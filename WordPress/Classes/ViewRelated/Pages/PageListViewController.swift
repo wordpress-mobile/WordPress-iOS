@@ -345,16 +345,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return Constant.Size.pageCellWithTagEstimatedRowHeight
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard _tableViewHandler.groupResults else {
             return UIView(frame: .zero)
         }
 
         let sectionInfo = _tableViewHandler.resultsController.sections?[section]
         let nibName = String(describing: PageListSectionHeaderView.self)
-        let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
+        let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? PageListSectionHeaderView
 
-        if let sectionInfo = sectionInfo {
+        if let sectionInfo = sectionInfo, let headerView = headerView {
             headerView.setTitle(PostSearchHeader.title(forStatus: sectionInfo.name))
         }
 

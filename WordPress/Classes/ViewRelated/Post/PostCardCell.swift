@@ -1,7 +1,7 @@
 import UIKit
 import Gridicons
 
-class PostCell: UITableViewCell, ConfigurablePostView {
+class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var featuredImageStackView: UIStackView!
     @IBOutlet weak var featuredImage: CachedAnimatedImageView!
     @IBOutlet weak var featuredImageHeight: NSLayoutConstraint!
@@ -23,9 +23,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topPadding: NSLayoutConstraint!
     @IBOutlet weak var contentStackView: UIStackView!
-    @IBOutlet weak var titleAndSnippetView: UIStackView!
     @IBOutlet weak var ghostStackView: UIStackView!
-    @IBOutlet weak var topMargin: NSLayoutConstraint!
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
@@ -52,7 +50,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         resetGhost()
         configureFeaturedImage()
-        configureTitleAndSnippetView()
         configureTitle()
         configureSnippet()
         configureDate()
@@ -182,18 +179,13 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         }
     }
 
-    private func configureTitleAndSnippetView() {
-        titleAndSnippetView.changeLayoutMargins(top: Constants.titleTopMargin, bottom: 0)
-    }
-
     private func configureTitle() {
         guard let post = post?.latest() else {
             return
         }
 
         if let titleForDisplay = post.titleForDisplay() {
-            titleLabel.attributedText = NSAttributedString(string: titleForDisplay, attributes: WPStyleGuide.postCardTitleAttributes() as? [NSAttributedString.Key: Any])
-            titleLabel.lineBreakMode = .byTruncatingTail
+            WPStyleGuide.applyPostTitleStyle(titleForDisplay, into: titleLabel)
         }
     }
 
@@ -204,9 +196,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         if let contentPreviewForDisplay = post.contentPreviewForDisplay(),
             !contentPreviewForDisplay.isEmpty {
-            snippetLabel.attributedText = NSAttributedString(string: contentPreviewForDisplay, attributes: WPStyleGuide.postCardSnippetAttributes() as? [NSAttributedString.Key: Any])
+            WPStyleGuide.applyPostSnippetStyle(contentPreviewForDisplay, into: snippetLabel)
             snippetLabel.isHidden = false
-            snippetLabel.lineBreakMode = .byTruncatingTail
         } else {
             snippetLabel.isHidden = true
         }
@@ -270,22 +261,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func setupBorders() {
-        [upperBorder, bottomBorder].forEach { border in
-            border?.heightAnchor.constraint(equalToConstant: Constants.borderHeight).isActive = true
-            border?.backgroundColor = WPStyleGuide.postCardBorderColor()
-        }
+        WPStyleGuide.applyBorderStyle(upperBorder)
+        WPStyleGuide.applyBorderStyle(bottomBorder)
     }
 
     private func setupActionBar() {
         actionBarView.subviews.compactMap({ $0 as? UIButton }).forEach { button in
-            button.flipInsetsForRightToLeftLayoutDirection()
-            button.setImage(button.imageView?.image?.imageWithTintColor(WPStyleGuide.grey()), for: .normal)
-            button.setTitleColor(WPStyleGuide.grey(), for: .normal)
-            button.setTitleColor(WPStyleGuide.darkGrey(), for: .highlighted)
-            button.setTitleColor(WPStyleGuide.darkGrey(), for: .selected)
+            WPStyleGuide.applyActionBarButtonStyle(button)
         }
-
-        actionBarView.changeLayoutMargins(top: Constants.margin - contentStackView.spacing)
     }
 
     private func setupLabels() {
@@ -302,14 +285,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func setupSelectedBackgroundView() {
         if let selectedBackgroundView = selectedBackgroundView {
-            let marginMask = UIView()
-            selectedBackgroundView.addSubview(marginMask)
-            marginMask.translatesAutoresizingMaskIntoConstraints = false
-            marginMask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor).isActive = true
-            marginMask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor).isActive = true
-            marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor).isActive = true
-            marginMask.heightAnchor.constraint(equalToConstant: Constants.margin).isActive = true
-            marginMask.backgroundColor = WPStyleGuide.greyLighten30()
+            WPStyleGuide.insertSelectedBackgroundSubview(selectedBackgroundView, topMargin: Constants.margin)
         }
     }
 
@@ -320,8 +296,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         contentStackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
 
         contentStackView.subviews.forEach { $0.changeLayoutMargins(left: 0, right: 0) }
-
-        topMargin.constant = Constants.margin
     }
 
     private func setupSeparatorLabel() {
@@ -336,16 +310,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private enum Constants {
         static let separator = " · "
-        static let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
+        static let margin: CGFloat = 16
         static let paddingWithoutImage: CGFloat = 8
-        static let titleTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 2
         static let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
-        static let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
         static let actionBarOpacity: Float = 1
     }
 }
 
-extension PostCell: InteractivePostView {
+extension PostCardCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
         interactivePostViewDelegate = delegate
     }
@@ -355,7 +327,7 @@ extension PostCell: InteractivePostView {
     }
 }
 
-extension PostCell: GhostableView {
+extension PostCardCell: GhostableView {
     func ghostAnimationWillStart() {
         progressView.isHidden = true
         actionBarView.layer.opacity = GhostConstants.actionBarOpacity

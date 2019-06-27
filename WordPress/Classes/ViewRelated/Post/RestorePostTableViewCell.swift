@@ -13,7 +13,7 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
             isCompact ? configureCompact() : configureDefault()
         }
     }
-    var post: Post!
+    var post: Post?
 
     func configure(with post: Post) {
         self.post = post
@@ -47,7 +47,7 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
 
     private func configureDefault() {
         topMargin.constant = Constants.defaultMargin
-        postContentView.layer.borderColor = WPStyleGuide.postCardBorderColor().cgColor
+        postContentView.layer.borderColor = WPStyleGuide.postCardBorderColor?.cgColor
         postContentView.layer.borderWidth = 1.0 / UIScreen.main.scale
     }
 
@@ -58,6 +58,10 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
     }
 
     @IBAction func restore(_ sender: Any) {
+        guard let post = post else {
+            return
+        }
+
         delegate?.restore(post)
     }
 

@@ -3,9 +3,9 @@ import XCTest
 
 @testable import WordPress
 
-class PostCellTests: XCTestCase {
+class PostCardCellTests: XCTestCase {
 
-    var postCell: PostCell!
+    var postCell: PostCardCell!
     var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
     var postActionSheetDelegateMock: PostActionSheetDelegateMock!
 
@@ -251,10 +251,10 @@ class PostCellTests: XCTestCase {
         XCTAssertFalse(postCell.separatorLabel.isHidden)
     }
 
-    private func postCellFromNib() -> PostCell {
-        let bundle = Bundle(for: PostCell.self)
-        guard let postCell = bundle.loadNibNamed("PostCell", owner: nil)?.first as? PostCell else {
-            fatalError("PostCell does not exist")
+    private func postCellFromNib() -> PostCardCell {
+        let bundle = Bundle(for: PostCardCell.self)
+        guard let postCell = bundle.loadNibNamed("PostCardCell", owner: nil)?.first as? PostCardCell else {
+            fatalError("PostCardCell does not exist")
         }
 
         return postCell

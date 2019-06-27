@@ -3,9 +3,9 @@ import XCTest
 
 @testable import WordPress
 
-class PostCellGhostableTests: XCTestCase {
+class PostCardCellGhostableTests: XCTestCase {
 
-    var postCell: PostCell!
+    var postCell: PostCardCell!
 
     override func setUp() {
         postCell = postCellFromNib()
@@ -41,9 +41,7 @@ class PostCellGhostableTests: XCTestCase {
     }
 
     func testTopPadding() {
-        let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
-
-        XCTAssertEqual(postCell.topPadding.constant, margin)
+        XCTAssertEqual(postCell.topPadding.constant, 16)
     }
 
     func testActionBarIsNotGhostable() {
@@ -90,10 +88,10 @@ class PostCellGhostableTests: XCTestCase {
         XCTAssertTrue(postCell.ghostStackView.isHidden)
     }
 
-    private func postCellFromNib() -> PostCell {
-        let bundle = Bundle(for: PostCell.self)
-        guard let postCell = bundle.loadNibNamed("PostCell", owner: nil)?.first as? PostCell else {
-            fatalError("PostCell does not exist")
+    private func postCellFromNib() -> PostCardCell {
+        let bundle = Bundle(for: PostCardCell.self)
+        guard let postCell = bundle.loadNibNamed("PostCardCell", owner: nil)?.first as? PostCardCell else {
+            fatalError("PostCardCell does not exist")
         }
 
         return postCell

@@ -35,7 +35,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     private let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
     private let postCompactCellNibName = "PostCompactCell"
-    private let postCardTextCellNibName = "PostCell"
+    private let postCardTextCellNibName = "PostCardCell"
     private let postCardRestoreCellNibName = "RestorePostTableViewCell"
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
@@ -467,7 +467,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func configurePostCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? PostCell else {
+        guard let cell = cell as? PostCardCell else {
             return
         }
 

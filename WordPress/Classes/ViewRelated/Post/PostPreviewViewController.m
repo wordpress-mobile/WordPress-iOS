@@ -3,7 +3,7 @@
 #import "PostCategory.h"
 #import "WordPress-Swift.h"
 #import "WPUserAgent.h"
-#import "WPStyleGuide+Posts.h"
+#import "WPStyleGuide+Pages.h"
 #import "WordPress-Swift.h"
 
 @import Gridicons;
