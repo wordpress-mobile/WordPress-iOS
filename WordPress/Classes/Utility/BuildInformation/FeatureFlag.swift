@@ -20,8 +20,7 @@ enum FeatureFlag: Int {
         case .domainCredit:
             return true
         case .murielColors:
-            // there's also a build setting for EXCLUDED_SOURCE_FILE_NAMES for the Images.xcassets file
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 }
