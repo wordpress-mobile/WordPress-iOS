@@ -711,7 +711,7 @@ FeaturedImageViewControllerDelegate>
 - (void)configureVisibilityButtonForPasswordCell:(WPTextFieldTableViewCell *)textCell
 {
     self.passwordVisibilityButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.passwordVisibilityButton.tintColor = [WPStyleGuide greyLighten10];
+    self.passwordVisibilityButton.tintColor = [UIColor murielNeutral200];
     [self.passwordVisibilityButton addTarget:self action:@selector(togglePasswordVisibility) forControlEvents:UIControlEventTouchUpInside];
     
     [self refreshPasswordVisibilityButton];
@@ -1328,14 +1328,18 @@ FeaturedImageViewControllerDelegate>
     options.badgedUTTypes = [NSSet setWithObject: (__bridge NSString *)kUTTypeGIF];
     options.preferredStatusBarStyle = UIStatusBarStyleLightContent;
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
-    self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
-                                                             initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
-    picker.dataSource = self.mediaDataSource;
+
+    WPAndDeviceMediaLibraryDataSource *mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
+                                                                                           initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
+
+    picker.dataSource = mediaDataSource;
     picker.delegate = self;
     [self registerChangeObserverForPicker:picker.mediaPicker];
 
     picker.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:picker animated:YES completion:nil];
+
+    self.mediaDataSource = mediaDataSource;
 }
 
 - (void)showCategoriesSelection

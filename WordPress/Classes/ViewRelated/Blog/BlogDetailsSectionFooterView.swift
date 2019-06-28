@@ -6,7 +6,7 @@ class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.numberOfLines = 0
         titleLabel.font = WPStyleGuide.tableviewSectionFooterFont()
-        titleLabel.textColor = WPStyleGuide.greyDarken10()
+        titleLabel.textColor = .neutral(shade: .shade400)
         return titleLabel
     }()
     private let spacerView = UIView(frame: .zero)

@@ -95,9 +95,9 @@
 
     } else {
 
-        [self.cancelButton setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-        self.addButton.tintColor = [WPStyleGuide wordPressBlue];
-        self.orderingButton.tintColor = [WPStyleGuide greyLighten20];
+        [self.cancelButton setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+        self.addButton.tintColor = [UIColor murielPrimary];
+        self.orderingButton.tintColor = [UIColor murielNeutral100];
     }
 }
 

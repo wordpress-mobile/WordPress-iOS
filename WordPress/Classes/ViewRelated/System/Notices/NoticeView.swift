@@ -161,7 +161,7 @@ class NoticeView: UIView {
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
         actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
+        actionButton.setTitleColor(.primary(shade: .shade400), for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
@@ -241,7 +241,6 @@ class NoticeView: UIView {
         cancelButton.titleLabel?.font = notice.style.cancelButtonFont
         actionButton.titleLabel?.font = notice.style.actionButtonFont
         titleLabel.font = notice.style.titleLabelFont
-        messageLabel.font = notice.style.messageLabelFont
 
         if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
             dualButtonsStackView?.axis = .vertical

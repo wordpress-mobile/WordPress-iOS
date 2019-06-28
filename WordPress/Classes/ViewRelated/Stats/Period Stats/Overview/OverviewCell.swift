@@ -3,14 +3,23 @@ import UIKit
 struct OverviewTabData: FilterTabBarItem {
     var tabTitle: String
     var tabData: Int
+    var tabDataStub: String?
     var difference: Int
     var differencePercent: Int
+    var analyticsStat: WPAnalyticsStat?
 
-    init(tabTitle: String, tabData: Int, difference: Int, differencePercent: Int) {
+    init(tabTitle: String,
+         tabData: Int,
+         tabDataStub: String? = nil,
+         difference: Int,
+         differencePercent: Int,
+         analyticsStat: WPAnalyticsStat? = nil) {
         self.tabTitle = tabTitle
         self.tabData = tabData
+        self.tabDataStub = tabDataStub
         self.difference = difference
         self.differencePercent = differencePercent
+        self.analyticsStat = analyticsStat
     }
 
     var attributedTitle: NSAttributedString? {
@@ -19,7 +28,14 @@ struct OverviewTabData: FilterTabBarItem {
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
                                        range: NSMakeRange(0, attributedTitle.string.count))
 
-        let attributedData = NSMutableAttributedString(string: tabData.abbreviatedString())
+        let dataString: String = {
+            if let tabDataStub = tabDataStub {
+                return tabDataStub
+            }
+            return tabData.abbreviatedString()
+        }()
+
+        let attributedData = NSMutableAttributedString(string: dataString)
         attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
                                        range: NSMakeRange(0, attributedData.string.count))
 
@@ -139,6 +155,10 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        if let event = tabsData[filterTabBar.selectedIndex].analyticsStat {
+            captureAnalyticsEvent(event)
+        }
+
         configureChartView()
         updateLabels()
     }
@@ -183,6 +203,18 @@ private extension OverviewCell {
     enum ChartBottomMargin {
         static let filterTabBarShown = CGFloat(16)
         static let filterTabBarHidden = CGFloat(24)
+    }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
+        }
     }
 
 }

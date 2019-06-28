@@ -69,11 +69,11 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 {
     _items = @[];
     _buttons = @[];
-    self.backgroundColor = [WPStyleGuide lightGrey];
+    self.backgroundColor = [UIColor murielNeutral0];
 
     self.contentView = [[UIView alloc] initWithFrame:self.bounds];
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.contentView.backgroundColor = [WPStyleGuide greyLighten30];
+    self.contentView.backgroundColor = [UIColor murielNeutral50];
     [self addSubview:self.contentView];
 
     NSDictionary *views = NSDictionaryOfVariableBindings(_contentView);
@@ -186,10 +186,10 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
     UIButton *button = [PostCardActionButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.exclusiveTouch = YES;
-    button.backgroundColor = [WPStyleGuide lightGrey];
+    button.backgroundColor = [UIColor murielNeutral0];
     button.titleLabel.font = [WPStyleGuide subtitleFont];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
 
     return button;

@@ -26,7 +26,7 @@
                                     <rect key="frame" x="0.0" y="15" width="28" height="28"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="28" id="Sez-wA-eee"/>
-                                        <constraint firstAttribute="width" secondItem="il5-2Z-QId" secondAttribute="height" multiplier="1:1" id="Xff-jJ-dhu"/>
+                                        <constraint firstAttribute="height" constant="28" id="vQc-8f-D53"/>
                                     </constraints>
                                 </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="U2I-mF-Pab" userLabel="Label Stack View">
@@ -150,6 +150,7 @@
                 <outlet property="dataLabel" destination="Ivc-26-vsM" id="wbJ-ri-8Rh"/>
                 <outlet property="disclosureButton" destination="KoQ-BR-jDc" id="qah-fR-XpV"/>
                 <outlet property="disclosureImageView" destination="zUJ-W9-Eeb" id="RPm-XV-KAU"/>
+                <outlet property="imageHeightConstraint" destination="vQc-8f-D53" id="T9W-c3-pP3"/>
                 <outlet property="imageView" destination="il5-2Z-QId" id="G0o-g7-BBY"/>
                 <outlet property="imageWidthConstraint" destination="Sez-wA-eee" id="PXQ-kQ-vRU"/>
                 <outlet property="itemDetailLabel" destination="AYo-jW-XP6" id="KlK-Zw-PCH"/>

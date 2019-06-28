@@ -58,7 +58,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+        view.backgroundColor = .neutral(shade: .shade50)
     }
 
     override func viewDidLayoutSubviews() {
@@ -76,11 +76,11 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = WPStyleGuide.greyLighten30()
+        table.backgroundColor = .neutral(shade: .shade50)
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = WPStyleGuide.greyLighten20()
+        table.separatorColor = .neutral(shade: .shade100)
     }
 
     private func hideSeparators() {

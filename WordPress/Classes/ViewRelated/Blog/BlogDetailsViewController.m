@@ -109,7 +109,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                     identifier:identifier
        accessibilityIdentifier:accessibilityIdentifier
                          image:image
-                    imageColor:[WPStyleGuide greyLighten10]
+                    imageColor:[UIColor murielNeutral]
                       callback:callback];
 }
     
@@ -502,12 +502,24 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)setRestorableSelectedIndexPath:(NSIndexPath *)restorableSelectedIndexPath
 {
-    _restorableSelectedIndexPath = restorableSelectedIndexPath;
-
-    if (restorableSelectedIndexPath != nil) {
+    if (restorableSelectedIndexPath != nil && restorableSelectedIndexPath.section < [self.tableSections count]) {
         BlogDetailsSection *section = [self.tableSections objectAtIndex:restorableSelectedIndexPath.section];
-        self.selectedSectionCategory = section.category;
+        switch (section.category) {
+            case BlogDetailsSectionCategoryQuickStart:
+            case BlogDetailsSectionCategoryDomainCredit: {
+                _restorableSelectedIndexPath = nil;
+            }
+                break;
+            default: {
+                self.selectedSectionCategory = section.category;
+                _restorableSelectedIndexPath = restorableSelectedIndexPath;
+            }
+                break;
+        }
+        return;
     }
+
+    _restorableSelectedIndexPath = nil;
 }
 
 - (SiteIconPickerPresenter *)siteIconPickerPresenter
@@ -558,10 +570,27 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Check if the last selected category index needs to be updated after a dynamic section is activated and displayed.
     // QuickStart and Use Domain are dynamic section, which means they can be removed or hidden at any time.
-    NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
-    if (section != NSNotFound && self.restorableSelectedIndexPath.section != section) {
-        NSUInteger row = self.restorableSelectedIndexPath.row;
-        self.restorableSelectedIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    NSUInteger sectionIndex = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
+
+    if (sectionIndex != NSNotFound && self.restorableSelectedIndexPath.section != sectionIndex) {
+        BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionIndex];
+
+        NSUInteger row = 0;
+        
+        // For QuickStart and Use Domain cases we want to select the first row on the next available section
+        switch (section.category) {
+            case BlogDetailsSectionCategoryQuickStart:
+            case BlogDetailsSectionCategoryDomainCredit: {
+                BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:BlogDetailsSubsectionStats];
+                sectionIndex = [self findSectionIndexWithSections:self.tableSections category:category];
+            }
+                break;
+            default:
+                row = self.restorableSelectedIndexPath.row;
+                break;
+        }
+
+        self.restorableSelectedIndexPath = [NSIndexPath indexPathForRow:row inSection:sectionIndex];
     }
 
     BOOL isValidIndexPath = self.restorableSelectedIndexPath.section < self.tableView.numberOfSections &&
@@ -1195,8 +1224,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)preloadStats
 {
     NSString *oauthToken = self.blog.authToken;
-
-    if (oauthToken) {
+    
+    if (oauthToken && ![Feature enabled:FeatureFlagStatsRefresh]) {
+        NSLog(@"BlogDetails: preloading stats.");
         self.statsService = [self statsServiceWithSiteId:self.blog.dotComID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken cacheExpirationInterval:5 * 60];
         [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
     }

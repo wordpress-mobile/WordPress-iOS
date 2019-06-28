@@ -6,7 +6,6 @@ import WordPressFlux
 /// via the `shared` singleton.
 ///
 class MediaCoordinator: NSObject {
-
     @objc static let shared = MediaCoordinator()
 
     private(set) var backgroundContext: NSManagedObjectContext = {
@@ -334,7 +333,7 @@ class MediaCoordinator: NSObject {
     func media(withObjectID objectID: String) -> Media? {
         guard let storeCoordinator = mainContext.persistentStoreCoordinator,
             let url = URL(string: objectID),
-            let managedObjectID = storeCoordinator.managedObjectID(forURIRepresentation: url),
+            let managedObjectID = storeCoordinator.safeManagedObjectID(forURIRepresentation: url),
             let media = try? mainContext.existingObject(with: managedObjectID) as? Media else {
             return nil
         }
@@ -599,6 +598,20 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
         if mediaProgressCoordinator != mediaLibraryProgressCoordinator {
             removeCoordinator(mediaProgressCoordinator)
+        }
+    }
+}
+
+extension MediaCoordinator: Uploader {
+    func resume() {
+        let service = MediaService(managedObjectContext: mainContext)
+
+        service.getFailedMedia { [weak self] media in
+            guard let self = self else {
+                return
+            }
+
+            media.forEach() { self.retryMedia($0) }
         }
     }
 }

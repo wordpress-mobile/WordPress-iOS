@@ -64,9 +64,7 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
-    private func displayPreviewNotAvialble() {
-        let title = NSLocalizedString("Preview Unavailable for Published Posts", comment: "Title on display preview error" )
-        let subtitle = NSLocalizedString("Update the published post to view your changes.", comment: "subtitle on display preview error" )
+    private func displayPreviewNotAvailable(title: String, subtitle: String? = nil) {
         let noResultsController = NoResultsViewController.controllerWith(title: title, subtitle: subtitle)
         noResultsController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(noResultsController, animated: true)
@@ -75,7 +73,8 @@ extension PostEditor where Self: UIViewController {
     func displayPreview() {
         savePostBeforePreview() { [weak self] previewURLString, error in
             if error != nil {
-                self?.displayPreviewNotAvialble()
+                let title = NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" )
+                self?.displayPreviewNotAvailable(title: title)
                 return
             }
             guard let post = self?.post else {
@@ -85,6 +84,11 @@ extension PostEditor where Self: UIViewController {
             if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {
                 previewController = PostPreviewViewController(post: post, previewURL: previewURL)
             } else {
+                if post.permaLink == nil {
+                    DDLogError("displayPreview: Post permalink is unexpectedly nil")
+                    self?.displayPreviewNotAvailable(title: NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
+                    return
+                }
                 previewController = PostPreviewViewController(post: post)
             }
             previewController.hidesBottomBarWhenPushed = true

@@ -5,15 +5,15 @@ extension WPStyleGuide {
     @objc public class func configureTableViewBlogCell(_ cell: UITableViewCell) {
         cell.textLabel?.font = tableviewTextFont()
         cell.textLabel?.sizeToFit()
-        cell.textLabel?.textColor = darkGrey()
+        cell.textLabel?.textColor = .text
 
         cell.detailTextLabel?.font = self.subtitleFont()
         cell.detailTextLabel?.sizeToFit()
-        cell.detailTextLabel?.textColor = self.greyDarken10()
+        cell.detailTextLabel?.textColor = .neutral(shade: .shade200)
 
         cell.imageView?.layer.borderColor = UIColor.white.cgColor
         cell.imageView?.layer.borderWidth = 1
-        cell.imageView?.tintColor = greyLighten10()
+        cell.imageView?.tintColor = .neutral(shade: .shade200)
 
         cell.backgroundColor = UIColor.white
     }
@@ -22,17 +22,17 @@ extension WPStyleGuide {
         // TODO: make this dynamic size once @elibud's dynamic type code is merged
         cell.textLabel?.font = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
         cell.textLabel?.sizeToFit()
-        cell.textLabel?.textColor = darkGrey()
+        cell.textLabel?.textColor = .text
 
         cell.detailTextLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         cell.detailTextLabel?.sizeToFit()
-        cell.detailTextLabel?.textColor = self.darkGrey()
+        cell.detailTextLabel?.textColor = .text
 
-        cell.imageView?.layer.borderColor = greyLighten20().cgColor
+        cell.imageView?.layer.borderColor = UIColor.neutral(shade: .shade100).cgColor
         cell.imageView?.layer.borderWidth = 1
-        cell.imageView?.tintColor = greyLighten10()
+        cell.imageView?.tintColor = .neutral(shade: .shade300)
 
-        cell.backgroundColor = lightGrey()
+        cell.backgroundColor = .neutral(shade: .shade0)
     }
 
  }

@@ -9,8 +9,8 @@ class DomainListDomainCell: WPTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        domainLabel?.textColor = WPStyleGuide.greyDarken30()
-        registeredMappedLabel?.textColor = WPStyleGuide.greyDarken10()
+        domainLabel?.textColor = .neutral(shade: .shade600)
+        registeredMappedLabel?.textColor = .neutral(shade: .shade400)
     }
 }
 
@@ -93,7 +93,7 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
 
         title = NSLocalizedString("Domains", comment: "Title for the Domains list")
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         if let dotComID = blog.dotComID?.intValue {
             service.refreshDomainsForSite(dotComID) { _ in }

@@ -18,10 +18,10 @@ struct AppBannerRoute: Route {
 }
 
 extension AppBannerRoute: NavigationAction {
-    func perform(_ values: [String: String]?, source: UIViewController? = nil) {
-        guard let fragmentValue = values?[MatchedRouteURLComponentKey.fragment.rawValue],
-        let fragment = fragmentValue.removingPercentEncoding else {
-            return
+    func perform(_ values: [String: String], source: UIViewController? = nil) {
+        guard let fragmentValue = values[MatchedRouteURLComponentKey.fragment.rawValue],
+            let fragment = fragmentValue.removingPercentEncoding else {
+                return
         }
 
         // Convert the fragment into a URL and ask the link router to handle

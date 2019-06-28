@@ -62,7 +62,7 @@ import Reachability
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        WPStyleGuide.configureColors(for: view, andTableView: nil)
+        WPStyleGuide.configureColors(view: view, tableView: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -449,7 +449,8 @@ private extension NoResultsViewController {
     func configureButton() {
         actionButton.contentEdgeInsets = DefaultRenderMetrics.contentInsets
 
-        let normalImage = renderBackgroundImage(fill: WPStyleGuide.mediumBlue(), border: WPStyleGuide.wordPressBlue())
+        // TODO: Murielize these colors when buttons are done
+        let normalImage = renderBackgroundImage(fill: .primary(shade: .shade400), border: WPStyleGuide.wordPressBlue())
         let highlightedImage = renderBackgroundImage(fill: WPStyleGuide.wordPressBlue(), border: WPStyleGuide.wordPressBlue())
 
         actionButton.setBackgroundImage(normalImage, for: .normal)

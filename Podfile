@@ -13,14 +13,14 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.1-beta'
+    pod 'WordPressShared', '~> 1.8.4-beta.3'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 	# 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'task/support-swift-5'
-	#pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> 'a903525'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'add/app-icon-analytics'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
 def aztec
@@ -35,7 +35,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.3.1-beta.1'
+    pod 'WordPressUI', '~> 1.3.4'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
@@ -43,8 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.1-beta'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'bug/allow-specifying-limit-for-summary-queries'
+    pod 'WordPressKit', '~> 4.2.0-beta.2'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/stats-fetch-likes-separately'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ef4f184f5a33ef628c053892e8f706046191d66c'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -139,6 +140,7 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
+    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.1.1'
 
     ## Automattic libraries
     ## ====================
@@ -151,15 +153,15 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '0.3'
 
-    pod 'WPMediaPicker', '~> 1.4.1'
+    pod 'WPMediaPicker', '~> 1.4.2'
     ## while PR is in review:
-    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e55438187d464763efd0b6bf11a0afa1964d9037'
+    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '7c3cb8f00400b9316a803640b42bb88a66bbc648'
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.5.0'
+    pod 'WordPressAuthenticator', '~> 1.5.4-beta.2'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '19efd8b8e7dadad66b5be9988fbc071acb766222'
 
     aztec
     wordpress_ui
@@ -175,8 +177,9 @@ target 'WordPress' do
     post_install do
         require 'commonmarker'
         
-        acknowledgements = 'Acknowledgements'
-        markdown = File.read('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown')
+        project_root = File.dirname(__FILE__)
+        acknowledgements = 'Acknowledgments'
+        markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
         styled_html = "<head>
                          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
@@ -207,7 +210,7 @@ target 'WordPress' do
           ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
                         
-        File.write('Pods/Target Support Files/Pods-WordPress/acknowledgements.html', styled_html)    
+        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)    
     end
 end
 
@@ -312,15 +315,29 @@ target 'WordPressComStatsiOSTests' do
   shared_test_pods
 end
 
+def wordpress_mocks
+  pod 'WordPressMocks', '~> 0.0.5'
+  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
+  # pod 'WordPressMocks', :path => '../WordPressMocks'
+end
+
 ## Screenshot Generation
 ## ===================
 ##
 target 'WordPressScreenshotGeneration' do
     project 'WordPress/WordPress.xcodeproj'
 
-    inherit! :search_paths
-
+    wordpress_mocks
     pod 'SimulatorStatusMagic'
+end
+
+## UI Tests
+## ===================
+##
+target 'WordPressUITests' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    wordpress_mocks
 end
 
 # Static Frameworks:

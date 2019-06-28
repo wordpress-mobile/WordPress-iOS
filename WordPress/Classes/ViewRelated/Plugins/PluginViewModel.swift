@@ -562,7 +562,7 @@ class PluginViewModel: Observable {
             guard let font = value as? UIFont, font.familyName == "Times New Roman" else { return }
 
             copy.addAttribute(.font, value: WPStyleGuide.subtitleFont(), range: range)
-            copy.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: range)
+            copy.addAttribute(.foregroundColor, value: UIColor.neutral(shade: .shade700), range: range)
         }
 
 

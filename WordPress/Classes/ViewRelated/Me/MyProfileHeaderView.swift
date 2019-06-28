@@ -87,6 +87,6 @@ class MyProfileHeaderView: WPTableViewCell {
     }
 
     private func configureGravatarButton() {
-        gravatarButton.tintColor = WPStyleGuide.wordPressBlue()
+        gravatarButton.tintColor = .primary
     }
 }

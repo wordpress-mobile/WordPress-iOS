@@ -1,5 +1,7 @@
-* Marca los avisos como no leídos con un simple deslizamiento.
-* ¿Esa caída ocasional cuando buscas en la biblioteca de fotos gratis? ¡Arreglada!
-* El inicio de sesión en sitios auto-alojados es ahora más fácil que nunca.
-* Mejora el aspecto de las citas en el lector
-* Hemos hecho un montón de pequeñas mejoras en la accesibilidad visual y auditiva a través de la aplicación.
+* Las estadísticas son mucho mejores, ni siquiera sabemos por dónde empezar. ¡Tanto la interfaz de usuario como la administración están totalmente renovadas! Los datos se almacenan en caché, por lo que la carga de estadísticas es mucho más rápida y puedes verlos incluso cuando estás desconectado. ¡Las estadísticas individuales tienen niveles más profundos de detalle para que puedas explorarlos! ¡Los selectores de fecha te permiten especificar los períodos exactos que quieras ver! ¿Es de tontos estar tan entusiasmados con las estadísticas? ¡A quién le importa!
+* El editor de bloques sigue mejorando. Los mensajes son más claros cuando se intenta poner contenido no válido en un bloque, y hemos corregido un problema con los ajustes de los enlaces que hacía que «Abrir en nueva pestaña» siempre estuviera desactivado.
+* Hasta el infinito y más allá: Hemos eliminado el límite en el número de fotos que puedes compartir con WordPress desde otras aplicaciones.
+* Si escribes un comentario y te vas mientras se carga, ahora obtendrás un mensaje más claro cuando se publique correctamente, o información más detallada si falla.
+* En los ajustes de la cuenta, tu sitio principal ahora muestra el dominio del sitio si el sitio no tiene nombre. (Elimina la presión de tener que pensar en el nombre perfecto inmediatamente. ¡Ya se te ocurrirá!)
+* ¿Te preguntas por el código que hace funcionar la aplicación? Hemos añadido agradecimientos a todas las bibliotecas de código de terceros que utilizamos; puedes encontrarlos en tus ajustes.
+* Arreglamos un fallo que podía ocurrir al configurar tu blog, así que ahora puedes, ya sabes, configurarlo.

@@ -57,9 +57,9 @@ class ExpandableCell: WPReusableTableViewCell {
         chevronImageView?.image = Gridicon.iconOfType(.chevronDown)
         chevronImageView?.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
 
-        titleTextLabel?.textColor = WPStyleGuide.darkGrey()
+        titleTextLabel?.textColor = .neutral(shade: .shade700)
 
-        let linkAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: WPStyleGuide.wordPressBlue(),
+        let linkAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary,
                                                              .underlineStyle: 0,
                                                              .underlineColor: UIColor.clear]
         expandableTextView?.linkTextAttributes = linkAttributes

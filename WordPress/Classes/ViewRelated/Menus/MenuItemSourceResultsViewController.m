@@ -5,6 +5,7 @@
 #import "Blog.h"
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
 static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
@@ -46,7 +47,7 @@ static CGFloat const SearchBarHeight = 44.0;
     tableView.translatesAutoresizingMaskIntoConstraints = NO;
     tableView.dataSource = self;
     tableView.delegate = self;
-    tableView.separatorColor = [WPStyleGuide greyLighten20];
+    tableView.separatorColor = [UIColor murielNeutral100];
     tableView.cellLayoutMarginsFollowReadableWidth = NO;
     UIEdgeInsets inset = tableView.contentInset;
     inset.top = MenusDesignDefaultContentSpacing / 2.0;

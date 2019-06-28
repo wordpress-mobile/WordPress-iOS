@@ -5,7 +5,7 @@ import WordPressFlux
 @objc protocol SiteStatsPeriodDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
@@ -15,8 +15,6 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
-
-    private let siteID = SiteStatsInformation.sharedInstance.siteID
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -91,7 +89,6 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return SiteStatsTableHeaderView.height
     }
-
 }
 
 // MARK: - Private Extension
@@ -111,6 +108,13 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self)
+        addViewModelListeners()
+    }
+
+    func addViewModelListeners() {
+        if changeReceipt != nil {
+            return
+        }
 
         changeReceipt = viewModel?.onChange { [weak self] in
             self?.refreshTableView()
@@ -119,8 +123,9 @@ private extension SiteStatsPeriodTableViewController {
         viewModel?.overviewStoreStatusOnChange = { [weak self] status in
             guard let self = self,
                 let viewModel = self.viewModel,
-                self.viewIsVisible() else {
-                return
+                self.viewIsVisible(),
+                self.changeReceipt != nil else {
+                    return
             }
 
             self.tableHandler.viewModel = viewModel.tableViewModel()
@@ -144,11 +149,17 @@ private extension SiteStatsPeriodTableViewController {
         }
     }
 
+    func removeViewModelListeners() {
+        changeReceipt = nil
+        viewModel?.overviewStoreStatusOnChange = nil
+    }
+
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [CellHeaderRow.self,
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
+                CountriesMapRow.self,
                 OverviewRow.self,
                 TableFooterRow.self]
     }
@@ -178,7 +189,7 @@ private extension SiteStatsPeriodTableViewController {
                 refreshControl?.endRefreshing()
                 return
         }
-
+        addViewModelListeners()
         viewModel?.refreshPeriodOverviewData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
@@ -263,7 +274,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
     func displayMediaWithID(_ mediaID: NSNumber) {
 
-        guard let siteID = siteID,
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
             let blog = blogService.blog(byBlogId: siteID) else {
                 DDLogInfo("Unable to get blog when trying to show media from Stats.")
                 return
@@ -277,8 +288,10 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         })
     }
 
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
+    func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool) {
+        if didSelectRow {
+            applyTableUpdates()
+        }
         StatsDataHelper.updatedExpandedState(forRow: row)
     }
 
@@ -286,6 +299,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         guard StatSection.allPeriods.contains(statSection) else {
             return
         }
+
+        removeViewModelListeners()
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection,
@@ -295,6 +310,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
+        removeViewModelListeners()
+
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)

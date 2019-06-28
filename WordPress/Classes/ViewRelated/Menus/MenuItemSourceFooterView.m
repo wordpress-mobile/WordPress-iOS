@@ -2,6 +2,7 @@
 #import "MenuItemSourceCell.h"
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 static NSTimeInterval const PulseAnimationDuration = 0.35;
 
@@ -168,7 +169,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
         NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         NSDictionary *attributes = @{
                                      NSFontAttributeName: [WPStyleGuide regularTextFont],
-                                     NSForegroundColorAttributeName: [WPStyleGuide greyDarken10],
+                                     NSForegroundColorAttributeName: [UIColor murielNeutral400],
                                      NSParagraphStyleAttributeName: style
                                      };
         [self.labelText drawInRect:textRect withAttributes:attributes];
@@ -180,7 +181,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 - (void)drawViewDrawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [[WPStyleGuide lightGrey] CGColor]);
+    CGContextSetFillColorWithColor(context, [[UIColor murielNeutral0] CGColor]);
     CGRect labelRect = self.sourceCell.drawingRectForLabel;
     CGContextFillRect(context, labelRect);
 }

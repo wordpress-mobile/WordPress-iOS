@@ -5,13 +5,13 @@ class NotificationsScreen: BaseScreen {
     let tabBar: TabNavComponent
 
     init() {
-        let navBar = XCUIApplication().navigationBars["Notifications"]
+        let navBar = XCUIApplication().tables["Notifications Table"]
         tabBar = TabNavComponent()
 
         super.init(element: navBar)
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().navigationBars["Notifications"].exists
+        return XCUIApplication().tables["Notifications Table"].exists
     }
 }

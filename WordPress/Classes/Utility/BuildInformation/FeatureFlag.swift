@@ -6,6 +6,7 @@ enum FeatureFlag: Int {
     case jetpackDisconnect
     case statsRefresh
     case domainCredit
+    case murielColors
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -15,9 +16,12 @@ enum FeatureFlag: Int {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .statsRefresh:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]
+            return true
         case .domainCredit:
             return true
+        case .murielColors:
+            // there's also a build setting for EXCLUDED_SOURCE_FILE_NAMES for the Images.xcassets file
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }

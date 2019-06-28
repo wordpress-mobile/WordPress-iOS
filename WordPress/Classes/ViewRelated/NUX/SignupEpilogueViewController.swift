@@ -31,7 +31,7 @@ class SignupEpilogueViewController: NUXViewController {
     private lazy var buttonViewController: NUXButtonViewController = {
         let buttonViewController = NUXButtonViewController.instance()
         buttonViewController.delegate = self
-        buttonViewController.setButtonTitles(primary: ButtonTitles.primary)
+        buttonViewController.setButtonTitles(primary: ButtonTitles.primary, primaryAccessibilityId: ButtonTitles.primaryAccessibilityId)
         return buttonViewController
     }()
 
@@ -274,6 +274,7 @@ extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {
 private extension SignupEpilogueViewController {
     enum ButtonTitles {
         static let primary = NSLocalizedString("Continue", comment: "Button text on site creation epilogue page to proceed to My Sites.")
+        static let primaryAccessibilityId = "Continue Button"
     }
 
     enum HUDMessages {

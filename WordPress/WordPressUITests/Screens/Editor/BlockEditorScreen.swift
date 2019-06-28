@@ -13,7 +13,7 @@ class BlockEditorScreen: BaseScreen {
     // Title
     let titleView = XCUIApplication().textViews.containing(.staticText, identifier: "Add title").element(boundBy: 0) // Uses a localized string
     // Paragraph block
-    let paragraphView = XCUIApplication().otherElements["block-0-core/paragraph"].textViews.element(boundBy: 0)
+    let paragraphView = XCUIApplication().otherElements["Paragraph Block. Row 1. Empty"].textViews.element(boundBy: 0)
     // Image block
     let imagePlaceholder = XCUIApplication().buttons["Image block. Empty"] // Uses a localized string
 
@@ -65,20 +65,29 @@ class BlockEditorScreen: BaseScreen {
 
     // returns void since return screen depends on from which screen it loaded
     func closeEditor() {
-        // Close the More menu if needed
-        if actionSheet.exists {
-            if isIpad {
-                app.otherElements["PopoverDismissRegion"].tap()
-            } else {
-                keepEditingButton.tap()
+        XCTContext.runActivity(named: "Close the block editor") { (activity) in
+            XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
+                if actionSheet.exists {
+                    if isIpad {
+                        app.otherElements["PopoverDismissRegion"].tap()
+                    } else {
+                        keepEditingButton.tap()
+                    }
+                }
             }
-        }
-        // Close the editor and discard any local changes
-        editorCloseButton.tap()
-        let notSavedState = app.staticTexts["You have unsaved changes."]
-        if notSavedState.exists {
-            Logger.log(message: "Discarding unsaved changes", event: .v)
-            discardButton.tap()
+
+            editorCloseButton.tap()
+
+            XCTContext.runActivity(named: "Discard any local changes") { (activity) in
+                let notSavedState = app.staticTexts["You have unsaved changes."]
+                if notSavedState.exists {
+                    Logger.log(message: "Discarding unsaved changes", event: .v)
+                    discardButton.tap()
+                }
+            }
+
+            let editorClosed = waitFor(element: editorNavBar, predicate: "isEnabled == false")
+            XCTAssert(editorClosed, "Block editor should be closed but is still loaded.")
         }
     }
 

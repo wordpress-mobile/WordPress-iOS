@@ -164,7 +164,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
         // transitioning to full screen width (but not yet wide enough).
         // This mask view sits behind the navigation bar and hides it.
         let navigationBarMask = UIView()
-        navigationBarMask.backgroundColor = WPStyleGuide.wordPressBlue()
+        navigationBarMask.backgroundColor = .primary
         containerView.addSubview(navigationBarMask)
         navigationBarMask.frame = model.navigationBarMaskFrame
 

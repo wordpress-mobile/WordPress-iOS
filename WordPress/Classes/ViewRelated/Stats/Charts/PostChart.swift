@@ -1,6 +1,4 @@
-
 import Foundation
-
 import Charts
 
 // MARK: - PostChartType
@@ -27,7 +25,7 @@ extension PostChartType {
         case .latest:
             return nil
         case .selected:
-            return WPStyleGuide.jazzyOrange()
+            return .accent
         }
     }
 }
@@ -101,13 +99,16 @@ private final class PostChartDataTransformer {
             effectiveWidth = range / effectiveBars
         }
 
+        let totalViews = data.compactMap({$0.viewsCount}).reduce(0, +)
+
         var entries = [BarChartDataEntry]()
         for datum in data {
             let dateInterval = datum.postDateTimeInterval ?? 0
             let offset = dateInterval - firstDateInterval
 
             let x = offset
-            let y = Double(datum.viewsCount)
+            // If the chart has no data, show "stub" bars
+            let y = totalViews > 0 ? Double(datum.viewsCount) : StatsBarChartView.emptyChartBarHeight
             let entry = BarChartDataEntry(x: x, y: y)
 
             entries.append(entry)
@@ -117,22 +118,34 @@ private final class PostChartDataTransformer {
         chartData.barWidth = effectiveWidth
 
         let xAxisFormatter: IAxisValueFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
-        let styling = PostChartStyling(primaryHighlightColor: type.highlightColor, xAxisValueFormatter: xAxisFormatter)
+        let styling = PostChartStyling(primaryBarColor: primaryBarColor(forCount: totalViews),
+                                       primaryHighlightColor: primaryHighlightColor(forType: type, withCount: totalViews),
+                                       xAxisValueFormatter: xAxisFormatter)
 
         return (chartData, styling)
     }
+
+    static func primaryBarColor(forCount count: Int) -> UIColor {
+        return count > 0 ? .primary : .neutral(shade: .shade0)
+    }
+
+    static func primaryHighlightColor(forType type: PostChartType, withCount count: Int) -> UIColor? {
+        return count > 0 ? type.highlightColor : nil
+    }
+
 }
 
 // MARK: - PostChartStyling
 
 private struct PostChartStyling: BarChartStyling {
-    let primaryBarColor: UIColor                    = WPStyleGuide.wordPressBlue()
+    let primaryBarColor: UIColor
     let secondaryBarColor: UIColor?                 = nil
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
-    let labelColor: UIColor                         = WPStyleGuide.grey()
+    let labelColor: UIColor                         = .neutral(shade: .shade300)
+    let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
-    let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
+    let lineColor: UIColor                          = .neutral(shade: .shade50)
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
 }

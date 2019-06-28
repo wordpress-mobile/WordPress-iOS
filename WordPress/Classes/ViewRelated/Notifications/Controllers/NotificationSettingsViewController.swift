@@ -53,7 +53,7 @@ open class NotificationSettingsViewController: UIViewController {
         tableView.tableFooterView = UIView()
 
         // Style!
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
@@ -263,10 +263,10 @@ open class NotificationSettingsViewController: UIViewController {
         }
 
         if let site = siteTopic(at: indexPath) {
-            cell.imageView?.image = .siteIconPlaceholderImage
+            cell.imageView?.image = .siteIconPlaceholder
 
             cell.accessoryType = .disclosureIndicator
-            cell.imageView?.backgroundColor = WPStyleGuide.greyLighten30()
+            cell.imageView?.backgroundColor = .neutral(shade: .shade50)
 
             cell.textLabel?.text = site.title
             cell.detailTextLabel?.text = URL(string: site.siteURL)?.host
@@ -291,7 +291,7 @@ open class NotificationSettingsViewController: UIViewController {
             if let blog = settings.blog {
                 cell.imageView?.downloadSiteIcon(for: blog)
             } else {
-                cell.imageView?.image = .siteIconPlaceholderImage
+                cell.imageView?.image = .siteIconPlaceholder
             }
 
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
