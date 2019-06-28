@@ -107,6 +107,7 @@ extension UIColor {
             return WPStyleGuide.jazzyOrange()
         }
     }
+
     static var accentDark: UIColor {
         if FeatureFlag.murielColors.enabled {
             return muriel(color: MurielColor(from: .accent, shade: .shade700))
@@ -114,6 +115,7 @@ extension UIColor {
             return WPStyleGuide.fireOrange()
         }
     }
+
     class func accent(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .accent, shade: shade))
     }
@@ -129,6 +131,7 @@ extension UIColor {
             return WPStyleGuide.errorRed()
         }
     }
+
     static var errorDark: UIColor {
         if FeatureFlag.murielColors.enabled {
             return muriel(color: MurielColor(from: .error, shade: .shade700))
@@ -136,6 +139,7 @@ extension UIColor {
             return WPStyleGuide.alertRedDarker()
         }
     }
+
     class func error(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .error, shade: shade))
     }
@@ -178,6 +182,7 @@ extension UIColor {
             return WPStyleGuide.wordPressBlue()
         }
     }
+
     static var primaryLight: UIColor {
         if FeatureFlag.murielColors.enabled {
             return muriel(color: MurielColor(from: .primary, shade: .shade300))
@@ -185,6 +190,7 @@ extension UIColor {
             return WPStyleGuide.lightBlue()
         }
     }
+
     static var primaryDark: UIColor {
         if FeatureFlag.murielColors.enabled {
             return muriel(color: MurielColor(from: .primary, shade: .shade700))
@@ -192,6 +198,7 @@ extension UIColor {
             return WPStyleGuide.darkBlue()
         }
     }
+
     class func primary(shade: MurielColorShade) -> UIColor {
         if FeatureFlag.murielColors.enabled {
             return muriel(color: MurielColor(from: .primary, shade: shade))
@@ -218,6 +225,7 @@ extension UIColor {
             return WPStyleGuide.validGreen()
         }
     }
+
     class func success(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .success, shade: shade))
     }
@@ -249,28 +257,31 @@ extension UIColor {
     }
 
     /// MARK: Muriel colors for buttons
-    static var buttonBase: UIColor {
+    static var primaryButtonBackground: UIColor {
         if FeatureFlag.murielColors.enabled {
             return .accent
         } else {
             return WPStyleGuide.mediumBlue()
         }
     }
-    static var buttonBorder: UIColor {
+
+    static var primaryButtonBorder: UIColor {
         if FeatureFlag.murielColors.enabled {
             return .accentDark
         } else {
             return WPStyleGuide.wordPressBlue()
         }
     }
-    static var buttonDown: UIColor {
+
+    static var primaryButtonDownBackground: UIColor {
         if FeatureFlag.murielColors.enabled {
             return muriel(color: MurielColor(name: .hotPink, shade: .shade800))
         } else {
             return WPStyleGuide.wordPressBlue()
         }
     }
-    static var buttonDownBorder: UIColor {
+
+    static var primaryButtonDownBorder: UIColor {
         if FeatureFlag.murielColors.enabled {
             return muriel(color: MurielColor(name: .hotPink, shade: .shade900))
         } else {
