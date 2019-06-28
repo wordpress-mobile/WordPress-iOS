@@ -253,7 +253,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.7.0)
   - WordPressAuthenticator (~> 1.5.3)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/fix-publishing-private-xmlrpc-posts`)
+  - WordPressKit (~> 4.2.0-beta)
   - WordPressMocks (~> 0.0.5)
   - WordPressShared (~> 1.8.3)
   - WordPressUI (~> 1.3.4)
@@ -299,6 +299,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -328,9 +329,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.7.0
-  WordPressKit:
-    :branch: feature/fix-publishing-private-xmlrpc-posts
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.7.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -347,9 +345,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.7.0
-  WordPressKit:
-    :commit: 7e52f67db1ca44a7290d7538276f048a2a74da8c
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -405,6 +400,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: e3c63673fcee3b412c682ac43ba2d6ff5978ce51
+PODFILE CHECKSUM: e3bf81beaf67362a44b8975c8f423501f307ed61
 
 COCOAPODS: 1.6.1
