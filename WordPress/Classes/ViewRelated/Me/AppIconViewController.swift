@@ -14,7 +14,7 @@ open class AppIconViewController: UITableViewController {
         static let cellIdentifier = "IconCell"
 
         static let defaultIconName = "WordPress"
-        static let jetpackIconName = "Jetpack"
+        static let jetpackIconName = "Jetpack Green"
 
         static let infoPlistBundleIconsKey = "CFBundleIcons"
         static let infoPlistAlternateIconsKey = "CFBundleAlternateIcons"

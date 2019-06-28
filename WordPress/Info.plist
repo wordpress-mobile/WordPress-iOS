@@ -79,16 +79,16 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Jetpack</key>
+			<key>Jetpack Green</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>jetpack_icon_20pt</string>
-					<string>jetpack_icon_29pt</string>
-					<string>jetpack_icon_40pt</string>
-					<string>jetpack_icon_60pt</string>
-					<string>jetpack_icon_76pt</string>
-					<string>jetpack_icon_83.5</string>
+					<string>jetpack_green_icon_20pt</string>
+					<string>jetpack_green_icon_29pt</string>
+					<string>jetpack_green_icon_40pt</string>
+					<string>jetpack_green_icon_60pt</string>
+					<string>jetpack_green_icon_76pt</string>
+					<string>jetpack_green_icon_83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
