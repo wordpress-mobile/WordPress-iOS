@@ -3190,7 +3190,9 @@ extension AztecPostViewController {
         static let defaultMargin            = CGFloat(20)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+        static let savingDraftButtonSize      = CGSize(width: 130, height: 30)
         static let uploadingButtonSize      = CGSize(width: 150, height: 30)
+        static let generatingPreviewButtonSize = CGSize(width: 170, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
@@ -3297,6 +3299,14 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
     var uploadingButtonSize: CGSize {
         return Constants.uploadingButtonSize
     }
+    
+    var generatingPreviewButtonSize: CGSize {
+        return Constants.generatingPreviewButtonSize
+    }
+    
+    var savingDraftButtonSize: CGSize {
+        return Constants.savingDraftButtonSize
+    }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         closeWasPressed()
@@ -3316,5 +3326,9 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
         displayCancelMediaUploads()
+    }
+    
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
+        navigationItem.leftBarButtonItems = items
     }
 }

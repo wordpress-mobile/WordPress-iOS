@@ -4,12 +4,15 @@ protocol PostEditorNavigationBarManagerDelegate: class {
     var publishButtonText: String { get }
     var isPublishButtonEnabled: Bool { get }
     var uploadingButtonSize: CGSize { get }
+    var generatingPreviewButtonSize: CGSize { get }
+    var savingDraftButtonSize: CGSize { get }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton)
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem])
 }
 
 // A class to share the navigation bar UI of the Post Editor.
@@ -72,7 +75,27 @@ class PostEditorNavigationBarManager {
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
+    
+    /// Preview Generating Button
+    ///
+    private lazy var previewGeneratingButton: WPUploadStatusButton = {
+        let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: delegate?.generatingPreviewButtonSize ?? .zero))
+        button.setTitle(NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        return button
+    }()
 
+    /// Draft Saving Button
+    ///
+    private lazy var savingDraftButton: WPUploadStatusButton = {
+        let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: delegate?.savingDraftButtonSize ?? .zero))
+        button.setTitle(NSLocalizedString("Saving Draft", comment: "Message to indicate progress of saving draft"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        return button
+    }()
+    
     // MARK: - Bar button items
 
     /// Negative Offset BarButtonItem: Used to fine tune navigationBar Items
@@ -106,6 +129,22 @@ class PostEditorNavigationBarManager {
     private lazy var mediaUploadingBarButtonItem: UIBarButtonItem = {
         let barButton = UIBarButtonItem(customView: self.mediaUploadingButton)
         barButton.accessibilityLabel = NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server")
+        return barButton
+    }()
+    
+    /// Preview Generating Status Button
+    ///
+    private lazy var previewGeneratingBarButtonItem: UIBarButtonItem = {
+        let barButton = UIBarButtonItem(customView: self.previewGeneratingButton)
+        barButton.accessibilityLabel = NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview")
+        return barButton
+    }()
+    
+    /// Saving draft Status Button
+    ///
+    private lazy var savingDraftBarButtonItem: UIBarButtonItem = {
+        let barButton = UIBarButtonItem(customView: self.savingDraftButton)
+        barButton.accessibilityLabel = NSLocalizedString("Saving Draft", comment: "Message to indicate progress of saving draft")
         return barButton
     }()
 
@@ -154,6 +193,14 @@ class PostEditorNavigationBarManager {
     var uploadingMediaLeftBarButtonItems: [UIBarButtonItem] {
         return [separatorButtonItem, closeBarButtonItem, mediaUploadingBarButtonItem]
     }
+    
+    var generatingPreviewLeftBarButtonItems: [UIBarButtonItem] {
+        return [separatorButtonItem, closeBarButtonItem, previewGeneratingBarButtonItem]
+    }
+    
+    var savingDraftLeftBarButtonItems: [UIBarButtonItem] {
+        return [separatorButtonItem, closeBarButtonItem, savingDraftBarButtonItem]
+    }
 
     var rightBarButtonItems: [UIBarButtonItem] {
         return [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
@@ -171,6 +218,10 @@ class PostEditorNavigationBarManager {
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
         blogPickerButton.buttonMode = enabled ? .multipleSite : .singleSite
         blogPickerButton.isEnabled = enabled
+    }
+    
+    func reloadLeftBarButtonItems(_ items: [UIBarButtonItem]) {
+        delegate?.navigationBarManager(self, reloadLeftNavigationItems: items)
     }
 }
 

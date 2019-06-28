@@ -26,39 +26,31 @@ extension PostEditor where Self: UIViewController {
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
-        let draftStatus = NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
-        let publishedStatus = NSLocalizedString("Generating Preview...", comment: "Text displayed in HUD while a post is being saved.")
-        SVProgressHUD.setDefaultMaskType(.clear)
-
         if !post.hasUnsavedChanges() {
             completion(nil, nil)
             return
         }
 
         if post.isDraft() {
-            SVProgressHUD.show(withStatus: draftStatus)
+            navigationBarManager.reloadLeftBarButtonItems(navigationBarManager.savingDraftLeftBarButtonItems)
             postService.uploadPost(post, success: { [weak self] savedPost in
                 self?.post = savedPost
                 self?.createPostRevisionBeforePreview() {
                     completion(nil, nil)
                 }
-                SVProgressHUD.dismiss()
                 }, failure: { error in
                     DDLogError("Error while trying to upload draft before preview: \(String(describing: error))")
                     completion(nil, nil)
-                    SVProgressHUD.dismiss()
             })
         } else {
-            SVProgressHUD.show(withStatus: publishedStatus)
+            navigationBarManager.reloadLeftBarButtonItems(navigationBarManager.generatingPreviewLeftBarButtonItems)
             postService.autoSave(post, success: { [weak self] savedPost, previewURL in
                 self?.post = savedPost
                 ContextManager.sharedInstance().save(context)
-                SVProgressHUD.dismiss()
                 completion(previewURL, nil)
             }) { error in
                 //When failing to save a published post will result in "preview not available"
                 DDLogError("Error while trying to save post before preview: \(String(describing: error))")
-                SVProgressHUD.dismiss()
                 completion(nil, error)
             }
         }
