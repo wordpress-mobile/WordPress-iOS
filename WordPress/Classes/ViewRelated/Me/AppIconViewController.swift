@@ -3,8 +3,6 @@ import WordPressShared
 
 open class AppIconViewController: UITableViewController {
 
-    private static let iconBaseName = "icon_40pt"
-
     private enum Constants {
         static let rowHeight: CGFloat = 58.0
         static let cornerRadius: CGFloat = 4.0
@@ -13,6 +11,7 @@ open class AppIconViewController: UITableViewController {
 
         static let cellIdentifier = "IconCell"
 
+        static let iconPreviewBaseName = "icon_40pt"
         static let defaultIconName = "WordPress"
         static let jetpackIconName = "Jetpack Green"
 
@@ -42,10 +41,6 @@ open class AppIconViewController: UITableViewController {
     }
 
     // MARK: - UITableview Data Source
-
-    open override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
 
     open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return icons.count
@@ -79,7 +74,7 @@ open class AppIconViewController: UITableViewController {
 
     private func previewImageName(for icon: String) -> String {
         let lowered = icon.lowercased().replacingMatches(of: " ", with: "_")
-        return "\(lowered)_\(AppIconViewController.iconBaseName)"
+        return "\(lowered)_\(Constants.iconPreviewBaseName)"
     }
 
     open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -108,9 +103,9 @@ open class AppIconViewController: UITableViewController {
         }
 
         // Add them (sorted) to the default key – first any prefixed with WordPress, then the rest.
-        let keys = iconDict.keys
+        let keys = Set(iconDict.keys)
         let wordPressKeys = keys.filter({$0.hasPrefix("WordPress")}).sorted()
-        let otherKeys = keys.filter({!$0.hasPrefix("WordPress")}).sorted()
+        let otherKeys = keys.subtracting(wordPressKeys).sorted()
         icons.append(contentsOf: (wordPressKeys + otherKeys))
 
         // Only show the Jetpack icon if the user has a Jetpack-connected site in the app.
