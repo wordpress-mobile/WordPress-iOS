@@ -114,11 +114,19 @@ open class AppIconViewController: UITableViewController {
         icons.append(contentsOf: (wordPressKeys + otherKeys))
 
         // Only show the Jetpack icon if the user has a Jetpack-connected site in the app.
-        if BlogService(managedObjectContext: ContextManager.shared.mainContext).hasAnyJetpackBlogs() == false {
+        if !shouldShowJetpackIcon {
             icons.removeAll(where: { $0 == Constants.jetpackIconName })
         }
 
         self.icons = icons
+    }
+
+    private var shouldShowJetpackIcon: Bool {
+        let context = ContextManager.shared.mainContext
+        let hasJetpackSite = BlogService(managedObjectContext: context).hasAnyJetpackBlogs()
+        let hasWPComSite = AccountService(managedObjectContext: context).defaultWordPressComAccount() != nil
+
+        return hasJetpackSite || hasWPComSite
     }
 
     private func loadBorderedIcons() {
