@@ -4,17 +4,11 @@ import Foundation
 /// and attempts to extract URL components for any placeholders present in the route.
 ///
 class RouteMatcher {
-    let redirects: [Route]
     let routes: [Route]
 
     /// - parameter routes: A collection of routes to match against.
-    init(routes: [Route], redirects: [Route] = []) {
-        self.redirects = redirects
+    init(routes: [Route]) {
         self.routes = routes
-    }
-
-    func redirectsMatching(_ url: URL) -> [MatchedRoute] {
-        return matches(in: routes, for: url)
     }
 
     /// Finds routes that match the specified URL's path. If any of the matching routes

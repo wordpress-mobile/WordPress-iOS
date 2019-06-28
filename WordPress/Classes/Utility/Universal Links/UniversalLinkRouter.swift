@@ -6,18 +6,19 @@ import Foundation
 struct UniversalLinkRouter {
     private let matcher: RouteMatcher
 
-    init(routes: [Route], redirects: [Route] = []) {
-        matcher = RouteMatcher(routes: routes, redirects: redirects)
+    init(routes: [Route]) {
+        matcher = RouteMatcher(routes: routes)
     }
 
     // A singleton is less than ideal, but we're currently using this from the
     // app delegate, and because it's primarily written in objective-c we can't
     // add a struct property there.
     //
-    static let shared = UniversalLinkRouter(routes: routes,
-                                            redirects: redirects)
+    static let shared = UniversalLinkRouter(
+        routes: defaultRoutes)
 
-    static let routes: [Route] =
+    static let defaultRoutes: [Route] =
+        redirects +
         meRoutes +
         newPostRoutes +
         notificationsRoutes +
@@ -102,45 +103,13 @@ struct UniversalLinkRouter {
         return host == "wordpress.com" && matcherCanHandle
     }
 
-    /// Attempts to find a redirect or route that matches the url's path, and perform its
+    /// Attempts to find a route that matches the url's path, and perform its
     /// associated action.
     ///
     /// - parameter url: The URL to match against.
     /// - parameter track: If false, don't post an analytics event for this URL.
     ///
     func handle(url: URL, shouldTrack track: Bool = true, source: UIViewController? = nil) {
-        guard !handleRedirect(url: url, source: source) else {
-            return
-        }
-
-        handleRoute(for: url, shouldTrack: track, source: source)
-    }
-
-    /// Attempts to find a redirect that matches the url's path, and perform its
-    /// associated action.
-    ///
-    /// - parameter url: The URL to match against.
-    ///
-    /// - returns: `true` if a matching redirect was found and executed, `false` otherwise.
-    ///
-    private func handleRedirect(url: URL, source: UIViewController? = nil) -> Bool {
-        let redirects = matcher.redirectsMatching(url)
-
-        if let redirect = redirects.first {
-            redirect.action.perform(redirect.values, source: source)
-            return true
-        }
-
-        return false
-    }
-
-    /// Attempts to find a Route that matches the url's path, and perform its
-    /// associated action.
-    ///
-    /// - parameter url: The URL to match against a route.
-    /// - parameter track: If false, don't post an analytics event for this URL.
-    ///
-    private func handleRoute(for url: URL, shouldTrack track: Bool = true, source: UIViewController? = nil) {
         let matches = matcher.routesMatching(url)
 
         if track {

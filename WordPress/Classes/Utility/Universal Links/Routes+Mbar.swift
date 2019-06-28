@@ -48,6 +48,6 @@ extension MbarRoute: NavigationAction {
                 return
         }
 
-        UniversalLinkRouter.shared.handle(url: redirectUrl, shouldTrack: true, source: source)
+        UniversalLinkRouter.shared.handle(url: redirectUrl, shouldTrack: false, source: source)
     }
 }
