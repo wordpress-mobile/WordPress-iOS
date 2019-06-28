@@ -15,28 +15,12 @@ open class AppIconViewController: UITableViewController {
         static let infoPlistAlternateIconsKey = "CFBundleAlternateIcons"
     }
     
-    private let icons: [String] = {
-        var icons = [Constants.defaultIconName]
-
-        // Load the names of the alternative app icons from the info plist
-        guard let bundleDict = Bundle.main.object(forInfoDictionaryKey: Constants.infoPlistBundleIconsKey) as? [String:Any],
-            let iconDict = bundleDict[Constants.infoPlistAlternateIconsKey] as? [String:Any] else {
-                return icons
-        }
-
-        // Add them to the default key
-        icons.append(contentsOf: iconDict.keys.sorted())
-
-        // Only show the Jetpack icon if the user has a Jetpack-connected site in the app.
-        if BlogService(managedObjectContext: ContextManager.shared.mainContext).hasAnyJetpackBlogs() == false {
-            icons.removeAll(where: { $0 == Constants.jetpackIconName })
-        }
-        
-        return icons
-    }()
+    private var icons: [String] = []
 
     convenience init() {
         self.init(style: .grouped)
+        
+        loadIcons()
     }
     
     open override func viewDidLoad() {
@@ -96,5 +80,39 @@ open class AppIconViewController: UITableViewController {
 
             self?.tableView.reloadData()
         })
+    }
+    
+    // MARK: - Private helpers
+    
+    private func loadIcons() {
+        var icons = [Constants.defaultIconName]
+        
+        // Load the names of the alternative app icons from the info plist
+        guard let iconDict = infoPlistIconsDict else {
+            self.icons = icons
+            return
+        }
+        
+        // Add them (sorted) to the default key – first any prefixed with WordPress, then the rest.
+        let keys = iconDict.keys
+        let wordPressKeys = keys.filter({$0.hasPrefix("WordPress")}).sorted()
+        let otherKeys = keys.filter({!$0.hasPrefix("WordPress")}).sorted()
+        icons.append(contentsOf: (wordPressKeys + otherKeys))
+        
+        // Only show the Jetpack icon if the user has a Jetpack-connected site in the app.
+        if BlogService(managedObjectContext: ContextManager.shared.mainContext).hasAnyJetpackBlogs() == false {
+            icons.removeAll(where: { $0 == Constants.jetpackIconName })
+        }
+        
+        self.icons = icons
+    }
+    
+    private var infoPlistIconsDict: [String:Any]? {
+        guard let bundleDict = Bundle.main.object(forInfoDictionaryKey: Constants.infoPlistBundleIconsKey) as? [String:Any],
+            let iconDict = bundleDict[Constants.infoPlistAlternateIconsKey] as? [String:Any] else {
+                return nil
+        }
+        
+        return iconDict
     }
 }
