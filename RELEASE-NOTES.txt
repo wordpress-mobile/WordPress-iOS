@@ -10,6 +10,7 @@
 * Stats Insights: Fixed issue where refreshing would sometimes clear the stats.
 * Stats overview chart: Fixed issue with legend location on iOS 11.
 * Stats Periods: Fixed crash when the Countries map displayed one country only
+* Added a selection of user customizable app icons. Change it via Me > App Settings > App Icon.
 
 12.7
 -----
