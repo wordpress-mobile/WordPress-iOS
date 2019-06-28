@@ -235,6 +235,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatActivityLogRewindStarted:
             eventName = @"activity_log_rewind_started";
             break;
+        case WPAnalyticsStatAppIconChanged:
+            eventName = @"app_icon_changed";
+            break;
+        case WPAnalyticsStatAppIconReset:
+            eventName = @"app_icon_reset";
+            break;
         case WPAnalyticsStatAppInstalled:
             eventName = @"application_installed";
             break;
