@@ -253,8 +253,7 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `b8c53761b89a092ac690a90f1d33bd800a9025a6`)
-  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `b8c53761b89a092ac690a90f1d33bd800a9025a6`)
+  - WordPress-Editor-iOS (~> 1.8.0)
   - WordPressAuthenticator (~> 1.5.4-beta.2)
   - WordPressKit (~> 4.2.0-beta.2)
   - WordPressMocks (~> 0.0.5)
@@ -299,6 +298,8 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
+    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
@@ -333,12 +334,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: e62e6991b64a25b98a6df586ee38e90a253b3c87
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPress-Aztec-iOS:
-    :commit: b8c53761b89a092ac690a90f1d33bd800a9025a6
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-Editor-iOS:
-    :commit: b8c53761b89a092ac690a90f1d33bd800a9025a6
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/e62e6991b64a25b98a6df586ee38e90a253b3c87/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -358,12 +353,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: e62e6991b64a25b98a6df586ee38e90a253b3c87
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPress-Aztec-iOS:
-    :commit: b8c53761b89a092ac690a90f1d33bd800a9025a6
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-Editor-iOS:
-    :commit: b8c53761b89a092ac690a90f1d33bd800a9025a6
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -420,6 +409,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 45147bf157583b53ca72a700cc158e2bc38bd364
+PODFILE CHECKSUM: cd8c2f243f548163d2c36d3396be186359e547ec
 
 COCOAPODS: 1.6.1
