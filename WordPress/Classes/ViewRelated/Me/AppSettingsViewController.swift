@@ -437,7 +437,7 @@ private extension AppSettingsViewController {
             UIApplication.shared.supportsAlternateIcons {
                 rows.insert(iconRow, at: 0)
         }
-        
+
         return ImmuTableSection(
             headerText: otherHeader,
             rows: rows,
