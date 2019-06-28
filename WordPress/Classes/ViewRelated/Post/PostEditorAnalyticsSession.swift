@@ -14,7 +14,7 @@ struct PostEditorAnalyticsSession {
         currentEditor = editor
         postType = post.analyticsPostType ?? "unsupported"
         blogType = post.blog.analyticsType.rawValue
-        contentType = ContentType(for: post, and: editor).rawValue
+        contentType = ContentType(post: post).rawValue
     }
 
     mutating func start(hasUnsupportedBlocks: Bool) {
@@ -87,10 +87,10 @@ extension PostEditorAnalyticsSession {
         case gutenberg
         case classic
 
-        init(for post: AbstractPost, and editor: Editor) {
+        init(post: AbstractPost) {
             if !post.hasContent() {
                 self = .new
-            } else if editor == .gutenberg {
+            } else if post.containsGutenbergBlocks() {
                 self = .gutenberg
             } else {
                 self = .classic
