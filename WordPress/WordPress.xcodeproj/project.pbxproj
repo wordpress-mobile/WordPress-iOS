@@ -4705,7 +4705,8 @@
 				17DC4C1E22C5E6910059CA11 /* Open Source Dark */,
 				17DC4C3D22C5E6B00059CA11 /* Open Source */,
 			);
-			path = Icons;
+			name = Icons;
+			path = Resources/Icons;
 			sourceTree = "<group>";
 		};
 		17D433581EFD2ED500CAB602 /* Fancy Alerts */ = {
@@ -4929,6 +4930,7 @@
 				433840C622C2BA5B00CB13F8 /* MurielImages.xcassets */,
 				435035911EDCAB99004ECF47 /* Animations */,
 				858DE3FF172F9991000AC628 /* Fonts */,
+				17D4153D22C24B67006378EF /* Icons */,
 				CC098B8116A9EB0400450976 /* HTML */,
 				B5DCD0C21C69328E00C9B431 /* Settings */,
 				5D6651461637324000EBDA7D /* Sounds */,
@@ -4938,7 +4940,6 @@
 				435B76292297484200511813 /* ColorPalette.xcassets */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */,
-				17D4153D22C24B67006378EF /* Icons */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				931DF4D818D09A2F00540BDD /* InfoPlist.strings */,
 				E1D91454134A853D0089019C /* Localizable.strings */,
