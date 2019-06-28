@@ -21,6 +21,50 @@
 		</dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
+			<key>WordPress Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>wordpress_dark_icon_20pt</string>
+					<string>wordpress_dark_icon_29pt</string>
+					<string>wordpress_dark_icon_40pt</string>
+					<string>wordpress_dark_icon_60pt</string>
+					<string>wordpress_dark_icon_76pt</string>
+					<string>wordpress_dark_icon_83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Open Source</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>open_source_icon_20pt</string>
+					<string>open_source_icon_29pt</string>
+					<string>open_source_icon_40pt</string>
+					<string>open_source_icon_60pt</string>
+					<string>open_source_icon_76pt</string>
+					<string>open_source_icon_83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Open Source Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>open_source_dark_icon_20pt</string>
+					<string>open_source_dark_icon_29pt</string>
+					<string>open_source_dark_icon_40pt</string>
+					<string>open_source_dark_icon_60pt</string>
+					<string>open_source_dark_icon_76pt</string>
+					<string>open_source_dark_icon_83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
 			<key>Hot Pink</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -31,22 +75,6 @@
 					<string>hot_pink_icon_60pt</string>
 					<string>hot_pink_icon_76pt</string>
 					<string>hot_pink_icon_83.5</string>
-					<string>hot_pink_Icon</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Dark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>dark_icon_20pt</string>
-					<string>dark_icon_29pt</string>
-					<string>dark_icon_40pt</string>
-					<string>dark_icon_60pt</string>
-					<string>dark_icon_76pt</string>
-					<string>dark_icon_83.5</string>
-					<string>dark_Icon</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -61,7 +89,6 @@
 					<string>jetpack_icon_60pt</string>
 					<string>jetpack_icon_76pt</string>
 					<string>jetpack_icon_83.5</string>
-					<string>jetpack_Icon</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -76,7 +103,6 @@
 					<string>pride_icon_60pt</string>
 					<string>pride_icon_76pt</string>
 					<string>pride_icon_83.5</string>
-					<string>pride_Icon</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
