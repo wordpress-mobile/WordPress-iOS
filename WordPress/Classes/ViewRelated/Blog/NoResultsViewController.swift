@@ -176,7 +176,7 @@ import Reachability
         displayTitleViewOnly = true
     }
 
-    func configureForNoConnectionInPostsList() {
+    func configureForNoConnectionInPostList() {
         titleText = NoConnection.titlePostList
         subtitleText = NoConnection.subTitlePostList
         attributedSubtitleText = NSAttributedString(string: NoConnection.subTitlePostList)
@@ -550,8 +550,8 @@ private extension NoResultsViewController {
     struct NoConnection {
         static let title: String = NSLocalizedString("Unable to load this page right now.", comment: "Title for No results full page screen displayed when there is no connection")
         static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Subtitle for No results full page screen displayed when there is no connection")
-        static let titlePostList: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayed when there is no connection")
-        static let subTitlePostList: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post lisy when there is no connection")
+        static let titlePostList: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
+        static let subTitlePostList: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
            static let buttonTitlePostList: String = NSLocalizedString("Create Post", comment: "Button title, encourages users to create a post.")
         static let imageName = "cloud"
     }

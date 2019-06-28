@@ -597,7 +597,7 @@ private extension PostListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-            noResultsViewController.configureForNoConnectionInPostsList()
+            noResultsViewController.configureForNoConnectionInPostList()
             return
         }
 
