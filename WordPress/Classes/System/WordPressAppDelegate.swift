@@ -785,10 +785,6 @@ extension WordPressAppDelegate {
             UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarTextColor], for: .selected)
         }
 
-        let clearImage = UIImage(color: .clear, havingSize: CGSize(width: 320.0, height: 4.0))
-        UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).shadowImage = clearImage
-        UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).setBackgroundImage(clearImage, for: .default)
-
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UIToolbar.appearance().barTintColor = .primary
         UISwitch.appearance().onTintColor = .primary

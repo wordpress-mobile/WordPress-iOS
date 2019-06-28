@@ -36,7 +36,6 @@ extension WPStyleGuide {
         buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
                                                     NSAttributedString.Key.foregroundColor: UIColor.textInverted.withAlphaComponent(0.25)],
                                                    for: .disabled)
-
     }
 
     /// Style the tab bar using Muriel colors
