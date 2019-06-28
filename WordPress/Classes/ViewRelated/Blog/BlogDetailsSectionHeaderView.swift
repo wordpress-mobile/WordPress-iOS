@@ -6,7 +6,7 @@ class BlogDetailsSectionHeaderView: UITableViewHeaderFooterView {
 
     @objc @IBOutlet private(set) var ellipsisButton: UIButton? {
         didSet {
-            ellipsisButton?.setImage(Gridicon.iconOfType(.ellipsis).imageWithTintColor(WPStyleGuide.grey()), for: .normal)
+            ellipsisButton?.setImage(Gridicon.iconOfType(.ellipsis).imageWithTintColor(.neutral(shade: .shade300)), for: .normal)
         }
     }
 

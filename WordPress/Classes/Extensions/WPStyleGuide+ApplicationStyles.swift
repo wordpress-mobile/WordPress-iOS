@@ -17,18 +17,24 @@ extension WPStyleGuide {
 
     /// Style the navigation appearance using Muriel colors
     class func configureNavigationAppearance() {
+        guard FeatureFlag.murielColors.enabled else {
+            configureNavigationBarAppearance()
+            return
+        }
+
         let navigationAppearance = UINavigationBar.appearance()
         navigationAppearance.isTranslucent = false
+        navigationAppearance.tintColor = .textInverted
         navigationAppearance.barTintColor = .navigationBar
         navigationAppearance.barStyle = .black
 
         let buttonBarAppearance = UIBarButtonItem.appearance()
-        buttonBarAppearance.tintColor = .white
+        buttonBarAppearance.tintColor = .textInverted
         buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: UIColor.white],
+                                                    NSAttributedString.Key.foregroundColor: UIColor.textInverted],
                                                    for: .normal)
         buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: UIColor(white: 1.0, alpha: 0.25)],
+                                                    NSAttributedString.Key.foregroundColor: UIColor.textInverted.withAlphaComponent(0.25)],
                                                    for: .disabled)
 
     }
@@ -86,6 +92,7 @@ extension WPStyleGuide {
         // we only set the text subtle color, so that system colors are used otherwise
         if FeatureFlag.murielColors.enabled {
             cell.detailTextLabel?.textColor = .textSubtle
+            cell.imageView?.tintColor = .neutral
         } else {
             cell.textLabel?.textColor = darkGrey()
             cell.detailTextLabel?.textColor = grey()

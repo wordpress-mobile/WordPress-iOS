@@ -11,11 +11,11 @@ extension WPStyleGuide {
         static func configureModuleCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
-            cell.textLabel?.textColor = darkGrey()
+            cell.textLabel?.textColor = .text
 
             cell.detailTextLabel?.font = tableviewSubtitleFont()
             cell.detailTextLabel?.sizeToFit()
-            cell.detailTextLabel?.textColor = grey()
+            cell.detailTextLabel?.textColor = .textSubtle
 
             cell.backgroundColor = UIColor.white
             cell.separatorInset = UIEdgeInsets.zero
@@ -24,18 +24,18 @@ extension WPStyleGuide {
         static func configureCategoryCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
-            cell.textLabel?.textColor = darkGrey()
+            cell.textLabel?.textColor = .text
             cell.textLabel?.numberOfLines = 0
 
             cell.backgroundColor = UIColor.white
             cell.separatorInset = UIEdgeInsets.zero
-            cell.tintColor = wordPressBlue()
+            cell.tintColor = .primary
         }
 
         static func configureTagCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
-            cell.textLabel?.textColor = darkGrey()
+            cell.textLabel?.textColor = .text
 
             cell.backgroundColor = UIColor.white
             cell.separatorInset = UIEdgeInsets.zero
@@ -44,16 +44,16 @@ extension WPStyleGuide {
         static func configureLoadingTagCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
-            cell.textLabel?.textColor = darkGrey()
+            cell.textLabel?.textColor = .text
 
-            cell.backgroundColor = WPStyleGuide.greyLighten30()
+            cell.backgroundColor = .neutral(shade: .shade50)
             cell.separatorInset = UIEdgeInsets.zero
         }
 
         static func configureTableViewSummaryCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
-            cell.textLabel?.textColor = darkGrey()
+            cell.textLabel?.textColor = .text
 
             cell.backgroundColor = UIColor.clear
             cell.separatorInset = UIEdgeInsets.zero
@@ -62,7 +62,7 @@ extension WPStyleGuide {
         static func configureTableViewSiteCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
-            cell.textLabel?.textColor = darkGrey()
+            cell.textLabel?.textColor = .text
             cell.textLabel?.numberOfLines = 0
 
             cell.detailTextLabel?.font = subtitleFont()
@@ -75,7 +75,7 @@ extension WPStyleGuide {
             cell.imageView?.tintColor = greyLighten10()
 
             cell.backgroundColor = UIColor.white
-            cell.tintColor = wordPressBlue()
+            cell.tintColor = .primary
         }
     }
 }

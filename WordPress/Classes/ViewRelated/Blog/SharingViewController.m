@@ -173,7 +173,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     // Configure the image
     UIImage *image = [WPStyleGuide iconForService: publicizer.serviceID];
     [cell.imageView setImage:image];
-    cell.imageView.tintColor = ([connections count] > 0) ? [WPStyleGuide tintColorForConnectedService: publicizer.serviceID] : [WPStyleGuide greyLighten20];
+    cell.imageView.tintColor = ([connections count] > 0) ? [WPStyleGuide tintColorForConnectedService: publicizer.serviceID] : [UIColor murielNeutral100];
 
     // Configure the text
     cell.textLabel.text = publicizer.label;

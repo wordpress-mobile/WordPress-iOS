@@ -37,10 +37,10 @@ private extension MainDraftActionViewController {
     func setupAppearance() {
         self.view.backgroundColor = .white
         let navigationBarAppearace = UINavigationBar.appearance()
-        navigationBarAppearace.barTintColor = WPStyleGuide.lightGrey()
+        navigationBarAppearace.barTintColor = .neutral(shade: .shade0)
         navigationBarAppearace.barStyle = .default
-        navigationBarAppearace.tintColor = WPStyleGuide.wordPressBlue()
-        navigationBarAppearace.titleTextAttributes = [.foregroundColor: WPStyleGuide.wordPressBlue()]
+        navigationBarAppearace.tintColor = .primary
+        navigationBarAppearace.titleTextAttributes = [.foregroundColor: UIColor.primary]
         navigationBarAppearace.isTranslucent = false
     }
 

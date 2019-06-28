@@ -2,6 +2,7 @@
 #import "MenuItem+ViewDesign.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -67,7 +68,7 @@
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor whiteColor];
-    iconView.tintColor = [WPStyleGuide grey];
+    iconView.tintColor = [UIColor murielNeutral300];
     iconView.image = [Gridicon iconOfType:GridiconTypeChevronLeft];
 
     NSAssert(_stackView != nil, @"stackView is nil");
@@ -106,7 +107,7 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 2.0);
-    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
+    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral50] CGColor]);
     CGContextMoveToPoint(context, 0, rect.size.height);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextStrokePath(context);

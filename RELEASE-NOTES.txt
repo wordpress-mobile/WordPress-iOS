@@ -9,6 +9,7 @@
 * Stats: modified appearance of empty charts.
 * Stats Insights: Fixed issue where refreshing would sometimes clear the stats.
 * Stats overview chart: Fixed issue with legend location on iOS 11.
+* Stats Periods: Fixed crash when the Countries map displayed one country only
 
 12.7
 -----

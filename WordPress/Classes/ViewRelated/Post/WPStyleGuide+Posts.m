@@ -14,7 +14,7 @@
 {
     NSDictionary *attributes = @{NSFontAttributeName: [self deviceDependantFontForLabels]};
     [segmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    segmentControl.tintColor = [WPStyleGuide grey];
+    segmentControl.tintColor = [UIColor murielNeutral300];
     segmentControl.backgroundColor = [UIColor whiteColor];
     segmentControl.clipsToBounds = YES;
     segmentControl.layer.cornerRadius = 3.0; // Clip the corners of the background color.
@@ -35,8 +35,8 @@
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell
 {
-    cell.backgroundColor = [self greyLighten30];
-    cell.contentView.backgroundColor = [self greyLighten30];
+    cell.backgroundColor = [UIColor murielNeutral50];
+    cell.contentView.backgroundColor = [UIColor murielNeutral50];
 }
 
 + (void)applyPostAuthorSiteStyle:(UILabel *)label
@@ -81,9 +81,9 @@
 
 + (void)applyPostProgressViewStyle:(UIProgressView *)progressView
 {
-    progressView.trackTintColor = [WPStyleGuide greyLighten20];
-    progressView.progressTintColor = [WPStyleGuide mediumBlue];
-    progressView.tintColor = [WPStyleGuide mediumBlue];
+    progressView.trackTintColor = [UIColor murielNeutral100];
+    progressView.progressTintColor = [UIColor murielPrimary400];
+    progressView.tintColor = [UIColor murielPrimary400];
 }
 
 + (void)applyRestorePostLabelStyle:(UILabel *)label
@@ -95,8 +95,8 @@
 + (void)applyRestorePostButtonStyle:(UIButton *)button
 {
     [self configureLabelForSmallFontStyle:button.titleLabel];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
 }
 
 #pragma mark - Attributed String Attributes
@@ -196,7 +196,7 @@
 {
     CGFloat fontSize = 15.0;
     label.font = [WPFontManager notoRegularFontOfSize:fontSize];
-    label.textColor = [self wordPressBlue];
+    label.textColor = [UIColor murielPrimary];
 }
 
 + (NSDictionary *)pageCellTitleAttributes
@@ -209,14 +209,14 @@
 + (void)applySectionHeaderTitleStyle:(UILabel *)label
 {
     [self configureLabelForSmallFontStyle:label];
-    label.backgroundColor = [self lightGrey];
-    label.textColor = [self grey];
+    label.backgroundColor = [UIColor murielNeutral0];
+    label.textColor = [UIColor murielNeutral300];
 }
 
 + (void)applyRestorePageLabelStyle:(UILabel *)label
 {
     label.font = [WPStyleGuide regularFont];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielNeutral300];
 }
 
 + (void)applyRestorePageButtonStyle:(UIButton *)button
@@ -224,14 +224,14 @@
     [WPStyleGuide configureLabel:button.titleLabel
                        textStyle:UIFontTextStyleCallout
                       fontWeight:UIFontWeightSemibold];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
 }
 
 + (void)applyRestoreSavedPostLabelStyle:(UILabel *)label
 {
     [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCallout];
-    label.textColor = [self greyDarken10];
+    label.textColor = [UIColor murielNeutral];
 }
 
 + (void)applyRestoreSavedPostTitleLabelStyle:(UILabel *)label
@@ -244,7 +244,7 @@
     UIFontDescriptorSymbolicTraits traits = [descriptor symbolicTraits];
     descriptor = [descriptor fontDescriptorWithSymbolicTraits:traits | UIFontDescriptorTraitItalic];
     label.font = [UIFont fontWithDescriptor:descriptor size:label.font.pointSize];
-    label.textColor = [self greyDarken10];
+    label.textColor = [UIColor murielNeutral];
 }
 
 + (void)applyRestoreSavedPostButtonStyle:(UIButton *)button
@@ -252,8 +252,8 @@
     [WPStyleGuide configureLabel:button.titleLabel
                        textStyle:UIFontTextStyleCallout
                       fontWeight:UIFontWeightSemibold];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
 }
 
 + (UIFont *)deviceDependantFontForLabels {

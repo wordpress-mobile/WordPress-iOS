@@ -24,7 +24,7 @@ class CountriesMapView: UIView, NibLoadable {
     @IBOutlet private var mapContainer: UIView! {
         didSet {
             map.strokeColor = .white
-            map.fillColor = WPStyleGuide.greyLighten20()
+            map.fillColor = .neutral(shade: .shade100)
             map.loadMap("world-map", withData: [:], colorAxis: colors)
             mapContainer.addSubview(map)
         }
@@ -39,6 +39,6 @@ class CountriesMapView: UIView, NibLoadable {
 
     private func decorate(_ label: UILabel) {
         label.font = WPStyleGuide.fontForTextStyle(.footnote)
-        label.textColor = WPStyleGuide.darkGrey()
+        label.textColor = .neutral(shade: .shade700)
     }
 }

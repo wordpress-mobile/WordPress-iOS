@@ -100,7 +100,20 @@ extension UIColor {
     }
 
     /// Muriel accent color
-    static var accent = muriel(color: .accent)
+    static var accent: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: .accent)
+        } else {
+            return WPStyleGuide.jazzyOrange()
+        }
+    }
+    static var accentDark: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .accent, shade: .shade700))
+        } else {
+            return WPStyleGuide.fireOrange()
+        }
+    }
     class func accent(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .accent, shade: shade))
     }
@@ -116,6 +129,13 @@ extension UIColor {
             return WPStyleGuide.errorRed()
         }
     }
+    static var errorDark: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .error, shade: .shade700))
+        } else {
+            return WPStyleGuide.alertRedDarker()
+        }
+    }
     class func error(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .error, shade: shade))
     }
@@ -123,7 +143,31 @@ extension UIColor {
     /// Muriel neutral color
     static var neutral = muriel(color: .neutral)
     class func neutral(shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .neutral, shade: shade))
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .neutral, shade: shade))
+        } else {
+            // here's compatibility with the old colors
+            switch shade {
+            case .shade700, .shade800, .shade900:
+                return WPStyleGuide.darkGrey()
+            case .shade600:
+                return WPStyleGuide.greyDarken30()
+            case .shade500:
+                return WPStyleGuide.greyDarken20()
+            case .shade400:
+                return WPStyleGuide.greyDarken10()
+            case .shade300:
+                return WPStyleGuide.grey()
+            case .shade200:
+                return WPStyleGuide.greyLighten10()
+            case .shade100:
+                return WPStyleGuide.greyLighten20()
+            case .shade50:
+                return WPStyleGuide.greyLighten30()
+            case .shade0:
+                return WPStyleGuide.lightGrey()
+            }
+        }
     }
 
     /// Muriel primary color
@@ -134,12 +178,46 @@ extension UIColor {
             return WPStyleGuide.wordPressBlue()
         }
     }
+    static var primaryLight: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .primary, shade: .shade300))
+        } else {
+            return WPStyleGuide.lightBlue()
+        }
+    }
+    static var primaryDark: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .primary, shade: .shade700))
+        } else {
+            return WPStyleGuide.darkBlue()
+        }
+    }
     class func primary(shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .primary, shade: shade))
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .primary, shade: shade))
+        } else {
+            // here's compatibility with the old colors
+            switch shade {
+            case .shade700, .shade800, .shade900:
+                return WPStyleGuide.darkBlue()
+            case .shade500, .shade600:
+                return WPStyleGuide.wordPressBlue()
+            case .shade400:
+                return WPStyleGuide.mediumBlue()
+            case .shade300, .shade200, .shade100, .shade50, .shade0:
+                return WPStyleGuide.lightBlue()
+            }
+        }
     }
 
     /// Muriel success color
-    static var success = muriel(color: .success)
+    static var success: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: .success)
+        } else {
+            return WPStyleGuide.validGreen()
+        }
+    }
     class func success(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .success, shade: shade))
     }
@@ -157,10 +235,9 @@ extension UIColor {
     }
 
     /// Muriel/iOS navigation color
-    static var navigationBar = muriel(color: .navigationBar)
+    static var textInverted = UIColor.white
 
-    /// Muriel/iOS navgiation shadow color
-    static var navigationBarShadow = muriel(color: .navigationBarShadow)
+    static var navigationBar = muriel(color: .navigationBar)
 
     /// Muriel/iOS unselected color
     static var unselected: UIColor {

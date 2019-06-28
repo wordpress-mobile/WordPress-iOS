@@ -140,7 +140,7 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
-    pod 'FSInteractiveMap', '0.1.0'
+    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.1.1'
 
     ## Automattic libraries
     ## ====================

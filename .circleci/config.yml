@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   ios: wordpress-mobile/ios@0.0.29
+  slack: circleci/slack@2.5.0
 
 jobs:
   build-ui-tests:
@@ -43,6 +44,16 @@ jobs:
           command: test-without-building
           arguments: -xctestrun DerivedData/Build/Products/WordPressUITests_iphonesimulator12.2-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
       - ios/save-xcodebuild-artifacts
+      - run:
+          name: Prepare Slack message
+          when: always
+          command: |
+            # Get the name of the device that is running. Using "<< parameters.device >>" can cause slack formatting errors.
+            DEVICE_NAME=$(xcrun simctl list -j | jq -r --arg UDID $SIMULATOR_UDID '.devices[] | .[] | select(.udid == "\($UDID)") | .name')
+            echo "export SLACK_FAILURE_MESSAGE=':red_circle: WordPress iOS UI tests have failed on ${DEVICE_NAME}!'" >> $BASH_ENV
+      - slack/status:
+          fail_only: 'true'
+          failure_message: '${SLACK_FAILURE_MESSAGE}'
 
 workflows:
   wordpress_ios:

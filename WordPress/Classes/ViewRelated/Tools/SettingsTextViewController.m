@@ -240,7 +240,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     _textField = [[UITextField alloc] initWithFrame:CGRectZero];
     _textField.clearButtonMode = UITextFieldViewModeAlways;
     _textField.font = [WPStyleGuide tableviewTextFont];
-    _textField.textColor = [WPStyleGuide darkGrey];
+    _textField.textColor = [UIColor murielNeutral700];
     _textField.returnKeyType = UIReturnKeyDone;
     _textField.keyboardType = UIKeyboardTypeDefault;
     _textField.delegate = self;

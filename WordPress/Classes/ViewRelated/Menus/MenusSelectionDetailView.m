@@ -53,7 +53,7 @@
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
-    iconView.tintColor = [WPStyleGuide grey];
+    iconView.tintColor = [UIColor murielNeutral300];
     [iconView.widthAnchor constraintEqualToConstant:24].active = YES;
     [iconView.heightAnchor constraintEqualToConstant:24].active = YES;
     [self.stackView addArrangedSubview:iconView];
@@ -80,7 +80,7 @@
     label.numberOfLines = 0;
     label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleFootnote maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
-    label.textColor = [WPStyleGuide grey];
+    label.textColor = [UIColor murielNeutral300];
     _subTitleLabel = label;
 
     NSAssert(_labelsStackView != nil, @"labelsStackView is nil");
@@ -94,7 +94,7 @@
     label.numberOfLines = 1;
     label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
-    label.textColor = [WPStyleGuide darkGrey];
+    label.textColor = [UIColor murielNeutral700];
     label.adjustsFontSizeToFitWidth = YES;
     label.minimumScaleFactor = 0.70;
     label.allowsDefaultTighteningForTruncation = YES;
@@ -110,7 +110,7 @@
     UIImageView *accessoryView = [[UIImageView alloc] init];
     accessoryView.contentMode = UIViewContentModeScaleAspectFit;
     accessoryView.image = [Gridicon iconOfType:GridiconTypeChevronDown];
-    accessoryView.tintColor = [WPStyleGuide greyLighten20];
+    accessoryView.tintColor = [UIColor murielNeutral100];
     [accessoryView.widthAnchor constraintEqualToConstant:24].active = YES;
     [accessoryView.heightAnchor constraintEqualToConstant:24].active = YES;
     _accessoryView = accessoryView;

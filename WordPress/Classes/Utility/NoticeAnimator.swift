@@ -43,7 +43,7 @@ class NoticeAnimator: Animator {
     fileprivate let targetView: UIView
     fileprivate let noticeLabel: PaddedLabel = {
         let label = PaddedLabel()
-        label.backgroundColor = WPStyleGuide.mediumBlue()
+        label.backgroundColor = .primary(shade: .shade400)
         label.clipsToBounds = true
         label.padding.horizontal = Defaults.padding.horizontal
         label.label.textColor = UIColor.white

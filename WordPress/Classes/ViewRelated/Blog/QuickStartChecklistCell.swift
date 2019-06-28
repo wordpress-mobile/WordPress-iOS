@@ -32,11 +32,11 @@ class QuickStartChecklistCell: UITableViewCell {
 
                 titleLabel.attributedText = NSAttributedString(string: titleText,
                                                                attributes: [.strikethroughStyle: 1,
-                                                                            .foregroundColor: WPStyleGuide.grey()])
-                descriptionLabel.textColor = WPStyleGuide.grey()
+                                                                            .foregroundColor: UIColor.neutral(shade: .shade300)])
+                descriptionLabel.textColor = .neutral(shade: .shade300)
             } else {
-                titleLabel.textColor = WPStyleGuide.darkGrey()
-                descriptionLabel.textColor = WPStyleGuide.darkGrey()
+                titleLabel.textColor = .neutral(shade: .shade700)
+                descriptionLabel.textColor = .neutral(shade: .shade700)
             }
         }
     }
@@ -44,7 +44,7 @@ class QuickStartChecklistCell: UITableViewCell {
         didSet {
             titleLabel.text = tour?.title
             descriptionLabel.text = tour?.description
-            iconView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+            iconView?.image = tour?.icon.imageWithTintColor(.neutral(shade: .shade200))
 
             if let hint = tour?.accessibilityHintText, !hint.isEmpty {
                 accessibilityHint = hint
