@@ -75,7 +75,7 @@ class PostEditorNavigationBarManager {
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
-    
+
     /// Preview Generating Button
     ///
     private lazy var previewGeneratingButton: WPUploadStatusButton = {
@@ -95,7 +95,7 @@ class PostEditorNavigationBarManager {
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
-    
+
     // MARK: - Bar button items
 
     /// Negative Offset BarButtonItem: Used to fine tune navigationBar Items
@@ -131,7 +131,7 @@ class PostEditorNavigationBarManager {
         barButton.accessibilityLabel = NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server")
         return barButton
     }()
-    
+
     /// Preview Generating Status Button
     ///
     private lazy var previewGeneratingBarButtonItem: UIBarButtonItem = {
@@ -139,7 +139,7 @@ class PostEditorNavigationBarManager {
         barButton.accessibilityLabel = NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview")
         return barButton
     }()
-    
+
     /// Saving draft Status Button
     ///
     private lazy var savingDraftBarButtonItem: UIBarButtonItem = {
@@ -193,11 +193,11 @@ class PostEditorNavigationBarManager {
     var uploadingMediaLeftBarButtonItems: [UIBarButtonItem] {
         return [separatorButtonItem, closeBarButtonItem, mediaUploadingBarButtonItem]
     }
-    
+
     var generatingPreviewLeftBarButtonItems: [UIBarButtonItem] {
         return [separatorButtonItem, closeBarButtonItem, previewGeneratingBarButtonItem]
     }
-    
+
     var savingDraftLeftBarButtonItems: [UIBarButtonItem] {
         return [separatorButtonItem, closeBarButtonItem, savingDraftBarButtonItem]
     }
@@ -219,7 +219,7 @@ class PostEditorNavigationBarManager {
         blogPickerButton.buttonMode = enabled ? .multipleSite : .singleSite
         blogPickerButton.isEnabled = enabled
     }
-    
+
     func reloadLeftBarButtonItems(_ items: [UIBarButtonItem]) {
         delegate?.navigationBarManager(self, reloadLeftNavigationItems: items)
     }

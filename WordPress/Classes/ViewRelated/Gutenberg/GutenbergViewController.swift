@@ -581,11 +581,11 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     var uploadingButtonSize: CGSize {
         return AztecPostViewController.Constants.uploadingButtonSize
     }
-    
+
     var generatingPreviewButtonSize: CGSize {
         return AztecPostViewController.Constants.generatingPreviewButtonSize
     }
-    
+
     var savingDraftButtonSize: CGSize {
         return AztecPostViewController.Constants.savingDraftButtonSize
     }
@@ -609,7 +609,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
 
     }
-    
+
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
         navigationItem.leftBarButtonItems = items
     }

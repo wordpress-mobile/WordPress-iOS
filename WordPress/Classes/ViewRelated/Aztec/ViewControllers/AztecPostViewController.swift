@@ -3299,11 +3299,11 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
     var uploadingButtonSize: CGSize {
         return Constants.uploadingButtonSize
     }
-    
+
     var generatingPreviewButtonSize: CGSize {
         return Constants.generatingPreviewButtonSize
     }
-    
+
     var savingDraftButtonSize: CGSize {
         return Constants.savingDraftButtonSize
     }
@@ -3327,7 +3327,7 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
         displayCancelMediaUploads()
     }
-    
+
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
         navigationItem.leftBarButtonItems = items
     }
