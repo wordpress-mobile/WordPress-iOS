@@ -12124,7 +12124,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG -D XCODE11";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE_SPECIFIER = "WPiOS Development Profile";
