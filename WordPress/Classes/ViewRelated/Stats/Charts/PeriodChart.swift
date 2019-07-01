@@ -181,7 +181,7 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?
     let labelColor: UIColor                         = .neutral(shade: .shade300)
-    let legendColor: UIColor?                       = .primary
+    let legendColor: UIColor?                       = .primaryDark
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
     let lineColor: UIColor                          = .neutral(shade: .shade50)
     let xAxisValueFormatter: IAxisValueFormatter
