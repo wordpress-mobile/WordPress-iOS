@@ -24,9 +24,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     override var accessoryType: UITableViewCell.AccessoryType {
         didSet {
-            if accessoryType != .none {
-                valueTextField.isEnabled = false
-            }
+            let textFieldEnabled = accessoryType == .none
+            valueTextField.isEnabled = textFieldEnabled
         }
     }
 

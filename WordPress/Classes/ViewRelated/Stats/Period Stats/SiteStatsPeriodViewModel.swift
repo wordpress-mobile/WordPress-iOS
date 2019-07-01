@@ -126,6 +126,9 @@ private extension SiteStatsPeriodViewModel {
             mostRecentChartData = chartData
         }
 
+        let periodDate = summaryData.last?.periodStartDate
+        let period = periodSummary?.period
+
         let viewsData = intervalData(summaryData: summaryData, summaryType: .views)
         let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
                                            tabData: viewsData.count,
@@ -139,7 +142,6 @@ private extension SiteStatsPeriodViewModel {
                                               difference: visitorsData.difference,
                                               differencePercent: visitorsData.percentage,
                                               analyticsStat: .statsOverviewTypeTappedVisitors)
-
 
         // If Summary Likes is still loading, show dashes (instead of 0)
         // to indicate it's still loading.

@@ -26,7 +26,7 @@ struct OverviewTabData: FilterTabBarItem {
 
         let attributedTitle = NSMutableAttributedString(string: tabTitle.localizedUppercase)
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
-                                       range: NSMakeRange(0, attributedTitle.string.count))
+                                      range: NSMakeRange(0, attributedTitle.string.count))
 
         let dataString: String = {
             if let tabDataStub = tabDataStub {
@@ -37,7 +37,7 @@ struct OverviewTabData: FilterTabBarItem {
 
         let attributedData = NSMutableAttributedString(string: dataString)
         attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
-                                       range: NSMakeRange(0, attributedData.string.count))
+                                     range: NSMakeRange(0, attributedData.string.count))
 
         attributedTitle.append(NSAttributedString(string: "\n"))
         attributedTitle.append(attributedData)
@@ -191,7 +191,7 @@ private extension OverviewCell {
             chartView.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor),
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
-        ])
+            ])
     }
 
     func resetChartContainerView() {
