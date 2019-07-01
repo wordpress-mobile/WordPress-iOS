@@ -1,5 +1,6 @@
 #import "SuggestionsTableViewCell.h"
 #import <WordPressShared/WPFontManager.h>
+#import "WordPress-Swift.h"
 
 NSInteger const SuggestionsTableViewCellAvatarSize = 23;
 
@@ -20,7 +21,7 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 23;
 - (void)setupUsernameLabel
 {
     _usernameLabel = [[UILabel alloc] init];
-    [_usernameLabel setTextColor:[WPStyleGuide wordPressBlue]];
+    [_usernameLabel setTextColor:[UIColor murielPrimary]];
     [_usernameLabel setFont:[WPFontManager systemRegularFontOfSize:14.0]];
     [_usernameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.contentView addSubview:_usernameLabel];

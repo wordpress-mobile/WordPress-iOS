@@ -1,6 +1,4 @@
-
 import Foundation
-
 import Charts
 
 // MARK: - PostChartType
@@ -27,7 +25,7 @@ extension PostChartType {
         case .latest:
             return nil
         case .selected:
-            return WPStyleGuide.jazzyOrange()
+            return .accent
         }
     }
 }
@@ -110,7 +108,7 @@ private final class PostChartDataTransformer {
 
             let x = offset
             // If the chart has no data, show "stub" bars
-            let y = totalViews > 0 ? Double(datum.viewsCount) : 1.0
+            let y = totalViews > 0 ? Double(datum.viewsCount) : StatsBarChartView.emptyChartBarHeight
             let entry = BarChartDataEntry(x: x, y: y)
 
             entries.append(entry)
@@ -128,7 +126,7 @@ private final class PostChartDataTransformer {
     }
 
     static func primaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()
+        return count > 0 ? .primary : .neutral(shade: .shade0)
     }
 
     static func primaryHighlightColor(forType type: PostChartType, withCount count: Int) -> UIColor? {
@@ -144,10 +142,10 @@ private struct PostChartStyling: BarChartStyling {
     let secondaryBarColor: UIColor?                 = nil
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
-    let labelColor: UIColor                         = WPStyleGuide.grey()
+    let labelColor: UIColor                         = .neutral(shade: .shade300)
     let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
-    let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
+    let lineColor: UIColor                          = .neutral(shade: .shade50)
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
 }

@@ -10,13 +10,13 @@ class RegisterDomainSectionHeaderView: UITableViewHeaderFooterView {
         super.awakeFromNib()
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline,
                                                         fontWeight: .semibold)
-        titleLabel.textColor = WPStyleGuide.darkGrey()
+        titleLabel.textColor = .neutral(shade: .shade700)
         titleLabel.numberOfLines = 0
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        descriptionLabel.textColor = WPStyleGuide.darkGrey()
+        descriptionLabel.textColor = .neutral(shade: .shade700)
         descriptionLabel.numberOfLines = 0
-        contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        contentView.backgroundColor = .neutral(shade: .shade50)
     }
 
     func setTitle(_ title: String?) {

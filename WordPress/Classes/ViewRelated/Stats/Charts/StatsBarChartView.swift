@@ -1,6 +1,4 @@
-
 import UIKit
-
 import Charts
 
 // MARK: - StatsBarChartViewDelegate
@@ -31,6 +29,11 @@ class StatsBarChartView: BarChartView {
         static let trailingOffset           = CGFloat(20)
         static let verticalAxisLabelCount   = 5
     }
+
+    /// Height for "stub" bars when a chart is empty, which is the height of the default chart.
+    /// The value is just shy of the default height to prevent the chart height from automatically expanding.
+    ///
+    static let emptyChartBarHeight = Double(Constants.verticalAxisLabelCount - 1) - 0.01
 
     /// This adapts the data set for presentation by the Charts framework.
     ///
@@ -275,10 +278,12 @@ private extension StatsBarChartView {
         addSubview(chartLegend)
 
         NSLayoutConstraint.activate([
-            chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
+            chartLegend.widthAnchor.constraint(equalTo: widthAnchor),
+            chartLegend.leadingAnchor.constraint(equalTo: leadingAnchor),
+            chartLegend.topAnchor.constraint(equalTo: topAnchor)
         ])
-        extraTopOffset = chartLegend.intrinsicContentSize.height + Constants.topOffsetWithLegend
 
+        extraTopOffset = chartLegend.intrinsicContentSize.height + Constants.topOffsetWithLegend
         self.legendView = chartLegend
     }
 
@@ -333,7 +338,7 @@ private extension StatsBarChartView {
         if let primaryHighlightColor = styling.primaryHighlightColor {
             markerColor = primaryHighlightColor
         } else {
-            markerColor = WPStyleGuide.jazzyOrange()
+            markerColor = .accent
         }
         marker.backgroundColor = markerColor.withAlphaComponent(Constants.markerAlpha)
 

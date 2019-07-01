@@ -98,7 +98,7 @@ import WordPressShared
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: SharingCellIdentifiers.SortableSwitchCellIdentifier)
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: SharingCellIdentifiers.SwitchCellIdentifier)
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.setEditing(true, animated: false)
         tableView.allowsSelectionDuringEditing = true
     }
@@ -302,7 +302,7 @@ import WordPressShared
         let row = SortableSharingSwitchRow(buttonID: button.buttonID)
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
             cell.imageView?.image = self.iconForSharingButton(button)
-            cell.imageView?.tintColor = WPStyleGuide.greyLighten20()
+            cell.imageView?.tintColor = .neutral(shade: .shade100)
 
             cell.editingAccessoryView = nil
             cell.editingAccessoryType = .none
@@ -373,7 +373,7 @@ import WordPressShared
         cell.editingAccessoryView = cell.accessoryView
         cell.editingAccessoryType = cell.accessoryType
         cell.imageView?.image = self.iconForSharingButton(button)
-        cell.imageView?.tintColor = WPStyleGuide.greyLighten20()
+        cell.imageView?.tintColor = .neutral(shade: .shade100)
         cell.textLabel?.text = button.name
     }
 

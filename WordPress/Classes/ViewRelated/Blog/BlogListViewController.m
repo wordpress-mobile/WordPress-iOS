@@ -1,5 +1,4 @@
 #import "BlogListViewController.h"
-
 #import "WordPress-Swift.h"
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
@@ -615,7 +614,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                       [weakSelf showRemoveSiteAlertForIndexPath:indexPath];
                                                                                   }];
                                                                               }];
-        removeAction.backgroundColor = [WPStyleGuide errorRed];
+        removeAction.backgroundColor = [UIColor murielError];
         [actions addObject:removeAction];
     } else {
         if (blog.visible) {
@@ -626,7 +625,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                         [weakSelf hideBlogAtIndexPath:indexPath];
                                                                                     }];
                                                                                 }];
-            hideAction.backgroundColor = [WPStyleGuide grey];
+            hideAction.backgroundColor = [UIColor murielNeutral300];
             [actions addObject:hideAction];
         } else {
             UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -636,7 +635,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                           [weakSelf unhideBlogAtIndexPath:indexPath];
                                                                                       }];
                                                                                   }];
-            unhideAction.backgroundColor = [WPStyleGuide validGreen];
+            unhideAction.backgroundColor = [UIColor murielSuccess];
             [actions addObject:unhideAction];
         }
     }

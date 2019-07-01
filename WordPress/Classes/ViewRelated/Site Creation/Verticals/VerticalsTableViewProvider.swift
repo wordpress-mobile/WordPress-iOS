@@ -70,11 +70,11 @@ final class VerticalsTableViewProvider: NSObject, TableViewProvider {
     private func addBorder(cell: UITableViewCell, at: IndexPath) {
         let row = at.row
         if row == 0 {
-            cell.addTopBorder(withColor: WPStyleGuide.greyLighten20())
+            cell.addTopBorder(withColor: .neutral(shade: .shade100))
         }
 
         if row == data.count - 1 {
-            cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
+            cell.addBottomBorder(withColor: .neutral(shade: .shade100))
         }
     }
 

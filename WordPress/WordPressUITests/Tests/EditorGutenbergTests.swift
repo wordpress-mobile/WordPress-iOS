@@ -13,6 +13,7 @@ class EditorGutenbergTests: XCTestCase {
     }
 
     override func tearDown() {
+        takeScreenshotOfFailedTest()
         if editorScreen != nil && !TabNavComponent.isVisible() {
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()

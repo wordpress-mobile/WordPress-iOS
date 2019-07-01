@@ -235,6 +235,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatActivityLogRewindStarted:
             eventName = @"activity_log_rewind_started";
             break;
+        case WPAnalyticsStatAppIconChanged:
+            eventName = @"app_icon_changed";
+            break;
+        case WPAnalyticsStatAppIconReset:
+            eventName = @"app_icon_reset";
+            break;
         case WPAnalyticsStatAppInstalled:
             eventName = @"application_installed";
             break;
@@ -1615,6 +1621,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsAccessed:
             eventName = @"stats_accessed";
             break;
+            case WPAnalyticsStatStatsDateTappedBackward:
+            eventName = @"stats_date_tapped_backward";
+            break;
+            case WPAnalyticsStatStatsDateTappedForward:
+            eventName = @"stats_date_tapped_forward";
+            break;
         case WPAnalyticsStatStatsInsightsAccessed:
             eventName = @"stats_insights_accessed";
             break;
@@ -1651,8 +1663,17 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsOverviewBarChartTapped:
             eventName = @"stats_overview_bar_chart_tapped";
             break;
-        case WPAnalyticsStatStatsOverviewTypeTapped:
-            eventName = @"stats_overview_type_tapped";
+        case WPAnalyticsStatStatsOverviewTypeTappedComments:
+            eventName = @"stats_overview_type_tapped_comments";
+            break;
+        case WPAnalyticsStatStatsOverviewTypeTappedLikes:
+            eventName = @"stats_overview_type_tapped_likes";
+            break;
+        case WPAnalyticsStatStatsOverviewTypeTappedViews:
+            eventName = @"stats_overview_type_tapped_views";
+            break;
+        case WPAnalyticsStatStatsOverviewTypeTappedVisitors:
+            eventName = @"stats_overview_type_tapped_visitors";
             break;
         case WPAnalyticsStatStatsPeriodDaysAccessed:
             eventName = @"stats_period_accessed";
@@ -1694,6 +1715,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsViewMoreTappedCountries:
             eventName = @"stats_countries_view_more_tapped";
             break;
+        case WPAnalyticsStatStatsViewMoreTappedFileDownloads:
+            eventName = @"stats_file_downloads_view_more_tapped";
+            break;
         case WPAnalyticsStatStatsViewMoreTappedFollowers:
             eventName = @"stats_followers_view_more_tapped";
             break;
@@ -1711,6 +1735,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatStatsViewMoreTappedTagsAndCategories:
             eventName = @"stats_tags_and_categories_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedThisYear:
+            eventName = @"stats_this_year_view_more_tapped";
             break;
         case WPAnalyticsStatStatsViewMoreTappedVideoPlays:
             eventName = @"stats_video_plays_view_more_tapped";

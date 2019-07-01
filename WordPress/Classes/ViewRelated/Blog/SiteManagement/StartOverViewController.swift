@@ -53,7 +53,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
         tableView.estimatedSectionHeaderHeight = 100.0
         tableView.sectionHeaderHeight = UITableView.automaticDimension
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     // MARK: Table View Data Source

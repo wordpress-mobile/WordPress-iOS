@@ -209,6 +209,15 @@
         }
     }
 
+    var detailsTitle: String {
+        switch self {
+        case .insightsAnnualSiteStats:
+            return DetailsTitles.annualSiteStats
+        default:
+            return title
+        }
+    }
+
     // MARK: - Image Size Accessor
 
     static let defaultImageSize = CGFloat(24)
@@ -240,7 +249,11 @@
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
-        static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'Annual Site Stats' header")
+        static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
+    }
+
+    struct DetailsTitles {
+        static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'This Year' details view header")
     }
 
     struct PeriodHeaders {
@@ -306,4 +319,17 @@
         static let userImage = CGFloat(28)
     }
 
+}
+
+// MARK: - Strings specific to Annual Site Stats
+
+struct AnnualSiteStats {
+    static let year = NSLocalizedString("Year", comment: "'This Year' label for the the year.")
+    static let totalPosts = NSLocalizedString("Total Posts", comment: "'This Year' label for the total number of posts.")
+    static let totalComments = NSLocalizedString("Total Comments", comment: "'This Year' label for total number of comments.")
+    static let totalLikes = NSLocalizedString("Total Likes", comment: "'This Year' label for total number of likes.")
+    static let totalWords = NSLocalizedString("Total Words", comment: "'This Year' label for total number of words.")
+    static let commentsPerPost = NSLocalizedString("Avg Comments / Post", comment: "'This Year' label for average comments per post.")
+    static let likesPerPost = NSLocalizedString("Avg Likes / Post", comment: "'This Year' label for average likes per post.")
+    static let wordsPerPost = NSLocalizedString("Avg Words / Post", comment: "'This Year' label for average words per post.")
 }

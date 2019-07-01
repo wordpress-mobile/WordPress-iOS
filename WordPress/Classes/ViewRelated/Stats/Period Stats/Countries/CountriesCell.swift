@@ -13,6 +13,8 @@ class CountriesCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
 
+    @IBOutlet private var topSeparatorLineHeightConstraint: NSLayoutConstraint!
+
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
@@ -32,11 +34,6 @@ class CountriesCell: UITableViewCell, NibLoadable {
         self.forDetails = forDetails
         bottomSeparatorLine.isHidden = forDetails
 
-        // TODO: in xib when add map:
-        // - unhide Map View
-        // - Top Separator Line: enable Top Space to Map View constraint
-        // - Top Separator Line: remove Top Space to Superview constraint
-
         if !forDetails {
         addRows(dataRows,
                 toStackView: rowsStackView,
@@ -53,7 +50,6 @@ class CountriesCell: UITableViewCell, NibLoadable {
         super.prepareForReuse()
         removeRowsFromStackView(rowsStackView)
     }
-
 }
 
 private extension CountriesCell {
@@ -75,6 +71,7 @@ private extension CountriesCell {
         }
 
         rowsStackViewTopConstraint.constant = !dataRows.isEmpty ? subtitleHeight : 0
+        topSeparatorLineHeightConstraint.constant = dataRows.isEmpty ? 0.5 : 0.33
     }
 
 }

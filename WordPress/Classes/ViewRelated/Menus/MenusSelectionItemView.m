@@ -72,7 +72,7 @@
     label.backgroundColor = [UIColor clearColor];
     label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleSubheadline maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
-    label.textColor = [WPStyleGuide darkGrey];
+    label.textColor = [UIColor murielNeutral700];
     [self addSubview:label];
     _label = label;
 
@@ -83,7 +83,7 @@
 - (void)setupIconImageView
 {
     UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.tintColor = [WPStyleGuide greyDarken10];
+    imageView.tintColor = [UIColor murielNeutral400];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.image = [Gridicon iconOfType:GridiconTypeCheckmark];
 
@@ -146,7 +146,7 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     if (self.drawsHighlighted) {
 
-        [[WPStyleGuide greyLighten30] set];
+        [[UIColor murielNeutral50] set];
         CGContextFillRect(context, rect);
 
     } else  if (self.drawsDesignLineSeparator) {
@@ -160,7 +160,7 @@
             CGContextAddLineToPoint(context, rect.size.width, rect.size.height - (MenusDesignStrokeWidth / 2.0));
         }
 
-        CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
+        CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral100] CGColor]);
         CGContextStrokePath(context);
     }
 }

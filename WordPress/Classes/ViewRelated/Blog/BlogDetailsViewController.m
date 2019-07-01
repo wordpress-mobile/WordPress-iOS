@@ -109,7 +109,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                     identifier:identifier
        accessibilityIdentifier:accessibilityIdentifier
                          image:image
-                    imageColor:[WPStyleGuide greyLighten10]
+                    imageColor:[UIColor murielNeutral]
                       callback:callback];
 }
     

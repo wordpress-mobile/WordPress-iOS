@@ -27,9 +27,9 @@ class ThemeBrowserSectionHeaderView: UICollectionReusableView {
     }
 
     fileprivate func applyStyles() {
-        descriptionLabel.textColor = WPStyleGuide.greyDarken20()
-        countLabel.textColor = WPStyleGuide.greyDarken20()
-        countLabel.layer.borderColor = WPStyleGuide.greyDarken10().cgColor
+        descriptionLabel.textColor = .neutral(shade: .shade500)
+        countLabel.textColor = .neutral(shade: .shade500)
+        countLabel.layer.borderColor = UIColor.neutral(shade: .shade400).cgColor
         countLabel.layer.borderWidth = 1.0
         countLabel.layer.cornerRadius = 9.0
     }

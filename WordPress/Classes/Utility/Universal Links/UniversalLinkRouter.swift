@@ -14,31 +14,35 @@ struct UniversalLinkRouter {
     // app delegate, and because it's primarily written in objective-c we can't
     // add a struct property there.
     //
-    static let shared = UniversalLinkRouter(routes:
-        MeRoutes +
-        NewPostRoutes +
-        NotificationsRoutes +
-        ReaderRoutes +
-        StatsRoutes +
-        MySitesRoutes +
-        AppBannerRoutes)
+    static let shared = UniversalLinkRouter(
+        routes: defaultRoutes)
 
-    static let MeRoutes: [Route] = [
+    static let defaultRoutes: [Route] =
+        redirects +
+        meRoutes +
+        newPostRoutes +
+        notificationsRoutes +
+        readerRoutes +
+        statsRoutes +
+        mySitesRoutes +
+        appBannerRoutes
+
+    static let meRoutes: [Route] = [
         MeRoute(),
         MeAccountSettingsRoute(),
         MeNotificationSettingsRoute()
     ]
 
-    static let NewPostRoutes: [Route] = [
+    static let newPostRoutes: [Route] = [
         NewPostRoute(),
         NewPostForSiteRoute()
     ]
 
-    static let NotificationsRoutes: [Route] = [
+    static let notificationsRoutes: [Route] = [
         NotificationsRoute()
     ]
 
-    static let ReaderRoutes: [Route] = [
+    static let readerRoutes: [Route] = [
         ReaderRoute.root,
         ReaderRoute.discover,
         ReaderRoute.search,
@@ -53,7 +57,7 @@ struct UniversalLinkRouter {
         ReaderRoute.blogsPost
     ]
 
-    static let StatsRoutes: [Route] = [
+    static let statsRoutes: [Route] = [
         StatsRoute.root,
         StatsRoute.site,
         StatsRoute.daySite,
@@ -66,7 +70,7 @@ struct UniversalLinkRouter {
         StatsRoute.activityLog
     ]
 
-    static let MySitesRoutes: [Route] = [
+    static let mySitesRoutes: [Route] = [
         MySitesRoute.pages,
         MySitesRoute.posts,
         MySitesRoute.media,
@@ -77,8 +81,12 @@ struct UniversalLinkRouter {
         MySitesRoute.managePlugins
     ]
 
-    static let AppBannerRoutes: [Route] = [
+    static let appBannerRoutes: [Route] = [
         AppBannerRoute()
+    ]
+
+    static let redirects: [Route] = [
+        MbarRoute()
     ]
 
     /// - returns: True if the URL routing system can handle the given URL,
@@ -95,13 +103,11 @@ struct UniversalLinkRouter {
         return host == "wordpress.com" && matcherCanHandle
     }
 
-    /// Attempts to find a Route that matches the url's path, and perform its
+    /// Attempts to find a route that matches the url's path, and perform its
     /// associated action.
     ///
-    /// - parameter url: The URL to match against a route.
+    /// - parameter url: The URL to match against.
     /// - parameter track: If false, don't post an analytics event for this URL.
-    ///
-    /// - returns: True if the route was handled, or false if it didn't match any routes.
     ///
     func handle(url: URL, shouldTrack track: Bool = true, source: UIViewController? = nil) {
         let matches = matcher.routesMatching(url)

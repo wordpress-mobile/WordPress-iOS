@@ -21,6 +21,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     private weak var delegate: SiteStatsTableHeaderDelegate?
     private var date: Date?
     private var period: StatsPeriodUnit?
+    private var mostRecentDate: Date?
 
     // Limits how far back the date chooser can go.
     // Corresponds to the number of bars shown on the Overview chart.
@@ -43,11 +44,16 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         applyStyles()
     }
 
-    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate, expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount) {
+    func configure(date: Date?,
+                   period: StatsPeriodUnit?,
+                   delegate: SiteStatsTableHeaderDelegate,
+                   expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount,
+                   mostRecentDate: Date? = nil) {
         self.date = date
         self.period = period
         self.delegate = delegate
         self.expectedPeriodCount = expectedPeriodCount
+        self.mostRecentDate = mostRecentDate
         dateLabel.text = displayDate()
         updateButtonStates()
         prepareForVoiceOver()
@@ -96,10 +102,12 @@ private extension SiteStatsTableHeaderView {
     }
 
     @IBAction func didTapBackButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedBackward)
         updateDate(forward: false)
     }
 
     @IBAction func didTapForwardButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedForward)
         updateDate(forward: true)
     }
 
@@ -120,7 +128,14 @@ private extension SiteStatsTableHeaderView {
     }
 
     func updateButtonStates() {
-        guard let date = date, let period = period else {
+
+        // Use dates without time
+        let currentDate = (mostRecentDate != nil) ? mostRecentDate!.normalizedDate() : Date().normalizedDate()
+
+        guard var date = date,
+            let period = period,
+            var oldestDate = calendar.date(byAdding: period.calendarComponent, value: backLimit, to: currentDate) else {
+            backButton.isEnabled = false
             forwardButton.isEnabled = false
             backButton.isEnabled = false
             updateArrowStates()
@@ -142,6 +157,19 @@ private extension SiteStatsTableHeaderView {
     func postAccessibilityPeriodLabel() {
         UIAccessibility.post(notification: .screenChanged, argument: dateLabel)
     }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
+        }
+    }
+
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {

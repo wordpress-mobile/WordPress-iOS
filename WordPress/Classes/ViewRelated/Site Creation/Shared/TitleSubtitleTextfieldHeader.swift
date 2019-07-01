@@ -71,7 +71,7 @@ final class SearchTextField: UITextField {
         backgroundColor = .white
         clearButtonMode = .whileEditing
         font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        textColor = WPStyleGuide.darkGrey()
+        textColor = .neutral(shade: .shade700)
 
         autocapitalizationType = .none
         autocorrectionType = .no
@@ -93,8 +93,8 @@ final class SearchTextField: UITextField {
             heightAnchor.constraint(equalToConstant: Constants.searchHeight),
             ])
 
-        addTopBorder(withColor: WPStyleGuide.greyLighten20())
-        addBottomBorder(withColor: WPStyleGuide.greyLighten20())
+        addTopBorder(withColor: .neutral(shade: .shade100))
+        addBottomBorder(withColor: .neutral(shade: .shade100))
     }
 }
 
@@ -162,7 +162,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
     }
 
     private func setStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .neutral(shade: .shade50)
     }
 
     func setTitle(_ text: String) {

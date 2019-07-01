@@ -6,7 +6,7 @@ class TrashComment: DefaultNotificationActionCommand {
     static let hint = NSLocalizedString("Moves the comment to the Trash.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash.")
 
     let trashIcon: UIButton = {
-        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.errorRed())
+        let button = MGSwipeButton(title: title, backgroundColor: .error)
         button.accessibilityLabel =  title
         button.accessibilityTraits = UIAccessibilityTraits.button
         button.accessibilityHint = hint

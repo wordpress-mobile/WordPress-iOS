@@ -35,7 +35,7 @@ class PostTagPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         textView.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
@@ -51,7 +51,7 @@ class PostTagPickerViewController: UIViewController {
         textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = WPStyleGuide.darkGrey()
+        textView.textColor = .neutral(shade: .shade700)
         textView.isScrollEnabled = false
         // Padding already provided by readable margins
         // Don't add extra padding so text aligns with suggestions
@@ -85,7 +85,7 @@ class PostTagPickerViewController: UIViewController {
             ])
 
         textViewContainer.backgroundColor = UIColor.white
-        textViewContainer.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
+        textViewContainer.layer.borderColor = UIColor.neutral(shade: .shade100).cgColor
         textViewContainer.layer.borderWidth = 0.5
         textViewContainer.layer.masksToBounds = false
 
@@ -406,7 +406,7 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
 extension WPStyleGuide {
     @objc static func configureTableViewSuggestionCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewCell(cell)
-        cell.textLabel?.textColor = WPStyleGuide.greyDarken30()
-        cell.backgroundColor = WPStyleGuide.greyLighten30()
+        cell.textLabel?.textColor = .neutral(shade: .shade600)
+        cell.backgroundColor = .neutral(shade: .shade50)
     }
 }

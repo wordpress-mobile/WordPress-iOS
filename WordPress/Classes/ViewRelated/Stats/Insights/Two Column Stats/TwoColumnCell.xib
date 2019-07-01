@@ -45,22 +45,29 @@
                                     <constraint firstAttribute="height" constant="13" id="qmf-Yb-GSl"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uon-fL-Zcd" userLabel="View More Button">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="didTapViewMore:" destination="oVo-l2-Jhn" eventType="touchUpInside" id="gKm-HN-PCI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="44" id="44e-cc-T7y"/>
+                            <constraint firstItem="uon-fL-Zcd" firstAttribute="leading" secondItem="Cfy-Hl-Mjq" secondAttribute="leading" id="KZ2-hk-YCD"/>
                             <constraint firstItem="1To-pb-uoT" firstAttribute="top" secondItem="Cfy-Hl-Mjq" secondAttribute="top" constant="12" id="Qwi-ZL-iXt"/>
                             <constraint firstAttribute="trailing" secondItem="YNj-gn-f07" secondAttribute="trailing" constant="16" id="SYx-K1-v17"/>
+                            <constraint firstAttribute="trailing" secondItem="uon-fL-Zcd" secondAttribute="trailing" id="Vmf-wW-kgh"/>
+                            <constraint firstItem="uon-fL-Zcd" firstAttribute="top" secondItem="Cfy-Hl-Mjq" secondAttribute="top" id="Waq-GV-Y7c"/>
                             <constraint firstItem="YNj-gn-f07" firstAttribute="leading" secondItem="1To-pb-uoT" secondAttribute="trailing" constant="16" id="aEU-Da-e0s"/>
                             <constraint firstItem="1To-pb-uoT" firstAttribute="leading" secondItem="Cfy-Hl-Mjq" secondAttribute="leading" constant="16" id="d7O-Xe-V7P"/>
                             <constraint firstAttribute="bottom" secondItem="1To-pb-uoT" secondAttribute="bottom" constant="12" id="jBf-At-vUw"/>
                             <constraint firstItem="YNj-gn-f07" firstAttribute="centerY" secondItem="Cfy-Hl-Mjq" secondAttribute="centerY" id="sgg-5x-f5z"/>
+                            <constraint firstAttribute="bottom" secondItem="uon-fL-Zcd" secondAttribute="bottom" id="zPx-Uo-fJ0"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uon-fL-Zcd" userLabel="View More Button">
-                        <rect key="frame" x="0.0" y="350" width="375" height="44"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cm8-Qw-O9e" userLabel="Bottom Separator Line">
                         <rect key="frame" x="0.0" y="394" width="375" height="0.5"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -77,17 +84,13 @@
                     <constraint firstItem="NTK-eu-Zrd" firstAttribute="top" secondItem="aea-rN-rAD" secondAttribute="top" id="ARx-Y7-BtJ"/>
                     <constraint firstItem="Cfy-Hl-Mjq" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="CW9-bq-3C0"/>
                     <constraint firstItem="Cm8-Qw-O9e" firstAttribute="top" secondItem="Cfy-Hl-Mjq" secondAttribute="bottom" id="GOc-lk-WGg"/>
-                    <constraint firstItem="uon-fL-Zcd" firstAttribute="top" secondItem="Cfy-Hl-Mjq" secondAttribute="top" id="H52-Pc-bsG"/>
                     <constraint firstAttribute="trailing" secondItem="53U-Zk-ZGa" secondAttribute="trailing" id="I9H-dB-FKj"/>
-                    <constraint firstItem="uon-fL-Zcd" firstAttribute="leading" secondItem="Cfy-Hl-Mjq" secondAttribute="leading" id="I9I-ov-7RB"/>
                     <constraint firstAttribute="trailing" secondItem="Cm8-Qw-O9e" secondAttribute="trailing" id="PzX-nO-5NH"/>
                     <constraint firstItem="53U-Zk-ZGa" firstAttribute="top" secondItem="NTK-eu-Zrd" secondAttribute="bottom" id="ZCG-4P-igX"/>
                     <constraint firstItem="53U-Zk-ZGa" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="aWs-1X-FnG"/>
-                    <constraint firstItem="uon-fL-Zcd" firstAttribute="bottom" secondItem="Cfy-Hl-Mjq" secondAttribute="bottom" id="axy-z3-ahd"/>
                     <constraint firstAttribute="trailing" secondItem="Cfy-Hl-Mjq" secondAttribute="trailing" id="bAa-4j-6TL"/>
                     <constraint firstAttribute="trailing" secondItem="NTK-eu-Zrd" secondAttribute="trailing" id="jHo-RQ-WZe"/>
                     <constraint firstItem="Cm8-Qw-O9e" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="s6O-Ci-p80"/>
-                    <constraint firstItem="uon-fL-Zcd" firstAttribute="trailing" secondItem="Cfy-Hl-Mjq" secondAttribute="trailing" id="zrQ-sh-aXJ"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="5pF-Tt-Ldy"/>

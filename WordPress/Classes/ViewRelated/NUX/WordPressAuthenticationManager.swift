@@ -1,6 +1,6 @@
 import Foundation
 import WordPressAuthenticator
-
+import Gridicons
 
 
 // MARK: - WordPressAuthenticationManager
@@ -31,7 +31,27 @@ class WordPressAuthenticationManager: NSObject {
                                                                 googleLoginScheme: ApiCredentials.googleLoginSchemeId(),
                                                                 userAgent: WPUserAgent.wordPress())
 
-        WordPressAuthenticator.initialize(configuration: configuration)
+        let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
+                                                primaryNormalBorderColor: .primaryButtonBorder,
+                                                primaryHighlightBackgroundColor: .primaryButtonDownBackground,
+                                                primaryHighlightBorderColor: .primaryButtonDownBorder,
+                                                secondaryNormalBackgroundColor: .textInverted,
+                                                secondaryNormalBorderColor: .neutral(shade: .shade100),
+                                                secondaryHighlightBackgroundColor: .neutral(shade: .shade100),
+                                                secondaryHighlightBorderColor: .neutral(shade: .shade400),
+                                                disabledBackgroundColor: .textInverted,
+                                                disabledBorderColor: .neutral(shade: .shade100),
+                                                primaryTitleColor: .textInverted,
+                                                secondaryTitleColor: .text,
+                                                disabledTitleColor: .neutral(shade: .shade200),
+                                                subheadlineColor: .textSubtle,
+                                                viewControllerBackgroundColor: .neutral(shade: .shade0),
+                                                navBarImage: Gridicon.iconOfType(.mySites),
+                                                prologueBackgroundColor: .primary,
+                                                prologueTitleColor: .textInverted)
+
+        WordPressAuthenticator.initialize(configuration: configuration,
+                                          style: style)
     }
 }
 

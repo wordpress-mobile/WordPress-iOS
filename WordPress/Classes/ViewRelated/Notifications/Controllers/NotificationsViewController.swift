@@ -380,7 +380,7 @@ private extension NotificationsViewController {
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     func setupTableHeaderView() {
@@ -439,9 +439,9 @@ private extension NotificationsViewController {
     }
 
     func setupFilterBar() {
-        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
-        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterTabBar.tintColor = .primary
+        filterTabBar.deselectedTabColor = .neutral(shade: .shade400)
+        filterTabBar.dividerColor = .neutral(shade: .shade100)
 
         filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -1037,7 +1037,7 @@ private extension NotificationsViewController {
 
         return [
             MGSwipeButton(title: title,
-                          backgroundColor: WPStyleGuide.greyDarken20(),
+                          backgroundColor: .neutral(shade: .shade500),
                           callback: { _ in
                             if isRead {
                                 self.markAsUnread(note: note)

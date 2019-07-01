@@ -31,7 +31,7 @@ extension WPStyleGuide {
         public static let noteSeparatorColor        = blockSeparatorColor
 
         // NoteUndoOverlayView
-        public static let noteUndoBackgroundColor   = WPStyleGuide.errorRed()
+        public static let noteUndoBackgroundColor   = UIColor.error
         public static let noteUndoTextColor         = UIColor.white
         public static let noteUndoTextFont          = subjectRegularFont
 
@@ -127,9 +127,9 @@ extension WPStyleGuide {
         public static let blockApprovedBgColor      = UIColor.clear
 
         public static let blockUnapprovedSideColor  = WPStyleGuide.alertYellowDark()
-        public static let blockUnapprovedBgColor    = WPStyleGuide.alertYellowLighter()
-        public static let blockUnapprovedTextColor  = WPStyleGuide.alertRedDarker()
-        public static let blockUnapprovedLinkColor  = WPStyleGuide.mediumBlue()
+        public static let blockUnapprovedBgColor    = UIColor.warning(shade: .shade0)
+        public static let blockUnapprovedTextColor  = UIColor.errorDark
+        public static let blockUnapprovedLinkColor  = UIColor.primary(shade: .shade400)
 
         public static var contentBlockRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
@@ -245,9 +245,9 @@ extension WPStyleGuide {
             button.titleLabel?.font = WPStyleGuide.subtitleFont()
 
             // Color(s)
-            let normalColor = WPStyleGuide.greyDarken20()
-            let highlightedColor = WPStyleGuide.greyDarken10()
-            let selectedColor = WPStyleGuide.validGreen()
+            let normalColor = UIColor.neutral(shade: .shade500)
+            let highlightedColor = UIColor.neutral(shade: .shade400)
+            let selectedColor = UIColor.success
 
             button.setTitleColor(normalColor, for: .normal)
             button.setTitleColor(selectedColor, for: .selected)

@@ -24,7 +24,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
-        footer.backgroundColor = WPStyleGuide.greyLighten20()
+        footer.backgroundColor = .neutral(shade: .shade100)
         return footer
     }()
 
@@ -149,7 +149,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let restorePageCellNib = UINib(nibName: Constant.Identifiers.restorePageCellNibName, bundle: bundle)
         tableView.register(restorePageCellNib, forCellReuseIdentifier: Constant.Identifiers.restorePageCellIdentifier)
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     override func configureSearchController() {

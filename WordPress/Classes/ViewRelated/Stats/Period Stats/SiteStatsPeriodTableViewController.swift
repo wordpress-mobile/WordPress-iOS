@@ -159,6 +159,7 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
+                CountriesMapRow.self,
                 OverviewRow.self,
                 TableFooterRow.self]
     }

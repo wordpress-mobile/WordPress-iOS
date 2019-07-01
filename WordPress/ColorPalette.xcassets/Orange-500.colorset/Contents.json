@@ -1,0 +1,20 @@
+{
+  "info": {
+    "author": "io.github.automattic.color-studio",
+    "version": "1.0.3"
+  },
+  "colors": [
+    {
+      "idiom": "universal",
+      "color": {
+        "components": {
+          "red": "215",
+          "green": "115",
+          "blue": "15",
+          "alpha": 1
+        },
+        "color-space": "srgb"
+      }
+    }
+  ]
+}
