@@ -37,7 +37,7 @@ class LoginFlow {
             if LoginEmailScreen.isLoaded() && LoginEmailScreen.isEmailEntered() {
                 LoginEmailScreen().emailTextField.clearTextIfNeeded()
             }
-            XCUIApplication().buttons["Back"].tap()
+            navBackButton.tap()
         }
     }
 }

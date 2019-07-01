@@ -77,7 +77,7 @@ extension DetailDataCell: StatsTotalRowDelegate {
         detailsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: postURL)
     }
 
-    func toggleChildRowsForRow(_ row: StatsTotalRow) {
+    func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool) {
         detailsDelegate?.toggleChildRowsForRow?(row)
     }
 

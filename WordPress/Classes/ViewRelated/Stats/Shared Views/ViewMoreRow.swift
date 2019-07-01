@@ -4,7 +4,7 @@ protocol ViewMoreRowDelegate: class {
     func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
-class ViewMoreRow: UIView, NibLoadable {
+class ViewMoreRow: UIView, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -19,8 +19,16 @@ class ViewMoreRow: UIView, NibLoadable {
         self.statSection = statSection
         self.delegate = delegate
         applyStyles()
+        prepareForVoiceOver()
     }
 
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+
+        accessibilityLabel = viewMoreLabel.text
+        accessibilityTraits = .button
+        accessibilityHint = NSLocalizedString("Tap for more detail.", comment: "Accessibility hint")
+    }
 }
 
 // MARK: - Private Methods

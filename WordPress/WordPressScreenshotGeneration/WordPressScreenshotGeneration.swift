@@ -11,12 +11,12 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         SDStatusBarManager.sharedInstance()?.enableOverrides()
 
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-        // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
+        // This does the shared setup including injecting mocks and launching the app
+        setUpTestSuite()
+
+        // The app is already launched so we can set it up for screenshots here
         let app = XCUIApplication()
         setupSnapshot(app)
-        app.launch()
 
         let isPad = UIDevice.current.userInterfaceIdiom == .pad
         if isPad {

@@ -246,10 +246,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     /// This method will disable animations and speed-up keyboad input if command-line arguments includes "NoAnimations"
     /// It was designed to be used in UI test suites. To enable it just pass a launch argument into XCUIApplicaton:
     ///
-    /// XCUIApplication().launchArguments = ["NoAnimations"]
+    /// XCUIApplication().launchArguments = ["-no-animations"]
     ///
     private func disableAnimationsForUITests(_ application: UIApplication) {
-        if CommandLine.arguments.contains("NoAnimations") {
+        if CommandLine.arguments.contains("-no-animations") {
             UIView.setAnimationsEnabled(false)
             application.windows.first?.layer.speed = MAXFLOAT
             application.keyWindow?.layer.speed = MAXFLOAT

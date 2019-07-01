@@ -1,7 +1,3 @@
-* Stats are so much better, we don’t even know where to start. Both the UI and backend are totally revamped! Data is cached, so loading stats is way faster and you can see them even when you’re offline! Individual stats have deeper levels of detail for you to explore! Date selectors let you specify the exact periods you want to see! Is it dorky to be this excited about stats? Who cares!
-* The block editor keeps getting better. It’s got clearer messaging when you try to put invalid content into a block, and we patched up a problem with link settings that caused “Open in New Tab” to always be off.
-* To infinity and beyond: We removed the limit on number of photos you can share to WordPress from other apps.
-* If you write a comment and wander off while it uploads, you now get a clearer message when it successfully posts, or more detailed information if it fails.
-* In Account Settings, your Primary Site now displays the site domain if the site has no name. (Takes the pressure off having to think of The Perfect Name immediately. It’ll come to you!)
-* Wondering about the code the powers the app? We’ve added acknowledgements for all the third-party code libraries we use — you can find them in your settings.
-* We fixed a crash that could happen when setting up your blog, so now you can actually, y’know, set it up.
+* Block editor improvements, ahoy! You’ve got Video, Quote and More blocks, the editor will keep text styling like bold and italics when you copy and paste, there’s a spandy new colour scheme, and nested lists are now available on the Toolbar. Try not to let all the new powers go to your head.
+* Sometimes, setting a Featured Image on a post would be problematic when network conditions were poor. Since we can’t fix the world’s network conditions, we fixed the app: * Featured Images should work more smoothly on all connections.
+* Stats Insights got a little spit-shine with two-column layouts for your Today and All-Time stats and let you see more of your data.
