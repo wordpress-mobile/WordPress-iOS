@@ -6,7 +6,6 @@ struct OverviewTabData: FilterTabBarItem {
     var tabDataStub: String?
     var difference: Int
     var differencePercent: Int
-
     var analyticsStat: WPAnalyticsStat?
 
     init(tabTitle: String,
@@ -27,7 +26,7 @@ struct OverviewTabData: FilterTabBarItem {
 
         let attributedTitle = NSMutableAttributedString(string: tabTitle.localizedUppercase)
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
-                                       range: NSMakeRange(0, attributedTitle.string.count))
+                                      range: NSMakeRange(0, attributedTitle.string.count))
 
         let dataString: String = {
             if let tabDataStub = tabDataStub {
@@ -38,7 +37,7 @@ struct OverviewTabData: FilterTabBarItem {
 
         let attributedData = NSMutableAttributedString(string: dataString)
         attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
-                                       range: NSMakeRange(0, attributedData.string.count))
+                                     range: NSMakeRange(0, attributedData.string.count))
 
         attributedTitle.append(NSAttributedString(string: "\n"))
         attributedTitle.append(attributedData)
@@ -55,12 +54,6 @@ struct OverviewTabData: FilterTabBarItem {
     }
 
     var differenceTextColor: UIColor {
-        if let date = date,
-            let period = period,
-            StatsPeriodHelper().dateAvailableAfterDate(date, period: period) == false {
-            return WPStyleGuide.grey()
-        }
-
         return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
     }
 
@@ -198,7 +191,7 @@ private extension OverviewCell {
             chartView.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor),
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
-        ])
+            ])
     }
 
     func resetChartContainerView() {
