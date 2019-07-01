@@ -179,8 +179,11 @@ private extension OverviewCell {
             return
         }
 
-        let configuration = StatsBarChartConfiguration(data: chartData[filterSelectedIndex], styling: chartStyling[filterSelectedIndex], analyticsGranularity: period?.analyticsGranularity, delegate: statsBarChartViewDelegate, indexToHighlight: chartHighlightIndex)
-        let chartView = StatsBarChartView(configuration: configuration)
+        let configuration = StatsBarChartConfiguration(data: chartData[filterSelectedIndex],
+                                                       styling: chartStyling[filterSelectedIndex],
+                                                       analyticsGranularity: period?.analyticsGranularity,
+                                                       indexToHighlight: chartHighlightIndex)
+        let chartView = StatsBarChartView(configuration: configuration, delegate: statsBarChartViewDelegate)
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)
