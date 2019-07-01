@@ -1825,6 +1825,7 @@
 		F126FE0220A33BDB0010EB6E /* DocumentUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFF20A33BDB0010EB6E /* DocumentUploadProcessor.swift */; };
 		F15A230420A3EBE300625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F15A230520A3ECC500625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
+		F1655B4822A6C2FA00227BFB /* Routes+Mbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */; };
 		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
 		F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
@@ -4135,6 +4136,7 @@
 		F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WordPress.alpha.xcconfig; sourceTree = "<group>"; };
 		F14B5F74208E64F900439554 /* Version.public.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.public.xcconfig; sourceTree = "<group>"; };
 		F14B5F75208E64F900439554 /* Version.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.internal.xcconfig; sourceTree = "<group>"; };
+		F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Mbar.swift"; sourceTree = "<group>"; };
 		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
 		F1D690141F828FF000200E30 /* BuildConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfiguration.swift; sourceTree = "<group>"; };
 		F1D690151F828FF000200E30 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
@@ -4662,6 +4664,7 @@
 			children = (
 				17B7C89F20EC1D6A0042E260 /* Route.swift */,
 				17BD4A0720F76A4700975AC3 /* Routes+Banners.swift */,
+				F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */,
 				17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */,
 				17E24F5320FCF1D900BD70A3 /* Routes+MySites.swift */,
 				17B7C8C020EE2A870042E260 /* Routes+Notifications.swift */,
@@ -10206,6 +10209,7 @@
 				4348C88321002FBD00735DC0 /* QuickStartTourGuide.swift in Sources */,
 				E102B7901E714F24007928E8 /* RecentSitesService.swift in Sources */,
 				E1D7FF381C74EB0E00E7E5E5 /* PlanService.swift in Sources */,
+				F1655B4822A6C2FA00227BFB /* Routes+Mbar.swift in Sources */,
 				5D7DEA2919D488DD0032EE77 /* WPStyleGuide+ReaderComments.swift in Sources */,
 				40C403F62215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				82FC61251FA8ADAD00A1757E /* ActivityListViewController.swift in Sources */,

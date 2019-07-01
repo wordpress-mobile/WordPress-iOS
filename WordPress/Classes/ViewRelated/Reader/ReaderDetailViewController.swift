@@ -82,7 +82,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     private let noResultsViewController = NoResultsViewController.controller()
 
-    private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.ReaderRoutes)
+    private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes)
 
     private let topMarginAttachment = NSTextAttachment()
 
