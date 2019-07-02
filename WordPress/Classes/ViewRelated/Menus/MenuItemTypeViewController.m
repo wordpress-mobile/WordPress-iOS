@@ -153,7 +153,7 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
     CGContextSetLineWidth(context, 2.0);
-    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral50] CGColor]);
+    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral5] CGColor]);
     CGContextMoveToPoint(context, rect.size.width, 0);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextStrokePath(context);

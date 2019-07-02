@@ -73,7 +73,7 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
     self.contentView = [[UIView alloc] initWithFrame:self.bounds];
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.contentView.backgroundColor = [UIColor murielNeutral50];
+    self.contentView.backgroundColor = [UIColor murielNeutral5];
     [self addSubview:self.contentView];
 
     NSDictionary *views = NSDictionaryOfVariableBindings(_contentView);

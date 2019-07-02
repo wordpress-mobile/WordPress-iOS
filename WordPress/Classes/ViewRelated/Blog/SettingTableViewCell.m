@@ -14,7 +14,7 @@
     if (self) {
         self.textLabel.text = label;
         [WPStyleGuide configureTableViewCell:self];
-        self.detailTextLabel.textColor = [UIColor murielNeutral300];
+        self.detailTextLabel.textColor = [UIColor murielNeutral30];
         if (editable) {
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             self.selectionStyle = UITableViewCellSelectionStyleDefault;

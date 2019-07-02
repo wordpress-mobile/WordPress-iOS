@@ -95,11 +95,11 @@ final class WebAddressTableViewProvider: NSObject, TableViewProvider {
     private func addBorder(cell: UITableViewCell, at: IndexPath) {
         let row = at.row
         if row == 0 {
-            cell.addTopBorder(withColor: .neutral(shade: .shade100))
+            cell.addTopBorder(withColor: .neutral(shade: .shade10))
         }
 
         if row == data.count - 1 {
-            cell.addBottomBorder(withColor: .neutral(shade: .shade100))
+            cell.addBottomBorder(withColor: .neutral(shade: .shade10))
         }
     }
 }

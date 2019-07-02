@@ -169,7 +169,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
         NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         NSDictionary *attributes = @{
                                      NSFontAttributeName: [WPStyleGuide regularTextFont],
-                                     NSForegroundColorAttributeName: [UIColor murielNeutral400],
+                                     NSForegroundColorAttributeName: [UIColor murielNeutral40],
                                      NSParagraphStyleAttributeName: style
                                      };
         [self.labelText drawInRect:textRect withAttributes:attributes];

@@ -382,7 +382,7 @@ extension NotificationDetailsViewController {
     func setupTableView() {
         tableView.separatorStyle            = .none
         tableView.keyboardDismissMode       = .interactive
-        tableView.backgroundColor           = .neutral(shade: .shade50)
+        tableView.backgroundColor           = .neutral(shade: .shade5)
         tableView.accessibilityIdentifier   = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
         tableView.backgroundColor           = .neutral(shade: .shade0)
     }

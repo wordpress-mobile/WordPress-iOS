@@ -23,7 +23,7 @@
     [super awakeFromNib];
 
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.borderColor = [[UIColor murielNeutral100] CGColor];
+    self.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     self.layer.borderWidth = MenusDesignStrokeWidth;
     if (![WPDeviceIdentification isRetina]) {
         // Increase the stroke width on non-retina screens.

@@ -106,7 +106,7 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc func setupReplyButton() {
         let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize)
-        let tintedIcon = icon.imageWithTintColor(.neutral(shade: .shade200))?.rotate180Degrees()
+        let tintedIcon = icon.imageWithTintColor(.neutral(shade: .shade20))?.rotate180Degrees()
         let highlightedIcon = icon.imageWithTintColor(.primaryLight)?.rotate180Degrees()
 
         replyButton.setImage(tintedIcon, for: .normal)
@@ -114,13 +114,13 @@ class ReaderCommentCell: UITableViewCell {
 
         let title = NSLocalizedString("Reply", comment: "Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post.")
         replyButton.setTitle(title, for: .normal)
-        replyButton.setTitleColor(.neutral(shade: .shade200), for: .normal)
+        replyButton.setTitleColor(.neutral(shade: .shade20), for: .normal)
     }
 
 
     @objc func setupLikeButton() {
         let size = Constants.buttonSize
-        let tintedIcon = Gridicon.iconOfType(.starOutline, withSize: size).imageWithTintColor(.neutral(shade: .shade200))
+        let tintedIcon = Gridicon.iconOfType(.starOutline, withSize: size).imageWithTintColor(.neutral(shade: .shade20))
         let highlightedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(.primaryLight)
         let selectedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(.accent)
 
@@ -169,7 +169,7 @@ class ReaderCommentCell: UITableViewCell {
         authorButton.isEnabled = true
         authorButton.setTitle(comment.authorForDisplay(), for: .normal)
         authorButton.setTitleColor(.primaryLight, for: .highlighted)
-        authorButton.setTitleColor(.neutral(shade: .shade600), for: .disabled)
+        authorButton.setTitleColor(.neutral(shade: .shade60), for: .disabled)
 
         if comment.authorIsPostAuthor() {
             authorButton.setTitleColor(.accent, for: .normal)

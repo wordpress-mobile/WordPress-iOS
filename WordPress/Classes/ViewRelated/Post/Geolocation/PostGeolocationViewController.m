@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor murielNeutral50];
+    self.view.backgroundColor = [UIColor murielNeutral5];
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     [self.view addSubview:self.geoView];
     self.navigationItem.leftBarButtonItems = @[self.removeButton];
@@ -92,13 +92,13 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 - (UISearchBar *)searchBar
 {
     if (_searchBar == nil) {
-        NSAttributedString *placeholderString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Search Locations", @"Prompt in the location search bar.") attributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor murielNeutral300]]];
-        [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [PostGeolocationViewController class]]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor murielNeutral700]]];
+        NSAttributedString *placeholderString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Search Locations", @"Prompt in the location search bar.") attributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor murielNeutral30]]];
+        [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [PostGeolocationViewController class]]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor murielNeutral70]]];
         [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [PostGeolocationViewController class]]] setAttributedPlaceholder:placeholderString];
         _searchBar = [[UISearchBar alloc] init];
         _searchBar.delegate = self;
-        _searchBar.barTintColor = [UIColor murielNeutral50];
-        _searchBar.tintColor = [UIColor murielNeutral300];
+        _searchBar.barTintColor = [UIColor murielNeutral5];
+        _searchBar.tintColor = [UIColor murielNeutral30];
         UIImage *clearImage = [[UIImage imageNamed:@"icon-clear-searchfield"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [_searchBar setImage:clearImage forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
         UIImage *searchImage = [[UIImage imageNamed:@"icon-post-list-search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -223,7 +223,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     [self.navigationController setNavigationBarHidden:searchOn animated:YES];
     self.searchBar.translucent = NO;
     self.tableView.hidden = !searchOn;
-    _searchBar.barTintColor = searchOn ? [UIColor murielPrimary]:[UIColor murielNeutral50];
+    _searchBar.barTintColor = searchOn ? [UIColor murielPrimary]:[UIColor murielNeutral5];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -296,7 +296,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
             cell.detailTextLabel.text = placemark.formattedAddress;
             cell.detailTextLabel.numberOfLines = 3;
             cell.detailTextLabel.font = [WPStyleGuide regularTextFont];
-            cell.detailTextLabel.textColor = [UIColor murielNeutral700];
+            cell.detailTextLabel.textColor = [UIColor murielNeutral70];
             cell.backgroundColor = [UIColor clearColor];
             cell.selected = NO;
             return cell;
@@ -339,9 +339,9 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.textLabel.text = NSLocalizedString(@"Use Current Location", @"Label for cell that sets the location of a post to the current location");
         cell.imageView.image = [Gridicon iconOfType:GridiconTypeLocation];
-        cell.imageView.tintColor = [UIColor murielPrimary400];
+        cell.imageView.tintColor = [UIColor murielPrimary40];
         cell.textLabel.font = [WPStyleGuide regularTextFont];
-        cell.textLabel.textColor = [UIColor murielNeutral700];
+        cell.textLabel.textColor = [UIColor murielNeutral70];
         cell.backgroundColor = [UIColor clearColor];
         _currentLocationCell = cell;
     }

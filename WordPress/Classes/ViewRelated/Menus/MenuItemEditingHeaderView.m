@@ -108,7 +108,7 @@
     textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.returnKeyType = UIReturnKeyDone;
-    textField.textColor = [UIColor murielNeutral700];
+    textField.textColor = [UIColor murielNeutral70];
     textField.font = [WPStyleGuide regularTextFont];
     textField.backgroundColor = [UIColor clearColor];
     [textField addTarget:self action:@selector(textFieldKeyboardDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -176,7 +176,7 @@
 
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
-    CGContextSetFillColorWithColor(context, [[UIColor murielPrimary400] CGColor]);
+    CGContextSetFillColorWithColor(context, [[UIColor murielPrimary40] CGColor]);
     CGContextBeginPath(context);
     CGContextMoveToPoint(context, rect.size.width, 0);
     CGContextAddLineToPoint(context, 0, 0);

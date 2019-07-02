@@ -73,7 +73,7 @@
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor whiteColor];
-    iconView.tintColor = [UIColor murielNeutral300];
+    iconView.tintColor = [UIColor murielNeutral30];
 
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:iconView];
@@ -93,7 +93,7 @@
     label.lineBreakMode = NSLineBreakByTruncatingTail;
     label.font = [WPStyleGuide tableviewTextFont];
     label.backgroundColor = [UIColor whiteColor];
-    label.textColor = [UIColor murielNeutral600];
+    label.textColor = [UIColor murielNeutral60];
 
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:label];
@@ -110,7 +110,7 @@
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor whiteColor];
-    iconView.tintColor = [UIColor murielNeutral300];
+    iconView.tintColor = [UIColor murielNeutral30];
     iconView.image = [Gridicon iconOfType:GridiconTypeChevronRight];
 
     NSAssert(_stackView != nil, @"stackView is nil");
@@ -153,7 +153,7 @@
 
 - (void)updateSelection
 {
-    self.label.textColor = self.selected ? [UIColor murielPrimary] : [UIColor murielNeutral600];
+    self.label.textColor = self.selected ? [UIColor murielPrimary] : [UIColor murielNeutral60];
     if (self.selected && ![self.delegate typeViewRequiresCompactLayout:self]) {
         [self showArrowView];
     } else  {
@@ -196,7 +196,7 @@
     CGContextSaveGState(context);
 
     CGContextSetLineWidth(context, 2.0);
-    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral50] CGColor]);
+    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral5] CGColor]);
 
     if (self.selected) {
 
