@@ -210,6 +210,8 @@ class GutenbergViewController: UIViewController, PostEditor {
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
+//        RCTSetLogThreshold(.error)
+
         self.post = post
 
         self.replaceEditor = replaceEditor
