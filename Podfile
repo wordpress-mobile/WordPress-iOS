@@ -353,7 +353,7 @@ pre_install do |installer|
         
         # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
         # linking it resolves this.
-        if pod.name == "Automattic-Tracks-iOS" || pod.name == "Sentry"
+        if pod.name == "Sentry"
           dynamic << pod
           next
         end
