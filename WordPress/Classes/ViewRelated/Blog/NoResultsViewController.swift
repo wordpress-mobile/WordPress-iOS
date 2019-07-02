@@ -157,7 +157,7 @@ import Reachability
                          subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
         let isReachable = reachability?.isReachable()
-        if (isReachable == false) {
+        if isReachable == false {
             titleText = noConnectionTitle != nil ? noConnectionTitle : NoConnection.title
             let subtitle = noConnectionSubtitle != nil ? noConnectionSubtitle : NoConnection.subTitle
             subtitleText = subtitle
