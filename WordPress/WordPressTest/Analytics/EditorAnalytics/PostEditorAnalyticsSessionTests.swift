@@ -32,11 +32,11 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
 
         XCTAssertEqual(TestAnalytics.tracked.count, 1)
 
-        let tracked = TestAnalytics.tracked.first!
+        let tracked = TestAnalytics.tracked.first
 
-        XCTAssertEqual(tracked.stat, WPAnalyticsStat.editorSessionStart)
-        XCTAssertEqual(tracked.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.new.rawValue)
-        XCTAssertEqual(tracked.value(for: "editor"), PostEditorAnalyticsSession.Editor.gutenberg.rawValue)
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
+        XCTAssertEqual(tracked?.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.new.rawValue)
+        XCTAssertEqual(tracked?.value(for: "editor"), PostEditorAnalyticsSession.Editor.gutenberg.rawValue)
     }
 
     func testStartGutenbergSessionWithTitleButNoContent() {
@@ -47,11 +47,11 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
 
         XCTAssertEqual(TestAnalytics.tracked.count, 1)
 
-        let tracked = TestAnalytics.tracked.first!
+        let tracked = TestAnalytics.tracked.first
 
-        XCTAssertEqual(tracked.stat, WPAnalyticsStat.editorSessionStart)
-        XCTAssertEqual(tracked.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.new.rawValue)
-        XCTAssertEqual(tracked.value(for: "editor"), PostEditorAnalyticsSession.Editor.gutenberg.rawValue)
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
+        XCTAssertEqual(tracked?.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.new.rawValue)
+        XCTAssertEqual(tracked?.value(for: "editor"), PostEditorAnalyticsSession.Editor.gutenberg.rawValue)
     }
 
     func testStartGutenbergSessionWithTitleAndContent() {
@@ -64,10 +64,10 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
 
         XCTAssertEqual(TestAnalytics.tracked.count, 1)
 
-        let tracked = TestAnalytics.tracked.first!
+        let tracked = TestAnalytics.tracked.first
 
-        XCTAssertEqual(tracked.stat, WPAnalyticsStat.editorSessionStart)
-        XCTAssertEqual(tracked.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.gutenberg.rawValue)
-        XCTAssertEqual(tracked.value(for: "editor"), PostEditorAnalyticsSession.Editor.gutenberg.rawValue)
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
+        XCTAssertEqual(tracked?.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.gutenberg.rawValue)
+        XCTAssertEqual(tracked?.value(for: "editor"), PostEditorAnalyticsSession.Editor.gutenberg.rawValue)
     }
 }
