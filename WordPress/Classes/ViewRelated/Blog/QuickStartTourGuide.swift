@@ -116,7 +116,16 @@ open class QuickStartTourGuide: NSObject {
         WPAnalytics.track(.quickStartSuggestionViewed)
     }
 
-    func start(tour: QuickStartTour, for blog: Blog) {
+    /// Starts the specified tour.
+    ///
+    /// - Parameters:
+    ///     - tour: the tour to start.
+    ///     - blog: the blog in which the tour will take place.
+    ///     - immeditately: whether the tour must start immediately or not.  If this is `false`
+    ///         the tour will be initialized but the first step won't be executed.  The caller of
+    ///         this method must also call `run()` to effectively start the tour.
+    ///
+    func start(tour: QuickStartTour, for blog: Blog, immediately: Bool = false) {
         endCurrentTour()
         dismissSuggestion()
 
@@ -126,8 +135,24 @@ open class QuickStartTourGuide: NSObject {
             fallthrough
         default:
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
-            showCurrentStep()
+
+            if immediately {
+                showCurrentStep()
+            }
         }
+    }
+
+    /// Runs the current tour.  Only works after calling `startTour` with parameter `immediately` set to
+    /// `false`, and if the tour is in the first step.  Otherwise this method will do nothing.
+    ///
+    func run() {
+        guard let state = currentTourState,
+            state.step == 0 else {
+
+            return
+        }
+
+        showCurrentStep()
     }
 
     func complete(tour: QuickStartTour, for blog: Blog, postNotification: Bool = true) {

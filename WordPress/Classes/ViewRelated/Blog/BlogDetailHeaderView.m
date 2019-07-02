@@ -106,6 +106,8 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 - (void)addQuickStartSpotlight
 {
+    [self.spotlightView removeFromSuperview];
+    
     self.spotlightView = [QuickStartSpotlightView new];
     [self addSubview:self.spotlightView];
 
