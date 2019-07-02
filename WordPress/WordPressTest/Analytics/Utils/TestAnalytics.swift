@@ -24,7 +24,7 @@ class TestAnalytics: AppAnalytics {
         return tracked.count
     }
 
-    static func track(_ stat: WPAnalyticsStat, withProperties: [AnyHashable : Any]!) {
+    static func track(_ stat: WPAnalyticsStat, withProperties: [AnyHashable: Any]!) {
         let trackedStat = Tracked(stat: stat, properties: withProperties)
         _tracked.append(trackedStat)
     }
