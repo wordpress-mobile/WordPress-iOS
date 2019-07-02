@@ -18,7 +18,6 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
     fileprivate var context: NSManagedObjectContext!
 
     override func setUp() {
-        TestAnalytics.clean()
         contextManager = TestContextManager()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
