@@ -3,7 +3,7 @@ import WordPressShared
 
 class CountriesMapView: UIView, NibLoadable {
     private var map = FSInteractiveMapView(frame: CGRect(x: 0, y: 0, width: 335, height: 224))
-    private let colors: [UIColor] = [.init(fromHex: 0xfff088), .init(fromHex: 0xf24606)]
+    private let colors: [UIColor] = [.accent(shade: .shade50), .accent]
     @IBOutlet private var minViewsCountLabel: UILabel! {
         didSet {
             decorate(minViewsCountLabel)
