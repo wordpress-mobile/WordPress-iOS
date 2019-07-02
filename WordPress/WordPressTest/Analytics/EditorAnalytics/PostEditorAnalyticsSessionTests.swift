@@ -25,10 +25,12 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         Environment.replaceEnvironment(analytics: TestAnalytics.self)
     }
 
+    override func tearDown() {
+        TestAnalytics.clean()
+    }
+
     func testStartGutenbergSessionWithoutContentAndTitle() {
-        let post = AbstractPost(context: context)
-        var session = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
-        session.start(hasUnsupportedBlocks: false)
+        startSession(editor: .gutenberg)
 
         XCTAssertEqual(TestAnalytics.tracked.count, 1)
 
@@ -40,10 +42,7 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
     }
 
     func testStartGutenbergSessionWithTitleButNoContent() {
-        let post = AbstractPost(context: context)
-        post.postTitle = "Some Title"
-        var session = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
-        session.start(hasUnsupportedBlocks: false)
+        startSession(editor: .gutenberg, postTitle: "Title")
 
         XCTAssertEqual(TestAnalytics.tracked.count, 1)
 
@@ -55,12 +54,7 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
     }
 
     func testStartGutenbergSessionWithTitleAndContent() {
-        let post = AbstractPost(context: context)
-        post.postTitle = "Some Title"
-        post.content = PostContent.gutenberg
-
-        var session = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
-        session.start(hasUnsupportedBlocks: false)
+        startSession(editor: .gutenberg, postTitle: "Title", postContent: PostContent.gutenberg)
 
         XCTAssertEqual(TestAnalytics.tracked.count, 1)
 
@@ -69,5 +63,20 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
         XCTAssertEqual(tracked?.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.gutenberg.rawValue)
         XCTAssertEqual(tracked?.value(for: "editor"), PostEditorAnalyticsSession.Editor.gutenberg.rawValue)
+    }
+}
+
+extension PostEditorAnalyticsSessionTests {
+    func createPost(title: String? = nil, body: String? = nil) -> AbstractPost {
+        let post = AbstractPost(context: context)
+        post.postTitle = title
+        post.content = body
+        return post
+    }
+
+    func startSession(editor: PostEditorAnalyticsSession.Editor, postTitle: String? = nil, postContent: String? = nil, unsupportedBlocks: Bool = false) {
+        let post = createPost(title: postTitle, body: postContent)
+        var session = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
+        session.start(hasUnsupportedBlocks: false)
     }
 }
