@@ -147,17 +147,27 @@ import Reachability
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc func configure(title: String,
+                         noConnectionTitle: String? = nil,
                          buttonTitle: String? = nil,
                          subtitle: String? = nil,
+                         noConnectionSubtitle: String? = nil,
                          attributedSubtitle: NSAttributedString? = nil,
                          attributedSubtitleConfiguration: AttributedSubtitleConfiguration? = nil,
                          image: String? = nil,
                          subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
         let isReachable = reachability?.isReachable()
-        titleText = isReachable == false ? NoConnection.title : title
-        subtitleText = isReachable == false ? NoConnection.subTitle : subtitle
-        attributedSubtitleText = isReachable == false ? NSAttributedString(string: NoConnection.subTitle) : attributedSubtitle
+        if (isReachable == false) {
+            titleText = noConnectionTitle != nil ? noConnectionTitle : NoConnection.title
+            let subtitle = noConnectionSubtitle != nil ? noConnectionSubtitle : NoConnection.subTitle
+            subtitleText = subtitle
+            attributedSubtitleText = NSAttributedString(string: subtitleText!)
+        } else {
+            titleText = title
+            subtitleText = subtitle
+            attributedSubtitleText = attributedSubtitle
+        }
+
         configureAttributedSubtitle = attributedSubtitleConfiguration
         buttonText = buttonTitle
         imageName = isReachable == false ? NoConnection.imageName : image
@@ -174,14 +184,6 @@ import Reachability
     func configureForNoSearchResults(title: String) {
         configure(title: title)
         displayTitleViewOnly = true
-    }
-
-    func configureForNoConnectionInPostList() {
-        titleText = NoConnection.titlePostList
-        subtitleText = NoConnection.subTitlePostList
-        attributedSubtitleText = NSAttributedString(string: NoConnection.subTitlePostList)
-        buttonText = NoConnection.buttonTitlePostList
-        imageName = NoConnection.imageName
     }
 
     /// Public method to remove No Results View from parent view.
@@ -550,9 +552,6 @@ private extension NoResultsViewController {
     struct NoConnection {
         static let title: String = NSLocalizedString("Unable to load this page right now.", comment: "Title for No results full page screen displayed when there is no connection")
         static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Subtitle for No results full page screen displayed when there is no connection")
-        static let titlePostList: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
-        static let subTitlePostList: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
-           static let buttonTitlePostList: String = NSLocalizedString("Create Post", comment: "Button title, encourages users to create a post.")
         static let imageName = "cloud"
     }
 }
