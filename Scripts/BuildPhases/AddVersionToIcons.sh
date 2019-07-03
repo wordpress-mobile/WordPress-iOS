@@ -117,3 +117,16 @@ while IFS= read -r -d '' file; do
     echo "$file"
     processIcon "${file}" "${tmp_path}" "${icons_dest_path}"
 done
+
+# Process all alternate app icons
+icons_path="${PROJECT_DIR}/Resources/Icons"
+icons_dest_path="${PROJECT_DIR}/Resources/Icons-Internal"
+
+# Empty and re-make the icon destination directory
+rm -rf "${icons_dest_path}" && mkdir "${icons_dest_path}"
+
+find "${icons_path}" -type f -name "*.png" -print0 |
+while IFS= read -r -d '' file; do
+    echo "$file"
+    processIcon "${file}" "${tmp_path}" "${icons_dest_path}"
+done
