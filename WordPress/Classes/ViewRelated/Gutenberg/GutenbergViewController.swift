@@ -517,6 +517,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogWarn(message)
         case .error:
             DDLogError(message)
+        case .fatal:
+            break
         }
     }
 }

@@ -90,11 +90,19 @@ end
 
 def gutenberg_dependencies(options)
     dependencies = [
-        'React',
+        'React-Core',
+        'React-RCTImage',
+        'React-RCTNetwork',
+        'React-cxxreact',
+        'React-jsinspector',
+        'React-jsi',
+        'React-jsiexecutor',
         'yoga',
         'Folly',
+        'react-native-keyboard-aware-scroll-view',
         'react-native-safe-area',
         'react-native-video',
+        'RNSVG'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -121,10 +129,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.8.0'
-
-    pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
-    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
+    gutenberg :commit => 'f39f6ead79b65bdf9a8e14cec87ff7d459ed0f82'
 
     ## Third party libraries
     ## =====================
