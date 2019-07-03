@@ -309,6 +309,7 @@ private extension StatsPeriodStore {
         // make a network call for whatever reason, we still want to load the data we have cached.
 
         guard shouldFetchOverview() else {
+            fetchingOverviewListener?(true, false)
             DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
             return
         }
