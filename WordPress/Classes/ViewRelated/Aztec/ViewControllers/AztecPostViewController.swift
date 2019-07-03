@@ -3192,7 +3192,6 @@ extension AztecPostViewController {
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
         static let savingDraftButtonSize      = CGSize(width: 130, height: 30)
         static let uploadingButtonSize      = CGSize(width: 150, height: 30)
-        static let generatingPreviewButtonSize = CGSize(width: 170, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
@@ -3298,10 +3297,6 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     var uploadingButtonSize: CGSize {
         return Constants.uploadingButtonSize
-    }
-
-    var generatingPreviewButtonSize: CGSize {
-        return Constants.generatingPreviewButtonSize
     }
 
     var savingDraftButtonSize: CGSize {

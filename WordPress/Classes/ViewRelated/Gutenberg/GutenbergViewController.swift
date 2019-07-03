@@ -582,10 +582,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         return AztecPostViewController.Constants.uploadingButtonSize
     }
 
-    var generatingPreviewButtonSize: CGSize {
-        return AztecPostViewController.Constants.generatingPreviewButtonSize
-    }
-
     var savingDraftButtonSize: CGSize {
         return AztecPostViewController.Constants.savingDraftButtonSize
     }
