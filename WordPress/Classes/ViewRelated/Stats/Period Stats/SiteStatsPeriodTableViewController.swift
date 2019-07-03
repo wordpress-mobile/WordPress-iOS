@@ -116,6 +116,7 @@ private extension SiteStatsPeriodTableViewController {
                                              periodDelegate: self)
         viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
+        viewModel?.startFetchingOverview()
     }
 
     func addViewModelListeners() {
@@ -130,7 +131,6 @@ private extension SiteStatsPeriodTableViewController {
         viewModel?.overviewStoreStatusOnChange = { [weak self] status in
             guard let self = self,
                 let viewModel = self.viewModel,
-                self.viewIsVisible(),
                 self.changeReceipt != nil else {
                     return
             }
