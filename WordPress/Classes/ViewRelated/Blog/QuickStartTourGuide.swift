@@ -125,7 +125,7 @@ open class QuickStartTourGuide: NSObject {
     ///         the tour will be initialized but the first step won't be executed.  The caller of
     ///         this method must also call `run()` to effectively start the tour.
     ///
-    func start(tour: QuickStartTour, for blog: Blog, immediately: Bool = false) {
+    func start(tour: QuickStartTour, for blog: Blog, immediately: Bool = true) {
         endCurrentTour()
         dismissSuggestion()
 
