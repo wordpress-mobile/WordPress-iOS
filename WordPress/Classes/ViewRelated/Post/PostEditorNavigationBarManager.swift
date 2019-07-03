@@ -78,12 +78,10 @@ class PostEditorNavigationBarManager {
 
     /// Preview Generating Button
     ///
-    private lazy var previewGeneratingButton: WPUploadStatusButton = {
-        let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: delegate?.generatingPreviewButtonSize ?? .zero))
-        button.setTitle(NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        return button
+    private lazy var previewGeneratingView: LocadingStatusView = {
+        let view = LocadingStatusView(title:NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     /// Draft Saving Button
@@ -135,7 +133,7 @@ class PostEditorNavigationBarManager {
     /// Preview Generating Status Button
     ///
     private lazy var previewGeneratingBarButtonItem: UIBarButtonItem = {
-        let barButton = UIBarButtonItem(customView: self.previewGeneratingButton)
+        let barButton = UIBarButtonItem(customView: self.previewGeneratingView)
         barButton.accessibilityLabel = NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview")
         return barButton
     }()
