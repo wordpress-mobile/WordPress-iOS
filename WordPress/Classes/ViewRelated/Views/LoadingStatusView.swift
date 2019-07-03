@@ -1,19 +1,18 @@
 import Foundation
 
-class LocadingStatusView: UIView {
+class LoadingStatusView: UIView {
     init(title: String) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
-        autoresizingMask = .flexibleWidth;
+        autoresizingMask = .flexibleWidth
         accessibilityHint = NSLocalizedString("Tap to cancel uploading.", comment: "This is a status indicator on the editor")
-        let localizedString = NSLocalizedString("%@", comment:  "\"Uploading\" Status text")
+        let localizedString = NSLocalizedString("%@", comment: "\"Uploading\" Status text")
         titleLabel.text = String.localizedStringWithFormat(localizedString, title)
         activityIndicator.startAnimating()
         configureLayout()
     }
-    
-    
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
@@ -38,7 +37,7 @@ class LocadingStatusView: UIView {
         addSubview(indicator)
         return indicator
     }()
-    
+
     private func configureLayout() {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -48,9 +47,8 @@ class LocadingStatusView: UIView {
             activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
             ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

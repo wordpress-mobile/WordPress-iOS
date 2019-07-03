@@ -4,7 +4,6 @@ protocol PostEditorNavigationBarManagerDelegate: class {
     var publishButtonText: String { get }
     var isPublishButtonEnabled: Bool { get }
     var uploadingButtonSize: CGSize { get }
-    var generatingPreviewButtonSize: CGSize { get }
     var savingDraftButtonSize: CGSize { get }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton)
@@ -78,8 +77,8 @@ class PostEditorNavigationBarManager {
 
     /// Preview Generating Button
     ///
-    private lazy var previewGeneratingView: LocadingStatusView = {
-        let view = LocadingStatusView(title:NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
+    private lazy var previewGeneratingView: LoadingStatusView = {
+        let view = LoadingStatusView(title: NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
