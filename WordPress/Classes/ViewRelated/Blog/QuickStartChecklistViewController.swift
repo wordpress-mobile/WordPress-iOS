@@ -100,10 +100,10 @@ class QuickStartChecklistViewController: UITableViewController {
                 }
 
                 let tourGuide = QuickStartTourGuide.find()
-                tourGuide?.start(tour: tour, for: self.blog, immediately: false)
+                tourGuide?.prepare(tour: tour, for: self.blog)
 
                 self.dismiss(animated: true) {
-                    tourGuide?.run()
+                    tourGuide?.begin()
                 }
             }
         }, didTapHeader: { [unowned self] expand in
