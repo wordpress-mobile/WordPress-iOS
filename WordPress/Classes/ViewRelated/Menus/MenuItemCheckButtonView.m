@@ -39,7 +39,7 @@ static CGFloat const iconPadding = 3.0;
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.image = [Gridicon iconOfType:GridiconTypeCheckmark];
-    iconView.tintColor = [UIColor murielPrimary400];
+    iconView.tintColor = [UIColor murielPrimary40];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.alpha = 0.0;
     [self addSubview:iconView];
@@ -61,7 +61,7 @@ static CGFloat const iconPadding = 3.0;
 
     NSDictionary *attributes = [self attributesForText];
     label.font = [attributes objectForKey:NSFontAttributeName];
-    label.textColor = [UIColor murielNeutral600];
+    label.textColor = [UIColor murielNeutral60];
 
     [self addSubview:label];
 
@@ -110,9 +110,9 @@ static CGFloat const iconPadding = 3.0;
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     if (self.drawsHighlighted) {
-        CGContextSetFillColorWithColor(context, [[UIColor murielPrimary400] CGColor]);
+        CGContextSetFillColorWithColor(context, [[UIColor murielPrimary40] CGColor]);
     } else  {
-        CGContextSetFillColorWithColor(context, [[UIColor murielNeutral100] CGColor]);
+        CGContextSetFillColorWithColor(context, [[UIColor murielNeutral10] CGColor]);
     }
 
     CGRect boxRect = CGRectZero;

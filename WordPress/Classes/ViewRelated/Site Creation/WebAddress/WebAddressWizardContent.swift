@@ -78,7 +78,7 @@ final class WebAddressWizardContent: UIViewController {
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
             label.textAlignment = .center
-            label.textColor = .neutral(shade: .shade400)
+            label.textColor = .neutral(shade: .shade40)
 
             let noResultsMessage = NSLocalizedString("No available addresses matching your search", comment: "Advises the user that no Domain suggestions could be found for the search query.")
             label.text = noResultsMessage
@@ -253,11 +253,11 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = .neutral(shade: .shade50)
+        view.backgroundColor = .neutral(shade: .shade5)
     }
 
     private func setupButtonWrapper() {
-        buttonWrapper.backgroundColor = .neutral(shade: .shade50)
+        buttonWrapper.backgroundColor = .neutral(shade: .shade5)
     }
 
     private func setupCreateSiteButton() {
@@ -346,7 +346,7 @@ final class WebAddressWizardContent: UIViewController {
         header.accessibilityTraits = .header
 
         let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade300))
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade30))
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         header.textField.attributedPlaceholder = attributedPlaceholder
 
@@ -377,11 +377,11 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = .neutral(shade: .shade50)
+        table.backgroundColor = .neutral(shade: .shade5)
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = .neutral(shade: .shade100)
+        table.separatorColor = .neutral(shade: .shade10)
     }
 
     private func setupConstraints() {

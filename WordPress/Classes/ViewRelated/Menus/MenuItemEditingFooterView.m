@@ -28,7 +28,7 @@
 {
     UIButton *button = self.cancelButton;
     button.titleLabel.font = [WPFontManager systemRegularFontOfSize:18.0];
-    [button setTitleColor:[UIColor murielNeutral700] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielNeutral70] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor murielNeutral] forState:UIControlStateHighlighted];
     [button setTitle:NSLocalizedString(@"Cancel", @"Menus: Cancel button title for canceling an edited menu item.") forState:UIControlStateNormal];
     [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
@@ -39,7 +39,7 @@
     UIButton *button = self.trashButton;
     button.adjustsImageWhenHighlighted = YES;
     [button setTitle:nil forState:UIControlStateNormal];
-    button.tintColor = [UIColor murielNeutral300];
+    button.tintColor = [UIColor murielNeutral30];
     [button setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -50,7 +50,7 @@
     button.titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:18.0];
     [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
-    [button setTitleColor:[UIColor murielNeutral100] forState:UIControlStateDisabled];
+    [button setTitleColor:[UIColor murielNeutral10] forState:UIControlStateDisabled];
     [button setTitle:NSLocalizedString(@"OK", @"Menus: button title for finishing editing of a menu item.") forState:UIControlStateNormal];
     [button addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -59,7 +59,7 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
 
-    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral50] CGColor]);
+    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral5] CGColor]);
     CGContextSetLineWidth(context, 2.0);
 
     CGContextMoveToPoint(context, 0, 0);

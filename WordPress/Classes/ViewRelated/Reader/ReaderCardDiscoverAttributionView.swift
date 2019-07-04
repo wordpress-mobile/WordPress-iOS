@@ -107,7 +107,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
                                             blogName: contentProvider.sourceBlogNameForDisplay())
         let attributes = originalAttributionParagraphAttributes
-        textLabel.textColor = .neutral(shade: .shade300)
+        textLabel.textColor = .neutral(shade: .shade30)
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
         attributionAction = .none
     }

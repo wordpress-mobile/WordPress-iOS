@@ -129,7 +129,7 @@ extension WPStyleGuide {
         public static let blockUnapprovedSideColor  = WPStyleGuide.alertYellowDark()
         public static let blockUnapprovedBgColor    = UIColor.warning(shade: .shade0)
         public static let blockUnapprovedTextColor  = UIColor.errorDark
-        public static let blockUnapprovedLinkColor  = UIColor.primary(shade: .shade400)
+        public static let blockUnapprovedLinkColor  = UIColor.primary(shade: .shade40)
 
         public static var contentBlockRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
@@ -245,8 +245,8 @@ extension WPStyleGuide {
             button.titleLabel?.font = WPStyleGuide.subtitleFont()
 
             // Color(s)
-            let normalColor = UIColor.neutral(shade: .shade500)
-            let highlightedColor = UIColor.neutral(shade: .shade400)
+            let normalColor = UIColor.neutral(shade: .shade50)
+            let highlightedColor = UIColor.neutral(shade: .shade40)
             let selectedColor = UIColor.success
 
             button.setTitleColor(normalColor, for: .normal)

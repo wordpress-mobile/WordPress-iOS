@@ -61,7 +61,7 @@
 
         UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
         NSString *placeholder = NSLocalizedString(@"Search...", @"Menus search bar placeholder text.");
-        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor murielNeutral400]};
+        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor murielNeutral40]};
         _textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
     }
 
@@ -98,7 +98,7 @@
 {
     UIView *contentView = [[UIView alloc] init];
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    contentView.layer.borderColor = [[UIColor murielNeutral100] CGColor];
+    contentView.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     contentView.layer.borderWidth = MenusDesignStrokeWidth;
     if (![WPDeviceIdentification isRetina]) {
         // Increase the stroke width on non-retina screens.
@@ -138,7 +138,7 @@
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
-    iconView.tintColor = [UIColor murielNeutral400];
+    iconView.tintColor = [UIColor murielNeutral40];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
 
     NSAssert(_contentStackView != nil, @"contentStackView is nil");

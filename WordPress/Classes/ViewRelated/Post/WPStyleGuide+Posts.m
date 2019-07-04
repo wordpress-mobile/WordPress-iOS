@@ -14,7 +14,7 @@
 {
     NSDictionary *attributes = @{NSFontAttributeName: [self deviceDependantFontForLabels]};
     [segmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    segmentControl.tintColor = [UIColor murielNeutral300];
+    segmentControl.tintColor = [UIColor murielNeutral30];
     segmentControl.backgroundColor = [UIColor whiteColor];
     segmentControl.clipsToBounds = YES;
     segmentControl.layer.cornerRadius = 3.0; // Clip the corners of the background color.
@@ -35,8 +35,8 @@
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell
 {
-    cell.backgroundColor = [UIColor murielNeutral50];
-    cell.contentView.backgroundColor = [UIColor murielNeutral50];
+    cell.backgroundColor = [UIColor murielNeutral5];
+    cell.contentView.backgroundColor = [UIColor murielNeutral5];
 }
 
 + (void)applyPostAuthorSiteStyle:(UILabel *)label
@@ -81,9 +81,9 @@
 
 + (void)applyPostProgressViewStyle:(UIProgressView *)progressView
 {
-    progressView.trackTintColor = [UIColor murielNeutral100];
-    progressView.progressTintColor = [UIColor murielPrimary400];
-    progressView.tintColor = [UIColor murielPrimary400];
+    progressView.trackTintColor = [UIColor murielNeutral10];
+    progressView.progressTintColor = [UIColor murielPrimary40];
+    progressView.tintColor = [UIColor murielPrimary40];
 }
 
 + (void)applyRestorePostLabelStyle:(UILabel *)label
@@ -210,13 +210,13 @@
 {
     [self configureLabelForSmallFontStyle:label];
     label.backgroundColor = [UIColor murielNeutral0];
-    label.textColor = [UIColor murielNeutral300];
+    label.textColor = [UIColor murielNeutral30];
 }
 
 + (void)applyRestorePageLabelStyle:(UILabel *)label
 {
     label.font = [WPStyleGuide regularFont];
-    label.textColor = [UIColor murielNeutral300];
+    label.textColor = [UIColor murielNeutral30];
 }
 
 + (void)applyRestorePageButtonStyle:(UIButton *)button

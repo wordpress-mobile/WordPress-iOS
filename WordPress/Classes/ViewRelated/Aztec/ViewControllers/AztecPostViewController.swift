@@ -1860,7 +1860,7 @@ extension AztecPostViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: UIColor.neutral(shade: .shade700)
+                .foregroundColor: UIColor.neutral(shade: .shade70)
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -3245,16 +3245,16 @@ extension AztecPostViewController {
 
     struct Colors {
         static let aztecBackground              = UIColor.clear
-        static let title                        = UIColor.neutral(shade: .shade300)
-        static let separator                    = UIColor.neutral(shade: .shade50)
-        static let placeholder                  = UIColor.neutral(shade: .shade300)
+        static let title                        = UIColor.neutral(shade: .shade30)
+        static let separator                    = UIColor.neutral(shade: .shade5)
+        static let placeholder                  = UIColor.neutral(shade: .shade30)
         static let progressBackground           = UIColor.primary
         static let progressTint                 = UIColor.white
         static let progressTrack                = UIColor.primary
-        static let mediaProgressOverlay         = UIColor.neutral(shade: .shade700).withAlphaComponent(CGFloat(0.6))
+        static let mediaProgressOverlay         = UIColor.neutral(shade: .shade70).withAlphaComponent(CGFloat(0.6))
         static let mediaProgressBarBackground   = UIColor.neutral(shade: .shade0)
         static let mediaProgressBarTrack        = UIColor.primary
-        static let aztecLinkColor               = UIColor.primary(shade: .shade400)
+        static let aztecLinkColor               = UIColor.primary(shade: .shade40)
         static let mediaOverlayBorderColor      = UIColor.primary
     }
 

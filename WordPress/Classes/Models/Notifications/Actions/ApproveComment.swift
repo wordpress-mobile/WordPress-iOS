@@ -85,7 +85,7 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
             return
         }
 
-        let newBackgroundColor = on ? UIColor.neutral(shade: .shade300) : .primary
+        let newBackgroundColor = on ? UIColor.neutral(shade: .shade30) : .primary
         button.backgroundColor = newBackgroundColor
 
         resetDefaultPadding()

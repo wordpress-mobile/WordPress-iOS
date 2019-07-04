@@ -51,7 +51,7 @@ class StatsChartLegendView: UIView {
             label.preferredMaxLayoutWidth = Constants.intrinsicWidth - Constants.capsuleWidth
 
             label.font = WPStyleGuide.fixedFont(for: .caption2)
-            label.textColor = .neutral(shade: .shade500)
+            label.textColor = .neutral(shade: .shade50)
             label.text = title
 
             label.sizeToFit()
