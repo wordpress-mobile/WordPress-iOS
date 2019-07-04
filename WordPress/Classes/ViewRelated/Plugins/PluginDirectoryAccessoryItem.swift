@@ -27,7 +27,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func automanaged() -> UIView {
-        let color = UIColor.neutral(shade: .shade400)
+        let color = UIColor.neutral(shade: .shade40)
         let text = NSLocalizedString("Auto-managed", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: nil, tintColor: color, text: text)
@@ -43,7 +43,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func inactive() -> UIView {
         let icon = Gridicon.iconOfType(.cross, withSize: Constants.imageSize)
-        let color = UIColor.neutral(shade: .shade400)
+        let color = UIColor.neutral(shade: .shade40)
         let text = NSLocalizedString("Inactive", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
@@ -129,10 +129,10 @@ struct PluginDirectoryAccessoryItem {
 
             if i <= Int(wholeStars) {
                 image = Gridicon.iconOfType(.star, withSize: Constants.starImageSize)
-                color = .primary(shade: .shade400)
+                color = .primary(shade: .shade40)
             } else {
                 image = Gridicon.iconOfType(.starOutline, withSize: Constants.starImageSize)
-                color = .neutral(shade: .shade100)
+                color = .neutral(shade: .shade10)
             }
 
             let imageView = UIImageView(image: image)
@@ -145,7 +145,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func halfStar(size: CGSize) -> UIView {
-        let color = UIColor.primary(shade: .shade400)
+        let color = UIColor.primary(shade: .shade40)
 
         let container = UIView(frame: .zero)
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -162,7 +162,7 @@ struct PluginDirectoryAccessoryItem {
         leftHalf.addConstraint(NSLayoutConstraint(item: leftHalf, attribute: .width, relatedBy: .equal, toItem: leftHalf, attribute: .height, multiplier: 0.5, constant: 0))
 
         let rightHalf = UIImageView(image: Gridicon.iconOfType(.starOutline, withSize: size))
-        rightHalf.tintColor = .neutral(shade: .shade100)
+        rightHalf.tintColor = .neutral(shade: .shade10)
         rightHalf.translatesAutoresizingMaskIntoConstraints = false
         rightHalf.contentMode = .right
         rightHalf.clipsToBounds = true

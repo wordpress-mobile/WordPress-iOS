@@ -79,7 +79,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         let buttonBackgroundImage = UIImage(color: .neutral(shade: .shade0))
         clearButton.setBackgroundImage(buttonBackgroundImage, for: UIControl.State())
 
-        borderImageView.image = UIImage(color: .neutral(shade: .shade200), havingSize: CGSize(width: stackView.frame.width, height: 1))
+        borderImageView.image = UIImage(color: .neutral(shade: .shade20), havingSize: CGSize(width: stackView.frame.width, height: 1))
 
         updateHeightConstraint()
     }
@@ -178,7 +178,7 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
         }
         let suggestion = suggestions[indexPath.row]
         cell.textLabel?.text = suggestion.searchPhrase
-        cell.textLabel?.textColor = .neutral(shade: .shade700)
+        cell.textLabel?.textColor = .neutral(shade: .shade70)
     }
 
 

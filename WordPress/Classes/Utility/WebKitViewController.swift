@@ -194,8 +194,8 @@ class WebKitViewController: UIViewController {
 
     private func setupNavBarTitleView() {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
-        titleView.titleLabel.textColor = .neutral(shade: .shade700)
-        titleView.subtitleLabel.textColor = .neutral(shade: .shade300)
+        titleView.titleLabel.textColor = .neutral(shade: .shade70)
+        titleView.subtitleLabel.textColor = .neutral(shade: .shade30)
 
         if let title = customTitle {
             self.title = title
@@ -209,7 +209,7 @@ class WebKitViewController: UIViewController {
             return
         }
         navigationBar.barStyle = .default
-        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.neutral(shade: .shade700)]
+        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.neutral(shade: .shade70)]
         navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
         navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
 
@@ -266,12 +266,12 @@ class WebKitViewController: UIViewController {
 
     private func fixBarButtonsColorForBoldText(on bar: UIView) {
         if UIAccessibility.isBoldTextEnabled {
-            bar.tintColor = .neutral(shade: .shade200)
+            bar.tintColor = .neutral(shade: .shade20)
         }
     }
 
     private func styleBarButton(_ button: UIBarButtonItem) {
-        button.tintColor = .neutral(shade: .shade200)
+        button.tintColor = .neutral(shade: .shade20)
     }
 
     // MARK: Reachability Helpers

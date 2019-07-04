@@ -68,7 +68,7 @@
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor whiteColor];
-    iconView.tintColor = [UIColor murielNeutral300];
+    iconView.tintColor = [UIColor murielNeutral30];
     iconView.image = [Gridicon iconOfType:GridiconTypeChevronLeft];
 
     NSAssert(_stackView != nil, @"stackView is nil");
@@ -107,7 +107,7 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 2.0);
-    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral50] CGColor]);
+    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral5] CGColor]);
     CGContextMoveToPoint(context, 0, rect.size.height);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextStrokePath(context);

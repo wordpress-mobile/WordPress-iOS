@@ -42,7 +42,7 @@ final class TitleSubtitleHeaderTests: XCTestCase {
     }
 
     func testTitleFontColor() {
-        XCTAssertEqual(header?.titleLabel.textColor, .neutral(shade: .shade700))
+        XCTAssertEqual(header?.titleLabel.textColor, .neutral(shade: .shade70))
     }
 
     func testSubtitleFont() {
@@ -50,6 +50,6 @@ final class TitleSubtitleHeaderTests: XCTestCase {
     }
 
     func testSubtitleFontColor() {
-        XCTAssertEqual(header?.subtitleLabel.textColor, .neutral(shade: .shade400))
+        XCTAssertEqual(header?.subtitleLabel.textColor, .neutral(shade: .shade40))
     }
 }

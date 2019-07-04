@@ -625,7 +625,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                         [weakSelf hideBlogAtIndexPath:indexPath];
                                                                                     }];
                                                                                 }];
-            hideAction.backgroundColor = [UIColor murielNeutral300];
+            hideAction.backgroundColor = [UIColor murielNeutral30];
             [actions addObject:hideAction];
         } else {
             UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal

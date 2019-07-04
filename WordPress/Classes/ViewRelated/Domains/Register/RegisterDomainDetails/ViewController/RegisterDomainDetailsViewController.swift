@@ -280,7 +280,7 @@ extension RegisterDomainDetailsViewController {
             let attributedItem = NSAttributedString.init(
                 string: item,
                 attributes: [.font: WPStyleGuide.tableviewTextFont(),
-                             .foregroundColor: UIColor.neutral(shade: .shade700)]
+                             .foregroundColor: UIColor.neutral(shade: .shade70)]
             )
             let option = OptionsTableViewOption(
                 image: nil,

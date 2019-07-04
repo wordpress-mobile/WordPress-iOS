@@ -286,7 +286,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                                                                }];
                                                                            }];
         
-        unapprove.backgroundColor = [UIColor murielNeutral300];
+        unapprove.backgroundColor = [UIColor murielNeutral30];
         [actions addObject:unapprove];
     } else {
         UITableViewRowAction *approve = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal

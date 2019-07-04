@@ -127,13 +127,13 @@ private extension RevisionDiffsBrowserViewController {
 
     private func setNextPreviousButtons() {
         previousButton.setImage(Gridicon.iconOfType(.chevronLeft), for: .normal)
-        previousButton.tintColor = .neutral(shade: .shade700)
+        previousButton.tintColor = .neutral(shade: .shade70)
         previousButton.on(.touchUpInside) { [weak self] _ in
             self?.showPrevious()
         }
 
         nextButton.setImage(Gridicon.iconOfType(.chevronRight), for: .normal)
-        nextButton.tintColor = .neutral(shade: .shade700)
+        nextButton.tintColor = .neutral(shade: .shade70)
         nextButton.on(.touchUpInside) { [weak self] _ in
             self?.showNext()
         }

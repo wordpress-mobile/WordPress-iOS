@@ -7,15 +7,15 @@ extension WPStyleGuide {
 
     static let aztecFormatBarActiveColor: UIColor = UIColor(hexString: "11181D")
 
-    static let aztecFormatBarDisabledColor = UIColor.neutral(shade: .shade100)
+    static let aztecFormatBarDisabledColor = UIColor.neutral(shade: .shade10)
 
-    static let aztecFormatBarDividerColor = UIColor.neutral(shade: .shade50)
+    static let aztecFormatBarDividerColor = UIColor.neutral(shade: .shade5)
 
     static let aztecFormatBarBackgroundColor = UIColor.white
 
     static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
         get {
-            return (UIDevice.isPad()) ? .neutral(shade: .shade0) : .neutral(shade: .shade50)
+            return (UIDevice.isPad()) ? .neutral(shade: .shade0) : .neutral(shade: .shade5)
         }
     }
 
@@ -28,7 +28,7 @@ extension WPStyleGuide {
     static func configureBetaButton(_ button: UIButton) {
         let helpImage = Gridicon.iconOfType(.helpOutline)
         button.setImage(helpImage, for: .normal)
-        button.tintColor = .neutral(shade: .shade200)
+        button.tintColor = .neutral(shade: .shade20)
 
         let edgeInsets = UIEdgeInsets(top: 2.0, left: 2.0, bottom: 2.0, right: 2.0)
         button.contentEdgeInsets = edgeInsets
