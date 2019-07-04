@@ -99,6 +99,12 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
         self.blavatarImageView.image = [UIImage siteIconPlaceholder];
     }
 
+    [self refreshSpotlight];
+}
+
+- (void)refreshSpotlight {
+    [self removeQuickStartSpotlight];
+    
     if ([[QuickStartTourGuide find] isCurrentElement:QuickStartTourElementSiteIcon]) {
         [self addQuickStartSpotlight];
     }
