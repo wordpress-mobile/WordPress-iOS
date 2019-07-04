@@ -711,7 +711,7 @@ FeaturedImageViewControllerDelegate>
 - (void)configureVisibilityButtonForPasswordCell:(WPTextFieldTableViewCell *)textCell
 {
     self.passwordVisibilityButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.passwordVisibilityButton.tintColor = [UIColor murielNeutral200];
+    self.passwordVisibilityButton.tintColor = [UIColor murielNeutral20];
     [self.passwordVisibilityButton addTarget:self action:@selector(togglePasswordVisibility) forControlEvents:UIControlEventTouchUpInside];
     
     [self refreshPasswordVisibilityButton];

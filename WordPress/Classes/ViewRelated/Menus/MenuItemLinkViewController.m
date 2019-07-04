@@ -30,7 +30,7 @@ static CGFloat const LinkTextBarHeight = 48.0;
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.text = [NSLocalizedString(@"Link Address (URL)", @"Menus title label when editing a menu item as a link.") uppercaseString];
-    label.textColor = [UIColor murielNeutral400];
+    label.textColor = [UIColor murielNeutral40];
     label.font = [WPFontManager systemSemiBoldFontOfSize:12.0];
 
     [self.stackView addArrangedSubview:label];

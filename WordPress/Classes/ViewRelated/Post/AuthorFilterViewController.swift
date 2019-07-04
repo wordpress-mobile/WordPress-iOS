@@ -45,7 +45,7 @@ class AuthorFilterViewController: UITableViewController {
 
         tableView.rowHeight = Metrics.rowHeight
         tableView.separatorInset = .zero
-        tableView.separatorColor = .neutral(shade: .shade100)
+        tableView.separatorColor = .neutral(shade: .shade10)
         tableView.isScrollEnabled = false
         tableView.showsVerticalScrollIndicator = false
     }
@@ -186,7 +186,7 @@ private class AuthorFilterCell: UITableViewCell {
         stackView.addArrangedSubview(gravatarImageView)
         stackView.addArrangedSubview(titleLabel)
 
-        tintColor = .primary(shade: .shade400)
+        tintColor = .primary(shade: .shade40)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -222,9 +222,9 @@ private class AuthorFilterCell: UITableViewCell {
     }
 
     private enum Appearance {
-        static let textColor = UIColor.neutral(shade: .shade700)
-        static let placeholderTintColor = UIColor.neutral(shade: .shade700)
-        static let placeholderBackgroundColor = UIColor.neutral(shade: .shade100)
+        static let textColor = UIColor.neutral(shade: .shade70)
+        static let placeholderTintColor = UIColor.neutral(shade: .shade70)
+        static let placeholderBackgroundColor = UIColor.neutral(shade: .shade10)
     }
 
     private enum Metrics {

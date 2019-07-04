@@ -92,9 +92,9 @@ function processIcon() {
 }
 
 # Process all app icons and create the corresponding internal icons
-# icons_dir="${SRCROOT}/Images.xcassets/AppIcon.appiconset"
-icons_path="${PROJECT_DIR}/Images.xcassets/AppIcon.appiconset"
-icons_dest_path="${PROJECT_DIR}/Images.xcassets/AppIcon-Internal.appiconset"
+# icons_dir="${SRCROOT}/AppImages.xcassets/AppIcon.appiconset"
+icons_path="${PROJECT_DIR}/Resources/MurielImages.xcassets/AppIcon.appiconset"
+icons_dest_path="${PROJECT_DIR}/Resources/MurielImages.xcassets/AppIcon-Internal.appiconset"
 icons_set=`basename "${icons_path}"`
 tmp_path="${TEMP_DIR}/IconVersioning"
 

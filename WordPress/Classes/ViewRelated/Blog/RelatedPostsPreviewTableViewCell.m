@@ -39,7 +39,7 @@ static CGFloat ImageHeight = 96.0;
 {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _titleLabel.textColor = [UIColor murielNeutral700];
+        _titleLabel.textColor = [UIColor murielNeutral70];
         _titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:14.0];
         _titleLabel.numberOfLines = 0;
     }
