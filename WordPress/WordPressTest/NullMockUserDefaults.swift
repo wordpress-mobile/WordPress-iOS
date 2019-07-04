@@ -7,10 +7,6 @@ class NullMockUserDefaults: KeyValueDatabase {
         return nil
     }
 
-    func bool(forKey: String) -> Bool {
-        return false
-    }
-
     func set(_ value: Any?, forKey defaultName: String) {
         //
     }
