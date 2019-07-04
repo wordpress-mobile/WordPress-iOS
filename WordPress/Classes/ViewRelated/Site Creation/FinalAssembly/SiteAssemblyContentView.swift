@@ -36,9 +36,6 @@ final class SiteAssemblyContentView: UIView {
     /// This influences the top of the assembled site, which varies by device & orientation.
     private var assembledSiteTopConstraint: NSLayoutConstraint?
 
-    /// This influences the height of the assembled site, which varies by device & orientation.
-    private var assembledSiteHeightConstraint: NSLayoutConstraint?
-
     /// This influences the width of the assembled site, which varies by device & orientation.
     private var assembledSiteWidthConstraint: NSLayoutConstraint?
 
@@ -227,8 +224,6 @@ final class SiteAssemblyContentView: UIView {
         let assembledSiteTopInset = Parameters.verticalSpacing
 
         let preferredAssembledSiteSize = assembledSiteView.preferredSize
-        let assembledSiteHeightConstraint = assembledSiteView.heightAnchor.constraint(greaterThanOrEqualToConstant: preferredAssembledSiteSize.height)
-        self.assembledSiteHeightConstraint = assembledSiteHeightConstraint
 
         let assembledSiteWidthConstraint = assembledSiteView.widthAnchor.constraint(equalToConstant: preferredAssembledSiteSize.width)
         self.assembledSiteWidthConstraint = assembledSiteWidthConstraint
@@ -236,10 +231,9 @@ final class SiteAssemblyContentView: UIView {
         NSLayoutConstraint.activate([
             initialSiteTopConstraint,
             assembledSiteView.topAnchor.constraint(greaterThanOrEqualTo: completionLabel.bottomAnchor, constant: assembledSiteTopInset),
-            assembledSiteView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor),
+            assembledSiteView.bottomAnchor.constraint(equalTo: buttonContainerView?.topAnchor ?? bottomAnchor),
             assembledSiteView.centerXAnchor.constraint(equalTo: centerXAnchor),
             assembledSiteWidthConstraint,
-            assembledSiteHeightConstraint
         ])
 
         self.assembledSiteView = assembledSiteView

@@ -523,9 +523,11 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         return;
     }
 
-    [self.noResultsViewController configureWithTitle:[self noResultsViewTitle]
+    [self.noResultsViewController configureWithTitle:self.noResultsViewTitle
+                                   noConnectionTitle:nil
                                          buttonTitle:nil
                                             subtitle:nil
+                                noConnectionSubtitle:nil
                                   attributedSubtitle:nil
                      attributedSubtitleConfiguration:nil
                                                image:nil
