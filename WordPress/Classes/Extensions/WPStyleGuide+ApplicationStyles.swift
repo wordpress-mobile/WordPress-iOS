@@ -91,7 +91,7 @@ extension WPStyleGuide {
         // we only set the text subtle color, so that system colors are used otherwise
         if FeatureFlag.murielColors.enabled {
             cell.detailTextLabel?.textColor = .textSubtle
-            cell.imageView?.tintColor = .neutral
+            cell.imageView?.tintColor = .neutral(shade: .shade30)
         } else {
             cell.textLabel?.textColor = darkGrey()
             cell.detailTextLabel?.textColor = grey()
