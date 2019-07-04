@@ -245,10 +245,13 @@ extension WPStyleGuide {
         let followIcon = Gridicon.iconOfType(.readerFollow, withSize: size)
         let followingIcon = Gridicon.iconOfType(.readerFollowing, withSize: size)
 
-        let tintedFollowIcon = followIcon.imageWithTintColor(.primary(shade: .shade40))
-        let tintedFollowingIcon = followingIcon.imageWithTintColor(.success(shade: .shade50))
+        let normalColor = UIColor.primary
+        let highlightedColor = UIColor.primaryDark
+        let selectedColor = UIColor.success
 
-        let highlightIcon = followingIcon.imageWithTintColor(.primaryLight)
+        let tintedFollowIcon = followIcon.imageWithTintColor(normalColor)
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(selectedColor)
+        let highlightIcon = followingIcon.imageWithTintColor(highlightedColor)
 
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
@@ -257,6 +260,10 @@ extension WPStyleGuide {
         button.setTitle(followStringForDisplay, for: UIControl.State())
         button.setTitle(followingStringForDisplay, for: .selected)
         button.setTitle(followingStringForDisplay, for: .highlighted)
+
+        button.setTitleColor(normalColor, for: UIControl.State())
+        button.setTitleColor(highlightedColor, for: .highlighted)
+        button.setTitleColor(selectedColor, for: .selected)
     }
 
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
