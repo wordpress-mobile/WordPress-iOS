@@ -6,18 +6,6 @@ import Gridicons
 ///
 extension WPStyleGuide {
 
-    // MARK: - System Defaults
-
-    @objc public class func accessoryDefaultTintColor() -> UIColor {
-        return UIColor(fromRGBAColorWithRed: 199.0, green: 199.0, blue: 204.0, alpha: 1.0)
-    }
-
-
-    @objc public class func cellDefaultHighlightColor() -> UIColor {
-        return UIColor(fromRGBAColorWithRed: 217.0, green: 217.0, blue: 217.0, alpha: 1.0)
-    }
-
-
     // MARK: - Original Post/Site Attribution Styles.
 
     @objc public class func originalAttributionParagraphAttributes() -> [NSAttributedString.Key: Any] {
@@ -49,12 +37,11 @@ extension WPStyleGuide {
 
     // MARK: - Custom Colors
     @objc public class func readerCardCellBorderColor() -> UIColor {
-        return UIColor(red: 215.0/255.0, green: 227.0/255.0, blue: 235.0/255.0, alpha: 1.0)
+        return .neutral(shade: .shade10)
     }
 
     @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
-        // #87a6bc
-        return UIColor(red: 135/255.0, green: 166/255.0, blue: 188/255.0, alpha: 1.0)
+        return .neutral
     }
 
     // MARK: - Card Attributed Text Attributes
