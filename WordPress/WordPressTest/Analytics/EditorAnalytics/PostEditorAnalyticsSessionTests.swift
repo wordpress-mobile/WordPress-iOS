@@ -14,26 +14,28 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         """
     }
 
-    fileprivate var contextManager: TestContextManager!
-    fileprivate var context: NSManagedObjectContext!
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext!
+
 
     override func setUp() {
         contextManager = TestContextManager()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
-        Environment.replaceEnvironment(analytics: TestAnalytics.self)
+        WPAnalytics.register(TestAnalyticsTracker())
     }
 
     override func tearDown() {
-        TestAnalytics.clean()
+        WPAnalytics.clearTrackers()
+        TestAnalyticsTracker.clear()
     }
 
     func testStartGutenbergSessionWithoutContentAndTitle() {
         startSession(editor: .gutenberg)
 
-        XCTAssertEqual(TestAnalytics.tracked.count, 1)
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
 
-        let tracked = TestAnalytics.tracked.first
+        let tracked = TestAnalyticsTracker.tracked.first
 
         XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
         XCTAssertEqual(tracked?.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.new.rawValue)
@@ -43,9 +45,9 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
     func testStartGutenbergSessionWithTitleButNoContent() {
         startSession(editor: .gutenberg, postTitle: "Title")
 
-        XCTAssertEqual(TestAnalytics.tracked.count, 1)
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
 
-        let tracked = TestAnalytics.tracked.first
+        let tracked = TestAnalyticsTracker.tracked.first
 
         XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
         XCTAssertEqual(tracked?.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.new.rawValue)
@@ -55,9 +57,9 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
     func testStartGutenbergSessionWithTitleAndContent() {
         startSession(editor: .gutenberg, postTitle: "Title", postContent: PostContent.gutenberg)
 
-        XCTAssertEqual(TestAnalytics.tracked.count, 1)
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
 
-        let tracked = TestAnalytics.tracked.first
+        let tracked = TestAnalyticsTracker.tracked.first
 
         XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
         XCTAssertEqual(tracked?.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.gutenberg.rawValue)

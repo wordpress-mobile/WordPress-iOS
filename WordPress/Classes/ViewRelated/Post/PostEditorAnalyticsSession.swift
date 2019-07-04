@@ -20,13 +20,13 @@ struct PostEditorAnalyticsSession {
     mutating func start(hasUnsupportedBlocks: Bool) {
         assert(!started, "An editor session was attempted to start more than once")
         self.hasUnsupportedBlocks = hasUnsupportedBlocks
-        Environment.current.analytics.track(.editorSessionStart, withProperties: commonProperties)
+        WPAppAnalytics.track(.editorSessionStart, withProperties: commonProperties)
         started = true
     }
 
     mutating func `switch`(editor: Editor) {
         currentEditor = editor
-        Environment.current.analytics.track(.editorSessionSwitchEditor, withProperties: commonProperties)
+        WPAppAnalytics.track(.editorSessionSwitchEditor, withProperties: commonProperties)
     }
 
     mutating func forceOutcome(_ newOutcome: Outcome) {
@@ -48,7 +48,7 @@ struct PostEditorAnalyticsSession {
             Property.outcome: outcome.rawValue,
             ].merging(commonProperties, uniquingKeysWith: { $1 })
 
-        Environment.current.analytics.track(.editorSessionEnd, withProperties: properties)
+        WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
 }
 

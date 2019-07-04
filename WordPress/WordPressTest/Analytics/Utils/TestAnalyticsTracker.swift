@@ -1,7 +1,7 @@
 import Foundation
 @testable import WordPress
 
-class TestAnalytics: AppAnalytics {
+class TestAnalyticsTracker: NSObject {
     struct Tracked {
         let stat: WPAnalyticsStat
         let properties: [AnyHashable: Any]
@@ -16,7 +16,7 @@ class TestAnalytics: AppAnalytics {
         return _tracked
     }
 
-    static func clean() {
+    static func clear() {
         _tracked.removeAll()
     }
 
@@ -24,8 +24,18 @@ class TestAnalytics: AppAnalytics {
         return tracked.count
     }
 
-    static func track(_ stat: WPAnalyticsStat, withProperties: [AnyHashable: Any]!) {
-        let trackedStat = Tracked(stat: stat, properties: withProperties)
+    private static func track(_ stat: WPAnalyticsStat, with properties: [AnyHashable: Any]? = nil) {
+        let trackedStat = Tracked(stat: stat, properties: properties ?? [:])
         _tracked.append(trackedStat)
+    }
+}
+
+extension TestAnalyticsTracker: WPAnalyticsTracker {
+    func track(_ stat: WPAnalyticsStat) {
+        TestAnalyticsTracker.track(stat)
+    }
+
+    func track(_ stat: WPAnalyticsStat, withProperties properties: [AnyHashable : Any]!) {
+        TestAnalyticsTracker.track(stat, with: properties)
     }
 }
