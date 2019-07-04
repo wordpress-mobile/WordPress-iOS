@@ -6,7 +6,7 @@ extension GutenbergViewController {
     enum InfoDialog {
         static let key = "Gutenberg.InformativeDialog"
         static let message = NSLocalizedString(
-            "This post was originally created in the Block Editor, so we've also enabled it on this Post. Switch back to Classic at any time by tapping ••• in the top bar.",
+            "This post was originally created in the Block Editor, so we've enabled it for new Posts.",
             comment: "Popup content about why this post is being opened in Block Editor"
         )
         static let title = NSLocalizedString("Block Editor Enabled", comment: "Popup title about why this post is being opened in Block Editor")
@@ -23,9 +23,13 @@ extension GutenbergViewController {
         on viewController: UIViewControllerTransitioningDelegate & UIViewController,
         animated: Bool = true
     ) {
-        guard !userDefaults.bool(forKey: InfoDialog.key),
-            post.containsGutenbergBlocks() else {
-            // Don't show if this was shown before or the post does not contain blocks
+        let settings = GutenbergSettings(database: userDefaults)
+        guard
+            !userDefaults.bool(forKey: InfoDialog.key),
+            post.containsGutenbergBlocks(),
+            settings.isGutenbergEnabled() == false
+        else {
+            // Don't show if this was shown before or the post does not contain blocks or gutenberg is already enabled.
             return
         }
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
@@ -51,5 +55,8 @@ extension GutenbergViewController {
         viewController.present(alert, animated: animated)
         // Save that this alert is shown
         userDefaults.set(true, forKey: InfoDialog.key)
+
+        // Toggle gutenberg default to true
+        settings.toggleGutenberg()
     }
 }
