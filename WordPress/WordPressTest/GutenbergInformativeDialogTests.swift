@@ -3,19 +3,6 @@ import UIKit
 import CoreData
 @testable import WordPress
 
-fileprivate class MockUserDefaults: GutenbergFlagsUserDefaultsProtocol {
-
-    private var boolDictionary: [String: Bool] = [:]
-
-    func set(_ value: Bool, forKey defaultName: String) {
-        boolDictionary[defaultName] = value
-    }
-
-    func bool(forKey defaultName: String) -> Bool {
-        return boolDictionary[defaultName] ?? false
-    }
-}
-
 fileprivate class MockUIViewController: UIViewController, UIViewControllerTransitioningDelegate {
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
@@ -38,7 +25,7 @@ class GutenbergInformativeDialogTests: XCTestCase {
 
     private var rootWindow: UIWindow!
     private var viewController: MockUIViewController!
-    private var mockUserDefaults: MockUserDefaults!
+    private var mockUserDefaults: EphemeralKeyValueDatabase!
     private var context: NSManagedObjectContext!
 
     override func setUp() {
@@ -47,7 +34,7 @@ class GutenbergInformativeDialogTests: XCTestCase {
         rootWindow.isHidden = false
         rootWindow.rootViewController = viewController
         context = setUpInMemoryManagedObjectContext()
-        mockUserDefaults = MockUserDefaults()
+        mockUserDefaults = EphemeralKeyValueDatabase()
     }
 
     override func tearDown() {
@@ -62,6 +49,7 @@ class GutenbergInformativeDialogTests: XCTestCase {
     func testShowInformativeDialogWithUserDefaultsFlagWithGutenbergContent() {
         let post = insertPost()
         post.content = PostContent.gutenberg
+
         mockUserDefaults.set(true, forKey: GutenbergViewController.InfoDialog.key)
         XCTAssertTrue(mockUserDefaults.bool(forKey: GutenbergViewController.InfoDialog.key))
         GutenbergViewController.showInformativeDialogIfNecessary(using: mockUserDefaults,
@@ -70,6 +58,7 @@ class GutenbergInformativeDialogTests: XCTestCase {
                                                                  animated: false)
         XCTAssertTrue(mockUserDefaults.bool(forKey: GutenbergViewController.InfoDialog.key))
         XCTAssertNil(viewController.presentedViewController as? FancyAlertViewController)
+
     }
 
     func testShowInformativeDialogWithNoUserDefaultsFlagWithGutenbergContent() {

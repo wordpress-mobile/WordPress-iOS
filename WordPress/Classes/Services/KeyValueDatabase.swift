@@ -7,6 +7,7 @@ import Foundation
 /// list objects.
 protocol KeyValueDatabase {
     func object(forKey defaultName: String) -> Any?
+    func bool(forKey: String) -> Bool
     func set(_ value: Any?, forKey defaultName: String)
     func removeObject(forKey defaultName: String)
 }
@@ -26,6 +27,10 @@ class EphemeralKeyValueDatabase: KeyValueDatabase {
 
     open func object(forKey defaultName: String) -> Any? {
         return memory[defaultName]
+    }
+
+    open func bool(forKey key: String) -> Bool {
+        return object(forKey: key) as? Bool ?? false
     }
 
     open func removeObject(forKey defaultName: String) {

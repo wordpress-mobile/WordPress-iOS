@@ -1,14 +1,5 @@
 import Foundation
 
-protocol GutenbergFlagsUserDefaultsProtocol {
-    func set(_ value: Bool, forKey defaultName: String)
-    func bool(forKey defaultName: String) -> Bool
-}
-
-extension UserDefaults: GutenbergFlagsUserDefaultsProtocol {
-
-}
-
 /// This extension handles Alert operations.
 extension GutenbergViewController {
 
@@ -27,7 +18,7 @@ extension GutenbergViewController {
     }
 
     static func showInformativeDialogIfNecessary(
-        using userDefaults: GutenbergFlagsUserDefaultsProtocol = UserDefaults.standard,
+        using userDefaults: KeyValueDatabase = UserDefaults.standard,
         showing post: AbstractPost,
         on viewController: UIViewControllerTransitioningDelegate & UIViewController,
         animated: Bool = true
