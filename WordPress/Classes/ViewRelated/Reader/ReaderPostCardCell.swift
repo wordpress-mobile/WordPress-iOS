@@ -205,7 +205,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate func setupLikeActionButton() {
         let normalImage = UIImage(named: "icon-reader-like")?.imageWithTintColor(.neutral(shade: .shade30))
         let highlightImage = UIImage(named: "icon-reader-like")?.imageWithTintColor(.neutral)
-        let selectedImage = UIImage(named: "icon-reader-liked")?.imageWithTintColor(.accent)
+        let selectedImage = UIImage(named: "icon-reader-liked")?.imageWithTintColor(.primary(shade: .shade40))
         likeActionButton.setImage(normalImage, for: UIControl.State())
         likeActionButton.setImage(highlightImage, for: .highlighted)
         likeActionButton.setImage(selectedImage, for: .selected)

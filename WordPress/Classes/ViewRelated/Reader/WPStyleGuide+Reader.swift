@@ -208,7 +208,7 @@ extension WPStyleGuide {
         WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
         button.setTitleColor(.neutral(shade: .shade30), for: UIControl.State())
         button.setTitleColor(.neutral, for: .highlighted)
-        button.setTitleColor(.accent, for: .selected)
+        button.setTitleColor(.primary(shade: .shade40), for: .selected)
         button.setTitleColor(.neutral(shade: .shade10), for: .disabled)
     }
 
@@ -265,8 +265,8 @@ extension WPStyleGuide {
         let selectedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
 
         let normalColor: UIColor = .neutral(shade: .shade30)
-        let selectedColor: UIColor = .accent
-        let highlightedColor: UIColor = .primary
+        let selectedColor: UIColor = .primary(shade: .shade40)
+        let highlightedColor: UIColor = .neutral
 
         let tintedIcon = icon.imageWithTintColor(normalColor)
         let tintedSelectedIcon = selectedIcon.imageWithTintColor(selectedColor)

@@ -58,10 +58,11 @@ struct MurielColor {
 
     // MARK: - Muriel's semantic colors
     static let accent = MurielColor(name: .pink)
+    static let brand = MurielColor(name: .airo)
     static let divider = MurielColor(name: .gray, shade: .shade5)
     static let error = MurielColor(name: .red)
     static let neutral = MurielColor(name: .gray)
-    static let primary = MurielColor(name: .airo)
+    static let primary = MurielColor(name: .blue)
     static let success = MurielColor(name: .green)
     static let text = MurielColor(name: .gray, shade: .shade80)
     static let textSubtle = MurielColor(name: .gray, shade: .shade50)
@@ -110,6 +111,9 @@ extension UIColor {
     class func accent(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .accent, shade: shade))
     }
+
+    /// Muriel brand color
+    static var brand = muriel(color: .brand)
 
     /// Muriel divider color
     static var divider = muriel(color: .divider)
