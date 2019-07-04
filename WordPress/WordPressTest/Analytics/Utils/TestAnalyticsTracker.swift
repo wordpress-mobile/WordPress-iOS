@@ -40,7 +40,7 @@ extension TestAnalyticsTracker: WPAnalyticsTracker {
         TestAnalyticsTracker.track(stat)
     }
 
-    func track(_ stat: WPAnalyticsStat, withProperties properties: [AnyHashable : Any]!) {
+    func track(_ stat: WPAnalyticsStat, withProperties properties: [AnyHashable: Any]!) {
         TestAnalyticsTracker.track(stat, with: properties)
     }
 }
