@@ -8,9 +8,6 @@ struct Environment {
 
     // MARK: - Globals
 
-    /// A type to track events for analytics
-    let analytics: AppAnalytics.Type
-
     /// A type that helps tracking whether or not a user should be prompted for an app review
     let appRatingUtility: AppRatingUtilityType
 
@@ -35,12 +32,10 @@ struct Environment {
     // MARK: - Initialization
 
     private init(
-        analytics: AppAnalytics.Type = WPAppAnalytics.self,
         appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
         contextManager: ContextManagerType = ContextManager.shared,
         wordPressComApiBase: String = WordPressComRestApi.apiBaseURLString) {
 
-        self.analytics = analytics
         self.appRatingUtility = appRatingUtility
         self.contextManager = contextManager
         self.wordPressComApiBase = wordPressComApiBase
@@ -52,13 +47,11 @@ extension Environment {
     ///
     @discardableResult
     static func replaceEnvironment(
-        analytics: AppAnalytics.Type = WPAppAnalytics.self,
         appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
         contextManager: ContextManagerType = Environment.current.contextManager,
         wordPressComApiBase: String = Environment.current.wordPressComApiBase) -> Environment {
 
         current = Environment(
-            analytics: analytics,
             appRatingUtility: appRatingUtility,
             contextManager: contextManager,
             wordPressComApiBase: wordPressComApiBase
