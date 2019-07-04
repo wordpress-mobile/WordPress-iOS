@@ -16,8 +16,13 @@ class TestAnalyticsTracker: NSObject {
         return _tracked
     }
 
-    static func clear() {
+    static func setup() {
+        WPAnalytics.register(TestAnalyticsTracker())
+    }
+
+    static func tearDown() {
         _tracked.removeAll()
+        WPAnalytics.clearTrackers()
     }
 
     static func trackedEventsCount() -> Int {

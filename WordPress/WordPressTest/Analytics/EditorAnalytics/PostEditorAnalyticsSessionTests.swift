@@ -22,12 +22,11 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         contextManager = TestContextManager()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
-        WPAnalytics.register(TestAnalyticsTracker())
+        TestAnalyticsTracker.setup()
     }
 
     override func tearDown() {
-        WPAnalytics.clearTrackers()
-        TestAnalyticsTracker.clear()
+        TestAnalyticsTracker.tearDown()
     }
 
     func testStartGutenbergSessionWithoutContentAndTitle() {
