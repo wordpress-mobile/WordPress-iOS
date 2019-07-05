@@ -1,4 +1,4 @@
-import Sentry
+import AutomatticTracks
 
 // MARK: - SiteVerticalsService
 
@@ -82,12 +82,7 @@ final class SiteCreationVerticalsService: LocalCoreDataService, SiteVerticalsSer
             switch result {
             case .success(let verticals):
                 guard let vertical = verticals.first else {
-                    if let sentry = Sentry.Client.shared {
-                        let event = Sentry.Event(level: .error)
-                        event.message = "The verticals service should always return at least 1 match for the precise term queried."
-                        sentry.send(event: event)
-                    }
-
+                    CrashLogging.logMessage("The verticals service should always return at least 1 match for the precise term queried.", level: .error)
                     completion(.failure(.serviceFailure))
                     return
                 }
