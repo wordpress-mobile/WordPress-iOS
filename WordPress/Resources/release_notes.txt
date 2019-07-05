@@ -1,17 +1,11 @@
 12.8
 -----
-* Stats Insights: New two-column layout for Follower Totals stats.
-* Stats Periods: Countries Map added in countries section.
-* Updated copy for preview unavailable screen
-* Stats Insights: New two-column layout for This Year stats.
-* Stats Insights: added details option for This Year stats.
-* Stats Insights: New two-column layout for Most Popular Time stats.
-* Stats: modified appearance of empty charts.
-* Stats Insights: Fixed issue where refreshing would sometimes clear the stats.
-* Stats overview chart: Fixed issue with legend location on iOS 11.
-* Stats Periods: Fixed crash when the Countries map displayed one country only
-* Added a selection of user customizable app icons. Change it via Me > App Settings > App Icon.
-* Update the app's colors using the Muriel color pallete.
+* Stats Insights: check out new two-column layouts for Follower Totals, This Year, and Most Popular Time stats.
+* This Year Insights: see a snapshot of total posts, comments, likes, and more for the year-to-date when you click on the View More option.
+* Stats Periods: We added a world map in the countries section.
+* Fixed an issue where refreshing sometimes cleared stats.
+* You do you! Go to Me > App Settings > App Icon to choose from a series of app icons.
+* Refreshed the app’s color scheme.
 
 12.7
 -----
