@@ -64,7 +64,10 @@ extension WPStyleGuide {
         guard let tableView = tableView else {
             return
         }
-        if !FeatureFlag.murielColors.enabled {
+        if FeatureFlag.murielColors.enabled {
+            tableView.backgroundColor = .neutral(shade: .shade0)
+            tableView.separatorColor = .neutral(shade: .shade10)
+        } else {
             tableView.backgroundView = nil
             tableView.backgroundColor = greyLighten30()
             tableView.separatorColor = greyLighten20()

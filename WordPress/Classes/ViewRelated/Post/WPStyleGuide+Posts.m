@@ -30,13 +30,13 @@
 
 + (UIColor *)postCardBorderColor
 {
-    return [UIColor colorWithRed:215.0/255.0 green:227.0/255.0 blue:235.0/255.0 alpha:1.0];
+    return [UIColor murielNeutral10];
 }
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell
 {
-    cell.backgroundColor = [UIColor murielNeutral5];
-    cell.contentView.backgroundColor = [UIColor murielNeutral5];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.contentView.backgroundColor = [UIColor clearColor];
 }
 
 + (void)applyPostAuthorSiteStyle:(UILabel *)label

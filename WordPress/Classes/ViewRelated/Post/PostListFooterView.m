@@ -15,8 +15,8 @@
 {
     [super awakeFromNib];
 
-    self.backgroundColor = [UIColor murielNeutral5];
-    self.bannerView.backgroundColor = [UIColor murielNeutral5];
+    self.backgroundColor = [UIColor clearColor];
+    self.bannerView.backgroundColor = [UIColor murielNeutral0];
     self.bannerView.hidden = YES;
 }
 
