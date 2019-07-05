@@ -197,7 +197,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     fileprivate func setupCommentActionButton() {
         let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageWithTintColor(.neutral)?.imageFlippedForRightToLeftLayoutDirection()
         commentActionButton.setImage(image, for: UIControl.State())
         commentActionButton.setImage(highlightImage, for: .highlighted)
     }
