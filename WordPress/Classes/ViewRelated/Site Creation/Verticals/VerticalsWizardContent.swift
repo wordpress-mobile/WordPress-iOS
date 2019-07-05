@@ -1,5 +1,4 @@
 import UIKit
-import Reachability
 import WordPressKit
 import WordPressAuthenticator
 
