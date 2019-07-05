@@ -279,7 +279,7 @@
 		17E363E022C4280A000E0C79 /* pride_icon_60pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D022C42808000E0C79 /* pride_icon_60pt.png */; };
 		17E363E122C4280A000E0C79 /* pride_icon_76pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D122C42808000E0C79 /* pride_icon_76pt@2x.png */; };
 		17E363E222C4280A000E0C79 /* pride_icon_76pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D222C42808000E0C79 /* pride_icon_76pt.png */; };
-		17E363E322C4280A000E0C79 /* pride_icon_83.5pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D322C42808000E0C79 /* pride_icon_83.5pt@2x.png */; };
+		17E363E322C4280A000E0C79 /* pride_icon_83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D322C42808000E0C79 /* pride_icon_83.5@2x.png */; };
 		17E363E422C4280A000E0C79 /* pride_icon_29pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D422C42809000E0C79 /* pride_icon_29pt@3x.png */; };
 		17E363E522C4280A000E0C79 /* pride_icon_40pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D522C42809000E0C79 /* pride_icon_40pt@2x.png */; };
 		17E363E622C4280A000E0C79 /* pride_icon_40pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D622C42809000E0C79 /* pride_icon_40pt.png */; };
@@ -2288,7 +2288,7 @@
 		17E363D022C42808000E0C79 /* pride_icon_60pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pride_icon_60pt.png; sourceTree = "<group>"; };
 		17E363D122C42808000E0C79 /* pride_icon_76pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_76pt@2x.png"; sourceTree = "<group>"; };
 		17E363D222C42808000E0C79 /* pride_icon_76pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pride_icon_76pt.png; sourceTree = "<group>"; };
-		17E363D322C42808000E0C79 /* pride_icon_83.5pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_83.5pt@2x.png"; sourceTree = "<group>"; };
+		17E363D322C42808000E0C79 /* pride_icon_83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_83.5@2x.png"; sourceTree = "<group>"; };
 		17E363D422C42809000E0C79 /* pride_icon_29pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_29pt@3x.png"; sourceTree = "<group>"; };
 		17E363D522C42809000E0C79 /* pride_icon_40pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_40pt@2x.png"; sourceTree = "<group>"; };
 		17E363D622C42809000E0C79 /* pride_icon_40pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pride_icon_40pt.png; sourceTree = "<group>"; };
@@ -4723,20 +4723,20 @@
 		17DC4C1E22C5E6910059CA11 /* Open Source Dark */ = {
 			isa = PBXGroup;
 			children = (
-				17DC4C1F22C5E6910059CA11 /* open_source_dark_icon_20pt@2x.png */,
-				17DC4C2022C5E6910059CA11 /* open_source_dark_icon_40pt@3x.png */,
 				17DC4C2122C5E6910059CA11 /* open_source_dark_icon_20pt.png */,
-				17DC4C2222C5E6910059CA11 /* open_source_dark_icon_40pt@2x.png */,
+				17DC4C1F22C5E6910059CA11 /* open_source_dark_icon_20pt@2x.png */,
 				17DC4C2322C5E6910059CA11 /* open_source_dark_icon_20pt@3x.png */,
-				17DC4C2422C5E6910059CA11 /* open_source_dark_icon_40pt.png */,
-				17DC4C2522C5E6910059CA11 /* open_source_dark_icon_76pt@2x.png */,
 				17DC4C2622C5E6910059CA11 /* open_source_dark_icon_29pt.png */,
-				17DC4C2722C5E6910059CA11 /* open_source_dark_icon_60pt@3x.png */,
-				17DC4C2822C5E6910059CA11 /* open_source_dark_icon_29pt@3x.png */,
-				17DC4C2922C5E6910059CA11 /* open_source_dark_icon_83.5@2x.png */,
 				17DC4C2A22C5E6910059CA11 /* open_source_dark_icon_29pt@2x.png */,
+				17DC4C2822C5E6910059CA11 /* open_source_dark_icon_29pt@3x.png */,
+				17DC4C2422C5E6910059CA11 /* open_source_dark_icon_40pt.png */,
+				17DC4C2222C5E6910059CA11 /* open_source_dark_icon_40pt@2x.png */,
+				17DC4C2022C5E6910059CA11 /* open_source_dark_icon_40pt@3x.png */,
 				17DC4C2B22C5E6910059CA11 /* open_source_dark_icon_60pt@2x.png */,
+				17DC4C2722C5E6910059CA11 /* open_source_dark_icon_60pt@3x.png */,
 				17DC4C2C22C5E6910059CA11 /* open_source_dark_icon_76pt.png */,
+				17DC4C2522C5E6910059CA11 /* open_source_dark_icon_76pt@2x.png */,
+				17DC4C2922C5E6910059CA11 /* open_source_dark_icon_83.5@2x.png */,
 			);
 			path = "Open Source Dark";
 			sourceTree = "<group>";
@@ -4779,7 +4779,7 @@
 				17E363D922C4280A000E0C79 /* pride_icon_60pt@3x.png */,
 				17E363D222C42808000E0C79 /* pride_icon_76pt.png */,
 				17E363D122C42808000E0C79 /* pride_icon_76pt@2x.png */,
-				17E363D322C42808000E0C79 /* pride_icon_83.5pt@2x.png */,
+				17E363D322C42808000E0C79 /* pride_icon_83.5@2x.png */,
 			);
 			path = Pride;
 			sourceTree = "<group>";
@@ -9039,6 +9039,7 @@
 				E1756E61169493AD00D9EC00 /* Generate API credentials */,
 				825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
+				F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
@@ -9554,7 +9555,7 @@
 				17E3630822C41725000E0C79 /* wordpress_dark_icon_29pt@3x.png in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				9A4E215A21F7565A00EFF212 /* QuickStartChecklistCell.xib in Resources */,
-				17E363E322C4280A000E0C79 /* pride_icon_83.5pt@2x.png in Resources */,
+				17E363E322C4280A000E0C79 /* pride_icon_83.5@2x.png in Resources */,
 				D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				17E3630522C41725000E0C79 /* wordpress_dark_icon_60pt@3x.png in Resources */,
@@ -9984,7 +9985,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# This script adds the version number to the icon of internal releases.\n\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nsh ../Scripts/BuildPhases/AddVersionToIcons.sh";
+			shellScript = "#!/bin/sh\n\n# This script adds the version number to the icon of internal releases.\n\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nsh ../Scripts/BuildPhases/AddVersionToIcons.sh\n";
 		};
 		920B9A6DAD47189622A86A9C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -10163,6 +10164,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Alternate Internal Icons (if needed)";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Overwrite the icons in the bundle with the updated internal icons\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\ncp -R ${PROJECT_DIR}/Resources/Icons-Internal/*.png \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
 		};
 		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
