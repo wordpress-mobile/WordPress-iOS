@@ -1,4 +1,5 @@
 import UIKit
+import Reachability
 import WordPressKit
 import WordPressAuthenticator
 
@@ -33,6 +34,9 @@ final class VerticalsWizardContent: UIViewController {
 
     /// The action to perform once a Vertical is selected by the user
     private let selection: (SiteVertical?) -> Void
+
+    /// Makes sure we don't call the selection handler twice.
+    private var selectionHandled = false
 
     /// The localized prompt retrieved by remote service; `nil` otherwise
     private var prompt: SiteVerticalsPrompt?
@@ -95,6 +99,7 @@ final class VerticalsWizardContent: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         restoreSearchIfNeeded()
+        selectionHandled = false
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -394,7 +399,7 @@ final class VerticalsWizardContent: UIViewController {
             }
 
             let vertical = provider.data[selectedIndexPath.row]
-            self.selection(vertical)
+            self.select(vertical)
             self.trackVerticalSelection(vertical)
         }
 
@@ -428,8 +433,51 @@ final class VerticalsWizardContent: UIViewController {
 
     @objc
     private func skip() {
-        selection(nil)
+        select(nil)
         WPAnalytics.track(.enhancedSiteCreationVerticalsSkipped)
+    }
+
+    private func searchAndSelectVertical(_ textField: UITextField) {
+        guard let verticalName = textField.text,
+            verticalName.count > 0 else {
+                return
+        }
+
+        verticalsService.retrieveVertical(named: verticalName) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+
+            switch result {
+            case .success(let vertical):
+                // If the user has changed the contents of the text field while the request was being executed
+                // we'll cancel the operation
+                guard verticalName == textField.text else {
+                    return
+                }
+
+                self.select(vertical)
+            case .failure:
+                // For now we're purposedly not taking any action here.
+                break
+            }
+        }
+    }
+
+    /// Convenience method to make sure we don't execute the selection handler twice.
+    /// We should avoid calling the selection handler directly and user this method instead.
+    /// This method is also thread safe.
+    ///
+    private func select(_ vertical: SiteVertical?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self,
+                !self.selectionHandled else {
+                    return
+            }
+
+            self.selectionHandled = true
+            self.selection(vertical)
+        }
     }
 }
 
@@ -446,6 +494,12 @@ extension VerticalsWizardContent: NetworkStatusDelegate {
 extension VerticalsWizardContent: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        searchAndSelectVertical(textField)
+
         return true
     }
 }
