@@ -83,11 +83,11 @@ final class AssembledSiteView: UIView {
 
             textField.translatesAutoresizingMaskIntoConstraints = false
 
-            textField.backgroundColor = .neutral(shade: .shade50)
+            textField.backgroundColor = .neutral(shade: .shade5)
             textField.font = WPStyleGuide.fontForTextStyle(.footnote)
             textField.isEnabled = false
             textField.textAlignment = .center
-            textField.textColor = .neutral(shade: .shade700)
+            textField.textColor = .neutral(shade: .shade70)
             textField.text = domainName
 
             textField.layer.cornerRadius = Parameters.textFieldCornerRadius
@@ -102,7 +102,7 @@ final class AssembledSiteView: UIView {
 
             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
             activityIndicator.hidesWhenStopped = true
-            activityIndicator.color = .neutral(shade: .shade400)
+            activityIndicator.color = .neutral(shade: .shade40)
             activityIndicator.startAnimating()
 
             return activityIndicator

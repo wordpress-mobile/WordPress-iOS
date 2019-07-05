@@ -54,8 +54,8 @@ open class ReaderCrossPostCell: UITableViewCell {
     // MARK: - Appearance
 
     fileprivate func applyStyles() {
-        contentView.backgroundColor = .neutral(shade: .shade50)
-        label?.backgroundColor = .neutral(shade: .shade50)
+        contentView.backgroundColor = .neutral(shade: .shade5)
+        label?.backgroundColor = .neutral(shade: .shade5)
     }
 
     fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {

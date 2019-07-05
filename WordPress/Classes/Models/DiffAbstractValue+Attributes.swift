@@ -2,11 +2,11 @@ extension DiffAbstractValue {
     var attributes: [NSAttributedString.Key: Any]? {
         switch operation {
         case .add:
-            return [.backgroundColor: UIColor.muriel(color: MurielColor(name: .hotBlue, shade: .shade50)),
+            return [.backgroundColor: UIColor.muriel(color: MurielColor(name: .blue, shade: .shade5)),
                     .underlineStyle: NSNumber(value: 2),
                     .underlineColor: UIColor.primary]
         case .del:
-            return [.backgroundColor: UIColor.muriel(color: MurielColor(name: .red, shade: .shade50)),
+            return [.backgroundColor: UIColor.muriel(color: MurielColor(name: .red, shade: .shade5)),
                     .underlineStyle: NSNumber(value: 2),
                     .underlineColor: UIColor.error,
                     .strikethroughStyle: NSNumber(value: 1),

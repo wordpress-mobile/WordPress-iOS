@@ -70,17 +70,17 @@ final class TitleSubtitleHeader: UIView {
     }
 
     private func styleBackground() {
-        backgroundColor = .neutral(shade: .shade50)
+        backgroundColor = .neutral(shade: .shade5)
     }
 
     private func styleTitle() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
-        titleLabel.textColor = .neutral(shade: .shade700)
+        titleLabel.textColor = .neutral(shade: .shade70)
     }
 
     private func styleSubtitle() {
         subtitleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        subtitleLabel.textColor = .neutral(shade: .shade400)
+        subtitleLabel.textColor = .neutral(shade: .shade40)
     }
 
     func setTitle(_ text: String) {

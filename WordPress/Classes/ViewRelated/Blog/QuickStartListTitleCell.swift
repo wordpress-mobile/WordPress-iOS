@@ -39,7 +39,7 @@ class QuickStartListTitleCell: UITableViewCell {
         }
 
         if state == .completed {
-            label.textColor = .neutral(shade: .shade300)
+            label.textColor = .neutral(shade: .shade30)
             label.attributedText = NSAttributedString(string: text, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
         }
     }
@@ -49,11 +49,11 @@ private extension QuickStartListTitleCell {
     func refreshIconColor() {
         switch state {
         case .customizeIncomplete:
-            circleImageView?.backgroundColor = .primary(shade: .shade400)
+            circleImageView?.backgroundColor = .primary(shade: .shade40)
         case .growIncomplete:
             circleImageView?.backgroundColor = .accent
         default:
-            circleImageView?.backgroundColor = .neutral(shade: .shade300)
+            circleImageView?.backgroundColor = .neutral(shade: .shade30)
         }
 
         guard let iconImageView = iconImageView,

@@ -44,7 +44,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCardBlogNameLabelDisabledTextColor() -> UIColor {
-        return .neutral(shade: .shade700)
+        return .neutral(shade: .shade70)
     }
 
     // MARK: - Custom Colors
@@ -206,10 +206,10 @@ extension WPStyleGuide {
             return
         }
         WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
-        button.setTitleColor(.neutral(shade: .shade100), for: UIControl.State())
+        button.setTitleColor(.neutral(shade: .shade10), for: UIControl.State())
         button.setTitleColor(.primaryLight, for: .highlighted)
         button.setTitleColor(.accent, for: .selected)
-        button.setTitleColor(.neutral(shade: .shade100), for: .disabled)
+        button.setTitleColor(.neutral(shade: .shade10), for: .disabled)
     }
 
 
@@ -245,8 +245,8 @@ extension WPStyleGuide {
         let followIcon = Gridicon.iconOfType(.readerFollow, withSize: size)
         let followingIcon = Gridicon.iconOfType(.readerFollowing, withSize: size)
 
-        let tintedFollowIcon = followIcon.imageWithTintColor(.primary(shade: .shade400))
-        let tintedFollowingIcon = followingIcon.imageWithTintColor(.success(shade: .shade500))
+        let tintedFollowIcon = followIcon.imageWithTintColor(.primary(shade: .shade40))
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(.success(shade: .shade50))
 
         let highlightIcon = followingIcon.imageWithTintColor(.primaryLight)
 
@@ -265,7 +265,7 @@ extension WPStyleGuide {
         let selectedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
 
         let normalColor: UIColor = .text
-        let selectedColor: UIColor = .primary(shade: .shade600)
+        let selectedColor: UIColor = .primary(shade: .shade60)
         let highlightedColor: UIColor = .primary
 
         let tintedIcon = icon.imageWithTintColor(normalColor)
@@ -347,7 +347,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func gapMarkerButtonBackgroundColor() -> UIColor {
-        return .neutral(shade: .shade400)
+        return .neutral(shade: .shade40)
     }
 
     @objc public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {

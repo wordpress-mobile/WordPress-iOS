@@ -279,7 +279,7 @@
 		17E363E022C4280A000E0C79 /* pride_icon_60pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D022C42808000E0C79 /* pride_icon_60pt.png */; };
 		17E363E122C4280A000E0C79 /* pride_icon_76pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D122C42808000E0C79 /* pride_icon_76pt@2x.png */; };
 		17E363E222C4280A000E0C79 /* pride_icon_76pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D222C42808000E0C79 /* pride_icon_76pt.png */; };
-		17E363E322C4280A000E0C79 /* pride_icon_83.5pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D322C42808000E0C79 /* pride_icon_83.5pt@2x.png */; };
+		17E363E322C4280A000E0C79 /* pride_icon_83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D322C42808000E0C79 /* pride_icon_83.5@2x.png */; };
 		17E363E422C4280A000E0C79 /* pride_icon_29pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D422C42809000E0C79 /* pride_icon_29pt@3x.png */; };
 		17E363E522C4280A000E0C79 /* pride_icon_40pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D522C42809000E0C79 /* pride_icon_40pt@2x.png */; };
 		17E363E622C4280A000E0C79 /* pride_icon_40pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D622C42809000E0C79 /* pride_icon_40pt.png */; };
@@ -911,9 +911,11 @@
 		7E9B90F821127CA400AF83E6 /* ContextManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */; };
 		7EA30DB521ADA20F0092F894 /* EditorMediaUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */; };
 		7EA30DB621ADA20F0092F894 /* AztecAttachmentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA30DB421ADA20F0092F894 /* AztecAttachmentDelegate.swift */; };
+		7EAA66EF22CB36FD00869038 /* TestAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAA66EE22CB36FD00869038 /* TestAnalyticsTracker.swift */; };
 		7EAD7CD0206D761200BEDCFD /* MediaExternalExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */; };
 		7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5824620EC41B200002702 /* NotificationContentFactory.swift */; };
 		7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB4125206C388100012D98 /* StockPhotosService.swift */; };
+		7EC9FE0B22C627DB00C5A888 /* PostEditorAnalyticsSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC9FE0A22C627DB00C5A888 /* PostEditorAnalyticsSessionTests.swift */; };
 		7ECD5B8120C4D823001AEBC5 /* MediaPreviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD5B8020C4D823001AEBC5 /* MediaPreviewHelper.swift */; };
 		7ED3695520A9F091007B0D56 /* Blog+ImageSourceInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */; };
 		7EDAB3F420B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDAB3F320B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift */; };
@@ -1832,7 +1834,7 @@
 		F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
 		F1DB8D292288C14400906E2F /* Uploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D282288C14400906E2F /* Uploader.swift */; };
 		F1DB8D2B2288C24500906E2F /* UploadsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D2A2288C24500906E2F /* UploadsManager.swift */; };
-		F928EDA3226140620030D451 /* WPCrashLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F928EDA2226140620030D451 /* WPCrashLogging.swift */; };
+		F928EDA3226140620030D451 /* WPCrashLoggingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */; };
 		F9463A7321C05EE90081F11E /* ScreenshotCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */; };
 		F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
 		F9941D1822A805F600788F33 /* UIImage+XCAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9941D1722A805F600788F33 /* UIImage+XCAssetTests.swift */; };
@@ -2286,7 +2288,7 @@
 		17E363D022C42808000E0C79 /* pride_icon_60pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pride_icon_60pt.png; sourceTree = "<group>"; };
 		17E363D122C42808000E0C79 /* pride_icon_76pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_76pt@2x.png"; sourceTree = "<group>"; };
 		17E363D222C42808000E0C79 /* pride_icon_76pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pride_icon_76pt.png; sourceTree = "<group>"; };
-		17E363D322C42808000E0C79 /* pride_icon_83.5pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_83.5pt@2x.png"; sourceTree = "<group>"; };
+		17E363D322C42808000E0C79 /* pride_icon_83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_83.5@2x.png"; sourceTree = "<group>"; };
 		17E363D422C42809000E0C79 /* pride_icon_29pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_29pt@3x.png"; sourceTree = "<group>"; };
 		17E363D522C42809000E0C79 /* pride_icon_40pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_40pt@2x.png"; sourceTree = "<group>"; };
 		17E363D622C42809000E0C79 /* pride_icon_40pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pride_icon_40pt.png; sourceTree = "<group>"; };
@@ -2967,9 +2969,11 @@
 		7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextManagerType.swift; sourceTree = "<group>"; };
 		7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorMediaUtility.swift; sourceTree = "<group>"; };
 		7EA30DB421ADA20F0092F894 /* AztecAttachmentDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AztecAttachmentDelegate.swift; sourceTree = "<group>"; };
+		7EAA66EE22CB36FD00869038 /* TestAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAnalyticsTracker.swift; sourceTree = "<group>"; };
 		7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExternalExporter.swift; sourceTree = "<group>"; };
 		7EB5824620EC41B200002702 /* NotificationContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentFactory.swift; sourceTree = "<group>"; };
 		7EBB4125206C388100012D98 /* StockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosService.swift; sourceTree = "<group>"; };
+		7EC9FE0A22C627DB00C5A888 /* PostEditorAnalyticsSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorAnalyticsSessionTests.swift; sourceTree = "<group>"; };
 		7ECD5B8020C4D823001AEBC5 /* MediaPreviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewHelper.swift; sourceTree = "<group>"; };
 		7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+ImageSourceInformation.swift"; sourceTree = "<group>"; };
 		7EDAB3F320B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CircularProgressView+ActivityIndicatorType.swift"; sourceTree = "<group>"; };
@@ -4148,7 +4152,7 @@
 		F373612EEEEF10E500093FF3 /* Pods-WordPress.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		F47DB4A8EC2E6844E213A3FA /* Pods_WordPressShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7E3CC306AECBBCB71D2E19C /* Pods_WordPressDraftActionExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressDraftActionExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F928EDA2226140620030D451 /* WPCrashLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPCrashLogging.swift; sourceTree = "<group>"; };
+		F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPCrashLoggingProvider.swift; sourceTree = "<group>"; };
 		F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotCredentials.swift; sourceTree = "<group>"; };
 		F9941D1722A805F600788F33 /* UIImage+XCAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+XCAssetTests.swift"; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
@@ -4719,20 +4723,20 @@
 		17DC4C1E22C5E6910059CA11 /* Open Source Dark */ = {
 			isa = PBXGroup;
 			children = (
-				17DC4C1F22C5E6910059CA11 /* open_source_dark_icon_20pt@2x.png */,
-				17DC4C2022C5E6910059CA11 /* open_source_dark_icon_40pt@3x.png */,
 				17DC4C2122C5E6910059CA11 /* open_source_dark_icon_20pt.png */,
-				17DC4C2222C5E6910059CA11 /* open_source_dark_icon_40pt@2x.png */,
+				17DC4C1F22C5E6910059CA11 /* open_source_dark_icon_20pt@2x.png */,
 				17DC4C2322C5E6910059CA11 /* open_source_dark_icon_20pt@3x.png */,
-				17DC4C2422C5E6910059CA11 /* open_source_dark_icon_40pt.png */,
-				17DC4C2522C5E6910059CA11 /* open_source_dark_icon_76pt@2x.png */,
 				17DC4C2622C5E6910059CA11 /* open_source_dark_icon_29pt.png */,
-				17DC4C2722C5E6910059CA11 /* open_source_dark_icon_60pt@3x.png */,
-				17DC4C2822C5E6910059CA11 /* open_source_dark_icon_29pt@3x.png */,
-				17DC4C2922C5E6910059CA11 /* open_source_dark_icon_83.5@2x.png */,
 				17DC4C2A22C5E6910059CA11 /* open_source_dark_icon_29pt@2x.png */,
+				17DC4C2822C5E6910059CA11 /* open_source_dark_icon_29pt@3x.png */,
+				17DC4C2422C5E6910059CA11 /* open_source_dark_icon_40pt.png */,
+				17DC4C2222C5E6910059CA11 /* open_source_dark_icon_40pt@2x.png */,
+				17DC4C2022C5E6910059CA11 /* open_source_dark_icon_40pt@3x.png */,
 				17DC4C2B22C5E6910059CA11 /* open_source_dark_icon_60pt@2x.png */,
+				17DC4C2722C5E6910059CA11 /* open_source_dark_icon_60pt@3x.png */,
 				17DC4C2C22C5E6910059CA11 /* open_source_dark_icon_76pt.png */,
+				17DC4C2522C5E6910059CA11 /* open_source_dark_icon_76pt@2x.png */,
+				17DC4C2922C5E6910059CA11 /* open_source_dark_icon_83.5@2x.png */,
 			);
 			path = "Open Source Dark";
 			sourceTree = "<group>";
@@ -4775,7 +4779,7 @@
 				17E363D922C4280A000E0C79 /* pride_icon_60pt@3x.png */,
 				17E363D222C42808000E0C79 /* pride_icon_76pt.png */,
 				17E363D122C42808000E0C79 /* pride_icon_76pt@2x.png */,
-				17E363D322C42808000E0C79 /* pride_icon_83.5pt@2x.png */,
+				17E363D322C42808000E0C79 /* pride_icon_83.5@2x.png */,
 			);
 			path = Pride;
 			sourceTree = "<group>";
@@ -4876,7 +4880,7 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -5442,7 +5446,7 @@
 		59DD94311AC479DC0032DD6B /* Logging */ = {
 			isa = PBXGroup;
 			children = (
-				F928EDA2226140620030D451 /* WPCrashLogging.swift */,
+				F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */,
 				938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */,
 				59DD94321AC479ED0032DD6B /* WPLogger.h */,
 				59DD94331AC479ED0032DD6B /* WPLogger.m */,
@@ -6309,6 +6313,31 @@
 				7E4123B120F4097A00DF8486 /* NotificationContentRangeFactory.swift */,
 			);
 			path = Ranges;
+			sourceTree = "<group>";
+		};
+		7EAA66ED22CB36DA00869038 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7EAA66EE22CB36FD00869038 /* TestAnalyticsTracker.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		7EC9FE0822C6275900C5A888 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				7EAA66ED22CB36DA00869038 /* Utils */,
+				7EC9FE0922C6276B00C5A888 /* EditorAnalytics */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
+		7EC9FE0922C6276B00C5A888 /* EditorAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				7EC9FE0A22C627DB00C5A888 /* PostEditorAnalyticsSessionTests.swift */,
+			);
+			path = EditorAnalytics;
 			sourceTree = "<group>";
 		};
 		7EFF207F20EAC59D009C4699 /* Groups */ = {
@@ -8393,6 +8422,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				7EC9FE0822C6275900C5A888 /* Analytics */,
 				572FB3FE223A800500933C76 /* Classes */,
 				FF9A6E6F21F9359200D36D14 /* Gutenberg */,
 				7E442FC520F677A300DEACA5 /* ActivityLog */,
@@ -9009,6 +9039,7 @@
 				E1756E61169493AD00D9EC00 /* Generate API credentials */,
 				825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
+				F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
@@ -9350,7 +9381,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -9524,7 +9555,7 @@
 				17E3630822C41725000E0C79 /* wordpress_dark_icon_29pt@3x.png in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				9A4E215A21F7565A00EFF212 /* QuickStartChecklistCell.xib in Resources */,
-				17E363E322C4280A000E0C79 /* pride_icon_83.5pt@2x.png in Resources */,
+				17E363E322C4280A000E0C79 /* pride_icon_83.5@2x.png in Resources */,
 				D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				17E3630522C41725000E0C79 /* wordpress_dark_icon_60pt@3x.png in Resources */,
@@ -9954,7 +9985,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# This script adds the version number to the icon of internal releases.\n\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nsh ../Scripts/BuildPhases/AddVersionToIcons.sh";
+			shellScript = "#!/bin/sh\n\n# This script adds the version number to the icon of internal releases.\n\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nsh ../Scripts/BuildPhases/AddVersionToIcons.sh\n";
 		};
 		920B9A6DAD47189622A86A9C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -10133,6 +10164,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		F9C5CF0222CD5DB0007CEF56 /* Copy Alternate Internal Icons (if needed) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Alternate Internal Icons (if needed)";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Overwrite the icons in the bundle with the updated internal icons\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\ncp -R ${PROJECT_DIR}/Resources/Icons-Internal/*.png \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
 		};
 		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -10508,7 +10557,7 @@
 				B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */,
 				43D74AD020F906EE004AD934 /* InlineEditableNameValueCell.swift in Sources */,
 				4089C51122371B120031CE78 /* TodayStatsRecordValue+CoreDataProperties.swift in Sources */,
-				F928EDA3226140620030D451 /* WPCrashLogging.swift in Sources */,
+				F928EDA3226140620030D451 /* WPCrashLoggingProvider.swift in Sources */,
 				D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */,
 				176BB87F20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift in Sources */,
 				E6805D321DCD399600168E4F /* WPRichTextMediaAttachment.swift in Sources */,
@@ -11598,7 +11647,9 @@
 				B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
 				E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */,
+				7EC9FE0B22C627DB00C5A888 /* PostEditorAnalyticsSessionTests.swift in Sources */,
 				D88A64A0208D8B7D008AE9BC /* StockPhotosMediaGroupTests.swift in Sources */,
+				7EAA66EF22CB36FD00869038 /* TestAnalyticsTracker.swift in Sources */,
 				931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */,
 				B5882C471D5297D1008E0EAA /* NotificationTests.swift in Sources */,
 				B532ACD31DC3AE1200FFFA57 /* OHHTTPStubs+Helpers.swift in Sources */,

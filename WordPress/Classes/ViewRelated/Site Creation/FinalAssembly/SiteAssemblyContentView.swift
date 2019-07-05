@@ -90,7 +90,7 @@ final class SiteAssemblyContentView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
-            label.textColor = .neutral(shade: .shade700)
+            label.textColor = .neutral(shade: .shade70)
             label.textAlignment = .center
 
             let createdText = NSLocalizedString("Your site has been created!",
@@ -108,7 +108,7 @@ final class SiteAssemblyContentView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
-            label.textColor = .neutral(shade: .shade400)
+            label.textColor = .neutral(shade: .shade40)
             label.textAlignment = .center
 
             let statusText = NSLocalizedString("We’re creating your new site.",
@@ -124,7 +124,7 @@ final class SiteAssemblyContentView: UIView {
 
             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
             activityIndicator.hidesWhenStopped = true
-            activityIndicator.color = .neutral(shade: .shade400)
+            activityIndicator.color = .neutral(shade: .shade40)
             activityIndicator.startAnimating()
 
             return activityIndicator
@@ -185,7 +185,7 @@ final class SiteAssemblyContentView: UIView {
         translatesAutoresizingMaskIntoConstraints = true
         autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
 
-        backgroundColor = .neutral(shade: .shade50)
+        backgroundColor = .neutral(shade: .shade5)
 
         statusStackView.addArrangedSubviews([ statusLabel, activityIndicator ])
         addSubviews([ completionLabel, statusStackView ])

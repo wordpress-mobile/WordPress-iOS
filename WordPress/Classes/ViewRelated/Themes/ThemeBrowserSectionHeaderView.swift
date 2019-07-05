@@ -27,9 +27,9 @@ class ThemeBrowserSectionHeaderView: UICollectionReusableView {
     }
 
     fileprivate func applyStyles() {
-        descriptionLabel.textColor = .neutral(shade: .shade500)
-        countLabel.textColor = .neutral(shade: .shade500)
-        countLabel.layer.borderColor = UIColor.neutral(shade: .shade400).cgColor
+        descriptionLabel.textColor = .neutral(shade: .shade50)
+        countLabel.textColor = .neutral(shade: .shade50)
+        countLabel.layer.borderColor = UIColor.neutral(shade: .shade40).cgColor
         countLabel.layer.borderWidth = 1.0
         countLabel.layer.cornerRadius = 9.0
     }
