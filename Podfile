@@ -93,12 +93,15 @@ def gutenberg_dependencies(options)
         'React-Core',
         'React-RCTImage',
         'React-RCTNetwork',
+        'React-RCTText',
+        'React-RCTWebSocket',
         'React-cxxreact',
         'React-jsinspector',
         'React-jsi',
         'React-jsiexecutor',
         'yoga',
         'Folly',
+        'glog',
         'react-native-keyboard-aware-scroll-view',
         'react-native-safe-area',
         'react-native-video',
@@ -129,7 +132,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'f39f6ead79b65bdf9a8e14cec87ff7d459ed0f82'
+    gutenberg :commit => 'a6300113d246b755674b494483423c5204c90266'
 
     ## Third party libraries
     ## =====================
