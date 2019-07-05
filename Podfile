@@ -91,6 +91,7 @@ end
 def gutenberg_dependencies(options)
     dependencies = [
         'React-Core',
+        'React-DevSupport',
         'React-RCTImage',
         'React-RCTNetwork',
         'React-RCTText',
@@ -132,7 +133,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'a6300113d246b755674b494483423c5204c90266'
+    gutenberg :commit => '512b7085ee7373ecc79626abba8e5d2620356435'
 
     ## Third party libraries
     ## =====================
