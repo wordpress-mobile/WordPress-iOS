@@ -344,6 +344,7 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
         item.imageInsets = imageInsets;
     }
+    item.tintColor = [UIColor murielPrimary];
     return item;
 }
 

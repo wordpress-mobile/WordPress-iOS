@@ -67,6 +67,16 @@
     }
 
     @available(swift, obsoleted: 1.0)
+    static func murielText() -> UIColor {
+        return .text
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielTextSubtle() -> UIColor {
+        return .textSubtle
+    }
+
+    @available(swift, obsoleted: 1.0)
     static func murielAccent() -> UIColor {
         return .accent
     }

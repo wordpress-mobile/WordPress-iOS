@@ -42,41 +42,41 @@
 + (void)applyPostAuthorSiteStyle:(UILabel *)label
 {
     [self configureLabelForRegularFontStyle:label];
-    label.textColor = [self greyDarken20];
+    label.textColor = [UIColor murielText];
 }
 
 + (void)applyPostAuthorNameStyle:(UILabel *)label
 {
     [self configureLabelForSmallFontStyle:label];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielTextSubtle];
 }
 
 + (void)applyPostTitleStyle:(UILabel *)label
 {
-    label.textColor = [self darkGrey];
+    label.textColor = [UIColor murielText];
 }
 
 + (void)applyPostSnippetStyle:(UILabel *)label
 {
-    label.textColor = [self darkGrey];
+    label.textColor = [UIColor murielText];
 }
 
 + (void)applyPostDateStyle:(UILabel *)label
 {
     [self configureLabelForDeviceDependantStyle:label];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielNeutral30];
 }
 
 + (void)applyPostStatusStyle:(UILabel *)label
 {
     [self configureLabelForDeviceDependantStyle:label];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielTextSubtle];
 }
 
 + (void)applyPostMetaButtonStyle:(UIButton *)button
 {
     [self configureLabelForDeviceDependantStyle:button.titleLabel];
-    [button setTitleColor:[self grey] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielNeutral30] forState:UIControlStateNormal];
 }
 
 + (void)applyPostProgressViewStyle:(UIProgressView *)progressView
@@ -89,7 +89,7 @@
 + (void)applyRestorePostLabelStyle:(UILabel *)label
 {
     [self configureLabelForDeviceDependantStyle:label];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielTextSubtle];
 }
 
 + (void)applyRestorePostButtonStyle:(UIButton *)button
