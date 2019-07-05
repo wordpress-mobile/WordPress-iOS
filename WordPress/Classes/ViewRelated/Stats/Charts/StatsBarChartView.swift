@@ -103,6 +103,7 @@ class StatsBarChartView: BarChartView {
         super.init(frame: .zero)
 
         initialize()
+        setupGestures()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -117,6 +118,26 @@ class StatsBarChartView: BarChartView {
 // MARK: - Private behavior
 
 private extension StatsBarChartView {
+    func setupGestures() {
+        gestureRecognizers = gestureRecognizers?.filter { gesture in
+            if let gesture = gesture as? UITapGestureRecognizer {
+                return gesture.numberOfTapsRequired != 1
+            }
+            return true
+        }
+        let tapGestureRecognizer = NSUITapGestureRecognizer(target: self, action: #selector(barTapGestureRecognized(_:)))
+        addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc func barTapGestureRecognized(_ recognizer: NSUITapGestureRecognizer) {
+        if data != nil, recognizer.state == .ended,
+            let highlight = getHighlightByTouchPoint(recognizer.location(in: self)),
+            highlight != lastHighlighted {
+            lastHighlighted = highlight
+            highlightValue(highlight, callDelegate: true)
+        }
+    }
+
     func applyStyling() {
         configureBarChartViewProperties()
         configureBarLineChartViewBaseProperties()
