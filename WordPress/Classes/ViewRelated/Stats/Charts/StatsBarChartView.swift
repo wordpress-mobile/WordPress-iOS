@@ -120,7 +120,7 @@ class StatsBarChartView: BarChartView {
 private extension StatsBarChartView {
     func setupGestures() {
         gestureRecognizers = gestureRecognizers?.filter { gesture in
-            if let gesture = (gesture as? UITapGestureRecognizer) {
+            if let gesture = gesture as? UITapGestureRecognizer {
                 return gesture.numberOfTapsRequired != 1
             }
             return true
