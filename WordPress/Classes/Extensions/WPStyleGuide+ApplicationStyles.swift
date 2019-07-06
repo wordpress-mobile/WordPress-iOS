@@ -15,6 +15,15 @@ extension WPStyleGuide {
         return UIImage(color: UIColor(fromHex: 0x007eb1))
     }
 
+    class func configureDefaultTint() {
+        guard FeatureFlag.murielColors.enabled else {
+            configureNavigationBarAppearance()
+            return
+        }
+        
+        UIWindow.appearance().tintColor = .primary
+    }
+
     /// Style the navigation appearance using Muriel colors
     class func configureNavigationAppearance() {
         guard FeatureFlag.murielColors.enabled else {

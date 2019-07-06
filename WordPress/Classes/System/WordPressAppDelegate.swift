@@ -770,6 +770,7 @@ extension WordPressAppDelegate {
 
         WPStyleGuide.configureTabBarAppearance()
         WPStyleGuide.configureNavigationAppearance()
+        WPStyleGuide.configureDefaultTint()
         if !FeatureFlag.murielColors.enabled {
             UITabBar.appearance().shadowImage = UIImage(color: UIColor(red: 210.0/255.0, green: 222.0/255.0, blue: 230.0/255.0, alpha: 1.0))
 
