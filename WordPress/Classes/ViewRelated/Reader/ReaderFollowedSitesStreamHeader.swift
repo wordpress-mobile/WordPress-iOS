@@ -24,7 +24,7 @@ import WordPressShared.WPStyleGuide
 
 
     @objc func applyStyles() {
-        backgroundColor = .neutral(shade: .shade5)
+        backgroundColor = .clear
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
 
