@@ -198,7 +198,7 @@ extension WPStyleGuide {
         }
 
         // Action Buttons
-        public static let blockActionDisabledColor  = UIColor.neutral
+        public static let blockActionDisabledColor  = UIColor.neutral(shade: .shade30)
         public static let blockActionEnabledColor   = UIColor.primary
 
         // RichText Helpers
@@ -322,7 +322,7 @@ extension WPStyleGuide {
         fileprivate static let subjectTextColor         = UIColor.text
         fileprivate static let subjectNoticonColor      = noticonReadColor
         fileprivate static let footerTextColor          = UIColor.textSubtle
-        fileprivate static let blockNoticonColor        = UIColor.error
+        fileprivate static let blockNoticonColor        = UIColor.neutral
         fileprivate static let snippetColor             = UIColor.neutral
         fileprivate static let headerTitleContextColor  = UIColor.primary
 
