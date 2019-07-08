@@ -3254,7 +3254,7 @@ extension AztecPostViewController {
         static let mediaProgressOverlay         = UIColor.neutral(shade: .shade70).withAlphaComponent(CGFloat(0.6))
         static let mediaProgressBarBackground   = UIColor.neutral(shade: .shade0)
         static let mediaProgressBarTrack        = UIColor.primary
-        static let aztecLinkColor               = UIColor.primary(shade: .shade40)
+        static let aztecLinkColor               = UIColor.primary
         static let mediaOverlayBorderColor      = UIColor.primary
     }
 

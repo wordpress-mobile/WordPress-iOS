@@ -121,7 +121,7 @@ extension WPStyleGuide {
         public static let blockTextColor            = WPStyleGuide.littleEddieGrey()
         public static let blockQuotedColor          = UIColor(red: 0x7E/255.0, green: 0x9E/255.0, blue: 0xB5/255.0, alpha: 0xFF/255.0)
         public static let blockBackgroundColor      = UIColor.white
-        public static let blockLinkColor            = WPStyleGuide.baseLighterBlue()
+        public static let blockLinkColor            = UIColor.primary
         public static let blockSeparatorColor       = WPStyleGuide.readGrey()
 
         public static let blockApprovedBgColor      = UIColor.clear
@@ -129,7 +129,7 @@ extension WPStyleGuide {
         public static let blockUnapprovedSideColor  = WPStyleGuide.alertYellowDark()
         public static let blockUnapprovedBgColor    = UIColor.warning(shade: .shade0)
         public static let blockUnapprovedTextColor  = UIColor.errorDark
-        public static let blockUnapprovedLinkColor  = UIColor.primary(shade: .shade40)
+        public static let blockUnapprovedLinkColor  = UIColor.primary
 
         public static var contentBlockRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
