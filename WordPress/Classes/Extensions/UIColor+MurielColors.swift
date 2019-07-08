@@ -59,7 +59,7 @@ struct MurielColor {
     // MARK: - Muriel's semantic colors
     static let accent = MurielColor(name: .pink)
     static let brand = MurielColor(name: .airo)
-    static let divider = MurielColor(name: .gray, shade: .shade5)
+    static let divider = MurielColor(name: .gray, shade: .shade10)
     static let error = MurielColor(name: .red)
     static let neutral = MurielColor(name: .gray)
     static let primary = MurielColor(name: .blue)

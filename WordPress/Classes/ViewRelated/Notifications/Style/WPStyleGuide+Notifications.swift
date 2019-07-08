@@ -21,12 +21,12 @@ extension WPStyleGuide {
         // NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonTextColor          = UIColor.white
-        public static let noticonReadColor          = UIColor(red: 0xA4/255.0, green: 0xB9/255.0, blue: 0xC9/255.0, alpha: 0xFF/255.0)
-        public static let noticonUnreadColor        = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
-        public static let noticonUnmoderatedColor   = WPStyleGuide.alertYellowDark()
+        public static let noticonReadColor          = UIColor.neutral(shade: .shade20)
+        public static let noticonUnreadColor        = UIColor.primary
+        public static let noticonUnmoderatedColor   = UIColor.warning
 
         public static let noteBackgroundReadColor   = UIColor.white
-        public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
+        public static let noteBackgroundUnreadColor = UIColor.neutral(shade: .shade0)
 
         public static let noteSeparatorColor        = blockSeparatorColor
 
@@ -74,7 +74,7 @@ extension WPStyleGuide {
         public static let headerTitleColor          = blockTextColor
         public static let headerTitleBoldFont       = blockBoldFont
 
-        public static let headerDetailsColor        = UIColor(red: 0x00/255.0, green: 0xAA/255.0, blue: 0xDC/255.0, alpha: 0xFF/255.0)
+        public static let headerDetailsColor        = UIColor.primary
         public static let headerDetailsRegularFont  = blockRegularFont
 
         public static var headerTitleRegularStyle: [NSAttributedString.Key: Any] {
@@ -118,15 +118,15 @@ extension WPStyleGuide {
         public static let blockRegularFont          = WPFontManager.systemRegularFont(ofSize: blockFontSize)
         public static let blockBoldFont             = WPFontManager.systemSemiBoldFont(ofSize: blockFontSize)
 
-        public static let blockTextColor            = WPStyleGuide.littleEddieGrey()
-        public static let blockQuotedColor          = UIColor(red: 0x7E/255.0, green: 0x9E/255.0, blue: 0xB5/255.0, alpha: 0xFF/255.0)
+        public static let blockTextColor            = UIColor.text
+        public static let blockQuotedColor          = UIColor.neutral
         public static let blockBackgroundColor      = UIColor.white
         public static let blockLinkColor            = UIColor.primary
-        public static let blockSeparatorColor       = WPStyleGuide.readGrey()
+        public static let blockSeparatorColor       = UIColor.divider
 
         public static let blockApprovedBgColor      = UIColor.clear
 
-        public static let blockUnapprovedSideColor  = WPStyleGuide.alertYellowDark()
+        public static let blockUnapprovedSideColor  = UIColor.warning(shade: .shade60)
         public static let blockUnapprovedBgColor    = UIColor.warning(shade: .shade0)
         public static let blockUnapprovedTextColor  = UIColor.errorDark
         public static let blockUnapprovedLinkColor  = UIColor.primary
@@ -198,8 +198,8 @@ extension WPStyleGuide {
         }
 
         // Action Buttons
-        public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
-        public static let blockActionEnabledColor   = UIColor(red: 0xEA/255.0, green: 0x6D/255.0, blue: 0x1B/255.0, alpha: 0xFF/255.0)
+        public static let blockActionDisabledColor  = UIColor.neutral
+        public static let blockActionEnabledColor   = UIColor.primary
 
         // RichText Helpers
         public static func blockBackgroundColorForRichText(_ isBadge: Bool) -> UIColor {
@@ -318,13 +318,13 @@ extension WPStyleGuide {
         )
 
         // Colors
-        fileprivate static let sectionHeaderTextColor   = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
-        fileprivate static let subjectTextColor         = WPStyleGuide.littleEddieGrey()
+        fileprivate static let sectionHeaderTextColor   = UIColor.neutral(shade: .shade20)
+        fileprivate static let subjectTextColor         = UIColor.text
         fileprivate static let subjectNoticonColor      = noticonReadColor
-        fileprivate static let footerTextColor          = WPStyleGuide.allTAllShadeGrey()
-        fileprivate static let blockNoticonColor        = WPStyleGuide.allTAllShadeGrey()
-        fileprivate static let snippetColor             = WPStyleGuide.allTAllShadeGrey()
-        fileprivate static let headerTitleContextColor  = WPStyleGuide.allTAllShadeGrey()
+        fileprivate static let footerTextColor          = UIColor.textSubtle
+        fileprivate static let blockNoticonColor        = UIColor.error
+        fileprivate static let snippetColor             = UIColor.neutral
+        fileprivate static let headerTitleContextColor  = UIColor.primary
 
         // Fonts
         fileprivate static var sectionHeaderFont: UIFont {
