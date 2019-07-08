@@ -20,7 +20,7 @@ extension WPStyleGuide {
             configureNavigationBarAppearance()
             return
         }
-        
+
         UIWindow.appearance().tintColor = .primary
     }
 
