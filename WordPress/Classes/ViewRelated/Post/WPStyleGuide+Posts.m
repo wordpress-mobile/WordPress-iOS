@@ -30,7 +30,7 @@
 
 + (UIColor *)postCardBorderColor
 {
-    return [UIColor murielNeutral10];
+    return [UIColor murielNeutral5];
 }
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell
