@@ -185,7 +185,8 @@ private extension SiteStatsPeriodTableViewController {
     func refreshData() {
 
         guard let selectedDate = selectedDate,
-            let selectedPeriod = selectedPeriod else {
+            let selectedPeriod = selectedPeriod,
+            viewIsVisible() else {
                 refreshControl?.endRefreshing()
                 return
         }
