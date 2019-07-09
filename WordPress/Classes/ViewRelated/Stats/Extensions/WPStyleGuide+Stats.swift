@@ -176,7 +176,7 @@ extension WPStyleGuide {
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 
-        static let tableBackgroundColor = UIColor.neutral(shade: .shade5)
+        static let tableBackgroundColor = UIColor.neutral(shade: .shade0)
         static let cellBackgroundColor = UIColor.white
         static let separatorColor = UIColor.neutral(shade: .shade10)
         static let verticalSeparatorColor = UIColor.neutral(shade: .shade5)

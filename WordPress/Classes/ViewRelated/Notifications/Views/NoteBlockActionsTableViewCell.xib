@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,13 +19,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8I0-Zx-4NW">
-                        <rect key="frame" x="0.0" y="0.0" width="389" height="72"/>
+                        <rect key="frame" x="0.0" y="0.0" width="389" height="71.5"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="V3D-QS-G4g">
-                                <rect key="frame" x="20" y="11" width="349" height="50.5"/>
+                                <rect key="frame" x="20" y="11" width="349" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-K2-0vs" userLabel="Approve" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="0.0" y="9" width="58" height="33"/>
+                                        <rect key="frame" x="0.0" y="8.5" width="58" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Approve" image="notifications-approve">
@@ -39,7 +39,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU3-yd-ZtO" userLabel="Spam" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="58" y="9" width="58.5" height="33"/>
+                                        <rect key="frame" x="58" y="8.5" width="58.5" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Spam" image="notifications-spam">
@@ -51,7 +51,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-fl-vc7" userLabel="Trash" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="116.5" y="9" width="58" height="33"/>
+                                        <rect key="frame" x="116.5" y="8.5" width="58" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Trash" image="notifications-trash">
@@ -63,7 +63,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-Uo-uFk" userLabel="Like" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="174.5" y="9" width="58" height="33"/>
+                                        <rect key="frame" x="174.5" y="8.5" width="58" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Like" image="notifications-like">
@@ -77,7 +77,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LLz-LW-VxX" userLabel="Edit" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="232.5" y="9.5" width="58.5" height="32"/>
+                                        <rect key="frame" x="232.5" y="9" width="58.5" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Edit" image="icon-pencil">
@@ -91,7 +91,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXE-y2-DWd" userLabel="Reply" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="291" y="9" width="58" height="33"/>
+                                        <rect key="frame" x="291" y="8.5" width="58" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Reply" image="notifications-reply">

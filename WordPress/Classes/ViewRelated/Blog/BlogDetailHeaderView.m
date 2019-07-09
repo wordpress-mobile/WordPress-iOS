@@ -4,7 +4,6 @@
 #import "WordPress-Swift.h"
 
 
-
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
 const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
@@ -221,7 +220,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.numberOfLines = 1;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide littleEddieGrey];
+    label.textColor = [UIColor murielText];
     label.adjustsFontSizeToFitWidth = NO;
     [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCallout];
 
@@ -239,7 +238,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.numberOfLines = 1;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide allTAllShadeGrey];
+    label.textColor = [UIColor murielNeutral];
     label.adjustsFontSizeToFitWidth = NO;
     [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCaption1 symbolicTraits:UIFontDescriptorTraitItalic];
 
