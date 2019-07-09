@@ -199,11 +199,11 @@ extension WPStyleGuide {
 
         struct PostingActivityColors {
             static let lightGrey = UIColor.neutral(shade: .shade10)
-            static let lightBlue = UIColor.muriel(color: MurielColor(name: .airo, shade: .shade10))
-            static let mediumBlue = UIColor.muriel(color: MurielColor(name: .airo, shade: .shade30))
+            static let lightBlue = UIColor.brand(shade: .shade10)
+            static let mediumBlue = UIColor.brand(shade: .shade30)
             static let blue = UIColor.muriel(color: MurielColor(name: .airo, shade: .shade50))
             static let darkBlue = UIColor.muriel(color: MurielColor(name: .airo, shade: .shade70))
-            static let pink = UIColor.accent(shade: .shade50)
+            static let pink = UIColor.accent
         }
 
         // MARK: - Posting Activity Collection View Styles
