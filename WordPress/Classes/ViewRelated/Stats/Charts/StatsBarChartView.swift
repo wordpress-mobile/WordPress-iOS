@@ -16,7 +16,7 @@ class StatsBarChartView: BarChartView {
     // MARK: Properties
 
     private struct Constants {
-        static let intrinsicHeight          = CGFloat(170)      // height via Zeplin
+        static let intrinsicHeight          = CGFloat(150)
         static let highlightAlpha           = CGFloat(1)
         static let horizontalAxisLabelCount = 2
         static let markerAlpha              = CGFloat(0.2)
