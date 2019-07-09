@@ -603,7 +603,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         viewController.statsService = WPStatsService(siteId: blog.dotComID,
                                                      siteTimeZone: service.timeZone(for: blog),
                                                      oauth2Token: blog.authToken,
-                                                     andCacheExpirationInterval: type(of: self).statsCacheInterval,
+                                                     andCacheExpirationInterval: statsCacheInterval,
                                                      apiBaseUrlString: Environment.current.wordPressComApiBase)
 
         navigationController?.pushViewController(viewController, animated: true)
