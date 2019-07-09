@@ -8,7 +8,7 @@ Note that due to the mock server setup, tests cannot be run on physical devices 
 
 1. Follow the [build instructions](https://github.com/wordpress-mobile/WordPress-iOS#build-instructions) (steps 1-5) to clone the project, install the dependencies, and open it in Xcode.
 2. `rake mocks` to start a local mock server.
-3. Run the tests in the `WordPressUITests` target.
+3. Run the tests in the `WordPressUITests` target on a simulator.
 
 ## Add a Test
 
@@ -18,6 +18,10 @@ When adding a new UI test, consider:
 * What screens are being tested (defined as page objects in `Screens/`).
 * Whether there are repeated flows across tests (defined in `Flows/`).
 * What network requests are made during the test (defined in the `WordPressMocks` repo).
+
+It's preferred to focus UI tests on entire user flows, and group tests with related flows or goals in the same test suite.
+
+When you add a new test, you may need to add new screens, methods, and flows. We use page objects and method chaining for clarity in our tests. Wherever possible, use an existing `accessibilityIdentifier` (or add one to the app) instead of a string to select a UI element on the screen. This ensures tests can be run regardless of the device language.
 
 ## Add or update network mocks
 
