@@ -211,16 +211,19 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
         btnEdit.setTitle(EditComment.title, for: UIControl.State())
         btnEdit.setTitleColor(textNormalColor, for: UIControl.State())
+        btnEdit.tintColor = textNormalColor
         btnEdit.accessibilityLabel = EditComment.title
         btnEdit.accessibilityHint = EditComment.hint
 
         btnSpam.setTitle(MarkAsSpam.title, for: .normal)
         btnSpam.setTitleColor(textNormalColor, for: UIControl.State())
+        btnSpam.tintColor = textNormalColor
         btnSpam.accessibilityLabel = MarkAsSpam.title
         btnSpam.accessibilityHint = MarkAsSpam.hint
 
         btnTrash.setTitle(TrashComment.title, for: .normal)
         btnTrash.setTitleColor(textNormalColor, for: UIControl.State())
+        btnTrash.tintColor = textNormalColor
         btnTrash.accessibilityLabel = TrashComment.title
         btnTrash.accessibilityHint = TrashComment.hint
     }
