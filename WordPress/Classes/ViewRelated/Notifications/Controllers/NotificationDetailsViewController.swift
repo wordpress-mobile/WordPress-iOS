@@ -161,6 +161,7 @@ class NotificationDetailsViewController: UIViewController {
         keyboardManager?.stopListeningToKeyboardNotifications()
         tearDownNotificationListeners()
         storeNotificationReplyIfNeeded()
+        dismissNotice()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -375,15 +376,15 @@ extension NotificationDetailsViewController {
     }
 
     func setupMainView() {
-        view.backgroundColor = WPStyleGuide.itsEverywhereGrey()
+        view.backgroundColor = .neutral(shade: .shade0)
     }
 
     func setupTableView() {
         tableView.separatorStyle            = .none
         tableView.keyboardDismissMode       = .interactive
-        tableView.backgroundColor           = WPStyleGuide.greyLighten30()
+        tableView.backgroundColor           = .neutral(shade: .shade5)
         tableView.accessibilityIdentifier   = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
-        tableView.backgroundColor           = WPStyleGuide.itsEverywhereGrey()
+        tableView.backgroundColor           = .neutral(shade: .shade0)
     }
 
     func setupTableViewCells() {
@@ -1044,7 +1045,7 @@ private extension NotificationDetailsViewController {
         let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
             if success {
                 let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-                SVProgressHUD.showDismissibleSuccess(withStatus: message)
+                self?.displayNotice(title: message)
             } else {
                 generator.notificationOccurred(.error)
                 self?.displayReplyError(with: block, content: content)
@@ -1084,23 +1085,8 @@ private extension NotificationDetailsViewController {
     }
 
     func displayReplyError(with block: FormattableCommentContent, content: String) {
-        var message     = String(format: NSLocalizedString("There has been an unexpected error while sending your reply: \n\"%@\"",
-                                            comment: "Reply Failure Message"), String(content.prefix(140)))
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
-        let retryTitle  = NSLocalizedString("Try Again", comment: "Retries sending a reply")
-
-        if content.count >= 140 {
-            message.insert("…", at: message.index(message.endIndex, offsetBy: -1))
-        }
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(cancelTitle)
-        alertController.addDefaultActionWithTitle(retryTitle) { action in
-            self.replyCommentWithBlock(block, content: content)
-        }
-
-        // Note: This viewController might not be visible anymore
-        alertController.presentFromRootViewController()
+        let message = NSLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message")
+        displayNotice(title: message)
     }
 }
 

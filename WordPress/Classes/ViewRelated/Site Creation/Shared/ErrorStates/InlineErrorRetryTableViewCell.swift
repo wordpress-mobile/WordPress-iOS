@@ -29,7 +29,7 @@ private class InlineErrorRetryTableViewCellAccessoryView: UIStackView {
 
     init() {
         self.retryImageView = {
-            let dismissImage = Gridicon.iconOfType(.refresh).imageWithTintColor(WPStyleGuide.wordPressBlue())
+            let dismissImage = Gridicon.iconOfType(.refresh).imageWithTintColor(.primary)
             let imageView = UIImageView(image: dismissImage)
 
             imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,7 +44,7 @@ private class InlineErrorRetryTableViewCellAccessoryView: UIStackView {
             label.translatesAutoresizingMaskIntoConstraints = false
 
             label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .bold)
-            label.textColor = WPStyleGuide.wordPressBlue()
+            label.textColor = .primary
             label.textAlignment = .center
 
             label.text = NSLocalizedString("Retry", comment: "Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation")
@@ -122,10 +122,10 @@ final class InlineErrorRetryTableViewCell: UITableViewCell, ReusableCell {
     private func initialize() {
         if let label = textLabel {
             WPStyleGuide.configureLabel(label, textStyle: .body)
-            label.textColor = WPStyleGuide.greyDarken10()
+            label.textColor = .neutral(shade: .shade40)
         }
 
-        let borderColor = WPStyleGuide.greyLighten20()
+        let borderColor = UIColor.neutral(shade: .shade10)
         addTopBorder(withColor: borderColor)
         addBottomBorder(withColor: borderColor)
 

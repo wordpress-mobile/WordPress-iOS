@@ -96,6 +96,7 @@ extension LoginEpilogueTableViewController {
         }
 
         cell.titleLabel?.text = title(for: section)
+        cell.accessibilityIdentifier = "Login Cell"
 
         return cell
     }
@@ -136,8 +137,8 @@ extension LoginEpilogueTableViewController {
         }
 
         headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-        headerView.textLabel?.textColor = WPStyleGuide.greyDarken20()
-        headerView.contentView.backgroundColor = WPStyleGuide.lightGrey()
+        headerView.textLabel?.textColor = .neutral(shade: .shade50)
+        headerView.contentView.backgroundColor = .neutral(shade: .shade0)
     }
 }
 

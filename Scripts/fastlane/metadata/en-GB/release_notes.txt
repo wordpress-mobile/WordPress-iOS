@@ -1,5 +1,3 @@
-* Mark notifications as unread with a simple swipe.
-* That occasional crash when searching the free photo library? Fixed!
-* Logging in to self-hosted sites is now smoother than ever.
-* Blockquotes in the Reader got a new, sleek look.
-* We’ve made lots of small improvements to visual and hearing accessibility throughout the app.
+* Block editor improvements, ahoy! You’ve got Video, Quote and More blocks, the editor will keep text styling like bold and italics when you copy and paste, there’s a completely new colour scheme, and nested lists are now available on the toolbar. Try not to let all the new powers go to your head.
+* Sometimes, setting a Featured Image on a post would be problematic when network conditions were poor. Since we can’t fix the world’s network conditions, we fixed the app: * Featured Images should work more smoothly on all connections.
+* Stats Insights got a little spit shine with two-column layouts for your Today and All-Time stats and let you see more of your data.

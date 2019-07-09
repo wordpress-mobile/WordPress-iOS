@@ -1,5 +1,6 @@
 #import "PostListFooterView.h"
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 @interface PostListFooterView()
 
@@ -14,8 +15,8 @@
 {
     [super awakeFromNib];
 
-    self.backgroundColor = [WPStyleGuide greyLighten30];
-    self.bannerView.backgroundColor = [WPStyleGuide greyLighten30];
+    self.backgroundColor = [UIColor murielNeutral5];
+    self.bannerView.backgroundColor = [UIColor murielNeutral5];
     self.bannerView.hidden = YES;
 }
 

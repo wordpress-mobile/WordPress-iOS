@@ -1,0 +1,3 @@
+* Melhorias no editor de blocos! Adicionamos blocos de vídeo, citação e ler mais. Além disso, agora o editor manterá a formatação do texto como negrito e itálico ao copiar e colar. Agora é possível criar uma sub-lista pela barra de ferramentas e temos também um novo esquema de cores.
+* Dependendo de sua conexão, configurar imagens destacadas pode ser complicado. Como não podemos consertar a internet do mundo, consertamos o aplicativo: Configurar imagens destacadas é mais simples em qualquer velocidade de conexão agora.
+* Melhoramos como as estatísticas são exibidas criando duas colunas em "Hoje" e "Até o momento" para permitir que você veja mais dados.

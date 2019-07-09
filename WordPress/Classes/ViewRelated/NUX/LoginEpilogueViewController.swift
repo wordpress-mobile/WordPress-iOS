@@ -129,6 +129,7 @@ private extension LoginEpilogueViewController {
         continueButton.accessibilityIdentifier = "Continue"
         connectButton.setTitle(connectTitle, for: .normal)
         connectButton.isHidden = hidesConnectButton
+        connectButton.accessibilityIdentifier = "Connect"
     }
 
     /// Setup: Button Panel
@@ -146,7 +147,7 @@ private extension LoginEpilogueViewController {
             buttonPanel.backgroundColor = .white
             shadowView.isHidden = false
         } else {
-            buttonPanel.backgroundColor = WPStyleGuide.lightGrey()
+            buttonPanel.backgroundColor = .neutral(shade: .shade0)
             shadowView.isHidden = true
         }
     }

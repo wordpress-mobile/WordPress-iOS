@@ -6,8 +6,8 @@ class RevisionsNavigationController: UINavigationController {
     }
 
     override func viewDidLoad() {
-        navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.darkGrey()), for: .default)
-        navigationBar.shadowImage = UIImage(color: WPStyleGuide.greyDarken30())
+        navigationBar.setBackgroundImage(UIImage(color: .neutral(shade: .shade70)), for: .default)
+        navigationBar.shadowImage = UIImage(color: .neutral(shade: .shade60))
     }
 
     private func setupForBrowserState() {

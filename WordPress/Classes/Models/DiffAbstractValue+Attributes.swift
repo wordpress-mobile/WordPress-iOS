@@ -2,13 +2,13 @@ extension DiffAbstractValue {
     var attributes: [NSAttributedString.Key: Any]? {
         switch operation {
         case .add:
-            return [.backgroundColor: WPStyleGuide.extraLightBlue(),
+            return [.backgroundColor: UIColor.muriel(color: MurielColor(name: .blue, shade: .shade5)),
                     .underlineStyle: NSNumber(value: 2),
-                    .underlineColor: WPStyleGuide.wordPressBlue()]
+                    .underlineColor: UIColor.primary]
         case .del:
-            return [.backgroundColor: WPStyleGuide.extraLightRed(),
+            return [.backgroundColor: UIColor.muriel(color: MurielColor(name: .red, shade: .shade5)),
                     .underlineStyle: NSNumber(value: 2),
-                    .underlineColor: WPStyleGuide.errorRed(),
+                    .underlineColor: UIColor.error,
                     .strikethroughStyle: NSNumber(value: 1),
                     .strikethroughColor: UIColor.black]
         default:

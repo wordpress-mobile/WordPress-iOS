@@ -23,28 +23,56 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
     // MARK: Properties
 
     private let initialDateInterval: TimeInterval
+    private let period: StatsPeriodUnit
 
-    private lazy var formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("MMM d")
-
-        return formatter
-    }()
+    private lazy var formatter = DateFormatter()
 
     // MARK: HorizontalAxisFormatter
 
-    init(initialDateInterval: TimeInterval) {
+    init(initialDateInterval: TimeInterval, period: StatsPeriodUnit = .day) {
         self.initialDateInterval = initialDateInterval
+        self.period = period
     }
 
     // MARK: IAxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+        updateFormatterTemplate()
+
         let adjustedValue = initialDateInterval + value
         let date = Date(timeIntervalSince1970: adjustedValue)
-        let value = formatter.string(from: date)
 
-        return value
+        switch period {
+            case .week:
+                return formattedDate(forWeekContaining: date)
+            default:
+                return formatter.string(from: date)
+        }
+    }
+
+    private func updateFormatterTemplate() {
+        formatter.setLocalizedDateFormatFromTemplate(period.dateFormatTemplate)
+    }
+
+    private func formattedDate(forWeekContaining date: Date) -> String {
+        let week = weekIncludingDate(date)
+        guard let weekStart = week?.weekStart, let weekEnd = week?.weekEnd else {
+            return ""
+        }
+
+        return "\(formatter.string(from: weekStart)) – \(formatter.string(from: weekEnd))"
+    }
+
+    private func weekIncludingDate(_ date: Date) -> (weekStart: Date, weekEnd: Date)? {
+        // Note: Week is Monday - Sunday
+
+        let calendar = Calendar.current
+        guard let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)),
+            let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) else {
+                return nil
+        }
+
+        return (weekStart, weekEnd)
     }
 }
 
@@ -64,5 +92,21 @@ class VerticalAxisFormatter: IAxisValueFormatter {
         }
 
         return largeValueFormatter.stringForValue(value, axis: axis)
+    }
+
+    // Matches WPAndroid behavior to produce neater rounded values on
+    // the vertical axis.
+    static func roundUpAxisMaximum(_ input: Double) -> Double {
+        if input > 100 {
+            return roundUpAxisMaximum(input / 10) * 10
+        } else {
+            for i in 1..<25 {
+                let limit = Double(4 * i)
+                if input < limit {
+                    return limit
+                }
+            }
+            return Double(100)
+        }
     }
 }

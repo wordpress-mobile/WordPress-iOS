@@ -32,7 +32,7 @@ public struct NormalNoticeStyle: NoticeStyle {
 
     public let titleColor: UIColor = .white
     public let messageColor: UIColor = .white
-    public let backgroundColor: UIColor = .gray800
+    public let backgroundColor: UIColor = .neutral(shade: .shade80)
 
     public let layoutMargins = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
 
@@ -49,17 +49,10 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
 
     public let titleColor: UIColor = .white
-    public let messageColor: UIColor = WPStyleGuide.greyLighten20()
-    public let backgroundColor: UIColor = WPStyleGuide.darkGrey().withAlphaComponent(0.88)
+    public let messageColor: UIColor = .neutral(shade: .shade10)
+    public let backgroundColor: UIColor = UIColor.neutral(shade: .shade70).withAlphaComponent(0.88)
 
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 
     public let isDismissable = false
-}
-
-private extension UIColor {
-    /// The Gray 800 color (#2b2d2f) from the new color palette.
-    ///
-    /// TODO This is here temporarily until we have the new color palette fully implemented.
-    static let gray800 = UIColor(red: 43/255, green: 45/255, blue: 47/255, alpha: 1.0)
 }

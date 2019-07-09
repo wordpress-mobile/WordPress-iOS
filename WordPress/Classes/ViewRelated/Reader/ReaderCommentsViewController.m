@@ -165,6 +165,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [self dismissNotice];
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
@@ -675,10 +676,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         
         hideImageView = (WPDeviceIdentification.isiPhone && !isLandscape) || (WPDeviceIdentification.isiPad && isLandscape);
     }
-    
     [self.noResultsViewController configureWithTitle:self.noResultsTitleText
+                                   noConnectionTitle:nil
                                          buttonTitle:nil
                                             subtitle:nil
+                                noConnectionSubtitle:nil
                                   attributedSubtitle:nil
                      attributedSubtitleConfiguration:nil
                                                image:nil
@@ -753,6 +755,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     void (^successBlock)(void) = ^void() {
         [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+        NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
+        [weakSelf displayNoticeWithTitle:successMessage message:nil];
 
         [weakSelf trackReplyToComment];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
@@ -762,35 +766,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        NSUInteger lastIndex = content.length == 0 ? 0 : content.length - 1;
-        NSUInteger composedCharacterIndex = NSMaxRange([content rangeOfComposedCharacterSequenceAtIndex:MIN(lastIndex, 140)]);
-        // 140 is a somewhat arbitraily chosen number (old tweet length) — should be enough to let people know what
-        // comment failed to show, but not too long to display.
-
-        NSString *replyExcerpt = [content substringToIndex:composedCharacterIndex];
-
-        NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"There has been an unexpected error while sending your reply: \n\"%@\"", nil), replyExcerpt];
-        if (composedCharacterIndex < lastIndex) {
-            NSMutableString *mutString = alertMessage.mutableCopy;
-            [mutString insertString:@"…" atIndex:(alertMessage.length - 2)];
-
-            alertMessage = mutString.copy;
-        }
-
         DDLogError(@"Error sending reply: %@", error);
-
         [generator notificationOccurred:UINotificationFeedbackTypeError];
-
-        NSString *alertCancel = NSLocalizedString(@"Cancel", @"Verb. A button label. Tapping the button dismisses a prompt.");
-        NSString *alertTryAgain = NSLocalizedString(@"Try Again", @"A button label. Tapping the re-tries an action that previously failed.");
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                                 message:alertMessage
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addCancelActionWithTitle:alertCancel handler:nil];
-        [alertController addActionWithTitle:alertTryAgain style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [weakSelf sendReplyWithNewContent:content];
-        }];
-        [alertController presentFromRootViewController];
+        NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", "Reply Failure Message");
+        [weakSelf displayNoticeWithTitle:message message:nil];
 
         [weakSelf refreshTableViewAndNoResultsView];
     };

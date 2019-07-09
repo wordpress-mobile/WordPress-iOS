@@ -12,8 +12,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     enum Const {
         enum Color {
-            static let nameText = WPStyleGuide.darkGrey()
-            static let valueText = WPStyleGuide.greyDarken10()
+            static let nameText = UIColor.neutral(shade: .shade70)
+            static let valueText = UIColor.neutral(shade: .shade40)
         }
     }
 
@@ -24,9 +24,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     override var accessoryType: UITableViewCell.AccessoryType {
         didSet {
-            if accessoryType != .none {
-                valueTextField.isEnabled = false
-            }
+            let textFieldEnabled = accessoryType == .none
+            valueTextField.isEnabled = textFieldEnabled
         }
     }
 

@@ -1,5 +1,3 @@
-* Markera aviseringar som olästa genom att helt enkelt svepa.
-* Kraschade appen ibland när du sökte fria bilder? Nu har vi löst det!
-* Smidigare än någonsin att logga in till webbplatser på webbhotell eller egen server.
-* Blockcitat i läsaren har fått ny, stilig utformning.
-* Vi har gjort en lång rad små förbättringar i hela appen för åtkomlighet för syn och hörsel.
+* Förbättringar i blockredigeraren, tjoho! Nu finns det block för video, citat och ”Läs mer”. Redigeraren behåller textformatering, såsom fetstil och kursiv text när du kopierar och klistrar in. I verktygslisten finns det ett stiligt nytt färgschema och listor i flera nivåer. Låt bara inte alla dina nya möjligeter få dig att tappa huvudet.
+* Ibland kunde det vara svårt att ställa in utvald bild för ett inlägg om internetanslutningen var dålig. Eftersom vi inte har kontroll över nätkvaliteten över hela världen fixade vi appen i stället: * Nu bör utvalda bilder fungera smidigare oberoende av anslutningen.
+* Insikterna i statistiken har finputsats med layouter i dubbla kolumner för statistiken för innevarande dag och för statistiken sedan början, så att mer av din statistik får plats.

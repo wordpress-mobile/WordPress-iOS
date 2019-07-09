@@ -567,6 +567,25 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
 
         // Push the Stats Post Details ViewController
+
+        if FeatureFlag.statsRefresh.enabled {
+            guard let postID = apost.postID as? Int else {
+                return
+            }
+
+            let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            SiteStatsInformation.sharedInstance.siteTimeZone = service.timeZone(for: blog)
+            SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
+            SiteStatsInformation.sharedInstance.siteID = blog.dotComID
+
+            let postURL = URL(string: apost.permaLink! as String)
+            let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+            postStatsTableViewController.configure(postID: postID, postTitle: apost.titleForDisplay(), postURL: postURL)
+            navigationController?.pushViewController(postStatsTableViewController, animated: true)
+
+            return
+        }
+
         let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let statsBundle = Bundle(for: WPStatsViewController.self)
@@ -581,7 +600,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         viewController.postID = apost.postID
         viewController.postTitle = apost.titleForDisplay()
-        viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZone(for: blog), oauth2Token: blog.authToken, andCacheExpirationInterval: statsCacheInterval)
+        viewController.statsService = WPStatsService(siteId: blog.dotComID,
+                                                     siteTimeZone: service.timeZone(for: blog),
+                                                     oauth2Token: blog.authToken,
+                                                     andCacheExpirationInterval: type(of: self).statsCacheInterval,
+                                                     apiBaseUrlString: Environment.current.wordPressComApiBase)
 
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -742,8 +765,7 @@ private extension PostListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-            noResultsViewController.configure(title: noConnectionMessage(),
-                                              image: noResultsImageName)
+            noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: NoResultsText.buttonTitle, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
             return
         }
 
@@ -803,13 +825,15 @@ private extension PostListViewController {
     }
 
     struct NoResultsText {
-        static let buttonTitle = NSLocalizedString("Create a Post", comment: "Button title, encourages users to create their first post on their blog.")
+        static let buttonTitle = NSLocalizedString("Create Post", comment: "Button title, encourages users to create post on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         static let noMatchesTitle = NSLocalizedString("No posts matching your search", comment: "Displayed when the user is searching the posts list and there are no matching posts")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+        static let noConnectionTitle: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
+        static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
         static let searchPosts = NSLocalizedString("Search posts", comment: "Text displayed when the search controller will be presented")
     }
 }

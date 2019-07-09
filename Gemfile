@@ -7,6 +7,7 @@ source 'https://rubygems.org' do
   gem 'fastlane', "2.103.1"
   gem 'dotenv'
   gem 'rubyzip', "~> 1.2.2"
+  gem 'commonmarker'
 end
 
 plugins_path = File.join(File.dirname(__FILE__), 'Scripts/fastlane', 'Pluginfile')

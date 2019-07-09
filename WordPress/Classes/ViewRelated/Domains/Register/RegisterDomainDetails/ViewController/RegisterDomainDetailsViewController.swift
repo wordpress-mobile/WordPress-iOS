@@ -55,7 +55,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
                                   comment: "Title for the Register domain screen")
 
         configureTableView()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         viewModel.onChange = { [weak self] (change) in
             self?.handle(change: change)
@@ -280,7 +280,7 @@ extension RegisterDomainDetailsViewController {
             let attributedItem = NSAttributedString.init(
                 string: item,
                 attributes: [.font: WPStyleGuide.tableviewTextFont(),
-                             .foregroundColor: WPStyleGuide.darkGrey()]
+                             .foregroundColor: UIColor.neutral(shade: .shade70)]
             )
             let option = OptionsTableViewOption(
                 image: nil,

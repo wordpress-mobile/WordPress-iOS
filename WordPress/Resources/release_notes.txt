@@ -1,13 +1,44 @@
+12.8
+-----
+* Stats Insights: check out new two-column layouts for Follower Totals, This Year, and Most Popular Time stats.
+* This Year Insights: see a snapshot of total posts, comments, likes, and more for the year-to-date when you click on the View More option.
+* Stats Periods: We added a world map in the countries section.
+* Fixed an issue where refreshing sometimes cleared stats.
+* You do you! Go to Me > App Settings > App Icon to choose from a series of app icons.
+* Refreshed the app’s color scheme.
+
+12.7
+-----
+* Block Editor: Video, Quote and More blocks are available now.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor network conditions.
+* Offline Improvements: Posts that failed to upload due to connectivity issues will be auto-uploaded.
+* Block Editor: Copy/Paste of text with attributes( bold, italic, ...) will be respected on the editor.
+* Block Editor: Updated color scheme.
+* Block Editor: Nested lists are now available on the toolbar.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
+* Stats Insights: New two-column layout for All-Time stats.
+* Stats Insights: New two-column layout for Today stats.
+* Post preview: Fixed issue with preview for self hosted sites not working.
+
 12.6
 -----
+* Block Editor: Added UI to display a warning when a block has invalid content.
+* Block Editor: Fixed issue with link settings where “Open in New Tab” was always OFF on open.
+* Removed the limit of number of photos that can be shared from other apps.
+* Account Settings Primary Site now shows the site domain if the site has no name.
+* The app now launches a bit more quickly.
+* Added a list of third-party library acknowledgements.
+* Updated messaging experience for a reply upload result.
+* Stats: Fixed an issue where chart axes may be formatted incorrectly in some locales.
 
 12.5
 -----
-* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
-* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
-* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
-* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
-* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).
+* Fixed Notices sometimes showing behind the keyboard
+* Implemented Domain Credit feature
+* Implemented auto saving a post on preview  
+* The app now launches a bit more quickly.
+* Fixed broken images in posts created by the share extension.
+* Deprecated local previews
 
 12.4
 -----

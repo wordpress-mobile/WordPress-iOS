@@ -1,5 +1,3 @@
-* Marca los avisos como no leídos con un simple deslizamiento.
-* ¿Esa caída ocasional cuando buscas en la biblioteca de fotos gratis? ¡Arreglada!
-* El inicio de sesión en sitios auto-alojados es ahora más fácil que nunca.
-* Mejora el aspecto de las citas en el lector
-* Hemos hecho un montón de pequeñas mejoras en la accesibilidad visual y auditiva a través de la aplicación.
+* Mejoras en el editor de bloques, ¡ahora! Tienes bloques de vídeo, citas y más, el editor mantendrá el estilo del texto en negrita y cursiva al copiar y pegar, hay una nueva combinación de colores y ahora hay listas anidadas disponibles en la barra de herramientas. Trata de no dejar que todos los nuevos poderes se te suban a la cabeza.
+* A veces, al configurar una imagen destacada en una entrada o el sitio era un problema cuando las condiciones de la red eran deficientes. Como no podemos arreglar las condiciones de la red mundial, arreglamos la aplicación: * Las imágenes destacadas deberían funcionar mejor en todas las conexiones.
+* La visualización de las estadísticas recibió un poco de lustre con diseños a dos columnas para sus estadísticas de hoy y de siempre, y te permiten ver más de sus datos.

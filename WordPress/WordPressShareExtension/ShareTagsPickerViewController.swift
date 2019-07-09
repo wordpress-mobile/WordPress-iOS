@@ -98,7 +98,7 @@ class ShareTagsPickerViewController: UIViewController {
     }
 
     fileprivate func setupTableView() {
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: SuggestionsDataSource.cellIdentifier)
         tableView.register(LoadingDataSource.Cell.self, forCellReuseIdentifier: LoadingDataSource.cellIdentifier)
         tableView.register(FailureDataSource.Cell.self, forCellReuseIdentifier: FailureDataSource.cellIdentifier)
@@ -113,7 +113,7 @@ class ShareTagsPickerViewController: UIViewController {
         textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = WPStyleGuide.darkGrey()
+        textView.textColor = .neutral(shade: .shade70)
         textView.isScrollEnabled = false
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: Constants.textViewTopBottomInset, left: 0, bottom: Constants.textViewTopBottomInset, right: 0)

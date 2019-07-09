@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FBE-8U-liw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FBE-8U-liw">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,34 +36,40 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ydF-z6-fhv">
                                         <rect key="frame" x="20" y="20" width="343" height="108"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcY-eU-7MY">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcY-eU-7MY" customClass="FancyButton" customModule="WordPressUI">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="connectSite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="kqU-iq-5lx"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                <state key="normal" title="Connect another site" backgroundImage="beveled-secondary-button">
+                                                <state key="normal" title="Connect another site">
                                                     <color key="titleColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="handleConnectAnotherButton" destination="FBE-8U-liw" eventType="touchUpInside" id="WYK-td-6aY"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51h-er-sEL">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51h-er-sEL" customClass="FancyButton" customModule="WordPressUI">
                                                 <rect key="frame" x="0.0" y="64" width="343" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="8TV-5o-H50"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                <state key="normal" title="Continue" backgroundImage="beveled-blue-button">
+                                                <state key="normal" title="Continue">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <state key="selected" backgroundImage="beveled-blue-button-down"/>
                                                 <state key="highlighted" backgroundImage="beveled-blue-button-down">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="dismissEpilogue" destination="FBE-8U-liw" eventType="touchUpInside" id="BG7-Nv-R8k"/>
                                                 </connections>
@@ -143,7 +148,8 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mastg" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w2L-7L-x21">
-                                            <rect key="frame" x="72" y="24" width="38" height="16"/>
+                                            <rect key="frame" x="72" y="24" width="37.5" height="16"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="siteUrl"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="wjh-eu-vg5"/>
                                             </constraints>
@@ -183,9 +189,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="beveled-blue-button" width="18" height="19"/>
-        <image name="beveled-blue-button-down" width="18" height="19"/>
-        <image name="beveled-secondary-button" width="18" height="19"/>
+        <image name="beveled-blue-button-down" width="18.5" height="19.5"/>
         <image name="darkgrey-shadow" width="10" height="10"/>
     </resources>
 </document>

@@ -1,5 +1,3 @@
-* Markeer meldingen als ongelezen met een simpele veegbeweging.
-* Die incidentele crash wanneer je zoekt naar de gratis fotobibliotheek? Opgelost!
-* Inloggen in zelf-gehoste sites gaat nu soepeler dan ooit.
-* Blockquotes in de leesfunctie hebben een nieuwe, strakke uitstraling.
-* We hebben door de hele app heel veel kleine verbeteringen doorgevoerd voor de visuele en auditieve toegankelijkheid.
+* Verbeteringen aan de blok-editor in zicht. De editor, onder andere opgebouwd uit de Video-, Citaat- en Meer-blokken, zorgt ervoor dat de opmaak van de tekst, zoals vetgedrukt en schuingedrukt behouden blijft wanneer je deze kopieert en plakt. Er is bovendien een nieuw kleurenschema en geneste lijsten zijn nu beschikbaar op de werkbalk. Laat alle nieuwe functies niet naar je hoofd stijgen.
+* Af en toe kon het kiezen van een aanbevolen afbeelding in een bericht problemen opleveren bij een slechte netwerkverbinding. Aangezien we de netwerkomstandigheden niet wereldwijd kunnen veranderen, hebben we de app verbeterd: * Aanbevolen afbeeldingen zouden soepeler moeten werken op alle verbindingen.
+* Stats Insights heeft een verbeterde uitstraling gekregen met lay-outs in twee kolommen voor je actuele en all-time statistieken. Je kunt bovendien meer gegevens bekijken.

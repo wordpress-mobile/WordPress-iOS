@@ -38,7 +38,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
     override func viewDidLoad() {
         super.viewDidLoad()
         ImmuTable.registerRows([LanguageSelectorRow.self], tableView: tableView)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureSearchBar(searchController.searchBar)
         tableView.tableHeaderView = searchController.searchBar

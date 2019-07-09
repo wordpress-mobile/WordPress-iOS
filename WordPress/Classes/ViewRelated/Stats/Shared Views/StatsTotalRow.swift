@@ -51,11 +51,11 @@ struct StatsTotalRowData {
 @objc protocol StatsTotalRowDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
+    @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
-class StatsTotalRow: UIView, NibLoadable {
+class StatsTotalRow: UIView, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -71,6 +71,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var itemDetailLabel: UILabel!
@@ -91,13 +92,11 @@ class StatsTotalRow: UIView, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: StatsTotalRowDelegate?
     private var forDetails = false
+    private(set) weak var parentRow: StatsTotalRow?
 
     // This view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
     weak var childRowsView: StatsChildRowsView?
-
-    // This is set by the containing cell when child rows are added.
-    weak var parentRow: StatsTotalRow?
 
     var showSeparator = true {
         didSet {
@@ -142,10 +141,14 @@ class StatsTotalRow: UIView, NibLoadable {
 
     // MARK: - Configure
 
-    func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil, forDetails: Bool = false) {
+    func configure(rowData: StatsTotalRowData,
+                   delegate: StatsTotalRowDelegate? = nil,
+                   forDetails: Bool = false,
+                   parentRow: StatsTotalRow? = nil) {
         self.rowData = rowData
         self.delegate = delegate
         self.forDetails = forDetails
+        self.parentRow = parentRow
 
         configureExpandedState()
         configureIcon()
@@ -164,6 +167,7 @@ class StatsTotalRow: UIView, NibLoadable {
         dataLabel.isHidden = rowData.data.isEmpty
 
         applyStyles()
+        prepareForVoiceOver()
     }
 
     override func layoutSubviews() {
@@ -171,6 +175,28 @@ class StatsTotalRow: UIView, NibLoadable {
         configureDataBar()
     }
 
+    // MARK: - Accessibility
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+
+        let itemTitle = itemLabel.text ?? ""
+        let dataTitle = dataLabel.text ?? ""
+        accessibilityLabel = [itemTitle, dataTitle].joined(separator: ", ")
+
+        let showDisclosure = rowData?.showDisclosure ?? false
+        accessibilityTraits = (showDisclosure) ? .button : .staticText
+        accessibilityHint = (showDisclosure) ? NSLocalizedString("Tap for more detail.", comment: "Accessibility hint") : ""
+
+        switch (showDisclosure, hasChildRows) {
+        case (true, true):
+            let hint = expanded ? "Expanded. Tap to collapse." : "Collapsed. Tap to expand."
+            accessibilityHint = NSLocalizedString(hint, comment: "Accessibility hint")
+        case (true, false):
+            accessibilityHint = NSLocalizedString("Tap for more detail.", comment: "Accessibility hint")
+        default:
+            break
+        }
+    }
 }
 
 private extension StatsTotalRow {
@@ -202,9 +228,18 @@ private extension StatsTotalRow {
         }
 
         let imageSize = rowData.statSection?.imageSize ?? StatSection.defaultImageSize
-        imageWidthConstraint.constant = imageSize
 
-        imageView.isHidden = !hasIcon
+        // If the parent row has an icon and this row does not,
+        // show the image view to make this row appear "indented" by the icon width.
+        if let parentRow = parentRow, parentRow.hasIcon, !hasIcon {
+            imageView.isHidden = false
+            imageWidthConstraint.constant = parentRow.imageWidthConstraint.constant
+            imageHeightConstraint.constant = 1
+        } else {
+            imageView.isHidden = !hasIcon
+            imageWidthConstraint.constant = imageSize
+            imageHeightConstraint.constant = imageSize
+        }
 
         if let icon = rowData.icon {
             imageView.image = icon
@@ -284,7 +319,8 @@ private extension StatsTotalRow {
 
         if hasChildRows {
             expanded.toggle()
-            delegate?.toggleChildRowsForRow?(self)
+            prepareForVoiceOver()
+            delegate?.toggleChildRows?(for: self, didSelectRow: true)
             return
         }
 

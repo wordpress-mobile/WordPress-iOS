@@ -24,12 +24,12 @@ import WordPressShared.WPStyleGuide
 
 
     @objc func applyStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .neutral(shade: .shade5)
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
 
         titleLabel.font = WPStyleGuide.tableviewTextFont()
-        titleLabel.textColor = WPStyleGuide.darkGrey()
+        titleLabel.textColor = .neutral(shade: .shade70)
         titleLabel.text = NSLocalizedString("Manage", comment: "Button title. Tapping lets the user manage the sites they follow.")
 
         disclosureIcon.image = Gridicon.iconOfType(.chevronRight, withSize: disclosureIcon.frame.size).imageFlippedForRightToLeftLayoutDirection()

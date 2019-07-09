@@ -274,7 +274,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                                                            [weakSelf deleteComment:comment];
                                                                        }];
                                                                    }];
-    trash.backgroundColor = [WPStyleGuide errorRed];
+    trash.backgroundColor = [UIColor murielError];
     [actions addObject:trash];
     
     if (comment.isApproved) {
@@ -286,7 +286,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                                                                }];
                                                                            }];
         
-        unapprove.backgroundColor = [WPStyleGuide grey];
+        unapprove.backgroundColor = [UIColor murielNeutral30];
         [actions addObject:unapprove];
     } else {
         UITableViewRowAction *approve = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -297,7 +297,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                                                              }];
                                                                          }];
         
-        approve.backgroundColor = [WPStyleGuide wordPressBlue];
+        approve.backgroundColor = [UIColor murielPrimary];
         [actions addObject:approve];
     }
     
@@ -523,9 +523,11 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         return;
     }
 
-    [self.noResultsViewController configureWithTitle:[self noResultsViewTitle]
+    [self.noResultsViewController configureWithTitle:self.noResultsViewTitle
+                                   noConnectionTitle:nil
                                          buttonTitle:nil
                                             subtitle:nil
+                                noConnectionSubtitle:nil
                                   attributedSubtitle:nil
                      attributedSubtitleConfiguration:nil
                                                image:nil

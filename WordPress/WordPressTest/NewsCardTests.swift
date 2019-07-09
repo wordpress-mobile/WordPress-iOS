@@ -61,15 +61,15 @@ final class NewsCardTests: XCTestCase {
     }
 
     func testViewHasTheExpectedBackgroundColor() {
-        XCTAssertEqual(subject?.view.backgroundColor, WPStyleGuide.greyLighten30())
+        XCTAssertEqual(subject?.view.backgroundColor, .neutral(shade: .shade5))
     }
 
     func testTitleHasTheExpectedColor() {
-        XCTAssertEqual(subject?.newsTitle.textColor, WPStyleGuide.darkGrey())
+        XCTAssertEqual(subject?.newsTitle.textColor, .text)
     }
 
     func testSubtitleHasTheExpectedColor() {
-        XCTAssertEqual(subject?.newsSubtitle.textColor, WPStyleGuide.greyDarken10())
+        XCTAssertEqual(subject?.newsSubtitle.textColor, .textSubtle)
     }
 
     func testDismissButtonContainsTheExpectedIcon() {

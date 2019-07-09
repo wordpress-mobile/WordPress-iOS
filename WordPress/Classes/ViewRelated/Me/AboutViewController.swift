@@ -45,7 +45,7 @@ open class AboutViewController: UITableViewController {
 
     fileprivate func setupTableView() {
         // Load and Tint the Logo
-        let color                   = WPStyleGuide.wordPressBlue()
+        let color                   = UIColor.primary
         let tintedImage             = UIImage(named: "icon-wp")?.withRenderingMode(.alwaysTemplate)
         let imageView               = UIImageView(image: tintedImage)
         imageView.tintColor = color
@@ -59,7 +59,7 @@ open class AboutViewController: UITableViewController {
         tableView.tableHeaderView   = imageView
         tableView.contentInset      = WPTableViewContentInsets
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
@@ -232,6 +232,10 @@ open class AboutViewController: UITableViewController {
                 Row(title: NSLocalizedString("Source Code", comment: "Opens the Github Repository Web"),
                     details: nil,
                     handler: { self.displayWebView(WPGithubMainURL) }),
+
+                Row(title: NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use"),
+                    details: nil,
+                    handler: { self.displayWebView(Bundle.main.url(forResource: "acknowledgements", withExtension: "html")) }),
             ]
         ]
     }

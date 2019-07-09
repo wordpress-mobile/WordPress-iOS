@@ -1,0 +1,3 @@
+* Blok düzenleyici iyileştirmeleri geldi! Video, Alıntı ve Diğer bloklarınız varsa siz kopyala-yapıştır işlemi yaparken editör metin biçimini (kalın ve italik gibi) korur. Üstelik artık bir yeni renk şeması ve araç çubuğunda iç içe geçmiş listeler var. Yine de her şeyi kontrol altına almaya çalışmayın.
+* Bazen ağ bağlantısı yavaş olduğunda bir Öne Çıkan Görseli yazıya yerleştirmek zor olabilir. Dünyadaki tüm ağ bağlantısı sorunlarını çözemeyeceğimiz için uygulamayı düzelttik: * Öne Çıkan Görseller tüm bağlantılarda artık sorunsuzca çalışmalı.
+* İstatistiksel Bilgiler, Bugün ve Tüm Zamanlar istatistiklerinizde bulunan iki sütunlu yerleşimlerde biraz daha öne çıkarak daha fazla veri görmenizi sağlıyor.

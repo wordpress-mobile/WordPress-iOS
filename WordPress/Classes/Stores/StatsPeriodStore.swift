@@ -1,11 +1,11 @@
 import Foundation
 import WordPressFlux
-import WordPressComStatsiOS
 
 enum PeriodAction: Action {
 
     // Period overview
     case receivedSummary(_ summary: StatsSummaryTimeIntervalData?, _ error: Error?)
+    case receivedLikesSummary(_ likes: StatsLikesSummaryTimeIntervalData?, _ error: Error?)
     case receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?)
     case receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?, _ error: Error?)
     case receivedReferrers(_ referrers: StatsTopReferrersTimeIntervalData?, _ error: Error?)
@@ -110,6 +110,7 @@ struct PeriodStoreState {
     var summary: StatsSummaryTimeIntervalData?
     var fetchingSummary = false
     var fetchingSummaryHasFailed = false
+    var fetchingSummaryLikes = false
 
     var topPostsAndPages: StatsTopPostsTimeIntervalData?
     var fetchingPostsAndPages = false
@@ -169,6 +170,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedSummary(let summary, let error):
             receivedSummary(summary, error)
+        case .receivedLikesSummary(let likes, let error):
+            receivedLikesSummary(likes, error)
         case .receivedPostsAndPages(let postsAndPages, let error):
             receivedPostsAndPages(postsAndPages, error)
         case .receivedReferrers(let referrers, let error):
@@ -210,7 +213,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         if !isFetchingOverview {
-            DDLogInfo("Stats: All fetching operations finished.")
+            DDLogInfo("Stats: Period Overview fetching operations finished.")
             fetchingOverviewListener?(false, fetchingOverviewHasFailed)
         }
     }
@@ -328,6 +331,16 @@ private extension StatsPeriodStore {
             self.actionDispatcher.dispatch(PeriodAction.receivedSummary(summary, error))
         }
 
+        statsRemote.getData(for: period, endingOn: date, limit: 14) { (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching likes summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats: Finished fetching likes summary.")
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedLikesSummary(likes, error))
+        }
+
         statsRemote.getData(for: period, endingOn: date) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
@@ -398,7 +411,7 @@ private extension StatsPeriodStore {
             self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos, error))
         }
 
-        statsRemote.getData(for: period, endingOn: date) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching countries: \(String(describing: error?.localizedDescription))")
             }
@@ -719,6 +732,39 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedLikesSummary(_ likesSummary: StatsLikesSummaryTimeIntervalData?, _ error: Error?) {
+        // This is a workaround for how our API works — the requests for summary for long periods of times
+        // can take extreme amounts of time to finish (and semi-frequenty fail). In order to not block the UI
+        // here, we split out the views/visitors/comments and likes requests.
+        // This method splices the results of the two back together so we can persist it to Core Data.
+        guard
+            let summary = likesSummary,
+            let currentSummary = state.summary,
+            summary.summaryData.count == currentSummary.summaryData.count
+            else {
+                return
+        }
+
+        let newSummaryData = currentSummary.summaryData.enumerated().map { index, obj in
+            return StatsSummaryData(period: obj.period,
+                                    periodStartDate: obj.periodStartDate,
+                                    viewsCount: obj.viewsCount,
+                                    visitorsCount: obj.visitorsCount,
+                                    likesCount: summary.summaryData[index].likesCount,
+                                    commentsCount: obj.commentsCount)
+        }
+
+        let newSummary = StatsSummaryTimeIntervalData(period: currentSummary.period,
+                                                      periodEndDate: currentSummary.periodEndDate,
+                                                      summaryData: newSummaryData)
+
+        transaction { state in
+            state.fetchingSummaryLikes = false
+            state.summary = newSummary
+        }
+
+    }
+
     func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingPostsAndPages = false
@@ -852,6 +898,7 @@ private extension StatsPeriodStore {
 
     func setAllAsFetchingOverview(fetching: Bool = true) {
         state.fetchingSummary = fetching
+        state.fetchingSummaryLikes = fetching
         state.fetchingPostsAndPages = fetching
         state.fetchingReferrers = fetching
         state.fetchingClicks = fetching
@@ -957,6 +1004,10 @@ extension StatsPeriodStore {
             state.fetchingSearchTerms ||
             state.fetchingVideos ||
             state.fetchingCountries
+    }
+
+    var isFetchingSummaryLikes: Bool {
+        return state.fetchingSummaryLikes
     }
 
     var isFetchingPostsAndPages: Bool {

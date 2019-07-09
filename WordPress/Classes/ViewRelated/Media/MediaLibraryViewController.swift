@@ -34,9 +34,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Initializers
 
     @objc init(blog: Blog) {
-        WPMediaCollectionViewCell.appearance().placeholderTintColor = WPStyleGuide.greyLighten30()
-        WPMediaCollectionViewCell.appearance().placeholderBackgroundColor = WPStyleGuide.darkGrey()
-        WPMediaCollectionViewCell.appearance().loadingBackgroundColor = WPStyleGuide.lightGrey()
+        WPMediaCollectionViewCell.appearance().placeholderTintColor = .neutral(shade: .shade5)
+        WPMediaCollectionViewCell.appearance().placeholderBackgroundColor = .neutral(shade: .shade70)
+        WPMediaCollectionViewCell.appearance().loadingBackgroundColor = .neutral(shade: .shade0)
 
         self.blog = blog
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)
@@ -83,8 +83,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
-        automaticallyAdjustsScrollViewInsets = false
-
         registerChangeObserver()
         registerUploadCoordinatorObserver()
 
@@ -106,7 +104,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
      or the resetting wasn't permanent.
      */
     fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationBarAppearance()
+        WPStyleGuide.configureNavigationAppearance()
     }
 
     override func viewDidAppear(_ animated: Bool) {

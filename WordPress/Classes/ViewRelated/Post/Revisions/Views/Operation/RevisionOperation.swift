@@ -38,7 +38,7 @@ class RevisionOperationView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        numbersLabel.textColor = WPStyleGuide.greyDarken10()
+        numbersLabel.textColor = .neutral(shade: .shade40)
     }
 
 
@@ -48,8 +48,8 @@ class RevisionOperationView: UIView {
 
         var color: UIColor {
             switch self {
-            case .add: return WPStyleGuide.wordPressBlue()
-            case .del: return WPStyleGuide.errorRed()
+            case .add: return .primary
+            case .del: return .error
             }
         }
 

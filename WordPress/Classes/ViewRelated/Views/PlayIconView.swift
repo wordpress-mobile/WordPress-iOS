@@ -12,7 +12,7 @@ class PlayIconView: UIView {
 
     @objc var isHighlighted: Bool {
         didSet {
-            let iconColor = isHighlighted ? .black : WPStyleGuide.darkGrey()
+            let iconColor: UIColor = isHighlighted ? .black : .neutral(shade: .shade70)
             playLayer.strokeColor = iconColor.cgColor
             playLayer.fillColor = iconColor.cgColor
         }

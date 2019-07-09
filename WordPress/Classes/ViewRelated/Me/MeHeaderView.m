@@ -162,9 +162,10 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.numberOfLines = 1;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide darkGrey];
+    label.textColor = [UIColor murielNeutral70];
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
+    label.accessibilityIdentifier = @"Display Name";
     [WPStyleGuide configureLabel:label
                        textStyle:UIFontTextStyleHeadline
                       fontWeight:UIFontWeightSemibold];
@@ -178,9 +179,10 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.numberOfLines = 1;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide grey];
+    label.textColor = [UIColor murielNeutral30];
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
+    label.accessibilityIdentifier = @"Username";
     [WPStyleGuide configureLabel:label
                        textStyle:UIFontTextStyleCallout];
 

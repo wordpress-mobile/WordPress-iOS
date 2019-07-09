@@ -61,8 +61,6 @@ WordPress/Derived Sources/
 # coverage.py
 */CoverageData/*
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
-WordPress/WordPressScreenshotGeneration/ScreenshotCredentials.swift
-WordPress/WordPressUITests/WPUITestCredentials.swift
 
 # Bundler
 /vendor/bundle/
@@ -77,3 +75,7 @@ Scripts/fastlane/report.xml
 Scripts/fastlane/README.md
 Scripts/Preview.html
 Scripts/fastlane/test_output/
+
+# Generated Internal Icons
+/WordPress/Resources/MurielImages.xcassets/AppIcon-Internal.appiconset
+/WordPress/Resources/Icons-Internal

@@ -77,7 +77,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
         tableView.tableFooterView = UIView()
 
         // Style!
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
@@ -149,7 +149,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
         let disabled                = stream.kind == .Device && pushNotificationsAuthorized == false
 
         cell.imageView?.image       = imageForStreamKind(stream.kind)
-        cell.imageView?.tintColor   = WPStyleGuide.greyLighten10()
+        cell.imageView?.tintColor   = .neutral(shade: .shade20)
         cell.textLabel?.text        = stream.kind.description()
         cell.detailTextLabel?.text  = disabled ? NSLocalizedString("Off", comment: "Disabled") : String()
         cell.accessoryType          = .disclosureIndicator

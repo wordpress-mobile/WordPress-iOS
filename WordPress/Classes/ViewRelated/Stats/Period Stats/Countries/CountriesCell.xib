@@ -19,27 +19,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="355" height="416.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X6O-ua-Hm7" userLabel="Map View">
-                        <rect key="frame" x="0.0" y="0.0" width="355" height="200"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Imagine a pretty map here" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OsT-Jn-Nkl" userLabel="Temporary Label">
-                                <rect key="frame" x="0.0" y="0.0" width="355" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" priority="999" constant="200" id="NMh-pN-iTp"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="OsT-Jn-Nkl" secondAttribute="bottom" id="GA5-T2-kfh"/>
-                            <constraint firstItem="OsT-Jn-Nkl" firstAttribute="top" secondItem="X6O-ua-Hm7" secondAttribute="top" id="LoO-ta-G97"/>
-                            <constraint firstItem="OsT-Jn-Nkl" firstAttribute="leading" secondItem="X6O-ua-Hm7" secondAttribute="leading" id="Qae-nl-UXm"/>
-                            <constraint firstAttribute="trailing" secondItem="OsT-Jn-Nkl" secondAttribute="trailing" id="s9K-TQ-Nze"/>
-                        </constraints>
-                    </view>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="WGt-7n-PjC" userLabel="Subtitles Stack View">
                         <rect key="frame" x="16" y="7.5" width="323" height="16"/>
                         <subviews>
@@ -61,7 +40,7 @@
                         </constraints>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="UCQ-gq-RrN" userLabel="Rows Stack View">
-                        <rect key="frame" x="0.0" y="30.5" width="355" height="386"/>
+                        <rect key="frame" x="0.0" y="0.5" width="355" height="416"/>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OxT-ul-sgW" userLabel="Top Seperator Line">
                         <rect key="frame" x="0.0" y="0.0" width="355" height="0.5"/>
@@ -79,31 +58,20 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="OxT-ul-sgW" firstAttribute="top" secondItem="X6O-ua-Hm7" secondAttribute="bottom" id="05N-cC-wfk"/>
-                    <constraint firstItem="X6O-ua-Hm7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="3j5-bC-lW0"/>
                     <constraint firstItem="WGt-7n-PjC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="7v5-dC-nT6"/>
                     <constraint firstAttribute="trailing" secondItem="WGt-7n-PjC" secondAttribute="trailing" constant="16" id="F8F-2p-b3J"/>
                     <constraint firstAttribute="trailing" secondItem="4PI-2u-gGF" secondAttribute="trailing" id="Fby-mi-9AI"/>
-                    <constraint firstItem="UCQ-gq-RrN" firstAttribute="top" secondItem="WGt-7n-PjC" secondAttribute="bottom" constant="7" id="ILe-TY-16f"/>
                     <constraint firstItem="OxT-ul-sgW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="IPs-GC-KBm"/>
-                    <constraint firstItem="UCQ-gq-RrN" firstAttribute="top" secondItem="OxT-ul-sgW" secondAttribute="bottom" priority="999" id="Usf-7v-7m6"/>
-                    <constraint firstItem="OxT-ul-sgW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="V1r-tT-mNL"/>
+                    <constraint firstItem="OxT-ul-sgW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Ilj-Ck-ryH"/>
+                    <constraint firstItem="UCQ-gq-RrN" firstAttribute="top" secondItem="OxT-ul-sgW" secondAttribute="bottom" id="Usf-7v-7m6"/>
                     <constraint firstAttribute="bottom" secondItem="UCQ-gq-RrN" secondAttribute="bottom" id="WJD-J4-Jab"/>
                     <constraint firstAttribute="trailing" secondItem="UCQ-gq-RrN" secondAttribute="trailing" id="aFU-xt-Aie"/>
                     <constraint firstAttribute="trailing" secondItem="OxT-ul-sgW" secondAttribute="trailing" id="lH1-IY-PBX"/>
-                    <constraint firstAttribute="trailing" secondItem="X6O-ua-Hm7" secondAttribute="trailing" id="lQx-hE-jLN"/>
                     <constraint firstAttribute="bottom" secondItem="4PI-2u-gGF" secondAttribute="bottom" id="mfY-aB-rjX"/>
                     <constraint firstItem="4PI-2u-gGF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="pPJ-5q-XT5"/>
                     <constraint firstItem="WGt-7n-PjC" firstAttribute="top" secondItem="OxT-ul-sgW" secondAttribute="bottom" constant="7" id="u2O-MU-b7v"/>
-                    <constraint firstItem="X6O-ua-Hm7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="vew-RU-HMw"/>
                     <constraint firstItem="UCQ-gq-RrN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="zLz-hS-D9n"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="05N-cC-wfk"/>
-                        <exclude reference="Usf-7v-7m6"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
@@ -112,9 +80,10 @@
                 <outlet property="itemSubtitleLabel" destination="5E0-WK-AUD" id="IUx-oV-aio"/>
                 <outlet property="rowsStackView" destination="UCQ-gq-RrN" id="Y2s-76-aAt"/>
                 <outlet property="rowsStackViewTopConstraint" destination="Usf-7v-7m6" id="Res-MH-gOh"/>
-                <outlet property="rowsStackViewTopConstraintWithSubtitles" destination="ILe-TY-16f" id="sbx-rC-13u"/>
                 <outlet property="subtitleStackView" destination="WGt-7n-PjC" id="5JN-Yn-YM9"/>
+                <outlet property="subtitlesStackViewTopConstraint" destination="u2O-MU-b7v" id="ya9-A4-B6Y"/>
                 <outlet property="topSeparatorLine" destination="OxT-ul-sgW" id="qjZ-f6-e57"/>
+                <outlet property="topSeparatorLineHeightConstraint" destination="tep-qB-gA1" id="7JT-Pm-BKH"/>
             </connections>
             <point key="canvasLocation" x="-263.19999999999999" y="204.64767616191907"/>
         </tableViewCell>

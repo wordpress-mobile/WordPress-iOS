@@ -53,7 +53,7 @@ final class SiteSegmentsCellTests: XCTestCase {
     }
 
     func testCellTitleIsTheCorrectColor() {
-        XCTAssertEqual(cell?.title.textColor, WPStyleGuide.darkGrey())
+        XCTAssertEqual(cell?.title.textColor, .neutral(shade: .shade70))
     }
 
     func testCellSubtitleIsTheCorrectFont() {
@@ -75,6 +75,6 @@ final class SiteSegmentsCellTests: XCTestCase {
     }
 
     func testCellSubtitleIsTheCorrectColor() {
-        XCTAssertEqual(cell?.subtitle.textColor, WPStyleGuide.darkGrey())
+        XCTAssertEqual(cell?.subtitle.textColor, .neutral(shade: .shade70))
     }
 }

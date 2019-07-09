@@ -10,7 +10,7 @@ import WordPressEditor
 import WPMediaPicker
 import AVKit
 import MobileCoreServices
-
+import AutomatticTracks
 
 // MARK: - Aztec's Native Editor!
 //
@@ -378,8 +378,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var insertToolbarItem: UIButton = {
         let insertItem = UIButton(type: .custom)
         insertItem.titleLabel?.font = Fonts.mediaPickerInsert
-        insertItem.tintColor = WPStyleGuide.wordPressBlue()
-        insertItem.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+        insertItem.tintColor = .primary
+        insertItem.setTitleColor(.primary, for: .normal)
 
         return insertItem
     }()
@@ -674,7 +674,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// nothing or the resetting wasn't permanent.
     ///
     fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationBarAppearance()
+        WPStyleGuide.configureNavigationAppearance()
     }
 
     func configureDismissButton() {
@@ -1030,7 +1030,7 @@ extension AztecPostViewController {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
             let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            WPCrashLogging.logError(error)
+            CrashLogging.logError(error)
             return
         }
 
@@ -1860,7 +1860,7 @@ extension AztecPostViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: WPStyleGuide.darkGrey()
+                .foregroundColor: UIColor.neutral(shade: .shade70)
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -2250,7 +2250,7 @@ extension AztecPostViewController {
         case .thumbnailReady(let url):
             handleThumbnailURL(url, attachment: attachment)
         case .uploading:
-            break
+            handleUploadStarted(attachment: attachment)
         case .ended:
             handleUploaded(media: media, mediaUploadID: media.uploadID)
         case .failed(let error):
@@ -2474,6 +2474,12 @@ extension AztecPostViewController {
             return
         }
         insert(exportableAsset: image, source: .otherApps, attachment: attachment)
+    }
+
+    private func handleUploadStarted(attachment: MediaAttachment) {
+        resetMediaAttachmentOverlay(attachment)
+        attachment.progress = 0
+        richTextView.refresh(attachment, overlayUpdateOnly: true)
     }
 
     private func handleUploaded(media: Media, mediaUploadID: String) {
@@ -3244,18 +3250,18 @@ extension AztecPostViewController {
     }
 
     struct Colors {
-        static let aztecBackground          = UIColor.clear
-        static let title                    = WPStyleGuide.grey()
-        static let separator                = WPStyleGuide.greyLighten30()
-        static let placeholder              = WPStyleGuide.grey()
-        static let progressBackground       = WPStyleGuide.wordPressBlue()
-        static let progressTint             = UIColor.white
-        static let progressTrack            = WPStyleGuide.wordPressBlue()
-        static let mediaProgressOverlay     = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
-        static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
-        static let mediaProgressBarTrack    = WPStyleGuide.wordPressBlue()
-        static let aztecLinkColor           = WPStyleGuide.mediumBlue()
-        static let mediaOverlayBorderColor  = WPStyleGuide.wordPressBlue()
+        static let aztecBackground              = UIColor.clear
+        static let title                        = UIColor.neutral(shade: .shade30)
+        static let separator                    = UIColor.neutral(shade: .shade5)
+        static let placeholder                  = UIColor.neutral(shade: .shade30)
+        static let progressBackground           = UIColor.primary
+        static let progressTint                 = UIColor.white
+        static let progressTrack                = UIColor.primary
+        static let mediaProgressOverlay         = UIColor.neutral(shade: .shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaProgressBarBackground   = UIColor.neutral(shade: .shade0)
+        static let mediaProgressBarTrack        = UIColor.primary
+        static let aztecLinkColor               = UIColor.primary(shade: .shade40)
+        static let mediaOverlayBorderColor      = UIColor.primary
     }
 
     struct Fonts {

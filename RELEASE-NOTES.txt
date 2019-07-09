@@ -1,5 +1,45 @@
+12.9
+-----
+* Offline support: Create Post is now available from empty results view in offline mode.
+
+12.8
+-----
+* Stats Insights: New two-column layout for Follower Totals stats.
+* Stats Periods: Countries Map added in countries section.
+* Updated copy for preview unavailable screen
+* Stats Insights: New two-column layout for This Year stats.
+* Stats Insights: added details option for This Year stats.
+* Stats Insights: New two-column layout for Most Popular Time stats.
+* Stats: modified appearance of empty charts.
+* Stats Insights: Fixed issue where refreshing would sometimes clear the stats.
+* Stats overview chart: Fixed issue with legend location on iOS 11.
+* Stats Periods: Fixed crash when the Countries map displayed one country only
+* Added a selection of user customizable app icons. Change it via Me > App Settings > App Icon.
+* Update the app's colors using the Muriel color pallete.
+
+12.7
+-----
+* Block Editor: Video, Quote and More blocks are available now.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor network conditions.
+* Offline Improvements: Posts that failed to upload due to connectivity issues will be auto-uploaded.
+* Block Editor: Copy/Paste of text with attributes( bold, italic, ...) will be respected on the editor.
+* Block Editor: Updated color scheme.
+* Block Editor: Nested lists are now available on the toolbar.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
+* Stats Insights: New two-column layout for All-Time stats.
+* Stats Insights: New two-column layout for Today stats.
+* Post preview: Fixed issue with preview for self hosted sites not working.
+
 12.6
 -----
+* Block Editor: Added UI to display a warning when a block has invalid content.
+* Block Editor: Fixed issue with link settings where “Open in New Tab” was always OFF on open.
+* Removed the limit of number of photos that can be shared from other apps.
+* Account Settings Primary Site now shows the site domain if the site has no name.
+* The app now launches a bit more quickly.
+* Added a list of third-party library acknowledgements.
+* Updated messaging experience for a reply upload result.
+* Stats: Fixed an issue where chart axes may be formatted incorrectly in some locales.
 
 12.5
 -----
@@ -8,6 +48,7 @@
 * Implemented auto saving a post on preview  
 * The app now launches a bit more quickly.
 * Fixed broken images in posts created by the share extension.
+* Deprecated local previews
 
 12.4
 -----

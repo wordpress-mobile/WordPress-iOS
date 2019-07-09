@@ -1,0 +1,3 @@
+* Block editor improvements, ahoy! You’ve got Video, Quote and More blocks, the editor will keep text styling like bold and italics when you copy and paste, there’s a spandy new colour scheme, and nested lists are now available on the Toolbar. Try not to let all the new powers go to your head.
+* Sometimes, setting a Featured Image on a post would be problematic when network conditions were poor. Since we can’t fix the world’s network conditions, we fixed the app: * Featured Images should work more smoothly on all connections.
+* Stats Insights got a little spit-shine with two-column layouts for your Today and All-Time stats and let you see more of your data.

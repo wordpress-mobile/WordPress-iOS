@@ -5,35 +5,33 @@ class SiteStatsDashboardViewController: UIViewController {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
-    @IBOutlet weak var insightsContainerView: UIView!
-    @IBOutlet weak var statsContainerView: UIView!
 
-    private var insightsTableViewController: SiteStatsInsightsTableViewController? {
-        didSet {
-            prepareTableViewForAnalytics(insightsTableViewController?.tableView)
-        }
-    }
-
-    private var periodTableViewController: SiteStatsPeriodTableViewController?
+    private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
+    private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
+    private var pageViewController: UIPageViewController?
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFilterBar()
-        getSelectedPeriodFromUserDefaults()
+        restoreSelectedPeriodFromUserDefaults()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let insightsTableVC = segue.destination as? SiteStatsInsightsTableViewController {
-            insightsTableViewController = insightsTableVC
-        }
-
-        if let periodTableVC = segue.destination as? SiteStatsPeriodTableViewController {
-            periodTableViewController = periodTableVC
+        switch segue.destination {
+        case let pageViewController as UIPageViewController:
+            self.pageViewController = pageViewController
+        default:
+            break
         }
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
+            updatePeriodView(oldSelectedPeriod: currentSelectedPeriod, withDate: periodTableViewController.selectedDate)
+        }
+    }
 }
 
 // MARK: - Private Extension
@@ -84,18 +82,12 @@ private extension SiteStatsDashboardViewController {
         }
         set {
             filterTabBar?.setSelectedIndex(newValue.rawValue)
-            setContainerViewVisibility()
-            updatePeriodView()
+            let oldSelectedPeriod = getSelectedPeriodFromUserDefaults()
+            updatePeriodView(oldSelectedPeriod: oldSelectedPeriod)
             saveSelectedPeriodToUserDefaults()
             trackAccessEvent()
         }
     }
-
-    func setContainerViewVisibility() {
-        statsContainerView.isHidden = currentSelectedPeriod == .insights
-        insightsContainerView.isHidden = !statsContainerView.isHidden
-    }
-
 }
 
 // MARK: - FilterTabBar Support
@@ -122,20 +114,37 @@ private extension SiteStatsDashboardViewController {
         UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: Constants.userDefaultsKey)
     }
 
-    func getSelectedPeriodFromUserDefaults() {
-        currentSelectedPeriod = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Constants.userDefaultsKey)) ?? .insights
+    func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
+        return StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Constants.userDefaultsKey)) ?? .insights
     }
 
-    func updatePeriodView() {
+    func restoreSelectedPeriodFromUserDefaults() {
+        currentSelectedPeriod = getSelectedPeriodFromUserDefaults()
+    }
 
-        guard currentSelectedPeriod != .insights else {
-            return
+    func updatePeriodView(oldSelectedPeriod: StatsPeriodType, withDate periodDate: Date? = Date()) {
+        let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
+        let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
+        let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
+
+        switch currentSelectedPeriod {
+        case .insights:
+            if selectedPeriodChanged || pageViewControllerIsEmpty {
+                pageViewController?.setViewControllers([insightsTableViewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
+            insightsTableViewController.refreshInsights()
+        default:
+            if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
+                pageViewController?.setViewControllers([periodTableViewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
+            periodTableViewController.selectedDate = periodDate
+            let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
+            periodTableViewController.selectedPeriod = selectedPeriod
         }
-
-        periodTableViewController?.selectedDate = Date()
-        let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
-        periodTableViewController?.selectedPeriod = selectedPeriod
-        prepareTableViewForAnalytics(periodTableViewController?.tableView)
     }
 }
 
@@ -151,34 +160,8 @@ private extension SiteStatsDashboardViewController {
         }
     }
 
-    func prepareTableViewForAnalytics(_ tableView: UIScrollView?) {
-        tableView?.delegate = self
-    }
-
     func trackAccessEvent() {
         let event = currentSelectedPeriod.analyticsAccessEvent
         captureAnalyticsEvent(event)
-    }
-
-    func trackScrollToBottomEvent() {
-        captureAnalyticsEvent(.statsScrolledToBottom)
-    }
-}
-
-// MARK: - UIScrollViewDelegate
-
-extension SiteStatsDashboardViewController: UIScrollViewDelegate {
-
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-
-        let targetOffsetY = Int(targetContentOffset.pointee.y)
-
-        let scrollViewContentHeight = scrollView.contentSize.height
-        let visibleScrollViewHeight = scrollView.bounds.height
-        let effectiveScrollViewHeight = Int(scrollViewContentHeight - visibleScrollViewHeight)
-
-        if targetOffsetY >= effectiveScrollViewHeight {
-            trackScrollToBottomEvent()
-        }
     }
 }

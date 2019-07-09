@@ -5,7 +5,7 @@ enum InsightType: Int {
     case latestPostSummary
     case allTimeStats
     case followersTotals
-    case mostPopularDayAndHour
+    case mostPopularTime
     case tagsAndCategories
     case annualSiteStats
     case comments
@@ -19,7 +19,7 @@ enum InsightType: Int {
                             .todaysStats,
                             .annualSiteStats,
                             .allTimeStats,
-                            .mostPopularDayAndHour,
+                            .mostPopularTime,
                             .postingActivity,
                             .comments,
                             .tagsAndCategories,
@@ -35,12 +35,13 @@ enum InsightType: Int {
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
     @objc optional func showPostingActivityDetails()
     @objc optional func tabbedTotalsCellUpdated()
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
-class SiteStatsInsightsTableViewController: UITableViewController {
+class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
+    static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
 
@@ -68,8 +69,10 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     private var viewModel: SiteStatsInsightsViewModel?
 
+    private let analyticsTracker = BottomScrollAnalyticsTracker()
+
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
@@ -91,6 +94,11 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         super.viewWillDisappear(animated)
         writeInsightsToUserDefaults()
     }
+
+    func refreshInsights() {
+        addViewModelListeners()
+        viewModel?.refreshInsights()
+    }
 }
 
 // MARK: - Private Extension
@@ -100,24 +108,34 @@ private extension SiteStatsInsightsTableViewController {
     func initViewModel() {
         viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, insightsStore: insightsStore, periodStore: periodStore)
 
+        addViewModelListeners()
+    }
+
+    func addViewModelListeners() {
+        if insightsChangeReceipt != nil {
+            return
+        }
+
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.insightsStore,
                 !store.isFetchingOverview else {
-                return
+                    return
             }
             self?.refreshTableView()
         }
     }
 
+    func removeViewModelListeners() {
+        insightsChangeReceipt = nil
+    }
+
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [CellHeaderRow.self,
                 LatestPostSummaryRow.self,
-                SimpleTotalsStatsRow.self,
-                SimpleTotalsStatsSubtitlesRow.self,
+                TwoColumnStatsRow.self,
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
-                AnnualSiteStatsRow.self,
                 TableFooterRow.self]
     }
 
@@ -145,7 +163,7 @@ private extension SiteStatsInsightsTableViewController {
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
         clearExpandedRows()
-        viewModel?.refreshInsights()
+        refreshInsights()
     }
 
     func applyTableUpdates() {
@@ -226,7 +244,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showCreatePost() {
         WPTabBarController.sharedInstance().showPostTab { [weak self] in
-            self?.viewModel?.refreshInsights()
+            self?.refreshInsights()
         }
     }
 
@@ -261,8 +279,10 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         applyTableUpdates()
     }
 
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
+    func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool) {
+        if didSelectRow {
+            applyTableUpdates()
+        }
         StatsDataHelper.updatedExpandedState(forRow: row)
     }
 
@@ -271,12 +291,25 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
+        removeViewModelListeners()
+
+        // When displaying Annual details, start from the most recent year available.
+        var selectedDate: Date?
+        if statSection == .insightsAnnualSiteStats,
+            let year = insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear {
+            var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            dateComponents.year = year
+            selectedDate = Calendar.current.date(from: dateComponents)
+        }
+
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
+        removeViewModelListeners()
+
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
@@ -290,6 +323,7 @@ extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate 
                         accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
                             noResults.hideImageView(false)
         }
-        viewModel?.refreshInsights()
+        addViewModelListeners()
+        refreshInsights()
     }
 }

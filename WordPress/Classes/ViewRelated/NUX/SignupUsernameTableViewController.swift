@@ -22,7 +22,7 @@ class SignupUsernameTableViewController: NUXTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
         navigationItem.title = NSLocalizedString("Pick username", comment: "Title for selecting a new username in the site creation flow.")
@@ -142,7 +142,7 @@ extension SignupUsernameTableViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == Sections.suggestions.rawValue {
             let footer = UIView()
-            footer.backgroundColor = WPStyleGuide.greyLighten20()
+            footer.backgroundColor = .neutral(shade: .shade10)
             return footer
         }
         return nil
@@ -198,7 +198,7 @@ extension SignupUsernameTableViewController {
         let cell = UITableViewCell()
 
         cell.textLabel?.text = username
-        cell.textLabel?.textColor = WPStyleGuide.darkGrey()
+        cell.textLabel?.textColor = .neutral(shade: .shade70)
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
         if checked {

@@ -35,7 +35,7 @@ class TodayViewController: UIViewController {
         let buttonText = NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app")
         configureMeButton.setTitle(buttonText, for: .normal)
 
-        let backgroundImage = UIImage(color: WPStyleGuide.wordPressBlue())
+        let backgroundImage = UIImage(color: .primary)
         let resizableBackgroundImage = backgroundImage?.resizableImage(withCapInsets: UIEdgeInsets.zero)
         configureMeButton.setBackgroundImage(resizableBackgroundImage, for: .normal)
 
@@ -142,7 +142,11 @@ extension TodayViewController: NCWidgetProviding {
 
         tracks.trackExtensionAccessed()
 
-        let statsService: WPStatsService = WPStatsService(siteId: siteID, siteTimeZone: timeZone, oauth2Token: oauthToken, andCacheExpirationInterval: 0)
+        let statsService: WPStatsService = WPStatsService(siteId: siteID,
+                                                          siteTimeZone: timeZone,
+                                                          oauth2Token: oauthToken,
+                                                          andCacheExpirationInterval: 0,
+                                                          apiBaseUrlString: WordPressComRestApi.apiBaseURLString)
         statsService.retrieveTodayStats(completionHandler: { wpStatsSummary, error in
             DDLogInfo("Downloaded data in the Today widget")
 

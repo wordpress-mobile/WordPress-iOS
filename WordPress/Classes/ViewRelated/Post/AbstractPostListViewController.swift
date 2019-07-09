@@ -156,7 +156,7 @@ class AbstractPostListViewController: UIViewController,
         configureAuthorFilter()
         configureSearchBackingView()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.reloadData()
 
         observeNetworkStatus()
@@ -237,9 +237,9 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func configureFilterBar() {
-        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
-        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterTabBar.tintColor = .primary
+        filterTabBar.deselectedTabColor = .neutral(shade: .shade40)
+        filterTabBar.dividerColor = .neutral(shade: .shade10)
 
         filterTabBar.items = filterSettings.availablePostListFilters()
 
@@ -1150,8 +1150,14 @@ class AbstractPostListViewController: UIViewController,
         return ReachabilityUtils.noConnectionMessage()
     }
 
-    func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
+    // MARK: - Others
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        // We override this method to dismiss any Notice that is currently being shown. If we
+        // don't do this, the present Notice will be shown on top of the ViewController we are
+        // presenting.
+        dismissAllNetworkErrorNotices()
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
     }
 }
 

@@ -72,7 +72,11 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     if (eventPair.properties == nil && properties == nil) {
         DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
     } else {
-        DDLogInfo(@"🔵 Tracked: %@, properties: %@", eventPair.eventName, mergedProperties);
+        NSArray<NSString *> *propertyKeys = [[mergedProperties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
+            return [NSString stringWithFormat:@"%@: %@", key, mergedProperties[key]];
+        }] componentsJoinedByString:@", "];
+        DDLogInfo(@"🔵 Tracked: %@ <%@>", eventPair.eventName, propertiesDescription);
     }
 
     [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
@@ -234,6 +238,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatActivityLogRewindStarted:
             eventName = @"activity_log_rewind_started";
+            break;
+        case WPAnalyticsStatAppIconChanged:
+            eventName = @"app_icon_changed";
+            break;
+        case WPAnalyticsStatAppIconReset:
+            eventName = @"app_icon_reset";
             break;
         case WPAnalyticsStatAppInstalled:
             eventName = @"application_installed";
@@ -640,8 +650,8 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEnhancedSiteCreationSuccessPreviewLoaded:
             eventName = @"enhanced_site_creation_preview_loaded";
             break;
-        case WPAnalyticsStatEnhancedSiteCreationCompleted:
-            eventName = @"enhanced_site_creation_completed";
+        case WPAnalyticsStatEnhancedSiteCreationSuccessPreviewOkButtonTapped:
+            eventName = @"enhanced_site_creation_preview_ok_button_tapped";
             break;
         case WPAnalyticsStatEnhancedSiteCreationErrorShown:
             eventName = @"enhanced_site_creation_error_shown";
@@ -1618,6 +1628,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsAccessed:
             eventName = @"stats_accessed";
             break;
+            case WPAnalyticsStatStatsDateTappedBackward:
+            eventName = @"stats_date_tapped_backward";
+            break;
+            case WPAnalyticsStatStatsDateTappedForward:
+            eventName = @"stats_date_tapped_forward";
+            break;
         case WPAnalyticsStatStatsInsightsAccessed:
             eventName = @"stats_insights_accessed";
             break;
@@ -1654,8 +1670,17 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsOverviewBarChartTapped:
             eventName = @"stats_overview_bar_chart_tapped";
             break;
-        case WPAnalyticsStatStatsOverviewTypeTapped:
-            eventName = @"stats_overview_type_tapped";
+        case WPAnalyticsStatStatsOverviewTypeTappedComments:
+            eventName = @"stats_overview_type_tapped_comments";
+            break;
+        case WPAnalyticsStatStatsOverviewTypeTappedLikes:
+            eventName = @"stats_overview_type_tapped_likes";
+            break;
+        case WPAnalyticsStatStatsOverviewTypeTappedViews:
+            eventName = @"stats_overview_type_tapped_views";
+            break;
+        case WPAnalyticsStatStatsOverviewTypeTappedVisitors:
+            eventName = @"stats_overview_type_tapped_visitors";
             break;
         case WPAnalyticsStatStatsPeriodDaysAccessed:
             eventName = @"stats_period_accessed";
@@ -1697,6 +1722,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsViewMoreTappedCountries:
             eventName = @"stats_countries_view_more_tapped";
             break;
+        case WPAnalyticsStatStatsViewMoreTappedFileDownloads:
+            eventName = @"stats_file_downloads_view_more_tapped";
+            break;
         case WPAnalyticsStatStatsViewMoreTappedFollowers:
             eventName = @"stats_followers_view_more_tapped";
             break;
@@ -1714,6 +1742,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatStatsViewMoreTappedTagsAndCategories:
             eventName = @"stats_tags_and_categories_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedThisYear:
+            eventName = @"stats_this_year_view_more_tapped";
             break;
         case WPAnalyticsStatStatsViewMoreTappedVideoPlays:
             eventName = @"stats_video_plays_view_more_tapped";

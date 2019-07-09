@@ -3,25 +3,47 @@ import UIKit
 struct OverviewTabData: FilterTabBarItem {
     var tabTitle: String
     var tabData: Int
+    var tabDataStub: String?
     var difference: Int
     var differencePercent: Int
+    var date: Date?
+    var period: StatsPeriodUnit?
+    var analyticsStat: WPAnalyticsStat?
 
-    init(tabTitle: String, tabData: Int, difference: Int, differencePercent: Int) {
+    init(tabTitle: String,
+         tabData: Int,
+         tabDataStub: String? = nil,
+         difference: Int,
+         differencePercent: Int,
+         date: Date? = nil,
+         period: StatsPeriodUnit? = nil,
+         analyticsStat: WPAnalyticsStat? = nil) {
         self.tabTitle = tabTitle
         self.tabData = tabData
+        self.tabDataStub = tabDataStub
         self.difference = difference
         self.differencePercent = differencePercent
+        self.date = date
+        self.period = period
+        self.analyticsStat = analyticsStat
     }
 
     var attributedTitle: NSAttributedString? {
 
         let attributedTitle = NSMutableAttributedString(string: tabTitle.localizedUppercase)
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
-                                       range: NSMakeRange(0, attributedTitle.string.count))
+                                      range: NSMakeRange(0, attributedTitle.string.count))
 
-        let attributedData = NSMutableAttributedString(string: tabData.abbreviatedString())
+        let dataString: String = {
+            if let tabDataStub = tabDataStub {
+                return tabDataStub
+            }
+            return tabData.abbreviatedString()
+        }()
+
+        let attributedData = NSMutableAttributedString(string: dataString)
         attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
-                                       range: NSMakeRange(0, attributedData.string.count))
+                                     range: NSMakeRange(0, attributedData.string.count))
 
         attributedTitle.append(NSAttributedString(string: "\n"))
         attributedTitle.append(attributedData)
@@ -38,6 +60,12 @@ struct OverviewTabData: FilterTabBarItem {
     }
 
     var differenceTextColor: UIColor {
+        if let date = date,
+            let period = period,
+            StatsPeriodHelper().dateAvailableAfterDate(date, period: period) == false {
+            return WPStyleGuide.grey()
+        }
+
         return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
     }
 
@@ -139,6 +167,10 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        if let event = tabsData[filterTabBar.selectedIndex].analyticsStat {
+            captureAnalyticsEvent(event)
+        }
+
         configureChartView()
         updateLabels()
     }
@@ -171,7 +203,7 @@ private extension OverviewCell {
             chartView.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor),
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
-        ])
+            ])
     }
 
     func resetChartContainerView() {
@@ -183,6 +215,18 @@ private extension OverviewCell {
     enum ChartBottomMargin {
         static let filterTabBarShown = CGFloat(16)
         static let filterTabBarHidden = CGFloat(24)
+    }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
+        }
     }
 
 }
