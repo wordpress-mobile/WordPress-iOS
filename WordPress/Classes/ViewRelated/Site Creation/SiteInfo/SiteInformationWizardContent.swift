@@ -91,6 +91,7 @@ final class SiteInformationWizardContent: UIViewController {
         setupFooter()
         setupConstraints()
 
+        table.setEditing(true, animated: false)
         table.dataSource = self
     }
 
@@ -248,12 +249,16 @@ extension SiteInformationWizardContent: UITableViewDataSource {
         if Rows.title.matches(index.row) {
             cell.nameLabel.text = TableStrings.site
             cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.site)
+            cell.valueTextField.delegate = self
+            cell.valueTextField.returnKeyType = .next
             cell.addTopBorder(withColor: .neutral(shade: .shade10))
         }
 
         if Rows.tagline.matches(index.row) {
             cell.nameLabel.text = TableStrings.tagline
             cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.tagline)
+            cell.valueTextField.delegate = self
+            cell.valueTextField.returnKeyType = .done
             cell.addBottomBorder(withColor: .neutral(shade: .shade10))
         }
 
@@ -290,6 +295,24 @@ extension SiteInformationWizardContent: InlineEditableNameValueCellDelegate {
 
     private func formIsFilled() -> Bool {
         return !titleString().isEmpty || !taglineString().isEmpty
+    }
+}
+
+extension SiteInformationWizardContent: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let indexPath = table. else {
+            return true
+        }
+
+        guard indexPath.row < table.numberOfRows(inSection: indexPath.section) - 1 else {
+            goNext()
+            return false
+        }
+
+        let nextIndexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
+        table.selectRow(at: nextIndexPath, animated: true, scrollPosition: .middle)
+
+        return false
     }
 }
 
