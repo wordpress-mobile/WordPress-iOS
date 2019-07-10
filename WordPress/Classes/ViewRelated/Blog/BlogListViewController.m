@@ -399,7 +399,7 @@ static NSInteger HideSearchMinSites = 3;
         _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _headerLabel.numberOfLines = 0;
         _headerLabel.textAlignment = NSTextAlignmentCenter;
-        _headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        _headerLabel.textColor = [UIColor murielText];
         _headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
         _headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
     }

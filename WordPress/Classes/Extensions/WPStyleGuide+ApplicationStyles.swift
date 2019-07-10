@@ -15,6 +15,15 @@ extension WPStyleGuide {
         return UIImage(color: UIColor(fromHex: 0x007eb1))
     }
 
+    class func configureDefaultTint() {
+        guard FeatureFlag.murielColors.enabled else {
+            configureNavigationBarAppearance()
+            return
+        }
+
+        UIWindow.appearance().tintColor = .primary
+    }
+
     /// Style the navigation appearance using Muriel colors
     class func configureNavigationAppearance() {
         guard FeatureFlag.murielColors.enabled else {
@@ -64,7 +73,10 @@ extension WPStyleGuide {
         guard let tableView = tableView else {
             return
         }
-        if !FeatureFlag.murielColors.enabled {
+        if FeatureFlag.murielColors.enabled {
+            tableView.backgroundColor = .neutral(shade: .shade0)
+            tableView.separatorColor = .neutral(shade: .shade10)
+        } else {
             tableView.backgroundView = nil
             tableView.backgroundColor = greyLighten30()
             tableView.separatorColor = greyLighten20()
@@ -91,7 +103,7 @@ extension WPStyleGuide {
         // we only set the text subtle color, so that system colors are used otherwise
         if FeatureFlag.murielColors.enabled {
             cell.detailTextLabel?.textColor = .textSubtle
-            cell.imageView?.tintColor = .neutral
+            cell.imageView?.tintColor = .neutral(shade: .shade30)
         } else {
             cell.textLabel?.textColor = darkGrey()
             cell.detailTextLabel?.textColor = grey()

@@ -61,7 +61,7 @@ final class NewsCardTests: XCTestCase {
     }
 
     func testViewHasTheExpectedBackgroundColor() {
-        XCTAssertEqual(subject?.view.backgroundColor, .neutral(shade: .shade5))
+        XCTAssertEqual(subject?.view.backgroundColor, .clear)
     }
 
     func testTitleHasTheExpectedColor() {
