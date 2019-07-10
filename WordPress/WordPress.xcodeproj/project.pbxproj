@@ -9576,7 +9576,6 @@
 				17DC4C3422C5E6910059CA11 /* open_source_dark_icon_76pt@2x.png in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
 				57AA8491228715E700D3C2A2 /* PostCardCell.xib in Resources */,
-				4350359A1EDCAB99004ECF47 /* reader.json in Resources */,
 				17E3630422C41725000E0C79 /* wordpress_dark_icon_29pt@2x.png in Resources */,
 				17E362F022C41275000E0C79 /* wordpress_icon_40pt@3x.png in Resources */,
 				D8AEA54B21C21BEC00AB4DCB /* NewVerticalCell.xib in Resources */,
