@@ -246,7 +246,7 @@ extension UIColor {
     /// Muriel/iOS unselected color
     static var unselected: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(name: .gray, shade: .shade30))
+            return muriel(color: MurielColor(name: .gray, shade: .shade20))
         } else {
             return WPStyleGuide.greyLighten10()
         }
