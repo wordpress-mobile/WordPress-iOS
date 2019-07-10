@@ -141,7 +141,7 @@ private extension SiteStatsTableHeaderView {
 
         let value = forward ? 1 : -1
 
-        self.date = StatsPeriodHelper().calculateEndDate(startDate: date, offsetBy: value, unit: period)
+        self.date = StatsPeriodHelper().calculateEndDate(from: date, offsetBy: value, unit: period)
 
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
@@ -195,7 +195,7 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
 
         let periodShift = -((entryCount - 1) - entryIndex)
 
-        self.date = StatsPeriodHelper().calculateEndDate(startDate: Date().normalizedDate(), offsetBy: periodShift, unit: period)
+        self.date = StatsPeriodHelper().calculateEndDate(from: Date().normalizedDate(), offsetBy: periodShift, unit: period)
 
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
