@@ -67,6 +67,42 @@ class StatsPeriodHelper {
         }
     }
 
+    func endDate(from startDate: Date, period: StatsPeriodUnit) -> Date {
+        switch period {
+        case .day:
+            return startDate.normalizedDate()
+        case .week:
+            guard let week = weekIncludingDate(startDate) else {
+                DDLogError("[Stats] Couldn't determine the right week. Returning original value.")
+                return startDate.normalizedDate()
+            }
+            return week.weekEnd.normalizedDate()
+        case .month:
+            guard let maxComponent = calendar.range(of: .day, in: .month, for: startDate)?.max(),
+                let endDate = calendar.date(bySetting: .day, value: maxComponent, of: startDate) else {
+                DDLogError("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
+                return startDate.normalizedDate()
+            }
+            return endDate.normalizedDate()
+        case .year:
+            // From a start date 2017-12-31 23:00:00 +0000 the end date must be 2018-12-30 23:00:00 +0000.
+            // Because the final formatted range will be 2018-01-01 and 2018-12-31.
+
+            let daysToAdd = -1
+            let yearsToAdd = 1
+
+            var dateComponent = DateComponents()
+            dateComponent.day = daysToAdd
+            dateComponent.year = yearsToAdd
+
+            guard let endDate = calendar.date(byAdding: dateComponent, to: startDate) else {
+                DDLogError("[Stats] Couldn't determine the right year. Returning original value.")
+                return startDate.normalizedDate()
+            }
+            return endDate.normalizedDate()
+        }
+    }
+
     func calculateEndDate(startDate: Date, offsetBy count: Int = 1, unit: StatsPeriodUnit) -> Date? {
         let calendar = Calendar.autoupdatingCurrent
 

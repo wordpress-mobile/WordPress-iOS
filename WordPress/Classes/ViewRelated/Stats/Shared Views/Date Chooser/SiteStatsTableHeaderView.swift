@@ -77,12 +77,13 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     }
 
     func update(date: Date) {
-        guard let week = StatsPeriodHelper().weekIncludingDate(date) else {
+        guard let period = period else {
             return
         }
-        self.date = date
 
-        delegate?.dateChangedTo(week.weekEnd)
+        self.date = StatsPeriodHelper().endDate(from: date, period: period)
+
+        delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
         updateButtonStates()
         prepareForVoiceOver()
