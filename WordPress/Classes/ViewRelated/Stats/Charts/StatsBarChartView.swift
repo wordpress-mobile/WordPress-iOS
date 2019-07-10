@@ -93,11 +93,11 @@ class StatsBarChartView: BarChartView {
         }
     }
 
-    init(configuration: StatsBarChartConfiguration) {
+    init(configuration: StatsBarChartConfiguration, delegate: StatsBarChartViewDelegate? = nil) {
         self.barChartData = configuration.data
         self.styling = configuration.styling
         self.analyticsGranularity = configuration.analyticsGranularity
-        self.statsBarChartViewDelegate = configuration.delegate
+        self.statsBarChartViewDelegate = delegate
         self.highlightIndex = configuration.indexToHighlight
 
         super.init(frame: .zero)

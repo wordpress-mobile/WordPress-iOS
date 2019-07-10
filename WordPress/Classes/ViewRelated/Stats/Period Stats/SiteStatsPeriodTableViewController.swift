@@ -54,6 +54,7 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel?
+    private var tableHeaderView: SiteStatsTableHeaderView?
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
@@ -81,13 +82,18 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         }
 
         cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
-        viewModel?.statsBarChartViewDelegate = cell
-
+        tableHeaderView = cell
         return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return SiteStatsTableHeaderView.height
+    }
+}
+
+extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        tableHeaderView?.statsBarChartValueSelected(statsBarChartView, entryIndex: entryIndex, entryCount: entryCount)
     }
 }
 
@@ -108,7 +114,9 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self)
+        viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
+        viewModel?.startFetchingOverview()
     }
 
     func addViewModelListeners() {
@@ -123,7 +131,6 @@ private extension SiteStatsPeriodTableViewController {
         viewModel?.overviewStoreStatusOnChange = { [weak self] status in
             guard let self = self,
                 let viewModel = self.viewModel,
-                self.viewIsVisible(),
                 self.changeReceipt != nil else {
                     return
             }
