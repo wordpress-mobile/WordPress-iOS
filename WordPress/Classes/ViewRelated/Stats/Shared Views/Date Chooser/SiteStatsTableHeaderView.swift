@@ -4,6 +4,10 @@ protocol SiteStatsTableHeaderDelegate: class {
     func dateChangedTo(_ newDate: Date?)
 }
 
+protocol SiteStatsTableHeaderUpdateDateDelegate: SiteStatsTableHeaderDelegate {
+    func updateDate(forward: Bool)
+}
+
 class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Accessible {
 
     // MARK: - Properties
@@ -71,6 +75,19 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         forwardButton.accessibilityLabel = NSLocalizedString("Next period", comment: "Accessibility label")
         forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
     }
+
+    func update(date: Date) {
+        guard let week = StatsPeriodHelper().weekIncludingDate(date) else {
+            return
+        }
+        self.date = date
+
+        delegate?.dateChangedTo(week.weekEnd)
+        dateLabel.text = displayDate()
+        updateButtonStates()
+        prepareForVoiceOver()
+        postAccessibilityPeriodLabel()
+    }
 }
 
 private extension SiteStatsTableHeaderView {
@@ -112,6 +129,11 @@ private extension SiteStatsTableHeaderView {
     }
 
     func updateDate(forward: Bool) {
+        if let delegate = delegate as? SiteStatsTableHeaderUpdateDateDelegate {
+            delegate.updateDate(forward: forward)
+            return
+        }
+
         guard let date = date, let period = period else {
             return
         }
@@ -162,7 +184,6 @@ private extension SiteStatsTableHeaderView {
             WPAppAnalytics.track(event, withProperties: properties)
         }
     }
-
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
