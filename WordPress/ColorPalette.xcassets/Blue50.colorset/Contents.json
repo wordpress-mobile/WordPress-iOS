@@ -1,19 +1,19 @@
 {
-  "info" : {
-    "version" : 1,
-    "author" : "xcode"
+  "info": {
+    "author": "blog.color-studio",
+    "version": "2.0.0-rc.4"
   },
-  "colors" : [
+  "colors": [
     {
-      "idiom" : "universal",
-      "color" : {
-        "color-space" : "srgb",
-        "components" : {
-          "red" : "32",
-          "alpha" : "1.000",
-          "blue" : "173",
-          "green" : "110"
-        }
+      "idiom": "universal",
+      "color": {
+        "components": {
+          "red": "34",
+          "green": "113",
+          "blue": "177",
+          "alpha": 1
+        },
+        "color-space": "srgb"
       }
     }
   ]
