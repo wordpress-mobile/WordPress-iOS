@@ -114,7 +114,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     func chartDate(for entryIndex: Int) -> Date? {
         if let summaryData = mostRecentChartData?.summaryData,
-            entryIndex < summaryData.count {
+            summaryData.indices.contains(entryIndex) {
             currentEntryIndex = entryIndex
             return summaryData[entryIndex].periodStartDate
         }
@@ -157,7 +157,7 @@ private extension SiteStatsPeriodViewModel {
         let periodDate = summaryData.last?.periodStartDate
         let period = periodSummary?.period
 
-        let viewsData = intervalData(summaryData: summaryData, summaryType: .views)
+        let viewsData = intervalData(summaryType: .views)
         let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
                                            tabData: viewsData.count,
                                            difference: viewsData.difference,
@@ -166,7 +166,7 @@ private extension SiteStatsPeriodViewModel {
                                            period: period,
                                            analyticsStat: .statsOverviewTypeTappedViews)
 
-        let visitorsData = intervalData(summaryData: summaryData, summaryType: .visitors)
+        let visitorsData = intervalData(summaryType: .visitors)
         let visitorsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle,
                                               tabData: visitorsData.count,
                                               difference: visitorsData.difference,
@@ -175,11 +175,10 @@ private extension SiteStatsPeriodViewModel {
                                               period: period,
                                               analyticsStat: .statsOverviewTypeTappedVisitors)
 
+        let likesData = intervalData(summaryType: .likes)
         // If Summary Likes is still loading, show dashes (instead of 0)
         // to indicate it's still loading.
-        let likesLoadingStub = store.isFetchingSummaryLikes ? "----" : nil
-
-        let likesData = intervalData(summaryData: summaryData, summaryType: .likes)
+        let likesLoadingStub = likesData.count > 0 ? nil : (store.isFetchingSummaryLikes ? "----" : nil)
         let likesTabData = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle,
                                            tabData: likesData.count,
                                            tabDataStub: likesLoadingStub,
@@ -189,7 +188,7 @@ private extension SiteStatsPeriodViewModel {
                                            period: period,
                                            analyticsStat: .statsOverviewTypeTappedLikes)
 
-        let commentsData = intervalData(summaryData: summaryData, summaryType: .comments)
+        let commentsData = intervalData(summaryType: .comments)
         let commentsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle,
                                               tabData: commentsData.count,
                                               difference: commentsData.difference,
@@ -219,15 +218,14 @@ private extension SiteStatsPeriodViewModel {
         return tableRows
     }
 
-    func intervalData(summaryData: [StatsSummaryData],
-                      summaryType: StatsSummaryType) ->
-        (count: Int, difference: Int, percentage: Int) {
-
-            guard let currentInterval = summaryData.last else {
+    func intervalData(summaryType: StatsSummaryType) -> (count: Int, difference: Int, percentage: Int) {
+            guard let summaryData = mostRecentChartData?.summaryData,
+                summaryData.indices.contains(currentEntryIndex) else {
                 return (0, 0, 0)
             }
 
-            let previousInterval = summaryData.count >= 2 ? summaryData[summaryData.count-2] : nil
+            let currentInterval = summaryData[currentEntryIndex]
+            let previousInterval = currentEntryIndex >= 1 ? summaryData[currentEntryIndex-1] : nil
 
             let currentCount: Int
             let previousCount: Int
