@@ -2250,7 +2250,7 @@ extension AztecPostViewController {
         case .thumbnailReady(let url):
             handleThumbnailURL(url, attachment: attachment)
         case .uploading:
-            break
+            handleUploadStarted(attachment: attachment)
         case .ended:
             handleUploaded(media: media, mediaUploadID: media.uploadID)
         case .failed(let error):
@@ -2474,6 +2474,12 @@ extension AztecPostViewController {
             return
         }
         insert(exportableAsset: image, source: .otherApps, attachment: attachment)
+    }
+
+    private func handleUploadStarted(attachment: MediaAttachment) {
+        resetMediaAttachmentOverlay(attachment)
+        attachment.progress = 0
+        richTextView.refresh(attachment, overlayUpdateOnly: true)
     }
 
     private func handleUploaded(media: Media, mediaUploadID: String) {
@@ -3254,7 +3260,7 @@ extension AztecPostViewController {
         static let mediaProgressOverlay         = UIColor.neutral(shade: .shade70).withAlphaComponent(CGFloat(0.6))
         static let mediaProgressBarBackground   = UIColor.neutral(shade: .shade0)
         static let mediaProgressBarTrack        = UIColor.primary
-        static let aztecLinkColor               = UIColor.primary(shade: .shade40)
+        static let aztecLinkColor               = UIColor.primary
         static let mediaOverlayBorderColor      = UIColor.primary
     }
 

@@ -674,6 +674,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
                                                       highlightedImage:nil];
     item.callback = callback;
     item.imageInsets = imageInsets;
+    item.tintColor = [UIColor murielPrimary];
     return item;
 }
 
