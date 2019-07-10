@@ -9,7 +9,7 @@ extension WPStyleGuide {
 
         cell.detailTextLabel?.font = self.subtitleFont()
         cell.detailTextLabel?.sizeToFit()
-        cell.detailTextLabel?.textColor = .neutral(shade: .shade20)
+        cell.detailTextLabel?.textColor = .textSubtle
 
         cell.imageView?.layer.borderColor = UIColor.white.cgColor
         cell.imageView?.layer.borderWidth = 1

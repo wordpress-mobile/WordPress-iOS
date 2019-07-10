@@ -16,6 +16,7 @@
 * Stats Periods: Fixed crash when the Countries map displayed one country only
 * Added a selection of user customizable app icons. Change it via Me > App Settings > App Icon.
 * Update the app's colors using the Muriel color pallete.
+* Stats Periods detail views: Fixed an issue where rotation would truncate data.
 
 12.7
 -----
