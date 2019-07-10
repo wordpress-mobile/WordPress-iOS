@@ -163,12 +163,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         configurePostViewButtonItem()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        automaticallySyncIfAppropriate()
-    }
-
     func configurePostViewButtonItem() {
         navigationItem.rightBarButtonItems = [postsViewButtonItem]
     }
