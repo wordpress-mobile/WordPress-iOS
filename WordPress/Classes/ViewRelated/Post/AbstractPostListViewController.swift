@@ -195,10 +195,6 @@ class AbstractPostListViewController: UIViewController,
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !searchController.isActive {
-            configureInitialScrollInsets()
-        }
-
         automaticallySyncIfAppropriate()
     }
 
