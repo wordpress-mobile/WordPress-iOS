@@ -27,7 +27,12 @@ class SiteStatsPeriodViewModel: Observable {
 
     weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
 
-    private var mostRecentChartData: StatsSummaryTimeIntervalData?
+    private var mostRecentChartData: StatsSummaryTimeIntervalData? {
+        didSet {
+            currentEntryIndex = (mostRecentChartData?.summaryData.endIndex ?? 0) - 1
+        }
+    }
+    private var currentEntryIndex: Int = 0
 
     // MARK: - Constructor
 
@@ -103,6 +108,26 @@ class SiteStatsPeriodViewModel: Observable {
         case fetchingData
         case fetchingCacheData(_ hasCachedData: Bool)
         case fetchingDataCompleted(_ success: Bool)
+    }
+
+    // MARK: - Chart Date
+
+    func chartDate(for entryIndex: Int) -> Date? {
+        if let summaryData = mostRecentChartData?.summaryData,
+            entryIndex < summaryData.count {
+            currentEntryIndex = entryIndex
+            return summaryData[entryIndex].periodStartDate
+        }
+        return nil
+    }
+
+    func updateDate(forward: Bool) -> Date? {
+        if forward {
+            currentEntryIndex += 1
+        } else {
+            currentEntryIndex -= 1
+        }
+        return chartDate(for: currentEntryIndex)
     }
 }
 
