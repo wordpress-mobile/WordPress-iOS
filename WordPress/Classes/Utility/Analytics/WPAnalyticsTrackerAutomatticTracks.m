@@ -1181,6 +1181,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"view" };
             break;
+        case WPAnalyticsStatPostListToggleButtonPressed:
+            eventName = @"post_list_toggle_button_pressed";
+            break;
         case WPAnalyticsStatPostRevisionsListViewed:
             eventName = @"revisions_list_viewed";
             break;

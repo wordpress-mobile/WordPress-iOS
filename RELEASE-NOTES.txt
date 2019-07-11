@@ -1,6 +1,9 @@
 12.9
 -----
- 
+* Offline support: Create Post is now available from empty results view in offline mode.
+* Post Preview: Displaying preview generation status in navigation bar instead of a  
+                blocking spinner. 
+
 12.8
 -----
 * Stats Insights: New two-column layout for Follower Totals stats.

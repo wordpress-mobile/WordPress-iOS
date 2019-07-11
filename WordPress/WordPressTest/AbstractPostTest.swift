@@ -15,7 +15,7 @@ class AbstractPostTest: XCTestCase {
 
         status = PostStatusPrivate
         title = AbstractPost.title(forStatus: status)
-         XCTAssertTrue(title == NSLocalizedString("Privately published", comment: "Name for the status of a post that is marked private."), "Title did not match status")
+         XCTAssertTrue(title == NSLocalizedString("Private", comment: "Name for the status of a post that is marked private."), "Title did not match status")
 
         status = PostStatusPublish
         title = AbstractPost.title(forStatus: status)

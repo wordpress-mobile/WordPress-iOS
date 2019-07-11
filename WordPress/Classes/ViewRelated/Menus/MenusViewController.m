@@ -529,8 +529,10 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     }
 
     [self.noResultsViewController configureWithTitle:title
+                                   noConnectionTitle:nil
                                          buttonTitle:nil
                                             subtitle:nil
+                                noConnectionSubtitle:nil
                                   attributedSubtitle:nil
                      attributedSubtitleConfiguration:nil
                                                image:nil
