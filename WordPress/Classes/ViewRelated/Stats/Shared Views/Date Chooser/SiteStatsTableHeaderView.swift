@@ -4,8 +4,8 @@ protocol SiteStatsTableHeaderDelegate: class {
     func dateChangedTo(_ newDate: Date?)
 }
 
-protocol SiteStatsTableHeaderUpdateDateDelegate: SiteStatsTableHeaderDelegate {
-    func updateDate(forward: Bool)
+protocol SiteStatsTableHeaderDateButtonDelegate: SiteStatsTableHeaderDelegate {
+    func didTouchHeaderButton(forward: Bool)
 }
 
 class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Accessible {
@@ -79,18 +79,15 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
     }
 
-    func update(date: Date) {
+    func updateDate(with intervalDate: Date) {
         guard let period = period else {
             return
         }
 
-        self.date = StatsPeriodHelper().endDate(from: date, period: period)
+        self.date = StatsPeriodHelper().endDate(from: intervalDate, period: period)
 
         delegate?.dateChangedTo(self.date)
-        dateLabel.text = displayDate()
-        updateButtonStates()
-        prepareForVoiceOver()
-        postAccessibilityPeriodLabel()
+        reloadView()
     }
 }
 
@@ -122,6 +119,13 @@ private extension SiteStatsTableHeaderView {
         }
     }
 
+    func reloadView() {
+        dateLabel.text = displayDate()
+        updateButtonStates()
+        prepareForVoiceOver()
+        postAccessibilityPeriodLabel()
+    }
+
     @IBAction func didTapBackButton(_ sender: UIButton) {
         captureAnalyticsEvent(.statsDateTappedBackward)
         updateDate(forward: false)
@@ -133,8 +137,8 @@ private extension SiteStatsTableHeaderView {
     }
 
     func updateDate(forward: Bool) {
-        if let delegate = delegate as? SiteStatsTableHeaderUpdateDateDelegate {
-            delegate.updateDate(forward: forward)
+        if let delegate = delegate as? SiteStatsTableHeaderDateButtonDelegate {
+            delegate.didTouchHeaderButton(forward: forward)
             return
         }
 
@@ -147,10 +151,7 @@ private extension SiteStatsTableHeaderView {
         self.date = StatsPeriodHelper().calculateEndDate(from: date, offsetBy: value, unit: period)
 
         delegate?.dateChangedTo(self.date)
-        dateLabel.text = displayDate()
-        updateButtonStates()
-        prepareForVoiceOver()
-        postAccessibilityPeriodLabel()
+        reloadView()
     }
 
     func updateButtonStates() {
@@ -201,9 +202,6 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
         self.date = StatsPeriodHelper().calculateEndDate(from: Date().normalizedDate(), offsetBy: periodShift, unit: period)
 
         delegate?.dateChangedTo(self.date)
-        dateLabel.text = displayDate()
-        updateButtonStates()
-        prepareForVoiceOver()
-        postAccessibilityPeriodLabel()
+        reloadView()
     }
 }
