@@ -3,9 +3,10 @@ PODS:
   - Alamofire (4.7.3)
   - AlamofireNetworkActivityIndicator (2.3.0):
     - Alamofire (~> 4.7)
-  - Automattic-Tracks-iOS (0.3.5):
+  - Automattic-Tracks-iOS (0.4.0):
     - CocoaLumberjack (~> 3.5.2)
     - Reachability (~> 3.1)
+    - Sentry (~> 4)
     - UIDeviceIdentifier (~> 1.1.4)
   - boost-for-react-native (1.63.0)
   - Charts (3.2.2):
@@ -199,9 +200,9 @@ PODS:
   - RNTAztecView (1.8.0):
     - React-Core
     - WordPress-Aztec-iOS
-  - Sentry (4.3.1):
-    - Sentry/Core (= 4.3.1)
-  - Sentry/Core (4.3.1)
+  - Sentry (4.4.0):
+    - Sentry/Core (= 4.4.0)
+  - Sentry/Core (4.4.0)
   - SimulatorStatusMagic (2.4.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -251,7 +252,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - Alamofire (= 4.7.3)
   - AlamofireNetworkActivityIndicator (~> 2.3)
-  - Automattic-Tracks-iOS (= 0.3.5)
+  - Automattic-Tracks-iOS (~> 0.4)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.5.2)
   - Down (~> 0.6.6)
@@ -295,7 +296,6 @@ DEPENDENCIES:
   - React-RCTWebSocket (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/9db88d4e96d6a694c1e641806cae9be40efc798e/react-native-gutenberg-bridge/third-party-podspecs/React-RCTWebSocket.podspec.json`)
   - RNSVG (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/9db88d4e96d6a694c1e641806cae9be40efc798e/react-native-gutenberg-bridge/third-party-podspecs/RNSVG.podspec.json`)
   - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `9db88d4e96d6a694c1e641806cae9be40efc798e`)
-  - Sentry (= 4.3.1)
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
@@ -303,7 +303,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.6.0)
   - WordPressKit (~> 4.2.0)
   - WordPressMocks (~> 0.0.5)
-  - WordPressShared (~> 1.8.4)
+  - WordPressShared (from `https://github.com/leandroalonso/WordPress-iOS-Shared.git`, branch `feature/wpios11646_post_list_toggle_events`)
   - WordPressUI (~> 1.3.4)
   - WPMediaPicker (~> 1.4.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/9db88d4e96d6a694c1e641806cae9be40efc798e/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -348,7 +348,6 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
-    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -411,6 +410,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 9db88d4e96d6a694c1e641806cae9be40efc798e
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressShared:
+    :branch: feature/wpios11646_post_list_toggle_events
+    :git: https://github.com/leandroalonso/WordPress-iOS-Shared.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/9db88d4e96d6a694c1e641806cae9be40efc798e/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -424,12 +426,15 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 9db88d4e96d6a694c1e641806cae9be40efc798e
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressShared:
+    :commit: f5c10cda240dac3ec86526b1646ab8c2031adcdc
+    :git: https://github.com/leandroalonso/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireNetworkActivityIndicator: 18346ff6d770d9513d0ac6f2d99706f40f93dbaa
-  Automattic-Tracks-iOS: 1ba339ac16d6aff577b7f0ec16546be2a7ccd64a
+  Automattic-Tracks-iOS: f7a8284999a5ce2f4e768717d86a640a32f43b7c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
@@ -478,7 +483,7 @@ SPEC CHECKSUMS:
   React-RCTWebSocket: 47dfd49bb143d4847fae643816e02646b7bce1b9
   RNSVG: c820516df826221ce4969594bf3e822a464abd51
   RNTAztecView: d445d158d80ee8ee8fa2eda95d5a3702bb06d68c
-  Sentry: 5267d493a398663538317e4dcc438c12c66202ed
+  Sentry: 26650184fe71eb7476dfd2737acb5ea6cc64b4b1
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -496,6 +501,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 5d7618a31aa895793e1afc406d89c3d3ab6b7253
+PODFILE CHECKSUM: 15e616c7e2c46c52e8d19981663f74ca45038230
 
 COCOAPODS: 1.6.1

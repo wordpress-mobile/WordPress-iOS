@@ -22,7 +22,7 @@ struct PlanListRow: ImmuTableRow {
         cell.textLabel?.attributedText = attributedTitle
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description
-        cell.detailTextLabel?.textColor = .neutral(shade: .shade300)
+        cell.detailTextLabel?.textColor = .neutral(shade: .shade30)
         cell.detailTextLabel?.font = WPFontManager.systemRegularFont(ofSize: 14.0)
         cell.separatorInset = UIEdgeInsets.zero
     }

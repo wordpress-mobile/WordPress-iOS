@@ -440,8 +440,8 @@ private extension NotificationsViewController {
 
     func setupFilterBar() {
         filterTabBar.tintColor = .primary
-        filterTabBar.deselectedTabColor = .neutral(shade: .shade400)
-        filterTabBar.dividerColor = .neutral(shade: .shade100)
+        filterTabBar.deselectedTabColor = .neutral(shade: .shade40)
+        filterTabBar.dividerColor = .neutral(shade: .shade10)
 
         filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -1037,7 +1037,7 @@ private extension NotificationsViewController {
 
         return [
             MGSwipeButton(title: title,
-                          backgroundColor: .neutral(shade: .shade500),
+                          backgroundColor: .neutral(shade: .shade50),
                           callback: { _ in
                             if isRead {
                                 self.markAsUnread(note: note)

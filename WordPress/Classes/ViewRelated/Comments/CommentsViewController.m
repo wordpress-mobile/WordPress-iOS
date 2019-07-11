@@ -286,7 +286,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                                                                }];
                                                                            }];
         
-        unapprove.backgroundColor = [UIColor murielNeutral300];
+        unapprove.backgroundColor = [UIColor murielNeutral30];
         [actions addObject:unapprove];
     } else {
         UITableViewRowAction *approve = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -523,9 +523,11 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         return;
     }
 
-    [self.noResultsViewController configureWithTitle:[self noResultsViewTitle]
+    [self.noResultsViewController configureWithTitle:self.noResultsViewTitle
+                                   noConnectionTitle:nil
                                          buttonTitle:nil
                                             subtitle:nil
+                                noConnectionSubtitle:nil
                                   attributedSubtitle:nil
                      attributedSubtitleConfiguration:nil
                                                image:nil

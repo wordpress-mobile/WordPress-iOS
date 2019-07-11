@@ -1,4 +1,5 @@
 import WordPressAuthenticator
+import AutomatticTracks
 
 @objc extension WordPressAppDelegate {
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -111,7 +112,7 @@ import WordPressAuthenticator
         }
 
         if debugKey == ApiCredentials.debuggingKey(), debugType == "force_crash" {
-            WPCrashLogging.crash()
+            CrashLogging.crash()
         }
 
         return true

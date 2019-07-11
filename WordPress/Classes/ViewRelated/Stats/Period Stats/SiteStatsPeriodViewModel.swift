@@ -21,7 +21,7 @@ class SiteStatsPeriodViewModel: Observable {
             }
         }
     }
-    private let periodReceipt: Receipt
+    private var periodReceipt: Receipt?
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
 
@@ -39,10 +39,6 @@ class SiteStatsPeriodViewModel: Observable {
         self.store = store
         self.lastRequestedDate = selectedDate
         self.lastRequestedPeriod = selectedPeriod
-        periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
-        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate,
-                                                                               period: selectedPeriod,
-                                                                               forceRefresh: true))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -56,6 +52,13 @@ class SiteStatsPeriodViewModel: Observable {
             let status: Status = fetching ? .fetchingData : .fetchingDataCompleted(success)
             self?.overviewStoreStatusOnChange?(status)
         }
+    }
+
+    func startFetchingOverview() {
+        periodReceipt = store.query(.periods(date: lastRequestedDate, period: lastRequestedPeriod))
+        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
+                                                                               period: lastRequestedPeriod,
+                                                                               forceRefresh: true))
     }
 
     // MARK: - Table Model
@@ -89,9 +92,9 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: false))
         self.lastRequestedDate = date
         self.lastRequestedPeriod = period
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: false))
     }
 
     // MARK: - State
@@ -134,6 +137,8 @@ private extension SiteStatsPeriodViewModel {
                                            tabData: viewsData.count,
                                            difference: viewsData.difference,
                                            differencePercent: viewsData.percentage,
+                                           date: periodDate,
+                                           period: period,
                                            analyticsStat: .statsOverviewTypeTappedViews)
 
         let visitorsData = intervalData(summaryData: summaryData, summaryType: .visitors)
@@ -141,6 +146,8 @@ private extension SiteStatsPeriodViewModel {
                                               tabData: visitorsData.count,
                                               difference: visitorsData.difference,
                                               differencePercent: visitorsData.percentage,
+                                              date: periodDate,
+                                              period: period,
                                               analyticsStat: .statsOverviewTypeTappedVisitors)
 
         // If Summary Likes is still loading, show dashes (instead of 0)
@@ -153,6 +160,8 @@ private extension SiteStatsPeriodViewModel {
                                            tabDataStub: likesLoadingStub,
                                            difference: likesData.difference,
                                            differencePercent: likesData.percentage,
+                                           date: periodDate,
+                                           period: period,
                                            analyticsStat: .statsOverviewTypeTappedLikes)
 
         let commentsData = intervalData(summaryData: summaryData, summaryType: .comments)
@@ -160,6 +169,8 @@ private extension SiteStatsPeriodViewModel {
                                               tabData: commentsData.count,
                                               difference: commentsData.difference,
                                               differencePercent: commentsData.percentage,
+                                              date: periodDate,
+                                              period: period,
                                               analyticsStat: .statsOverviewTypeTappedComments)
 
         var barChartData = [BarChartDataConvertible]()
@@ -187,47 +198,47 @@ private extension SiteStatsPeriodViewModel {
                       summaryType: StatsSummaryType) ->
         (count: Int, difference: Int, percentage: Int) {
 
-        guard let currentInterval = summaryData.last else {
-            return (0, 0, 0)
-        }
+            guard let currentInterval = summaryData.last else {
+                return (0, 0, 0)
+            }
 
-        let previousInterval = summaryData.count >= 2 ? summaryData[summaryData.count-2] : nil
+            let previousInterval = summaryData.count >= 2 ? summaryData[summaryData.count-2] : nil
 
-        let currentCount: Int
-        let previousCount: Int
-        switch summaryType {
-        case .views:
-            currentCount = currentInterval.viewsCount
-            previousCount = previousInterval?.viewsCount ?? 0
-        case .visitors:
-            currentCount = currentInterval.visitorsCount
-            previousCount = previousInterval?.visitorsCount ?? 0
-        case .likes:
-            currentCount = currentInterval.likesCount
-            previousCount = previousInterval?.likesCount ?? 0
-        case .comments:
-            currentCount = currentInterval.commentsCount
-            previousCount = previousInterval?.commentsCount ?? 0
-        }
+            let currentCount: Int
+            let previousCount: Int
+            switch summaryType {
+            case .views:
+                currentCount = currentInterval.viewsCount
+                previousCount = previousInterval?.viewsCount ?? 0
+            case .visitors:
+                currentCount = currentInterval.visitorsCount
+                previousCount = previousInterval?.visitorsCount ?? 0
+            case .likes:
+                currentCount = currentInterval.likesCount
+                previousCount = previousInterval?.likesCount ?? 0
+            case .comments:
+                currentCount = currentInterval.commentsCount
+                previousCount = previousInterval?.commentsCount ?? 0
+            }
 
-        let difference = currentCount - previousCount
-        var roundedPercentage = 0
+            let difference = currentCount - previousCount
+            var roundedPercentage = 0
 
-        if previousCount > 0 {
-            let percentage = (Float(difference) / Float(previousCount)) * 100
-            roundedPercentage = Int(round(percentage))
-        }
+            if previousCount > 0 {
+                let percentage = (Float(difference) / Float(previousCount)) * 100
+                roundedPercentage = Int(round(percentage))
+            }
 
-        return (currentCount, difference, roundedPercentage)
+            return (currentCount, difference, roundedPercentage)
     }
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: StatSection.periodPostsAndPages.title))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
-                                           dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
-                                           dataRows: postsAndPagesDataRows(),
-                                           siteStatsPeriodDelegate: periodDelegate))
+                                                 dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
+                                                 dataRows: postsAndPagesDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
     }
@@ -376,9 +387,9 @@ private extension SiteStatsPeriodViewModel {
         return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
                             maxViewsCount: countries.first?.viewsCount ?? 0,
                             data: countries.reduce([String: NSNumber]()) { (dict, country) in
-                                    var nextDict = dict
-                                    nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
-                                    return nextDict
+                                var nextDict = dict
+                                nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
+                                return nextDict
         })
     }
 
@@ -428,10 +439,10 @@ private extension SiteStatsPeriodViewModel {
 
     func publishedDataRows() -> [StatsTotalRowData] {
         return store.getTopPublished()?.publishedPosts.prefix(10).map { StatsTotalRowData.init(name: $0.title,
-                                                                                    data: "",
-                                                                                    showDisclosure: true,
-                                                                                    disclosureURL: $0.postURL,
-                                                                                    statSection: .periodPublished) }
+                                                                                               data: "",
+                                                                                               showDisclosure: true,
+                                                                                               disclosureURL: $0.postURL,
+                                                                                               statSection: .periodPublished) }
             ?? []
     }
 

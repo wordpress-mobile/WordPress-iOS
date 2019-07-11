@@ -7,8 +7,8 @@
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielPrimary400() -> UIColor {
-        return .primary(shade: .shade400)
+    static func murielPrimary40() -> UIColor {
+        return .primary(shade: .shade40)
     }
 
     @available(swift, obsoleted: 1.0)
@@ -27,43 +27,53 @@
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielNeutral50() -> UIColor {
-        return .neutral(shade: .shade50)
+    static func murielNeutral5() -> UIColor {
+        return .neutral(shade: .shade5)
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielNeutral100() -> UIColor {
-        return .neutral(shade: .shade100)
+    static func murielNeutral10() -> UIColor {
+        return .neutral(shade: .shade10)
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielNeutral200() -> UIColor {
-        return .neutral(shade: .shade200)
+    static func murielNeutral20() -> UIColor {
+        return .neutral(shade: .shade20)
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielNeutral300() -> UIColor {
-        return .neutral(shade: .shade300)
+    static func murielNeutral30() -> UIColor {
+        return .neutral(shade: .shade30)
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielNeutral400() -> UIColor {
-        return .neutral(shade: .shade400)
+    static func murielNeutral40() -> UIColor {
+        return .neutral(shade: .shade40)
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielNeutral600() -> UIColor {
-        return .neutral(shade: .shade600)
+    static func murielNeutral60() -> UIColor {
+        return .neutral(shade: .shade60)
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielNeutral700() -> UIColor {
-        return .neutral(shade: .shade700)
+    static func murielNeutral70() -> UIColor {
+        return .neutral(shade: .shade70)
     }
 
     @available(swift, obsoleted: 1.0)
     static func murielSuccess() -> UIColor {
         return .success
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielText() -> UIColor {
+        return .text
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielTextSubtle() -> UIColor {
+        return .textSubtle
     }
 
     @available(swift, obsoleted: 1.0)
@@ -73,7 +83,7 @@
 
     @available(swift, obsoleted: 1.0)
     static func murielWarningDark() -> UIColor {
-        return .warning(shade: .shade700)
+        return .warning(shade: .shade70)
     }
 
     @available(swift, obsoleted: 1.0)

@@ -3,8 +3,8 @@ import WordPressKit
 
 final class AddressCell: UITableViewCell, ModelSettableCell {
     private struct TextStyleAttributes {
-        static let defaults: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: UIColor.neutral(shade: .shade300)]
-        static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: UIColor.neutral(shade: .shade700)]
+        static let defaults: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: UIColor.neutral(shade: .shade30)]
+        static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: UIColor.neutral(shade: .shade70)]
     }
 
     @IBOutlet weak var title: UILabel!
@@ -43,7 +43,7 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleCheckmark() {
-        tintColor = .primary(shade: .shade400)
+        tintColor = .primary(shade: .shade40)
     }
 
     override func prepareForReuse() {

@@ -330,7 +330,7 @@ class ReaderSiteSearchHeaderView: UIView {
         frame.size.height = collapsedHeaderFooterHeight
 
         divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = WPStyleGuide.postCardBorderColor()
+        divider.backgroundColor = WPStyleGuide.postCardBorderColor
         addSubview(divider)
 
         NSLayoutConstraint.activate([
@@ -368,7 +368,7 @@ class ReaderSiteSearchFooterView: UIView {
         frame.size.height = ReaderSiteSearchFooterView.expandedHeight
 
         divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = WPStyleGuide.postCardBorderColor()
+        divider.backgroundColor = WPStyleGuide.postCardBorderColor
         addSubview(divider)
 
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false

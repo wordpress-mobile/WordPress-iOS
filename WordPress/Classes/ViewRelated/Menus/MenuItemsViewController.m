@@ -45,7 +45,7 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
     [super viewDidLoad];
 
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
-    self.view.layer.borderColor = [[UIColor murielNeutral100] CGColor];
+    self.view.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     self.view.layer.borderWidth = MenusDesignStrokeWidth;
     if (![WPDeviceIdentification isRetina]) {
         // Increase the stroke width on non-retina screens.

@@ -84,7 +84,7 @@ final class NewsCard: UIViewController {
     }
 
     private func styleBackground() {
-        view.backgroundColor = .neutral(shade: .shade50)
+        view.backgroundColor = .clear
     }
 
     private func styleBorderedView() {

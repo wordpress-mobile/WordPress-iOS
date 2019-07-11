@@ -15,6 +15,11 @@ class CountriesMapCell: UITableViewCell, NibLoadable {
         }
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionStyle = .none
+    }
+
     func configure(with countriesMap: CountriesMap) {
         countriesMapView.setData(countriesMap)
     }

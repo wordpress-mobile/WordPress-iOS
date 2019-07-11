@@ -9,8 +9,8 @@ class DomainListDomainCell: WPTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        domainLabel?.textColor = .neutral(shade: .shade600)
-        registeredMappedLabel?.textColor = .neutral(shade: .shade400)
+        domainLabel?.textColor = .neutral(shade: .shade60)
+        registeredMappedLabel?.textColor = .neutral(shade: .shade40)
     }
 }
 

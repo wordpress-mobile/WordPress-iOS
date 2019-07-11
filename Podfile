@@ -13,13 +13,13 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.4'
+    # pod 'WordPressShared', '~> 1.8.4'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'add/app-icon-analytics'
+    pod 'WordPressShared', :git => 'https://github.com/leandroalonso/WordPress-iOS-Shared.git', :branch => 'feature/wpios11646_post_list_toggle_events'
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -36,10 +36,11 @@ end
 def wordpress_ui
     ## for production:
     pod 'WordPressUI', '~> 1.3.4'
+
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => 'edd2908'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'change_layout_margins_uiview_helper'
 end
 
 def wordpress_kit
@@ -54,10 +55,9 @@ def shared_with_all_pods
     pod 'CocoaLumberjack', '3.5.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
-    pod 'Sentry', '4.3.1'
 end
 
-def shared_with_networking_pods    
+def shared_with_networking_pods
     pod 'Alamofire', '4.7.3'
     pod 'Reachability', '3.2'
 
@@ -163,7 +163,7 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '0.3.5'
+    pod 'Automattic-Tracks-iOS', '~> 0.4'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'a15db91a24499913affae84243d45be0e353472a'
 
@@ -266,7 +266,7 @@ end
 ##
 target 'WordPressTodayWidget' do
     project 'WordPress/WordPress.xcodeproj'
-  
+
     shared_with_all_pods
     shared_with_networking_pods
 end
@@ -367,6 +367,14 @@ pre_install do |installer|
     static = []
     dynamic = []
     installer.pod_targets.each do |pod|
+        
+        # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
+        # linking it resolves this.
+        if pod.name == "Sentry"
+          dynamic << pod
+          next
+        end
+
         # If this pod is a dependency of one of our shared targets, it must be linked dynamically
         if pod.target_definitions.any? { |t| shared_targets.include? t.name }
           dynamic << pod

@@ -128,14 +128,7 @@ private extension SiteStatsTableHeaderView {
     }
 
     func updateButtonStates() {
-
-        // Use dates without time
-        let currentDate = (mostRecentDate != nil) ? mostRecentDate!.normalizedDate() : Date().normalizedDate()
-
-        guard var date = date,
-            let period = period,
-            var oldestDate = calendar.date(byAdding: period.calendarComponent, value: backLimit, to: currentDate) else {
-            backButton.isEnabled = false
+        guard let date = date, let period = period else {
             forwardButton.isEnabled = false
             backButton.isEnabled = false
             updateArrowStates()

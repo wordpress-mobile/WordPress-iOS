@@ -73,12 +73,12 @@ class PlanDetailViewController: UIViewController {
     }
 
     fileprivate func configureAppearance() {
-        planTitleLabel.textColor = .neutral(shade: .shade700)
-        planDescriptionLabel.textColor = .neutral(shade: .shade300)
+        planTitleLabel.textColor = .neutral(shade: .shade70)
+        planDescriptionLabel.textColor = .neutral(shade: .shade30)
         dropshadowImageView.backgroundColor = UIColor.white
         configurePlanImageDropshadow()
 
-        separator.backgroundColor = .neutral(shade: .shade50)
+        separator.backgroundColor = .neutral(shade: .shade5)
     }
 
     fileprivate func configureTableView() {
@@ -88,7 +88,7 @@ class PlanDetailViewController: UIViewController {
 
     fileprivate func configurePlanImageDropshadow() {
         dropshadowImageView.layer.masksToBounds = false
-        dropshadowImageView.layer.shadowColor = UIColor.neutral(shade: .shade50).cgColor
+        dropshadowImageView.layer.shadowColor = UIColor.neutral(shade: .shade5).cgColor
         dropshadowImageView.layer.shadowOpacity = 1.0
         dropshadowImageView.layer.shadowRadius = planImageDropshadowRadius
         dropshadowImageView.layer.shadowOffset = .zero

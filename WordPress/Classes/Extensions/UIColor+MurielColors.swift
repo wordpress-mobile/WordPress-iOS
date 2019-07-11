@@ -4,23 +4,15 @@ import WordPressShared
 /// Generates the names of the named colors in the ColorPalette.xcasset
 enum MurielColorName: String, CustomStringConvertible {
     // MARK: - Base colors
+    case airo
     case blue
     case celadon
     case gray
     case green
-    case hotBlue = "Hot-Blue"
-    case hotGreen = "Hot-Green"
-    case hotOrange = "Hot-Orange"
-    case hotPink = "Hot-Pink"
-    case hotPurple = "Hot-Purple"
-    case hotRed = "Hot-Red"
-    case hotYellow = "Hot-Yellow"
-    case jetpackGreen = "Jetpack-Green"
     case orange
     case pink
     case purple
     case red
-    case wooPurple = "Woo-Purple"
     case yellow
 
     var description: String {
@@ -34,16 +26,16 @@ enum MurielColorName: String, CustomStringConvertible {
 ///       Also, enum cases cannot begin with a number, thus the `shade` prefix.
 enum MurielColorShade: Int, CustomStringConvertible {
     case shade0 = 0
+    case shade5 = 5
+    case shade10 = 10
+    case shade20 = 20
+    case shade30 = 30
+    case shade40 = 40
     case shade50 = 50
-    case shade100 = 100
-    case shade200 = 200
-    case shade300 = 300
-    case shade400 = 400
-    case shade500 = 500
-    case shade600 = 600
-    case shade700 = 700
-    case shade800 = 800
-    case shade900 = 900
+    case shade60 = 60
+    case shade70 = 70
+    case shade80 = 80
+    case shade90 = 90
 
     var description: String {
         return "\(rawValue)"
@@ -54,7 +46,7 @@ struct MurielColor {
     let name: MurielColorName
     let shade: MurielColorShade
 
-    init(name: MurielColorName, shade: MurielColorShade = .shade500) {
+    init(name: MurielColorName, shade: MurielColorShade = .shade50) {
         self.name = name
         self.shade = shade
     }
@@ -65,23 +57,23 @@ struct MurielColor {
     }
 
     // MARK: - Muriel's semantic colors
-    static let accent = MurielColor(name: .hotPink)
-    static let divider = MurielColor(name: .gray, shade: .shade50)
-    static let error = MurielColor(name: .hotRed)
+    static let accent = MurielColor(name: .pink)
+    static let brand = MurielColor(name: .airo)
+    static let divider = MurielColor(name: .gray, shade: .shade10)
+    static let error = MurielColor(name: .red)
     static let neutral = MurielColor(name: .gray)
     static let primary = MurielColor(name: .blue)
     static let success = MurielColor(name: .green)
-    static let text = MurielColor(name: .gray, shade: .shade800)
-    static let textSubtle = MurielColor(name: .gray, shade: .shade500)
-    static let warning = MurielColor(name: .hotYellow)
+    static let text = MurielColor(name: .gray, shade: .shade80)
+    static let textSubtle = MurielColor(name: .gray, shade: .shade50)
+    static let warning = MurielColor(name: .yellow)
 
     // MARK: - Additional iOS semantic colors
-    static let navigationBar = MurielColor(name: .blue)
-    static let navigationBarShadow = MurielColor(name: .blue, shade: .shade800)
+    static let navigationBar = MurielColor(name: .airo)
 
     /// The full name of the color, with required shade value
     func assetName() -> String {
-        return "\(name)-\(shade)"
+        return "\(name)\(shade)"
     }
 }
 
@@ -110,7 +102,7 @@ extension UIColor {
 
     static var accentDark: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(from: .accent, shade: .shade700))
+            return muriel(color: MurielColor(from: .accent, shade: .shade70))
         } else {
             return WPStyleGuide.fireOrange()
         }
@@ -119,6 +111,9 @@ extension UIColor {
     class func accent(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .accent, shade: shade))
     }
+
+    /// Muriel brand color
+    static var brand = muriel(color: .brand)
 
     /// Muriel divider color
     static var divider = muriel(color: .divider)
@@ -134,7 +129,7 @@ extension UIColor {
 
     static var errorDark: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(from: .error, shade: .shade700))
+            return muriel(color: MurielColor(from: .error, shade: .shade70))
         } else {
             return WPStyleGuide.alertRedDarker()
         }
@@ -152,21 +147,21 @@ extension UIColor {
         } else {
             // here's compatibility with the old colors
             switch shade {
-            case .shade700, .shade800, .shade900:
+            case .shade70, .shade80, .shade90:
                 return WPStyleGuide.darkGrey()
-            case .shade600:
+            case .shade60:
                 return WPStyleGuide.greyDarken30()
-            case .shade500:
-                return WPStyleGuide.greyDarken20()
-            case .shade400:
-                return WPStyleGuide.greyDarken10()
-            case .shade300:
-                return WPStyleGuide.grey()
-            case .shade200:
-                return WPStyleGuide.greyLighten10()
-            case .shade100:
-                return WPStyleGuide.greyLighten20()
             case .shade50:
+                return WPStyleGuide.greyDarken20()
+            case .shade40:
+                return WPStyleGuide.greyDarken10()
+            case .shade30:
+                return WPStyleGuide.grey()
+            case .shade20:
+                return WPStyleGuide.greyLighten10()
+            case .shade10:
+                return WPStyleGuide.greyLighten20()
+            case .shade5:
                 return WPStyleGuide.greyLighten30()
             case .shade0:
                 return WPStyleGuide.lightGrey()
@@ -185,7 +180,7 @@ extension UIColor {
 
     static var primaryLight: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(from: .primary, shade: .shade300))
+            return muriel(color: MurielColor(from: .primary, shade: .shade30))
         } else {
             return WPStyleGuide.lightBlue()
         }
@@ -193,7 +188,7 @@ extension UIColor {
 
     static var primaryDark: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(from: .primary, shade: .shade700))
+            return muriel(color: MurielColor(from: .primary, shade: .shade70))
         } else {
             return WPStyleGuide.darkBlue()
         }
@@ -205,13 +200,13 @@ extension UIColor {
         } else {
             // here's compatibility with the old colors
             switch shade {
-            case .shade700, .shade800, .shade900:
+            case .shade70, .shade80, .shade90:
                 return WPStyleGuide.darkBlue()
-            case .shade500, .shade600:
+            case .shade50, .shade60:
                 return WPStyleGuide.wordPressBlue()
-            case .shade400:
+            case .shade40:
                 return WPStyleGuide.mediumBlue()
-            case .shade300, .shade200, .shade100, .shade50, .shade0:
+            case .shade30, .shade20, .shade10, .shade5, .shade0:
                 return WPStyleGuide.lightBlue()
             }
         }
@@ -250,7 +245,7 @@ extension UIColor {
     /// Muriel/iOS unselected color
     static var unselected: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(name: .gray, shade: .shade300))
+            return muriel(color: MurielColor(name: .gray, shade: .shade30))
         } else {
             return WPStyleGuide.greyLighten10()
         }
@@ -275,7 +270,7 @@ extension UIColor {
 
     static var primaryButtonDownBackground: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(name: .hotPink, shade: .shade800))
+            return muriel(color: MurielColor(name: .pink, shade: .shade80))
         } else {
             return WPStyleGuide.wordPressBlue()
         }
@@ -283,7 +278,7 @@ extension UIColor {
 
     static var primaryButtonDownBorder: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(name: .hotPink, shade: .shade900))
+            return muriel(color: MurielColor(name: .pink, shade: .shade90))
         } else {
             return WPStyleGuide.wordPressBlue()
         }

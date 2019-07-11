@@ -109,7 +109,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     // width and height constraints are (less than or equal to) in case the view is hidden
     [iconView.widthAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
     [iconView.heightAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
-    iconView.tintColor = [UIColor murielNeutral300];
+    iconView.tintColor = [UIColor murielNeutral30];
     _iconView = iconView;
 
     NSAssert(_stackView != nil, @"stackView is nil");
@@ -243,7 +243,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 {
     UIColor *color = nil;
     if (self.highlighted) {
-        color = [UIColor murielPrimary400];
+        color = [UIColor murielPrimary40];
     } else  {
         color = [UIColor whiteColor];
     }
@@ -257,7 +257,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     if (self.highlighted) {
         color = [UIColor whiteColor];
     } else  {
-        color = [UIColor murielNeutral700];
+        color = [UIColor murielNeutral70];
     }
 
     return color;
@@ -269,7 +269,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     if (self.highlighted) {
         color = [UIColor whiteColor];
     } else  {
-        color = [UIColor murielNeutral300];
+        color = [UIColor murielNeutral30];
     }
 
     return color;
@@ -316,7 +316,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 
     CGRect dashRect = CGRectInset(self.contentView.frame, 8.0, 8.0);
 
-    CGContextSetStrokeColorWithColor(context, [[UIColor murielPrimary400] CGColor]);
+    CGContextSetStrokeColorWithColor(context, [[UIColor murielPrimary40] CGColor]);
     CGContextSetLineWidth(context, 1.0);
 
     const CGFloat dashLength = 6.0;
@@ -373,7 +373,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     CGContextMoveToPoint(context, self.stackView.layoutMargins.left, rect.size.height - (MenusDesignStrokeWidth / 2.0));
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height - (MenusDesignStrokeWidth / 2.0));
 
-    UIColor *borderColor = [UIColor murielNeutral100];
+    UIColor *borderColor = [UIColor murielNeutral10];
     CGContextSetStrokeColorWithColor(context, [borderColor CGColor]);
     CGContextStrokePath(context);
 }

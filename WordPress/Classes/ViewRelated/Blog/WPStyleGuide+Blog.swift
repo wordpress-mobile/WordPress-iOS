@@ -9,11 +9,11 @@ extension WPStyleGuide {
 
         cell.detailTextLabel?.font = self.subtitleFont()
         cell.detailTextLabel?.sizeToFit()
-        cell.detailTextLabel?.textColor = .neutral(shade: .shade200)
+        cell.detailTextLabel?.textColor = .textSubtle
 
         cell.imageView?.layer.borderColor = UIColor.white.cgColor
         cell.imageView?.layer.borderWidth = 1
-        cell.imageView?.tintColor = .neutral(shade: .shade200)
+        cell.imageView?.tintColor = .neutral(shade: .shade20)
 
         cell.backgroundColor = UIColor.white
     }
@@ -28,9 +28,9 @@ extension WPStyleGuide {
         cell.detailTextLabel?.sizeToFit()
         cell.detailTextLabel?.textColor = .text
 
-        cell.imageView?.layer.borderColor = UIColor.neutral(shade: .shade100).cgColor
+        cell.imageView?.layer.borderColor = UIColor.neutral(shade: .shade10).cgColor
         cell.imageView?.layer.borderWidth = 1
-        cell.imageView?.tintColor = .neutral(shade: .shade300)
+        cell.imageView?.tintColor = .neutral(shade: .shade30)
 
         cell.backgroundColor = .neutral(shade: .shade0)
     }
