@@ -13,13 +13,13 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.4'
+    # pod 'WordPressShared', '~> 1.8.4'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'add/app-icon-analytics'
+    pod 'WordPressShared', :git => 'https://github.com/leandroalonso/WordPress-iOS-Shared.git', :branch => 'feature/wpios11646_post_list_toggle_events'
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -36,10 +36,11 @@ end
 def wordpress_ui
     ## for production:
     pod 'WordPressUI', '~> 1.3.4'
+
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => 'edd2908'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'change_layout_margins_uiview_helper'
 end
 
 def wordpress_kit
@@ -56,7 +57,7 @@ def shared_with_all_pods
     pod 'NSObject-SafeExpectations', '0.0.3'
 end
 
-def shared_with_networking_pods    
+def shared_with_networking_pods
     pod 'Alamofire', '4.7.3'
     pod 'Reachability', '3.2'
 
@@ -249,7 +250,7 @@ end
 ##
 target 'WordPressTodayWidget' do
     project 'WordPress/WordPress.xcodeproj'
-  
+
     shared_with_all_pods
     shared_with_networking_pods
 end

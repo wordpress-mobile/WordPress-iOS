@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressComStatsiOS
 import WordPressShared
+import Gridicons
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -30,24 +31,71 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
-    static fileprivate let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
-    static fileprivate let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
-    static fileprivate let postCardTextCellNibName = "PostCardTextCell"
-    static fileprivate let postCardRestoreCellNibName = "RestorePostTableViewCell"
-    static fileprivate let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
-    static fileprivate let statsStoryboardName = "SiteStats"
-    static fileprivate let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
+    private let postCompactCellIdentifier = "PostCompactCellIdentifier"
+    private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
+    private let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
+    private let postCompactCellNibName = "PostCompactCell"
+    private let postCardTextCellNibName = "PostCardCell"
+    private let postCardRestoreCellNibName = "RestorePostTableViewCell"
+    private let statsStoryboardName = "SiteStats"
+    private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
+    private var postCellIdentifier: String {
+        return isCompact || isSearching() ? postCompactCellIdentifier : postCardTextCellIdentifier
+    }
 
-    static fileprivate let statsCacheInterval = TimeInterval(300) // 5 minutes
+    static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
 
-    static fileprivate let postCardEstimatedRowHeight = CGFloat(300.0)
-    static fileprivate let postListHeightForFooterView = CGFloat(34.0)
+    private let statsCacheInterval = TimeInterval(300) // 5 minutes
+
+    private let postCardEstimatedRowHeight = CGFloat(300.0)
+    private let postListHeightForFooterView = CGFloat(50.0)
 
     @IBOutlet var searchWrapperView: UIView!
     @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var filterTabBariOS10TopConstraint: NSLayoutConstraint!
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
+
+    private var database: KeyValueDatabase = UserDefaults.standard
+
+    private lazy var _tableViewHandler: PostListTableViewHandler = {
+        let tableViewHandler = PostListTableViewHandler(tableView: tableView)
+        tableViewHandler.cacheRowHeights = false
+        tableViewHandler.delegate = self
+        tableViewHandler.updateRowAnimation = .none
+        return tableViewHandler
+    }()
+
+    override var tableViewHandler: WPTableViewHandler {
+        get {
+            return _tableViewHandler
+        } set {
+            super.tableViewHandler = newValue
+        }
+    }
+
+    private var postViewIcon: UIImage? {
+        return isCompact ? UIImage(named: "icon-post-view-card") : Gridicon.iconOfType(.listUnordered)
+    }
+
+    private lazy var postActionSheet: PostActionSheet = {
+        return PostActionSheet(viewController: self, interactivePostViewDelegate: self)
+    }()
+
+    private lazy var postsViewButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(image: postViewIcon, style: .done, target: self, action: #selector(togglePostsView))
+    }()
+
+    private var showingJustMyPosts: Bool {
+        return filterSettings.currentPostAuthorFilter() == .mine
+    }
+
+    private var isCompact: Bool = false {
+        didSet {
+            database.set(isCompact, forKey: Constants.exhibitionModeKey)
+            showCompactOrDefault()
+        }
+    }
 
     // MARK: - Convenience constructors
 
@@ -108,35 +156,83 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
+        configureCompactOrDefault()
         configureFilterBarTopConstraint()
+        configureGhost()
+
+        configurePostViewButtonItem()
+    }
+
+    func configurePostViewButtonItem() {
+        navigationItem.rightBarButtonItems = [postsViewButtonItem]
+    }
+
+    @objc func togglePostsView() {
+        isCompact.toggle()
+
+        WPAppAnalytics.track(.postListToggleButtonPressed, withProperties: ["mode": isCompact ? Constants.compact: Constants.card])
     }
 
     // MARK: - Configuration
 
     override func heightForFooterView() -> CGFloat {
-        return type(of: self).postListHeightForFooterView
+        return postListHeightForFooterView
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard _tableViewHandler.isSearching else {
+            return 0.0
+        }
+        return Constants.searchHeaderHeight
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
+        guard _tableViewHandler.isSearching,
+            let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
+            return UIView(frame: .zero)
+        }
+
+        let sectionInfo = _tableViewHandler.resultsController.sections?[section]
+
+        if let sectionInfo = sectionInfo {
+            headerView.titleLabel.text = PostSearchHeader.title(forStatus: sectionInfo.name)
+        }
+
+        return headerView
     }
 
     private func configureFilterBarTopConstraint() {
         filterTabBariOS10TopConstraint.isActive = false
     }
 
-    override func configureTableView() {
+    private func configureGhost() {
+        ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+    }
 
+    private func configureCompactOrDefault() {
+        isCompact = database.object(forKey: Constants.exhibitionModeKey) as? Bool ?? false
+    }
+
+    override func configureTableView() {
         tableView.accessibilityIdentifier = "PostsTable"
         tableView.isAccessibilityElement = true
-        tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = type(of: self).postCardEstimatedRowHeight
+        tableView.estimatedRowHeight = postCardEstimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
 
         let bundle = Bundle.main
 
         // Register the cells
-        let postCardTextCellNib = UINib(nibName: type(of: self).postCardTextCellNibName, bundle: bundle)
-        tableView.register(postCardTextCellNib, forCellReuseIdentifier: type(of: self).postCardTextCellIdentifier)
+        let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: bundle)
+        tableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
 
-        let postCardRestoreCellNib = UINib(nibName: type(of: self).postCardRestoreCellNibName, bundle: bundle)
-        tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: type(of: self).postCardRestoreCellIdentifier)
+        let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: bundle)
+        tableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
+
+        let postCardRestoreCellNib = UINib(nibName: postCardRestoreCellNibName, bundle: bundle)
+        tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: postCardRestoreCellIdentifier)
+
+        let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
+        tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
     }
 
     override func configureAuthorFilter() {
@@ -164,13 +260,24 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     fileprivate func updateTableHeaderSize() {
         if searchController.isActive {
             // Account for the search bar being moved to the top of the screen.
-            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - view.safeAreaInsets.top
+            searchWrapperView.frame.size.height = 0
         } else {
             searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
         }
 
         // Resetting the tableHeaderView is necessary to get the new height to take effect
         tableView.tableHeaderView = searchWrapperView
+    }
+
+    private func configureSeparator() {
+        tableView.separatorStyle = isCompact || searchController.isActive ? .singleLine : .none
+    }
+
+    func showCompactOrDefault() {
+        configureGhost()
+        configureSeparator()
+        tableView.reloadSections([0], with: .automatic)
+        postsViewButtonItem.image = postViewIcon
     }
 
     // Mark - Layout Methods
@@ -269,15 +376,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(basePredicate)
         }
 
-        let typePredicate = NSPredicate(format: "postType = %@", postTypeToSync().rawValue)
-        predicates.append(typePredicate)
-
-        let searchText = currentSearchTerm()
-        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
+        let searchText = currentSearchTerm() ?? ""
+        let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if searchText?.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+        if searchText.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
 
             predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [filterPredicate, trashedPredicate]))
@@ -293,7 +397,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(authorPredicate)
         }
 
-        if let searchText = searchText, searchText.count > 0 {
+        if searchText.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
             predicates.append(searchPredicate)
         }
@@ -333,31 +437,49 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         cell.accessoryType = .none
-        cell.selectionStyle = .none
 
         let post = postAtIndexPath(indexPath)
 
         guard let interactivePostView = cell as? InteractivePostView,
             let configurablePostView = cell as? ConfigurablePostView else {
-
-            fatalError("Cell does not implement the required protocols")
+                fatalError("Cell does not implement the required protocols")
         }
 
         interactivePostView.setInteractionDelegate(self)
+        interactivePostView.setActionSheetDelegate?(self)
 
         configurablePostView.configure(with: post)
+
+        configurePostCell(cell)
+        configureRestoreCell(cell)
     }
 
     fileprivate func cellIdentifierForPost(_ post: Post) -> String {
         var identifier: String
 
         if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
-            identifier = type(of: self).postCardRestoreCellIdentifier
+            identifier = postCardRestoreCellIdentifier
         } else {
-            identifier = type(of: self).postCardTextCellIdentifier
+            identifier = postCellIdentifier
         }
 
         return identifier
+    }
+
+    private func configurePostCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? PostCardCell else {
+            return
+        }
+
+        cell.isAuthorHidden = showingJustMyPosts
+    }
+
+    private func configureRestoreCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? RestorePostTableViewCell else {
+            return
+        }
+
+        cell.isCompact = isCompact
     }
 
     // MARK: - Post Actions
@@ -467,7 +589,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let statsBundle = Bundle(for: WPStatsViewController.self)
-        let statsStoryboard = UIStoryboard(name: type(of: self).statsStoryboardName, bundle: statsBundle)
+        let statsStoryboard = UIStoryboard(name: statsStoryboardName, bundle: statsBundle)
         let viewControllerObject = statsStoryboard.instantiateViewController(withIdentifier: identifier)
 
         assert(viewControllerObject is StatsPostDetailsTableViewController)
@@ -481,7 +603,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         viewController.statsService = WPStatsService(siteId: blog.dotComID,
                                                      siteTimeZone: service.timeZone(for: blog),
                                                      oauth2Token: blog.authToken,
-                                                     andCacheExpirationInterval: type(of: self).statsCacheInterval,
+                                                     andCacheExpirationInterval: statsCacheInterval,
                                                      apiBaseUrlString: Environment.current.wordPressComApiBase)
 
         navigationController?.pushViewController(viewController, animated: true)
@@ -489,33 +611,33 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - InteractivePostViewDelegate
 
-    func cell(_ cell: UITableViewCell, handleEdit post: AbstractPost) {
+    func edit(_ post: AbstractPost) {
         editPost(apost: post)
     }
 
-    func cell(_ cell: UITableViewCell, handleViewPost post: AbstractPost) {
+    func view(_ post: AbstractPost) {
         viewPost(post)
     }
 
-    func cell(_ cell: UITableViewCell, handleStatsFor post: AbstractPost) {
+    func stats(for post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             viewStatsForPost(post)
         }
     }
 
-    func cell(_ cell: UITableViewCell, handlePublishPost post: AbstractPost) {
+    func publish(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             publishPost(post)
         }
     }
 
-    func cell(_ cell: UITableViewCell, handleSchedulePost post: AbstractPost) {
+    func schedule(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             schedulePost(post)
         }
     }
 
-    func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
+    func trash(_ post: AbstractPost) {
         guard ReachabilityUtils.isInternetReachable() else {
             let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
             ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
@@ -546,16 +668,37 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             self?.deletePost(post)
         }
         alertController.presentFromRootViewController()
-
     }
 
-    func cell(_ cell: UITableViewCell, handleRestore post: AbstractPost) {
+    func restore(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             restorePost(post)
         }
     }
 
-    // MARK: - UISearchControllerDelegate
+    func draft(_ post: AbstractPost) {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            moveToDraft(post)
+        }
+    }
+
+    func retry(_ post: AbstractPost) {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            PostCoordinator.shared.retrySave(of: post)
+        }
+    }
+
+    // MARK: - Searching
+
+    override func updateForLocalPostsMatchingSearchText() {
+        // If the user taps and starts to type right away, avoid doing the search
+        // while the tableViewHandler is not ready yet
+        if !_tableViewHandler.isSearching && currentSearchTerm()?.count > 0 {
+            return
+        }
+
+        super.updateForLocalPostsMatchingSearchText()
+    }
 
     override func willPresentSearchController(_ searchController: UISearchController) {
         super.willPresentSearchController(searchController)
@@ -565,13 +708,31 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func didPresentSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
+        configureSeparator()
+        _tableViewHandler.isSearching = true
 
         tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
         tableView.contentInset.top = 0
     }
 
+    override func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
+        if !isSearching() {
+            return super.sortDescriptorsForFetchRequest()
+        }
+
+        let descriptor = NSSortDescriptor(key: BasePost.statusKeyPath, ascending: true)
+        return [descriptor]
+    }
+
+    override func willDismissSearchController(_ searchController: UISearchController) {
+        _tableViewHandler.isSearching = false
+        _tableViewHandler.refreshTableView()
+        super.willDismissSearchController(searchController)
+    }
+
     func didDismissSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
+        configureSeparator()
 
         UIView.animate(withDuration: Animations.searchDismissDuration) {
             self.filterTabBar.alpha = WPAlphaFull
@@ -588,6 +749,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return NSLocalizedString("No internet connection. Some posts may be unavailable while offline.",
                                  comment: "Error message shown when the user is browsing Site Posts without an internet connection.")
     }
+
+    private enum Constants {
+        static let exhibitionModeKey = "showCompactPosts"
+        static let searchHeaderHeight: CGFloat = 40
+        static let card = "card"
+        static let compact = "compact"
+    }
 }
 
 // MARK: - No Results Handling
@@ -601,8 +769,12 @@ private extension PostListViewController {
             return
         }
 
-        if isSearching() {
-            noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
+        if searchController.isActive {
+            if currentSearchTerm()?.count == 0 {
+                noResultsViewController.configureForNoSearchResults(title: NoResultsText.searchPosts)
+            } else {
+                noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
+            }
         } else {
             let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
@@ -662,5 +834,17 @@ private extension PostListViewController {
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
         static let noConnectionTitle: String = NSLocalizedString("Unable to load posts right now.", comment: "Title for No results full page screen displayedfrom post list when there is no connection")
         static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a post.", comment: "Subtitle for No results full page screen displayed from post list when there is no connection")
+        static let searchPosts = NSLocalizedString("Search posts", comment: "Text displayed when the search controller will be presented")
+    }
+}
+
+extension PostListViewController: PostActionSheetDelegate {
+    func showActionSheet(_ post: AbstractPost, from view: UIView) {
+        guard let post = post as? Post else {
+            return
+        }
+
+        let isCompactOrSearching = isCompact || searchController.isActive
+        postActionSheet.show(for: post, from: view, showViewOption: isCompactOrSearching)
     }
 }
