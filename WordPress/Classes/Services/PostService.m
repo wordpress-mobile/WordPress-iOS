@@ -284,51 +284,71 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (void)autoSave:(AbstractPost *)post
-         success:(nullable void (^)(AbstractPost *post, NSString *previewURL))success
+         success:(void (^)(AbstractPost *post, NSString *previewURL))success
          failure:(void (^)(NSError * _Nullable error))failure
 {
-    if(![post.blog supports:BlogFeatureWPComRESTAPI]) {
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Blog does not support WPCom REST API" };
-        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
-        return;
-    }
-
-    PostServiceRemoteREST *remote = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:post.blog.wordPressComRestApi siteID:post.blog.dotComID];
-    RemotePost *remotePost = [self remotePostWithPost:post];
-    NSManagedObjectID *postObjectID = post.objectID;
-    void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
-        [self.managedObjectContext performBlock:^{
-            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
-            if (postInContext) {
-                postInContext.remoteStatus = AbstractPostRemoteStatusAutoSaved;
-                [self updateMediaForPost:postInContext success:^{
+    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    
+    if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
+        PostServiceRemoteREST *restRemote = (PostServiceRemoteREST*) remote;
+        RemotePost *remotePost = [self remotePostWithPost:post];
+        NSManagedObjectID *postObjectID = post.objectID;
+        
+        void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
+            [self.managedObjectContext performBlock:^{
+                AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+                if (postInContext) {
+                    postInContext.remoteStatus = AbstractPostRemoteStatusAutoSaved;
+                    [self updateMediaForPost:postInContext success:^{
+                        if (success) {
+                            success(postInContext, previewURL);
+                        }
+                    } failure:^(NSError * _Nullable error) {
+                        DDLogInfo(@"Error in updateMediaForPost while remote auto-saving post. description: %@", error.localizedDescription);
+                        // even if media fails to attach we are answering with success because the post auto-save was successful.
+                        if (success) {
+                            success(postInContext, previewURL);
+                        }
+                    }];
+                } else {
+                    // This can happen if the post was deleted right after triggering the auto-save.
                     if (success) {
-                        success(postInContext, previewURL);
+                        success(nil, nil);
                     }
-                } failure:^(NSError * _Nullable error) {
-                    DDLogInfo(@"Error in updateMediaForPost while remote auto-saving post. description: %@", error.localizedDescription);
-                    // even if media fails to attach we are answering with success because the post auto-save was successful.
-                    if (success) {
-                        success(postInContext, previewURL);
-                    }
-                }];
-            } else {
-                // This can happen if the post was deleted right after triggering the auto-save.
-                if (success) {
-                    success(nil, nil);
                 }
-            }
-        }];
-    };
-    
-     void (^failureBlock)(NSError *error) = ^(NSError *error) {
-         failure(error);
-     };
-    
-    if ([post.postID longLongValue] > 0) {
-        [remote autoSave:remotePost
-                   success:successBlock
-                   failure:failureBlock];
+            }];
+        };
+        
+        void (^failureBlock)(NSError *error) = ^(NSError *error) {
+            failure(error);
+        };
+        
+        // We should upload the post if:
+        //
+        // - The post is a draft, and has no assigned ID; or
+        // - The post is a draft, and is not accessible through WP.com (because self-hosted doesn't support autosaving).
+        //
+        BOOL needsUploading = [post isDraft] && [post.postID longLongValue] <= 0;
+        
+        if (needsUploading) {
+            [self uploadPost:post
+                     success:^(AbstractPost * _Nonnull post) {
+                         success(post, nil);
+                     }
+                     failure:failure];
+        } else {
+            [restRemote autoSave:remotePost
+                         success:successBlock
+                         failure:failureBlock];
+        }
+    } else if ([post originalIsDraft] && [post isDraft]) {
+        [self uploadPost:post
+                 success:^(AbstractPost * _Nonnull post) {
+                     success(post, nil);
+                 } failure:failure];
+    } else {
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." };
+        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
     }
 }
 
