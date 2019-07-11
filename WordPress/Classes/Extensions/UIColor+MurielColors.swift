@@ -115,6 +115,9 @@ extension UIColor {
 
     /// Muriel brand color
     static var brand = muriel(color: .brand)
+    class func brand(shade: MurielColorShade) -> UIColor {
+        return muriel(color: MurielColor(from: .brand, shade: shade))
+    }
 
     /// Muriel divider color
     static var divider = muriel(color: .divider)
