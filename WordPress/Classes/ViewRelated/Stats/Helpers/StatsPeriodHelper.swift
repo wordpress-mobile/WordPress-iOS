@@ -118,26 +118,21 @@ class StatsPeriodHelper {
                 DDLogError("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
                 return currentDate
             }
-
-            let endOfAdjustedWeek = calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end
-
-            return endOfAdjustedWeek?.normalizedDate()
+            return calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end.normalizedDate()
 
         case .month:
-            guard let endOfAdjustedMonth = adjustedDate.lastDayOfTheMonth(in: calendar) else {
+            guard let endDate = adjustedDate.lastDayOfTheMonth(in: calendar) else {
                 DDLogError("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
                 return currentDate
             }
-
-            return endOfAdjustedMonth.normalizedDate()
+            return endDate.normalizedDate()
 
         case .year:
-            guard let adjustedDayDate = adjustedDate.lastDayOfTheYear(in: calendar) else {
+            guard let endDate = adjustedDate.lastDayOfTheYear(in: calendar) else {
                 DDLogError("[Stats] Couldn't determine number of months in a given year, or days in a given monthin Stats. Returning original value.")
                 return currentDate
             }
-
-            return adjustedDayDate.normalizedDate()
+            return endDate.normalizedDate()
         }
     }
 
