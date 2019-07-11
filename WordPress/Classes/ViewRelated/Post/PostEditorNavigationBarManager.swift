@@ -79,7 +79,6 @@ class PostEditorNavigationBarManager {
     ///
     private lazy var previewGeneratingView: LoadingStatusView = {
         let view = LoadingStatusView(title: NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
