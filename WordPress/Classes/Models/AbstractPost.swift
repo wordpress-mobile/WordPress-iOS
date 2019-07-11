@@ -18,14 +18,14 @@ extension AbstractPost {
         get {
             guard let remoteStatusNumber = remoteStatusNumber?.uintValue,
                 let status = AbstractPostRemoteStatus(rawValue: remoteStatusNumber) else {
-                    return .local
+                    return .pushing
             }
 
             return status
         }
 
         set {
-            remoteStatusNumber = NSNumber(value: remoteStatus.rawValue)
+            remoteStatusNumber = NSNumber(value: newValue.rawValue)
         }
     }
 
