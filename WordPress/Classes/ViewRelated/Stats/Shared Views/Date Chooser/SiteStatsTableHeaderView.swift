@@ -25,6 +25,9 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     private weak var delegate: SiteStatsTableHeaderDelegate?
     private var date: Date?
     private var period: StatsPeriodUnit?
+
+    // Allow the date bar to only go up to the most recent year available.
+    // Used by Insights 'This Year' details view.
     private var mostRecentDate: Date?
 
     // Limits how far back the date chooser can go.
@@ -159,8 +162,8 @@ private extension SiteStatsTableHeaderView {
         }
 
         let helper = StatsPeriodHelper()
-        forwardButton.isEnabled = helper.dateAvailableAfterDate(date, period: period)
-        backButton.isEnabled = helper.dateAvailableBeforeDate(date, period: period, backLimit: backLimit)
+        forwardButton.isEnabled = helper.dateAvailableAfterDate(date, period: period, mostRecentDate: mostRecentDate)
+        backButton.isEnabled = helper.dateAvailableBeforeDate(date, period: period, backLimit: backLimit, mostRecentDate: mostRecentDate)
         updateArrowStates()
         prepareForVoiceOver()
     }

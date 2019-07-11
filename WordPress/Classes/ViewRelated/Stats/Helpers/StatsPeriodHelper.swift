@@ -7,9 +7,9 @@ class StatsPeriodHelper {
         return cal
     }()
 
-    func dateAvailableBeforeDate(_ dateIn: Date, period: StatsPeriodUnit, backLimit: Int) -> Bool {
+    func dateAvailableBeforeDate(_ dateIn: Date, period: StatsPeriodUnit, backLimit: Int, mostRecentDate: Date? = nil) -> Bool {
         // Use dates without time
-        let currentDate = Date().normalizedDate()
+        let currentDate =  mostRecentDate?.normalizedDate() ?? Date().normalizedDate()
 
         guard var oldestDate = calendar.date(byAdding: period.calendarComponent, value: backLimit, to: currentDate) else {
             return false
@@ -40,9 +40,9 @@ class StatsPeriodHelper {
         }
     }
 
-    func dateAvailableAfterDate(_ dateIn: Date, period: StatsPeriodUnit) -> Bool {
+    func dateAvailableAfterDate(_ dateIn: Date, period: StatsPeriodUnit, mostRecentDate: Date? = nil) -> Bool {
         // Use dates without time
-        let currentDate = Date().normalizedDate()
+        let currentDate =  mostRecentDate?.normalizedDate() ?? Date().normalizedDate()
         let date = dateIn.normalizedDate()
 
         switch period {
