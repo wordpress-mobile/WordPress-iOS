@@ -18,44 +18,6 @@
 
 @synthesize restorableStatus;
 
-+ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus
-{
-    switch ([remoteStatus intValue]) {
-        case AbstractPostRemoteStatusPushing:
-            return NSLocalizedString(@"Uploading", @"");
-        case AbstractPostRemoteStatusFailed:
-            return NSLocalizedString(@"Failed", @"");
-        case AbstractPostRemoteStatusSync:
-            return NSLocalizedString(@"Posts", @"");
-        default:
-            return NSLocalizedString(@"Local", @"");
-    }
-}
-
-+ (NSString *)titleForStatus:(NSString *)status
-{
-    if ([status isEqualToString:PostStatusDraft]) {
-        return NSLocalizedString(@"Draft", @"Name for the status of a draft post.");
-
-    } else if ([status isEqualToString:PostStatusPending]) {
-        return NSLocalizedString(@"Pending review", @"Name for the status of a post pending review.");
-
-    } else if ([status isEqualToString:PostStatusPrivate]) {
-        return NSLocalizedString(@"Private", @"Name for the status of a post that is marked private.");
-
-    } else if ([status isEqualToString:PostStatusPublish]) {
-        return NSLocalizedString(@"Published", @"Name for the status of a published post.");
-
-    } else if ([status isEqualToString:PostStatusTrash]) {
-        return NSLocalizedString(@"Trashed", @"Name for the status of a trashed post");
-
-    } else if ([status isEqualToString:PostStatusScheduled]) {
-        return NSLocalizedString(@"Scheduled", @"Name for the status of a scheduled post");
-    }
-    
-    return status;
-}
-
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {
     NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
@@ -67,11 +29,6 @@
     }
 
     return keyPaths;
-}
-
-+ (NSString *const)remoteUniqueIdentifier
-{
-    return @"";
 }
 
 #pragma mark - Life Cycle Methods
@@ -148,26 +105,6 @@
     } else if ([self.status isEqualToString:PostStatusScheduled]) {
         self.status = PostStatusPublish;
     }
-}
-
-- (NSString *)statusTitle
-{
-    return [AbstractPost titleForStatus:self.status];
-}
-
-- (AbstractPostRemoteStatus)remoteStatus
-{
-    return (AbstractPostRemoteStatus)[[self remoteStatusNumber] intValue];
-}
-
-- (void)setRemoteStatus:(AbstractPostRemoteStatus)aStatus
-{
-    [self setRemoteStatusNumber:[NSNumber numberWithInt:aStatus]];
-}
-
-- (NSString *)remoteStatusText
-{
-    return [AbstractPost titleForRemoteStatus:self.remoteStatusNumber];
 }
 
 #pragma mark -
