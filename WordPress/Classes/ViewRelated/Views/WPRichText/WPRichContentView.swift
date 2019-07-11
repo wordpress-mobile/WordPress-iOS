@@ -60,12 +60,18 @@ class WPRichContentView: UITextView {
     }
 
     @objc class func formattedAttributedStringForString(_ string: String) -> NSAttributedString {
+        let fallbackTextColorHex = "000"
+        let textColorHex = UIColor.text.hexString() ?? fallbackTextColorHex
+        let blockQuoteColorHex = UIColor.textSubtle.hexString() ?? fallbackTextColorHex
+        let linkColorHex = UIColor.primary.hexString() ?? fallbackTextColorHex
+        let linkColorActiveHex = UIColor.primaryDark.hexString() ?? fallbackTextColorHex
+
         let style = "<style>" +
-            "body { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #2e4453; }" +
-            "blockquote { color:#4f748e; } " +
+            "body { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #\(textColorHex); }" +
+            "blockquote { color:#\(blockQuoteColorHex); } " +
             "em, i { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; font-style: italic; line-height:1.6; } " +
-            "a { color: #0087be; text-decoration: none; } " +
-            "a:active { color: #005082; } " +
+            "a { color: #\(linkColorHex); text-decoration: none; } " +
+            "a:active { color: #\(linkColorActiveHex); } " +
         "</style>"
         let html = style + string
 
@@ -434,7 +440,7 @@ class ContentInformation: ImageSourceInformation {
 @objc fileprivate class BlockquoteBackgroundLayoutManager: NSLayoutManager {
     /// Blockquote's Left Border Color
     ///
-    let blockquoteBorderColor = UIColor(red: 0.52, green: 0.65, blue: 0.73, alpha: 1.0)
+    let blockquoteBorderColor = UIColor.textSubtle
 
     /// Blockquote's Left Border width
     ///

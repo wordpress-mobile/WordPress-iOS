@@ -2250,7 +2250,7 @@ extension AztecPostViewController {
         case .thumbnailReady(let url):
             handleThumbnailURL(url, attachment: attachment)
         case .uploading:
-            break
+            handleUploadStarted(attachment: attachment)
         case .ended:
             handleUploaded(media: media, mediaUploadID: media.uploadID)
         case .failed(let error):
@@ -2474,6 +2474,12 @@ extension AztecPostViewController {
             return
         }
         insert(exportableAsset: image, source: .otherApps, attachment: attachment)
+    }
+
+    private func handleUploadStarted(attachment: MediaAttachment) {
+        resetMediaAttachmentOverlay(attachment)
+        attachment.progress = 0
+        richTextView.refresh(attachment, overlayUpdateOnly: true)
     }
 
     private func handleUploaded(media: Media, mediaUploadID: String) {
@@ -3190,6 +3196,7 @@ extension AztecPostViewController {
         static let defaultMargin            = CGFloat(20)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+        static let savingDraftButtonSize    = CGSize(width: 130, height: 30)
         static let uploadingButtonSize      = CGSize(width: 150, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
@@ -3254,7 +3261,7 @@ extension AztecPostViewController {
         static let mediaProgressOverlay         = UIColor.neutral(shade: .shade70).withAlphaComponent(CGFloat(0.6))
         static let mediaProgressBarBackground   = UIColor.neutral(shade: .shade0)
         static let mediaProgressBarTrack        = UIColor.primary
-        static let aztecLinkColor               = UIColor.primary(shade: .shade40)
+        static let aztecLinkColor               = UIColor.primary
         static let mediaOverlayBorderColor      = UIColor.primary
     }
 
@@ -3298,6 +3305,10 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
         return Constants.uploadingButtonSize
     }
 
+    var savingDraftButtonSize: CGSize {
+        return Constants.savingDraftButtonSize
+    }
+
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         closeWasPressed()
     }
@@ -3316,5 +3327,9 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
         displayCancelMediaUploads()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
+        navigationItem.leftBarButtonItems = items
     }
 }

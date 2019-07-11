@@ -21,7 +21,7 @@ class SiteStatsPeriodViewModel: Observable {
             }
         }
     }
-    private let periodReceipt: Receipt
+    private var periodReceipt: Receipt?
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
 
@@ -39,10 +39,6 @@ class SiteStatsPeriodViewModel: Observable {
         self.store = store
         self.lastRequestedDate = selectedDate
         self.lastRequestedPeriod = selectedPeriod
-        periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
-        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate,
-                                                                               period: selectedPeriod,
-                                                                               forceRefresh: true))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -56,6 +52,13 @@ class SiteStatsPeriodViewModel: Observable {
             let status: Status = fetching ? .fetchingData : .fetchingDataCompleted(success)
             self?.overviewStoreStatusOnChange?(status)
         }
+    }
+
+    func startFetchingOverview() {
+        periodReceipt = store.query(.periods(date: lastRequestedDate, period: lastRequestedPeriod))
+        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
+                                                                               period: lastRequestedPeriod,
+                                                                               forceRefresh: true))
     }
 
     // MARK: - Table Model
@@ -89,9 +92,9 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: false))
         self.lastRequestedDate = date
         self.lastRequestedPeriod = period
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: false))
     }
 
     // MARK: - State

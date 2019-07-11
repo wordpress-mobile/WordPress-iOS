@@ -63,7 +63,7 @@ struct OverviewTabData: FilterTabBarItem {
         if let date = date,
             let period = period,
             StatsPeriodHelper().dateAvailableAfterDate(date, period: period) == false {
-            return WPStyleGuide.grey()
+            return .neutral(shade: .shade40)
         }
 
         return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
@@ -192,8 +192,11 @@ private extension OverviewCell {
             return
         }
 
-        let configuration = StatsBarChartConfiguration(data: chartData[filterSelectedIndex], styling: chartStyling[filterSelectedIndex], analyticsGranularity: period?.analyticsGranularity, delegate: statsBarChartViewDelegate, indexToHighlight: chartHighlightIndex)
-        let chartView = StatsBarChartView(configuration: configuration)
+        let configuration = StatsBarChartConfiguration(data: chartData[filterSelectedIndex],
+                                                       styling: chartStyling[filterSelectedIndex],
+                                                       analyticsGranularity: period?.analyticsGranularity,
+                                                       indexToHighlight: chartHighlightIndex)
+        let chartView = StatsBarChartView(configuration: configuration, delegate: statsBarChartViewDelegate)
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)

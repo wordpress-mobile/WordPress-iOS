@@ -24,7 +24,7 @@ import WordPressShared.WPStyleGuide
 
 
     @objc func applyStyles() {
-        backgroundColor = .neutral(shade: .shade5)
+        backgroundColor = .clear
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
 
@@ -33,7 +33,7 @@ import WordPressShared.WPStyleGuide
         titleLabel.text = NSLocalizedString("Manage", comment: "Button title. Tapping lets the user manage the sites they follow.")
 
         disclosureIcon.image = Gridicon.iconOfType(.chevronRight, withSize: disclosureIcon.frame.size).imageFlippedForRightToLeftLayoutDirection()
-        disclosureIcon.tintColor = WPStyleGuide.accessoryDefaultTintColor()
+        disclosureIcon.tintColor = .neutral(shade: .shade30)
 
         imageView.image = Gridicon.iconOfType(.cog)
         imageView.tintColor = UIColor.white
@@ -57,7 +57,7 @@ import WordPressShared.WPStyleGuide
 
 
     @IBAction func didTouchDown(_ sender: UIButton) {
-        borderedView.backgroundColor = WPStyleGuide.cellDefaultHighlightColor()
+        borderedView.backgroundColor = .textInverted
     }
 
 

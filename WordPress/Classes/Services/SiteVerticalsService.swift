@@ -1,9 +1,23 @@
+import AutomatticTracks
 
 // MARK: - SiteVerticalsService
+
+/// Advises the caller of results related to requests for a specific site vertical.
+///
+/// - success: the site vertical request succeeded with the accompanying result.
+/// - failure: the site vertical request failed due to the accompanying error.
+///
+public enum SiteVerticalRequestResult {
+    case success(SiteVertical)
+    case failure(SiteVerticalsError)
+}
+
+typealias SiteVerticalRequestCompletion = (SiteVerticalRequestResult) -> ()
 
 /// Abstracts retrieval of site verticals.
 ///
 protocol SiteVerticalsService {
+    func retrieveVertical(named verticalName: String, completion: @escaping SiteVerticalRequestCompletion)
     func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion)
 }
 
@@ -12,6 +26,11 @@ protocol SiteVerticalsService {
 /// Mock implementation of the SiteVerticalsService
 ///
 final class MockSiteVerticalsService: SiteVerticalsService {
+    func retrieveVertical(named verticalName: String, completion: @escaping SiteVerticalRequestCompletion) {
+        let vertical = SiteVertical(identifier: "SV 1", title: "Vertical 1", isNew: false)
+        completion(.success(vertical))
+    }
+
     func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion) {
         let result = SiteVerticalsResult.success(mockVerticals())
         completion(result)
@@ -55,6 +74,25 @@ final class SiteCreationVerticalsService: LocalCoreDataService, SiteVerticalsSer
     }
 
     // MARK: SiteVerticalsService
+
+    func retrieveVertical(named verticalName: String, completion: @escaping SiteVerticalRequestCompletion) {
+        let request = SiteVerticalsRequest(search: verticalName, limit: 1)
+
+        remoteService.retrieveVerticals(request: request) { result in
+            switch result {
+            case .success(let verticals):
+                guard let vertical = verticals.first else {
+                    CrashLogging.logMessage("The verticals service should always return at least 1 match for the precise term queried.", level: .error)
+                    completion(.failure(.serviceFailure))
+                    return
+                }
+
+                completion(.success(vertical))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 
     func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion) {
         remoteService.retrieveVerticals(request: request) { result in
