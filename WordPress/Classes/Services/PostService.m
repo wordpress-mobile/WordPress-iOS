@@ -323,11 +323,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             failure(error);
         };
         
-        // We should upload the post if:
-        //
-        // - The post is a draft, and has no assigned ID; or
-        // - The post is a draft, and is not accessible through WP.com (because self-hosted doesn't support autosaving).
-        //
         BOOL needsUploading = [post isDraft] && [post.postID longLongValue] <= 0;
         
         if (needsUploading) {
