@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9BX-ta-eQr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9BX-ta-eQr">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,14 +30,14 @@
         <scene sceneID="b16-UI-OVT">
             <objects>
                 <viewController id="aEY-1G-H9o" customClass="RevisionDiffsBrowserViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="cG0-G3-XU5">
+                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="cG0-G3-XU5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rsS-xc-ge8">
+                            <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rsS-xc-ge8">
                                 <rect key="frame" x="0.0" y="547" width="375" height="56"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2sd-Cz-oer">
+                                    <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2sd-Cz-oer">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Revision Description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Hg-z8-YVh">
@@ -84,10 +84,10 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="rSD-aC-9V4" firstAttribute="top" secondItem="2sd-Cz-oer" secondAttribute="top" id="0NR-XG-8oT"/>
-                                            <constraint firstItem="rSD-aC-9V4" firstAttribute="leading" secondItem="2sd-Cz-oer" secondAttribute="leading" constant="-5" id="0Yx-9O-f8Z"/>
+                                            <constraint firstItem="rSD-aC-9V4" firstAttribute="leading" secondItem="2sd-Cz-oer" secondAttribute="leadingMargin" constant="-13" id="0Yx-9O-f8Z"/>
                                             <constraint firstItem="Und-hy-I90" firstAttribute="top" secondItem="2sd-Cz-oer" secondAttribute="top" id="5yn-Ry-XWr"/>
                                             <constraint firstItem="T2k-GK-3TX" firstAttribute="centerX" secondItem="2sd-Cz-oer" secondAttribute="centerX" id="7Cm-Jp-MCY"/>
-                                            <constraint firstAttribute="trailing" secondItem="Und-hy-I90" secondAttribute="trailing" constant="-5" id="9ir-ww-2ld"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="Und-hy-I90" secondAttribute="trailing" constant="-13" id="9ir-ww-2ld"/>
                                             <constraint firstItem="1Hg-z8-YVh" firstAttribute="centerX" secondItem="2sd-Cz-oer" secondAttribute="centerX" id="BXl-ng-Iq7"/>
                                             <constraint firstAttribute="trailing" secondItem="7EM-Lu-3t1" secondAttribute="trailing" id="C5H-cg-l5R"/>
                                             <constraint firstItem="T2k-GK-3TX" firstAttribute="top" secondItem="1Hg-z8-YVh" secondAttribute="bottom" constant="4" id="H2J-G4-f1h"/>
@@ -106,7 +106,7 @@
                                     <constraint firstItem="2sd-Cz-oer" firstAttribute="leading" secondItem="rsS-xc-ge8" secondAttribute="leading" id="mBV-uA-g4X"/>
                                 </constraints>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uhq-mq-TeO">
+                            <containerView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uhq-mq-TeO">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
@@ -142,14 +142,14 @@
         <scene sceneID="hhd-wv-eJw">
             <objects>
                 <viewController storyboardIdentifier="RevisionDiffViewController" id="zhH-St-dBr" customClass="RevisionDiffViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="lxH-jU-9dc">
+                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="lxH-jU-9dc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mb8-Xb-lI6">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mb8-Xb-lI6">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Uaa-Yz-aE2">
+                                    <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Uaa-Yz-aE2">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1426.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GAe-1S-aM6">
@@ -191,9 +191,9 @@ Nulla sodales mauris ullamcorper massa tincidunt, eu pretium erat fringilla. Sed
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="mb8-Xb-lI6" secondAttribute="bottom" id="W3Y-Jf-i31"/>
-                            <constraint firstItem="mb8-Xb-lI6" firstAttribute="leading" secondItem="lxH-jU-9dc" secondAttribute="leading" id="hs4-hl-CAs"/>
+                            <constraint firstItem="mb8-Xb-lI6" firstAttribute="leading" secondItem="LhI-on-qxn" secondAttribute="leading" id="hs4-hl-CAs"/>
                             <constraint firstItem="mb8-Xb-lI6" firstAttribute="top" secondItem="lxH-jU-9dc" secondAttribute="top" id="mRH-2V-B47"/>
-                            <constraint firstAttribute="trailing" secondItem="mb8-Xb-lI6" secondAttribute="trailing" id="xjh-3u-ybK"/>
+                            <constraint firstItem="LhI-on-qxn" firstAttribute="trailing" secondItem="mb8-Xb-lI6" secondAttribute="trailing" id="xjh-3u-ybK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="LhI-on-qxn"/>
                     </view>
@@ -210,7 +210,7 @@ Nulla sodales mauris ullamcorper massa tincidunt, eu pretium erat fringilla. Sed
         <scene sceneID="8bZ-0Y-ew9">
             <objects>
                 <viewController id="NGj-2N-mgj" customClass="RevisionOperationViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="GfE-RI-5IB">
+                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="GfE-RI-5IB">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="18"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -225,7 +225,7 @@ Nulla sodales mauris ullamcorper massa tincidunt, eu pretium erat fringilla. Sed
         <scene sceneID="Un9-in-nSa">
             <objects>
                 <viewController storyboardIdentifier="RevisionPreviewViewController" id="V7o-xA-JuH" customClass="RevisionPreviewViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="tXX-ja-77L">
+                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="tXX-ja-77L">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
