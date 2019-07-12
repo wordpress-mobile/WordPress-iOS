@@ -36,9 +36,6 @@ final class SiteAssemblyContentView: UIView {
     /// This influences the top of the assembled site, which varies by device & orientation.
     private var assembledSiteTopConstraint: NSLayoutConstraint?
 
-    /// This influences the height of the assembled site, which varies by device & orientation.
-    private var assembledSiteHeightConstraint: NSLayoutConstraint?
-
     /// This influences the width of the assembled site, which varies by device & orientation.
     private var assembledSiteWidthConstraint: NSLayoutConstraint?
 
@@ -93,7 +90,7 @@ final class SiteAssemblyContentView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
-            label.textColor = WPStyleGuide.darkGrey()
+            label.textColor = .neutral(shade: .shade70)
             label.textAlignment = .center
 
             let createdText = NSLocalizedString("Your site has been created!",
@@ -111,7 +108,7 @@ final class SiteAssemblyContentView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
-            label.textColor = WPStyleGuide.greyDarken10()
+            label.textColor = .neutral(shade: .shade40)
             label.textAlignment = .center
 
             let statusText = NSLocalizedString("We’re creating your new site.",
@@ -127,7 +124,7 @@ final class SiteAssemblyContentView: UIView {
 
             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
             activityIndicator.hidesWhenStopped = true
-            activityIndicator.color = WPStyleGuide.greyDarken10()
+            activityIndicator.color = .neutral(shade: .shade40)
             activityIndicator.startAnimating()
 
             return activityIndicator
@@ -188,7 +185,7 @@ final class SiteAssemblyContentView: UIView {
         translatesAutoresizingMaskIntoConstraints = true
         autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
 
-        backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .neutral(shade: .shade5)
 
         statusStackView.addArrangedSubviews([ statusLabel, activityIndicator ])
         addSubviews([ completionLabel, statusStackView ])
@@ -227,8 +224,6 @@ final class SiteAssemblyContentView: UIView {
         let assembledSiteTopInset = Parameters.verticalSpacing
 
         let preferredAssembledSiteSize = assembledSiteView.preferredSize
-        let assembledSiteHeightConstraint = assembledSiteView.heightAnchor.constraint(greaterThanOrEqualToConstant: preferredAssembledSiteSize.height)
-        self.assembledSiteHeightConstraint = assembledSiteHeightConstraint
 
         let assembledSiteWidthConstraint = assembledSiteView.widthAnchor.constraint(equalToConstant: preferredAssembledSiteSize.width)
         self.assembledSiteWidthConstraint = assembledSiteWidthConstraint
@@ -236,10 +231,9 @@ final class SiteAssemblyContentView: UIView {
         NSLayoutConstraint.activate([
             initialSiteTopConstraint,
             assembledSiteView.topAnchor.constraint(greaterThanOrEqualTo: completionLabel.bottomAnchor, constant: assembledSiteTopInset),
-            assembledSiteView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor),
+            assembledSiteView.bottomAnchor.constraint(equalTo: buttonContainerView?.topAnchor ?? bottomAnchor),
             assembledSiteView.centerXAnchor.constraint(equalTo: centerXAnchor),
             assembledSiteWidthConstraint,
-            assembledSiteHeightConstraint
         ])
 
         self.assembledSiteView = assembledSiteView

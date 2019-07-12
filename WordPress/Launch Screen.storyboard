@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -26,7 +27,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.52941176470588003" blue="0.74509803921568996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="Airo50"/>
                         <constraints>
                             <constraint firstItem="FfR-yo-4a1" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="T0u-ej-Kyp"/>
                             <constraint firstItem="FfR-yo-4a1" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="a6p-Lx-MaV"/>
@@ -40,5 +41,8 @@
     </scenes>
     <resources>
         <image name="icon-wp" width="50" height="52"/>
+        <namedColor name="Airo50">
+            <color red="0.0" green="0.36862745098039218" blue="0.51764705882352946" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

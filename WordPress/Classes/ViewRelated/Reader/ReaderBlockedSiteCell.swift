@@ -11,11 +11,11 @@ open class ReaderBlockedSiteCell: UITableViewCell {
     }
 
     fileprivate func applyStyles() {
-        contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        contentView.backgroundColor = .neutral(shade: .shade0)
         borderedContentView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedContentView.layer.borderWidth = 1.0
         label.font = WPStyleGuide.subtitleFont()
-        label.textColor = WPStyleGuide.whisperGrey()
+        label.textColor = .textSubtle
     }
 
     @objc open func setSiteName(_ name: String) {

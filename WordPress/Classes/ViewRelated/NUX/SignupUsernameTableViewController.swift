@@ -142,7 +142,7 @@ extension SignupUsernameTableViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == Sections.suggestions.rawValue {
             let footer = UIView()
-            footer.backgroundColor = WPStyleGuide.greyLighten20()
+            footer.backgroundColor = .neutral(shade: .shade10)
             return footer
         }
         return nil
@@ -198,7 +198,7 @@ extension SignupUsernameTableViewController {
         let cell = UITableViewCell()
 
         cell.textLabel?.text = username
-        cell.textLabel?.textColor = WPStyleGuide.darkGrey()
+        cell.textLabel?.textColor = .neutral(shade: .shade70)
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
         if checked {

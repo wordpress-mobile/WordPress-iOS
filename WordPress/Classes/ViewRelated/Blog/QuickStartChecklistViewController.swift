@@ -92,13 +92,18 @@ class QuickStartChecklistViewController: UITableViewController {
         dataManager = QuickStartChecklistManager(blog: blog,
                                                  tours: configuration.tours,
                                                  didSelectTour: { [weak self] tour in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
-                self?.dismiss(animated: true) {
-                    if let blog = self?.blog,
-                        let tourGuide = QuickStartTourGuide.find() {
-                        tourGuide.start(tour: tour, for: blog)
-                    }
+
+                guard let self = self else {
+                    return
+                }
+
+                let tourGuide = QuickStartTourGuide.find()
+                tourGuide?.prepare(tour: tour, for: self.blog)
+
+                self.dismiss(animated: true) {
+                    tourGuide?.begin()
                 }
             }
         }, didTapHeader: { [unowned self] expand in

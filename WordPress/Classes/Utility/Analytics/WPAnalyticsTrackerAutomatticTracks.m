@@ -72,7 +72,11 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     if (eventPair.properties == nil && properties == nil) {
         DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
     } else {
-        DDLogInfo(@"🔵 Tracked: %@, properties: %@", eventPair.eventName, mergedProperties);
+        NSArray<NSString *> *propertyKeys = [[mergedProperties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
+            return [NSString stringWithFormat:@"%@: %@", key, mergedProperties[key]];
+        }] componentsJoinedByString:@", "];
+        DDLogInfo(@"🔵 Tracked: %@ <%@>", eventPair.eventName, propertiesDescription);
     }
 
     [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
@@ -234,6 +238,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatActivityLogRewindStarted:
             eventName = @"activity_log_rewind_started";
+            break;
+        case WPAnalyticsStatAppIconChanged:
+            eventName = @"app_icon_changed";
+            break;
+        case WPAnalyticsStatAppIconReset:
+            eventName = @"app_icon_reset";
             break;
         case WPAnalyticsStatAppInstalled:
             eventName = @"application_installed";
@@ -1170,6 +1180,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPostListViewAction:
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"view" };
+            break;
+        case WPAnalyticsStatPostListToggleButtonPressed:
+            eventName = @"post_list_toggle_button_pressed";
             break;
         case WPAnalyticsStatPostRevisionsListViewed:
             eventName = @"revisions_list_viewed";

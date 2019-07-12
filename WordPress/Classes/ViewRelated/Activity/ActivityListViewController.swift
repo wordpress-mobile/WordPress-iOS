@@ -174,7 +174,7 @@ extension ActivityListViewController {
                                                 handler: { [weak self] _, indexPath in
                                                     self?.presentRewindFor(activity: row.activity)
         })
-        rewindAction.backgroundColor = WPStyleGuide.mediumBlue()
+        rewindAction.backgroundColor = .primary(shade: .shade40)
 
         return [rewindAction]
     }

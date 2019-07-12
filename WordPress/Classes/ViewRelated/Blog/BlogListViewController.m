@@ -1,5 +1,4 @@
 #import "BlogListViewController.h"
-
 #import "WordPress-Swift.h"
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
@@ -262,14 +261,16 @@ static NSInteger HideSearchMinSites = 3;
     
     // If we have no sites, show the No Results VC.
     if (siteCount == 0) {
-            [self.noResultsViewController configureWithTitle: NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.")
-                                                 buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
-                                                    subtitle:nil
-                                          attributedSubtitle:nil
-                             attributedSubtitleConfiguration:nil
-                                                       image:@"mysites-nosites"
-                                               subtitleImage:nil
-                                               accessoryView:nil];
+        [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.")
+                                       noConnectionTitle:nil
+                                             buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
+                                                subtitle:nil
+                                    noConnectionSubtitle:nil
+                                      attributedSubtitle:nil
+                         attributedSubtitleConfiguration:nil
+                                                   image:@"mysites-nosites"
+                                           subtitleImage:nil
+                                           accessoryView:nil];
         [self addNoResultsToView];
     }
 }
@@ -291,8 +292,10 @@ static NSInteger HideSearchMinSites = 3;
 
     if (count == 1) {
         [self.noResultsViewController configureWithTitle:singularTitle
+                                       noConnectionTitle:nil
                                              buttonTitle:buttonTitle
-                                                subtitle:singularSubtitle
+                                                subtitle:singularTitle
+                                    noConnectionSubtitle:nil
                                       attributedSubtitle:nil
                          attributedSubtitleConfiguration:nil
                                                    image:imageName
@@ -300,8 +303,10 @@ static NSInteger HideSearchMinSites = 3;
                                            accessoryView:nil];
     } else {
         [self.noResultsViewController configureWithTitle:multipleTitle
+                                       noConnectionTitle:nil
                                              buttonTitle:buttonTitle
                                                 subtitle:multipleSubtitle
+                                    noConnectionSubtitle:nil
                                       attributedSubtitle:nil
                          attributedSubtitleConfiguration:nil
                                                    image:imageName
@@ -394,7 +399,7 @@ static NSInteger HideSearchMinSites = 3;
         _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _headerLabel.numberOfLines = 0;
         _headerLabel.textAlignment = NSTextAlignmentCenter;
-        _headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        _headerLabel.textColor = [UIColor murielText];
         _headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
         _headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
     }
@@ -615,7 +620,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                       [weakSelf showRemoveSiteAlertForIndexPath:indexPath];
                                                                                   }];
                                                                               }];
-        removeAction.backgroundColor = [WPStyleGuide errorRed];
+        removeAction.backgroundColor = [UIColor murielError];
         [actions addObject:removeAction];
     } else {
         if (blog.visible) {
@@ -626,7 +631,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                         [weakSelf hideBlogAtIndexPath:indexPath];
                                                                                     }];
                                                                                 }];
-            hideAction.backgroundColor = [WPStyleGuide grey];
+            hideAction.backgroundColor = [UIColor murielNeutral30];
             [actions addObject:hideAction];
         } else {
             UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -636,7 +641,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                           [weakSelf unhideBlogAtIndexPath:indexPath];
                                                                                       }];
                                                                                   }];
-            unhideAction.backgroundColor = [WPStyleGuide validGreen];
+            unhideAction.backgroundColor = [UIColor murielSuccess];
             [actions addObject:unhideAction];
         }
     }

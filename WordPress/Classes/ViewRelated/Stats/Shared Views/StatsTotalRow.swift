@@ -186,6 +186,16 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         let showDisclosure = rowData?.showDisclosure ?? false
         accessibilityTraits = (showDisclosure) ? .button : .staticText
         accessibilityHint = (showDisclosure) ? NSLocalizedString("Tap for more detail.", comment: "Accessibility hint") : ""
+
+        switch (showDisclosure, hasChildRows) {
+        case (true, true):
+            let hint = expanded ? "Expanded. Tap to collapse." : "Collapsed. Tap to expand."
+            accessibilityHint = NSLocalizedString(hint, comment: "Accessibility hint")
+        case (true, false):
+            accessibilityHint = NSLocalizedString("Tap for more detail.", comment: "Accessibility hint")
+        default:
+            break
+        }
     }
 }
 
@@ -309,6 +319,7 @@ private extension StatsTotalRow {
 
         if hasChildRows {
             expanded.toggle()
+            prepareForVoiceOver()
             delegate?.toggleChildRows?(for: self, didSelectRow: true)
             return
         }

@@ -92,9 +92,9 @@ function processIcon() {
 }
 
 # Process all app icons and create the corresponding internal icons
-# icons_dir="${SRCROOT}/Images.xcassets/AppIcon.appiconset"
-icons_path="${PROJECT_DIR}/Images.xcassets/AppIcon.appiconset"
-icons_dest_path="${PROJECT_DIR}/Images.xcassets/AppIcon-Internal.appiconset"
+# icons_dir="${SRCROOT}/AppImages.xcassets/AppIcon.appiconset"
+icons_path="${PROJECT_DIR}/Resources/MurielImages.xcassets/AppIcon.appiconset"
+icons_dest_path="${PROJECT_DIR}/Resources/MurielImages.xcassets/AppIcon-Internal.appiconset"
 icons_set=`basename "${icons_path}"`
 tmp_path="${TEMP_DIR}/IconVersioning"
 
@@ -113,6 +113,19 @@ cp -rf "${icons_path}" "${icons_dest_path}"
 
 # Reference: https://askubuntu.com/a/343753
 find "${icons_path}" -type f -name "*.png" -print0 | 
+while IFS= read -r -d '' file; do
+    echo "$file"
+    processIcon "${file}" "${tmp_path}" "${icons_dest_path}"
+done
+
+# Process all alternate app icons
+icons_path="${PROJECT_DIR}/Resources/Icons"
+icons_dest_path="${PROJECT_DIR}/Resources/Icons-Internal"
+
+# Empty and re-make the icon destination directory
+rm -rf "${icons_dest_path}" && mkdir "${icons_dest_path}"
+
+find "${icons_path}" -type f -name "*.png" -print0 |
 while IFS= read -r -d '' file; do
     echo "$file"
     processIcon "${file}" "${tmp_path}" "${icons_dest_path}"

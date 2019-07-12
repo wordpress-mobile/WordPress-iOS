@@ -1,4 +1,5 @@
 import Foundation
+import AutomatticTracks
 
 /// This extension handles the "more" actions triggered by the top right
 /// navigation bar button of Gutenberg editor.
@@ -68,7 +69,7 @@ extension GutenbergViewController {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
             let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            WPCrashLogging.logError(error)
+            CrashLogging.logError(error)
             return
         }
 

@@ -11,11 +11,11 @@ extension WPStyleGuide {
         public static var textFont: UIFont {
             return WPStyleGuide.notoFontForTextStyle(.subheadline)
         }
-        public static let enabledColor     = WPStyleGuide.newKidOnTheBlockBlue()
-        public static let disabledColor    = UIColor(red: 0xA1/255.0, green: 0xB9/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
-        public static let placeholderColor = UIColor(red: 0xA3/255.0, green: 0xB9/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
-        public static let textColor        = WPStyleGuide.littleEddieGrey()
-        public static let separatorColor   = placeholderColor
-        public static let backgroundColor  = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
+        public static let enabledColor     = UIColor.primary
+        public static let disabledColor    = UIColor.neutral(shade: .shade20)
+        public static let placeholderColor = UIColor.neutral(shade: .shade20)
+        public static let textColor        = UIColor.text
+        public static let separatorColor   = UIColor.neutral(shade: .shade20)
+        public static let backgroundColor  = UIColor.neutral(shade: .shade0)
     }
 }

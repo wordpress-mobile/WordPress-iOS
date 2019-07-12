@@ -56,7 +56,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         scrollView.zoomScale = minimumScale
 
         // Setup: Overlay
-        overlayView.borderColor = WPStyleGuide.mediumBlue()
+        overlayView.borderColor = .primary(shade: .shade40)
         overlayView.maskShape = maskShape
     }
 

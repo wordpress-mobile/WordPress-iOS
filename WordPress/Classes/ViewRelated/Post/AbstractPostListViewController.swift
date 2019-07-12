@@ -131,6 +131,14 @@ class AbstractPostListViewController: UIViewController,
 
     fileprivate var searchesSyncing = 0
 
+    var ghostOptions: GhostOptions?
+
+    private var emptyResults: Bool {
+        return tableViewHandler.resultsController.fetchedObjects?.count == 0
+    }
+
+    private var atLeastSyncedOnce = false
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -156,6 +164,8 @@ class AbstractPostListViewController: UIViewController,
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        startGhost()
 
         if reloadTableViewBeforeAppearing {
             reloadTableViewBeforeAppearing = false
@@ -184,10 +194,6 @@ class AbstractPostListViewController: UIViewController,
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        if !searchController.isActive {
-            configureInitialScrollInsets()
-        }
 
         automaticallySyncIfAppropriate()
     }
@@ -227,9 +233,9 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func configureFilterBar() {
-        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
-        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterTabBar.tintColor = .primary
+        filterTabBar.deselectedTabColor = .neutral(shade: .shade40)
+        filterTabBar.dividerColor = .neutral(shade: .shade10)
 
         filterTabBar.items = filterSettings.availablePostListFilters()
 
@@ -272,7 +278,8 @@ class AbstractPostListViewController: UIViewController,
         }
 
         hideNoResultsView()
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if emptyResults {
+            stopGhostIfConnectionIsNotAvailable()
             showNoResultsView()
         }
     }
@@ -300,8 +307,10 @@ class AbstractPostListViewController: UIViewController,
     }
 
     fileprivate func configureInitialScrollInsets() {
-        tableView.scrollIndicatorInsets.top = 0
-        tableView.contentInset.top = 0
+        tableView.layoutIfNeeded()
+        tableView.contentInset = .zero
+        tableView.scrollIndicatorInsets = .zero
+        tableView.contentOffset = .zero
     }
 
     fileprivate func configureSearchBackingView() {
@@ -356,7 +365,7 @@ class AbstractPostListViewController: UIViewController,
 
     func showNoResultsView() {
 
-        guard refreshNoResultsViewController != nil else {
+        guard refreshNoResultsViewController != nil, atLeastSyncedOnce else {
             return
         }
 
@@ -705,12 +714,19 @@ class AbstractPostListViewController: UIViewController,
             })
     }
 
+    func syncContentStart(_ syncHelper: WPContentSyncHelper) {
+        startGhost()
+        atLeastSyncedOnce = true
+    }
+
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         refreshControl?.endRefreshing()
         postListFooterView.showSpinner(false)
         noResultsViewController.removeFromView()
 
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        stopGhost()
+
+        if emptyResults {
             // This is a special case.  Core data can be a bit slow about notifying
             // NSFetchedResultsController delegates about changes to the fetched results.
             // To compensate, call configureNoResultsView after a short delay.
@@ -728,6 +744,8 @@ class AbstractPostListViewController: UIViewController,
             promptForPassword()
             return
         }
+
+        stopGhost()
 
         dismissAllNetworkErrorNotices()
 
@@ -759,6 +777,32 @@ class AbstractPostListViewController: UIViewController,
         }
     }
 
+    // MARK: - Ghost cells
+
+    func startGhost() {
+        guard let ghostOptions = ghostOptions, emptyResults else {
+            return
+        }
+
+        tableView.displayGhostContent(options: ghostOptions)
+        tableView.isScrollEnabled = false
+        noResultsViewController.view.isHidden = true
+    }
+
+    func stopGhost() {
+        tableView.removeGhostContent()
+        tableView.isScrollEnabled = true
+        noResultsViewController.view.isHidden = false
+    }
+
+    func stopGhostIfConnectionIsNotAvailable() {
+        guard WordPressAppDelegate.shared?.connectionAvailable == false else {
+            return
+        }
+
+        atLeastSyncedOnce = true
+        stopGhost()
+    }
 
     // MARK: - Searching
 
@@ -775,7 +819,7 @@ class AbstractPostListViewController: UIViewController,
         tableView.reloadData()
 
         let filter = filterSettings.currentPostListFilter()
-        if filter.hasMore && tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if filter.hasMore && emptyResults {
             // If the filter detects there are more posts, but there are none that match the current search
             // hide the no results view while the upcoming syncPostsMatchingSearchText() may in fact load results.
             hideNoResultsView()
@@ -866,6 +910,14 @@ class AbstractPostListViewController: UIViewController,
         apost.status = .scheduled
         uploadPost(apost)
         updateFilterWithPostStatus(.scheduled)
+    }
+
+    @objc func moveToDraft(_ apost: AbstractPost) {
+        WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
+
+        apost.status = .draft
+        uploadPost(apost)
+        updateFilterWithPostStatus(.draft)
     }
 
     fileprivate func uploadPost(_ apost: AbstractPost) {
@@ -1056,7 +1108,12 @@ class AbstractPostListViewController: UIViewController,
         filterSettings.setCurrentFilterIndex(filterBar.selectedIndex)
 
         refreshAndReload()
+
+        startGhost()
+
         syncItemsWithUserInteraction(false)
+
+        configureInitialScrollInsets()
 
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }

@@ -63,7 +63,7 @@ class EditPostViewController: UIViewController {
     fileprivate init(post: Post?, blog: Blog) {
         self.post = post
         if let post = post {
-            if !post.isDraft() {
+            if !post.originalIsDraft() {
                 editingExistingPost = true
             }
         }
@@ -216,7 +216,7 @@ class EditPostViewController: UIViewController {
         if postPost.revealPost {
             return true
         }
-        if post.isDraft() {
+        if post.originalIsDraft() {
             return false
         }
         return hasChanges

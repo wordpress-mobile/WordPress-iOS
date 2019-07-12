@@ -12,8 +12,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     enum Const {
         enum Color {
-            static let nameText = WPStyleGuide.darkGrey()
-            static let valueText = WPStyleGuide.greyDarken10()
+            static let nameText = UIColor.neutral(shade: .shade70)
+            static let valueText = UIColor.neutral(shade: .shade40)
         }
     }
 
@@ -24,9 +24,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     override var accessoryType: UITableViewCell.AccessoryType {
         didSet {
-            if accessoryType != .none {
-                valueTextField.isEnabled = false
-            }
+            let textFieldEnabled = accessoryType == .none
+            valueTextField.isEnabled = textFieldEnabled
         }
     }
 
@@ -42,9 +41,11 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         valueTextField.textColor = Const.Color.valueText
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
-        valueTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)),
+        valueTextField.addTarget(self,
+                                 action: #selector(textFieldDidChange(textField:)),
                                  for: UIControl.Event.editingChanged)
-        valueTextField.addTarget(self, action: #selector(textEditingDidEnd(textField:)),
+        valueTextField.addTarget(self,
+                                 action: #selector(textEditingDidEnd(textField:)),
                                  for: UIControl.Event.editingDidEnd)
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next inverse_text_alignment

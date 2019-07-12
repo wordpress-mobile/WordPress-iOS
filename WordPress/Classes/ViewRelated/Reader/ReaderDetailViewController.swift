@@ -82,7 +82,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     private let noResultsViewController = NoResultsViewController.controller()
 
-    private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.ReaderRoutes)
+    private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes)
 
     private let topMarginAttachment = NSTextAttachment()
 
@@ -829,11 +829,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         likeButton.isEnabled = ReaderHelpers.isLoggedIn()
 
         let title = post!.likeCountForDisplay()
-        let imageName = post!.isLiked ? "icon-reader-liked" : "icon-reader-like"
-        let image = UIImage(named: imageName)
-        let highlightImage = UIImage(named: "icon-reader-like-highlight")
         let selected = post!.isLiked
-        configureActionButton(likeButton, title: title, image: image, highlightedImage: highlightImage, selected: selected)
+        let normalImage = UIImage(named: "icon-reader-like")?.imageWithTintColor(.neutral(shade: .shade30))
+        let highlightImage = UIImage(named: "icon-reader-like")?.imageWithTintColor(.neutral)
+        let selectedImage = UIImage(named: "icon-reader-liked")?.imageWithTintColor(.primary(shade: .shade40))
+        configureActionButton(likeButton, title: title, image: normalImage, highlightedImage: highlightImage, selected: selected)
+        likeButton.setImage(selectedImage, for: .selected)
 
         if animated {
             playLikeButtonAnimation()
@@ -907,7 +908,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func configureCommentActionButton() {
         let title = post!.commentCount.stringValue
         let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageWithTintColor(.neutral)?.imageFlippedForRightToLeftLayoutDirection()
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
     }
 

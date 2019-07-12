@@ -113,7 +113,7 @@ class ShareTagsPickerViewController: UIViewController {
         textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = WPStyleGuide.darkGrey()
+        textView.textColor = .neutral(shade: .shade70)
         textView.isScrollEnabled = false
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: Constants.textViewTopBottomInset, left: 0, bottom: Constants.textViewTopBottomInset, right: 0)

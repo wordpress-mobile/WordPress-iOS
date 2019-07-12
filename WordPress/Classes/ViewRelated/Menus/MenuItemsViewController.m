@@ -10,6 +10,7 @@
 #import "WPGUIConstants.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 static CGFloat const ItemHoriztonalDragDetectionWidthRatio = 0.05;
 static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
@@ -44,7 +45,7 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
     [super viewDidLoad];
 
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
-    self.view.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
+    self.view.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     self.view.layer.borderWidth = MenusDesignStrokeWidth;
     if (![WPDeviceIdentification isRetina]) {
         // Increase the stroke width on non-retina screens.

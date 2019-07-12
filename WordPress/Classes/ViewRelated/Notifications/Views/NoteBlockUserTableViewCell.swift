@@ -73,7 +73,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
         nameLabel.textColor = WPStyleGuide.Notifications.blockTextColor
 
         blogLabel.font = WPStyleGuide.Notifications.blockRegularFont
-        blogLabel.textColor = WPStyleGuide.greyDarken20()
+        blogLabel.textColor = .neutral(shade: .shade50)
         blogLabel.adjustsFontSizeToFitWidth = false
 
         configureAccesibility()

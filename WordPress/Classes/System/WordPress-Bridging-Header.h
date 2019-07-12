@@ -31,9 +31,6 @@
 
 #import "HockeyManager.h"
 
-#import "InteractivePostView.h"
-#import "InteractivePostViewDelegate.h"
-
 #import "LocalCoreDataService.h"
 
 #import "Media.h"
@@ -49,7 +46,6 @@
 #import "PageListTableViewCell.h"
 #import "PageSettingsViewController.h"
 #import "PostContentProvider.h"
-#import "PostCardTableViewCell.h"
 #import "PostCategory.h"
 #import "PostContentProvider.h"
 #import "PostListFooterView.h"
@@ -109,7 +105,7 @@
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
 #import "WPScrollableViewController.h"
-#import "WPStyleGuide+Posts.h"
+#import "WPStyleGuide+Pages.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPStyleGuide+WebView.h"
 #import "WPTableImageSource.h"

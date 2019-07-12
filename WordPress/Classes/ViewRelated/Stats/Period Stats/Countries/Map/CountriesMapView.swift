@@ -3,7 +3,7 @@ import WordPressShared
 
 class CountriesMapView: UIView, NibLoadable {
     private var map = FSInteractiveMapView(frame: CGRect(x: 0, y: 0, width: 335, height: 224))
-    private let colors: [UIColor] = [.init(fromHex: 0xfff088), .init(fromHex: 0xf24606)]
+    private let colors: [UIColor] = [.accent(shade: .shade5), .accent]
     @IBOutlet private var minViewsCountLabel: UILabel! {
         didSet {
             decorate(minViewsCountLabel)
@@ -24,7 +24,7 @@ class CountriesMapView: UIView, NibLoadable {
     @IBOutlet private var mapContainer: UIView! {
         didSet {
             map.strokeColor = .white
-            map.fillColor = WPStyleGuide.greyLighten20()
+            map.fillColor = .neutral(shade: .shade10)
             map.loadMap("world-map", withData: [:], colorAxis: colors)
             mapContainer.addSubview(map)
         }
@@ -39,6 +39,6 @@ class CountriesMapView: UIView, NibLoadable {
 
     private func decorate(_ label: UILabel) {
         label.font = WPStyleGuide.fontForTextStyle(.footnote)
-        label.textColor = WPStyleGuide.darkGrey()
+        label.textColor = .neutral(shade: .shade70)
     }
 }

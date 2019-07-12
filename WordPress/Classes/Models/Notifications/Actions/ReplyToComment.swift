@@ -6,7 +6,7 @@ class ReplyToComment: DefaultNotificationActionCommand {
     static let hint = NSLocalizedString("Replies to a comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to reply to a comment.")
 
     let replyIcon: UIButton = {
-        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        let button = MGSwipeButton(title: title, backgroundColor: .primary)
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraits.button
         button.accessibilityHint = hint

@@ -9,8 +9,8 @@ class DomainListDomainCell: WPTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        domainLabel?.textColor = WPStyleGuide.greyDarken30()
-        registeredMappedLabel?.textColor = WPStyleGuide.greyDarken10()
+        domainLabel?.textColor = .neutral(shade: .shade60)
+        registeredMappedLabel?.textColor = .neutral(shade: .shade40)
     }
 }
 
