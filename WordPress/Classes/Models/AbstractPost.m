@@ -41,7 +41,7 @@
         return NSLocalizedString(@"Pending review", @"Name for the status of a post pending review.");
 
     } else if ([status isEqualToString:PostStatusPrivate]) {
-        return NSLocalizedString(@"Privately published", @"Name for the status of a post that is marked private.");
+        return NSLocalizedString(@"Private", @"Name for the status of a post that is marked private.");
 
     } else if ([status isEqualToString:PostStatusPublish]) {
         return NSLocalizedString(@"Published", @"Name for the status of a published post.");
@@ -450,6 +450,11 @@
 
 - (BOOL)isDraft
 {
+    return [self.status isEqualToString:PostStatusDraft];
+}
+
+- (BOOL)originalIsDraft
+{
     if ([self.status isEqualToString:PostStatusDraft]) {
         return YES;
     } else if (self.isRevision && [self.original.status isEqualToString:PostStatusDraft]) {
@@ -466,7 +471,7 @@
 
 - (BOOL)shouldPublishImmediately
 {
-    return [self isDraft] && [self dateCreatedIsNilOrEqualToDateModified];
+    return [self originalIsDraft] && [self dateCreatedIsNilOrEqualToDateModified];
 }
 
 - (NSString *)authorNameForDisplay
@@ -506,10 +511,8 @@
 
 - (NSString *)dateStringForDisplay
 {
-    if ([self isDraft] || [self.status isEqualToString:PostStatusPending]) {
-        NSString *shortDate = [[self dateModified] mediumString];
-        NSString *lastModified = NSLocalizedString(@"last-modified",@"A label for a post's last-modified date.");
-        return [NSString stringWithFormat:@"%@ (%@)", shortDate, lastModified];
+    if ([self originalIsDraft] || [self.status isEqualToString:PostStatusPending]) {
+        return [[self dateModified] mediumString];
     } else if ([self isScheduled]) {
         return [[self dateCreated] mediumStringWithTime];
     } else if ([self shouldPublishImmediately]) {

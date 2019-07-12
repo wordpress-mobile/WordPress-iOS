@@ -29,9 +29,9 @@ class PostingActivityLegend: UIView, NibLoadable {
         case 3...5:
             return Style.PostingActivityColors.mediumBlue
         case 6...7:
-            return Style.PostingActivityColors.darkBlue
+            return Style.PostingActivityColors.blue
         default:
-            return Style.PostingActivityColors.darkGrey
+            return Style.PostingActivityColors.darkBlue
         }
     }
 
