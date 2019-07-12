@@ -207,7 +207,7 @@ private extension SiteStatsPeriodViewModel {
             barChartStyling.append(contentsOf: chart.barChartStyling)
 
             indexToHighlight = chartData.summaryData.lastIndex(where: {
-                lastRequestedDate >= $0.periodStartDate
+                lastRequestedDate.normalizedDate() >= $0.periodStartDate.normalizedDate()
             })
         }
 
