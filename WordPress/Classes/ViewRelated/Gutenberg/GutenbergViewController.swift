@@ -500,9 +500,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
+    func gutenbergDidMount(unsupportedBlockNames: [String]) {
         startAutoSave()
         if !editorSession.started {
+            let hasUnsupportedBlocks = !unsupportedBlockNames.isEmpty
             editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
         }
     }
@@ -515,7 +516,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogInfo(message)
         case .warn:
             DDLogWarn(message)
-        case .error:
+        case .error, .fatal:
             DDLogError(message)
         }
     }
