@@ -21,6 +21,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
+    @IBOutlet weak var actionBarSeparator: UIView!
     @IBOutlet weak var topPadding: NSLayoutConstraint!
     @IBOutlet weak var contentStackView: UIStackView!
     @IBOutlet weak var ghostStackView: UIStackView!
@@ -263,6 +264,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     private func setupBorders() {
         WPStyleGuide.applyBorderStyle(upperBorder)
         WPStyleGuide.applyBorderStyle(bottomBorder)
+        WPStyleGuide.applyBorderStyle(actionBarSeparator)
     }
 
     private func setupActionBar() {

@@ -93,7 +93,9 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
 
 extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
-        tableHeaderView?.statsBarChartValueSelected(statsBarChartView, entryIndex: entryIndex, entryCount: entryCount)
+        if let intervalDate = viewModel?.chartDate(for: entryIndex) {
+            tableHeaderView?.updateDate(with: intervalDate)
+        }
     }
 }
 
@@ -329,11 +331,15 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
 // MARK: - SiteStatsTableHeaderDelegate Methods
 
-extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDelegate {
-
+extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDateButtonDelegate {
     func dateChangedTo(_ newDate: Date?) {
         selectedDate = newDate
         refreshData()
     }
 
+    func didTouchHeaderButton(forward: Bool) {
+        if let intervalDate = viewModel?.updateDate(forward: forward) {
+            tableHeaderView?.updateDate(with: intervalDate)
+        }
+    }
 }

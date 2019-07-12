@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, InteractivePostView {
     @IBOutlet var postContentView: UIView!
@@ -38,6 +39,8 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
         restoreLabel.text = NSLocalizedString("Post moved to trash.", comment: "A short message explaining that a post was moved to the trash bin.")
         let buttonTitle = NSLocalizedString("Undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.")
         restoreButton.setTitle(buttonTitle, for: .normal)
+        restoreButton.setImage(Gridicon.iconOfType(.undo, withSize: CGSize(width: Constants.imageSize,
+                                                                           height: Constants.imageSize)), for: .normal)
     }
 
     private func configureCompact() {
@@ -47,7 +50,7 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
 
     private func configureDefault() {
         topMargin.constant = Constants.defaultMargin
-        postContentView.layer.borderColor = WPStyleGuide.postCardBorderColor?.cgColor
+        postContentView.layer.borderColor = WPStyleGuide.postCardBorderColor.cgColor
         postContentView.layer.borderWidth = 1.0 / UIScreen.main.scale
     }
 
@@ -72,5 +75,6 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
     private enum Constants {
         static let defaultMargin: CGFloat = 16
         static let compactMargin: CGFloat = 0
+        static let imageSize: CGFloat = 18.0
     }
 }

@@ -382,6 +382,7 @@ final class VerticalsWizardContent: UIViewController {
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade30))
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         header.textField.attributedPlaceholder = attributedPlaceholder
+        header.textField.returnKeyType = .done
 
         table.tableHeaderView = header
 
