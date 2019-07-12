@@ -18,7 +18,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var postTitle: String?
     private var postURL: URL?
     private var postID: Int?
-    private var selectedDate = Date()
+    private var selectedDate = StatsDataHelper.currentDateForSite()
     private var tableHeaderView: SiteStatsTableHeaderView?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
