@@ -26,20 +26,15 @@ extension PostEditor where Self: UIViewController {
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
-        let publishedStatus = NSLocalizedString("Generating Preview...", comment: "Text displayed in HUD while a post is being saved.")
-        SVProgressHUD.setDefaultMaskType(.clear)
 
         if !post.hasUnsavedChanges() {
             completion(nil, nil)
             return
         }
 
-        SVProgressHUD.show(withStatus: publishedStatus)
-
         navigationBarManager.reloadLeftBarButtonItems(navigationBarManager.generatingPreviewLeftBarButtonItems)
 
         postService.autoSave(post, success: { [weak self] savedPost, previewURL in
-            SVProgressHUD.dismiss()
 
             guard let self = self else {
                 return
@@ -56,7 +51,6 @@ extension PostEditor where Self: UIViewController {
                 }
             }
         }) { error in
-            SVProgressHUD.dismiss()
 
             //When failing to save a published post will result in "preview not available"
             DDLogError("Error while trying to save post before preview: \(String(describing: error))")
