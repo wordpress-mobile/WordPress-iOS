@@ -63,6 +63,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
+        WPStyleGuide.applyPostCardStyle(self)
         WPStyleGuide.applyPostProgressViewStyle(progressView)
         WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
         WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
@@ -70,15 +71,16 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.headline)
         titleLabel.adjustsFontForContentSizeCategory = true
 
-        titleLabel.textColor = WPStyleGuide.darkGrey()
-        timestampLabel.textColor = WPStyleGuide.grey()
-        menuButton.tintColor = WPStyleGuide.greyLighten10()
+        titleLabel.textColor = .text
+        timestampLabel.textColor = .textSubtle
+        menuButton.tintColor = .textSubtle
 
         menuButton.setImage(Gridicon.iconOfType(.ellipsis), for: .normal)
 
-        backgroundColor = WPStyleGuide.greyLighten30()
-
         featuredImageView.layer.cornerRadius = Constants.imageRadius
+
+        backgroundColor = innerView.backgroundColor
+        contentView.backgroundColor = innerView.backgroundColor
     }
 
     private func setupReadableGuideForiPad() {
