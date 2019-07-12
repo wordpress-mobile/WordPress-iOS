@@ -147,17 +147,27 @@ import Reachability
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc func configure(title: String,
+                         noConnectionTitle: String? = nil,
                          buttonTitle: String? = nil,
                          subtitle: String? = nil,
+                         noConnectionSubtitle: String? = nil,
                          attributedSubtitle: NSAttributedString? = nil,
                          attributedSubtitleConfiguration: AttributedSubtitleConfiguration? = nil,
                          image: String? = nil,
                          subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
         let isReachable = reachability?.isReachable()
-        titleText = isReachable == false ? NoConnection.title : title
-        subtitleText = isReachable == false ? NoConnection.subTitle : subtitle
-        attributedSubtitleText = isReachable == false ? NSAttributedString(string: NoConnection.subTitle) : attributedSubtitle
+        if isReachable == false {
+            titleText = noConnectionTitle != nil ? noConnectionTitle : NoConnection.title
+            let subtitle = noConnectionSubtitle != nil ? noConnectionSubtitle : NoConnection.subTitle
+            subtitleText = subtitle
+            attributedSubtitleText = NSAttributedString(string: subtitleText!)
+        } else {
+            titleText = title
+            subtitleText = subtitle
+            attributedSubtitleText = attributedSubtitle
+        }
+
         configureAttributedSubtitle = attributedSubtitleConfiguration
         buttonText = buttonTitle
         imageName = isReachable == false ? NoConnection.imageName : image

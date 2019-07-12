@@ -730,6 +730,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (Blog *)migrateRemoteJetpackBlog:(RemoteBlog *)remoteBlog
                         forAccount:(WPAccount *)account
 {
+    assert(remoteBlog.xmlrpc != nil);
     NSURL *xmlrpcURL = [NSURL URLWithString:remoteBlog.xmlrpc];
     NSURLComponents *components = [NSURLComponents componentsWithURL:xmlrpcURL resolvingAgainstBaseURL:NO];
     if ([components.scheme isEqualToString:@"https"]) {

@@ -1,5 +1,5 @@
 #import "PageListSectionHeaderView.h"
-#import "WPStyleGuide+Posts.h"
+#import "WPStyleGuide+Pages.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 
 @interface PageListSectionHeaderView()
