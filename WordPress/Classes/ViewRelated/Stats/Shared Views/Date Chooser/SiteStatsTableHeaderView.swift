@@ -56,7 +56,16 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
                    delegate: SiteStatsTableHeaderDelegate,
                    expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount,
                    mostRecentDate: Date? = nil) {
-        self.date = date
+
+        self.date = {
+            if let date = date,
+                let mostRecentDate = mostRecentDate,
+                mostRecentDate < date {
+                return mostRecentDate
+            }
+            return date
+        }()
+
         self.period = period
         self.delegate = delegate
         self.expectedPeriodCount = expectedPeriodCount
@@ -199,7 +208,8 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
         }
 
         let periodShift = -((entryCount - 1) - entryIndex)
-        self.date = StatsPeriodHelper().calculateEndDate(from: StatsDataHelper.currentDateForSite().normalizedForSite(), offsetBy: periodShift, unit: period)
+        let fromDate = mostRecentDate?.normalizedDate() ?? StatsDataHelper.currentDateForSite().normalizedForSite()
+        self.date = StatsPeriodHelper().calculateEndDate(from: fromDate, offsetBy: periodShift, unit: period)
 
         delegate?.dateChangedTo(self.date)
         reloadView()

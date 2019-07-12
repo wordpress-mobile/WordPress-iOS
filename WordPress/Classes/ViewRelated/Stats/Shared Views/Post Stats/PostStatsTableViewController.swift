@@ -55,7 +55,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
             return nil
         }
 
-        cell.configure(date: selectedDate, period: .day, delegate: self)
+        cell.configure(date: selectedDate, period: .day, delegate: self, mostRecentDate: store.getMostRecentDate(forPost: postID))
         tableHeaderView = cell
         return cell
     }
@@ -74,6 +74,11 @@ private extension PostStatsTableViewController {
 
         guard let postID = postID else {
             return
+        }
+
+        if let mostRecentDate = store.getMostRecentDate(forPost: postID),
+            mostRecentDate < selectedDate {
+            selectedDate = mostRecentDate
         }
 
         viewModel = PostStatsViewModel(postID: postID,
