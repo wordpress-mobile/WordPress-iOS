@@ -104,6 +104,7 @@ private extension SiteStatsTableHeaderView {
         }
 
         let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = SiteStatsInformation.sharedInstance.siteTimeZone
         dateFormatter.setLocalizedDateFormatFromTemplate(period.dateFormatTemplate)
 
         switch period {
@@ -198,8 +199,7 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
         }
 
         let periodShift = -((entryCount - 1) - entryIndex)
-
-        self.date = StatsPeriodHelper().calculateEndDate(from: Date().normalizedDate(), offsetBy: periodShift, unit: period)
+        self.date = StatsPeriodHelper().calculateEndDate(from: StatsDataHelper.currentDateForSite().normalizedForSite(), offsetBy: periodShift, unit: period)
 
         delegate?.dateChangedTo(self.date)
         reloadView()

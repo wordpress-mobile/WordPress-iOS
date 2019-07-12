@@ -9,14 +9,14 @@ class StatsPeriodHelper {
 
     func dateAvailableBeforeDate(_ dateIn: Date, period: StatsPeriodUnit, backLimit: Int, mostRecentDate: Date? = nil) -> Bool {
         // Use dates without time
-        let currentDate =  mostRecentDate?.normalizedDate() ?? Date().normalizedDate()
+        let currentDate =  mostRecentDate?.normalizedDate() ?? StatsDataHelper.currentDateForSite().normalizedForSite()
 
         guard var oldestDate = calendar.date(byAdding: period.calendarComponent, value: backLimit, to: currentDate) else {
             return false
         }
 
-        let date = dateIn.normalizedDate()
-        oldestDate = oldestDate.normalizedDate()
+        let date = dateIn.normalizedForSite()
+        oldestDate = oldestDate.normalizedForSite()
 
         switch period {
         case .day:
@@ -42,8 +42,8 @@ class StatsPeriodHelper {
 
     func dateAvailableAfterDate(_ dateIn: Date, period: StatsPeriodUnit, mostRecentDate: Date? = nil) -> Bool {
         // Use dates without time
-        let currentDate =  mostRecentDate?.normalizedDate() ?? Date().normalizedDate()
-        let date = dateIn.normalizedDate()
+        let currentDate =  mostRecentDate?.normalizedForSite() ?? StatsDataHelper.currentDateForSite().normalizedForSite()
+        let date = dateIn.normalizedForSite()
 
         switch period {
         case .day:
