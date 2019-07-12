@@ -116,6 +116,14 @@ class StatsDataHelper {
         }
     }
 
+    // MARK: - Helpers
+
+    class func currentDateForSite() -> Date {
+        let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
+        let delta = TimeInterval(siteTimeZone.secondsFromGMT())
+        return Date().addingTimeInterval(delta)
+    }
+
 }
 
 private extension StatsDataHelper {
@@ -145,14 +153,29 @@ private extension StatsDataHelper {
 }
 
 extension Date {
-    func relativeStringInPast(timezone: TimeZone = .autoupdatingCurrent) -> String {
+
+    func normalizedForSite() -> Date {
+        var calendar = StatsDataHelper.calendar
+        calendar.timeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
+
+        let flags: NSCalendar.Unit = [.day, .month, .year]
+        let components = (calendar as NSCalendar).components(flags, from: self)
+
+        var normalized = DateComponents()
+        normalized.day = components.day
+        normalized.month = components.month
+        normalized.year = components.year
+
+        calendar.timeZone = .autoupdatingCurrent
+        return calendar.date(from: normalized) ?? self
+    }
+
+    func relativeStringInPast() -> String {
         // This is basically a Swift rewrite of https://github.com/wordpress-mobile/WordPressCom-Stats-iOS/blob/develop/WordPressCom-Stats-iOS/Services/StatsDateUtilities.m#L97
         // It could definitely use some love!
 
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = timezone
-
-        let now = Date()
+        let calendar = StatsDataHelper.calendar
+        let now = StatsDataHelper.currentDateForSite()
 
         let components = calendar.dateComponents([.minute, .hour, .day], from: self, to: now)
         let niceComponents = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: self, to: now)
