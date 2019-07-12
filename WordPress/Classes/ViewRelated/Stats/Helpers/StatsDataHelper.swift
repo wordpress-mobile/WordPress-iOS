@@ -4,8 +4,6 @@ import Foundation
 ///
 class StatsDataHelper {
 
-    private typealias Style = WPStyleGuide.Stats
-
     // Max number of rows to display on Insights and Period stat cards.
     static let maxRowsToDisplay = 6
 
@@ -118,19 +116,25 @@ class StatsDataHelper {
         }
     }
 
-    private static var calendar: Calendar = {
+}
+
+private extension StatsDataHelper {
+
+    typealias Style = WPStyleGuide.Stats
+
+    static var calendar: Calendar = {
         var cal = Calendar(identifier: .iso8601)
         cal.timeZone = .autoupdatingCurrent
         return cal
     }()
 
-    private static var monthFormatter: DateFormatter = {
+    static var monthFormatter: DateFormatter = {
         let df = DateFormatter()
         df.setLocalizedDateFormatFromTemplate("MMM")
         return df
     }()
 
-    private class func displayMonth(forDate date: DateComponents) -> String {
+    class func displayMonth(forDate date: DateComponents) -> String {
         guard let month = StatsDataHelper.calendar.date(from: date) else {
             return ""
         }
