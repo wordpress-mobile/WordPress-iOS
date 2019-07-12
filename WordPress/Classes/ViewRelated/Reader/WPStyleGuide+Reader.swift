@@ -41,7 +41,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
-        return .neutral
+        return .neutral(shade: .shade10)
     }
 
     // MARK: - Card Attributed Text Attributes
