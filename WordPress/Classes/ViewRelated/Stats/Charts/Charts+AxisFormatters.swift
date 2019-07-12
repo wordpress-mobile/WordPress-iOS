@@ -24,6 +24,7 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
 
     private let initialDateInterval: TimeInterval
     private let period: StatsPeriodUnit
+    private let periodHelper = StatsPeriodHelper()
 
     private lazy var formatter = DateFormatter()
 
@@ -39,7 +40,7 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         updateFormatterTemplate()
 
-        let adjustedValue = initialDateInterval + value
+        let adjustedValue = initialDateInterval + (value < 0 ? 0 : value)
         let date = Date(timeIntervalSince1970: adjustedValue)
 
         switch period {
@@ -55,24 +56,12 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
     }
 
     private func formattedDate(forWeekContaining date: Date) -> String {
-        let week = weekIncludingDate(date)
+        let week = periodHelper.weekIncludingDate(date)
         guard let weekStart = week?.weekStart, let weekEnd = week?.weekEnd else {
             return ""
         }
 
         return "\(formatter.string(from: weekStart)) – \(formatter.string(from: weekEnd))"
-    }
-
-    private func weekIncludingDate(_ date: Date) -> (weekStart: Date, weekEnd: Date)? {
-        // Note: Week is Monday - Sunday
-
-        let calendar = Calendar.current
-        guard let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)),
-            let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) else {
-                return nil
-        }
-
-        return (weekStart, weekEnd)
     }
 }
 
