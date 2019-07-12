@@ -41,9 +41,11 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         valueTextField.textColor = Const.Color.valueText
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
-        valueTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)),
+        valueTextField.addTarget(self,
+                                 action: #selector(textFieldDidChange(textField:)),
                                  for: UIControl.Event.editingChanged)
-        valueTextField.addTarget(self, action: #selector(textEditingDidEnd(textField:)),
+        valueTextField.addTarget(self,
+                                 action: #selector(textEditingDidEnd(textField:)),
                                  for: UIControl.Event.editingDidEnd)
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next inverse_text_alignment
