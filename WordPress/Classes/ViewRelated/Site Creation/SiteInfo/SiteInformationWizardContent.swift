@@ -9,10 +9,6 @@ final class SiteInformationWizardContent: UIViewController {
         case title = 0
         case tagline = 1
 
-        static func count() -> Int {
-            return allCases.count
-        }
-
         func matches(_ row: Int) -> Bool {
             return row == self.rawValue
         }
@@ -120,7 +116,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupNextButton() {
-        nextStep.addTarget(self, action: #selector(goNext), for: .touchUpInside)
+        nextStep.addTarget(self, action: #selector(goToNextStep), for: .touchUpInside)
 
         setupButtonAsSkip()
     }
@@ -192,7 +188,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     @objc
-    private func goNext() {
+    private func goToNextStep() {
         let collectedData = SiteInformation(title: titleString(), tagLine: taglineString())
         completion(collectedData)
         trackBasicInformationNextStep()
@@ -258,7 +254,7 @@ extension SiteInformationWizardContent: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Row.count()
+        return Row.allCases.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -328,7 +324,7 @@ extension SiteInformationWizardContent: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         for (index, row) in Row.allCases.enumerated() {
             guard let rowTextField = valueTextField(for: row) else {
-                let errorMessage = "We expect all rows to have `valueTextField`.  Please review the logic."
+                let errorMessage = "We expect all rows to have `valueTextField` but row \(index) doesn't.  Please review the logic."
                 CrashLogging.logMessage(errorMessage, properties: nil, level: .error)
                 assertionFailure(errorMessage)
                 continue
@@ -341,7 +337,7 @@ extension SiteInformationWizardContent: UITextFieldDelegate {
             let indexPath = IndexPath(row: index + 1, section: 0)
 
             guard let nextTextField = valueTextField(at: indexPath) else {
-                goNext()
+                goToNextStep()
                 return false
             }
 
