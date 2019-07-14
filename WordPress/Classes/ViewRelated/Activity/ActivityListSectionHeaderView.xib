@@ -27,20 +27,31 @@
                     <color key="textColor" name="Gray50"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XJm-Vt-ZYG">
+                    <rect key="frame" x="0.0" y="39" width="320" height="1"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="yov-ic-ZmF"/>
+                    </constraints>
+                </view>
             </subviews>
             <constraints>
                 <constraint firstItem="L4V-t8-P4G" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="2nH-U4-5ow"/>
                 <constraint firstItem="L4V-t8-P4G" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="8H4-AD-Bu1"/>
                 <constraint firstItem="L4V-t8-P4G" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="8lb-5E-Smc"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rTR-ms-4m0" secondAttribute="trailing" constant="16" id="9o9-W1-rVf"/>
+                <constraint firstItem="XJm-Vt-ZYG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="CqK-2S-6c6"/>
                 <constraint firstItem="rTR-ms-4m0" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="F88-hv-bgL"/>
                 <constraint firstItem="L4V-t8-P4G" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="FmN-q3-Hfb"/>
                 <constraint firstItem="rTR-ms-4m0" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="WX8-Q4-85Y"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="rTR-ms-4m0" secondAttribute="bottom" constant="2" id="X29-mW-8MP"/>
+                <constraint firstAttribute="bottom" secondItem="XJm-Vt-ZYG" secondAttribute="bottom" id="rzd-Rm-ABm"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="XJm-Vt-ZYG" secondAttribute="trailing" id="ypY-d4-qzK"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="separator" destination="XJm-Vt-ZYG" id="8dL-Hf-kh6"/>
                 <outlet property="titleLabel" destination="rTR-ms-4m0" id="vUB-uB-DAt"/>
             </connections>
         </view>

@@ -16,6 +16,8 @@ extension WPStyleGuide {
 
     // MARK: - Card View Styles
     static let postCardBorderColor: UIColor = .neutral(shade: .shade10)
+    
+    static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
 
     class func applyPostCardStyle(_ cell: UITableViewCell) {
         cell.backgroundColor = .neutral(shade: .shade0)
@@ -59,7 +61,7 @@ extension WPStyleGuide {
     }
 
     class func applyBorderStyle(_ view: UIView) {
-        view.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale).isActive = true
+        view.heightAnchor.constraint(equalToConstant: separatorHeight).isActive = true
         view.backgroundColor = postCardBorderColor
     }
 

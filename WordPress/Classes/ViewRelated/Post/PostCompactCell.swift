@@ -13,7 +13,9 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var timestampTrailing: NSLayoutConstraint!
     @IBOutlet var labelsContainerTrailing: NSLayoutConstraint!
-
+    @IBOutlet weak var separator: UIView!
+    @IBOutlet weak var labelsVerticalY: NSLayoutConstraint!
+    
     private weak var actionSheetDelegate: PostActionSheetDelegate?
 
     lazy var imageLoader: ImageLoader = {
@@ -54,6 +56,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         super.awakeFromNib()
         applyStyles()
         setupReadableGuideForiPad()
+        setupSeparator()
     }
 
     private func resetGhostStyles() {
@@ -81,6 +84,12 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         backgroundColor = innerView.backgroundColor
         contentView.backgroundColor = innerView.backgroundColor
+    }
+    
+    private func setupSeparator() {
+        WPStyleGuide.applyBorderStyle(separator)
+        contentView.heightAnchor.constraint(equalToConstant: contentView.frame.height + WPStyleGuide.separatorHeight).isActive = true
+        labelsVerticalY.constant -= WPStyleGuide.separatorHeight
     }
 
     private func setupReadableGuideForiPad() {
