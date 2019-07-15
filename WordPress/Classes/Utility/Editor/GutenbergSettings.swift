@@ -34,14 +34,14 @@ class GutenbergSettings {
         }
         set(enabled) {
             if enabled {
-                wasGutenbergenabledOnce = true
+                wasGutenbergEnabledOnce = true
             }
             database.set(enabled, forKey: Key.enabled)
         }
     }
 
     /// True if gutenberg editor has been enabled at least once
-    var wasGutenbergenabledOnce: Bool {
+    var wasGutenbergEnabledOnce: Bool {
         get {
             return isGutenbergEnabled || database.bool(forKey: Key.enabledOnce)
         }
@@ -51,7 +51,7 @@ class GutenbergSettings {
     }
 
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
-        return  post.containsGutenbergBlocks() && !wasGutenbergenabledOnce
+        return  post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce
     }
 
     func setGutenbergEnabledIfNeeded() {
@@ -121,7 +121,7 @@ class GutenbergSettings {
         }
 
         let service = EditorServiceRemote(wordPressComRestApi: remoteAPI)
-        service.postDesignateMobileEditor(blogDotComId, editor: settings, success: { resp in print("SUCCESS!: \(resp)") }) { (error) in
+        service.postDesignateMobileEditor(blogDotComId, editor: settings, success: { _ in }) { (error) in
             DDLogError("Failed to syncronize editor settings with error: \(error)")
         }
     }
