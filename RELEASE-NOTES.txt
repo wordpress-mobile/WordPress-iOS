@@ -1,3 +1,6 @@
+13.0
+-----
+ 
 12.9
 -----
 * Offline support: Create Post is now available from empty results view in offline mode.
