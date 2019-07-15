@@ -3,6 +3,9 @@
 * Offline support: Create Post is now available from empty results view in offline mode.
 * Post Preview: Displaying preview generation status in navigation bar instead of a  
                 blocking spinner. 
+* Block editor: Tapping on an empty editor area will create a new paragraph block
+* Block editor: Fix content loss issue when loading unsupported blocks containing inner blocks.
+* Block editor: Adding a block from the Post Title now inserts the block at the top of the Post.
 
 12.8
 -----
