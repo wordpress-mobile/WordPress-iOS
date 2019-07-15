@@ -97,7 +97,7 @@ class GutenbergSettings {
     func setToRemote() {
         let currentSettings: EditorSettings = isGutenbergEnabled ? .gutenberg : .aztec
         let allBlogs = getAllBlogs()
-        let delay: TimeInterval = allBlogs.count > 5 ? 0.3 : 0;
+        let delay: TimeInterval = allBlogs.count > 5 ? 0.3 : 0
 
         queue.async {
             allBlogs.forEach({ (blog) in
