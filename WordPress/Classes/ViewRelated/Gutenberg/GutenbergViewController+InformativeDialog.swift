@@ -13,21 +13,15 @@ extension GutenbergViewController {
     }
 
     func showInformativeDialogIfNecessary() {
-        GutenbergViewController.showInformativeDialogIfNecessary(showing: post, on: self)
+        if shouldPresentInformativeDialog {
+            GutenbergViewController.showInformativeDialog(on: self)
+        }
     }
 
-    static func showInformativeDialogIfNecessary(
-        using userDefaults: KeyValueDatabase = UserDefaults.standard,
-        showing post: AbstractPost,
+    static func showInformativeDialog(
         on viewController: UIViewControllerTransitioningDelegate & UIViewController,
         animated: Bool = true
     ) {
-        let settings = GutenbergSettings(database: userDefaults)
-
-        guard settings.shouldAutoenableGutenberg(for: post) else {
-            return
-        }
-
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
         (
             title: InfoDialog.okButtonTitle,
@@ -49,7 +43,5 @@ extension GutenbergViewController {
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = viewController
         viewController.present(alert, animated: animated)
-        // Save that gutenberg has been autoenabled
-        settings.wasGutenbergAutoenabled = true
     }
 }

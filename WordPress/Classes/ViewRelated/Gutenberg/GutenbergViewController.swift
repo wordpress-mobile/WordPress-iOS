@@ -203,6 +203,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
     private var isFirstGutenbergLayout = true
+    var shouldPresentInformativeDialog = false
 
     // MARK: - Initializers
     required init(

@@ -8,23 +8,31 @@ class EditorFactory {
     /// Settings for the Gutenberg logic.
     ///
     private let gutenbergSettings = GutenbergSettings()
+    typealias ReplaceEditorBlock = (EditorViewController, EditorViewController) -> ()
 
     // MARK: - Editor: Instantiation
 
-    func instantiateEditor(
-        for post: AbstractPost,
-        replaceEditor: @escaping (EditorViewController, EditorViewController) -> ()) -> EditorViewController {
+    func instantiateEditor(for post: AbstractPost, replaceEditor: @escaping ReplaceEditorBlock) -> EditorViewController {
+        defer {
+            gutenbergSettings.setToRemote()
+        }
 
         if gutenbergSettings.mustUseGutenberg(for: post) {
-            if gutenbergSettings.shouldAutoenableGutenberg(for: post) {
-                gutenbergSettings.setGutenbergEnabledIfNeeded()
-            }
-            gutenbergSettings.setToRemote()
-            return GutenbergViewController(post: post, replaceEditor: replaceEditor)
+            return createGutenbergVC(with: post, replaceEditor: replaceEditor)
         } else {
-            gutenbergSettings.setToRemote()
             return AztecPostViewController(post: post, replaceEditor: replaceEditor)
         }
+    }
+
+    private func createGutenbergVC(with post: AbstractPost, replaceEditor: @escaping ReplaceEditorBlock) -> GutenbergViewController {
+        let gutenbergVC = GutenbergViewController(post: post, replaceEditor: replaceEditor)
+
+        if gutenbergSettings.shouldAutoenableGutenberg(for: post) {
+            gutenbergSettings.setGutenbergEnabledIfNeeded()
+            gutenbergVC.shouldPresentInformativeDialog = true
+        }
+
+        return gutenbergVC
     }
 
     func switchToAztec(from source: EditorViewController) {
