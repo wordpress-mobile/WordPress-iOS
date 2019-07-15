@@ -136,6 +136,12 @@ private extension StatsDataHelper {
         return cal
     }()
 
+    static var calendarForSite: Calendar = {
+        var cal = StatsDataHelper.calendar
+        cal.timeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
+        return cal
+    }()
+
     static var monthFormatter: DateFormatter = {
         let df = DateFormatter()
         df.setLocalizedDateFormatFromTemplate("MMM")
@@ -155,8 +161,7 @@ private extension StatsDataHelper {
 extension Date {
 
     func normalizedForSite() -> Date {
-        var calendar = StatsDataHelper.calendar
-        calendar.timeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
+        var calendar = StatsDataHelper.calendarForSite
 
         let flags: NSCalendar.Unit = [.day, .month, .year]
         let components = (calendar as NSCalendar).components(flags, from: self)
