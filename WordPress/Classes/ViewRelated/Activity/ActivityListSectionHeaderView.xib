@@ -31,7 +31,7 @@
                     <rect key="frame" x="0.0" y="39" width="320" height="1"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="1" id="yov-ic-ZmF"/>
+                        <constraint firstAttribute="height" constant="1" placeholder="YES" id="yov-ic-ZmF"/>
                     </constraints>
                 </view>
             </subviews>

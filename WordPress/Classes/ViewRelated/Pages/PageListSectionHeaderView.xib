@@ -27,7 +27,7 @@
                     <rect key="frame" x="0.0" y="39" width="320" height="1"/>
                     <color key="backgroundColor" name="Gray10"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="1" id="taE-hp-KRL"/>
+                        <constraint firstAttribute="height" constant="1" placeholder="YES" id="taE-hp-KRL"/>
                     </constraints>
                 </view>
             </subviews>

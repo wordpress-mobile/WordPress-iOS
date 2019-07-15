@@ -27,21 +27,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UrU-r4-hAL" userLabel="Labels">
-                                <rect key="frame" x="16" y="9" width="192" height="40"/>
+                                <rect key="frame" x="16" y="7" width="192" height="43.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUq-Dg-elW">
-                                        <rect key="frame" x="0.0" y="0.0" width="192" height="20"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="192" height="23.5"/>
                                         <fontDescription key="fontDescription" name="NotoSerif-Bold" family="Noto Serif" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 days ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEo-hS-PK1">
-                                        <rect key="frame" x="0.0" y="22" width="75" height="18"/>
+                                        <rect key="frame" x="0.0" y="25.5" width="75" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Private • Local changes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZNQ-Pm-fi0">
-                                        <rect key="frame" x="83" y="22" width="109" height="18"/>
+                                        <rect key="frame" x="83" y="25.5" width="109" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
