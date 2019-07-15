@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB" customClass="PageListSectionHeaderView">
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB" customClass="PageListSectionHeaderView" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -23,6 +23,13 @@
                     <color key="textColor" name="Gray50"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KH0-so-kSl">
+                    <rect key="frame" x="0.0" y="39" width="320" height="1"/>
+                    <color key="backgroundColor" name="Gray10"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="taE-hp-KRL"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" name="Gray0"/>
             <constraints>
@@ -30,13 +37,17 @@
                 <constraint firstAttribute="trailing" secondItem="T0w-kY-8uW" secondAttribute="trailingMargin" constant="16" id="UYn-hJ-O0G"/>
                 <constraint firstAttribute="bottom" secondItem="T0w-kY-8uW" secondAttribute="bottom" constant="3" id="bEL-Gi-2rw"/>
                 <constraint firstItem="T0w-kY-8uW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="eA8-WK-DnH"/>
+                <constraint firstAttribute="trailing" secondItem="KH0-so-kSl" secondAttribute="trailing" id="f6P-jh-yWe"/>
                 <constraint firstItem="T0w-kY-8uW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="13" id="p5g-Am-UlJ"/>
+                <constraint firstAttribute="bottom" secondItem="KH0-so-kSl" secondAttribute="bottom" id="tDp-Md-YUG"/>
+                <constraint firstItem="KH0-so-kSl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="v8W-VK-VIF"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="separator" destination="KH0-so-kSl" id="x4i-pG-eFL"/>
                 <outlet property="titleLabel" destination="T0w-kY-8uW" id="YvO-AP-LKa"/>
             </connections>
             <point key="canvasLocation" x="235" y="185"/>
@@ -45,6 +56,9 @@
     <resources>
         <namedColor name="Gray0">
             <color red="0.96862745098039216" green="0.95686274509803926" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Gray10">
+            <color red="0.80392156862745101" green="0.78823529411764703" blue="0.80392156862745101" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Gray50">
             <color red="0.40392156862745099" green="0.41568627450980394" blue="0.45490196078431372" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
