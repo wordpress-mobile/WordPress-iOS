@@ -6,6 +6,11 @@
 * Block editor: Tapping on an empty editor area will create a new paragraph block
 * Block editor: Fix content loss issue when loading unsupported blocks containing inner blocks.
 * Block editor: Adding a block from the Post Title now inserts the block at the top of the Post.
+* Post List: Adds the option to display posts in a compact way.
+* Post List: Display "ghost post card" when loading posts.
+* Post List: Update card design and do not display author name when "Me" is selected.
+* Site Setup: Fixes an issue that was causing new site previews to show behind the "Done" button.
+* Site Setup: It's now more clear how to add a site icon when creating a new WordPress.com site.
 
 12.8
 -----
