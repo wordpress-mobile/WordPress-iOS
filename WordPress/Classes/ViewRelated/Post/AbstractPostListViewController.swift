@@ -282,6 +282,17 @@ class AbstractPostListViewController: UIViewController,
             stopGhostIfConnectionIsNotAvailable()
             showNoResultsView()
         }
+
+        updateBackgroundColor()
+    }
+
+    // Update controller's background color to avoid white lines
+    private func updateBackgroundColor() {
+        if searchController.isActive && emptyResults {
+            view.backgroundColor = noResultsViewController.view.backgroundColor
+        } else {
+            view.backgroundColor = tableView.backgroundColor
+        }
     }
 
     func configureAuthorFilter() {
