@@ -5,8 +5,12 @@ import Foundation
 class GutenbergSettings {
 
     // MARK: - Enabled Editors Keys
-
-    fileprivate let gutenbergEditorEnabledKey = "kUserDefaultsGutenbergEditorEnabled"
+    private enum GutenbergEditorKey {
+        static let enabled = "kUserDefaultsGutenbergEditorEnabled"
+        // This key is already used to auto-enable gutenberg upon showing the informative dialog,
+        // so we need to keep it as it is to get the value from previous users and avoid showing the dialog again.
+        static let shouldAutoenable = "Gutenberg.InformativeDialog"
+    }
 
     // MARK: - Internal variables
     fileprivate let database: KeyValueDatabase
@@ -23,17 +27,41 @@ class GutenbergSettings {
 
     // MARK: Public accessors
 
-    func isGutenbergEnabled() -> Bool {
-        return database.object(forKey: gutenbergEditorEnabledKey) as? Bool ?? false
+    private(set) var isGutenbergEnabled: Bool {
+        get {
+            return database.bool(forKey: GutenbergEditorKey.enabled)
+        }
+        set {
+            database.set(newValue, forKey: GutenbergEditorKey.enabled)
+        }
+    }
+
+    var wasGutenbergAutoenabled: Bool {
+        get {
+            return database.bool(forKey: GutenbergEditorKey.shouldAutoenable)
+        }
+        set {
+            database.set(newValue, forKey: GutenbergEditorKey.shouldAutoenable)
+        }
+    }
+
+    func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
+        return !wasGutenbergAutoenabled && post.containsGutenbergBlocks()
+    }
+
+    func setGutenbergEnabledIfNeeded() {
+        if isGutenbergEnabled == false {
+            toggleGutenberg()
+        }
     }
 
     func toggleGutenberg() {
-        if isGutenbergEnabled() {
+        if isGutenbergEnabled {
             WPAppAnalytics.track(.appSettingsGutenbergDisabled)
-            database.set(false, forKey: gutenbergEditorEnabledKey)
+            isGutenbergEnabled = false
         } else {
             WPAppAnalytics.track(.appSettingsGutenbergEnabled)
-            database.set(true, forKey: gutenbergEditorEnabledKey)
+            isGutenbergEnabled = true
         }
         WPAnalytics.refreshMetadata()
     }
@@ -50,7 +78,7 @@ class GutenbergSettings {
     func mustUseGutenberg(for post: AbstractPost) -> Bool {
         if post.isContentEmpty() {
             // It's a new post
-            return isGutenbergEnabled()
+            return isGutenbergEnabled
         } else {
             // It's an existing post
             return post.containsGutenbergBlocks()
@@ -62,7 +90,7 @@ class GutenbergSettings {
     /// Posts the current local editor setting to remote. This local setting will be set to all the user's blogs.
     ///
     func setToRemote() {
-        let currentSettings: EditorSettings = isGutenbergEnabled() ? .gutenberg : .aztec
+        let currentSettings: EditorSettings = isGutenbergEnabled ? .gutenberg : .aztec
         let allBlogs = getAllBlogs()
         let delay: TimeInterval = allBlogs.count > 5 ? 0.3 : 0;
 
@@ -88,7 +116,7 @@ class GutenbergSettings {
         }
 
         let service = EditorServiceRemote(wordPressComRestApi: remoteAPI)
-        service.postDesignateMobileEditor(blogDotComId, editor: settings, success: { _ in }) { (error) in
+        service.postDesignateMobileEditor(blogDotComId, editor: settings, success: { resp in print("SUCCESS!: \(resp)") }) { (error) in
             DDLogError("Failed to syncronize editor settings with error: \(error)")
         }
     }
@@ -98,6 +126,6 @@ class GutenbergSettings {
 class GutenbergSettingsBridge: NSObject {
     @objc
     static func isGutenbergEnabled() -> Bool {
-        return GutenbergSettings().isGutenbergEnabled()
+        return GutenbergSettings().isGutenbergEnabled
     }
 }

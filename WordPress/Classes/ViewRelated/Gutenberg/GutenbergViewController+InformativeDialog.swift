@@ -4,7 +4,6 @@ import Foundation
 extension GutenbergViewController {
 
     enum InfoDialog {
-        static let key = "Gutenberg.InformativeDialog"
         static let message = NSLocalizedString(
             "This post uses the block editor, which is the default editor for new posts. To enable the classic editor, go to Me > App Settings.",
             comment: "Popup content about why this post is being opened in block editor"
@@ -25,14 +24,8 @@ extension GutenbergViewController {
         animated: Bool = true
     ) {
         let settings = GutenbergSettings(database: userDefaults)
-        defer {
-            settings.setToRemote()
-        }
-        guard
-            !userDefaults.bool(forKey: InfoDialog.key),
-            post.containsGutenbergBlocks(),
-            settings.isGutenbergEnabled() == false
-        else {
+
+        guard settings.shouldAutoenableGutenberg(for: post) else {
             // Don't show if this was shown before or the post does not contain blocks or gutenberg is already enabled.
             return
         }
@@ -57,10 +50,7 @@ extension GutenbergViewController {
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = viewController
         viewController.present(alert, animated: animated)
-        // Save that this alert is shown
-        userDefaults.set(true, forKey: InfoDialog.key)
-
-        // Toggle gutenberg default to true
-        settings.toggleGutenberg()
+        // Save that gutenberg has been autoenabled
+        settings.wasGutenbergAutoenabled = true
     }
 }

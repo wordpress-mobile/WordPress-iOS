@@ -16,6 +16,10 @@ class EditorFactory {
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> ()) -> EditorViewController {
 
         if gutenbergSettings.mustUseGutenberg(for: post) {
+            if gutenbergSettings.shouldAutoenableGutenberg(for: post) {
+                gutenbergSettings.setGutenbergEnabledIfNeeded()
+            }
+            gutenbergSettings.setToRemote()
             return GutenbergViewController(post: post, replaceEditor: replaceEditor)
         } else {
             gutenbergSettings.setToRemote()
