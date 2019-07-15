@@ -13,7 +13,6 @@ extension GutenbergViewController {
     }
 
     func showInformativeDialogIfNecessary() {
-        // Enable gutenberg upon opening a block based post
         GutenbergViewController.showInformativeDialogIfNecessary(showing: post, on: self)
     }
 
@@ -26,9 +25,9 @@ extension GutenbergViewController {
         let settings = GutenbergSettings(database: userDefaults)
 
         guard settings.shouldAutoenableGutenberg(for: post) else {
-            // Don't show if this was shown before or the post does not contain blocks or gutenberg is already enabled.
             return
         }
+
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
         (
             title: InfoDialog.okButtonTitle,
