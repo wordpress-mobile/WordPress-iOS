@@ -18,6 +18,7 @@ class EditorFactory {
         if gutenbergSettings.mustUseGutenberg(for: post) {
             return GutenbergViewController(post: post, replaceEditor: replaceEditor)
         } else {
+            gutenbergSettings.setToRemote()
             return AztecPostViewController(post: post, replaceEditor: replaceEditor)
         }
     }

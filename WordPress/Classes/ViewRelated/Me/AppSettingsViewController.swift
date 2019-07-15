@@ -200,7 +200,10 @@ class AppSettingsViewController: UITableViewController {
 
     func toggleGutenberg() -> (Bool) -> Void {
         return { [weak self] _ in
-            GutenbergSettings().toggleGutenberg()
+            let settings = GutenbergSettings()
+            settings.toggleGutenberg()
+            settings.setToRemote()
+
             self?.reloadViewModel()
         }
     }

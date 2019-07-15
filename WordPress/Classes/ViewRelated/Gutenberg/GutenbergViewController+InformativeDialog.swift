@@ -14,6 +14,7 @@ extension GutenbergViewController {
     }
 
     func showInformativeDialogIfNecessary() {
+        // Enable gutenberg upon opening a block based post
         GutenbergViewController.showInformativeDialogIfNecessary(showing: post, on: self)
     }
 
@@ -24,6 +25,9 @@ extension GutenbergViewController {
         animated: Bool = true
     ) {
         let settings = GutenbergSettings(database: userDefaults)
+        defer {
+            settings.setToRemote()
+        }
         guard
             !userDefaults.bool(forKey: InfoDialog.key),
             post.containsGutenbergBlocks(),
