@@ -20,7 +20,7 @@
 * Stats overview chart: Fixed issue with legend location on iOS 11.
 * Stats Periods: Fixed crash when the Countries map displayed one country only
 * Added a selection of user customizable app icons. Change it via Me > App Settings > App Icon.
-* Update the app's colors using the Muriel color pallete.
+* Update the app's colors using the Muriel color palette.
 * Stats Periods detail views: Fixed an issue where rotation would truncate data.
 * Stats Periods: Fixed an issue when a period interval was selected.
 

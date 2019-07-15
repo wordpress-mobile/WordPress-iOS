@@ -1,3 +1,6 @@
-* Mejoras en el editor de bloques, ¡ahora! Tienes bloques de vídeo, citas y más, el editor mantendrá el estilo del texto en negrita y cursiva al copiar y pegar, hay una nueva combinación de colores y ahora hay listas anidadas disponibles en la barra de herramientas. Trata de no dejar que todos los nuevos poderes se te suban a la cabeza.
-* A veces, al configurar una imagen destacada en una entrada o el sitio era un problema cuando las condiciones de la red eran deficientes. Como no podemos arreglar las condiciones de la red mundial, arreglamos la aplicación: * Las imágenes destacadas deberían funcionar mejor en todas las conexiones.
-* La visualización de las estadísticas recibió un poco de lustre con diseños a dos columnas para sus estadísticas de hoy y de siempre, y te permiten ver más de sus datos.
+* Vista de estadísticas: echa un vistazo a los nuevos diseños de dos columnas para los totales de seguidores, este año, y las estadísticas más populares por fecha.
+* Vistas de este año: ve una instantánea del total de entradas, comentarios, «me gusta» y más de un año hasta la fecha cuando hagas clic en la opción «Ver más».
+* Estadísticas por períodos: Hemos añadido un mapa del mundo en la sección de países.
+* Se ha corregido un problema por el que al actualizar las estadísticas a veces se borraban.
+* ¡Lo haces tú! * Ve a «Yo > Ajustes de la aplicación > Icono de la aplicación» para elegir entre una serie de iconos de aplicaciones.
+* Actualizada la combinación de colores de la aplicación.
