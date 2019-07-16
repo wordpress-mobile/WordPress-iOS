@@ -3229,7 +3229,7 @@ extension AztecPostViewController {
 
     struct MoreSheetAlert {
         static let gutenbergTitle = NSLocalizedString(
-            "Switch to block editor", 
+            "Switch to block editor",
             comment: "Switches from the classic editor to block editor."
         )
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")

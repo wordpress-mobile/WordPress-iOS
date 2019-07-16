@@ -95,7 +95,7 @@ extension GutenbergViewController {
 extension GutenbergViewController {
     private struct MoreSheetAlert {
         static let classicTitle = NSLocalizedString(
-            "Switch to classic editor", 
+            "Switch to classic editor",
             comment: "Switches from Gutenberg mobile to the classic editor"
         )
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
