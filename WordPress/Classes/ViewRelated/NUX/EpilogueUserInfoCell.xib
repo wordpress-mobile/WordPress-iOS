@@ -113,11 +113,13 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityIndicator" destination="xGK-LG-0cx" id="cvq-jE-eTh"/>
+                <outlet property="bottomBorder" destination="m3s-Kz-bOH" id="OI6-YV-Aed"/>
                 <outlet property="fullNameLabel" destination="MbK-Ns-TbF" id="V0e-0h-jX6"/>
                 <outlet property="gravatarActivityIndicator" destination="2Ri-os-5ZW" id="VjF-HG-SdZ"/>
                 <outlet property="gravatarAddIcon" destination="GYR-3W-aku" id="Sdn-zL-dLo"/>
                 <outlet property="gravatarButton" destination="11G-E4-8Jh" id="yiB-I0-zZi"/>
                 <outlet property="gravatarView" destination="SqA-Tm-XVX" id="ag5-hS-Y5D"/>
+                <outlet property="topBorder" destination="Ddl-7i-jhj" id="10u-ag-28x"/>
                 <outlet property="usernameLabel" destination="89f-vg-HlI" id="u0g-9B-dLf"/>
             </connections>
             <point key="canvasLocation" x="-206.5" y="-63"/>
