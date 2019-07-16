@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -53,7 +54,7 @@
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7EM-Lu-3t1" userLabel="Stroke">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                                        <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.84313725490196079" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" name="Gray40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="irb-X1-ceq"/>
                                         </constraints>
@@ -67,7 +68,7 @@
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="LKL-8N-EMV"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                <color key="textColor" red="0.32549019607843138" green="0.47450980392156861" blue="0.58039215686274503" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" name="Gray40"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2k-GK-3TX">
@@ -246,4 +247,9 @@ Nulla sodales mauris ullamcorper massa tincidunt, eu pretium erat fringilla. Sed
             <point key="canvasLocation" x="359" y="-170"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="Gray40">
+            <color red="0.50196078431372548" green="0.50196078431372548" blue="0.5490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
