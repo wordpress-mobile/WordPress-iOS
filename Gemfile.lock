@@ -1,13 +1,18 @@
 GIT
   remote: https://github.com/wordpress-mobile/release-toolkit
-  revision: 074bac6f11ae07a293d73eed71eede716480ef6e
-  tag: 0.2.0
+  revision: ec3b4514bcf074e63512e5adae518a6810cdeb32
+  ref: ec3b4514bcf074e63512e5adae518a6810cdeb32
   specs:
-    fastlane-plugin-wpmreleasetoolkit (0.2.0)
-      diffy
-      git
-      nokogiri
-      octokit
+    fastlane-plugin-wpmreleasetoolkit (0.5.0)
+      diffy (~> 3.3)
+      git (~> 1.3)
+      jsonlint
+      nokogiri (= 1.10.1)
+      octokit (~> 4.13)
+      parallel (~> 1.14)
+      progress_bar (~> 1.3)
+      rake (~> 12.3)
+      rake-compiler (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -145,6 +150,9 @@ GEM
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     json (2.2.0)
+    jsonlint (0.3.0)
+      oj (~> 3)
+      optimist (~> 3)
     jwt (2.2.1)
     memoist (0.16.0)
     mime-types (3.2.2)
@@ -161,19 +169,29 @@ GEM
     nap (1.1.0)
     naturally (2.2.0)
     netrc (0.11.0)
-    nokogiri (1.10.3)
+    nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     octokit (4.14.0)
       sawyer (~> 0.8.0, >= 0.5.3)
+    oj (3.7.12)
+    optimist (3.0.0)
+    options (2.3.2)
     os (1.0.1)
+    parallel (1.17.0)
     plist (3.5.0)
+    progress_bar (1.3.0)
+      highline (>= 1.6, < 3)
+      options (~> 2.3.0)
     public_suffix (2.0.5)
     rake (12.3.2)
+    rake-compiler (1.0.7)
+      rake
     representable (3.0.4)
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
       uber (< 0.2.0)
     retriable (3.1.2)
+    rmagick (3.2.0)
     rouge (2.0.7)
     ruby-enum (0.7.2)
       i18n
@@ -232,6 +250,7 @@ DEPENDENCIES
   fastlane-plugin-wpmreleasetoolkit!
   octokit (~> 4.0)!
   rake!
+  rmagick (~> 3.2.0)
   rubyzip (~> 1.2.2)!
   xcpretty-travis-formatter!
 

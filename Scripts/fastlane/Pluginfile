@@ -2,5 +2,9 @@
 #
 # Ensure this file is checked in to source control!
 
-gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', tag: '0.2.0'
+group :screenshots, optional: true do
+  gem 'rmagick', '~> 3.2.0'
+end
+
+gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: 'ec3b4514bcf074e63512e5adae518a6810cdeb32'
 gem 'fastlane-plugin-sentry'
