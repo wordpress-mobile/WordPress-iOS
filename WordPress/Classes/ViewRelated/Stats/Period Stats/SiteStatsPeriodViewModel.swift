@@ -29,9 +29,12 @@ class SiteStatsPeriodViewModel: Observable {
 
     private var mostRecentChartData: StatsSummaryTimeIntervalData? {
         didSet {
-            currentEntryIndex = (mostRecentChartData?.summaryData.endIndex ?? 0) - 1
+            if oldValue == nil {
+                currentEntryIndex = (mostRecentChartData?.summaryData.endIndex ?? 0) - 1
+            }
         }
     }
+
     private var currentEntryIndex: Int = 0
 
     // MARK: - Constructor
