@@ -18,7 +18,6 @@ static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 static NSInteger const JetpackProfessionalYearlyPlanId = 2004;
 static NSInteger const JetpackProfessionalMonthlyPlanId = 2001;
-static NSInteger const WPComBusinessPlanId = 1008;
 
 NSString * const BlogEntityName = @"Blog";
 NSString * const PostFormatStandard = @"standard";
@@ -563,7 +562,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
     BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"5.6"];
 
     BOOL isTransferrable = self.isHostedAtWPcom
-        && self.planID.integerValue == WPComBusinessPlanId
+        && self.hasBusinessPlan
         && self.siteVisibility != SiteVisibilityPrivate
         && self.isAdmin;
 
