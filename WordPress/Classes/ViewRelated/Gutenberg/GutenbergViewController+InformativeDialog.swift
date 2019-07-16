@@ -9,7 +9,10 @@ extension GutenbergViewController {
             "This post uses the block editor, which is the default editor for new posts. To enable the classic editor, go to Me > App Settings.",
             comment: "Popup content about why this post is being opened in block editor"
         )
-        static let title = NSLocalizedString("Block editor enabled", comment: "Popup title about why this post is being opened in block editor")
+        static let title = NSLocalizedString(
+            "Block editor enabled", 
+            comment: "Popup title about why this post is being opened in block editor"
+        )
         static let okButtonTitle   = NSLocalizedString("OK", comment: "OK button to close the informative dialog on Gutenberg editor")
     }
 
