@@ -1,3 +1,6 @@
+13.0
+-----
+ 
 12.9
 -----
 * Offline support: Create Post is now available from empty results view in offline mode.
@@ -6,6 +9,7 @@
 * Block editor: Tapping on an empty editor area will create a new paragraph block
 * Block editor: Fix content loss issue when loading unsupported blocks containing inner blocks.
 * Block editor: Adding a block from the Post Title now inserts the block at the top of the Post.
+* Stats Insights: Fixed issue that prevented some stats from showing for low volume sites.
 
 12.8
 -----
