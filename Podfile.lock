@@ -255,7 +255,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.8.0)
   - WordPressAuthenticator (~> 1.6.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `b30a7371e3773b56000b5852c11f0d23967e0ab8`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `2fcc2606d8f31d0135a97cd5ed949051ee91963b`)
   - WordPressMocks (~> 0.0.5)
   - WordPressShared (from `https://github.com/leandroalonso/WordPress-iOS-Shared.git`, branch `feature/wpios11646_post_list_toggle_events`)
   - WordPressUI (~> 1.3.4)
@@ -333,7 +333,7 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.8.0
   WordPressKit:
-    :commit: b30a7371e3773b56000b5852c11f0d23967e0ab8
+    :commit: 2fcc2606d8f31d0135a97cd5ed949051ee91963b
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :branch: feature/wpios11646_post_list_toggle_events
@@ -358,7 +358,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.8.0
   WordPressKit:
-    :commit: b30a7371e3773b56000b5852c11f0d23967e0ab8
+    :commit: 2fcc2606d8f31d0135a97cd5ed949051ee91963b
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :commit: f5c10cda240dac3ec86526b1646ab8c2031adcdc
@@ -419,6 +419,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 92e018a970c704b9d398394b4bf04482236f6267
+PODFILE CHECKSUM: 209c1ce2847a71e8d2f2bc2f8d350cfc2945c495
 
 COCOAPODS: 1.6.1

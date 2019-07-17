@@ -46,7 +46,7 @@ end
 def wordpress_kit
     #pod 'WordPressKit', '~> 4.2.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/fix-publishing-private-xmlrpc-posts'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'b30a7371e3773b56000b5852c11f0d23967e0ab8'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '2fcc2606d8f31d0135a97cd5ed949051ee91963b'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
