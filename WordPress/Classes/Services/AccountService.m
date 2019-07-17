@@ -278,10 +278,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         [self setupAppExtensionsWithDefaultAccount];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
+            if (success) {
+                success();
+            }
         });
-        if (success) {
-            success();
-        }
     } failure:^(NSError *error) {
         DDLogError(@"Failed to fetch user details for account %@.  %@", account, error);
         if (failure) {
