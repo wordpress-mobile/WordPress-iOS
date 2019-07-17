@@ -13,10 +13,6 @@ class EditorFactory {
     // MARK: - Editor: Instantiation
 
     func instantiateEditor(for post: AbstractPost, replaceEditor: @escaping ReplaceEditorBlock) -> EditorViewController {
-        defer {
-            gutenbergSettings.setToRemote()
-        }
-
         if gutenbergSettings.mustUseGutenberg(for: post) {
             return createGutenbergVC(with: post, replaceEditor: replaceEditor)
         } else {

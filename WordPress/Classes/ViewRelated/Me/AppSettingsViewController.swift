@@ -202,7 +202,6 @@ class AppSettingsViewController: UITableViewController {
         return { [weak self] _ in
             let settings = GutenbergSettings()
             settings.toggleGutenberg()
-            settings.setToRemote()
 
             self?.reloadViewModel()
         }
