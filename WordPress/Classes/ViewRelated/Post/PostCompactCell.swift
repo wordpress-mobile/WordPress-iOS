@@ -14,7 +14,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var timestampTrailing: NSLayoutConstraint!
     @IBOutlet var labelsContainerTrailing: NSLayoutConstraint!
     @IBOutlet weak var separator: UIView!
-    @IBOutlet weak var labelsVerticalY: NSLayoutConstraint!
 
     private weak var actionSheetDelegate: PostActionSheetDelegate?
 
@@ -88,8 +87,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     private func setupSeparator() {
         WPStyleGuide.applyBorderStyle(separator)
-        contentView.heightAnchor.constraint(equalToConstant: contentView.frame.height + WPStyleGuide.separatorHeight).isActive = true
-        labelsVerticalY.constant -= WPStyleGuide.separatorHeight
     }
 
     private func setupReadableGuideForiPad() {
@@ -185,6 +182,7 @@ extension PostCompactCell: GhostableView {
     private func toggleGhost(visible: Bool) {
         isUserInteractionEnabled = !visible
         menuButton.isGhostableDisabled = true
+        separator.isGhostableDisabled = true
         ghostView.isHidden = !visible
         featuredImageView.isHidden = true
     }
