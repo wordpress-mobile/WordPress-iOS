@@ -64,6 +64,47 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         XCTAssertEqual(tracked?.value(for: "content_type"), PostEditorAnalyticsSession.ContentType.gutenberg.rawValue)
         XCTAssertEqual(tracked?.value(for: "editor"), PostEditorAnalyticsSession.Editor.gutenberg.rawValue)
     }
+
+    func testTrackUnsupportedBlocksOnStart() {
+        let unsupportedBlocks = ["unsupported"]
+        startSession(editor: .gutenberg, unsupportedBlocks: unsupportedBlocks)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
+
+        let tracked = TestAnalyticsTracker.tracked.first
+
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
+        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), unsupportedBlocks)
+        XCTAssertEqual(tracked?.value(for: "has_unsupported_blocks"), "1")
+    }
+
+    func testTrackUnsupportedBlocksOnSwitch() {
+        let unsupportedBlocks = ["unsupported"]
+        var session = startSession(editor: .gutenberg, unsupportedBlocks: unsupportedBlocks)
+        session.switch(editor: .gutenberg)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 2)
+
+        let tracked = TestAnalyticsTracker.tracked.last
+
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionSwitchEditor)
+        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), unsupportedBlocks)
+        XCTAssertEqual(tracked?.value(for: "has_unsupported_blocks"), "1")
+    }
+
+    func testTrackUnsupportedBlocksOnEnd() {
+        let unsupportedBlocks = ["unsupported"]
+        let session = startSession(editor: .gutenberg, unsupportedBlocks: unsupportedBlocks)
+        session.end(outcome: .publish)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 2)
+
+        let tracked = TestAnalyticsTracker.tracked.last
+
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionEnd)
+        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), unsupportedBlocks)
+        XCTAssertEqual(tracked?.value(for: "has_unsupported_blocks"), "1")
+    }
 }
 
 extension PostEditorAnalyticsSessionTests {
@@ -74,9 +115,11 @@ extension PostEditorAnalyticsSessionTests {
         return post
     }
 
-    func startSession(editor: PostEditorAnalyticsSession.Editor, postTitle: String? = nil, postContent: String? = nil, unsupportedBlocks: Bool = false) {
+    @discardableResult
+    func startSession(editor: PostEditorAnalyticsSession.Editor, postTitle: String? = nil, postContent: String? = nil, unsupportedBlocks: [String] = []) -> PostEditorAnalyticsSession {
         let post = createPost(title: postTitle, body: postContent)
         var session = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
-        session.start(hasUnsupportedBlocks: false)
+        session.start(unsupportedBlocks: unsupportedBlocks)
+        return session
     }
 }
