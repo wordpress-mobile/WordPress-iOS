@@ -131,7 +131,7 @@ class WPTableViewCellIndicator: WPTableViewCellDefault {
         let view = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: 10)))
         view.layer.masksToBounds = true
         view.layer.cornerRadius =  view.frame.height / 2
-        view.backgroundColor = WPStyleGuide.jazzyOrange()
+        view.backgroundColor = .accent
         return view
     }()
 }

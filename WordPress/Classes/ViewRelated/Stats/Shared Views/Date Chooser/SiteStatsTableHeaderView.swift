@@ -4,6 +4,10 @@ protocol SiteStatsTableHeaderDelegate: class {
     func dateChangedTo(_ newDate: Date?)
 }
 
+protocol SiteStatsTableHeaderDateButtonDelegate: SiteStatsTableHeaderDelegate {
+    func didTouchHeaderButton(forward: Bool)
+}
+
 class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Accessible {
 
     // MARK: - Properties
@@ -21,6 +25,10 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     private weak var delegate: SiteStatsTableHeaderDelegate?
     private var date: Date?
     private var period: StatsPeriodUnit?
+
+    // Allow the date bar to only go up to the most recent year available.
+    // Used by Insights 'This Year' details view.
+    private var mostRecentDate: Date?
 
     // Limits how far back the date chooser can go.
     // Corresponds to the number of bars shown on the Overview chart.
@@ -43,11 +51,16 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         applyStyles()
     }
 
-    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate, expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount) {
+    func configure(date: Date?,
+                   period: StatsPeriodUnit?,
+                   delegate: SiteStatsTableHeaderDelegate,
+                   expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount,
+                   mostRecentDate: Date? = nil) {
         self.date = date
         self.period = period
         self.delegate = delegate
         self.expectedPeriodCount = expectedPeriodCount
+        self.mostRecentDate = mostRecentDate
         dateLabel.text = displayDate()
         updateButtonStates()
         prepareForVoiceOver()
@@ -64,6 +77,17 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 
         forwardButton.accessibilityLabel = NSLocalizedString("Next period", comment: "Accessibility label")
         forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
+    }
+
+    func updateDate(with intervalDate: Date) {
+        guard let period = period else {
+            return
+        }
+
+        self.date = StatsPeriodHelper().endDate(from: intervalDate, period: period)
+
+        delegate?.dateChangedTo(self.date)
+        reloadView()
     }
 }
 
@@ -95,28 +119,39 @@ private extension SiteStatsTableHeaderView {
         }
     }
 
+    func reloadView() {
+        dateLabel.text = displayDate()
+        updateButtonStates()
+        prepareForVoiceOver()
+        postAccessibilityPeriodLabel()
+    }
+
     @IBAction func didTapBackButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedBackward)
         updateDate(forward: false)
     }
 
     @IBAction func didTapForwardButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedForward)
         updateDate(forward: true)
     }
 
     func updateDate(forward: Bool) {
+        if let delegate = delegate as? SiteStatsTableHeaderDateButtonDelegate {
+            delegate.didTouchHeaderButton(forward: forward)
+            return
+        }
+
         guard let date = date, let period = period else {
             return
         }
 
         let value = forward ? 1 : -1
 
-        self.date = StatsPeriodHelper().calculateEndDate(startDate: date, offsetBy: value, unit: period)
+        self.date = StatsPeriodHelper().calculateEndDate(from: date, offsetBy: value, unit: period)
 
         delegate?.dateChangedTo(self.date)
-        dateLabel.text = displayDate()
-        updateButtonStates()
-        prepareForVoiceOver()
-        postAccessibilityPeriodLabel()
+        reloadView()
     }
 
     func updateButtonStates() {
@@ -128,8 +163,8 @@ private extension SiteStatsTableHeaderView {
         }
 
         let helper = StatsPeriodHelper()
-        forwardButton.isEnabled = helper.dateAvailableAfterDate(date, period: period)
-        backButton.isEnabled = helper.dateAvailableBeforeDate(date, period: period, backLimit: backLimit)
+        forwardButton.isEnabled = helper.dateAvailableAfterDate(date, period: period, mostRecentDate: mostRecentDate)
+        backButton.isEnabled = helper.dateAvailableBeforeDate(date, period: period, backLimit: backLimit, mostRecentDate: mostRecentDate)
         updateArrowStates()
         prepareForVoiceOver()
     }
@@ -142,6 +177,18 @@ private extension SiteStatsTableHeaderView {
     func postAccessibilityPeriodLabel() {
         UIAccessibility.post(notification: .screenChanged, argument: dateLabel)
     }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
+        }
+    }
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
@@ -152,12 +199,9 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
 
         let periodShift = -((entryCount - 1) - entryIndex)
 
-        self.date = StatsPeriodHelper().calculateEndDate(startDate: Date().normalizedDate(), offsetBy: periodShift, unit: period)
+        self.date = StatsPeriodHelper().calculateEndDate(from: Date().normalizedDate(), offsetBy: periodShift, unit: period)
 
         delegate?.dateChangedTo(self.date)
-        dateLabel.text = displayDate()
-        updateButtonStates()
-        prepareForVoiceOver()
-        postAccessibilityPeriodLabel()
+        reloadView()
     }
 }

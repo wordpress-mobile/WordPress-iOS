@@ -54,7 +54,7 @@ open class SettingsListEditorViewController: UITableViewController {
 
     fileprivate func setupTableView() {
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
 
@@ -92,7 +92,7 @@ open class SettingsListEditorViewController: UITableViewController {
 
         cell.accessoryType = isEmpty() ? .none : .disclosureIndicator
         cell.textLabel?.text = isEmpty() ? emptyText : stringAtIndexPath(indexPath)
-        cell.textLabel?.textColor = isEmpty() ? WPStyleGuide.greyLighten20() : WPStyleGuide.darkGrey()
+        cell.textLabel?.textColor = isEmpty() ? .neutral(shade: .shade10) : .neutral(shade: .shade70)
 
         return cell
     }

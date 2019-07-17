@@ -149,7 +149,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     private func setupTable() {
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.tableFooterView = UIView(frame: .zero)
     }
 
@@ -175,7 +175,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.clearButtonMode = .whileEditing
         textField.font = WPStyleGuide.tableviewTextFont()
-        textField.textColor = WPStyleGuide.darkGrey()
+        textField.textColor = .neutral(shade: .shade70)
         textField.delegate = self
         textField.returnKeyType = .done
 
@@ -188,7 +188,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         let textView = UITextView(frame: .zero, textContainer: nil)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = WPStyleGuide.darkGrey()
+        textView.textColor = .neutral(shade: .shade70)
         textView.delegate = self
         textView.returnKeyType = .done
 
@@ -285,7 +285,7 @@ extension SettingsTitleSubtitleController {
         let contentSection = Sections.section(for: section)
         if contentSection == .name {
             if let footer = view as? UITableViewHeaderFooterView {
-                footer.textLabel?.textColor = WPStyleGuide.errorRed()
+                footer.textLabel?.textColor = .error
             }
             // By default the footer is hidden, it will be shown if the user leaves the title empty
             view.isHidden = true

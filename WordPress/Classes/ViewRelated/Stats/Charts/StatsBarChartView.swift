@@ -1,6 +1,4 @@
-
 import UIKit
-
 import Charts
 
 // MARK: - StatsBarChartViewDelegate
@@ -18,7 +16,7 @@ class StatsBarChartView: BarChartView {
     // MARK: Properties
 
     private struct Constants {
-        static let intrinsicHeight          = CGFloat(170)      // height via Zeplin
+        static let intrinsicHeight          = CGFloat(150)
         static let highlightAlpha           = CGFloat(1)
         static let horizontalAxisLabelCount = 2
         static let markerAlpha              = CGFloat(0.2)
@@ -31,6 +29,11 @@ class StatsBarChartView: BarChartView {
         static let trailingOffset           = CGFloat(20)
         static let verticalAxisLabelCount   = 5
     }
+
+    /// Height for "stub" bars when a chart is empty, which is the height of the default chart.
+    /// The value is just shy of the default height to prevent the chart height from automatically expanding.
+    ///
+    static let emptyChartBarHeight = Double(Constants.verticalAxisLabelCount - 1) - 0.01
 
     /// This adapts the data set for presentation by the Charts framework.
     ///
@@ -90,16 +93,17 @@ class StatsBarChartView: BarChartView {
         }
     }
 
-    init(configuration: StatsBarChartConfiguration) {
+    init(configuration: StatsBarChartConfiguration, delegate: StatsBarChartViewDelegate? = nil) {
         self.barChartData = configuration.data
         self.styling = configuration.styling
         self.analyticsGranularity = configuration.analyticsGranularity
-        self.statsBarChartViewDelegate = configuration.delegate
+        self.statsBarChartViewDelegate = delegate
         self.highlightIndex = configuration.indexToHighlight
 
         super.init(frame: .zero)
 
         initialize()
+        setupGestures()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -114,6 +118,26 @@ class StatsBarChartView: BarChartView {
 // MARK: - Private behavior
 
 private extension StatsBarChartView {
+    func setupGestures() {
+        gestureRecognizers = gestureRecognizers?.filter { gesture in
+            if let gesture = gesture as? UITapGestureRecognizer {
+                return gesture.numberOfTapsRequired != 1
+            }
+            return true
+        }
+        let tapGestureRecognizer = NSUITapGestureRecognizer(target: self, action: #selector(barTapGestureRecognized(_:)))
+        addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc func barTapGestureRecognized(_ recognizer: NSUITapGestureRecognizer) {
+        if data != nil, recognizer.state == .ended,
+            let highlight = getHighlightByTouchPoint(recognizer.location(in: self)),
+            highlight != lastHighlighted {
+            lastHighlighted = highlight
+            highlightValue(highlight, callDelegate: true)
+        }
+    }
+
     func applyStyling() {
         configureBarChartViewProperties()
         configureBarLineChartViewBaseProperties()
@@ -275,10 +299,12 @@ private extension StatsBarChartView {
         addSubview(chartLegend)
 
         NSLayoutConstraint.activate([
-            chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
+            chartLegend.widthAnchor.constraint(equalTo: widthAnchor),
+            chartLegend.leadingAnchor.constraint(equalTo: leadingAnchor),
+            chartLegend.topAnchor.constraint(equalTo: topAnchor)
         ])
-        extraTopOffset = chartLegend.intrinsicContentSize.height + Constants.topOffsetWithLegend
 
+        extraTopOffset = chartLegend.intrinsicContentSize.height + Constants.topOffsetWithLegend
         self.legendView = chartLegend
     }
 
@@ -333,7 +359,7 @@ private extension StatsBarChartView {
         if let primaryHighlightColor = styling.primaryHighlightColor {
             markerColor = primaryHighlightColor
         } else {
-            markerColor = WPStyleGuide.jazzyOrange()
+            markerColor = .accent
         }
         marker.backgroundColor = markerColor.withAlphaComponent(Constants.markerAlpha)
 

@@ -79,7 +79,7 @@ private extension RevisionsTableViewController {
 
         tableView.tableFooterView = tableViewFooter
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     private func setupManager() {

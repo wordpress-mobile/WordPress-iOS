@@ -148,7 +148,7 @@ class AbstractPostListViewController: UIViewController,
         configureAuthorFilter()
         configureSearchBackingView()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.reloadData()
 
         observeNetworkStatus()
@@ -227,9 +227,9 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func configureFilterBar() {
-        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
-        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterTabBar.tintColor = .primary
+        filterTabBar.deselectedTabColor = .neutral(shade: .shade40)
+        filterTabBar.dividerColor = .neutral(shade: .shade10)
 
         filterTabBar.items = filterSettings.availablePostListFilters()
 

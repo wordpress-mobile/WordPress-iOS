@@ -177,7 +177,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         modulesTableView.tableFooterView = UIView()
 
         // Style!
-        WPStyleGuide.configureColors(for: view, andTableView: modulesTableView)
+        WPStyleGuide.configureColors(view: view, tableView: modulesTableView)
         WPStyleGuide.configureAutomaticHeightRows(for: modulesTableView)
 
         view.layoutIfNeeded()
@@ -195,7 +195,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         sitesTableView.refreshControl = refreshControl
 
         // Style!
-        WPStyleGuide.configureColors(for: view, andTableView: sitesTableView)
+        WPStyleGuide.configureColors(view: view, tableView: sitesTableView)
         WPStyleGuide.configureAutomaticHeightRows(for: sitesTableView)
     }
 
@@ -429,9 +429,9 @@ fileprivate extension ShareModularViewController {
             cell.detailTextLabel?.text = shareData.selectedCategoriesNameString
             if (shareData.userSelectedCategories == nil || shareData.userSelectedCategories?.count == 0)
                 && shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
-                cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+                cell.detailTextLabel?.textColor = .neutral(shade: .shade30)
             } else {
-                cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
+                cell.detailTextLabel?.textColor = .neutral(shade: .shade70)
             }
         case ModulesSection.tags.rawValue:
             WPStyleGuide.Share.configureModuleCell(cell)
@@ -440,10 +440,10 @@ fileprivate extension ShareModularViewController {
             cell.accessibilityLabel = "Tags"
             if let tags = shareData.tags, !tags.isEmpty {
                 cell.detailTextLabel?.text = tags
-                cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
+                cell.detailTextLabel?.textColor = .neutral(shade: .shade70)
             } else {
                 cell.detailTextLabel?.text =  NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
-                cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+                cell.detailTextLabel?.textColor = .neutral(shade: .shade30)
             }
         default:
             // Summary section

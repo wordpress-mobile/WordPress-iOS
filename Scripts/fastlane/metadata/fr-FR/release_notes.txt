@@ -1,3 +1,6 @@
-- Améliorations de l’éditeur de blocs : voici le bloc vidéo, citation et bien plus. L’éditeur gardera les styles du texte comme le gras et l’italique lors d’un copier-coller. Un tout nouveau jeu de couleurs et listes sont maintenant disponibles dans la barre d’outil. Essayez de ne pas laisser tous ces nouveaux pouvoirs vous monter à la tête.
-- Quelques fois, mettre une image mise en avant sur un article ou un site peut être compliqué quand la connexion au réseau est faible. Comme nous ne pouvons pas améliorer la connexion pour tout le monde, nous avons améliorer l’app : les images mise en avant fonctionneront mieux pour toutes les connexions.
-- L’aperçu des statistiques a reçu un petit coup de polish avec 2 nouvelles colones : Aujourd'hui et Depuis la création ce qui vous affiche plus de données.
+- aperçus des statistiques : consultez les nouvelles mises en page en deux colonnes pour les Totaux des abonné·es, Cette année et les statistiques les plus populaires.
+- aperçus de Cette année : visualisez un instantané du total d’articles, de commentaires, de J’aime et plus pour l’année en cours quand vous touchez sur Voir plus d’options.
+- périodes des statistiques : nous avons ajouté une carte du monde dans la section pays.
+- correctif d’un problème du rafraîchissement des statistiques qui effaçait certaines statistiques.
+- Faites comme vous voulez ! Allez sur Moi > Réglages de l’app > Icône de l’app pour choisir parmi une série de d’icônes pour l’app.
+- Rafraichissement de du jeu de couleurs de l’app.

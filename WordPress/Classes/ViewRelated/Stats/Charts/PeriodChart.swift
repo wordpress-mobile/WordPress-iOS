@@ -1,6 +1,4 @@
-
 import Foundation
-
 import Charts
 
 // MARK: - StatsPeriodFilterDimension
@@ -84,6 +82,7 @@ private final class PeriodChartDataTransformer {
         var visitorEntries  = [BarChartDataEntry]()
         var likeEntries     = [BarChartDataEntry]()
         var commentEntries  = [BarChartDataEntry]()
+
         for datum in summaryData {
             let dateInterval = datum.periodStartDate.timeIntervalSince1970
             let offset = dateInterval - firstDateInterval
@@ -91,10 +90,11 @@ private final class PeriodChartDataTransformer {
             let x = offset
 
             // If the chart has no data, show "stub" bars
-            let viewEntry = BarChartDataEntry(x: x, y: totalViews > 0 ? Double(datum.viewsCount) : 1.0)
-            let visitorEntry = BarChartDataEntry(x: x, y: totalVisitors > 0 ? Double(datum.visitorsCount) : 1.0)
-            let likeEntry = BarChartDataEntry(x: x, y: totalLikes > 0 ? Double(datum.likesCount) : 1.0)
-            let commentEntry = BarChartDataEntry(x: x, y: totalComments > 0 ? Double(datum.commentsCount) : 1.0)
+            let emptyChartBarHeight = StatsBarChartView.emptyChartBarHeight
+            let viewEntry = BarChartDataEntry(x: x, y: totalViews > 0 ? Double(datum.viewsCount) : emptyChartBarHeight)
+            let visitorEntry = BarChartDataEntry(x: x, y: totalVisitors > 0 ? Double(datum.visitorsCount) : emptyChartBarHeight)
+            let likeEntry = BarChartDataEntry(x: x, y: totalLikes > 0 ? Double(datum.likesCount) : emptyChartBarHeight)
+            let commentEntry = BarChartDataEntry(x: x, y: totalComments > 0 ? Double(datum.commentsCount) : emptyChartBarHeight)
 
             viewEntries.append(viewEntry)
             visitorEntries.append(visitorEntry)
@@ -156,19 +156,19 @@ private final class PeriodChartDataTransformer {
     }
 
     static func primaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()
+        return count > 0 ? .primary : .neutral(shade: .shade0)
     }
 
     static func secondaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? WPStyleGuide.darkBlue() : WPStyleGuide.lightGrey()
+        return count > 0 ? .primaryDark : .neutral(shade: .shade0)
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? WPStyleGuide.jazzyOrange() : nil
+        return count > 0 ? .accent : nil
     }
 
     static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? WPStyleGuide.fireOrange() : nil
+        return count > 0 ? .accentDark : nil
     }
 
 }
@@ -180,10 +180,10 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let secondaryBarColor: UIColor?
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?
-    let labelColor: UIColor                         = WPStyleGuide.grey()
-    let legendColor: UIColor?                       = WPStyleGuide.wordPressBlue()
+    let labelColor: UIColor                         = .neutral(shade: .shade30)
+    let legendColor: UIColor?                       = .primaryDark
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
-    let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
+    let lineColor: UIColor                          = .neutral(shade: .shade5)
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
 }
@@ -195,10 +195,10 @@ private struct DefaultPeriodChartStyling: BarChartStyling {
     let secondaryBarColor: UIColor?                 = nil
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
-    let labelColor: UIColor                         = WPStyleGuide.grey()
+    let labelColor: UIColor                         = .neutral(shade: .shade30)
     let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
-    let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
+    let lineColor: UIColor                          = .neutral(shade: .shade5)
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
 }

@@ -30,11 +30,11 @@ final class NewVerticalCell: UITableViewCell, SiteVerticalPresenter {
 
     private func styleTitle() {
         WPStyleGuide.configureLabel(title, textStyle: .body, symbolicTraits: .traitItalic)
-        title.textColor = WPStyleGuide.darkGrey()
+        title.textColor = .neutral(shade: .shade70)
     }
 
     private func styleSubtitle() {
         subtitle.font = WPFontManager.systemRegularFont(ofSize: 15.0)
-        subtitle.textColor = WPStyleGuide.grey()
+        subtitle.textColor = .neutral(shade: .shade30)
     }
 }

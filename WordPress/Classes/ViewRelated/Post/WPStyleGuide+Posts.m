@@ -14,7 +14,7 @@
 {
     NSDictionary *attributes = @{NSFontAttributeName: [self deviceDependantFontForLabels]};
     [segmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    segmentControl.tintColor = [WPStyleGuide grey];
+    segmentControl.tintColor = [UIColor murielNeutral30];
     segmentControl.backgroundColor = [UIColor whiteColor];
     segmentControl.clipsToBounds = YES;
     segmentControl.layer.cornerRadius = 3.0; // Clip the corners of the background color.
@@ -30,73 +30,73 @@
 
 + (UIColor *)postCardBorderColor
 {
-    return [UIColor colorWithRed:215.0/255.0 green:227.0/255.0 blue:235.0/255.0 alpha:1.0];
+    return [UIColor murielNeutral5];
 }
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell
 {
-    cell.backgroundColor = [self greyLighten30];
-    cell.contentView.backgroundColor = [self greyLighten30];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.contentView.backgroundColor = [UIColor clearColor];
 }
 
 + (void)applyPostAuthorSiteStyle:(UILabel *)label
 {
     [self configureLabelForRegularFontStyle:label];
-    label.textColor = [self greyDarken20];
+    label.textColor = [UIColor murielText];
 }
 
 + (void)applyPostAuthorNameStyle:(UILabel *)label
 {
     [self configureLabelForSmallFontStyle:label];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielTextSubtle];
 }
 
 + (void)applyPostTitleStyle:(UILabel *)label
 {
-    label.textColor = [self darkGrey];
+    label.textColor = [UIColor murielText];
 }
 
 + (void)applyPostSnippetStyle:(UILabel *)label
 {
-    label.textColor = [self darkGrey];
+    label.textColor = [UIColor murielText];
 }
 
 + (void)applyPostDateStyle:(UILabel *)label
 {
     [self configureLabelForDeviceDependantStyle:label];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielNeutral30];
 }
 
 + (void)applyPostStatusStyle:(UILabel *)label
 {
     [self configureLabelForDeviceDependantStyle:label];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielTextSubtle];
 }
 
 + (void)applyPostMetaButtonStyle:(UIButton *)button
 {
     [self configureLabelForDeviceDependantStyle:button.titleLabel];
-    [button setTitleColor:[self grey] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielNeutral30] forState:UIControlStateNormal];
 }
 
 + (void)applyPostProgressViewStyle:(UIProgressView *)progressView
 {
-    progressView.trackTintColor = [WPStyleGuide greyLighten20];
-    progressView.progressTintColor = [WPStyleGuide mediumBlue];
-    progressView.tintColor = [WPStyleGuide mediumBlue];
+    progressView.trackTintColor = [UIColor murielNeutral10];
+    progressView.progressTintColor = [UIColor murielPrimary40];
+    progressView.tintColor = [UIColor murielPrimary40];
 }
 
 + (void)applyRestorePostLabelStyle:(UILabel *)label
 {
     [self configureLabelForDeviceDependantStyle:label];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielTextSubtle];
 }
 
 + (void)applyRestorePostButtonStyle:(UIButton *)button
 {
     [self configureLabelForSmallFontStyle:button.titleLabel];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
 }
 
 #pragma mark - Attributed String Attributes
@@ -196,7 +196,7 @@
 {
     CGFloat fontSize = 15.0;
     label.font = [WPFontManager notoRegularFontOfSize:fontSize];
-    label.textColor = [self wordPressBlue];
+    label.textColor = [UIColor murielPrimary];
 }
 
 + (NSDictionary *)pageCellTitleAttributes
@@ -209,14 +209,14 @@
 + (void)applySectionHeaderTitleStyle:(UILabel *)label
 {
     [self configureLabelForSmallFontStyle:label];
-    label.backgroundColor = [self lightGrey];
-    label.textColor = [self grey];
+    label.backgroundColor = [UIColor murielNeutral0];
+    label.textColor = [UIColor murielNeutral30];
 }
 
 + (void)applyRestorePageLabelStyle:(UILabel *)label
 {
     label.font = [WPStyleGuide regularFont];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielNeutral30];
 }
 
 + (void)applyRestorePageButtonStyle:(UIButton *)button
@@ -224,14 +224,14 @@
     [WPStyleGuide configureLabel:button.titleLabel
                        textStyle:UIFontTextStyleCallout
                       fontWeight:UIFontWeightSemibold];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
 }
 
 + (void)applyRestoreSavedPostLabelStyle:(UILabel *)label
 {
     [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCallout];
-    label.textColor = [self greyDarken10];
+    label.textColor = [UIColor murielNeutral];
 }
 
 + (void)applyRestoreSavedPostTitleLabelStyle:(UILabel *)label
@@ -244,7 +244,7 @@
     UIFontDescriptorSymbolicTraits traits = [descriptor symbolicTraits];
     descriptor = [descriptor fontDescriptorWithSymbolicTraits:traits | UIFontDescriptorTraitItalic];
     label.font = [UIFont fontWithDescriptor:descriptor size:label.font.pointSize];
-    label.textColor = [self greyDarken10];
+    label.textColor = [UIColor murielNeutral];
 }
 
 + (void)applyRestoreSavedPostButtonStyle:(UIButton *)button
@@ -252,8 +252,8 @@
     [WPStyleGuide configureLabel:button.titleLabel
                        textStyle:UIFontTextStyleCallout
                       fontWeight:UIFontWeightSemibold];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
 }
 
 + (UIFont *)deviceDependantFontForLabels {

@@ -18,8 +18,8 @@ struct FeatureItemRow: ImmuTableRow {
             cell.featureDescriptionLabel?.attributedText = attributedDescriptionText(description, font: featureDescriptionLabel.font)
         }
 
-        cell.featureTitleLabel.textColor = WPStyleGuide.darkGrey()
-        cell.featureDescriptionLabel.textColor = WPStyleGuide.grey()
+        cell.featureTitleLabel.textColor = .neutral(shade: .shade70)
+        cell.featureDescriptionLabel.textColor = .neutral(shade: .shade30)
         WPStyleGuide.configureTableViewCell(cell)
     }
 

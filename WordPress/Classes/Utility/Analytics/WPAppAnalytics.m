@@ -204,6 +204,9 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
         return;
     }
     self.applicationOpenedTime = [NSDate date];
+    
+    // This stat is part of a funnel that provides critical information.  Before
+    // making ANY modification to this stat please refer to: p4qSXL-35X-p2
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
 }
 

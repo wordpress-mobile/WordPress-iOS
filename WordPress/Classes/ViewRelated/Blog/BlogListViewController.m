@@ -1,5 +1,4 @@
 #import "BlogListViewController.h"
-
 #import "WordPress-Swift.h"
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
@@ -394,7 +393,7 @@ static NSInteger HideSearchMinSites = 3;
         _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _headerLabel.numberOfLines = 0;
         _headerLabel.textAlignment = NSTextAlignmentCenter;
-        _headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        _headerLabel.textColor = [UIColor murielText];
         _headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
         _headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
     }
@@ -615,7 +614,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                       [weakSelf showRemoveSiteAlertForIndexPath:indexPath];
                                                                                   }];
                                                                               }];
-        removeAction.backgroundColor = [WPStyleGuide errorRed];
+        removeAction.backgroundColor = [UIColor murielError];
         [actions addObject:removeAction];
     } else {
         if (blog.visible) {
@@ -626,7 +625,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                         [weakSelf hideBlogAtIndexPath:indexPath];
                                                                                     }];
                                                                                 }];
-            hideAction.backgroundColor = [WPStyleGuide grey];
+            hideAction.backgroundColor = [UIColor murielNeutral30];
             [actions addObject:hideAction];
         } else {
             UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -636,7 +635,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                           [weakSelf unhideBlogAtIndexPath:indexPath];
                                                                                       }];
                                                                                   }];
-            unhideAction.backgroundColor = [WPStyleGuide validGreen];
+            unhideAction.backgroundColor = [UIColor murielSuccess];
             [actions addObject:unhideAction];
         }
     }

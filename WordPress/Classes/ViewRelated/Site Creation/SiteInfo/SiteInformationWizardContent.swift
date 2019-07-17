@@ -79,7 +79,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+        view.backgroundColor = .neutral(shade: .shade5)
     }
 
     private func setupTable() {
@@ -95,11 +95,11 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = WPStyleGuide.greyLighten30()
+        table.backgroundColor = .neutral(shade: .shade5)
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = WPStyleGuide.greyLighten20()
+        table.separatorColor = .neutral(shade: .shade10)
     }
 
     private func registerCell() {
@@ -115,7 +115,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupButtonWrapper() {
-        buttonWrapper.backgroundColor = WPStyleGuide.greyLighten30()
+        buttonWrapper.backgroundColor = .neutral(shade: .shade5)
     }
 
     private func setupNextButton() {
@@ -165,7 +165,7 @@ final class SiteInformationWizardContent: UIViewController {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.textAlignment = .natural
         title.numberOfLines = 0
-        title.textColor = WPStyleGuide.greyDarken20()
+        title.textColor = .neutral(shade: .shade50)
         title.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
         title.text = TableStrings.footer
         title.adjustsFontForContentSizeCategory = true
@@ -248,20 +248,20 @@ extension SiteInformationWizardContent: UITableViewDataSource {
         if Rows.title.matches(index.row) {
             cell.nameLabel.text = TableStrings.site
             cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.site)
-            cell.addTopBorder(withColor: WPStyleGuide.greyLighten20())
+            cell.addTopBorder(withColor: .neutral(shade: .shade10))
         }
 
         if Rows.tagline.matches(index.row) {
             cell.nameLabel.text = TableStrings.tagline
             cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.tagline)
-            cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
+            cell.addBottomBorder(withColor: .neutral(shade: .shade10))
         }
 
         cell.nameLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        cell.nameLabel.textColor = WPStyleGuide.darkGrey()
+        cell.nameLabel.textColor = .neutral(shade: .shade70)
 
         cell.valueTextField.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        cell.valueTextField.textColor = WPStyleGuide.greyDarken30()
+        cell.valueTextField.textColor = .neutral(shade: .shade60)
 
         if cell.delegate == nil {
             cell.delegate = self
@@ -270,7 +270,7 @@ extension SiteInformationWizardContent: UITableViewDataSource {
 
     private func attributedPlaceholder(text: String) -> NSAttributedString {
         let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: WPStyleGuide.grey(),
+            .foregroundColor: UIColor.neutral(shade: .shade30),
             .font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         ]
 

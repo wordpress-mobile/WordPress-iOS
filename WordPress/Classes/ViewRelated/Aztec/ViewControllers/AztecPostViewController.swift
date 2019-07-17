@@ -378,8 +378,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var insertToolbarItem: UIButton = {
         let insertItem = UIButton(type: .custom)
         insertItem.titleLabel?.font = Fonts.mediaPickerInsert
-        insertItem.tintColor = WPStyleGuide.wordPressBlue()
-        insertItem.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+        insertItem.tintColor = .primary
+        insertItem.setTitleColor(.primary, for: .normal)
 
         return insertItem
     }()
@@ -674,7 +674,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// nothing or the resetting wasn't permanent.
     ///
     fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationBarAppearance()
+        WPStyleGuide.configureNavigationAppearance()
     }
 
     func configureDismissButton() {
@@ -1860,7 +1860,7 @@ extension AztecPostViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: WPStyleGuide.darkGrey()
+                .foregroundColor: UIColor.neutral(shade: .shade70)
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -3244,18 +3244,18 @@ extension AztecPostViewController {
     }
 
     struct Colors {
-        static let aztecBackground          = UIColor.clear
-        static let title                    = WPStyleGuide.grey()
-        static let separator                = WPStyleGuide.greyLighten30()
-        static let placeholder              = WPStyleGuide.grey()
-        static let progressBackground       = WPStyleGuide.wordPressBlue()
-        static let progressTint             = UIColor.white
-        static let progressTrack            = WPStyleGuide.wordPressBlue()
-        static let mediaProgressOverlay     = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
-        static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
-        static let mediaProgressBarTrack    = WPStyleGuide.wordPressBlue()
-        static let aztecLinkColor           = WPStyleGuide.mediumBlue()
-        static let mediaOverlayBorderColor  = WPStyleGuide.wordPressBlue()
+        static let aztecBackground              = UIColor.clear
+        static let title                        = UIColor.neutral(shade: .shade30)
+        static let separator                    = UIColor.neutral(shade: .shade5)
+        static let placeholder                  = UIColor.neutral(shade: .shade30)
+        static let progressBackground           = UIColor.primary
+        static let progressTint                 = UIColor.white
+        static let progressTrack                = UIColor.primary
+        static let mediaProgressOverlay         = UIColor.neutral(shade: .shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaProgressBarBackground   = UIColor.neutral(shade: .shade0)
+        static let mediaProgressBarTrack        = UIColor.primary
+        static let aztecLinkColor               = UIColor.primary
+        static let mediaOverlayBorderColor      = UIColor.primary
     }
 
     struct Fonts {

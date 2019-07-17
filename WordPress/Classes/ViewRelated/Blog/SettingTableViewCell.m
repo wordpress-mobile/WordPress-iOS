@@ -1,4 +1,5 @@
 #import "SettingTableViewCell.h"
+#import "WordPress-Swift.h"
 
 @implementation SettingTableViewCell
 
@@ -13,7 +14,7 @@
     if (self) {
         self.textLabel.text = label;
         [WPStyleGuide configureTableViewCell:self];
-        self.detailTextLabel.textColor = [WPStyleGuide grey];
+        self.detailTextLabel.textColor = [UIColor murielNeutral30];
         if (editable) {
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             self.selectionStyle = UITableViewCellSelectionStyleDefault;

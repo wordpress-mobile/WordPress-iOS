@@ -26,7 +26,7 @@ class FeatureItemCell: WPTableViewCell {
 
         layoutMargins = UIEdgeInsets.zero
 
-        separator.backgroundColor = WPStyleGuide.greyLighten30()
+        separator.backgroundColor = .neutral(shade: .shade5)
     }
 
     override func prepareForReuse() {

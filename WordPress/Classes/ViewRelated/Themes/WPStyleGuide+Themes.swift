@@ -7,17 +7,17 @@ extension WPStyleGuide {
     public struct Themes {
         // MARK: - Current Theme Styles
 
-        public static let currentThemeBackgroundColor = UIColor.white
-        public static let currentThemeDividerColor = WPStyleGuide.greyLighten30()
+        public static let currentThemeBackgroundColor: UIColor = .white
+        public static let currentThemeDividerColor: UIColor = .neutral(shade: .shade5)
 
         public static let currentThemeLabelFont = WPFontManager.systemRegularFont(ofSize: 11)
-        public static let currentThemeLabelColor = WPStyleGuide.greyDarken20()
+        public static let currentThemeLabelColor: UIColor = .textSubtle
 
         public static let currentThemeNameFont = WPFontManager.systemSemiBoldFont(ofSize: 14)
-        public static let currentThemeNameColor = WPStyleGuide.darkGrey()
+        public static let currentThemeNameColor: UIColor = .text
 
         public static let currentThemeButtonFont = WPFontManager.systemRegularFont(ofSize: 13)
-        public static let currentThemeButtonColor = WPStyleGuide.darkGrey()
+        public static let currentThemeButtonColor: UIColor = .text
 
         public static func styleCurrentThemeButton(_ button: UIButton) {
             button.titleLabel?.font = currentThemeButtonFont
@@ -26,11 +26,11 @@ extension WPStyleGuide {
 
         // MARK: - Search Styles
 
-        public static let searchBarBackgroundColor = WPStyleGuide.lightGrey()
-        public static let searchBarBorderColor = WPStyleGuide.greyLighten20()
+        public static let searchBarBackgroundColor: UIColor = .neutral(shade: .shade0)
+        public static let searchBarBorderColor: UIColor = .neutral(shade: .shade10)
 
         public static let searchTypeTitleFont = WPFontManager.systemSemiBoldFont(ofSize: 14)
-        public static let searchTypeTitleColor = WPStyleGuide.darkGrey()
+        public static let searchTypeTitleColor: UIColor = .neutral(shade: .shade70)
 
         public static func styleSearchTypeButton(_ button: UIButton, title: String) {
             button.setTitleColor(searchTypeTitleColor, for: UIControl.State())
@@ -47,19 +47,19 @@ extension WPStyleGuide {
         public static let cellNameFont = WPFontManager.systemSemiBoldFont(ofSize: 14)
         public static let cellInfoFont = WPFontManager.systemSemiBoldFont(ofSize: 12)
 
-        public static let placeholderColor = WPStyleGuide.greyLighten20()
+        public static let placeholderColor: UIColor = .neutral(shade: .shade10)
 
-        public static let activeCellBackgroundColor = WPStyleGuide.mediumBlue()
-        public static let activeCellBorderColor = WPStyleGuide.mediumBlue()
-        public static let activeCellDividerColor = WPStyleGuide.lightBlue()
-        public static let activeCellNameColor = UIColor.white
-        public static let activeCellInfoColor = WPStyleGuide.lightBlue()
+        public static let activeCellBackgroundColor: UIColor = .neutral(shade: .shade40)
+        public static let activeCellBorderColor: UIColor = .neutral(shade: .shade40)
+        public static let activeCellDividerColor: UIColor = .neutral(shade: .shade20)
+        public static let activeCellNameColor: UIColor = .white
+        public static let activeCellInfoColor: UIColor = .primaryLight
 
-        public static let inactiveCellBackgroundColor = UIColor.white
-        public static let inactiveCellBorderColor = WPStyleGuide.greyLighten20()
-        public static let inactiveCellDividerColor = WPStyleGuide.greyLighten30()
-        public static let inactiveCellNameColor = WPStyleGuide.darkGrey()
-        public static let inactiveCellPriceColor = WPStyleGuide.validGreen()
+        public static let inactiveCellBackgroundColor: UIColor = .white
+        public static let inactiveCellBorderColor: UIColor = .neutral(shade: .shade10)
+        public static let inactiveCellDividerColor: UIColor = .neutral(shade: .shade5)
+        public static let inactiveCellNameColor: UIColor = .neutral(shade: .shade70)
+        public static let inactiveCellPriceColor: UIColor = .success
 
         // MARK: - Metrics
 

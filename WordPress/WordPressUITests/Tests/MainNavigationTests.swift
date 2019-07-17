@@ -14,6 +14,7 @@ class MainNavigationTests: XCTestCase {
     }
 
     override func tearDown() {
+        takeScreenshotOfFailedTest()
         LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
@@ -27,6 +28,9 @@ class MainNavigationTests: XCTestCase {
             .tabBar.gotoBlockEditorScreen()
             .closeEditor()
 
-        XCTAssert(NotificationsScreen.isLoaded())
+        XCTContext.runActivity(named: "Confirm Notifications screen and main navigation bar are loaded.") { (activity) in
+            XCTAssert(NotificationsScreen.isLoaded(), "Notifications screen isn't loaded.")
+            XCTAssert(TabNavComponent.isVisible(), "Main navigation bar isn't visible.")
+        }
     }
 }

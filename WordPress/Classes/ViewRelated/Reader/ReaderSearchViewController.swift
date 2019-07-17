@@ -100,7 +100,7 @@ import Gridicons
 
         navigationItem.title = NSLocalizedString("Search", comment: "Title of the Reader's search feature")
 
-        WPStyleGuide.configureColors(for: view, andTableView: nil)
+        WPStyleGuide.configureColors(view: view, tableView: nil)
         setupSearchBar()
         configureFilterBar()
         configureLabel()
@@ -158,19 +158,19 @@ import Gridicons
     @objc func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
         let placeholderText = NSLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade30))
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).attributedPlaceholder = attributedPlaceholder
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.greyDarken30())
+        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade60))
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).defaultTextAttributes = textAttributes
 
         WPStyleGuide.configureSearchBar(searchBar)
     }
 
     func configureFilterBar() {
-        filterBar.tintColor = WPStyleGuide.wordPressBlue()
-        filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterBar.tintColor = .primary
+        filterBar.deselectedTabColor = .neutral(shade: .shade40)
+        filterBar.dividerColor = .neutral(shade: .shade10)
         filterBar.tabSizingStyle = .equalWidths
         filterBar.items = sections
 
@@ -179,7 +179,7 @@ import Gridicons
 
     @objc func configureLabel() {
         let text = NSLocalizedString("Search WordPress\nfor a site or post", comment: "A short message that is a call to action for the Reader's Search feature.")
-        let rawAttributes = WPNUXUtility.titleAttributes(with: WPStyleGuide.greyDarken20()) as! [String: Any]
+        let rawAttributes = WPNUXUtility.titleAttributes(with: .neutral(shade: .shade50)) as! [String: Any]
         let swiftedAttributes = NSAttributedString.Key.convertFromRaw(attributes: rawAttributes)
         label.numberOfLines = 2
         label.attributedText = NSAttributedString(string: text, attributes: swiftedAttributes)

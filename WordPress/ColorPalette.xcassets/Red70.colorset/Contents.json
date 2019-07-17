@@ -1,0 +1,20 @@
+{
+  "info": {
+    "author": "blog.color-studio",
+    "version": "2.0.0-rc.4"
+  },
+  "colors": [
+    {
+      "idiom": "universal",
+      "color": {
+        "components": {
+          "red": "138",
+          "green": "36",
+          "blue": "36",
+          "alpha": 1
+        },
+        "color-space": "srgb"
+      }
+    }
+  ]
+}

@@ -70,7 +70,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
@@ -174,7 +174,7 @@ extension ActivityListViewController {
                                                 handler: { [weak self] _, indexPath in
                                                     self?.presentRewindFor(activity: row.activity)
         })
-        rewindAction.backgroundColor = WPStyleGuide.mediumBlue()
+        rewindAction.backgroundColor = .primary(shade: .shade40)
 
         return [rewindAction]
     }

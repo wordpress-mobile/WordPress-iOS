@@ -39,7 +39,7 @@ class QuickStartListTitleCell: UITableViewCell {
         }
 
         if state == .completed {
-            label.textColor = WPStyleGuide.grey()
+            label.textColor = .neutral(shade: .shade30)
             label.attributedText = NSAttributedString(string: text, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
         }
     }
@@ -49,11 +49,11 @@ private extension QuickStartListTitleCell {
     func refreshIconColor() {
         switch state {
         case .customizeIncomplete:
-            circleImageView?.backgroundColor = .mediumBlue
+            circleImageView?.backgroundColor = .primary(shade: .shade40)
         case .growIncomplete:
-            circleImageView?.backgroundColor = .mediumPink
+            circleImageView?.backgroundColor = .accent
         default:
-            circleImageView?.backgroundColor = .wpGrey
+            circleImageView?.backgroundColor = .neutral(shade: .shade30)
         }
 
         guard let iconImageView = iconImageView,
@@ -62,19 +62,5 @@ private extension QuickStartListTitleCell {
         }
 
         iconImageView.image = iconImage.imageWithTintColor(.white)
-    }
-}
-
-private extension UIColor {
-    class var mediumBlue: UIColor {
-        return WPStyleGuide.mediumBlue()
-    }
-
-    class var mediumPink: UIColor {
-        return UIColor(red: 188/255, green: 70/255, blue: 129/255, alpha: 1.0)
-    }
-
-    class var wpGrey: UIColor {
-        return WPStyleGuide.grey()
     }
 }

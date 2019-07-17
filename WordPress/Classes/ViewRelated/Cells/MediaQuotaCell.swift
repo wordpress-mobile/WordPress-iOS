@@ -51,11 +51,11 @@ import WordPressShared
 
     @objc func customizeAppearance() {
         titleLabel.font = WPStyleGuide.tableviewTextFont()
-        titleLabel.textColor = WPStyleGuide.darkGrey()
+        titleLabel.textColor = .neutral(shade: .shade70)
         valueLabel.font = WPStyleGuide.tableviewSubtitleFont()
-        valueLabel.textColor = WPStyleGuide.grey()
-        progressView.progressTintColor = WPStyleGuide.wordPressBlue()
-        progressView.trackTintColor = WPStyleGuide.grey()
+        valueLabel.textColor = .neutral(shade: .shade30)
+        progressView.progressTintColor = .primary
+        progressView.trackTintColor = .neutral(shade: .shade30)
     }
 
     // MARK: - UIKit bindings

@@ -7,9 +7,9 @@ class StatsPeriodHelper {
         return cal
     }()
 
-    func dateAvailableBeforeDate(_ dateIn: Date, period: StatsPeriodUnit, backLimit: Int) -> Bool {
+    func dateAvailableBeforeDate(_ dateIn: Date, period: StatsPeriodUnit, backLimit: Int, mostRecentDate: Date? = nil) -> Bool {
         // Use dates without time
-        let currentDate = Date().normalizedDate()
+        let currentDate =  mostRecentDate?.normalizedDate() ?? Date().normalizedDate()
 
         guard var oldestDate = calendar.date(byAdding: period.calendarComponent, value: backLimit, to: currentDate) else {
             return false
@@ -40,9 +40,9 @@ class StatsPeriodHelper {
         }
     }
 
-    func dateAvailableAfterDate(_ dateIn: Date, period: StatsPeriodUnit) -> Bool {
+    func dateAvailableAfterDate(_ dateIn: Date, period: StatsPeriodUnit, mostRecentDate: Date? = nil) -> Bool {
         // Use dates without time
-        let currentDate = Date().normalizedDate()
+        let currentDate =  mostRecentDate?.normalizedDate() ?? Date().normalizedDate()
         let date = dateIn.normalizedDate()
 
         switch period {
@@ -67,12 +67,37 @@ class StatsPeriodHelper {
         }
     }
 
-    func calculateEndDate(startDate: Date, offsetBy count: Int = 1, unit: StatsPeriodUnit) -> Date? {
+    func endDate(from intervalStartDate: Date, period: StatsPeriodUnit, offsetBy count: Int = 1) -> Date {
+        switch period {
+        case .day:
+            return intervalStartDate.normalizedDate()
+        case .week:
+            guard let week = weekIncludingDate(intervalStartDate) else {
+                DDLogError("[Stats] Couldn't determine the right week. Returning original value.")
+                return intervalStartDate.normalizedDate()
+            }
+            return week.weekEnd.normalizedDate()
+        case .month:
+            guard let endDate = intervalStartDate.lastDayOfTheMonth(in: calendar) else {
+                DDLogError("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
+                return intervalStartDate.normalizedDate()
+            }
+            return endDate.normalizedDate()
+        case .year:
+            guard let endDate = intervalStartDate.lastDayOfTheYear(in: calendar) else {
+                DDLogError("[Stats] Couldn't determine number of months in a given year, or days in a given monthin Stats. Returning original value.")
+                return intervalStartDate.normalizedDate()
+            }
+            return endDate.normalizedDate()
+        }
+    }
+
+    func calculateEndDate(from currentDate: Date, offsetBy count: Int = 1, unit: StatsPeriodUnit) -> Date? {
         let calendar = Calendar.autoupdatingCurrent
 
-        guard let adjustedDate = calendar.date(byAdding: unit.calendarComponent, value: count, to: startDate) else {
+        guard let adjustedDate = calendar.date(byAdding: unit.calendarComponent, value: count, to: currentDate) else {
             DDLogError("[Stats] Couldn't do basic math on Calendars in Stats. Returning original value.")
-            return startDate
+            return currentDate
         }
 
         switch unit {
@@ -81,7 +106,7 @@ class StatsPeriodHelper {
 
         case .week:
 
-            // The hours component here is because the `dateInterval` returnd by Calendar is a closed range
+            // The hours component here is because the `dateInterval` returned by Calendar is a closed range
             // — so the "end" of a specific week is also simultenously a 'start' of the next one.
             // This causes problem when calling this math on dates that _already are_ an end/start of a week.
             // This doesn't work for our calculations, so we force it to rollover using this hack.
@@ -89,34 +114,25 @@ class StatsPeriodHelper {
             // I spend like 10h on this ~50 LoC method. Beware.)
             let components = DateComponents(day: 7 * count, hour: -12)
 
-            guard let weekAdjusted = calendar.date(byAdding: components, to: startDate.normalizedDate()) else {
+            guard let weekAdjusted = calendar.date(byAdding: components, to: currentDate.normalizedDate()) else {
                 DDLogError("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
-                return startDate
+                return currentDate
             }
-
-            let endOfAdjustedWeek = calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end
-
-            return endOfAdjustedWeek?.normalizedDate()
+            return calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end.normalizedDate()
 
         case .month:
-            guard let maxComponent = calendar.range(of: .day, in: .month, for: adjustedDate)?.max() else {
+            guard let endDate = adjustedDate.lastDayOfTheMonth(in: calendar) else {
                 DDLogError("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
-                return startDate
+                return currentDate
             }
-
-            return calendar.date(bySetting: .day, value: maxComponent, of: adjustedDate)?.normalizedDate()
+            return endDate.normalizedDate()
 
         case .year:
-            guard
-                let maxMonth = calendar.range(of: .month, in: .year, for: adjustedDate)?.max(),
-                let adjustedMonthDate = calendar.date(bySetting: .month, value: maxMonth, of: adjustedDate),
-                let maxDay = calendar.range(of: .day, in: .month, for: adjustedMonthDate)?.max() else {
-                    DDLogError("[Stats] Couldn't determine number of months in a given year, or days in a given monthin Stats. Returning original value.")
-                    return startDate
+            guard let endDate = adjustedDate.lastDayOfTheYear(in: calendar) else {
+                DDLogError("[Stats] Couldn't determine number of months in a given year, or days in a given monthin Stats. Returning original value.")
+                return currentDate
             }
-            let adjustedDayDate = calendar.date(bySetting: .day, value: maxDay, of: adjustedMonthDate)
-
-            return adjustedDayDate?.normalizedDate()
+            return endDate.normalizedDate()
         }
     }
 
@@ -140,5 +156,52 @@ class StatsPeriodHelper {
 
     func yearFromDate(_ date: Date) -> Int {
         return calendar.component(.year, from: date)
+    }
+}
+
+private extension Date {
+    func adjusted(for period: StatsPeriodUnit, in calendar: Calendar, value: Int) -> Date {
+        guard let adjustedDate = calendar.date(byAdding: period.calendarComponent, value: value, to: self) else {
+            DDLogError("[Stats] Couldn't do basic math on Calendars in Stats. Returning original value.")
+            return self
+        }
+        return adjustedDate
+    }
+
+    func lastDayOfTheWeek(in calendar: Calendar, with offset: Int) -> Date? {
+        // The hours component here is because the `dateInterval` returnd by Calendar is a closed range
+        // — so the "end" of a specific week is also simultenously a 'start' of the next one.
+        // This causes problem when calling this math on dates that _already are_ an end/start of a week.
+        // This doesn't work for our calculations, so we force it to rollover using this hack.
+        // (I *think* that's what's happening here. Doing Calendar math on this method has broken my brain.
+        // I spend like 10h on this ~50 LoC method. Beware.)
+        let components = DateComponents(day: 7 * offset, hour: -12)
+
+        guard let weekAdjusted = calendar.date(byAdding: components, to: normalizedDate()),
+        let endOfAdjustedWeek = calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end else {
+            DDLogError("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
+            return nil
+        }
+        return endOfAdjustedWeek
+    }
+
+    func lastDayOfTheMonth(in calendar: Calendar) -> Date? {
+        guard let maxComponent = calendar.range(of: .day, in: .month, for: self)?.max() else {
+            DDLogError("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
+            return nil
+        }
+        return calendar.date(bySetting: .day, value: maxComponent, of: self)?.normalizedDate()
+    }
+
+    func lastDayOfTheYear(in calendar: Calendar) -> Date? {
+        guard
+            let maxMonth = calendar.range(of: .month, in: .year, for: self)?.max(),
+            let adjustedMonthDate = calendar.date(bySetting: .month, value: maxMonth, of: self),
+            let maxDay = calendar.range(of: .day, in: .month, for: adjustedMonthDate)?.max() else {
+                DDLogError("[Stats] Couldn't determine number of months in a given year, or days in a given monthin Stats. Returning original value.")
+                return nil
+        }
+        let adjustedDayDate = calendar.date(bySetting: .day, value: maxDay, of: adjustedMonthDate)
+        return adjustedDayDate?.normalizedDate()
     }
 }

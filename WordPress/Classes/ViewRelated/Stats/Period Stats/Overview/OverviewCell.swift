@@ -8,8 +8,16 @@ struct OverviewTabData: FilterTabBarItem {
     var differencePercent: Int
     var date: Date?
     var period: StatsPeriodUnit?
+    var analyticsStat: WPAnalyticsStat?
 
-    init(tabTitle: String, tabData: Int, tabDataStub: String? = nil, difference: Int, differencePercent: Int, date: Date? = nil, period: StatsPeriodUnit? = nil) {
+    init(tabTitle: String,
+         tabData: Int,
+         tabDataStub: String? = nil,
+         difference: Int,
+         differencePercent: Int,
+         date: Date? = nil,
+         period: StatsPeriodUnit? = nil,
+         analyticsStat: WPAnalyticsStat? = nil) {
         self.tabTitle = tabTitle
         self.tabData = tabData
         self.tabDataStub = tabDataStub
@@ -17,13 +25,14 @@ struct OverviewTabData: FilterTabBarItem {
         self.differencePercent = differencePercent
         self.date = date
         self.period = period
+        self.analyticsStat = analyticsStat
     }
 
     var attributedTitle: NSAttributedString? {
 
         let attributedTitle = NSMutableAttributedString(string: tabTitle.localizedUppercase)
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
-                                       range: NSMakeRange(0, attributedTitle.string.count))
+                                      range: NSMakeRange(0, attributedTitle.string.count))
 
         let dataString: String = {
             if let tabDataStub = tabDataStub {
@@ -34,7 +43,7 @@ struct OverviewTabData: FilterTabBarItem {
 
         let attributedData = NSMutableAttributedString(string: dataString)
         attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
-                                       range: NSMakeRange(0, attributedData.string.count))
+                                     range: NSMakeRange(0, attributedData.string.count))
 
         attributedTitle.append(NSAttributedString(string: "\n"))
         attributedTitle.append(attributedData)
@@ -54,7 +63,7 @@ struct OverviewTabData: FilterTabBarItem {
         if let date = date,
             let period = period,
             StatsPeriodHelper().dateAvailableAfterDate(date, period: period) == false {
-            return WPStyleGuide.grey()
+            return .neutral(shade: .shade40)
         }
 
         return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
@@ -158,6 +167,10 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        if let event = tabsData[filterTabBar.selectedIndex].analyticsStat {
+            captureAnalyticsEvent(event)
+        }
+
         configureChartView()
         updateLabels()
     }
@@ -179,8 +192,11 @@ private extension OverviewCell {
             return
         }
 
-        let configuration = StatsBarChartConfiguration(data: chartData[filterSelectedIndex], styling: chartStyling[filterSelectedIndex], analyticsGranularity: period?.analyticsGranularity, delegate: statsBarChartViewDelegate, indexToHighlight: chartHighlightIndex)
-        let chartView = StatsBarChartView(configuration: configuration)
+        let configuration = StatsBarChartConfiguration(data: chartData[filterSelectedIndex],
+                                                       styling: chartStyling[filterSelectedIndex],
+                                                       analyticsGranularity: period?.analyticsGranularity,
+                                                       indexToHighlight: chartHighlightIndex)
+        let chartView = StatsBarChartView(configuration: configuration, delegate: statsBarChartViewDelegate)
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)
@@ -190,7 +206,7 @@ private extension OverviewCell {
             chartView.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor),
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
-        ])
+            ])
     }
 
     func resetChartContainerView() {
@@ -202,6 +218,18 @@ private extension OverviewCell {
     enum ChartBottomMargin {
         static let filterTabBarShown = CGFloat(16)
         static let filterTabBarHidden = CGFloat(24)
+    }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
+        }
     }
 
 }

@@ -270,7 +270,7 @@ public protocol ThemePresenter: class {
 
         title = NSLocalizedString("Themes", comment: "Title of Themes browser page")
 
-        WPStyleGuide.configureColors(for: view, collectionView: collectionView)
+        WPStyleGuide.configureColors(view: view, collectionView: collectionView)
 
         fetchThemes()
         sections = (themeCount == 0 && customThemeCount == 0) ? [.search, .customThemes, .themes] :

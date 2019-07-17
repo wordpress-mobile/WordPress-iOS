@@ -16,7 +16,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private var dataRows = [StatsTwoColumnRowData]()
     private var statSection: StatSection?
-
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - View
 
@@ -30,9 +30,10 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
         removeRowsFromStackView(rowsStackView)
     }
 
-    func configure(dataRows: [StatsTwoColumnRowData], statSection: StatSection) {
+    func configure(dataRows: [StatsTwoColumnRowData], statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.dataRows = dataRows
         self.statSection = statSection
+        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         addRows()
         toggleViewMore()
     }
@@ -71,4 +72,42 @@ private extension TwoColumnCell {
                                                                 bottomSeparatorLineHeightConstraint.constant
     }
 
+    @IBAction func didTapViewMore(_ sender: UIButton) {
+        guard let statSection = statSection else {
+            return
+        }
+
+        captureAnalyticsEventsFor(statSection)
+        siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
+    }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEventsFor(_ statSection: StatSection) {
+        if let event = statSection.analyticsViewMoreEvent {
+            captureAnalyticsEvent(event)
+        }
+    }
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event)
+        }
+    }
+
+}
+
+// MARK: - Analytics support
+
+private extension StatSection {
+    var analyticsViewMoreEvent: WPAnalyticsStat? {
+        switch self {
+        case .insightsAnnualSiteStats:
+            return .statsViewMoreTappedThisYear
+        default:
+            return nil
+        }
+    }
 }

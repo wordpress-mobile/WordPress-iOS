@@ -4,7 +4,7 @@ import MGSwipeTableCell
 final class LikePost: DefaultNotificationActionCommand {
     let likeIcon: UIButton = {
         let title = NSLocalizedString("Like", comment: "Like a post.")
-        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        let button = MGSwipeButton(title: title, backgroundColor: .primary)
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraits.button
         button.accessibilityHint = NSLocalizedString("Likes the post.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Like a Post.")

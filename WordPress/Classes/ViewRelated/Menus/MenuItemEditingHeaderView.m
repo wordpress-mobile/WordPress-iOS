@@ -2,6 +2,7 @@
 #import "MenuItem.h"
 #import "MenuItem+ViewDesign.h"
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 @interface MenuItemEditingHeaderView () <UITextFieldDelegate>
 
@@ -107,7 +108,7 @@
     textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.returnKeyType = UIReturnKeyDone;
-    textField.textColor = [WPStyleGuide darkGrey];
+    textField.textColor = [UIColor murielNeutral70];
     textField.font = [WPStyleGuide regularTextFont];
     textField.backgroundColor = [UIColor clearColor];
     [textField addTarget:self action:@selector(textFieldKeyboardDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -175,7 +176,7 @@
 
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
-    CGContextSetFillColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
+    CGContextSetFillColorWithColor(context, [[UIColor murielPrimary40] CGColor]);
     CGContextBeginPath(context);
     CGContextMoveToPoint(context, rect.size.width, 0);
     CGContextAddLineToPoint(context, 0, 0);

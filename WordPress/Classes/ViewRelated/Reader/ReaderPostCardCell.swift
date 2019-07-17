@@ -197,16 +197,16 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     fileprivate func setupCommentActionButton() {
         let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageWithTintColor(.neutral)?.imageFlippedForRightToLeftLayoutDirection()
         commentActionButton.setImage(image, for: UIControl.State())
         commentActionButton.setImage(highlightImage, for: .highlighted)
     }
 
     fileprivate func setupLikeActionButton() {
-        let image = UIImage(named: "icon-reader-like")
-        let highlightImage = UIImage(named: "icon-reader-like-highlight")
-        let selectedImage = UIImage(named: "icon-reader-liked")
-        likeActionButton.setImage(image, for: UIControl.State())
+        let normalImage = UIImage(named: "icon-reader-like")?.imageWithTintColor(.neutral(shade: .shade30))
+        let highlightImage = UIImage(named: "icon-reader-like")?.imageWithTintColor(.neutral)
+        let selectedImage = UIImage(named: "icon-reader-liked")?.imageWithTintColor(.primary(shade: .shade40))
+        likeActionButton.setImage(normalImage, for: UIControl.State())
         likeActionButton.setImage(highlightImage, for: .highlighted)
         likeActionButton.setImage(selectedImage, for: .selected)
     }
@@ -215,8 +215,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         let size = CGSize(width: 20, height: 20)
         let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
         let icon = Gridicon.iconOfType(.external, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())?.imageFlippedForRightToLeftLayoutDirection()
+        let tintedIcon = icon.imageWithTintColor(.neutral(shade: .shade30))?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightIcon = icon.imageWithTintColor(.neutral)?.imageFlippedForRightToLeftLayoutDirection()
 
         visitButton.setTitle(title, for: UIControl.State())
         visitButton.setImage(tintedIcon, for: .normal)
@@ -230,8 +230,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = Gridicon.iconOfType(.ellipsis, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+        let tintedIcon = icon.imageWithTintColor(.neutral(shade: .shade30))
+        let highlightIcon = icon.imageWithTintColor(.neutral)
 
         menuButton.setImage(tintedIcon, for: .normal)
         menuButton.setImage(highlightIcon, for: .highlighted)
@@ -252,10 +252,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies the default styles to the cell's subviews
     */
     fileprivate func applyStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
-        contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = 1.0
+        borderedView.layer.borderWidth = 0.5
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)

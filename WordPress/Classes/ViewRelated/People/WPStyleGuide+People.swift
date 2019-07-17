@@ -19,9 +19,9 @@ extension WPStyleGuide {
         }
 
         // MARK: Colors
-        public static let superAdminColor = WPStyleGuide.fireOrange()
-        public static let adminColor = WPStyleGuide.darkGrey()
-        public static let editorColor = WPStyleGuide.darkBlue()
-        public static let otherRoleColor = WPStyleGuide.wordPressBlue()
+        public static let superAdminColor = UIColor.accentDark
+        public static let adminColor = UIColor.neutral(shade: .shade70)
+        public static let editorColor = UIColor.primaryDark
+        public static let otherRoleColor: UIColor = .primary
     }
 }

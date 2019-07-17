@@ -57,7 +57,7 @@ class PostPostViewController: UIViewController {
 
         navBar.isTranslucent = true
         navBar.barTintColor = UIColor.clear
-        view.backgroundColor = WPStyleGuide.wordPressBlue()
+        view.backgroundColor = .primary
         navBar.tintColor = UIColor.white
         let clearImage = UIImage(color: UIColor.clear, havingSize: CGSize(width: 1, height: 1))
         navBar.shadowImage = clearImage
@@ -87,7 +87,7 @@ class PostPostViewController: UIViewController {
     }
 
     private func setupActionButtons() {
-        shareButton.secondaryTitleColor = WPStyleGuide.wordPressBlue()
+        shareButton.secondaryTitleColor = .primary
         shareButton.secondaryNormalBackgroundColor = .white
         shareButton.secondaryHighlightBackgroundColor = .white
 

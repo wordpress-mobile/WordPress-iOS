@@ -54,6 +54,7 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel?
+    private var tableHeaderView: SiteStatsTableHeaderView?
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
@@ -81,13 +82,20 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         }
 
         cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
-        viewModel?.statsBarChartViewDelegate = cell
-
+        tableHeaderView = cell
         return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return SiteStatsTableHeaderView.height
+    }
+}
+
+extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        if let intervalDate = viewModel?.chartDate(for: entryIndex) {
+            tableHeaderView?.updateDate(with: intervalDate)
+        }
     }
 }
 
@@ -108,7 +116,9 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self)
+        viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
+        viewModel?.startFetchingOverview()
     }
 
     func addViewModelListeners() {
@@ -123,7 +133,6 @@ private extension SiteStatsPeriodTableViewController {
         viewModel?.overviewStoreStatusOnChange = { [weak self] status in
             guard let self = self,
                 let viewModel = self.viewModel,
-                self.viewIsVisible(),
                 self.changeReceipt != nil else {
                     return
             }
@@ -159,6 +168,7 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
+                CountriesMapRow.self,
                 OverviewRow.self,
                 TableFooterRow.self]
     }
@@ -184,7 +194,8 @@ private extension SiteStatsPeriodTableViewController {
     func refreshData() {
 
         guard let selectedDate = selectedDate,
-            let selectedPeriod = selectedPeriod else {
+            let selectedPeriod = selectedPeriod,
+            viewIsVisible() else {
                 refreshControl?.endRefreshing()
                 return
         }
@@ -320,11 +331,15 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
 // MARK: - SiteStatsTableHeaderDelegate Methods
 
-extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDelegate {
-
+extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDateButtonDelegate {
     func dateChangedTo(_ newDate: Date?) {
         selectedDate = newDate
         refreshData()
     }
 
+    func didTouchHeaderButton(forward: Bool) {
+        if let intervalDate = viewModel?.updateDate(forward: forward) {
+            tableHeaderView?.updateDate(with: intervalDate)
+        }
+    }
 }

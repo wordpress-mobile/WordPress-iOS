@@ -213,7 +213,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         if !isFetchingOverview {
-            DDLogInfo("Stats: All fetching operations finished.")
+            DDLogInfo("Stats: Period Overview fetching operations finished.")
             fetchingOverviewListener?(false, fetchingOverviewHasFailed)
         }
     }
@@ -309,6 +309,7 @@ private extension StatsPeriodStore {
         // make a network call for whatever reason, we still want to load the data we have cached.
 
         guard shouldFetchOverview() else {
+            fetchingOverviewListener?(true, false)
             DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
             return
         }
@@ -329,16 +330,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching summary.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedSummary(summary, error))
-        }
-
-        statsRemote.getData(for: period, endingOn: date, limit: 14) { (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
-            if error != nil {
-                DDLogInfo("Error fetching likes summary: \(String(describing: error?.localizedDescription))")
-            }
-
-            DDLogInfo("Stats: Finished fetching likes summary.")
-
-            self.actionDispatcher.dispatch(PeriodAction.receivedLikesSummary(likes, error))
+            self.fetchSummaryLikesData(date: date, period: period)
         }
 
         statsRemote.getData(for: period, endingOn: date) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
@@ -411,7 +403,7 @@ private extension StatsPeriodStore {
             self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos, error))
         }
 
-        statsRemote.getData(for: period, endingOn: date) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching countries: \(String(describing: error?.localizedDescription))")
             }
@@ -419,6 +411,23 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching countries.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries, error))
+        }
+    }
+
+    func fetchSummaryLikesData(date: Date, period: StatsPeriodUnit) {
+        guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        statsRemote.getData(for: period, endingOn: date, limit: 14) { (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching likes summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats: Finished fetching likes summary.")
+            DispatchQueue.main.async {
+                self.actionDispatcher.dispatch(PeriodAction.receivedLikesSummary(likes, error))
+            }
         }
     }
 

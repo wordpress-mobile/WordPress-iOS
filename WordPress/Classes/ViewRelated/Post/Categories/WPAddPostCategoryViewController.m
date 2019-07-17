@@ -7,6 +7,7 @@
 #import "PostCategoryService.h"
 #import "ContextManager.h"
 #import "BlogService.h"
+#import "WordPress-Swift.h"
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/WPTextFieldTableViewCell.h>
@@ -185,7 +186,7 @@
          
     _createCategoryCell.textField.clearButtonMode = UITextFieldViewModeAlways;
     _createCategoryCell.textField.font = [WPStyleGuide tableviewTextFont];
-    _createCategoryCell.textField.textColor = [WPStyleGuide darkGrey];
+    _createCategoryCell.textField.textColor = [UIColor murielNeutral70];
     _createCategoryCell.textField.text = @"";
     _createCategoryCell.textField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");;
     _createCategoryCell.textField.returnKeyType = UIReturnKeyDone;

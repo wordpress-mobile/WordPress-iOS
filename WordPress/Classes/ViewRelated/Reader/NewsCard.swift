@@ -84,7 +84,7 @@ final class NewsCard: UIViewController {
     }
 
     private func styleBackground() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+        view.backgroundColor = .clear
     }
 
     private func styleBorderedView() {

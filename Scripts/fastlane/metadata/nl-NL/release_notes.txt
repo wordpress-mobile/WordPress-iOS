@@ -1,3 +1,6 @@
-* Verbeteringen aan de blok-editor in zicht. De editor, onder andere opgebouwd uit de Video-, Citaat- en Meer-blokken, zorgt ervoor dat de opmaak van de tekst, zoals vetgedrukt en schuingedrukt behouden blijft wanneer je deze kopieert en plakt. Er is bovendien een nieuw kleurenschema en geneste lijsten zijn nu beschikbaar op de werkbalk. Laat alle nieuwe functies niet naar je hoofd stijgen.
-* Af en toe kon het kiezen van een aanbevolen afbeelding in een bericht problemen opleveren bij een slechte netwerkverbinding. Aangezien we de netwerkomstandigheden niet wereldwijd kunnen veranderen, hebben we de app verbeterd: * Aanbevolen afbeeldingen zouden soepeler moeten werken op alle verbindingen.
-* Stats Insights heeft een verbeterde uitstraling gekregen met lay-outs in twee kolommen voor je actuele en all-time statistieken. Je kunt bovendien meer gegevens bekijken.
+* Stats Insights: bekijk nieuwe lay-outs met twee kolommen voor de statistieken Aantal volgers, Dit jaar en Populairste tijd.
+* Dit jaar in Insights: als je op de optie Meer weergeven klikt, krijg je een overzicht te zien van het totaalaantal berichten, reacties, likes, en meer voor het afgelopen jaar tot dat moment.
+* Statistieken-periodes: We hebben een wereldkaart toegevoegd in het landengedeelte.
+* Een probleem opgelost waarbij bij vernieuwen soms de statistieken werden gewist.
+* Jij maakt jezelf! Ga naar Ik > App-instellingen > App-pictogram om te kiezen uit een reeks pictogrammen voor de app.
+* Het kleurenschema van de app vernieuwd.
