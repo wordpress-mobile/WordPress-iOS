@@ -7,9 +7,6 @@ class GutenbergSettings {
     // MARK: - Enabled Editors Keys
     enum Key {
         static let enabled = "kUserDefaultsGutenbergEditorEnabled"
-        // This key is already used to auto-enable gutenberg upon showing the informative dialog,
-        // so we need to keep it as it is to get the value from previous users and avoid showing the dialog again.
-        static let enabledOnce = "Gutenberg.InformativeDialog"
     }
 
     // MARK: - Internal variables
@@ -32,21 +29,13 @@ class GutenbergSettings {
             return database.bool(forKey: Key.enabled)
         }
         set(enabled) {
-            if enabled {
-                wasGutenbergEnabledOnce = true
-            }
             database.set(enabled, forKey: Key.enabled)
         }
     }
 
     /// True if gutenberg editor has been enabled at least once
     var wasGutenbergEnabledOnce: Bool {
-        get {
-            return isGutenbergEnabled || database.bool(forKey: Key.enabledOnce)
-        }
-        set {
-            database.set(newValue, forKey: Key.enabledOnce)
-        }
+        return database.object(forKey: Key.enabled) != nil
     }
 
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
