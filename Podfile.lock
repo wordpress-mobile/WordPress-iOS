@@ -20,6 +20,11 @@ PODS:
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
+    - Folly/Default (= 2018.10.22.00)
+    - glog
+  - Folly/Default (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
     - glog
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
@@ -161,10 +166,10 @@ PODS:
   - react-native-safe-area (0.5.1):
     - React
   - react-native-video (4.4.1):
-    - React
+    - React-Core
     - react-native-video/Video (= 4.4.1)
   - react-native-video/Video (4.4.1):
-    - React
+    - React-Core
   - React-RCTActionSheet (0.60.0-patched):
     - React-Core (= 0.60.0-patched)
   - React-RCTAnimation (0.60.0-patched):
@@ -430,7 +435,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
-  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
@@ -460,7 +465,7 @@ SPEC CHECKSUMS:
   React-jsinspector: fd89d0a2012fb6d4e452c1caa87f4ed85902e128
   react-native-keyboard-aware-scroll-view: 01c4b2303c4ef1c49c4d239c9c5856f0393104df
   react-native-safe-area: e8230b0017d76c00de6b01e2412dcf86b127c6a3
-  react-native-video: 9aecbfc4628128838187df9d9c9f630670cfb1d1
+  react-native-video: 9de661e89386bb7ab78cc68e61a146cbdf5ad4ad
   React-RCTActionSheet: f6f84ea3818164bba944c67ba6e681d9c4bb4d2e
   React-RCTAnimation: cf0b6eda1308a7b49acf8efa424fe7bfbf8f7854
   React-RCTBlob: 3811d8208edd395946cff234d43cf616d7cbb0c3
