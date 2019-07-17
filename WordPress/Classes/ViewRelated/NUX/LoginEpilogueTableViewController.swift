@@ -138,7 +138,7 @@ extension LoginEpilogueTableViewController {
 
         headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         headerView.textLabel?.textColor = .neutral(shade: .shade50)
-        headerView.contentView.backgroundColor = .neutral(shade: .shade0)
+        headerView.contentView.backgroundColor = .tableBackground
     }
 }
 

@@ -36,7 +36,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     @objc init(blog: Blog) {
         WPMediaCollectionViewCell.appearance().placeholderTintColor = .neutral(shade: .shade5)
         WPMediaCollectionViewCell.appearance().placeholderBackgroundColor = .neutral(shade: .shade70)
-        WPMediaCollectionViewCell.appearance().loadingBackgroundColor = .neutral(shade: .shade0)
+        WPMediaCollectionViewCell.appearance().loadingBackgroundColor = .tableBackground
 
         self.blog = blog
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)

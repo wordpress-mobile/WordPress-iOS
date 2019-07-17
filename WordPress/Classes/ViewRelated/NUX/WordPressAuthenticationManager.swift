@@ -45,7 +45,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 secondaryTitleColor: .text,
                                                 disabledTitleColor: .neutral(shade: .shade20),
                                                 subheadlineColor: .textSubtle,
-                                                viewControllerBackgroundColor: .neutral(shade: .shade0),
+                                                viewControllerBackgroundColor: .tableBackground,
                                                 navBarImage: Gridicon.iconOfType(.mySites),
                                                 prologueBackgroundColor: .primary,
                                                 prologueTitleColor: .textInverted)
