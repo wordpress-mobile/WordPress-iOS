@@ -1,11 +1,13 @@
-import Foundation
+import UIKit
 
-class ActivityListSectionHeaderView: UITableViewHeaderFooterView {
+class PageListSectionHeaderView: UIView {
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separator: UIView!
 
-    static let height: CGFloat = 40
-    static let identifier = "ActivityListSectionHeaderView"
+    func setTitle(_ title: String) {
+        titleLabel.text = title.uppercased(with: .current)
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
