@@ -8,6 +8,7 @@ struct PostEditorAnalyticsSession {
     var started = false
     var currentEditor: Editor
     var hasUnsupportedBlocks = false
+    var unsupportedBlocks: [String] = []
     var outcome: Outcome? = nil
 
     init(editor: Editor, post: AbstractPost) {
@@ -17,9 +18,10 @@ struct PostEditorAnalyticsSession {
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(hasUnsupportedBlocks: Bool) {
+    mutating func start(unsupportedBlocks: [String] = []) {
         assert(!started, "An editor session was attempted to start more than once")
-        self.hasUnsupportedBlocks = hasUnsupportedBlocks
+        self.hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
+        self.unsupportedBlocks = unsupportedBlocks
         WPAppAnalytics.track(.editorSessionStart, withProperties: commonProperties)
         started = true
     }
@@ -50,6 +52,11 @@ struct PostEditorAnalyticsSession {
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
+
+    func track(_ stat: WPAnalyticsStat, with properties: [String: Any], post: AbstractPost) {
+        let finalProperties = properties.merging(commonProperties) { $1 }
+        WPAppAnalytics.track(stat, withProperties: finalProperties, with: post)
+    }
 }
 
 private extension PostEditorAnalyticsSession {
@@ -58,12 +65,16 @@ private extension PostEditorAnalyticsSession {
         static let contentType = "content_type"
         static let editor = "editor"
         static let hasUnsupportedBlocks = "has_unsupported_blocks"
+        static let unsupportedBlocks = "unsupported_blocks"
         static let postType = "post_type"
         static let outcome = "outcome"
         static let sessionId = "session_id"
     }
 
-    var commonProperties: [String: String] {
+    var commonProperties: [String: Any] {
+        let unsupportedBlocksProperty: [String: Any] = hasUnsupportedBlocks ?
+            [Property.unsupportedBlocks: unsupportedBlocks] : [:]
+
         return [
             Property.editor: currentEditor.rawValue,
             Property.contentType: contentType,
@@ -71,7 +82,7 @@ private extension PostEditorAnalyticsSession {
             Property.blogType: blogType,
             Property.sessionId: sessionId,
             Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0"
-        ]
+        ].merging(unsupportedBlocksProperty) { $1 }
     }
 }
 
