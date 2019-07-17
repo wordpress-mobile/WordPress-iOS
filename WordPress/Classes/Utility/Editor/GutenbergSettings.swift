@@ -96,20 +96,20 @@ class GutenbergSettings {
     ///
     func setToRemote() {
         let currentSettings: EditorSettings = isGutenbergEnabled ? .gutenberg : .aztec
-        let allBlogs = getAllBlogs()
-        let delay: TimeInterval = allBlogs.count > 5 ? 0.3 : 0
+        let blogs = getWPComBlogs()
+        let delay: TimeInterval = blogs.count > 5 ? 0.3 : 0
 
         queue.async {
-            allBlogs.forEach({ (blog) in
+            blogs.forEach { (blog) in
                 self.postEditorSettings(currentSettings, to: blog)
                 Thread.sleep(forTimeInterval: delay)
-            })
+            }
         }
     }
 
-    private func getAllBlogs() -> [Blog] {
-        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return blogService.blogsForAllAccounts() as? [Blog] ?? []
+    private func getWPComBlogs() -> Set<Blog> {
+        let defaultAccount = AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount()
+        return defaultAccount?.blogs ?? Set()
     }
 
     private func postEditorSettings(_ settings: EditorSettings, to blog: Blog) {
