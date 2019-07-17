@@ -13,4 +13,8 @@ import Foundation
     @objc var siteTimeZone: TimeZone?
     @objc var oauth2Token: String?
 
+    func timeZoneMatchesDevice() -> Bool {
+        return siteTimeZone == TimeZone.current
+    }
+
 }

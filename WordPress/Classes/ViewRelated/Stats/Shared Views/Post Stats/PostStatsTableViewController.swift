@@ -61,7 +61,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return SiteStatsTableHeaderView.height
+        return SiteStatsTableHeaderView.headerHeight()
     }
 
 }

@@ -117,7 +117,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
                 return 0
         }
 
-        return SiteStatsTableHeaderView.height
+        return SiteStatsTableHeaderView.headerHeight()
     }
 
 }

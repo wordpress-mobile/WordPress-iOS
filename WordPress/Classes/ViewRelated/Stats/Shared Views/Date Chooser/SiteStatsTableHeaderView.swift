@@ -13,6 +13,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     // MARK: - Properties
 
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var timezoneLabel: UILabel!
     @IBOutlet weak var backArrow: UIImageView!
     @IBOutlet weak var forwardArrow: UIImageView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
@@ -20,14 +21,13 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var forwardButton: UIButton!
 
-    static let height: CGFloat = 44
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: SiteStatsTableHeaderDelegate?
     private var date: Date?
     private var period: StatsPeriodUnit?
 
-    // Allow the date bar to only go up to the most recent year available.
-    // Used by Insights 'This Year' details view.
+    // Allow the date bar to only go up to the most recent date available.
+    // Used by Insights 'This Year' details view and Post Stats.
     private var mostRecentDate: Date?
 
     // Limits how far back the date chooser can go.
@@ -38,11 +38,11 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         return -(expectedPeriodCount - 1)
     }
 
-    private lazy var calendar: Calendar = {
-        var cal = Calendar(identifier: .iso8601)
-        cal.timeZone = .autoupdatingCurrent
-        return cal
-    }()
+    // MARK: - Class Methods
+
+    class func headerHeight() -> CGFloat {
+        return SiteStatsInformation.sharedInstance.timeZoneMatchesDevice() ? Heights.default : Heights.withTimezone
+    }
 
     // MARK: - View
 
@@ -71,6 +71,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         self.expectedPeriodCount = expectedPeriodCount
         self.mostRecentDate = mostRecentDate
         dateLabel.text = displayDate()
+        displayTimezone()
         updateButtonStates()
         prepareForVoiceOver()
     }
@@ -104,6 +105,7 @@ private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
         Style.configureLabelAsCellRowTitle(dateLabel)
+        Style.configureLabelAsData(timezoneLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
@@ -127,6 +129,22 @@ private extension SiteStatsTableHeaderView {
 
             return "\(dateFormatter.string(from: weekStart)) – \(dateFormatter.string(from: weekEnd))"
         }
+    }
+
+    func displayTimezone() {
+        guard !SiteStatsInformation.sharedInstance.timeZoneMatchesDevice(),
+        let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone else {
+            timezoneLabel.isHidden = true
+            return
+        }
+
+        let hoursFromUTC = siteTimeZone.secondsFromGMT() / 3600
+        let timezoneString = NSLocalizedString("Site timezone (UTC %@ %@)",
+                                               comment: "Site timezone offset from UTC. The first %@ is plus or minus. The second %@ is the number of hours. Example: `Site timezone (UTC + 10)`.")
+
+
+        timezoneLabel.text = .localizedStringWithFormat(timezoneString, hoursFromUTC < 0 ? "-" : "+", String(abs(hoursFromUTC)))
+        timezoneLabel.isHidden = false
     }
 
     func reloadView() {
@@ -198,6 +216,13 @@ private extension SiteStatsTableHeaderView {
         } else {
             WPAppAnalytics.track(event, withProperties: properties)
         }
+    }
+
+    // MARK: - Header Heights
+
+    private struct Heights {
+        static let `default`: CGFloat = 44
+        static let withTimezone: CGFloat = 68
     }
 }
 
