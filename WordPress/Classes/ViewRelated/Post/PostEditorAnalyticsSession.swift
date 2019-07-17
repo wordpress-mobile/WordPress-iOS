@@ -52,11 +52,6 @@ struct PostEditorAnalyticsSession {
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
-
-    func track(_ stat: WPAnalyticsStat, with properties: [String: Any], post: AbstractPost) {
-        let finalProperties = properties.merging(commonProperties) { $1 }
-        WPAppAnalytics.track(stat, withProperties: finalProperties, with: post)
-    }
 }
 
 private extension PostEditorAnalyticsSession {

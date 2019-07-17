@@ -181,7 +181,7 @@ extension PostEditor where Self: UIViewController {
             properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo()
         }
 
-        editorSession.track(stat, with: properties, post: post)
+        WPAppAnalytics.track(stat, withProperties: properties, with: post)
     }
 
     // MARK: - Close button handling
@@ -211,7 +211,7 @@ extension PostEditor where Self: UIViewController {
             return postDeleted
         }
 
-        editorSession.track(.editorDiscardedChanges, with: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], post: post)
+        WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
         let shouldCreateDummyRevision: Bool
 
@@ -383,7 +383,7 @@ extension PostEditor where Self: UIViewController {
     func dismissOrPopView(didSave: Bool = true) {
         stopEditing()
 
-        editorSession.track(.editorDiscardedChanges, with: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], post: post)
+        WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
         if let onClose = onClose {
             onClose(didSave, false)
