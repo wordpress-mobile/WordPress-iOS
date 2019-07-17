@@ -330,16 +330,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching summary.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedSummary(summary, error))
-        }
-
-        statsRemote.getData(for: period, endingOn: date, limit: 14) { (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
-            if error != nil {
-                DDLogInfo("Error fetching likes summary: \(String(describing: error?.localizedDescription))")
-            }
-
-            DDLogInfo("Stats: Finished fetching likes summary.")
-
-            self.actionDispatcher.dispatch(PeriodAction.receivedLikesSummary(likes, error))
+            self.fetchSummaryLikesData(date: date, period: period)
         }
 
         statsRemote.getData(for: period, endingOn: date) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
@@ -420,6 +411,23 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching countries.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries, error))
+        }
+    }
+
+    func fetchSummaryLikesData(date: Date, period: StatsPeriodUnit) {
+        guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        statsRemote.getData(for: period, endingOn: date, limit: 14) { (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching likes summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats: Finished fetching likes summary.")
+            DispatchQueue.main.async {
+                self.actionDispatcher.dispatch(PeriodAction.receivedLikesSummary(likes, error))
+            }
         }
     }
 

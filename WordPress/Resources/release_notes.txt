@@ -1,11 +1,33 @@
+12.9
+-----
+* Offline support: Create Post is now available from empty results view in offline mode.
+* Post Preview: Displaying preview generation status in navigation bar instead of a  
+                blocking spinner. 
+* Block editor: Tapping on an empty editor area will create a new paragraph block
+* Block editor: Fix content loss issue when loading unsupported blocks containing inner blocks.
+* Block editor: Adding a block from the Post Title now inserts the block at the top of the Post.
+* Post List: Adds the option to display posts in a compact way.
+* Post List: Display "ghost post card" when loading posts.
+* Post List: Update card design and do not display author name when "Me" is selected.
+* Site Setup: Fixes an issue that was causing new site previews to show behind the "Done" button.
+* Site Setup: It's now more clear how to add a site icon when creating a new WordPress.com site.
+
 12.8
 -----
-* Stats Insights: check out new two-column layouts for Follower Totals, This Year, and Most Popular Time stats.
-* This Year Insights: see a snapshot of total posts, comments, likes, and more for the year-to-date when you click on the View More option.
-* Stats Periods: We added a world map in the countries section.
-* Fixed an issue where refreshing sometimes cleared stats.
-* You do you! Go to Me > App Settings > App Icon to choose from a series of app icons.
-* Refreshed the app’s color scheme.
+* Stats Insights: New two-column layout for Follower Totals stats.
+* Stats Periods: Countries Map added in countries section.
+* Updated copy for preview unavailable screen
+* Stats Insights: New two-column layout for This Year stats.
+* Stats Insights: added details option for This Year stats.
+* Stats Insights: New two-column layout for Most Popular Time stats.
+* Stats: modified appearance of empty charts.
+* Stats Insights: Fixed issue where refreshing would sometimes clear the stats.
+* Stats overview chart: Fixed issue with legend location on iOS 11.
+* Stats Periods: Fixed crash when the Countries map displayed one country only
+* Added a selection of user customizable app icons. Change it via Me > App Settings > App Icon.
+* Update the app's colors using the Muriel color palette.
+* Stats Periods detail views: Fixed an issue where rotation would truncate data.
+* Stats Periods: Fixed an issue when a period interval was selected.
 
 12.7
 -----

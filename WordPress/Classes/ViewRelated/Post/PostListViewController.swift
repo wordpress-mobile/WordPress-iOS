@@ -233,6 +233,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
+
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     override func configureAuthorFilter() {

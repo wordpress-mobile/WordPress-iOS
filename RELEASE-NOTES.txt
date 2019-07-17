@@ -1,8 +1,15 @@
+13.0
+-----
+ 
 12.9
 -----
 * Offline support: Create Post is now available from empty results view in offline mode.
 * Post Preview: Displaying preview generation status in navigation bar instead of a  
                 blocking spinner. 
+* Block editor: Tapping on an empty editor area will create a new paragraph block
+* Block editor: Fix content loss issue when loading unsupported blocks containing inner blocks.
+* Block editor: Adding a block from the Post Title now inserts the block at the top of the Post.
+* Stats Insights: Fixed issue that prevented some stats from showing for low volume sites.
 
 12.8
 -----
@@ -17,8 +24,9 @@
 * Stats overview chart: Fixed issue with legend location on iOS 11.
 * Stats Periods: Fixed crash when the Countries map displayed one country only
 * Added a selection of user customizable app icons. Change it via Me > App Settings > App Icon.
-* Update the app's colors using the Muriel color pallete.
+* Update the app's colors using the Muriel color palette.
 * Stats Periods detail views: Fixed an issue where rotation would truncate data.
+* Stats Periods: Fixed an issue when a period interval was selected.
 
 12.7
 -----

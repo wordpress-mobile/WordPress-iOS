@@ -1,3 +1,6 @@
-* Ehi, abbiamo migliorato l'editor dei blocchi! Hai a disposizione i blocchi Video, Citazione e Leggi tutto, l'editor mantiene lo stile del testo grassetto e corsivo quando copi e incolli, c'è uno schema colori completamente nuovo e gli elenchi nidificati ora sono disponibili sulla barra degli strumenti. Non lasciare che tutte queste nuove possibilità ti diano alla testa.
-* Qualche volta, configurare un'immagine in evidenza su un articolo potrebbe essere problematico quando le condizioni delle rete sono scarse. Siccome non possiamo risolvere i problemi delle reti di tutto il mondo, abbiamo corretto l'app: * Le immagini in evidenza dovrebbero funzionare in modo più fluido in tutte le situazioni.
-* La panoramica delle statistiche ha un aspetto migliore con i layout a due colonne per le statistiche di oggi e di tutte le statistiche e consente di vedere più dati.
+* Panoramica delle statistiche: controlla i nuovi layout a due colonne per le statistiche su Follower totali, Quest'anno e Ora più popolare.
+* Panoramica di Quest'anno: visualizza un'istantanea dei Mi piace, dei commenti, degli articoli totali e molto altro per l'anno in corso facendo clic sull'opzione Visualizza altro.
+* Periodi delle statistiche: abbiamo aggiunto una mappa del mondo nella sezione dei Paesi.
+* È stato risolto un problema a causa del quale a volte l'aggiornamento comportava la cancellazione delle statistiche.
+* Creala come vuoi! Vai a Io > Impostazioni app > Icona app per scegliere tra una serie di icone di app.
+* È stato aggiornato lo schema colori dell'app.

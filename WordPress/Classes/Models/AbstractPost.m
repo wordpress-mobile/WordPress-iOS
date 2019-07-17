@@ -450,6 +450,11 @@
 
 - (BOOL)isDraft
 {
+    return [self.status isEqualToString:PostStatusDraft];
+}
+
+- (BOOL)originalIsDraft
+{
     if ([self.status isEqualToString:PostStatusDraft]) {
         return YES;
     } else if (self.isRevision && [self.original.status isEqualToString:PostStatusDraft]) {
@@ -466,7 +471,7 @@
 
 - (BOOL)shouldPublishImmediately
 {
-    return [self isDraft] && [self dateCreatedIsNilOrEqualToDateModified];
+    return [self originalIsDraft] && [self dateCreatedIsNilOrEqualToDateModified];
 }
 
 - (NSString *)authorNameForDisplay
@@ -506,7 +511,7 @@
 
 - (NSString *)dateStringForDisplay
 {
-    if ([self isDraft] || [self.status isEqualToString:PostStatusPending]) {
+    if ([self originalIsDraft] || [self.status isEqualToString:PostStatusPending]) {
         return [[self dateModified] mediumString];
     } else if ([self isScheduled]) {
         return [[self dateCreated] mediumStringWithTime];

@@ -282,7 +282,6 @@ static NSInteger HideSearchMinSites = 3;
     NSUInteger count = self.dataSource.allBlogsCount;
     
     NSString *singularTitle = NSLocalizedString(@"You have 1 hidden WordPress site.", @"Message informing the user that all of their sites are currently hidden (singular)");
-    NSString *singularSubtitle = NSLocalizedString(@"To manage it here, set it to visible.", @"Prompt asking user to make sites visible in order to use them in the app (singular)");
     
     NSString *multipleTitle = [NSString stringWithFormat:NSLocalizedString(@"You have %lu hidden WordPress sites.", @"Message informing the user that all of their sites are currently hidden (plural)"), count];
     NSString *multipleSubtitle = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");

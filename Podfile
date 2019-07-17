@@ -13,13 +13,12 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    # pod 'WordPressShared', '~> 1.8.4'
+    pod 'WordPressShared', '~> 1.8.5'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    pod 'WordPressShared', :git => 'https://github.com/leandroalonso/WordPress-iOS-Shared.git', :branch => 'feature/wpios11646_post_list_toggle_events'
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -44,9 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.2.0'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/fix-publishing-private-xmlrpc-posts'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '2fcc2606d8f31d0135a97cd5ed949051ee91963b'
+    pod 'WordPressKit', '~> 4.2.1-beta.1'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'fix/stats_insights_parsing'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ef4f184f5a33ef628c053892e8f706046191d66c'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -91,10 +90,29 @@ end
 def gutenberg_dependencies(options)
     dependencies = [
         'React',
+        'React-Core',
+        'React-DevSupport',
+        'React-RCTActionSheet',
+        'React-RCTAnimation',
+        'React-RCTBlob',
+        'React-RCTImage',
+        'React-RCTLinking',
+        'React-RCTNetwork',
+        'React-RCTSettings',
+        'React-RCTText',
+        'React-RCTVibration',
+        'React-RCTWebSocket',
+        'React-cxxreact',
+        'React-jsinspector',
+        'React-jsi',
+        'React-jsiexecutor',
         'yoga',
         'Folly',
+        'glog',
+        'react-native-keyboard-aware-scroll-view',
         'react-native-safe-area',
         'react-native-video',
+        'RNSVG'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -121,10 +139,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.8.0'
-
-    pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
-    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
+    gutenberg :tag => 'v1.9.0'
 
     ## Third party libraries
     ## =====================
