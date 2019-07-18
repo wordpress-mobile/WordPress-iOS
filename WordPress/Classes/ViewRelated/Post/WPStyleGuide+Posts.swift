@@ -20,8 +20,8 @@ extension WPStyleGuide {
     static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
 
     class func applyPostCardStyle(_ cell: UITableViewCell) {
-        cell.backgroundColor = .neutral(shade: .shade0)
-        cell.contentView.backgroundColor = .neutral(shade: .shade0)
+        cell.backgroundColor = .tableBackground
+        cell.contentView.backgroundColor = .tableBackground
     }
 
     class func applyPostTitleStyle(_ label: UILabel) {
