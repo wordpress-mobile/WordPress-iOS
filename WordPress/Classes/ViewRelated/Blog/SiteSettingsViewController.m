@@ -826,6 +826,22 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return headingTitle;
 }
 
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    NSInteger settingsSection = [self.tableSections[section] integerValue];
+    UIView *footerView = nil;
+    switch (settingsSection) {
+        case SiteSettingsSectionEditor:
+            footerView = [self getEditorSettingsSectionFooterView];
+            break;
+
+        case SiteSettingsSectionTraffic:
+            footerView = [self getTrafficSettingsSectionFooterView];
+            break;
+    }
+    return footerView;
+}
+
 - (void)showPrivacySelector
 {
     NSArray *values = [BlogSiteVisibilityHelper siteVisibilityValuesForBlog:self.blog];
