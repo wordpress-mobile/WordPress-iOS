@@ -134,14 +134,17 @@ private extension SiteStatsTableHeaderView {
         guard !SiteStatsInformation.sharedInstance.timeZoneMatchesDevice(),
         let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone else {
             timezoneLabel.isHidden = true
+            timezoneLabel.accessibilityLabel = nil
             return
         }
 
         let hoursFromUTC = siteTimeZone.secondsFromGMT() / 3600
+        let absHours = String(abs(hoursFromUTC))
         let timezoneString = NSLocalizedString("Site timezone (UTC %@ %@)",
                                                comment: "Site timezone offset from UTC. The first %@ is plus or minus. The second %@ is the number of hours. Example: `Site timezone (UTC + 10)`.")
 
-        timezoneLabel.text = .localizedStringWithFormat(timezoneString, hoursFromUTC < 0 ? "-" : "+", String(abs(hoursFromUTC)))
+        timezoneLabel.text = .localizedStringWithFormat(timezoneString, hoursFromUTC < 0 ? "-" : "+", absHours)
+        timezoneLabel.accessibilityLabel = .localizedStringWithFormat(timezoneString, hoursFromUTC < 0 ? "minus" : "plus", absHours)
         timezoneLabel.isHidden = false
     }
 
