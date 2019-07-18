@@ -11,40 +11,36 @@ class SiteStatsInsightsViewModel: Observable {
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
-    private let insightsStore: StatsInsightsStore
-    private var insightsReceipt: Receipt
+    private let insightsStore = StoreContainer.shared.statsInsights
+    private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
 
-    private let periodStore: StatsPeriodStore
     private var periodReceipt: Receipt?
-    private var periodChangeReceipt: Receipt?
 
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Constructor
 
     init(insightsToShow: [InsightType],
-         insightsDelegate: SiteStatsInsightsDelegate,
-         insightsStore: StatsInsightsStore = StoreContainer.shared.statsInsights,
-         periodStore: StatsPeriodStore = StoreContainer.shared.statsPeriod) {
+         insightsDelegate: SiteStatsInsightsDelegate) {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
-        self.insightsStore = insightsStore
-        self.periodStore = periodStore
 
-        insightsReceipt = insightsStore.query(.insights)
-        insightsStore.actionDispatcher.dispatch(InsightAction.refreshInsights)
         insightsChangeReceipt = insightsStore.onChange { [weak self] in
-            if let lastPostID = insightsStore.getLastPostInsight()?.postID {
-                self?.fetchStatsForInsightsLatestPost(postID: lastPostID)
-            } else {
-                self?.emitChange()
-            }
-        }
-
-        periodChangeReceipt = periodStore.onChange { [weak self] in
             self?.emitChange()
+        }
+    }
+
+    func fetchInsights() {
+        insightsReceipt = insightsStore.query(.insights)
+    }
+
+    // MARK: - Refresh Data
+
+    func refreshInsights() {
+        if !insightsStore.isFetchingOverview {
+            ActionDispatcher.dispatch(InsightAction.refreshInsights)
         }
     }
 
@@ -59,14 +55,12 @@ class SiteStatsInsightsViewModel: Observable {
             return ImmuTable.Empty
         }
 
-        let postId = insightsStore.getLastPostInsight()?.postID
-
         insightsToShow.forEach { insightType in
             switch insightType {
             case .latestPostSummary:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
                 tableRows.append(LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
-                                                      chartData: periodStore.getPostStats(for: postId),
+                                                      chartData: insightsStore.getPostStats(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
@@ -125,12 +119,24 @@ class SiteStatsInsightsViewModel: Observable {
             ])
     }
 
-    // MARK: - Refresh Data
+    func isFetchingOverview() -> Bool {
+        return insightsStore.isFetchingOverview
+    }
 
-    func refreshInsights() {
-        if !insightsStore.isFetchingOverview {
-            ActionDispatcher.dispatch(InsightAction.refreshInsights)
-        }
+    func fetchingFailed() -> Bool {
+        return insightsStore.fetchingFailed(for: .insights)
+    }
+
+    func containsCachedData() -> Bool {
+        return insightsStore.containsCachedData
+    }
+
+    func yearlyPostingActivity(from date: Date = Date()) -> [[PostingStreakEvent]] {
+        return insightsStore.getYearlyPostingActivityFrom(date: date)
+    }
+
+    func annualInsightsYear() -> Int? {
+        return insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear
     }
 }
 
@@ -448,9 +454,5 @@ private extension SiteStatsInsightsViewModel {
                        dataSubtitle: followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
-    }
-
-    func fetchStatsForInsightsLatestPost(postID: Int) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 }
