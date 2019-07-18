@@ -115,7 +115,6 @@ private extension SiteStatsTableHeaderView {
         }
 
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = SiteStatsInformation.sharedInstance.siteTimeZone
         dateFormatter.setLocalizedDateFormatFromTemplate(period.dateFormatTemplate)
 
         switch period {
@@ -141,7 +140,6 @@ private extension SiteStatsTableHeaderView {
         let hoursFromUTC = siteTimeZone.secondsFromGMT() / 3600
         let timezoneString = NSLocalizedString("Site timezone (UTC %@ %@)",
                                                comment: "Site timezone offset from UTC. The first %@ is plus or minus. The second %@ is the number of hours. Example: `Site timezone (UTC + 10)`.")
-
 
         timezoneLabel.text = .localizedStringWithFormat(timezoneString, hoursFromUTC < 0 ? "-" : "+", String(abs(hoursFromUTC)))
         timezoneLabel.isHidden = false
@@ -233,7 +231,7 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
         }
 
         let periodShift = -((entryCount - 1) - entryIndex)
-        let fromDate = mostRecentDate?.normalizedDate() ?? StatsDataHelper.currentDateForSite().normalizedForSite()
+        let fromDate = mostRecentDate?.normalizedDate() ?? StatsDataHelper.currentDateForSite().normalizedDate()
         self.date = StatsPeriodHelper().calculateEndDate(from: fromDate, offsetBy: periodShift, unit: period)
 
         delegate?.dateChangedTo(self.date)

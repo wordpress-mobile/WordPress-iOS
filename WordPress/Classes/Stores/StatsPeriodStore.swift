@@ -73,7 +73,7 @@ enum PeriodQuery {
         case .allPublished(let date, _):
             return date
         default:
-            return StatsDataHelper.currentDateForSite()
+            return StatsDataHelper.currentDateForSite().normalizedDate()
         }
     }
 

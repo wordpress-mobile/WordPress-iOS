@@ -141,7 +141,8 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             }
-            periodTableViewController.selectedDate = periodDate ?? StatsDataHelper.currentDateForSite()
+
+            periodTableViewController.selectedDate = periodDate ?? StatsDataHelper.currentDateForSite().normalizedDate()
             let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
             periodTableViewController.selectedPeriod = selectedPeriod
         }
