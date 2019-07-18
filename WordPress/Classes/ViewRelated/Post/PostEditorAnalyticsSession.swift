@@ -8,7 +8,6 @@ struct PostEditorAnalyticsSession {
     var started = false
     var currentEditor: Editor
     var hasUnsupportedBlocks = false
-    var unsupportedBlocks: [String] = []
     var outcome: Outcome? = nil
 
     init(editor: Editor, post: AbstractPost) {
@@ -20,10 +19,17 @@ struct PostEditorAnalyticsSession {
 
     mutating func start(unsupportedBlocks: [String] = []) {
         assert(!started, "An editor session was attempted to start more than once")
-        self.hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
-        self.unsupportedBlocks = unsupportedBlocks
-        WPAppAnalytics.track(.editorSessionStart, withProperties: commonProperties)
+        hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
+
+        let properties = startEventProperties(with: unsupportedBlocks)
+
+        WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
+    }
+
+    private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
+        let unsupportedBlocksProperty: [String: Any] = hasUnsupportedBlocks ? [Property.unsupportedBlocks: unsupportedBlocks] : [:]
+        return unsupportedBlocksProperty.merging(commonProperties, uniquingKeysWith: { $1 })
     }
 
     mutating func `switch`(editor: Editor) {
@@ -67,9 +73,6 @@ private extension PostEditorAnalyticsSession {
     }
 
     var commonProperties: [String: Any] {
-        let unsupportedBlocksProperty: [String: Any] = hasUnsupportedBlocks ?
-            [Property.unsupportedBlocks: unsupportedBlocks] : [:]
-
         return [
             Property.editor: currentEditor.rawValue,
             Property.contentType: contentType,
@@ -77,7 +80,7 @@ private extension PostEditorAnalyticsSession {
             Property.blogType: blogType,
             Property.sessionId: sessionId,
             Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0"
-        ].merging(unsupportedBlocksProperty) { $1 }
+        ]
     }
 }
 

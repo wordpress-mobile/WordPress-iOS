@@ -88,8 +88,8 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         let tracked = TestAnalyticsTracker.tracked.last
 
         XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionSwitchEditor)
-        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), unsupportedBlocks)
         XCTAssertEqual(tracked?.value(for: "has_unsupported_blocks"), "1")
+        XCTAssertNil(tracked?.value(for: "unsupported_blocks"))
     }
 
     func testTrackUnsupportedBlocksOnEnd() {
@@ -102,8 +102,8 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         let tracked = TestAnalyticsTracker.tracked.last
 
         XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionEnd)
-        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), unsupportedBlocks)
         XCTAssertEqual(tracked?.value(for: "has_unsupported_blocks"), "1")
+        XCTAssertNil(tracked?.value(for: "unsupported_blocks"))
     }
 }
 
