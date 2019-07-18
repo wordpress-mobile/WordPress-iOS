@@ -72,7 +72,7 @@ private extension PostEditorAnalyticsSession {
         static let sessionId = "session_id"
     }
 
-    var commonProperties: [String: Any] {
+    var commonProperties: [String: String] {
         return [
             Property.editor: currentEditor.rawValue,
             Property.contentType: contentType,
