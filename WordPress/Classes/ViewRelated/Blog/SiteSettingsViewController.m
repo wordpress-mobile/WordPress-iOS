@@ -1156,11 +1156,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     }
 }
 
-- (BOOL)isTrafficSettingsSection:(NSInteger)section {
-    NSInteger settingsSection = [self.tableSections[section] integerValue];
-    return settingsSection == SiteSettingsSectionTraffic;
-}
-
 #pragma mark - Custom methods
 
 - (IBAction)refreshTriggered:(id)sender
