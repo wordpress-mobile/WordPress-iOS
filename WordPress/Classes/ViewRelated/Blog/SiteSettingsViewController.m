@@ -37,7 +37,8 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
 };
 
 NS_ENUM(NSInteger, SiteSettingsWriting) {
-    SiteSettingsWritingDefaultCategory = 0,
+    SiteSettingsWritingEditorSelector = 0,
+    SiteSettingsWritingDefaultCategory,
     SiteSettingsWritingTags,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
@@ -86,6 +87,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
+@property (nonatomic, strong) SwitchTableViewCell  *editorSelectorCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *tagsCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
@@ -306,6 +308,18 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return nil;
 }
 
+- (SwitchTableViewCell *)editorSelectorCell
+{
+    if (!_editorSelectorCell) {
+        _editorSelectorCell = [SwitchTableViewCell new];
+        _editorSelectorCell.name = NSLocalizedString(@"Use block editor", @"Option to enable the block editor for new posts");
+        _editorSelectorCell.onChange = ^(BOOL value){
+            [GutenbergSettings toggleGutenberg];
+        };
+    }
+    return _editorSelectorCell;
+}
+
 - (SettingTableViewCell *)defaultCategoryCell
 {
     if (_defaultCategoryCell){
@@ -450,6 +464,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _jetpackConnectionCell;
 }
 
+- (void)configureEditorSelectorCell
+{
+    [self.editorSelectorCell setOn:[GutenbergSettings isGutenbergEnabled]];
+}
+
 - (void)configureDefaultCategoryCell
 {
     PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -470,6 +489,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
     switch (row) {
+        case (SiteSettingsWritingEditorSelector):
+            [self configureEditorSelectorCell];
+            return self.editorSelectorCell;
+
         case (SiteSettingsWritingDefaultCategory):
             [self configureDefaultCategoryCell];
             return self.defaultCategoryCell;

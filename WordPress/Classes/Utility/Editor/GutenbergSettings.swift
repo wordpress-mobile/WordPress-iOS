@@ -85,4 +85,9 @@ class GutenbergSettingsBridge: NSObject {
     static func isGutenbergEnabled() -> Bool {
         return GutenbergSettings().isGutenbergEnabled
     }
+
+    @objc
+    static func toggleGutenberg() {
+        GutenbergSettings().toggleGutenberg()
+    }
 }
