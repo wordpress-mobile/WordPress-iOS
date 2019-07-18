@@ -6,7 +6,10 @@ import WordPressAuthenticator
 import WordPressComStatsiOS
 import WordPressShared
 import AlamofireNetworkActivityIndicator
+
+#if !XCODE11
 import ZendeskCoreSDK
+#endif
 
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -204,8 +207,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
 #if DEBUG
         KeychainTools.processKeychainDebugArguments()
-        CoreLogger.enabled = true
-        CoreLogger.logLevel = .debug
+        #if !XCODE11
+            CoreLogger.enabled = true
+            CoreLogger.logLevel = .debug
+        #endif
 #endif
 
         ZendeskUtils.setup()
@@ -810,7 +815,7 @@ extension WordPressAppDelegate {
 
 
         let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
-        cellAppearance.loadingBackgroundColor = .neutral(shade: .shade0)
+        cellAppearance.loadingBackgroundColor = .tableBackground
         cellAppearance.placeholderBackgroundColor = .neutral(shade: .shade70)
         cellAppearance.placeholderTintColor = .neutral(shade: .shade5)
         cellAppearance.setCellTintColor(.primary)

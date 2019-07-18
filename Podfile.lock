@@ -222,7 +222,7 @@ PODS:
     - WordPressKit (~> 4.1)
     - WordPressShared (~> 1.8)
     - WordPressUI (~> 1.3)
-  - WordPressKit (4.2.0):
+  - WordPressKit (4.2.1-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -230,7 +230,7 @@ PODS:
     - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
   - WordPressMocks (0.0.5)
-  - WordPressShared (1.8.5-beta.1):
+  - WordPressShared (1.8.5):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.3.4)
@@ -301,9 +301,9 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.8.0)
   - WordPressAuthenticator (~> 1.7.0-beta.2)
-  - WordPressKit (~> 4.2.0)
+  - WordPressKit (~> 4.2.1-beta.1)
   - WordPressMocks (~> 0.0.5)
-  - WordPressShared (~> 1.8.5-beta.1)
+  - WordPressShared (~> 1.8.5)
   - WordPressUI (~> 1.3.4)
   - WPMediaPicker (~> 1.4.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.9.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -486,9 +486,9 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 5022d76e7c4cd2a492f670944e24b9dd05639763
   WordPress-Editor-iOS: e0116fe2c4d3e0d2c325f053d9becdf637bfd708
   WordPressAuthenticator: 1ab1d36fd9a50fefdbeb0c0cb115e364673b473c
-  WordPressKit: 0b6672d1b24f0eb7c4386df826ae80307fc0fa00
+  WordPressKit: 2cf3d0f5bf80d5593fbd26dc569f012b343584d5
   WordPressMocks: d8088f718439556ff3856d5881aef581740cd26a
-  WordPressShared: 6c54520e2c4dc95f8363adce4b559d65a8cd2b09
+  WordPressShared: 18f7bce275fb88e269906eef1b16efab8b7c1bc3
   WordPressUI: 065de4c33212b9ca3ae458d43c73f2ce2738d3d4
   WPMediaPicker: 1897f312c7b41114ffd239fb782431ae602134a1
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
@@ -496,6 +496,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 2b0e25dd85ebcc7dc9bee1f5cfbc313d6d2bc635
+PODFILE CHECKSUM: 2ecdde36056f689e962ddf9dc4459b71f0c93512
 
 COCOAPODS: 1.6.1

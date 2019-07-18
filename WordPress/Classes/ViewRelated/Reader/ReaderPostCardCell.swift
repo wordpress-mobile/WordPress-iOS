@@ -255,7 +255,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = 1.0
+        borderedView.layer.borderWidth = 0.5
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
