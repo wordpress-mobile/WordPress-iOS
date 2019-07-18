@@ -78,6 +78,19 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         XCTAssertEqual(tracked?.value(for: "has_unsupported_blocks"), "1")
     }
 
+    func testTrackUnsupportedBlocksOnStartWithEmptyList() {
+        let unsupportedBlocks = [String]()
+        startSession(editor: .gutenberg, unsupportedBlocks: unsupportedBlocks)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
+
+        let tracked = TestAnalyticsTracker.tracked.first
+
+        XCTAssertEqual(tracked?.stat, WPAnalyticsStat.editorSessionStart)
+        XCTAssertEqual(tracked?.value(for: "unsupported_blocks"), unsupportedBlocks)
+        XCTAssertEqual(tracked?.value(for: "has_unsupported_blocks"), "0")
+    }
+
     func testTrackUnsupportedBlocksOnSwitch() {
         let unsupportedBlocks = ["unsupported"]
         var session = startSession(editor: .gutenberg, unsupportedBlocks: unsupportedBlocks)

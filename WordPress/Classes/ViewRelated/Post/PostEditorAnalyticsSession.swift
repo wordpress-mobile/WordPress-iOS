@@ -28,8 +28,9 @@ struct PostEditorAnalyticsSession {
     }
 
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
-        let unsupportedBlocksProperty: [String: Any] = hasUnsupportedBlocks ? [Property.unsupportedBlocks: unsupportedBlocks] : [:]
-        return unsupportedBlocksProperty.merging(commonProperties, uniquingKeysWith: { $1 })
+        return [
+            Property.unsupportedBlocks: unsupportedBlocks
+        ].merging(commonProperties, uniquingKeysWith: { $1 })
     }
 
     mutating func `switch`(editor: Editor) {
