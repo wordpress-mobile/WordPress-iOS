@@ -160,6 +160,21 @@ private extension StatsDataHelper {
 
 extension Date {
 
+    func normalizedForSite() -> Date {
+        var calendar = StatsDataHelper.calendarForSite
+
+        let flags: NSCalendar.Unit = [.day, .month, .year]
+        let components = (calendar as NSCalendar).components(flags, from: self)
+
+        var normalized = DateComponents()
+        normalized.day = components.day
+        normalized.month = components.month
+        normalized.year = components.year
+
+        calendar.timeZone = .autoupdatingCurrent
+        return calendar.date(from: normalized) ?? self
+    }
+
     func relativeStringInPast() -> String {
         // This is basically a Swift rewrite of https://github.com/wordpress-mobile/WordPressCom-Stats-iOS/blob/develop/WordPressCom-Stats-iOS/Services/StatsDateUtilities.m#L97
         // It could definitely use some love!
