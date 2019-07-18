@@ -34,6 +34,8 @@ class LoginEpilogueTableViewController: UITableViewController {
 
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
+
+        view.backgroundColor = .neutral(shade: .shade0)
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.

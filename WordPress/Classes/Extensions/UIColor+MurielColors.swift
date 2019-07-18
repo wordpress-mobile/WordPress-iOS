@@ -236,6 +236,9 @@ extension UIColor {
     /// Muriel text subtle color
     static var textSubtle = muriel(color: .textSubtle)
 
+    /// Muriel placeholder text color
+    static var textPlaceholder = neutral(shade: .shade30)
+
     /// Muriel warning color
     static var warning = muriel(color: .warning)
     class func warning(shade: MurielColorShade) -> UIColor {
