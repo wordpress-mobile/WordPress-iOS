@@ -199,10 +199,8 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func toggleGutenberg() -> (Bool) -> Void {
-        return { [weak self] _ in
-            let settings = GutenbergSettings()
-            settings.toggleGutenberg()
-
+        return { [weak self] isEnabled in
+            GutenbergSettings().isGutenbergEnabled = isEnabled
             self?.reloadViewModel()
         }
     }
