@@ -199,8 +199,8 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func toggleGutenberg() -> (Bool) -> Void {
-        return { [weak self] _ in
-            GutenbergSettings().toggleGutenberg()
+        return { [weak self] isEnabled in
+            GutenbergSettings().isGutenbergEnabled = isEnabled
             self?.reloadViewModel()
         }
     }
@@ -321,7 +321,7 @@ private extension AppSettingsViewController {
 
     func editorTableSection() -> ImmuTableSection? {
         let gutenbergSettings = GutenbergSettings()
-        let enabled = gutenbergSettings.isGutenbergEnabled()
+        let enabled = gutenbergSettings.isGutenbergEnabled
         let gutenbergEditor = SwitchRow(
             title: NSLocalizedString("Use Block Editor", comment: "Option to enable the block editor for new posts"),
             value: enabled,

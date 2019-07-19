@@ -26,7 +26,7 @@ extension WPStyleGuide {
 
         // MARK: - Search Styles
 
-        public static let searchBarBackgroundColor: UIColor = .neutral(shade: .shade0)
+        public static let searchBarBackgroundColor: UIColor = .tableBackground
         public static let searchBarBorderColor: UIColor = .neutral(shade: .shade10)
 
         public static let searchTypeTitleFont = WPFontManager.systemSemiBoldFont(ofSize: 14)
