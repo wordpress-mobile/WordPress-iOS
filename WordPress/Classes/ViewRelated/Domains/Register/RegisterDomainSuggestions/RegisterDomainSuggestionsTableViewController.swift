@@ -2,9 +2,11 @@ import Foundation
 
 class RegisterDomainSuggestionsTableViewController: DomainSuggestionsTableViewController {
 
-    override open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType {
-        return .noWordpressDotCom
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        domainSuggestionType = .noWordpressDotCom
     }
+
     override open var useFadedColorForParentDomains: Bool {
         return false
     }
