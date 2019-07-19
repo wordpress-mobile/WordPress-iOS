@@ -95,6 +95,10 @@ class ReaderCommentCell: UITableViewCell {
         authorButton.titleLabel?.lineBreakMode = .byTruncatingTail
 
         textView.textContainerInset = Constants.textViewInsets
+
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .primary(shade: .shade0)
+        selectedBackgroundView = backgroundView
     }
 
     func setupContentView() {
