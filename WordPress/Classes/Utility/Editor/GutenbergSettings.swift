@@ -33,6 +33,7 @@ class GutenbergSettings {
                 trackSettingChange(to: isEnabled)
             }
             database.set(isEnabled, forKey: Key.enabled)
+            WPAnalytics.refreshMetadata()
         }
     }
 
@@ -44,7 +45,6 @@ class GutenbergSettings {
     private func trackSettingChange(to isEnabled: Bool) {
         let stat: WPAnalyticsStat = isEnabled ? .appSettingsGutenbergEnabled : .appSettingsGutenbergDisabled
         WPAppAnalytics.track(stat)
-        WPAnalytics.refreshMetadata()
     }
 
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
