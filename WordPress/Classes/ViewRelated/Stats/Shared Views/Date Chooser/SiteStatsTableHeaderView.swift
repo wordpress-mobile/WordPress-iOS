@@ -134,10 +134,12 @@ private extension SiteStatsTableHeaderView {
         guard !SiteStatsInformation.sharedInstance.timeZoneMatchesDevice(),
         let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone else {
             timezoneLabel.isHidden = true
+            timezoneLabel.accessibilityLabel = nil
             return
         }
 
         timezoneLabel.text = siteTimeZone.displayForStats()
+        timezoneLabel.accessibilityLabel = siteTimeZone.displayForStats()
         timezoneLabel.isHidden = false
     }
 
