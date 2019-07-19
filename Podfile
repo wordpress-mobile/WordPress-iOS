@@ -43,9 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.2.1-beta.1'
+    #pod 'WordPressKit', '~> 4.2.1-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'fix/stats_insights_parsing'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ef4f184f5a33ef628c053892e8f706046191d66c'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'c116a2cdf47d2f9a3ff8b9c7da1ed8da1938f16e'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
