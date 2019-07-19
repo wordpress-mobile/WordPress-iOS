@@ -16,6 +16,6 @@ extension WPStyleGuide {
         public static let placeholderColor = UIColor.neutral(shade: .shade20)
         public static let textColor        = UIColor.text
         public static let separatorColor   = UIColor.neutral(shade: .shade20)
-        public static let backgroundColor  = UIColor.neutral(shade: .shade0)
+        public static let backgroundColor  = UIColor.tableBackground
     }
 }

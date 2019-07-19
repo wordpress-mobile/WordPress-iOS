@@ -36,7 +36,7 @@ class MainShareViewController: UIViewController {
 private extension MainShareViewController {
     func setupAppearance() {
         let navigationBarAppearace = UINavigationBar.appearance()
-        navigationBarAppearace.barTintColor = .neutral(shade: .shade0)
+        navigationBarAppearace.barTintColor = .tableBackground
         navigationBarAppearace.barStyle = .default
         navigationBarAppearace.tintColor = .primary
         navigationBarAppearace.titleTextAttributes = [.foregroundColor: UIColor.primary]

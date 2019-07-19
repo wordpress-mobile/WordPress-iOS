@@ -32,7 +32,7 @@ extension WPStyleGuide {
         cell.imageView?.layer.borderWidth = 1
         cell.imageView?.tintColor = .neutral(shade: .shade30)
 
-        cell.backgroundColor = .neutral(shade: .shade0)
+        cell.backgroundColor = .tableBackground
     }
 
  }

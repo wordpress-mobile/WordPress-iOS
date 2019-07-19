@@ -34,6 +34,8 @@ class LoginEpilogueTableViewController: UITableViewController {
 
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
+
+        view.backgroundColor = .neutral(shade: .shade0)
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
@@ -138,7 +140,7 @@ extension LoginEpilogueTableViewController {
 
         headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         headerView.textLabel?.textColor = .neutral(shade: .shade50)
-        headerView.contentView.backgroundColor = .neutral(shade: .shade0)
+        headerView.contentView.backgroundColor = .tableBackground
     }
 }
 

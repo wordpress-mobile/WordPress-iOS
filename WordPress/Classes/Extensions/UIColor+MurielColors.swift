@@ -71,6 +71,7 @@ struct MurielColor {
 
     // MARK: - Additional iOS semantic colors
     static let navigationBar = MurielColor(name: .wordPressBlue)
+    static let tableBackground = MurielColor(name: .gray, shade: .shade0)
 
     /// The full name of the color, with required shade value
     func assetName() -> String {
@@ -235,6 +236,9 @@ extension UIColor {
     /// Muriel text subtle color
     static var textSubtle = muriel(color: .textSubtle)
 
+    /// Muriel placeholder text color
+    static var textPlaceholder = neutral(shade: .shade30)
+
     /// Muriel warning color
     static var warning = muriel(color: .warning)
     class func warning(shade: MurielColorShade) -> UIColor {
@@ -245,6 +249,8 @@ extension UIColor {
     static var textInverted = UIColor.white
 
     static var navigationBar = muriel(color: .navigationBar)
+
+    static var tableBackground = muriel(color: .tableBackground)
 
     /// Muriel/iOS unselected color
     static var unselected: UIColor {

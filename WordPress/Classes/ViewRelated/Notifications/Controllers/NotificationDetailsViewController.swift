@@ -376,7 +376,7 @@ extension NotificationDetailsViewController {
     }
 
     func setupMainView() {
-        view.backgroundColor = .neutral(shade: .shade0)
+        view.backgroundColor = .tableBackground
     }
 
     func setupTableView() {
@@ -384,7 +384,7 @@ extension NotificationDetailsViewController {
         tableView.keyboardDismissMode       = .interactive
         tableView.backgroundColor           = .neutral(shade: .shade5)
         tableView.accessibilityIdentifier   = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
-        tableView.backgroundColor           = .neutral(shade: .shade0)
+        tableView.backgroundColor           = .tableBackground
     }
 
     func setupTableViewCells() {
