@@ -130,8 +130,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }
 
     BOOL dotcom_user = (accountPresent && username.length > 0);
-    BOOL gutenbergEnabled = [GutenbergSettings isGutenbergEnabled];
-    
+
+    //A global "gutenberg enabled" value does not make sense anymore
+    //BOOL gutenbergEnabled = [GutenbergSettings isGutenbergEnabled];
+
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
     userProperties[@"platform"] = @"iOS";
     userProperties[@"dotcom_user"] = @(dotcom_user);
@@ -139,7 +141,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     userProperties[@"is_rtl_language"] = @(UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
-    userProperties[@"gutenberg_enabled"] = @(gutenbergEnabled);
+        //userProperties[@"gutenberg_enabled"] = @(gutenbergEnabled);
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];

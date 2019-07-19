@@ -672,9 +672,10 @@ private extension ZendeskUtils {
         tags.append(Constants.platformTag)
 
         // Add gutenbergIsDefault tag
-        let gutenbergSettings = GutenbergSettings()
-        if gutenbergSettings.isGutenbergEnabled {
-            tags.append(Constants.gutenbergIsDefault)
+        if let blog = blogService.lastUsedBlog() {
+            if GutenbergSettings().isGutenbergEnabled(for: blog) {
+                tags.append(Constants.gutenbergIsDefault)
+            }
         }
 
         return tags

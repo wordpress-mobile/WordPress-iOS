@@ -12,6 +12,8 @@ class GutenbergSettings {
     // MARK: - Internal variables
     fileprivate let database: KeyValueDatabase
 
+    let context = Environment.current.contextManager.mainContext
+
     // MARK: - Initialization
     init(database: KeyValueDatabase) {
         self.database = database
@@ -23,23 +25,35 @@ class GutenbergSettings {
 
     // MARK: Public accessors
 
-    /// True if gutenberg editor is currently enabled
-    var isGutenbergEnabled: Bool {
-        get {
-            return database.bool(forKey: Key.enabled)
+    func isGutenbergEnabled(for blog: Blog) -> Bool {
+        return blog.editor.mobile == .gutenberg
+    }
+
+    func setGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
+        let selectedEditor: MobileEditor = isEnabled ? .gutenberg : .aztec
+        guard shouldUpdateSettings(with: selectedEditor, for: blog) else {
+            return
         }
-        set(isEnabled) {
-            if isGutenbergEnabled != isEnabled {
-                trackSettingChange(to: isEnabled)
-            }
-            database.set(isEnabled, forKey: Key.enabled)
-            WPAnalytics.refreshMetadata()
+
+        if isGutenbergEnabled(for: blog) != isEnabled {
+            trackSettingChange(to: isEnabled)
         }
+
+        let editorSettingsService = EditorSettingsService(managedObjectContext: context)
+        editorSettingsService.postEditorSetting(selectedEditor, for: blog, success: {}) { (error) in
+            DDLogError("Failed to post new post selection with Error: \(error)")
+        }
+
+        WPAnalytics.refreshMetadata()
+    }
+
+    private func shouldUpdateSettings(with newSetting: MobileEditor, for blog: Blog) -> Bool {
+        return !wasGutenbergEnabledOnce(for: blog) || blog.editor.mobile != newSetting
     }
 
     /// True if gutenberg editor has been enabled at least once
-    var wasGutenbergEnabledOnce: Bool {
-        return database.object(forKey: Key.enabled) != nil
+    func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
+        return blog.editor.mobile != nil
     }
 
     private func trackSettingChange(to isEnabled: Bool) {
@@ -48,7 +62,7 @@ class GutenbergSettings {
     }
 
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
-        return  post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce
+        return  post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce(for: post.blog)
     }
 
     // MARK: - Gutenberg Choice Logic
@@ -61,9 +75,10 @@ class GutenbergSettings {
     /// - Returns: true if the post must be edited with Gutenberg.
     ///
     func mustUseGutenberg(for post: AbstractPost) -> Bool {
+        let blog = post.blog
+
         if post.isContentEmpty() {
-            // It's a new post
-            return isGutenbergEnabled
+            return blog.editor.mobile == .gutenberg && blog.editor.web == .gutenberg
         } else {
             // It's an existing post
             return post.containsGutenbergBlocks()
@@ -74,7 +89,7 @@ class GutenbergSettings {
 @objc(GutenbergSettings)
 class GutenbergSettingsBridge: NSObject {
     @objc
-    static func isGutenbergEnabled() -> Bool {
-        return GutenbergSettings().isGutenbergEnabled
+    static func isGutenbergEnabledForBlog(_ blog: Blog) -> Bool {
+        return GutenbergSettings().isGutenbergEnabled(for: blog)
     }
 }
