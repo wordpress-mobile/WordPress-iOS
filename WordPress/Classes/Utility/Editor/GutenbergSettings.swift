@@ -5,8 +5,9 @@ import Foundation
 class GutenbergSettings {
 
     // MARK: - Enabled Editors Keys
-
-    fileprivate let gutenbergEditorEnabledKey = "kUserDefaultsGutenbergEditorEnabled"
+    enum Key {
+        static let enabled = "kUserDefaultsGutenbergEditorEnabled"
+    }
 
     // MARK: - Internal variables
     fileprivate let database: KeyValueDatabase
@@ -22,19 +23,32 @@ class GutenbergSettings {
 
     // MARK: Public accessors
 
-    func isGutenbergEnabled() -> Bool {
-        return database.object(forKey: gutenbergEditorEnabledKey) as? Bool ?? false
+    /// True if gutenberg editor is currently enabled
+    var isGutenbergEnabled: Bool {
+        get {
+            return database.bool(forKey: Key.enabled)
+        }
+        set(isEnabled) {
+            if isGutenbergEnabled != isEnabled {
+                trackSettingChange(to: isEnabled)
+            }
+            database.set(isEnabled, forKey: Key.enabled)
+            WPAnalytics.refreshMetadata()
+        }
     }
 
-    func toggleGutenberg() {
-        if isGutenbergEnabled() {
-            WPAppAnalytics.track(.appSettingsGutenbergDisabled)
-            database.set(false, forKey: gutenbergEditorEnabledKey)
-        } else {
-            WPAppAnalytics.track(.appSettingsGutenbergEnabled)
-            database.set(true, forKey: gutenbergEditorEnabledKey)
-        }
-        WPAnalytics.refreshMetadata()
+    /// True if gutenberg editor has been enabled at least once
+    var wasGutenbergEnabledOnce: Bool {
+        return database.object(forKey: Key.enabled) != nil
+    }
+
+    private func trackSettingChange(to isEnabled: Bool) {
+        let stat: WPAnalyticsStat = isEnabled ? .appSettingsGutenbergEnabled : .appSettingsGutenbergDisabled
+        WPAppAnalytics.track(stat)
+    }
+
+    func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
+        return  post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce
     }
 
     // MARK: - Gutenberg Choice Logic
@@ -49,7 +63,7 @@ class GutenbergSettings {
     func mustUseGutenberg(for post: AbstractPost) -> Bool {
         if post.isContentEmpty() {
             // It's a new post
-            return isGutenbergEnabled()
+            return isGutenbergEnabled
         } else {
             // It's an existing post
             return post.containsGutenbergBlocks()
@@ -61,6 +75,6 @@ class GutenbergSettings {
 class GutenbergSettingsBridge: NSObject {
     @objc
     static func isGutenbergEnabled() -> Bool {
-        return GutenbergSettings().isGutenbergEnabled()
+        return GutenbergSettings().isGutenbergEnabled
     }
 }
