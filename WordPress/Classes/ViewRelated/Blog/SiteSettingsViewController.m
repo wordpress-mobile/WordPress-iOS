@@ -324,7 +324,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         _editorSelectorCell = [SwitchTableViewCell new];
         _editorSelectorCell.name = NSLocalizedString(@"Use block editor", @"Option to enable the block editor for new posts");
         _editorSelectorCell.onChange = ^(BOOL value){
-            [GutenbergSettings toggleGutenberg];
+            [GutenbergSettings setGutenbergEnabled:value];
         };
     }
     return _editorSelectorCell;

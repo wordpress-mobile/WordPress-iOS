@@ -42,7 +42,6 @@
 #import "NSAttributedString+Util.h"
 #import "NSObject+Helpers.h"
 
-#import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
 #import "PageSettingsViewController.h"
 #import "PostContentProvider.h"

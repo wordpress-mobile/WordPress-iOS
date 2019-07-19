@@ -24,12 +24,15 @@ class GutenbergSettings {
     // MARK: Public accessors
 
     /// True if gutenberg editor is currently enabled
-    private(set) var isGutenbergEnabled: Bool {
+    var isGutenbergEnabled: Bool {
         get {
             return database.bool(forKey: Key.enabled)
         }
-        set(enabled) {
-            database.set(enabled, forKey: Key.enabled)
+        set(isEnabled) {
+            if isGutenbergEnabled != isEnabled {
+                trackSettingChange(to: isEnabled)
+            }
+            database.set(isEnabled, forKey: Key.enabled)
         }
     }
 
@@ -38,25 +41,14 @@ class GutenbergSettings {
         return database.object(forKey: Key.enabled) != nil
     }
 
+    private func trackSettingChange(to isEnabled: Bool) {
+        let stat: WPAnalyticsStat = isEnabled ? .appSettingsGutenbergEnabled : .appSettingsGutenbergDisabled
+        WPAppAnalytics.track(stat)
+        WPAnalytics.refreshMetadata()
+    }
+
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
         return  post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce
-    }
-
-    func setGutenbergEnabledIfNeeded() {
-        if isGutenbergEnabled == false {
-            toggleGutenberg()
-        }
-    }
-
-    func toggleGutenberg() {
-        if isGutenbergEnabled {
-            WPAppAnalytics.track(.appSettingsGutenbergDisabled)
-            isGutenbergEnabled = false
-        } else {
-            WPAppAnalytics.track(.appSettingsGutenbergEnabled)
-            isGutenbergEnabled = true
-        }
-        WPAnalytics.refreshMetadata()
     }
 
     // MARK: - Gutenberg Choice Logic
@@ -87,7 +79,7 @@ class GutenbergSettingsBridge: NSObject {
     }
 
     @objc
-    static func toggleGutenberg() {
-        GutenbergSettings().toggleGutenberg()
+    static func setGutenbergEnabled(_ isEnabled: Bool) {
+        GutenbergSettings().isGutenbergEnabled = isEnabled
     }
 }
