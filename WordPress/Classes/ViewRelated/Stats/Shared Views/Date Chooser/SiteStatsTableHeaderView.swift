@@ -220,7 +220,7 @@ private extension SiteStatsTableHeaderView {
 
     private struct Heights {
         static let `default`: CGFloat = 44
-        static let withTimezone: CGFloat = 68
+        static let withTimezone: CGFloat = 60
     }
 }
 
