@@ -32,7 +32,7 @@ class GutenbergSettingsTests: XCTestCase {
 
             XCTAssertFalse(settings.isGutenbergEnabled)
 
-            settings.toggleGutenberg()
+            settings.isGutenbergEnabled = true
 
             // This simulates a second launch
             let secondEditorSettings = GutenbergSettings(database: database)
@@ -56,7 +56,7 @@ class GutenbergSettingsTests: XCTestCase {
 
         XCTAssertTrue(settings.mustUseGutenberg(for: post))
 
-        settings.toggleGutenberg()
+        settings.isGutenbergEnabled = true
         XCTAssertTrue(settings.isGutenbergEnabled)
 
         XCTAssertTrue(settings.mustUseGutenberg(for: post))
@@ -72,7 +72,7 @@ class GutenbergSettingsTests: XCTestCase {
 
         XCTAssertFalse(settings.mustUseGutenberg(for: post))
 
-        settings.toggleGutenberg()
+        settings.isGutenbergEnabled = true
         XCTAssertTrue(settings.isGutenbergEnabled)
 
         XCTAssertFalse(settings.mustUseGutenberg(for: post))
@@ -87,7 +87,7 @@ class GutenbergSettingsTests: XCTestCase {
 
         XCTAssertFalse(settings.mustUseGutenberg(for: post))
 
-        settings.toggleGutenberg()
+        settings.isGutenbergEnabled = true
         XCTAssertTrue(settings.isGutenbergEnabled)
 
         XCTAssertTrue(settings.mustUseGutenberg(for: post))
