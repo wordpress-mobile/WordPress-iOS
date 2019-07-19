@@ -3,18 +3,17 @@ import Foundation
 @objc class EditorSettingsService: LocalCoreDataService {
     @objc func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         guard let api = blog.wordPressComRestApi(), let siteID = blog.dotComID?.intValue else {
+            let error = NSError(domain: "EditorSettingsService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Api or dotCom Site ID not found"])
+            failure(error)
             return
         }
 
         let service = EditorServiceRemote(wordPressComRestApi: api)
         service.getEditorSettings(siteID, success: { (settings) in
             self.saveRemoteEditorSettings(settings, on: blog)
-            ContextManager.sharedInstance().save(self.managedObjectContext) {
-                success()
-            }
-        }) { (error) in
-            failure(error)
-        }
+            ContextManager.sharedInstance().save(self.managedObjectContext)
+            success()
+        }, failure: failure)
     }
 
     private func saveRemoteEditorSettings(_ settings: EditorSettings, on blog: Blog) {
@@ -28,7 +27,7 @@ import Foundation
             let api = blog.wordPressComRestApi(),
             let siteID = blog.dotComID?.intValue
         else {
-            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil)
+            let error = NSError(domain: "EditorSettingsService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Api or dotCom Site ID not found"])
             failure(error)
             return
         }
@@ -37,9 +36,8 @@ import Foundation
 
         let service = EditorServiceRemote(wordPressComRestApi: api)
         service.postDesignateMobileEditor(siteID, editor: remoteEditor, success: { _ in
-            ContextManager.sharedInstance().save(self.managedObjectContext) {
-                success()
-            }
+            ContextManager.sharedInstance().save(self.managedObjectContext)
+            success()
         }) { (error) in
             blog.mobileEditor = oldValue
             failure(error)

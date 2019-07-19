@@ -62,7 +62,7 @@ class GutenbergSettings {
     }
 
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
-        return  post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce(for: post.blog)
+        return  post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce(for: post.blog) && post.blog.editor.web == .gutenberg
     }
 
     // MARK: - Gutenberg Choice Logic
