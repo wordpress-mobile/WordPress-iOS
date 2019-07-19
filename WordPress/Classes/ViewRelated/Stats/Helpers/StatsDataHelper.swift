@@ -283,26 +283,19 @@ extension StatsPeriodUnit {
 
 extension TimeZone {
     func displayForStats() -> String {
-        var identifier = self.identifier
-
-        // minutes
-        let minutes = Int(identifier.suffix(2)) ?? 0
-        identifier.removeLast(2)
+        let seconds = self.secondsFromGMT()
+        let hours = seconds / 3600
+        let remainingSeconds = seconds - (hours * 3600)
+        let minutes = remainingSeconds / 60
         let displayMinutes = minutes > 0 ? ":\(minutes)" : ""
-
-        // hours
-        let hours = Int(identifier.suffix(2)) ?? 0
-        identifier.removeLast(2)
-
-        // sign
-        let sign = String(identifier.removeLast())
+        let sign = hours < 0 ? "-" : "+"
 
         let timezoneString = NSLocalizedString("Site timezone (UTC%@%d%@)",
                                                comment: "Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`.")
 
         return String.localizedStringWithFormat(timezoneString,
                                                 sign,
-                                                hours,
+                                                abs(hours),
                                                 displayMinutes)
     }
 }
