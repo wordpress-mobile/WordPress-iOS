@@ -480,7 +480,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
 
         if !editorSession.started {
-            editorSession.start(hasUnsupportedBlocks: false)
+            editorSession.start()
         }
     }
 

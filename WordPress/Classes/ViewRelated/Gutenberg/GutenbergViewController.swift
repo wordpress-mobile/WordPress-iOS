@@ -503,8 +503,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidMount(unsupportedBlockNames: [String]) {
         startAutoSave()
         if !editorSession.started {
-            let hasUnsupportedBlocks = !unsupportedBlockNames.isEmpty
-            editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
+            editorSession.start(unsupportedBlocks: unsupportedBlockNames)
         }
     }
 
