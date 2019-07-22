@@ -323,8 +323,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if (!_editorSelectorCell) {
         _editorSelectorCell = [SwitchTableViewCell new];
         _editorSelectorCell.name = NSLocalizedString(@"Use block editor", @"Option to enable the block editor for new posts");
+        __weak Blog *blog = self.blog;
         _editorSelectorCell.onChange = ^(BOOL value){
-            [GutenbergSettings setGutenbergEnabled:value];
+            [GutenbergSettings setGutenbergEnabled:value forBlog:blog];
         };
     }
     return _editorSelectorCell;
@@ -476,7 +477,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (void)configureEditorSelectorCell
 {
-    [self.editorSelectorCell setOn:[GutenbergSettings isGutenbergEnabled]];
+    [self.editorSelectorCell setOn:self.blog.isGutenbergEnabled];
 }
 
 - (void)configureDefaultCategoryCell
