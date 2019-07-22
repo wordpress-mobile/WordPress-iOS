@@ -107,11 +107,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     __block NSString *emailAddress;
     __block BOOL accountPresent = NO;
     __block BOOL jetpackBlogsPresent = NO;
+    __block WPAccount *account;
+
     [context performBlockAndWait:^{
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *account = [accountService defaultWordPressComAccount];
+        account = [accountService defaultWordPressComAccount];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        
+
+
         blogCount = [blogService blogCountForAllAccounts];
         jetpackBlogsPresent = [blogService hasAnyJetpackBlogs];
         if (account != nil) {
@@ -131,8 +134,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 
     BOOL dotcom_user = (accountPresent && username.length > 0);
 
-    //A global "gutenberg enabled" value does not make sense anymore
-    //BOOL gutenbergEnabled = [GutenbergSettings isGutenbergEnabled];
+    // The user "uses" gutenberg if it is enabled on any of their sites.
+    __block BOOL gutenbergEnabled = NO;
+    [account.blogs enumerateObjectsUsingBlock:^(Blog * _Nonnull blog, BOOL * _Nonnull stop) {
+        if (blog.isGutenbergEnabled) {
+            gutenbergEnabled = YES;
+            *stop = YES;
+        }
+    }];
 
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
     userProperties[@"platform"] = @"iOS";
@@ -141,7 +150,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     userProperties[@"is_rtl_language"] = @(UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
-        //userProperties[@"gutenberg_enabled"] = @(gutenbergEnabled);
+    userProperties[@"gutenberg_enabled"] = @(gutenbergEnabled);
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];

@@ -333,7 +333,7 @@ private extension AppSettingsViewController {
 
         let enabled: Bool
         if let blog = blog {
-            enabled = GutenbergSettings().isGutenbergEnabled(for: blog)
+            enabled = blog.isGutenbergEnabled
         } else {
             enabled = false
         }

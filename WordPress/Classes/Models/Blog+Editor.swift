@@ -28,3 +28,9 @@ extension Blog {
         return Editor(blog: self)
     }
 }
+
+@objc extension Blog {
+    @objc var isGutenbergEnabled: Bool {
+        return self.editor.mobile == .gutenberg
+    }
+}

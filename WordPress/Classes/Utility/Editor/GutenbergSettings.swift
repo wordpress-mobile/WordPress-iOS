@@ -25,12 +25,9 @@ class GutenbergSettings {
 
     // MARK: Public accessors
 
-    func isGutenbergEnabled(for blog: Blog) -> Bool {
-        guard let mobileEditor = blog.editor.mobile else {
-            return false
-        }
-        return mobileEditor == .gutenberg
-    }
+//    func isGutenbergEnabled(for blog: Blog) -> Bool {
+//        return blog.editor.mobile == .gutenberg
+//    }
 
     func setGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
         let selectedEditor: MobileEditor = isEnabled ? .gutenberg : .aztec
@@ -38,7 +35,7 @@ class GutenbergSettings {
             return
         }
 
-        if isGutenbergEnabled(for: blog) != isEnabled {
+        if blog.isGutenbergEnabled != isEnabled {
             trackSettingChange(to: isEnabled)
         }
 
@@ -91,13 +88,5 @@ class GutenbergSettings {
             // It's an existing post
             return post.containsGutenbergBlocks()
         }
-    }
-}
-
-@objc(GutenbergSettings)
-class GutenbergSettingsBridge: NSObject {
-    @objc
-    static func isGutenbergEnabledForBlog(_ blog: Blog) -> Bool {
-        return GutenbergSettings().isGutenbergEnabled(for: blog)
     }
 }
