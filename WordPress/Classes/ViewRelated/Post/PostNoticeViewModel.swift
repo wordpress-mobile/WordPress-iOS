@@ -91,6 +91,11 @@ struct PostNoticeViewModel {
     }
 
     private var failureTitle: String {
+        if post.status == .publish {
+            return NSLocalizedString("Post will be published the next time your device is online",
+                                     comment: "Text displayed in notice after a post if published while offline.")
+        }
+
         if post is Page {
             return NSLocalizedString("Page failed to upload", comment: "Title of notification displayed when a page has failed to upload.")
         } else {
