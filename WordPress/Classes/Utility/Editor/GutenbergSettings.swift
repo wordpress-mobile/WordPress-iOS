@@ -25,10 +25,11 @@ class GutenbergSettings {
 
     // MARK: Public accessors
 
-//    func isGutenbergEnabled(for blog: Blog) -> Bool {
-//        return blog.editor.mobile == .gutenberg
-//    }
-
+    /// Sets gutenberg enabled state locally for the given site.
+    ///
+    /// - Parameters:
+    ///   - isEnabled: Enabled state to set
+    ///   - blog: The site to set the gutenberg enabled state
     func setGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
         let selectedEditor: MobileEditor = isEnabled ? .gutenberg : .aztec
         guard shouldUpdateSettings(with: selectedEditor, for: blog) else {
@@ -45,20 +46,8 @@ class GutenbergSettings {
         WPAnalytics.refreshMetadata()
     }
 
-    func postSettingsToRemote(for blog: Blog) {
-        let editorSettingsService = EditorSettingsService(managedObjectContext: context)
-        editorSettingsService.postEditorSetting(for: blog, success: {}) { (error) in
-            DDLogError("Failed to post new post selection with Error: \(error)")
-        }
-    }
-
     private func shouldUpdateSettings(with newSetting: MobileEditor, for blog: Blog) -> Bool {
         return !wasGutenbergEnabledOnce(for: blog) || blog.editor.mobile != newSetting
-    }
-
-    /// True if gutenberg editor has been enabled at least once
-    func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
-        return blog.editor.mobile != nil
     }
 
     private func trackSettingChange(to isEnabled: Bool) {
@@ -66,6 +55,23 @@ class GutenbergSettings {
         WPAppAnalytics.track(stat)
     }
 
+
+    /// Synch the current editor settings with remote for the given site
+    ///
+    /// - Parameter blog: The site to synch editor settings
+    func postSettingsToRemote(for blog: Blog) {
+        let editorSettingsService = EditorSettingsService(managedObjectContext: context)
+        editorSettingsService.postEditorSetting(for: blog, success: {}) { (error) in
+            DDLogError("Failed to post new post selection with Error: \(error)")
+        }
+    }
+
+    /// True if gutenberg editor has been enabled at least once on the given blog
+    func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
+        return blog.editor.mobile != nil
+    }
+
+    /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
         return  post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce(for: post.blog) && post.blog.editor.web == .gutenberg
     }
