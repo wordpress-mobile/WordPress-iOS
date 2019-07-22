@@ -82,6 +82,8 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
+@dynamic mobileEditor;
+@dynamic webEditor;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;

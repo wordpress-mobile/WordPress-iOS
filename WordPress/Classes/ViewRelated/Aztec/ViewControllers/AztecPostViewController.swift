@@ -1150,7 +1150,7 @@ private extension AztecPostViewController {
             }
         }
 
-        if GutenbergSettings().isGutenbergEnabled,
+        if post.blog.isGutenbergEnabled,
             let postContent = post.content,
             postContent.count > 0 && post.containsGutenbergBlocks() {
 

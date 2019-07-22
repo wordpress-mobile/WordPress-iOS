@@ -292,6 +292,20 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         dispatch_group_leave(syncGroup);
     }];
 
+    EditorSettingsService *editorService = [[EditorSettingsService alloc] init];
+    dispatch_group_enter(syncGroup);
+    [editorService syncEditorSettingsFor:blog success:^{
+        dispatch_group_leave(syncGroup);
+    } failure:^(NSError * _Nonnull error) {
+        if ([error.domain isEqualToString:EditorSettingsServiceErrorDomain] && error.code == EditorSettingsServiceErrorMobileEditorNotSet) {
+            /// DO MIGRATION
+        } else {
+            DDLogError(@"Failed to sync Editor settings");
+        }
+        dispatch_group_leave(syncGroup);
+    }];
+
+
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
     dispatch_group_notify(syncGroup, dispatch_get_main_queue(),^{
