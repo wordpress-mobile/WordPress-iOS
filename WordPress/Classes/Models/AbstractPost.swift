@@ -60,20 +60,6 @@ extension AbstractPost {
         }
     }
 
-    @objc
-    class func title(for remoteStatus: AbstractPostRemoteStatus) -> String {
-        switch remoteStatus {
-        case .pushing:
-            return NSLocalizedString("Uploading", comment: "Title for the Uploading remote status.")
-        case .failed:
-            return NSLocalizedString("Failed", comment: "Title for the Failed remote status.")
-        case .sync:
-            return NSLocalizedString("Posts", comment: "Title for the Sync remote status.")
-        default:
-            return NSLocalizedString("Local", comment: "Title for the default remote status.")
-        }
-    }
-
     // MARK: - Misc
 
     /// Represent the supported properties used to sort posts.
