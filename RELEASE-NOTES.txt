@@ -1,7 +1,7 @@
 13.0
 -----
-* Offline support: post published while offline will now be published once online.
- 
+* Offline support: you can now publish, schedule or save posts while offline.
+* Offline support: you can cancel publishing, scheduling or saving of posts that haven't yet been uploaded.
 * Improved color scheme consistency.
 
 12.9
