@@ -31,7 +31,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
         [self setupStackView];
         [self setupAvatarImageView];
         [self setupLabelsStackView];
-        [self setupSubtTitleLabel];
+        [self setupSubtitleLabel];
         [self setupTitleLabel];
         [self setupDisclosureButton];
         [self setupTapGesture];
@@ -94,7 +94,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 }
 
-- (void)setupSubtTitleLabel
+- (void)setupSubtitleLabel
 {
     NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
 
@@ -102,7 +102,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.backgroundColor = [UIColor whiteColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide allTAllShadeGrey];
+    label.textColor = [UIColor murielTextSubtle];
     label.font = [WPStyleGuide subtitleFont];
     label.adjustsFontForContentSizeCategory = YES;
 
@@ -118,7 +118,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.backgroundColor = [UIColor whiteColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide littleEddieGrey];
+    label.textColor = [UIColor murielText];
     label.font = [WPStyleGuide subtitleFont];
     label.adjustsFontForContentSizeCategory = YES;
 

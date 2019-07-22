@@ -43,8 +43,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.2.1-beta.1'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'fix/stats_insights_parsing'
+    pod 'WordPressKit', '~> 4.2.1.beta'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/filter-tldrs-in-domain-suggestions'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ef4f184f5a33ef628c053892e8f706046191d66c'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -174,9 +174,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.6.0'
+    pod 'WordPressAuthenticator', '~> 1.7.0-beta.2'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issues/11683-new-wpios-colors'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issues/11683-more-color-changes'
 
     aztec
     wordpress_ui

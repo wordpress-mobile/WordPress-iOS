@@ -2,6 +2,8 @@
 -----
 * Offline support: post published while offline will now be published once online.
  
+* Improved color scheme consistency.
+
 12.9
 -----
 * Offline support: Create Post is now available from empty results view in offline mode.

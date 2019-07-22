@@ -673,7 +673,7 @@ private extension ZendeskUtils {
 
         // Add gutenbergIsDefault tag
         let gutenbergSettings = GutenbergSettings()
-        if gutenbergSettings.isGutenbergEnabled() {
+        if gutenbergSettings.isGutenbergEnabled {
             tags.append(Constants.gutenbergIsDefault)
         }
 

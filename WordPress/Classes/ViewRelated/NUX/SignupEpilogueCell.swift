@@ -69,7 +69,10 @@ class SignupEpilogueCell: UITableViewCell {
                        fieldPlaceholder: String? = nil) {
         cellType = newCellType
         cellLabel.text = labelText
+        cellLabel.textColor = .text
+
         cellField.text = fieldValue
+        cellField.textColor = .text
         cellField.placeholder = fieldPlaceholder
         cellField.delegate = self
         cellField.isSecureTextEntry = (cellType == .password)

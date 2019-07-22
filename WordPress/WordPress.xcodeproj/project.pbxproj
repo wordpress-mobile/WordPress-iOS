@@ -348,6 +348,7 @@
 		400F4625201E74EE000CFD9E /* CollectionViewContainerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400F4624201E74EE000CFD9E /* CollectionViewContainerRow.swift */; };
 		4019B27120885AB900A0C7EB /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4019B27020885AB900A0C7EB /* Activity.storyboard */; };
 		401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 401A3D012027DBD80099A127 /* PluginListCell.xib */; };
+		401AC82722DD2387006D78D4 /* Blog+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401AC82622DD2387006D78D4 /* Blog+Plans.swift */; };
 		4020B2BD2007AC850002C963 /* WPStyleGuide+Gridicon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4020B2BC2007AC850002C963 /* WPStyleGuide+Gridicon.swift */; };
 		4020B2BE2007AC850002C963 /* WPStyleGuide+Gridicon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4020B2BC2007AC850002C963 /* WPStyleGuide+Gridicon.swift */; };
 		40247E022120FE3600AE1C3C /* AutomatedTransferHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40247E012120FE3600AE1C3C /* AutomatedTransferHelper.swift */; };
@@ -2398,6 +2399,7 @@
 		400F4624201E74EE000CFD9E /* CollectionViewContainerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewContainerRow.swift; sourceTree = "<group>"; };
 		4019B27020885AB900A0C7EB /* Activity.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Activity.storyboard; sourceTree = "<group>"; };
 		401A3D012027DBD80099A127 /* PluginListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginListCell.xib; sourceTree = "<group>"; };
+		401AC82622DD2387006D78D4 /* Blog+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Plans.swift"; sourceTree = "<group>"; };
 		4020B2BC2007AC850002C963 /* WPStyleGuide+Gridicon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Gridicon.swift"; sourceTree = "<group>"; };
 		40247E012120FE3600AE1C3C /* AutomatedTransferHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomatedTransferHelper.swift; sourceTree = "<group>"; };
 		402B2A7820ACD7690027C1DC /* ActivityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStore.swift; sourceTree = "<group>"; };
@@ -7433,6 +7435,7 @@
 				8217380A1FE05EE600BEC94C /* BlogSettings+DateAndTimeFormat.swift */,
 				FF00889A204DF3ED007CCE66 /* Blog+Quota.swift */,
 				43290D03215C28D800F6B398 /* Blog+QuickStart.swift */,
+				401AC82622DD2387006D78D4 /* Blog+Plans.swift */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -10938,6 +10941,7 @@
 				7E58879A20FE8D9300DB6F80 /* Environment.swift in Sources */,
 				591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */,
 				E14200781C117A2E00B3B115 /* ManagedAccountSettings.swift in Sources */,
+				401AC82722DD2387006D78D4 /* Blog+Plans.swift in Sources */,
 				08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */,
 				59A9AB351B4C33A500A433DC /* ThemeService.m in Sources */,
 				5D6C4B111B604190005E3C43 /* NSAttributedString+RichTextView.swift in Sources */,
