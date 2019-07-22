@@ -1,6 +1,7 @@
 13.0
 -----
 * Stats: now use site timezone instead of device.
+* Improved color scheme consistency.
 
 12.9
 -----
