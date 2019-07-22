@@ -176,7 +176,7 @@ extension WPStyleGuide {
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 
-        static let tableBackgroundColor = UIColor.neutral(shade: .shade0)
+        static let tableBackgroundColor = UIColor.tableBackground
         static let cellBackgroundColor = UIColor.white
         static let separatorColor = UIColor.neutral(shade: .shade10)
         static let verticalSeparatorColor = UIColor.neutral(shade: .shade5)
@@ -199,11 +199,11 @@ extension WPStyleGuide {
 
         struct PostingActivityColors {
             static let lightGrey = UIColor.neutral(shade: .shade10)
-            static let lightBlue = UIColor(fromRGBAColorWithRed: 145.0, green: 226.0, blue: 251.0, alpha: 1)
-            static let mediumBlue = UIColor(fromRGBAColorWithRed: 0.0, green: 190.0, blue: 246.0, alpha: 1)
-            static let darkBlue = UIColor(fromRGBAColorWithRed: 0.0, green: 131.0, blue: 169.0, alpha: 1)
-            static let darkGrey = UIColor.neutral(shade: .shade70)
-            static let orange = UIColor(fromRGBAColorWithRed: 245.0, green: 131.0, blue: 53.0, alpha: 1)
+            static let lightBlue = UIColor.primary(shade: .shade5)
+            static let mediumBlue = UIColor.primaryLight
+            static let blue = UIColor.primary
+            static let darkBlue = UIColor.primaryDark
+            static let pink = UIColor.accent
         }
 
         // MARK: - Posting Activity Collection View Styles

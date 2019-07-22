@@ -1,16 +1,13 @@
+import AutomatticTracks
 import UIKit
 import WordPressAuthenticator
 
 typealias SiteInformationCompletion = (SiteInformation) -> Void
 
 final class SiteInformationWizardContent: UIViewController {
-    private enum Rows: Int, CaseIterable {
+    private enum Row: Int, CaseIterable {
         case title = 0
         case tagline = 1
-
-        static func count() -> Int {
-            return allCases.count
-        }
 
         func matches(_ row: Int) -> Bool {
             return row == self.rawValue
@@ -119,7 +116,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupNextButton() {
-        nextStep.addTarget(self, action: #selector(goNext), for: .touchUpInside)
+        nextStep.addTarget(self, action: #selector(goToNextStep), for: .touchUpInside)
 
         setupButtonAsSkip()
     }
@@ -191,7 +188,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     @objc
-    private func goNext() {
+    private func goToNextStep() {
         let collectedData = SiteInformation(title: titleString(), tagLine: taglineString())
         completion(collectedData)
         trackBasicInformationNextStep()
@@ -210,16 +207,42 @@ final class SiteInformationWizardContent: UIViewController {
         }
     }
 
+    // MARK: - Cell Titles
+
     private func titleString() -> String {
-        return cell(at: IndexPath(row: Rows.title.rawValue, section: 0))?.valueTextField.text ?? ""
+        return valueText(for: Row.title)
     }
 
     private func taglineString() -> String {
-        return cell(at: IndexPath(row: Rows.tagline.rawValue, section: 0))?.valueTextField.text ?? ""
+        return valueText(for: Row.tagline)
     }
 
-    private func cell(at: IndexPath) -> InlineEditableNameValueCell? {
-        return table.cellForRow(at: at) as? InlineEditableNameValueCell
+    // MARK: - Accessing Cells
+
+    private func indexPath(for row: Row) -> IndexPath {
+        return IndexPath(row: row.rawValue, section: 0)
+    }
+
+    private func cell(for row: Row) -> InlineEditableNameValueCell? {
+        return cell(at: indexPath(for: row))
+    }
+
+    private func cell(at indexPath: IndexPath) -> InlineEditableNameValueCell? {
+        return table.cellForRow(at: indexPath) as? InlineEditableNameValueCell
+    }
+
+    // MARK: - Cell Value Text Fields
+
+    private func valueTextField(at indexPath: IndexPath) -> UITextField? {
+        return cell(at: indexPath)?.valueTextField
+    }
+
+    private func valueTextField(for row: Row) -> UITextField? {
+        return cell(for: row)?.valueTextField
+    }
+
+    private func valueText(for row: Row) -> String {
+        return valueTextField(for: row)?.text ?? ""
     }
 }
 
@@ -231,7 +254,7 @@ extension SiteInformationWizardContent: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Rows.count()
+        return Row.allCases.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -245,15 +268,19 @@ extension SiteInformationWizardContent: UITableViewDataSource {
     }
 
     private func configure(_ cell: InlineEditableNameValueCell, index: IndexPath) {
-        if Rows.title.matches(index.row) {
+        if Row.title.matches(index.row) {
             cell.nameLabel.text = TableStrings.site
             cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.site)
+            cell.valueTextField.delegate = self
+            cell.valueTextField.returnKeyType = .next
             cell.addTopBorder(withColor: .neutral(shade: .shade10))
         }
 
-        if Rows.tagline.matches(index.row) {
+        if Row.tagline.matches(index.row) {
             cell.nameLabel.text = TableStrings.tagline
             cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.tagline)
+            cell.valueTextField.delegate = self
+            cell.valueTextField.returnKeyType = .done
             cell.addBottomBorder(withColor: .neutral(shade: .shade10))
         }
 
@@ -290,6 +317,35 @@ extension SiteInformationWizardContent: InlineEditableNameValueCellDelegate {
 
     private func formIsFilled() -> Bool {
         return !titleString().isEmpty || !taglineString().isEmpty
+    }
+}
+
+extension SiteInformationWizardContent: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        for (index, row) in Row.allCases.enumerated() {
+            guard let rowTextField = valueTextField(for: row) else {
+                let errorMessage = "We expect all rows to have `valueTextField` but row \(index) doesn't.  Please review the logic."
+                CrashLogging.logMessage(errorMessage, properties: nil, level: .error)
+                assertionFailure(errorMessage)
+                continue
+            }
+
+            guard rowTextField == textField else {
+                continue
+            }
+
+            let indexPath = IndexPath(row: index + 1, section: 0)
+
+            guard let nextTextField = valueTextField(at: indexPath) else {
+                goToNextStep()
+                return false
+            }
+
+            nextTextField.becomeFirstResponder()
+            return false
+        }
+
+        return true
     }
 }
 

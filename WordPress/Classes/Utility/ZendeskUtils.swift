@@ -1,8 +1,11 @@
 import Foundation
-import ZendeskSDK
-import ZendeskCoreSDK
 import CoreTelephony
 import WordPressAuthenticator
+
+#if !XCODE11
+import ZendeskSDK
+import ZendeskCoreSDK
+#endif
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
@@ -13,6 +16,8 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationReceivedNotification = NSNotification.Name.ZendeskPushNotificationReceivedNotification
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
+
+#if !XCODE11
 
 /// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
 /// as well as displaying views for the Help Center, new tickets, and ticket list.
@@ -366,7 +371,7 @@ private extension ZendeskUtils {
          Steps to selecting which account to use:
          1. If there is a WordPress.com account, use that.
          2. If not, use selected site.
-        */
+         */
 
         let context = ContextManager.sharedInstance().mainContext
 
@@ -425,8 +430,8 @@ private extension ZendeskUtils {
     static func registerDeviceIfNeeded() {
 
         guard let deviceID = ZendeskUtils.sharedInstance.deviceID,
-        let zendeskInstance = Zendesk.instance else {
-            return
+            let zendeskInstance = Zendesk.instance else {
+                return
         }
 
         ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { (pushResponse, error) in
@@ -668,7 +673,7 @@ private extension ZendeskUtils {
 
         // Add gutenbergIsDefault tag
         let gutenbergSettings = GutenbergSettings()
-        if gutenbergSettings.isGutenbergEnabled() {
+        if gutenbergSettings.isGutenbergEnabled {
             tags.append(Constants.gutenbergIsDefault)
         }
 
@@ -957,8 +962,8 @@ extension ZendeskUtils: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard textField == ZendeskUtils.sharedInstance.alertNameField,
-        let text = textField.text else {
-            return true
+            let text = textField.text else {
+                return true
         }
 
         let newLength = text.count + string.count - range.length
@@ -966,3 +971,84 @@ extension ZendeskUtils: UITextFieldDelegate {
     }
 
 }
+
+
+
+#else
+
+/// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
+/// as well as displaying views for the Help Center, new tickets, and ticket list.
+///
+@objc class ZendeskUtils: NSObject {
+
+    // MARK: - Public Properties
+
+    static var sharedInstance: ZendeskUtils = ZendeskUtils()
+    static var zendeskEnabled = false
+    @objc static var unreadNotificationsCount = 0
+
+    @objc static var showSupportNotificationIndicator: Bool {
+        return false
+    }
+
+    struct PushNotificationIdentifiers {
+        static let key = "type"
+        static let type = "zendesk"
+    }
+
+    // MARK: - Private Properties
+
+    private override init() {}
+    private var sourceTag: WordPressSupportSourceTag?
+
+    private var userName: String?
+    private var userEmail: String?
+    private var deviceID: String?
+    private var haveUserIdentity = false
+    private var alertNameField: UITextField?
+    private var sitePlansCache = [Int: RemotePlanSimpleDescription]()
+
+    private static var zdAppID: String?
+    private static var zdUrl: String?
+    private static var zdClientId: String?
+    private static var presentInController: UIViewController?
+
+    private static var appVersion: String {
+        return Bundle.main.shortVersionString() ?? ""
+    }
+
+    private static var appLanguage: String {
+        return Locale.preferredLanguages[0]
+    }
+
+    // MARK: - Public Methods
+
+    @objc static func setup() {}
+
+    // MARK: - Show Zendesk Views
+
+    func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {}
+    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {}
+    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {}
+    func showSupportEmailPrompt(from controller: UIViewController, completion: @escaping (Bool) -> Void) {}
+
+    func cacheUnlocalizedSitePlans() {}
+
+    // MARK: - Device Registration
+    static func setNeedToRegisterDevice(_ identifier: String) {}
+    static func unregisterDevice() {}
+
+    // MARK: - Push Notifications
+
+    static func handlePushNotification(_ userInfo: NSDictionary) {}
+    static func pushNotificationReceived() {}
+    static func pushNotificationRead() {}
+
+    // MARK: - Helpers
+
+    static func userSupportEmail() -> String? {
+        return nil
+    }
+}
+
+#endif

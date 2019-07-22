@@ -218,6 +218,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.isAccessibilityElement = true
         tableView.estimatedRowHeight = postCardEstimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
 
         let bundle = Bundle.main
 
@@ -233,6 +234,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
+
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     override func configureAuthorFilter() {
@@ -269,13 +272,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.tableHeaderView = searchWrapperView
     }
 
-    private func configureSeparator() {
-        tableView.separatorStyle = isCompact || searchController.isActive ? .singleLine : .none
-    }
-
     func showCompactOrDefault() {
         configureGhost()
-        configureSeparator()
         tableView.reloadSections([0], with: .automatic)
         postsViewButtonItem.image = postViewIcon
     }
@@ -708,7 +706,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func didPresentSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
-        configureSeparator()
         _tableViewHandler.isSearching = true
 
         tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
@@ -732,7 +729,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func didDismissSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
-        configureSeparator()
 
         UIView.animate(withDuration: Animations.searchDismissDuration) {
             self.filterTabBar.alpha = WPAlphaFull

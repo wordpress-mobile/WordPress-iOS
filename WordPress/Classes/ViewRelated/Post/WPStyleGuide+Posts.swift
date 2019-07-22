@@ -15,59 +15,62 @@ extension WPStyleGuide {
     }
 
     // MARK: - Card View Styles
-    static var postCardBorderColor = UIColor(fromRGBAColorWithRed: 215.0, green: 227.0, blue: 235.0, alpha: 1.0)
+    static let postCardBorderColor: UIColor = .neutral(shade: .shade10)
+
+    static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
 
     class func applyPostCardStyle(_ cell: UITableViewCell) {
-        cell.backgroundColor = greyLighten30()
-        cell.contentView.backgroundColor = greyLighten30()
+        cell.backgroundColor = .tableBackground
+        cell.contentView.backgroundColor = .tableBackground
     }
 
     class func applyPostTitleStyle(_ label: UILabel) {
-        label.textColor = darkGrey()
+        label.textColor = .text
     }
 
     class func applyPostSnippetStyle(_ label: UILabel) {
-        label.textColor = darkGrey()
+        label.textColor = .text
     }
 
     class func applyPostDateStyle(_ label: UILabel) {
         configureLabelForRegularFontStyle(label)
-        label.textColor = grey()
+        label.textColor = .textSubtle
     }
 
     class func applyPostButtonStyle(_ button: UIButton) {
         configureLabelForRegularFontStyle(button.titleLabel)
-        button.setTitleColor(grey(), for: .normal)
+        button.setTitleColor(.textSubtle, for: .normal)
     }
 
     class func applyPostProgressViewStyle(_ progressView: UIProgressView) {
-        progressView.trackTintColor = greyLighten20()
-        progressView.progressTintColor = mediumBlue()
-        progressView.tintColor = mediumBlue()
+        progressView.trackTintColor = .divider
+        progressView.progressTintColor = .primary
+        progressView.tintColor = .primary
     }
 
     class func applyRestorePostLabelStyle(_ label: UILabel) {
         configureLabelForRegularFontStyle(label)
-        label.textColor = grey()
+        label.textColor = .textSubtle
     }
 
     class func applyRestorePostButtonStyle(_ button: UIButton) {
         configureLabelForRegularFontStyle(button.titleLabel)
-        button.setTitleColor(wordPressBlue(), for: .normal)
-        button.setTitleColor(darkBlue(), for: .highlighted)
+        button.setTitleColor(.accent, for: .normal)
+        button.setTitleColor(.accentDark, for: .highlighted)
+        button.tintColor = .accent
     }
 
     class func applyBorderStyle(_ view: UIView) {
-        view.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale).isActive = true
+        view.heightAnchor.constraint(equalToConstant: separatorHeight).isActive = true
         view.backgroundColor = postCardBorderColor
     }
 
     class func applyActionBarButtonStyle(_ button: UIButton) {
         button.flipInsetsForRightToLeftLayoutDirection()
-        button.setImage(button.imageView?.image?.imageWithTintColor(grey()), for: .normal)
-        button.setTitleColor(grey(), for: .normal)
-        button.setTitleColor(darkGrey(), for: .highlighted)
-        button.setTitleColor(darkGrey(), for: .selected)
+        button.setImage(button.imageView?.image?.imageWithTintColor(.textSubtle), for: .normal)
+        button.setTitleColor(.textSubtle, for: .normal)
+        button.setTitleColor(.text, for: .highlighted)
+        button.setTitleColor(.text, for: .selected)
     }
 
     class func insertSelectedBackgroundSubview(_ selectedBackgroundView: UIView, topMargin: CGFloat) {
@@ -79,8 +82,8 @@ extension WPStyleGuide {
             marginMask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor),
             marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor),
             marginMask.heightAnchor.constraint(equalToConstant: topMargin)
-        ])
-        marginMask.backgroundColor = greyLighten30()
+            ])
+        marginMask.backgroundColor = .neutral(shade: .shade5)
     }
 
     // MARK: - Attributed String Attributes

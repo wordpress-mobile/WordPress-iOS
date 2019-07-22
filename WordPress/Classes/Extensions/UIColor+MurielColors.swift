@@ -4,7 +4,7 @@ import WordPressShared
 /// Generates the names of the named colors in the ColorPalette.xcasset
 enum MurielColorName: String, CustomStringConvertible {
     // MARK: - Base colors
-    case airo
+    case wordPressBlue
     case blue
     case celadon
     case gray
@@ -16,7 +16,8 @@ enum MurielColorName: String, CustomStringConvertible {
     case yellow
 
     var description: String {
-        return rawValue.capitalized
+        // can't use .capitalized because it lowercases the P and B in "wordPressBlue"
+        return rawValue.prefix(1).uppercased() + rawValue.dropFirst()
     }
 }
 
@@ -58,7 +59,7 @@ struct MurielColor {
 
     // MARK: - Muriel's semantic colors
     static let accent = MurielColor(name: .pink)
-    static let brand = MurielColor(name: .airo)
+    static let brand = MurielColor(name: .wordPressBlue)
     static let divider = MurielColor(name: .gray, shade: .shade10)
     static let error = MurielColor(name: .red)
     static let neutral = MurielColor(name: .gray)
@@ -69,7 +70,8 @@ struct MurielColor {
     static let warning = MurielColor(name: .yellow)
 
     // MARK: - Additional iOS semantic colors
-    static let navigationBar = MurielColor(name: .airo)
+    static let navigationBar = MurielColor(name: .wordPressBlue)
+    static let tableBackground = MurielColor(name: .gray, shade: .shade0)
 
     /// The full name of the color, with required shade value
     func assetName() -> String {
@@ -114,6 +116,9 @@ extension UIColor {
 
     /// Muriel brand color
     static var brand = muriel(color: .brand)
+    class func brand(shade: MurielColorShade) -> UIColor {
+        return muriel(color: MurielColor(from: .brand, shade: shade))
+    }
 
     /// Muriel divider color
     static var divider = muriel(color: .divider)
@@ -231,6 +236,9 @@ extension UIColor {
     /// Muriel text subtle color
     static var textSubtle = muriel(color: .textSubtle)
 
+    /// Muriel placeholder text color
+    static var textPlaceholder = neutral(shade: .shade30)
+
     /// Muriel warning color
     static var warning = muriel(color: .warning)
     class func warning(shade: MurielColorShade) -> UIColor {
@@ -242,10 +250,12 @@ extension UIColor {
 
     static var navigationBar = muriel(color: .navigationBar)
 
+    static var tableBackground = muriel(color: .tableBackground)
+
     /// Muriel/iOS unselected color
     static var unselected: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(name: .gray, shade: .shade30))
+            return muriel(color: MurielColor(name: .gray, shade: .shade20))
         } else {
             return WPStyleGuide.greyLighten10()
         }

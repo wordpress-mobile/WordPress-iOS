@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -228,6 +229,14 @@
                                 </constraints>
                                 <color key="trackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </progressView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kcO-mG-FcD">
+                                <rect key="frame" x="0.0" y="404.5" width="326" height="1"/>
+                                <color key="backgroundColor" name="Gray10"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="Nuu-dr-YF0"/>
+                                    <constraint firstAttribute="width" constant="326" id="Zzv-2b-WyX"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9eW-ex-CSu">
                                 <rect key="frame" x="0.0" y="448.5" width="326" height="1"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -242,13 +251,16 @@
                             <constraint firstItem="9eW-ex-CSu" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="3u1-2g-wAg"/>
                             <constraint firstAttribute="bottom" secondItem="33v-Uz-9S6" secondAttribute="bottom" id="6IU-Qy-TAU"/>
                             <constraint firstItem="33v-Uz-9S6" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="84P-oH-EZa"/>
+                            <constraint firstAttribute="trailing" secondItem="kcO-mG-FcD" secondAttribute="trailing" id="AEy-Bg-FgQ"/>
                             <constraint firstAttribute="trailing" secondItem="9eW-ex-CSu" secondAttribute="trailing" id="HUj-hh-Ili"/>
                             <constraint firstAttribute="trailing" secondItem="JqA-of-VBn" secondAttribute="trailing" id="MY8-mP-ASa"/>
                             <constraint firstAttribute="bottom" secondItem="JqA-of-VBn" secondAttribute="bottom" id="NwA-tt-aRf"/>
+                            <constraint firstItem="kcO-mG-FcD" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="WNn-kw-WAj"/>
                             <constraint firstItem="sev-PH-HG8" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="Yrw-8m-Cu0"/>
                             <constraint firstAttribute="bottom" secondItem="9eW-ex-CSu" secondAttribute="bottom" id="a2Y-qy-DA8"/>
                             <constraint firstItem="JqA-of-VBn" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="bPW-Sv-fZu"/>
                             <constraint firstItem="JqA-of-VBn" firstAttribute="top" secondItem="Lk7-nZ-b0t" secondAttribute="top" constant="16" id="hLL-be-nDD"/>
+                            <constraint firstItem="A8f-pJ-oKt" firstAttribute="top" secondItem="kcO-mG-FcD" secondAttribute="bottom" id="rKR-Zt-Tm7"/>
                             <constraint firstAttribute="trailing" secondItem="sev-PH-HG8" secondAttribute="trailing" id="uus-mZ-ErN"/>
                             <constraint firstAttribute="trailing" secondItem="33v-Uz-9S6" secondAttribute="trailing" id="xYe-gc-ksZ"/>
                         </constraints>
@@ -265,6 +277,7 @@
             </tableViewCellContentView>
             <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             <connections>
+                <outlet property="actionBarSeparator" destination="kcO-mG-FcD" id="UJZ-Bx-3Dw"/>
                 <outlet property="actionBarView" destination="6Zz-tH-1DC" id="BX0-Jw-TD9"/>
                 <outlet property="authorLabel" destination="l4E-Qn-Vgl" id="13b-bv-tba"/>
                 <outlet property="bottomBorder" destination="9eW-ex-CSu" id="wXM-fE-LEN"/>
@@ -296,5 +309,8 @@
         <image name="icon-post-actionbar-more" width="18" height="18"/>
         <image name="icon-post-actionbar-restore" width="18" height="18"/>
         <image name="icon-post-actionbar-view" width="18" height="18"/>
+        <namedColor name="Gray10">
+            <color red="0.80784313725490198" green="0.78823529411764703" blue="0.80784313725490198" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

@@ -45,6 +45,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
         controller.site = site
         controller.domainPurchasedCallback = domainPurchasedCallback
         controller.siteName = siteNameForSuggestions(for: site)
+
         return controller
     }
 
@@ -80,6 +81,11 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
         if let vc = segue.destination as? RegisterDomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
+
+            if BlogService.blog(with: site)?.hasBloggerPlan == true {
+                vc.domainSuggestionType = .whitelistedTopLevelDomains(["blog"])
+            }
+
             domainsTableViewController = vc
         }
     }

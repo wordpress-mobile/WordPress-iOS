@@ -13,13 +13,12 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    # pod 'WordPressShared', '~> 1.8.4'
+    pod 'WordPressShared', '~> 1.8.5'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    pod 'WordPressShared', :git => 'https://github.com/leandroalonso/WordPress-iOS-Shared.git', :branch => 'feature/wpios11646_post_list_toggle_events'
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -44,8 +43,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.2.0'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/fix-publishing-private-xmlrpc-posts'
+    pod 'WordPressKit', '~> 4.2.1.beta'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/filter-tldrs-in-domain-suggestions'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ef4f184f5a33ef628c053892e8f706046191d66c'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -91,10 +90,29 @@ end
 def gutenberg_dependencies(options)
     dependencies = [
         'React',
+        'React-Core',
+        'React-DevSupport',
+        'React-RCTActionSheet',
+        'React-RCTAnimation',
+        'React-RCTBlob',
+        'React-RCTImage',
+        'React-RCTLinking',
+        'React-RCTNetwork',
+        'React-RCTSettings',
+        'React-RCTText',
+        'React-RCTVibration',
+        'React-RCTWebSocket',
+        'React-cxxreact',
+        'React-jsinspector',
+        'React-jsi',
+        'React-jsiexecutor',
         'yoga',
         'Folly',
+        'glog',
+        'react-native-keyboard-aware-scroll-view',
         'react-native-safe-area',
         'react-native-video',
+        'RNSVG'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -121,10 +139,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.8.0'
-
-    pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
-    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
+    gutenberg :tag => 'v1.9.0'
 
     ## Third party libraries
     ## =====================
@@ -159,9 +174,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.6.0'
+    pod 'WordPressAuthenticator', '~> 1.7.0-beta.2'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issues/11683-new-wpios-colors'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issues/11683-more-color-changes'
 
     aztec
     wordpress_ui

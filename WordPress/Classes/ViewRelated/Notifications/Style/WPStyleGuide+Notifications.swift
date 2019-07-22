@@ -26,7 +26,7 @@ extension WPStyleGuide {
         public static let noticonUnmoderatedColor   = UIColor.warning
 
         public static let noteBackgroundReadColor   = UIColor.white
-        public static let noteBackgroundUnreadColor = UIColor.neutral(shade: .shade0)
+        public static let noteBackgroundUnreadColor = UIColor.primary(shade: .shade0)
 
         public static let noteSeparatorColor        = blockSeparatorColor
 

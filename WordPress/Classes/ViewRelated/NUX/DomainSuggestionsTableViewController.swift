@@ -17,9 +17,8 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
 
     open var siteName: String?
     open var delegate: DomainSuggestionsTableViewControllerDelegate?
-    open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType {
-        return .onlyWordPressDotCom
-    }
+    open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom
+
     open var useFadedColorForParentDomains: Bool {
         return true
     }

@@ -1,3 +1,6 @@
-* Förbättringar i blockredigeraren, tjoho! Nu finns det block för video, citat och ”Läs mer”. Redigeraren behåller textformatering, såsom fetstil och kursiv text när du kopierar och klistrar in. I verktygslisten finns det ett stiligt nytt färgschema och listor i flera nivåer. Låt bara inte alla dina nya möjligeter få dig att tappa huvudet.
-* Ibland kunde det vara svårt att ställa in utvald bild för ett inlägg om internetanslutningen var dålig. Eftersom vi inte har kontroll över nätkvaliteten över hela världen fixade vi appen i stället: * Nu bör utvalda bilder fungera smidigare oberoende av anslutningen.
-* Insikterna i statistiken har finputsats med layouter i dubbla kolumner för statistiken för innevarande dag och för statistiken sedan början, så att mer av din statistik får plats.
+* Statistiska insikter: kolla in den nya layouten i två kolumner med statistik över totalt antal följare och uppgifter om innevarande år och populäraste tider.
+* Insikter om innevarande år: tryck på alternativet ”visa mer” för att se en ögonblicksbild över totalt antal inlägg, kommentarer, gillamarkeringar med mera för innevarande år fram till dagens datum.
+* Statistikperioder: Vi har lagt till en världskarta i avsnittet med alla länder.
+* Rättat ett fel som vid omladdning ibland kunde tömma statistiken.
+* Designa själv! Gå till Jag > App-inställningar > App-ikon så kan du välja mellan en rad olika ikoner för appen.
+* Appens färgschema har uppdaterats.

@@ -140,6 +140,11 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)isDraft;
 
 /**
+ Returns YES if the original post is a draft
+ */
+- (BOOL)originalIsDraft;
+
+/**
  Returns YES if the post has a future date_created_gmt.
  This is different from "isScheduled" in that  a post with a draft, pending, or
  trashed status can also have a date_created_gmt with a future value.

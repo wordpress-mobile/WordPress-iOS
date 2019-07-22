@@ -203,6 +203,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
     private var isFirstGutenbergLayout = true
+    var shouldPresentInformativeDialog = false
 
     // MARK: - Initializers
     required init(
@@ -500,10 +501,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
+    func gutenbergDidMount(unsupportedBlockNames: [String]) {
         startAutoSave()
         if !editorSession.started {
-            editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
+            editorSession.start(unsupportedBlocks: unsupportedBlockNames)
         }
     }
 
@@ -515,7 +516,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogInfo(message)
         case .warn:
             DDLogWarn(message)
-        case .error:
+        case .error, .fatal:
             DDLogError(message)
         }
     }

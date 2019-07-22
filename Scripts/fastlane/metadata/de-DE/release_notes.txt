@@ -1,3 +1,6 @@
-* Verbesserungen am Blockeditor, ahoi! Dir stehen Video-, Zitate- und andere Blöcke zur Verfügung, der Editor behält Schriftstile wie Fett und Kursiv bei, wenn du Texte kopierst und einfügst, es gibt ein schickes neues Farbschema und die Toolbar verfügt jetzt über verschachtelte Listen. Lass dir die neuen Superkräfte möglichst nicht zu Kopf steigen.
-* Manchmal war es bei einer schlechten Netzwerkverbindung problematisch, ein Beitragsbild in einem Beitrag zu laden. Da wir keinen Einfluss auf die Netzwerke dieser Welt haben, haben wir stattdessen an der App gearbeitet: * Beitragsbilder sollten nun bei allen Verbindungen reibungsloser angezeigt werden.
-* Die Statistikeinsichten wurden mit zweispaltigen Layouts für die heutige und Gesamtstatistik ein wenig aufpoliert, damit dir mehr Daten angezeigt werden.
+* Stats Insights: check out new two-column layouts for Follower Totals, This Year, and Most Popular Time stats.
+* This Year Insights: see a snapshot of total posts, comments, likes, and more for the year-to-date when you click on the View More option.
+* Stats Periods: We added a world map in the countries section.
+* Fixed an issue where refreshing sometimes cleared stats.
+* You do you! Go to Me > App Settings > App Icon to choose from a series of app icons.
+* Refreshed the app’s color scheme.
