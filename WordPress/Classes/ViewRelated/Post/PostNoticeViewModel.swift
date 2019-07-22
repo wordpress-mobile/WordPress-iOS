@@ -91,10 +91,15 @@ struct PostNoticeViewModel {
     }
 
     private var failureTitle: String {
-        if post is Page {
-            return NSLocalizedString("Page failed to upload", comment: "Title of notification displayed when a page has failed to upload.")
-        } else {
-            return NSLocalizedString("Post failed to upload", comment: "Title of notification displayed when a post has failed to upload.")
+        let status = post.status ?? .draft
+
+        switch status {
+        case .publish, .publishPrivate:
+            return NSLocalizedString("Post will be published the next time your device is online", comment: "Text displayed in notice after a post if published while offline.")
+        case .scheduled:
+            return NSLocalizedString("Post will be scheduled the next time your device is online", comment: "Text displayed in notice after a post if scheduled while offline.")
+        default:
+            return NSLocalizedString("Post will be saved the next time your device is online", comment: "Text displayed in notice after a draft if saved while offline.")
         }
     }
 
