@@ -138,6 +138,7 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     var didCallEdit = false
     var didCallView = false
     var didCallRetry = false
+    var didCallCancel = false
 
     func stats(for post: AbstractPost) {
         didCallHandleStats = true
@@ -153,6 +154,10 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
 
     func edit(_ post: AbstractPost) {
         didCallEdit = true
+    }
+
+    func cancelSave(of post: AbstractPost) {
+        didCallCancel = true
     }
 
     func view(_ post: AbstractPost) {

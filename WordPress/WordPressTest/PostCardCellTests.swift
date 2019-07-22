@@ -213,13 +213,13 @@ class PostCardCellTests: XCTestCase {
         XCTAssertEqual(postActionSheetDelegateMock.calledWithView, button)
     }
 
-    func testRetryAction() {
+    func testCancelAction() {
         let post = PostBuilder().published().build()
         postCell.configure(with: post)
 
-        postCell.retry()
+        postCell.cancel()
 
-        XCTAssertTrue(interactivePostViewDelegateMock.didCallRetry)
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallCancel)
     }
 
     func testShowRetryButtonAndHideViewButton() {
