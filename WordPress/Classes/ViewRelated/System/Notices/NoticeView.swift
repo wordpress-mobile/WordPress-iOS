@@ -130,7 +130,9 @@ class NoticeView: UIView {
         titleLabel.textColor = notice.style.titleColor
         messageLabel.textColor = notice.style.messageColor
 
+        titleLabel.numberOfLines = 0
         messageLabel.numberOfLines = 0
+
         if notice.cancelTitle != nil {
             messageLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Appearance.minMessageHeight).isActive = true
         }
@@ -266,8 +268,6 @@ class NoticeView: UIView {
             titleLabel.isHidden = true
         } else if let message = notice.message {
             messageLabel.text = message
-        } else {
-            titleLabel.numberOfLines = 2
         }
     }
 
