@@ -22,7 +22,7 @@ class GutenbergSettingsTests: XCTestCase {
     }
 
     var isGutenbergEnabled: Bool {
-        return settings.isGutenbergEnabled(for: blog)
+        return blog.isGutenbergEnabled
     }
 
     var mustUseGutenberg: Bool {
@@ -54,14 +54,11 @@ class GutenbergSettingsTests: XCTestCase {
             // This simulates the first launch
             let settings = GutenbergSettings(database: database)
 
-            XCTAssertFalse(settings.isGutenbergEnabled(for: blog))
+            XCTAssertFalse(blog.isGutenbergEnabled)
 
             settings.setGutenbergEnabled(true, for: blog)
 
-            // This simulates a second launch
-            let secondEditorSettings = GutenbergSettings(database: database)
-
-            XCTAssertTrue(secondEditorSettings.isGutenbergEnabled(for: blog))
+            XCTAssertTrue(blog.isGutenbergEnabled)
         }
 
         BuildConfiguration.localDeveloper.test(testClosure)
