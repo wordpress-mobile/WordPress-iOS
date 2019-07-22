@@ -33,6 +33,10 @@ class PostCardStatusViewModel: NSObject {
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
         } else if post.isFailed {
+            if post.status == .publish {
+                return NSLocalizedString("Post will be published next time your device is online", comment: "Message shown in the posts list when a post is scheduled for publishing")
+            }
+
             return NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
@@ -104,7 +108,7 @@ class PostCardStatusViewModel: NSObject {
         }
 
         if post.isFailed {
-            return .error
+            return status == .publish ? .warning : .error
         }
 
         switch status {
