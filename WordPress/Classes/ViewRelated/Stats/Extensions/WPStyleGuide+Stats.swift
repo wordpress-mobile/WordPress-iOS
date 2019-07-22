@@ -31,6 +31,7 @@ extension WPStyleGuide {
         }
 
         static func configureCell(_ cell: UITableViewCell) {
+            cell.backgroundColor = tableBackgroundColor
             cell.contentView.backgroundColor = cellBackgroundColor
         }
 
