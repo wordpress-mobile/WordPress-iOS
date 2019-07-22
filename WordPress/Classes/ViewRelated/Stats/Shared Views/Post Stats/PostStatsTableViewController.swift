@@ -55,7 +55,14 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
             return nil
         }
 
-        cell.configure(date: selectedDate, period: .day, delegate: self, mostRecentDate: store.getMostRecentDate(forPost: postID))
+        let lastTwoWeeks = store.getPostStats(for: postID)?.lastTwoWeeks ?? []
+
+        cell.configure(date: selectedDate,
+                       period: .day,
+                       delegate: self,
+                       expectedPeriodCount: lastTwoWeeks.count,
+                       mostRecentDate: store.getMostRecentDate(forPost: postID))
+
         tableHeaderView = cell
         return cell
     }
