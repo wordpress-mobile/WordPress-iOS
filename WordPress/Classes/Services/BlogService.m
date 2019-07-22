@@ -296,9 +296,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     dispatch_group_enter(syncGroup);
     [editorService syncEditorSettingsFor:blog success:^{
         dispatch_group_leave(syncGroup);
-        DDLogInfo(@"--> EDITOR SETTINGS SYNCHED!!!");
     } failure:^(NSError * _Nonnull error) {
-        DDLogError(@"Failed to sync Editor settings");
+        if ([error.domain isEqualToString:EditorSettingsServiceErrorDomain] && error.code == EditorSettingsServiceErrorMobileEditorNotSet) {
+            /// DO MIGRATION
+        } else {
+            DDLogError(@"Failed to sync Editor settings");
+        }
         dispatch_group_leave(syncGroup);
     }];
 

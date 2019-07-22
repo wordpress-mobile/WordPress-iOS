@@ -45,7 +45,7 @@ end
 def wordpress_kit
     #pod 'WordPressKit', '~> 4.2.1-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'fix/stats_insights_parsing'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'c116a2cdf47d2f9a3ff8b9c7da1ed8da1938f16e'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ff0438ce5648954294f20ea38bf9ebdaa7f8f891'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
