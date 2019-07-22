@@ -37,7 +37,8 @@ extension AbstractPost {
     /// one of the `PostStatus...` constants.  If a matching title is not found
     /// the status is returned.
     ///
-    /// - parameter string: The post status value
+    /// - parameter status: The post status value
+    ///
     /// - returns: The localized title for the specified status, or the status if a title was not found.
     ///
     @objc
