@@ -32,9 +32,10 @@ import Foundation
         blog.webEditor = settings.web.rawValue
     }
 
-    func postEditorSetting(_ newEditor: MobileEditor, for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
+    func postEditorSetting(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
         guard
-            let remoteEditor = EditorSettings.Mobile(rawValue: newEditor.rawValue),
+            let selectedEditor = blog.editor.mobile,
+            let remoteEditor = EditorSettings.Mobile(rawValue: selectedEditor.rawValue),
             let api = blog.wordPressComRestApi(),
             let siteID = blog.dotComID?.intValue
         else {
@@ -42,16 +43,9 @@ import Foundation
             failure(error)
             return
         }
-        let oldValue = blog.mobileEditor
-        blog.mobileEditor = newEditor.rawValue
-
         let service = EditorServiceRemote(wordPressComRestApi: api)
         service.postDesignateMobileEditor(siteID, editor: remoteEditor, success: { _ in
-            ContextManager.sharedInstance().save(self.managedObjectContext)
             success()
-        }) { (error) in
-            blog.mobileEditor = oldValue
-            failure(error)
-        }
+        }, failure: failure)
     }
 }

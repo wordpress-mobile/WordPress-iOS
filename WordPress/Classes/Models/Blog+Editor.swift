@@ -19,6 +19,9 @@ extension Blog {
         var web: WebEditor? {
             return WebEditor(rawValue: blog.webEditor ?? "")
         }
+        func setMobileEditor(_ newValue: MobileEditor) {
+            blog.mobileEditor = newValue.rawValue
+        }
     }
 
     var editor: Editor {

@@ -26,7 +26,10 @@ class GutenbergSettings {
     // MARK: Public accessors
 
     func isGutenbergEnabled(for blog: Blog) -> Bool {
-        return blog.editor.mobile == .gutenberg
+        guard let mobileEditor = blog.editor.mobile else {
+            return false
+        }
+        return mobileEditor == .gutenberg
     }
 
     func setGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
@@ -39,12 +42,17 @@ class GutenbergSettings {
             trackSettingChange(to: isEnabled)
         }
 
-        let editorSettingsService = EditorSettingsService(managedObjectContext: context)
-        editorSettingsService.postEditorSetting(selectedEditor, for: blog, success: {}) { (error) in
-            DDLogError("Failed to post new post selection with Error: \(error)")
-        }
+        blog.editor.setMobileEditor(selectedEditor)
+        ContextManager.sharedInstance().save(context)
 
         WPAnalytics.refreshMetadata()
+    }
+
+    func postSettingsToRemote(for blog: Blog) {
+        let editorSettingsService = EditorSettingsService(managedObjectContext: context)
+        editorSettingsService.postEditorSetting(for: blog, success: {}) { (error) in
+            DDLogError("Failed to post new post selection with Error: \(error)")
+        }
     }
 
     private func shouldUpdateSettings(with newSetting: MobileEditor, for blog: Blog) -> Bool {
