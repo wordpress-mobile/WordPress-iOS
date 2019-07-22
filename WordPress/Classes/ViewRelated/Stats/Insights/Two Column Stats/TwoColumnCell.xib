@@ -19,15 +19,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="394.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NTK-eu-Zrd" userLabel="Top Separator Line">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
-                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="92V-aQ-RRF"/>
-                        </constraints>
-                    </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="53U-Zk-ZGa" userLabel="Rows Stack View">
-                        <rect key="frame" x="0.0" y="0.5" width="375" height="350"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="350.5"/>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cfy-Hl-Mjq" userLabel="View More View">
                         <rect key="frame" x="0.0" y="350" width="375" height="44"/>
@@ -68,6 +61,13 @@
                             <constraint firstAttribute="bottom" secondItem="uon-fL-Zcd" secondAttribute="bottom" id="zPx-Uo-fJ0"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NTK-eu-Zrd" userLabel="Top Separator Line">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="92V-aQ-RRF"/>
+                        </constraints>
+                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cm8-Qw-O9e" userLabel="Bottom Separator Line">
                         <rect key="frame" x="0.0" y="394" width="375" height="0.5"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -78,15 +78,15 @@
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
+                    <constraint firstItem="Cm8-Qw-O9e" firstAttribute="top" secondItem="Cfy-Hl-Mjq" secondAttribute="bottom" id="1qX-rv-2Jq"/>
                     <constraint firstAttribute="bottom" secondItem="Cm8-Qw-O9e" secondAttribute="bottom" id="3M7-TD-t69"/>
                     <constraint firstAttribute="bottom" secondItem="53U-Zk-ZGa" secondAttribute="bottom" constant="44" id="5cr-Nz-ZDr"/>
                     <constraint firstItem="NTK-eu-Zrd" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="7Ya-0E-IUF"/>
                     <constraint firstItem="NTK-eu-Zrd" firstAttribute="top" secondItem="aea-rN-rAD" secondAttribute="top" id="ARx-Y7-BtJ"/>
                     <constraint firstItem="Cfy-Hl-Mjq" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="CW9-bq-3C0"/>
-                    <constraint firstItem="Cm8-Qw-O9e" firstAttribute="top" secondItem="Cfy-Hl-Mjq" secondAttribute="bottom" id="GOc-lk-WGg"/>
+                    <constraint firstItem="53U-Zk-ZGa" firstAttribute="top" secondItem="aea-rN-rAD" secondAttribute="top" id="HeU-RZ-kPi"/>
                     <constraint firstAttribute="trailing" secondItem="53U-Zk-ZGa" secondAttribute="trailing" id="I9H-dB-FKj"/>
                     <constraint firstAttribute="trailing" secondItem="Cm8-Qw-O9e" secondAttribute="trailing" id="PzX-nO-5NH"/>
-                    <constraint firstItem="53U-Zk-ZGa" firstAttribute="top" secondItem="NTK-eu-Zrd" secondAttribute="bottom" id="ZCG-4P-igX"/>
                     <constraint firstItem="53U-Zk-ZGa" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="aWs-1X-FnG"/>
                     <constraint firstAttribute="trailing" secondItem="Cfy-Hl-Mjq" secondAttribute="trailing" id="bAa-4j-6TL"/>
                     <constraint firstAttribute="trailing" secondItem="NTK-eu-Zrd" secondAttribute="trailing" id="jHo-RQ-WZe"/>
@@ -96,7 +96,6 @@
             <viewLayoutGuide key="safeArea" id="5pF-Tt-Ldy"/>
             <connections>
                 <outlet property="bottomSeparatorLine" destination="Cm8-Qw-O9e" id="aJ6-i9-r5U"/>
-                <outlet property="bottomSeparatorLineHeightConstraint" destination="3NE-5X-JlJ" id="kaO-5K-fcS"/>
                 <outlet property="rowsStackView" destination="53U-Zk-ZGa" id="T8V-zp-KCA"/>
                 <outlet property="rowsStackViewBottomConstraint" destination="5cr-Nz-ZDr" id="gpX-JD-vtf"/>
                 <outlet property="topSeparatorLine" destination="NTK-eu-Zrd" id="9Sq-Ea-hi8"/>
