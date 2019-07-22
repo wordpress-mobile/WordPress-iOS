@@ -204,7 +204,9 @@ class AppSettingsViewController: UITableViewController {
             //Soon the switch will be moved to the Site Settings view.
             let account = AccountService(managedObjectContext: Environment.current.contextManager.mainContext).defaultWordPressComAccount()
             account?.blogs.forEach { blog in
-                GutenbergSettings().setGutenbergEnabled(isEnabled, for: blog)
+                let settings = GutenbergSettings()
+                settings.setGutenbergEnabled(isEnabled, for: blog)
+                settings.postSettingsToRemote(for: blog)
             }
             self?.reloadViewModel()
         }
