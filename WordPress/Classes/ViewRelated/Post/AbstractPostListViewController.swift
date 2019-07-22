@@ -975,7 +975,7 @@ class AbstractPostListViewController: UIViewController,
         postService.trashPost(apost, success: {
             // If we permanently deleted the post
             if trashed {
-                PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
+                PostCoordinator.shared.cancelSave(of: apost)
                 MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
             }
         }, failure: { [weak self] (error) in

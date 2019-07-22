@@ -219,7 +219,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         super.init(nibName: nil, bundle: nil)
 
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
+        PostCoordinator.shared.cancelSave(of: post)
         navigationBarManager.delegate = self
     }
 

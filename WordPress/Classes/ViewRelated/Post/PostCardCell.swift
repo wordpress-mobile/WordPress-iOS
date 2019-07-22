@@ -228,6 +228,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         let status = viewModel.statusAndBadges(separatedBy: Constants.separator)
         statusLabel.textColor = viewModel.statusColor
         statusLabel.text = status
+        statusLabel.numberOfLines = 0
         statusView.isHidden = status.isEmpty
     }
 

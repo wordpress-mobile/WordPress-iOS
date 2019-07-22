@@ -42,7 +42,7 @@ struct PostNoticeViewModel {
                       notificationInfo: notificationInfo,
                       actionTitle: failureActionTitle,
                       actionHandler: { _ in
-                        self.retryUpload()
+                        self.cancelUpload()
         })
     }
 
@@ -174,7 +174,7 @@ struct PostNoticeViewModel {
     }
 
     private var failureActionTitle: String {
-        return NSLocalizedString("Retry", comment: "Button title. Retries uploading a post.")
+        return NSLocalizedString("Cancel", comment: "Button title. Cancels uploading a post.")
     }
 
     private func viewPost() {
@@ -191,12 +191,12 @@ struct PostNoticeViewModel {
         PostCoordinator.shared.save(post: post)
     }
 
-    private func retryUpload() {
+    private func cancelUpload() {
         guard let post = postInContext else {
             return
         }
 
-        PostCoordinator.shared.save(post: post)
+        PostCoordinator.shared.cancelSave(of: post)
     }
 
     private var postInContext: AbstractPost? {

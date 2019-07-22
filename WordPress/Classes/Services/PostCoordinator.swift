@@ -84,7 +84,13 @@ class PostCoordinator: NSObject {
         upload(post: post)
     }
 
-    func cancelAnyPendingSaveOf(post: AbstractPost) {
+    func cancelSave(of post: AbstractPost) {
+        if post.remoteStatus == .failed {
+            post.managedObjectContext?.perform {
+                post.remoteStatus = .local
+            }
+        }
+
         removeObserver(for: post)
     }
 
