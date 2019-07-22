@@ -1,5 +1,6 @@
 13.0
 -----
+* Offline support: post published while offline will now be published once online.
  
 12.9
 -----
