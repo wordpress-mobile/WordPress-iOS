@@ -326,6 +326,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         __weak Blog *blog = self.blog;
         _editorSelectorCell.onChange = ^(BOOL value){
             [GutenbergSettings setGutenbergEnabled:value forBlog:blog];
+            [GutenbergSettings postSettingsToRemoteForBlog:blog];
         };
     }
     return _editorSelectorCell;
