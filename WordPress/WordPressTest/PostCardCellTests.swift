@@ -107,7 +107,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.statusLabel?.text, "Upload failed")
+        XCTAssertEqual(postCell.statusLabel?.text, "Post will be published next time your device is online")
     }
 
 
