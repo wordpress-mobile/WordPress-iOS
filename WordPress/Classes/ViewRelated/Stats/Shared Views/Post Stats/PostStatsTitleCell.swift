@@ -27,6 +27,7 @@ private extension PostStatsTitleCell {
     func applyStyles() {
         titleLabel.text = NSLocalizedString("Showing stats for:", comment: "Label on Post Stats view indicating which post the stats are for.")
 
+        Style.configureCell(self)
         Style.configureLabelAsPostStatsTitle(titleLabel)
         Style.configureLabelAsPostTitle(postTitleLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)
