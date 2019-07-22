@@ -282,7 +282,6 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     private func setupLabels() {
         cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Label for the cancel post upload button in the post list."), for: .normal)
         cancelButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
-        cancelButton.isHidden = true
 
         editButton.setTitle(NSLocalizedString("Edit", comment: "Label for the edit post button. Tapping displays the editor."), for: .normal)
 
