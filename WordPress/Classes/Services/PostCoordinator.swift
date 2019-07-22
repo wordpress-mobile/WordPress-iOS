@@ -88,6 +88,7 @@ class PostCoordinator: NSObject {
         if post.remoteStatus == .failed {
             post.managedObjectContext?.perform {
                 post.remoteStatus = .local
+                try? post.managedObjectContext?.save()
             }
         }
 

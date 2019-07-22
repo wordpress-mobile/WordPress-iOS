@@ -227,7 +227,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertFalse(postCell.retryButton.isHidden)
+        XCTAssertFalse(postCell.cancelButton.isHidden)
         XCTAssertTrue(postCell.viewButton.isHidden)
     }
 

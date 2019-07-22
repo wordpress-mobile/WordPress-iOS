@@ -686,6 +686,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    func cancelSave(of post: AbstractPost) {
+        PostCoordinator.shared.cancelSave(of: post)
+    }
+
     // MARK: - Searching
 
     override func updateForLocalPostsMatchingSearchText() {

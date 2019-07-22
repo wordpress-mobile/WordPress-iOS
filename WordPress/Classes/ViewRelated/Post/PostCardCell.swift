@@ -14,7 +14,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var statusView: UIStackView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var editButton: UIButton!
-    @IBOutlet weak var retryButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var viewButton: UIButton!
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var actionBarView: UIStackView!
@@ -112,12 +112,12 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         actionSheetDelegate?.showActionSheet(post, from: button)
     }
 
-    @IBAction func retry() {
+    @IBAction func cancel() {
         guard let post = post else {
             return
         }
 
-        interactivePostViewDelegate?.retry(post)
+        interactivePostViewDelegate?.cancelSave(of: post)
     }
 
     private func applyStyles() {
@@ -130,7 +130,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.configureLabel(statusLabel, textStyle: UIFont.TextStyle.subheadline)
         WPStyleGuide.applyPostProgressViewStyle(progressView)
         WPStyleGuide.applyPostButtonStyle(editButton)
-        WPStyleGuide.applyPostButtonStyle(retryButton)
+        WPStyleGuide.applyPostButtonStyle(cancelButton)
         WPStyleGuide.applyPostButtonStyle(viewButton)
         WPStyleGuide.applyPostButtonStyle(moreButton)
 
@@ -258,7 +258,12 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
-        retryButton.isHidden = !post.isFailed
+        if let viewModel = viewModel {
+            cancelButton.tintColor = viewModel.statusColor
+            cancelButton.titleLabel?.textColor = viewModel.statusColor
+        }
+
+        cancelButton.isHidden = !post.isFailed
         viewButton.isHidden = post.isFailed
     }
 
@@ -275,9 +280,9 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func setupLabels() {
-        retryButton.setTitle(NSLocalizedString("Retry", comment: "Label for the retry post upload button. Tapping attempts to upload the post again."), for: .normal)
-        retryButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
-        retryButton.isHidden = true
+        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Label for the cancel post upload button in the post list."), for: .normal)
+        cancelButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
+        cancelButton.isHidden = true
 
         editButton.setTitle(NSLocalizedString("Edit", comment: "Label for the edit post button. Tapping displays the editor."), for: .normal)
 

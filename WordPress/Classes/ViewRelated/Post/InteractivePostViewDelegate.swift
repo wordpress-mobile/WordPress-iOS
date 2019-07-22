@@ -10,4 +10,5 @@ import Foundation
     func restore(_ post: AbstractPost)
     func draft(_ post: AbstractPost)
     func retry(_ post: AbstractPost)
+    func cancelSave(of post: AbstractPost)
 }

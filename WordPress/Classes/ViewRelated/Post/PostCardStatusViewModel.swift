@@ -33,7 +33,7 @@ class PostCardStatusViewModel: NSObject {
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
         } else if post.remoteStatus == .local {
-            return NSLocalizedString("The post has unsaved changes", comment: "Message displayed on a post's card when the post has local changes and is not scheduled for upload.")
+            return NSLocalizedString("Post has local unsaved changes", comment: "Message displayed on a post's card when the post has local changes and is not scheduled for upload.")
         } else if post.isFailed {
             let status = post.status ?? .draft
 
