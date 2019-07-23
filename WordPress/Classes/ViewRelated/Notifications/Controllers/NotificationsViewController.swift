@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 import CocoaLumberjack
-import MGSwipeTableCell
 import WordPressShared
 import WordPressAuthenticator
 
@@ -174,6 +173,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         tableViewHandler.updateRowAnimation = .none
     }
 
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -323,6 +325,38 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         showDetails(for: note)
     }
 
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
+            return nil
+        }
+
+        let isRead = note.read
+
+        let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") : NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
+
+        let action = UIContextualAction(style: .normal, title: title, handler: { (action, view, completionHandler) in
+            if isRead {
+                self.markAsUnread(note: note)
+            } else {
+                self.markAsRead(note: note)
+            }
+            completionHandler(true)
+        })
+
+        action.backgroundColor = .neutral(shade: .shade50)
+
+        let configuration = UISwipeActionsConfiguration(actions: [action])
+        return configuration
+    }
+
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return nil
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let note = sender as? Notification else {
             return
@@ -967,28 +1001,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         }
 
         cell.downloadIconWithURL(note.iconURL)
-
-        configureCellActions(cell, note: note)
-    }
-
-    @objc func configureCellActions(_ cell: NoteTableViewCell, note: Notification) {
-        // Let "Mark as Read / Unread" expand
-        let leadingExpansionButton = 0
-
-        // Don't expand "Trash"
-        let trailingExpansionButton = -1
-
-        if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
-            cell.leftButtons = leadingButtons(note: note)
-            cell.leftExpansion.buttonIndex = leadingExpansionButton
-            cell.rightButtons = trailingButtons(note: note)
-            cell.rightExpansion.buttonIndex = trailingExpansionButton
-        } else {
-            cell.rightButtons = leadingButtons(note: note)
-            cell.rightExpansion.buttonIndex = trailingExpansionButton
-            cell.leftButtons = trailingButtons(note: note)
-            cell.leftExpansion.buttonIndex = trailingExpansionButton
-        }
     }
 
     func sectionNameKeyPath() -> String {
@@ -1024,72 +1036,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         }
     }
 }
-
-
-
-// MARK: - Actions
-//
-private extension NotificationsViewController {
-    func leadingButtons(note: Notification) -> [MGSwipeButton] {
-        let isRead = note.read
-
-        let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") : NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
-
-        return [
-            MGSwipeButton(title: title,
-                          backgroundColor: .neutral(shade: .shade50),
-                          callback: { _ in
-                            if isRead {
-                                self.markAsUnread(note: note)
-                            } else {
-                                self.markAsRead(note: note)
-                            }
-                            return true
-            })
-        ]
-    }
-
-    func trailingButtons(note: Notification) -> [MGSwipeButton] {
-        var rightButtons = [MGSwipeButton]()
-
-        guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
-            return []
-        }
-
-        // Comments: Trash
-        if let trashAction = block.action(id: TrashCommentAction.actionIdentifier()), let button = trashAction.command?.icon as? MGSwipeButton {
-            button.callback = { [weak self] _ in
-                let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
-                    guard let request = request else {
-                        return
-                    }
-                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
-                })
-                trashAction.execute(context: actionContext)
-                return true
-            }
-            rightButtons.append(button)
-        }
-
-        guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled, approveEnabled == true else {
-            return rightButtons
-        }
-
-        let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
-        let button = approveAction?.command?.icon as? MGSwipeButton
-
-        button?.callback = { _ in
-            let actionContext = ActionContext(block: block)
-            approveAction?.execute(context: actionContext)
-            return true
-        }
-
-        rightButtons.append(button!)
-
-        return rightButtons
-    }
-}
-
 
 
 // MARK: - Filter Helpers
