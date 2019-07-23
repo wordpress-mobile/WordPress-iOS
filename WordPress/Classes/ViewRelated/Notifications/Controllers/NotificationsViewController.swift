@@ -353,8 +353,24 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         return configuration
     }
 
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return nil
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {    
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+            let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            return nil
+        }
+
+        guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled, approveEnabled == true else {
+            return nil
+        }
+
+        let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
+        let action = approveAction?.command?.action(handler: { (_, _, completionHandler) in
+            let actionContext = ActionContext(block: block)
+            approveAction?.execute(context: actionContext)
+            completionHandler(true)
+        })
+
+        return UISwipeActionsConfiguration(actions: [action!])
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

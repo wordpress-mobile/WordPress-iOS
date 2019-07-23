@@ -5,6 +5,7 @@ protocol FormattableContentActionCommand: CustomStringConvertible {
     var identifier: Identifier { get }
     var on: Bool { get set }
 
+    func action(handler: @escaping UIContextualAction.Handler) -> UIContextualAction?
     func execute<ContentType: FormattableContent>(context: ActionContext<ContentType>)
 }
 
