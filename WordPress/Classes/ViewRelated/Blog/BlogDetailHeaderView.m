@@ -37,12 +37,15 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)performSetup
 {
     self.preservesSuperviewLayoutMargins = YES;
+    
     [self setupStackView];
     [self setupBlavatarImageView];
     [self setupBlavatarDropTarget];
     [self setupLabelsStackView];
     [self setupTitleLabel];
     [self setupSubtitleLabel];
+    
+    self.accessibilityElements = @[self.stackView, self.blavatarDropTarget];
 }
 
 #pragma mark - Public Methods
@@ -63,6 +66,12 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
         UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
         [self.blavatarDropTarget addInteraction:dropInteraction];
     }
+    
+    NSString *localizedLabel =
+        NSLocalizedString(@"Site named %@ located at %@",
+                          @"Accessibility label for the site header. The first variable is the blog name, the second is the domain.");
+    self.stackView.accessibilityLabel =
+        [NSString stringWithFormat:localizedLabel, title, blog.displayURL];
 }
 
 - (void)setTitleText:(NSString *)title
@@ -144,6 +153,9 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                               [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
                                               [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
                                               ]];
+    
+    stackView.isAccessibilityElement = YES;
+
     _stackView = stackView;
 }
 
