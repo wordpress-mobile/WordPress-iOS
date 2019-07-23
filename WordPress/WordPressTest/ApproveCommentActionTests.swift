@@ -25,9 +25,6 @@ final class ApproveCommentActionTests: XCTestCase {
     }
 
     private var action: ApproveComment?
-
-    private var mockHandler: UIContextualAction.Handler = { (_, _, _) in }
-
     private let utility = NotificationUtility()
 
     private struct Constants {
@@ -52,23 +49,20 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.on, Constants.initialStatus)
     }
 
-    func testContextualActionTitleIsExpected() {
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.approve)
+    func testActionTitleIsExpected() {
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.approve)
     }
 
     func testSettingActionOnSetsExpectedTitle() {
         action?.on = true
 
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.unapprove)
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.unapprove)
     }
 
     func testSettingActionOffSetsExpectedTitle() {
         action?.on = false
 
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.approve)
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.approve)
     }
 
     func testExecuteCallsUnapproveWhenActionIsOn() {
@@ -84,13 +78,11 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertTrue(mockService.unapproveWasCalled)
     }
 
-    func testExecuteUpdatesContextualActionTitleWhenActionIsOn() {
+    func testExecuteUpdatesActionTitleWhenActionIsOn() {
         action?.on = true
 
         action?.execute(context: utility.mockCommentContext())
-
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.approve)
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.approve)
     }
 
     func testExecuteCallsApproveWhenActionIsOff() {
@@ -106,12 +98,10 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertTrue(mockService.approveWasCalled)
     }
 
-    func testExecuteUpdatesContextualActionTitleWhenActionIsOff() {
+    func testExecuteUpdatesActionTitleWhenActionIsOff() {
         action?.on = false
 
         action?.execute(context: utility.mockCommentContext())
-
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.unapprove)
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.unapprove)
     }
 }

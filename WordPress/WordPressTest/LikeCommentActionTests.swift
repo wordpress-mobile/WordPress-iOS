@@ -25,9 +25,6 @@ final class LikeCommentActionTests: XCTestCase {
     }
 
     private var action: LikeComment?
-
-    private var mockHandler: UIContextualAction.Handler = { (_, _, _) in }
-
     private let utility = NotificationUtility()
 
     private struct Constants {
@@ -55,15 +52,13 @@ final class LikeCommentActionTests: XCTestCase {
     func testSettingActionOnSetsExpectedTitle() {
         action?.on = true
 
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, LikeComment.TitleStrings.like)
+        XCTAssertEqual(action?.actionTitle, LikeComment.TitleStrings.like)
     }
 
     func testSettingActionOffSetsExpectedTitle() {
         action?.on = false
 
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, LikeComment.TitleStrings.unlike)
+        XCTAssertEqual(action?.actionTitle, LikeComment.TitleStrings.unlike)
     }
 
     func testExecuteCallsUnlikeWhenActionIsOn() {
@@ -84,8 +79,7 @@ final class LikeCommentActionTests: XCTestCase {
 
         action?.execute(context: utility.mockCommentContext())
 
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, LikeComment.TitleStrings.like)
+        XCTAssertEqual(action?.actionTitle, LikeComment.TitleStrings.like)
     }
 
     func testExecuteCallsLikeWhenActionIsOff() {
@@ -106,7 +100,6 @@ final class LikeCommentActionTests: XCTestCase {
 
         action?.execute(context: utility.mockCommentContext())
 
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, LikeComment.TitleStrings.unlike)
+        XCTAssertEqual(action?.actionTitle, LikeComment.TitleStrings.unlike)
     }
 }

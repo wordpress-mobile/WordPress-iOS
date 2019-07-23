@@ -18,9 +18,6 @@ final class ReplyToCommentActionTests: XCTestCase {
     }
 
     private var action: ReplyToComment?
-
-    private var mockHandler: UIContextualAction.Handler = { (_, _, _) in }
-
     let utility = NotificationUtility()
 
     private struct Constants {
@@ -45,9 +42,8 @@ final class ReplyToCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.on, Constants.initialStatus)
     }
 
-    func testContextualActionTitleIsExpected() {
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, ReplyToComment.title)
+    func testActionTitleIsExpected() {
+        XCTAssertEqual(action?.actionTitle, ReplyToComment.title)
     }
 
     func testExecuteCallsReply() {

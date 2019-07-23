@@ -362,7 +362,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         // Trash comment
         if let trashAction = block.action(id: TrashCommentAction.actionIdentifier()),
             let command = trashAction.command,
-            let action = command.action(handler: { (_, _, completionHandler) in
+            let title = command.actionTitle {
+            let action = UIContextualAction(style: .normal, title: title, handler: { (_, _, completionHandler) in
                 let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
                     guard let request = request else {
                         return
@@ -371,7 +372,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
                 })
                 trashAction.execute(context: actionContext)
                 completionHandler(true)
-            }) {
+            })
+            action.backgroundColor = command.actionColor
             actions.append(action)
         }
 
@@ -381,11 +383,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
-        if let action = approveAction?.command?.action(handler: { (_, _, completionHandler) in
-            let actionContext = ActionContext(block: block)
-            approveAction?.execute(context: actionContext)
-            completionHandler(true)
-        }) {
+        if let title = approveAction?.command?.actionTitle {
+            let action = UIContextualAction(style: .normal, title: title, handler: { (_, _, completionHandler) in
+                let actionContext = ActionContext(block: block)
+                approveAction?.execute(context: actionContext)
+                completionHandler(true)
+            })
+            action.backgroundColor = approveAction?.command?.actionColor
             actions.append(action)
         }
 

@@ -19,9 +19,6 @@ final class EditCommentActionTests: XCTestCase {
     }
 
     private var action: EditComment?
-
-    private var mockHandler: UIContextualAction.Handler = { (_, _, _) in }
-
     private let utility = NotificationUtility()
 
     private struct Constants {
@@ -40,9 +37,8 @@ final class EditCommentActionTests: XCTestCase {
         super.tearDown()
     }
 
-    func testContextualActionTitleIsExpected() {
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, EditComment.title)
+    func testActionTitleIsExpected() {
+        XCTAssertEqual(action?.actionTitle, EditComment.title)
     }
 
     func testExecuteCallsEdit() {

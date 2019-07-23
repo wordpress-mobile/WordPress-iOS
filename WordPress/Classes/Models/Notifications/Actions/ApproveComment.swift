@@ -10,12 +10,12 @@ class ApproveComment: DefaultNotificationActionCommand {
         static let unapprove = NSLocalizedString("Unapproves the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment")
     }
 
-    override func action(handler: @escaping UIContextualAction.Handler) -> UIContextualAction? {
-        let action = UIContextualAction(style: .normal,
-                                        title: on ? TitleStrings.unapprove : TitleStrings.approve, handler: handler)
+    override var actionTitle: String {
+        return on ? TitleStrings.unapprove : TitleStrings.approve
+    }
 
-        action.backgroundColor = on ? .neutral(shade: .shade30) : .primary
-        return action
+    override var actionColor: UIColor {
+        return on ? .neutral(shade: .shade30) : .primary
     }
 
     override func execute<ObjectType: FormattableCommentContent>(context: ActionContext<ObjectType>) {

@@ -16,9 +16,6 @@ final class MarkAsSpamActionTests: XCTestCase {
     }
 
     private var action: MarkAsSpam?
-
-    private var mockHandler: UIContextualAction.Handler = { (_, _, _) in }
-
     let utility = NotificationUtility()
 
     private struct Constants {
@@ -43,9 +40,8 @@ final class MarkAsSpamActionTests: XCTestCase {
         XCTAssertEqual(action?.on, Constants.initialStatus)
     }
 
-    func testContextualActionTitleIsExpected() {
-        let contextualAction = action?.action(handler: mockHandler)
-        XCTAssertEqual(contextualAction?.title, MarkAsSpam.title)
+    func testActionTitleIsExpected() {
+        XCTAssertEqual(action?.actionTitle, MarkAsSpam.title)
     }
 
     func testExecuteCallsSpam() {
