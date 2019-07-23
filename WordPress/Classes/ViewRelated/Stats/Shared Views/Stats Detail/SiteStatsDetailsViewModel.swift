@@ -598,7 +598,9 @@ private extension SiteStatsDetailsViewModel {
                               dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
                               userIconURL: $0.iconURL,
                               showDisclosure: true,
-                              childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
+                              childRows: $0.posts.map { StatsTotalRowData(name: $0.title,
+                                                                          data: $0.viewsCount.abbreviatedString(),
+                                                                          statSection: .periodAuthors) },
                               statSection: .periodAuthors)
         }
     }
