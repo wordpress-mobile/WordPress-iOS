@@ -18,7 +18,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var postTitle: String?
     private var postURL: URL?
     private var postID: Int?
-    private var selectedDate = Date()
+    private var selectedDate = StatsDataHelper.currentDateForSite()
     private var tableHeaderView: SiteStatsTableHeaderView?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
@@ -55,13 +55,13 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
             return nil
         }
 
-        cell.configure(date: selectedDate, period: .day, delegate: self)
+        cell.configure(date: selectedDate, period: .day, delegate: self, mostRecentDate: store.getMostRecentDate(forPost: postID))
         tableHeaderView = cell
         return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return SiteStatsTableHeaderView.height
+        return SiteStatsTableHeaderView.headerHeight()
     }
 
 }
@@ -74,6 +74,11 @@ private extension PostStatsTableViewController {
 
         guard let postID = postID else {
             return
+        }
+
+        if let mostRecentDate = store.getMostRecentDate(forPost: postID),
+            mostRecentDate < selectedDate {
+            selectedDate = mostRecentDate
         }
 
         viewModel = PostStatsViewModel(postID: postID,

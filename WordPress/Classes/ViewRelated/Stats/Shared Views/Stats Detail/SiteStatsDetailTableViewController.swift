@@ -20,7 +20,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
     private var statType: StatType = .period
-    private var selectedDate = Date()
+    private var selectedDate = StatsDataHelper.currentDateForSite()
     private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsDetailsViewModel?
@@ -65,7 +65,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
                    selectedPeriod: StatsPeriodUnit? = nil,
                    postID: Int? = nil) {
         self.statSection = statSection
-        self.selectedDate = selectedDate ?? Date()
+        self.selectedDate = selectedDate ?? StatsDataHelper.currentDateForSite()
         self.selectedPeriod = selectedPeriod
         self.postID = postID
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
@@ -98,7 +98,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         }
 
         // Allow the date bar to only go up to the most recent year available.
-        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: StatsDataHelper.currentDateForSite())
         dateComponents.year = mostRecentYear
         let mostRecentDate = Calendar.current.date(from: dateComponents)
 
@@ -117,7 +117,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
                 return 0
         }
 
-        return SiteStatsTableHeaderView.height
+        return SiteStatsTableHeaderView.headerHeight()
     }
 
 }
