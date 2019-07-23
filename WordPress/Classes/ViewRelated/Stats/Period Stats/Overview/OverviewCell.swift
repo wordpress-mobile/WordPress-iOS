@@ -155,6 +155,9 @@ private extension OverviewCell {
         // Post Stats view, which does not have a filterTabBar.
         filterTabBar.isHidden = tabsData.count == 1
 
+        // The filterTabBar has a bottom line, so hide the bottom line on the cell if the filterTabBar is showing.
+        bottomSeparatorLine.isHidden = !filterTabBar.isHidden
+
         chartBottomConstraint.constant = filterTabBar.isHidden ?
             ChartBottomMargin.filterTabBarHidden :
             ChartBottomMargin.filterTabBarShown

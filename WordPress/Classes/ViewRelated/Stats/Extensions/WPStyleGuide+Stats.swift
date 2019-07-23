@@ -37,6 +37,8 @@ extension WPStyleGuide {
 
         static func configureViewAsSeparator(_ separatorView: UIView) {
             separatorView.backgroundColor = separatorColor
+            separatorView.constraints.first(where: { $0.firstAttribute == .height })?.isActive = false
+            separatorView.heightAnchor.constraint(equalToConstant: separatorHeight).isActive = true
         }
 
         static func configureViewAsVerticalSeparator(_ separatorView: UIView) {
@@ -180,6 +182,7 @@ extension WPStyleGuide {
         static let tableBackgroundColor = UIColor.tableBackground
         static let cellBackgroundColor = UIColor.white
         static let separatorColor = UIColor.neutral(shade: .shade10)
+        static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
         static let verticalSeparatorColor = UIColor.neutral(shade: .shade5)
 
         static let defaultFilterTintColor: UIColor = .primary
