@@ -919,6 +919,7 @@
 		7E7BEF7322E1DD27009A880D /* EditorSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7BEF7222E1DD27009A880D /* EditorSettingsService.swift */; };
 		7E846FF120FD0A0500881F5A /* ContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E846FF020FD0A0500881F5A /* ContentCoordinator.swift */; };
 		7E846FF320FD37BD00881F5A /* ActivityCommentRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E846FF220FD37BD00881F5A /* ActivityCommentRange.swift */; };
+		7E8980B922E73F4000C567B0 /* EditorSettingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8980B822E73F4000C567B0 /* EditorSettingsServiceTests.swift */; };
 		7E92828921090E9A00BBD8A3 /* notifications-pingback.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E92828821090E9A00BBD8A3 /* notifications-pingback.json */; };
 		7E929CD12110D4F200BCAD88 /* FormattableRangesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E929CD02110D4F200BCAD88 /* FormattableRangesFactory.swift */; };
 		7E987F562108017B00CAFB88 /* NotificationContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */; };
@@ -2990,6 +2991,7 @@
 		7E7BEF7222E1DD27009A880D /* EditorSettingsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorSettingsService.swift; sourceTree = "<group>"; };
 		7E846FF020FD0A0500881F5A /* ContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCoordinator.swift; sourceTree = "<group>"; };
 		7E846FF220FD37BD00881F5A /* ActivityCommentRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCommentRange.swift; sourceTree = "<group>"; };
+		7E8980B822E73F4000C567B0 /* EditorSettingsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorSettingsServiceTests.swift; sourceTree = "<group>"; };
 		7E92828821090E9A00BBD8A3 /* notifications-pingback.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-pingback.json"; sourceTree = "<group>"; };
 		7E929CD02110D4F200BCAD88 /* FormattableRangesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableRangesFactory.swift; sourceTree = "<group>"; };
 		7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouter.swift; sourceTree = "<group>"; };
@@ -7816,6 +7818,7 @@
 				FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */,
 				59FBD5611B5684F300734466 /* ThemeServiceTests.m */,
 				40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */,
+				7E8980B822E73F4000C567B0 /* EditorSettingsServiceTests.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -11685,6 +11688,7 @@
 				02761EC4227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift in Sources */,
 				732A473D218787500015DA74 /* WPRichTextFormatterTests.swift in Sources */,
 				1ABA150822AE5F870039311A /* WordPressUIBundleTests.swift in Sources */,
+				7E8980B922E73F4000C567B0 /* EditorSettingsServiceTests.swift in Sources */,
 				1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */,
 				73178C2A21BEE09300E37C9A /* SiteSegmentsCellTests.swift in Sources */,
 				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,
