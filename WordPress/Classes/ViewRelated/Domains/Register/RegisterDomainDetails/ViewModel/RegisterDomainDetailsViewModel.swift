@@ -464,8 +464,17 @@ class RegisterDomainDetailsViewModel {
     private func formattedPhoneNumber() -> String {
         let section = sections[SectionIndex.phone.rawValue]
         let countryCode = section.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow?.value ?? ""
+
+        let strippedCountryCode = countryCode
+            .replacingOccurrences(of: Constant.phoneNumberCountryCodePrefix, with: "")
+            .replacingOccurrences(of: "00", with: "")
+        // theoretically speaking, users shouldn't be able to input "+" in that field. however, external and non-system keyboards
+        // make it a _very_ theoretical thing, so we have to safe-guard it.
+        // in some countries it's also customary to use '00' instead of '+' in the country code. let's handle those cases too.
+
         let number = section.rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.value ?? ""
-        return Constant.phoneNumberCountryCodePrefix + countryCode +
+
+        return Constant.phoneNumberCountryCodePrefix + strippedCountryCode +
             String(Constant.phoneNumberConnectingChar) + number
     }
 }
