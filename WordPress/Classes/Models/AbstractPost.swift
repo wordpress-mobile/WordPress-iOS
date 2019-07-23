@@ -29,7 +29,7 @@ extension AbstractPost {
         }
     }
 
-    class func title(for status: Status) -> String {
+    static func title(for status: Status) -> String {
         return title(forStatus: status.rawValue)
     }
 
@@ -42,7 +42,7 @@ extension AbstractPost {
     /// - returns: The localized title for the specified status, or the status if a title was not found.
     ///
     @objc
-    class func title(forStatus status: String) -> String {
+    static func title(forStatus status: String) -> String {
         switch status {
         case PostStatusDraft:
             return NSLocalizedString("Draft", comment: "Name for the status of a draft post.")
