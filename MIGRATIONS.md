@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 88
+@etoledo 2019-07-19
+
+- `Blog`: Added `mobileEditor` and `webEditor` properties
+
 ## WordPress 87
 @klausa 2019-02-15
 
