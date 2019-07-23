@@ -346,33 +346,54 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             }
             completionHandler(true)
         })
-
         action.backgroundColor = .neutral(shade: .shade50)
 
-        let configuration = UISwipeActionsConfiguration(actions: [action])
-        return configuration
+        return UISwipeActionsConfiguration(actions: [action])
     }
 
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
             let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
             return nil
         }
 
+        var actions: [UIContextualAction] = []
+
+        // Trash comment
+        if let trashAction = block.action(id: TrashCommentAction.actionIdentifier()),
+            let command = trashAction.command,
+            let action = command.action(handler: { (_, _, completionHandler) in
+                let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
+                    guard let request = request else {
+                        return
+                    }
+                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                })
+                trashAction.execute(context: actionContext)
+                completionHandler(true)
+            }) {
+            actions.append(action)
+        }
+
+        // Approve comment
         guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled, approveEnabled == true else {
             return nil
         }
 
         let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
-        let action = approveAction?.command?.action(handler: { (_, _, completionHandler) in
+        if let action = approveAction?.command?.action(handler: { (_, _, completionHandler) in
             let actionContext = ActionContext(block: block)
             approveAction?.execute(context: actionContext)
             completionHandler(true)
-        })
+        }) {
+            actions.append(action)
+        }
 
-        return UISwipeActionsConfiguration(actions: [action!])
+        let configuration = UISwipeActionsConfiguration(actions: actions)
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let note = sender as? Notification else {
             return
