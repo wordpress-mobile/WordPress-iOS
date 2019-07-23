@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -35,22 +35,12 @@
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="Ssg-6U-5Ac">
                                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                                 </imageView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3M-QS-Aux" userLabel="Back Button">
-                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                    <connections>
-                                        <action selector="didTapBackButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="c6p-VQ-SS4"/>
-                                    </connections>
-                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="Ssg-6U-5Ac" secondAttribute="trailing" id="1Ti-ir-8Eu"/>
                                 <constraint firstItem="Ssg-6U-5Ac" firstAttribute="top" secondItem="ANL-Um-LdU" secondAttribute="top" id="47u-vP-kBg"/>
-                                <constraint firstItem="b3M-QS-Aux" firstAttribute="leading" secondItem="Ssg-6U-5Ac" secondAttribute="leading" id="9pS-Yd-bcz"/>
                                 <constraint firstItem="Ssg-6U-5Ac" firstAttribute="leading" secondItem="ANL-Um-LdU" secondAttribute="leading" id="Rsi-pr-H6P"/>
-                                <constraint firstItem="b3M-QS-Aux" firstAttribute="top" secondItem="Ssg-6U-5Ac" secondAttribute="top" id="XKH-DN-Rw0"/>
-                                <constraint firstItem="b3M-QS-Aux" firstAttribute="bottom" secondItem="Ssg-6U-5Ac" secondAttribute="bottom" id="Xea-2p-t5C"/>
-                                <constraint firstItem="b3M-QS-Aux" firstAttribute="trailing" secondItem="Ssg-6U-5Ac" secondAttribute="trailing" id="jCi-6C-6GT"/>
                                 <constraint firstAttribute="width" constant="20" id="rM3-sd-PgX"/>
                                 <constraint firstAttribute="bottom" secondItem="Ssg-6U-5Ac" secondAttribute="bottom" id="upK-YJ-fvz"/>
                             </constraints>
@@ -61,23 +51,13 @@
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="2dA-xk-MWI">
                                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                                 </imageView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1z-fb-p7G" userLabel="Forward Button">
-                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                    <connections>
-                                        <action selector="didTapForwardButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="GBT-pg-rO2"/>
-                                    </connections>
-                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="2dA-xk-MWI" firstAttribute="leading" secondItem="MDc-iR-4u0" secondAttribute="leading" id="8gB-9S-kgq"/>
                                 <constraint firstItem="2dA-xk-MWI" firstAttribute="top" secondItem="MDc-iR-4u0" secondAttribute="top" id="BUE-Gb-mWp"/>
                                 <constraint firstAttribute="trailing" secondItem="2dA-xk-MWI" secondAttribute="trailing" id="LMy-m5-Hme"/>
-                                <constraint firstItem="U1z-fb-p7G" firstAttribute="trailing" secondItem="2dA-xk-MWI" secondAttribute="trailing" id="UKE-Iv-Yct"/>
                                 <constraint firstAttribute="width" constant="20" id="VHg-Zg-qku"/>
-                                <constraint firstItem="U1z-fb-p7G" firstAttribute="bottom" secondItem="2dA-xk-MWI" secondAttribute="bottom" id="a0A-rh-ZzX"/>
-                                <constraint firstItem="U1z-fb-p7G" firstAttribute="top" secondItem="2dA-xk-MWI" secondAttribute="top" id="eHU-f4-YHb"/>
-                                <constraint firstItem="U1z-fb-p7G" firstAttribute="leading" secondItem="2dA-xk-MWI" secondAttribute="leading" id="es9-lQ-Xjj"/>
                                 <constraint firstAttribute="bottom" secondItem="2dA-xk-MWI" secondAttribute="bottom" id="ruq-lf-Eas"/>
                             </constraints>
                         </view>
@@ -86,6 +66,18 @@
                         <constraint firstAttribute="height" constant="20" id="mWu-cY-kmx"/>
                     </constraints>
                 </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3M-QS-Aux" userLabel="Back Button">
+                    <rect key="frame" x="277" y="0.0" width="44" height="44"/>
+                    <connections>
+                        <action selector="didTapBackButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="c6p-VQ-SS4"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1z-fb-p7G" userLabel="Forward Button">
+                    <rect key="frame" x="321" y="0.0" width="44" height="44"/>
+                    <connections>
+                        <action selector="didTapForwardButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="GBT-pg-rO2"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="82h-So-kdz" userLabel="Bottom Seperator Line">
                     <rect key="frame" x="0.0" y="43.5" width="375" height="0.5"/>
                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -95,15 +87,25 @@
                 </view>
             </subviews>
             <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="b3M-QS-Aux" secondAttribute="bottom" id="5vH-vh-DFc"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="hDF-ds-FAU" secondAttribute="bottom" constant="12" id="86s-xt-4cF"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="0sS-MO-MHI" secondAttribute="trailing" constant="22" id="Cs6-dg-gL6"/>
                 <constraint firstItem="82h-So-kdz" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Enr-vP-A2t"/>
+                <constraint firstItem="b3M-QS-Aux" firstAttribute="centerX" secondItem="Ssg-6U-5Ac" secondAttribute="centerX" id="Ew6-aw-dOi"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="top" secondItem="tc3-qS-cyd" secondAttribute="top" id="HGC-IT-WvX"/>
+                <constraint firstItem="U1z-fb-p7G" firstAttribute="centerY" secondItem="2dA-xk-MWI" secondAttribute="centerY" id="OLh-Ez-9F8"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="82h-So-kdz" secondAttribute="trailing" id="eUf-m1-yjt"/>
+                <constraint firstItem="b3M-QS-Aux" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="mId-xq-pl2"/>
+                <constraint firstItem="U1z-fb-p7G" firstAttribute="width" secondItem="2dA-xk-MWI" secondAttribute="width" constant="24" id="oyC-Wx-mUz"/>
                 <constraint firstItem="tc3-qS-cyd" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="pms-tO-lf4"/>
+                <constraint firstItem="U1z-fb-p7G" firstAttribute="centerX" secondItem="2dA-xk-MWI" secondAttribute="centerX" id="pyK-uD-e4F"/>
                 <constraint firstItem="0sS-MO-MHI" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="qFo-Js-x24"/>
                 <constraint firstItem="tc3-qS-cyd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="rUF-mP-Cnc"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="U1z-fb-p7G" secondAttribute="bottom" id="sCK-Uu-Q2N"/>
+                <constraint firstItem="U1z-fb-p7G" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="sYj-wu-cIK"/>
                 <constraint firstItem="hDF-ds-FAU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="tIn-ZA-c5f"/>
+                <constraint firstItem="b3M-QS-Aux" firstAttribute="centerY" secondItem="Ssg-6U-5Ac" secondAttribute="centerY" id="tsb-mU-AUf"/>
+                <constraint firstItem="b3M-QS-Aux" firstAttribute="width" secondItem="Ssg-6U-5Ac" secondAttribute="width" constant="24" id="xLQ-Ie-a7j"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="tc3-qS-cyd" secondAttribute="trailing" id="xTa-dK-suZ"/>
                 <constraint firstItem="hDF-ds-FAU" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="xW3-mX-LoF"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="82h-So-kdz" secondAttribute="bottom" id="z3S-cF-8Um"/>
