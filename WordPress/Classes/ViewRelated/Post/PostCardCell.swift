@@ -258,11 +258,6 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
-        if let viewModel = viewModel {
-            cancelButton.tintColor = viewModel.statusColor
-            cancelButton.titleLabel?.textColor = viewModel.statusColor
-        }
-
         cancelButton.isHidden = !post.isFailed
         viewButton.isHidden = post.isFailed
     }
@@ -281,7 +276,9 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
 
     private func setupLabels() {
         cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Label for the cancel post upload button in the post list."), for: .normal)
-        cancelButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
+        cancelButton.setTitleColor(.warning, for: .normal)
+        cancelButton.setImage(Gridicon.iconOfType(.undo, withSize: CGSize(width: 18, height: 18)), for: .normal)
+        cancelButton.tintColor = .warning
 
         editButton.setTitle(NSLocalizedString("Edit", comment: "Label for the edit post button. Tapping displays the editor."), for: .normal)
 
