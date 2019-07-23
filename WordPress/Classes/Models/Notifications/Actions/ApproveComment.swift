@@ -1,7 +1,7 @@
 import MGSwipeTableCell
 
 /// Encapsulates logic to approve a cooment
-class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
+class ApproveComment: DefaultNotificationActionCommand {
     enum TitleStrings {
         static let approve = NSLocalizedString("Approve", comment: "Approves a Comment")
         static let unapprove = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
@@ -19,7 +19,6 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
             let newTitle = newValue ? TitleStrings.unapprove : TitleStrings.approve
             let newHint = newValue ? TitleHints.unapprove : TitleHints.approve
 
-            setIconStrings(title: newTitle, label: newTitle, hint: newHint)
 
             updateVisualState()
         }
@@ -48,10 +47,6 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
     }
 
     private func unApprove(block: FormattableCommentContent) {
-        setIconStrings(title: TitleStrings.unapprove,
-                       label: TitleStrings.unapprove,
-                       hint: TitleHints.unapprove)
-
         ReachabilityUtils.onAvailableInternetConnectionDo {
             actionsService?.unapproveCommentWithBlock(block, completion: { [weak self] success in
                 if success {
@@ -62,10 +57,6 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
     }
 
     private func approve(block: FormattableCommentContent) {
-        setIconStrings(title: TitleStrings.approve,
-                       label: TitleStrings.approve,
-                       hint: TitleHints.approve)
-
         ReachabilityUtils.onAvailableInternetConnectionDo {
             actionsService?.approveCommentWithBlock(block, completion: { [weak self] success in
                 if success {

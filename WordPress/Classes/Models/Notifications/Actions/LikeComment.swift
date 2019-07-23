@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 /// Encapsulates logic to Like a comment
-class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
+class LikeComment: DefaultNotificationActionCommand {
     enum TitleStrings {
         static let like = NSLocalizedString("Like", comment: "Likes a Comment")
         static let unlike = NSLocalizedString("Liked", comment: "A comment is marked as liked")
@@ -20,14 +20,6 @@ class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableConten
         return button
     }()
 
-    override var on: Bool {
-        willSet {
-            let newTitle = newValue ? TitleStrings.like : TitleStrings.unlike
-            let newHint = newValue ? TitleHints.like : TitleHints.unlike
-            setIconStrings(title: newTitle, label: newTitle, hint: newHint)
-        }
-    }
-
     override var icon: UIButton? {
         return likeIcon
     }
@@ -43,17 +35,9 @@ class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableConten
 
     private func like(block: FormattableCommentContent) {
         actionsService?.likeCommentWithBlock(block)
-
-        setIconStrings(title: TitleStrings.unlike,
-                       label: TitleStrings.unlike,
-                       hint: TitleHints.unlike)
     }
 
     private func removeLike(block: FormattableCommentContent) {
         actionsService?.unlikeCommentWithBlock(block)
-
-        setIconStrings(title: TitleStrings.like,
-                       label: TitleStrings.like,
-                       hint: TitleHints.like)
     }
 }
