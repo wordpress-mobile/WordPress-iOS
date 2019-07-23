@@ -13,7 +13,6 @@ class LikeComment: DefaultNotificationActionCommand {
     override func action(handler: @escaping UIContextualAction.Handler) -> UIContextualAction? {
         let action = UIContextualAction(style: .normal,
                                         title: on ? TitleStrings.like : TitleStrings.unlike, handler: handler)
-
         action.backgroundColor = .primary
         return action
     }

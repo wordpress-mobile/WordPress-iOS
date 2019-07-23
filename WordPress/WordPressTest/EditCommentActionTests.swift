@@ -19,6 +19,9 @@ final class EditCommentActionTests: XCTestCase {
     }
 
     private var action: EditComment?
+
+    private var mockHandler: UIContextualAction.Handler = { (_, _, _) in }
+
     private let utility = NotificationUtility()
 
     private struct Constants {
@@ -37,16 +40,9 @@ final class EditCommentActionTests: XCTestCase {
         super.tearDown()
     }
 
-    func testDefaultTitleIsExpected() {
-        XCTAssertEqual(action?.icon?.titleLabel?.text, EditComment.title)
-    }
-
-    func testDefaultAccessibilityLabelIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityLabel, EditComment.title)
-    }
-
-    func testDefaultAccessibilityHintIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityHint, EditComment.hint)
+    func testContextualActionTitleIsExpected() {
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, EditComment.title)
     }
 
     func testExecuteCallsEdit() {

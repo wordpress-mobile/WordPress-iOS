@@ -17,6 +17,8 @@ final class TrashCommentActionTests: XCTestCase {
 
     private var action: TrashComment?
 
+    private var mockHandler: UIContextualAction.Handler = { (_, _, _) in }
+
     let utils = NotificationUtility()
 
     private struct Constants {
@@ -41,16 +43,9 @@ final class TrashCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.on, Constants.initialStatus)
     }
 
-    func testDefaultTitleIsExpected() {
-        XCTAssertEqual(action?.icon?.titleLabel?.text, TrashComment.title)
-    }
-
-    func testDefaultAccessibilityLabelIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityLabel, TrashComment.title)
-    }
-
-    func testDefaultAccessibilityHintIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityHint, TrashComment.hint)
+    func testContextualActionTitleIsExpected() {
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, TrashComment.title)
     }
 
     func testExecuteCallsTrash() {

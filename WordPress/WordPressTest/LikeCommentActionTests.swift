@@ -25,6 +25,9 @@ final class LikeCommentActionTests: XCTestCase {
     }
 
     private var action: LikeComment?
+
+    private var mockHandler: UIContextualAction.Handler = { (_, _, _) in }
+
     private let utility = NotificationUtility()
 
     private struct Constants {
@@ -51,47 +54,19 @@ final class LikeCommentActionTests: XCTestCase {
 
     func testSettingActionOnSetsExpectedTitle() {
         action?.on = true
-        XCTAssertEqual(action?.icon?.titleLabel?.text, LikeComment.TitleStrings.like)
-    }
 
-    func testSettingActionOnSetsExpectedAccessibilityLabel() {
-        action?.on = true
-        XCTAssertEqual(action?.icon?.accessibilityLabel, LikeComment.TitleStrings.like)
-    }
-
-    func testSettingActionOnSetsExpectedAccessibilityHint() {
-        action?.on = true
-        XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.like)
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, LikeComment.TitleStrings.like)
     }
 
     func testSettingActionOffSetsExpectedTitle() {
         action?.on = false
-        XCTAssertEqual(action?.icon?.titleLabel?.text, LikeComment.TitleStrings.unlike)
+
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, LikeComment.TitleStrings.unlike)
     }
 
-    func testSettingActionOffSetsExpectedAccessibilityLabel() {
-        action?.on = false
-        XCTAssertEqual(action?.icon?.accessibilityLabel, LikeComment.TitleStrings.unlike)
-    }
-
-    func testSettingActionOffSetsExpectedAccessibilityHint() {
-        action?.on = false
-        XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.unlike)
-    }
-
-    func testDefaultTitleIsExpected() {
-        XCTAssertEqual(action?.icon?.titleLabel?.text, LikeComment.TitleStrings.like)
-    }
-
-    func testDefaultAccessibilityLabelIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityLabel, LikeComment.TitleStrings.like)
-    }
-
-    func testDefaultAccessibilityHintIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.like)
-    }
-
-    func testExecuteCallsUnlikeWhenIconIsOn() {
+    func testExecuteCallsUnlikeWhenActionIsOn() {
         action?.on = true
 
         action?.execute(context: utility.mockCommentContext())
@@ -104,31 +79,16 @@ final class LikeCommentActionTests: XCTestCase {
         XCTAssertTrue(mockService.unlikeWasCalled)
     }
 
-    func testExecuteUpdatesIconTitleWhenIconIsOn() {
+    func testExecuteUpdatesActionTitleWhenActionIsOn() {
         action?.on = true
 
         action?.execute(context: utility.mockCommentContext())
 
-        XCTAssertEqual(action?.icon?.titleLabel?.text, LikeComment.TitleStrings.like)
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, LikeComment.TitleStrings.like)
     }
 
-    func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOn() {
-        action?.on = true
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityLabel, LikeComment.TitleStrings.like)
-    }
-
-    func testExecuteUpdatesIconAccessibilityHintWhenIconIsOn() {
-        action?.on = true
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.like)
-    }
-
-    func testExecuteCallsLikeWhenIconIsOff() {
+    func testExecuteCallsLikeWhenActionIsOff() {
         action?.on = false
 
         action?.execute(context: utility.mockCommentContext())
@@ -141,27 +101,12 @@ final class LikeCommentActionTests: XCTestCase {
         XCTAssertTrue(mockService.likeWasCalled)
     }
 
-    func testExecuteUpdatesIconTitleWhenIconIsOff() {
+    func testExecuteUpdatesActionTitleWhenActionIsOff() {
         action?.on = false
 
         action?.execute(context: utility.mockCommentContext())
 
-        XCTAssertEqual(action?.icon?.titleLabel?.text, LikeComment.TitleStrings.unlike)
-    }
-
-    func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOff() {
-        action?.on = false
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityLabel, LikeComment.TitleStrings.unlike)
-    }
-
-    func testExecuteUpdatesIconAccessibilityHintWhenIconIsOff() {
-        action?.on = false
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.unlike)
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, LikeComment.TitleStrings.unlike)
     }
 }

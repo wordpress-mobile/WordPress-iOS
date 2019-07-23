@@ -10,21 +10,24 @@ final class ApproveCommentActionTests: XCTestCase {
     }
 
     private class MockNotificationActionsService: NotificationActionsService {
-        var unaproveWasCalled: Bool = false
-        var aproveWasCalled: Bool = false
+        var unapproveWasCalled: Bool = false
+        var approveWasCalled: Bool = false
 
         override func unapproveCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
-            unaproveWasCalled = true
+            unapproveWasCalled = true
             completion?(true)
         }
 
         override func approveCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
-            aproveWasCalled = true
+            approveWasCalled = true
             completion?(true)
         }
     }
 
     private var action: ApproveComment?
+
+    private var mockHandler: UIContextualAction.Handler = { (_, _, _) in }
+
     private let utility = NotificationUtility()
 
     private struct Constants {
@@ -49,49 +52,26 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.on, Constants.initialStatus)
     }
 
+    func testContextualActionTitleIsExpected() {
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.approve)
+    }
+
     func testSettingActionOnSetsExpectedTitle() {
         action?.on = true
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.unapprove)
-    }
 
-    func testSettingActionOnSetsExpectedAccessibilityLabel() {
-        action?.on = true
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.unapprove)
-    }
-
-    func testSettingActionOnSetsExpectedAccessibilityHint() {
-        action?.on = true
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.unapprove)
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.unapprove)
     }
 
     func testSettingActionOffSetsExpectedTitle() {
         action?.on = false
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
+
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.approve)
     }
 
-    func testSettingActionOffSetsExpectedAccessibilityLabel() {
-        action?.on = false
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
-    }
-
-    func testSettingActionOffSetsExpectedAccessibilityHint() {
-        action?.on = false
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
-    }
-
-    func testDefaultTitleIsExpected() {
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
-    }
-
-    func testDefaultAccessibilityLabelIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
-    }
-
-    func testDefaultAccessibilityHintIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
-    }
-
-    func testExecuteCallsUnapproveWhenIconIsOn() {
+    func testExecuteCallsUnapproveWhenActionIsOn() {
         action?.on = true
 
         action?.execute(context: utility.mockCommentContext())
@@ -101,34 +81,19 @@ final class ApproveCommentActionTests: XCTestCase {
             return
         }
 
-        XCTAssertTrue(mockService.unaproveWasCalled)
+        XCTAssertTrue(mockService.unapproveWasCalled)
     }
 
-    func testExecuteUpdatesIconTitleWhenIconIsOn() {
+    func testExecuteUpdatesContextualActionTitleWhenActionIsOn() {
         action?.on = true
 
         action?.execute(context: utility.mockCommentContext())
 
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.approve)
     }
 
-    func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOn() {
-        action?.on = true
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
-    }
-
-    func testExecuteUpdatesIconAccessibilityHintWhenIconIsOn() {
-        action?.on = true
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
-    }
-
-    func testExecuteCallsApproveWhenIconIsOff() {
+    func testExecuteCallsApproveWhenActionIsOff() {
         action?.on = false
 
         action?.execute(context: utility.mockCommentContext())
@@ -138,30 +103,15 @@ final class ApproveCommentActionTests: XCTestCase {
             return
         }
 
-        XCTAssertTrue(mockService.aproveWasCalled)
+        XCTAssertTrue(mockService.approveWasCalled)
     }
 
-    func testExecuteUpdatesIconTitleWhenIconIsOff() {
+    func testExecuteUpdatesContextualActionTitleWhenActionIsOff() {
         action?.on = false
 
         action?.execute(context: utility.mockCommentContext())
 
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.unapprove)
-    }
-
-    func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOff() {
-        action?.on = false
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.unapprove)
-    }
-
-    func testExecuteUpdatesIconAccessibilityHintWhenIconIsOff() {
-        action?.on = false
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.unapprove)
+        let contextualAction = action?.action(handler: mockHandler)
+        XCTAssertEqual(contextualAction?.title, ApproveComment.TitleStrings.unapprove)
     }
 }
