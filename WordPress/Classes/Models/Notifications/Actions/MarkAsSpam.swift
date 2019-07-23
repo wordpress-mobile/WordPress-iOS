@@ -13,8 +13,11 @@ class MarkAsSpam: DefaultNotificationActionCommand {
         return button
     }()
 
-    override var icon: UIButton? {
-        return spamIcon
+    override func action(handler: @escaping UIContextualAction.Handler) -> UIContextualAction? {
+        let action = UIContextualAction(style: .normal,
+                                        title: MarkAsSpam.title, handler: handler)
+        action.backgroundColor = .primary
+        return action
     }
 
     override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {

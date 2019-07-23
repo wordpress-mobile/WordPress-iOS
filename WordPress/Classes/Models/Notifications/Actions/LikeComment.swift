@@ -11,17 +11,12 @@ class LikeComment: DefaultNotificationActionCommand {
         static let unlike = NSLocalizedString("Unlike the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment")
     }
 
-    let likeIcon: UIButton = {
-        let title = TitleStrings.like
-        let button = MGSwipeButton(title: title, backgroundColor: .primary)
-        button.accessibilityLabel = title
-        button.accessibilityTraits = UIAccessibilityTraits.button
-        button.accessibilityHint = TitleHints.like
-        return button
-    }()
+    override func action(handler: @escaping UIContextualAction.Handler) -> UIContextualAction? {
+        let action = UIContextualAction(style: .normal,
+                                        title: on ? TitleStrings.like : TitleStrings.unlike, handler: handler)
 
-    override var icon: UIButton? {
-        return likeIcon
+        action.backgroundColor = .primary
+        return action
     }
 
     override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {

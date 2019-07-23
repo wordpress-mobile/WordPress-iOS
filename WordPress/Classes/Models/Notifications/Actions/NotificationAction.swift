@@ -14,12 +14,12 @@ class DefaultNotificationActionCommand: FormattableContentActionCommand {
         return NotificationActionsService(managedObjectContext: mainContext!)
     }()
 
-    var icon: UIButton? {
-        return nil
-    }
-
     init(on: Bool) {
         self.on = on
+    }
+
+    func action(handler: @escaping UIContextualAction.Handler) -> UIContextualAction? {
+        return nil
     }
 
     func execute<ContentType: FormattableContent>(context: ActionContext<ContentType>) { }
