@@ -1,5 +1,3 @@
-import MGSwipeTableCell
-
 /// Encapsulates logic to follow a blog
 final class Follow: DefaultNotificationActionCommand {
     static let title = NSLocalizedString("Follow", comment: "Prompt to follow a blog.")

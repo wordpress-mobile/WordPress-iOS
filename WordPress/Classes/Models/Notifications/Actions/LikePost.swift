@@ -1,5 +1,3 @@
-import MGSwipeTableCell
-
 /// Encapsulates logic to Like a Post
 final class LikePost: DefaultNotificationActionCommand {
     override func action(handler: @escaping UIContextualAction.Handler) -> UIContextualAction? {

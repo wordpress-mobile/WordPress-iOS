@@ -1,5 +1,3 @@
-import MGSwipeTableCell
-
 /// Encapsulates logic to approve a cooment
 class ApproveComment: DefaultNotificationActionCommand {
     enum TitleStrings {
