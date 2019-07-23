@@ -292,16 +292,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         dispatch_group_leave(syncGroup);
     }];
 
-    EditorSettingsService *editorService = [[EditorSettingsService alloc] init];
+    EditorSettingsService *editorService = [[EditorSettingsService alloc] initWithManagedObjectContext:self.managedObjectContext];
     dispatch_group_enter(syncGroup);
-    [editorService syncEditorSettingsFor:blog success:^{
+    [editorService syncEditorSettingsForBlog:blog success:^{
         dispatch_group_leave(syncGroup);
     } failure:^(NSError * _Nonnull error) {
-        if ([error.domain isEqualToString:EditorSettingsServiceErrorDomain] && error.code == EditorSettingsServiceErrorMobileEditorNotSet) {
-            /// DO MIGRATION
-        } else {
-            DDLogError(@"Failed to sync Editor settings");
-        }
+        DDLogError(@"Failed to sync Editor settings");
         dispatch_group_leave(syncGroup);
     }];
 

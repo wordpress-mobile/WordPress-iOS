@@ -29,6 +29,9 @@ extension Blog {
     }
 
     @objc var isGutenbergEnabled: Bool {
-        return self.editor.mobile == .gutenberg
+        guard let selectedEditor = editor.mobile else {
+            return GutenbergSettings().getDefaultEditor(for: self) == .gutenberg
+        }
+        return selectedEditor == .gutenberg
     }
 }

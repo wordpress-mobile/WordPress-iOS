@@ -17,8 +17,14 @@ class GutenbergSettingsTests: XCTestCase {
         return post
     }
 
-    private func newTestBlog() -> Blog {
-        return NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
+    private func newTestBlog(isWPComAPIEnabled: Bool = true) -> Blog {
+        if isWPComAPIEnabled {
+            let blog = ModelTestHelper.insertDotComBlog(context: context)
+            blog.account?.authToken = "auth"
+            return blog
+        } else {
+            return ModelTestHelper.insertSelfHostedBlog(context: context)
+        }
     }
 
     var isGutenbergEnabled: Bool {
@@ -104,14 +110,26 @@ class GutenbergSettingsTests: XCTestCase {
         XCTAssertTrue(mustUseGutenberg)
     }
 
-    func testUseAztecForNewPostsIfWebIsSetToClassic() {
-        XCTAssertFalse(isGutenbergEnabled)
-        XCTAssertFalse(mustUseGutenberg)
+    // Thests for defaults when `mobile_editor` haven't been sync from remote
 
-        settings.setGutenbergEnabled(true, for: blog)
-        blog.webEditor = WebEditor.classic.rawValue
-
-        XCTAssertTrue(isGutenbergEnabled)
+    func testSelfHostedDefaultsToAztec() {
+        blog = newTestBlog(isWPComAPIEnabled: false)
         XCTAssertFalse(mustUseGutenberg)
+    }
+
+    func testSelfHostedUsesOldGlobalEditorSetting() {
+        blog = newTestBlog(isWPComAPIEnabled: false)
+        database.set(true, forKey: GutenbergSettings.Key.enabledOnce)
+        XCTAssertTrue(mustUseGutenberg)
+    }
+
+    func testOldWPComAccountsDefaultsToAztec() {
+        blog.account?.userID = 1
+        XCTAssertFalse(mustUseGutenberg)
+    }
+
+    func testNewWPComAccountsDefaultToGutenberg() {
+        blog.account?.userID = NSNumber(value: Int.max)
+        XCTAssertTrue(mustUseGutenberg)
     }
 }

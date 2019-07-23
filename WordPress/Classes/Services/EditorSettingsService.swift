@@ -5,8 +5,26 @@ import Foundation
 }
 
 @objc class EditorSettingsService: LocalCoreDataService {
-    @objc func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
-        guard let api = blog.wordPressComRestApi(), let siteID = blog.dotComID?.intValue else {
+
+    let database: KeyValueDatabase
+    let wpcomApi: WordPressComRestApi?
+
+    @objc convenience override init(managedObjectContext: NSManagedObjectContext) {
+        self.init(managedObjectContext: managedObjectContext, wpcomApi: nil)
+    }
+
+    init(managedObjectContext: NSManagedObjectContext, database: KeyValueDatabase = UserDefaults(), wpcomApi: WordPressComRestApi? = nil) {
+        self.database = database
+        self.wpcomApi = wpcomApi
+        super.init(managedObjectContext: managedObjectContext)
+    }
+
+    @objc(syncEditorSettingsForBlog:success:failure:)
+    func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
+        guard
+            let api = wpcomApi ?? blog.wordPressComRestApi(),
+            let siteID = blog.dotComID?.intValue
+        else {
             let error = NSError(domain: "EditorSettingsService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Api or dotCom Site ID not found"])
             failure(error)
             return
@@ -16,11 +34,13 @@ import Foundation
         service.getEditorSettings(siteID, success: { (settings) in
             do {
                 try self.saveRemoteEditorSettings(settings, on: blog)
+                ContextManager.sharedInstance().save(self.managedObjectContext)
+                success()
+            } catch EditorSettingsServiceError.mobileEditorNotSet {
+                self.migrateLocalSettingToRemote(for: blog, success: success, failure: failure)
             } catch {
                 failure(error)
             }
-            ContextManager.sharedInstance().save(self.managedObjectContext)
-            success()
         }, failure: failure)
     }
 
@@ -32,11 +52,20 @@ import Foundation
         blog.webEditor = settings.web.rawValue
     }
 
+    private func migrateLocalSettingToRemote(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
+        if blog.editor.mobile == nil {
+            let settings = GutenbergSettings(database: database)
+            let defaultEditor = settings.getDefaultEditor(for: blog)
+            settings.setGutenbergEnabled(defaultEditor == .gutenberg, for: blog)
+        }
+        postEditorSetting(for: blog, success: success, failure: failure)
+    }
+
     func postEditorSetting(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
         guard
             let selectedEditor = blog.editor.mobile,
             let remoteEditor = EditorSettings.Mobile(rawValue: selectedEditor.rawValue),
-            let api = blog.wordPressComRestApi(),
+            let api = wpcomApi ?? blog.wordPressComRestApi(),
             let siteID = blog.dotComID?.intValue
         else {
             let error = NSError(domain: "EditorSettingsService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Api or dotCom Site ID not found"])

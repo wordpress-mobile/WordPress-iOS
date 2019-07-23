@@ -1,12 +1,13 @@
 import Foundation
 
+private let MIN_WPCOM_USER_ID_TO_DEFAULT_GB: Int = 149287441
+
 /// Takes care of storing and accessing Gutenberg settings.
 ///
 class GutenbergSettings {
-
     // MARK: - Enabled Editors Keys
     enum Key {
-        static let enabled = "kUserDefaultsGutenbergEditorEnabled"
+        static let enabledOnce = "kUserDefaultsGutenbergEditorEnabled"
     }
 
     // MARK: - Internal variables
@@ -21,6 +22,12 @@ class GutenbergSettings {
 
     convenience init() {
         self.init(database: UserDefaults() as KeyValueDatabase)
+    }
+
+    /// Get the deprecated app-wide value of gutenberg enabled.
+    /// This is useful for the local to remote migration, and for the global to per-site migration.
+    private var oldAppWideIsGutenbergEnabled: Bool {
+        return database.bool(forKey: Key.enabledOnce)
     }
 
     // MARK: Public accessors
@@ -40,6 +47,10 @@ class GutenbergSettings {
             trackSettingChange(to: isEnabled)
         }
 
+        if isEnabled {
+            /// After the migrations are finished, this value will be used to decide if we should auto-enable gutenberg
+            database.set(isEnabled, forKey: Key.enabledOnce)
+        }
         blog.editor.setMobileEditor(selectedEditor)
         ContextManager.sharedInstance().save(context)
 
@@ -68,12 +79,13 @@ class GutenbergSettings {
 
     /// True if gutenberg editor has been enabled at least once on the given blog
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
-        return blog.editor.mobile != nil
+        return database.object(forKey: Key.enabledOnce) != nil
     }
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
-        return  post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce(for: post.blog) && post.blog.editor.web == .gutenberg
+        let blog = post.blog
+        return post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce(for: blog)
     }
 
     // MARK: - Gutenberg Choice Logic
@@ -89,11 +101,29 @@ class GutenbergSettings {
         let blog = post.blog
 
         if post.isContentEmpty() {
-            return blog.editor.mobile == .gutenberg && blog.editor.web == .gutenberg
+            return shouldUseGutenbergForNewPosts(on: blog)
         } else {
             // It's an existing post
             return post.containsGutenbergBlocks()
         }
+    }
+
+    private func shouldUseGutenbergForNewPosts(on blog: Blog) -> Bool {
+        guard let userSelectedEditor = blog.editor.mobile else {
+            return getDefaultEditor(for: blog) == .gutenberg
+        }
+
+        return userSelectedEditor == .gutenberg
+    }
+
+    func getDefaultEditor(for blog: Blog) -> MobileEditor {
+        if blog.isAccessibleThroughWPCom(),
+            let accountID = blog.account?.userID?.intValue,
+            accountID > MIN_WPCOM_USER_ID_TO_DEFAULT_GB {
+
+            return .gutenberg
+        }
+        return oldAppWideIsGutenbergEnabled ? .gutenberg : .aztec
     }
 }
 
