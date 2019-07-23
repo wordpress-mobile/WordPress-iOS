@@ -297,7 +297,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         var selectedDate: Date?
         if statSection == .insightsAnnualSiteStats,
             let year = viewModel?.annualInsightsYear() {
-            var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: StatsDataHelper.currentDateForSite())
             dateComponents.year = year
             selectedDate = Calendar.current.date(from: dateComponents)
         }

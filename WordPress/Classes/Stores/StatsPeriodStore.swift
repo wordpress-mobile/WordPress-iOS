@@ -73,7 +73,7 @@ enum PeriodQuery {
         case .allPublished(let date, _):
             return date
         default:
-            return Date()
+            return StatsDataHelper.currentDateForSite().normalizedDate()
         }
     }
 
@@ -1000,6 +1000,16 @@ extension StatsPeriodStore {
             return nil
         }
         return state.postStats[postId] ?? nil
+    }
+
+    func getMostRecentDate(forPost postId: Int?) -> Date? {
+        guard let postId = postId,
+            let postStats = state.postStats[postId],
+            let mostRecentDay = postStats?.recentWeeks.last?.endDay else {
+                return nil
+        }
+
+        return Calendar.autoupdatingCurrent.date(from: mostRecentDay)
     }
 
     var isFetchingOverview: Bool {

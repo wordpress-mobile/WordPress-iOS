@@ -29,9 +29,12 @@ class SiteStatsPeriodViewModel: Observable {
 
     private var mostRecentChartData: StatsSummaryTimeIntervalData? {
         didSet {
-            currentEntryIndex = (mostRecentChartData?.summaryData.endIndex ?? 0) - 1
+            if oldValue == nil {
+                currentEntryIndex = (mostRecentChartData?.summaryData.endIndex ?? 0) - 1
+            }
         }
     }
+
     private var currentEntryIndex: Int = 0
 
     // MARK: - Constructor
@@ -207,7 +210,7 @@ private extension SiteStatsPeriodViewModel {
             barChartStyling.append(contentsOf: chart.barChartStyling)
 
             indexToHighlight = chartData.summaryData.lastIndex(where: {
-                lastRequestedDate >= $0.periodStartDate
+                lastRequestedDate.normalizedDate() >= $0.periodStartDate.normalizedDate()
             })
         }
 
