@@ -171,6 +171,10 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     self.blavatarDropTarget = [UIView new];
     [self.blavatarDropTarget setTranslatesAutoresizingMaskIntoConstraints:NO];
     self.blavatarDropTarget.backgroundColor = [UIColor clearColor];
+    self.blavatarDropTarget.accessibilityLabel = NSLocalizedString(@"Site Icon", @"Site Icon accessibility label.");
+    self.blavatarDropTarget.accessibilityTraits = UIAccessibilityTraitImage | UIAccessibilityTraitButton;
+    self.blavatarDropTarget.accessibilityHint = NSLocalizedString(@"Shows a menu for changing the Site Icon.", @"Accessibility hint describing what happens if the Site Icon is tapped.");
+    self.blavatarDropTarget.isAccessibilityElement = YES;
 
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                 action:@selector(blavatarImageTapped)];
