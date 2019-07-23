@@ -20,6 +20,7 @@ class DetailDataCell: UITableViewCell, NibLoadable {
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private var rowData: StatsTotalRowData?
     private typealias Style = WPStyleGuide.Stats
+    private var row: StatsTotalRow?
 
     // MARK: - Configure
 
@@ -62,9 +63,15 @@ class DetailDataCell: UITableViewCell, NibLoadable {
             }
         }
 
+        self.row = row
         dataView.addSubview(row)
         row.translatesAutoresizingMaskIntoConstraints = false
         dataView.pinSubviewToAllEdges(row)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        row?.removeFromSuperview()
     }
 
 }
