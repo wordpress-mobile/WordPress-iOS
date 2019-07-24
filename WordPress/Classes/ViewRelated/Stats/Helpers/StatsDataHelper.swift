@@ -183,8 +183,6 @@ extension Date {
         let now = StatsDataHelper.currentDateForSite()
 
         let components = calendar.dateComponents([.minute, .hour, .day], from: self, to: now)
-        let niceComponents = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: self, to: now)
-
         let days = components.day ?? 0
         let hours = components.hour ?? 0
         let minutes = components.minute ?? 0
@@ -206,7 +204,7 @@ extension Date {
         }
 
         if days >= DateFormattingBreakpoints.almostAMonth.rawValue {
-            return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month"))
+            return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month."))
         }
 
         if days > 1 || (days == 1 && hours >= DateFormattingBreakpoints.halfADay.rawValue) {
@@ -227,9 +225,7 @@ extension Date {
             return String(format: NSLocalizedString("an hour", comment: "Age between dates equaling one hour."))
         }
 
-        return NSLocalizedString("<1 hour", comment: "Age between dates less than one hour.")
-
-
+        return NSLocalizedString("< 1 hour", comment: "Age between dates less than one hour.")
     }
 
     private enum DateFormattingBreakpoints: Int {
