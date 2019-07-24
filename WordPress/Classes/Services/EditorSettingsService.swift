@@ -5,16 +5,13 @@ import Foundation
 }
 
 @objc class EditorSettingsService: LocalCoreDataService {
-
-    let database: KeyValueDatabase
     let wpcomApi: WordPressComRestApi?
 
     @objc convenience override init(managedObjectContext: NSManagedObjectContext) {
         self.init(managedObjectContext: managedObjectContext, wpcomApi: nil)
     }
 
-    init(managedObjectContext: NSManagedObjectContext, database: KeyValueDatabase = UserDefaults(), wpcomApi: WordPressComRestApi? = nil) {
-        self.database = database
+    init(managedObjectContext: NSManagedObjectContext, wpcomApi: WordPressComRestApi? = nil) {
         self.wpcomApi = wpcomApi
         super.init(managedObjectContext: managedObjectContext)
     }
@@ -54,7 +51,7 @@ import Foundation
 
     private func migrateLocalSettingToRemote(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
         if blog.editor.mobile == nil {
-            let settings = GutenbergSettings(database: database)
+            let settings = GutenbergSettings()
             let defaultEditor = settings.getDefaultEditor(for: blog)
             settings.setGutenbergEnabled(defaultEditor == .gutenberg, for: blog)
         }

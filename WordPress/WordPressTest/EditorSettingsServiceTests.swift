@@ -6,7 +6,6 @@ class EditorSettingsServiceTest: XCTestCase {
     var context: NSManagedObjectContext!
     var remoteApi: MockWordPressComRestApi!
     var service: EditorSettingsService!
-    var database: KeyValueDatabase!
 
     override func setUp() {
         super.setUp()
@@ -14,8 +13,8 @@ class EditorSettingsServiceTest: XCTestCase {
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
         remoteApi = MockWordPressComRestApi()
-        database = EphemeralKeyValueDatabase()
-        service = EditorSettingsService(managedObjectContext: context, database: database, wpcomApi: remoteApi)
+        Environment.replaceEnvironment(contextManager: contextManager, userDefaults: EphemeralKeyValueDatabase())
+        service = EditorSettingsService(managedObjectContext: context, wpcomApi: remoteApi)
     }
 
     override func tearDown() {
@@ -90,7 +89,7 @@ extension EditorSettingsServiceTest {
 
     func responseWith(mobileEditor: String) -> AnyObject {
         return [
-            "editor_mobile": "",
+            "editor_mobile": mobileEditor,
             "editor_web": "classic",
         ] as AnyObject
     }

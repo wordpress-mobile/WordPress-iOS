@@ -14,23 +14,10 @@ class GutenbergSettings {
         }
     }
 
-    // MARK: - Internal variables
-    fileprivate let database: KeyValueDatabase
-
-    let context = Environment.current.contextManager.mainContext
-
-    // MARK: - Initialization
-    init(database: KeyValueDatabase) {
-        self.database = database
-    }
-
-    convenience init() {
-        self.init(database: UserDefaults() as KeyValueDatabase)
-    }
-
     /// Get the deprecated app-wide value of gutenberg enabled.
     /// This is useful for the local to remote migration, and for the global to per-site migration.
     private var oldAppWideIsGutenbergEnabled: Bool {
+        let database = Environment.current.userDefaults
         return database.bool(forKey: Key.enabledOnce)
     }
 
@@ -52,10 +39,12 @@ class GutenbergSettings {
         }
 
         if isEnabled {
+            let database = Environment.current.userDefaults
             database.set(true, forKey: Key.enabledOnce(for: blog))
         }
 
         blog.editor.setMobileEditor(selectedEditor)
+        let context = Environment.current.mainContext
         ContextManager.sharedInstance().save(context)
 
         WPAnalytics.refreshMetadata()
@@ -75,6 +64,7 @@ class GutenbergSettings {
     ///
     /// - Parameter blog: The site to synch editor settings
     func postSettingsToRemote(for blog: Blog) {
+        let context = Environment.current.mainContext
         let editorSettingsService = EditorSettingsService(managedObjectContext: context)
         editorSettingsService.postEditorSetting(for: blog, success: {}) { (error) in
             DDLogError("Failed to post new post selection with Error: \(error)")
@@ -84,6 +74,7 @@ class GutenbergSettings {
     /// True if gutenberg editor has been enabled at least once on the given blog
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
         // If gutenberg was "globaly" enabled before, will take precedence over the new per-site flag
+        let database = Environment.current.userDefaults
         return database.object(forKey: Key.enabledOnce) != nil || database.object(forKey: Key.enabledOnce(for: blog)) != nil
     }
 

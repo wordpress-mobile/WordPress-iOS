@@ -41,9 +41,11 @@ class GutenbergSettingsTests: XCTestCase {
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
         database = EphemeralKeyValueDatabase()
-        settings = GutenbergSettings(database: database)
+        settings = GutenbergSettings()
         blog = newTestBlog()
         post = newTestPost(with: blog)
+
+        Environment.replaceEnvironment(contextManager: contextManager, userDefaults: database)
     }
 
     override func tearDown() {
@@ -55,10 +57,10 @@ class GutenbergSettingsTests: XCTestCase {
     func testGutenbergDisabledByDefaultAndToggleEnablesInSecondLaunch() {
 
         let testClosure: () -> () = { () in
-            let database = EphemeralKeyValueDatabase()
+            Environment.replaceEnvironment(contextManager: TestContextManager(), userDefaults: EphemeralKeyValueDatabase())
             let blog = self.newTestBlog()
             // This simulates the first launch
-            let settings = GutenbergSettings(database: database)
+            let settings = GutenbergSettings()
 
             XCTAssertFalse(blog.isGutenbergEnabled)
 

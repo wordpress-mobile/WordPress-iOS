@@ -14,6 +14,9 @@ struct Environment {
     /// A type to create derived context, save context, etc...
     let contextManager: ContextManagerType
 
+    /// A simple database to store any kind of key-value pairs.
+    let userDefaults: KeyValueDatabase
+
     /// The base url to use for WP.com api requests
     let wordPressComApiBase: String
 
@@ -31,13 +34,16 @@ struct Environment {
 
     // MARK: - Initialization
 
+    // Defaults defined here will be normally unless explicitly overriden with a `replaceEnvironment()` call
     private init(
         appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
         contextManager: ContextManagerType = ContextManager.shared,
+        userDefaults: KeyValueDatabase = UserDefaults.standard,
         wordPressComApiBase: String = WordPressComRestApi.apiBaseURLString) {
 
         self.appRatingUtility = appRatingUtility
         self.contextManager = contextManager
+        self.userDefaults = userDefaults
         self.wordPressComApiBase = wordPressComApiBase
     }
 }
@@ -49,11 +55,13 @@ extension Environment {
     static func replaceEnvironment(
         appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
         contextManager: ContextManagerType = Environment.current.contextManager,
+        userDefaults: KeyValueDatabase = Environment.current.userDefaults,
         wordPressComApiBase: String = Environment.current.wordPressComApiBase) -> Environment {
 
         current = Environment(
             appRatingUtility: appRatingUtility,
             contextManager: contextManager,
+            userDefaults: userDefaults,
             wordPressComApiBase: wordPressComApiBase
         )
         return current
