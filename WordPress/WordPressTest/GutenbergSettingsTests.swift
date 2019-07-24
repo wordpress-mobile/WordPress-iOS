@@ -59,6 +59,7 @@ class GutenbergSettingsTests: XCTestCase {
             let blog = self.newTestBlog()
             // This simulates the first launch
             let settings = GutenbergSettings(database: database)
+            settings.setGutenbergEnabled(false, for: blog)
 
             XCTAssertFalse(blog.isGutenbergEnabled)
 
@@ -74,6 +75,7 @@ class GutenbergSettingsTests: XCTestCase {
     }
 
     func testGutenbergAlwaysUsedForExistingGutenbergPosts() {
+        settings.setGutenbergEnabled(false, for: blog)
         XCTAssertFalse(isGutenbergEnabled)
 
         post.content = "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->"
@@ -87,6 +89,7 @@ class GutenbergSettingsTests: XCTestCase {
     }
 
     func testAztecAlwaysUsedForExistingAztecPosts() {
+        settings.setGutenbergEnabled(false, for: blog)
         XCTAssertFalse(isGutenbergEnabled)
 
         post.content = "<p>Hello world</p>"
@@ -99,37 +102,22 @@ class GutenbergSettingsTests: XCTestCase {
         XCTAssertFalse(mustUseGutenberg)
     }
 
-    func testUseGutenbergForNewPostsIfWebAndMobileAreSetToGutenberg() {
-        XCTAssertFalse(isGutenbergEnabled)
-        XCTAssertFalse(mustUseGutenberg)
-
-        settings.setGutenbergEnabled(true, for: blog)
-        blog.webEditor = WebEditor.gutenberg.rawValue
-
-        XCTAssertTrue(isGutenbergEnabled)
-        XCTAssertTrue(mustUseGutenberg)
-    }
-
     // Thests for defaults when `mobile_editor` haven't been sync from remote
 
     func testSelfHostedDefaultsToAztec() {
         blog = newTestBlog(isWPComAPIEnabled: false)
+        post = newTestPost(with: blog)
         XCTAssertFalse(mustUseGutenberg)
     }
 
     func testSelfHostedUsesOldGlobalEditorSetting() {
         blog = newTestBlog(isWPComAPIEnabled: false)
-        database.set(true, forKey: GutenbergSettings.Key.enabledOnce)
+        post = newTestPost(with: blog)
+        database.set(true, forKey: GutenbergSettings.Key.appWideEnabled)
         XCTAssertTrue(mustUseGutenberg)
     }
 
-    func testOldWPComAccountsDefaultsToAztec() {
-        blog.account?.userID = 1
-        XCTAssertFalse(mustUseGutenberg)
-    }
-
-    func testNewWPComAccountsDefaultToGutenberg() {
-        blog.account?.userID = NSNumber(value: Int.max)
+    func testWPComAccountsDefaultsToGutenberg() {
         XCTAssertTrue(mustUseGutenberg)
     }
 }
