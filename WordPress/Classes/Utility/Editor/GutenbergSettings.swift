@@ -120,14 +120,8 @@ class GutenbergSettings {
     }
 
     func getDefaultEditor(for blog: Blog) -> MobileEditor {
-        if blog.isAccessibleThroughWPCom() {
-            if let appWideEnabled = database.object(forKey: Key.appWideEnabled) as? Bool, appWideEnabled == false {
-                // Return Aztec just if gutenberg was explicitly disabled
-                return .aztec
-            }
-            return .gutenberg
-        }
-        return oldAppWideIsGutenbergEnabled ? .gutenberg : .aztec
+        // Default to gutenberg on WPCom/Jetpack sites
+        return blog.isAccessibleThroughWPCom() ? .gutenberg : .aztec
     }
 }
 
