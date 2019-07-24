@@ -31,6 +31,18 @@ data model as well as any custom migrations.
 * `VisitsSummaryStatsRecordValue`
 
 
+## WordPress 88
+@danielebogo 2019-07-24
+- `AccountSettings` added `usernameCanBeChanged` property to store a bool value.
+
+## WordPress 87
+@jklausa 2019-03-26
+- `ClicksStatsRecordValue` added a `iconUrlString` to store the icon URL as string.
+- Added `OtherAndTotalViewsCountStatsRecordValue` entity.
+- `TopViewedPostStatsRecordValue` modified `postID` property and `type` property  to Integer 64.
+- `TopViewedVideoStatsRecordValue` modified `postID` property  to Integer 64.
+- `VisitsSummaryStatsRecordValue` added `periodStart` property as Date.
+
 ## WordPress 86
 @aerych 2018-12-08
 - Added `Plan`, `PlanGroup`, and `PlanFeature` entities and properties.
