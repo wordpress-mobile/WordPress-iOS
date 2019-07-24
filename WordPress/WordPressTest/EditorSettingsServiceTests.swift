@@ -24,8 +24,9 @@ class EditorSettingsServiceTest: XCTestCase {
     }
 
     func testLocalSettingsMigrationPostAztec() {
-        // Blog from an old account should default to Aztec
-        let blog = blogWith(userId: 1)
+        // Gutenberg globaly disable to migrate to Aztec
+        database.set(false, forKey: GutenbergSettings.Key.appWideEnabled)
+        let blog = blogWith()
 
         sync(with: blog)
 
@@ -51,8 +52,9 @@ class EditorSettingsServiceTest: XCTestCase {
     }
 
     func testLocalSettingsMigrationPostGutenberg() {
-        // Blog from a new account should default to Gutenberg
-        let blog = blogWith(userId: Int.max)
+        // Gutenberg globaly enabled to migrate to Aztec
+        database.set(true, forKey: GutenbergSettings.Key.appWideEnabled)
+        let blog = blogWith()
 
         // Mobile editor not yet set on the server
         let response = responseWith(mobileEditor: "")
@@ -80,17 +82,16 @@ class EditorSettingsServiceTest: XCTestCase {
 }
 
 extension EditorSettingsServiceTest {
-    func blogWith(userId: Int) -> Blog {
+    func blogWith() -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: context)
         blog.dotComID = 1
-        blog.account?.userID = NSNumber(value: userId)
         blog.account?.authToken = "auth"
         return blog
     }
 
     func responseWith(mobileEditor: String) -> AnyObject {
         return [
-            "editor_mobile": "",
+            "editor_mobile": mobileEditor,
             "editor_web": "classic",
         ] as AnyObject
     }
