@@ -214,7 +214,7 @@ extension Date {
             return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), Int(round(Float(totalHours) / Float(24))))
         }
 
-        if hours > DateFormattingBreakpoints.almostADay.rawValue {
+        if days == 1 || hours > DateFormattingBreakpoints.almostADay.rawValue {
             return String(format: NSLocalizedString("a day", comment: "Age between dates equaling one day."))
         }
 
@@ -223,7 +223,7 @@ extension Date {
             return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), Int(round(Float(totalMinutes) / Float(60))))
         }
 
-        if minutes >= DateFormattingBreakpoints.almostAnHour.rawValue {
+        if hours == 1 || minutes >= DateFormattingBreakpoints.almostAnHour.rawValue {
             return String(format: NSLocalizedString("an hour", comment: "Age between dates equaling one hour."))
         }
 
