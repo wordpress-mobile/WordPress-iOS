@@ -100,7 +100,7 @@ extension AccountSettings {
                   displayName: managed.displayName.stringByDecodingXMLCharacters(),
                   aboutMe: managed.aboutMe,
                   username: managed.username,
-                  usernameCanBeChanged: false,
+                  usernameCanBeChanged: managed.usernameCanBeChanged,
                   email: managed.email,
                   emailPendingAddress: managed.emailPendingAddress,
                   emailPendingChange: managed.emailPendingChange,
