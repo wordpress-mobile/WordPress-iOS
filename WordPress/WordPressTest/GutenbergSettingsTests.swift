@@ -110,13 +110,6 @@ class GutenbergSettingsTests: XCTestCase {
         XCTAssertFalse(mustUseGutenberg)
     }
 
-    func testSelfHostedUsesOldGlobalEditorSetting() {
-        blog = newTestBlog(isWPComAPIEnabled: false)
-        post = newTestPost(with: blog)
-        database.set(true, forKey: GutenbergSettings.Key.appWideEnabled)
-        XCTAssertTrue(mustUseGutenberg)
-    }
-
     func testWPComAccountsDefaultsToGutenberg() {
         XCTAssertTrue(mustUseGutenberg)
     }

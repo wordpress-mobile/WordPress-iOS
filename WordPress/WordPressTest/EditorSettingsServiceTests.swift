@@ -15,7 +15,7 @@ class EditorSettingsServiceTest: XCTestCase {
         context.parent = contextManager.mainContext
         remoteApi = MockWordPressComRestApi()
         database = EphemeralKeyValueDatabase()
-        service = EditorSettingsService(managedObjectContext: context, database: database, wpcomApi: remoteApi)
+        service = EditorSettingsService(managedObjectContext: context, wpcomApi: remoteApi)
     }
 
     override func tearDown() {
@@ -24,9 +24,9 @@ class EditorSettingsServiceTest: XCTestCase {
     }
 
     func testLocalSettingsMigrationPostAztec() {
-        // Gutenberg globaly disable to migrate to Aztec
-        database.set(false, forKey: GutenbergSettings.Key.appWideEnabled)
         let blog = blogWith()
+        // Self-Hosted sites will default to Aztec
+        blog.account = nil
 
         sync(with: blog)
 
@@ -52,8 +52,7 @@ class EditorSettingsServiceTest: XCTestCase {
     }
 
     func testLocalSettingsMigrationPostGutenberg() {
-        // Gutenberg globaly enabled to migrate to Aztec
-        database.set(true, forKey: GutenbergSettings.Key.appWideEnabled)
+        // WPCom sites will default to gutenberg
         let blog = blogWith()
 
         // Mobile editor not yet set on the server
