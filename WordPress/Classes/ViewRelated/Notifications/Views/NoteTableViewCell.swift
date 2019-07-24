@@ -1,6 +1,5 @@
 import Foundation
 import WordPressShared
-import MGSwipeTableCell
 
 /// The purpose of this class is to render a Notification entity, onscreen.
 /// This cell should be loaded from its nib, since the autolayout constraints and outlets are not generated
@@ -8,7 +7,7 @@ import MGSwipeTableCell
 /// Supports specific styles for Unapproved Comment Notifications, Unread Notifications, and a brand
 /// new "Undo Deletion" mechanism has been implemented. See "NoteUndoOverlayView" for reference.
 ///
-class NoteTableViewCell: MGSwipeTableCell {
+class NoteTableViewCell: UITableViewCell {
     // MARK: - Public Properties
     @objc var read: Bool = false {
         didSet {

@@ -16,7 +16,6 @@ final class TrashCommentActionTests: XCTestCase {
     }
 
     private var action: TrashComment?
-
     let utils = NotificationUtility()
 
     private struct Constants {
@@ -41,16 +40,8 @@ final class TrashCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.on, Constants.initialStatus)
     }
 
-    func testDefaultTitleIsExpected() {
-        XCTAssertEqual(action?.icon?.titleLabel?.text, TrashComment.title)
-    }
-
-    func testDefaultAccessibilityLabelIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityLabel, TrashComment.title)
-    }
-
-    func testDefaultAccessibilityHintIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityHint, TrashComment.hint)
+    func testActionTitleIsExpected() {
+        XCTAssertEqual(action?.actionTitle, TrashComment.title)
     }
 
     func testExecuteCallsTrash() {
