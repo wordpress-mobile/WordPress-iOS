@@ -128,6 +128,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
 private extension OverviewCell {
 
     func applyStyles() {
+        Style.configureCell(self)
         Style.configureLabelForOverview(selectedLabel)
         Style.configureLabelForOverview(selectedData)
         Style.configureViewAsSeparator(topSeparatorLine)
@@ -153,6 +154,9 @@ private extension OverviewCell {
         // If there is only one tab data, this is being displayed on the
         // Post Stats view, which does not have a filterTabBar.
         filterTabBar.isHidden = tabsData.count == 1
+
+        // The filterTabBar has a bottom line, so hide the bottom line on the cell if the filterTabBar is showing.
+        bottomSeparatorLine.isHidden = !filterTabBar.isHidden
 
         chartBottomConstraint.constant = filterTabBar.isHidden ?
             ChartBottomMargin.filterTabBarHidden :

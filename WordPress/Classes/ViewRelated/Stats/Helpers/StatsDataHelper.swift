@@ -4,8 +4,6 @@ import Foundation
 ///
 class StatsDataHelper {
 
-    private typealias Style = WPStyleGuide.Stats
-
     // Max number of rows to display on Insights and Period stat cards.
     static let maxRowsToDisplay = 6
 
@@ -118,19 +116,39 @@ class StatsDataHelper {
         }
     }
 
-    private static var calendar: Calendar = {
+    // MARK: - Helpers
+
+    class func currentDateForSite() -> Date {
+        let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
+        let delta = TimeInterval(siteTimeZone.secondsFromGMT())
+        return Date().addingTimeInterval(delta)
+    }
+
+}
+
+private extension StatsDataHelper {
+
+    typealias Style = WPStyleGuide.Stats
+
+    static var calendar: Calendar = {
         var cal = Calendar(identifier: .iso8601)
         cal.timeZone = .autoupdatingCurrent
         return cal
     }()
 
-    private static var monthFormatter: DateFormatter = {
+    static var calendarForSite: Calendar = {
+        var cal = StatsDataHelper.calendar
+        cal.timeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
+        return cal
+    }()
+
+    static var monthFormatter: DateFormatter = {
         let df = DateFormatter()
         df.setLocalizedDateFormatFromTemplate("MMM")
         return df
     }()
 
-    private class func displayMonth(forDate date: DateComponents) -> String {
+    class func displayMonth(forDate date: DateComponents) -> String {
         guard let month = StatsDataHelper.calendar.date(from: date) else {
             return ""
         }
@@ -141,14 +159,28 @@ class StatsDataHelper {
 }
 
 extension Date {
-    func relativeStringInPast(timezone: TimeZone = .autoupdatingCurrent) -> String {
+
+    func normalizedForSite() -> Date {
+        var calendar = StatsDataHelper.calendarForSite
+
+        let flags: NSCalendar.Unit = [.day, .month, .year]
+        let components = (calendar as NSCalendar).components(flags, from: self)
+
+        var normalized = DateComponents()
+        normalized.day = components.day
+        normalized.month = components.month
+        normalized.year = components.year
+
+        calendar.timeZone = .autoupdatingCurrent
+        return calendar.date(from: normalized) ?? self
+    }
+
+    func relativeStringInPast() -> String {
         // This is basically a Swift rewrite of https://github.com/wordpress-mobile/WordPressCom-Stats-iOS/blob/develop/WordPressCom-Stats-iOS/Services/StatsDateUtilities.m#L97
         // It could definitely use some love!
 
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = timezone
-
-        let now = Date()
+        let calendar = StatsDataHelper.calendar
+        let now = StatsDataHelper.currentDateForSite()
 
         let components = calendar.dateComponents([.minute, .hour, .day], from: self, to: now)
         let niceComponents = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: self, to: now)
@@ -247,4 +279,23 @@ extension StatsPeriodUnit {
         return "period"
     }
 
+}
+
+extension TimeZone {
+    func displayForStats() -> String {
+        let seconds = self.secondsFromGMT()
+        let hours = seconds / 3600
+        let remainingSeconds = seconds - (hours * 3600)
+        let minutes = remainingSeconds / 60
+        let displayMinutes = minutes > 0 ? ":\(minutes)" : ""
+        let sign = hours < 0 ? "-" : "+"
+
+        let timezoneString = NSLocalizedString("Site timezone (UTC%@%d%@)",
+                                               comment: "Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`.")
+
+        return String.localizedStringWithFormat(timezoneString,
+                                                sign,
+                                                abs(hours),
+                                                displayMinutes)
+    }
 }

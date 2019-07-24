@@ -1,6 +1,8 @@
 13.0
 -----
+* Stats: now use site timezone instead of device.
 * Improved color scheme consistency.
+* Post Stats: date bar no longer goes prior to earliest date available.
 
 12.9
 -----
