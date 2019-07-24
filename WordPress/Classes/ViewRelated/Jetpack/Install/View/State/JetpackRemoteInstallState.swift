@@ -25,12 +25,11 @@ enum JetpackRemoteInstallState: Equatable {
         case .installing:
             return NSLocalizedString("Installing Jetpack on your site. This can take up to a few minutes to complete.",
                                      comment: "The Jetpack view message used while the state is installing")
-        case .failure:
-            return NSLocalizedString("Jetpack could not be installed at this time.",
-                                     comment: "The default Jetpack view message used when an error occurred")
         case .success:
             return NSLocalizedString("Now that Jetpack is installed, we just need to get you set up. This will only take a minute.",
                                      comment: "The default Jetpack view message for the success state")
+        case .failure(let error):
+            return error.message
         }
     }
 
