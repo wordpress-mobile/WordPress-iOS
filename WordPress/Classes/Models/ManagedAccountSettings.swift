@@ -19,6 +19,7 @@ class ManagedAccountSettings: NSManagedObject {
         aboutMe = accountSettings.aboutMe
 
         username = accountSettings.username
+        usernameCanBeChanged = accountSettings.usernameCanBeChanged
         email = accountSettings.email
         emailPendingAddress = accountSettings.emailPendingAddress
         emailPendingChange = accountSettings.emailPendingChange
@@ -99,6 +100,7 @@ extension AccountSettings {
                   displayName: managed.displayName.stringByDecodingXMLCharacters(),
                   aboutMe: managed.aboutMe,
                   username: managed.username,
+                  usernameCanBeChanged: false,
                   email: managed.email,
                   emailPendingAddress: managed.emailPendingAddress,
                   emailPendingChange: managed.emailPendingChange,
