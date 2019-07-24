@@ -8,6 +8,10 @@ class GutenbergSettings {
     // MARK: - Enabled Editors Keys
     enum Key {
         static let enabledOnce = "kUserDefaultsGutenbergEditorEnabled"
+        static func enabledOnce(for blog: Blog) -> String {
+            let url = (blog.displayURL ?? "") as String
+            return "com.wordpress.gutenberg-autoenabled-" + url
+        }
     }
 
     // MARK: - Internal variables
@@ -48,9 +52,9 @@ class GutenbergSettings {
         }
 
         if isEnabled {
-            /// After the migrations are finished, this value will be used to decide if we should auto-enable gutenberg
-            database.set(isEnabled, forKey: Key.enabledOnce)
+            database.set(true, forKey: Key.enabledOnce(for: blog))
         }
+
         blog.editor.setMobileEditor(selectedEditor)
         ContextManager.sharedInstance().save(context)
 
@@ -79,7 +83,8 @@ class GutenbergSettings {
 
     /// True if gutenberg editor has been enabled at least once on the given blog
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
-        return database.object(forKey: Key.enabledOnce) != nil
+        // If gutenberg was "globaly" enabled before, will take precedence over the new per-site flag
+        return database.object(forKey: Key.enabledOnce) != nil || database.object(forKey: Key.enabledOnce(for: blog)) != nil
     }
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
