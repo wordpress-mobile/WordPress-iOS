@@ -166,6 +166,9 @@ final public class PushNotificationsManager: NSObject {
             return
         }
 
+        // Analytics
+        trackNotification(with: userInfo)
+
         // Handling!
         let handlers = [handleSupportNotification,
                         handleAuthenticationNotification,
@@ -338,6 +341,7 @@ extension PushNotificationsManager {
         return true
     }
 }
+
 
 // MARK: - Nested Types
 //

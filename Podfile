@@ -149,7 +149,6 @@ target 'WordPress' do
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'MGSwipeTableCell', '1.6.8'
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
