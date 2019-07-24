@@ -26,12 +26,6 @@ class GutenbergSettings {
         self.init(database: UserDefaults() as KeyValueDatabase)
     }
 
-    /// Get the deprecated app-wide value of gutenberg enabled.
-    /// This is useful for the local to remote migration, and for the global to per-site migration.
-    private var oldAppWideIsGutenbergEnabled: Bool {
-        return database.bool(forKey: Key.appWideEnabled)
-    }
-
     // MARK: Public accessors
 
     /// Sets gutenberg enabled state locally for the given site.
