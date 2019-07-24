@@ -190,7 +190,7 @@ extension Date {
         let minutes = components.minute ?? 0
 
         if days >= DateFormattingBreakpoints.aboutYearAndAHalf.rawValue {
-            return String(format: NSLocalizedString("%d years", comment: "Age between dates over one year."), niceComponents.year!)
+            return String(format: NSLocalizedString("%d years", comment: "Age between dates over one year."), Int(round(Float(days) / Float(365))))
         }
 
         if days >= DateFormattingBreakpoints.almostAYear.rawValue {
@@ -206,7 +206,8 @@ extension Date {
         }
 
         if days > 1 || (days == 1 && hours >= DateFormattingBreakpoints.halfADay.rawValue) {
-            return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), niceComponents.day!)
+            let totalHours = (days * 24) + hours
+            return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), Int(round(Float(totalHours) / Float(24))))
         }
 
         if hours > DateFormattingBreakpoints.almostADay.rawValue {
@@ -214,7 +215,8 @@ extension Date {
         }
 
         if hours > 1 || (hours == 1 && minutes >= DateFormattingBreakpoints.halfAnHour.rawValue) {
-            return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), niceComponents.hour!)
+            let totalMinutes = (hours * 60) + minutes
+            return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), Int(round(Float(totalMinutes) / Float(60))))
         }
 
         if minutes >= DateFormattingBreakpoints.almostAnHour.rawValue {
