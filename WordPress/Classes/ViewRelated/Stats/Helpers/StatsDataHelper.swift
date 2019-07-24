@@ -198,7 +198,11 @@ extension Date {
         }
 
         if days >= DateFormattingBreakpoints.monthAndAHalf.rawValue {
-            return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), niceComponents.month!)
+            let components = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: self, to: now)
+            let months = components.month ?? 0
+            let days = components.day ?? 0
+            let adjustedMonths = days > DateFormattingBreakpoints.halfAMonth.rawValue ? months + 1 : months
+            return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), adjustedMonths)
         }
 
         if days >= DateFormattingBreakpoints.almostAMonth.rawValue {
@@ -230,8 +234,9 @@ extension Date {
 
     private enum DateFormattingBreakpoints: Int {
         case aboutYearAndAHalf = 548
-        case almostAYear = 345
-        case monthAndAHalf = 35
+        case almostAYear = 305
+        case monthAndAHalf = 44
+        case halfAMonth = 15
         case almostAMonth = 25
         case halfADay = 12
         case almostADay = 22
