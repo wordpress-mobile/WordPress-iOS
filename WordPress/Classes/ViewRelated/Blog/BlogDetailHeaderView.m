@@ -68,7 +68,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     }
     
     NSString *localizedLabel =
-        NSLocalizedString(@"Site named %@ located at %@",
+        NSLocalizedString(@"%@, at %@",
                           @"Accessibility label for the site header. The first variable is the blog name, the second is the domain.");
     self.stackView.accessibilityLabel =
         [NSString stringWithFormat:localizedLabel, title, blog.displayURL];
