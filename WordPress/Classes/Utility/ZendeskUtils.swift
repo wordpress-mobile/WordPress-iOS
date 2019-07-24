@@ -776,6 +776,7 @@ private extension ZendeskUtils {
             textField.clearButtonMode = .always
             textField.placeholder = LocalizedText.emailPlaceholder
             textField.text = ZendeskUtils.sharedInstance.userEmail
+            textField.isEnabled = false
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
@@ -789,12 +790,19 @@ private extension ZendeskUtils {
                 textField.placeholder = LocalizedText.namePlaceholder
                 textField.text = ZendeskUtils.sharedInstance.userName
                 textField.delegate = ZendeskUtils.sharedInstance
+                textField.isEnabled = false
                 ZendeskUtils.sharedInstance.alertNameField = textField
             }
         }
 
         // Show alert
-        presentInController?.present(alertController, animated: true)
+        presentInController?.present(alertController, animated: true) {
+            // Enable text fields only after the alert is shown so that VoiceOver will dictate
+            // the message first. 
+            alertController.textFields?.forEach { textField in
+                textField.isEnabled = true
+            }
+        }
     }
 
     @objc static func emailTextFieldDidChange(_ textField: UITextField) {
