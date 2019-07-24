@@ -280,6 +280,7 @@ private extension SupportTableViewController {
             WPStyleGuide.configureTableViewCell(cell)
             cell.textLabel?.textColor = .primary
             cell.showIndicator = showIndicator
+            cell.accessibilityTraits = .button
         }
     }
 
