@@ -250,6 +250,17 @@ class RegisterDomainDetailsViewModel {
             row.idValue = country.code
             row.value = country.name
             fetchStates(countryCode: country.code)
+
+
+            let phoneSection = sections[SectionIndex.phone.rawValue]
+            let countryCodeRow = phoneSection.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow
+
+            if let prefix = countryCodePrefix(for: country.code),
+                let countryCodeRow = countryCodeRow {
+                countryCodeRow.value = String(prefix)
+                onChange?(.prefillSuccess)
+            }
+
         }
     }
 
@@ -467,10 +478,11 @@ class RegisterDomainDetailsViewModel {
 
         let strippedCountryCode = countryCode
             .replacingOccurrences(of: Constant.phoneNumberCountryCodePrefix, with: "")
-            .replacingOccurrences(of: "00", with: "")
+            .replacingOccurrences(of: "^0+", with: "", options: .regularExpression)
         // theoretically speaking, users shouldn't be able to input "+" in that field. however, external and non-system keyboards
         // make it a _very_ theoretical thing, so we have to safe-guard it.
-        // in some countries it's also customary to use '00' instead of '+' in the country code. let's handle those cases too.
+        // in some countries, people are used to typing a (semi-arbitrary) amount of leading zeroes before the country code.
+        // we're going to take care of those too.
 
         let number = section.rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.value ?? ""
 
