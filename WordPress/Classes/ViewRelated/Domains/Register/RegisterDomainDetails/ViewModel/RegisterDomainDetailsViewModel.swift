@@ -251,16 +251,8 @@ class RegisterDomainDetailsViewModel {
             row.value = country.name
             fetchStates(countryCode: country.code)
 
-
-            let phoneSection = sections[SectionIndex.phone.rawValue]
-            let countryCodeRow = phoneSection.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow
-
-            if let prefix = countryCodePrefix(for: country.code),
-                let countryCodeRow = countryCodeRow {
-                countryCodeRow.value = String(prefix)
-                onChange?(.prefillSuccess)
-            }
-
+            prefillCountryCodePrefix(countryCode: country.code)
+            onChange?(.prefillSuccess)
         }
     }
 
@@ -305,6 +297,7 @@ class RegisterDomainDetailsViewModel {
 
                 }
                 if let countryCode = domainContactInformation.countryCode {
+                    strongSelf.prefillCountryCodePrefix(countryCode: countryCode)
                     strongSelf.fetchStates(countryCode: countryCode) {
                         prefillSuccessBlock()
                     }
@@ -422,6 +415,16 @@ class RegisterDomainDetailsViewModel {
         section.rows[safe: CellIndex.ContactInformation.firstName.rawValue]?.editableRow?.value = domainContactInformation.firstName
         section.rows[safe: CellIndex.ContactInformation.lastName.rawValue]?.editableRow?.value = domainContactInformation.lastName
         section.rows[safe: CellIndex.ContactInformation.organization.rawValue]?.editableRow?.value = domainContactInformation.organization
+    }
+
+    private func prefillCountryCodePrefix(countryCode: String) {
+        let phoneSection = sections[SectionIndex.phone.rawValue]
+        let countryCodeRow = phoneSection.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow
+
+        if let prefix = countryCodePrefix(for: countryCode),
+            let countryCodeRow = countryCodeRow {
+            countryCodeRow.value = String(prefix)
+        }
     }
 
     private func jsonRepresentation() -> [String: String] {
