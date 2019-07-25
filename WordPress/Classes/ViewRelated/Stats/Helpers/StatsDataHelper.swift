@@ -187,57 +187,57 @@ extension Date {
         let hours = components.hour ?? 0
         let minutes = components.minute ?? 0
 
-        if days >= DateFormattingBreakpoints.aboutYearAndAHalf.rawValue {
+        if days >= DateBreakpoints.aboutYearAndAHalf {
             return String(format: NSLocalizedString("%d years", comment: "Age between dates over one year."), Int(round(Float(days) / Float(365))))
         }
 
-        if days >= DateFormattingBreakpoints.almostAYear.rawValue {
+        if days >= DateBreakpoints.almostAYear {
             return String(format: NSLocalizedString("a year", comment: "Age between dates equaling one year."))
         }
 
-        if days >= DateFormattingBreakpoints.monthAndAHalf.rawValue {
+        if days >= DateBreakpoints.monthAndAHalf {
             let components = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: self, to: now)
             let months = components.month ?? 0
             let days = components.day ?? 0
-            let adjustedMonths = days > DateFormattingBreakpoints.halfAMonth.rawValue ? months + 1 : months
+            let adjustedMonths = days > DateBreakpoints.halfAMonth ? months + 1 : months
             return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), adjustedMonths)
         }
 
-        if days >= DateFormattingBreakpoints.almostAMonth.rawValue {
+        if days >= DateBreakpoints.almostAMonth {
             return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month."))
         }
 
-        if days > 1 || (days == 1 && hours >= DateFormattingBreakpoints.halfADay.rawValue) {
+        if days > 1 || (days == 1 && hours >= DateBreakpoints.halfADay) {
             let totalHours = (days * 24) + hours
             return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), Int(round(Float(totalHours) / Float(24))))
         }
 
-        if days == 1 || hours > DateFormattingBreakpoints.almostADay.rawValue {
+        if days == 1 || hours > DateBreakpoints.almostADay {
             return String(format: NSLocalizedString("a day", comment: "Age between dates equaling one day."))
         }
 
-        if hours > 1 || (hours == 1 && minutes >= DateFormattingBreakpoints.halfAnHour.rawValue) {
+        if hours > 1 || (hours == 1 && minutes >= DateBreakpoints.halfAnHour) {
             let totalMinutes = (hours * 60) + minutes
             return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), Int(round(Float(totalMinutes) / Float(60))))
         }
 
-        if hours == 1 || minutes >= DateFormattingBreakpoints.almostAnHour.rawValue {
+        if hours == 1 || minutes >= DateBreakpoints.almostAnHour {
             return String(format: NSLocalizedString("an hour", comment: "Age between dates equaling one hour."))
         }
 
         return NSLocalizedString("< 1 hour", comment: "Age between dates less than one hour.")
     }
 
-    private enum DateFormattingBreakpoints: Int {
-        case aboutYearAndAHalf = 548
-        case almostAYear = 305
-        case monthAndAHalf = 44
-        case halfAMonth = 15
-        case almostAMonth = 25
-        case halfADay = 12
-        case almostADay = 22
-        case halfAnHour = 30
-        case almostAnHour = 45
+    private struct DateBreakpoints {
+        static let aboutYearAndAHalf = 548
+        static let almostAYear = 305
+        static let monthAndAHalf = 44
+        static let halfAMonth = 15
+        static let almostAMonth = 25
+        static let halfADay = 12
+        static let almostADay = 22
+        static let halfAnHour = 30
+        static let almostAnHour = 45
     }
 }
 
