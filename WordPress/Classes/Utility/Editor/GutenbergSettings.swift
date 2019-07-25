@@ -54,7 +54,7 @@ class GutenbergSettings {
     }
 
     private func shouldUpdateSettings(with newSetting: MobileEditor, for blog: Blog) -> Bool {
-        return !wasGutenbergEnabledOnce(for: blog) || blog.editor.mobile != newSetting
+        return blog.editor.mobile != newSetting
     }
 
     private func trackSettingChange(to isEnabled: Bool) {
@@ -82,7 +82,13 @@ class GutenbergSettings {
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
         let blog = post.blog
-        return post.containsGutenbergBlocks() && !wasGutenbergEnabledOnce(for: blog)
+        return !blog.isGutenbergEnabled &&
+            post.containsGutenbergBlocks() &&
+            !wasGutenbergEnabledOnce(for: blog)
+    }
+
+    func didAutoenableGutenberg() {
+        database.set(true, forKey: Key.appWideEnabled)
     }
 
     // MARK: - Gutenberg Choice Logic
