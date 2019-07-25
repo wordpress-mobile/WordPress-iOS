@@ -298,7 +298,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     func focusTitleIfNeeded() {
-        guard !post.hasContent() else {
+        guard !post.hasContent() && shouldPresentInformativeDialog == false else {
             return
         }
         gutenberg.setFocusOnTitle()
