@@ -131,6 +131,7 @@ final class WebAddressWizardContent: UIViewController {
         super.viewDidAppear(animated)
         restoreSearchIfNeeded()
         allowTextFieldFirstResponder()
+        postScreenChangedForVoiceOver()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -487,5 +488,13 @@ extension WebAddressWizardContent {
 
     func preferredContentSizeDidChange() {
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+    }
+}
+
+// MARK: - VoiceOver
+
+private extension WebAddressWizardContent {
+    func postScreenChangedForVoiceOver() {
+        UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
     }
 }

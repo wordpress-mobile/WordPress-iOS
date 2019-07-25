@@ -53,6 +53,11 @@ final class SiteSegmentsWizardContent: UIViewController {
         observeNetworkStatus()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        postScreenChangedForVoiceOver()
+    }
+
     private func applyTitle() {
         title = NSLocalizedString("Create Site", comment: "Site creation. Step 1. Screen title")
     }
@@ -253,5 +258,9 @@ extension SiteSegmentsWizardContent: Accessible {
 
     private func prepareTableForVoiceOver() {
         table.accessibilityLabel = NSLocalizedString("The kinds of sites that can be created", comment: "Accessibility hint for list")
+    }
+
+    private func postScreenChangedForVoiceOver() {
+        UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
     }
 }

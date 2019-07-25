@@ -61,6 +61,11 @@ final class SiteInformationWizardContent: UIViewController {
         startListeningToKeyboardNotifications()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        postScreenChangedForVoiceOver()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopListeningToKeyboardNotifications()
@@ -402,5 +407,13 @@ extension SiteInformationWizardContent {
     private func keyboardWillHide(_ notification: Foundation.Notification) {
         buttonWrapper.clearShadow()
         bottomConstraint.constant = Constants.bottomMargin
+    }
+}
+
+// MARK: - VoiceOver
+
+private extension SiteInformationWizardContent {
+    func postScreenChangedForVoiceOver() {
+        UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
     }
 }
