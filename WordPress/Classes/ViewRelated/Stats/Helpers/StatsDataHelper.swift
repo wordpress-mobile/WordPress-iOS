@@ -19,6 +19,10 @@ class StatsDataHelper {
     // Details table.
     static var expandedRowLabelsDetails = [StatSection: [String]]()
 
+    // Track when a detail row is updated.
+    // Used to determine if the disclosure icon needs animating.
+    static var detailRowDisclosureNeedsUpdating: String?
+
     class func updatedExpandedState(forRow row: StatsTotalRow, inDetails: Bool = false) {
 
         guard let rowData = row.rowData,
@@ -46,6 +50,7 @@ class StatsDataHelper {
 
         if inDetails {
             StatsDataHelper.expandedRowLabelsDetails = expandedRowsArray
+            detailRowDisclosureNeedsUpdating = rowData.name
         } else {
             StatsDataHelper.expandedRowLabels = expandedRowsArray
         }
