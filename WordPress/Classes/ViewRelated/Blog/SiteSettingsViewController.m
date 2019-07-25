@@ -178,8 +178,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
 
+    [sections addObject:@(SiteSettingsSectionEditor)];
+
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
-        [sections addObject:@(SiteSettingsSectionEditor)];
         [sections addObject:@(SiteSettingsSectionWriting)];
         [sections addObject:@(SiteSettingsSectionDiscussion)];
         if (self.blog.isQuotaAvailable) {
