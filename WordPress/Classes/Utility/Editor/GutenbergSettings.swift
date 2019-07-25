@@ -1,24 +1,15 @@
 import Foundation
 
-private let MIN_WPCOM_USER_ID_TO_DEFAULT_GB: Int = 149287441
-
 /// Takes care of storing and accessing Gutenberg settings.
 ///
 class GutenbergSettings {
     // MARK: - Enabled Editors Keys
     enum Key {
-        static let enabledOnce = "kUserDefaultsGutenbergEditorEnabled"
+        static let appWideEnabled = "kUserDefaultsGutenbergEditorEnabled"
         static func enabledOnce(for blog: Blog) -> String {
             let url = (blog.displayURL ?? "") as String
             return "com.wordpress.gutenberg-autoenabled-" + url
         }
-    }
-
-    /// Get the deprecated app-wide value of gutenberg enabled.
-    /// This is useful for the local to remote migration, and for the global to per-site migration.
-    private var oldAppWideIsGutenbergEnabled: Bool {
-        let database = Environment.current.userDefaults
-        return database.bool(forKey: Key.enabledOnce)
     }
 
     // MARK: Public accessors
@@ -75,7 +66,7 @@ class GutenbergSettings {
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
         // If gutenberg was "globaly" enabled before, will take precedence over the new per-site flag
         let database = Environment.current.userDefaults
-        return database.object(forKey: Key.enabledOnce) != nil || database.object(forKey: Key.enabledOnce(for: blog)) != nil
+        return database.object(forKey: Key.appWideEnabled) != nil || database.object(forKey: Key.enabledOnce(for: blog)) != nil
     }
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
@@ -113,13 +104,8 @@ class GutenbergSettings {
     }
 
     func getDefaultEditor(for blog: Blog) -> MobileEditor {
-        if blog.isAccessibleThroughWPCom(),
-            let accountID = blog.account?.userID?.intValue,
-            accountID > MIN_WPCOM_USER_ID_TO_DEFAULT_GB {
-
-            return .gutenberg
-        }
-        return oldAppWideIsGutenbergEnabled ? .gutenberg : .aztec
+        // Default to gutenberg on WPCom/Jetpack sites
+        return blog.isAccessibleThroughWPCom() ? .gutenberg : .aztec
     }
 }
 

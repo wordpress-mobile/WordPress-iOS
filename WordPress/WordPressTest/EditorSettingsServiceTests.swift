@@ -13,7 +13,7 @@ class EditorSettingsServiceTest: XCTestCase {
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
         remoteApi = MockWordPressComRestApi()
-        Environment.replaceEnvironment(contextManager: contextManager, userDefaults: EphemeralKeyValueDatabase())
+        Environment.replaceEnvironment(contextManager: contextManager)
         service = EditorSettingsService(managedObjectContext: context, wpcomApi: remoteApi)
     }
 
@@ -23,8 +23,9 @@ class EditorSettingsServiceTest: XCTestCase {
     }
 
     func testLocalSettingsMigrationPostAztec() {
-        // Blog from an old account should default to Aztec
-        let blog = blogWith(userId: 1)
+        let blog = blogWith()
+        // Self-Hosted sites will default to Aztec
+        blog.account = nil
 
         sync(with: blog)
 
@@ -50,8 +51,8 @@ class EditorSettingsServiceTest: XCTestCase {
     }
 
     func testLocalSettingsMigrationPostGutenberg() {
-        // Blog from a new account should default to Gutenberg
-        let blog = blogWith(userId: Int.max)
+        // WPCom sites will default to gutenberg
+        let blog = blogWith()
 
         // Mobile editor not yet set on the server
         let response = responseWith(mobileEditor: "")
@@ -79,10 +80,9 @@ class EditorSettingsServiceTest: XCTestCase {
 }
 
 extension EditorSettingsServiceTest {
-    func blogWith(userId: Int) -> Blog {
+    func blogWith() -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: context)
         blog.dotComID = 1
-        blog.account?.userID = NSNumber(value: userId)
         blog.account?.authToken = "auth"
         return blog
     }
