@@ -110,8 +110,6 @@ final class SiteSegmentsWizardContent: UIViewController {
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
-        header.accessibilityTraits = .header
-
         table.tableHeaderView = header
 
         NSLayoutConstraint.activate([
