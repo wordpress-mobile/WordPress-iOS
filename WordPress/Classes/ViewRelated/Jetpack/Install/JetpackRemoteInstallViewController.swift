@@ -76,13 +76,14 @@ private extension JetpackRemoteInstallViewController {
                 WPAnalytics.track(.installJetpackRemoteFailed,
                                   withProperties: ["error": error.type.rawValue,
                                                    "site_url": self?.blog.url ?? "unknown"])
+                let url = self?.blog.url ?? "unknown"
+                let title = error.title ?? "no error message"
+                let type = error.type.rawValue
+                let code = error.code
+                DDLogError("Jetpack Remote Install error for site \(url) – \(title) (\(code): \(type))")
 
-                DDLogInfo("Jetpack Remote Install Error Site URL: \(self?.blog.url ?? "unknown")")
-                DDLogInfo("Jetpack Remote Install Error Type: \(error.type.rawValue)")
-                DDLogInfo("Jetpack Remote Install Error Code: \(error.code)")
-                DDLogInfo("Jetpack Remote Install Error Title: \(error.title ?? "no error message")")
                 if error.isBlockingError {
-                    DDLogInfo("Jetpack Remote Install Error: Blocking error")
+                    DDLogInfo("Jetpack Remote Install error - Blocking error")
                     self?.delegate?.jetpackRemoteInstallWebviewFallback()
                 }
             default:
