@@ -8,17 +8,17 @@ class BlogToBlogMigration87to88: NSEntityMigrationPolicy {
             return
         }
 
-        let editor: MobileEditor
+        let editor: String
 
-        if let isGutenbergEnabled = UserDefaults.standard.object(forKey: GutenbergSettings.Key.appWideEnabled) as? Bool {
+        if let isGutenbergEnabled = UserDefaults.standard.object(forKey: "kUserDefaultsGutenbergEditorEnabled") as? Bool {
             // Keep previous user selection
-            editor = isGutenbergEnabled ? .gutenberg : .aztec
+            editor = isGutenbergEnabled ? "gutenberg" : "aztec"
         } else {
             let isAccessibleThroughWPCom = sourceBlog.value(forKey: "account") != nil
             // Default to Gutenberg for WPCom/Jetpack sites
-            editor = isAccessibleThroughWPCom ? .gutenberg : .aztec
+            editor = isAccessibleThroughWPCom ? "gutenberg" : "aztec"
         }
 
-        dInstance.setValue(editor.rawValue, forKey: "mobileEditor")
+        dInstance.setValue(editor, forKey: "mobileEditor")
     }
 }
