@@ -49,7 +49,7 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
 
     private func applyStyles() {
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = 1.0
+        borderedView.layer.borderWidth = .hairlineBorderWidth
 
         WPStyleGuide.applyRestoreSavedPostLabelStyle(removed)
         WPStyleGuide.applyRestoreSavedPostTitleLabelStyle(title)
