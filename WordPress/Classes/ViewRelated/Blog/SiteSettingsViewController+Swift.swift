@@ -104,7 +104,7 @@ extension SiteSettingsViewController {
 
     @objc(getTrafficSettingsSectionFooterView)
     func trafficSettingsSectionFooterView() -> UIView {
-        let footer = commonFooterView()
+        let footer = makeFooterView()
         footer.textLabel?.text = NSLocalizedString("Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.",
                                                    comment: "Footer for AMP Traffic Site Setting, should match Calypso.")
         footer.textLabel?.isUserInteractionEnabled = true
@@ -116,12 +116,12 @@ extension SiteSettingsViewController {
 
     @objc(getEditorSettingsSectionFooterView)
     func editorSettingsSectionFooterView() -> UIView {
-        let footer = commonFooterView()
+        let footer = makeFooterView()
         footer.textLabel?.text = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
         return footer
     }
 
-    private func commonFooterView() -> UITableViewHeaderFooterView {
+    private func makeFooterView() -> UITableViewHeaderFooterView {
         let footer = UITableViewHeaderFooterView()
         footer.textLabel?.numberOfLines = 0
         footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
