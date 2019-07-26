@@ -1007,6 +1007,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         if hidden {
+            // Do not hide the navigation bars if VoiceOver is running because switching between
+            // hidden and visible causes the dictation to assume that the number of pages has
+            // changed. For example, when transitioning from hidden to visible, VoiceOver will
+            // dictate "page 4 of 4" and then dictate "page 5 of 5".
+            if UIAccessibility.isVoiceOverRunning {
+                return
+            }
+
             // Hides the navbar and footer view
             navigationController?.setNavigationBarHidden(true, animated: animated)
             currentPreferredStatusBarStyle = .default
@@ -1401,6 +1409,17 @@ extension ReaderDetailViewController: Accessible {
         prepareHeaderForVoiceOver()
         prepareContentForVoiceOver()
         prepareActionButtonsForVoiceOver()
+
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(setBarsAsVisibleIfVoiceOverIsEnabled),
+            name: UIAccessibility.voiceOverStatusDidChangeNotification,
+            object: nil)
+    }
+
+    @objc func setBarsAsVisibleIfVoiceOverIsEnabled() {
+        if UIAccessibility.isVoiceOverRunning {
+            setBarsHidden(false)
+        }
     }
 
     private func prepareMenuForVoiceOver() {
