@@ -28,6 +28,13 @@ class MediaCoordinator: NSObject {
         return coordinator
     }()
 
+    /// Tracks uploads that don't belong to a specific post _and_ are auto-retries of failed uploads
+    private lazy var autoRetryProgressCoordinator: MediaProgressCoordinator = {
+        let coordinator = MediaProgressCoordinator()
+        coordinator.delegate = self
+        return coordinator
+    }()
+
     /// Tracks uploads of media for specific posts
     private var postMediaProgressCoordinators = [AbstractPost: MediaProgressCoordinator]()
 
@@ -156,8 +163,10 @@ class MediaCoordinator: NSObject {
     /// Retry the upload of a media object that previously has failed.
     ///
     /// - Parameter media: the media object to retry the upload
+    /// - Parameter isAutomaticRetry: indicates whether an upload is a manual action taken by the user
+    /// or an automagical one done via the `Uploader` protocol.
     ///
-    func retryMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil) {
+    func retryMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil, isAutomaticRetry: Bool = false) {
         guard media.remoteStatus == .failed else {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
@@ -165,7 +174,13 @@ class MediaCoordinator: NSObject {
 
         trackRetryUploadOf(media, analyticsInfo: analyticsInfo)
 
-        let coordinator = self.coordinator(for: media)
+        let coordinator: MediaProgressCoordinator
+        if isAutomaticRetry {
+            coordinator = autoRetryProgressCoordinator
+        } else {
+            coordinator = self.coordinator(for: media)
+        }
+
         coordinator.track(numberOfItems: 1)
         let uploadProgress = uploadMedia(media)
         coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
@@ -611,7 +626,7 @@ extension MediaCoordinator: Uploader {
                 return
             }
 
-            media.forEach() { self.retryMedia($0) }
+            media.forEach() { self.retryMedia($0, isAutomaticRetry: true) }
         }
     }
 }
