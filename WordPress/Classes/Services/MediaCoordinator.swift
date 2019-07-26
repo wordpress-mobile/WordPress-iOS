@@ -391,6 +391,7 @@ class MediaCoordinator: NSObject {
     ///                    called when changes occur to _any_ media item.
     /// - returns: A UUID that can be used to unregister the observer block at a later time.
     ///
+    @discardableResult
     func addObserver(_ onUpdate: @escaping ObserverBlock, for media: Media? = nil) -> UUID {
         let uuid = UUID()
 
@@ -413,7 +414,8 @@ class MediaCoordinator: NSObject {
     ///                   with this post via its media relationship.
     /// - returns: A UUID that can be used to unregister the observer block at a later time.
     ///
-    @discardableResult func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
+    @discardableResult
+    func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
         let uuid = UUID()
 
         let original = post.original ?? post
