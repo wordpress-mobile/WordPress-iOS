@@ -81,6 +81,12 @@ private class AccountSettingsController: SettingsController {
             value: settings?.username ?? ""
         )
 
+        let editableUsername = EditableTextRow(
+            title: NSLocalizedString("Username", comment: "Account Settings Username label"),
+            value: settings?.username ?? "",
+            action: presenter.push(changeUsername(with: settings, service: service))
+        )
+
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.emailForDisplay ?? "",
@@ -116,7 +122,7 @@ private class AccountSettingsController: SettingsController {
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: [
-                    username,
+                    (settings?.usernameCanBeChanged ?? false) ? editableUsername : username,
                     email,
                     password,
                     primarySite,
@@ -165,6 +171,12 @@ private class AccountSettingsController: SettingsController {
                     })
                 }
             }
+        }
+    }
+
+    func changeUsername(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> ChangeUsernameViewController {
+        return { _ in
+            return ChangeUsernameViewController(service: service, settings: settings)
         }
     }
 

@@ -1177,6 +1177,12 @@
 		9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */; };
 		9A4E939F2268D9B400E14823 /* UIViewController+NoResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */; };
 		9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */; };
+		9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */; };
+		9A51DA1622E9E8C7005CC335 /* ChangeUsernameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A51DA1422E9E8C7005CC335 /* ChangeUsernameViewController.xib */; };
+		9A51DA2722EB24C3005CC335 /* ChangeUsernameLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A51DA2622EB24C3005CC335 /* ChangeUsernameLabel.swift */; };
+		9A51DA2922EB252C005CC335 /* ChangeUsernameLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A51DA2822EB252C005CC335 /* ChangeUsernameLabel.xib */; };
+		9A51DA2C22EB4330005CC335 /* ChangeUsernameTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A51DA2B22EB4330005CC335 /* ChangeUsernameTextfield.swift */; };
+		9A51DA2E22EB436F005CC335 /* ChangeUsernameTextfield.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A51DA2D22EB436F005CC335 /* ChangeUsernameTextfield.xib */; };
 		9A5C854822B3E42800BEE7A3 /* CountriesMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */; };
 		9A5C854922B3E42800BEE7A3 /* CountriesMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */; };
 		9A76C32F22AFDA2100F5D819 /* world-map.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9A76C32E22AFDA2100F5D819 /* world-map.svg */; };
@@ -3318,6 +3324,12 @@
 		9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RevisionDiff+CoreData.swift"; sourceTree = "<group>"; };
 		9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+NoResults.swift"; sourceTree = "<group>"; };
 		9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+Revisions.swift"; sourceTree = "<group>"; };
+		9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUsernameViewController.swift; sourceTree = "<group>"; };
+		9A51DA1422E9E8C7005CC335 /* ChangeUsernameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeUsernameViewController.xib; sourceTree = "<group>"; };
+		9A51DA2622EB24C3005CC335 /* ChangeUsernameLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUsernameLabel.swift; sourceTree = "<group>"; };
+		9A51DA2822EB252C005CC335 /* ChangeUsernameLabel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeUsernameLabel.xib; sourceTree = "<group>"; };
+		9A51DA2B22EB4330005CC335 /* ChangeUsernameTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUsernameTextfield.swift; sourceTree = "<group>"; };
+		9A51DA2D22EB436F005CC335 /* ChangeUsernameTextfield.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeUsernameTextfield.xib; sourceTree = "<group>"; };
 		9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesMapCell.swift; sourceTree = "<group>"; };
 		9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CountriesMapCell.xib; sourceTree = "<group>"; };
 		9A76C32E22AFDA2100F5D819 /* world-map.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "world-map.svg"; sourceTree = "<group>"; };
@@ -5180,6 +5192,7 @@
 				E1ADE0EA20A9EF6200D6AADC /* PrivacySettingsViewController.swift */,
 				E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */,
 				98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */,
+				9A51DA2422EB23F5005CC335 /* Change Username */,
 			);
 			path = Me;
 			sourceTree = "<group>";
@@ -7182,6 +7195,35 @@
 				9A162F2721C2715100FDC035 /* Preview */,
 			);
 			path = Browser;
+			sourceTree = "<group>";
+		};
+		9A51DA2422EB23F5005CC335 /* Change Username */ = {
+			isa = PBXGroup;
+			children = (
+				9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */,
+				9A51DA1422E9E8C7005CC335 /* ChangeUsernameViewController.xib */,
+				9A51DA2A22EB4318005CC335 /* Textfield */,
+				9A51DA2522EB2494005CC335 /* Label */,
+			);
+			path = "Change Username";
+			sourceTree = "<group>";
+		};
+		9A51DA2522EB2494005CC335 /* Label */ = {
+			isa = PBXGroup;
+			children = (
+				9A51DA2622EB24C3005CC335 /* ChangeUsernameLabel.swift */,
+				9A51DA2822EB252C005CC335 /* ChangeUsernameLabel.xib */,
+			);
+			path = Label;
+			sourceTree = "<group>";
+		};
+		9A51DA2A22EB4318005CC335 /* Textfield */ = {
+			isa = PBXGroup;
+			children = (
+				9A51DA2B22EB4330005CC335 /* ChangeUsernameTextfield.swift */,
+				9A51DA2D22EB436F005CC335 /* ChangeUsernameTextfield.xib */,
+			);
+			path = Textfield;
 			sourceTree = "<group>";
 		};
 		9A5CF43E218C54A60060F81B /* Cell */ = {
@@ -9559,6 +9601,7 @@
 				17E3630E22C41725000E0C79 /* wordpress_dark_icon_76pt@2x.png in Resources */,
 				17E363A322C41DBA000E0C79 /* hot_pink_icon_83.5@2x.png in Resources */,
 				B59F34A1207678480069992D /* SignupEpilogue.storyboard in Resources */,
+				9A51DA2E22EB436F005CC335 /* ChangeUsernameTextfield.xib in Resources */,
 				B5683DB81B6C03810043447C /* NoteTableHeaderView.xib in Resources */,
 				98FCFC242231DF43006ECDD4 /* PostStatsTitleCell.xib in Resources */,
 				17E363E222C4280A000E0C79 /* pride_icon_76pt.png in Resources */,
@@ -9592,9 +9635,11 @@
 				9A8ECE0D2254A3260043C8DA /* JetpackLoginViewController.xib in Resources */,
 				17DC4C3722C5E6910059CA11 /* open_source_dark_icon_29pt@3x.png in Resources */,
 				98458CBA21A39D7A0025D232 /* StatsNoDataRow.xib in Resources */,
+				9A51DA2922EB252C005CC335 /* ChangeUsernameLabel.xib in Resources */,
 				82FC61261FA8ADAD00A1757E /* ActivityTableViewCell.xib in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
+				9A51DA1622E9E8C7005CC335 /* ChangeUsernameViewController.xib in Resources */,
 				17DC4C3422C5E6910059CA11 /* open_source_dark_icon_76pt@2x.png in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
 				57AA8491228715E700D3C2A2 /* PostCardCell.xib in Resources */,
@@ -10354,6 +10399,7 @@
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
 				9A8ECE112254A3260043C8DA /* JetpackRemoteInstallViewModel.swift in Sources */,
+				9A51DA2722EB24C3005CC335 /* ChangeUsernameLabel.swift in Sources */,
 				5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				9A162F2521C26F5F00FDC035 /* UIViewController+ChildViewController.swift in Sources */,
@@ -10444,6 +10490,7 @@
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				31C9F82E1A2368A2008BB945 /* BlogDetailHeaderView.m in Sources */,
 				9A2D0B23225CB92B009E585F /* BlogService+JetpackConvenience.swift in Sources */,
+				9A51DA2C22EB4330005CC335 /* ChangeUsernameTextfield.swift in Sources */,
 				B50C0C5F1EF42A4A00372C65 /* AztecPostViewController.swift in Sources */,
 				2FA6511321F26949009AA935 /* SiteVerticalsPromptService.swift in Sources */,
 				FF28B3F11AEB251200E11AAE /* InfoPListTranslator.m in Sources */,
@@ -11258,6 +11305,7 @@
 				E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
+				9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */,
 				B587797C19B799D800E57C5A /* NSParagraphStyle+Helpers.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
 				4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */,

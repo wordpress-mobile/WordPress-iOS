@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangeUsernameViewController" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="containerView" destination="vah-0j-odb" id="fjd-VL-rph"/>
+                <outlet property="footerText" destination="u8N-Li-snN" id="vn5-g2-VpG"/>
+                <outlet property="footerTitle" destination="U3R-Rn-eBt" id="867-9G-Wpb"/>
+                <outlet property="scrollViewBottomConstraint" destination="cp4-Dm-R22" id="HCz-Gd-E1s"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FRN-yZ-P2z">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="fRT-hx-blE" userLabel="Container">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="153.5"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vah-0j-odb" userLabel="TextFields">
+                                    <rect key="frame" x="0.0" y="35" width="414" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" placeholder="YES" id="Hda-u9-6JH"/>
+                                    </constraints>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7vh-gI-m0O" userLabel="Footer">
+                                    <rect key="frame" x="0.0" y="101" width="414" height="44.5"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U3R-Rn-eBt">
+                                            <rect key="frame" x="16" y="0.0" width="382" height="20.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                            <color key="textColor" name="Gray50"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8N-Li-snN">
+                                            <rect key="frame" x="16" y="28.5" width="382" height="16"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                            <color key="textColor" name="Gray50"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
+                                </stackView>
+                            </subviews>
+                            <edgeInsets key="layoutMargins" top="35" left="0.0" bottom="8" right="0.0"/>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" name="Gray0"/>
+                    <constraints>
+                        <constraint firstItem="fRT-hx-blE" firstAttribute="leading" secondItem="FRN-yZ-P2z" secondAttribute="leading" id="0PB-Sh-Hyn"/>
+                        <constraint firstItem="fRT-hx-blE" firstAttribute="width" secondItem="FRN-yZ-P2z" secondAttribute="width" id="7OV-zC-QHt"/>
+                        <constraint firstAttribute="trailing" secondItem="fRT-hx-blE" secondAttribute="trailing" id="iJb-Tg-MMT"/>
+                        <constraint firstItem="fRT-hx-blE" firstAttribute="top" secondItem="FRN-yZ-P2z" secondAttribute="top" id="tc3-0q-sD3"/>
+                        <constraint firstAttribute="bottom" secondItem="fRT-hx-blE" secondAttribute="bottom" id="tyZ-D6-XDt"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" name="Gray0"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="FRN-yZ-P2z" secondAttribute="trailing" id="Myc-Wm-zSm"/>
+                <constraint firstItem="FRN-yZ-P2z" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="aGS-4V-XPq"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="FRN-yZ-P2z" secondAttribute="bottom" id="cp4-Dm-R22"/>
+                <constraint firstItem="FRN-yZ-P2z" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="wX0-H9-HN6"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="Gray0">
+            <color red="0.96862745098039216" green="0.95686274509803926" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Gray50">
+            <color red="0.40392156862745099" green="0.41568627450980394" blue="0.45490196078431372" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

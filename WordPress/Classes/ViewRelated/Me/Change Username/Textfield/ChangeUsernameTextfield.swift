@@ -1,0 +1,3 @@
+class ChangeUsernameTextfield: UIView, NibLoadable {
+
+}
