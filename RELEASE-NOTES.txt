@@ -3,6 +3,8 @@
 * Stats: now use site timezone instead of device.
 * Improved color scheme consistency.
 * Post Stats: date bar no longer goes prior to earliest date available.
+* Block editor: Adding a block from the post title now shows the add block here indicator.
+* Block editor: Deselect post title any time a block is added
 
 12.9
 -----
