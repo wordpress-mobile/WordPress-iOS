@@ -423,7 +423,7 @@ class RegisterDomainDetailsViewModel {
 
         if let prefix = countryCodePrefix(for: countryCode),
             let countryCodeRow = countryCodeRow {
-            countryCodeRow.value = String(prefix)
+            countryCodeRow.value = prefix
         }
     }
 

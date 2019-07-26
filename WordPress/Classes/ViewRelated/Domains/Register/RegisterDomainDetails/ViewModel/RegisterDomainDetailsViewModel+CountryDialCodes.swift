@@ -271,7 +271,11 @@ extension RegisterDomainDetailsViewModel {
         "ZM": 260,
         "ZW": 263]
 
-    func countryCodePrefix(for countryCode: String) -> Int? {
-        return type(of: self).countryCodePhonePrefixMapping[countryCode]
+    func countryCodePrefix(for countryCode: String) -> String? {
+        guard let countryCode = type(of: self).countryCodePhonePrefixMapping[countryCode] else {
+            return nil
+        }
+
+        return String(countryCode)
     }
 }
