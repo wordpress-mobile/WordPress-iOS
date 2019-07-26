@@ -47,7 +47,7 @@ class EditorSettingsServiceTest: XCTestCase {
 
         waitForExpectations(timeout: 0.1) { (error) in
             // The default value should be now on local and remote
-            XCTAssertEqual(blog.editor.mobile, .aztec)
+            XCTAssertEqual(blog.mobileEditor, .aztec)
         }
     }
 
@@ -75,7 +75,7 @@ class EditorSettingsServiceTest: XCTestCase {
 
         waitForExpectations(timeout: 0.1) { (error) in
             // The default value should be now on local and remote
-            XCTAssertEqual(blog.editor.mobile, .gutenberg)
+            XCTAssertEqual(blog.mobileEditor, .gutenberg)
         }
     }
 }

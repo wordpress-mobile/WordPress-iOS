@@ -45,12 +45,12 @@ import Foundation
         guard settings.mobile != .notSet else {
             throw EditorSettingsServiceError.mobileEditorNotSet
         }
-        blog.mobileEditor = settings.mobile.rawValue
-        blog.webEditor = settings.web.rawValue
+        blog.mobileEditor = MobileEditor(rawValue: settings.mobile.rawValue)
+        blog.webEditor = WebEditor(rawValue: settings.web.rawValue)
     }
 
     private func migrateLocalSettingToRemote(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
-        if blog.editor.mobile == nil {
+        if blog.mobileEditor == nil {
             let settings = GutenbergSettings()
             let defaultEditor = settings.getDefaultEditor(for: blog)
             settings.setGutenbergEnabled(defaultEditor == .gutenberg, for: blog)
@@ -60,7 +60,7 @@ import Foundation
 
     func postEditorSetting(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
         guard
-            let selectedEditor = blog.editor.mobile,
+            let selectedEditor = blog.mobileEditor,
             let remoteEditor = EditorSettings.Mobile(rawValue: selectedEditor.rawValue),
             let api = wpcomApi ?? blog.wordPressComRestApi(),
             let siteID = blog.dotComID?.intValue

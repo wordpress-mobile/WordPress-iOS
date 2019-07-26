@@ -47,14 +47,14 @@ class GutenbergSettings {
             database.set(true, forKey: Key.enabledOnce(for: blog))
         }
 
-        blog.editor.setMobileEditor(selectedEditor)
+        blog.mobileEditor = selectedEditor
         ContextManager.sharedInstance().save(context)
 
         WPAnalytics.refreshMetadata()
     }
 
     private func shouldUpdateSettings(with newSetting: MobileEditor, for blog: Blog) -> Bool {
-        return blog.editor.mobile != newSetting
+        return blog.mobileEditor != newSetting
     }
 
     private func trackSettingChange(to isEnabled: Bool) {
@@ -109,7 +109,7 @@ class GutenbergSettings {
     }
 
     private func shouldUseGutenbergForNewPosts(on blog: Blog) -> Bool {
-        guard let userSelectedEditor = blog.editor.mobile else {
+        guard let userSelectedEditor = blog.mobileEditor else {
             return getDefaultEditor(for: blog) == .gutenberg
         }
 
