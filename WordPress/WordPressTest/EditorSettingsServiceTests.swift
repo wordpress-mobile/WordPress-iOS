@@ -63,34 +63,6 @@ class EditorSettingsServiceTest: XCTestCase {
             XCTAssertEqual(blog.mobileEditor, .aztec)
         }
     }
-
-    func testLocalSettingsMigrationPostGutenberg() {
-        // WPCom sites will default to gutenberg
-        let blog = makeTestBlog()
-
-        // Mobile editor not yet set on the server
-        let response = responseWith(mobileEditor: "")
-
-        sync(with: blog)
-
-        // Call GET settings from remote
-        XCTAssertTrue(remoteApi.getMethodCalled)
-        remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
-
-        // Begin migration from local to remote
-
-        // Should call POST local settings to remote (migration)
-        XCTAssertTrue(remoteApi.postMethodCalled)
-        XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("platform=mobile&editor=gutenberg") ?? false)
-        // Respond with mobile editor set on the server
-        let finalResponse = responseWith(mobileEditor: "gutenberg")
-        remoteApi.successBlockPassedIn?(finalResponse, HTTPURLResponse())
-
-        waitForExpectations(timeout: 0.1) { (error) in
-            // The default value should be now on local and remote
-            XCTAssertEqual(blog.mobileEditor, .gutenberg)
-        }
-    }
 }
 
 extension EditorSettingsServiceTest {

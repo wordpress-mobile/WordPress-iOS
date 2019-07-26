@@ -110,7 +110,7 @@ class GutenbergSettingsTests: XCTestCase {
         XCTAssertFalse(mustUseGutenberg)
     }
 
-    func testWPComAccountsDefaultsToGutenberg() {
-        XCTAssertTrue(mustUseGutenberg)
+    func testWPComAccountsDefaultsToAztec() {
+        XCTAssertFalse(mustUseGutenberg)
     }
 }

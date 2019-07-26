@@ -109,8 +109,7 @@ class GutenbergSettings {
     }
 
     func getDefaultEditor(for blog: Blog) -> MobileEditor {
-        // Default to gutenberg on WPCom/Jetpack sites
-        return blog.isAccessibleThroughWPCom() ? .gutenberg : .aztec
+        return .aztec
     }
 }
 

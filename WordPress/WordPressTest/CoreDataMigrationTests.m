@@ -1047,10 +1047,10 @@
     NSArray *results = [context executeFetchRequest:request error:nil];
     XCTAssert(results.count == 2, @"Error Fetching Blogs");
 
-    // WPCom/Jetpack sites should migrate to Gutenberg
+    // WPCom/Jetpack sites should migrate to Aztec
 
     NSManagedObject *wpcomBlog = [results firstObject];
-    XCTAssertEqualObjects([wpcomBlog valueForKey:@"mobileEditor"], @"gutenberg");
+    XCTAssertEqualObjects([wpcomBlog valueForKey:@"mobileEditor"], @"aztec");
 
     // SelfHosted (non-jetpack) should migrate to Aztec
 
