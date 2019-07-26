@@ -19,7 +19,7 @@ import Foundation
         let service = EditorServiceRemote(wordPressComRestApi: api)
         service.getEditorSettings(siteID, success: { (settings) in
             do {
-                try self.saveRemoteEditorSettings(settings, on: blog)
+                try self.update(blog, remoteEditorSettings: settings)
                 ContextManager.sharedInstance().save(self.managedObjectContext)
                 success()
             } catch EditorSettingsServiceError.mobileEditorNotSet {
@@ -30,12 +30,12 @@ import Foundation
         }, failure: failure)
     }
 
-    private func saveRemoteEditorSettings(_ settings: EditorSettings, on blog: Blog) throws {
+    private func update(_ blog: Blog, remoteEditorSettings settings: EditorSettings) throws {
+        blog.webEditor = WebEditor(rawValue: settings.web.rawValue)
         guard settings.mobile != .notSet else {
             throw EditorSettingsServiceError.mobileEditorNotSet
         }
         blog.mobileEditor = MobileEditor(rawValue: settings.mobile.rawValue)
-        blog.webEditor = WebEditor(rawValue: settings.web.rawValue)
     }
 
     private func migrateLocalSettingToRemote(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
