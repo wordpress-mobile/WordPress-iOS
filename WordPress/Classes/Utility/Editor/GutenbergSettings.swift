@@ -101,19 +101,11 @@ class GutenbergSettings {
         let blog = post.blog
 
         if post.isContentEmpty() {
-            return shouldUseGutenbergForNewPosts(on: blog)
+            return blog.isGutenbergEnabled
         } else {
             // It's an existing post
             return post.containsGutenbergBlocks()
         }
-    }
-
-    private func shouldUseGutenbergForNewPosts(on blog: Blog) -> Bool {
-        guard let userSelectedEditor = blog.mobileEditor else {
-            return getDefaultEditor(for: blog) == .gutenberg
-        }
-
-        return userSelectedEditor == .gutenberg
     }
 
     func getDefaultEditor(for blog: Blog) -> MobileEditor {
