@@ -17,7 +17,7 @@ import Foundation
             do {
                 try self.saveRemoteEditorSettings(settings, on: blog)
             } catch {
-                failure(error)
+                return failure(error)
             }
             ContextManager.sharedInstance().save(self.managedObjectContext)
             success()
