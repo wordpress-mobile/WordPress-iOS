@@ -43,9 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.3.0-beta.3'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/stats_timezone'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '3eaf8f8863dee3d38c4e4b66b8334e8c80ebee6d'
+    pod 'WordPressKit', '~> 4.3.0-beta.4'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/9705-update-username'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'cbacefca353ffea31448bc26e75641f95555e730'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
