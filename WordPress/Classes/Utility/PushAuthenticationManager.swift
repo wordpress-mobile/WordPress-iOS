@@ -63,14 +63,17 @@ class PushAuthenticationManager {
             return
         }
 
-        showLoginVerificationAlert(message) { approved in
-            if approved {
-                self.authorizeLogin(token, retryCount: Settings.initialRetryCount)
-                WPAnalytics.track(.pushAuthenticationApproved)
-            } else {
-                WPAnalytics.track(.pushAuthenticationIgnored)
-            }
-        }
+        self.authorizeLogin(token, retryCount: Settings.initialRetryCount)
+        WPAnalytics.track(.pushAuthenticationApproved)
+
+//        showLoginVerificationAlert(message) { approved in
+//            if approved {
+//                self.authorizeLogin(token, retryCount: Settings.initialRetryCount)
+//                WPAnalytics.track(.pushAuthenticationApproved)
+//            } else {
+//                WPAnalytics.track(.pushAuthenticationIgnored)
+//            }
+//        }
     }
 }
 
