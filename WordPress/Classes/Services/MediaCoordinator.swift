@@ -1,6 +1,9 @@
 import Foundation
 import WordPressFlux
 
+import class AutomatticTracks.CrashLogging
+import enum Alamofire.AFError
+
 /// MediaCoordinator is responsible for creating and uploading new media
 /// items, independently of a specific view controller. It should be accessed
 /// via the `shared` singleton.
@@ -628,8 +631,40 @@ extension MediaCoordinator: Uploader {
                 return
             }
 
-            media.forEach() { self.retryMedia($0, isAutomaticRetry: true) }
+            media.forEach() {
+                self.addObserverForDeletedFiles(for: $0)
+                self.retryMedia($0, isAutomaticRetry: true)
+            }
         }
+    }
+}
+
+extension MediaCoordinator {
+    // Based on user logs we've collected for users, we've noticed the app sometimes
+    // trying to upload a Media object and failing because the underlying file has disappeared from
+    // `Documents` folder.
+    // We want to collect more data about that, so we're going to log that info to Sentry,
+    // and also delete the `Media` object, since there isn't really a reasonable way to recover from that failure.
+    func addObserverForDeletedFiles(for media: Media) {
+        addObserver({ (media, state) in
+            guard
+                case .failed(let error) = state,
+                let afError = error as? AFError,
+                case .multipartEncodingFailed(let encodingFailure) = afError else {
+                    return
+            }
+
+            switch encodingFailure {
+            case .bodyPartFileNotReachableWithError,
+                 .bodyPartFileNotReachable:
+                CrashLogging.logMessage("Deleting a media object that's failed to upload because of a missing local file.",
+                                        properties: ["underlyingError": afError])
+                self.cancelUploadAndDeleteMedia(media)
+            default:
+                return
+            }
+
+        }, for: media)
     }
 }
 
