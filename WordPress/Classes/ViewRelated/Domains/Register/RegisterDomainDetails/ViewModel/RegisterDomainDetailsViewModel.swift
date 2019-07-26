@@ -250,6 +250,9 @@ class RegisterDomainDetailsViewModel {
             row.idValue = country.code
             row.value = country.name
             fetchStates(countryCode: country.code)
+
+            prefillCountryCodePrefix(countryCode: country.code)
+            onChange?(.prefillSuccess)
         }
     }
 
@@ -294,6 +297,7 @@ class RegisterDomainDetailsViewModel {
 
                 }
                 if let countryCode = domainContactInformation.countryCode {
+                    strongSelf.prefillCountryCodePrefix(countryCode: countryCode)
                     strongSelf.fetchStates(countryCode: countryCode) {
                         prefillSuccessBlock()
                     }
@@ -413,6 +417,16 @@ class RegisterDomainDetailsViewModel {
         section.rows[safe: CellIndex.ContactInformation.organization.rawValue]?.editableRow?.value = domainContactInformation.organization
     }
 
+    private func prefillCountryCodePrefix(countryCode: String) {
+        let phoneSection = sections[SectionIndex.phone.rawValue]
+        let countryCodeRow = phoneSection.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow
+
+        if let prefix = countryCodePrefix(for: countryCode),
+            let countryCodeRow = countryCodeRow {
+            countryCodeRow.value = prefix
+        }
+    }
+
     private func jsonRepresentation() -> [String: String] {
         var dict: [String: String] = [:]
         if let privacySectionSelectedItem = privacySectionSelectedItem() {
@@ -464,8 +478,18 @@ class RegisterDomainDetailsViewModel {
     private func formattedPhoneNumber() -> String {
         let section = sections[SectionIndex.phone.rawValue]
         let countryCode = section.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow?.value ?? ""
+
+        let strippedCountryCode = countryCode
+            .replacingOccurrences(of: Constant.phoneNumberCountryCodePrefix, with: "")
+            .replacingOccurrences(of: "^0+", with: "", options: .regularExpression)
+        // theoretically speaking, users shouldn't be able to input "+" in that field. however, external and non-system keyboards
+        // make it a _very_ theoretical thing, so we have to safe-guard it.
+        // in some countries, people are used to typing a (semi-arbitrary) amount of leading zeroes before the country code.
+        // we're going to take care of those too.
+
         let number = section.rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.value ?? ""
-        return Constant.phoneNumberCountryCodePrefix + countryCode +
+
+        return Constant.phoneNumberCountryCodePrefix + strippedCountryCode +
             String(Constant.phoneNumberConnectingChar) + number
     }
 }

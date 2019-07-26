@@ -358,6 +358,7 @@
 		4034FDEA2007C42400153B87 /* ExpandableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4034FDE92007C42400153B87 /* ExpandableCell.swift */; };
 		4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4034FDED2007D4F700153B87 /* ExpandableCell.xib */; };
 		403F57BC20E5CA6A004E889A /* RewindStatusRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F57BB20E5CA6A004E889A /* RewindStatusRow.swift */; };
+		404B35D322E9BA0800AD0B37 /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B35D222E9BA0800AD0B37 /* RegisterDomainDetailsViewModel+CountryDialCodes.swift */; };
 		4054F43B221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F439221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift */; };
 		4054F43C221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F43A221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift */; };
 		4054F43E221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F43D221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift */; };
@@ -2410,6 +2411,7 @@
 		4034FDE92007C42400153B87 /* ExpandableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableCell.swift; sourceTree = "<group>"; };
 		4034FDED2007D4F700153B87 /* ExpandableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpandableCell.xib; sourceTree = "<group>"; };
 		403F57BB20E5CA6A004E889A /* RewindStatusRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewindStatusRow.swift; sourceTree = "<group>"; };
+		404B35D222E9BA0800AD0B37 /* RegisterDomainDetailsViewModel+CountryDialCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterDomainDetailsViewModel+CountryDialCodes.swift"; sourceTree = "<group>"; };
 		4054F439221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentedPostStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4054F43A221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentedPostStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4054F43D221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCommentedPostStatsRecordValueTests.swift; sourceTree = "<group>"; };
@@ -5378,6 +5380,7 @@
 			isa = PBXGroup;
 			children = (
 				436D56112117312700CEAA33 /* RegisterDomainDetailsViewModel.swift */,
+				404B35D222E9BA0800AD0B37 /* RegisterDomainDetailsViewModel+CountryDialCodes.swift */,
 				436D562F2117410C00CEAA33 /* RegisterDomainDetailsViewModel+CellIndex.swift */,
 				436D56122117312700CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift */,
 				436D56132117312700CEAA33 /* RegisterDomainDetailsViewModel+RowList.swift */,
@@ -10880,6 +10883,7 @@
 				BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */,
 				B532D4E9199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift in Sources */,
 				73BFDA8A211D054800907245 /* Notifiable.swift in Sources */,
+				404B35D322E9BA0800AD0B37 /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */,
 				D8EB1FD121900810002AE1C4 /* BlogListViewController+SiteCreation.swift in Sources */,
 				FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */,
 				0857C2771CE5375F0014AE99 /* MenuItemAbstractView.m in Sources */,
