@@ -22,7 +22,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="3xC-QJ-pF2" userLabel="Date Stack View">
-                    <rect key="frame" x="16" y="11" width="257" height="37.5"/>
+                    <rect key="frame" x="16" y="9" width="257" height="41.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDF-ds-FAU">
                             <rect key="frame" x="0.0" y="0.0" width="37.5" height="20.5"/>
@@ -31,8 +31,8 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site timezone (UTC + 10)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8X-zf-iZc">
-                            <rect key="frame" x="0.0" y="21.5" width="152" height="16"/>
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                            <rect key="frame" x="0.0" y="22" width="182" height="19.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                             <color key="textColor" name="Gray40"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -100,7 +100,7 @@
             </subviews>
             <constraints>
                 <constraint firstItem="U1z-fb-p7G" firstAttribute="centerY" secondItem="2dA-xk-MWI" secondAttribute="centerY" id="2aP-4M-TNR"/>
-                <constraint firstItem="82h-So-kdz" firstAttribute="top" secondItem="3xC-QJ-pF2" secondAttribute="bottom" constant="11" id="3EX-id-84a"/>
+                <constraint firstItem="82h-So-kdz" firstAttribute="top" secondItem="3xC-QJ-pF2" secondAttribute="bottom" constant="9" id="3EX-id-84a"/>
                 <constraint firstItem="b3M-QS-Aux" firstAttribute="centerX" secondItem="Ssg-6U-5Ac" secondAttribute="centerX" id="58K-9V-5lQ"/>
                 <constraint firstItem="U1z-fb-p7G" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="6vG-ZF-WkE"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="0sS-MO-MHI" secondAttribute="trailing" constant="22" id="Cs6-dg-gL6"/>
@@ -109,7 +109,7 @@
                 <constraint firstItem="82h-So-kdz" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Enr-vP-A2t"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="top" secondItem="tc3-qS-cyd" secondAttribute="top" id="HGC-IT-WvX"/>
                 <constraint firstItem="b3M-QS-Aux" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="SuI-Za-NAL"/>
-                <constraint firstItem="3xC-QJ-pF2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="11" id="X1Z-uc-7br"/>
+                <constraint firstItem="3xC-QJ-pF2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="9" id="X1Z-uc-7br"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="82h-So-kdz" secondAttribute="trailing" id="eUf-m1-yjt"/>
                 <constraint firstItem="3xC-QJ-pF2" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="eYB-4i-d94"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="b3M-QS-Aux" secondAttribute="bottom" id="gYd-gL-ceU"/>
