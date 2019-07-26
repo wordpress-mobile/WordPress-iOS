@@ -256,7 +256,7 @@ extension PostCoordinator: Uploader {
             }
 
             posts.forEach() { post in
-                let shouldRetry = post.status == .draft && (!post.hasRemote() || post.original?.status == .draft)
+                let shouldRetry = post.status == .draft && !post.hasRemote()
 
                 if shouldRetry {
                     self.retrySave(of: post)
