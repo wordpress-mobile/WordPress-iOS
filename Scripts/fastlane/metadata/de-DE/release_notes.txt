@@ -1,6 +1,5 @@
-* Stats Insights: check out new two-column layouts for Follower Totals, This Year, and Most Popular Time stats.
-* This Year Insights: see a snapshot of total posts, comments, likes, and more for the year-to-date when you click on the View More option.
-* Stats Periods: We added a world map in the countries section.
-* Fixed an issue where refreshing sometimes cleared stats.
-* You do you! Go to Me > App Settings > App Icon to choose from a series of app icons.
-* Refreshed the app’s color scheme.
+* Entwürfe offline erstellen! Manchmal hast du tolle Ideen, aber keine Internetverbindung, weil wir noch nicht in einer perfekten Welt leben. Wir haben auch immer noch keine fliegenden Autos, aber jetzt kannst du neue Beiträge in der App erstellen, auch wenn du offline bist.
+* Übersichtlichere Vorschauen! Zuvor war der Status von in Bearbeitung befindlichen Beitragsvorschauen hinter einer Statusanzeige verborgen, die den Bildschirm verdeckt hat. Jetzt ist die Statusanzeige besser positioniert: Sie ist nun am Bildschirmanfang zu finden, sodass du weiterhin auf den restlichen Bildschirm zugreifen kannst.
+* Bessere Blöcke! Wir haben eine Reihe von Verbesserungen am Block-Editor vorgenommen, um das Erstellen von Entwürfen einfacher zu gestalten. Wenn du auf einen leeren Editor-Bereich tippst, wird automatisch ein neuer Absatzblock erstellt. Wenn du über den Beitragstitel einen Block hinzufügst, wird der Block nun am Anfang des Beitrags und nicht mehr am Ende angezeigt, wo du ihn nicht richtig sehen konntest. Und wir haben ein Problem behoben, das manchmal dazu führte, dass Inhalte verloren gingen, wenn der Editor versuchte, nicht unterstützte Blöcke zu laden.
+* Übersichtlichere Beitragslisten! Die Liste deiner Beiträge enthält jetzt eine Option, um Beiträge kompakter anzuzeigen, sodass du mehr Beitragsdetails auf einmal anzeigen kannst. Und der Ladebildschirm wurde neu gestaltet, um das Warten darauf, dass Inhalte geladen werden, angenehmer zu machen.
+* Reibungslosere Einrichtung! Wenn du eine neue Website einrichtest, wurden manchmal Vorschauen falsch angezeigt, und das Hinzufügen eines Website-Icons war nicht so einfach, wie es sein sollte. Das ist jetzt nicht mehr der Fall.

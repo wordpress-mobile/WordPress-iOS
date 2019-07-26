@@ -1,6 +1,5 @@
-* Statistiska insikter: kolla in den nya layouten i två kolumner med statistik över totalt antal följare och uppgifter om innevarande år och populäraste tider.
-* Insikter om innevarande år: tryck på alternativet ”visa mer” för att se en ögonblicksbild över totalt antal inlägg, kommentarer, gillamarkeringar med mera för innevarande år fram till dagens datum.
-* Statistikperioder: Vi har lagt till en världskarta i avsnittet med alla länder.
-* Rättat ett fel som vid omladdning ibland kunde tömma statistiken.
-* Designa själv! Gå till Jag > App-inställningar > App-ikon så kan du välja mellan en rad olika ikoner för appen.
-* Appens färgschema har uppdaterats.
+* Skapa utkast när du är offline! Ibland kommer fantastiska idéer när man saknar internetförbindelse, eftersom världen ännu inte är perfekt. Vi har ännu inte heller några flygande bilar, men du kan redan påbörja inlägg i appen även när du är offline.
+* Tydligare förhandsvisningar! Tidigare doldes statusen för förhandsvisning av inlägg som höll på att skapas av en snurra som täckte skärmen. Nu har snurran lagts på plats och statusen visas längst upp på skärmen så att du fortfarande kommer åt resten.
+* Bättre block! Vi har genomfört ett antal förbättringar av blockredigeraren för att göra det enklare att skapa utkast. När du trycker på ett tomt redigeringsområde skapas automatiskt ett nytt stycke-block. Om du lägger till ett block när du står i inläggsrubriken hamnar blocket först i inlägget, i stället för längst ned, där du antagligen inte såg det. Dessutom har vi löst ett problem som ibland kunde göra att innehåll förlorades när redigeraren försökte ladda in block som saknade stöd.
+* Renare inläggslistor! Nu innehåller din inläggslista en möjlighet att visa inläggen mer kompakt, så att du kan se mer inläggsinformation samtidigt. Startskärmen har fått ny design – även när man väntar på att något ska laddas bör upplevelsen vara tilltalande.
+* Smidigare konfiguration! När skapade en ny webbplats var förhandsvisningarna ibland inte korrekt, och det var inte så enkelt att lägga till en webbplatsikon som det borde vara. Det kunde göras bättre, och nu har vi gjort det!

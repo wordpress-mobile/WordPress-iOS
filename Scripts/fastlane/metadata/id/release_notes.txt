@@ -1,6 +1,0 @@
-* Wawasan Statistik: cek tata letak baru dengan dua kolom untuk melihat statistik Total Pengikut, Tahun Ini, dan Waktu yang Paling Disukai.
-* Wawasan Tahun Ini: lihat snapshot total pos, komentar, suka, dan wawasan lainnya hingga saat ini jika Anda mengklik pilihan Lihat Selengkapnya.
-* Periode Statistik: Kami menambahkan peta dunia di bagian negara.
-* Memperbaiki masalah terhapusnya statistik yang kadang terjadi saat penyegaran.
-* Jadi diri sendiri! Buka Saya > Pengaturan Aplikasi > Ikon Aplikasi untuk memilih dari serangkaian ikon aplikasi.
-* Menyegarkan skema warna aplikasi.
