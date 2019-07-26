@@ -37,6 +37,7 @@ extension WPStyleGuide {
         navigationAppearance.barTintColor = .navigationBar
         navigationAppearance.barStyle = .black
 
+#if XCODE11
         if #available(iOS 13.0, *) {
             // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
             let appearance = UINavigationBarAppearance()
@@ -46,6 +47,7 @@ extension WPStyleGuide {
             navigationAppearance.standardAppearance = appearance
             navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
         }
+#endif
 
         let buttonBarAppearance = UIBarButtonItem.appearance()
         buttonBarAppearance.tintColor = .textInverted
