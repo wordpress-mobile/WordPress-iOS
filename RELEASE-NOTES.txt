@@ -6,7 +6,6 @@
 * Block editor: Adding a block from the post title now shows the add block here indicator.
 * Block editor: Deselect post title any time a block is added
 * Block editor: Fix merging of empty paragraph blocks when added from a post's title
-* Block editor: Fix loss of center alignment in image captions
 
 12.9
 -----
