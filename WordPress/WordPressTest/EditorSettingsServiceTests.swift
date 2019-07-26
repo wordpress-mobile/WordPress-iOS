@@ -37,7 +37,7 @@ class EditorSettingsServiceTest: XCTestCase {
     }
 
     func testLocalSettingsMigrationPostAztec() {
-        let blog = blogWith()
+        let blog = makeTestBlog()
         // Self-Hosted sites will default to Aztec
         blog.account = nil
 
@@ -66,7 +66,7 @@ class EditorSettingsServiceTest: XCTestCase {
 
     func testLocalSettingsMigrationPostGutenberg() {
         // WPCom sites will default to gutenberg
-        let blog = blogWith()
+        let blog = makeTestBlog()
 
         // Mobile editor not yet set on the server
         let response = responseWith(mobileEditor: "")
@@ -94,7 +94,7 @@ class EditorSettingsServiceTest: XCTestCase {
 }
 
 extension EditorSettingsServiceTest {
-    func blogWith() -> Blog {
+    func makeTestBlog() -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: context)
         blog.dotComID = 1
         blog.account?.authToken = "auth"
