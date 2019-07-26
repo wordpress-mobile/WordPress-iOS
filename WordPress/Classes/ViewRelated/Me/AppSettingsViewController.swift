@@ -78,7 +78,6 @@ class AppSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
         let tableSections = [
-            editorTableSection(),
             mediaTableSection(),
             privacyTableSection(),
             otherTableSection()
@@ -198,20 +197,6 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func toggleGutenberg() -> (Bool) -> Void {
-        return { [weak self] isEnabled in
-            //Temporarely set the new value for all the user's sites, since this switch is still on App settings.
-            //Soon the switch will be moved to the Site Settings view.
-            let account = AccountService(managedObjectContext: Environment.current.contextManager.mainContext).defaultWordPressComAccount()
-            account?.blogs.forEach { blog in
-                let settings = GutenbergSettings()
-                settings.setGutenbergEnabled(isEnabled, for: blog)
-                settings.postSettingsToRemote(for: blog)
-            }
-            self?.reloadViewModel()
-        }
-    }
-
     func pushAppIconSwitcher() -> ImmuTableAction {
         return { [weak self] row in
             let controller = AppIconViewController()
@@ -325,32 +310,6 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
 // MARK: - Table Sections Private Extension
 
 private extension AppSettingsViewController {
-
-    func editorTableSection() -> ImmuTableSection? {
-
-        //Temporarely getting the App-wide value from the default blog.
-        let blog = AccountService(managedObjectContext: Environment.current.contextManager.mainContext).defaultWordPressComAccount()?.defaultBlog
-
-        let enabled: Bool
-        if let blog = blog {
-            enabled = blog.isGutenbergEnabled
-        } else {
-            enabled = false
-        }
-
-        let gutenbergEditor = SwitchRow(
-            title: NSLocalizedString("Use Block Editor", comment: "Option to enable the block editor for new posts"),
-            value: enabled,
-            onChange: toggleGutenberg(),
-            accessibilityIdentifier: "useBlockEditorSwitch"
-        )
-
-        let headerText = NSLocalizedString("Editor", comment: "Title for the editor settings section")
-        let footerText = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
-
-        return ImmuTableSection(headerText: headerText, rows: [gutenbergEditor], footerText: footerText)
-    }
-
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
 

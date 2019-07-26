@@ -96,3 +96,16 @@ class GutenbergSettings {
         }
     }
 }
+
+@objc(GutenbergSettings)
+class GutenbergSettingsBridge: NSObject {
+    @objc(setGutenbergEnabled:forBlog:)
+    static func setGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
+        GutenbergSettings().setGutenbergEnabled(isEnabled, for: blog)
+    }
+
+    @objc(postSettingsToRemoteForBlog:)
+    static func postSettingsToRemote(for blog: Blog) {
+        GutenbergSettings().postSettingsToRemote(for: blog)
+    }
+}

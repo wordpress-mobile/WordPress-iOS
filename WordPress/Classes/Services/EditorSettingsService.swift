@@ -6,10 +6,14 @@ import Foundation
 
 @objc class EditorSettingsService: LocalCoreDataService {
     @objc func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
-        guard let api = blog.wordPressComRestApi(), let siteID = blog.dotComID?.intValue else {
-            let error = NSError(domain: "EditorSettingsService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Api or dotCom Site ID not found"])
-            failure(error)
-            return
+        guard let api = blog.wordPressComRestApi() else {
+            // SelfHosted non-jetpack sites won't sync with remote.
+            return success()
+        }
+        guard let siteID = blog.dotComID?.intValue else {
+            assertionFailure("Blog with dotCom Rest API but dotCom Site ID not found")
+            let error = NSError(domain: "EditorSettingsService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "dotCom Site ID not found"])
+            return failure(error)
         }
 
         let service = EditorServiceRemote(wordPressComRestApi: api)
