@@ -11,6 +11,7 @@ import Foundation
             return success()
         }
         guard let siteID = blog.dotComID?.intValue else {
+            assertionFailure("Blog with dotCom Rest API but dotCom Site ID not found")
             let error = NSError(domain: "EditorSettingsService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "dotCom Site ID not found"])
             return failure(error)
         }
