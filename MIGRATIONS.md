@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 88
+@danielebogo 2019-07-24
+- `AccountSettings` added `usernameCanBeChanged` property to store a bool value.
+
 ## WordPress 87
 @klausa 2019-02-15
 
@@ -29,19 +33,6 @@ data model as well as any custom migrations.
 * `TopViewedPostStatsRecordValue`
 * `TopViewedVideoStatsRecordValue`
 * `VisitsSummaryStatsRecordValue`
-
-
-## WordPress 88
-@danielebogo 2019-07-24
-- `AccountSettings` added `usernameCanBeChanged` property to store a bool value.
-
-## WordPress 87
-@jklausa 2019-03-26
-- `ClicksStatsRecordValue` added a `iconUrlString` to store the icon URL as string.
-- Added `OtherAndTotalViewsCountStatsRecordValue` entity.
-- `TopViewedPostStatsRecordValue` modified `postID` property and `type` property  to Integer 64.
-- `TopViewedVideoStatsRecordValue` modified `postID` property  to Integer 64.
-- `VisitsSummaryStatsRecordValue` added `periodStart` property as Date.
 
 ## WordPress 86
 @aerych 2018-12-08

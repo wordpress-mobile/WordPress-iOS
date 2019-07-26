@@ -220,15 +220,14 @@ private extension SiteStatsInsightsViewModel {
         }
 
         let timeFormatter = DateFormatter()
-        timeFormatter.dateStyle = .none
-        timeFormatter.timeStyle = .short
+        timeFormatter.setLocalizedDateFormatFromTemplate("h a")
 
         let timeString = timeFormatter.string(from: timeModifiedDate)
 
         return [StatsTwoColumnRowData.init(leftColumnName: MostPopularStats.bestDay,
                                    leftColumnData: dayString,
                                    rightColumnName: MostPopularStats.bestHour,
-                                   rightColumnData: timeString.replacingOccurrences(of: ":00", with: ""))]
+                                   rightColumnData: timeString.uppercased())]
     }
 
     func createTotalFollowersRows() -> [StatsTwoColumnRowData] {

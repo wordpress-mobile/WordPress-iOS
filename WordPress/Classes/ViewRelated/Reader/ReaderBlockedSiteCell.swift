@@ -13,7 +13,7 @@ open class ReaderBlockedSiteCell: UITableViewCell {
     fileprivate func applyStyles() {
         contentView.backgroundColor = .tableBackground
         borderedContentView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedContentView.layer.borderWidth = 1.0
+        borderedContentView.layer.borderWidth = .hairlineBorderWidth
         label.font = WPStyleGuide.subtitleFont()
         label.textColor = .textSubtle
     }

@@ -37,7 +37,7 @@
         <attribute name="primarySiteID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="tracksOptOut" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="username" attributeType="String" syncable="YES"/>
-        <attribute name="usernameCanBeChanged" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="usernameCanBeChanged" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="webAddress" attributeType="String" syncable="YES"/>
         <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="settings" inverseEntity="Account" syncable="YES"/>
     </entity>
