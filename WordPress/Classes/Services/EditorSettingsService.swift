@@ -5,20 +5,9 @@ import Foundation
 }
 
 @objc class EditorSettingsService: LocalCoreDataService {
-    let wpcomApi: WordPressComRestApi?
-
-    @objc convenience override init(managedObjectContext: NSManagedObjectContext) {
-        self.init(managedObjectContext: managedObjectContext, wpcomApi: nil)
-    }
-
-    init(managedObjectContext: NSManagedObjectContext, wpcomApi: WordPressComRestApi? = nil) {
-        self.wpcomApi = wpcomApi
-        super.init(managedObjectContext: managedObjectContext)
-    }
-
     @objc(syncEditorSettingsForBlog:success:failure:)
     func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
-        guard let api = wpcomApi ?? blog.wordPressComRestApi() else {
+        guard let api = api(for: blog) else {
             // SelfHosted non-jetpack sites won't sync with remote.
             return success()
         }
@@ -62,7 +51,7 @@ import Foundation
         guard
             let selectedEditor = blog.mobileEditor,
             let remoteEditor = EditorSettings.Mobile(rawValue: selectedEditor.rawValue),
-            let api = wpcomApi ?? blog.wordPressComRestApi(),
+            let api = api(for: blog),
             let siteID = blog.dotComID?.intValue
         else {
             let error = NSError(domain: "EditorSettingsService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "Api or dotCom Site ID not found"])
@@ -73,5 +62,9 @@ import Foundation
         service.postDesignateMobileEditor(siteID, editor: remoteEditor, success: { _ in
             success()
         }, failure: failure)
+    }
+
+    func api(for blog: Blog) -> WordPressComRestApi? {
+        return blog.wordPressComRestApi()
     }
 }

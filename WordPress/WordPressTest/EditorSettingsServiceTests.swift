@@ -1,6 +1,19 @@
 import Foundation
 @testable import WordPress
 
+private class TestableEditorSettingsService: EditorSettingsService {
+    let mockApi: WordPressComRestApi
+
+    init(managedObjectContext context: NSManagedObjectContext, wpcomApi: WordPressComRestApi) {
+        mockApi = wpcomApi
+        super.init(managedObjectContext: context)
+    }
+
+    override func api(for blog: Blog) -> WordPressComRestApi? {
+        return mockApi
+    }
+}
+
 class EditorSettingsServiceTest: XCTestCase {
     var contextManager: TestContextManager!
     var context: NSManagedObjectContext!
@@ -15,7 +28,7 @@ class EditorSettingsServiceTest: XCTestCase {
         context.parent = contextManager.mainContext
         remoteApi = MockWordPressComRestApi()
         database = EphemeralKeyValueDatabase()
-        service = EditorSettingsService(managedObjectContext: context, wpcomApi: remoteApi)
+        service = TestableEditorSettingsService(managedObjectContext: context, wpcomApi: remoteApi)
     }
 
     override func tearDown() {
