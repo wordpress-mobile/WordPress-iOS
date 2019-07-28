@@ -80,7 +80,7 @@ class GutenbergSettings {
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
-        return !wasGutenbergEnabledOnce(for: post.blog)
+        return !post.isContentEmpty() && !wasGutenbergEnabledOnce(for: post.blog)
     }
 
     // MARK: - Gutenberg Choice Logic
