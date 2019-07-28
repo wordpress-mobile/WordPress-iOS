@@ -75,17 +75,12 @@ class GutenbergSettings {
 
     /// True if gutenberg editor has been enabled at least once on the given blog
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
-        // If gutenberg was "globaly" enabled before, will take precedence over the new per-site flag
-        return database.object(forKey: Key.appWideEnabled) != nil || database.object(forKey: Key.enabledOnce(for: blog)) != nil
+        return database.object(forKey: Key.enabledOnce(for: blog)) != nil
     }
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
         return !wasGutenbergEnabledOnce(for: post.blog)
-    }
-
-    func didAutoenableGutenberg() {
-        database.set(true, forKey: Key.appWideEnabled)
     }
 
     // MARK: - Gutenberg Choice Logic
