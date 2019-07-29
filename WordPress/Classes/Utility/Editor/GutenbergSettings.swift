@@ -34,8 +34,23 @@ class GutenbergSettings {
     ///   - isEnabled: Enabled state to set
     ///   - blog: The site to set the gutenberg enabled state
     func setGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
-        let selectedEditor: MobileEditor = isEnabled ? .gutenberg : .aztec
-        guard shouldUpdateSettings(with: selectedEditor, for: blog) else {
+        guard shouldUpdateSettings(enabling: isEnabled, for: blog) else {
+            return
+        }
+
+        softSetGutenbergEnabled(isEnabled, for: blog)
+
+        if isEnabled {
+            database.set(true, forKey: Key.enabledOnce(for: blog))
+        }
+    }
+
+    /// Sets gutenberg enabled without registering the enabled action ("enabledOnce")
+    /// Use this to set gutenberg and still show the auto-enabled dialog.
+    ///
+    /// - Parameter blog: The site to set the
+    func softSetGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
+        guard shouldUpdateSettings(enabling: isEnabled, for: blog) else {
             return
         }
 
@@ -43,27 +58,15 @@ class GutenbergSettings {
             trackSettingChange(to: isEnabled)
         }
 
-        if isEnabled {
-            database.set(true, forKey: Key.enabledOnce(for: blog))
-        }
-
-        blog.mobileEditor = selectedEditor
+        blog.mobileEditor = isEnabled ? .gutenberg : .aztec
         ContextManager.sharedInstance().save(context)
 
         WPAnalytics.refreshMetadata()
     }
 
-
-    /// Sets gutenberg enabled without tracking events and without registering the enabled action ("enabledOnce")
-    ///
-    /// - Parameter blog: The site to set the
-    func softEnableGutenberg(for blog: Blog) {
-        blog.mobileEditor = .gutenberg
-        ContextManager.sharedInstance().save(context)
-    }
-
-    private func shouldUpdateSettings(with newSetting: MobileEditor, for blog: Blog) -> Bool {
-        return blog.mobileEditor != newSetting
+    private func shouldUpdateSettings(enabling isEnablingGutenberg: Bool, for blog: Blog) -> Bool {
+        let selectedEditor: MobileEditor = isEnablingGutenberg ? .gutenberg : .aztec
+        return blog.mobileEditor != selectedEditor
     }
 
     private func trackSettingChange(to isEnabled: Bool) {
