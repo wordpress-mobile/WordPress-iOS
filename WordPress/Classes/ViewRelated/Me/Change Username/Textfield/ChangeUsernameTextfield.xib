@@ -14,11 +14,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ChangeUsernameTextfield" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="440" height="46"/>
+            <rect key="frame" x="0.0" y="0.0" width="440" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bar-SJ-Eax">
-                    <rect key="frame" x="16" y="1" width="408" height="44"/>
+                    <rect key="frame" x="16" y="0.0" width="408" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Eyh-o2-deV"/>
                     </constraints>
@@ -26,33 +26,13 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1oL-4o-i0P" userLabel="Top">
-                    <rect key="frame" x="0.0" y="0.0" width="440" height="1"/>
-                    <color key="backgroundColor" name="Gray10"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="tU0-3k-2E8"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kTN-sl-kGO" userLabel="Bottom">
-                    <rect key="frame" x="0.0" y="45" width="440" height="1"/>
-                    <color key="backgroundColor" name="Gray10"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="GDj-XY-xZq"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="bar-SJ-Eax" secondAttribute="trailing" constant="16" id="7KN-I7-Kow"/>
-                <constraint firstItem="kTN-sl-kGO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="9pH-qu-7pQ"/>
-                <constraint firstAttribute="bottom" secondItem="kTN-sl-kGO" secondAttribute="bottom" id="K1M-YM-uaO"/>
-                <constraint firstAttribute="trailing" secondItem="kTN-sl-kGO" secondAttribute="trailing" id="Qyf-Nj-Zdn"/>
-                <constraint firstItem="kTN-sl-kGO" firstAttribute="top" secondItem="bar-SJ-Eax" secondAttribute="bottom" id="SIV-Vg-43G"/>
-                <constraint firstItem="bar-SJ-Eax" firstAttribute="top" secondItem="1oL-4o-i0P" secondAttribute="bottom" id="SJy-bM-qkE"/>
-                <constraint firstItem="1oL-4o-i0P" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="YKD-td-iCm"/>
+                <constraint firstAttribute="bottom" secondItem="bar-SJ-Eax" secondAttribute="bottom" id="PRr-m1-wYB"/>
                 <constraint firstItem="bar-SJ-Eax" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="dTR-Pz-0az"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="1oL-4o-i0P" secondAttribute="trailing" id="wlq-CS-36k"/>
-                <constraint firstItem="1oL-4o-i0P" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="zRP-7n-7id"/>
+                <constraint firstItem="bar-SJ-Eax" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="uNO-mY-Pak"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
@@ -60,9 +40,6 @@
         </view>
     </objects>
     <resources>
-        <namedColor name="Gray10">
-            <color red="0.80392156862745101" green="0.78823529411764703" blue="0.80392156862745101" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="Gray80">
             <color red="0.17254901960784313" green="0.20000000000000001" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
