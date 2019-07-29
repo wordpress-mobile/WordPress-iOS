@@ -14,8 +14,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangeUsernameViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
                 <outlet property="containerView" destination="fRT-hx-blE" id="LIF-Pz-acc"/>
-                <outlet property="headerText" destination="u8N-Li-snN" id="JWP-Aa-DqZ"/>
-                <outlet property="headerView" destination="rjx-Wc-uKH" id="XXb-lg-eD5"/>
+                <outlet property="footerText" destination="u8N-Li-snN" id="q9y-a3-qdT"/>
                 <outlet property="scrollViewBottomConstraint" destination="cp4-Dm-R22" id="HCz-Gd-E1s"/>
                 <outlet property="textFieldContainerView" destination="vah-0j-odb" id="GID-jw-jYt"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -32,18 +31,24 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fRT-hx-blE" userLabel="Container">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="202"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjx-Wc-uKH" userLabel="Header">
-                                    <rect key="frame" x="0.0" y="16" width="414" height="128"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vah-0j-odb" userLabel="TextFields">
+                                    <rect key="frame" x="0.0" y="16" width="414" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" placeholder="YES" id="Hda-u9-6JH"/>
+                                    </constraints>
+                                </stackView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjx-Wc-uKH" userLabel="Footer">
+                                    <rect key="frame" x="0.0" y="66" width="414" height="128"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8N-Li-snN">
                                             <rect key="frame" x="16" y="16" width="382" height="96"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" name="Gray0"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" name="Gray50"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="backgroundColor" name="Gray0"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="u8N-Li-snN" secondAttribute="trailing" constant="16" id="Bcd-4G-NyH"/>
                                         <constraint firstItem="u8N-Li-snN" firstAttribute="top" secondItem="rjx-Wc-uKH" secondAttribute="top" constant="16" id="Pc6-3t-Csw"/>
@@ -51,12 +56,6 @@
                                         <constraint firstItem="u8N-Li-snN" firstAttribute="leading" secondItem="rjx-Wc-uKH" secondAttribute="leading" constant="16" id="pfX-uE-iVZ"/>
                                     </constraints>
                                 </view>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vah-0j-odb" userLabel="TextFields">
-                                    <rect key="frame" x="0.0" y="144" width="414" height="50"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="50" placeholder="YES" id="Hda-u9-6JH"/>
-                                    </constraints>
-                                </stackView>
                             </subviews>
                             <edgeInsets key="layoutMargins" top="16" left="0.0" bottom="8" right="0.0"/>
                         </stackView>

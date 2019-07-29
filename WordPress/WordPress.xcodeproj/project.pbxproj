@@ -1174,6 +1174,7 @@
 		9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */; };
 		9A4E216021F87AE200EFF212 /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */; };
 		9A4E216221F87AF300EFF212 /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */; };
+		9A4E271A22EF0C78001F6A6B /* ChangeUsernameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E271922EF0C78001F6A6B /* ChangeUsernameViewModel.swift */; };
 		9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */; };
 		9A4E939F2268D9B400E14823 /* UIViewController+NoResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */; };
 		9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */; };
@@ -3321,6 +3322,7 @@
 		9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistManager.swift; sourceTree = "<group>"; };
 		9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
+		9A4E271922EF0C78001F6A6B /* ChangeUsernameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUsernameViewModel.swift; sourceTree = "<group>"; };
 		9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RevisionDiff+CoreData.swift"; sourceTree = "<group>"; };
 		9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+NoResults.swift"; sourceTree = "<group>"; };
 		9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+Revisions.swift"; sourceTree = "<group>"; };
@@ -7184,6 +7186,14 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		9A4E271822EF0C57001F6A6B /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				9A4E271922EF0C78001F6A6B /* ChangeUsernameViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
 		9A4E61FC21A2CC4C0017A925 /* Browser */ = {
 			isa = PBXGroup;
 			children = (
@@ -7202,6 +7212,7 @@
 			children = (
 				9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */,
 				9A51DA1422E9E8C7005CC335 /* ChangeUsernameViewController.xib */,
+				9A4E271822EF0C57001F6A6B /* View Model */,
 				9A51DA2A22EB4318005CC335 /* Textfield */,
 				9A51DA2522EB2494005CC335 /* Label */,
 			);
@@ -11164,6 +11175,7 @@
 				981D092A211259840014ECAF /* NoResultsViewController+MediaLibrary.swift in Sources */,
 				D83CA3B02084CAAF0060E310 /* StockPhotosDataLoader.swift in Sources */,
 				E66969DA1B9E55AB00EC9C00 /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
+				9A4E271A22EF0C78001F6A6B /* ChangeUsernameViewModel.swift in Sources */,
 				D800D86620997C6E00E7C7E5 /* FollowingMenuItemCreator.swift in Sources */,
 				172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */,
 				7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */,

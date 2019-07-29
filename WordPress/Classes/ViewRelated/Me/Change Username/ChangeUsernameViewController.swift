@@ -1,17 +1,10 @@
-import Reachability
-
 class ChangeUsernameViewController: UIViewController {
     private typealias TextfieldRow = ChangeUsernameTextfield
     private typealias LabelRow = ChangeUsernameLabel
 
-    private let service: AccountSettingsService
-    private let settings: AccountSettings?
-    private let reachability = Reachability.forInternetConnection()
     private let usernameTextfield = TextfieldRow.loadFromNib()
     private let usernameTextfieldFooter = LabelRow.loadFromNib()
-    private let scheduler = Scheduler(seconds: 1.0)
-    private var validatorState: State = .neutral
-    private var confirmationState: State = .neutral
+    private let viewModel: ChangeUsernameViewModel
     private lazy var saveBarButtonItem: UIBarButtonItem = {
         let saveItem = UIBarButtonItem(title: Constants.actionButtonTitle, style: .plain, target: nil, action: nil)
         saveItem.on() { [weak self] _ in
@@ -20,18 +13,12 @@ class ChangeUsernameViewController: UIViewController {
         return saveItem
     }()
     @IBOutlet private var scrollViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private var headerView: UIView! {
-        didSet {
-            headerView.addTopBorder(withColor: .neutral(shade: .shade10))
-        }
-    }
-    @IBOutlet private var headerText: UILabel!
+    @IBOutlet private var footerText: UILabel!
     @IBOutlet private var containerView: UIStackView!
     @IBOutlet private var textFieldContainerView: UIStackView!
 
     init(service: AccountSettingsService, settings: AccountSettings?) {
-        self.service = service
-        self.settings = settings
+        self.viewModel = ChangeUsernameViewModel(service: service, settings: settings)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -40,48 +27,48 @@ class ChangeUsernameViewController: UIViewController {
     }
 
     deinit {
-        removeObserver()
+        viewModel.removeObserver()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupViewModel()
         setupUI()
-        addObservers()
     }
 }
 
 private extension ChangeUsernameViewController {
+    func setupViewModel() {
+        viewModel.addObservers()
+        viewModel.reachabilityListener = { [weak self] in
+            self?.setNeedsSaveButtonIsEnabled()
+        }
+        viewModel.validationListener = { [weak self] (success, error) in
+            DispatchQueue.main.async {
+                if success {
+                    self?.usernameTextfieldFooter.set(text: "%@ is a valid username.", for: .success)
+                } else {
+                    self?.usernameTextfieldFooter.set(text: error, for: .error)
+                }
+            }
+        }
+    }
+
     func setupUI() {
         navigationItem.title = Constants.Header.title
         navigationItem.rightBarButtonItem = saveBarButtonItem
 
-        setHeader()
+        let title = LabelRow.label(text: Constants.Header.title.uppercased())
+        containerView.insertArrangedSubview(title, at: 0)
         textFieldContainerView.addArrangedSubview(usernameTextfield)
-        if let account = defaultAccount() {
+        if let account = viewModel.defaultAccount {
             usernameTextfieldFooter.set(text: String(format: Constants.Username.footer, account.dateCreated.mediumString()))
             textFieldContainerView.addArrangedSubview(usernameTextfieldFooter)
         }
+        setFooter()
 
-        setNeedsSaveButtonIsEnabled(isReachable: reachability?.isReachable() ?? false)
-    }
-
-    func addObservers() {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-
-        let reachabilityBlock: NetworkReachable = { [weak self] reachability in
-            self?.setNeedsSaveButtonIsEnabled(isReachable: reachability?.isReachable() ?? false)
-        }
-        reachability?.reachableBlock = reachabilityBlock
-        reachability?.unreachableBlock = reachabilityBlock
-        reachability?.startNotifier()
-    }
-
-    func removeObserver() {
-        NotificationCenter.default.removeObserver(self)
-        reachability?.stopNotifier()
+        setNeedsSaveButtonIsEnabled()
     }
 
     @objc func adjustForKeyboard(notification: Foundation.Notification) {
@@ -94,54 +81,21 @@ private extension ChangeUsernameViewController {
     }
 
     func validate(username: String) {
-        scheduler.debounce { [weak self] in
-            self?.service.validateUsername(to: username, success: {
-                self?.validationSucceeded()
-            }) { error in
-                self?.validationFailed(error: error.localizedDescription)
-            }
-        }
-    }
 
-    func validationSucceeded() {
-        validatorState = .success
-
-        usernameTextfieldFooter.set(text: "%@ is a valid username.", for: .success)
-    }
-
-    func validationFailed(error: String) {
-        validatorState = .failure
-        confirmationState = .failure
-
-        usernameTextfieldFooter.set(text: error, for: .error)
     }
 
     func save() {
 
     }
 
-    func setNeedsSaveButtonIsEnabled(isReachable: Bool) {
-        saveBarButtonItem.isEnabled = isReachable && validatorState == .success && confirmationState == .success
+    func setNeedsSaveButtonIsEnabled() {
+        saveBarButtonItem.isEnabled = viewModel.isReachable && viewModel.usernameIsValidToBeChanged
     }
 
-    func setHeader() {
-        guard let username = settings?.username,
-            let displayName = settings?.displayName else {
-                headerText.isHidden = true
-            return
-        }
-        let title = LabelRow.label(text: Constants.Header.title.uppercased())
-        containerView.insertArrangedSubview(title, at: 0)
-        headerText.attributedText = attributed(for: Constants.Header.text,
-                                               username: username,
-                                               displayName: displayName)
-    }
-
-    private func defaultAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
-        return account
+    func setFooter() {
+        footerText.attributedText = attributed(for: Constants.Header.text,
+                                               username: viewModel.username,
+                                               displayName: viewModel.displayName)
     }
 
     func attributed(for text: String, username: String, displayName: String) -> NSAttributedString {
@@ -176,11 +130,5 @@ private extension ChangeUsernameViewController {
             static let text = NSLocalizedString("You are about to change your username, which is currently %@. You will not be able to change your username back.\n\nIf you just want to change your display name, which is currently %@, you can do so under My Profile.\n\nChanging your username will also affect your Gravatar profile and IntenseDebate profile addresses.",
                                                   comment: "Paragraph displayed in the footer. The placholders are for the current username and the current display name.")
         }
-    }
-
-    enum State {
-        case neutral
-        case success
-        case failure
     }
 }
