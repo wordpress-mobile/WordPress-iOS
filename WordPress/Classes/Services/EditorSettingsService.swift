@@ -71,7 +71,9 @@ import Foundation
         }
         let blogsWithAccount = blogs.filter({ $0.account != nil })
         for blog in blogsWithAccount {
-            syncEditorSettings(for: blog, success: {}, failure: { _ in })
+            syncEditorSettings(for: blog, success: {}, failure: { (error) in
+                DDLogError("Error saving editor settings: \(error)")
+            })
         }
     }
 
