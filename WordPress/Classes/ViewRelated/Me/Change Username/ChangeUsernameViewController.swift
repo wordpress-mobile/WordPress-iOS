@@ -20,9 +20,14 @@ class ChangeUsernameViewController: UIViewController {
         return saveItem
     }()
     @IBOutlet private var scrollViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private var footerTitle: UILabel!
-    @IBOutlet private var footerText: UILabel!
+    @IBOutlet private var headerView: UIView! {
+        didSet {
+            headerView.addTopBorder(withColor: .neutral(shade: .shade10))
+        }
+    }
+    @IBOutlet private var headerText: UILabel!
     @IBOutlet private var containerView: UIStackView!
+    @IBOutlet private var textFieldContainerView: UIStackView!
 
     init(service: AccountSettingsService, settings: AccountSettings?) {
         self.service = service
@@ -48,16 +53,16 @@ class ChangeUsernameViewController: UIViewController {
 
 private extension ChangeUsernameViewController {
     func setupUI() {
-        navigationItem.title = Constants.title
+        navigationItem.title = Constants.Header.title
         navigationItem.rightBarButtonItem = saveBarButtonItem
 
-        containerView.addArrangedSubviews([LabelRow.label(text: Constants.Username.header.uppercased()),
-                                           usernameTextfield])
+        setHeader()
+        textFieldContainerView.addArrangedSubview(usernameTextfield)
         if let account = defaultAccount() {
             usernameTextfieldFooter.set(text: String(format: Constants.Username.footer, account.dateCreated.mediumString()))
-            containerView.addArrangedSubview(usernameTextfieldFooter)
+            textFieldContainerView.addArrangedSubview(usernameTextfieldFooter)
         }
-        setFooter()
+
         setNeedsSaveButtonIsEnabled(isReachable: reachability?.isReachable() ?? false)
     }
 
@@ -119,15 +124,15 @@ private extension ChangeUsernameViewController {
         saveBarButtonItem.isEnabled = isReachable && validatorState == .success && confirmationState == .success
     }
 
-    func setFooter() {
+    func setHeader() {
         guard let username = settings?.username,
             let displayName = settings?.displayName else {
-                footerTitle.isHidden = true
-                footerText.isHidden = true
+                headerText.isHidden = true
             return
         }
-        footerTitle.text = Constants.Footer.title
-        footerText.attributedText = attributed(for: Constants.Footer.text,
+        let title = LabelRow.label(text: Constants.Header.title.uppercased())
+        containerView.insertArrangedSubview(title, at: 0)
+        headerText.attributedText = attributed(for: Constants.Header.text,
                                                username: username,
                                                displayName: displayName)
     }
@@ -150,9 +155,8 @@ private extension ChangeUsernameViewController {
     }
 
     enum Constants {
-        static let title = NSLocalizedString("Change Username", comment: "Main title")
-        static let description = NSLocalizedString("", comment: "Help text that describes how the password should be. It appears while editing the password")
         static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
+        static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
 
         enum Username {
             static let header = NSLocalizedString("Username", comment: "Change username textfield header title")
@@ -167,9 +171,9 @@ private extension ChangeUsernameViewController {
             static let failure = NSLocalizedString("Please re-enter your new username to confirm it.", comment: "Failure message when the username confirmation fails")
         }
 
-        enum Footer {
-            static let title = NSLocalizedString("Please Read Carefully", comment: "Title displayed in the footer")
-            static let text = NSLocalizedString("You are about to change your username, which is currently %@. You will not be able to change your username back.\n\nIf you just want to change your display name, which is currently %@, you can do so under My Profile.\n\nChanging your username will also affect your Gravatar profile and IntenseDebate profile addresses.\n\nIf you would still like to change your username, please save your changes. Otherwise, hit the back button.",
+        enum Header {
+            static let title = NSLocalizedString("Change Username", comment: "Main title")
+            static let text = NSLocalizedString("You are about to change your username, which is currently %@. You will not be able to change your username back.\n\nIf you just want to change your display name, which is currently %@, you can do so under My Profile.\n\nChanging your username will also affect your Gravatar profile and IntenseDebate profile addresses.",
                                                   comment: "Paragraph displayed in the footer. The placholders are for the current username and the current display name.")
         }
     }
