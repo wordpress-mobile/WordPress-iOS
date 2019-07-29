@@ -53,11 +53,11 @@ class ChangeUsernameViewModel {
 
     func validate(username: String) {
         scheduler.debounce { [weak self] in
-//            self?.service.validateUsername(to: username, success: {
-//                self?.validationSucceeded()
-//            }) { error in
-//                self?.validationFailed(error: error.localizedDescription)
-//            }
+            self?.service?.validateUsername(to: username, success: {
+                self?.validationListener?(true, "")
+            }) { error in
+                self?.validationListener?(false, error.localizedDescription)
+            }
         }
     }
 
