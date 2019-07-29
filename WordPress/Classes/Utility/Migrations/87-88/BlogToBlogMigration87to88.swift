@@ -9,4 +9,12 @@ class BlogToBlogMigration87to88: NSEntityMigrationPolicy {
 
         dInstance.setValue(editor, forKey: "mobileEditor")
     }
+
+    override func end(_ mapping: NSEntityMapping, manager: NSMigrationManager) throws {
+        NotificationCenter.default.observeOnce(forName: .applicationLaunchCompleted, object: nil, queue: .main, using: { (_) in
+            let context = ContextManager.shared.mainContext
+            let service = EditorSettingsService(managedObjectContext: context)
+            service.syncEditorSettingsForAllBlogs()
+        })
+    }
 }

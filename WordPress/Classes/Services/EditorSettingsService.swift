@@ -64,6 +64,17 @@ import Foundation
         }, failure: failure)
     }
 
+    func syncEditorSettingsForAllBlogs() {
+        let blogService = BlogService(managedObjectContext: managedObjectContext)
+        guard let blogs = blogService.blogsForAllAccounts() as? [Blog] else {
+            return
+        }
+        let blogsWithAccount = blogs.filter({ $0.account != nil })
+        for blog in blogsWithAccount {
+            syncEditorSettings(for: blog, success: {}, failure: { _ in })
+        }
+    }
+
     func api(for blog: Blog) -> WordPressComRestApi? {
         return blog.wordPressComRestApi()
     }
