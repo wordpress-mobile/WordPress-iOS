@@ -132,7 +132,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceUsed;
 
 
-
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
  *              and their values.
