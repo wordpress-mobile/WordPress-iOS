@@ -35,7 +35,7 @@ import Foundation
         guard settings.mobile != .notSet else {
             throw EditorSettingsServiceError.mobileEditorNotSet
         }
-        blog.mobileEditor = MobileEditor(rawValue: settings.mobile.rawValue)
+        GutenbergSettings().setGutenbergEnabled(settings.mobile == .gutenberg, for: blog)
     }
 
     private func migrateLocalSettingToRemote(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
