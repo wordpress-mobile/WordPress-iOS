@@ -11,24 +11,38 @@ enum WebEditor: String {
 }
 
 extension Blog {
-    struct Editor {
-        fileprivate let blog: Blog
-        var mobile: MobileEditor? {
-            return MobileEditor(rawValue: blog.mobileEditor ?? "")
+    static let mobileEditorKeyPath = "mobileEditor"
+    static let webEditorKeyPath = "webEditor"
+
+    /// The stored setting for the default mobile editor
+    ///
+    var mobileEditor: MobileEditor? {
+        get {
+            return rawValue(forKey: Blog.mobileEditorKeyPath)
         }
-        var web: WebEditor? {
-            return WebEditor(rawValue: blog.webEditor ?? "")
-        }
-        func setMobileEditor(_ newValue: MobileEditor) {
-            blog.mobileEditor = newValue.rawValue
+        set {
+            setRawValue(newValue, forKey: Blog.mobileEditorKeyPath)
         }
     }
 
-    var editor: Editor {
-        return Editor(blog: self)
+    /// The stored setting for the default web editor
+    ///
+    var webEditor: WebEditor? {
+        get {
+            return rawValue(forKey: Blog.webEditorKeyPath)
+        }
+        set {
+            setRawValue(newValue, forKey: Blog.webEditorKeyPath)
+        }
+    }
+
+    /// The editor to use when creating a new post
+    ///
+    var editor: MobileEditor {
+        return mobileEditor ?? GutenbergSettings().getDefaultEditor(for: self)
     }
 
     @objc var isGutenbergEnabled: Bool {
-        return self.editor.mobile == .gutenberg
+        return editor == .gutenberg
     }
 }
