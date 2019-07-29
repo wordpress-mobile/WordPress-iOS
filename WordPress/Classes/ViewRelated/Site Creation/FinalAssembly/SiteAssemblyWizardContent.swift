@@ -114,7 +114,7 @@ final class SiteAssemblyWizardContent: UIViewController {
                     // Default all new blogs to use Gutenberg
                     if let createdBlog = blog {
                         let gutenbergSettings = GutenbergSettings()
-                        gutenbergSettings.setGutenbergEnabled(true, for: createdBlog)
+                        gutenbergSettings.softEnableGutenberg(for: createdBlog)
                         gutenbergSettings.postSettingsToRemote(for: createdBlog)
                     }
 

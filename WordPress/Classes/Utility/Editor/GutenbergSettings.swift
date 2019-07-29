@@ -53,6 +53,15 @@ class GutenbergSettings {
         WPAnalytics.refreshMetadata()
     }
 
+
+    /// Sets gutenberg enabled without tracking events and without registering the enabled action ("enabledOnce")
+    ///
+    /// - Parameter blog: The site to set the
+    func softEnableGutenberg(for blog: Blog) {
+        blog.mobileEditor = .gutenberg
+        ContextManager.sharedInstance().save(context)
+    }
+
     private func shouldUpdateSettings(with newSetting: MobileEditor, for blog: Blog) -> Bool {
         return blog.mobileEditor != newSetting
     }
@@ -80,7 +89,7 @@ class GutenbergSettings {
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
-        return !post.isContentEmpty() && !wasGutenbergEnabledOnce(for: post.blog)
+        return !wasGutenbergEnabledOnce(for: post.blog)
     }
 
     // MARK: - Gutenberg Choice Logic
