@@ -1,11 +1,14 @@
 import Reachability
 
 class ChangeUsernameViewController: UIViewController {
+    private typealias TextfieldRow = ChangeUsernameTextfield
+    private typealias LabelRow = ChangeUsernameLabel
+
     private let service: AccountSettingsService
     private let settings: AccountSettings?
     private let reachability = Reachability.forInternetConnection()
-    private let usernameTextfield = ChangeUsernameTextfield.loadFromNib()
-    private let usernameTextfieldFooter = ChangeUsernameLabel.loadFromNib()
+    private let usernameTextfield = TextfieldRow.loadFromNib()
+    private let usernameTextfieldFooter = LabelRow.loadFromNib()
     private let scheduler = Scheduler(seconds: 1.0)
     private var validatorState: State = .neutral
     private var confirmationState: State = .neutral
@@ -48,10 +51,10 @@ private extension ChangeUsernameViewController {
         navigationItem.title = Constants.title
         navigationItem.rightBarButtonItem = saveBarButtonItem
 
-        containerView.addArrangedSubviews([ChangeUsernameLabel.label(text: Constants.Textfield.username.uppercased()),
+        containerView.addArrangedSubviews([LabelRow.label(text: Constants.Username.header.uppercased()),
                                            usernameTextfield])
         if let account = defaultAccount() {
-            usernameTextfieldFooter.set(text: String(format: Constants.Textfield.date, account.dateCreated.mediumString()))
+            usernameTextfieldFooter.set(text: String(format: Constants.Username.footer, account.dateCreated.mediumString()))
             containerView.addArrangedSubview(usernameTextfieldFooter)
         }
         setFooter()
@@ -151,9 +154,17 @@ private extension ChangeUsernameViewController {
         static let description = NSLocalizedString("", comment: "Help text that describes how the password should be. It appears while editing the password")
         static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
 
-        enum Textfield {
-            static let username = NSLocalizedString("Username", comment: "Change username textfield header title")
-            static let date = NSLocalizedString("Joined %@", comment: "Change username textfield footer title. The placeholder is the date when the user has been created")
+        enum Username {
+            static let header = NSLocalizedString("Username", comment: "Change username textfield header title")
+            static let footer = NSLocalizedString("Joined %@", comment: "Change username textfield footer title. The placeholder is the date when the user has been created")
+            static let success = NSLocalizedString("%@ is a valid username.", comment: "Success message when a typed username is valid. The placeholder indicates the validated username")
+        }
+
+        enum Confirmation {
+            static let header = NSLocalizedString("Confirm Username", comment: "Confirm username textfield header title")
+            static let footer = NSLocalizedString("Confirm new username", comment: "Confirm username textfield footer title.")
+            static let success = NSLocalizedString("Thanks for confirming your new username!", comment: "Success message with the username confirmation")
+            static let failure = NSLocalizedString("Please re-enter your new username to confirm it.", comment: "Failure message when the username confirmation fails")
         }
 
         enum Footer {
