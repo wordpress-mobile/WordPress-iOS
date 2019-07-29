@@ -37,16 +37,8 @@ final class EditCommentActionTests: XCTestCase {
         super.tearDown()
     }
 
-    func testDefaultTitleIsExpected() {
-        XCTAssertEqual(action?.icon?.titleLabel?.text, EditComment.title)
-    }
-
-    func testDefaultAccessibilityLabelIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityLabel, EditComment.title)
-    }
-
-    func testDefaultAccessibilityHintIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityHint, EditComment.hint)
+    func testActionTitleIsExpected() {
+        XCTAssertEqual(action?.actionTitle, EditComment.title)
     }
 
     func testExecuteCallsEdit() {

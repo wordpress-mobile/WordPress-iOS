@@ -122,7 +122,7 @@ private extension SiteStatsDashboardViewController {
         currentSelectedPeriod = getSelectedPeriodFromUserDefaults()
     }
 
-    func updatePeriodView(oldSelectedPeriod: StatsPeriodType, withDate periodDate: Date? = Date()) {
+    func updatePeriodView(oldSelectedPeriod: StatsPeriodType, withDate periodDate: Date? = nil) {
         let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
         let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
         let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
@@ -141,11 +141,13 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             }
-            periodTableViewController.selectedDate = periodDate
+
+            periodTableViewController.selectedDate = periodDate ?? StatsDataHelper.currentDateForSite().normalizedForSite()
             let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
             periodTableViewController.selectedPeriod = selectedPeriod
         }
     }
+
 }
 
 // MARK: - Tracks Support

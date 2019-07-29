@@ -122,6 +122,7 @@ private extension SupportTableViewController {
             helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator))
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
                                                    value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
+                                                   accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
                                                    action: supportEmailSelected()))
         } else {
             helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
@@ -280,6 +281,7 @@ private extension SupportTableViewController {
             WPStyleGuide.configureTableViewCell(cell)
             cell.textLabel?.textColor = .primary
             cell.showIndicator = showIndicator
+            cell.accessibilityTraits = .button
         }
     }
 
@@ -288,6 +290,7 @@ private extension SupportTableViewController {
 
         let title: String
         let value: String
+        let accessibilityHint: String
         let action: ImmuTableAction?
 
         func configureCell(_ cell: UITableViewCell) {
@@ -295,6 +298,8 @@ private extension SupportTableViewController {
             cell.detailTextLabel?.text = value
             WPStyleGuide.configureTableViewCell(cell)
             cell.textLabel?.textColor = .primary
+            cell.accessibilityTraits = .button
+            cell.accessibilityHint = accessibilityHint
         }
     }
 
@@ -319,6 +324,7 @@ private extension SupportTableViewController {
         static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
         static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
         static let contactEmail = NSLocalizedString("Contact Email", comment: "Support email label.")
+        static let contactEmailAccessibilityHint = NSLocalizedString("Shows a dialog for changing the Contact Email.", comment: "Accessibility hint describing what happens if the Contact Email button is tapped.")
         static let emailNotSet = NSLocalizedString("Not Set", comment: "Display value for Support email field if there is no user email address.")
     }
 

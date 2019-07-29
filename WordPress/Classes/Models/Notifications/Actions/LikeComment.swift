@@ -1,6 +1,5 @@
-import MGSwipeTableCell
 /// Encapsulates logic to Like a comment
-class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
+class LikeComment: DefaultNotificationActionCommand {
     enum TitleStrings {
         static let like = NSLocalizedString("Like", comment: "Likes a Comment")
         static let unlike = NSLocalizedString("Liked", comment: "A comment is marked as liked")
@@ -11,25 +10,8 @@ class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableConten
         static let unlike = NSLocalizedString("Unlike the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment")
     }
 
-    let likeIcon: UIButton = {
-        let title = TitleStrings.like
-        let button = MGSwipeButton(title: title, backgroundColor: .primary)
-        button.accessibilityLabel = title
-        button.accessibilityTraits = UIAccessibilityTraits.button
-        button.accessibilityHint = TitleHints.like
-        return button
-    }()
-
-    override var on: Bool {
-        willSet {
-            let newTitle = newValue ? TitleStrings.like : TitleStrings.unlike
-            let newHint = newValue ? TitleHints.like : TitleHints.unlike
-            setIconStrings(title: newTitle, label: newTitle, hint: newHint)
-        }
-    }
-
-    override var icon: UIButton? {
-        return likeIcon
+    override var actionTitle: String {
+        return on ? TitleStrings.like : TitleStrings.unlike
     }
 
     override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
@@ -43,17 +25,9 @@ class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableConten
 
     private func like(block: FormattableCommentContent) {
         actionsService?.likeCommentWithBlock(block)
-
-        setIconStrings(title: TitleStrings.unlike,
-                       label: TitleStrings.unlike,
-                       hint: TitleHints.unlike)
     }
 
     private func removeLike(block: FormattableCommentContent) {
         actionsService?.unlikeCommentWithBlock(block)
-
-        setIconStrings(title: TitleStrings.like,
-                       label: TitleStrings.like,
-                       hint: TitleHints.like)
     }
 }

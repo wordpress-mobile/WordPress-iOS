@@ -776,7 +776,9 @@ private extension ZendeskUtils {
         alertController.addTextField(configurationHandler: { textField in
             textField.clearButtonMode = .always
             textField.placeholder = LocalizedText.emailPlaceholder
+            textField.accessibilityLabel = LocalizedText.emailAccessibilityLabel
             textField.text = ZendeskUtils.sharedInstance.userEmail
+            textField.isEnabled = false
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
@@ -788,14 +790,22 @@ private extension ZendeskUtils {
             alertController.addTextField { textField in
                 textField.clearButtonMode = .always
                 textField.placeholder = LocalizedText.namePlaceholder
+                textField.accessibilityLabel = LocalizedText.nameAccessibilityLabel
                 textField.text = ZendeskUtils.sharedInstance.userName
                 textField.delegate = ZendeskUtils.sharedInstance
+                textField.isEnabled = false
                 ZendeskUtils.sharedInstance.alertNameField = textField
             }
         }
 
         // Show alert
-        presentInController?.present(alertController, animated: true)
+        presentInController?.present(alertController, animated: true) {
+            // Enable text fields only after the alert is shown so that VoiceOver will dictate
+            // the message first. 
+            alertController.textFields?.forEach { textField in
+                textField.isEnabled = true
+            }
+        }
     }
 
     @objc static func emailTextFieldDidChange(_ textField: UITextField) {
@@ -952,7 +962,9 @@ private extension ZendeskUtils {
         static let alertSubmit = NSLocalizedString("OK", comment: "Submit button on prompt for user information.")
         static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
         static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
+        static let emailAccessibilityLabel = NSLocalizedString("Email", comment: "Accessibility label for the Email text field.")
         static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
+        static let nameAccessibilityLabel = NSLocalizedString("Name", comment: "Accessibility label for the Email text field.")
     }
 
 }

@@ -26,6 +26,7 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
     func configure(withTitle title: String, adjustHeightForPostStats: Bool = false) {
         headerLabel.text = title
         self.adjustHeightForPostStats = adjustHeightForPostStats
+        prepareForVoiceOver()
         applyStyles()
     }
 
@@ -45,7 +46,6 @@ private extension StatsCellHeader {
         Style.configureLabelAsHeader(headerLabel)
         configureManageInsightButton()
         updateStackView()
-        prepareForVoiceOver()
     }
 
     func updateStackView() {

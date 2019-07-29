@@ -60,40 +60,14 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="addButton" destination="AUi-GI-97s" id="D1f-jZ-iVb"/>
                         <outlet property="filterTabBar" destination="kb7-5Y-cyY" id="yfM-1V-Kgn"/>
                         <outlet property="filterTabBarBottomConstraint" destination="VTs-hm-pCI" id="8xw-da-7bY"/>
                         <outlet property="filterTabBarTopConstraint" destination="Iu4-wT-NJl" id="ncb-1g-VsV"/>
                         <outlet property="filterTabBariOS10TopConstraint" destination="N3R-GK-VXe" id="qgA-sx-Yrb"/>
-                        <outlet property="rightBarButtonView" destination="eMR-fX-0uB" id="tkm-aq-s67"/>
                         <outlet property="tableViewTopConstraint" destination="hqa-P7-bPN" id="Mas-aT-2OZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qQg-Lr-ANj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view clipsSubviews="YES" contentMode="scaleToFill" id="eMR-fX-0uB">
-                    <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AUi-GI-97s">
-                            <rect key="frame" x="40" y="0.0" width="40" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="40" id="csV-Ow-Cyb"/>
-                            </constraints>
-                            <state key="normal" image="icon-post-add">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <state key="highlighted" image="icon-post-add-highlight"/>
-                            <connections>
-                                <action selector="handleAddButtonTapped:" destination="RgW-to-XfM" eventType="touchUpInside" id="vcJ-37-Dhr"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="AUi-GI-97s" secondAttribute="trailing" id="BBb-fa-dJF"/>
-                        <constraint firstAttribute="bottom" secondItem="AUi-GI-97s" secondAttribute="bottom" id="cqe-SB-jlh"/>
-                        <constraint firstItem="AUi-GI-97s" firstAttribute="top" secondItem="eMR-fX-0uB" secondAttribute="top" id="hWW-a3-5U0"/>
-                    </constraints>
-                </view>
             </objects>
             <point key="canvasLocation" x="517.60000000000002" y="317.99100449775113"/>
         </scene>
@@ -194,8 +168,4 @@
             <point key="canvasLocation" x="1240.8" y="1047.5262368815593"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="icon-post-add" width="22" height="22"/>
-        <image name="icon-post-add-highlight" width="22" height="22"/>
-    </resources>
 </document>
