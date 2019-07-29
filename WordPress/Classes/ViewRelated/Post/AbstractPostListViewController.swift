@@ -1,4 +1,5 @@
 import Foundation
+import Gridicons
 import CocoaLumberjack
 import WordPressShared
 import wpxmlrpc
@@ -123,8 +124,10 @@ class AbstractPostListViewController: UIViewController,
     @objc var postListFooterView: PostListFooterView!
 
     @IBOutlet var filterTabBar: FilterTabBar!
-    @IBOutlet var rightBarButtonView: UIView!
-    @IBOutlet var addButton: UIButton!
+
+    @objc lazy var addButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: Gridicon.iconOfType(.plus), style: .plain, target: self, action: #selector(handleAddButtonTapped))
+    }()
 
     @objc var searchController: UISearchController!
     @objc var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
@@ -226,10 +229,7 @@ class AbstractPostListViewController: UIViewController,
         //
         let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backButton
-
-        let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
-        rightBarButtonItem.width = rightBarButtonView.frame.size.width
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)
+        navigationItem.rightBarButtonItem = addButton
     }
 
     func configureFilterBar() {
@@ -359,7 +359,6 @@ class AbstractPostListViewController: UIViewController,
 
     func hideNoResultsView() {
         postListFooterView.isHidden = false
-        rightBarButtonView.isHidden = false
         noResultsViewController.removeFromView()
     }
 
@@ -370,7 +369,6 @@ class AbstractPostListViewController: UIViewController,
         }
 
         postListFooterView.isHidden = true
-        rightBarButtonView.isHidden = true
         refreshNoResultsViewController(noResultsViewController)
 
         // Only add no results view if it isn't already in the table view
@@ -547,7 +545,7 @@ class AbstractPostListViewController: UIViewController,
         WPAnalytics.track(.postListPullToRefresh, withProperties: propertiesForAnalytics())
     }
 
-    @IBAction func handleAddButtonTapped(_ sender: AnyObject) {
+    @objc func handleAddButtonTapped() {
         createPost()
     }
 
