@@ -14,7 +14,7 @@ enum PeriodAction: Action {
     case receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?, _ error: Error?)
     case receivedVideos(_ videos: StatsTopVideosTimeIntervalData?, _ error: Error?)
     case receivedCountries(_ countries: StatsTopCountryTimeIntervalData?, _ error: Error?)
-    case receivedFileDownloads(_ countries: StatsFileDownloadsTimeIntervalData?, _ error: Error?)
+    case receivedFileDownloads(_ downloads: StatsFileDownloadsTimeIntervalData?, _ error: Error?)
     case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
 
     // Period details
