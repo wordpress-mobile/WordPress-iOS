@@ -13,10 +13,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangeUsernameViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
-                <outlet property="containerView" destination="fRT-hx-blE" id="LIF-Pz-acc"/>
-                <outlet property="footerText" destination="u8N-Li-snN" id="q9y-a3-qdT"/>
+                <outlet property="container" destination="fRT-hx-blE" id="8Qm-l8-N8x"/>
+                <outlet property="footerLabel" destination="u8N-Li-snN" id="gDS-rN-XwO"/>
                 <outlet property="scrollViewBottomConstraint" destination="cp4-Dm-R22" id="HCz-Gd-E1s"/>
-                <outlet property="textFieldContainerView" destination="vah-0j-odb" id="GID-jw-jYt"/>
+                <outlet property="validationContainer" destination="vah-0j-odb" id="vlE-IR-wiv"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -31,7 +31,7 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fRT-hx-blE" userLabel="Container">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="202"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vah-0j-odb" userLabel="TextFields">
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vah-0j-odb" userLabel="Validation">
                                     <rect key="frame" x="0.0" y="16" width="414" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" placeholder="YES" id="Hda-u9-6JH"/>
@@ -40,7 +40,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjx-Wc-uKH" userLabel="Footer">
                                     <rect key="frame" x="0.0" y="66" width="414" height="128"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8N-Li-snN">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8N-Li-snN">
                                             <rect key="frame" x="16" y="16" width="382" height="96"/>
                                             <color key="backgroundColor" name="Gray0"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
@@ -81,6 +81,9 @@
         </view>
     </objects>
     <resources>
+        <namedColor name="Gray0">
+            <color red="0.96862745098039216" green="0.95686274509803926" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Gray0">
             <color red="0.96862745098039216" green="0.95686274509803926" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
