@@ -7,12 +7,12 @@ class EditorFlow {
         }
     }
 
-    static func toggleBlockEditor(to state: AppSettingsScreen.Toggle) -> AppSettingsScreen {
-        if !AppSettingsScreen.isLoaded() {
+    static func toggleBlockEditor(to state: SiteSettingsScreen.Toggle) -> SiteSettingsScreen {
+        if !SiteSettingsScreen.isLoaded() {
             _ = TabNavComponent()
-                .gotoMeScreen()
-                .gotoAppSettings()
+                .gotoMySiteScreen()
+                .gotoSettingsScreen()
         }
-        return AppSettingsScreen().toggleBlockEditor(to: state)
+        return SiteSettingsScreen().toggleBlockEditor(to: state)
     }
 }

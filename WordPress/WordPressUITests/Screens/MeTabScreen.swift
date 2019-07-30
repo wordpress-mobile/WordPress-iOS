@@ -33,10 +33,4 @@ class MeTabScreen: BaseScreen {
 
         return WelcomeScreen()
     }
-
-    func gotoAppSettings() -> AppSettingsScreen {
-        appSettingsButton.tap()
-
-        return AppSettingsScreen()
-    }
 }
