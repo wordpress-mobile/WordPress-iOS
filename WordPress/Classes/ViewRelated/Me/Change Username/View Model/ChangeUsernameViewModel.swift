@@ -22,22 +22,21 @@ class ChangeUsernameViewModel {
         return reachability?.isReachable() ?? false
     }
     var usernameIsValidToBeChanged: Bool {
-        return store.validationSucceeded() && currentUsername == confirmationUsername
+        return store.validationSucceeded()
     }
 
     var reachabilityListener: ReachabilityListener?
     var keyboardListener: KeyboardListener?
-    var confirmationListener: StateBlock?
     var validationListener: StateBlock?
 
     private let settings: AccountSettings?
     private let store: AccountSettingsStore
-    private let scheduler = Scheduler(seconds: 1.0)
+    private let scheduler = Scheduler(seconds: 0.5)
     private let reachability = Reachability.forInternetConnection()
     private let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var receipt: Receipt?
+    private var saveUsernameBlock: StateBlock?
     private var currentUsername: String = ""
-    private var confirmationUsername: String = ""
 
     init(service: AccountSettingsService?, settings: AccountSettings?) {
         self.settings = settings
@@ -45,7 +44,9 @@ class ChangeUsernameViewModel {
         self.receipt = self.store.onStateChange { [weak self] (old, new) in
             if old.usernameValidationState != new.usernameValidationState {
                 self?.validation(for: new.usernameValidationState)
-                self?.confirmation(for: new.usernameValidationState)
+            }
+            if old.usernameSaveState != new.usernameSaveState {
+                self?.saveUsernameBlock?(new.usernameSaveState, Constants.Error.saveUsername)
             }
         }
     }
@@ -57,20 +58,28 @@ class ChangeUsernameViewModel {
     func start() {
         addObservers()
         validation(for: .stationary)
-        confirmation(for: .stationary)
     }
 
     func validate(username: String) {
-        currentUsername = username
-        confirmation(for: store.validationState)
+        if username.isEmpty {
+            validation(for: .failure(Constants.Error.emptyValue))
+            return
+        }
+
+        if username == self.username {
+            validation(for: .stationary)
+            return
+        }
+
         scheduler.debounce { [weak self] in
+            self?.currentUsername = username
             self?.store.onDispatch(AccountSettingsAction.validate(username: username))
         }
     }
 
-    func confirm(username: String) {
-        confirmationUsername = username
-        confirmation(for: store.validationState)
+    func save(saveUsernameBlock: @escaping StateBlock) {
+        self.saveUsernameBlock = saveUsernameBlock
+        store.onDispatch(AccountSettingsAction.saveUsername(username: currentUsername))
     }
 }
 
@@ -99,37 +108,31 @@ private extension ChangeUsernameViewModel {
 
     func validation(for state: AccountSettingsState) {
         switch state {
-        case .stationary, .loading:
+        case .stationary:
             validationListener?(.stationary, String(format: Constants.Username.stationary, formattedCreatedDate ?? Date().mediumString()))
         case .success:
             validationListener?(state, String(format: Constants.Username.success, currentUsername))
         case .failure:
-            validationListener?(state, state.failureMessage ?? "")
-        }
-    }
-
-    func confirmation(for validationState: AccountSettingsState) {
-        switch validationState {
-        case .stationary, .loading, .failure:
-            confirmationListener?(.stationary, Constants.Confirmation.stationary)
-        case .success:
-            confirmationListener?(usernameIsValidToBeChanged ? .success : .failure(nil),
-                                  usernameIsValidToBeChanged ? Constants.Confirmation.success : Constants.Confirmation.failure)
+            validationListener?(state, state.failureMessage ?? Constants.Error.validateUsername)
+        default:
+            break
         }
     }
 
     enum Constants {
         static let paragraph = NSLocalizedString("You are about to change your username, which is currently %@. You will not be able to change your username back.\n\nIf you just want to change your display name, which is currently %@, you can do so under My Profile.\n\nChanging your username will also affect your Gravatar profile and IntenseDebate profile addresses.",
                                                 comment: "Paragraph displayed in the footer. The placholders are for the current username and the current display name.")
+
         enum Username {
             static let stationary = NSLocalizedString("Joined %@", comment: "Change username textfield footer title. The placeholder is the date when the user has been created")
             static let success = NSLocalizedString("%@ is a valid username.", comment: "Success message when a typed username is valid. The placeholder indicates the validated username")
         }
 
-        enum Confirmation {
-            static let stationary = NSLocalizedString("Confirm new username", comment: "Confirm username textfield footer title.")
-            static let success = NSLocalizedString("Thanks for confirming your new username!", comment: "Success message with the username confirmation")
-            static let failure = NSLocalizedString("Please re-enter your new username to confirm it.", comment: "Failure message when the username confirmation fails")
+        enum Error {
+            static let validateUsername = NSLocalizedString("There was an error validating the username", comment: "Text displayed when there is a failure validating the username.")
+            static let saveUsername = NSLocalizedString("There was an error saving the username", comment: "Text displayed when there is a failure saving the username.")
+            static let emptyValue = NSLocalizedString("Username must be at least 4 characters.", comment: "Error displayed if the username input is an empty string")
+
         }
     }
 }
