@@ -132,7 +132,6 @@ private extension ChangeUsernameViewModel {
             static let validateUsername = NSLocalizedString("There was an error validating the username", comment: "Text displayed when there is a failure validating the username.")
             static let saveUsername = NSLocalizedString("There was an error saving the username", comment: "Text displayed when there is a failure saving the username.")
             static let emptyValue = NSLocalizedString("Username must be at least 4 characters.", comment: "Error displayed if the username input is an empty string")
-
         }
     }
 }
