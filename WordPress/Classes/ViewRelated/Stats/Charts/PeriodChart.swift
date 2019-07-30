@@ -156,19 +156,19 @@ private final class PeriodChartDataTransformer {
     }
 
     static func primaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? .primary : .neutral(shade: .shade0)
+        return count > 0 ? .primaryLight : .neutral(shade: .shade0)
     }
 
     static func secondaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? .primaryDark : .neutral(shade: .shade0)
+        return count > 0 ? .primary(shade: .shade60) : .neutral(shade: .shade0)
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? .accent : nil
+        return count > 0 ? .accent(shade: .shade30) : nil
     }
 
     static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? .accentDark : nil
+        return count > 0 ? .accent(shade: .shade60) : nil
     }
 
 }
@@ -181,7 +181,7 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?
     let labelColor: UIColor                         = .neutral(shade: .shade30)
-    let legendColor: UIColor?                       = .primaryDark
+    let legendColor: UIColor?                       = .primary(shade: .shade60)
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
     let lineColor: UIColor                          = .neutral(shade: .shade5)
     let xAxisValueFormatter: IAxisValueFormatter
