@@ -1,36 +1,29 @@
 class ChangeUsernameLabel: UIView, NibLoadable {
     @IBOutlet private var textLabel: UILabel!
-    private var state: State = .neutral {
+    private var state: AccountSettingsState = .stationary {
         didSet {
-            textLabel.textColor = state.color
+            textLabel.textColor = color
+        }
+    }
+    private var color: UIColor {
+        switch state {
+        case .stationary, .loading:
+            return .neutral
+        case .success:
+            return .success
+        case .failure:
+            return .error
         }
     }
 
-    class func label(text: String, for state: State = .neutral) -> ChangeUsernameLabel {
+    class func label(text: String, for state: AccountSettingsState = .stationary) -> ChangeUsernameLabel {
         let label = ChangeUsernameLabel.loadFromNib()
         label.set(text: text, for: state)
         return label
     }
 
-    func set(text: String, for state: State = .neutral) {
+    func set(text: String, for state: AccountSettingsState = .stationary) {
         textLabel.text = text
         self.state = state
-    }
-
-    enum State {
-        case neutral
-        case success
-        case error
-
-        var color: UIColor {
-            switch self {
-            case .neutral:
-                return .neutral
-            case .success:
-                return .success
-            case .error:
-                return .error
-            }
-        }
     }
 }
