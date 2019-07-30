@@ -1,3 +1,7 @@
+13.1
+-----
+* Account Settings: added the ability to change the username.
+
 13.0
 -----
 * Stats: now use site timezone instead of device.
