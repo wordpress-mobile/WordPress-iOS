@@ -101,7 +101,8 @@ open class QuickStartTourGuide: NSObject {
                                 self?.currentSuggestion = nil
 
                                 if accepted {
-                                    self?.start(tour: tour, for: blog)
+                                    self?.prepare(tour: tour, for: blog)
+                                    self?.begin()
                                     cancelTimer(false)
                                     WPAnalytics.track(.quickStartSuggestionButtonTapped, withProperties: ["type": "positive"])
                                 } else {
@@ -116,7 +117,13 @@ open class QuickStartTourGuide: NSObject {
         WPAnalytics.track(.quickStartSuggestionViewed)
     }
 
-    func start(tour: QuickStartTour, for blog: Blog) {
+    /// Prepares to begin the specified tour.
+    ///
+    /// - Parameters:
+    ///     - tour: the tour to prepare for running.
+    ///     - blog: the blog in which the tour will take place.
+    ///
+    func prepare(tour: QuickStartTour, for blog: Blog) {
         endCurrentTour()
         dismissSuggestion()
 
@@ -126,8 +133,19 @@ open class QuickStartTourGuide: NSObject {
             fallthrough
         default:
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
-            showCurrentStep()
         }
+    }
+
+    /// Begins the prepared tour.  Should only be called after `prepare(tour:for:)`.
+    ///
+    func begin() {
+        guard let state = currentTourState,
+            state.step == 0 else {
+
+            return
+        }
+
+        showCurrentStep()
     }
 
     func complete(tour: QuickStartTour, for blog: Blog, postNotification: Bool = true) {

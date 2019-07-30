@@ -121,7 +121,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             accountPresent = YES;
         }
     }];
-    
+
+    if ([[NSUUID alloc] initWithUUIDString:username]) {
+        // User has authenticated but we're waiting for account details to sync.
+        // Once details are synced this method will be called again with the actual
+        // username. For now just exit without making changes.
+        return;
+    }
+
     BOOL dotcom_user = (accountPresent && username.length > 0);
     BOOL gutenbergEnabled = [GutenbergSettings isGutenbergEnabled];
     
@@ -1180,6 +1187,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPostListViewAction:
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"view" };
+            break;
+        case WPAnalyticsStatPostListToggleButtonPressed:
+            eventName = @"post_list_toggle_button_pressed";
             break;
         case WPAnalyticsStatPostRevisionsListViewed:
             eventName = @"revisions_list_viewed";

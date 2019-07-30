@@ -1,5 +1,6 @@
 import Gridicons
 import UIKit
+import AutomatticTracks
 
 class PrivacySettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!
@@ -113,7 +114,7 @@ class PrivacySettingsViewController: UITableViewController {
             let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             AccountSettingsHelper(accountService: accountService).updateTracksOptOutSetting(!enabled)
 
-            WPCrashLogging.userHasOptedOut = !enabled
+            CrashLogging.setNeedsDataRefresh()
         }
     }
 

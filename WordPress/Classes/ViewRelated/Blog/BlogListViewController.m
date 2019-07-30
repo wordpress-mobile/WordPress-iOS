@@ -261,14 +261,16 @@ static NSInteger HideSearchMinSites = 3;
     
     // If we have no sites, show the No Results VC.
     if (siteCount == 0) {
-            [self.noResultsViewController configureWithTitle: NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.")
-                                                 buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
-                                                    subtitle:nil
-                                          attributedSubtitle:nil
-                             attributedSubtitleConfiguration:nil
-                                                       image:@"mysites-nosites"
-                                               subtitleImage:nil
-                                               accessoryView:nil];
+        [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.")
+                                       noConnectionTitle:nil
+                                             buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
+                                                subtitle:nil
+                                    noConnectionSubtitle:nil
+                                      attributedSubtitle:nil
+                         attributedSubtitleConfiguration:nil
+                                                   image:@"mysites-nosites"
+                                           subtitleImage:nil
+                                           accessoryView:nil];
         [self addNoResultsToView];
     }
 }
@@ -280,7 +282,6 @@ static NSInteger HideSearchMinSites = 3;
     NSUInteger count = self.dataSource.allBlogsCount;
     
     NSString *singularTitle = NSLocalizedString(@"You have 1 hidden WordPress site.", @"Message informing the user that all of their sites are currently hidden (singular)");
-    NSString *singularSubtitle = NSLocalizedString(@"To manage it here, set it to visible.", @"Prompt asking user to make sites visible in order to use them in the app (singular)");
     
     NSString *multipleTitle = [NSString stringWithFormat:NSLocalizedString(@"You have %lu hidden WordPress sites.", @"Message informing the user that all of their sites are currently hidden (plural)"), count];
     NSString *multipleSubtitle = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
@@ -290,8 +291,10 @@ static NSInteger HideSearchMinSites = 3;
 
     if (count == 1) {
         [self.noResultsViewController configureWithTitle:singularTitle
+                                       noConnectionTitle:nil
                                              buttonTitle:buttonTitle
-                                                subtitle:singularSubtitle
+                                                subtitle:singularTitle
+                                    noConnectionSubtitle:nil
                                       attributedSubtitle:nil
                          attributedSubtitleConfiguration:nil
                                                    image:imageName
@@ -299,8 +302,10 @@ static NSInteger HideSearchMinSites = 3;
                                            accessoryView:nil];
     } else {
         [self.noResultsViewController configureWithTitle:multipleTitle
+                                       noConnectionTitle:nil
                                              buttonTitle:buttonTitle
                                                 subtitle:multipleSubtitle
+                                    noConnectionSubtitle:nil
                                       attributedSubtitle:nil
                          attributedSubtitleConfiguration:nil
                                                    image:imageName

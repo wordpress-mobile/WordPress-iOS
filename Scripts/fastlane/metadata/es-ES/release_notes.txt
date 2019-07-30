@@ -1,6 +1,5 @@
-* Vista de estadísticas: echa un vistazo a los nuevos diseños de dos columnas para los totales de seguidores, este año, y las estadísticas más populares por fecha.
-* Vistas de este año: ve una instantánea del total de entradas, comentarios, «me gusta» y más de un año hasta la fecha cuando hagas clic en la opción «Ver más».
-* Estadísticas por períodos: Hemos añadido un mapa del mundo en la sección de países.
-* Se ha corregido un problema por el que al actualizar las estadísticas a veces se borraban.
-* ¡Lo haces tú! * Ve a «Yo > Ajustes de la aplicación > Icono de la aplicación» para elegir entre una serie de iconos de aplicaciones.
-* Actualizada la combinación de colores de la aplicación.
+* ¡Borradores offline! A veces tienes ideas increíbles pero no tienes conexión a Internet, porque aún no vivimos en un mundo perfecto. Todavía no tenemos coches voladores, pero ahora puedes empezar entradas en la aplicación incluso cuando estás desconectado.
+* ¡Vistas previas más claras! Antes, el estado de las vistas previas durante el proceso se ocultaba detrás de un girador de bloqueo de pantalla. Ahora el girador está en su sitio, y el estado se muestra en la parte superior de la pantalla para que puedas acceder al resto de la misma.
+*¡Mejores bloques! Tenemos un montón de mejoras en el editor de bloques para eliminar los problemas del borrador. Al tocar un área de editor vacía, se crea automáticamente un nuevo bloque de párrafos. Añadiendo un bloque desde el título de la entrada ahora pon el bloque en la parte superior de la entrada, en lugar de en la parte inferior, donde realmente no podías verlo. Y corregimos un problema que a veces hacía que el contenido se perdiera cuando el editor intentaba cargar bloques no compatibles.
+* ¡Listados de entradas más limpias! Tu lista de entradas ahora incluye una opción para mostrar las entradas de forma más compacta, para que puedas ver más detalles de las entradas a la vez. Y tiene una pantalla de subidas rediseñada, porque incluso esperar a que algo se suba debería ser una buena experiencia.
+*¡Una configuración más suave! Al configurar un nuevo sitio, a veces las vistas previas se mostraban de forma incorrecta, y el proceso de añadir un icono de sitio no era tan sencillo como debería. No era lo ideal, y ya no pasa.
