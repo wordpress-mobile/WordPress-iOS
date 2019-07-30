@@ -11,6 +11,7 @@
     case periodSearchTerms
     case periodPublished
     case periodVideos
+    case periodFileDownloads
     case insightsLatestPostSummary
     case insightsAllTime
     case insightsFollowerTotals
@@ -55,7 +56,8 @@
                              .periodCountries,
                              .periodSearchTerms,
                              .periodPublished,
-                             .periodVideos
+                             .periodVideos,
+                             .periodFileDownloads
     ]
 
     static let allPostStats = [StatSection.postStatsGraph,
@@ -106,6 +108,8 @@
             return PeriodHeaders.published
         case .periodVideos:
             return PeriodHeaders.videos
+        case .periodFileDownloads:
+            return PeriodHeaders.fileDownloads
         case .postStatsMonthsYears:
             return PostStatsHeaders.monthsAndYears
         case .postStatsAverageViews:
@@ -142,6 +146,8 @@
             return ItemSubtitles.searchTerm
         case .postStatsMonthsYears, .postStatsAverageViews, .postStatsRecentWeeks:
             return ItemSubtitles.period
+        case .periodFileDownloads:
+            return ItemSubtitles.file
         default:
             return ""
         }
@@ -170,6 +176,8 @@
             return DataSubtitles.since
         case .periodClicks:
             return DataSubtitles.clicks
+        case .periodFileDownloads:
+            return DataSubtitles.downloads
         default:
             return ""
         }
@@ -265,6 +273,7 @@
         static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
         static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
         static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
+        static let fileDownloads = NSLocalizedString("File Downloads", comment: "Period Stats 'File Downloads' header")
     }
 
     struct PostStatsHeaders {
@@ -283,6 +292,7 @@
         static let country = NSLocalizedString("Country", comment: "Label for list of countries.")
         static let searchTerm = NSLocalizedString("Search Term", comment: "Label for list of search term")
         static let period = NSLocalizedString("Period", comment: "Label for date periods.")
+        static let file = NSLocalizedString("File", comment: "Label for list of file downloads.")
     }
 
     struct DataSubtitles {
@@ -291,6 +301,7 @@
         static let followers = NSLocalizedString("Followers", comment: "Label for number of followers.")
         static let since = NSLocalizedString("Since", comment: "Label for time period in list of followers.")
         static let clicks = NSLocalizedString("Clicks", comment: "Label for number of clicks.")
+        static let downloads = NSLocalizedString("Downloads", comment: "Label for number of file downloads.")
     }
 
     struct TabTitles {
