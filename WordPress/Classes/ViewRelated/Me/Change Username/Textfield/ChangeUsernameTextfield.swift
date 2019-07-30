@@ -1,5 +1,6 @@
 class ChangeUsernameTextfield: UIView, NibLoadable {
     var textDidChange: ((String) -> Void)?
+    var textDidBeginEditing: ((ChangeUsernameTextfield) -> Void)?
     var text: String? {
         return textField.text
     }
@@ -38,5 +39,9 @@ extension ChangeUsernameTextfield: UITextFieldDelegate {
             textDidChange?(newText)
         }
         return true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textDidBeginEditing?(self)
     }
 }
