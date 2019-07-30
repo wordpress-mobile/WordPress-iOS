@@ -1,3 +1,0 @@
-* Perbaikan penyunting blok, hoi! Anda telah mendapatkan Video, Kutipan, dan Lebih banyak blok, penyunting akan mempertahankan gaya teks seperti tebal dan miring saat Anda menyalin dan menempel, terdapat skema warna baru, dan daftar tersarang kini tersedia di bilah peralatan. Tetapi jangan sampai semua kekuatan baru tersebut membuat Anda besar kepala.
-* Terkadang, mengatur Gambar Andalan di pos akan bermasalah ketika kondisi jaringan buruk. Karena kami tidak dapat memperbaiki kondisi jaringan dunia, kami memperbaiki aplikasinya: * Gambar Unggulan bisa berfungsi lebih mulus di semua koneksi.
-* Wawasan Statistik sedikit mendapat polesan dengan tata letak dua kolom untuk statistik Hari Ini dan Sepanjang Waktu, dan memungkinkan Anda melihat lebih banyak data.

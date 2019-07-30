@@ -214,7 +214,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
 
     fileprivate func saveSettings() {
         service.updateSettings(for: blog,
-                               success: nil,
+                               success: { SiteStatsInformation.sharedInstance.updateTimeZone() },
                                failure: { [weak self] (error: Error) -> Void in
                                     self?.refreshSettings()
                                     DDLogError("Error while persisting settings: \(error)")

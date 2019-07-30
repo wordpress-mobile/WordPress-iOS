@@ -37,12 +37,15 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)performSetup
 {
     self.preservesSuperviewLayoutMargins = YES;
+    
     [self setupStackView];
     [self setupBlavatarImageView];
     [self setupBlavatarDropTarget];
     [self setupLabelsStackView];
     [self setupTitleLabel];
     [self setupSubtitleLabel];
+    
+    self.accessibilityElements = @[self.stackView, self.blavatarDropTarget];
 }
 
 #pragma mark - Public Methods
@@ -63,6 +66,12 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
         UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
         [self.blavatarDropTarget addInteraction:dropInteraction];
     }
+    
+    NSString *localizedLabel =
+        NSLocalizedString(@"%@, at %@",
+                          @"Accessibility label for the site header. The first variable is the blog name, the second is the domain.");
+    self.stackView.accessibilityLabel =
+        [NSString stringWithFormat:localizedLabel, title, blog.displayURL];
 }
 
 - (void)setTitleText:(NSString *)title
@@ -144,6 +153,9 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                               [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
                                               [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
                                               ]];
+    
+    stackView.isAccessibilityElement = YES;
+
     _stackView = stackView;
 }
 
@@ -171,6 +183,10 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     self.blavatarDropTarget = [UIView new];
     [self.blavatarDropTarget setTranslatesAutoresizingMaskIntoConstraints:NO];
     self.blavatarDropTarget.backgroundColor = [UIColor clearColor];
+    self.blavatarDropTarget.accessibilityLabel = NSLocalizedString(@"Site Icon", @"Site Icon accessibility label.");
+    self.blavatarDropTarget.accessibilityTraits = UIAccessibilityTraitImage | UIAccessibilityTraitButton;
+    self.blavatarDropTarget.accessibilityHint = NSLocalizedString(@"Shows a menu for changing the Site Icon.", @"Accessibility hint describing what happens if the Site Icon is tapped.");
+    self.blavatarDropTarget.isAccessibilityElement = YES;
 
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                 action:@selector(blavatarImageTapped)];

@@ -74,7 +74,7 @@ extension WPStyleGuide {
             return
         }
         if FeatureFlag.murielColors.enabled {
-            tableView.backgroundColor = .neutral(shade: .shade0)
+            tableView.backgroundColor = .tableBackground
             tableView.separatorColor = .neutral(shade: .shade10)
         } else {
             tableView.backgroundView = nil

@@ -1,3 +1,13 @@
+13.0
+-----
+* Stats: now use site timezone instead of device.
+* Improved color scheme consistency.
+* Post Stats: date bar no longer goes prior to earliest date available.
+* Block editor: Adding a block from the post title now shows the add block here indicator.
+* Block editor: Deselect post title any time a block is added
+* Block editor: Auto-enabled upon first open of a block post, unless opted out in v12.9.
+* Block editor: You can now enable and disable the block editor on a per-site basis.
+
 12.9
 -----
 * Offline support: Create Post is now available from empty results view in offline mode.
@@ -6,6 +16,7 @@
 * Block editor: Tapping on an empty editor area will create a new paragraph block
 * Block editor: Fix content loss issue when loading unsupported blocks containing inner blocks.
 * Block editor: Adding a block from the Post Title now inserts the block at the top of the Post.
+* Stats Insights: Fixed issue that prevented some stats from showing for low volume sites.
 
 12.8
 -----
@@ -20,7 +31,7 @@
 * Stats overview chart: Fixed issue with legend location on iOS 11.
 * Stats Periods: Fixed crash when the Countries map displayed one country only
 * Added a selection of user customizable app icons. Change it via Me > App Settings > App Icon.
-* Update the app's colors using the Muriel color pallete.
+* Update the app's colors using the Muriel color palette.
 * Stats Periods detail views: Fixed an issue where rotation would truncate data.
 * Stats Periods: Fixed an issue when a period interval was selected.
 

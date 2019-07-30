@@ -10,6 +10,7 @@ extension ManagedAccountSettings {
     @NSManaged var aboutMe: String
 
     @NSManaged var username: String
+    @NSManaged var usernameCanBeChanged: Bool
     @NSManaged var email: String
     @NSManaged var emailPendingAddress: String?
     @NSManaged var emailPendingChange: Bool

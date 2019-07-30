@@ -41,7 +41,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
-        return .neutral
+        return .neutral(shade: .shade10)
     }
 
     // MARK: - Card Attributed Text Attributes
@@ -193,12 +193,9 @@ extension WPStyleGuide {
             return
         }
         WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
-        button.setTitleColor(.neutral(shade: .shade30), for: UIControl.State())
-        button.setTitleColor(.neutral, for: .highlighted)
-        button.setTitleColor(.primary(shade: .shade40), for: .selected)
-        button.setTitleColor(.neutral(shade: .shade10), for: .disabled)
-    }
 
+        WPStyleGuide.applyReaderActionButtonStyle(button)
+    }
 
     // MARK: - Apply Stream Header Styles
 
@@ -224,6 +221,32 @@ extension WPStyleGuide {
 
 
     // MARK: - Button Styles and Text
+
+    public class func applyReaderActionButtonStyle(_ button: UIButton) {
+        let defaultColor: UIColor = .neutral(shade: .shade30)
+        let highlightedColor: UIColor = .neutral
+        let selectedColor: UIColor = .primary(shade: .shade40)
+        let bothColor: UIColor = .primaryLight
+        let disabledColor: UIColor = .neutral(shade: .shade10)
+
+        let normalImage = button.image(for: .normal)
+        let highlightedImage = button.image(for: .highlighted)
+        let selectedImage = button.image(for: .selected)
+        let bothImage = button.image(for: [.highlighted, .selected])
+        let disabledImage = button.image(for: .disabled)
+
+        button.setImage(normalImage?.imageWithTintColor(defaultColor), for: .normal)
+        button.setImage(highlightedImage?.imageWithTintColor(highlightedColor), for: .highlighted)
+        button.setImage(selectedImage?.imageWithTintColor(selectedColor), for: .selected)
+        button.setImage(bothImage?.imageWithTintColor(bothColor), for: [.selected, .highlighted])
+        button.setImage(disabledImage?.imageWithTintColor(disabledColor), for: .disabled)
+
+        button.setTitleColor(defaultColor, for: .normal)
+        button.setTitleColor(highlightedColor, for: .highlighted)
+        button.setTitleColor(selectedColor, for: .selected)
+        button.setTitleColor(bothColor, for: [.selected, .highlighted])
+        button.setTitleColor(disabledColor, for: .disabled)
+    }
 
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
         let side = WPStyleGuide.fontSizeForTextStyle(Cards.buttonTextStyle)
@@ -258,24 +281,12 @@ extension WPStyleGuide {
         let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: size)
         let selectedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
 
-        let normalColor: UIColor = .neutral(shade: .shade30)
-        let selectedColor: UIColor = .primary(shade: .shade40)
-        let highlightedColor: UIColor = .neutral
+        button.setImage(icon, for: .normal)
+        button.setImage(selectedIcon, for: .selected)
+        button.setImage(selectedIcon, for: .highlighted)
+        button.setImage(selectedIcon, for: [.highlighted, .selected])
 
-        let tintedIcon = icon.imageWithTintColor(normalColor)
-        let tintedSelectedIcon = selectedIcon.imageWithTintColor(selectedColor)
-        let tintedHighlightedIcon = icon.imageWithTintColor(highlightedColor)
-        let tintedSelectedHighlightedIcon = selectedIcon.imageWithTintColor(highlightedColor)
-
-        button.setImage(tintedIcon, for: .normal)
-        button.setImage(tintedSelectedIcon, for: .selected)
-        button.setImage(tintedHighlightedIcon, for: .highlighted)
-        button.setImage(tintedSelectedHighlightedIcon, for: [.highlighted, .selected])
-
-        button.setTitleColor(normalColor, for: .normal)
-        button.setTitleColor(selectedColor, for: .selected)
-        button.setTitleColor(highlightedColor, for: .highlighted)
-        button.setTitleColor(highlightedColor, for: [.highlighted, .selected])
+        applyReaderActionButtonStyle(button)
     }
 
     @objc public class func applyReaderSaveForLaterButtonTitles(_ button: UIButton) {

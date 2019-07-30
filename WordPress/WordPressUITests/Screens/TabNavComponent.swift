@@ -25,7 +25,10 @@ class TabNavComponent: BaseScreen {
     }
 
     func gotoMySiteScreen() -> MySiteScreen {
-        mySitesTabButton.tap()
+        // Avoid transitioning to the sites list if MySites is already on screen
+        if !MySiteScreen.isVisible {
+            mySitesTabButton.tap()
+        }
         return MySiteScreen()
     }
 

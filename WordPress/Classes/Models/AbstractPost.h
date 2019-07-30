@@ -36,12 +36,10 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 // These are primarily used as helpers sorting fetchRequests.
 @property (nonatomic, assign) BOOL metaIsLocal;
 @property (nonatomic, assign) BOOL metaPublishImmediately;
-@property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 /**
  Used to store the post's status before its sent to the trash.
  */
 @property (nonatomic, strong) NSString *restorableStatus;
-@property (nonatomic, weak, readonly, nullable) NSString * statusTitle;
 /**
  This array will contain a list of revision IDs.
  */
@@ -112,18 +110,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  */
 - (BOOL)hasRemoteChanges;
 
-
-
-/**
- Returns the localized title for the specified status.  Status should be
- one of the `PostStatus...` constants.  If a matching title is not found
- the status is returned.
-
- @param string The post status value
- @return The localized title for the specified status, or the status if a title was not found.
- */
-+ (NSString *)titleForStatus:(NSString *)status;
-
 /**
  An array of statuses available to a post while editing
  @details Subset of status a user may assign to a post they are editing.
@@ -192,10 +178,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (void)remove;
 // Save changes to disk
 - (void)save;
-
-// Subclass methods
-- (nullable NSString *)remoteStatusText;
-+ (NSString *)titleForRemoteStatus:(nullable NSNumber *)remoteStatus;
 
 /**
  * Updates the path for the display image by looking at the post content and trying to find an good image to use.

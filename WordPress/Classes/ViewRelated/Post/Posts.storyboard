@@ -60,40 +60,15 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
                         <outlet property="filterTabBar" destination="Nmf-Iz-jkG" id="Ydz-ff-EUy"/>
                         <outlet property="filterTabBarBottomConstraint" destination="Hb8-6N-iSm" id="GsJ-Hc-dE5"/>
                         <outlet property="filterTabBarTopConstraint" destination="ZFh-Do-F2v" id="hq3-Iz-dZu"/>
                         <outlet property="filterTabBariOS10TopConstraint" destination="fGy-cf-WIB" id="2s9-pa-9Ee"/>
-                        <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
                         <outlet property="searchWrapperView" destination="sFK-WP-z2Z" id="CJ1-ul-bLt"/>
                         <outlet property="tableViewTopConstraint" destination="UwE-7o-GHb" id="4mJ-Ry-6Xa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrN-zD-yTr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ph-e4-iOe">
-                    <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Az-zB-Hwe">
-                            <rect key="frame" x="40" y="0.0" width="40" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="40" id="Moj-01-1lI"/>
-                            </constraints>
-                            <state key="normal" image="icon-post-add">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <state key="highlighted" image="icon-post-add-highlight"/>
-                            <connections>
-                                <action selector="handleAddButtonTapped:" destination="VTO-0U-HpP" eventType="touchUpInside" id="fEv-yc-HXV"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <constraints>
-                        <constraint firstItem="9Az-zB-Hwe" firstAttribute="top" secondItem="8Ph-e4-iOe" secondAttribute="top" id="Hjj-Ra-6M9"/>
-                        <constraint firstAttribute="trailing" secondItem="9Az-zB-Hwe" secondAttribute="trailing" id="STW-Iw-FBG"/>
-                        <constraint firstAttribute="bottom" secondItem="9Az-zB-Hwe" secondAttribute="bottom" id="Usu-ZA-zoK"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" id="sFK-WP-z2Z" customClass="SearchWrapperView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -126,8 +101,4 @@
             <point key="canvasLocation" x="1202" y="318"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="icon-post-add" width="22" height="22"/>
-        <image name="icon-post-add-highlight" width="22" height="22"/>
-    </resources>
 </document>

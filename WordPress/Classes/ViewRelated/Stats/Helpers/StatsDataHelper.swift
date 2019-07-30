@@ -4,8 +4,6 @@ import Foundation
 ///
 class StatsDataHelper {
 
-    private typealias Style = WPStyleGuide.Stats
-
     // Max number of rows to display on Insights and Period stat cards.
     static let maxRowsToDisplay = 6
 
@@ -20,6 +18,10 @@ class StatsDataHelper {
     static var expandedRowLabels = [StatSection: [String]]()
     // Details table.
     static var expandedRowLabelsDetails = [StatSection: [String]]()
+
+    // Track when a detail row is updated.
+    // Used to determine if the disclosure icon needs animating.
+    static var detailRowDisclosureNeedsUpdating: String?
 
     class func updatedExpandedState(forRow row: StatsTotalRow, inDetails: Bool = false) {
 
@@ -48,6 +50,7 @@ class StatsDataHelper {
 
         if inDetails {
             StatsDataHelper.expandedRowLabelsDetails = expandedRowsArray
+            detailRowDisclosureNeedsUpdating = rowData.name
         } else {
             StatsDataHelper.expandedRowLabels = expandedRowsArray
         }
@@ -118,19 +121,39 @@ class StatsDataHelper {
         }
     }
 
-    private static var calendar: Calendar = {
+    // MARK: - Helpers
+
+    class func currentDateForSite() -> Date {
+        let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
+        let delta = TimeInterval(siteTimeZone.secondsFromGMT())
+        return Date().addingTimeInterval(delta)
+    }
+
+}
+
+private extension StatsDataHelper {
+
+    typealias Style = WPStyleGuide.Stats
+
+    static var calendar: Calendar = {
         var cal = Calendar(identifier: .iso8601)
         cal.timeZone = .autoupdatingCurrent
         return cal
     }()
 
-    private static var monthFormatter: DateFormatter = {
+    static var calendarForSite: Calendar = {
+        var cal = StatsDataHelper.calendar
+        cal.timeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
+        return cal
+    }()
+
+    static var monthFormatter: DateFormatter = {
         let df = DateFormatter()
         df.setLocalizedDateFormatFromTemplate("MMM")
         return df
     }()
 
-    private class func displayMonth(forDate date: DateComponents) -> String {
+    class func displayMonth(forDate date: DateComponents) -> String {
         guard let month = StatsDataHelper.calendar.date(from: date) else {
             return ""
         }
@@ -141,68 +164,85 @@ class StatsDataHelper {
 }
 
 extension Date {
-    func relativeStringInPast(timezone: TimeZone = .autoupdatingCurrent) -> String {
+
+    func normalizedForSite() -> Date {
+        var calendar = StatsDataHelper.calendarForSite
+
+        let flags: NSCalendar.Unit = [.day, .month, .year]
+        let components = (calendar as NSCalendar).components(flags, from: self)
+
+        var normalized = DateComponents()
+        normalized.day = components.day
+        normalized.month = components.month
+        normalized.year = components.year
+
+        calendar.timeZone = .autoupdatingCurrent
+        return calendar.date(from: normalized) ?? self
+    }
+
+    func relativeStringInPast() -> String {
         // This is basically a Swift rewrite of https://github.com/wordpress-mobile/WordPressCom-Stats-iOS/blob/develop/WordPressCom-Stats-iOS/Services/StatsDateUtilities.m#L97
         // It could definitely use some love!
 
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = timezone
-
-        let now = Date()
+        let calendar = StatsDataHelper.calendar
+        let now = StatsDataHelper.currentDateForSite()
 
         let components = calendar.dateComponents([.minute, .hour, .day], from: self, to: now)
-        let niceComponents = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: self, to: now)
-
         let days = components.day ?? 0
         let hours = components.hour ?? 0
         let minutes = components.minute ?? 0
 
-        if days >= DateFormattingBreakpoints.aboutYearAndAHalf.rawValue {
-            return String(format: NSLocalizedString("%d years", comment: "Age between dates over one year."), niceComponents.year!)
+        if days >= DateBreakpoints.aboutYearAndAHalf {
+            return String(format: NSLocalizedString("%d years", comment: "Age between dates over one year."), Int(round(Float(days) / Float(365))))
         }
 
-        if days >= DateFormattingBreakpoints.almostAYear.rawValue {
+        if days >= DateBreakpoints.almostAYear {
             return String(format: NSLocalizedString("a year", comment: "Age between dates equaling one year."))
         }
 
-        if days >= DateFormattingBreakpoints.monthAndAHalf.rawValue {
-            return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), niceComponents.month!)
+        if days >= DateBreakpoints.monthAndAHalf {
+            let components = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: self, to: now)
+            let months = components.month ?? 0
+            let days = components.day ?? 0
+            let adjustedMonths = days > DateBreakpoints.halfAMonth ? months + 1 : months
+            return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), adjustedMonths)
         }
 
-        if days >= DateFormattingBreakpoints.almostAMonth.rawValue {
-            return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month"))
+        if days >= DateBreakpoints.almostAMonth {
+            return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month."))
         }
 
-        if days > 1 || (days == 1 && hours >= DateFormattingBreakpoints.halfADay.rawValue) {
-            return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), niceComponents.day!)
+        if days > 1 || (days == 1 && hours >= DateBreakpoints.halfADay) {
+            let totalHours = (days * 24) + hours
+            return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), Int(round(Float(totalHours) / Float(24))))
         }
 
-        if hours > DateFormattingBreakpoints.almostADay.rawValue {
+        if days == 1 || hours > DateBreakpoints.almostADay {
             return String(format: NSLocalizedString("a day", comment: "Age between dates equaling one day."))
         }
 
-        if hours > 1 || (hours == 1 && minutes >= DateFormattingBreakpoints.halfAnHour.rawValue) {
-            return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), niceComponents.hour!)
+        if hours > 1 || (hours == 1 && minutes >= DateBreakpoints.halfAnHour) {
+            let totalMinutes = (hours * 60) + minutes
+            return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), Int(round(Float(totalMinutes) / Float(60))))
         }
 
-        if minutes >= DateFormattingBreakpoints.almostAnHour.rawValue {
+        if hours == 1 || minutes >= DateBreakpoints.almostAnHour {
             return String(format: NSLocalizedString("an hour", comment: "Age between dates equaling one hour."))
         }
 
-        return NSLocalizedString("<1 hour", comment: "Age between dates less than one hour.")
-
-
+        return NSLocalizedString("< 1 hour", comment: "Age between dates less than one hour.")
     }
 
-    private enum DateFormattingBreakpoints: Int {
-        case aboutYearAndAHalf = 548
-        case almostAYear = 345
-        case monthAndAHalf = 35
-        case almostAMonth = 25
-        case halfADay = 12
-        case almostADay = 22
-        case halfAnHour = 30
-        case almostAnHour = 45
+    private struct DateBreakpoints {
+        static let aboutYearAndAHalf = 548
+        static let almostAYear = 305
+        static let monthAndAHalf = 44
+        static let halfAMonth = 15
+        static let almostAMonth = 25
+        static let halfADay = 12
+        static let almostADay = 22
+        static let halfAnHour = 30
+        static let almostAnHour = 45
     }
 }
 
@@ -247,4 +287,23 @@ extension StatsPeriodUnit {
         return "period"
     }
 
+}
+
+extension TimeZone {
+    func displayForStats() -> String {
+        let seconds = self.secondsFromGMT()
+        let hours = seconds / 3600
+        let remainingSeconds = seconds - (hours * 3600)
+        let minutes = remainingSeconds / 60
+        let displayMinutes = minutes > 0 ? ":\(minutes)" : ""
+        let sign = hours < 0 ? "-" : "+"
+
+        let timezoneString = NSLocalizedString("Site timezone (UTC%@%d%@)",
+                                               comment: "Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`.")
+
+        return String.localizedStringWithFormat(timezoneString,
+                                                sign,
+                                                abs(hours),
+                                                displayMinutes)
+    }
 }

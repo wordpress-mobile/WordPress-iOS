@@ -280,7 +280,7 @@ class Post: AbstractPost {
         if status == .trash || status == .scheduled {
             statusString = ""
         } else if status != .publish && status != .draft {
-            statusString = statusTitle as String?
+            statusString = statusTitle
         }
 
         if isRevision() {
