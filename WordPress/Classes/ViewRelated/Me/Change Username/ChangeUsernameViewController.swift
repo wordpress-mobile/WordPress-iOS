@@ -1,5 +1,5 @@
 class ChangeUsernameViewController: UIViewController {
-    typealias ChangeUsernameCompletionBlock = () -> Void
+    typealias CompletionBlock = () -> Void
 
     private typealias TextfieldRow = ChangeUsernameTextfield
     private typealias LabelRow = ChangeUsernameLabel
@@ -7,7 +7,7 @@ class ChangeUsernameViewController: UIViewController {
     private let usernameTextfield = TextfieldRow.loadFromNib()
     private let usernameTextfieldFooter = LabelRow.loadFromNib()
     private let viewModel: ChangeUsernameViewModel
-    private let completionBlock: ChangeUsernameCompletionBlock
+    private let completionBlock: CompletionBlock
     private lazy var saveBarButtonItem: UIBarButtonItem = {
         let saveItem = UIBarButtonItem(title: Constants.actionButtonTitle, style: .plain, target: nil, action: nil)
         saveItem.on() { [weak self] _ in
@@ -20,7 +20,7 @@ class ChangeUsernameViewController: UIViewController {
     @IBOutlet private var validationContainer: UIStackView!
     @IBOutlet private var footerLabel: UILabel!
 
-    init(service: AccountSettingsService, settings: AccountSettings?, completionBlock: @escaping ChangeUsernameCompletionBlock) {
+    init(service: AccountSettingsService, settings: AccountSettings?, completionBlock: @escaping CompletionBlock) {
         self.viewModel = ChangeUsernameViewModel(service: service, settings: settings)
         self.completionBlock = completionBlock
         super.init(nibName: nil, bundle: nil)
@@ -32,7 +32,6 @@ class ChangeUsernameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupViewModel()
         setupUI()
     }
