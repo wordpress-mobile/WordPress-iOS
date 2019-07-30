@@ -1,6 +1,0 @@
-* Estatísticas: dê uma olhada no novo formato em duas colunas para as estatísticas de seguidores, ano e horário popular.
-* Informações desse ano: veja um resumo do total de posts, comentários, curtidas e muito mais ao clicar em "Ver mais".
-* Estatísticas por período: adicionamos um mapa do mundo na seção de países.
-* Corrigimos um problema que deixava as estatísticas em branco ao atualizar.
-* Você decide! Vá para "Eu > Configurações do aplicativo > Ícone do aplicativo" para escolher entre vários ícones.
-* Atualizamos o esquema de cores do aplicativo.

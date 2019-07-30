@@ -27,7 +27,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" name="Airo50"/>
+                        <color key="backgroundColor" name="WordPressBlue50"/>
                         <constraints>
                             <constraint firstItem="FfR-yo-4a1" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="T0u-ej-Kyp"/>
                             <constraint firstItem="FfR-yo-4a1" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="a6p-Lx-MaV"/>
@@ -41,8 +41,8 @@
     </scenes>
     <resources>
         <image name="icon-wp" width="50" height="52"/>
-        <namedColor name="Airo50">
-            <color red="0.0" green="0.36862745098039218" blue="0.51764705882352946" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="WordPressBlue50">
+            <color red="0.0" green="0.37647058823529411" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
