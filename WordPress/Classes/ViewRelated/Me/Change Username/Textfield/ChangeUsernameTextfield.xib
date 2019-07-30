@@ -36,6 +36,9 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="textField" destination="bar-SJ-Eax" id="WIe-Xr-7Ll"/>
+            </connections>
             <point key="canvasLocation" x="156.52173913043478" y="-28.794642857142854"/>
         </view>
     </objects>
