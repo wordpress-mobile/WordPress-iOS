@@ -4,6 +4,8 @@ class ChangeUsernameViewController: UIViewController {
 
     private let usernameTextfield = TextfieldRow.loadFromNib()
     private let usernameTextfieldFooter = LabelRow.loadFromNib()
+    private let confirmationTextfield = TextfieldRow.loadFromNib()
+    private let confirmationTextfieldFooter = LabelRow.loadFromNib()
     private let viewModel: ChangeUsernameViewModel
     private lazy var saveBarButtonItem: UIBarButtonItem = {
         let saveItem = UIBarButtonItem(title: Constants.actionButtonTitle, style: .plain, target: nil, action: nil)
@@ -26,52 +28,94 @@ class ChangeUsernameViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        viewModel.removeObserver()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViewModel()
         setupUI()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        usernameTextfield.becomeFirstResponder()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        usernameTextfield.resignFirstResponder()
+        confirmationTextfield.resignFirstResponder()
+    }
 }
 
 private extension ChangeUsernameViewController {
     func setupViewModel() {
-        viewModel.addObservers()
         viewModel.reachabilityListener = { [weak self] in
             self?.setNeedsSaveButtonIsEnabled()
         }
-        viewModel.validationListener = { [weak self] (success, error) in
+        viewModel.keyboardListener = { [weak self] notification in
+            self?.adjustForKeyboard(notification: notification)
+        }
+        viewModel.validationListener = { [weak self] (state, text) in
             DispatchQueue.main.async {
-                if success {
-                    self?.usernameTextfieldFooter.set(text: "%@ is a valid username.", for: .success)
-                } else {
-                    self?.usernameTextfieldFooter.set(text: error, for: .error)
-                }
+                self?.setNeedsSaveButtonIsEnabled()
+                self?.usernameTextfieldFooter.set(text: text, for: state)
             }
         }
+        viewModel.confirmationListener = { [weak self] (state, text) in
+            DispatchQueue.main.async {
+                self?.setNeedsSaveButtonIsEnabled()
+                self?.confirmationTextfieldFooter.set(text: text, for: state)
+            }
+        }
+        viewModel.start()
     }
 
     func setupUI() {
-        navigationItem.title = Constants.Header.title
+        navigationItem.title = Constants.title
         navigationItem.rightBarButtonItem = saveBarButtonItem
 
-        let title = LabelRow.label(text: Constants.Header.title.uppercased())
-        containerView.insertArrangedSubview(title, at: 0)
-        textFieldContainerView.addArrangedSubview(usernameTextfield)
-        if let account = viewModel.defaultAccount {
-            usernameTextfieldFooter.set(text: String(format: Constants.Username.footer, account.dateCreated.mediumString()))
-            textFieldContainerView.addArrangedSubview(usernameTextfieldFooter)
-        }
+        setUsernameTextfield()
         setFooter()
 
         setNeedsSaveButtonIsEnabled()
     }
 
-    @objc func adjustForKeyboard(notification: Foundation.Notification) {
+    func setNeedsSaveButtonIsEnabled() {
+        saveBarButtonItem.isEnabled = viewModel.isReachable && viewModel.usernameIsValidToBeChanged
+    }
+
+    func setUsernameTextfield() {
+        usernameTextfield.set(text: viewModel.username)
+        usernameTextfield.textDidChange = { [weak self] text in
+            self?.setConfirmationTextfieldIfNeeded()
+            self?.validate(username: text)
+        }
+
+        let title = LabelRow.label(text: Constants.title.uppercased())
+        containerView.insertArrangedSubview(title, at: 0)
+        textFieldContainerView.addArrangedSubviews([usernameTextfield, usernameTextfieldFooter])
+    }
+
+    func setConfirmationTextfieldIfNeeded() {
+        if confirmationTextfield.superview != nil {
+            return
+        }
+
+        confirmationTextfield.textDidChange = { [weak self] text in
+            self?.viewModel.confirm(username: text)
+        }
+
+        let title = LabelRow.label(text: Constants.Header.confirmation.uppercased())
+        textFieldContainerView.addArrangedSubviews([title, confirmationTextfield, confirmationTextfieldFooter])
+    }
+
+    func setFooter() {
+        footerText.attributedText = attributed(for: viewModel.paragraph,
+                                               username: viewModel.username,
+                                               displayName: viewModel.displayName)
+    }
+
+    func adjustForKeyboard(notification: Foundation.Notification) {
         let wrappedRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
         let keyboardRect = wrappedRect?.cgRectValue ?? CGRect.zero
         let relativeRect = view.convert(keyboardRect, from: nil)
@@ -81,21 +125,11 @@ private extension ChangeUsernameViewController {
     }
 
     func validate(username: String) {
-
+        viewModel.validate(username: username)
     }
 
     func save() {
 
-    }
-
-    func setNeedsSaveButtonIsEnabled() {
-        saveBarButtonItem.isEnabled = viewModel.isReachable && viewModel.usernameIsValidToBeChanged
-    }
-
-    func setFooter() {
-        footerText.attributedText = attributed(for: Constants.Header.text,
-                                               username: viewModel.username,
-                                               displayName: viewModel.displayName)
     }
 
     func attributed(for text: String, username: String, displayName: String) -> NSAttributedString {
@@ -110,25 +144,11 @@ private extension ChangeUsernameViewController {
 
     enum Constants {
         static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
-        static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
-
-        enum Username {
-            static let header = NSLocalizedString("Username", comment: "Change username textfield header title")
-            static let footer = NSLocalizedString("Joined %@", comment: "Change username textfield footer title. The placeholder is the date when the user has been created")
-            static let success = NSLocalizedString("%@ is a valid username.", comment: "Success message when a typed username is valid. The placeholder indicates the validated username")
-        }
-
-        enum Confirmation {
-            static let header = NSLocalizedString("Confirm Username", comment: "Confirm username textfield header title")
-            static let footer = NSLocalizedString("Confirm new username", comment: "Confirm username textfield footer title.")
-            static let success = NSLocalizedString("Thanks for confirming your new username!", comment: "Success message with the username confirmation")
-            static let failure = NSLocalizedString("Please re-enter your new username to confirm it.", comment: "Failure message when the username confirmation fails")
-        }
+        static let title = NSLocalizedString("Change Username", comment: "Main title")
 
         enum Header {
-            static let title = NSLocalizedString("Change Username", comment: "Main title")
-            static let text = NSLocalizedString("You are about to change your username, which is currently %@. You will not be able to change your username back.\n\nIf you just want to change your display name, which is currently %@, you can do so under My Profile.\n\nChanging your username will also affect your Gravatar profile and IntenseDebate profile addresses.",
-                                                  comment: "Paragraph displayed in the footer. The placholders are for the current username and the current display name.")
+            static let username = NSLocalizedString("Username", comment: "Change username textfield header title")
+            static let confirmation = NSLocalizedString("Confirm Username", comment: "Confirm username textfield header title")
         }
     }
 }
