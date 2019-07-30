@@ -1071,7 +1071,29 @@ extension StatsPeriodStore {
     }
 
     func getTopFileDownloads() -> StatsFileDownloadsTimeIntervalData? {
+
+        // Enable this to see File Downloads with stub data.
+        // return stubFileDownloads()
+
         return state.topFileDownloads
+    }
+
+    // TODO: remove when File Downloads endpoint is live.
+    func stubFileDownloads() -> StatsFileDownloadsTimeIntervalData? {
+        guard let downloads = state.topFileDownloads else {
+            return nil
+        }
+
+        var fileDownloads = [StatsFileDownload]()
+        for num in 1...10 {
+            fileDownloads.append(StatsFileDownload(file: "file\(num).ext", downloadCount: 666999))
+        }
+
+        return StatsFileDownloadsTimeIntervalData(period: downloads.period,
+                                                  periodEndDate: downloads.periodEndDate,
+                                                  fileDownloads: fileDownloads,
+                                                  totalDownloadsCount: downloads.totalDownloadsCount,
+                                                  otherDownloadsCount: downloads.otherDownloadsCount)
     }
 
     func getPostStats(for postId: Int?) -> StatsPostDetails? {
