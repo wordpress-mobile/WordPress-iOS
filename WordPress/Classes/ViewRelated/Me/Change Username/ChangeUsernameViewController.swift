@@ -94,14 +94,14 @@ private extension ChangeUsernameViewController {
             return
         }
 
-        navigationItem.rightBarButtonItem = saveBarButtonItem
-        setNeedsSaveButtonIsEnabled()
-
         footerLabel.attributedText = attributed(for: viewModel.paragraph,
                                                 username: viewModel.username,
                                                 displayName: viewModel.displayName)
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             self.footerLabel.alpha = 1.0
+            self.navigationItem.rightBarButtonItem = self.saveBarButtonItem
+        }) { _ in
+            self.setNeedsSaveButtonIsEnabled()
         }
     }
 
