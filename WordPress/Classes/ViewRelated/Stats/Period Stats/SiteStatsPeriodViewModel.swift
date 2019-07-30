@@ -89,6 +89,11 @@ class SiteStatsPeriodViewModel: Observable {
         tableRows.append(contentsOf: searchTermsTableRows())
         tableRows.append(contentsOf: publishedTableRows())
         tableRows.append(contentsOf: videosTableRows())
+
+        if FeatureFlag.statsFileDownloads.enabled {
+            tableRows.append(contentsOf: fileDownloadsTableRows())
+        }
+
         tableRows.append(TableFooterRow())
 
         return ImmuTable(sections: [
@@ -490,6 +495,24 @@ private extension SiteStatsPeriodViewModel {
                                                                                icon: Style.imageForGridiconType(.video),
                                                                                showDisclosure: true,
                                                                                statSection: .periodVideos) }
+            ?? []
+    }
+
+    func fileDownloadsTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: StatSection.periodFileDownloads.title))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
+                                                 dataSubtitle: StatSection.periodFileDownloads.dataSubtitle,
+                                                 dataRows: fileDownloadsDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+        
+        return tableRows
+    }
+    
+    func fileDownloadsDataRows() -> [StatsTotalRowData] {
+        return store.getTopFileDownloads()?.fileDownloads.prefix(10).map { StatsTotalRowData(name: $0.file,
+                                                                                             data: $0.downloadCount.abbreviatedString(),
+                                                                                             statSection: .periodFileDownloads) }
             ?? []
     }
 
