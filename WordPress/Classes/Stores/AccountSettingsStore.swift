@@ -4,7 +4,7 @@ enum AccountSettingsState: Equatable {
     case stationary
     case loading
     case success
-    case failure(Error?)
+    case failure(String?)
 
     static func == (lhs: AccountSettingsState, rhs: AccountSettingsState) -> Bool {
         switch (lhs, rhs) {
@@ -13,7 +13,7 @@ enum AccountSettingsState: Equatable {
              (.success, .success):
             return true
         case (.failure(let lhsError), .failure(let rhsError)):
-            return lhsError?.localizedDescription == rhsError?.localizedDescription
+            return lhsError == rhsError
         default:
             return false
         }
@@ -26,7 +26,7 @@ enum AccountSettingsState: Equatable {
     var failureMessage: String? {
         switch self {
         case .failure(let error):
-            return error?.localizedDescription
+            return error
         default:
             return nil
         }
@@ -64,8 +64,8 @@ class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
         switch action {
         case .validate(let username):
             validate(username: username)
-        case .saveUsername:
-            break
+        case .saveUsername(let username):
+            saveUsername(username: username)
         }
     }
 
@@ -76,26 +76,55 @@ class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
 
 private extension AccountSettingsStore {
     func validate(username: String) {
+        if state.usernameValidationState == .loading {
+            return
+        }
+
+        state.usernameValidationState = .loading
+
         service?.validateUsername(to: username, success: { [weak self] in
-            self?.usernameValidationSuccess()
+            DDLogInfo("Validation of \(username) username finished successfully")
+
+            DispatchQueue.main.async {
+                self?.transaction { state in
+                    state.usernameValidationState = .success
+                }
+            }
         }) { [weak self] error in
-            self?.usernameValidationFailure(error)
-        }
-    }
+            DDLogInfo("Validation username failed: \(error.localizedDescription)")
 
-    func usernameValidationSuccess() {
-        DispatchQueue.main.async {
-            self.transaction { state in
-                state.usernameValidationState = .success
+            DispatchQueue.main.async {
+                self?.transaction { state in
+                    state.usernameValidationState = .failure(error.localizedDescription)
+                }
             }
         }
     }
 
-    func usernameValidationFailure(_ error: Error?) {
-        DispatchQueue.main.async {
-            self.transaction { state in
-                state.usernameValidationState = .failure(error)
-            }
+    func saveUsername(username: String) {
+        if state.usernameValidationState == .loading ||
+            state.usernameSaveState == .loading {
+            return
         }
+
+        state.usernameSaveState = .loading
+
+        service?.changeUsername(to: username, success: { [weak self] in
+            DDLogInfo("Saving \(username) username succeeded")
+
+            DispatchQueue.main.async {
+                self?.transaction { state in
+                    state.usernameSaveState = .success
+                }
+            }
+        }, failure: { [weak self] in
+            DDLogInfo("Saving \(username) username failed")
+
+            DispatchQueue.main.async {
+                self?.transaction { state in
+                    state.usernameSaveState = .failure(nil)
+                }
+            }
+        })
     }
 }
