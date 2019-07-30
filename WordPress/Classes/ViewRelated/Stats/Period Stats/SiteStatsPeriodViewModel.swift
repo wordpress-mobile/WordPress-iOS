@@ -505,10 +505,10 @@ private extension SiteStatsPeriodViewModel {
                                                  dataSubtitle: StatSection.periodFileDownloads.dataSubtitle,
                                                  dataRows: fileDownloadsDataRows(),
                                                  siteStatsPeriodDelegate: periodDelegate))
-        
+
         return tableRows
     }
-    
+
     func fileDownloadsDataRows() -> [StatsTotalRowData] {
         return store.getTopFileDownloads()?.fileDownloads.prefix(10).map { StatsTotalRowData(name: $0.file,
                                                                                              data: $0.downloadCount.abbreviatedString(),

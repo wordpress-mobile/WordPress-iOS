@@ -1083,12 +1083,12 @@ extension StatsPeriodStore {
         guard let downloads = state.topFileDownloads else {
             return nil
         }
-        
+
         var fileDownloads = [StatsFileDownload]()
         for num in 1...10 {
             fileDownloads.append(StatsFileDownload(file: "file\(num).ext", downloadCount: 666999))
         }
-        
+
         return StatsFileDownloadsTimeIntervalData(period: downloads.period,
                                                   periodEndDate: downloads.periodEndDate,
                                                   fileDownloads: fileDownloads,
