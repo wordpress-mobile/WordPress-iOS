@@ -1387,7 +1387,6 @@
 		C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */; };
 		CC19BE06223FECAC00CAB3E1 /* EditorPostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */; };
 		CC2BB0CA2289CC3B0034F9AB /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
-		CC2BB0CE2289D10D0034F9AB /* AppSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0CD2289D10D0034F9AB /* AppSettingsScreen.swift */; };
 		CC2BB0D0228ACF710034F9AB /* EditorGutenbergTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */; };
 		CC52188C2278C622008998CE /* EditorFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC52188B2278C622008998CE /* EditorFlow.swift */; };
 		CC52189A2279CF3B008998CE /* MediaPickerAlbumListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */; };
@@ -3586,7 +3585,6 @@
 		CC24E5F21577DFF400A6D5B5 /* Twitter.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		CC24E5F41577E16B00A6D5B5 /* Accounts.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEditorScreen.swift; sourceTree = "<group>"; };
-		CC2BB0CD2289D10D0034F9AB /* AppSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsScreen.swift; sourceTree = "<group>"; };
 		CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorGutenbergTests.swift; sourceTree = "<group>"; };
 		CC52188B2278C622008998CE /* EditorFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorFlow.swift; sourceTree = "<group>"; };
 		CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerAlbumListScreen.swift; sourceTree = "<group>"; };
@@ -8236,7 +8234,6 @@
 		CC2BB0CC2289D0F20034F9AB /* Me */ = {
 			isa = PBXGroup;
 			children = (
-				CC2BB0CD2289D10D0034F9AB /* AppSettingsScreen.swift */,
 			);
 			path = Me;
 			sourceTree = "<group>";
@@ -11841,7 +11838,6 @@
 				BE6DD3301FD67F3B00E55192 /* TabNavComponent.swift in Sources */,
 				CC7CB97322B1510900642EE9 /* SignupTests.swift in Sources */,
 				CC7CB97822B15B2C00642EE9 /* SignupCheckMagicLinkScreen.swift in Sources */,
-				CC2BB0CE2289D10D0034F9AB /* AppSettingsScreen.swift in Sources */,
 				CC94FC68221452A4002E5825 /* EditorNoticeComponent.swift in Sources */,
 				BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */,
 				CC52188C2278C622008998CE /* EditorFlow.swift in Sources */,
