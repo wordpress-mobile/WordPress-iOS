@@ -161,6 +161,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     [self refreshData];
     [self observeTimeZoneStore];
+
+    self.tableView.accessibilityIdentifier = @"siteSettingsTable";
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -324,6 +326,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if (!_editorSelectorCell) {
         _editorSelectorCell = [SwitchTableViewCell new];
         _editorSelectorCell.name = NSLocalizedString(@"Use block editor", @"Option to enable the block editor for new posts");
+        _editorSelectorCell.flipSwitch.accessibilityIdentifier = @"useBlockEditorSwitch";
         __weak Blog *blog = self.blog;
         _editorSelectorCell.onChange = ^(BOOL value){
             [GutenbergSettings setGutenbergEnabled:value forBlog:blog];

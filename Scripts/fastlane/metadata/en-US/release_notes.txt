@@ -1,6 +1,5 @@
-* Stats Insights: check out new two-column layouts for Follower Totals, This Year, and Most Popular Time stats.
-* This Year Insights: see a snapshot of total posts, comments, likes, and more for the year-to-date when you click on the View More option.
-* Stats Periods: We added a world map in the countries section.
-* Fixed an issue where refreshing sometimes cleared stats.
-* You do you! Go to Me > App Settings > App Icon to choose from a series of app icons.
-* Refreshed the app’s color scheme.
+* Offline drafting! Sometimes you have amazing ideas but no internet connection, because we don’t yet live in a perfect world. We still don’t have flying cars either, but now you can start new posts in the app even when you’re offline.
+* Clearer previews! Before, the status of in-process post previews were hidden behind a screen-blocking spinner. Now the spinner has been put in its place, and the status displays at the top of the screen so you can still access the rest of it.
+* Better blocks! We’ve got a bunch of block editor improvements to take the bumps out of drafting. Tapping on an empty editor area automatically creates a new paragraph block. Adding a block from the Post Title now puts the block at the top of the post, instead of at the bottom where you couldn’t really see it. And we fixed an issue that sometimes caused content to get lost when the editor tried to load unsupported blocks.
+* Cleaner post lists! Your list of posts now includes an option for displaying posts more compactly, so you can see more post details at once. And it has a redesigned loading screen, because even waiting for something to load should be a nice experience.
+* Smoother setup! When you set up a new site, sometimes previews would display incorrectly, and the process of adding a site icon was not as straightforward as it should’ve been. Not ideal, and not the case any more.

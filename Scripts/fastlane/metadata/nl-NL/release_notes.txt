@@ -1,6 +1,5 @@
-* Stats Insights: bekijk nieuwe lay-outs met twee kolommen voor de statistieken Aantal volgers, Dit jaar en Populairste tijd.
-* Dit jaar in Insights: als je op de optie Meer weergeven klikt, krijg je een overzicht te zien van het totaalaantal berichten, reacties, likes, en meer voor het afgelopen jaar tot dat moment.
-* Statistieken-periodes: We hebben een wereldkaart toegevoegd in het landengedeelte.
-* Een probleem opgelost waarbij bij vernieuwen soms de statistieken werden gewist.
-* Jij maakt jezelf! Ga naar Ik > App-instellingen > App-pictogram om te kiezen uit een reeks pictogrammen voor de app.
-* Het kleurenschema van de app vernieuwd.
+* Offline kladversie! Soms heb je geweldige ideeën maar geen internetverbinding, omdat we nog niet in een perfecte wereld leven. We hebben nog steeds geen vliegende auto's, maar je kunt nu wel nieuwe berichten in de app starten, zelfs als je offline bent.
+* Duidelijkere voorvertoningen! Voorheen was de status van de voorvertoningen verborgen achter een spinner die het scherm blokkeerde. De spinner is nu actief en de status wordt bovenaan het scherm weergegeven, zodat je nog steeds toegang hebt tot de rest van het scherm.
+* Betere blokken! We hebben de blokeditor enorm verbeterd om je gemakkelijker te laten creëren. Als je op een leeg editorgebied tikt, wordt automatisch een nieuw alineablok aangemaakt. Als je een blok uit de berichttitel toevoegt, wordt het blok nu bovenaan het bericht geplaatst in plaats van onderaan, waar je het niet echt kon zien. En we hebben een probleem opgelost dat er soms voor zorgde dat de inhoud verloren ging wanneer de editor niet-ondersteunde blokken probeerde te laden.
+* Duidelijkere berichtenlijsten! Je berichtenlijst bevat nu een optie om berichten compacter weer te geven, zodat je meer details in één keer kunt zien. En de lijst heeft een nieuw laadscherm, omdat zelfs het wachten op iets dat wordt geladen een leuke ervaring zou moeten zijn.
+* Soepelere configuratie! Bij het configureren van een nieuwe site werden de voorvertoningen soms verkeerd weergegeven en was het toevoegen van een sitepictogram niet zo eenvoudig als het zou moeten zijn. Niet ideaal en gelukkig hebben we dit opgelost.

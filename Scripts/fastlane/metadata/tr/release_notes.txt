@@ -1,6 +1,5 @@
-* Yararlı İstatistik Bilgileri: Toplam Takipçi, Bu Yıl ve En Popüler Zaman istatistikleri için iki sütunluk yeni düzenleri inceleyin.
-* Bu Yılla İlgili Yararlı Bilgiler: Daha Fazla Görüntüle seçeneğini tıklayarak bu yıla ait tüm gönderilerin, yorumların, beğenilerin vb. anlık bir görüntüsünü görün.
-* İstatistik Dönemleri: Ülkeler bölümüne bir dünya haritası eklendi.
-* Bazen yenileme yapıldığında istatistiklerin temizlenmesine yol açan sorun giderildi.
-* Siz yapıyorsunuz! Ben > Uygulama Ayarları > Uygulama Simgesi'ne giderek bir dizi uygulama simgesi içinden seçim yapın.
-* Uygulamanın renk planı yenilendi.
+* Çevrimdışı çizim! Bazen harika fikirleriniz var ama internet bağlantınız yok, çünkü henüz mükemmel bir dünyada yaşamıyoruz. Hala uçan arabalarımız da yok, ancak artık çevrimdışı olsanız bile uygulamada yeni yayınlara başlayabilirsiniz.
+* Daha net önizlemeler! Daha önce, işlem içi post önizlemelerin durumu ekran engelleyen bir eğiricinin arkasına gizlenmişti. Şimdi iplikçi yerine kondu ve durum ekranın en üstünde göründüğü için geri kalanına hala erişebiliyorsunuz.
+* Daha iyi bloklar! Çarpma taslağını çıkarmak için bir sürü blok editör geliştirmesi yaptık. Boş bir editör alanına dokunulduğunda otomatik olarak yeni bir paragraf bloğu oluşturulur. Gönderi Başlığı’na bir blok eklemek artık bloğu yazının en üstüne, gerçekten göremediğiniz bir yere koyuyor. Editör desteklenmeyen blokları yüklemeye çalıştığında, bazen içeriğin kaybolmasına neden olan bir sorunu çözdük.
+* Temiz yazı listeleri! Artık gönderi listeniz, postaları daha kompakt görüntüleme seçeneği sunar, böylece bir kerede daha fazla posta detayı görebilirsiniz. Ve yeniden tasarlanmış bir yükleme ekranına sahip, çünkü bir şeyin yüklenmesini beklemek bile güzel bir deneyim olmalı.
+* Pürüzsüz kurulum! Yeni bir site kurduğunuzda, bazen önizlemeler yanlış görüntülenebilir ve bir site simgesi ekleme işlemi olması gerektiği kadar kolay değildi. İdeal değil ve artık durum böyle değil.
