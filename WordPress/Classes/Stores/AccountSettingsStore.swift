@@ -72,11 +72,16 @@ class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
     func validationSucceeded() -> Bool {
         return state.usernameValidationState.succeeded
     }
+
+    func isLoading() -> Bool {
+        return state.usernameValidationState == .loading ||
+            state.usernameSaveState == .loading
+    }
 }
 
 private extension AccountSettingsStore {
     func validate(username: String) {
-        if state.usernameValidationState == .loading {
+        if isLoading() {
             return
         }
 
@@ -102,8 +107,7 @@ private extension AccountSettingsStore {
     }
 
     func saveUsername(username: String) {
-        if state.usernameValidationState == .loading ||
-            state.usernameSaveState == .loading {
+        if isLoading() {
             return
         }
 
