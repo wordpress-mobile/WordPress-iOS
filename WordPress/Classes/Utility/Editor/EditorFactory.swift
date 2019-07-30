@@ -27,6 +27,7 @@ class EditorFactory {
             gutenbergSettings.setGutenbergEnabled(true, for: post.blog)
             gutenbergSettings.postSettingsToRemote(for: post.blog)
             gutenbergVC.shouldPresentInformativeDialog = true
+            gutenbergSettings.willShowDialog(for: post.blog)
         }
 
         return gutenbergVC

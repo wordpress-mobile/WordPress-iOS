@@ -5,6 +5,7 @@ class GutenbergSettingsTests: XCTestCase {
 
     fileprivate var contextManager: TestContextManager!
     fileprivate var context: NSManagedObjectContext!
+    private let gutenbergContent = "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->"
 
     var database: EphemeralKeyValueDatabase!
     var settings: GutenbergSettings!
@@ -33,6 +34,10 @@ class GutenbergSettingsTests: XCTestCase {
 
     var mustUseGutenberg: Bool {
         return settings.mustUseGutenberg(for: post)
+    }
+
+    var shouldAutoenableGutenberg: Bool {
+        return settings.shouldAutoenableGutenberg(for: post)
     }
 
     override func setUp() {
@@ -78,7 +83,7 @@ class GutenbergSettingsTests: XCTestCase {
         settings.setGutenbergEnabled(false, for: blog)
         XCTAssertFalse(isGutenbergEnabled)
 
-        post.content = "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->"
+        post.content = gutenbergContent
 
         XCTAssertTrue(mustUseGutenberg)
 
@@ -112,5 +117,91 @@ class GutenbergSettingsTests: XCTestCase {
 
     func testWPComAccountsDefaultsToAztec() {
         XCTAssertFalse(mustUseGutenberg)
+    }
+
+    // MARK: - Tests for Autoenabling gutenberg
+
+    // Autoenable on new installs
+
+    func testDoNotAutoenableIfUsersSwitchesToGutenberg() {
+        settings.setGutenbergEnabled(true, for: blog)
+
+        XCTAssertTrue(mustUseGutenberg)
+        XCTAssertFalse(shouldAutoenableGutenberg)
+    }
+
+    func testDoNotAutoenableIfUsersSwitchesToGutenbergAndBackToAztec() {
+        settings.setGutenbergEnabled(true, for: blog)
+        settings.setGutenbergEnabled(false, for: blog)
+        post.content = gutenbergContent
+
+        XCTAssertTrue(mustUseGutenberg)
+        XCTAssertFalse(shouldAutoenableGutenberg)
+    }
+
+    func testAutoenableWhenSetToAztecOpeningGutenbergPost() {
+        post.content = gutenbergContent
+        blog.mobileEditor = .aztec
+
+        XCTAssertTrue(mustUseGutenberg)
+        XCTAssertTrue(shouldAutoenableGutenberg)
+    }
+
+    // Autoenable on new blogs
+
+    func testAutoenableOnNewPostAndNewBlogs() {
+        settings.softSetGutenbergEnabled(true, for: blog)
+
+        XCTAssertTrue(mustUseGutenberg)
+        XCTAssertTrue(shouldAutoenableGutenberg)
+    }
+
+    func testAutoenableOnExistingPostAndNewBlogs() {
+        settings.softSetGutenbergEnabled(true, for: blog)
+        post.content = gutenbergContent
+
+        XCTAssertTrue(mustUseGutenberg)
+        XCTAssertTrue(shouldAutoenableGutenberg)
+    }
+
+    func testAutoenableOnNewBlogsOccoursOnlyOnce() {
+        settings.softSetGutenbergEnabled(true, for: blog)
+
+        XCTAssertTrue(mustUseGutenberg)
+        XCTAssertTrue(shouldAutoenableGutenberg)
+
+        settings.willShowDialog(for: blog)
+
+        XCTAssertFalse(shouldAutoenableGutenberg)
+    }
+
+    // Autoenable after Migration
+
+    func testDoNotAutoenableAfterMigrationSetToGutenberg() {
+        database.set(true, forKey: GutenbergSettings.Key.appWideEnabled)
+        blog.mobileEditor = .gutenberg
+
+        XCTAssertTrue(mustUseGutenberg)
+        XCTAssertFalse(shouldAutoenableGutenberg)
+    }
+
+    func testDoNotAutoenableAfterMigrationSetToAztec() {
+        database.set(false, forKey: GutenbergSettings.Key.appWideEnabled)
+        blog.mobileEditor = .aztec
+
+        post.content = gutenbergContent
+
+        XCTAssertTrue(mustUseGutenberg)
+        XCTAssertFalse(shouldAutoenableGutenberg)
+    }
+
+    func testAutoenableAfterMigrationNotSet() {
+        database.set(nil, forKey: GutenbergSettings.Key.appWideEnabled)
+        blog.mobileEditor = .aztec
+
+        post.content = gutenbergContent
+
+        XCTAssertTrue(mustUseGutenberg)
+        XCTAssertTrue(shouldAutoenableGutenberg)
     }
 }

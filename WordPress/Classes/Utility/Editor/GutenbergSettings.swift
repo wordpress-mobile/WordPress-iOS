@@ -87,12 +87,16 @@ class GutenbergSettings {
 
     /// True if gutenberg editor has been enabled at least once on the given blog
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
-        return database.object(forKey: Key.enabledOnce(for: blog)) != nil
+        return database.object(forKey: Key.enabledOnce(for: blog)) != nil || database.object(forKey: Key.appWideEnabled) != nil
     }
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
         return !wasGutenbergEnabledOnce(for: post.blog)
+    }
+
+    func willShowDialog(for blog: Blog) {
+        database.set(true, forKey: Key.enabledOnce(for: blog))
     }
 
     // MARK: - Gutenberg Choice Logic
