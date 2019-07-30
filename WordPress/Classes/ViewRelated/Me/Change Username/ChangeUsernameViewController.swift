@@ -65,12 +65,10 @@ private extension ChangeUsernameViewController {
 
     func setupUI() {
         navigationItem.title = Constants.username
-        navigationItem.rightBarButtonItem = saveBarButtonItem
 
         footerLabel.alpha = 0.0
 
         setUsernameTextfield()
-        setNeedsSaveButtonIsEnabled()
     }
 
     func setNeedsSaveButtonIsEnabled() {
@@ -95,6 +93,10 @@ private extension ChangeUsernameViewController {
         guard footerLabel.alpha == 0.0 else {
             return
         }
+
+        navigationItem.rightBarButtonItem = saveBarButtonItem
+        setNeedsSaveButtonIsEnabled()
+
         footerLabel.attributedText = attributed(for: viewModel.paragraph,
                                                 username: viewModel.username,
                                                 displayName: viewModel.displayName)
