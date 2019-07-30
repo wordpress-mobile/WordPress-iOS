@@ -46,10 +46,14 @@ class ChangeUsernameViewController: UIViewController {
 private extension ChangeUsernameViewController {
     func setupViewModel() {
         viewModel.reachabilityListener = { [weak self] in
-            self?.setNeedsSaveButtonIsEnabled()
+            DispatchQueue.main.async {
+                self?.setNeedsSaveButtonIsEnabled()
+            }
         }
         viewModel.keyboardListener = { [weak self] notification in
-            self?.adjustForKeyboard(notification: notification)
+            DispatchQueue.main.async {
+                self?.adjustForKeyboard(notification: notification)
+            }
         }
         viewModel.validationListener = { [weak self] (state, text) in
             DispatchQueue.main.async {
