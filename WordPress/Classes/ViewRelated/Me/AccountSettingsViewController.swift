@@ -176,7 +176,9 @@ private class AccountSettingsController: SettingsController {
 
     func changeUsername(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> ChangeUsernameViewController {
         return { _ in
-            return ChangeUsernameViewController(service: service, settings: settings)
+            return ChangeUsernameViewController(service: service, settings: settings) { [weak self] in
+                self?.refreshModel()
+            }
         }
     }
 
