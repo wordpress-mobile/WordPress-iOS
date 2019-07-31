@@ -82,4 +82,3 @@ private extension PostCoordinator.FailedPostsFetcher {
         return result
     }
 }
-
