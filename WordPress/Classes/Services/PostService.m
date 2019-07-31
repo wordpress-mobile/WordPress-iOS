@@ -259,6 +259,17 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
                 postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
+                // If the post was not created on the server yet we convert the post to a local
+                // draft post with the current date. However, if it's PUBLISHED or DRAFT, we will
+                // not reset the status so that when retrying the upload, the post will have the
+                // status that the user originally intended.
+                //
+                // When we support auto-uploading of all statuses, we will fully remove this block.
+                if (!postInContext.hasRemote && ![postInContext.status isEqualToString:PostStatusPublish]) {
+                    postInContext.status = PostStatusDraft;
+                    postInContext.dateModified = [NSDate date];
+                }
+
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {

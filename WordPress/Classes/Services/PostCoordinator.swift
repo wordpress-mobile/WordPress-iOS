@@ -273,9 +273,15 @@ extension PostCoordinator {
         }
 
         func getPostsToRetry(result: @escaping ([AbstractPost]) -> Void) {
+            let allowedStatuses: [BasePost.Status] = [.draft, .publish]
+
             postService.getFailedPosts { posts in
                 let postsToRetry = posts.filter({ post -> Bool in
-                    return post.status == .draft && !post.hasRemote()
+                    guard let status = post.status else {
+                        return false
+                    }
+
+                    return allowedStatuses.contains(status) && !post.hasRemote()
                 })
 
                 result(postsToRetry)

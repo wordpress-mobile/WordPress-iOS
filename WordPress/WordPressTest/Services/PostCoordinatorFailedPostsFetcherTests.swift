@@ -25,30 +25,37 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
 
     func testItOnlyReturnsLocalDrafts() {
         // Arrange
-        let localDrafts = [createPost(), createPost(), createPost()]
+        let expectedPosts = [
+            createPost(status: .draft),
+            createPost(status: .draft),
+            createPost(status: .draft),
+            createPost(status: .publish)
+        ]
         let unexpectedPosts = [
-            // Draft from remote
-            createPost(hasRemote: true),
-            createPost(status: .publish),
+            createPost(status: .draft, hasRemote: true),
+            createPost(status: .publish, hasRemote: true),
             createPost(status: .publishPrivate),
+            createPost(status: .publishPrivate, hasRemote: true),
             createPost(status: .scheduled),
+            createPost(status: .scheduled, hasRemote: true),
             createPost(status: .trash),
-            // Local draft that we never attempted to upload
-            createPost(remoteStatus: .local)
+            createPost(status: .trash, hasRemote: true),
+            // Local draft that we never attempted to upload so it never failed
+            createPost(status: .draft, remoteStatus: .local)
         ]
 
         // Act
         let posts = fetcher.getPostsToRetrySync()
 
         // Assert
-        expect(posts).to(haveCount(localDrafts.count))
-        expect(posts).to(contain(localDrafts))
+        expect(posts).to(haveCount(expectedPosts.count))
+        expect(posts).to(contain(expectedPosts))
         expect(posts).notTo(contain(unexpectedPosts))
     }
 }
 
 private extension PostCoordinatorFailedPostsFetcherTests {
-    func createPost(status: BasePost.Status = .draft,
+    func createPost(status: BasePost.Status,
                     remoteStatus: AbstractPostRemoteStatus = .failed,
                     hasRemote: Bool = false) -> Post {
         let post = Post(context: context)
