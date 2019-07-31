@@ -200,7 +200,9 @@ class MediaFileManager: NSObject {
     ///
     @objc class func clearAllMediaCacheFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         let cacheManager = MediaFileManager(directory: .cache)
-        cacheManager.clearFilesFromDirectory(onCompletion: onCompletion, onError: onError)
+        cacheManager.clearFilesFromDirectory(onCompletion: {
+            MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: onCompletion, onError: onError)
+        }, onError: onError)
     }
 
     /// Helper method for getting the default upload directory URL.
