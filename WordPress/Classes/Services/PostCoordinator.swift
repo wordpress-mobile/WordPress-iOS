@@ -248,19 +248,37 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        let service = PostService(managedObjectContext: mainContext)
-
-        service.getFailedPosts { [weak self] posts in
+        let fetcher = FailedPostsFetcher(mainContext)
+        fetcher.getPostsToRetry { [weak self] posts in
             guard let self = self else {
                 return
             }
 
-            posts.forEach() { post in
-                let shouldRetry = post.status == .draft && !post.hasRemote()
+            posts.forEach({ self.retrySave(of: $0) })
+        }
+    }
+}
 
-                if shouldRetry {
-                    self.retrySave(of: post)
-                }
+extension PostCoordinator {
+    /// Fetches failed posts that should be retried when there is an internet connection.
+    class FailedPostsFetcher {
+        private let postService: PostService
+
+        init(_ postService: PostService) {
+            self.postService = postService
+        }
+
+        init(_ managedObjectContext: NSManagedObjectContext) {
+            postService = PostService(managedObjectContext: managedObjectContext)
+        }
+
+        func getPostsToRetry(result: @escaping ([AbstractPost]) -> Void) {
+            postService.getFailedPosts { posts in
+                let postsToRetry = posts.filter({ post -> Bool in
+                    return post.status == .draft && !post.hasRemote()
+                })
+
+                result(postsToRetry)
             }
         }
     }
