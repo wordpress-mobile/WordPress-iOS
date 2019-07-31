@@ -1,12 +1,12 @@
 13.0
 -----
-* Stats: now use site timezone instead of device.
-* Improved color scheme consistency.
-* Post Stats: date bar no longer goes prior to earliest date available.
-* Block editor: Adding a block from the post title now shows the add block here indicator.
-* Block editor: Deselect post title any time a block is added
-* Block editor: Auto-enabled upon first open of a block post, unless opted out in v12.9.
-* Block editor: You can now enable and disable the block editor on a per-site basis.
+Your phone has one time zone setting. Your website uses a different one. What are your site stats based on? Did that traffic spike happen this morning, or this afternoon? Answer: your stats are now based on the time zone settings of your website.
+
+Consistent color schemes with good contrast make an accessible, intuitive app, which makes happy users. Version 13.0 is more consistent; enjoy the happiness.
+
+The block editor keeps getting better and better. Not possible, you say? Pshaw, let us count the ways: it’s automatically enabled the first time you start a block-based post* and you can enable and disable it on a per-site basis, so every user gets the editor experience they want. Adding blocks from the post title shows an “add block here” indicator, to simplify content creation, and adding new blocks de-selects the post title so the focus is on the new block.
+
+* Unless you opted out in version 12.9! We’re not monsters.
 
 12.9
 -----
