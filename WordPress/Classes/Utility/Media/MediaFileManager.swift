@@ -165,7 +165,7 @@ class MediaFileManager: NSObject {
     ///   was being created or when a CoreData migration fails and the database is recreated.
     ///
     @objc func clearUnusedFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
-        purgeMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL || remoteURL == NULL"),
+        purgeMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL && remoteURL == NULL"),
                         onCompletion: onCompletion,
                         onError: onError)
     }
