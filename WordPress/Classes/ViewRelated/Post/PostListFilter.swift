@@ -85,8 +85,8 @@ import Foundation
 
         // The postID = -1 condition is intentionally a reverse of publishedFilter() so that
         // local published posts will show in the Drafts list instead of the Published list.
-        let statusesForLocalDrafts: [BasePost.Status] = [.publish, .publishPrivate]
-        let predicate = NSPredicate(format: "(postID = -1 AND status IN %@) OR NOT status IN %@", statusesForLocalDrafts.strings, statusesExcluded.strings)
+        let predicate = NSPredicate(format: "(postID = -1 AND status = %@) OR NOT status IN %@",
+                                    BasePost.Status.publish.rawValue, statusesExcluded.strings)
 
         let title = NSLocalizedString("Drafts", comment: "Title of the drafts filter.  This filter shows a list of draft posts.")
 
