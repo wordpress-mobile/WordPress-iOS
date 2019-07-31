@@ -1,11 +1,11 @@
 /* News Card title. */
-"Title" = "Sharing made easier.";
+"Title" = "Stats made better.";
 
 /* News Card content. */
-"Content" = "We rolled up our sleeves and rethought the entire sharing workflow for both iPhones and iPads.";
+"Content" = "Stats are so much better, we don’t even know where to start. Both the UI and backend are totally revamped!";
 
 /* News Card link. */
-"URL" = "https://en.blog.wordpress.com/2018/03/28/new-and-improved-ios-sharing-extensions/";
+"URL" = "https://en.blog.wordpress.com/2019/07/16/more-stats-better-stats-faster-stats-a-whole-new-mobile-experience/";
 
 /* Build version this card applies to. */
-"version" = "10.8";
+"version" = "12.6";
