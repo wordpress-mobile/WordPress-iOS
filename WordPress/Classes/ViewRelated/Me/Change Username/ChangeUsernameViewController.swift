@@ -112,6 +112,10 @@ private extension ChangeUsernameViewController {
 
     func save() {
         usernameTextfield.resignFirstResponder()
+        present(changeUsernameConfirmationPrompt(), animated: true)
+    }
+
+    func changeUsername() {
         SVProgressHUD.show()
         viewModel.save() { [weak self] (state, error) in
             switch state {
@@ -125,6 +129,19 @@ private extension ChangeUsernameViewController {
                 break
             }
         }
+    }
+
+    func changeUsernameConfirmationPrompt() -> UIAlertController {
+        let alertController = UIAlertController(title: Constants.Alert.title,
+                                                message: Constants.Alert.message,
+                                                preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(Constants.Alert.cancel)
+        alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { _ in
+            DDLogInfo("User changes username")
+            self.changeUsername()
+        })
+        DDLogInfo("Prompting user for confirmation of change username")
+        return alertController
     }
 
     func attributed(username: String, displayName: String) -> NSAttributedString {
@@ -145,5 +162,11 @@ private extension ChangeUsernameViewController {
         static let highlight = NSLocalizedString("You will not be able to change your username back.", comment: "Paragraph text that needs to be highlighted")
         static let paragraph = NSLocalizedString("You are about to change your username, which is currently %@. %@\n\nIf you just want to change your display name, which is currently %@, you can do so under My Profile.\n\nChanging your username will also affect your Gravatar profile and IntenseDebate profile addresses.",
                                                  comment: "Paragraph displayed in the footer. The placholders are for the current username, highlight text and the current display name.")
+        enum Alert {
+            static let title = NSLocalizedString("Careful!", comment: "Alert title.")
+            static let message = NSLocalizedString("Are you sure you want to change your username? You will not be able to change it back.", comment: "Alert message.")
+            static let cancel = NSLocalizedString("Cancel", comment: "Cancel button.")
+            static let change = NSLocalizedString("Change", comment: "Change button.")
+        }
     }
 }
