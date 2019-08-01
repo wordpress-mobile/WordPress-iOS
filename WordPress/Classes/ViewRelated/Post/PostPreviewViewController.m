@@ -43,7 +43,6 @@
         self.apost = aPost;
         self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost];
         self.generator.delegate = self;
-        self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     }
     return self;
 }
@@ -55,7 +54,6 @@
         self.apost = aPost;
         self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost previewURL:previewURL];
         self.generator.delegate = self;
-        self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     }
     return self;
 }
@@ -119,11 +117,13 @@
 - (void)startLoading
 {
     [self.navigationItem setLeftBarButtonItem:[self statusButtonItem] animated:YES];
+    self.navigationItem.title = nil;
 }
 
 - (void)stopLoading
 {
     self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.title  = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     [self.webView stopLoading];
 }
 
