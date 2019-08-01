@@ -45,20 +45,14 @@ class ChangeUsernameViewController: UIViewController {
 private extension ChangeUsernameViewController {
     func setupViewModel() {
         viewModel.reachabilityListener = { [weak self] in
-            DispatchQueue.main.async {
-                self?.setNeedsSaveButtonIsEnabled()
-            }
+            self?.setNeedsSaveButtonIsEnabled()
         }
         viewModel.keyboardListener = { [weak self] notification in
-            DispatchQueue.main.async {
-                self?.adjustForKeyboard(notification: notification)
-            }
+            self?.adjustForKeyboard(notification: notification)
         }
         viewModel.validationListener = { [weak self] (state, text) in
-            DispatchQueue.main.async {
-                self?.setNeedsSaveButtonIsEnabled()
-                self?.usernameTextfieldFooter.set(text: text, for: state)
-            }
+            self?.setNeedsSaveButtonIsEnabled()
+            self?.usernameTextfieldFooter.set(text: text, for: state)
         }
         viewModel.start()
     }
@@ -94,8 +88,7 @@ private extension ChangeUsernameViewController {
             return
         }
 
-        footerLabel.attributedText = attributed(for: viewModel.paragraph,
-                                                username: viewModel.username,
+        footerLabel.attributedText = attributed(username: viewModel.username,
                                                 displayName: viewModel.displayName)
         UIView.animate(withDuration: 0.3, animations: {
             self.footerLabel.alpha = 1.0
@@ -121,33 +114,36 @@ private extension ChangeUsernameViewController {
         usernameTextfield.resignFirstResponder()
         SVProgressHUD.show()
         viewModel.save() { [weak self] (state, error) in
-            DispatchQueue.main.async {
-                switch state {
-                case .success:
-                    SVProgressHUD.dismiss()
-                    self?.completionBlock()
-                    self?.navigationController?.popViewController(animated: true)
-                case .failure:
-                    SVProgressHUD.showError(withStatus: error)
-                default:
-                    break
-                }
+            switch state {
+            case .success:
+                SVProgressHUD.dismiss()
+                self?.completionBlock()
+                self?.navigationController?.popViewController(animated: true)
+            case .failure:
+                SVProgressHUD.showError(withStatus: error)
+            default:
+                break
             }
         }
     }
 
-    func attributed(for text: String, username: String, displayName: String) -> NSAttributedString {
-        let text = String(format: text, username, displayName)
+    func attributed(username: String, displayName: String) -> NSAttributedString {
+        let text = String(format: Constants.paragraph, username, Constants.highlight, displayName)
         let font = WPStyleGuide.fontForTextStyle(.footnote)
         let bold = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .bold)
 
         let attributed = NSMutableAttributedString(string: text, attributes: [.font: font])
         attributed.applyStylesToMatchesWithPattern("\\b\(username)|\\b\(displayName)", styles: [.font: bold])
+        attributed.addAttributes([.underlineStyle: NSNumber(value: 1), .font: bold],
+                                 range: (text as NSString).range(of: Constants.highlight))
         return attributed
     }
 
     enum Constants {
         static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
         static let username = NSLocalizedString("Username", comment: "The header and main title")
+        static let highlight = NSLocalizedString("You will not be able to change your username back.", comment: "Paragraph text that needs to be highlighted")
+        static let paragraph = NSLocalizedString("You are about to change your username, which is currently %@. %@\n\nIf you just want to change your display name, which is currently %@, you can do so under My Profile.\n\nChanging your username will also affect your Gravatar profile and IntenseDebate profile addresses.",
+                                                 comment: "Paragraph displayed in the footer. The placholders are for the current username, highlight text and the current display name.")
     }
 }
