@@ -158,7 +158,7 @@ static CGFloat const FeaturedImageSize = 120.0;
         [badges addObject:NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge")];
     }
     
-    self.badgesLabel.text = [badges componentsJoinedByString:@" • "];
+    self.badgesLabel.text = [badges componentsJoinedByString:@" · "];
 }
 
 - (void)configureFeaturedImage
