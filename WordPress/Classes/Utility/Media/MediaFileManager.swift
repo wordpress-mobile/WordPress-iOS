@@ -165,7 +165,7 @@ class MediaFileManager: NSObject {
     ///   was being created or when a CoreData migration fails and the database is recreated.
     ///
     @objc func clearUnusedFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
-        purgeMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL || remoteURL == NULL"),
+        purgeMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL && remoteURL == NULL"),
                         onCompletion: onCompletion,
                         onError: onError)
     }
@@ -200,7 +200,9 @@ class MediaFileManager: NSObject {
     ///
     @objc class func clearAllMediaCacheFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         let cacheManager = MediaFileManager(directory: .cache)
-        cacheManager.clearFilesFromDirectory(onCompletion: onCompletion, onError: onError)
+        cacheManager.clearFilesFromDirectory(onCompletion: {
+            MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: onCompletion, onError: onError)
+        }, onError: onError)
     }
 
     /// Helper method for getting the default upload directory URL.

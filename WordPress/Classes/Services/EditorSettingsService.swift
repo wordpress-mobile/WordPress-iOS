@@ -71,14 +71,41 @@ import Foundation
             return
         }
         let blogsWithAccount = blogs.filter({ $0.account != nil })
+        let queue = SyncQueue()
         for blog in blogsWithAccount {
-            syncEditorSettings(for: blog, success: {}, failure: { (error) in
-                DDLogError("Error saving editor settings: \(error)")
-            })
+            queue.add { (next) in
+                self.syncEditorSettings(for: blog, success: {
+                    next()
+                }, failure: { (error) in
+                    DDLogError("Error saving editor settings: \(error)")
+                    next()
+                })
+            }
         }
+        queue.start()
     }
 
     func api(for blog: Blog) -> WordPressComRestApi? {
         return blog.wordPressComRestApi()
+    }
+}
+
+private class SyncQueue {
+    var actions = [(@escaping () -> Void) -> Void]()
+
+    func add(_ action: @escaping (@escaping () -> Void) -> Void) {
+        self.actions.append(action)
+    }
+
+    private func next() {
+        guard !actions.isEmpty else {
+            return
+        }
+        let action = actions.removeFirst()
+        action({ self.next() })
+    }
+
+    func start() {
+        next()
     }
 }
