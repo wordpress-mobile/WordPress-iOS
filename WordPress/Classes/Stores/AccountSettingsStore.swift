@@ -1,14 +1,14 @@
 import WordPressFlux
 
 enum AccountSettingsState: Equatable {
-    case stationary
+    case idle
     case loading
     case success
     case failure(String?)
 
     static func == (lhs: AccountSettingsState, rhs: AccountSettingsState) -> Bool {
         switch (lhs, rhs) {
-        case (.stationary, .stationary),
+        case (.idle, .idle),
              (.loading, .loading),
              (.success, .success):
             return true
@@ -39,8 +39,8 @@ enum AccountSettingsAction: Action {
 }
 
 struct AccountSettingsStoreState {
-    fileprivate(set) var usernameValidationState: AccountSettingsState = .stationary
-    fileprivate(set) var usernameSaveState: AccountSettingsState = .stationary
+    fileprivate(set) var usernameValidationState: AccountSettingsState = .idle
+    fileprivate(set) var usernameSaveState: AccountSettingsState = .idle
 }
 
 class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
@@ -87,7 +87,7 @@ private extension AccountSettingsStore {
 
         state.usernameValidationState = .loading
 
-        service?.validateUsername(to: username, success: { [weak self] in
+        service?.validateUsername(username, success: { [weak self] in
             DDLogInfo("Validation of \(username) username finished successfully")
 
             DispatchQueue.main.async {
@@ -96,7 +96,7 @@ private extension AccountSettingsStore {
                 }
             }
         }) { [weak self] error in
-            DDLogInfo("Validation username failed: \(error.localizedDescription)")
+            DDLogInfo("Username validation failed: \(error.localizedDescription)")
 
             DispatchQueue.main.async {
                 self?.transaction { state in
