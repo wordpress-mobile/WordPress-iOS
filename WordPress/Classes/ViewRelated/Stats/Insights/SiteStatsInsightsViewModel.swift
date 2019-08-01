@@ -55,6 +55,10 @@ class SiteStatsInsightsViewModel: Observable {
             return ImmuTable.Empty
         }
 
+        if FeatureFlag.statsInsightsManagement.enabled {
+            tableRows.append(CustomizeInsightsRow())
+        }
+
         insightsToShow.forEach { insightType in
             switch insightType {
             case .latestPostSummary:

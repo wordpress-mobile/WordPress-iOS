@@ -67,6 +67,27 @@ struct TableFooterRow: ImmuTableRow {
 
 // MARK: - Insights Rows
 
+struct CustomizeInsightsRow: ImmuTableRow {
+
+    typealias CellType = CustomizeInsightsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure()
+    }
+
+}
+
 struct LatestPostSummaryRow: ImmuTableRow {
 
     typealias CellType = LatestPostSummaryCell
@@ -87,7 +108,6 @@ struct LatestPostSummaryRow: ImmuTableRow {
         }
 
         cell.configure(withInsightData: summaryData, chartData: chartData, andDelegate: siteStatsInsightsDelegate)
-
     }
 }
 
