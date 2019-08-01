@@ -95,7 +95,6 @@ static CGFloat const FeaturedImageSize = 120.0;
     [self configureTitle];
     [self configureForStatus];
     [self configureBadges];
-    [self configureTimeStamp];
     [self configureFeaturedImage];
 }
 
