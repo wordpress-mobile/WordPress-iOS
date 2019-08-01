@@ -38,6 +38,8 @@ enum InsightType: Int {
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
+    @objc optional func customizeLaterButtonTapped()
+    @objc optional func customizeTryButtonTapped()
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
@@ -314,6 +316,12 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
+    }
+
+    func customizeLaterButtonTapped() {
+    }
+
+    func customizeTryButtonTapped() {
     }
 
 }

@@ -124,14 +124,14 @@ extension WPStyleGuide {
             label.font = customizeInsightsTitleFont
         }
 
-        static func configureLabelAsCustomizeLater(_ label: UILabel) {
-            label.textColor = customizeInsightsButtonTextColor
-            label.font = customizeInsightsLaterButtonFont
+        static func configureAsCustomizeLaterButton(_ button: UIButton) {
+            button.setTitleColor(customizeInsightsButtonTextColor, for: .normal)
+            button.titleLabel?.font = customizeInsightsLaterButtonFont
         }
 
-        static func configureLabelAsCustomizeTry(_ label: UILabel) {
-            label.textColor = customizeInsightsButtonTextColor
-            label.font = customizeInsightsTryButtonFont
+        static func configureAsCustomizeTryButton(_ button: UIButton) {
+            button.setTitleColor(customizeInsightsButtonTextColor, for: .normal)
+            button.titleLabel?.font = customizeInsightsTryButtonFont
         }
 
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {

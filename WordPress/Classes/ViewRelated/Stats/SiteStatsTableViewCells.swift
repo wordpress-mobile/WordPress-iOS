@@ -75,6 +75,7 @@ struct CustomizeInsightsRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -83,7 +84,7 @@ struct CustomizeInsightsRow: ImmuTableRow {
             return
         }
 
-        cell.configure()
+        cell.configure(insightsDelegate: siteStatsInsightsDelegate)
     }
 
 }

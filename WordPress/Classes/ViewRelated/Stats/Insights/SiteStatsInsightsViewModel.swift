@@ -56,7 +56,7 @@ class SiteStatsInsightsViewModel: Observable {
         }
 
         if FeatureFlag.statsInsightsManagement.enabled {
-            tableRows.append(CustomizeInsightsRow())
+            tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
         }
 
         insightsToShow.forEach { insightType in
