@@ -124,9 +124,9 @@ extension WPStyleGuide {
             label.font = customizeInsightsTitleFont
         }
 
-        static func configureAsCustomizeLaterButton(_ button: UIButton) {
+        static func configureAsCustomizeDismissButton(_ button: UIButton) {
             button.setTitleColor(customizeInsightsButtonTextColor, for: .normal)
-            button.titleLabel?.font = customizeInsightsLaterButtonFont
+            button.titleLabel?.font = customizeInsightsDismissButtonFont
         }
 
         static func configureAsCustomizeTryButton(_ button: UIButton) {
@@ -214,7 +214,7 @@ extension WPStyleGuide {
         static let customizeInsightsTitleFont = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
 
         static let customizeInsightsButtonTextColor = UIColor.primary
-        static let customizeInsightsLaterButtonFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        static let customizeInsightsDismissButtonFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let customizeInsightsTryButtonFont = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium)
 
         static let positiveColor = UIColor.success

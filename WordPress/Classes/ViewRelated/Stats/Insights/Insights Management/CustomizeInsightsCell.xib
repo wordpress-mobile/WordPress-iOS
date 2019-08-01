@@ -51,11 +51,11 @@
                             <constraint firstAttribute="height" constant="0.5" id="UVD-9o-n5O"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sIn-CK-ILW" userLabel="Later Button">
-                        <rect key="frame" x="16" y="362.5" width="36" height="35.5"/>
-                        <state key="normal" title="Later"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sIn-CK-ILW" userLabel="Dismiss Button">
+                        <rect key="frame" x="16" y="362.5" width="54" height="35.5"/>
+                        <state key="normal" title="Dismiss"/>
                         <connections>
-                            <action selector="didTapLaterButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="4NP-Uo-ra2"/>
+                            <action selector="didTapDismissButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Im1-bb-YfB"/>
                         </connections>
                     </button>
                 </subviews>
@@ -84,7 +84,7 @@
             <connections>
                 <outlet property="bottomSeparatorLine" destination="zGn-sn-PF3" id="Rz5-Om-IBD"/>
                 <outlet property="contentLabel" destination="w8p-Zf-FRY" id="0h6-yK-Jst"/>
-                <outlet property="laterButton" destination="sIn-CK-ILW" id="fLn-Mt-rbk"/>
+                <outlet property="dismissButton" destination="sIn-CK-ILW" id="vSz-5O-uNe"/>
                 <outlet property="titleLabel" destination="niM-ZX-mhT" id="HR5-Xi-bJ8"/>
                 <outlet property="tryButton" destination="e4l-te-ce3" id="eia-gq-zzW"/>
             </connections>

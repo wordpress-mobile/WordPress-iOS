@@ -39,7 +39,7 @@ enum InsightType: Int {
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
-    @objc optional func customizeLaterButtonTapped()
+    @objc optional func customizeDismissButtonTapped()
     @objc optional func customizeTryButtonTapped()
 }
 
@@ -337,7 +337,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
-    func customizeLaterButtonTapped() {
+    func customizeDismissButtonTapped() {
         hideCustomizeCard = true
         insightsToShow = insightsToShow.filter { $0 != .customize }
         viewModel?.updateInsightsToShow(insights: insightsToShow)

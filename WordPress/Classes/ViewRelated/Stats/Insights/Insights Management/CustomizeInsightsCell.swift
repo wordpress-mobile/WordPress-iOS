@@ -6,7 +6,7 @@ class CustomizeInsightsCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
-    @IBOutlet weak var laterButton: UIButton!
+    @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var tryButton: UIButton!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
@@ -32,20 +32,20 @@ private extension CustomizeInsightsCell {
         titleLabel.text = NSLocalizedString("Customize your insights", comment: "")
         contentLabel.text = NSLocalizedString("Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.", comment: "")
         tryButton.setTitle(NSLocalizedString("Try it now", comment: ""), for: .normal)
-        laterButton.setTitle(NSLocalizedString("Later", comment: ""), for: .normal)
+        dismissButton.setTitle(NSLocalizedString("Dismiss", comment: ""), for: .normal)
 
         Style.configureCell(self)
         Style.configureLabelAsCustomizeTitle(titleLabel)
         Style.configureLabelAsSummary(contentLabel)
-        Style.configureAsCustomizeLaterButton(laterButton)
+        Style.configureAsCustomizeDismissButton(dismissButton)
         Style.configureAsCustomizeTryButton(tryButton)
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
     // MARK: - Button Handling
 
-    @IBAction func didTapLaterButton(_ sender: UIButton) {
-        insightsDelegate?.customizeLaterButtonTapped?()
+    @IBAction func didTapDismissButton(_ sender: UIButton) {
+        insightsDelegate?.customizeDismissButtonTapped?()
     }
 
     @IBAction func didTapTryButton(_ sender: UIButton) {
