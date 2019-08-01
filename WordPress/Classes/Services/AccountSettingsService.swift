@@ -156,7 +156,7 @@ class AccountSettingsService {
         remote.changeUsername(to: username, success: success, failure: success)
     }
 
-    public func validateUsername(to username: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+    public func validateUsername(_ username: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         remote.validateUsername(to: username, success: success, failure: failure)
     }
 
