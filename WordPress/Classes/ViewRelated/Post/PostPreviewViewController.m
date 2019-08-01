@@ -122,7 +122,7 @@
 
 - (void)stopLoading
 {
-    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
     self.navigationItem.title  = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     [self.webView stopLoading];
 }
@@ -293,7 +293,7 @@
 - (UIBarButtonItem *)statusButtonItem
 {
     if (!_statusButtonItem) {
-        LoadingStatusView *statusView = [[LoadingStatusView alloc] initWithTitle: NSLocalizedString(@"Loading Preview", @"Label for button to present loading preview status")];
+        LoadingStatusView *statusView = [[LoadingStatusView alloc] initWithTitle: NSLocalizedString(@"Loading", @"Label for button to present loading preview status")];
         _statusButtonItem = [[UIBarButtonItem alloc] initWithCustomView:statusView];
         _statusButtonItem.accessibilityIdentifier = @"Preview Status";
     }
