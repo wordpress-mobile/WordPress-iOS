@@ -160,11 +160,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         configureFilterBarTopConstraint()
         configureGhost()
 
-        configurePostViewButtonItem()
+        configureNavigationButtons()
     }
 
-    func configurePostViewButtonItem() {
-        navigationItem.rightBarButtonItems = [postsViewButtonItem]
+    func configureNavigationButtons() {
+        navigationItem.rightBarButtonItems = [addButton, postsViewButtonItem]
     }
 
     @objc func togglePostsView() {

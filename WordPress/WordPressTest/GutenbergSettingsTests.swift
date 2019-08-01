@@ -6,8 +6,33 @@ class GutenbergSettingsTests: XCTestCase {
     fileprivate var contextManager: TestContextManager!
     fileprivate var context: NSManagedObjectContext!
 
-    fileprivate func newTestPost() -> Post {
-        return NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
+    var database: EphemeralKeyValueDatabase!
+    var settings: GutenbergSettings!
+    var blog: Blog!
+    var post: Post!
+
+    fileprivate func newTestPost(with blog: Blog) -> Post {
+        let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
+        post.blog = blog
+        return post
+    }
+
+    private func newTestBlog(isWPComAPIEnabled: Bool = true) -> Blog {
+        if isWPComAPIEnabled {
+            let blog = ModelTestHelper.insertDotComBlog(context: context)
+            blog.account?.authToken = "auth"
+            return blog
+        } else {
+            return ModelTestHelper.insertSelfHostedBlog(context: context)
+        }
+    }
+
+    var isGutenbergEnabled: Bool {
+        return blog.isGutenbergEnabled
+    }
+
+    var mustUseGutenberg: Bool {
+        return settings.mustUseGutenberg(for: post)
     }
 
     override func setUp() {
@@ -15,6 +40,10 @@ class GutenbergSettingsTests: XCTestCase {
         contextManager = TestContextManager()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
+        database = EphemeralKeyValueDatabase()
+        settings = GutenbergSettings(database: database)
+        blog = newTestBlog()
+        post = newTestPost(with: blog)
     }
 
     override func tearDown() {
@@ -24,20 +53,19 @@ class GutenbergSettingsTests: XCTestCase {
     }
 
     func testGutenbergDisabledByDefaultAndToggleEnablesInSecondLaunch() {
+
         let testClosure: () -> () = { () in
             let database = EphemeralKeyValueDatabase()
-
+            let blog = self.newTestBlog()
             // This simulates the first launch
             let settings = GutenbergSettings(database: database)
+            settings.setGutenbergEnabled(false, for: blog)
 
-            XCTAssertFalse(settings.isGutenbergEnabled)
+            XCTAssertFalse(blog.isGutenbergEnabled)
 
-            settings.isGutenbergEnabled = true
+            settings.setGutenbergEnabled(true, for: blog)
 
-            // This simulates a second launch
-            let secondEditorSettings = GutenbergSettings(database: database)
-
-            XCTAssertTrue(secondEditorSettings.isGutenbergEnabled)
+            XCTAssertTrue(blog.isGutenbergEnabled)
         }
 
         BuildConfiguration.localDeveloper.test(testClosure)
@@ -47,49 +75,42 @@ class GutenbergSettingsTests: XCTestCase {
     }
 
     func testGutenbergAlwaysUsedForExistingGutenbergPosts() {
-        let database = EphemeralKeyValueDatabase()
-        let settings = GutenbergSettings(database: database)
-        XCTAssertFalse(settings.isGutenbergEnabled)
+        settings.setGutenbergEnabled(false, for: blog)
+        XCTAssertFalse(isGutenbergEnabled)
 
-        let post = newTestPost()
         post.content = "<!-- wp:paragraph -->\n<p>Hello world</p>\n<!-- /wp:paragraph -->"
 
-        XCTAssertTrue(settings.mustUseGutenberg(for: post))
+        XCTAssertTrue(mustUseGutenberg)
 
-        settings.isGutenbergEnabled = true
-        XCTAssertTrue(settings.isGutenbergEnabled)
+        settings.setGutenbergEnabled(true, for: blog)
 
-        XCTAssertTrue(settings.mustUseGutenberg(for: post))
+        XCTAssertTrue(isGutenbergEnabled)
+        XCTAssertTrue(mustUseGutenberg)
     }
 
     func testAztecAlwaysUsedForExistingAztecPosts() {
-        let database = EphemeralKeyValueDatabase()
-        let settings = GutenbergSettings(database: database)
-        XCTAssertFalse(settings.isGutenbergEnabled)
+        settings.setGutenbergEnabled(false, for: blog)
+        XCTAssertFalse(isGutenbergEnabled)
 
-        let post = newTestPost()
         post.content = "<p>Hello world</p>"
 
-        XCTAssertFalse(settings.mustUseGutenberg(for: post))
+        XCTAssertFalse(mustUseGutenberg)
 
-        settings.isGutenbergEnabled = true
-        XCTAssertTrue(settings.isGutenbergEnabled)
+        settings.setGutenbergEnabled(true, for: blog)
 
-        XCTAssertFalse(settings.mustUseGutenberg(for: post))
+        XCTAssertTrue(isGutenbergEnabled)
+        XCTAssertFalse(mustUseGutenberg)
     }
 
-    func testUseSettingForNewPosts() {
-        let database = EphemeralKeyValueDatabase()
-        let settings = GutenbergSettings(database: database)
-        XCTAssertFalse(settings.isGutenbergEnabled)
+    // Thests for defaults when `mobile_editor` haven't been sync from remote
 
-        let post = newTestPost()
+    func testSelfHostedDefaultsToAztec() {
+        blog = newTestBlog(isWPComAPIEnabled: false)
+        post = newTestPost(with: blog)
+        XCTAssertFalse(mustUseGutenberg)
+    }
 
-        XCTAssertFalse(settings.mustUseGutenberg(for: post))
-
-        settings.isGutenbergEnabled = true
-        XCTAssertTrue(settings.isGutenbergEnabled)
-
-        XCTAssertTrue(settings.mustUseGutenberg(for: post))
+    func testWPComAccountsDefaultsToAztec() {
+        XCTAssertFalse(mustUseGutenberg)
     }
 }

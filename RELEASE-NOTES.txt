@@ -2,6 +2,7 @@
 -----
 * Account Settings: added the ability to change the username.
 
+ 
 13.0
 -----
 * Stats: now use site timezone instead of device.
@@ -9,6 +10,8 @@
 * Post Stats: date bar no longer goes prior to earliest date available.
 * Block editor: Adding a block from the post title now shows the add block here indicator.
 * Block editor: Deselect post title any time a block is added
+* Block editor: Auto-enabled upon first open of a block post, unless opted out in v12.9.
+* Block editor: You can now enable and disable the block editor on a per-site basis.
 
 12.9
 -----

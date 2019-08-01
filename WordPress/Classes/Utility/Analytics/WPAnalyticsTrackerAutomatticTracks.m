@@ -107,11 +107,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     __block NSString *emailAddress;
     __block BOOL accountPresent = NO;
     __block BOOL jetpackBlogsPresent = NO;
+    __block WPAccount *account;
+
     [context performBlockAndWait:^{
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *account = [accountService defaultWordPressComAccount];
+        account = [accountService defaultWordPressComAccount];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        
+
+
         blogCount = [blogService blogCountForAllAccounts];
         jetpackBlogsPresent = [blogService hasAnyJetpackBlogs];
         if (account != nil) {
@@ -130,8 +133,16 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }
 
     BOOL dotcom_user = (accountPresent && username.length > 0);
-    BOOL gutenbergEnabled = [GutenbergSettings isGutenbergEnabled];
-    
+
+    // The user "uses" gutenberg if it is enabled on any of their sites.
+    __block BOOL gutenbergEnabled = NO;
+    [account.blogs enumerateObjectsUsingBlock:^(Blog * _Nonnull blog, BOOL * _Nonnull stop) {
+        if (blog.isGutenbergEnabled) {
+            gutenbergEnabled = YES;
+            *stop = YES;
+        }
+    }];
+
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
     userProperties[@"platform"] = @"iOS";
     userProperties[@"dotcom_user"] = @(dotcom_user);

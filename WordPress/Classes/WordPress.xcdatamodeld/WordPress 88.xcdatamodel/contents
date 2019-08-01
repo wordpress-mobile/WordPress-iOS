@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18F132" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18G84" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -37,7 +37,7 @@
         <attribute name="primarySiteID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="tracksOptOut" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="username" attributeType="String" syncable="YES"/>
-        <attribute name="usernameCanBeChanged" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="usernameCanBeChanged" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="webAddress" attributeType="String" syncable="YES"/>
         <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="settings" inverseEntity="Account" syncable="YES"/>
     </entity>
@@ -140,6 +140,7 @@
             <userInfo/>
         </attribute>
         <attribute name="lastUpdateWarning" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mobileEditor" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="options" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
@@ -158,6 +159,7 @@
             <userInfo/>
         </attribute>
         <attribute name="visible" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="webEditor" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="xmlrpc" attributeType="String">
             <userInfo/>
         </attribute>
@@ -906,7 +908,7 @@
         <element name="AllTimeStatsRecordValue" positionX="27" positionY="162" width="128" height="120"/>
         <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="36" positionY="162" width="128" height="255"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="763"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="30"/>
         <element name="BlogAuthor" positionX="36" positionY="162" width="128" height="165"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="855"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>

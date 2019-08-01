@@ -88,6 +88,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
+        NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         return true
     }
 
@@ -281,6 +282,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var runningInBackground: Bool {
         return UIApplication.shared.applicationState == .background
+    }
+}
+
+/// Declares Notification Names
+extension Foundation.Notification.Name {
+    static var applicationLaunchCompleted: Foundation.NSNotification.Name {
+        return Foundation.Notification.Name("org.wordpress.startup.completed")
     }
 }
 
@@ -769,7 +777,7 @@ extension WordPressAppDelegate {
 
 extension WordPressAppDelegate {
     func customizeAppearance() {
-        window?.backgroundColor = WPStyleGuide.itsEverywhereGrey()
+        window?.backgroundColor = .black
         window?.tintColor = WPStyleGuide.wordPressBlue()
 
         WPStyleGuide.configureTabBarAppearance()
