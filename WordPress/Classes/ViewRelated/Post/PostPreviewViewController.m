@@ -7,7 +7,6 @@
 #import "WordPress-Swift.h"
 
 @import Gridicons;
-@import SVProgressHUD;
 @import WordPressUI;
 
 
@@ -19,6 +18,7 @@
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *doneBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *statusButtonItem;
 @property (nonatomic, strong) PostPreviewGenerator *generator;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) id reachabilityObserver;
@@ -85,6 +85,7 @@
         [rightButtons addObject:[self shareBarButtonItem]];
     }
     [self.navigationItem setRightBarButtonItems:rightButtons animated:YES];
+    self.navigationItem.leftItemsSupplementBackButton = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -117,12 +118,12 @@
 
 - (void)startLoading
 {
-    [SVProgressHUD show];
+    [self.navigationItem setLeftBarButtonItem:[self statusButtonItem] animated:YES];
 }
 
 - (void)stopLoading
 {
-    [SVProgressHUD dismiss];
+    self.navigationItem.leftBarButtonItem = nil;
     [self.webView stopLoading];
 }
 
@@ -287,6 +288,17 @@
     }
 
     return _doneBarButtonItem;
+}
+
+- (UIBarButtonItem *)statusButtonItem
+{
+    if (!_statusButtonItem) {
+        LoadingStatusView *statusView = [[LoadingStatusView alloc] initWithTitle: NSLocalizedString(@"Loading Preview", @"Label for button to present loading preview status")];
+        _statusButtonItem = [[UIBarButtonItem alloc] initWithCustomView:statusView];
+        _statusButtonItem.accessibilityIdentifier = @"Preview Status";
+    }
+    
+    return _statusButtonItem;
 }
 
 - (void)sharePost
