@@ -44,11 +44,13 @@ class GutenbergSettingsTests: XCTestCase {
         settings = GutenbergSettings(database: database)
         blog = newTestBlog()
         post = newTestPost(with: blog)
+        TestAnalyticsTracker.setup()
     }
 
     override func tearDown() {
         context.rollback()
         ContextManager.overrideSharedInstance(nil)
+        TestAnalyticsTracker.tearDown()
         super.tearDown()
     }
 
@@ -112,5 +114,78 @@ class GutenbergSettingsTests: XCTestCase {
 
     func testWPComAccountsDefaultsToAztec() {
         XCTAssertFalse(mustUseGutenberg)
+    }
+
+    // MARK: - Tracks tests
+
+    func testTracksOnBlockPostOpening() {
+        settings.setGutenbergEnabled(true, for: blog, source: .onBlockPostOpening)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
+
+        let trackEvent = TestAnalyticsTracker.tracked.first
+        XCTAssertEqual(trackEvent?.stat, WPAnalyticsStat.appSettingsGutenbergEnabled)
+
+        let property = trackEvent?.properties["source"] as? String
+        XCTAssertEqual(property, GutenbergSettings.TracksSwitchSource.onBlockPostOpening.rawValue)
+    }
+
+    func testTracksOnSiteCreation() {
+        settings.softSetGutenbergEnabled(true, for: blog, source: .onSiteCreation)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
+
+        let trackEvent = TestAnalyticsTracker.tracked.first
+        XCTAssertEqual(trackEvent?.stat, WPAnalyticsStat.appSettingsGutenbergEnabled)
+
+        let property = trackEvent?.properties["source"] as? String
+        XCTAssertEqual(property, GutenbergSettings.TracksSwitchSource.onSiteCreation.rawValue)
+    }
+
+    func testTracksViaSiteSettings() {
+        settings.setGutenbergEnabled(true, for: blog, source: .viaSiteSettings)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
+
+        let trackEvent = TestAnalyticsTracker.tracked.first
+        XCTAssertEqual(trackEvent?.stat, WPAnalyticsStat.appSettingsGutenbergEnabled)
+
+        let property = trackEvent?.properties["source"] as? String
+        XCTAssertEqual(property, GutenbergSettings.TracksSwitchSource.viaSiteSettings.rawValue)
+    }
+
+    func testTracksEventOnlyOnceWhenEditorDoesNotChange() {
+        settings.softSetGutenbergEnabled(true, for: blog, source: .onSiteCreation)
+        settings.setGutenbergEnabled(true, for: blog, source: .viaSiteSettings)
+        settings.setGutenbergEnabled(true, for: blog, source: .onBlockPostOpening)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
+
+        let trackEvent = TestAnalyticsTracker.tracked.first
+        XCTAssertEqual(trackEvent?.stat, WPAnalyticsStat.appSettingsGutenbergEnabled)
+
+        let property = trackEvent?.properties["source"] as? String
+        XCTAssertEqual(property, GutenbergSettings.TracksSwitchSource.onSiteCreation.rawValue)
+    }
+
+    func testTracksSwitchEventOnAndOff() {
+        settings.setGutenbergEnabled(true, for: blog, source: .viaSiteSettings)
+        settings.setGutenbergEnabled(false, for: blog, source: .viaSiteSettings)
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 2)
+
+        // First event (Switch ON)
+        var trackEvent = TestAnalyticsTracker.tracked.first
+        XCTAssertEqual(trackEvent?.stat, WPAnalyticsStat.appSettingsGutenbergEnabled)
+
+        var property = trackEvent?.properties["source"] as? String
+        XCTAssertEqual(property, GutenbergSettings.TracksSwitchSource.viaSiteSettings.rawValue)
+
+        // Second event (Switch OFF)
+        trackEvent = TestAnalyticsTracker.tracked.last
+        XCTAssertEqual(trackEvent?.stat, WPAnalyticsStat.appSettingsGutenbergDisabled)
+
+        property = trackEvent?.properties["source"] as? String
+        XCTAssertEqual(property, GutenbergSettings.TracksSwitchSource.viaSiteSettings.rawValue)
     }
 }
