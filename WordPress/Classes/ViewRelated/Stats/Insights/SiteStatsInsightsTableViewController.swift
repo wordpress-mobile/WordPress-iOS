@@ -322,6 +322,12 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func customizeTryButtonTapped() {
+        // TODO: remove when Insights Management view added.
+        let alertController = UIAlertController(title: "Under Construction",
+                                                message: "This will show the Insights Management view.",
+                                                preferredStyle: .alert)
+        alertController.addActionWithTitle("OK", style: .default)
+        present(alertController, animated: true, completion: nil)
     }
 
 }
