@@ -2,6 +2,7 @@ import UIKit
 import WordPressFlux
 
 enum InsightType: Int {
+    case customize
     case latestPostSummary
     case allTimeStats
     case followersTotals
@@ -51,7 +52,12 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     // TODO: update this array when Manage Insights is implemented.
     // Types of Insights to display. The array order dictates the display order.
     private var insightsToShow = [InsightType]()
-    private let userDefaultsKey = "StatsInsightTypes"
+    private let userDefaultsInsightTypesKey = "StatsInsightTypes"
+
+    // Store customize separately as it is not per site.
+    // (insightsToShow is not yet per site, but it will be.)
+    private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
+    private var hideCustomizeCard = false
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -186,13 +192,26 @@ private extension SiteStatsInsightsTableViewController {
         // For now, we'll show all Insights in the default order.
         let allTypesInts = InsightType.allValues.map { $0.rawValue }
 
-        let insightTypesInt = UserDefaults.standard.array(forKey: userDefaultsKey) as? [Int] ?? allTypesInts
+        let insightTypesInt = UserDefaults.standard.array(forKey: userDefaultsInsightTypesKey) as? [Int] ?? allTypesInts
         insightsToShow = insightTypesInt.compactMap { InsightType(rawValue: $0) }
+
+        hideCustomizeCard = UserDefaults.standard.bool(forKey: userDefaultsHideCustomizeKey)
+
+        if !hideCustomizeCard {
+            // Insert customize at the beginning of the array so it is displayed first.
+            insightsToShow.insert(.customize, at: 0)
+        }
     }
 
     func writeInsightsToUserDefaults() {
+        // Remove customize from array since it is not per site.
+        // (insightsToShow is not yet per site, but it will be.)
+        insightsToShow = insightsToShow.filter { $0 != .customize }
+
         let insightTypesInt = insightsToShow.compactMap { $0.rawValue }
-        UserDefaults.standard.set(insightTypesInt, forKey: userDefaultsKey)
+        UserDefaults.standard.set(insightTypesInt, forKey: userDefaultsInsightTypesKey)
+
+        UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
 }
 
@@ -319,6 +338,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func customizeLaterButtonTapped() {
+        hideCustomizeCard = true
+        insightsToShow = insightsToShow.filter { $0 != .customize }
+        viewModel?.updateInsightsToShow(insights: insightsToShow)
+        refreshTableView()
+        writeInsightsToUserDefaults()
     }
 
     func customizeTryButtonTapped() {
