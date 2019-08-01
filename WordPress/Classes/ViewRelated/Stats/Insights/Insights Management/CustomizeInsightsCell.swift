@@ -29,10 +29,10 @@ private extension CustomizeInsightsCell {
     // MARK: - Styles
 
     func applyStyles() {
-        titleLabel.text = NSLocalizedString("Customize your insights", comment: "")
-        contentLabel.text = NSLocalizedString("Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.", comment: "")
-        tryButton.setTitle(NSLocalizedString("Try it now", comment: ""), for: .normal)
-        dismissButton.setTitle(NSLocalizedString("Dismiss", comment: ""), for: .normal)
+        titleLabel.text = Labels.title
+        contentLabel.text = Labels.content
+        tryButton.setTitle(Labels.tryIt, for: .normal)
+        dismissButton.setTitle(Labels.dismiss, for: .normal)
 
         Style.configureCell(self)
         Style.configureLabelAsCustomizeTitle(titleLabel)
@@ -52,4 +52,10 @@ private extension CustomizeInsightsCell {
         insightsDelegate?.customizeTryButtonTapped?()
     }
 
+    struct Labels {
+        static let title = NSLocalizedString("Customize your insights", comment: "Customize Insights title")
+        static let content = NSLocalizedString("Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.", comment: "Customize Insights description")
+        static let tryIt = NSLocalizedString("Try it now", comment: "Customize Insights button title")
+        static let dismiss = NSLocalizedString("Dismiss", comment: "Customize Insights button title")
+    }
 }
