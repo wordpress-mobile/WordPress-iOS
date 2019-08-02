@@ -125,9 +125,9 @@ extension NSNotification.Name {
         helpCenterConfig.labels = [Constants.articleLabel]
 
         // If we don't have the user's information, disable 'Contact Us' via the Help Center and Article view.
-        helpCenterConfig.hideContactSupport = !haveUserIdentity
+        helpCenterConfig.showContactOptionsOnEmptySearch = haveUserIdentity
         let articleConfig = ArticleUiConfiguration()
-        articleConfig.hideContactSupport = !haveUserIdentity
+        articleConfig.showContactOptions = haveUserIdentity
 
         // Get custom request configuration so new tickets from this path have all the necessary information.
         let newRequestConfig = self.createRequest()
