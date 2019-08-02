@@ -152,6 +152,7 @@ class GutenbergSettingsTests: XCTestCase {
 
     func testAutoenableOnNewPostAndNewBlogs() {
         settings.softSetGutenbergEnabled(true, for: blog)
+        settings.setGutenbergEnabled(true, for: blog) // Called after sync
 
         XCTAssertTrue(mustUseGutenberg)
         XCTAssertTrue(shouldAutoenableGutenberg)
@@ -159,6 +160,8 @@ class GutenbergSettingsTests: XCTestCase {
 
     func testAutoenableOnExistingPostAndNewBlogs() {
         settings.softSetGutenbergEnabled(true, for: blog)
+        settings.setGutenbergEnabled(true, for: blog) // Called after sync
+
         post.content = gutenbergContent
 
         XCTAssertTrue(mustUseGutenberg)
@@ -167,11 +170,12 @@ class GutenbergSettingsTests: XCTestCase {
 
     func testAutoenableOnNewBlogsOccoursOnlyOnce() {
         settings.softSetGutenbergEnabled(true, for: blog)
+        settings.setGutenbergEnabled(true, for: blog) // Called after sync
 
         XCTAssertTrue(mustUseGutenberg)
         XCTAssertTrue(shouldAutoenableGutenberg)
 
-        settings.willShowDialog(for: blog)
+        settings.willShowDialog(for: blog) // Called by EditorFactory
 
         XCTAssertFalse(shouldAutoenableGutenberg)
     }
@@ -214,7 +218,6 @@ class GutenbergSettingsTests: XCTestCase {
         blog.mobileEditor = editor
 
         if gutenbergEnabledFlag != nil {
-            let url = blog.url ?? ""
             let perSiteEnabledKey = GutenbergSettings.Key.enabledOnce(for: blog)
             database.set(true, forKey: perSiteEnabledKey)
         }
