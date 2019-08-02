@@ -6,6 +6,7 @@ enum FeatureFlag: Int {
     case jetpackDisconnect
     case statsRefresh
     case statsFileDownloads
+    case statsInsightsManagement
     case domainCredit
     case murielColors
 
@@ -19,6 +20,8 @@ enum FeatureFlag: Int {
         case .statsRefresh:
             return true
         case .statsFileDownloads:
+            return BuildConfiguration.current == .localDeveloper
+        case .statsInsightsManagement:
             return BuildConfiguration.current == .localDeveloper
         case .domainCredit:
             return true

@@ -57,6 +57,10 @@ class SiteStatsInsightsViewModel: Observable {
 
         insightsToShow.forEach { insightType in
             switch insightType {
+            case .customize:
+                if FeatureFlag.statsInsightsManagement.enabled {
+                    tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                }
             case .latestPostSummary:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
                 tableRows.append(LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
@@ -138,6 +142,11 @@ class SiteStatsInsightsViewModel: Observable {
     func annualInsightsYear() -> Int? {
         return insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear
     }
+
+    func updateInsightsToShow(insights: [InsightType]) {
+        insightsToShow = insights
+    }
+
 }
 
 // MARK: - Private Extension
