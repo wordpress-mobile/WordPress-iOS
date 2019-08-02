@@ -95,7 +95,8 @@ class PostListFilterTests: XCTestCase {
         let predicate = PostListFilter.publishedFilter().predicateForFetchRequest
         let matchingPosts = [
             createPost(.publish, hasRemote: true),
-            createPost(.publishPrivate, hasRemote: true)
+            createPost(.publishPrivate),
+            createPost(.publishPrivate, hasRemote: true),
         ]
         let nonMatchingPosts = [
             createPost(.draft),
