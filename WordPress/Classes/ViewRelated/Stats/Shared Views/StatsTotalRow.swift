@@ -426,6 +426,8 @@ private extension StatSection {
             return .statsItemTappedTagsAndCategories
         case .periodVideos:
             return .statsItemTappedVideoTapped
+        case .insightsAddInsight:
+            return .statsItemTappedInsightsAddStat
         default:
             return nil
         }
