@@ -4,11 +4,11 @@ class CustomizeInsightsCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var contentLabel: UILabel!
-    @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var tryButton: UIButton!
-    @IBOutlet weak var bottomSeparatorLine: UIView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var contentLabel: UILabel!
+    @IBOutlet private var dismissButton: UIButton!
+    @IBOutlet private var tryButton: UIButton!
+    @IBOutlet private var bottomSeparatorLine: UIView!
 
     private weak var insightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
