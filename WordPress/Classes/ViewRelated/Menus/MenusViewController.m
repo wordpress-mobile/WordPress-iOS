@@ -81,7 +81,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
-    self.view.backgroundColor = [UIColor murielNeutral5];
+    self.view.backgroundColor = [UIColor murielNeutral0];
 
     self.scrollView.backgroundColor = self.view.backgroundColor;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
@@ -119,7 +119,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 {
     UILabel *label = [[UILabel alloc] init];
     label.font = [WPFontManager systemLightFontOfSize:14];
-    label.textColor = [UIColor murielPrimaryDark];
+    label.textColor = [UIColor murielText];
     label.numberOfLines = 0;
     [self.stackView addArrangedSubview:label];
     [label.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:MenusDesignDefaultContentSpacing].active = YES;
