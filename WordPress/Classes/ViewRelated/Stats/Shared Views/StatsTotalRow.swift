@@ -187,6 +187,12 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         let dataTitle = dataLabel.text ?? ""
         accessibilityLabel = [itemTitle, dataTitle].joined(separator: ", ")
 
+        if let statSection = rowData?.statSection, statSection == .insightsAddInsight {
+            accessibilityTraits = .button
+            accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint")
+            return
+        }
+
         let showDisclosure = rowData?.showDisclosure ?? false
         accessibilityTraits = (showDisclosure) ? .button : .staticText
         accessibilityHint = (showDisclosure) ? NSLocalizedString("Tap for more detail.", comment: "Accessibility hint") : ""
