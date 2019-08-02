@@ -28,7 +28,7 @@ enum MeNavigationAction: NavigationAction {
         case .accountSettings:
             WPTabBarController.sharedInstance().switchMeTabToAccountSettings()
         case .notificationSettings:
-            WPTabBarController.sharedInstance().switchMeTabToNotificationSettings()
+            WPTabBarController.sharedInstance().switchNotificationsTabToNotificationSettings()
         }
     }
 }

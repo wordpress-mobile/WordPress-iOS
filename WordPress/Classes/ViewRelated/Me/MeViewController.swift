@@ -161,13 +161,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             action: pushAccountSettings(),
             accessibilityIdentifier: "accountSettings")
 
-        let notificationSettings = NavigationItemRow(
-            title: RowTitles.notificationSettings,
-            icon: Gridicon.iconOfType(.bell),
-            accessoryType: accessoryType,
-            action: pushNotificationSettings(),
-            accessibilityIdentifier: "notificationSettings")
-
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
             icon: Gridicon.iconOfType(.help),
@@ -192,9 +185,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                     ImmuTableSection(rows: [
                         myProfile,
                         accountSettings,
-                        appSettingsRow,
-                        notificationSettings
-                        ]),
+                        appSettingsRow
+                    ]),
                     ImmuTableSection(rows: [helpAndSupportIndicator]),
                     ImmuTableSection(
                         headerText: wordPressComAccount,
@@ -273,13 +265,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func pushNotificationSettings() -> ImmuTableAction {
-        return { [unowned self] row in
-            let controller = NotificationSettingsViewController()
-            self.showDetailViewController(controller, sender: self)
-        }
-    }
-
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportTableViewController()
@@ -323,12 +308,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     ///
     @objc public func navigateToAppSettings() {
         navigateToTarget(for: appSettingsRow.title)
-    }
-
-    /// Selects the Notification Settings row and pushes the Notification Settings view controller
-    ///
-    @objc public func navigateToNotificationSettings() {
-        navigateToTarget(for: RowTitles.notificationSettings)
     }
 
     /// Selects the Help & Support row and pushes the Support view controller
@@ -528,7 +507,6 @@ private extension MeViewController {
         static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
         static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
         static let accountSettings = NSLocalizedString("Account Settings", comment: "Link to Account Settings section")
-        static let notificationSettings = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
