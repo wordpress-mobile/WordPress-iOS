@@ -1,6 +1,6 @@
 import UIKit
 
-class CustomizeInsightsCell: UITableViewCell, NibLoadable {
+class CustomizeInsightsCell: UITableViewCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -18,6 +18,23 @@ class CustomizeInsightsCell: UITableViewCell, NibLoadable {
     func configure(insightsDelegate: SiteStatsInsightsDelegate?) {
         self.insightsDelegate = insightsDelegate
         applyStyles()
+        prepareForVoiceOver()
+    }
+
+    func prepareForVoiceOver() {
+        titleLabel.isAccessibilityElement = true
+        titleLabel.accessibilityTraits = .staticText
+        titleLabel.accessibilityLabel = Labels.title
+
+        contentLabel.isAccessibilityElement = true
+        contentLabel.accessibilityTraits = .staticText
+        contentLabel.accessibilityLabel = Labels.content
+
+        dismissButton.accessibilityLabel = Labels.dismiss
+        dismissButton.accessibilityHint = Labels.dismissHint
+
+        tryButton.accessibilityLabel = Labels.tryIt
+        tryButton.accessibilityHint = Labels.tryItHint
     }
 
 }
@@ -52,10 +69,15 @@ private extension CustomizeInsightsCell {
         insightsDelegate?.customizeTryButtonTapped?()
     }
 
+    // MARK: - Constants
+
     struct Labels {
         static let title = NSLocalizedString("Customize your insights", comment: "Customize Insights title")
         static let content = NSLocalizedString("Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.", comment: "Customize Insights description")
         static let tryIt = NSLocalizedString("Try it now", comment: "Customize Insights button title")
         static let dismiss = NSLocalizedString("Dismiss", comment: "Customize Insights button title")
+        static let dismissHint = NSLocalizedString("Tap to dismiss this card", comment: "Accessibility hint")
+        static let tryItHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint")
     }
+
 }
