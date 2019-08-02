@@ -254,7 +254,7 @@ extension PostCoordinator: Uploader {
                 return
             }
 
-            posts.forEach({ self.retrySave(of: $0) })
+            posts.forEach { self.retrySave(of: $0) }
         }
     }
 }
@@ -276,13 +276,13 @@ extension PostCoordinator {
             let allowedStatuses: [BasePost.Status] = [.draft, .publish]
 
             postService.getFailedPosts { posts in
-                let postsToRetry = posts.filter({ post -> Bool in
+                let postsToRetry = posts.filter { post -> Bool in
                     guard let status = post.status else {
                         return false
                     }
 
                     return allowedStatuses.contains(status) && !post.hasRemote()
-                })
+                }
 
                 result(postsToRetry)
             }
