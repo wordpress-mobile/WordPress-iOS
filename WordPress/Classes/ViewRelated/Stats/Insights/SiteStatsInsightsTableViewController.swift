@@ -41,6 +41,8 @@ enum InsightType: Int {
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func customizeDismissButtonTapped()
     @objc optional func customizeTryButtonTapped()
+    @objc optional func showAddInsight()
+
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
@@ -267,7 +269,6 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showShareForPost(postID: NSNumber, fromView: UIView) {
-
         guard let blogId = SiteStatsInformation.sharedInstance.siteID,
         let blog = blogService.blog(byBlogId: blogId) else {
             DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
@@ -347,6 +348,16 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func customizeTryButtonTapped() {
         // TODO: remove when Insights Management view added.
+        showTemporaryAlert()
+    }
+
+    func showAddInsight() {
+        // TODO: remove when Insights Management view added.
+        showTemporaryAlert()
+    }
+
+    // TODO: remove when Insights Management view added.
+    private func showTemporaryAlert() {
         let alertController = UIAlertController(title: "Under Construction",
                                                 message: "This will show the Insights Management view.",
                                                 preferredStyle: .alert)

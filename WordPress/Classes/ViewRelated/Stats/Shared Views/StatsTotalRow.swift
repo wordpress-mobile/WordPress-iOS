@@ -53,6 +53,7 @@ struct StatsTotalRowData {
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
+    @objc optional func showAddInsight()
 }
 
 class StatsTotalRow: UIView, NibLoadable, Accessible {
@@ -161,8 +162,8 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         dataLabel.text = rowData.data
 
         // Toggle optionals
+        configureDisclosureButton()
         disclosureImageView.isHidden = !rowData.showDisclosure
-        disclosureButton.isEnabled = rowData.showDisclosure
         itemDetailLabel.isHidden = (rowData.nameDetail == nil)
         dataBarView.isHidden = (rowData.dataBarPercent == nil)
         separatorLine.isHidden = !showSeparator
@@ -211,6 +212,20 @@ private extension StatsTotalRow {
         Style.configureViewAsSeparator(separatorLine)
         Style.configureViewAsSeparator(topExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
+    }
+
+    func configureDisclosureButton() {
+        guard let rowData = rowData else {
+            disclosureButton.isEnabled = false
+            return
+        }
+
+        disclosureButton.isEnabled = rowData.showDisclosure
+
+        // Add Insight doesn't have a disclosure icon, but it needs a tap action.
+        if rowData.statSection == .insightsAddInsight {
+            disclosureButton.isEnabled = true
+        }
     }
 
     func configureExpandedState() {
@@ -292,6 +307,16 @@ private extension StatsTotalRow {
         }
     }
 
+    func downloadImageFrom(_ iconURL: URL) {
+        WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
+            self.imageView.image = image
+            self.imageView.backgroundColor = .clear
+        }, failure: { error in
+            DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
+            self.imageView.isHidden = true
+        })
+    }
+
     func configureDataBar() {
 
         guard let dataBarPercent = rowData?.dataBarPercent else {
@@ -317,16 +342,6 @@ private extension StatsTotalRow {
         let barWidth = maxBarWidth * dataBarPercent
         let distanceFromMax = maxBarWidth - barWidth
         dataBarWidthConstraint.constant = CGFloat(distanceFromMax)
-    }
-
-    func downloadImageFrom(_ iconURL: URL) {
-        WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
-            self.imageView.image = image
-            self.imageView.backgroundColor = .clear
-        }, failure: { error in
-            DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
-            self.imageView.isHidden = true
-        })
     }
 
     struct Constants {
@@ -363,6 +378,11 @@ private extension StatsTotalRow {
             } else {
                 delegate?.displayWebViewWithURL?(disclosureURL)
             }
+            return
+        }
+
+        if let statSection = rowData?.statSection, statSection == .insightsAddInsight {
+            delegate?.showAddInsight?()
             return
         }
 
