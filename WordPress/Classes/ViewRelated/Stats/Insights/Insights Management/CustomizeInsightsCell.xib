@@ -25,20 +25,20 @@
                             <constraint firstAttribute="height" constant="189" id="J0H-hm-Jwg"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Customize your insights" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="niM-ZX-mhT">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Customize your insights" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="niM-ZX-mhT">
                         <rect key="frame" x="16" y="214" width="288" height="24"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8p-Zf-FRY">
-                        <rect key="frame" x="16" y="246" width="288" height="81.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8p-Zf-FRY">
+                        <rect key="frame" x="16" y="246" width="288" height="86.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4l-te-ce3" userLabel="Try Button">
-                        <rect key="frame" x="237" y="362.5" width="67" height="35.5"/>
+                        <rect key="frame" x="237" y="367.5" width="67" height="30.5"/>
                         <state key="normal" title="Try it now"/>
                         <connections>
                             <action selector="didTapTryButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="RyC-pa-vmv"/>
@@ -52,7 +52,7 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sIn-CK-ILW" userLabel="Dismiss Button">
-                        <rect key="frame" x="16" y="362.5" width="54" height="35.5"/>
+                        <rect key="frame" x="16" y="367.5" width="54" height="30.5"/>
                         <state key="normal" title="Dismiss"/>
                         <connections>
                             <action selector="didTapDismissButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Im1-bb-YfB"/>
