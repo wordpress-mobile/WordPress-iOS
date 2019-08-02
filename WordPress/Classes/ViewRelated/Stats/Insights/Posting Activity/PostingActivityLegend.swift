@@ -23,15 +23,15 @@ class PostingActivityLegend: UIView, NibLoadable {
     static func colorForCount(_ count: Int) -> UIColor? {
         switch count {
         case 0:
-            return Style.PostingActivityColors.lightGrey
+            return Style.PostingActivityColors.range1
         case 1...2:
-            return Style.PostingActivityColors.lightBlue
+            return Style.PostingActivityColors.range2
         case 3...5:
-            return Style.PostingActivityColors.mediumBlue
+            return Style.PostingActivityColors.range3
         case 6...7:
-            return Style.PostingActivityColors.blue
+            return Style.PostingActivityColors.range4
         default:
-            return Style.PostingActivityColors.darkBlue
+            return Style.PostingActivityColors.range5
         }
     }
 
