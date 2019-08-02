@@ -31,13 +31,6 @@ class MediaCoordinator: NSObject {
         return coordinator
     }()
 
-    /// Tracks uploads that don't belong to a specific post _and_ are auto-retries of failed uploads
-    private lazy var autoRetryProgressCoordinator: MediaProgressCoordinator = {
-        let coordinator = MediaProgressCoordinator()
-        coordinator.delegate = self
-        return coordinator
-    }()
-
     /// Tracks uploads of media for specific posts
     private var postMediaProgressCoordinators = [AbstractPost: MediaProgressCoordinator]()
 
@@ -166,10 +159,8 @@ class MediaCoordinator: NSObject {
     /// Retry the upload of a media object that previously has failed.
     ///
     /// - Parameter media: the media object to retry the upload
-    /// - Parameter isAutomaticRetry: indicates whether an upload is a manual action taken by the user
-    /// or an automagical one done via the `Uploader` protocol.
     ///
-    func retryMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil, isAutomaticRetry: Bool = false) {
+    func retryMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .failed else {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
@@ -177,12 +168,7 @@ class MediaCoordinator: NSObject {
 
         trackRetryUploadOf(media, analyticsInfo: analyticsInfo)
 
-        let coordinator: MediaProgressCoordinator
-        if isAutomaticRetry {
-            coordinator = autoRetryProgressCoordinator
-        } else {
-            coordinator = self.coordinator(for: media)
-        }
+        let coordinator = self.coordinator(for: media)
 
         coordinator.track(numberOfItems: 1)
         let uploadProgress = uploadMedia(media)
@@ -607,7 +593,13 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         // We only want to show an upload notice for uploads initiated within
         // the media library, or if there's been a failure.
-        if mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
+        // If the errors are causes by a missing file, we want to ignore that too.
+
+        let mediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
+
+        if !mediaErrorsAreMissingFilesErrors,
+            mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
+
             let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
             if let notice = model?.notice {
                 ActionDispatcher.dispatch(NoticeAction.post(notice))
@@ -633,7 +625,7 @@ extension MediaCoordinator: Uploader {
 
             media.forEach() {
                 self.addObserverForDeletedFiles(for: $0)
-                self.retryMedia($0, isAutomaticRetry: true)
+                self.retryMedia($0)
             }
         }
     }
@@ -646,23 +638,15 @@ extension MediaCoordinator {
     // We want to collect more data about that, so we're going to log that info to Sentry,
     // and also delete the `Media` object, since there isn't really a reasonable way to recover from that failure.
     func addObserverForDeletedFiles(for media: Media) {
-        addObserver({ (media, state) in
-            guard
-                case .failed(let error) = state,
-                let afError = error as? AFError,
-                case .multipartEncodingFailed(let encodingFailure) = afError else {
-                    return
-            }
-
-            switch encodingFailure {
-            case .bodyPartFileNotReachableWithError,
-                 .bodyPartFileNotReachable:
-                CrashLogging.logMessage("Deleting a media object that's failed to upload because of a missing local file.",
-                                        properties: ["underlyingError": afError])
-                self.cancelUploadAndDeleteMedia(media)
-            default:
+        addObserver({ [weak self] (media, _) in
+            guard let mediaError = media.error,
+                media.hasMissingFileError else {
                 return
             }
+
+            CrashLogging.logError(mediaError,
+                                  userInfo: ["description": "Deleting a media object that's failed to upload because of a missing local file."])
+            self?.cancelUploadAndDeleteMedia(media)
 
         }, for: media)
     }
@@ -671,5 +655,22 @@ extension MediaCoordinator {
 extension Media {
     var uploadID: String {
         return objectID.uriRepresentation().absoluteString
+    }
+
+    fileprivate var hasMissingFileError: Bool {
+        guard
+            let afError = error as? AFError,
+            case .multipartEncodingFailed = afError,
+            case .multipartEncodingFailed(let encodingFailure) = afError else {
+                return false
+        }
+
+        switch encodingFailure {
+        case .bodyPartFileNotReachableWithError,
+             .bodyPartFileNotReachable:
+            return true
+        default:
+            return false
+        }
     }
 }
