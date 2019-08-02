@@ -22,6 +22,7 @@ class GutenbergSettingsTests: XCTestCase {
         if isWPComAPIEnabled {
             let blog = ModelTestHelper.insertDotComBlog(context: context)
             blog.account?.authToken = "auth"
+            blog.dotComID = 1
             return blog
         } else {
             return ModelTestHelper.insertSelfHostedBlog(context: context)
@@ -179,7 +180,7 @@ class GutenbergSettingsTests: XCTestCase {
 
     func testDoNotAutoenableAfterMigrationSetToGutenberg() {
         database.set(true, forKey: GutenbergSettings.Key.appWideEnabled)
-        blog.mobileEditor = .gutenberg
+        migration()
 
         XCTAssertTrue(mustUseGutenberg)
         XCTAssertFalse(shouldAutoenableGutenberg)
@@ -187,7 +188,7 @@ class GutenbergSettingsTests: XCTestCase {
 
     func testDoNotAutoenableAfterMigrationSetToAztec() {
         database.set(false, forKey: GutenbergSettings.Key.appWideEnabled)
-        blog.mobileEditor = .aztec
+        migration()
 
         post.content = gutenbergContent
 
@@ -197,11 +198,25 @@ class GutenbergSettingsTests: XCTestCase {
 
     func testAutoenableAfterMigrationNotSet() {
         database.set(nil, forKey: GutenbergSettings.Key.appWideEnabled)
-        blog.mobileEditor = .aztec
+        migration()
 
         post.content = gutenbergContent
 
         XCTAssertTrue(mustUseGutenberg)
         XCTAssertTrue(shouldAutoenableGutenberg)
+    }
+
+    func migration() {
+        let gutenbergEnabledFlag = database.object(forKey: GutenbergSettings.Key.appWideEnabled) as? Bool
+        let isGutenbergEnabled = gutenbergEnabledFlag ?? false
+        let editor: MobileEditor = isGutenbergEnabled ? .gutenberg : .aztec
+
+        blog.mobileEditor = editor
+
+        if gutenbergEnabledFlag != nil {
+            let url = blog.url ?? ""
+            let perSiteEnabledKey = GutenbergSettings.Key.enabledOnce(for: blog)
+            database.set(true, forKey: perSiteEnabledKey)
+        }
     }
 }

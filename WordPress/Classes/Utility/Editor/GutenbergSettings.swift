@@ -7,7 +7,7 @@ class GutenbergSettings {
     enum Key {
         static let appWideEnabled = "kUserDefaultsGutenbergEditorEnabled"
         static func enabledOnce(for blog: Blog) -> String {
-            let url = (blog.displayURL ?? "") as String
+            let url = (blog.url ?? "") as String
             return "com.wordpress.gutenberg-autoenabled-" + url
         }
     }
@@ -87,7 +87,7 @@ class GutenbergSettings {
 
     /// True if gutenberg editor has been enabled at least once on the given blog
     func wasGutenbergEnabledOnce(for blog: Blog) -> Bool {
-        return database.object(forKey: Key.enabledOnce(for: blog)) != nil || database.object(forKey: Key.appWideEnabled) != nil
+        return database.object(forKey: Key.enabledOnce(for: blog)) != nil
     }
 
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
