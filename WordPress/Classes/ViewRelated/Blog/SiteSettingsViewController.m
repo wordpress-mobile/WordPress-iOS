@@ -17,6 +17,7 @@
 #import "WordPress-Swift.h"
 #import "WPWebViewController.h"
 #import <wpxmlrpc/WPXMLRPC.h>
+#import "AccountService.h"
 @import WordPressKit;
 
 
@@ -149,6 +150,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                                              selector:@selector(handleDataModelChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:self.blog.managedObjectContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAccountChange:)
+                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
+                                               object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -1347,6 +1352,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if ([updatedObjects containsObject:self.blog]) {
         [self.tableView reloadData];
     }
+}
+
+- (void)handleAccountChange:(NSNotification *)notification
+{
+    [self.tableView reloadData];
 }
 
 @end
