@@ -25,7 +25,7 @@ class PostActionSheet {
             }
         }
 
-        if post.status == .publish || post.status == .draft {
+        if post.status == .publish {
             actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
                 self?.interactivePostViewDelegate?.stats(for: post)
             }
