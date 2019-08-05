@@ -1646,10 +1646,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsAccessed:
             eventName = @"stats_accessed";
             break;
-            case WPAnalyticsStatStatsDateTappedBackward:
+        case WPAnalyticsStatStatsDateTappedBackward:
             eventName = @"stats_date_tapped_backward";
             break;
-            case WPAnalyticsStatStatsDateTappedForward:
+        case WPAnalyticsStatStatsDateTappedForward:
             eventName = @"stats_date_tapped_forward";
             break;
         case WPAnalyticsStatStatsInsightsAccessed:
@@ -1660,6 +1660,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatStatsItemTappedClicks:
             eventName = @"stats_clicks_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedInsightsAddStat:
+            eventName = @"stats_add_insight_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedInsightsCustomizeDismiss:
+            eventName = @"stats_customize_insights_dismiss_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedInsightsCustomizeTry:
+            eventName = @"stats_customize_insights_try_item_tapped";
             break;
         case WPAnalyticsStatStatsItemTappedLatestPostSummaryNewPost:
             eventName = @"stats_latest_post_summary_add_new_post_tapped";
