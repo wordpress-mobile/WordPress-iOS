@@ -23,6 +23,14 @@ class PluginListCell: UITableViewCell {
             view.leadingAnchor.constraint(greaterThanOrEqualTo: accessoryViewContainer.leadingAnchor).isActive = true
         }
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        nameLabel.textColor = .text
+        authorLabel.textColor = .textSubtle
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
 
