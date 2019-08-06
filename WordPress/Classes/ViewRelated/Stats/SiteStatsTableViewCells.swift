@@ -67,6 +67,28 @@ struct TableFooterRow: ImmuTableRow {
 
 // MARK: - Insights Rows
 
+struct CustomizeInsightsRow: ImmuTableRow {
+
+    typealias CellType = CustomizeInsightsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(insightsDelegate: siteStatsInsightsDelegate)
+    }
+
+}
+
 struct LatestPostSummaryRow: ImmuTableRow {
 
     typealias CellType = LatestPostSummaryCell
@@ -87,7 +109,6 @@ struct LatestPostSummaryRow: ImmuTableRow {
         }
 
         cell.configure(withInsightData: summaryData, chartData: chartData, andDelegate: siteStatsInsightsDelegate)
-
     }
 }
 
@@ -189,6 +210,29 @@ struct TwoColumnStatsRow: ImmuTableRow {
 
         cell.configure(dataRows: dataRows, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
+}
+
+struct AddInsightRow: ImmuTableRow {
+
+    typealias CellType = TopTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let dataRow: StatsTotalRowData
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(dataRows: [dataRow], siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+
 }
 
 // MARK: - Period Rows

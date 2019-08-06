@@ -1,7 +1,7 @@
 import Foundation
 
 class LoadingStatusView: UIView {
-    init(title: String) {
+    @objc init(title: String) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear

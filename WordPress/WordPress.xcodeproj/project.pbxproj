@@ -1098,6 +1098,8 @@
 		984F86FB21DEDB070070E0E3 /* TopTotalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984F86FA21DEDB060070E0E3 /* TopTotalsCell.swift */; };
 		98563DDD21BF30C40006F5E9 /* TabbedTotalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98563DDB21BF30C40006F5E9 /* TabbedTotalsCell.swift */; };
 		98563DDE21BF30C40006F5E9 /* TabbedTotalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98563DDC21BF30C40006F5E9 /* TabbedTotalsCell.xib */; };
+		985793C822F23D7000643DBF /* CustomizeInsightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985793C622F23D7000643DBF /* CustomizeInsightsCell.swift */; };
+		985793C922F23D7000643DBF /* CustomizeInsightsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 985793C722F23D7000643DBF /* CustomizeInsightsCell.xib */; };
 		98579BC7203DD86F004086E4 /* EpilogueSectionHeaderFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98579BC5203DD86D004086E4 /* EpilogueSectionHeaderFooter.swift */; };
 		98579BC8203DD86F004086E4 /* EpilogueSectionHeaderFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98579BC6203DD86E004086E4 /* EpilogueSectionHeaderFooter.xib */; };
 		9865257D2194D77F0078B916 /* SiteStatsInsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9865257C2194D77E0078B916 /* SiteStatsInsightsViewModel.swift */; };
@@ -3256,6 +3258,8 @@
 		984F86FA21DEDB060070E0E3 /* TopTotalsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopTotalsCell.swift; sourceTree = "<group>"; };
 		98563DDB21BF30C40006F5E9 /* TabbedTotalsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedTotalsCell.swift; sourceTree = "<group>"; };
 		98563DDC21BF30C40006F5E9 /* TabbedTotalsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TabbedTotalsCell.xib; sourceTree = "<group>"; };
+		985793C622F23D7000643DBF /* CustomizeInsightsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeInsightsCell.swift; sourceTree = "<group>"; };
+		985793C722F23D7000643DBF /* CustomizeInsightsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomizeInsightsCell.xib; sourceTree = "<group>"; };
 		98579BC5203DD86D004086E4 /* EpilogueSectionHeaderFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpilogueSectionHeaderFooter.swift; sourceTree = "<group>"; };
 		98579BC6203DD86E004086E4 /* EpilogueSectionHeaderFooter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EpilogueSectionHeaderFooter.xib; sourceTree = "<group>"; };
 		9865257C2194D77E0078B916 /* SiteStatsInsightsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsInsightsViewModel.swift; sourceTree = "<group>"; };
@@ -6986,6 +6990,15 @@
 			name = Zendesk;
 			sourceTree = "<group>";
 		};
+		985793C522F23CD800643DBF /* Insights Management */ = {
+			isa = PBXGroup;
+			children = (
+				985793C622F23D7000643DBF /* CustomizeInsightsCell.swift */,
+				985793C722F23D7000643DBF /* CustomizeInsightsCell.xib */,
+			);
+			path = "Insights Management";
+			sourceTree = "<group>";
+		};
 		986C908222319ECF00FC31E1 /* Post Stats */ = {
 			isa = PBXGroup;
 			children = (
@@ -7024,6 +7037,7 @@
 		98747671219638BF0080967F /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				985793C522F23CD800643DBF /* Insights Management */,
 				9826AE7F21B5C63800C851FA /* Latest Post Summary */,
 				9826AE8421B5C6D500C851FA /* Posting Activity */,
 				98880A4722B2E3FC00464538 /* Two Column Stats */,
@@ -9581,6 +9595,7 @@
 				17DC4C5822C5E6D60059CA11 /* open_source_icon_20pt@3x.png in Resources */,
 				4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */,
 				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
+				985793C922F23D7000643DBF /* CustomizeInsightsCell.xib in Resources */,
 				D8380CA52192E77F00250609 /* VerticalsCell.xib in Resources */,
 				17E363A122C41DBA000E0C79 /* hot_pink_icon_29pt@3x.png in Resources */,
 				17E3630222C41725000E0C79 /* wordpress_dark_icon_20pt.png in Resources */,
@@ -11159,6 +11174,7 @@
 				B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */,
 				4395A15D2106718900844E8E /* QuickStartChecklistCell.swift in Sources */,
 				9829162F2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift in Sources */,
+				985793C822F23D7000643DBF /* CustomizeInsightsCell.swift in Sources */,
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
 				436D56242117312700CEAA33 /* RegisterDomainDetailsViewModel+RowList.swift in Sources */,
 				596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */,
