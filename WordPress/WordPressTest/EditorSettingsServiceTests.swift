@@ -12,6 +12,10 @@ private class TestableEditorSettingsService: EditorSettingsService {
     override func api(for blog: Blog) -> WordPressComRestApi? {
         return mockApi
     }
+
+    override func apiForDefaultAccount() -> WordPressComRestApi? {
+        return mockApi
+    }
 }
 
 class EditorSettingsServiceTest: XCTestCase {
@@ -62,6 +66,39 @@ class EditorSettingsServiceTest: XCTestCase {
             // The default value should be now on local and remote
             XCTAssertEqual(blog.mobileEditor, .aztec)
         }
+    }
+
+    func testAppWideGutenbergSyncWithServer() {
+        database.set(true, forKey: GutenbergSettings.Key.appWideEnabled)
+
+        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
+
+        XCTAssertTrue(remoteApi.postMethodCalled)
+        XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("me/gutenberg") ?? false)
+        let parameters = remoteApi.parametersPassedIn as? [String: String]
+        XCTAssertEqual(parameters?["editor"], MobileEditor.gutenberg.rawValue)
+    }
+
+    func testAppWideAztecSyncWithServer() {
+        database.set(false, forKey: GutenbergSettings.Key.appWideEnabled)
+
+        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
+
+        XCTAssertTrue(remoteApi.postMethodCalled)
+        XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("me/gutenberg") ?? false)
+        let parameters = remoteApi.parametersPassedIn as? [String: String]
+        XCTAssertEqual(parameters?["editor"], MobileEditor.aztec.rawValue)
+    }
+
+    func testAppWideNilSyncAztecWithServer() {
+        database.set(nil, forKey: GutenbergSettings.Key.appWideEnabled)
+
+        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
+
+        XCTAssertTrue(remoteApi.postMethodCalled)
+        XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("me/gutenberg") ?? false)
+        let parameters = remoteApi.parametersPassedIn as? [String: String]
+        XCTAssertEqual(parameters?["editor"], MobileEditor.aztec.rawValue)
     }
 }
 

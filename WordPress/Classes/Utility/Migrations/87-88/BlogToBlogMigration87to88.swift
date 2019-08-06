@@ -21,7 +21,7 @@ class BlogToBlogMigration87to88: NSEntityMigrationPolicy {
         NotificationCenter.default.observeOnce(forName: .applicationLaunchCompleted, object: nil, queue: .main, using: { (_) in
             let context = ContextManager.shared.mainContext
             let service = EditorSettingsService(managedObjectContext: context)
-            service.syncEditorSettingsForAllBlogs()
+            service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration()
         })
     }
 }

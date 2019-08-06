@@ -65,47 +65,29 @@ import Foundation
         }, failure: failure)
     }
 
-    func syncEditorSettingsForAllBlogs() {
-        let blogService = BlogService(managedObjectContext: managedObjectContext)
-        guard let blogs = blogService.blogsForAllAccounts() as? [Blog] else {
+    /// This method is intended to be called only after the db 87 to 88 migration
+    ///
+    func postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: KeyValueDatabase = UserDefaults.standard) {
+        guard let api = apiForDefaultAccount() else {
+            // SelfHosted non-jetpack sites won't sync with remote.
             return
         }
-        let blogsWithAccount = blogs.filter({ $0.account != nil })
-        let queue = SyncQueue()
-        for blog in blogsWithAccount {
-            queue.add { (next) in
-                self.syncEditorSettings(for: blog, success: {
-                    next()
-                }, failure: { (error) in
-                    DDLogError("Error saving editor settings: \(error)")
-                    next()
-                })
-            }
+
+        let isGutenbergEnabledAppWide = database.bool(forKey: GutenbergSettings.Key.appWideEnabled)
+        let editor: EditorSettings.Mobile = isGutenbergEnabledAppWide ? .gutenberg : .aztec
+
+        let service = EditorServiceRemote(wordPressComRestApi: api)
+        service.postDesignateMobileEditorForAllSites(editor, success: {}) { (error) in
+            DDLogError("---> Error saving editor settings: \(error)")
         }
-        queue.start()
     }
 
     func api(for blog: Blog) -> WordPressComRestApi? {
         return blog.wordPressComRestApi()
     }
-}
 
-private class SyncQueue {
-    var actions = [(@escaping () -> Void) -> Void]()
-
-    func add(_ action: @escaping (@escaping () -> Void) -> Void) {
-        self.actions.append(action)
-    }
-
-    private func next() {
-        guard !actions.isEmpty else {
-            return
-        }
-        let action = actions.removeFirst()
-        action({ self.next() })
-    }
-
-    func start() {
-        next()
+    func apiForDefaultAccount() -> WordPressComRestApi? {
+        let accountService = AccountService(managedObjectContext: Environment.current.mainContext)
+        return accountService.defaultWordPressComAccount()?.wordPressComRestApi
     }
 }
