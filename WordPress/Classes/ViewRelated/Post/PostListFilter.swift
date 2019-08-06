@@ -68,7 +68,11 @@ import Foundation
         let filterType: Status = .published
         let statuses: [BasePost.Status] = [.publish, .publishPrivate]
 
-        let predicate = NSPredicate(format: "status IN %@", statuses.strings)
+        // The postID > 0 condition is a reverse of draftFilter(). In the Published List, we only
+        // want to show private and previously uploaded published posts. Local published posts
+        // will be shown in Drafts. See draftFilter().
+        let predicate = NSPredicate(format: "(postID > 0 AND status = %@) OR status = %@",
+                                    BasePost.Status.publish.rawValue, BasePost.Status.publishPrivate.rawValue)
 
         let title = NSLocalizedString("Published", comment: "Title of the published filter. This filter shows a list of posts that the user has published.")
 
@@ -83,7 +87,10 @@ import Foundation
         let statuses: [BasePost.Status] = [.draft, .pending]
         let statusesExcluded: [BasePost.Status] = [.publish, .publishPrivate, .scheduled, .trash]
 
-        let predicate = NSPredicate(format: "NOT status IN %@", statusesExcluded.strings)
+        // The postID = -1 condition is intentionally a reverse of publishedFilter() so that
+        // local published posts will show in the Drafts list instead of the Published list.
+        let predicate = NSPredicate(format: "(postID = -1 AND status = %@) OR NOT status IN %@",
+                                    BasePost.Status.publish.rawValue, statusesExcluded.strings)
 
         let title = NSLocalizedString("Drafts", comment: "Title of the drafts filter.  This filter shows a list of draft posts.")
 
