@@ -70,7 +70,7 @@ class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
             validate(username: username)
         case .saveUsername(let username):
             saveUsername(username: username)
-        case .suggestUsernames(for: username):
+        case .suggestUsernames(let username):
             suggestUsernames(for: username)
         }
     }
