@@ -134,11 +134,13 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Zh4-Mc-AK7" secondAttribute="trailing" constant="-8" id="6OK-8s-Dxs"/>
                             <constraint firstAttribute="trailing" secondItem="06O-B0-y3k" secondAttribute="trailing" id="8ib-ER-7zy"/>
                             <constraint firstItem="XTx-r8-hUF" firstAttribute="top" secondItem="HJK-1N-bmY" secondAttribute="top" id="DSl-Iw-NhL"/>
+                            <constraint firstItem="UrU-r4-hAL" firstAttribute="top" secondItem="HJK-1N-bmY" secondAttribute="top" constant="6" id="JL4-zc-5bz"/>
                             <constraint firstAttribute="bottom" secondItem="XTx-r8-hUF" secondAttribute="bottom" id="Psp-EO-ZSL"/>
+                            <constraint firstAttribute="bottom" secondItem="UrU-r4-hAL" secondAttribute="bottom" constant="10" id="QLd-8e-C0k"/>
                             <constraint firstItem="XTx-r8-hUF" firstAttribute="leading" secondItem="UrU-r4-hAL" secondAttribute="leading" id="Sn7-OG-k7S"/>
                             <constraint firstItem="tne-qn-oAS" firstAttribute="centerY" secondItem="HJK-1N-bmY" secondAttribute="centerY" id="UEo-T2-kHC"/>
                             <constraint firstItem="UrU-r4-hAL" firstAttribute="trailing" secondItem="Zh4-Mc-AK7" secondAttribute="leading" priority="750" id="VgY-3y-Xq1"/>
-                            <constraint firstAttribute="height" priority="999" constant="60" id="XwZ-7a-9Cd"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="60" id="XwZ-7a-9Cd"/>
                             <constraint firstItem="tne-qn-oAS" firstAttribute="leading" secondItem="UrU-r4-hAL" secondAttribute="trailing" constant="16" id="YXw-VS-KHH"/>
                             <constraint firstItem="Zh4-Mc-AK7" firstAttribute="leading" secondItem="XTx-r8-hUF" secondAttribute="trailing" id="ex5-gp-3zr"/>
                             <constraint firstItem="06O-B0-y3k" firstAttribute="leading" secondItem="HJK-1N-bmY" secondAttribute="leading" id="g6x-y3-fZX"/>
