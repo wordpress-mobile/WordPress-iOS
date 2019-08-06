@@ -1,4 +1,4 @@
-class ChangeUsernameViewController: UIViewController {
+class ChangeUsernameViewController: SignupUsernameTableViewController {
     typealias CompletionBlock = () -> Void
 
     private let viewModel: ChangeUsernameViewModel
@@ -10,8 +10,6 @@ class ChangeUsernameViewController: UIViewController {
         }
         return saveItem
     }()
-    @IBOutlet private var bottomConstraint: NSLayoutConstraint!
-    @IBOutlet private var tableView: UITableView!
 
     init(service: AccountSettingsService, settings: AccountSettings?, completionBlock: @escaping CompletionBlock) {
         self.viewModel = ChangeUsernameViewModel(service: service, settings: settings)
@@ -30,13 +28,15 @@ class ChangeUsernameViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         viewModel.start()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        SVProgressHUD.dismiss()
+    override func buildHeaderDescription() -> NSAttributedString {
+        return viewModel.headerDescription()
+    }
+
+    override func startSearch(for searchTerm: String) {
+        viewModel.suggestUsernames(for: searchTerm)
     }
 }
 
@@ -48,27 +48,28 @@ private extension ChangeUsernameViewController {
         viewModel.keyboardListener = { [weak self] notification in
             self?.adjustForKeyboard(notification: notification)
         }
-        viewModel.suggestionsListener = { state, suggestions in
-
+        viewModel.suggestionsListener = { [weak self] state, suggestions in
+            switch state {
+            case .loading:
+                SVProgressHUD.show(withStatus: Constants.Alert.loading)
+            case .success:
+                SVProgressHUD.dismiss()
+                self?.suggestions = suggestions
+                self?.reloadSuggestions()
+            default:
+                break
+            }
         }
+        currentUsername = viewModel.username
     }
 
     func setupUI() {
         navigationItem.title = Constants.username
-        navigationItem.rightBarButtonItem = self.saveBarButtonItem
+        navigationItem.rightBarButtonItems = [saveBarButtonItem]
 
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
-
+        registerNibs()
+        setupBackgroundTapGestureRecognizer()
         setNeedsSaveButtonIsEnabled()
-    }
-
-    func setupBackgroundTapGestureRecognizer() {
-        let gestureRecognizer = UITapGestureRecognizer()
-        gestureRecognizer.on(call: { [weak self] (gesture) in
-            self?.view.endEditing(true)
-        })
-        gestureRecognizer.cancelsTouchesInView = false
-        view.addGestureRecognizer(gestureRecognizer)
     }
 
     func setNeedsSaveButtonIsEnabled() {
@@ -80,7 +81,10 @@ private extension ChangeUsernameViewController {
         let keyboardRect = wrappedRect?.cgRectValue ?? CGRect.zero
         let relativeRect = view.convert(keyboardRect, from: nil)
         let bottomInset = max(relativeRect.height - relativeRect.maxY + view.frame.height, 0)
-        bottomConstraint.constant = bottomInset
+        var insets = tableView.contentInset
+        insets.bottom = bottomInset
+        tableView.contentInset = insets
+        tableView.scrollIndicatorInsets = insets
     }
 
     func save() {
@@ -119,8 +123,10 @@ private extension ChangeUsernameViewController {
     enum Constants {
         static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
         static let username = NSLocalizedString("Username", comment: "The header and main title")
+        static let cellIdentifier = "SearchTableViewCell"
 
         enum Alert {
+            static let loading = NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process.")
             static let title = NSLocalizedString("Careful!", comment: "Alert title.")
             static let message = NSLocalizedString("You are changing your Username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new Username to continue.", comment: "Alert message.")
             static let cancel = NSLocalizedString("Cancel", comment: "Cancel button.")
