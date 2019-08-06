@@ -65,10 +65,14 @@ private extension AddInsightTableViewController {
     // MARK: - Table Sections
 
     func sectionForCategory(_ category: InsightsCategories) -> ImmuTableSection {
+        // TODO: set 'enabled' indicating whether the row can be selected or not
+        // depending on if it's already displayed in Insights.
+        let enabled = true
+
         return ImmuTableSection(headerText: category.title,
                                 rows: category.insights.map { AddInsightStatRow(title: $0.insightManagementTitle,
-                                                                                enabled: true,
-                                                                                action: rowActionFor($0)) }
+                                                                                enabled: enabled,
+                                                                                action: enabled ? rowActionFor($0) : nil) }
         )
     }
 
