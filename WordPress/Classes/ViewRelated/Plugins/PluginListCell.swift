@@ -24,8 +24,8 @@ class PluginListCell: UITableViewCell {
         }
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func awakeFromNib() {
+        super.awakeFromNib()
 
         nameLabel.textColor = .text
         authorLabel.textColor = .textSubtle
