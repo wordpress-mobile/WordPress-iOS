@@ -1188,7 +1188,6 @@
 		9A4E939F2268D9B400E14823 /* UIViewController+NoResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */; };
 		9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */; };
 		9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */; };
-		9A51DA1622E9E8C7005CC335 /* ChangeUsernameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A51DA1422E9E8C7005CC335 /* ChangeUsernameViewController.xib */; };
 		9A5C854822B3E42800BEE7A3 /* CountriesMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */; };
 		9A5C854922B3E42800BEE7A3 /* CountriesMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */; };
 		9A76C32F22AFDA2100F5D819 /* world-map.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9A76C32E22AFDA2100F5D819 /* world-map.svg */; };
@@ -3342,7 +3341,6 @@
 		9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+NoResults.swift"; sourceTree = "<group>"; };
 		9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+Revisions.swift"; sourceTree = "<group>"; };
 		9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUsernameViewController.swift; sourceTree = "<group>"; };
-		9A51DA1422E9E8C7005CC335 /* ChangeUsernameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeUsernameViewController.xib; sourceTree = "<group>"; };
 		9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesMapCell.swift; sourceTree = "<group>"; };
 		9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CountriesMapCell.xib; sourceTree = "<group>"; };
 		9A76C32E22AFDA2100F5D819 /* world-map.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "world-map.svg"; sourceTree = "<group>"; };
@@ -7241,7 +7239,6 @@
 			isa = PBXGroup;
 			children = (
 				9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */,
-				9A51DA1422E9E8C7005CC335 /* ChangeUsernameViewController.xib */,
 				9A4E271822EF0C57001F6A6B /* View Model */,
 			);
 			path = "Change Username";
@@ -9664,7 +9661,6 @@
 				82FC61261FA8ADAD00A1757E /* ActivityTableViewCell.xib in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
-				9A51DA1622E9E8C7005CC335 /* ChangeUsernameViewController.xib in Resources */,
 				17DC4C3422C5E6910059CA11 /* open_source_dark_icon_76pt@2x.png in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
 				57AA8491228715E700D3C2A2 /* PostCardCell.xib in Resources */,
