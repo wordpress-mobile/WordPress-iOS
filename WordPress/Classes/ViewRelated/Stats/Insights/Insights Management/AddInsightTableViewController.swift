@@ -4,6 +4,8 @@ class AddInsightTableViewController: UITableViewController {
 
     // MARK: - Properties
 
+    weak var insightsDelegate: SiteStatsInsightsDelegate?
+
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
@@ -54,10 +56,27 @@ private extension AddInsightTableViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-        return ImmuTable(sections: [ InsightsCategories.general.tableSection(),
-                                     InsightsCategories.postsAndPages.tableSection(),
-                                     InsightsCategories.activity.tableSection() ]
+        return ImmuTable(sections: [ sectionForCategory(.general),
+                                     sectionForCategory(.postsAndPages),
+                                     sectionForCategory(.activity) ]
         )
+    }
+
+    // MARK: - Table Sections
+
+    func sectionForCategory(_ category: InsightsCategories) -> ImmuTableSection {
+        return ImmuTableSection(headerText: category.title,
+                                rows: category.insights.map { AddInsightStatRow(title: $0.insightManagementTitle,
+                                                                                enabled: true,
+                                                                                action: rowActionFor($0)) }
+        )
+    }
+
+    func rowActionFor(_ statSection: StatSection) -> ImmuTableAction {
+        return { [unowned self] row in
+            self.insightsDelegate?.addInsightSelected?(statSection)
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 
     // MARK: - Insights Categories
@@ -87,13 +106,6 @@ private extension AddInsightTableViewController {
             case .activity:
                 return [.insightsCommentsPosts, .insightsFollowersEmail, .insightsFollowerTotals, .insightsPublicize]
             }
-        }
-
-        func tableSection() -> ImmuTableSection {
-            return ImmuTableSection(
-                headerText: title,
-                rows: insights.map { AddInsightStatRow(title: $0.insightManagementTitle, enabled: true, action: nil) }
-            )
         }
     }
 
