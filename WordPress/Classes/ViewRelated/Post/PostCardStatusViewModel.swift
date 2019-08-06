@@ -30,11 +30,12 @@ class PostCardStatusViewModel: NSObject {
 
     @objc
     var status: String? {
+        // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
         } else if post.isFailed {
             if post.status == .publish {
-                return NSLocalizedString("Post will be published next time your device is online", comment: "Message shown in the posts list when a post is scheduled for publishing")
+                return StatusMessages.postWillBePublished
             }
 
             return NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
@@ -146,5 +147,10 @@ class PostCardStatusViewModel: NSObject {
 
     private enum Constants {
         static let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
+    }
+
+    enum StatusMessages {
+        static let postWillBePublished = NSLocalizedString("Post will be published next time your device is online",
+                                                           comment: "Message shown in the posts list when a post is scheduled for publishing")
     }
 }
