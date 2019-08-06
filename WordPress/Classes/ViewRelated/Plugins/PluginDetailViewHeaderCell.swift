@@ -10,7 +10,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
     }
 
     open func configureCell(_ directoryEntry: PluginDirectoryEntry) {
-        contentView.backgroundColor = .primary(shade: .shade0)
+        contentView.backgroundColor = .neutral(shade: .shade0)
 
         if let banner = directoryEntry.banner {
             headerImageView?.isHidden = false
