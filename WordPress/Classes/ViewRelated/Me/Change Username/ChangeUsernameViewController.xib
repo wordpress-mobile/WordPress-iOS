@@ -13,10 +13,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangeUsernameViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
-                <outlet property="container" destination="fRT-hx-blE" id="8Qm-l8-N8x"/>
-                <outlet property="footerLabel" destination="u8N-Li-snN" id="gDS-rN-XwO"/>
-                <outlet property="scrollViewBottomConstraint" destination="cp4-Dm-R22" id="HCz-Gd-E1s"/>
-                <outlet property="validationContainer" destination="vah-0j-odb" id="vlE-IR-wiv"/>
+                <outlet property="bottomConstraint" destination="us1-Hd-3ju" id="3Zw-A8-qeK"/>
+                <outlet property="tableView" destination="kgg-Gx-b4J" id="teX-gX-ZaL"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -25,57 +23,17 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FRN-yZ-P2z">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="kgg-Gx-b4J">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                    <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fRT-hx-blE" userLabel="Container">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="202"/>
-                            <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vah-0j-odb" userLabel="Validation">
-                                    <rect key="frame" x="0.0" y="16" width="414" height="50"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="50" placeholder="YES" id="Hda-u9-6JH"/>
-                                    </constraints>
-                                </stackView>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjx-Wc-uKH" userLabel="Footer">
-                                    <rect key="frame" x="0.0" y="66" width="414" height="128"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8N-Li-snN">
-                                            <rect key="frame" x="16" y="16" width="382" height="96"/>
-                                            <color key="backgroundColor" name="Gray0"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                            <color key="textColor" name="Gray50"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" name="Gray0"/>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="u8N-Li-snN" secondAttribute="trailing" constant="16" id="Bcd-4G-NyH"/>
-                                        <constraint firstItem="u8N-Li-snN" firstAttribute="top" secondItem="rjx-Wc-uKH" secondAttribute="top" constant="16" id="Pc6-3t-Csw"/>
-                                        <constraint firstAttribute="bottom" secondItem="u8N-Li-snN" secondAttribute="bottom" constant="16" id="kPG-02-ygS"/>
-                                        <constraint firstItem="u8N-Li-snN" firstAttribute="leading" secondItem="rjx-Wc-uKH" secondAttribute="leading" constant="16" id="pfX-uE-iVZ"/>
-                                    </constraints>
-                                </view>
-                            </subviews>
-                            <edgeInsets key="layoutMargins" top="16" left="0.0" bottom="8" right="0.0"/>
-                        </stackView>
-                    </subviews>
-                    <color key="backgroundColor" name="Gray0"/>
-                    <constraints>
-                        <constraint firstItem="fRT-hx-blE" firstAttribute="leading" secondItem="FRN-yZ-P2z" secondAttribute="leading" id="0PB-Sh-Hyn"/>
-                        <constraint firstItem="fRT-hx-blE" firstAttribute="width" secondItem="FRN-yZ-P2z" secondAttribute="width" id="7OV-zC-QHt"/>
-                        <constraint firstAttribute="trailing" secondItem="fRT-hx-blE" secondAttribute="trailing" id="iJb-Tg-MMT"/>
-                        <constraint firstItem="fRT-hx-blE" firstAttribute="top" secondItem="FRN-yZ-P2z" secondAttribute="top" id="tc3-0q-sD3"/>
-                        <constraint firstAttribute="bottom" secondItem="fRT-hx-blE" secondAttribute="bottom" id="tyZ-D6-XDt"/>
-                    </constraints>
-                </scrollView>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                </tableView>
             </subviews>
             <color key="backgroundColor" name="Gray0"/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="FRN-yZ-P2z" secondAttribute="trailing" id="Myc-Wm-zSm"/>
-                <constraint firstItem="FRN-yZ-P2z" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="aGS-4V-XPq"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="FRN-yZ-P2z" secondAttribute="bottom" id="cp4-Dm-R22"/>
-                <constraint firstItem="FRN-yZ-P2z" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="wX0-H9-HN6"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="kgg-Gx-b4J" secondAttribute="trailing" id="6E7-EH-hfP"/>
+                <constraint firstItem="kgg-Gx-b4J" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="A5D-UH-qDQ"/>
+                <constraint firstItem="kgg-Gx-b4J" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="tjn-CL-HT1"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="kgg-Gx-b4J" secondAttribute="bottom" id="us1-Hd-3ju"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
@@ -83,12 +41,6 @@
     <resources>
         <namedColor name="Gray0">
             <color red="0.96862745098039216" green="0.95686274509803926" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Gray0">
-            <color red="0.96862745098039216" green="0.95686274509803926" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Gray50">
-            <color red="0.40392156862745099" green="0.41568627450980394" blue="0.45490196078431372" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
