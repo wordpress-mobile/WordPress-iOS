@@ -1,5 +1,6 @@
 13.1
 -----
+* Stats: added File Downloads to period stats.
  
 13.0
 -----
