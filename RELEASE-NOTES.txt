@@ -1,5 +1,6 @@
 13.1
 -----
+* Adds a Publish Now action to posts in the posts list. 
  
 13.0
 -----

@@ -25,13 +25,17 @@ class PostActionSheet {
             }
         }
 
-        if post.status == .publish || post.status == .draft {
+        if post.status == .publish {
             actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
                 self?.interactivePostViewDelegate?.stats(for: post)
             }
         }
 
-        if post.status != .draft {
+        if post.status == .draft {
+            actionSheetController.addDefaultActionWithTitle(Titles.publish) { [weak self] _ in
+                self?.interactivePostViewDelegate?.publish(post)
+            }
+        } else {
             actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
                 self?.interactivePostViewDelegate?.draft(post)
             }
@@ -54,6 +58,7 @@ class PostActionSheet {
     struct Titles {
         static let cancel = NSLocalizedString("Cancel", comment: "Dismiss the post action sheet")
         static let stats = NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
+        static let publish = NSLocalizedString("Publish Now", comment: "Label for an option that moves a publishes a post immediately")
         static let draft = NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder")
         static let delete = NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
         static let trash = NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder")
