@@ -215,6 +215,13 @@ private extension SiteStatsInsightsTableViewController {
 
         UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
+
+    // MARK: - Insights Management
+
+    func showAddInsightView() {
+        navigationController?.pushViewController(AddInsightTableViewController(), animated: true)
+    }
+
 }
 
 extension SiteStatsInsightsTableViewController: NoResultsViewHost {
@@ -347,22 +354,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func customizeTryButtonTapped() {
-        // TODO: remove when Insights Management view added.
-        showTemporaryAlert()
+        showAddInsightView()
     }
 
     func showAddInsight() {
-        // TODO: remove when Insights Management view added.
-        showTemporaryAlert()
-    }
-
-    // TODO: remove when Insights Management view added.
-    private func showTemporaryAlert() {
-        let alertController = UIAlertController(title: "Under Construction",
-                                                message: "This will show the Insights Management view.",
-                                                preferredStyle: .alert)
-        alertController.addActionWithTitle("OK", style: .default)
-        present(alertController, animated: true, completion: nil)
+        showAddInsightView()
     }
 
 }
