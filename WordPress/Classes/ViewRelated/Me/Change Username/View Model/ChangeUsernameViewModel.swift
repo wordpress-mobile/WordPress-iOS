@@ -41,7 +41,7 @@ class ChangeUsernameViewModel {
         self.receipt = self.store.onStateChange { [weak self] (old, new) in
             DispatchQueue.main.async {
                 if old.suggestUsernamesState != new.suggestUsernamesState {
-
+                    self?.suggestionsListener?(new.suggestUsernamesState, new.suggestions)
                 }
                 if old.usernameSaveState != new.usernameSaveState {
                     self?.saveUsernameBlock?(new.usernameSaveState, Constants.Error.saveUsername)
