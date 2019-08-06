@@ -4,7 +4,7 @@ import Foundation
 
 class PostBuilder {
 
-    private(set) var post: Post!
+    private var post: Post!
 
     init() {
         post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: setUpInMemoryManagedObjectContext()) as? Post
