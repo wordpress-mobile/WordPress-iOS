@@ -92,7 +92,7 @@ private extension AddInsightTableViewController {
         func tableSection() -> ImmuTableSection {
             return ImmuTableSection(
                 headerText: title,
-                rows: insights.map { AddInsightStatRow(title: $0.title, enabled: true, action: nil) }
+                rows: insights.map { AddInsightStatRow(title: $0.insightManagementTitle, enabled: true, action: nil) }
             )
         }
     }
