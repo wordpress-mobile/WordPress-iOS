@@ -1,6 +1,9 @@
 import Foundation
 import WordPressFlux
 
+import class AutomatticTracks.CrashLogging
+import enum Alamofire.AFError
+
 /// MediaCoordinator is responsible for creating and uploading new media
 /// items, independently of a specific view controller. It should be accessed
 /// via the `shared` singleton.
@@ -166,6 +169,7 @@ class MediaCoordinator: NSObject {
         trackRetryUploadOf(media, analyticsInfo: analyticsInfo)
 
         let coordinator = self.coordinator(for: media)
+
         coordinator.track(numberOfItems: 1)
         let uploadProgress = uploadMedia(media)
         coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
@@ -376,6 +380,7 @@ class MediaCoordinator: NSObject {
     ///                    called when changes occur to _any_ media item.
     /// - returns: A UUID that can be used to unregister the observer block at a later time.
     ///
+    @discardableResult
     func addObserver(_ onUpdate: @escaping ObserverBlock, for media: Media? = nil) -> UUID {
         let uuid = UUID()
 
@@ -398,7 +403,8 @@ class MediaCoordinator: NSObject {
     ///                   with this post via its media relationship.
     /// - returns: A UUID that can be used to unregister the observer block at a later time.
     ///
-    @discardableResult func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
+    @discardableResult
+    func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
         let uuid = UUID()
 
         let original = post.original ?? post
@@ -587,7 +593,13 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         // We only want to show an upload notice for uploads initiated within
         // the media library, or if there's been a failure.
-        if mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
+        // If the errors are causes by a missing file, we want to ignore that too.
+
+        let mediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
+
+        if !mediaErrorsAreMissingFilesErrors,
+            mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
+
             let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
             if let notice = model?.notice {
                 ActionDispatcher.dispatch(NoticeAction.post(notice))
@@ -611,13 +623,54 @@ extension MediaCoordinator: Uploader {
                 return
             }
 
-            media.forEach() { self.retryMedia($0) }
+            media.forEach() {
+                self.addObserverForDeletedFiles(for: $0)
+                self.retryMedia($0)
+            }
         }
+    }
+}
+
+extension MediaCoordinator {
+    // Based on user logs we've collected for users, we've noticed the app sometimes
+    // trying to upload a Media object and failing because the underlying file has disappeared from
+    // `Documents` folder.
+    // We want to collect more data about that, so we're going to log that info to Sentry,
+    // and also delete the `Media` object, since there isn't really a reasonable way to recover from that failure.
+    func addObserverForDeletedFiles(for media: Media) {
+        addObserver({ [weak self] (media, _) in
+            guard let mediaError = media.error,
+                media.hasMissingFileError else {
+                return
+            }
+
+            CrashLogging.logError(mediaError,
+                                  userInfo: ["description": "Deleting a media object that's failed to upload because of a missing local file."])
+            self?.cancelUploadAndDeleteMedia(media)
+
+        }, for: media)
     }
 }
 
 extension Media {
     var uploadID: String {
         return objectID.uriRepresentation().absoluteString
+    }
+
+    fileprivate var hasMissingFileError: Bool {
+        guard
+            let afError = error as? AFError,
+            case .multipartEncodingFailed = afError,
+            case .multipartEncodingFailed(let encodingFailure) = afError else {
+                return false
+        }
+
+        switch encodingFailure {
+        case .bodyPartFileNotReachableWithError,
+             .bodyPartFileNotReachable:
+            return true
+        default:
+            return false
+        }
     }
 }

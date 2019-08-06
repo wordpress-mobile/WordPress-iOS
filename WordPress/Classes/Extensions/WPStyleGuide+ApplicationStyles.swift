@@ -98,7 +98,7 @@ extension WPStyleGuide {
     class func configureColors(view: UIView, collectionView: UICollectionView) {
         configureTableViewColors(view: view)
         collectionView.backgroundView = nil
-        collectionView.backgroundColor = greyLighten30()
+        collectionView.backgroundColor = .tableBackground
     }
 
     @objc
