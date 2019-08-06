@@ -36,11 +36,15 @@ enum AccountSettingsState: Equatable {
 enum AccountSettingsAction: Action {
     case validate(username: String)
     case saveUsername(username: String)
+    case suggestUsernames(for: String)
 }
 
 struct AccountSettingsStoreState {
     fileprivate(set) var usernameValidationState: AccountSettingsState = .idle
     fileprivate(set) var usernameSaveState: AccountSettingsState = .idle
+    fileprivate(set) var suggestUsernamesState: AccountSettingsState = .idle
+
+    fileprivate(set) var suggestions: [String] = []
 }
 
 class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
@@ -66,6 +70,8 @@ class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
             validate(username: username)
         case .saveUsername(let username):
             saveUsername(username: username)
+        case .suggestUsernames(for: username):
+            suggestUsernames(for: username)
         }
     }
 
@@ -75,7 +81,8 @@ class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
 
     func isLoading() -> Bool {
         return state.usernameValidationState == .loading ||
-            state.usernameSaveState == .loading
+            state.usernameSaveState == .loading ||
+            state.suggestUsernamesState == .loading
     }
 }
 
@@ -130,5 +137,24 @@ private extension AccountSettingsStore {
                 }
             }
         })
+    }
+
+    func suggestUsernames(for username: String) {
+        if isLoading() {
+            return
+        }
+
+        state.suggestUsernamesState = .loading
+
+        service?.suggestUsernames(base: username) { [weak self] suggestions in
+            DDLogInfo("Usernames suggestion finished finding \(suggestions.count) usernames")
+
+            DispatchQueue.main.async {
+                self?.transaction { state in
+                    state.suggestUsernamesState = .success
+                    state.suggestions = suggestions
+                }
+            }
+        }
     }
 }
