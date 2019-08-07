@@ -2,7 +2,7 @@ import Reachability
 import WordPressFlux
 
 class ChangeUsernameViewModel {
-    typealias ReachabilityListener = () -> Void
+    typealias VoidListener = () -> Void
     typealias KeyboardListener = (Foundation.Notification) -> Void
     typealias SuggestionsListener = (AccountSettingsState, [String]) -> Void
     typealias StateBlock = (AccountSettingsState, String) -> Void
@@ -23,10 +23,17 @@ class ChangeUsernameViewModel {
         return selectedUsername != username && !selectedUsername.isEmpty
     }
 
-    var reachabilityListener: ReachabilityListener?
+    var reachabilityListener: VoidListener?
+    var selectedUsernameListener: VoidListener?
     var keyboardListener: KeyboardListener?
     var suggestionsListener: SuggestionsListener?
-    var selectedUsername: String = ""
+    var selectedUsername: String = "" {
+        didSet {
+            DispatchQueue.main.async {
+                self.selectedUsernameListener?()
+            }
+        }
+    }
 
     private let settings: AccountSettings?
     private let store: AccountSettingsStore
@@ -82,6 +89,12 @@ class ChangeUsernameViewModel {
         attributed.addAttributes([.underlineStyle: NSNumber(value: 1), .font: bold],
                                  range: (text as NSString).range(of: Constants.highlight))
         return attributed
+    }
+}
+
+extension ChangeUsernameViewModel: SignupUsernameViewControllerDelegate {
+    func usernameSelected(_ username: String) {
+        selectedUsername = username
     }
 }
 
