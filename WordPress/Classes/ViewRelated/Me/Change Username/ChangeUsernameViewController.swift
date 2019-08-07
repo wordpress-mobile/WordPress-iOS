@@ -36,7 +36,7 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
     }
 
     override func startSearch(for searchTerm: String) {
-        viewModel.suggestUsernames(for: searchTerm)
+        viewModel.suggestUsernames(for: searchTerm, reloadingAllSections: false)
     }
 }
 
@@ -50,14 +50,14 @@ private extension ChangeUsernameViewController {
         viewModel.keyboardListener = { [weak self] notification in
             self?.adjustForKeyboard(notification: notification)
         }
-        viewModel.suggestionsListener = { [weak self] state, suggestions in
+        viewModel.suggestionsListener = { [weak self] state, suggestions, reloadAllSections in
             switch state {
             case .loading:
                 SVProgressHUD.show(withStatus: Constants.Alert.loading)
             case .success:
                 SVProgressHUD.dismiss()
                 self?.suggestions = suggestions
-                self?.reloadSuggestions()
+                self?.reloadSections(includingAllSections: reloadAllSections)
             default:
                 break
             }
