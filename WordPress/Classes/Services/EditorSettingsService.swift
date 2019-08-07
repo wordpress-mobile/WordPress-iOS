@@ -31,23 +31,6 @@ import Foundation
         }, failure: failure)
     }
 
-    private func update(_ blog: Blog, remoteEditorSettings settings: EditorSettings) throws {
-        blog.webEditor = WebEditor(rawValue: settings.web.rawValue)
-        guard settings.mobile != .notSet else {
-            throw EditorSettingsServiceError.mobileEditorNotSet
-        }
-        GutenbergSettings().setGutenbergEnabled(settings.mobile == .gutenberg, for: blog)
-    }
-
-    private func migrateLocalSettingToRemote(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
-        if blog.mobileEditor == nil {
-            let settings = GutenbergSettings()
-            let defaultEditor = settings.getDefaultEditor(for: blog)
-            settings.setGutenbergEnabled(defaultEditor == .gutenberg, for: blog)
-        }
-        postEditorSetting(for: blog, success: success, failure: failure)
-    }
-
     func postEditorSetting(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
         guard
             let selectedEditor = blog.mobileEditor,
@@ -83,7 +66,21 @@ import Foundation
         }
     }
 
-    private func updateAllSites(with response: [Int: EditorSettings.Mobile]) {
+    func api(for blog: Blog) -> WordPressComRestApi? {
+        return blog.wordPressComRestApi()
+    }
+
+    var apiForDefaultAccount: WordPressComRestApi? {
+        return defaultWPComAccount?.wordPressComRestApi
+    }
+}
+
+private extension EditorSettingsService {
+    var defaultWPComAccount: WPAccount? {
+        return AccountService(managedObjectContext: managedObjectContext).defaultWordPressComAccount()
+    }
+
+    func updateAllSites(with response: [Int: EditorSettings.Mobile]) {
         guard let account = defaultWPComAccount else {
             return
         }
@@ -99,15 +96,20 @@ import Foundation
         }
     }
 
-    func api(for blog: Blog) -> WordPressComRestApi? {
-        return blog.wordPressComRestApi()
+    func update(_ blog: Blog, remoteEditorSettings settings: EditorSettings) throws {
+        blog.webEditor = WebEditor(rawValue: settings.web.rawValue)
+        guard settings.mobile != .notSet else {
+            throw EditorSettingsServiceError.mobileEditorNotSet
+        }
+        GutenbergSettings().setGutenbergEnabled(settings.mobile == .gutenberg, for: blog)
     }
 
-    var apiForDefaultAccount: WordPressComRestApi? {
-        return defaultWPComAccount?.wordPressComRestApi
-    }
-
-    var defaultWPComAccount: WPAccount? {
-        return AccountService(managedObjectContext: managedObjectContext).defaultWordPressComAccount()
+    func migrateLocalSettingToRemote(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
+        if blog.mobileEditor == nil {
+            let settings = GutenbergSettings()
+            let defaultEditor = settings.getDefaultEditor(for: blog)
+            settings.setGutenbergEnabled(defaultEditor == .gutenberg, for: blog)
+        }
+        postEditorSetting(for: blog, success: success, failure: failure)
     }
 }
