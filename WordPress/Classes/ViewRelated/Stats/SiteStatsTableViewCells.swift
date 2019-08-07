@@ -212,6 +212,8 @@ struct TwoColumnStatsRow: ImmuTableRow {
     }
 }
 
+// MARK: - Insights Management
+
 struct AddInsightRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell
@@ -232,7 +234,24 @@ struct AddInsightRow: ImmuTableRow {
 
         cell.configure(dataRows: [dataRow], siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
+}
 
+struct AddInsightStatRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+
+    let title: String
+    let enabled: Bool
+    let action: ImmuTableAction?
+
+    func configureCell(_ cell: UITableViewCell) {
+        WPStyleGuide.configureTableViewCell(cell)
+
+        cell.textLabel?.text = title
+        cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        cell.textLabel?.adjustsFontForContentSizeCategory = true
+        cell.textLabel?.textColor = enabled ? .text : .textPlaceholder
+        cell.selectionStyle = .none
+    }
 }
 
 // MARK: - Period Rows

@@ -42,6 +42,7 @@ enum InsightType: Int {
     @objc optional func customizeDismissButtonTapped()
     @objc optional func customizeTryButtonTapped()
     @objc optional func showAddInsight()
+    @objc optional func addInsightSelected(_ insight: StatSection)
 
 }
 
@@ -215,6 +216,15 @@ private extension SiteStatsInsightsTableViewController {
 
         UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
+
+    // MARK: - Insights Management
+
+    func showAddInsightView() {
+        let controller = AddInsightTableViewController()
+        controller.insightsDelegate = self
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
 }
 
 extension SiteStatsInsightsTableViewController: NoResultsViewHost {
@@ -347,22 +357,15 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func customizeTryButtonTapped() {
-        // TODO: remove when Insights Management view added.
-        showTemporaryAlert()
+        showAddInsightView()
     }
 
     func showAddInsight() {
-        // TODO: remove when Insights Management view added.
-        showTemporaryAlert()
+        showAddInsightView()
     }
 
-    // TODO: remove when Insights Management view added.
-    private func showTemporaryAlert() {
-        let alertController = UIAlertController(title: "Under Construction",
-                                                message: "This will show the Insights Management view.",
-                                                preferredStyle: .alert)
-        alertController.addActionWithTitle("OK", style: .default)
-        present(alertController, animated: true, completion: nil)
+    func addInsightSelected(_ insight: StatSection) {
+        NSLog("Add Insight selected: \(insight.insightManagementTitle)")
     }
 
 }
