@@ -18,6 +18,7 @@ protocol AccountSettingsRemoteInterface {
     func getSettings(success: @escaping (AccountSettings) -> Void, failure: @escaping (Error) -> Void)
     func updateSetting(_ change: AccountSettingsChange, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
     func changeUsername(to username: String, success: @escaping () -> Void, failure: @escaping () -> Void)
+    func validateUsername(to username: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
     func suggestUsernames(base: String, finished: @escaping ([String]) -> Void)
     func updatePassword(_ password: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
 }
@@ -153,6 +154,10 @@ class AccountSettingsService {
     ///   - failure: block for failure
     public func changeUsername(to username: String, success: @escaping () -> Void, failure: @escaping () -> Void) {
         remote.changeUsername(to: username, success: success, failure: success)
+    }
+
+    public func validateUsername(_ username: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        remote.validateUsername(to: username, success: success, failure: failure)
     }
 
     public func suggestUsernames(base: String, finished: @escaping ([String]) -> Void) {
