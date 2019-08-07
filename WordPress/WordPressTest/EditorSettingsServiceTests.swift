@@ -13,7 +13,7 @@ private class TestableEditorSettingsService: EditorSettingsService {
         return mockApi
     }
 
-    override func apiForDefaultAccount() -> WordPressComRestApi? {
+    override var apiForDefaultAccount: WordPressComRestApi? {
         return mockApi
     }
 }
@@ -24,15 +24,24 @@ class EditorSettingsServiceTest: XCTestCase {
     var remoteApi: MockWordPressComRestApi!
     var service: EditorSettingsService!
     var database: KeyValueDatabase!
+    var account: WPAccount!
 
     override func setUp() {
         super.setUp()
         contextManager = TestContextManager()
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
+        context = contextManager.mainContext
         remoteApi = MockWordPressComRestApi()
         database = EphemeralKeyValueDatabase()
         service = TestableEditorSettingsService(managedObjectContext: context, wpcomApi: remoteApi)
+        Environment.replaceEnvironment(contextManager: contextManager)
+        setupDefaultAccount(with: context)
+    }
+
+    func setupDefaultAccount(with context: NSManagedObjectContext) {
+        account = ModelTestHelper.insertAccount(context: context)
+        account.authToken = "auth"
+        account.uuid = "uuid"
+        AccountService(managedObjectContext: context).setDefaultWordPressComAccount(account)
     }
 
     override func tearDown() {
@@ -75,8 +84,8 @@ class EditorSettingsServiceTest: XCTestCase {
 
         XCTAssertTrue(remoteApi.postMethodCalled)
         XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("me/gutenberg") ?? false)
-        let parameters = remoteApi.parametersPassedIn as? [String: String]
-        XCTAssertEqual(parameters?["editor"], MobileEditor.gutenberg.rawValue)
+        let parameters = remoteApi.parametersPassedIn as? [String: Any]
+        XCTAssertEqual(parameters?["editor"] as? String, MobileEditor.gutenberg.rawValue)
     }
 
     func testAppWideAztecSyncWithServer() {
@@ -86,8 +95,8 @@ class EditorSettingsServiceTest: XCTestCase {
 
         XCTAssertTrue(remoteApi.postMethodCalled)
         XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("me/gutenberg") ?? false)
-        let parameters = remoteApi.parametersPassedIn as? [String: String]
-        XCTAssertEqual(parameters?["editor"], MobileEditor.aztec.rawValue)
+        let parameters = remoteApi.parametersPassedIn as? [String: Any]
+        XCTAssertEqual(parameters?["editor"] as? String, MobileEditor.aztec.rawValue)
     }
 
     func testAppWideNilSyncAztecWithServer() {
@@ -97,17 +106,65 @@ class EditorSettingsServiceTest: XCTestCase {
 
         XCTAssertTrue(remoteApi.postMethodCalled)
         XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("me/gutenberg") ?? false)
-        let parameters = remoteApi.parametersPassedIn as? [String: String]
-        XCTAssertEqual(parameters?["editor"], MobileEditor.aztec.rawValue)
+        let parameters = remoteApi.parametersPassedIn as? [String: Any]
+        XCTAssertEqual(parameters?["editor"] as? String, MobileEditor.aztec.rawValue)
+    }
+
+    func testPostAppWideEditorSettingResponseIsHandledProperlyWithGutenberg() {
+        let numberOfBlogs = 10
+        let blogs = addBlogsToAccount(count: numberOfBlogs)
+        let response = bulkResponse(with: .gutenberg, count: numberOfBlogs)
+
+        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
+        remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
+
+        blogs.forEach {
+            XCTAssertTrue($0.isGutenbergEnabled)
+        }
+    }
+
+    func testPostAppWideEditorSettingResponseIsHandledProperlyWithAztec() {
+        let numberOfBlogs = 10
+        let blogs = addBlogsToAccount(count: numberOfBlogs)
+        let response = bulkResponse(with: .aztec, count: numberOfBlogs)
+
+        blogs.forEach {
+            // Pre-set gutenberg to be sure it is overiden with aztec
+            $0.mobileEditor = .gutenberg
+        }
+
+        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
+        remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
+
+        blogs.forEach {
+            XCTAssertFalse($0.isGutenbergEnabled)
+            XCTAssertEqual($0.editor, .aztec)
+        }
     }
 }
 
 extension EditorSettingsServiceTest {
-    func makeTestBlog() -> Blog {
+    func addBlogsToAccount(count: Int) -> [Blog] {
+        let blogs = makeTestBlogs(count: count)
+        account.addBlogs(Set(blogs))
+        return blogs
+    }
+
+    func makeTestBlogs(count: Int) -> [Blog] {
+        return (1...count).map(makeTestBlog)
+    }
+
+    func makeTestBlog(withID id: Int = 1) -> Blog {
         let blog = ModelTestHelper.insertDotComBlog(context: context)
-        blog.dotComID = 1
+        blog.dotComID = NSNumber(value: id)
         blog.account?.authToken = "auth"
         return blog
+    }
+
+    func bulkResponse(with editor: MobileEditor, count: Int) -> [String: String] {
+        return (1...count).reduce(into: [String: String]()) {
+            $0["\($1)"] = editor.rawValue
+        }
     }
 
     func responseWith(mobileEditor: String) -> AnyObject {

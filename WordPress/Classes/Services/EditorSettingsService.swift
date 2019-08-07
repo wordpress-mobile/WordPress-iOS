@@ -68,7 +68,7 @@ import Foundation
     /// This method is intended to be called only after the db 87 to 88 migration
     ///
     func postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: KeyValueDatabase = UserDefaults.standard) {
-        guard let api = apiForDefaultAccount() else {
+        guard let api = apiForDefaultAccount else {
             // SelfHosted non-jetpack sites won't sync with remote.
             return
         }
@@ -77,8 +77,26 @@ import Foundation
         let editor: EditorSettings.Mobile = isGutenbergEnabledAppWide ? .gutenberg : .aztec
 
         let service = EditorServiceRemote(wordPressComRestApi: api)
-        service.postDesignateMobileEditorForAllSites(editor, success: {}) { (error) in
-            DDLogError("---> Error saving editor settings: \(error)")
+        service.postDesignateMobileEditorForAllSites(editor, success: { response in
+            self.updateAllSites(with: response, database: database)
+        }) { (error) in
+            DDLogError("Error saving editor settings: \(error)")
+        }
+    }
+
+    private func updateAllSites(with response: [Int: EditorSettings.Mobile], database: KeyValueDatabase) {
+        guard let account = defaultWPComAccount else {
+            return
+        }
+        let settings = GutenbergSettings(database: database)
+        for (siteID, editor) in response {
+            self.updateSite(withID: siteID, editor: editor, account: account, settings: settings)
+        }
+    }
+
+    func updateSite(withID siteID: Int, editor: EditorSettings.Mobile, account: WPAccount, settings: GutenbergSettings) {
+        if let blog = account.blogs.first(where: { $0.dotComID?.intValue == siteID }) {
+            settings.setGutenbergEnabled(editor == .gutenberg, for: blog)
         }
     }
 
@@ -86,8 +104,11 @@ import Foundation
         return blog.wordPressComRestApi()
     }
 
-    func apiForDefaultAccount() -> WordPressComRestApi? {
-        let accountService = AccountService(managedObjectContext: Environment.current.mainContext)
-        return accountService.defaultWordPressComAccount()?.wordPressComRestApi
+    var apiForDefaultAccount: WordPressComRestApi? {
+        return defaultWPComAccount?.wordPressComRestApi
+    }
+
+    var defaultWPComAccount: WPAccount? {
+        return AccountService(managedObjectContext: managedObjectContext).defaultWordPressComAccount()
     }
 }
