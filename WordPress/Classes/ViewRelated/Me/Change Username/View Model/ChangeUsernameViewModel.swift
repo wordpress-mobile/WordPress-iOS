@@ -4,7 +4,7 @@ import WordPressFlux
 class ChangeUsernameViewModel {
     typealias VoidListener = () -> Void
     typealias KeyboardListener = (Foundation.Notification) -> Void
-    typealias SuggestionsListener = (AccountSettingsState, [String]) -> Void
+    typealias SuggestionsListener = (AccountSettingsState, [String], Bool) -> Void
     typealias StateBlock = (AccountSettingsState, String) -> Void
 
     var username: String {
@@ -41,6 +41,7 @@ class ChangeUsernameViewModel {
     private let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var receipt: Receipt?
     private var saveUsernameBlock: StateBlock?
+    private var reloadAllSections: Bool = true
 
     init(service: AccountSettingsService?, settings: AccountSettings?) {
         self.settings = settings
@@ -48,7 +49,7 @@ class ChangeUsernameViewModel {
         self.receipt = self.store.onStateChange { [weak self] (old, new) in
             DispatchQueue.main.async {
                 if old.suggestUsernamesState != new.suggestUsernamesState {
-                    self?.suggestionsListener?(new.suggestUsernamesState, new.suggestions)
+                    self?.suggestionsListener?(new.suggestUsernamesState, new.suggestions, self?.reloadAllSections ?? true)
                 }
                 if old.usernameSaveState != new.usernameSaveState {
                     self?.saveUsernameBlock?(new.usernameSaveState, Constants.Error.saveUsername)
@@ -67,10 +68,11 @@ class ChangeUsernameViewModel {
         suggestUsernames(for: username)
     }
 
-    func suggestUsernames(for username: String) {
+    func suggestUsernames(for username: String, reloadingAllSections: Bool = true) {
         if username.isEmpty {
             return
         }
+        reloadAllSections = reloadingAllSections
         store.onDispatch(AccountSettingsAction.suggestUsernames(for: username))
     }
 
