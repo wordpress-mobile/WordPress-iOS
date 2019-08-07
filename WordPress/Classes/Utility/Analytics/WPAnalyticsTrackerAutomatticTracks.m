@@ -1872,6 +1872,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatOpenedAccountSettings:
             eventName = @"account_settings_opened";
             break;
+        case WPAnalyticsStatAccountSettingsChangeUsernameSucceeded:
+            eventName = @"account_settings_change_username_succeeded";
+            break;
+        case WPAnalyticsStatAccountSettingsChangeUsernameFailed:
+            eventName = @"account_settings_change_username_failed";
+            break;
+        case WPAnalyticsStatAccountSettingsChangeUsernameSuggestionsFailed:
+            eventName = @"account_settings_change_username_suggestions_failed";
+            break;
         case WPAnalyticsStatOpenedAppSettings:
             eventName = @"app_settings_opened";
             break;
