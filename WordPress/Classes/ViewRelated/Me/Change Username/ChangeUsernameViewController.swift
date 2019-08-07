@@ -112,8 +112,10 @@ private extension ChangeUsernameViewController {
 
     func changeUsernameConfirmationPrompt() -> UIAlertController {
         let alertController = UIAlertController(title: Constants.Alert.title,
-                                                message: String(format: Constants.Alert.message, viewModel.selectedUsername),
+                                                message: "",
                                                 preferredStyle: .alert)
+        alertController.addAttributeMessage(String(format: Constants.Alert.message, viewModel.selectedUsername),
+                                            highlighted: viewModel.selectedUsername)
         alertController.addTextField { textField in
             textField.placeholder = Constants.Alert.confirm
         }
@@ -144,5 +146,17 @@ private extension ChangeUsernameViewController {
             static let change = NSLocalizedString("Change Username", comment: "Change button.")
             static let confirm = NSLocalizedString("Confirm Username", comment: "Alert text field placeholder.")
         }
+    }
+}
+
+fileprivate extension UIAlertController {
+    func addAttributeMessage(_ message: String, highlighted text: String) {
+        let paragraph = String(format: message, text)
+        let font = WPStyleGuide.fontForTextStyle(.footnote)
+        let bold = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .bold)
+
+        let attributed = NSMutableAttributedString(string: paragraph, attributes: [.font: font])
+        attributed.applyStylesToMatchesWithPattern("\\b\(text)", styles: [.font: bold])
+        setValue(attributed, forKey: "attributedMessage")
     }
 }
