@@ -113,6 +113,7 @@ private extension SiteStatsDashboardViewController {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
         filterTabBar.items = StatsPeriodType.allPeriods
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+        filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {

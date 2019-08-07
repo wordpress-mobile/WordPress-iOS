@@ -139,8 +139,6 @@ class WordPressScreenshotGeneration: XCTestCase {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
 
-//        gutenScreenshot()
-
         blogDetailsTable.cells["Media Row"].tap() // Tap Media
         sleep(imagesWaitTime) // wait for post images to load
 
@@ -153,14 +151,21 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get Stats screenshot
         blogDetailsTable.cells["Stats Row"].tap() // tap Stats
-        app.segmentedControls.element(boundBy: 0).buttons.element(boundBy: 1).tap() // tap Days
+
+        if app.buttons["dismiss-customize-insights-cell"].exists {
+            app.buttons["dismiss-customize-insights-cell"].tap()
+        }
+
+        app.buttons["years"].tap()
+
+//        app.segmentedControls.element(boundBy: 0).buttons.element(boundBy: 1).tap() // tap Days
 
         // This line is for stats v2
         // app.buttons["insights"].tap()
 
         // Wait for stats to be loaded
-        waitForElementToExist(element: app.otherElements["visitorsViewsGraph"])
-        waitForElementToNotExist(element: app.progressIndicators.firstMatch)
+//        waitForElementToExist(element: app.otherElements["visitorsViewsGraph"])
+//        waitForElementToNotExist(element: app.progressIndicators.firstMatch)
 
         snapshot("2-Stats")
 
