@@ -254,9 +254,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         _ = state.topSearchTerms.flatMap { StatsRecord.record(from: $0, for: blog) }
         _ = state.topCountries.flatMap { StatsRecord.record(from: $0, for: blog) }
         _ = state.topVideos.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topFileDownloads.flatMap { StatsRecord.record(from: $0, for: blog) }
 
         try? ContextManager.shared.mainContext.save()
-        DDLogInfo("Stats: finished persisting Stats to disk.")
+        DDLogInfo("Stats: finished persisting Period Stats to disk.")
     }
 }
 
@@ -432,7 +433,9 @@ private extension StatsPeriodStore {
             self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries, error))
         }
 
-        statsRemote.getData(for: period, endingOn: date, limit: 14) { (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
+        // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
+        // 'num' relates to the "number of periods to include in the query".
+        statsRemote.getData(for: period, endingOn: date, limit: 1) { (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching file downloads: \(String(describing: error?.localizedDescription))")
             }
@@ -476,8 +479,9 @@ private extension StatsPeriodStore {
         let searchTerms = StatsRecord.timeIntervalData(for: blog, type: .searchTerms, period: StatsRecordPeriodType(remoteStatus: period), date: date)
         let countries = StatsRecord.timeIntervalData(for: blog, type: .countryViews, period: StatsRecordPeriodType(remoteStatus: period), date: date)
         let videos = StatsRecord.timeIntervalData(for: blog, type: .videos, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let fileDownloads = StatsRecord.timeIntervalData(for: blog, type: .fileDownloads, period: StatsRecordPeriodType(remoteStatus: period), date: date)
 
-        DDLogInfo("Stats: Finished loading data from Core Data.")
+        DDLogInfo("Stats: Finished loading Period data from Core Data.")
 
         transaction { state in
             state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
@@ -489,8 +493,9 @@ private extension StatsPeriodStore {
             state.topSearchTerms = searchTerms.flatMap { StatsSearchTermTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topCountries = countries.flatMap { StatsTopCountryTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topVideos = videos.flatMap { StatsTopVideosTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topFileDownloads = fileDownloads.flatMap { StatsFileDownloadsTimeIntervalData(statsRecordValues: $0.recordValues) }
 
-            DDLogInfo("Stats: Finished setting data to store from Core Data.")
+            DDLogInfo("Stats: Finished setting data to Period store from Core Data.")
         }
 
         cachedDataListener?(containsCachedData)
@@ -742,7 +747,6 @@ private extension StatsPeriodStore {
 
         // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
         // 'num' relates to the "number of periods to include in the query".
-        // Since details shows data for a single period, set 'limit' to 1 to fetch data only for the given period.
         statsRemote.getData(for: period, endingOn: date, limit: 1) { (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching all file downloads: \(String(describing: error?.localizedDescription))")
@@ -751,8 +755,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching all file downloads.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedFileDownloads(downloads, error))
-            // TODO: enable when File Downloads added to cached data
-            // self.persistToCoreData()
+            self.persistToCoreData()
         }
     }
 
@@ -1071,29 +1074,7 @@ extension StatsPeriodStore {
     }
 
     func getTopFileDownloads() -> StatsFileDownloadsTimeIntervalData? {
-
-        // Enable this to see File Downloads with stub data.
-        // return stubFileDownloads()
-
         return state.topFileDownloads
-    }
-
-    // TODO: remove when File Downloads endpoint is live.
-    func stubFileDownloads() -> StatsFileDownloadsTimeIntervalData? {
-        guard let downloads = state.topFileDownloads else {
-            return nil
-        }
-
-        var fileDownloads = [StatsFileDownload]()
-        for num in 1...10 {
-            fileDownloads.append(StatsFileDownload(file: "file\(num).ext", downloadCount: 666999))
-        }
-
-        return StatsFileDownloadsTimeIntervalData(period: downloads.period,
-                                                  periodEndDate: downloads.periodEndDate,
-                                                  fileDownloads: fileDownloads,
-                                                  totalDownloadsCount: downloads.totalDownloadsCount,
-                                                  otherDownloadsCount: downloads.otherDownloadsCount)
     }
 
     func getPostStats(for postId: Int?) -> StatsPostDetails? {
@@ -1207,7 +1188,6 @@ extension StatsPeriodStore {
         }
     }
 
-    // TODO: update when File Downloads added to cached data
     var containsCachedData: Bool {
         if state.summary != nil ||
             state.topPostsAndPages != nil ||
@@ -1217,7 +1197,8 @@ extension StatsPeriodStore {
             state.topAuthors != nil ||
             state.topSearchTerms != nil ||
             state.topCountries != nil ||
-            state.topVideos != nil {
+            state.topVideos != nil ||
+            state.topFileDownloads != nil {
             return true
         }
 
