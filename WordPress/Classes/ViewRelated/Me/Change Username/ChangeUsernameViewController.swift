@@ -42,9 +42,11 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
 
 private extension ChangeUsernameViewController {
     func setupViewModel() {
-        viewModel.reachabilityListener = { [weak self] in
+        let reloadSaveButton: ChangeUsernameViewModel.VoidListener = { [weak self] in
             self?.setNeedsSaveButtonIsEnabled()
         }
+        viewModel.reachabilityListener = reloadSaveButton
+        viewModel.selectedUsernameListener = reloadSaveButton
         viewModel.keyboardListener = { [weak self] notification in
             self?.adjustForKeyboard(notification: notification)
         }
@@ -61,6 +63,7 @@ private extension ChangeUsernameViewController {
             }
         }
         currentUsername = viewModel.username
+        delegate = viewModel
     }
 
     func setupUI() {
@@ -109,10 +112,18 @@ private extension ChangeUsernameViewController {
 
     func changeUsernameConfirmationPrompt() -> UIAlertController {
         let alertController = UIAlertController(title: Constants.Alert.title,
-                                                message: Constants.Alert.message,
+                                                message: String(format: Constants.Alert.message, viewModel.selectedUsername),
                                                 preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = Constants.Alert.confirm
+        }
         alertController.addCancelActionWithTitle(Constants.Alert.cancel)
-        alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { _ in
+        alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController] _ in
+            guard let textField = alertController?.textFields?.first,
+                textField.text == self.viewModel.selectedUsername else {
+                    DDLogInfo("Username confirmation failed")
+                    return
+            }
             DDLogInfo("User changes username")
             self.changeUsername()
         })
@@ -131,6 +142,7 @@ private extension ChangeUsernameViewController {
             static let message = NSLocalizedString("You are changing your Username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new Username to continue.", comment: "Alert message.")
             static let cancel = NSLocalizedString("Cancel", comment: "Cancel button.")
             static let change = NSLocalizedString("Change Username", comment: "Change button.")
+            static let confirm = NSLocalizedString("Confirm Username", comment: "Alert text field placeholder.")
         }
     }
 }
