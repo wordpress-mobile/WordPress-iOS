@@ -78,9 +78,7 @@ class EditorSettingsServiceTest: XCTestCase {
     }
 
     func testAppWideGutenbergSyncWithServer() {
-        database.set(true, forKey: GutenbergSettings.Key.appWideEnabled)
-
-        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
+        service.migrateGlobalSettingToRemote(isGutenbergEnabled: true)
 
         XCTAssertTrue(remoteApi.postMethodCalled)
         XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("me/gutenberg") ?? false)
@@ -91,18 +89,7 @@ class EditorSettingsServiceTest: XCTestCase {
     func testAppWideAztecSyncWithServer() {
         database.set(false, forKey: GutenbergSettings.Key.appWideEnabled)
 
-        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
-
-        XCTAssertTrue(remoteApi.postMethodCalled)
-        XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("me/gutenberg") ?? false)
-        let parameters = remoteApi.parametersPassedIn as? [String: Any]
-        XCTAssertEqual(parameters?["editor"] as? String, MobileEditor.aztec.rawValue)
-    }
-
-    func testAppWideNilSyncAztecWithServer() {
-        database.set(nil, forKey: GutenbergSettings.Key.appWideEnabled)
-
-        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
+        service.migrateGlobalSettingToRemote(isGutenbergEnabled: false)
 
         XCTAssertTrue(remoteApi.postMethodCalled)
         XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("me/gutenberg") ?? false)
@@ -115,7 +102,7 @@ class EditorSettingsServiceTest: XCTestCase {
         let blogs = addBlogsToAccount(count: numberOfBlogs)
         let response = bulkResponse(with: .gutenberg, count: numberOfBlogs)
 
-        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
+        service.migrateGlobalSettingToRemote(isGutenbergEnabled: true)
         remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
 
         blogs.forEach {
@@ -133,7 +120,7 @@ class EditorSettingsServiceTest: XCTestCase {
             $0.mobileEditor = .gutenberg
         }
 
-        service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: database)
+        service.migrateGlobalSettingToRemote(isGutenbergEnabled: false)
         remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
 
         blogs.forEach {

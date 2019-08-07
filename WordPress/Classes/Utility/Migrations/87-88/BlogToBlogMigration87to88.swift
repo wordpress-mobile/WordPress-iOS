@@ -21,7 +21,9 @@ class BlogToBlogMigration87to88: NSEntityMigrationPolicy {
         NotificationCenter.default.observeOnce(forName: .applicationLaunchCompleted, object: nil, queue: .main, using: { (_) in
             let context = ContextManager.shared.mainContext
             let service = EditorSettingsService(managedObjectContext: context)
-            service.postAppWideEditorSettingToRemoteForAllBlogsAfterMigration()
+            let isGutenbergEnabled = UserDefaults.standard.object(forKey: "kUserDefaultsGutenbergEditorEnabled") as? Bool ?? false
+
+            service.migrateGlobalSettingToRemote(isGutenbergEnabled: isGutenbergEnabled)
         })
     }
 }

@@ -67,28 +67,27 @@ import Foundation
 
     /// This method is intended to be called only after the db 87 to 88 migration
     ///
-    func postAppWideEditorSettingToRemoteForAllBlogsAfterMigration(database: KeyValueDatabase = UserDefaults.standard) {
+    func migrateGlobalSettingToRemote(isGutenbergEnabled: Bool) {
         guard let api = apiForDefaultAccount else {
             // SelfHosted non-jetpack sites won't sync with remote.
             return
         }
 
-        let isGutenbergEnabledAppWide = database.bool(forKey: GutenbergSettings.Key.appWideEnabled)
-        let editor: EditorSettings.Mobile = isGutenbergEnabledAppWide ? .gutenberg : .aztec
+        let remoteEditor: EditorSettings.Mobile = isGutenbergEnabled ? .gutenberg : .aztec
 
         let service = EditorServiceRemote(wordPressComRestApi: api)
-        service.postDesignateMobileEditorForAllSites(editor, success: { response in
-            self.updateAllSites(with: response, database: database)
+        service.postDesignateMobileEditorForAllSites(remoteEditor, success: { response in
+            self.updateAllSites(with: response)
         }) { (error) in
             DDLogError("Error saving editor settings: \(error)")
         }
     }
 
-    private func updateAllSites(with response: [Int: EditorSettings.Mobile], database: KeyValueDatabase) {
+    private func updateAllSites(with response: [Int: EditorSettings.Mobile]) {
         guard let account = defaultWPComAccount else {
             return
         }
-        let settings = GutenbergSettings(database: database)
+        let settings = GutenbergSettings()
         for (siteID, editor) in response {
             self.updateSite(withID: siteID, editor: editor, account: account, settings: settings)
         }
