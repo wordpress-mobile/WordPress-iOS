@@ -38,7 +38,7 @@ class SignupUsernameTableViewController: NUXTableViewController, SearchTableView
 
         suggestUsernames(for: nameToSearch) { [weak self] (suggestions) in
             self?.suggestions = suggestions
-            self?.reloadSuggestions()
+            self?.reloadSections()
         }
     }
 
@@ -52,9 +52,10 @@ class SignupUsernameTableViewController: NUXTableViewController, SearchTableView
         tableView.register(UINib(nibName: "SearchTableViewCell", bundle: bundle), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
     }
 
-    func reloadSuggestions() {
+    func reloadSections(includingAllSections: Bool = true) {
         DispatchQueue.main.async {
-            self.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.suggestions.rawValue), with: .automatic)
+            let set = includingAllSections ? IndexSet(integersIn: Sections.searchField.rawValue...Sections.suggestions.rawValue) : IndexSet(integer: Sections.suggestions.rawValue)
+            self.tableView.reloadSections(set, with: .automatic)
         }
     }
 
@@ -94,7 +95,7 @@ class SignupUsernameTableViewController: NUXTableViewController, SearchTableView
 
         suggestUsernames(for: searchTerm) { [weak self] suggestions in
             self?.suggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
+            self?.reloadSections(includingAllSections: false)
         }
     }
 }
