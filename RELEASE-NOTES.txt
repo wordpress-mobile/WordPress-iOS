@@ -1,5 +1,6 @@
 13.1
 -----
+* Moved Notification Settings from the Me tab to the Notifications tab.
 * Stats: added File Downloads to period stats.
 * Adds a Publish Now action to posts in the posts list. 
  
