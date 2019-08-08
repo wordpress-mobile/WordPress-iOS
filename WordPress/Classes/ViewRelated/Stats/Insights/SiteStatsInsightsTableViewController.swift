@@ -41,6 +41,9 @@ enum InsightType: Int {
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func customizeDismissButtonTapped()
     @objc optional func customizeTryButtonTapped()
+    @objc optional func showAddInsight()
+    @objc optional func addInsightSelected(_ insight: StatSection)
+
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
@@ -213,6 +216,15 @@ private extension SiteStatsInsightsTableViewController {
 
         UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
+
+    // MARK: - Insights Management
+
+    func showAddInsightView() {
+        let controller = AddInsightTableViewController()
+        controller.insightsDelegate = self
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
 }
 
 extension SiteStatsInsightsTableViewController: NoResultsViewHost {
@@ -267,7 +279,6 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showShareForPost(postID: NSNumber, fromView: UIView) {
-
         guard let blogId = SiteStatsInformation.sharedInstance.siteID,
         let blog = blogService.blog(byBlogId: blogId) else {
             DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
@@ -346,12 +357,15 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func customizeTryButtonTapped() {
-        // TODO: remove when Insights Management view added.
-        let alertController = UIAlertController(title: "Under Construction",
-                                                message: "This will show the Insights Management view.",
-                                                preferredStyle: .alert)
-        alertController.addActionWithTitle("OK", style: .default)
-        present(alertController, animated: true, completion: nil)
+        showAddInsightView()
+    }
+
+    func showAddInsight() {
+        showAddInsightView()
+    }
+
+    func addInsightSelected(_ insight: StatSection) {
+        NSLog("Add Insight selected: \(insight.insightManagementTitle)")
     }
 
 }

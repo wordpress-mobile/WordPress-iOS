@@ -115,6 +115,11 @@ class SiteStatsInsightsViewModel: Observable {
             }
         }
 
+        if FeatureFlag.statsInsightsManagement.enabled {
+            tableRows.append(TableFooterRow())
+            tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+        }
+
         tableRows.append(TableFooterRow())
 
         return ImmuTable(sections: [
@@ -463,4 +468,12 @@ private extension SiteStatsInsightsViewModel {
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }
+
+    func createAddInsightRow() -> StatsTotalRowData {
+        return StatsTotalRowData(name: StatSection.insightsAddInsight.title,
+                                 data: "",
+                                 icon: Style.imageForGridiconType(.plus, withTint: .darkGrey),
+                                 statSection: .insightsAddInsight)
+    }
+
 }

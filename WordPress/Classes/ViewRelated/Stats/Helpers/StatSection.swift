@@ -25,6 +25,7 @@
     case insightsTodaysStats
     case insightsPostingActivity
     case insightsPublicize
+    case insightsAddInsight
     case postStatsGraph
     case postStatsMonthsYears
     case postStatsAverageViews
@@ -92,6 +93,8 @@
             return InsightsHeaders.postingActivity
         case .insightsPublicize:
             return InsightsHeaders.publicize
+        case .insightsAddInsight:
+            return InsightsHeaders.addCard
         case .periodPostsAndPages:
             return PeriodHeaders.postsAndPages
         case .periodReferrers:
@@ -226,6 +229,15 @@
         }
     }
 
+    var insightManagementTitle: String {
+        switch self {
+        case .insightsTodaysStats:
+            return InsightManagementTitles.todaysStats
+        default:
+            return title
+        }
+    }
+
     // MARK: - Image Size Accessor
 
     static let defaultImageSize = CGFloat(24)
@@ -258,10 +270,15 @@
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
         static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
+        static let addCard = NSLocalizedString("Add new stats card", comment: "Label for action to add a new Insight.")
     }
 
     struct DetailsTitles {
         static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'This Year' details view header")
+    }
+
+    struct InsightManagementTitles {
+        static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights Management 'Today's Stats' title")
     }
 
     struct PeriodHeaders {

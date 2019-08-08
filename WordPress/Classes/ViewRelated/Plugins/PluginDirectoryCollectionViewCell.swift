@@ -56,8 +56,11 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
             logoImageView.image = iconPlaceholder
         }
 
-        authorLabel?.text = author
         nameLabel?.text = name
+        authorLabel?.text = author
+
+        nameLabel?.textColor = .text
+        authorLabel?.textColor = .textSubtle
     }
 
 }
