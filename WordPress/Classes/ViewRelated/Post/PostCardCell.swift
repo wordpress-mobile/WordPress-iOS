@@ -122,7 +122,9 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     @IBAction func cancelAutoUpload() {
-        #warning("TODO")
+        if let post = post {
+            interactivePostViewDelegate?.cancelAutoUpload(post)
+        }
     }
 
     private func applyStyles() {

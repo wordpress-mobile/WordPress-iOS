@@ -189,7 +189,7 @@
                                                     <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="cancelAutoUpload:" destination="sqZ-hd-ibO" eventType="touchUpInside" id="ApN-GB-Dfe"/>
+                                                    <action selector="cancelAutoUpload" destination="sqZ-hd-ibO" eventType="touchUpInside" id="neU-zO-5Vo"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZFa-Ih-GYE">
