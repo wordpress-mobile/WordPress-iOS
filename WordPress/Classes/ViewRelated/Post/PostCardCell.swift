@@ -262,7 +262,8 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
-        retryButton.isHidden = !post.isFailed
+        retryButton.isHidden = !(post.isFailed && post.status != .publish)
+        cancelAutoUploadButton.isHidden = !(post.isFailed && post.status == .publish)
         viewButton.isHidden = post.isFailed
     }
 
