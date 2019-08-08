@@ -62,10 +62,12 @@ private extension CustomizeInsightsCell {
     // MARK: - Button Handling
 
     @IBAction func didTapDismissButton(_ sender: UIButton) {
+        WPAppAnalytics.track(.statsItemTappedInsightsCustomizeDismiss)
         insightsDelegate?.customizeDismissButtonTapped?()
     }
 
     @IBAction func didTapTryButton(_ sender: UIButton) {
+        WPAppAnalytics.track(.statsItemTappedInsightsCustomizeTry)
         insightsDelegate?.customizeTryButtonTapped?()
     }
 
