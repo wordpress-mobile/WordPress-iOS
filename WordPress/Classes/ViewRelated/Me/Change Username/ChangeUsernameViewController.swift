@@ -42,7 +42,7 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
 
 private extension ChangeUsernameViewController {
     func setupViewModel() {
-        let reloadSaveButton: ChangeUsernameViewModel.VoidListener = { [weak self] in
+        let reloadSaveButton: ChangeUsernameViewModel.Listener = { [weak self] in
             self?.setNeedsSaveButtonIsEnabled()
         }
         viewModel.reachabilityListener = reloadSaveButton
@@ -95,8 +95,11 @@ private extension ChangeUsernameViewController {
     }
 
     func changeUsername() {
+        SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show()
+
         viewModel.save() { [weak self] (state, error) in
+            SVProgressHUD.setDefaultMaskType(.none)
             switch state {
             case .success:
                 SVProgressHUD.dismiss()
@@ -141,10 +144,10 @@ private extension ChangeUsernameViewController {
         enum Alert {
             static let loading = NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process.")
             static let title = NSLocalizedString("Careful!", comment: "Alert title.")
-            static let message = NSLocalizedString("You are changing your Username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new Username to continue.", comment: "Alert message.")
+            static let message = NSLocalizedString("You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.", comment: "Alert message.")
             static let cancel = NSLocalizedString("Cancel", comment: "Cancel button.")
-            static let change = NSLocalizedString("Change Username", comment: "Change button.")
-            static let confirm = NSLocalizedString("Confirm Username", comment: "Alert text field placeholder.")
+            static let change = NSLocalizedString("Change username", comment: "Change button.")
+            static let confirm = NSLocalizedString("Confirm username", comment: "Alert text field placeholder.")
         }
     }
 }
