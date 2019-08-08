@@ -164,7 +164,7 @@ extension UIColor {
     /// Text Colors
     static var text = muriel(color: .text)
     static var textSubtle = muriel(color: .textSubtle)
-    static var textInverted = UIColor.white
+    static var textInverted = UIColor(light: .white, dark: .neutral(shade: .shade0))
     static var textPlaceholder = neutral(shade: .shade30)
 
     /// Muriel/iOS navigation color
@@ -172,7 +172,17 @@ extension UIColor {
 
     // MARK: -- Table Views
     
-    static var divider = muriel(color: .divider)
+    static var divider: UIColor {
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .separator
+        } else {
+            return muriel(color: .divider)
+        }
+        #else
+        return muriel(color: .divider)
+        #endif
+    }
 
     static var tableForeground: UIColor {
         #if XCODE11
@@ -183,6 +193,18 @@ extension UIColor {
         }
         #else
         return .white
+        #endif
+    }
+
+    static var tableForegroundUnread: UIColor {
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .tertiarySystemGroupedBackground
+        } else {
+            return .primary(shade: .shade0)
+        }
+        #else
+        return .primary(shade: .shade0)
         #endif
     }
 
