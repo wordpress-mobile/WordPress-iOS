@@ -174,6 +174,18 @@ extension UIColor {
     
     static var divider = muriel(color: .divider)
 
+    static var tableForeground: UIColor {
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .secondarySystemBackground
+        } else {
+            return .white
+        }
+        #else
+        return .white
+        #endif
+    }
+
     static var tableBackground: UIColor {
         #if XCODE11
         return .groupTableViewBackground
