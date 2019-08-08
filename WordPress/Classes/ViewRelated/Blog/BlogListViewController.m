@@ -581,10 +581,10 @@ static NSInteger HideSearchMinSites = 3;
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    cell.backgroundColor = [UIColor whiteColor];
-}
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    cell.backgroundColor = [UIColor whiteColor];
+//}
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {

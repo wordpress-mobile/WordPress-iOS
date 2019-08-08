@@ -42,7 +42,7 @@ extension WPStyleGuide {
             // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .brand
+            appearance.backgroundColor = .navigationBar
             appearance.titleTextAttributes = [.foregroundColor: UIColor.textInverted]
             navigationAppearance.standardAppearance = appearance
             navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
@@ -62,7 +62,7 @@ extension WPStyleGuide {
     /// Style the tab bar using Muriel colors
     class func configureTabBarAppearance() {
         UITabBar.appearance().tintColor = .primary
-        UITabBar.appearance().unselectedItemTintColor = .unselected
+        UITabBar.appearance().unselectedItemTintColor = .tabUnselected
     }
 }
 

@@ -13,9 +13,7 @@ extension WPStyleGuide {
 
         cell.imageView?.layer.borderColor = UIColor.white.cgColor
         cell.imageView?.layer.borderWidth = 1
-        cell.imageView?.tintColor = .neutral(shade: .shade20)
-
-        cell.backgroundColor = UIColor.white
+        cell.imageView?.tintColor = .listIcon
     }
 
     @objc public class func configureCellForLogin(_ cell: WPBlogTableViewCell) {

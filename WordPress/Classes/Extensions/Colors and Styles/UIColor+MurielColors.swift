@@ -1,84 +1,6 @@
 /// Only necessary until the .murielColors feature flag is removed
 import WordPressShared
 
-/// Generates the names of the named colors in the ColorPalette.xcasset
-enum MurielColorName: String, CustomStringConvertible {
-    // MARK: - Base colors
-    case wordPressBlue
-    case blue
-    case celadon
-    case gray
-    case green
-    case orange
-    case pink
-    case purple
-    case red
-    case yellow
-
-    var description: String {
-        // can't use .capitalized because it lowercases the P and B in "wordPressBlue"
-        return rawValue.prefix(1).uppercased() + rawValue.dropFirst()
-    }
-}
-
-/// Value of a Muriel color's shade
-///
-/// Note: There are a finite number of acceptable values. Not just any Int works.
-///       Also, enum cases cannot begin with a number, thus the `shade` prefix.
-enum MurielColorShade: Int, CustomStringConvertible {
-    case shade0 = 0
-    case shade5 = 5
-    case shade10 = 10
-    case shade20 = 20
-    case shade30 = 30
-    case shade40 = 40
-    case shade50 = 50
-    case shade60 = 60
-    case shade70 = 70
-    case shade80 = 80
-    case shade90 = 90
-
-    var description: String {
-        return "\(rawValue)"
-    }
-}
-
-struct MurielColor {
-    let name: MurielColorName
-    let shade: MurielColorShade
-
-    init(name: MurielColorName, shade: MurielColorShade = .shade50) {
-        self.name = name
-        self.shade = shade
-    }
-
-    init(from identifier: MurielColor, shade: MurielColorShade) {
-        self.name = identifier.name
-        self.shade = shade
-    }
-
-    // MARK: - Muriel's semantic colors
-    static let accent = MurielColor(name: .pink)
-    static let brand = MurielColor(name: .wordPressBlue)
-    static let divider = MurielColor(name: .gray, shade: .shade10)
-    static let error = MurielColor(name: .red)
-    static let neutral = MurielColor(name: .gray)
-    static let primary = MurielColor(name: .blue)
-    static let success = MurielColor(name: .green)
-    static let text = MurielColor(name: .gray, shade: .shade80)
-    static let textSubtle = MurielColor(name: .gray, shade: .shade50)
-    static let warning = MurielColor(name: .yellow)
-
-    // MARK: - Additional iOS semantic colors
-    static let navigationBar = MurielColor(name: .wordPressBlue)
-    static let tableBackground = MurielColor(name: .gray, shade: .shade0)
-
-    /// The full name of the color, with required shade value
-    func assetName() -> String {
-        return "\(name)\(shade)"
-    }
-}
-
 extension UIColor {
     /// Get a UIColor from the Muriel color palette
     ///
@@ -92,7 +14,9 @@ extension UIColor {
         }
         return color
     }
-
+}
+// MARK: -- Basic Colors
+extension UIColor {
     /// Muriel accent color
     static var accent: UIColor {
         if FeatureFlag.murielColors.enabled {
@@ -100,6 +24,10 @@ extension UIColor {
         } else {
             return WPStyleGuide.jazzyOrange()
         }
+    }
+
+    class func accent(shade: MurielColorShade) -> UIColor {
+        return muriel(color: MurielColor(from: .accent, shade: shade))
     }
 
     static var accentDark: UIColor {
@@ -110,18 +38,11 @@ extension UIColor {
         }
     }
 
-    class func accent(shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .accent, shade: shade))
-    }
-
     /// Muriel brand color
     static var brand = muriel(color: .brand)
     class func brand(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .brand, shade: shade))
     }
-
-    /// Muriel divider color
-    static var divider = muriel(color: .divider)
 
     /// Muriel error color
     static var error: UIColor {
@@ -230,38 +151,43 @@ extension UIColor {
         return muriel(color: MurielColor(from: .success, shade: shade))
     }
 
-    /// Muriel text color
-    static var text = muriel(color: .text)
-
-    /// Muriel text subtle color
-    static var textSubtle = muriel(color: .textSubtle)
-
-    /// Muriel placeholder text color
-    static var textPlaceholder = neutral(shade: .shade30)
-
     /// Muriel warning color
     static var warning = muriel(color: .warning)
     class func warning(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .warning, shade: shade))
     }
+}
+
+// MARK: -- UI elements
+extension UIColor {
+
+    /// Text Colors
+    static var text = muriel(color: .text)
+    static var textSubtle = muriel(color: .textSubtle)
+    static var textInverted = UIColor.white
+    static var textPlaceholder = neutral(shade: .shade30)
 
     /// Muriel/iOS navigation color
-    static var textInverted = UIColor.white
+    static var navigationBar = UIColor(light: .brand, dark: .neutral(shade: .shade0))
 
-    static var navigationBar = muriel(color: .navigationBar)
+    // MARK: -- Table Views
+    
+    static var divider = muriel(color: .divider)
 
-    static var tableBackground = muriel(color: .tableBackground)
-
-    /// Muriel/iOS unselected color
-    static var unselected: UIColor {
-        if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColor(name: .gray, shade: .shade20))
-        } else {
-            return WPStyleGuide.greyLighten10()
-        }
+    static var tableBackground: UIColor {
+        #if XCODE11
+        return .groupTableViewBackground
+        #else
+        return muriel(color: .tableBackground)
+        #endif
     }
 
-    /// MARK: Muriel colors for buttons
+    static var listIcon = UIColor(light: .neutral(shade: .shade20), dark: .neutral(shade: .shade50))
+
+    /// Tab bar unselected color
+    static var tabUnselected: UIColor =  UIColor(light: .neutral(shade: .shade20), dark: .neutral(shade: .shade50))
+
+// MARK: -- WP Fancy Buttons
     static var primaryButtonBackground: UIColor {
         if FeatureFlag.murielColors.enabled {
             return .accent
@@ -292,5 +218,37 @@ extension UIColor {
         } else {
             return WPStyleGuide.wordPressBlue()
         }
+    }
+}
+
+extension UIColor {
+    // A way to create dynamic colors that's compatible with iOS 11 & 12
+    convenience init(light: UIColor, dark: UIColor) {
+        #if XCODE11
+        if #available(iOS 13, *) {
+            self.init { traitCollection in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return dark
+                } else {
+                    return light
+                }
+            }
+        } else {
+            self.init(color: light)
+        }
+        #else
+            // in older versions of iOS, we assume light mode
+            self.init(color: light)
+        #endif
+    }
+
+    convenience init(color: UIColor) {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+
+        color.getRed(&r, green: &g, blue: &b, alpha: &a)
+        self.init(red: r, green: g, blue: b, alpha: a)
     }
 }
