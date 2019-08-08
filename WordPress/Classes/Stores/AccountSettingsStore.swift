@@ -34,13 +34,11 @@ enum AccountSettingsState: Equatable {
 }
 
 enum AccountSettingsAction: Action {
-    case validate(username: String)
     case saveUsername(username: String)
     case suggestUsernames(for: String)
 }
 
 struct AccountSettingsStoreState {
-    fileprivate(set) var usernameValidationState: AccountSettingsState = .idle
     fileprivate(set) var usernameSaveState: AccountSettingsState = .idle
     fileprivate(set) var suggestUsernamesState: AccountSettingsState = .idle
 
@@ -48,10 +46,6 @@ struct AccountSettingsStoreState {
 }
 
 class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
-    var validationState: AccountSettingsState {
-        return state.usernameValidationState
-    }
-
     private weak var service: AccountSettingsService?
 
     init(service: AccountSettingsService?) {
@@ -66,8 +60,6 @@ class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
         }
 
         switch action {
-        case .validate(let username):
-            validate(username: username)
         case .saveUsername(let username):
             saveUsername(username: username)
         case .suggestUsernames(let username):
@@ -75,44 +67,13 @@ class AccountSettingsStore: StatefulStore<AccountSettingsStoreState> {
         }
     }
 
-    func validationSucceeded() -> Bool {
-        return state.usernameValidationState.succeeded
-    }
-
     func isLoading() -> Bool {
-        return state.usernameValidationState == .loading ||
-            state.usernameSaveState == .loading ||
+        return state.usernameSaveState == .loading ||
             state.suggestUsernamesState == .loading
     }
 }
 
 private extension AccountSettingsStore {
-    func validate(username: String) {
-        if isLoading() {
-            return
-        }
-
-        state.usernameValidationState = .loading
-
-        service?.validateUsername(username, success: { [weak self] in
-            DDLogInfo("Validation of \(username) username finished successfully")
-
-            DispatchQueue.main.async {
-                self?.transaction { state in
-                    state.usernameValidationState = .success
-                }
-            }
-        }) { [weak self] error in
-            DDLogInfo("Username validation failed: \(error.localizedDescription)")
-
-            DispatchQueue.main.async {
-                self?.transaction { state in
-                    state.usernameValidationState = .failure(error.localizedDescription)
-                }
-            }
-        }
-    }
-
     func saveUsername(username: String) {
         if isLoading() {
             return
