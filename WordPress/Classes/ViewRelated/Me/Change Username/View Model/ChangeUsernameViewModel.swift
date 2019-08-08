@@ -2,7 +2,7 @@ import Reachability
 import WordPressFlux
 
 class ChangeUsernameViewModel {
-    typealias VoidListener = () -> Void
+    typealias Listener = () -> Void
     typealias KeyboardListener = (Foundation.Notification) -> Void
     typealias SuggestionsListener = (AccountSettingsState, [String], Bool) -> Void
     typealias StateBlock = (AccountSettingsState, String) -> Void
@@ -23,8 +23,8 @@ class ChangeUsernameViewModel {
         return selectedUsername != username && !selectedUsername.isEmpty
     }
 
-    var reachabilityListener: VoidListener?
-    var selectedUsernameListener: VoidListener?
+    var reachabilityListener: Listener?
+    var selectedUsernameListener: Listener?
     var keyboardListener: KeyboardListener?
     var suggestionsListener: SuggestionsListener?
     var selectedUsername: String = "" {

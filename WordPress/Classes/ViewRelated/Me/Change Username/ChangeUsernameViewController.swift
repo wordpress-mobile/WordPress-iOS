@@ -10,6 +10,7 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
         }
         return saveItem
     }()
+    private var changeUsernameAction: UIAlertAction?
 
     init(service: AccountSettingsService, settings: AccountSettings?, completionBlock: @escaping CompletionBlock) {
         self.viewModel = ChangeUsernameViewModel(service: service, settings: settings)
@@ -36,13 +37,14 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
     }
 
     override func startSearch(for searchTerm: String) {
+        saveBarButtonItem.isEnabled = false
         viewModel.suggestUsernames(for: searchTerm, reloadingAllSections: false)
     }
 }
 
 private extension ChangeUsernameViewController {
     func setupViewModel() {
-        let reloadSaveButton: ChangeUsernameViewModel.VoidListener = { [weak self] in
+        let reloadSaveButton: ChangeUsernameViewModel.Listener = { [weak self] in
             self?.setNeedsSaveButtonIsEnabled()
         }
         viewModel.reachabilityListener = reloadSaveButton
@@ -98,8 +100,11 @@ private extension ChangeUsernameViewController {
     }
 
     func changeUsername() {
+        SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show()
+
         viewModel.save() { [weak self] (state, error) in
+            SVProgressHUD.setDefaultMaskType(.none)
             switch state {
             case .success:
                 WPAppAnalytics.track(.accountSettingsChangeUsernameSucceeded)
@@ -121,19 +126,40 @@ private extension ChangeUsernameViewController {
                                                 preferredStyle: .alert)
         alertController.addAttributeMessage(String(format: Constants.Alert.message, viewModel.selectedUsername),
                                             highlighted: viewModel.selectedUsername)
-        alertController.addTextField { textField in
-            textField.placeholder = Constants.Alert.confirm
-        }
-        alertController.addCancelActionWithTitle(Constants.Alert.cancel)
-        alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController] _ in
+        alertController.addCancelActionWithTitle(Constants.Alert.cancel, handler: { [weak alertController] _ in
+            if let textField = alertController?.textFields?.first {
+                NotificationCenter.default.removeObserver(textField, name: UITextField.textDidChangeNotification, object: nil)
+            }
+            DDLogInfo("User cancelled alert")
+        })
+        changeUsernameAction = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController] _ in
             guard let textField = alertController?.textFields?.first,
                 textField.text == self.viewModel.selectedUsername else {
                     DDLogInfo("Username confirmation failed")
                     return
             }
             DDLogInfo("User changes username")
+            NotificationCenter.default.removeObserver(textField, name: UITextField.textDidChangeNotification, object: nil)
             self.changeUsername()
         })
+        changeUsernameAction?.isEnabled = false
+        alertController.addTextField { [weak self] textField in
+            textField.placeholder = Constants.Alert.confirm
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification,
+                                                   object: textField,
+                                                   queue: .main) {_ in
+                                                    if let text = textField.text,
+                                                        !text.isEmpty,
+                                                        let username = self?.viewModel.selectedUsername,
+                                                        text == username {
+                                                        self?.changeUsernameAction?.isEnabled = true
+                                                        textField.textColor = .success
+                                                        return
+                                                    }
+                                                    self?.changeUsernameAction?.isEnabled = false
+                                                    textField.textColor = .black
+            }
+        }
         DDLogInfo("Prompting user for confirmation of change username")
         return alertController
     }
@@ -146,10 +172,10 @@ private extension ChangeUsernameViewController {
         enum Alert {
             static let loading = NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process.")
             static let title = NSLocalizedString("Careful!", comment: "Alert title.")
-            static let message = NSLocalizedString("You are changing your Username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new Username to continue.", comment: "Alert message.")
+            static let message = NSLocalizedString("You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.", comment: "Alert message.")
             static let cancel = NSLocalizedString("Cancel", comment: "Cancel button.")
-            static let change = NSLocalizedString("Change Username", comment: "Change button.")
-            static let confirm = NSLocalizedString("Confirm Username", comment: "Alert text field placeholder.")
+            static let change = NSLocalizedString("Change username", comment: "Change button.")
+            static let confirm = NSLocalizedString("Confirm username", comment: "Alert text field placeholder.")
         }
     }
 }
