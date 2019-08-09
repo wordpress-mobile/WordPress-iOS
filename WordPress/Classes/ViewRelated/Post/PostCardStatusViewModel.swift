@@ -6,7 +6,8 @@ import Gridicons
 class PostCardStatusViewModel: NSObject {
     private let post: Post
     private var progressObserverUUID: UUID? = nil
-    @objc var progressBlock: ((Float) -> Void)? = nil {
+
+    var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
                 MediaCoordinator.shared.removeObserver(withUUID: uuid)
@@ -22,14 +23,12 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    @objc
     init(post: Post) {
         self.post = post
         super.init()
     }
 
-    @objc
-    var status: String? {
+    private var status: String? {
         // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
@@ -98,7 +97,6 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    @objc
     var statusColor: UIColor {
         guard let status = postStatus else {
             return .neutral(shade: .shade70)
@@ -124,12 +122,10 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    @objc
     var shouldHideProgressView: Bool {
         return !(MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing)
     }
 
-    @objc
     var progress: Float {
         if post.remoteStatus == .pushing {
             return 1.0
