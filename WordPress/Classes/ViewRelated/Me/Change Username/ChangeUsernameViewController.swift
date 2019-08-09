@@ -1,5 +1,5 @@
 class ChangeUsernameViewController: SignupUsernameTableViewController {
-    typealias CompletionBlock = () -> Void
+    typealias CompletionBlock = (String?) -> Void
 
     private let viewModel: ChangeUsernameViewModel
     private let completionBlock: CompletionBlock
@@ -109,7 +109,7 @@ private extension ChangeUsernameViewController {
             case .success:
                 WPAppAnalytics.track(.accountSettingsChangeUsernameSucceeded)
                 SVProgressHUD.dismiss()
-                self?.completionBlock()
+                self?.completionBlock(self?.viewModel.selectedUsername)
                 self?.navigationController?.popViewController(animated: true)
             case .failure:
                 WPAppAnalytics.track(.accountSettingsChangeUsernameFailed)
@@ -157,7 +157,7 @@ private extension ChangeUsernameViewController {
                                                         return
                                                     }
                                                     self?.changeUsernameAction?.isEnabled = false
-                                                    textField.textColor = .black
+                                                    textField.textColor = .text
             }
         }
         DDLogInfo("Prompting user for confirmation of change username")
