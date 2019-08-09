@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
-
+import WordPressFlux
 
 func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewController? {
     guard let api = account.wordPressComRestApi else {
@@ -176,8 +176,12 @@ private class AccountSettingsController: SettingsController {
 
     func changeUsername(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> ChangeUsernameViewController {
         return { _ in
-            return ChangeUsernameViewController(service: service, settings: settings) { [weak self] in
+            return ChangeUsernameViewController(service: service, settings: settings) { [weak self] username in
                 self?.refreshModel()
+                if let username = username {
+                    let notice = Notice(title: String(format: Constants.usernameChanged, username))
+                    ActionDispatcher.dispatch(NoticeAction.post(notice))
+                }
             }
         }
     }
@@ -252,5 +256,6 @@ private class AccountSettingsController: SettingsController {
         static let changingPassword = NSLocalizedString("Changing password", comment: "Loader title displayed by the loading view while the password is changing")
         static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
+        static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
     }
 }
