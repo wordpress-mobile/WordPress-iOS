@@ -267,6 +267,15 @@ extension PostCoordinator: Uploader {
             }
         }
     }
+
+    func cancelAutoUploadOf(_ post: AbstractPost) {
+        cancelAnyPendingSaveOf(post: post)
+        
+        #warning("stub")
+        post.managedObjectContext?.perform {
+            post.confirmedAutoUpload = false
+        }
+    }
 }
 
 extension PostCoordinator {
@@ -293,6 +302,5 @@ extension PostCoordinator {
                 result(postsAndActions)
             }
         }
-
     }
 }

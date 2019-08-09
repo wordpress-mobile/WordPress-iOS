@@ -687,7 +687,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func cancelAutoUpload(_ post: AbstractPost) {
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
+        PostCoordinator.shared.cancelAutoUploadOf(post)
     }
 
     // MARK: - Searching
