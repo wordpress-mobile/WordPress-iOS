@@ -57,6 +57,9 @@ private extension ChangeUsernameViewController {
             case .loading:
                 SVProgressHUD.show(withStatus: Constants.Alert.loading)
             case .success:
+                if suggestions.isEmpty {
+                    WPAppAnalytics.track(.accountSettingsChangeUsernameSuggestionsFailed)
+                }
                 SVProgressHUD.dismiss()
                 self?.suggestions = suggestions
                 self?.reloadSections(includingAllSections: reloadAllSections)
@@ -104,10 +107,12 @@ private extension ChangeUsernameViewController {
             SVProgressHUD.setDefaultMaskType(.none)
             switch state {
             case .success:
+                WPAppAnalytics.track(.accountSettingsChangeUsernameSucceeded)
                 SVProgressHUD.dismiss()
                 self?.completionBlock(self?.viewModel.selectedUsername)
                 self?.navigationController?.popViewController(animated: true)
             case .failure:
+                WPAppAnalytics.track(.accountSettingsChangeUsernameFailed)
                 SVProgressHUD.showError(withStatus: error)
             default:
                 break
