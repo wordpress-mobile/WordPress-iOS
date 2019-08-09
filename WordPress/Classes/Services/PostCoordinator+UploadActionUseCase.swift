@@ -20,6 +20,26 @@ extension PostCoordinator {
             }
 
             return .upload
+extension AbstractPost {
+    private static let confirmedPrefix = "<C> "
+
+    #warning("Stub. This should be replaced by a content hash.")
+    var confirmedAutoUpload: Bool {
+        get {
+            return postTitle?.hasPrefix(AbstractPost.confirmedPrefix) ?? false
+        }
+        set {
+            let title = postTitle ?? ""
+
+            if newValue {
+                if !title.hasPrefix(AbstractPost.confirmedPrefix) {
+                    postTitle = AbstractPost.confirmedPrefix + title
+                }
+            } else {
+                if title.hasPrefix(AbstractPost.confirmedPrefix) {
+                    postTitle = title.removingPrefix(AbstractPost.confirmedPrefix)
+                }
+            }
         }
     }
 }
