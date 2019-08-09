@@ -249,12 +249,22 @@ class PostCoordinator: NSObject {
 extension PostCoordinator: Uploader {
     func resume() {
         let fetcher = FailedPostsFetcher(mainContext)
-        fetcher.getPostsToRetry { [weak self] posts in
+        fetcher.getPostsToRetry { [weak self] postsAndActions in
             guard let self = self else {
                 return
             }
 
-            posts.forEach { self.retrySave(of: $0) }
+            postsAndActions.forEach { post, action in
+                switch action {
+                case .upload:
+                    self.retrySave(of: post)
+                case .remoteAutoSave:
+                    // TODO execute auto-save instead
+                    return
+                case .nothing:
+                    return
+                }
+            }
         }
     }
 }
@@ -272,20 +282,17 @@ extension PostCoordinator {
             postService = PostService(managedObjectContext: managedObjectContext)
         }
 
-        func getPostsToRetry(result: @escaping ([AbstractPost]) -> Void) {
-            let allowedStatuses: [BasePost.Status] = [.draft, .publish]
+        func getPostsToRetry(result: @escaping ([AbstractPost: UploadAction]) -> Void) {
+            let uploadActionUseCase = UploadActionUseCase()
 
             postService.getFailedPosts { posts in
-                let postsToRetry = posts.filter { post -> Bool in
-                    guard let status = post.status else {
-                        return false
-                    }
-
-                    return allowedStatuses.contains(status) && !post.hasRemote()
+                let postsAndActions = posts.reduce(into: [AbstractPost: UploadAction]()) { result, post in
+                    result[post] = uploadActionUseCase.getAutoUploadAction(post: post)
                 }
 
-                result(postsToRetry)
+                result(postsAndActions)
             }
         }
+
     }
 }
