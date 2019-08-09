@@ -537,6 +537,7 @@
 		570BFD902282418A007859A8 /* PostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8F2282418A007859A8 /* PostBuilder.swift */; };
 		5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */; };
 		572FB401223A806000933C76 /* NoticeStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572FB400223A806000933C76 /* NoticeStoreTests.swift */; };
+		5749984722FA0F2E00CE86ED /* PostNoticeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5749984622FA0F2E00CE86ED /* PostNoticeViewModelTests.swift */; };
 		575E126322973EBB0041B3EB /* PostCompactCellGhostableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E126222973EBB0041B3EB /* PostCompactCellGhostableTests.swift */; };
 		575E126F229779E70041B3EB /* RestorePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E126E229779E70041B3EB /* RestorePostTableViewCell.swift */; };
 		577C2AAB22936DCB00AD1F03 /* PostCardCellGhostableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577C2AAA22936DCB00AD1F03 /* PostCardCellGhostableTests.swift */; };
@@ -2580,6 +2581,7 @@
 		570BFD8F2282418A007859A8 /* PostBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBuilder.swift; sourceTree = "<group>"; };
 		5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePostViewDelegate.swift; sourceTree = "<group>"; };
 		572FB400223A806000933C76 /* NoticeStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeStoreTests.swift; sourceTree = "<group>"; };
+		5749984622FA0F2E00CE86ED /* PostNoticeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticeViewModelTests.swift; sourceTree = "<group>"; };
 		575E126222973EBB0041B3EB /* PostCompactCellGhostableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCompactCellGhostableTests.swift; sourceTree = "<group>"; };
 		575E126E229779E70041B3EB /* RestorePostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePostTableViewCell.swift; sourceTree = "<group>"; };
 		577C2AAA22936DCB00AD1F03 /* PostCardCellGhostableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardCellGhostableTests.swift; sourceTree = "<group>"; };
@@ -5490,6 +5492,15 @@
 			path = Stores;
 			sourceTree = "<group>";
 		};
+		5749984522FA0EB900CE86ED /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5749984622FA0F2E00CE86ED /* PostNoticeViewModelTests.swift */,
+			);
+			name = Utils;
+			path = ViewRelated/Post/Utils;
+			sourceTree = "<group>";
+		};
 		59B48B601B99E0B0008EBB84 /* TestUtilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -6753,6 +6764,7 @@
 		937E3AB41E3EBDC900CDA01A /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				5749984522FA0EB900CE86ED /* Utils */,
 				937E3AB51E3EBE1600CDA01A /* PostEditorStateTests.swift */,
 				E10F3DA01E5C2CE0008FAADA /* PostListFilterTests.swift */,
 				E684383F221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift */,
@@ -11616,6 +11628,7 @@
 				D81C2F6020F891C4002AE1F1 /* TrashCommentActionTests.swift in Sources */,
 				570BFD8D22823DE5007859A8 /* PostActionSheetTests.swift in Sources */,
 				FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */,
+				5749984722FA0F2E00CE86ED /* PostNoticeViewModelTests.swift in Sources */,
 				08B6E51C1F037ADD00268F57 /* MediaFileManagerTests.swift in Sources */,
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
 				73178C2C21BEE09300E37C9A /* SiteCreationHeaderDataTests.swift in Sources */,

@@ -3,6 +3,8 @@ import XCTest
 
 @testable import WordPress
 
+private typealias StatusMessages = PostCardStatusViewModel.StatusMessages
+
 class PostCompactCellTests: XCTestCase {
 
     var postCell: PostCompactCell!
@@ -107,6 +109,18 @@ class PostCompactCellTests: XCTestCase {
         postCell.configure(with: post)
 
         XCTAssertTrue(postCell.progressView.isHidden)
+    }
+
+    func testShowsWarningMessageForFailedPublishedPosts() {
+        // Given
+        let post = PostBuilder().published().with(remoteStatus: .failed).build()
+
+        // When
+        postCell.configure(with: post)
+
+        // Then
+        XCTAssertEqual(postCell.badgesLabel.text, StatusMessages.postWillBePublished)
+        XCTAssertEqual(postCell.badgesLabel.textColor, UIColor.warning)
     }
 
     private func postCellFromNib() -> PostCompactCell {

@@ -3,6 +3,8 @@ import XCTest
 
 @testable import WordPress
 
+private typealias StatusMessages = PostCardStatusViewModel.StatusMessages
+
 class PostCardCellTests: XCTestCase {
 
     var postCell: PostCardCell!
@@ -107,7 +109,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.statusLabel?.text, "Upload failed")
+        XCTAssertEqual(postCell.statusLabel?.text, StatusMessages.postWillBePublished)
     }
 
 
@@ -249,6 +251,18 @@ class PostCardCellTests: XCTestCase {
 
         XCTAssertFalse(postCell.authorLabel.isHidden)
         XCTAssertFalse(postCell.separatorLabel.isHidden)
+    }
+
+    func testShowsWarningMessageForFailedPublishedPosts() {
+        // Given
+        let post = PostBuilder().published().with(remoteStatus: .failed).build()
+
+        // When
+        postCell.configure(with: post)
+
+        // Then
+        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.postWillBePublished)
+        XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
     private func postCellFromNib() -> PostCardCell {

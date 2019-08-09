@@ -4,10 +4,14 @@ import Foundation
 
 class PostBuilder {
 
-    var post: Post!
+    private var post: Post!
 
     init() {
         post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: setUpInMemoryManagedObjectContext()) as? Post
+    }
+
+    init(_ context: NSManagedObjectContext) {
+        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as? Post
     }
 
     func published() -> PostBuilder {

@@ -90,7 +90,12 @@ struct PostNoticeViewModel {
         }
     }
 
+    // TODO Move strings to FailureTitles enum
     private var failureTitle: String {
+        if post.status == .publish {
+            return FailureTitles.postWillBePublished
+        }
+
         if post is Page {
             return NSLocalizedString("Page failed to upload", comment: "Title of notification displayed when a page has failed to upload.")
         } else {
@@ -200,5 +205,10 @@ struct PostNoticeViewModel {
         let postInContext = objectInContext as? AbstractPost
 
         return postInContext
+    }
+
+    enum FailureTitles {
+        static let postWillBePublished = NSLocalizedString("Post will be published the next time your device is online",
+                                                           comment: "Text displayed in notice after a post if published while offline.")
     }
 }
