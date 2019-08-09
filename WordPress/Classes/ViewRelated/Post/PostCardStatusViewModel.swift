@@ -61,42 +61,6 @@ class PostCardStatusViewModel: NSObject {
         return post.status
     }
 
-    @objc
-    var shouldHideStatusView: Bool {
-        guard let status = status else {
-            return !post.isStickyPost
-        }
-
-        return status.isEmpty && !post.isStickyPost
-    }
-
-    @objc
-    var statusImage: UIImage? {
-        guard let status = postStatus else {
-            return nil
-        }
-
-        // In progress uploads
-        if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
-            return Gridicon.iconOfType(.cloudUpload)
-        }
-
-        if post.isFailed {
-            return Gridicon.iconOfType(.cloudUpload)
-        }
-
-        switch status {
-        case .pending:
-            return Gridicon.iconOfType(.chat)
-        case .scheduled:
-            return Gridicon.iconOfType(.scheduled)
-        case .trash:
-            return Gridicon.iconOfType(.trash)
-        default:
-            return UIDevice.isPad() ? Gridicon.iconOfType(.tablet) : Gridicon.iconOfType(.phone)
-        }
-    }
-
     var statusColor: UIColor {
         guard let status = postStatus else {
             return .neutral(shade: .shade70)
