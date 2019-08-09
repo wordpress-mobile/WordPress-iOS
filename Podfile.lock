@@ -301,7 +301,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.7.0)
   - WordPressKit (~> 4.4.0-beta.2)
   - WordPressMocks (~> 0.0.5)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared`, branch `feature/change-username-events`)
+  - WordPressShared (~> 1.8.6-beta.2)
   - WordPressUI (~> 1.3.4)
   - WPMediaPicker (~> 1.4.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.10.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -345,6 +345,7 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
+    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -407,9 +408,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.10.0
-  WordPressShared:
-    :branch: feature/change-username-events
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.10.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -423,9 +421,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.10.0
-  WordPressShared:
-    :commit: d105fc35672fd97cfbb761c582ce4b83d6a89363
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -489,7 +484,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: 485679ba24ceefb15acb8e0bd18f3856cf52e8f4
   WordPressKit: 91237a0adcb2db19595114833f76efa2e3da9e55
   WordPressMocks: d8088f718439556ff3856d5881aef581740cd26a
-  WordPressShared: ed85d3cbeac9b67cffdcb903fdfae266b0b698e9
+  WordPressShared: e5dd3839eced389a56809164fc47e4cf24c833a3
   WordPressUI: 065de4c33212b9ca3ae458d43c73f2ce2738d3d4
   WPMediaPicker: 1897f312c7b41114ffd239fb782431ae602134a1
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
@@ -497,6 +492,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: c2e49fd16a73e43e490f777cea67dd852b819ace
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 6debeeb2a241294e8666e31f0061b92a0bfce6cd
+PODFILE CHECKSUM: dab7a04e7001e81156f27292138f45e206f8700b
 
 COCOAPODS: 1.6.1
