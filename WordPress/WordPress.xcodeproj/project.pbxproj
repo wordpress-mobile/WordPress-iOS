@@ -1083,6 +1083,7 @@
 		9826AE9121B5D3CD00C851FA /* PostingActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9826AE8F21B5D3CD00C851FA /* PostingActivityCell.xib */; };
 		9829162F2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */; };
 		982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
+		983002A822FA05D600F03DBB /* AddInsightTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983002A722FA05D600F03DBB /* AddInsightTableViewController.swift */; };
 		983DBBAA22125DD500753988 /* StatsTableFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 983DBBA822125DD300753988 /* StatsTableFooter.xib */; };
 		983DBBAB22125DD500753988 /* StatsTableFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983DBBA922125DD300753988 /* StatsTableFooter.swift */; };
 		98458CB821A39D350025D232 /* StatsNoDataRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98458CB721A39D350025D232 /* StatsNoDataRow.swift */; };
@@ -1156,6 +1157,7 @@
 		98F537A922496D0D00B334F9 /* SiteStatsTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98F537A822496D0D00B334F9 /* SiteStatsTableHeaderView.xib */; };
 		98FCFC232231DF43006ECDD4 /* PostStatsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FCFC212231DF43006ECDD4 /* PostStatsTitleCell.swift */; };
 		98FCFC242231DF43006ECDD4 /* PostStatsTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98FCFC222231DF43006ECDD4 /* PostStatsTitleCell.xib */; };
+		9A144AC822FD6A650069DD71 /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		9A162F2321C26D7500FDC035 /* RevisionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2221C26D7500FDC035 /* RevisionPreviewViewController.swift */; };
 		9A162F2521C26F5F00FDC035 /* UIViewController+ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */; };
 		9A162F2921C271D300FDC035 /* RevisionBrowserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2821C271D300FDC035 /* RevisionBrowserState.swift */; };
@@ -3242,6 +3244,7 @@
 		9826AE8F21B5D3CD00C851FA /* PostingActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostingActivityCell.xib; sourceTree = "<group>"; };
 		9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsDetailsViewModel.swift; sourceTree = "<group>"; };
 		982A4C3420227D6700B5518E /* NoResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsViewController.swift; sourceTree = "<group>"; };
+		983002A722FA05D600F03DBB /* AddInsightTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightTableViewController.swift; sourceTree = "<group>"; };
 		983DBBA822125DD300753988 /* StatsTableFooter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTableFooter.xib; sourceTree = "<group>"; };
 		983DBBA922125DD300753988 /* StatsTableFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTableFooter.swift; sourceTree = "<group>"; };
 		98458CB721A39D350025D232 /* StatsNoDataRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsNoDataRow.swift; sourceTree = "<group>"; };
@@ -4941,7 +4944,7 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -6995,6 +6998,7 @@
 			children = (
 				985793C622F23D7000643DBF /* CustomizeInsightsCell.swift */,
 				985793C722F23D7000643DBF /* CustomizeInsightsCell.xib */,
+				983002A722FA05D600F03DBB /* AddInsightTableViewController.swift */,
 			);
 			path = "Insights Management";
 			sourceTree = "<group>";
@@ -9515,7 +9519,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -9833,6 +9837,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93E5284319A7741A003A1A9C /* MainInterface.storyboard in Resources */,
+				9A144AC822FD6A650069DD71 /* ColorPalette.xcassets in Resources */,
 				E1B6A9CC1E54B6B2008FD47E /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -10892,6 +10897,7 @@
 				749197EE209B9A2E006F5E66 /* ReaderCardContent+PostInformation.swift in Sources */,
 				FF355D981FB492DD00244E6D /* ExportableAsset.swift in Sources */,
 				E15644EF1CE0E53B00D96E64 /* PlanListViewModel.swift in Sources */,
+				983002A822FA05D600F03DBB /* AddInsightTableViewController.swift in Sources */,
 				98CAD296221B4ED2003E8F45 /* StatSection.swift in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
