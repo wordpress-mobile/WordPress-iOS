@@ -354,6 +354,11 @@ extension PostEditor where Self: UIViewController {
 
         mapUIContentToPostAndSave(immediate: true)
 
+        #warning("stub")
+        if post.status == .publish {
+            post.confirmedAutoUpload = true
+        }
+
         post.updatePathForDisplayImageBasedOnContent()
 
         PostCoordinator.shared.save(post: post)
