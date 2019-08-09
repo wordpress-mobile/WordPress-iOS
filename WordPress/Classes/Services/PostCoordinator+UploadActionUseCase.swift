@@ -19,7 +19,15 @@ extension PostCoordinator {
                 return .nothing
             }
 
-            return .upload
+            if post.confirmedAutoUpload {
+                return .upload
+            } else {
+                return .remoteAutoSave
+            }
+        }
+    }
+}
+
 extension AbstractPost {
     private static let confirmedPrefix = "<C> "
 
