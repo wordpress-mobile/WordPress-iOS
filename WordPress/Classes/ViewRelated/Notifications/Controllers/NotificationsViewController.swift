@@ -1221,7 +1221,7 @@ private extension NotificationsViewController {
     }
 
     var shouldDisplaySettingsButton: Bool {
-        return AccountHelper.isDotcomAvailable() == true
+        return AccountHelper.isDotcomAvailable()
     }
 
     var shouldDisplayNoResultsView: Bool {
