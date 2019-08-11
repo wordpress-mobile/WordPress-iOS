@@ -675,7 +675,7 @@ extension Media {
 
         // I don't want to hand-encode the Alamofire.AFError domain and/or code — they're both subject to change
         // in the future, so I'm hand-creating an error here to get the domain/code out of.
-        let multipartEncodingFailedSampleError = AFError.multipartEncodingFailed(reason:.bodyPartFileNotReachable(at: URL(string: "https://wordpress.com")!)) as NSError
+        let multipartEncodingFailedSampleError = AFError.multipartEncodingFailed(reason: .bodyPartFileNotReachable(at: URL(string: "https://wordpress.com")!)) as NSError
         // (yes, yes, I know, unwrapped optional. but if creating a URL from this string fails, then something is probably REALLY wrong and we should bail anyway.)
 
         // If we still have enough data to know this is a Swift Error, let's do the actual right thing here:
