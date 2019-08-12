@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 VERSION_SHORT=13.0
 
 // Public long version example: VERSION_LONG=9.9.0.0
 VERSION_LONG=13.0.0.0
-=======
-VERSION_SHORT=12.7.1
-
-// Public long version example: VERSION_LONG=9.9.0.0
-VERSION_LONG=12.7.1.0
->>>>>>> release/12.7.1
