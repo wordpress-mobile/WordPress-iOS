@@ -98,6 +98,18 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
+    var canRetryUpload: Bool {
+        return post.isFailed && post.status != .publish
+    }
+
+    var canCancelAutoUpload: Bool {
+        return post.isFailed && post.status == .publish && post.confirmedAutoUpload
+    }
+
+    var canPreview: Bool {
+        return !post.isFailed
+    }
+
     func statusAndBadges(separatedBy separator: String) -> String {
         let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
         let status = self.status ?? ""

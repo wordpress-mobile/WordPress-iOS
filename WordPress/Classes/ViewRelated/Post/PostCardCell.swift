@@ -260,13 +260,13 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureActionBar() {
-        guard let post = post else {
+        guard let viewModel = viewModel else {
             return
         }
 
-        retryButton.isHidden = !(post.isFailed && post.status != .publish)
-        cancelAutoUploadButton.isHidden = !(post.isFailed && post.status == .publish && post.confirmedAutoUpload)
-        viewButton.isHidden = post.isFailed
+        retryButton.isHidden = !viewModel.canRetryUpload
+        cancelAutoUploadButton.isHidden = !viewModel.canCancelAutoUpload
+        viewButton.isHidden = !viewModel.canPreview
     }
 
     private func setupBorders() {
