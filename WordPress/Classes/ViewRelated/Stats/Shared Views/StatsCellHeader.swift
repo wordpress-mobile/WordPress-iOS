@@ -43,6 +43,7 @@ private extension StatsCellHeader {
     // MARK: - Configure
 
     func applyStyles() {
+        Style.configureCell(self)
         Style.configureLabelAsHeader(headerLabel)
         configureManageInsightButton()
         updateStackView()
