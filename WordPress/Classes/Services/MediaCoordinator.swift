@@ -698,6 +698,15 @@ extension Media {
             nsError.code == multipartEncodingFailedSampleError.code {
             // and if we only have the NSError-level of data, let's just fall back on best-effort guess.
             return true
+        } else if let nsError = error as NSError?,
+            nsError.domain == MediaServiceErrorDomain,
+            nsError.code == MediaServiceError.fileDoesNotExist.rawValue {
+            // if for some reason, the app crashed when trying to create a media object (like, for example, in this crash):
+            // https://github.com/wordpress-mobile/gutenberg-mobile/issues/1190
+            // the Media objects ends up in a malformed state, and we acutally handle that on the
+            // MediaService level. We need to also handle it here!
+
+            return true
         }
 
         return false
