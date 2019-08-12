@@ -25,6 +25,38 @@ extension PostCoordinator {
                 return .remoteAutoSave
             }
         }
+
+        func canCancelAutoUpload(of post: AbstractPost) -> Bool {
+            guard post.isFailed else {
+                return false
+            }
+            guard let status = post.status else {
+                return false
+            }
+            // Ignore currently not supported statuses
+            guard UploadActionUseCase.allowedStatuses.contains(status) else {
+                return false
+            }
+
+            // Local drafts are always automatically uploaded
+            if post.status == .draft && !post.hasRemote() {
+                return false
+            } else {
+                return getAutoUploadAction(post: post) == .upload && post.confirmedAutoUpload
+            }
+        }
+
+        /// Temporary method to support old _Retry_ upload functionality.
+        func canRetryUpload(of post: AbstractPost) -> Bool {
+            guard post.isFailed else {
+                return false
+            }
+            guard let status = post.status else {
+                return false
+            }
+
+            return !UploadActionUseCase.allowedStatuses.contains(status)
+        }
     }
 }
 

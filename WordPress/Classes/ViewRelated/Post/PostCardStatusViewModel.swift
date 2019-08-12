@@ -7,6 +7,8 @@ class PostCardStatusViewModel: NSObject {
     private let post: Post
     private var progressObserverUUID: UUID? = nil
 
+    private let uploadActionUseCase = PostCoordinator.UploadActionUseCase()
+
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
@@ -33,7 +35,7 @@ class PostCardStatusViewModel: NSObject {
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
         } else if post.isFailed {
-            if post.status == .publish {
+            if canCancelAutoUpload {
                 return StatusMessages.postWillBePublished
             }
 
@@ -71,7 +73,7 @@ class PostCardStatusViewModel: NSObject {
         }
 
         if post.isFailed {
-            return status == .publish ? .warning : .error
+            return canCancelAutoUpload ? .warning : .error
         }
 
         switch status {
@@ -99,11 +101,11 @@ class PostCardStatusViewModel: NSObject {
     }
 
     var canRetryUpload: Bool {
-        return post.isFailed && post.status != .publish
+        return uploadActionUseCase.canRetryUpload(of: post)
     }
 
     var canCancelAutoUpload: Bool {
-        return post.isFailed && post.status == .publish && post.confirmedAutoUpload
+        return uploadActionUseCase.canCancelAutoUpload(of: post)
     }
 
     var canPreview: Bool {
