@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 VERSION_SHORT=13.0
 
 // Internal long version example: VERSION_LONG=9.9.0.20180423
 VERSION_LONG=13.0.0.20190729
+=======
+VERSION_SHORT=12.7.1
+
+// Internal long version example: VERSION_LONG=9.9.0.20180423
+VERSION_LONG=12.7.1.20190704
+>>>>>>> release/12.7.1
