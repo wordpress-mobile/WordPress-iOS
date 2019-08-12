@@ -184,10 +184,11 @@ extension UIColor {
         #endif
     }
 
+    /// WP color for table foregrounds (cells, etc)
     static var tableForeground: UIColor {
         #if XCODE11
         if #available(iOS 13, *) {
-            return .secondarySystemBackground
+            return .secondarySystemGroupedBackground
         } else {
             return .white
         }
@@ -209,10 +210,15 @@ extension UIColor {
     }
 
     static var tableBackground: UIColor {
+        let fallbackColor = muriel(color: .tableBackground)
         #if XCODE11
-        return .groupTableViewBackground
+        if #available(iOS 13, *) {
+            return .systemGroupedBackground
+        } else {
+            return fallbackColor
+        }
         #else
-        return muriel(color: .tableBackground)
+        return fallbackColor
         #endif
     }
 

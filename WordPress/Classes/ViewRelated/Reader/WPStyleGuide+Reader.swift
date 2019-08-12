@@ -37,7 +37,7 @@ extension WPStyleGuide {
 
     // MARK: - Custom Colors
     @objc public class func readerCardCellBorderColor() -> UIColor {
-        return .neutral(shade: .shade10)
+        return .divider
     }
 
     @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
