@@ -223,7 +223,7 @@ extension WPStyleGuide {
     // MARK: - Button Styles and Text
 
     public class func applyReaderActionButtonStyle(_ button: UIButton) {
-        let defaultColor: UIColor = .neutral(shade: .shade30)
+        let defaultColor: UIColor = .listIcon
         let highlightedColor: UIColor = .neutral
         let selectedColor: UIColor = .primary(shade: .shade40)
         let bothColor: UIColor = .primaryLight

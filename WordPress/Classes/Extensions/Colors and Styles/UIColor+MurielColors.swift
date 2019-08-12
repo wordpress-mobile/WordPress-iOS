@@ -222,7 +222,18 @@ extension UIColor {
         #endif
     }
 
-    static var listIcon = UIColor(light: .neutral(shade: .shade20), dark: .neutral(shade: .shade50))
+    static var listIcon: UIColor {
+        let fallbackColor = UIColor(light: .neutral(shade: .shade20), dark: .neutral(shade: .shade50))
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .secondaryLabel
+        } else {
+            return fallbackColor
+        }
+        #else
+        return fallbackColor
+        #endif
+    }
 
     /// Tab bar unselected color
     static var tabUnselected: UIColor =  UIColor(light: .neutral(shade: .shade20), dark: .neutral(shade: .shade50))
