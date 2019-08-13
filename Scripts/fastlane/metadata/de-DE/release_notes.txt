@@ -1,5 +1,9 @@
-* Entwürfe offline erstellen! Manchmal hast du tolle Ideen, aber keine Internetverbindung, weil wir noch nicht in einer perfekten Welt leben. Wir haben auch immer noch keine fliegenden Autos, aber jetzt kannst du neue Beiträge in der App erstellen, auch wenn du offline bist.
-* Übersichtlichere Vorschauen! Zuvor war der Status von in Bearbeitung befindlichen Beitragsvorschauen hinter einer Statusanzeige verborgen, die den Bildschirm verdeckt hat. Jetzt ist die Statusanzeige besser positioniert: Sie ist nun am Bildschirmanfang zu finden, sodass du weiterhin auf den restlichen Bildschirm zugreifen kannst.
-* Bessere Blöcke! Wir haben eine Reihe von Verbesserungen am Block-Editor vorgenommen, um das Erstellen von Entwürfen einfacher zu gestalten. Wenn du auf einen leeren Editor-Bereich tippst, wird automatisch ein neuer Absatzblock erstellt. Wenn du über den Beitragstitel einen Block hinzufügst, wird der Block nun am Anfang des Beitrags und nicht mehr am Ende angezeigt, wo du ihn nicht richtig sehen konntest. Und wir haben ein Problem behoben, das manchmal dazu führte, dass Inhalte verloren gingen, wenn der Editor versuchte, nicht unterstützte Blöcke zu laden.
-* Übersichtlichere Beitragslisten! Die Liste deiner Beiträge enthält jetzt eine Option, um Beiträge kompakter anzuzeigen, sodass du mehr Beitragsdetails auf einmal anzeigen kannst. Und der Ladebildschirm wurde neu gestaltet, um das Warten darauf, dass Inhalte geladen werden, angenehmer zu machen.
-* Reibungslosere Einrichtung! Wenn du eine neue Website einrichtest, wurden manchmal Vorschauen falsch angezeigt, und das Hinzufügen eines Website-Icons war nicht so einfach, wie es sein sollte. Das ist jetzt nicht mehr der Fall.
+13.0
+-----
+Dein Smartphone hat eine Zeitzoneneinstellung. Deine Website verwendet jedoch eine andere. Worauf basieren deine Website-Statistiken? Gab es diese Traffic-Spitze an diesem Morgen oder diesem Nachmittag? Antwort: Deine Statistiken basieren jetzt auf den Zeitzoneneinstellungen deiner Website.
+
+Konsistente Farbschemas mit hohen Kontrasten ergeben eine benutzerfreundliche, intuitive App und damit glückliche Benutzer. Version 13.0 ist jetzt noch konsistenter – wir wünschen dir viel Spaß!
+
+Der Block-Editor wird immer besser. Du meinst, das ist nicht möglich? Pah! Lass uns mal sehen: Er wird automatisch aktiviert, wenn du das erste Mal einen blockbasierten Beitrag* startest, und du kannst ihn für jede Website aktivieren und deaktivieren, sodass jeder Benutzer genau die Editor-Erfahrung erhält, die er möchte. Wenn du Blöcke aus dem Beitragstitel hinzufügst, wird ein „Block hier einfügen“-Indikator angezeigt, um die Erstellung von Inhalten zu vereinfachen, und durch das Hinzufügen neuer Blöcke wird die Auswahl des Beitragstitels aufgehoben, sodass der Fokus auf dem neuen Block liegt.
+
+* Wenn du dies nicht in Version 12.9 deaktiviert hast! Wir sind keine Monster.
