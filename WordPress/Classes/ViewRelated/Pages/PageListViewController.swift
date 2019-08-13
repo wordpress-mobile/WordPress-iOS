@@ -466,15 +466,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     private func show(_ editorViewController: EditorViewController) {
         let filterIndex = filterSettings.currentFilterIndex()
 
-        editorViewController.onClose = { [weak self, weak editorViewController] changesSaved, _ in
-            if changesSaved {
-                if let postStatus = editorViewController?.post.status {
-                    self?.updateFilterWithPostStatus(postStatus)
-                }
-            } else {
-                self?.updateFilter(index: filterIndex)
-            }
-
+        editorViewController.onClose = { [weak self, weak editorViewController] _, _ in
+            self?.updateFilter(index: filterIndex)
             self?._tableViewHandler.isSearching = false
             editorViewController?.dismiss(animated: true)
         }

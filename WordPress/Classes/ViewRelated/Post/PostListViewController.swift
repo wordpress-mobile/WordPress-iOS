@@ -485,14 +485,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func createPost() {
         let filterIndex = filterSettings.currentFilterIndex()
         let editor = EditPostViewController(blog: blog)
-        editor.onClose = { [weak self] changesSaved in
-            if changesSaved {
-                if let postStatus = editor.post?.status {
-                    self?.updateFilterWithPostStatus(postStatus)
-                }
-            } else {
-                self?.updateFilter(index: filterIndex)
-            }
+        editor.onClose = { [weak self] _ in
+             self?.updateFilter(index: filterIndex)
         }
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: { [weak self] in
