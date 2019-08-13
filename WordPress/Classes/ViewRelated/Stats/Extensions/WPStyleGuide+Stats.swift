@@ -10,15 +10,18 @@ extension WPStyleGuide {
             case blue
             case grey
             case darkGrey
+            case icon
 
             var styleGuideColor: UIColor {
                 switch self {
                 case .blue:
                     return .primary(shade: .shade40)
                 case .grey:
-                    return .neutral(shade: .shade20)
+                    return .textQuaternary
                 case .darkGrey:
-                    return .neutral(shade: .shade70)
+                    return .textSubtle
+                case .icon:
+                    return .listIcon
                 }
             }
         }
@@ -46,7 +49,7 @@ extension WPStyleGuide {
         }
 
         static func configureViewAsDataBar(_ dataBar: UIView) {
-            dataBar.backgroundColor = separatorColor
+            dataBar.backgroundColor = dataBarColor
             dataBar.layer.cornerRadius = dataBar.frame.height * 0.5
         }
 
@@ -74,7 +77,7 @@ extension WPStyleGuide {
         }
 
         static func configureLabelAsData(_ label: UILabel) {
-            label.textColor = secondaryTextColor
+            label.textColor = defaultTextColor
         }
 
         static func configureLabelAsChildRowTitle(_ label: UILabel) {
@@ -182,10 +185,10 @@ extension WPStyleGuide {
 
         // MARK: - Style Values
 
-        static let defaultTextColor = UIColor.neutral(shade: .shade70)
-        static let headerTextColor = UIColor.neutral(shade: .shade50)
-        static let secondaryTextColor = UIColor.neutral(shade: .shade30)
-        static let itemDetailTextColor = UIColor.neutral(shade: .shade40)
+        static let defaultTextColor = UIColor.text
+        static let headerTextColor = UIColor.textSubtle
+        static let secondaryTextColor = UIColor.textSubtle
+        static let itemDetailTextColor = UIColor.textSubtle
         static let actionTextColor = UIColor.primary
         static let summaryTextColor = UIColor.neutral(shade: .shade70)
         static let substringHighlightTextColor = UIColor.primary
@@ -197,14 +200,15 @@ extension WPStyleGuide {
 
         static let tableBackgroundColor = UIColor.tableBackground
         static let cellBackgroundColor = UIColor.tableForeground
-        static let separatorColor = UIColor.neutral(shade: .shade10)
+        static let separatorColor = UIColor.divider
+        static let dataBarColor = UIColor.textTertiary
         static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
         static let verticalSeparatorColor = UIColor.neutral(shade: .shade5)
 
-        static let defaultFilterTintColor: UIColor = .primary
-        static let tabbedCardFilterTintColor = UIColor.neutral(shade: .shade10)
-        static let tabbedCardFilterSelectedTitleColor = UIColor.neutral(shade: .shade70)
-        static let filterDeselectedColor = UIColor.neutral(shade: .shade40)
+        static let defaultFilterTintColor = UIColor.filterBarSelected
+        static let tabbedCardFilterTintColor = UIColor.filterBarSelected
+        static let tabbedCardFilterSelectedTitleColor = UIColor.filterBarSelected
+        static let filterDeselectedColor = UIColor.textSubtle
         static let filterDividerColor = UIColor.neutral(shade: .shade10)
 
         static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .regular)

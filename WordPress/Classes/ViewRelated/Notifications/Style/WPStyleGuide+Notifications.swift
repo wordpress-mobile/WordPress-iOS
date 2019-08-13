@@ -21,7 +21,7 @@ extension WPStyleGuide {
         // NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonTextColor          = UIColor.textInverted
-        public static let noticonReadColor          = UIColor.neutral(shade: .shade20)
+        public static let noticonReadColor          = UIColor.listSmallIcon
         public static let noticonUnreadColor        = UIColor.primary
         public static let noticonUnmoderatedColor   = UIColor.warning
 

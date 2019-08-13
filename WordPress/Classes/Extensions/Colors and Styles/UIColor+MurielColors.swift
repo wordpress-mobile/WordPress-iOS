@@ -161,9 +161,62 @@ extension UIColor {
 // MARK: -- UI elements
 extension UIColor {
 
-    /// Text Colors
-    static var text = muriel(color: .text)
-    static var textSubtle = muriel(color: .textSubtle)
+    /// Default text color: high contrast
+    static var text: UIColor {
+        let fallbackColor = muriel(color: .text)
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .label
+        } else {
+            return fallbackColor
+        }
+        #else
+        return fallbackColor
+        #endif
+    }
+
+    /// Secondary text color: less contrast
+    static var textSubtle: UIColor {
+        let fallbackColor = muriel(color: .neutral)
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .secondaryLabel
+        } else {
+            return fallbackColor
+        }
+        #else
+        return fallbackColor
+        #endif
+    }
+
+    /// Very low contrast text
+    static var textTertiary: UIColor {
+        let fallbackColor = UIColor.neutral(shade: .shade10)
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .tertiaryLabel
+        } else {
+            return fallbackColor
+        }
+        #else
+        return fallbackColor
+        #endif
+    }
+
+    /// Very, very low contrast text
+    static var textQuaternary: UIColor {
+        let fallbackColor = UIColor.neutral(shade: .shade10)
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .quaternaryLabel
+        } else {
+            return fallbackColor
+        }
+        #else
+        return fallbackColor
+        #endif
+    }
+
     static var textInverted = UIColor(light: .white, dark: .neutral(shade: .shade0))
     static var textPlaceholder = neutral(shade: .shade30)
 
@@ -222,6 +275,7 @@ extension UIColor {
         #endif
     }
 
+    /// For icons that are present in a table view, or similar list
     static var listIcon: UIColor {
         let fallbackColor = UIColor(light: .neutral(shade: .shade20), dark: .neutral(shade: .shade50))
         #if XCODE11
@@ -232,6 +286,33 @@ extension UIColor {
         }
         #else
         return fallbackColor
+        #endif
+    }
+
+    /// For small icons, such as the badges on notification gravatars
+    static var listSmallIcon: UIColor {
+        let fallbackColor = UIColor.neutral(shade: .shade20)
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .systemGray
+        } else {
+            return fallbackColor
+        }
+        #else
+        return fallbackColor
+        #endif
+    }
+
+    static var filterBarSelected: UIColor {
+        let lightModeColor = UIColor.primary
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return UIColor(light: lightModeColor, dark: .label)
+        } else {
+            return lightModeColor
+        }
+        #else
+        return lightModeColor
         #endif
     }
 
