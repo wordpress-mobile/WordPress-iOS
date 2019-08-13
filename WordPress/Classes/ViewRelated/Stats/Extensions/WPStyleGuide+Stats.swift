@@ -38,6 +38,11 @@ extension WPStyleGuide {
             cell.contentView.backgroundColor = cellBackgroundColor
         }
 
+        static func configureHeaderCell(_ cell: UITableViewCell) {
+            cell.backgroundColor = tableBackgroundColor
+            cell.contentView.backgroundColor = tableBackgroundColor
+        }
+
         static func configureViewAsSeparator(_ separatorView: UIView) {
             separatorView.backgroundColor = separatorColor
             separatorView.constraints.first(where: { $0.firstAttribute == .height })?.isActive = false
