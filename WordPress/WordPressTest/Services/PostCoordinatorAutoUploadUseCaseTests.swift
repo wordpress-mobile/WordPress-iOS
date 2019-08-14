@@ -65,6 +65,41 @@ class PostCoordinatorAutoUploadUseCaseTests: XCTestCase {
             expect(actualAction).to(equal(expectedAction))
         }
     }
+
+    /// Test which auto-uploaded post types can be canceled by the user
+    func testCancelAutoUploadMethodAppliesToLocalDraftsAndConfirmedUploads() {
+        // Arrange
+        let postsAndExpectedCancelableResult: [Post: Bool] = [
+            // Local drafts are automatically uploaded and do not need to be canceled. We consider
+            // them to be safe.
+            createPost(.draft): false,
+            // Published local drafts require confirmation and can be canceled
+            createPost(.publish, confirmedAutoUpload: true): true,
+            // Published local drafts with no confirmation will be remote auto-saved. Remote
+            // auto-saved is considered safe and do not need to be canceled. It should also happen
+            // in the background without any interaction from the user.
+            createPost(.publish): false,
+            // Draft and published posts with remote are currently unsupported. These should
+            // allow cancelation. This will be fixed soon.
+            createPost(.draft, hasRemote: true, confirmedAutoUpload: true): false,
+            createPost(.publish, hasRemote: true, confirmedAutoUpload: true): false,
+            // Posts with remote that have no confirmation will be remote auto-saved.
+            createPost(.draft, hasRemote: true): false,
+            createPost(.publish, hasRemote: true): false,
+            // Other statuses are currently unsupported
+            createPost(.publishPrivate, confirmedAutoUpload: true): false,
+            createPost(.scheduled, confirmedAutoUpload: true): false,
+            createPost(.trash, confirmedAutoUpload: true): false,
+            createPost(.deleted, confirmedAutoUpload: true): false,
+        ]
+
+        // Act and Assert
+        postsAndExpectedCancelableResult.forEach { post, expectedCancelableResult in
+            let actualResult = uploadActionUseCase.canCancelAutoUpload(of: post)
+
+            expect(actualResult).to(equal(expectedCancelableResult))
+        }
+    }
 }
 
 private extension PostCoordinatorAutoUploadUseCaseTests {
