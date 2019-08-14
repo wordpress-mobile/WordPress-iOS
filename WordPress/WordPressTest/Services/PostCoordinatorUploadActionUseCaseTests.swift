@@ -2,7 +2,7 @@
 @testable import WordPress
 import Nimble
 
-class PostCoordinatorAutoUploadUseCaseTests: XCTestCase {
+class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
     private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
 
@@ -102,7 +102,7 @@ class PostCoordinatorAutoUploadUseCaseTests: XCTestCase {
     }
 }
 
-private extension PostCoordinatorAutoUploadUseCaseTests {
+private extension PostCoordinatorUploadActionUseCaseTests {
     func createPost(_ status: BasePost.Status,
                     remoteStatus: AbstractPostRemoteStatus = .failed,
                     hasRemote: Bool = false,
