@@ -75,7 +75,7 @@ private extension PostCoordinator.FailedPostsFetcher {
         var result = [AbstractPost]()
         waitUntil(timeout: 5) { done in
             self.getPostsToRetry { postsAndActions in
-                result = Array(postsAndActions.keys)
+                result = Array(postsAndActions.filter { $1 != .nothing }.keys)
                 done()
             }
         }
