@@ -2,6 +2,7 @@
 -----
 * When Log In is selected, all available options are displayed.
 
+ 
 13.1
 -----
 * Account Settings: added the ability to change the username.

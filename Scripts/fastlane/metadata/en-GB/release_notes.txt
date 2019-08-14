@@ -1,5 +1,9 @@
-* Offline drafting! Sometimes you have amazing ideas but no internet connection, because we don’t yet live in a perfect world. We still don’t have flying cars either, but now you can start new posts in the app even when you’re offline.
-* Clearer previews! Before, the status of in-process post previews were hidden behind a screen-blocking spinner. Now the spinner has been put in its place, and the status displays at the top of the screen so you can still access the rest of it.
-* Better blocks! We’ve got a bunch of block editor improvements to take the bumps out of drafting. Tapping on an empty editor area automatically creates a new Paragraph Block. Adding a block from the post title now puts the block at the top of the post, instead of at the bottom where you couldn’t really see it. And we fixed an issue that sometimes caused content to get lost when the editor tried to load unsupported blocks.
-* Cleaner post lists! Your list of posts now includes an option for displaying posts more compactly, so you can see more post details at once. And it has a redesigned loading screen, because even waiting for something to load should be a nice experience.
-* Smoother setup! When you set up a new site, sometimes previews would display incorrectly, and the process of adding a site icon was not as straightforward as it should’ve been. Not ideal, and not the case any more.
+13.0
+-----
+Your phone has one time zone setting. Your website uses a different one. What are your site stats based on? Did that traffic spike happen this morning, or this afternoon? Answer: your stats are now based on the time zone settings of your website.
+
+Consistent colour schemes with good contrast make an accessible, intuitive app, which makes happy users. Version 13.0 is more consistent; enjoy the happiness.
+
+The block editor keeps getting better and better. Not possible, you say? Well, let us count the ways: it’s automatically enabled the first time you start a block based post* and you can enable and disable it on a per site basis, so every user gets the editor experience they want. Adding blocks from the post title shows an “add block here” indicator, to simplify content creation, and adding new blocks deselects the post title so the focus is on the new block.
+
+* Unless you opted out in version 12.9! We’re not monsters.

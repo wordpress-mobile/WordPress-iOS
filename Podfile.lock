@@ -221,7 +221,7 @@ PODS:
     - WordPressKit (~> 4.1)
     - WordPressShared (~> 1.8)
     - WordPressUI (~> 1.3)
-  - WordPressKit (4.4.0-beta.2):
+  - WordPressKit (4.4.0):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -229,7 +229,7 @@ PODS:
     - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
   - WordPressMocks (0.0.5)
-  - WordPressShared (1.8.6-beta.2):
+  - WordPressShared (1.8.6):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.3.4)
@@ -299,9 +299,9 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.8.0)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/new_login_flow`)
-  - WordPressKit (~> 4.4.0-beta.2)
+  - WordPressKit (~> 4.4.0)
   - WordPressMocks (~> 0.0.5)
-  - WordPressShared (~> 1.8.6-beta.2)
+  - WordPressShared (~> 1.8.6)
   - WordPressUI (~> 1.3.4)
   - WPMediaPicker (~> 1.4.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.10.2/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -487,9 +487,9 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 5022d76e7c4cd2a492f670944e24b9dd05639763
   WordPress-Editor-iOS: e0116fe2c4d3e0d2c325f053d9becdf637bfd708
   WordPressAuthenticator: 61a32bf3548d5114501f5be73591591733fbe472
-  WordPressKit: 91237a0adcb2db19595114833f76efa2e3da9e55
+  WordPressKit: 9e6f4ffbec47aea18ce9f7a4cec7a785df9935db
   WordPressMocks: d8088f718439556ff3856d5881aef581740cd26a
-  WordPressShared: e5dd3839eced389a56809164fc47e4cf24c833a3
+  WordPressShared: 8cb6984e8c62f4341cd48d11ed04e2076d581a74
   WordPressUI: 065de4c33212b9ca3ae458d43c73f2ce2738d3d4
   WPMediaPicker: 1897f312c7b41114ffd239fb782431ae602134a1
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
@@ -497,6 +497,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: c2e49fd16a73e43e490f777cea67dd852b819ace
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 0efbfa0d7049cf4bf7e64daeaadaaf3456373e1d
+PODFILE CHECKSUM: bdc4125f46fe1b91d2a2dc073a5732fa0becbe8e
 
 COCOAPODS: 1.6.1
