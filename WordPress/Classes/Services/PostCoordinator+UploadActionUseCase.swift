@@ -19,9 +19,10 @@ extension PostCoordinator {
                 return .nothing
             }
 
-            if post.confirmedAutoUpload {
+            if post.isLocalDraft || post.confirmedAutoUpload {
                 return .upload
             } else {
+                // TODO This is currently not supported by PostCoordinator
                 return .remoteAutoSave
             }
         }
@@ -39,7 +40,7 @@ extension PostCoordinator {
             }
 
             // Local drafts are always automatically uploaded
-            if post.status == .draft && !post.hasRemote() {
+            if post.isLocalDraft {
                 return false
             } else {
                 return getAutoUploadAction(post: post) == .upload && post.confirmedAutoUpload

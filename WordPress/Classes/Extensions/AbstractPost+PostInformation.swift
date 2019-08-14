@@ -12,4 +12,8 @@ extension AbstractPost: ImageSourceInformation {
         return self.originalIsDraft() && self.isRevision() && self.remoteStatus == .local
     }
 
+    /// Returns true if the post is a draft and has not been updated to the server yet.
+    var isLocalDraft: Bool {
+        return self.isDraft() && !self.hasRemote()
+    }
 }
