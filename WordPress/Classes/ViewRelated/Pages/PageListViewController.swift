@@ -464,10 +464,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func show(_ editorViewController: EditorViewController) {
-        let filterIndex = filterSettings.currentFilterIndex()
-
         editorViewController.onClose = { [weak self, weak editorViewController] _, _ in
-            self?.updateFilter(index: filterIndex)
             self?._tableViewHandler.isSearching = false
             editorViewController?.dismiss(animated: true)
         }
@@ -476,9 +473,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
         navController.modalPresentationStyle = .fullScreen
 
-        present(navController, animated: true, completion: { [weak self] in
-            self?.updateFilterWithPostStatus(.draft)
-        })
+        present(navController, animated: true, completion: nil)
     }
 
     func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {

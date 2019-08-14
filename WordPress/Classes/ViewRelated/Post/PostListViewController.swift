@@ -483,15 +483,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
-        let filterIndex = filterSettings.currentFilterIndex()
         let editor = EditPostViewController(blog: blog)
-        editor.onClose = { [weak self] _ in
-             self?.updateFilter(index: filterIndex)
-        }
         editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false, completion: { [weak self] in
-            self?.updateFilterWithPostStatus(.draft)
-        })
+        present(editor, animated: false, completion: nil)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 
