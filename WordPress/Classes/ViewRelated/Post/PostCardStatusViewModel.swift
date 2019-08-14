@@ -39,7 +39,7 @@ class PostCardStatusViewModel: NSObject {
                 return StatusMessages.postWillBePublished
             }
 
-            return NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
+            return StatusMessages.uploadFailed
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
         } else {
@@ -124,6 +124,7 @@ class PostCardStatusViewModel: NSObject {
     }
 
     enum StatusMessages {
+        static let uploadFailed = NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
         static let postWillBePublished = NSLocalizedString("Post will be published next time your device is online",
                                                            comment: "Message shown in the posts list when a post is scheduled for publishing")
     }
