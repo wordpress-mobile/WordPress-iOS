@@ -17,16 +17,16 @@ class WelcomeScreen: BaseScreen {
         super.init(element: logInButton)
     }
 
-    func login() -> LoginEmailScreen {
-        logInButton.tap()
-
-        return LoginEmailScreen()
-    }
-
     func selectSignup() -> WelcomeScreenSignupComponent {
         signupButton.tap()
 
         return WelcomeScreenSignupComponent()
+    }
+
+    func selectLogin() -> WelcomeScreenLoginComponent {
+        logInButton.tap()
+
+        return WelcomeScreenLoginComponent()
     }
 
     static func isLoaded() -> Bool {
