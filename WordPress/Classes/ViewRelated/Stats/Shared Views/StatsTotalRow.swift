@@ -128,10 +128,11 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
             showSeparator = (parentRow != nil) ? false : !expanded
             showTopExpandedSeparator = expanded
 
-            let rotation = expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [weak self] in
-                self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
-            })
+            // Detail rows are updated differently,
+            // so those disclosure icons are updated on configure.
+            if !forDetails {
+                rotateDisclosure()
+            }
         }
     }
 
@@ -150,8 +151,9 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         self.forDetails = forDetails
         self.parentRow = parentRow
 
-        configureExpandedState()
         configureIcon()
+        configureExpandedState()
+        configureDetailDisclosure()
 
         // Set values
         itemLabel.text = rowData.name
@@ -176,6 +178,7 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     }
 
     // MARK: - Accessibility
+
     func prepareForVoiceOver() {
         isAccessibilityElement = true
 
@@ -211,14 +214,39 @@ private extension StatsTotalRow {
     }
 
     func configureExpandedState() {
-        guard let name = rowData?.name,
-        let statSection = rowData?.statSection else {
+        guard let name = rowData?.name, let statSection = rowData?.statSection else {
             expanded = false
             return
         }
 
         let expandedLabels = forDetails ? StatsDataHelper.expandedRowLabelsDetails : StatsDataHelper.expandedRowLabels
         expanded = expandedLabels[statSection]?.contains(name) ?? false
+    }
+
+    func configureDetailDisclosure() {
+        guard hasChildRows, forDetails else {
+            return
+        }
+
+        // If the detail row has been expanded/collapsed, animate the icon rotation.
+        // Otherwise, just set the rotation.
+
+        if StatsDataHelper.detailRowDisclosureNeedsUpdating == rowData?.name {
+            StatsDataHelper.detailRowDisclosureNeedsUpdating = nil
+            rotateDisclosure()
+        } else {
+            disclosureImageView.transform = CGAffineTransform(rotationAngle: disclosureRotation())
+        }
+    }
+
+    func rotateDisclosure() {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+            self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: self?.disclosureRotation() ?? 0)
+        })
+    }
+
+    func disclosureRotation() -> CGFloat {
+        return expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
     }
 
     func configureIcon() {

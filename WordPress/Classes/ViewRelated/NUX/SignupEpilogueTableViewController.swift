@@ -94,8 +94,6 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
         }
         cell.titleLabel?.text = sectionTitle
         cell.titleLabel?.accessibilityIdentifier = "New Account Header"
-        cell.contentView.backgroundColor = .neutral(shade: .shade5)
-
         return cell
     }
 

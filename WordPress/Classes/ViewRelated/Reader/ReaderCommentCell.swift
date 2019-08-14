@@ -95,6 +95,10 @@ class ReaderCommentCell: UITableViewCell {
         authorButton.titleLabel?.lineBreakMode = .byTruncatingTail
 
         textView.textContainerInset = Constants.textViewInsets
+
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .primary(shade: .shade0)
+        selectedBackgroundView = backgroundView
     }
 
     func setupContentView() {
@@ -105,32 +109,29 @@ class ReaderCommentCell: UITableViewCell {
     }
 
     @objc func setupReplyButton() {
-        let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize)
-        let tintedIcon = icon.imageWithTintColor(.neutral(shade: .shade20))?.rotate180Degrees()
-        let highlightedIcon = icon.imageWithTintColor(.primaryLight)?.rotate180Degrees()
-
-        replyButton.setImage(tintedIcon, for: .normal)
-        replyButton.setImage(highlightedIcon, for: .highlighted)
+        let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize).rotate180Degrees()
+        replyButton.setImage(icon, for: .normal)
+        replyButton.setImage(icon, for: .highlighted)
 
         let title = NSLocalizedString("Reply", comment: "Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post.")
         replyButton.setTitle(title, for: .normal)
-        replyButton.setTitleColor(.neutral(shade: .shade20), for: .normal)
+
+        WPStyleGuide.applyReaderActionButtonStyle(replyButton)
     }
 
 
     @objc func setupLikeButton() {
         let size = Constants.buttonSize
-        let tintedIcon = Gridicon.iconOfType(.starOutline, withSize: size).imageWithTintColor(.neutral(shade: .shade20))
-        let highlightedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(.primaryLight)
-        let selectedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(.accent)
+        let star = Gridicon.iconOfType(.star, withSize: size)
+        let starOutline = Gridicon.iconOfType(.starOutline, withSize: size)
 
-        likeButton.setImage(tintedIcon, for: .normal)
-        likeButton.setImage(highlightedIcon, for: .highlighted)
-        likeButton.setImage(selectedIcon, for: .selected)
+        likeButton.setImage(starOutline, for: .normal)
+        likeButton.setImage(star, for: .highlighted)
+        likeButton.setImage(star, for: .selected)
+        likeButton.setImage(star, for: [.selected, .highlighted])
 
-        likeButton.setTitleColor(.textSubtle, for: .normal)
+        WPStyleGuide.applyReaderActionButtonStyle(likeButton)
     }
-
 
     // MARK: - Configuration
 

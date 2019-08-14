@@ -13,6 +13,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     // MARK: - Properties
 
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var timezoneLabel: UILabel!
     @IBOutlet weak var backArrow: UIImageView!
     @IBOutlet weak var forwardArrow: UIImageView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
@@ -20,14 +21,13 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var forwardButton: UIButton!
 
-    static let height: CGFloat = 44
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: SiteStatsTableHeaderDelegate?
     private var date: Date?
     private var period: StatsPeriodUnit?
 
-    // Allow the date bar to only go up to the most recent year available.
-    // Used by Insights 'This Year' details view.
+    // Allow the date bar to only go up to the most recent date available.
+    // Used by Insights 'This Year' details view and Post Stats.
     private var mostRecentDate: Date?
 
     // Limits how far back the date chooser can go.
@@ -38,11 +38,11 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         return -(expectedPeriodCount - 1)
     }
 
-    private lazy var calendar: Calendar = {
-        var cal = Calendar(identifier: .iso8601)
-        cal.timeZone = .autoupdatingCurrent
-        return cal
-    }()
+    // MARK: - Class Methods
+
+    class func headerHeight() -> CGFloat {
+        return SiteStatsInformation.sharedInstance.timeZoneMatchesDevice() ? Heights.default : Heights.withTimezone
+    }
 
     // MARK: - View
 
@@ -56,12 +56,22 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
                    delegate: SiteStatsTableHeaderDelegate,
                    expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount,
                    mostRecentDate: Date? = nil) {
-        self.date = date
+
+        self.date = {
+            if let date = date,
+                let mostRecentDate = mostRecentDate,
+                mostRecentDate < date {
+                return mostRecentDate
+            }
+            return date
+        }()
+
         self.period = period
         self.delegate = delegate
         self.expectedPeriodCount = expectedPeriodCount
         self.mostRecentDate = mostRecentDate
         dateLabel.text = displayDate()
+        displayTimezone()
         updateButtonStates()
         prepareForVoiceOver()
     }
@@ -95,6 +105,7 @@ private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
         Style.configureLabelAsCellRowTitle(dateLabel)
+        Style.configureLabelAsData(timezoneLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
@@ -117,6 +128,19 @@ private extension SiteStatsTableHeaderView {
 
             return "\(dateFormatter.string(from: weekStart)) – \(dateFormatter.string(from: weekEnd))"
         }
+    }
+
+    func displayTimezone() {
+        guard !SiteStatsInformation.sharedInstance.timeZoneMatchesDevice(),
+        let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone else {
+            timezoneLabel.isHidden = true
+            timezoneLabel.accessibilityLabel = nil
+            return
+        }
+
+        timezoneLabel.text = siteTimeZone.displayForStats()
+        timezoneLabel.accessibilityLabel = siteTimeZone.displayForStats()
+        timezoneLabel.isHidden = false
     }
 
     func reloadView() {
@@ -189,6 +213,13 @@ private extension SiteStatsTableHeaderView {
             WPAppAnalytics.track(event, withProperties: properties)
         }
     }
+
+    // MARK: - Header Heights
+
+    private struct Heights {
+        static let `default`: CGFloat = 44
+        static let withTimezone: CGFloat = 60
+    }
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
@@ -198,8 +229,8 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
         }
 
         let periodShift = -((entryCount - 1) - entryIndex)
-
-        self.date = StatsPeriodHelper().calculateEndDate(from: Date().normalizedDate(), offsetBy: periodShift, unit: period)
+        let fromDate = mostRecentDate?.normalizedDate() ?? StatsDataHelper.currentDateForSite().normalizedDate()
+        self.date = StatsPeriodHelper().calculateEndDate(from: fromDate, offsetBy: periodShift, unit: period)
 
         delegate?.dateChangedTo(self.date)
         reloadView()

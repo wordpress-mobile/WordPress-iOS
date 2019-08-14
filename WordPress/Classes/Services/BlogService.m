@@ -277,7 +277,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     PlanService *planService = [[PlanService alloc] initWithManagedObjectContext:self.managedObjectContext];
     dispatch_group_enter(syncGroup);
-    [planService getWpcomPlans:^{
+    [planService getWpcomPlans:blog.account
+                       success:^{
         dispatch_group_leave(syncGroup);
     } failure:^(NSError *error) {
         DDLogError(@"Failed updating plans: %@", error);
@@ -291,6 +292,16 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         DDLogError(@"Failed checking domain credit for site %@: %@", blog.url, error);
         dispatch_group_leave(syncGroup);
     }];
+
+    EditorSettingsService *editorService = [[EditorSettingsService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    dispatch_group_enter(syncGroup);
+    [editorService syncEditorSettingsForBlog:blog success:^{
+        dispatch_group_leave(syncGroup);
+    } failure:^(NSError * _Nonnull error) {
+        DDLogError(@"Failed to sync Editor settings");
+        dispatch_group_leave(syncGroup);
+    }];
+
 
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler

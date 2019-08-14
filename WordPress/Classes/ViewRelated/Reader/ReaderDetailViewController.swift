@@ -819,9 +819,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         button.setTitle(title, for: .disabled)
         button.setImage(image, for: UIControl.State())
         button.setImage(highlightedImage, for: .highlighted)
+        button.setImage(highlightedImage, for: .selected)
+        button.setImage(highlightedImage, for: [.highlighted, .selected])
         button.setImage(image, for: .disabled)
         button.isSelected = selected
         button.isHidden = false
+
+        WPStyleGuide.applyReaderActionButtonStyle(button)
     }
 
 
@@ -830,11 +834,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         let title = post!.likeCountForDisplay()
         let selected = post!.isLiked
-        let normalImage = UIImage(named: "icon-reader-like")?.imageWithTintColor(.neutral(shade: .shade30))
-        let highlightImage = UIImage(named: "icon-reader-like")?.imageWithTintColor(.neutral)
-        let selectedImage = UIImage(named: "icon-reader-liked")?.imageWithTintColor(.primary(shade: .shade40))
-        configureActionButton(likeButton, title: title, image: normalImage, highlightedImage: highlightImage, selected: selected)
-        likeButton.setImage(selectedImage, for: .selected)
+        let likeImage = UIImage(named: "icon-reader-like")
+        let likedImage = UIImage(named: "icon-reader-liked")
+
+        configureActionButton(likeButton, title: title, image: likeImage, highlightedImage: likedImage, selected: selected)
 
         if animated {
             playLikeButtonAnimation()
@@ -908,7 +911,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func configureCommentActionButton() {
         let title = post!.commentCount.stringValue
         let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageWithTintColor(.neutral)?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
     }
 
@@ -1004,6 +1007,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         if hidden {
+            // Do not hide the navigation bars if VoiceOver is running because switching between
+            // hidden and visible causes the dictation to assume that the number of pages has
+            // changed. For example, when transitioning from hidden to visible, VoiceOver will
+            // dictate "page 4 of 4" and then dictate "page 5 of 5".
+            if UIAccessibility.isVoiceOverRunning {
+                return
+            }
+
             // Hides the navbar and footer view
             navigationController?.setNavigationBarHidden(true, animated: animated)
             currentPreferredStatusBarStyle = .default
@@ -1398,6 +1409,17 @@ extension ReaderDetailViewController: Accessible {
         prepareHeaderForVoiceOver()
         prepareContentForVoiceOver()
         prepareActionButtonsForVoiceOver()
+
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(setBarsAsVisibleIfVoiceOverIsEnabled),
+            name: UIAccessibility.voiceOverStatusDidChangeNotification,
+            object: nil)
+    }
+
+    @objc func setBarsAsVisibleIfVoiceOverIsEnabled() {
+        if UIAccessibility.isVoiceOverRunning {
+            setBarsHidden(false)
+        }
     }
 
     private func prepareMenuForVoiceOver() {
