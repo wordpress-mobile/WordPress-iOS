@@ -109,9 +109,8 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.statusLabel?.text, StatusMessages.postWillBePublished)
+        XCTAssertEqual(postCell.statusLabel?.text, StatusMessages.uploadFailed)
     }
-
 
     func testShowPrivateLabelWhenPostIsPrivate() {
         let post = PostBuilder().with(remoteStatus: .sync).private().build()
@@ -225,7 +224,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowRetryButtonAndHideViewButton() {
-        let post = PostBuilder().with(remoteStatus: .failed).build()
+        let post = PostBuilder().private().with(remoteStatus: .failed).build()
 
         postCell.configure(with: post)
 
@@ -255,7 +254,7 @@ class PostCardCellTests: XCTestCase {
 
     func testShowsWarningMessageForFailedPublishedPosts() {
         // Given
-        let post = PostBuilder().published().with(remoteStatus: .failed).build()
+        let post = PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         // When
         postCell.configure(with: post)
