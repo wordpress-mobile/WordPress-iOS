@@ -286,7 +286,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         retryButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
         retryButton.isHidden = true
 
-        cancelAutoUploadButton.setTitle(NSLocalizedString("Cancel", comment: "Labale for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post."),
+        cancelAutoUploadButton.setTitle(NSLocalizedString("Cancel", comment: "Labal for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post."),
                                         for: .normal)
         cancelAutoUploadButton.isHidden = true
 

@@ -246,10 +246,12 @@ class PostCoordinator: NSObject {
     }
 }
 
+// MARK: - Automatic Uploads
+
 extension PostCoordinator: Uploader {
     func resume() {
         let fetcher = FailedPostsFetcher(mainContext)
-        fetcher.getPostsToRetry { [weak self] postsAndActions in
+        fetcher.getFailedPostsAndRetryActions { [weak self] postsAndActions in
             guard let self = self else {
                 return
             }
@@ -268,6 +270,7 @@ extension PostCoordinator: Uploader {
         }
     }
 
+    /// Cancel active and pending automatic uploads of the post.
     func cancelAutoUploadOf(_ post: AbstractPost) {
         cancelAnyPendingSaveOf(post: post)
         
@@ -291,7 +294,7 @@ extension PostCoordinator {
             postService = PostService(managedObjectContext: managedObjectContext)
         }
 
-        func getPostsToRetry(result: @escaping ([AbstractPost: UploadAction]) -> Void) {
+        func getFailedPostsAndRetryActions(result: @escaping ([AbstractPost: UploadAction]) -> Void) {
             let uploadActionUseCase = UploadActionUseCase()
 
             postService.getFailedPosts { posts in

@@ -74,7 +74,7 @@ private extension PostCoordinator.FailedPostsFetcher {
     func getPostsToRetrySync() -> [AbstractPost] {
         var result = [AbstractPost]()
         waitUntil(timeout: 5) { done in
-            self.getPostsToRetry { postsAndActions in
+            self.getFailedPostsAndRetryActions { postsAndActions in
                 result = Array(postsAndActions.filter { $1 != .nothing }.keys)
                 done()
             }
