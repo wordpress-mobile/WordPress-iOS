@@ -12,6 +12,7 @@ extension PostCoordinator {
         case nothing
     }
 
+    /// Provides business logic for automatic uploads.
     final class UploadActionUseCase {
         private static let allowedStatuses: [BasePost.Status] = [.draft, .publish]
 
@@ -24,6 +25,9 @@ extension PostCoordinator {
         /// If we do not receive a confirmation, which can happen if the editor crashed, we will
         /// try to upload a revision instead.
         func autoUploadAction(for post: AbstractPost) -> UploadAction {
+            guard post.isFailed else {
+                return .nothing
+            }
             guard let status = post.status else {
                 return .nothing
             }

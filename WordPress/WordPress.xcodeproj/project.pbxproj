@@ -538,6 +538,7 @@
 		5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */; };
 		572FB401223A806000933C76 /* NoticeStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572FB400223A806000933C76 /* NoticeStoreTests.swift */; };
 		5749984722FA0F2E00CE86ED /* PostNoticeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5749984622FA0F2E00CE86ED /* PostNoticeViewModelTests.swift */; };
+		57569CF2230485680052EE14 /* PostCoordinatorAutoUploadUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57569CF1230485680052EE14 /* PostCoordinatorAutoUploadUseCaseTests.swift */; };
 		575E126322973EBB0041B3EB /* PostCompactCellGhostableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E126222973EBB0041B3EB /* PostCompactCellGhostableTests.swift */; };
 		575E126F229779E70041B3EB /* RestorePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575E126E229779E70041B3EB /* RestorePostTableViewCell.swift */; };
 		577C2AAB22936DCB00AD1F03 /* PostCardCellGhostableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577C2AAA22936DCB00AD1F03 /* PostCardCellGhostableTests.swift */; };
@@ -2583,6 +2584,7 @@
 		5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePostViewDelegate.swift; sourceTree = "<group>"; };
 		572FB400223A806000933C76 /* NoticeStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeStoreTests.swift; sourceTree = "<group>"; };
 		5749984622FA0F2E00CE86ED /* PostNoticeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticeViewModelTests.swift; sourceTree = "<group>"; };
+		57569CF1230485680052EE14 /* PostCoordinatorAutoUploadUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostCoordinatorAutoUploadUseCaseTests.swift; path = Services/PostCoordinatorAutoUploadUseCaseTests.swift; sourceTree = "<group>"; };
 		575E126222973EBB0041B3EB /* PostCompactCellGhostableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCompactCellGhostableTests.swift; sourceTree = "<group>"; };
 		575E126E229779E70041B3EB /* RestorePostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePostTableViewCell.swift; sourceTree = "<group>"; };
 		577C2AAA22936DCB00AD1F03 /* PostCardCellGhostableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardCellGhostableTests.swift; sourceTree = "<group>"; };
@@ -7855,6 +7857,7 @@
 				40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */,
 				7E8980B822E73F4000C567B0 /* EditorSettingsServiceTests.swift */,
 				570B037622F1FFF6009D8411 /* PostCoordinatorFailedPostsFetcherTests.swift */,
+				57569CF1230485680052EE14 /* PostCoordinatorAutoUploadUseCaseTests.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -11733,6 +11736,7 @@
 				02761EC4227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift in Sources */,
 				732A473D218787500015DA74 /* WPRichTextFormatterTests.swift in Sources */,
 				1ABA150822AE5F870039311A /* WordPressUIBundleTests.swift in Sources */,
+				57569CF2230485680052EE14 /* PostCoordinatorAutoUploadUseCaseTests.swift in Sources */,
 				7E8980B922E73F4000C567B0 /* EditorSettingsServiceTests.swift in Sources */,
 				1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */,
 				73178C2A21BEE09300E37C9A /* SiteSegmentsCellTests.swift in Sources */,
