@@ -3,7 +3,11 @@ import Foundation
 
 extension PostCoordinator {
     enum UploadAction {
+        /// Upload the post as is
+        ///
+        /// If the post was published locally, it will be published in the server.
         case upload
+        /// Upload a revision in the server.
         case remoteAutoSave
         case nothing
     }
@@ -11,7 +15,15 @@ extension PostCoordinator {
     final class UploadActionUseCase {
         private static let allowedStatuses: [BasePost.Status] = [.draft, .publish]
 
-        func getAutoUploadAction(post: AbstractPost) -> UploadAction {
+        /// Returns what action should be executed when we retry a failed upload.
+        ///
+        /// In some cases, we do not want to automatically upload a post if the user has not
+        /// given explicit confirmation. Users "confirm" automatic uploads by pressing the
+        /// Publish or Update button in the editor.
+        ///
+        /// If we do not receive a confirmation, which can happen if the editor crashed, we will
+        /// try to upload a revision instead.
+        func autoUploadAction(for post: AbstractPost) -> UploadAction {
             guard let status = post.status else {
                 return .nothing
             }
@@ -27,6 +39,11 @@ extension PostCoordinator {
             }
         }
 
+        /// Returns true if the post will be automatically uploaded later and it can be canceled.
+        ///
+        /// This can be used to determine if the app should show the Cancel button in the Post List.
+        ///
+        /// - SeeAlso: autoUploadAction(for:)
         func canCancelAutoUpload(of post: AbstractPost) -> Bool {
             guard post.isFailed else {
                 return false
@@ -43,7 +60,7 @@ extension PostCoordinator {
             if post.isLocalDraft {
                 return false
             } else {
-                return getAutoUploadAction(post: post) == .upload && post.confirmedAutoUpload
+                return autoUploadAction(for: post) == .upload && post.confirmedAutoUpload
             }
         }
 

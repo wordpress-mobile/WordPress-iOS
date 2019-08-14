@@ -259,7 +259,7 @@ extension PostCoordinator: Uploader {
                 case .upload:
                     self.retrySave(of: post)
                 case .remoteAutoSave:
-                    // TODO execute auto-save instead
+                    // TODO: Create a revision for the post
                     return
                 case .nothing:
                     return
@@ -296,7 +296,7 @@ extension PostCoordinator {
 
             postService.getFailedPosts { posts in
                 let postsAndActions = posts.reduce(into: [AbstractPost: UploadAction]()) { result, post in
-                    result[post] = uploadActionUseCase.getAutoUploadAction(post: post)
+                    result[post] = uploadActionUseCase.autoUploadAction(for: post)
                 }
 
                 result(postsAndActions)
