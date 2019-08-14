@@ -49,22 +49,15 @@ extension PostCoordinator {
         ///
         /// - SeeAlso: autoUploadAction(for:)
         func canCancelAutoUpload(of post: AbstractPost) -> Bool {
-            guard post.isFailed else {
+            guard autoUploadAction(for: post) == .upload else {
                 return false
             }
-            guard let status = post.status else {
-                return false
-            }
-            // Ignore currently not supported statuses
-            guard UploadActionUseCase.allowedStatuses.contains(status) else {
-                return false
-            }
-
+            
             // Local drafts are always automatically uploaded
             if post.isLocalDraft {
                 return false
             } else {
-                return autoUploadAction(for: post) == .upload && post.confirmedAutoUpload
+                return post.confirmedAutoUpload
             }
         }
 
