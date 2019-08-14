@@ -52,7 +52,7 @@ extension PostCoordinator {
             guard autoUploadAction(for: post) == .upload else {
                 return false
             }
-            
+
             // Local drafts are always automatically uploaded
             if post.isLocalDraft {
                 return false
