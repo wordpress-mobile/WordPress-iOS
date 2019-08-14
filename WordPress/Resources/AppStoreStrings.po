@@ -40,6 +40,8 @@ msgstr ""
 
 msgctxt "v13.1-whats-new"
 msgid ""
+"13.1\n"
+"-----\n"
 "- You can now change your username in the app.\n"
 "- Data about your File Downloads is now available in Period stats.\n"
 "- You can now publish drafts in the Posts list by tapping the new “Publish Now” action accessible from the “…” menu.\n"
