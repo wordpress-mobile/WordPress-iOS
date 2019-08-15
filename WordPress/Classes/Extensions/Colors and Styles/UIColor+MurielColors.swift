@@ -15,7 +15,7 @@ extension UIColor {
         return color
     }
 }
-// MARK: -- Basic Colors
+// MARK: - Basic Colors
 extension UIColor {
     /// Muriel accent color
     static var accent: UIColor {
@@ -158,7 +158,7 @@ extension UIColor {
     }
 }
 
-// MARK: -- UI elements
+// MARK: - UI elements
 extension UIColor {
 
     /// Default text color: high contrast
@@ -223,7 +223,7 @@ extension UIColor {
     /// Muriel/iOS navigation color
     static var navigationBar = UIColor(light: .brand, dark: .neutral(shade: .shade0))
 
-    // MARK: -- Table Views
+    // MARK: - Table Views
     
     static var divider: UIColor {
         #if XCODE11
@@ -319,7 +319,7 @@ extension UIColor {
     /// Tab bar unselected color
     static var tabUnselected: UIColor =  UIColor(light: .neutral(shade: .shade20), dark: .neutral(shade: .shade50))
 
-// MARK: -- WP Fancy Buttons
+// MARK: - WP Fancy Buttons
     static var primaryButtonBackground: UIColor {
         if FeatureFlag.murielColors.enabled {
             return .accent
