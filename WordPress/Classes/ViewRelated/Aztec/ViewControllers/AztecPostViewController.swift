@@ -973,6 +973,15 @@ extension AztecPostViewController {
 
         toolbar.selectItemsMatchingIdentifiers(identifiers.map({ $0.rawValue }))
     }
+    
+    private func mediaFor(uploadID: String) -> Media? {
+        for media in post.media {
+            if media.uploadID == uploadID {
+                return media
+            }
+        }
+        return nil
+    }
 }
 
 
@@ -2477,7 +2486,7 @@ extension AztecPostViewController {
     }
 
     private func handleUploadStarted(attachment: MediaAttachment) {
-        resetMediaAttachmentOverlay(attachment)
+        resetMediaAttachmentOverlayIfNoError(attachment)
         attachment.progress = 0
         richTextView.refresh(attachment, overlayUpdateOnly: true)
     }
@@ -2494,6 +2503,7 @@ extension AztecPostViewController {
             guard let attachment = self.findAttachment(withUploadID: mediaUploadID) else {
                 return
             }
+            resetMediaAttachmentOverlayIfNoError(attachment)
             attachment.uploadID = nil
             attachment.progress = nil
             if let imageAttachment = attachment as? ImageAttachment {
@@ -2617,7 +2627,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func retryFailedMediaUpload(media: Media, attachment: MediaAttachment) {
-        resetMediaAttachmentOverlay(attachment)
+        resetMediaAttachmentOverlayIfNoError(attachment)
         attachment.progress = 0
         richTextView.refresh(attachment)
 
@@ -2688,15 +2698,15 @@ extension AztecPostViewController {
         let title: String = MediaAttachmentActionSheet.title
         var message: String?
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alertController.addActionWithTitle(MediaAttachmentActionSheet.dismissActionTitle,
-                                           style: .cancel,
-                                           handler: { (action) in
-                                            if attachment == self.currentSelectedAttachment {
-                                                self.currentSelectedAttachment = nil
-                                                self.resetMediaAttachmentOverlay(attachment)
-                                                self.richTextView.refresh(attachment)
-                                            }
-        })
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
+            if attachment == self.currentSelectedAttachment {
+                self.currentSelectedAttachment = nil
+                self.resetMediaAttachmentOverlayIfNoError(attachment)
+                self.richTextView.refresh(attachment)
+            }
+        }
+        alertController.addAction(dismissAction)
+
         var showDefaultActions = true
         if let mediaUploadID = attachment.uploadID,
             let media = mediaCoordinator.media(withIdentifier: mediaUploadID, for: post) {
@@ -2817,7 +2827,7 @@ extension AztecPostViewController {
         controller.onCancel = { [weak self] in
             if attachment == self?.currentSelectedAttachment {
                 self?.currentSelectedAttachment = nil
-                self?.resetMediaAttachmentOverlay(attachment)
+                self?.resetMediaAttachmentOverlayIfNoError(attachment)
                 self?.richTextView.refresh(attachment)
             }
         }
@@ -2916,10 +2926,14 @@ extension AztecPostViewController {
         restoreInputAssistantItems()
     }
 
-    fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
-        mediaAttachment.overlayImage = nil
-        mediaAttachment.message = nil
-        mediaAttachment.shouldHideBorder = false
+    fileprivate func resetMediaAttachmentOverlayIfNoError(_ mediaAttachment: MediaAttachment) {
+        if let uploadID = mediaAttachment.uploadID,
+        let media = self.mediaFor(uploadID: uploadID),
+        media.error == nil {
+            mediaAttachment.overlayImage = nil
+            mediaAttachment.message = nil
+            mediaAttachment.shouldHideBorder = false
+        }
     }
 }
 
@@ -2947,14 +2961,15 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         // Check to see if there is an error associated to the attachment
         var errorAssociatedToAttachment = false
         if let uploadID = attachment.uploadID,
-           let media = mediaCoordinator.media(withObjectID: uploadID),
-           media.error != nil {
+            let media = mediaFor(uploadID: uploadID),
+            media.error != nil {
             errorAssociatedToAttachment = true
         }
+
         if !errorAssociatedToAttachment {
             // If it's a new attachment tapped let's unmark the previous one...
             if let selectedAttachment = currentSelectedAttachment {
-                resetMediaAttachmentOverlay(selectedAttachment)
+                resetMediaAttachmentOverlayIfNoError(selectedAttachment)
                 richTextView.refresh(selectedAttachment)
             }
 
@@ -2976,7 +2991,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     func deselected(textAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
         currentSelectedAttachment = nil
         if let mediaAttachment = attachment as? MediaAttachment {
-            self.resetMediaAttachmentOverlay(mediaAttachment)
+            self.resetMediaAttachmentOverlayIfNoError(mediaAttachment)
             richTextView.refresh(mediaAttachment)
             processMediaAttachments()
         }
