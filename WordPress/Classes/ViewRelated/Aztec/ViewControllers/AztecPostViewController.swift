@@ -2486,7 +2486,9 @@ extension AztecPostViewController {
     }
 
     private func handleUploadStarted(attachment: MediaAttachment) {
-        resetMediaAttachmentOverlayIfNoError(attachment)
+        attachment.overlayImage = nil
+        attachment.message = nil
+        attachment.shouldHideBorder = false
         attachment.progress = 0
         richTextView.refresh(attachment, overlayUpdateOnly: true)
     }
@@ -2503,7 +2505,6 @@ extension AztecPostViewController {
             guard let attachment = self.findAttachment(withUploadID: mediaUploadID) else {
                 return
             }
-            resetMediaAttachmentOverlayIfNoError(attachment)
             attachment.uploadID = nil
             attachment.progress = nil
             if let imageAttachment = attachment as? ImageAttachment {
