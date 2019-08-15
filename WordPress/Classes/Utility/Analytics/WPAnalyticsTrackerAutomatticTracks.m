@@ -611,6 +611,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"unordered_list" };
             break;
+        case WPAnalyticsStatEditorTappedList:
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"list" };
+            break;
         case WPAnalyticsStatEditorToggledOff:
             eventName = @"editor_toggled_off";
             break;

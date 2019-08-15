@@ -1521,6 +1521,7 @@ extension AztecPostViewController {
     }
 
     func toggleList(fromItem item: FormatBarItem) {
+        trackFormatBarAnalytics(stat: .editorTappedList)
         let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
             let title = NSAttributedString(string: listType.description, attributes: [:])
             return OptionsTableViewOption(image: listType.iconImage,
