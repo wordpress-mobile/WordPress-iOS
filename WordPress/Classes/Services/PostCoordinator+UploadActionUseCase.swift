@@ -25,13 +25,10 @@ extension PostCoordinator {
         /// If we do not receive a confirmation, which can happen if the editor crashed, we will
         /// try to upload a revision instead.
         func autoUploadAction(for post: AbstractPost) -> UploadAction {
-            guard post.isFailed else {
-                return .nothing
-            }
-            guard let status = post.status else {
-                return .nothing
-            }
-            guard UploadActionUseCase.allowedStatuses.contains(status), !post.hasRemote() else {
+            guard post.isFailed,
+                let status = post.status,
+                UploadActionUseCase.allowedStatuses.contains(status),
+                !post.hasRemote() else {
                 return .nothing
             }
 
@@ -63,10 +60,8 @@ extension PostCoordinator {
 
         /// Temporary method to support old _Retry_ upload functionality.
         func canRetryUpload(of post: AbstractPost) -> Bool {
-            guard post.isFailed else {
-                return false
-            }
-            guard let status = post.status else {
+            guard post.isFailed,
+                let status = post.status else {
                 return false
             }
 
