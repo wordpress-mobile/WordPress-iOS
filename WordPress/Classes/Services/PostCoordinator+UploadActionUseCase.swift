@@ -3,12 +3,12 @@ import Foundation
 
 extension PostCoordinator {
     enum UploadAction {
-        /// Upload the post as is
+        /// Upload the post as is.
         ///
-        /// If the post was published locally, it will be published in the server.
+        /// For example, if the post was published locally, it will be published when the server receives it.
         case upload
-        /// Upload a revision in the server.
-        case remoteAutoSave
+        /// Upload a revision to the server.
+        case autoSave
         case nothing
     }
 
@@ -39,7 +39,7 @@ extension PostCoordinator {
                 return .upload
             } else {
                 // TODO This is currently not supported by PostCoordinator
-                return .remoteAutoSave
+                return .autoSave
             }
         }
 

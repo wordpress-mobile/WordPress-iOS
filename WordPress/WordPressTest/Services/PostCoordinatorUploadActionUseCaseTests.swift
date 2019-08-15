@@ -30,7 +30,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
             // Published local drafts require confirmation
             createPost(.publish, confirmedAutoUpload: true): .upload,
             // Published local drafts with no confirmation will be remote auto-saved
-            createPost(.publish): .remoteAutoSave,
+            createPost(.publish): .autoSave,
             // Draft and published posts with remote are currently unsupported. This will be
             // fixed soon.
             createPost(.draft, hasRemote: true): .nothing,

@@ -260,7 +260,7 @@ extension PostCoordinator: Uploader {
                 switch action {
                 case .upload:
                     self.retrySave(of: post)
-                case .remoteAutoSave:
+                case .autoSave:
                     // TODO: Create a revision for the post
                     return
                 case .nothing:
