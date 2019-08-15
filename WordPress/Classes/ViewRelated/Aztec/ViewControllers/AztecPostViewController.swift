@@ -728,6 +728,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         nc.addObserver(self, selector: #selector(keyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
         nc.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
+        nc.addObserver(self, selector: #selector(didUndoRedo), name: .NSUndoManagerDidUndoChange, object: nil)
+        nc.addObserver(self, selector: #selector(didUndoRedo), name: .NSUndoManagerDidRedoChange, object: nil)
     }
 
     func stopListeningToNotifications() {
@@ -735,6 +737,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         nc.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         nc.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
         nc.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        nc.removeObserver(self, name: .NSUndoManagerDidUndoChange, object: nil)
+        nc.removeObserver(self, name: .NSUndoManagerDidRedoChange, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -925,6 +929,23 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
+    }
+
+    @objc func didUndoRedo(_ notification: Foundation.Notification) {
+        guard
+            let undoManager = notification.object as? UndoManager,
+            undoManager === richTextView.undoManager || undoManager === htmlTextView.undoManager
+        else {
+            return
+        }
+
+        switch notification.name {
+        case .NSUndoManagerDidUndoChange:
+            trackFormatBarAnalytics(stat: .editorTappedUndo)
+        case .NSUndoManagerDidRedoChange:
+            trackFormatBarAnalytics(stat: .editorTappedRedo)
+        default: break
+        }
     }
 }
 
