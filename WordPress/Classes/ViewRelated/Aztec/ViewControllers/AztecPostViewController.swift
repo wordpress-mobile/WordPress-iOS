@@ -973,7 +973,7 @@ extension AztecPostViewController {
 
         toolbar.selectItemsMatchingIdentifiers(identifiers.map({ $0.rawValue }))
     }
-    
+
     private func mediaFor(uploadID: String) -> Media? {
         for media in post.media {
             if media.uploadID == uploadID {
