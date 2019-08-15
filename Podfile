@@ -13,13 +13,13 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.6-beta.1'
+    pod 'WordPressShared', '~> 1.8.6'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => 'feature/customize_insights_events'
+#     pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => 'feature/change-username-events'
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -44,9 +44,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.4.0-beta.2'
+    pod 'WordPressKit', '~> 4.4.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'cbacefca353ffea31448bc26e75641f95555e730'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'a06182b86d3c8542c16ce38c765769e1d50b0d5f'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -140,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.10.0'
+    gutenberg :tag => 'v1.10.3'
 
     ## Third party libraries
     ## =====================
@@ -174,9 +174,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.7.0'
+    pod 'WordPressAuthenticator', '~> 1.8.0-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issues/11683-more-color-changes'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
     aztec
     wordpress_ui
