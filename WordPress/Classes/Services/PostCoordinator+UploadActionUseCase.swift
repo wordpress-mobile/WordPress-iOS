@@ -51,11 +51,7 @@ extension PostCoordinator {
             }
 
             // Local drafts are always automatically uploaded
-            if post.isLocalDraft {
-                return false
-            } else {
-                return post.confirmedAutoUpload
-            }
+            return !post.isLocalDraft
         }
 
         /// Temporary method to support old _Retry_ upload functionality.
