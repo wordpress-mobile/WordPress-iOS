@@ -294,12 +294,12 @@ extension PostCoordinator {
             postService = PostService(managedObjectContext: managedObjectContext)
         }
 
-        func getFailedPostsAndRetryActions(result: @escaping ([AbstractPost: UploadAction]) -> Void) {
-            let uploadActionUseCase = UploadActionUseCase()
+        func getFailedPostsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
+            let interactor = PostAutoUploadInteractor()
 
             postService.getFailedPosts { posts in
-                let postsAndActions = posts.reduce(into: [AbstractPost: UploadAction]()) { result, post in
-                    result[post] = uploadActionUseCase.autoUploadAction(for: post)
+                let postsAndActions = posts.reduce(into: [AbstractPost: PostAutoUploadInteractor.AutoUploadAction]()) { result, post in
+                    result[post] = interactor.autoUploadAction(for: post)
                 }
 
                 result(postsAndActions)

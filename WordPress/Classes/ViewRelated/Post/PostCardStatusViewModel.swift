@@ -7,7 +7,7 @@ class PostCardStatusViewModel: NSObject {
     private let post: Post
     private var progressObserverUUID: UUID? = nil
 
-    private let uploadActionUseCase = PostCoordinator.UploadActionUseCase()
+    private let autoUploadInteractor = PostAutoUploadInteractor()
 
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
@@ -101,11 +101,11 @@ class PostCardStatusViewModel: NSObject {
     }
 
     var canRetryUpload: Bool {
-        return uploadActionUseCase.canRetryUpload(of: post)
+        return autoUploadInteractor.canRetryUpload(of: post)
     }
 
     var canCancelAutoUpload: Bool {
-        return uploadActionUseCase.canCancelAutoUpload(of: post)
+        return autoUploadInteractor.canCancelAutoUpload(of: post)
     }
 
     var canPreview: Bool {

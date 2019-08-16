@@ -6,17 +6,17 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
     private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
 
-    private var uploadActionUseCase: PostCoordinator.UploadActionUseCase!
+    private var interactor: PostAutoUploadInteractor!
 
     override func setUp() {
         super.setUp()
         contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
-        uploadActionUseCase = PostCoordinator.UploadActionUseCase()
+        interactor = PostAutoUploadInteractor()
     }
 
     override func tearDown() {
-        uploadActionUseCase = nil
+        interactor = nil
         context = nil
         contextManager = nil
         super.tearDown()
@@ -24,7 +24,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
 
     func testAutoUploadActionMethodReturnsTheExpectedActions() {
         // Arrange
-        let postsAndExpectedActions: [Post: PostCoordinator.UploadAction] = [
+        let postsAndExpectedActions: [Post: PostAutoUploadInteractor.AutoUploadAction] = [
             // Local drafts are automatically uploaded
             createPost(.draft): .upload,
             // Published local drafts require confirmation
@@ -44,7 +44,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
 
         // Act and Assert
         postsAndExpectedActions.forEach { post, expectedAction in
-            let actualAction = uploadActionUseCase.autoUploadAction(for: post)
+            let actualAction = interactor.autoUploadAction(for: post)
 
             expect(actualAction).to(equal(expectedAction))
         }
@@ -52,7 +52,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
 
     func testAutoUploadActionDoesNotApplyToUploadsThatDidntFail() {
         // Arrange
-        let postsAndExpectedActions: [Post: PostCoordinator.UploadAction] = [
+        let postsAndExpectedActions: [Post: PostAutoUploadInteractor.AutoUploadAction] = [
             createPost(.draft, remoteStatus: .local): .nothing,
             createPost(.publish, remoteStatus: .local, confirmedAutoUpload: true): .nothing,
             createPost(.publish, remoteStatus: .sync): .nothing
@@ -60,7 +60,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
 
         // Act and Assert
         postsAndExpectedActions.forEach { post, expectedAction in
-            let actualAction = uploadActionUseCase.autoUploadAction(for: post)
+            let actualAction = interactor.autoUploadAction(for: post)
 
             expect(actualAction).to(equal(expectedAction))
         }
@@ -95,7 +95,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
 
         // Act and Assert
         postsAndExpectedCancelableResult.forEach { post, expectedCancelableResult in
-            let actualResult = uploadActionUseCase.canCancelAutoUpload(of: post)
+            let actualResult = interactor.canCancelAutoUpload(of: post)
 
             expect(actualResult).to(equal(expectedCancelableResult))
         }
