@@ -266,6 +266,15 @@ extension UIColor {
         return UIColor.neutral(shade: .shade20)
     }
 
+    static var filterBarBackground: UIColor {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                return UIColor(light: white, dark: .neutral(shade: .shade0))
+            }
+        #endif
+        return white
+    }
+
     static var filterBarSelected: UIColor {
         #if XCODE11
             if #available(iOS 13, *) {

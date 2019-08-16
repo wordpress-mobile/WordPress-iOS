@@ -170,7 +170,7 @@ extension WPStyleGuide {
                                           forOverviewCard: Bool = false) {
             filterTabBar.dividerColor = filterDividerColor
             filterTabBar.deselectedTabColor = filterDeselectedColor
-            filterTabBar.backgroundColor = .navigationBar
+            filterTabBar.backgroundColor = .filterBarBackground
             filterTabBar.tintColor = defaultFilterTintColor
 
             // For FilterTabBar on TabbedTotalsCell
