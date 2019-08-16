@@ -154,7 +154,6 @@
 - (void)webViewDidFinishLoad:(UIWebView *)awebView
 {
     DDLogMethod();
-    [self stopLoading];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -179,7 +178,6 @@
         return;
     }
 
-    [self stopLoading];
     [self.generator previewRequestFailedWithReason:[NSString stringWithFormat:@"Generic web view error Error. Error code: %d, Error domain: %@", error.code, error.domain]];
 }
 
@@ -212,26 +210,6 @@
     }
     
     if (navigationType == UIWebViewNavigationTypeFormSubmitted) {
-        return NO;
-    }
-    
-    // Something is causing our web view to try and load a different URL after the initial URL is already loading.
-    //
-    // Example of first URL: https://diegotest4.wordpress.com/?p=748
-    // Example of second URL: https://public-api.wordpress.com/wp-admin/rest-proxy/#https://diegotest4.wordpress.com
-    //
-    // The second URL is probably loaded by Javascript code or is part of a frame, as it's also loaded by Safari
-    // according to Charles.app (not just in our app in WPiOS).
-    //
-    // The problem is that our code is failing to filter this second URL, and allowing it to load.  This fix
-    // implements a final safeguard in the logic of this method, after all other checks are above pass.
-    //
-    // We won't allow a URL that's not the base document to load at this point.
-    // It could be worth our effort to try removing this check once we migrate our web view to WKWebView.
-    //
-    // More information and context on this issue can be found here: https://git.io/fj5Px
-    //
-    if (![request.URL isEqual:request.mainDocumentURL]) {
         return NO;
     }
     
