@@ -208,7 +208,7 @@ extension UIColor {
     static var navigationBar = UIColor(light: .brand, dark: .neutral(shade: .shade0))
 
     // MARK: - Table Views
-    
+
     static var divider: UIColor {
         #if XCODE11
             if #available(iOS 13, *) {
