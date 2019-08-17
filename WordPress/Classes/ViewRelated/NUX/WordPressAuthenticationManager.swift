@@ -54,7 +54,8 @@ class WordPressAuthenticationManager: NSObject {
                                                 navBarImage: Gridicon.iconOfType(.mySites),
                                                 navBarBadgeColor: .accent(shade: .shade20),
                                                 prologueBackgroundColor: .primary,
-                                                prologueTitleColor: .textInverted)
+                                                prologueTitleColor: .textInverted,
+                                                statusBarStyle: .lightContent)
 
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style)
