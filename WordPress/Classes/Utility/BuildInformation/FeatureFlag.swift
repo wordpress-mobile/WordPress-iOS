@@ -9,6 +9,7 @@ enum FeatureFlag: Int {
     case statsInsightsManagement
     case domainCredit
     case murielColors
+    case signInWithApple
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -27,6 +28,8 @@ enum FeatureFlag: Int {
             return true
         case .murielColors:
             return true
+        case .signInWithApple:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
