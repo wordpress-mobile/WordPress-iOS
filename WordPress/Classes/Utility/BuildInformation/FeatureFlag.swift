@@ -29,6 +29,11 @@ enum FeatureFlag: Int {
         case .murielColors:
             return true
         case .signInWithApple:
+            // SIWA can NOT be enabled for internal builds
+            // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
+            if BuildConfiguration.current == .a8cBranchTest || BuildConfiguration.current == .a8cPrereleaseTesting {
+                return false
+            }
             return BuildConfiguration.current == .localDeveloper
         }
     }
