@@ -91,14 +91,31 @@ import WordPressShared
 
 
     fileprivate func showFacebookNotice() {
-        let message = NSLocalizedString("The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.",
+        let alertHeaderMessage = NSLocalizedString("No Pages Found", comment: "Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
+        let alertBodyMessage = NSLocalizedString("The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.",
                                        comment: "Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
 
-        let buttonTitle = NSLocalizedString("Learn more", comment: "A button title.")
-        noResultsViewController.configure(title: "", buttonTitle: buttonTitle, subtitle: message)
-        noResultsViewController.delegate = self
+        let cancelActionTitle = NSLocalizedString("OK", comment: "Cancel action title")
+        let defaultActionTitle = NSLocalizedString("Learn more", comment: "A button title.")
+        let defautlAction = UIAlertAction(title: defaultActionTitle, style: .default) { [weak self] action in
+            self?.showLearnMore()
+        }
+
+        let alertVC = UIAlertController(title: alertHeaderMessage, message: alertBodyMessage, preferredStyle: .alert)
+        alertVC.addAction(defautlAction)
+        alertVC.addAction(UIAlertAction(title: cancelActionTitle, style: .cancel, handler: nil))
+
+        self.present(alertVC, animated: true)
     }
 
+    
+    fileprivate func showLearnMore() {
+        if let url = URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages") {
+            UIApplication.shared.open(url)
+        }
+
+        dismiss(animated: true)
+    }
 
     // MARK: - View Model Wrangling
 
@@ -323,14 +340,4 @@ import WordPressShared
 @objc protocol SharingAccountSelectionDelegate: NSObjectProtocol {
     func didDismissSharingAccountViewController(_ controller: SharingAccountViewController)
     func sharingAccountViewController(_ controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)
-}
-
-
-extension SharingAccountViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        if let url = URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages") {
-            UIApplication.shared.open(url)
-        }
-        dismiss(animated: true)
-    }
 }
