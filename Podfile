@@ -176,7 +176,7 @@ target 'WordPress' do
 
     # pod 'WordPressAuthenticator', '~> 1.8.0-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'feature/siwa_button'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'feature/siwa_request'
 
     aztec
     wordpress_ui
