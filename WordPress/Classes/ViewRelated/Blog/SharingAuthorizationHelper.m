@@ -227,6 +227,12 @@
 - (void)showAccountSelectorForKeyrings:(NSArray *)keyringConnections
 {
     NSParameterAssert([[keyringConnections firstObject] isKindOfClass:[KeyringConnection class]]);
+    KeyringAccountController *keyringAccount = [KeyringAccountController new];
+
+    if ([keyringAccount showFacebookNoticeFromConnections:[self connectionsForService] with:self.publicizeService]) {
+        [self showFacebookPublicizeAlert];
+        return;
+    }
 
     SharingAccountViewController *controller = [[SharingAccountViewController alloc] initWithService:self.publicizeService
                                                                            connections:keyringConnections
@@ -236,6 +242,21 @@
     // Set the view controller stack vs push so there is no back button to contend with.
     // There should be no reason for the user to click back to the authorization vc.
     [self.navController setViewControllers:@[controller] animated:YES];
+}
+
+-(void)showFacebookPublicizeAlert
+{
+    NSString *alertHeaderMessage = NSLocalizedString(@"No Pages Found", @"Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.");
+    NSString *alertBodyMessage = NSLocalizedString(@"The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.", @"Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.");
+    NSString *continueActionTitle = NSLocalizedString(@"Learn more", @"A button title.");
+    NSString *cancelActionTitle = NSLocalizedString(@"OK", comment: @"Cancel action title");
+
+    [self.delegate sharingAuthorizationHelper:self
+               showFacebookPublicityAlertFrom:self.navController
+                                    withTitle:alertHeaderMessage
+                                     withBody: alertBodyMessage
+                             usingCancelTitle:cancelActionTitle
+                          usingLearnMoreTitle:continueActionTitle];
 }
 
 

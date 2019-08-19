@@ -63,4 +63,11 @@
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionFailedForService:(PublicizeService *)service;
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionCancelledForService:(PublicizeService *)service;
 
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper
+    showFacebookPublicityAlertFrom:(UIViewController*)viewController
+                         withTitle:(NSString *)title
+                          withBody:(NSString *)body
+                  usingCancelTitle:(NSString *)cancelTitle
+               usingLearnMoreTitle:(NSString *)learnMoreTitle;
+
 @end

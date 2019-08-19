@@ -89,34 +89,6 @@ import WordPressShared
         noResultsViewController.configure(title: title, subtitle: message)
     }
 
-
-    fileprivate func showFacebookNotice() {
-        let alertHeaderMessage = NSLocalizedString("No Pages Found", comment: "Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
-        let alertBodyMessage = NSLocalizedString("The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.",
-                                       comment: "Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
-
-        let cancelActionTitle = NSLocalizedString("OK", comment: "Cancel action title")
-        let defaultActionTitle = NSLocalizedString("Learn more", comment: "A button title.")
-        let defautlAction = UIAlertAction(title: defaultActionTitle, style: .default) { [weak self] action in
-            self?.showLearnMore()
-        }
-
-        let alertVC = UIAlertController(title: alertHeaderMessage, message: alertBodyMessage, preferredStyle: .alert)
-        alertVC.addAction(defautlAction)
-        alertVC.addAction(UIAlertAction(title: cancelActionTitle, style: .cancel, handler: nil))
-
-        self.present(alertVC, animated: true)
-    }
-
-    
-    fileprivate func showLearnMore() {
-        if let url = URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages") {
-            UIApplication.shared.open(url)
-        }
-
-        dismiss(animated: true)
-    }
-
     // MARK: - View Model Wrangling
 
 
@@ -130,11 +102,7 @@ import WordPressShared
         var accounts = keyringAccountsFromKeyringConnections(keyringConnections)
 
         if accounts.count == 0 {
-            if publicizeService.serviceID == PublicizeService.facebookServiceID {
-                showFacebookNotice()
-            } else {
-                showNoResultsViewController()
-            }
+            showNoResultsViewController()
             return ImmuTable(sections: [])
         }
 
@@ -299,20 +267,6 @@ import WordPressShared
     ///
     @objc func handleCloseTapped(_ sender: UIBarButtonItem) {
         delegate?.didDismissSharingAccountViewController(self)
-    }
-
-
-    // MARK: - Structs
-
-
-    /// KeyringAccount is used to normalize the list of avaiable accounts while
-    /// preserving the owning keyring connection.
-    ///
-    struct KeyringAccount {
-        var name: String // The account name
-        var externalID: String? // The actual externalID value that should be passed when creating/updating a publicize connection.
-        var externalIDForConnection: String // The effective external ID that should be used for comparing a keyring account with a PublicizeConnection.
-        var keyringConnection: KeyringConnection
     }
 
 

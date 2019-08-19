@@ -236,6 +236,16 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.helper connectPublicizeService];
 }
 
+- (void)handleLearMoreTapped
+{
+    NSURL *learMoreURL =[[NSURL alloc] initWithString:@"https://en.support.wordpress.com/publicize/#facebook-pages"];
+    UIApplication *application = [UIApplication sharedApplication];
+
+    if ([application canOpenURL:learMoreURL]) {
+        [application openURL:learMoreURL options:@{} completionHandler:nil];
+    }
+}
+
 
 #pragma mark - SharingAuthorizationHelper Delegate Methods
 
@@ -256,6 +266,34 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     self.connecting = NO;
     [self.tableView reloadData];
     [self showDetailForConnection:keyringConnection];
+}
+
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper
+    showFacebookPublicityAlertFrom:(UIViewController*)viewController
+                         withTitle:(NSString *)title
+                          withBody:(NSString *)body
+                  usingCancelTitle:(NSString *)cancelTitle
+               usingLearnMoreTitle:(NSString *)learnMoreTitle
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title
+                                                                     message:body
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:cancelTitle
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:nil];
+    __weak SharingConnectionsViewController *sharingConnectionsVC = self;
+    UIAlertAction* learnMoreAction = [UIAlertAction actionWithTitle:learnMoreTitle
+                                                              style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              [sharingConnectionsVC handleLearMoreTapped];
+                                                          }];
+
+    [alertVC addAction:learnMoreAction];
+    [alertVC addAction:cancelAction];
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 @end
