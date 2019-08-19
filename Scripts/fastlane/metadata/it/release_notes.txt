@@ -1,5 +1,9 @@
-* Preparazione di bozze offline. A volte hai idee fantastiche ma nessuna connessione Internet, perché non viviamo ancora in un mondo perfetto. Per ora non abbiamo nemmeno auto volanti, ma ora puoi iniziare nuovi articoli nell'app anche mentre sei offline.
-* Anteprime più chiare. Prima, lo stato delle anteprime degli articoli in corso era nascosto dietro una casella di selezione che bloccava la schermata. Ora la casella di selezione è stata sistemata al suo posto e lo stato viene visualizzato nella parte superiore della schermata, quindi puoi ancora accedere facilmente agli altri contenuti.
-* Migliori blocchi. Abbiamo apportato alcuni miglioramenti all'editor dei blocchi per facilitare la preparazione di bozze. Toccando un'area dell'editor vuota si crea automaticamente un nuovo blocco Paragrafo. Aggiungendo un blocco dal titolo dell'articolo, ora il blocco viene posizionato nella parte superiore dell'articolo, invece che in quella inferiore dove non era molto visibile. Inoltre, abbiamo risolto un problema che a volte causava la perdita di contenuti quando l'editor provava a caricare blocchi non supportati.
-* Elenchi di articoli più chiari. Il tuo elenco di articoli ora comprende un'opzione per visualizzare gli articoli in modo più compatto, in modo da poter vedere i dettagli di più articoli in una volta. Inoltre, ha una schermata di caricamento riprogettata, perché anche l'attesa durante il caricamento deve essere una piacevole esperienza.
-* Configurazione più agevole. Durante la configurazione di un nuovo sito, a volte le anteprime venivano visualizzate in modo errato e il processo di aggiunta di un'icona del sito non era semplice come avrebbe dovuto. La situazione non era ideale ed è stata risolta.
+13.0
+-----
+Il fuso orario impostato sul tuo telefono è diverso da quello utilizzato dal sito Web. Su cosa si basano le statistiche del tuo sito? Quel picco di traffico si è verificato questa mattina o questo pomeriggio? Risposta: le statistiche si basano ora sul fuso orario del tuo sito Web.
+
+Schemi di colore coerenti, con buoni contrasti, creano un'app accessibile, intuitiva e gradevole per gli utenti. La Versione 13.0 è più coerente: scopri com'è piacevole.
+
+L'editor dei blocchi continua a migliorare. Come dici? Impossibile? Beh, vediamo un po': viene abilitato automaticamente non appena viene iniziato un articolo basato su blocchi* ed è possibile attivarlo o disattivarlo a livello di singoli siti, offrendo a ciascun utente l'esperienza desiderata con l'editor. L'aggiunta di blocchi a partire dal titolo dell'articolo avviene tramite visualizzazione di un apposito indicatore, consentendo una creazione più semplice dei contenuti, mentre l'aggiunta di nuovi blocchi comporta la deselezione dei titolo dell'articolo, con focalizzazione sul nuovo blocco.
+
+* Salvo disattivazione nella versione 12.9. Non siamo mostri.

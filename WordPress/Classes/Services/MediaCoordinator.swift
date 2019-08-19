@@ -11,6 +11,11 @@ import enum Alamofire.AFError
 class MediaCoordinator: NSObject {
     @objc static let shared = MediaCoordinator()
 
+    override init() {
+        super.init()
+        addObserverForDeletedFiles()
+    }
+
     private(set) var backgroundContext: NSManagedObjectContext = {
         let context = ContextManager.sharedInstance().newDerivedContext()
         context.automaticallyMergesChangesFromParent = true
@@ -624,7 +629,6 @@ extension MediaCoordinator: Uploader {
             }
 
             media.forEach() {
-                self.addObserverForDeletedFiles(for: $0)
                 self.retryMedia($0)
             }
         }
@@ -637,18 +641,18 @@ extension MediaCoordinator {
     // `Documents` folder.
     // We want to collect more data about that, so we're going to log that info to Sentry,
     // and also delete the `Media` object, since there isn't really a reasonable way to recover from that failure.
-    func addObserverForDeletedFiles(for media: Media) {
-        addObserver({ [weak self] (media, _) in
+    func addObserverForDeletedFiles() {
+        addObserver({ (media, _) in
             guard let mediaError = media.error,
                 media.hasMissingFileError else {
                 return
             }
 
+            self.cancelUploadAndDeleteMedia(media)
             CrashLogging.logError(mediaError,
                                   userInfo: ["description": "Deleting a media object that's failed to upload because of a missing local file."])
-            self?.cancelUploadAndDeleteMedia(media)
 
-        }, for: media)
+        }, for: nil)
     }
 }
 
@@ -658,19 +662,52 @@ extension Media {
     }
 
     fileprivate var hasMissingFileError: Bool {
-        guard
-            let afError = error as? AFError,
-            case .multipartEncodingFailed = afError,
-            case .multipartEncodingFailed(let encodingFailure) = afError else {
+        // So this is weirdly complicated for a weird reason.
+        // Turns out, Core Data and Swift-y `Error`s do not play super well together, but there's some magic here involved.
+        // If you assing an `Error` property to a Core Data's object field, it will retain all it's Swifty-ish magic properties,
+        // it'll have all the enum values you expect, etc.
+        // However.
+        // Persisting the data to disk and/or reading it from a different MOC using methods like `existingObjectWithID(:_)`
+        // or similar, loses all that data, and the resulting error is "simplified" down to a "dumb"
+        // `NSError` with just a `domain` and `code` set.
+        // This was _not_ a fun one to track down.
+
+        // I don't want to hand-encode the Alamofire.AFError domain and/or code — they're both subject to change
+        // in the future, so I'm hand-creating an error here to get the domain/code out of.
+        let multipartEncodingFailedSampleError = AFError.multipartEncodingFailed(reason: .bodyPartFileNotReachable(at: URL(string: "https://wordpress.com")!)) as NSError
+        // (yes, yes, I know, unwrapped optional. but if creating a URL from this string fails, then something is probably REALLY wrong and we should bail anyway.)
+
+        // If we still have enough data to know this is a Swift Error, let's do the actual right thing here:
+        if let afError = error as? AFError {
+            guard
+                case .multipartEncodingFailed = afError,
+                case .multipartEncodingFailed(let encodingFailure) = afError else {
+                    return false
+            }
+
+            switch encodingFailure {
+            case .bodyPartFileNotReachableWithError,
+                 .bodyPartFileNotReachable:
+                return true
+            default:
                 return false
+            }
+        } else if let nsError = error as NSError?,
+            nsError.domain == multipartEncodingFailedSampleError.domain,
+            nsError.code == multipartEncodingFailedSampleError.code {
+            // and if we only have the NSError-level of data, let's just fall back on best-effort guess.
+            return true
+        } else if let nsError = error as NSError?,
+            nsError.domain == MediaServiceErrorDomain,
+            nsError.code == MediaServiceError.fileDoesNotExist.rawValue {
+            // if for some reason, the app crashed when trying to create a media object (like, for example, in this crash):
+            // https://github.com/wordpress-mobile/gutenberg-mobile/issues/1190
+            // the Media objects ends up in a malformed state, and we acutally handle that on the
+            // MediaService level. We need to also handle it here!
+
+            return true
         }
 
-        switch encodingFailure {
-        case .bodyPartFileNotReachableWithError,
-             .bodyPartFileNotReachable:
-            return true
-        default:
-            return false
-        }
+        return false
     }
 }
