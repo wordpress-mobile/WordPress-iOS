@@ -100,22 +100,31 @@ extension SiteSettingsViewController {
         navigationController?.pushViewController(speedUpSiteSettingsViewController, animated: true)
     }
 
-    // MARK: AMP footer
+    // MARK: Footers
 
-    open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard isTrafficSettingsSection(section) else {
-            return nil
-        }
-
-        let footer = UITableViewHeaderFooterView()
+    @objc(getTrafficSettingsSectionFooterView)
+    func trafficSettingsSectionFooterView() -> UIView {
+        let footer = makeFooterView()
         footer.textLabel?.text = NSLocalizedString("Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.",
                                                    comment: "Footer for AMP Traffic Site Setting, should match Calypso.")
-        footer.textLabel?.numberOfLines = 0
-        footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         footer.textLabel?.isUserInteractionEnabled = true
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleAMPFooterTap(_:)))
         footer.addGestureRecognizer(tap)
+        return footer
+    }
+
+    @objc(getEditorSettingsSectionFooterView)
+    func editorSettingsSectionFooterView() -> UIView {
+        let footer = makeFooterView()
+        footer.textLabel?.text = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
+        return footer
+    }
+
+    private func makeFooterView() -> UITableViewHeaderFooterView {
+        let footer = UITableViewHeaderFooterView()
+        footer.textLabel?.numberOfLines = 0
+        footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         return footer
     }
 

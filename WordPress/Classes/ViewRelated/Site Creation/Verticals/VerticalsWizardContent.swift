@@ -99,6 +99,7 @@ final class VerticalsWizardContent: UIViewController {
         super.viewDidAppear(animated)
         restoreSearchIfNeeded()
         selectionHandled = false
+        postScreenChangedForVoiceOver()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -514,5 +515,13 @@ extension VerticalsWizardContent {
 
     func preferredContentSizeDidChange() {
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+    }
+}
+
+// MARK: - VoiceOver
+
+private extension VerticalsWizardContent {
+    func postScreenChangedForVoiceOver() {
+        UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
     }
 }

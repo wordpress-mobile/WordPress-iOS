@@ -44,9 +44,17 @@ struct InsightStoreState {
 
     // Insights overview
 
+    // LPS
+
     var lastPostInsight: StatsLastPostInsight?
     var fetchingLastPostInsight = false
     var fetchingLastPostInsightHasFailed = false
+
+    var postStats: StatsPostDetails?
+    var fetchingPostStats = false
+    var fetchingPostStatsHasFailed = false
+
+    // Other Blocks
 
     var allTimeStats: StatsAllTimesInsight?
     var fetchingAllTimeStats = false
@@ -236,14 +244,12 @@ private extension StatsInsightsStore {
     // MARK: - Insights Overview
 
     func fetchInsights() {
-
-        loadFromCache()
+        setAllAsFetchingOverview()
 
         guard let api = statsRemote() else {
+            setAllAsFetchingOverview(false)
             return
         }
-
-        setAllAsFetchingOverview()
 
         api.getInsight { (lastPost: StatsLastPostInsight?, error) in
             if error != nil {
@@ -365,6 +371,36 @@ private extension StatsInsightsStore {
         fetchInsights()
     }
 
+    func fetchStatsForInsightsLatestPost() {
+        guard let postID = getLastPostInsight()?.postID,
+            let api = statsRemote() else {
+            return
+        }
+
+        state.fetchingPostStats = true
+
+        api.getDetails(forPostID: postID) { (postStats: StatsPostDetails?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Insights: Error fetching Post Stats: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Insights: Finished fetching post stats.")
+
+            DispatchQueue.main.async {
+                self.receivedPostStats(postStats, error)
+            }
+        }
+    }
+
+    func receivedPostStats(_ postStats: StatsPostDetails?, _ error: Error?) {
+        transaction { state in
+            if postStats != nil {
+                state.postStats = postStats
+            }
+            state.fetchingPostStats = false
+            state.fetchingPostStatsHasFailed = error != nil
+        }
+    }
+
     func receivedLastPostInsight(_ lastPostInsight: StatsLastPostInsight?, _ error: Error?) {
         transaction { state in
             if lastPostInsight != nil {
@@ -373,6 +409,7 @@ private extension StatsInsightsStore {
             state.fetchingLastPostInsight = false
             state.fetchingLastPostInsightHasFailed = error != nil
         }
+        fetchStatsForInsightsLatestPost()
     }
 
     func receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?, _ error: Error?) {
@@ -465,17 +502,18 @@ private extension StatsInsightsStore {
         }
     }
 
-    func setAllAsFetchingOverview() {
-        state.fetchingLastPostInsight = true
-        state.fetchingAllTimeStats = true
-        state.fetchingAnnualAndMostPopularTime = true
-        state.fetchingDotComFollowers = true
-        state.fetchingEmailFollowers = true
-        state.fetchingPublicize = true
-        state.fetchingTodaysStats = true
-        state.fetchingPostingActivity = true
-        state.fetchingCommentsInsight = true
-        state.fetchingTagsAndCategories = true
+    func setAllAsFetchingOverview(_ isFetching: Bool = true) {
+        state.fetchingLastPostInsight = isFetching
+        state.fetchingPostStats = isFetching
+        state.fetchingAllTimeStats = isFetching
+        state.fetchingAnnualAndMostPopularTime = isFetching
+        state.fetchingDotComFollowers = isFetching
+        state.fetchingEmailFollowers = isFetching
+        state.fetchingPublicize = isFetching
+        state.fetchingTodaysStats = isFetching
+        state.fetchingPostingActivity = isFetching
+        state.fetchingCommentsInsight = isFetching
+        state.fetchingTagsAndCategories = isFetching
     }
 
     func shouldFetchOverview() -> Bool {
@@ -672,6 +710,10 @@ extension StatsInsightsStore {
         return state.lastPostInsight
     }
 
+    func getPostStats() -> StatsPostDetails? {
+        return state.postStats
+    }
+
     func getAllTimeStats() -> StatsAllTimesInsight? {
         return state.allTimeStats
     }
@@ -781,6 +823,7 @@ extension StatsInsightsStore {
     var isFetchingOverview: Bool {
         return
             state.fetchingLastPostInsight ||
+            state.fetchingPostStats ||
             state.fetchingAllTimeStats ||
             state.fetchingAnnualAndMostPopularTime ||
             state.fetchingDotComFollowers ||
@@ -813,6 +856,7 @@ extension StatsInsightsStore {
     var fetchingOverviewHasFailed: Bool {
         return
             state.fetchingLastPostInsightHasFailed &&
+            state.fetchingPostStatsHasFailed &&
             state.fetchingAllTimeStatsHasFailed &&
             state.fetchingAnnualAndMostPopularTimeHasFailed &&
             state.fetchingDotComFollowersHasFailed &&

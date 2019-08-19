@@ -36,6 +36,11 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
     SiteSettingsAccountCount,
 };
 
+NS_ENUM(NSInteger, SiteSettingsEditor) {
+    SiteSettingsEditorSelector = 0,
+    SiteSettingsEditorCount,
+};
+
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDefaultCategory = 0,
     SiteSettingsWritingTags,
@@ -63,6 +68,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
     SiteSettingsSectionAccount,
+    SiteSettingsSectionEditor,
     SiteSettingsSectionWriting,
     SiteSettingsSectionMedia,
     SiteSettingsSectionDiscussion,
@@ -86,6 +92,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
+@property (nonatomic, strong) SwitchTableViewCell  *editorSelectorCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *tagsCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
@@ -171,6 +178,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
 
+    [sections addObject:@(SiteSettingsSectionEditor)];
+
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
         [sections addObject:@(SiteSettingsSectionDiscussion)];
@@ -223,6 +232,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionAccount:
         {
             return SiteSettingsAccountCount;
+        }
+        case SiteSettingsSectionEditor:
+        {
+            return SiteSettingsEditorCount;
         }
         case SiteSettingsSectionWriting:
         {
@@ -304,6 +317,20 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     }
     return nil;
+}
+
+- (SwitchTableViewCell *)editorSelectorCell
+{
+    if (!_editorSelectorCell) {
+        _editorSelectorCell = [SwitchTableViewCell new];
+        _editorSelectorCell.name = NSLocalizedString(@"Use block editor", @"Option to enable the block editor for new posts");
+        __weak Blog *blog = self.blog;
+        _editorSelectorCell.onChange = ^(BOOL value){
+            [GutenbergSettings setGutenbergEnabled:value forBlog:blog];
+            [GutenbergSettings postSettingsToRemoteForBlog:blog];
+        };
+    }
+    return _editorSelectorCell;
 }
 
 - (SettingTableViewCell *)defaultCategoryCell
@@ -450,6 +477,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _jetpackConnectionCell;
 }
 
+- (void)configureEditorSelectorCell
+{
+    [self.editorSelectorCell setOn:self.blog.isGutenbergEnabled];
+}
+
 - (void)configureDefaultCategoryCell
 {
     PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -465,6 +497,16 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 - (void)configurePostsPerPageCell
 {
     [self.postsPerPageCell setTextValue:self.blog.settings.postsPerPage.stringValue];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForEditorSettingsAtRow:(NSInteger)row
+{
+    switch (row) {
+        case (SiteSettingsEditorSelector):
+            [self configureEditorSelectorCell];
+            return self.editorSelectorCell;
+    }
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
@@ -699,6 +741,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionAccount:
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
 
+        case SiteSettingsSectionEditor:
+            return [self tableView:tableView cellForEditorSettingsAtRow:indexPath.row];
+
         case SiteSettingsSectionWriting:
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
 
@@ -757,6 +802,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
             break;
 
+        case SiteSettingsSectionEditor:
+            headingTitle = NSLocalizedString(@"Editor", @"Title for the editor settings section");
+            break;
+
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
             break;
@@ -778,6 +827,22 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             break;
     }
     return headingTitle;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    NSInteger settingsSection = [self.tableSections[section] integerValue];
+    UIView *footerView = nil;
+    switch (settingsSection) {
+        case SiteSettingsSectionEditor:
+            footerView = [self getEditorSettingsSectionFooterView];
+            break;
+
+        case SiteSettingsSectionTraffic:
+            footerView = [self getTrafficSettingsSectionFooterView];
+            break;
+    }
+    return footerView;
 }
 
 - (void)showPrivacySelector
@@ -1092,11 +1157,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
             break;
     }
-}
-
-- (BOOL)isTrafficSettingsSection:(NSInteger)section {
-    NSInteger settingsSection = [self.tableSections[section] integerValue];
-    return settingsSection == SiteSettingsSectionTraffic;
 }
 
 #pragma mark - Custom methods

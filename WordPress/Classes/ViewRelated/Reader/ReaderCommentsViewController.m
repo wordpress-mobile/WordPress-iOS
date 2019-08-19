@@ -282,7 +282,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     // Border
     CGSize borderSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 1.0);
-    UIImage *borderImage = [UIImage imageWithColor:[WPStyleGuide readGrey] havingSize:borderSize];
+    UIImage *borderImage = [UIImage imageWithColor:[UIColor murielNeutral5] havingSize:borderSize];
     UIImageView *borderView = [[UIImageView alloc] initWithImage:borderImage];
     borderView.translatesAutoresizingMaskIntoConstraints = NO;
     borderView.contentMode = UIViewContentModeScaleAspectFill;

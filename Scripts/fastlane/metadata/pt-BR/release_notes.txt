@@ -1,0 +1,7 @@
+13.0
+-----
+Seu celular tem um fuso horário. Seu site usa um horário diferente. Como criamos as estatísticas do seu site? Aquele pico de acessos ocorreu pela manhã ou à tarde? Resposta: agora suas estatísticas são exibidas no fuso horário configurado em seu site.
+
+Esquemas de cores consistentes com bom contraste cria um aplicativo acessível, intuitivo e deixa todo mundo feliz. A versão 13.0 tem mais consistência. Aproveite!
+
+O editor de blocos continua melhorando. Aqui estão alguns pontos: é ativado automaticamente na primeira vez que você iniciar um post com blocos (a menos que você não tenha desativado esse recurso na versão 12.9) e você pode mudar essa configuração para cada site para que cada usuário tenha a experiência que quiser. Adicionar blocos no título do post agora mostra uma mensagem "adicionar bloco aqui" e, ao adicionar um novo bloco, o foco é movido para o bloco em si e não para o título.

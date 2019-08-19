@@ -1,5 +1,9 @@
-- Rédaction des brouillons hors ligne ! Quelquefois, vous avez des idées géniales mais pas de connexion internet parce que nous ne vivons pas dans un monde parfait. Nous n’avons toujours pas de voitures volantes non plus mais maintenant vous pouvez commencer un nouvel article dans l’app même si vous êtes hors ligne.
-- Des aperçus plus clairs ! Avant, l’état de l’aperçu d’un article en cours de rédaction était caché derrière une icône de préchargement. Maintenant, cette icône a été remise à sa place et l’état s’affiche en haut de l’écran de sorte que vous puissiez accéder au reste de celui-ci.
-- De meilleurs blocs ! Nous avons apporté un tas d’améliorations à l’éditeur de blocs pour éliminer les petits désagréments liés à la rédaction. En touchant une zone vide dans l’éditeur, cela crée automatiquement un nouveau bloc de paragraphe. Lorsque vous ajoutez un bloc depuis le titre de l’article, cela place ce bloc en haut de l’article au lieu de l’ajouter en bas où vous ne pouviez pas le voir. Nous avons aussi corriger un problème qui causait la perte de contenu lorsque l’éditeur tentait de charger un bloc non supporté.
-- Des listes d’articles plus clairs ! Votre liste d’articles comprend maintenant une option pour afficher les articles de manière plus compacte, comme ça vous pouvez voir plus de détails à la fois. L’écran de chargement a été redessiné parce que même attendre un chargement devrait être une belle expérience.
-- Une configuration plus douce ! Lorsque vous configurer un nouveau site, quelque fois l’aperçu s’affiche mal et le processus d’ajout d’une icône de site n’était pas aussi simple qu’il aurait dû. Ce n'est encore idéal mais ce n’est plus le cas.
+13.0
+-----
+Votre téléphone est régler sur un fuseau horaire. Votre site en utilise un différent. Sur quelle base horaire sont vos statistiques ? Est-ce que ce trafic a eu lieu ce matin ou cet après-midi ? Réponse : vos statistiques sont maintenant basées sur le réglage de fuseau horaire du site.
+
+Un jeu de couleurs cohérent avec un bon contraste rend l’app plus accessible et intuitive, et rend les utilisateurs plus heureux. La version 13.0 est plus cohérente. Profitez du bonheur.
+
+L’éditeur de blocs ne cesse de s’améliorer. Vous vous dites : impossible ! Pff, laissez-moi vous dire en quoi : il est automatiquement activé la première fois que vous commencer un article basé sur des blocs* et vous pouvez l’activer ou le désactiver par site comme ça chaque utilisateur choisit l’expérience de l’éditeur qu’il préfère. Pour ajouter un bloc depuis le titre de l’article, un indicateur « Ajouter un bloc ici » s’affiche pour simplifier la création de contenu. Et l’ajout d’un nouveau bloc désélectionne le titre de l’article pour garder l’attention sur le nouveau bloc.
+
+*À part si vous l’avez déjà désactivé sur la version 12.9 ! Nous ne sommes pas des monstres.

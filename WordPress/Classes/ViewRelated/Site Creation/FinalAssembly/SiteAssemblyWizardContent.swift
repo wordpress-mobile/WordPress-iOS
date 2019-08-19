@@ -111,6 +111,13 @@ final class SiteAssemblyWizardContent: UIViewController {
                     self.installErrorStateViewController(with: errorType)
                 } else if status == .succeeded {
                     let blog = self.service.createdBlog
+                    // Default all new blogs to use Gutenberg
+                    if let createdBlog = blog {
+                        let gutenbergSettings = GutenbergSettings()
+                        gutenbergSettings.softSetGutenbergEnabled(true, for: createdBlog, source: .onSiteCreation)
+                        gutenbergSettings.postSettingsToRemote(for: createdBlog)
+                    }
+
                     self.contentView.siteURLString = blog?.url as String?
                     self.contentView.siteName = blog?.displayURL as String?
                     self.createdBlog = blog

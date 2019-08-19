@@ -11,7 +11,6 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var bottomSeparatorLine: UIView!
     @IBOutlet weak var rowsStackViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var viewMoreHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var bottomSeparatorLineHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
     private var dataRows = [StatsTwoColumnRowData]()
@@ -68,8 +67,7 @@ private extension TwoColumnCell {
     func toggleViewMore() {
         let showViewMore = !dataRows.isEmpty && statSection == .insightsAnnualSiteStats
         viewMoreView.isHidden = !showViewMore
-        rowsStackViewBottomConstraint.constant = showViewMore ? viewMoreHeightConstraint.constant :
-                                                                bottomSeparatorLineHeightConstraint.constant
+        rowsStackViewBottomConstraint.constant = showViewMore ? viewMoreHeightConstraint.constant : 0
     }
 
     @IBAction func didTapViewMore(_ sender: UIButton) {

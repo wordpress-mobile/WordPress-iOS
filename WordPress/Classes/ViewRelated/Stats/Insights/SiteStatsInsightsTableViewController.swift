@@ -44,11 +44,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
-
-    private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsChangeReceipt: Receipt?
-
-    private let periodStore = StoreContainer.shared.statsPeriod
 
     // TODO: update this array when Manage Insights is implemented.
     // Types of Insights to display. The array order dictates the display order.
@@ -106,9 +102,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, insightsStore: insightsStore, periodStore: periodStore)
-
+        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self)
         addViewModelListeners()
+        viewModel?.fetchInsights()
     }
 
     func addViewModelListeners() {
@@ -117,8 +113,8 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
-            guard let store = self?.insightsStore,
-                !store.isFetchingOverview else {
+            if let viewModel = self?.viewModel,
+                viewModel.isFetchingOverview() {
                     return
             }
             self?.refreshTableView()
@@ -150,8 +146,8 @@ private extension SiteStatsInsightsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        if insightsStore.fetchingFailed(for: .insights) &&
-            !insightsStore.containsCachedData {
+        if viewModel.fetchingFailed() &&
+            !viewModel.containsCachedData() {
             displayFailureViewIfNecessary()
         } else {
             hideNoResults()
@@ -270,8 +266,12 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showPostingActivityDetails() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
         let postingActivityViewController = PostingActivityViewController.loadFromStoryboard()
-        postingActivityViewController.yearData = insightsStore.getYearlyPostingActivityFrom(date: Date())
+        postingActivityViewController.yearData = viewModel.yearlyPostingActivity()
         navigationController?.pushViewController(postingActivityViewController, animated: true)
     }
 
@@ -296,8 +296,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         // When displaying Annual details, start from the most recent year available.
         var selectedDate: Date?
         if statSection == .insightsAnnualSiteStats,
-            let year = insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear {
-            var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            let year = viewModel?.annualInsightsYear() {
+            var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: StatsDataHelper.currentDateForSite())
             dateComponents.year = year
             selectedDate = Calendar.current.date(from: dateComponents)
         }

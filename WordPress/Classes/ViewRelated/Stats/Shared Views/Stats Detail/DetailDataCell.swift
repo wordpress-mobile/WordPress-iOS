@@ -20,6 +20,7 @@ class DetailDataCell: UITableViewCell, NibLoadable {
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private var rowData: StatsTotalRowData?
     private typealias Style = WPStyleGuide.Stats
+    private var row: StatsTotalRow?
 
     // MARK: - Configure
 
@@ -52,11 +53,25 @@ class DetailDataCell: UITableViewCell, NibLoadable {
         if isChildRow {
             Style.configureLabelAsChildRowTitle(row.itemLabel)
             row.imageView.isHidden = !showChildRowImage
+
+            // If the imageView is being shown but there is no image (i.e. the row is "indented"),
+            // reduce the image height so it doesn't affect the row height.
+            if showChildRowImage && !row.hasIcon {
+                row.imageHeightConstraint.constant = 1
+            } else {
+                row.imageHeightConstraint.constant = rowData.statSection?.imageSize ?? StatSection.defaultImageSize
+            }
         }
 
+        self.row = row
         dataView.addSubview(row)
         row.translatesAutoresizingMaskIntoConstraints = false
         dataView.pinSubviewToAllEdges(row)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        row?.removeFromSuperview()
     }
 
 }
