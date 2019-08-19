@@ -160,6 +160,15 @@ extension UIColor {
 
 // MARK: - UI elements
 extension UIColor {
+    /// The most basic background: white in light mode, black in dark mode
+    static var basicBackground: UIColor {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                return .systemBackground
+            }
+        #endif
+        return .white
+    }
 
     /// Default text color: high contrast
     static var text: UIColor {

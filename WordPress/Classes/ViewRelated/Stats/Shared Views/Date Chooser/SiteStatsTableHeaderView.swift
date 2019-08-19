@@ -104,7 +104,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
-        contentView.backgroundColor = .tableBackground
+        contentView.backgroundColor = .basicBackground
         Style.configureLabelAsCellRowTitle(dateLabel)
         Style.configureLabelAsChildRowTitle(timezoneLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)
