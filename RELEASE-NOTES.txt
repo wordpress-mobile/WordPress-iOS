@@ -5,6 +5,7 @@
 -----
 * Account Settings: added the ability to change the username.
 * Stats: added File Downloads to period stats.
+* Stats Periods: Fixed an issue that made the Post stats title button unable.
 * Adds a Publish Now action to posts in the posts list. 
  
 13.0
