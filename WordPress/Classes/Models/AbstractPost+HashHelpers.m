@@ -28,17 +28,29 @@
 
     NSMutableData *mutableData = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
 
-    for (NSData *hash in finalHashes) {
-        const char *finalHashBytes = [mutableData bytes];
-        const char *currentIterationHashBytes = [hash bytes];
+    // So, there are multiple ways of combining all those hashes. You need to be careful not to lose the entropy though.
+    // Initially, I wanted to just XOR them together, which is totally reasonable thing to do!
+    // ...however, things get tricky when you XOR things that might be similar/the same.
+    // One important thing to keep in mind here is that a XOR a = 0;
+    // e.g. imagine if `self.content` and `self.postTitle` would be both empty strings (most of our users probably don't
+    // want to upload such posts, but stick with me for illustrations purposes).
+    // If we were to then iterate over the list of hashes and xor them together, then at one point we'd
+    // end up doing iteration where the result is 0, reducing the entropy.
+    // Now, this _probably_ would be extremely rare and shouldn't _actually_ cause collisions, (
+    // but better safe than sorry — tracking down those would be a nightmare.
+    // What I'm doing here instead is just treating all the "partial" hashes as a dumb bag of bits,
+    // combining them together and the final hash is SHA256 of _that_.
+    // Hopefully that'll be enough.
 
-        for (int i = 0; i < mutableData.length; i++) {
-            const char xorByte = finalHashBytes[i] ^ currentIterationHashBytes[i];
-            [mutableData replaceBytesInRange:NSMakeRange(i, 1) withBytes:&xorByte];
-        }
+    for (NSData *hash in finalHashes) {
+        [mutableData appendData:hash];
     }
 
-    return [self sha256StringFromData:mutableData];
+    unsigned char finalDigest[CC_SHA256_DIGEST_LENGTH];
+
+    CC_SHA256(mutableData.bytes, (CC_LONG)mutableData.length, finalDigest);
+
+    return [self sha256StringFromData:[NSData dataWithBytes:finalDigest length:CC_SHA256_DIGEST_LENGTH]];
 }
 
 
