@@ -77,9 +77,7 @@ extension WPStyleGuide {
         guard let view = view else {
             return
         }
-        if !FeatureFlag.murielColors.enabled {
-            view.backgroundColor = greyLighten30()
-        }
+        view.backgroundColor = .basicBackground
     }
     class func configureTableViewColors(tableView: UITableView?) {
         guard let tableView = tableView else {
