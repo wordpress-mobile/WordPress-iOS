@@ -315,4 +315,19 @@ class Post: AbstractPost {
 
         return URL(string: path)
     }
+
+    override func additionalContentHashes() -> [Data] {
+        // Since the relationship between the categories and a Post is a `Set` and not a `OrderedSet`, we
+        // need to sort it manually here, so it won't magically change between runs.
+        let stringifiedCategories = categories?.compactMap { $0.categoryName }.sorted().reduce("") { acc, obj in
+            return acc + obj
+        } ?? ""
+
+        return [hash(for: publicID ?? ""),
+                hash(for: tags ?? ""),
+                hash(for: postFormat ?? ""),
+                hash(for: stringifiedCategories),
+                hash(for: geolocation?.latitude ?? 0),
+                hash(for: geolocation?.longitude ?? 0)]
+    }
 }
