@@ -174,4 +174,8 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     func retry(_ post: AbstractPost) {
         didCallRetry = true
     }
+
+    func cancelAutoUpload(_ post: AbstractPost) {
+        // noop
+    }
 }

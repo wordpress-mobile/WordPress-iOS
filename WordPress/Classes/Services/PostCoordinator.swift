@@ -246,15 +246,37 @@ class PostCoordinator: NSObject {
     }
 }
 
+// MARK: - Automatic Uploads
+
 extension PostCoordinator: Uploader {
     func resume() {
         let fetcher = FailedPostsFetcher(mainContext)
-        fetcher.getPostsToRetry { [weak self] posts in
+        fetcher.getFailedPostsAndRetryActions { [weak self] postsAndActions in
             guard let self = self else {
                 return
             }
 
-            posts.forEach { self.retrySave(of: $0) }
+            postsAndActions.forEach { post, action in
+                switch action {
+                case .upload:
+                    self.retrySave(of: post)
+                case .autoSave:
+                    // TODO: Create a revision for the post
+                    return
+                case .nothing:
+                    return
+                }
+            }
+        }
+    }
+
+    /// Cancel active and pending automatic uploads of the post.
+    func cancelAutoUploadOf(_ post: AbstractPost) {
+        cancelAnyPendingSaveOf(post: post)
+
+        #warning("stub")
+        post.managedObjectContext?.perform {
+            post.confirmedAutoUpload = false
         }
     }
 }
@@ -272,19 +294,15 @@ extension PostCoordinator {
             postService = PostService(managedObjectContext: managedObjectContext)
         }
 
-        func getPostsToRetry(result: @escaping ([AbstractPost]) -> Void) {
-            let allowedStatuses: [BasePost.Status] = [.draft, .publish]
+        func getFailedPostsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
+            let interactor = PostAutoUploadInteractor()
 
             postService.getFailedPosts { posts in
-                let postsToRetry = posts.filter { post -> Bool in
-                    guard let status = post.status else {
-                        return false
-                    }
-
-                    return allowedStatuses.contains(status) && !post.hasRemote()
+                let postsAndActions = posts.reduce(into: [AbstractPost: PostAutoUploadInteractor.AutoUploadAction]()) { result, post in
+                    result[post] = interactor.autoUploadAction(for: post)
                 }
 
-                result(postsToRetry)
+                result(postsAndActions)
             }
         }
     }

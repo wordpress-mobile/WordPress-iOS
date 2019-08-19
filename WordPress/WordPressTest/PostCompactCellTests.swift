@@ -113,7 +113,7 @@ class PostCompactCellTests: XCTestCase {
 
     func testShowsWarningMessageForFailedPublishedPosts() {
         // Given
-        let post = PostBuilder().published().with(remoteStatus: .failed).build()
+        let post = PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         // When
         postCell.configure(with: post)

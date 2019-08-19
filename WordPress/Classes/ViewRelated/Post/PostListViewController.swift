@@ -674,6 +674,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    func cancelAutoUpload(_ post: AbstractPost) {
+        PostCoordinator.shared.cancelAutoUploadOf(post)
+    }
+
     // MARK: - Searching
 
     override func updateForLocalPostsMatchingSearchText() {

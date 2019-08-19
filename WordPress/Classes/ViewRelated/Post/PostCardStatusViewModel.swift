@@ -7,6 +7,8 @@ class PostCardStatusViewModel: NSObject {
     private let post: Post
     private var progressObserverUUID: UUID? = nil
 
+    private let autoUploadInteractor = PostAutoUploadInteractor()
+
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
@@ -33,11 +35,11 @@ class PostCardStatusViewModel: NSObject {
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
         } else if post.isFailed {
-            if post.status == .publish {
+            if canCancelAutoUpload {
                 return StatusMessages.postWillBePublished
             }
 
-            return NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
+            return StatusMessages.uploadFailed
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
         } else {
@@ -71,7 +73,7 @@ class PostCardStatusViewModel: NSObject {
         }
 
         if post.isFailed {
-            return status == .publish ? .warning : .error
+            return canCancelAutoUpload ? .warning : .error
         }
 
         switch status {
@@ -98,6 +100,18 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
+    var canRetryUpload: Bool {
+        return autoUploadInteractor.canRetryUpload(of: post)
+    }
+
+    var canCancelAutoUpload: Bool {
+        return autoUploadInteractor.canCancelAutoUpload(of: post)
+    }
+
+    var canPreview: Bool {
+        return !post.isFailed
+    }
+
     func statusAndBadges(separatedBy separator: String) -> String {
         let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
         let status = self.status ?? ""
@@ -110,6 +124,7 @@ class PostCardStatusViewModel: NSObject {
     }
 
     enum StatusMessages {
+        static let uploadFailed = NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
         static let postWillBePublished = NSLocalizedString("Post will be published next time your device is online",
                                                            comment: "Message shown in the posts list when a post is scheduled for publishing")
     }

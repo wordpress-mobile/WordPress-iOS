@@ -6,17 +6,28 @@ import XCTest
 private typealias StatusMessages = PostCardStatusViewModel.StatusMessages
 
 class PostCardCellTests: XCTestCase {
+    private var contextManager: TestContextManager!
+    private var context: NSManagedObjectContext!
 
-    var postCell: PostCardCell!
-    var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
-    var postActionSheetDelegateMock: PostActionSheetDelegateMock!
+    private var postCell: PostCardCell!
+    private var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
+    private var postActionSheetDelegateMock: PostActionSheetDelegateMock!
 
     override func setUp() {
+        contextManager = TestContextManager()
+        context = contextManager.newDerivedContext()
+
         postCell = postCellFromNib()
         interactivePostViewDelegateMock = InteractivePostViewDelegateMock()
         postActionSheetDelegateMock = PostActionSheetDelegateMock()
         postCell.setInteractionDelegate(interactivePostViewDelegateMock)
         postCell.setActionSheetDelegate(postActionSheetDelegateMock)
+    }
+
+    override func tearDown() {
+        context = nil
+        contextManager = nil
+        super.tearDown()
     }
 
     func testIsAUITableViewCell() {
@@ -109,9 +120,8 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.statusLabel?.text, StatusMessages.postWillBePublished)
+        XCTAssertEqual(postCell.statusLabel?.text, StatusMessages.uploadFailed)
     }
-
 
     func testShowPrivateLabelWhenPostIsPrivate() {
         let post = PostBuilder().with(remoteStatus: .sync).private().build()
@@ -225,7 +235,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowRetryButtonAndHideViewButton() {
-        let post = PostBuilder().with(remoteStatus: .failed).build()
+        let post = PostBuilder().private().with(remoteStatus: .failed).build()
 
         postCell.configure(with: post)
 
@@ -255,7 +265,7 @@ class PostCardCellTests: XCTestCase {
 
     func testShowsWarningMessageForFailedPublishedPosts() {
         // Given
-        let post = PostBuilder().published().with(remoteStatus: .failed).build()
+        let post = PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         // When
         postCell.configure(with: post)
@@ -263,6 +273,40 @@ class PostCardCellTests: XCTestCase {
         // Then
         XCTAssertEqual(postCell.statusLabel.text, StatusMessages.postWillBePublished)
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
+    }
+
+    func testShowsCancelButtonForUserConfirmedFailedPublishedPosts() {
+        // Given
+        let post = PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build()
+
+        // When
+        postCell.configure(with: post)
+
+        // Then
+        XCTAssertTrue(postCell.retryButton.isHidden)
+        XCTAssertFalse(postCell.cancelAutoUploadButton.isHidden)
+    }
+
+    /// TODO We will be showing "Publish" buttons like on Android instead.
+    func testDoesNotShowRetryButtonForUnconfirmedFailedLocalDraftsAndPublishedPosts() {
+        // A post can be unconfirmed if:
+        //
+        // - The user pressed the Published button (confirmed) but pressed Cancel in the Post List.
+        // - The user edited a published post but the editor crashed.
+
+        // Arrange
+        let posts = [
+            PostBuilder(context).published().with(remoteStatus: .failed).build(),
+            PostBuilder(context).drafted().with(remoteStatus: .failed).build()
+        ]
+
+        // Act and Assert
+        for post in posts {
+            postCell.configure(with: post)
+
+            XCTAssertTrue(postCell.retryButton.isHidden)
+            XCTAssertTrue(postCell.cancelAutoUploadButton.isHidden)
+        }
     }
 
     private func postCellFromNib() -> PostCardCell {
