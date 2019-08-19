@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 90
+@jklausa 2019-08-19
+- `AbstractPost`: Addded a  `confirmedChangesHash` property. 
+
 ## WordPress 89
 
 @scoutharris 2019-08-xx

@@ -15,6 +15,7 @@
 @dynamic comments;
 @dynamic featuredImage;
 @dynamic revisions;
+@dynamic confirmedChangesHash;
 
 @synthesize restorableStatus;
 
