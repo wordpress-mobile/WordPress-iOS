@@ -84,6 +84,8 @@ extension PostEditor where Self: UIViewController {
                 }
             }
 
+            self.post.confirmedChangesHash = self.post.changesConfirmedContentHashValue()
+
             if let analyticsStat = analyticsStat {
                 self.trackPostSave(stat: analyticsStat)
             }
