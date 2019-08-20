@@ -2928,12 +2928,17 @@ extension AztecPostViewController {
     }
 
     fileprivate func resetMediaAttachmentOverlayIfNoError(_ mediaAttachment: MediaAttachment) {
+        // having an uploadID means we are uploading or just finished uplading (successfully or not). In this case, we remove the overlay only if no error
         if let uploadID = mediaAttachment.uploadID,
-        let media = self.mediaFor(uploadID: uploadID),
-        media.error == nil {
-            mediaAttachment.overlayImage = nil
+            let media = self.mediaFor(uploadID: uploadID) {
+            if media.error == nil {
+                mediaAttachment.overlayImage = nil
+                mediaAttachment.message = nil
+                mediaAttachment.shouldHideBorder = false
+            }
+        // For an existing media we set it's message to nil so the glyphImage will be removed.
+        } else {
             mediaAttachment.message = nil
-            mediaAttachment.shouldHideBorder = false
         }
     }
 }
