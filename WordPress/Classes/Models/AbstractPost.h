@@ -85,6 +85,9 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 #pragma mark - Conveniece Methods
 - (void)publishImmediately;
 - (BOOL)shouldPublishImmediately;
+
+- (BOOL)shouldAttemptAutoUpload;
+
 - (NSString *)authorNameForDisplay;
 - (NSString *)blavatarForDisplay;
 - (NSString *)dateStringForDisplay;

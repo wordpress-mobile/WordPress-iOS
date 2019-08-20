@@ -412,6 +412,13 @@
     return [self originalIsDraft] && [self dateCreatedIsNilOrEqualToDateModified];
 }
 
+- (BOOL)shouldAttemptAutoUpload {
+    BOOL hashesEqual = self.confirmedChangesHash != nil && ([self.confirmedChangesHash isEqualToString:self.changesConfirmedContentHashValue]);
+
+    return hashesEqual;
+}
+
+
 - (NSString *)authorNameForDisplay
 {
     return [NSString makePlainText:self.author];
