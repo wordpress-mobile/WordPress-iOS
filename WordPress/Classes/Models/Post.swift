@@ -328,6 +328,7 @@ class Post: AbstractPost {
                 hash(for: postFormat ?? ""),
                 hash(for: stringifiedCategories),
                 hash(for: geolocation?.latitude ?? 0),
-                hash(for: geolocation?.longitude ?? 0)]
+                hash(for: geolocation?.longitude ?? 0),
+                hash(for: isStickyPost ? 1 : 0)]
     }
 }
