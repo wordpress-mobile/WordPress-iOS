@@ -246,7 +246,7 @@
 
 -(void)showFacebookPublicizeAlert
 {
-    NSString *alertHeaderMessage = NSLocalizedString(@"No Pages Found", @"Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.");
+    NSString *alertHeaderMessage = NSLocalizedString(@"Not connected", @"Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.");
     NSString *alertBodyMessage = NSLocalizedString(@"The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.", @"Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.");
     NSString *continueActionTitle = NSLocalizedString(@"Learn more", @"A button title.");
     NSString *cancelActionTitle = NSLocalizedString(@"OK", comment: @"Cancel action title");
