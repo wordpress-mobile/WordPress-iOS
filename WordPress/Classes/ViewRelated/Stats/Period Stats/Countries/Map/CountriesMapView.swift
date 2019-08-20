@@ -5,7 +5,7 @@ class CountriesMapView: UIView, NibLoadable {
     private var map = FSInteractiveMapView(frame: CGRect(x: 0, y: 0, width: 335, height: 224))
     private var countries: CountriesMap?
     private lazy var colors: [UIColor] = {
-        return mapColors(traits: nil)
+        return mapColors()
     }()
     @IBOutlet private var minViewsCountLabel: UILabel! {
         didSet {
@@ -37,7 +37,7 @@ class CountriesMapView: UIView, NibLoadable {
         super.awakeFromNib()
         backgroundColor = .tableForeground
         map.backgroundColor = .tableForeground
-        colors = mapColors(traits: traitCollection)
+        colors = mapColors()
     }
 
     func setData(_ countries: CountriesMap) {
@@ -56,13 +56,13 @@ class CountriesMapView: UIView, NibLoadable {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        colors = mapColors(traits: traitCollection)
+        colors = mapColors()
         if let countries = countries {
             setData(countries)
         }
     }
 
-    private func mapColors(traits: UITraitCollection?) -> [UIColor] {
+    private func mapColors() -> [UIColor] {
         #if XCODE11
         if #available(iOS 13, *) {
             if traitCollection.userInterfaceStyle == .dark {
