@@ -52,8 +52,14 @@ final class InteractiveNotificationsManager: NSObject {
         defer {
             WPAnalytics.track(.pushNotificationOSAlertShown)
         }
+
+        var options: UNAuthorizationOptions = [.badge, .sound, .alert]
+        if #available(iOS 12.0, *) {
+            options.insert(.providesAppNotificationSettings)
+        }
+
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: [.badge, .sound, .alert]) { (allowed, _)  in
+        notificationCenter.requestAuthorization(options: options) { (allowed, _)  in
             DispatchQueue.main.async {
                 if allowed {
                     WPAnalytics.track(.pushNotificationOSAlertAllowed)
@@ -501,5 +507,9 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         PushNotificationsManager.shared.handleNotification(userInfo) { _ in
             completionHandler()
         }
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
+        MeNavigationAction.notificationSettings.perform()
     }
 }

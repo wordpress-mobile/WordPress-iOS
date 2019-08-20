@@ -1,5 +1,9 @@
-* Çevrimdışı çizim! Bazen harika fikirleriniz var ama internet bağlantınız yok, çünkü henüz mükemmel bir dünyada yaşamıyoruz. Hala uçan arabalarımız da yok, ancak artık çevrimdışı olsanız bile uygulamada yeni yayınlara başlayabilirsiniz.
-* Daha net önizlemeler! Daha önce, işlem içi post önizlemelerin durumu ekran engelleyen bir eğiricinin arkasına gizlenmişti. Şimdi iplikçi yerine kondu ve durum ekranın en üstünde göründüğü için geri kalanına hala erişebiliyorsunuz.
-* Daha iyi bloklar! Çarpma taslağını çıkarmak için bir sürü blok editör geliştirmesi yaptık. Boş bir editör alanına dokunulduğunda otomatik olarak yeni bir paragraf bloğu oluşturulur. Gönderi Başlığı’na bir blok eklemek artık bloğu yazının en üstüne, gerçekten göremediğiniz bir yere koyuyor. Editör desteklenmeyen blokları yüklemeye çalıştığında, bazen içeriğin kaybolmasına neden olan bir sorunu çözdük.
-* Temiz yazı listeleri! Artık gönderi listeniz, postaları daha kompakt görüntüleme seçeneği sunar, böylece bir kerede daha fazla posta detayı görebilirsiniz. Ve yeniden tasarlanmış bir yükleme ekranına sahip, çünkü bir şeyin yüklenmesini beklemek bile güzel bir deneyim olmalı.
-* Pürüzsüz kurulum! Yeni bir site kurduğunuzda, bazen önizlemeler yanlış görüntülenebilir ve bir site simgesi ekleme işlemi olması gerektiği kadar kolay değildi. İdeal değil ve artık durum böyle değil.
+13.0
+-----
+Telefonunuzda tek bir saat dilimi ayarı var. Web siteniz farklı bir ayar kullanıyor. Site istatistikleriniz neyi temel alıyor? Bu trafik artışı sabah mı yoksa akşam mı gerçekleşti? Yanıt: İstatistikleriniz artık web sitenizin saat dilimi ayarlarını temel alıyor.
+
+Uygun kontrasta sahip tutarlı renk düzenleri, kullanıcıları memnun eden erişilebilir ve kullanımı kolay bir uygulama oluşturuyor. 13.0 sürümü daha tutarlı. Bu memnuniyetin keyfini çıkarın.
+
+Blok düzenleyici her geçen gün daha da iyileşiyor. Mümkün değil mi dediniz? O zaman sayalım: İlk kez blok tabanlı bir gönderi* oluşturduğunuzda otomatik olarak etkinleştirilir ve bunu site bazında etkinleştirip devre dışı bırakabildiğinizden her kullanıcı, istediği düzenleyici deneyimini elde eder. İçerik oluşturma işleminin basitleştirilmesi için, gönderi başlığından blok eklenirken bir “bloğu buraya ekleyin” göstergesi görünür. Yeni blok eklendiğinde odağın yeni blokta olması için gönderi başlığının seçimi kaldırılır.
+
+* 12.9 sürümünde hizmeti kapatmadıysanız! Biz canavar değiliz.

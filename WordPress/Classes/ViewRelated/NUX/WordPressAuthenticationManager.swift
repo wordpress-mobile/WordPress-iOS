@@ -17,7 +17,7 @@ class WordPressAuthenticationManager: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationCleared), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
-    /// Initializes WordPressAuthenticator with all of the paramteres that will be needed during the login flow.
+    /// Initializes WordPressAuthenticator with all of the parameters that will be needed during the login flow.
     ///
     func initializeWordPressAuthenticator() {
         let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
@@ -29,7 +29,9 @@ class WordPressAuthenticationManager: NSObject {
                                                                 googleLoginClientId: ApiCredentials.googleLoginClientId(),
                                                                 googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
                                                                 googleLoginScheme: ApiCredentials.googleLoginSchemeId(),
-                                                                userAgent: WPUserAgent.wordPress())
+                                                                userAgent: WPUserAgent.wordPress(),
+                                                                showNewLoginFlow: true,
+                                                                enableSignInWithApple: FeatureFlag.signInWithApple.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: .primaryButtonBorder,
@@ -53,7 +55,8 @@ class WordPressAuthenticationManager: NSObject {
                                                 navBarImage: Gridicon.iconOfType(.mySites),
                                                 navBarBadgeColor: .accent(shade: .shade20),
                                                 prologueBackgroundColor: .primary,
-                                                prologueTitleColor: .textInverted)
+                                                prologueTitleColor: .textInverted,
+                                                statusBarStyle: .lightContent)
 
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style)
