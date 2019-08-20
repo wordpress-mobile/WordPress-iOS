@@ -1,5 +1,6 @@
 #import "AbstractPost+HashHelpers.h"
 #import "Media+WPMediaAsset.h"
+#import "WordPress-Swift.h"
 
 @implementation AbstractPost (HashHelpers)
 
@@ -16,8 +17,7 @@
                                           [self hashForDouble:self.dateCreated.timeIntervalSinceReferenceDate],
                                           [self hashForString:self.permaLink],
                                           [self hashForString:self.mt_excerpt],
-                                          [self hashForString:self.statusForDisplay],
-                                          [self hashForNSInteger:self.remoteStatusNumber.integerValue],
+                                          [self hashForString:self.status],
                                           [self hashForString:self.password],
                                           [self hashForString:self.author],
                                           [self hashForString:self.featuredImage.identifier],
