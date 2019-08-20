@@ -57,6 +57,10 @@ class SiteStatsInsightsViewModel: Observable {
 
         insightsToShow.forEach { insightType in
             switch insightType {
+            case .customize:
+                if FeatureFlag.statsInsightsManagement.enabled {
+                    tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                }
             case .latestPostSummary:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
                 tableRows.append(LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
@@ -111,6 +115,11 @@ class SiteStatsInsightsViewModel: Observable {
             }
         }
 
+        if FeatureFlag.statsInsightsManagement.enabled {
+            tableRows.append(TableFooterRow())
+            tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+        }
+
         tableRows.append(TableFooterRow())
 
         return ImmuTable(sections: [
@@ -138,6 +147,11 @@ class SiteStatsInsightsViewModel: Observable {
     func annualInsightsYear() -> Int? {
         return insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear
     }
+
+    func updateInsightsToShow(insights: [InsightType]) {
+        insightsToShow = insights
+    }
+
 }
 
 // MARK: - Private Extension
@@ -454,4 +468,12 @@ private extension SiteStatsInsightsViewModel {
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }
+
+    func createAddInsightRow() -> StatsTotalRowData {
+        return StatsTotalRowData(name: StatSection.insightsAddInsight.title,
+                                 data: "",
+                                 icon: Style.imageForGridiconType(.plus, withTint: .darkGrey),
+                                 statSection: .insightsAddInsight)
+    }
+
 }

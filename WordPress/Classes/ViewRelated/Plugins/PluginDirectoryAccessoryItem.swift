@@ -76,7 +76,7 @@ struct PluginDirectoryAccessoryItem {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = WPStyleGuide.subtitleFont()
-        label.textColor = tintColor
+        label.textColor = .textSubtle
         label.text = text
 
         container.axis = .horizontal

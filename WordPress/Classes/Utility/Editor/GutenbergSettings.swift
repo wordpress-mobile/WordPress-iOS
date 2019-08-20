@@ -7,9 +7,15 @@ class GutenbergSettings {
     enum Key {
         static let appWideEnabled = "kUserDefaultsGutenbergEditorEnabled"
         static func enabledOnce(for blog: Blog) -> String {
-            let url = (blog.displayURL ?? "") as String
+            let url = (blog.url ?? "") as String
             return "com.wordpress.gutenberg-autoenabled-" + url
         }
+    }
+
+    enum TracksSwitchSource: String {
+        case viaSiteSettings = "via-site-settings"
+        case onSiteCreation = "on-site-creation"
+        case onBlockPostOpening = "on-block-post-opening"
     }
 
     // MARK: - Internal variables
@@ -33,12 +39,12 @@ class GutenbergSettings {
     /// - Parameters:
     ///   - isEnabled: Enabled state to set
     ///   - blog: The site to set the gutenberg enabled state
-    func setGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
+    func setGutenbergEnabled(_ isEnabled: Bool, for blog: Blog, source: TracksSwitchSource? = nil) {
         guard shouldUpdateSettings(enabling: isEnabled, for: blog) else {
             return
         }
 
-        softSetGutenbergEnabled(isEnabled, for: blog)
+        softSetGutenbergEnabled(isEnabled, for: blog, source: source)
 
         if isEnabled {
             database.set(true, forKey: Key.enabledOnce(for: blog))
@@ -49,13 +55,13 @@ class GutenbergSettings {
     /// Use this to set gutenberg and still show the auto-enabled dialog.
     ///
     /// - Parameter blog: The site to set the
-    func softSetGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
+    func softSetGutenbergEnabled(_ isEnabled: Bool, for blog: Blog, source: TracksSwitchSource?) {
         guard shouldUpdateSettings(enabling: isEnabled, for: blog) else {
             return
         }
 
-        if blog.isGutenbergEnabled != isEnabled {
-            trackSettingChange(to: isEnabled)
+        if let source = source, blog.isGutenbergEnabled != isEnabled {
+            trackSettingChange(to: isEnabled, from: source)
         }
 
         blog.mobileEditor = isEnabled ? .gutenberg : .aztec
@@ -69,9 +75,12 @@ class GutenbergSettings {
         return blog.mobileEditor != selectedEditor
     }
 
-    private func trackSettingChange(to isEnabled: Bool) {
+    private func trackSettingChange(to isEnabled: Bool, from source: TracksSwitchSource) {
         let stat: WPAnalyticsStat = isEnabled ? .appSettingsGutenbergEnabled : .appSettingsGutenbergDisabled
-        WPAppAnalytics.track(stat)
+        let props: [String: Any] = [
+            "source": source.rawValue
+        ]
+        WPAppAnalytics.track(stat, withProperties: props)
     }
 
 
@@ -93,6 +102,10 @@ class GutenbergSettings {
     /// True if gutenberg should be autoenabled for the blog hosting the given post.
     func shouldAutoenableGutenberg(for post: AbstractPost) -> Bool {
         return !wasGutenbergEnabledOnce(for: post.blog)
+    }
+
+    func willShowDialog(for blog: Blog) {
+        database.set(true, forKey: Key.enabledOnce(for: blog))
     }
 
     // MARK: - Gutenberg Choice Logic
@@ -124,7 +137,7 @@ class GutenbergSettings {
 class GutenbergSettingsBridge: NSObject {
     @objc(setGutenbergEnabled:forBlog:)
     static func setGutenbergEnabled(_ isEnabled: Bool, for blog: Blog) {
-        GutenbergSettings().setGutenbergEnabled(isEnabled, for: blog)
+        GutenbergSettings().setGutenbergEnabled(isEnabled, for: blog, source: .viaSiteSettings)
     }
 
     @objc(postSettingsToRemoteForBlog:)

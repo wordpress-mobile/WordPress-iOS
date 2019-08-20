@@ -94,6 +94,8 @@ private extension StatSection {
             return .statsViewMoreTappedTagsAndCategories
         case .periodVideos:
             return .statsViewMoreTappedVideoPlays
+        case .periodFileDownloads:
+            return .statsViewMoreTappedFileDownloads
         default:
             return nil
         }

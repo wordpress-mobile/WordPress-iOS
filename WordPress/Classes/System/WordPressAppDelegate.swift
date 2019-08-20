@@ -777,7 +777,7 @@ extension WordPressAppDelegate {
 
 extension WordPressAppDelegate {
     func customizeAppearance() {
-        window?.backgroundColor = WPStyleGuide.itsEverywhereGrey()
+        window?.backgroundColor = .black
         window?.tintColor = WPStyleGuide.wordPressBlue()
 
         WPStyleGuide.configureTabBarAppearance()

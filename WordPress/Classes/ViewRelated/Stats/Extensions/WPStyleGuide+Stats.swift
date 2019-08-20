@@ -119,6 +119,21 @@ extension WPStyleGuide {
             label.textColor = defaultTextColor
         }
 
+        static func configureLabelAsCustomizeTitle(_ label: UILabel) {
+            label.textColor = defaultTextColor
+            label.font = customizeInsightsTitleFont
+        }
+
+        static func configureAsCustomizeDismissButton(_ button: UIButton) {
+            button.setTitleColor(customizeInsightsButtonTextColor, for: .normal)
+            button.titleLabel?.font = customizeInsightsDismissButtonFont
+        }
+
+        static func configureAsCustomizeTryButton(_ button: UIButton) {
+            button.setTitleColor(customizeInsightsButtonTextColor, for: .normal)
+            button.titleLabel?.font = customizeInsightsTryButtonFont
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 
@@ -196,18 +211,24 @@ extension WPStyleGuide {
 
         static let postTitleFont = WPFontManager.notoBoldFont(ofSize: 17.0)
 
+        static let customizeInsightsTitleFont = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
+
+        static let customizeInsightsButtonTextColor = UIColor.primary
+        static let customizeInsightsDismissButtonFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        static let customizeInsightsTryButtonFont = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium)
+
         static let positiveColor = UIColor.success
         static let negativeColor = UIColor.error
 
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {
-            static let lightGrey = UIColor.neutral(shade: .shade10)
-            static let lightBlue = UIColor.primary(shade: .shade5)
-            static let mediumBlue = UIColor.primaryLight
-            static let blue = UIColor.primary
-            static let darkBlue = UIColor.primaryDark
-            static let pink = UIColor.accent
+            static let range1 = UIColor.neutral(shade: .shade10)
+            static let range2 = UIColor.primary(shade: .shade5)
+            static let range3 = UIColor.primaryLight
+            static let range4 = UIColor.primary
+            static let range5 = UIColor.primaryDark
+            static let selectedDay = UIColor.accent
         }
 
         // MARK: - Posting Activity Collection View Styles
