@@ -79,9 +79,8 @@ class PostBuilder {
         return self
     }
 
-    #warning("Stub. The logic of how we confirm auto-uploads is still TBD.")
     func confirmedAutoUpload() -> PostBuilder {
-        post.confirmedAutoUpload = true
+        post.confirmedChangesHash = post.changesConfirmedContentHashValue()
         return self
     }
 
