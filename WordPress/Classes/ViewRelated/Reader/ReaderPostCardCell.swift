@@ -270,7 +270,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         WPStyleGuide.applyReaderActionButtonStyle(commentActionButton)
         WPStyleGuide.applyReaderActionButtonStyle(likeActionButton)
         WPStyleGuide.applyReaderActionButtonStyle(visitButton)
-        WPStyleGuide.applyReaderActionButtonStyle(saveForLaterButton)
     }
 
 
