@@ -188,8 +188,26 @@ target 'WordPress' do
         pod 'Nimble', '~> 7.3.1'
     end
 
-    ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
+    
     post_install do
+      
+        ## Append SDKVersions.xcconfig contents to WordPressAuthenticator config files
+        Dir.glob("Pods/Target Support Files/WordPressAuthenticator/*.xcconfig") do |xc_config_filename|
+          
+          ## Get WPAuth config file
+          xcconfig_path = "#{Dir.pwd}/#{xc_config_filename}"
+          xc_config = File.read(xcconfig_path)
+
+          ## Get WPiOS config file
+          custom_xcconfig_path = "#{Dir.pwd}/config/SDKVersions.xcconfig"
+          custom_xc_config = File.read(custom_xcconfig_path)
+
+          ## Write back to WPAuth config file, appending both configs.
+          File.open(xcconfig_path, 'w') { |file| file << xc_config << custom_xc_config }
+        end
+      
+      
+        ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
         
         project_root = File.dirname(__FILE__)
