@@ -95,7 +95,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self stopLoading];
     [self stopWaitingForConnectionRestored];
 }
 
@@ -112,20 +111,21 @@
     [self.view addSubview:self.webView];
 }
 
-#pragma mark - Loading
+#pragma mark - Loading Animations
 
-- (void)startLoading
+- (void)startLoadAnimation
 {
     [self.navigationItem setLeftBarButtonItem:[self statusButtonItem] animated:YES];
     self.navigationItem.title = nil;
 }
 
-- (void)stopLoading
+- (void)stopLoadAnimation
 {
     self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
     self.navigationItem.title  = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
-    [self.webView stopLoading];
 }
+
+#pragma mark - Reachability
 
 - (void)reloadWhenConnectionRestored
 {
@@ -154,6 +154,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)awebView
 {
     DDLogMethod();
+    [self stopLoadAnimation];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -178,6 +179,8 @@
         return;
     }
 
+    [self stopLoadAnimation];
+    
     [self.generator previewRequestFailedWithReason:[NSString stringWithFormat:@"Generic web view error Error. Error code: %d, Error domain: %@", error.code, error.domain]];
 }
 
@@ -224,7 +227,7 @@
 }
 
 - (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
-    [self startLoading];
+    [self startLoadAnimation];
     [self.webView loadRequest:request];
     [self.noResultsViewController removeFromView];
 }
