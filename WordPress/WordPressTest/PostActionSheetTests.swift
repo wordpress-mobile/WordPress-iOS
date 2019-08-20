@@ -32,7 +32,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: post, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Stats", "Move to Trash"], options)
+        XCTAssertEqual(["Cancel", "Publish Now", "Move to Trash"], options)
     }
 
     func testScheduledPostOptions() {

@@ -31,23 +31,6 @@ import Foundation
         }, failure: failure)
     }
 
-    private func update(_ blog: Blog, remoteEditorSettings settings: EditorSettings) throws {
-        blog.webEditor = WebEditor(rawValue: settings.web.rawValue)
-        guard settings.mobile != .notSet else {
-            throw EditorSettingsServiceError.mobileEditorNotSet
-        }
-        GutenbergSettings().setGutenbergEnabled(settings.mobile == .gutenberg, for: blog)
-    }
-
-    private func migrateLocalSettingToRemote(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
-        if blog.mobileEditor == nil {
-            let settings = GutenbergSettings()
-            let defaultEditor = settings.getDefaultEditor(for: blog)
-            settings.setGutenbergEnabled(defaultEditor == .gutenberg, for: blog)
-        }
-        postEditorSetting(for: blog, success: success, failure: failure)
-    }
-
     func postEditorSetting(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
         guard
             let selectedEditor = blog.mobileEditor,
@@ -65,20 +48,68 @@ import Foundation
         }, failure: failure)
     }
 
-    func syncEditorSettingsForAllBlogs() {
-        let blogService = BlogService(managedObjectContext: managedObjectContext)
-        guard let blogs = blogService.blogsForAllAccounts() as? [Blog] else {
+    /// This method is intended to be called only after the db 87 to 88 migration
+    ///
+    func migrateGlobalSettingToRemote(isGutenbergEnabled: Bool) {
+        guard let api = apiForDefaultAccount else {
+            // SelfHosted non-jetpack sites won't sync with remote.
             return
         }
-        let blogsWithAccount = blogs.filter({ $0.account != nil })
-        for blog in blogsWithAccount {
-            syncEditorSettings(for: blog, success: {}, failure: { (error) in
-                DDLogError("Error saving editor settings: \(error)")
-            })
+
+        let remoteEditor: EditorSettings.Mobile = isGutenbergEnabled ? .gutenberg : .aztec
+
+        let service = EditorServiceRemote(wordPressComRestApi: api)
+        service.postDesignateMobileEditorForAllSites(remoteEditor, success: { response in
+            self.updateAllSites(with: response)
+        }) { (error) in
+            DDLogError("Error saving editor settings: \(error)")
         }
     }
 
     func api(for blog: Blog) -> WordPressComRestApi? {
         return blog.wordPressComRestApi()
+    }
+
+    var apiForDefaultAccount: WordPressComRestApi? {
+        return defaultWPComAccount?.wordPressComRestApi
+    }
+}
+
+private extension EditorSettingsService {
+    var defaultWPComAccount: WPAccount? {
+        return AccountService(managedObjectContext: managedObjectContext).defaultWordPressComAccount()
+    }
+
+    func updateAllSites(with response: [Int: EditorSettings.Mobile]) {
+        guard let account = defaultWPComAccount else {
+            return
+        }
+        let settings = GutenbergSettings()
+        for (siteID, editor) in response {
+            self.updateSite(withID: siteID, editor: editor, account: account, settings: settings)
+        }
+    }
+
+    func updateSite(withID siteID: Int, editor: EditorSettings.Mobile, account: WPAccount, settings: GutenbergSettings) {
+        if let blog = account.blogs.first(where: { $0.dotComID?.intValue == siteID }) {
+            settings.setGutenbergEnabled(editor == .gutenberg, for: blog)
+        }
+    }
+
+    func update(_ blog: Blog, remoteEditorSettings settings: EditorSettings) throws {
+        blog.webEditor = WebEditor(rawValue: settings.web.rawValue)
+        guard settings.mobile != .notSet else {
+            throw EditorSettingsServiceError.mobileEditorNotSet
+        }
+        GutenbergSettings().setGutenbergEnabled(settings.mobile == .gutenberg, for: blog)
+    }
+
+    func migrateLocalSettingToRemote(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
+        if blog.mobileEditor == nil {
+            let settings = GutenbergSettings()
+            let defaultEditor = settings.getDefaultEditor(for: blog)
+            settings.setGutenbergEnabled(defaultEditor == .gutenberg, for: blog)
+        }
+        postEditorSetting(for: blog, success: success, failure: failure)
     }
 }

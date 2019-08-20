@@ -1,5 +1,9 @@
-* Offline kladversie! Soms heb je geweldige ideeën maar geen internetverbinding, omdat we nog niet in een perfecte wereld leven. We hebben nog steeds geen vliegende auto's, maar je kunt nu wel nieuwe berichten in de app starten, zelfs als je offline bent.
-* Duidelijkere voorvertoningen! Voorheen was de status van de voorvertoningen verborgen achter een spinner die het scherm blokkeerde. De spinner is nu actief en de status wordt bovenaan het scherm weergegeven, zodat je nog steeds toegang hebt tot de rest van het scherm.
-* Betere blokken! We hebben de blokeditor enorm verbeterd om je gemakkelijker te laten creëren. Als je op een leeg editorgebied tikt, wordt automatisch een nieuw alineablok aangemaakt. Als je een blok uit de berichttitel toevoegt, wordt het blok nu bovenaan het bericht geplaatst in plaats van onderaan, waar je het niet echt kon zien. En we hebben een probleem opgelost dat er soms voor zorgde dat de inhoud verloren ging wanneer de editor niet-ondersteunde blokken probeerde te laden.
-* Duidelijkere berichtenlijsten! Je berichtenlijst bevat nu een optie om berichten compacter weer te geven, zodat je meer details in één keer kunt zien. En de lijst heeft een nieuw laadscherm, omdat zelfs het wachten op iets dat wordt geladen een leuke ervaring zou moeten zijn.
-* Soepelere configuratie! Bij het configureren van een nieuwe site werden de voorvertoningen soms verkeerd weergegeven en was het toevoegen van een sitepictogram niet zo eenvoudig als het zou moeten zijn. Niet ideaal en gelukkig hebben we dit opgelost.
+13.0
+-----
+Je telefoon heeft een instelling voor de tijdzone. Je website gebruikt een andere. Waar zijn je sitestatistieken op gebaseerd? Is dat grote bezoekersaantal vanochtend geweest of vanmiddag? Antwoord: Je statistieken zijn nu gebaseerd op de tijdzone van je website.
+
+Consistente kleurenschema's met goed contrast zorgen voor een toegankelijke, intuïtieve app, die op zijn beurt zorgt voor blije gebruikers. Versie 13.0 is consistenter. Geniet van de blijheid!
+
+De blokeditor blijft steeds beter worden. Is dat volgens jou niet mogelijk? Laat ons dan eens de manieren opnoemen: Het wordt de eerste keer dat je een blokbericht* wilt beginnen automatisch ingeschakeld. Je kunt het per site in- en uitschakelen, waardoor iedere gebruiker de ervaring krijgt die ze willen. Blokken toevoegen vanuit de berichttitel laat een indicator 'blok hier toevoegen' zien om het aanmaken van inhoud te vereenvoudigen. Het toevoegen van nieuwe blokken deselecteert de berichttitel zodat de aandacht op het nieuwe blok gericht is.
+
+* tenzij je je hebt uitgeschreven in versie 12.9! We zijn geen monsters.

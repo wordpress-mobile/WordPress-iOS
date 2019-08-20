@@ -25,7 +25,7 @@ extension PostChartType {
         case .latest:
             return nil
         case .selected:
-            return .accent
+            return .accent(shade: .shade30)
         }
     }
 }
@@ -126,7 +126,7 @@ private final class PostChartDataTransformer {
     }
 
     static func primaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? .primary : .neutral(shade: .shade0)
+        return count > 0 ? .primaryLight : .neutral(shade: .shade0)
     }
 
     static func primaryHighlightColor(forType type: PostChartType, withCount count: Int) -> UIColor? {

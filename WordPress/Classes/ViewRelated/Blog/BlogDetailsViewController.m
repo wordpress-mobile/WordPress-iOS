@@ -1521,7 +1521,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
             FancyAlertViewController *alert = [FancyAlertViewController makeNotificationPrimerAlertControllerWithApproveAction:^(FancyAlertViewController* controller) {
                 [[InteractiveNotificationsManager shared] requestAuthorizationWithCompletion:^() {
-                    [controller dismissViewControllerAnimated:true completion:^{}];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [controller dismissViewControllerAnimated:true completion:^{}];
+                    });
                 }];
             }];
             alert.modalPresentationStyle = UIModalPresentationCustom;

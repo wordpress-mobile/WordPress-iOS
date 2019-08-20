@@ -277,7 +277,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     PlanService *planService = [[PlanService alloc] initWithManagedObjectContext:self.managedObjectContext];
     dispatch_group_enter(syncGroup);
-    [planService getWpcomPlans:^{
+    [planService getWpcomPlans:blog.account
+                       success:^{
         dispatch_group_leave(syncGroup);
     } failure:^(NSError *error) {
         DDLogError(@"Failed updating plans: %@", error);
