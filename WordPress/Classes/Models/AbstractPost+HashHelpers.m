@@ -58,7 +58,7 @@
     return @[];
 }
 
-#pragma mark - SHA512 calculations
+#pragma mark - SHA256 calculations
 
 - (NSData *)hashForString:(NSString *) string {
     if (!string) {
