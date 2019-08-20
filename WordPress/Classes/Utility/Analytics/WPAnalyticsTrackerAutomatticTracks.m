@@ -611,6 +611,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"unordered_list" };
             break;
+        case WPAnalyticsStatEditorTappedList:
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"list" };
+            break;
+        case WPAnalyticsStatEditorTappedUndo:
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"undo" };
+            break;
+        case WPAnalyticsStatEditorTappedRedo:
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"redo" };
+            break;
         case WPAnalyticsStatEditorToggledOff:
             eventName = @"editor_toggled_off";
             break;
@@ -1871,6 +1883,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatOpenedAccountSettings:
             eventName = @"account_settings_opened";
+            break;
+        case WPAnalyticsStatAccountSettingsChangeUsernameSucceeded:
+            eventName = @"account_settings_change_username_succeeded";
+            break;
+        case WPAnalyticsStatAccountSettingsChangeUsernameFailed:
+            eventName = @"account_settings_change_username_failed";
+            break;
+        case WPAnalyticsStatAccountSettingsChangeUsernameSuggestionsFailed:
+            eventName = @"account_settings_change_username_suggestions_failed";
             break;
         case WPAnalyticsStatOpenedAppSettings:
             eventName = @"app_settings_opened";

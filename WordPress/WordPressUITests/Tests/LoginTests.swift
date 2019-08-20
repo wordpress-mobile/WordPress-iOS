@@ -15,7 +15,8 @@ class LoginTests: XCTestCase {
     }
 
     func testEmailPasswordLoginLogout() {
-        let welcomeScreen = WelcomeScreen().login()
+        let welcomeScreen = WelcomeScreen().selectLogin()
+            .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithPassword()
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
@@ -32,7 +33,8 @@ class LoginTests: XCTestCase {
      This test opens safari to trigger the mocked magic link redirect
      */
     func testEmailMagicLinkLogin() {
-        let welcomeScreen = WelcomeScreen().login()
+        let welcomeScreen = WelcomeScreen().selectLogin()
+            .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithLink()
             .openMagicLoginLink()
@@ -45,7 +47,8 @@ class LoginTests: XCTestCase {
     }
 
     func testWpcomUsernamePasswordLogin() {
-        _ = WelcomeScreen().login()
+        _ = WelcomeScreen().selectLogin()
+            .selectEmailLogin()
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: "WordPress.com")
             .proceedWith(username: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
@@ -57,7 +60,7 @@ class LoginTests: XCTestCase {
     }
 
     func testSelfHostedUsernamePasswordLoginLogout() {
-        _ = WelcomeScreen().login()
+        _ = WelcomeScreen().selectLogin()
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
@@ -69,7 +72,8 @@ class LoginTests: XCTestCase {
     }
 
     func testUnsuccessfulLogin() {
-        _ = WelcomeScreen().login()
+        _ = WelcomeScreen().selectLogin()
+            .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithPassword()
             .tryProceed(password: "invalidPswd")

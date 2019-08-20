@@ -229,6 +229,15 @@
         }
     }
 
+    var insightManagementTitle: String {
+        switch self {
+        case .insightsTodaysStats:
+            return InsightManagementTitles.todaysStats
+        default:
+            return title
+        }
+    }
+
     // MARK: - Image Size Accessor
 
     static let defaultImageSize = CGFloat(24)
@@ -266,6 +275,10 @@
 
     struct DetailsTitles {
         static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'This Year' details view header")
+    }
+
+    struct InsightManagementTitles {
+        static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights Management 'Today's Stats' title")
     }
 
     struct PeriodHeaders {
