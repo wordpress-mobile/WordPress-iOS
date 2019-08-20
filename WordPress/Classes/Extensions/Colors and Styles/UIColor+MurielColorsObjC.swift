@@ -90,4 +90,9 @@
     static func murielError() -> UIColor {
         return .error
     }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielListIcon() -> UIColor {
+        return .listIcon
+    }
 }

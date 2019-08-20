@@ -33,7 +33,7 @@ extension WPStyleGuide {
 
         let navigationAppearance = UINavigationBar.appearance()
         navigationAppearance.isTranslucent = false
-        navigationAppearance.tintColor = .textInverted
+        navigationAppearance.tintColor = .white
         navigationAppearance.barTintColor = .navigationBar
         navigationAppearance.barStyle = .black
 
@@ -42,27 +42,27 @@ extension WPStyleGuide {
             // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .brand
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.textInverted]
+            appearance.backgroundColor = .navigationBar
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationAppearance.standardAppearance = appearance
             navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
         }
 #endif
 
         let buttonBarAppearance = UIBarButtonItem.appearance()
-        buttonBarAppearance.tintColor = .textInverted
+        buttonBarAppearance.tintColor = .white
         buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: UIColor.textInverted],
+                                                    NSAttributedString.Key.foregroundColor: UIColor.white],
                                                    for: .normal)
         buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: UIColor.textInverted.withAlphaComponent(0.25)],
+                                                    NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.25)],
                                                    for: .disabled)
     }
 
     /// Style the tab bar using Muriel colors
     class func configureTabBarAppearance() {
         UITabBar.appearance().tintColor = .primary
-        UITabBar.appearance().unselectedItemTintColor = .unselected
+        UITabBar.appearance().unselectedItemTintColor = .tabUnselected
     }
 }
 

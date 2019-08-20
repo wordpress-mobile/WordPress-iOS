@@ -76,7 +76,7 @@ class StatsChartLegendView: UIView {
 
     private func initialize() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .white
+        backgroundColor = WPStyleGuide.Stats.cellBackgroundColor
 
         addSubview(capsule)
         addSubview(label)
