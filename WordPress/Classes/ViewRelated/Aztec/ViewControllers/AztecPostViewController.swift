@@ -2628,7 +2628,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func retryFailedMediaUpload(media: Media, attachment: MediaAttachment) {
-        resetMediaAttachmentOverlayIfNoError(attachment)
+        resetMediaAttachmentOverlay(attachment)
         attachment.progress = 0
         richTextView.refresh(attachment)
 
@@ -2702,7 +2702,7 @@ extension AztecPostViewController {
         let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
             if attachment == self.currentSelectedAttachment {
                 self.currentSelectedAttachment = nil
-                self.resetMediaAttachmentOverlayIfNoError(attachment)
+                self.resetMediaAttachmentOverlay(attachment)
                 self.richTextView.refresh(attachment)
             }
         }
@@ -2828,7 +2828,7 @@ extension AztecPostViewController {
         controller.onCancel = { [weak self] in
             if attachment == self?.currentSelectedAttachment {
                 self?.currentSelectedAttachment = nil
-                self?.resetMediaAttachmentOverlayIfNoError(attachment)
+                self?.resetMediaAttachmentOverlay(attachment)
                 self?.richTextView.refresh(attachment)
             }
         }
@@ -2927,7 +2927,7 @@ extension AztecPostViewController {
         restoreInputAssistantItems()
     }
 
-    fileprivate func resetMediaAttachmentOverlayIfNoError(_ mediaAttachment: MediaAttachment) {
+    fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
         // having an uploadID means we are uploading or just finished uplading (successfully or not). In this case, we remove the overlay only if no error
         if let uploadID = mediaAttachment.uploadID,
             let media = self.mediaFor(uploadID: uploadID) {
@@ -2975,7 +2975,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         if !errorAssociatedToAttachment {
             // If it's a new attachment tapped let's unmark the previous one...
             if let selectedAttachment = currentSelectedAttachment {
-                resetMediaAttachmentOverlayIfNoError(selectedAttachment)
+                resetMediaAttachmentOverlay(selectedAttachment)
                 richTextView.refresh(selectedAttachment)
             }
 
@@ -2997,7 +2997,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     func deselected(textAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
         currentSelectedAttachment = nil
         if let mediaAttachment = attachment as? MediaAttachment {
-            self.resetMediaAttachmentOverlayIfNoError(mediaAttachment)
+            self.resetMediaAttachmentOverlay(mediaAttachment)
             richTextView.refresh(mediaAttachment)
             processMediaAttachments()
         }
