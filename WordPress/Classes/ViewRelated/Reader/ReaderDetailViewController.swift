@@ -9,7 +9,7 @@ import MobileCoreServices
 class ReaderPlaceholderAttachment: NSTextAttachment {
     init() {
         // Initialize with default image data to prevent placeholder graphics appearing on iOS 13.
-        super.init(data: UIImage.init(color: .basicBackground).pngData(), ofType: kUTTypePNG as String)
+        super.init(data: UIImage(color: .basicBackground).pngData(), ofType: kUTTypePNG as String)
     }
 
     required init?(coder: NSCoder) {
