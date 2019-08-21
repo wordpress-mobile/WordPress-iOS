@@ -16,21 +16,11 @@ extension WPStyleGuide {
     }
 
     class func configureDefaultTint() {
-        guard FeatureFlag.murielColors.enabled else {
-            configureNavigationBarAppearance()
-            return
-        }
-
         UIWindow.appearance().tintColor = .primary
     }
 
     /// Style the navigation appearance using Muriel colors
     class func configureNavigationAppearance() {
-        guard FeatureFlag.murielColors.enabled else {
-            configureNavigationBarAppearance()
-            return
-        }
-
         let navigationAppearance = UINavigationBar.appearance()
         navigationAppearance.isTranslucent = false
         navigationAppearance.tintColor = .white
@@ -83,14 +73,9 @@ extension WPStyleGuide {
         guard let tableView = tableView else {
             return
         }
-        if FeatureFlag.murielColors.enabled {
-            tableView.backgroundColor = .tableBackground
-            tableView.separatorColor = .neutral(shade: .shade10)
-        } else {
-            tableView.backgroundView = nil
-            tableView.backgroundColor = greyLighten30()
-            tableView.separatorColor = greyLighten20()
-        }
+
+        tableView.backgroundColor = .tableBackground
+        tableView.separatorColor = .neutral(shade: .shade10)
     }
 
     class func configureColors(view: UIView, collectionView: UICollectionView) {
@@ -111,24 +96,15 @@ extension WPStyleGuide {
         cell.detailTextLabel?.sizeToFit()
 
         // we only set the text subtle color, so that system colors are used otherwise
-        if FeatureFlag.murielColors.enabled {
-            cell.detailTextLabel?.textColor = .textSubtle
-            cell.imageView?.tintColor = .neutral(shade: .shade30)
-        } else {
-            cell.textLabel?.textColor = darkGrey()
-            cell.detailTextLabel?.textColor = grey()
-            cell.imageView?.tintColor = greyLighten10()
-        }
+        cell.detailTextLabel?.textColor = .textSubtle
+        cell.imageView?.tintColor = .neutral(shade: .shade30)
+
     }
 
     class func configureTableViewSmallSubtitleCell(_ cell: UITableViewCell) {
         configureTableViewColors(view: cell)
         cell.detailTextLabel?.font = subtitleFont()
-        if FeatureFlag.murielColors.enabled {
-            cell.detailTextLabel?.textColor = .textSubtle
-        } else {
-            cell.detailTextLabel?.textColor = darkGrey()
-        }
+        cell.detailTextLabel?.textColor = .textSubtle
     }
 
     @objc
@@ -150,18 +126,10 @@ extension WPStyleGuide {
         configureTableViewCell(cell)
 
         if cell.textField.isEnabled {
-            if FeatureFlag.murielColors.enabled {
-                cell.detailTextLabel?.textColor = .text
-            } else {
-                cell.detailTextLabel?.textColor = darkBlue()
-            }
+            cell.detailTextLabel?.textColor = .text
             cell.textField.textAlignment = .natural
         } else {
-            if FeatureFlag.murielColors.enabled {
-                cell.detailTextLabel?.textColor = .textSubtle
-            } else {
-                cell.detailTextLabel?.textColor = darkGrey()
-            }
+            cell.detailTextLabel?.textColor = .textSubtle
             if cell.effectiveUserInterfaceLayoutDirection == .leftToRight {
                 // swiftlint:disable:next inverse_text_alignment
                 cell.textField.textAlignment = .right
@@ -170,14 +138,6 @@ extension WPStyleGuide {
                 cell.textField.textAlignment = .left
             }
         }
-    }
-
-    @objc class func configureTableViewSectionHeader(_ header: UIView) {
-        guard !FeatureFlag.murielColors.enabled,
-            let header = header as? UITableViewHeaderFooterView else {
-            return
-        }
-        header.textLabel?.textColor = whisperGrey()
     }
 
     @objc

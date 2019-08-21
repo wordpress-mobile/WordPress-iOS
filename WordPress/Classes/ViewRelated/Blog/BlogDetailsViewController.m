@@ -1188,11 +1188,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self presentViewController:removeSheet animated:YES completion:nil];
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    [WPStyleGuide configureTableViewSectionHeader:view];
-}
-
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     BOOL isNewSelection = (indexPath != tableView.indexPathForSelectedRow);
