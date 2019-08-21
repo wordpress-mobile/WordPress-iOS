@@ -403,4 +403,27 @@ class PostTests: XCTestCase {
         post.status = .draft
         XCTAssertTrue(post.canEditPublicizeSettings())
     }
+
+    func testHashing() {
+        let post = newTestPost()
+
+        post.postTitle = "Lorem Ipsum"
+        post.content = "Dolor Sit Amet"
+        post.password = "sikrit"
+        post.author = "jk"
+        post.authorID = 9001
+        post.wp_slug = "lorem-ipsum"
+        post.publicID = "90210"
+        post.tags = "lorem,ipsum,test"
+        post.geolocation = Coordinate(coordinate: CLLocationCoordinate2D(latitude: 52.520833, longitude: 13.409444))
+        post.isStickyPost = true
+
+        let correctHash = "36d7cd8138748d779453d30e8f758592b40b61af464921133c9db12cd71cf0ca"
+
+        XCTAssertEqual(post.changesConfirmedContentHashValue(), correctHash)
+
+        post.isStickyPost = false
+
+        XCTAssertNotEqual(post.confirmedChangesHash, correctHash)
+    }
 }
