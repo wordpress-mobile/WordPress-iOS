@@ -1,6 +1,6 @@
 struct StatsGhostImmutableRow: ImmuTableRow {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostCell.defaultNib, StatsGhostCell.self)
+        return ImmuTableCell.nib(StatsStackViewCell.defaultNib, StatsStackViewCell.self)
     }()
     let action: ImmuTableAction? = nil
 
@@ -11,7 +11,7 @@ struct StatsGhostImmutableRow: ImmuTableRow {
     }
 
     func configureCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? StatsGhostCell else {
+        guard let cell = cell as? StatsStackViewCell else {
             return
         }
 
@@ -21,7 +21,13 @@ struct StatsGhostImmutableRow: ImmuTableRow {
     }
 }
 
-struct StatsGhostRow<View: NibLoadable> {
+extension StatsGhostImmutableRow {
+    static var twoColumnRow: ImmuTableRow {
+        return StatsGhostRow<StatsTwoColumnRow>.row
+    }
+}
+
+private struct StatsGhostRow<View: NibLoadable> {
     static var row: ImmuTableRow {
         return StatsGhostImmutableRow(view: View.self)
     }

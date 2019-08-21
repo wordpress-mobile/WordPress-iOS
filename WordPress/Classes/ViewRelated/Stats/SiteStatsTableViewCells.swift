@@ -584,3 +584,23 @@ struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
                        forDetails: true)
     }
 }
+
+struct StatsErrorRow: ImmuTableRow {
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(StatsStackViewCell.defaultNib, StatsStackViewCell.self)
+    }()
+    let action: ImmuTableAction? = nil
+    let rowStatus: StoreFetchingStatus
+    let statType: StatType
+
+    private let noDataRow = StatsNoDataRow.loadFromNib()
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? StatsStackViewCell else {
+            return
+        }
+
+        noDataRow.configure(forType: statType, rowStatus: rowStatus)
+        cell.insert(view: noDataRow, animated: false)
+    }
+}
