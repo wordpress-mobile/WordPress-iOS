@@ -241,6 +241,15 @@ extension WPStyleGuide {
             static let selectedDay = UIColor.accent
         }
 
+        static var mapBackground: UIColor {
+            #if XCODE11
+            if #available(iOS 13, *) {
+                return .systemGray5
+            }
+            #endif
+            return .neutral(shade: .shade10)
+        }
+
         // MARK: - Posting Activity Collection View Styles
 
         // Value of PostingActivityMonth view width for five columns
