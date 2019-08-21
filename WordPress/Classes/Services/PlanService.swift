@@ -19,11 +19,16 @@ open class PlanService: LocalCoreDataService {
         }, failure: failure)
     }
 
-    @objc public func getWpcomPlans(_ success: @escaping () -> Void,
+    @objc public func getWpcomPlans(_ account: WPAccount,
+                                    success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
 
-        let wpcomAPI = WordPressComRestApi.defaultApi(localeKey: WordPressComRestApi.LocaleKeyDefault) // locale, not _locale
-        let remote = PlanServiceRemote(wordPressComRestApi: wpcomAPI)
+        guard let api = account.wordPressComRestApi else {
+            failure(nil)
+            return
+        }
+
+        let remote = PlanServiceRemote(wordPressComRestApi: api)
         remote.getWpcomPlans({ plans in
 
             self.mergeRemoteWpcomPlans(plans.plans, remoteGroups: plans.groups, remoteFeatures: plans.features, onComplete: {

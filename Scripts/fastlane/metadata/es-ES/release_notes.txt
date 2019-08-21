@@ -1,6 +1,9 @@
-* Vista de estadísticas: echa un vistazo a los nuevos diseños de dos columnas para los totales de seguidores, este año, y las estadísticas más populares por fecha.
-* Vistas de este año: ve una instantánea del total de entradas, comentarios, «me gusta» y más de un año hasta la fecha cuando hagas clic en la opción «Ver más».
-* Estadísticas por períodos: Hemos añadido un mapa del mundo en la sección de países.
-* Se ha corregido un problema por el que al actualizar las estadísticas a veces se borraban.
-* ¡Lo haces tú! * Ve a «Yo > Ajustes de la aplicación > Icono de la aplicación» para elegir entre una serie de iconos de aplicaciones.
-* Actualizada la combinación de colores de la aplicación.
+13.0
+-----
+Tu teléfono tiene un ajuste de zona horaria. Tu web usa una diferente. ¿En qué se basan las estadísticas de tu sitio? ¿El aumento de tráfico ha ocurrido esta mañana o esta tarde? Respuesta: ahora tus estadísticas se basan en los ajustes de la zona horaria de tu web.
+
+Los esquemas de color consistentes, con un buen contraste, hacen que la aplicación sea accesible e intuitiva, lo que crea usuarios felices. La versión 13.0 es más consistente; disfruta de la felicidad.
+
+El editor de bloques se mantiene cada vez mejor. ¿Dices que no es posible? ¡Bah! Déjanos contar las formas: se activa automáticamente la primera vez que comienzas una entrada basada en bloques* y puedes activarlo y desactivarlo en cada sitio, por lo que cada usuario obtiene la experiencia del editor que quiere. Al añadir bloques desde el título de la entrada, se muestra el indicador de «añadir un bloque aquí» para simplificar la creación de contenido y, al añadir nuevos bloques, se deselecciona el título de la entrada para que el foco esté en el nuevo bloque.
+
+* ¡Salvo que lo hayas desactivado en la versión 12.9! No somos monstruos.

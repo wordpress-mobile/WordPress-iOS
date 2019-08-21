@@ -125,9 +125,9 @@ extension NSNotification.Name {
         helpCenterConfig.labels = [Constants.articleLabel]
 
         // If we don't have the user's information, disable 'Contact Us' via the Help Center and Article view.
-        helpCenterConfig.hideContactSupport = !haveUserIdentity
+        helpCenterConfig.showContactOptions = haveUserIdentity
         let articleConfig = ArticleUiConfiguration()
-        articleConfig.hideContactSupport = !haveUserIdentity
+        articleConfig.showContactOptions = haveUserIdentity
 
         // Get custom request configuration so new tickets from this path have all the necessary information.
         let newRequestConfig = self.createRequest()
@@ -479,18 +479,13 @@ private extension ZendeskUtils {
             return
         }
 
-        // If the controller is a UIViewController, set the modal display for iPad.
-        if !presentInController.isKind(of: UINavigationController.self) && WPDeviceIdentification.isiPad() {
-            let navController = UINavigationController(rootViewController: zendeskView)
-            navController.modalPresentationStyle = .fullScreen
-            navController.modalTransitionStyle = .crossDissolve
-            presentInController.present(navController, animated: true)
-            return
-        }
-
-        if let navController = presentInController as? UINavigationController {
-            navController.pushViewController(zendeskView, animated: true)
-        }
+        // Presenting in a modal instead of pushing onto an existing navigation stack
+        // seems to fix this issue we were seeing when trying to add media to a ticket:
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/11397
+        let navController = UINavigationController(rootViewController: zendeskView)
+        navController.modalPresentationStyle = .formSheet
+        navController.modalTransitionStyle = .coverVertical
+        presentInController.present(navController, animated: true)
     }
 
     // MARK: - Get User Information
@@ -672,9 +667,10 @@ private extension ZendeskUtils {
         tags.append(Constants.platformTag)
 
         // Add gutenbergIsDefault tag
-        let gutenbergSettings = GutenbergSettings()
-        if gutenbergSettings.isGutenbergEnabled {
-            tags.append(Constants.gutenbergIsDefault)
+        if let blog = blogService.lastUsedBlog() {
+            if blog.isGutenbergEnabled {
+                tags.append(Constants.gutenbergIsDefault)
+            }
         }
 
         return tags

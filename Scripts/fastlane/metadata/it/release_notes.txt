@@ -1,6 +1,9 @@
-* Panoramica delle statistiche: controlla i nuovi layout a due colonne per le statistiche su Follower totali, Quest'anno e Ora più popolare.
-* Panoramica di Quest'anno: visualizza un'istantanea dei Mi piace, dei commenti, degli articoli totali e molto altro per l'anno in corso facendo clic sull'opzione Visualizza altro.
-* Periodi delle statistiche: abbiamo aggiunto una mappa del mondo nella sezione dei Paesi.
-* È stato risolto un problema a causa del quale a volte l'aggiornamento comportava la cancellazione delle statistiche.
-* Creala come vuoi! Vai a Io > Impostazioni app > Icona app per scegliere tra una serie di icone di app.
-* È stato aggiornato lo schema colori dell'app.
+13.0
+-----
+Il fuso orario impostato sul tuo telefono è diverso da quello utilizzato dal sito Web. Su cosa si basano le statistiche del tuo sito? Quel picco di traffico si è verificato questa mattina o questo pomeriggio? Risposta: le statistiche si basano ora sul fuso orario del tuo sito Web.
+
+Schemi di colore coerenti, con buoni contrasti, creano un'app accessibile, intuitiva e gradevole per gli utenti. La Versione 13.0 è più coerente: scopri com'è piacevole.
+
+L'editor dei blocchi continua a migliorare. Come dici? Impossibile? Beh, vediamo un po': viene abilitato automaticamente non appena viene iniziato un articolo basato su blocchi* ed è possibile attivarlo o disattivarlo a livello di singoli siti, offrendo a ciascun utente l'esperienza desiderata con l'editor. L'aggiunta di blocchi a partire dal titolo dell'articolo avviene tramite visualizzazione di un apposito indicatore, consentendo una creazione più semplice dei contenuti, mentre l'aggiunta di nuovi blocchi comporta la deselezione dei titolo dell'articolo, con focalizzazione sul nuovo blocco.
+
+* Salvo disattivazione nella versione 12.9. Non siamo mostri.

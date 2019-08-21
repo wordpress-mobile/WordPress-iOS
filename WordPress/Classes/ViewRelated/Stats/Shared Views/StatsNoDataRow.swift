@@ -15,6 +15,7 @@ class StatsNoDataRow: UIView, NibLoadable, Accessible {
     func configure(forType statType: StatType) {
         noDataLabel.text = statType == .insights ? insightsNoDataLabel : periodNoDataLabel
         WPStyleGuide.Stats.configureLabelAsNoData(noDataLabel)
+        backgroundColor = .tableForeground
         prepareForVoiceOver()
     }
 

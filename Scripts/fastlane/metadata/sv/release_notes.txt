@@ -1,6 +1,9 @@
-* Statistiska insikter: kolla in den nya layouten i två kolumner med statistik över totalt antal följare och uppgifter om innevarande år och populäraste tider.
-* Insikter om innevarande år: tryck på alternativet ”visa mer” för att se en ögonblicksbild över totalt antal inlägg, kommentarer, gillamarkeringar med mera för innevarande år fram till dagens datum.
-* Statistikperioder: Vi har lagt till en världskarta i avsnittet med alla länder.
-* Rättat ett fel som vid omladdning ibland kunde tömma statistiken.
-* Designa själv! Gå till Jag > App-inställningar > App-ikon så kan du välja mellan en rad olika ikoner för appen.
-* Appens färgschema har uppdaterats.
+13.0
+-----
+Din telefon har en inställning för tidszon och din webbplats har en annan. Vilken tidszon används för din statistik? Inträffade den där trafiktoppen på morgonen eller på eftermiddagen? Svar: Nu baseras statistiken på den tidszon som är inställd för webbplatsen.
+
+Konsekventa färgscheman med god kontrast ger oss en tillgänglighetsanpassad, intuitivt förståelig app, vilket leder till nöjda användare. Version 13.0 är mer konsekvent, något att glädja sig åt.
+
+Blockredigeraren blir allt bättre. The block editor keeps getting better and better. Och du trodde att det inte var möjligt? Kolla bara in: den aktiveras automatiskt första gången du påbörjar ett blockbaserat inlägg* och du kan aktivera och inaktivera den för varje webbplats för sig så att varje användare får den redigeringsmiljö han/hon vill ha. Om man lägger till block från inläggsrubriken visas en anvisning ”lägg till block här” för att underlätta innehållsskapande, och när man lägger till nya block avmarkeras inläggsrubriken så att fokuset landar på det nya blocket.
+
+* Om du inte tackade nej i version 12.9! Ser du hur omtänksamma vi är!

@@ -24,8 +24,10 @@ class EditorFactory {
         let gutenbergVC = GutenbergViewController(post: post, replaceEditor: replaceEditor)
 
         if gutenbergSettings.shouldAutoenableGutenberg(for: post) {
-            gutenbergSettings.isGutenbergEnabled = true
+            gutenbergSettings.setGutenbergEnabled(true, for: post.blog, source: .onBlockPostOpening)
+            gutenbergSettings.postSettingsToRemote(for: post.blog)
             gutenbergVC.shouldPresentInformativeDialog = true
+            gutenbergSettings.willShowDialog(for: post.blog)
         }
 
         return gutenbergVC

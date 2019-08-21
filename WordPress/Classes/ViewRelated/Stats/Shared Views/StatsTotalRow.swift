@@ -53,6 +53,7 @@ struct StatsTotalRowData {
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
+    @objc optional func showAddInsight()
 }
 
 class StatsTotalRow: UIView, NibLoadable, Accessible {
@@ -128,10 +129,11 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
             showSeparator = (parentRow != nil) ? false : !expanded
             showTopExpandedSeparator = expanded
 
-            let rotation = expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [weak self] in
-                self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
-            })
+            // Detail rows are updated differently,
+            // so those disclosure icons are updated on configure.
+            if !forDetails {
+                rotateDisclosure()
+            }
         }
     }
 
@@ -150,8 +152,9 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         self.forDetails = forDetails
         self.parentRow = parentRow
 
-        configureExpandedState()
         configureIcon()
+        configureExpandedState()
+        configureDetailDisclosure()
 
         // Set values
         itemLabel.text = rowData.name
@@ -159,8 +162,8 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         dataLabel.text = rowData.data
 
         // Toggle optionals
+        configureDisclosureButton()
         disclosureImageView.isHidden = !rowData.showDisclosure
-        disclosureButton.isEnabled = rowData.showDisclosure
         itemDetailLabel.isHidden = (rowData.nameDetail == nil)
         dataBarView.isHidden = (rowData.dataBarPercent == nil)
         separatorLine.isHidden = !showSeparator
@@ -176,12 +179,19 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     }
 
     // MARK: - Accessibility
+
     func prepareForVoiceOver() {
         isAccessibilityElement = true
 
         let itemTitle = itemLabel.text ?? ""
         let dataTitle = dataLabel.text ?? ""
         accessibilityLabel = [itemTitle, dataTitle].joined(separator: ", ")
+
+        if let statSection = rowData?.statSection, statSection == .insightsAddInsight {
+            accessibilityTraits = .button
+            accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint")
+            return
+        }
 
         let showDisclosure = rowData?.showDisclosure ?? false
         accessibilityTraits = (showDisclosure) ? .button : .staticText
@@ -202,6 +212,8 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
 private extension StatsTotalRow {
 
     func applyStyles() {
+        backgroundColor = .tableForeground
+        contentView.backgroundColor = .tableForeground
         Style.configureLabelAsCellRowTitle(itemLabel)
         Style.configureLabelItemDetail(itemDetailLabel)
         Style.configureLabelAsData(dataLabel)
@@ -210,15 +222,54 @@ private extension StatsTotalRow {
         Style.configureViewAsDataBar(dataBar)
     }
 
+    func configureDisclosureButton() {
+        guard let rowData = rowData else {
+            disclosureButton.isEnabled = false
+            return
+        }
+
+        disclosureButton.isEnabled = rowData.showDisclosure
+
+        // Add Insight doesn't have a disclosure icon, but it needs a tap action.
+        if rowData.statSection == .insightsAddInsight {
+            disclosureButton.isEnabled = true
+        }
+    }
+
     func configureExpandedState() {
-        guard let name = rowData?.name,
-        let statSection = rowData?.statSection else {
+        guard let name = rowData?.name, let statSection = rowData?.statSection else {
             expanded = false
             return
         }
 
         let expandedLabels = forDetails ? StatsDataHelper.expandedRowLabelsDetails : StatsDataHelper.expandedRowLabels
         expanded = expandedLabels[statSection]?.contains(name) ?? false
+    }
+
+    func configureDetailDisclosure() {
+        guard hasChildRows, forDetails else {
+            return
+        }
+
+        // If the detail row has been expanded/collapsed, animate the icon rotation.
+        // Otherwise, just set the rotation.
+
+        if StatsDataHelper.detailRowDisclosureNeedsUpdating == rowData?.name {
+            StatsDataHelper.detailRowDisclosureNeedsUpdating = nil
+            rotateDisclosure()
+        } else {
+            disclosureImageView.transform = CGAffineTransform(rotationAngle: disclosureRotation())
+        }
+    }
+
+    func rotateDisclosure() {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+            self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: self?.disclosureRotation() ?? 0)
+        })
+    }
+
+    func disclosureRotation() -> CGFloat {
+        return expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
     }
 
     func configureIcon() {
@@ -264,6 +315,16 @@ private extension StatsTotalRow {
         }
     }
 
+    func downloadImageFrom(_ iconURL: URL) {
+        WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
+            self.imageView.image = image
+            self.imageView.backgroundColor = .clear
+        }, failure: { error in
+            DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
+            self.imageView.isHidden = true
+        })
+    }
+
     func configureDataBar() {
 
         guard let dataBarPercent = rowData?.dataBarPercent else {
@@ -289,16 +350,6 @@ private extension StatsTotalRow {
         let barWidth = maxBarWidth * dataBarPercent
         let distanceFromMax = maxBarWidth - barWidth
         dataBarWidthConstraint.constant = CGFloat(distanceFromMax)
-    }
-
-    func downloadImageFrom(_ iconURL: URL) {
-        WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
-            self.imageView.image = image
-            self.imageView.backgroundColor = .clear
-        }, failure: { error in
-            DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
-            self.imageView.isHidden = true
-        })
     }
 
     struct Constants {
@@ -338,6 +389,11 @@ private extension StatsTotalRow {
             return
         }
 
+        if let statSection = rowData?.statSection, statSection == .insightsAddInsight {
+            delegate?.showAddInsight?()
+            return
+        }
+
         DDLogInfo("Stat row selection action not supported.")
     }
 
@@ -372,6 +428,8 @@ private extension StatSection {
             return .statsItemTappedTagsAndCategories
         case .periodVideos:
             return .statsItemTappedVideoTapped
+        case .insightsAddInsight:
+            return .statsItemTappedInsightsAddStat
         default:
             return nil
         }

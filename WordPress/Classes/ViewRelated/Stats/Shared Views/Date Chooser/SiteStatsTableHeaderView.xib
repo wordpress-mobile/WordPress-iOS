@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,10 +17,10 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tc3-qS-cyd" userLabel="Background View">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="3xC-QJ-pF2" userLabel="Date Stack View">
-                    <rect key="frame" x="16" y="11" width="257" height="37.5"/>
+                    <rect key="frame" x="16" y="9" width="257" height="41.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDF-ds-FAU">
                             <rect key="frame" x="0.0" y="0.0" width="37.5" height="20.5"/>
@@ -31,8 +29,8 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site timezone (UTC + 10)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u8X-zf-iZc">
-                            <rect key="frame" x="0.0" y="21.5" width="152" height="16"/>
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                            <rect key="frame" x="0.0" y="22" width="182" height="19.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                             <color key="textColor" name="Gray40"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -48,7 +46,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                                 </imageView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="Ssg-6U-5Ac" secondAttribute="trailing" id="1Ti-ir-8Eu"/>
                                 <constraint firstItem="Ssg-6U-5Ac" firstAttribute="top" secondItem="ANL-Um-LdU" secondAttribute="top" id="47u-vP-kBg"/>
@@ -64,7 +62,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                                 </imageView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="2dA-xk-MWI" firstAttribute="leading" secondItem="MDc-iR-4u0" secondAttribute="leading" id="8gB-9S-kgq"/>
                                 <constraint firstItem="2dA-xk-MWI" firstAttribute="top" secondItem="MDc-iR-4u0" secondAttribute="top" id="BUE-Gb-mWp"/>
@@ -80,12 +78,14 @@
                 </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3M-QS-Aux" userLabel="Back Button">
                     <rect key="frame" x="277" y="0.0" width="44" height="60"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <action selector="didTapBackButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="c6p-VQ-SS4"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1z-fb-p7G" userLabel="Forward Button">
                     <rect key="frame" x="321" y="0.0" width="44" height="60"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <action selector="didTapForwardButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="GBT-pg-rO2"/>
                     </connections>
@@ -100,7 +100,7 @@
             </subviews>
             <constraints>
                 <constraint firstItem="U1z-fb-p7G" firstAttribute="centerY" secondItem="2dA-xk-MWI" secondAttribute="centerY" id="2aP-4M-TNR"/>
-                <constraint firstItem="82h-So-kdz" firstAttribute="top" secondItem="3xC-QJ-pF2" secondAttribute="bottom" constant="11" id="3EX-id-84a"/>
+                <constraint firstItem="82h-So-kdz" firstAttribute="top" secondItem="3xC-QJ-pF2" secondAttribute="bottom" constant="9" id="3EX-id-84a"/>
                 <constraint firstItem="b3M-QS-Aux" firstAttribute="centerX" secondItem="Ssg-6U-5Ac" secondAttribute="centerX" id="58K-9V-5lQ"/>
                 <constraint firstItem="U1z-fb-p7G" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="6vG-ZF-WkE"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="0sS-MO-MHI" secondAttribute="trailing" constant="22" id="Cs6-dg-gL6"/>
@@ -109,7 +109,7 @@
                 <constraint firstItem="82h-So-kdz" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Enr-vP-A2t"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="top" secondItem="tc3-qS-cyd" secondAttribute="top" id="HGC-IT-WvX"/>
                 <constraint firstItem="b3M-QS-Aux" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="SuI-Za-NAL"/>
-                <constraint firstItem="3xC-QJ-pF2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="11" id="X1Z-uc-7br"/>
+                <constraint firstItem="3xC-QJ-pF2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="9" id="X1Z-uc-7br"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="82h-So-kdz" secondAttribute="trailing" id="eUf-m1-yjt"/>
                 <constraint firstItem="3xC-QJ-pF2" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="eYB-4i-d94"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="b3M-QS-Aux" secondAttribute="bottom" id="gYd-gL-ceU"/>

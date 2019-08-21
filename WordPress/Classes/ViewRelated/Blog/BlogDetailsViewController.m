@@ -109,7 +109,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                     identifier:identifier
        accessibilityIdentifier:accessibilityIdentifier
                          image:image
-                    imageColor:[UIColor murielNeutral30]
+                    imageColor:[UIColor murielListIcon]
                       callback:callback];
 }
     
@@ -776,6 +776,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                      identifier:BlogDetailsSettingsCellIdentifier
+                                        accessibilityIdentifier:@"Settings Row"
                                                           image:[Gridicon iconOfType:GridiconTypeCog]
                                                        callback:^{
                                                            [weakSelf showSettings];
@@ -1520,7 +1521,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
             FancyAlertViewController *alert = [FancyAlertViewController makeNotificationPrimerAlertControllerWithApproveAction:^(FancyAlertViewController* controller) {
                 [[InteractiveNotificationsManager shared] requestAuthorizationWithCompletion:^() {
-                    [controller dismissViewControllerAnimated:true completion:^{}];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [controller dismissViewControllerAnimated:true completion:^{}];
+                    });
                 }];
             }];
             alert.modalPresentationStyle = UIModalPresentationCustom;

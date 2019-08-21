@@ -13,12 +13,13 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.5'
+    pod 'WordPressShared', '~> 1.8.7-beta.1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => 'feature/change-username-events'
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -43,9 +44,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.3.0-beta.3'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/stats_timezone'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '3eaf8f8863dee3d38c4e4b66b8334e8c80ebee6d'
+    pod 'WordPressKit', '~> 4.4.0'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'a06182b86d3c8542c16ce38c765769e1d50b0d5f'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -139,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.9.0'
+    gutenberg :tag => 'v1.10.3'
 
     ## Third party libraries
     ## =====================
@@ -152,7 +153,7 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSDK', '2.3.1'
+    pod 'ZendeskSDK', '3.0.1'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.1.1'
 
@@ -173,9 +174,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.7.0-beta.2'
+    pod 'WordPressAuthenticator', '~> 1.8.0-beta.5'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issues/11683-more-color-changes'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/ios-13-modal-presentation'
 
     aztec
     wordpress_ui
@@ -187,8 +188,26 @@ target 'WordPress' do
         pod 'Nimble', '~> 7.3.1'
     end
 
-    ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
+    
     post_install do
+      
+        ## Append SDKVersions.xcconfig contents to WordPressAuthenticator config files
+        Dir.glob("Pods/Target Support Files/WordPressAuthenticator/*.xcconfig") do |xc_config_filename|
+          
+          ## Get WPAuth config file
+          xcconfig_path = "#{Dir.pwd}/#{xc_config_filename}"
+          xc_config = File.read(xcconfig_path)
+
+          ## Get WPiOS config file
+          custom_xcconfig_path = "#{Dir.pwd}/config/SDKVersions.xcconfig"
+          custom_xc_config = File.read(custom_xcconfig_path)
+
+          ## Write back to WPAuth config file, appending both configs.
+          File.open(xcconfig_path, 'w') { |file| file << xc_config << custom_xc_config }
+        end
+      
+      
+        ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
         
         project_root = File.dirname(__FILE__)

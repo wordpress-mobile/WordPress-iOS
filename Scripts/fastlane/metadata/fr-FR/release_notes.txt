@@ -1,6 +1,9 @@
-- aperçus des statistiques : consultez les nouvelles mises en page en deux colonnes pour les Totaux des abonné·es, Cette année et les statistiques les plus populaires.
-- aperçus de Cette année : visualisez un instantané du total d’articles, de commentaires, de J’aime et plus pour l’année en cours quand vous touchez sur Voir plus d’options.
-- périodes des statistiques : nous avons ajouté une carte du monde dans la section pays.
-- correctif d’un problème du rafraîchissement des statistiques qui effaçait certaines statistiques.
-- Faites comme vous voulez ! Allez sur Moi > Réglages de l’app > Icône de l’app pour choisir parmi une série de d’icônes pour l’app.
-- Rafraichissement de du jeu de couleurs de l’app.
+13.0
+-----
+Votre téléphone est régler sur un fuseau horaire. Votre site en utilise un différent. Sur quelle base horaire sont vos statistiques ? Est-ce que ce trafic a eu lieu ce matin ou cet après-midi ? Réponse : vos statistiques sont maintenant basées sur le réglage de fuseau horaire du site.
+
+Un jeu de couleurs cohérent avec un bon contraste rend l’app plus accessible et intuitive, et rend les utilisateurs plus heureux. La version 13.0 est plus cohérente. Profitez du bonheur.
+
+L’éditeur de blocs ne cesse de s’améliorer. Vous vous dites : impossible ! Pff, laissez-moi vous dire en quoi : il est automatiquement activé la première fois que vous commencer un article basé sur des blocs* et vous pouvez l’activer ou le désactiver par site comme ça chaque utilisateur choisit l’expérience de l’éditeur qu’il préfère. Pour ajouter un bloc depuis le titre de l’article, un indicateur « Ajouter un bloc ici » s’affiche pour simplifier la création de contenu. Et l’ajout d’un nouveau bloc désélectionne le titre de l’article pour garder l’attention sur le nouveau bloc.
+
+*À part si vous l’avez déjà désactivé sur la version 12.9 ! Nous ne sommes pas des monstres.

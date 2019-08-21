@@ -728,6 +728,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         nc.addObserver(self, selector: #selector(keyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
         nc.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
+        nc.addObserver(self, selector: #selector(didUndoRedo), name: .NSUndoManagerDidUndoChange, object: nil)
+        nc.addObserver(self, selector: #selector(didUndoRedo), name: .NSUndoManagerDidRedoChange, object: nil)
     }
 
     func stopListeningToNotifications() {
@@ -735,6 +737,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         nc.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         nc.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
         nc.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        nc.removeObserver(self, name: .NSUndoManagerDidUndoChange, object: nil)
+        nc.removeObserver(self, name: .NSUndoManagerDidRedoChange, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -926,6 +930,23 @@ class AztecPostViewController: UIViewController, PostEditor {
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
     }
+
+    @objc func didUndoRedo(_ notification: Foundation.Notification) {
+        guard
+            let undoManager = notification.object as? UndoManager,
+            undoManager === richTextView.undoManager || undoManager === htmlTextView.undoManager
+        else {
+            return
+        }
+
+        switch notification.name {
+        case .NSUndoManagerDidUndoChange:
+            trackFormatBarAnalytics(stat: .editorTappedUndo)
+        case .NSUndoManagerDidRedoChange:
+            trackFormatBarAnalytics(stat: .editorTappedRedo)
+        default: break
+        }
+    }
 }
 
 
@@ -972,6 +993,15 @@ extension AztecPostViewController {
         }
 
         toolbar.selectItemsMatchingIdentifiers(identifiers.map({ $0.rawValue }))
+    }
+
+    private func mediaFor(uploadID: String) -> Media? {
+        for media in post.media {
+            if media.uploadID == uploadID {
+                return media
+            }
+        }
+        return nil
     }
 }
 
@@ -1150,7 +1180,7 @@ private extension AztecPostViewController {
             }
         }
 
-        if GutenbergSettings().isGutenbergEnabled,
+        if post.blog.isGutenbergEnabled,
             let postContent = post.content,
             postContent.count > 0 && post.containsGutenbergBlocks() {
 
@@ -1521,6 +1551,7 @@ extension AztecPostViewController {
     }
 
     func toggleList(fromItem item: FormatBarItem) {
+        trackFormatBarAnalytics(stat: .editorTappedList)
         let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
             let title = NSAttributedString(string: listType.description, attributes: [:])
             return OptionsTableViewOption(image: listType.iconImage,
@@ -2477,7 +2508,9 @@ extension AztecPostViewController {
     }
 
     private func handleUploadStarted(attachment: MediaAttachment) {
-        resetMediaAttachmentOverlay(attachment)
+        attachment.overlayImage = nil
+        attachment.message = nil
+        attachment.shouldHideBorder = false
         attachment.progress = 0
         richTextView.refresh(attachment, overlayUpdateOnly: true)
     }
@@ -2688,15 +2721,15 @@ extension AztecPostViewController {
         let title: String = MediaAttachmentActionSheet.title
         var message: String?
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alertController.addActionWithTitle(MediaAttachmentActionSheet.dismissActionTitle,
-                                           style: .cancel,
-                                           handler: { (action) in
-                                            if attachment == self.currentSelectedAttachment {
-                                                self.currentSelectedAttachment = nil
-                                                self.resetMediaAttachmentOverlay(attachment)
-                                                self.richTextView.refresh(attachment)
-                                            }
-        })
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
+            if attachment == self.currentSelectedAttachment {
+                self.currentSelectedAttachment = nil
+                self.resetMediaAttachmentOverlay(attachment)
+                self.richTextView.refresh(attachment)
+            }
+        }
+        alertController.addAction(dismissAction)
+
         var showDefaultActions = true
         if let mediaUploadID = attachment.uploadID,
             let media = mediaCoordinator.media(withIdentifier: mediaUploadID, for: post) {
@@ -2917,9 +2950,18 @@ extension AztecPostViewController {
     }
 
     fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
-        mediaAttachment.overlayImage = nil
-        mediaAttachment.message = nil
-        mediaAttachment.shouldHideBorder = false
+        // having an uploadID means we are uploading or just finished uplading (successfully or not). In this case, we remove the overlay only if no error
+        if let uploadID = mediaAttachment.uploadID,
+            let media = self.mediaFor(uploadID: uploadID) {
+            if media.error == nil {
+                mediaAttachment.overlayImage = nil
+                mediaAttachment.message = nil
+                mediaAttachment.shouldHideBorder = false
+            }
+        // For an existing media we set it's message to nil so the glyphImage will be removed.
+        } else {
+            mediaAttachment.message = nil
+        }
     }
 }
 
@@ -2947,10 +2989,11 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         // Check to see if there is an error associated to the attachment
         var errorAssociatedToAttachment = false
         if let uploadID = attachment.uploadID,
-           let media = mediaCoordinator.media(withObjectID: uploadID),
-           media.error != nil {
+            let media = mediaFor(uploadID: uploadID),
+            media.error != nil {
             errorAssociatedToAttachment = true
         }
+
         if !errorAssociatedToAttachment {
             // If it's a new attachment tapped let's unmark the previous one...
             if let selectedAttachment = currentSelectedAttachment {
@@ -3228,7 +3271,10 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let gutenbergTitle = NSLocalizedString("Switch to Block Editor", comment: "Switches from the Classic Editor to Block Editor.")
+        static let gutenbergTitle = NSLocalizedString(
+            "Switch to block editor",
+            comment: "Switches from the classic editor to block editor."
+        )
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")

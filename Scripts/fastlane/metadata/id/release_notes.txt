@@ -1,6 +1,9 @@
-* Wawasan Statistik: cek tata letak baru dengan dua kolom untuk melihat statistik Total Pengikut, Tahun Ini, dan Waktu yang Paling Disukai.
-* Wawasan Tahun Ini: lihat snapshot total pos, komentar, suka, dan wawasan lainnya hingga saat ini jika Anda mengklik pilihan Lihat Selengkapnya.
-* Periode Statistik: Kami menambahkan peta dunia di bagian negara.
-* Memperbaiki masalah terhapusnya statistik yang kadang terjadi saat penyegaran.
-* Jadi diri sendiri! Buka Saya > Pengaturan Aplikasi > Ikon Aplikasi untuk memilih dari serangkaian ikon aplikasi.
-* Menyegarkan skema warna aplikasi.
+13.0
+-----
+Ponsel Anda memiliki satu pengaturan zona waktu. Situs web Anda menggunakan zona waktu yang berbeda. Apa dasar pembuatan statistik situs Anda? Apakah lonjakan lalu lintas itu terjadi pagi ini, atau siang ini? Jawaban: statistik Anda kini berdasarkan pengaturan zona waktu situs web Anda.
+
+Skema warna konsisten dengan kontras yang baik menghasilkan aplikasi yang mudah diakses dan intuitif, sehingga membuat pengunjung senang. Versi 13.0 lebih konsisten. Nikmati kepuasan pengunjung.
+
+Penyunting blok semakin baik lagi. Apa? Tidak mungkin? Biar kami tunjukkan cara-caranya: fitur ini otomatis diaktifkan pertama kali Anda memulai pos berbasis blok* dan Anda dapat mengaktifkan serta menonaktifkannya untuk setiap situs, jadi setiap pengguna mendapatkan pengalaman penyunting yang mereka inginkan. Menambahkan blok dari judul pos menampilkan indikator “tambahkan blok di sini”, untuk menyederhanakan pembuatan konten, dan menambahkan blok baru akan membatalkan pilihan judul pos, jadi fokusnya ada pada blok baru.
+
+* Kecuali Anda tidak memilihnya di versi 12.9! Kami bukan monster.

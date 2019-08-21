@@ -1,6 +1,9 @@
-* Stats Insights: check out new two-column layouts for Follower Totals, This Year, and Most Popular Time stats.
-* This Year Insights: see a snapshot of total posts, comments, likes, and more for the year-to-date when you click on the View More option.
-* Stats Periods: We added a world map in the countries section.
-* Fixed an issue where refreshing sometimes cleared stats.
-* You do you! Go to Me > App Settings > App Icon to choose from a series of app icons.
-* Refreshed the app’s colour scheme.
+13.0
+-----
+Your phone has one time zone setting. Your website uses a different one. What are your site stats based on? Did that traffic spike happen this morning or this afternoon? Answer: your stats are now based on the time zone settings of your website.
+
+Consistent colour schemes with good contrast make an accessible, intuitive app, which makes happy users. Version 13.0 is more consistent; enjoy the happiness.
+
+The block editor keeps getting better and better. Not possible, you say? Pshaw, let us count the ways: it’s automatically enabled the first time you start a block-based post* and you can enable and disable it on a per-site basis, so every user gets the editor experience they want. Adding blocks from the post title shows an “add block here” indicator, to simplify content creation, and adding new blocks de-selects the post title so the focus is on the new block.
+
+* Unless you opted out in version 12.9! We’re not monsters.
