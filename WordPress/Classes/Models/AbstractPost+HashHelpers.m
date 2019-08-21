@@ -20,6 +20,7 @@
                                           [self hashForString:self.status],
                                           [self hashForString:self.password],
                                           [self hashForString:self.author],
+                                          [self hashForNSInteger:self.authorID.integerValue],
                                           [self hashForString:self.featuredImage.identifier],
                                           [self hashForString:self.wp_slug]];
 
