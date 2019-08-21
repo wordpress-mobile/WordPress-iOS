@@ -224,6 +224,7 @@ namespace :git do
   task :pre_commit => %[dependencies:lint:check] do
     begin
       swiftlint %w[lint --quiet --strict]
+      sh('find WordPress -name *.strings -exec plutil -lint {} +')
     rescue
       exit $?.exitstatus
     end
