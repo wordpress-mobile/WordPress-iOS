@@ -7,6 +7,9 @@ class PostBuilder {
 
     init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext()) {
         post = Post(context: context)
+
+        // Non-null Core Data properties
+        post.blog = BlogBuilder(context).build()
     }
 
     func published() -> PostBuilder {
