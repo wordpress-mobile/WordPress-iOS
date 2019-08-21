@@ -32,5 +32,6 @@ class PostNoticeViewModelTests: XCTestCase {
         // Then
         expect(notice.title).to(equal(PostNoticeViewModel.FailureTitles.postWillBePublished))
         expect(notice.message).to(equal(post.postTitle))
+        expect(notice.actionTitle).to(equal(PostNoticeViewModel.FailureActionTitles.cancel))
     }
 }

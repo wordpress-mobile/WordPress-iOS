@@ -174,7 +174,11 @@ struct PostNoticeViewModel {
     }
 
     private var failureActionTitle: String {
-        return NSLocalizedString("Retry", comment: "Button title. Retries uploading a post.")
+        if post.status == .publish {
+            return FailureActionTitles.cancel
+        } else {
+            return FailureActionTitles.retry
+        }
     }
 
     private func viewPost() {
@@ -210,5 +214,10 @@ struct PostNoticeViewModel {
     enum FailureTitles {
         static let postWillBePublished = NSLocalizedString("Post will be published the next time your device is online",
                                                            comment: "Text displayed in notice after a post if published while offline.")
+    }
+
+    enum FailureActionTitles {
+        static let retry = NSLocalizedString("Retry", comment: "Button title. Retries uploading a post.")
+        static let cancel = NSLocalizedString("Cancel", comment: "Button title. Cancels automatic uploading of the post when the device is back online.")
     }
 }
