@@ -148,10 +148,7 @@ extension WPStyleGuide {
         }
         if textLabel.isUserInteractionEnabled {
             textLabel.textColor = .primary
-        } else if !FeatureFlag.murielColors.enabled {
-            textLabel.textColor = greyDarken10()
         }
-
     }
 
 }

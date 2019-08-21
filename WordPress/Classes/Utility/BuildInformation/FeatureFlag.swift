@@ -8,7 +8,6 @@ enum FeatureFlag: Int {
     case statsFileDownloads
     case statsInsightsManagement
     case domainCredit
-    case murielColors
     case signInWithApple
 
     /// Returns a boolean indicating if the feature is enabled
@@ -25,8 +24,6 @@ enum FeatureFlag: Int {
         case .statsInsightsManagement:
             return BuildConfiguration.current == .localDeveloper
         case .domainCredit:
-            return true
-        case .murielColors:
             return true
         case .signInWithApple:
             // SIWA can NOT be enabled for internal builds
