@@ -154,7 +154,8 @@ private extension SiteStatsInsightsTableViewController {
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
-                TableFooterRow.self]
+                TableFooterRow.self,
+                StatsGhostImmutableRow.self]
     }
 
     // MARK: - Table Refreshing
