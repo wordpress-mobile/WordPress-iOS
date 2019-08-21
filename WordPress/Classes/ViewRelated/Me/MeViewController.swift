@@ -187,7 +187,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         accountSettings,
                         appSettingsRow
                         ],
-                         footerText: NSLocalizedString("Looking for notification settings? They’re now in the Notifications tab — tap the cog.", comment: "Instruction informing the user where notification settings can be found.")),
+                         footerText: NSLocalizedString("Notification settings can now be found in the Notifications tab", comment: "Instruction informing the user where notification settings can be found.")),
                     ImmuTableSection(rows: [helpAndSupportIndicator]),
                     ImmuTableSection(
                         headerText: wordPressComAccount,
