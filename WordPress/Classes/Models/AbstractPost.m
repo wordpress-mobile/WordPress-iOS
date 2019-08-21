@@ -5,6 +5,21 @@
 #import "BasePost.h"
 @import WordPressKit;
 
+@interface AbstractPost ()
+
+/**
+ The following pair of properties is used to confirm that the post we'll be trying to automatically retry uploading,
+ hasn't changed since user has tapped on "confirm", and that we're not suddenly trying to auto-upload a post that the user
+ might have already forgotten about.
+
+ The public-facing counterparts of those is the `shouldAttemptAutoUpload` property.
+ */
+
+@property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
+@property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
+
+@end
+
 @implementation AbstractPost
 
 @dynamic blog;
@@ -16,6 +31,7 @@
 @dynamic featuredImage;
 @dynamic revisions;
 @dynamic confirmedChangesHash;
+@dynamic confirmedChangesTimestamp;
 
 @synthesize restorableStatus;
 
@@ -412,13 +428,6 @@
     return [self originalIsDraft] && [self dateCreatedIsNilOrEqualToDateModified];
 }
 
-- (BOOL)shouldAttemptAutoUpload {
-    BOOL hashesEqual = self.confirmedChangesHash != nil && ([self.confirmedChangesHash isEqualToString:self.changesConfirmedContentHashValue]);
-
-    return hashesEqual;
-}
-
-
 - (NSString *)authorNameForDisplay
 {
     return [NSString makePlainText:self.author];
@@ -581,6 +590,32 @@
 {
     self.remoteStatus = AbstractPostRemoteStatusFailed;
     [self save];
+}
+
+- (BOOL)shouldAttemptAutoUpload {
+    if (!self.confirmedChangesTimestamp || !self.confirmedChangesHash) {
+        return NO;
+    }
+
+    NSTimeInterval timeDifference = [self.confirmedChangesTimestamp timeIntervalSinceDate:[NSDate date]];
+
+    BOOL timeDifferenceWithinRange = timeDifference <= (60 * 60 * 24 * 2); //
+    // I know, I know. This isn't how a date comparison _should_ be done!
+    // However, going thru NSCalendar can get really expensive and this method can potentially be called a lot during
+    // scrolling of a Post List — and for our specific use-case, being slightly innacurate here in terms of
+    // leap seconds or other calendrical oddities doesn't actually matter.
+
+    BOOL hashesEqual = [self.confirmedChangesHash isEqualToString:[self calculateConfirmedChangesContentHash]];
+
+    return hashesEqual && timeDifferenceWithinRange;
+}
+
+- (void)setShouldAttemptAutoUpload:(BOOL)shouldAttemptAutoUpload {
+    NSString *currentHash = [self calculateConfirmedChangesContentHash];
+    NSDate *now = [NSDate date];
+
+    self.confirmedChangesHash = currentHash;
+    self.confirmedChangesTimestamp = now;
 }
 
 - (void)updatePathForDisplayImageBasedOnContent
