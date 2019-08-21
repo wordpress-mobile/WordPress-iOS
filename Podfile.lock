@@ -426,7 +426,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.10.3
   WordPressAuthenticator:
-    :commit: e56f8baa2299123f1e6f671765cc812f80ec9245
+    :commit: 411d028bfdc2b708230fc53d13eac3d63dbe3249
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
     :commit: 753a2c899a9fc7474f8f0f4f69584dba5bfbdb45
