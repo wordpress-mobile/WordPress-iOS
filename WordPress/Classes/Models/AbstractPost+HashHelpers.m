@@ -26,7 +26,7 @@
 
     NSArray<NSData *> *finalHashes = [hashedContents arrayByAddingObjectsFromArray:self.additionalContentHashes];
 
-    NSMutableData *mutableData = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
+    NSMutableData *mutableData = [NSMutableData data];
 
     // So, there are multiple ways of combining all those hashes. You need to be careful not to lose the entropy though.
     // Initially, I wanted to just XOR them together, which is totally reasonable thing to do!
