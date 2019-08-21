@@ -27,7 +27,7 @@ class CountriesMapView: UIView, NibLoadable {
     @IBOutlet private var mapContainer: UIView! {
         didSet {
             map.strokeColor = .tableForeground
-            map.fillColor = .neutral(shade: .shade10)
+            map.fillColor = WPStyleGuide.Stats.mapBackground
             map.loadMap("world-map", withData: [:], colorAxis: colors)
             mapContainer.addSubview(map)
         }
