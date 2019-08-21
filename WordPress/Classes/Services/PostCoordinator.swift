@@ -244,6 +244,20 @@ class PostCoordinator: NSObject {
             try? post.managedObjectContext?.save()
         }
     }
+
+    /// Cancel active and pending automatic uploads of the post.
+    func cancelAutoUploadOf(_ post: AbstractPost) {
+        cancelAnyPendingSaveOf(post: post)
+
+        // nil-ing this out will make the `shouldAttemptAutoUpload` property to return false.
+        post.confirmedChangesHash = nil
+
+        let moc = post.managedObjectContext
+
+        moc?.perform {
+            try? moc?.save()
+        }
+    }
 }
 
 // MARK: - Automatic Uploads
@@ -267,20 +281,6 @@ extension PostCoordinator: Uploader {
                     return
                 }
             }
-        }
-    }
-
-    /// Cancel active and pending automatic uploads of the post.
-    func cancelAutoUploadOf(_ post: AbstractPost) {
-        cancelAnyPendingSaveOf(post: post)
-
-        // nil-ing this out will make the `shouldAttemptAutoUpload` property to return false.
-        post.confirmedChangesHash = nil
-
-        let moc = post.managedObjectContext
-
-        moc?.perform {
-            try? moc?.save()
         }
     }
 }
