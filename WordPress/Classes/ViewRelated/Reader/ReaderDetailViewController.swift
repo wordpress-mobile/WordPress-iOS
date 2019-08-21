@@ -4,6 +4,18 @@ import WordPressShared
 import WordPressUI
 import QuartzCore
 import Gridicons
+import MobileCoreServices
+
+class ReaderPlaceholderAttachment: NSTextAttachment {
+    init() {
+        // Initialize with default image data to prevent placeholder graphics appearing on iOS 13.
+        super.init(data: UIImage.init(color: .basicBackground).pngData(), ofType: kUTTypePNG as String)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+}
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
@@ -84,9 +96,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes)
 
-    private let topMarginAttachment = NSTextAttachment()
+    private let topMarginAttachment = ReaderPlaceholderAttachment()
 
-    private let bottomMarginAttachment = NSTextAttachment()
+    private let bottomMarginAttachment = ReaderPlaceholderAttachment()
 
     @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {

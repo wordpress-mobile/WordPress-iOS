@@ -38,8 +38,9 @@ open class WPTextAttachment: NSTextAttachment {
         self.identifier = identifier
         self.tagName = tagName
         self.src = src
-        let img = UIImage.init(color: UIColor.white)
-        super.init(data: img!.pngData(), ofType: kUTTypePNG as String)
+
+        // Initialize with default image data to prevent placeholder graphics appearing on iOS 13.
+        super.init(data: UIImage.init(color: .basicBackground).pngData(), ofType: kUTTypePNG as String)
     }
 
 
