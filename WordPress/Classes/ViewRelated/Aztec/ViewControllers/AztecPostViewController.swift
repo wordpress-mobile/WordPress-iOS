@@ -994,6 +994,15 @@ extension AztecPostViewController {
 
         toolbar.selectItemsMatchingIdentifiers(identifiers.map({ $0.rawValue }))
     }
+
+    private func mediaFor(uploadID: String) -> Media? {
+        for media in post.media {
+            if media.uploadID == uploadID {
+                return media
+            }
+        }
+        return nil
+    }
 }
 
 
@@ -2499,7 +2508,9 @@ extension AztecPostViewController {
     }
 
     private func handleUploadStarted(attachment: MediaAttachment) {
-        resetMediaAttachmentOverlay(attachment)
+        attachment.overlayImage = nil
+        attachment.message = nil
+        attachment.shouldHideBorder = false
         attachment.progress = 0
         richTextView.refresh(attachment, overlayUpdateOnly: true)
     }
@@ -2710,15 +2721,15 @@ extension AztecPostViewController {
         let title: String = MediaAttachmentActionSheet.title
         var message: String?
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alertController.addActionWithTitle(MediaAttachmentActionSheet.dismissActionTitle,
-                                           style: .cancel,
-                                           handler: { (action) in
-                                            if attachment == self.currentSelectedAttachment {
-                                                self.currentSelectedAttachment = nil
-                                                self.resetMediaAttachmentOverlay(attachment)
-                                                self.richTextView.refresh(attachment)
-                                            }
-        })
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
+            if attachment == self.currentSelectedAttachment {
+                self.currentSelectedAttachment = nil
+                self.resetMediaAttachmentOverlay(attachment)
+                self.richTextView.refresh(attachment)
+            }
+        }
+        alertController.addAction(dismissAction)
+
         var showDefaultActions = true
         if let mediaUploadID = attachment.uploadID,
             let media = mediaCoordinator.media(withIdentifier: mediaUploadID, for: post) {
@@ -2939,9 +2950,18 @@ extension AztecPostViewController {
     }
 
     fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
-        mediaAttachment.overlayImage = nil
-        mediaAttachment.message = nil
-        mediaAttachment.shouldHideBorder = false
+        // having an uploadID means we are uploading or just finished uplading (successfully or not). In this case, we remove the overlay only if no error
+        if let uploadID = mediaAttachment.uploadID,
+            let media = self.mediaFor(uploadID: uploadID) {
+            if media.error == nil {
+                mediaAttachment.overlayImage = nil
+                mediaAttachment.message = nil
+                mediaAttachment.shouldHideBorder = false
+            }
+        // For an existing media we set it's message to nil so the glyphImage will be removed.
+        } else {
+            mediaAttachment.message = nil
+        }
     }
 }
 
@@ -2969,10 +2989,11 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         // Check to see if there is an error associated to the attachment
         var errorAssociatedToAttachment = false
         if let uploadID = attachment.uploadID,
-           let media = mediaCoordinator.media(withObjectID: uploadID),
-           media.error != nil {
+            let media = mediaFor(uploadID: uploadID),
+            media.error != nil {
             errorAssociatedToAttachment = true
         }
+
         if !errorAssociatedToAttachment {
             // If it's a new attachment tapped let's unmark the previous one...
             if let selectedAttachment = currentSelectedAttachment {

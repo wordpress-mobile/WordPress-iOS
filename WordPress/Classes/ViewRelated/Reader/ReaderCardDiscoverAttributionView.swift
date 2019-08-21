@@ -67,8 +67,9 @@ private enum ReaderCardDiscoverAttribution: Int {
      Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
      */
     fileprivate func applyOpaqueBackgroundColors() {
-        imageView.backgroundColor = UIColor.white
-        textLabel.backgroundColor = UIColor.white
+        backgroundColor = .tableForeground
+        imageView.backgroundColor = .tableForeground
+        textLabel.backgroundColor = .tableForeground
     }
 
     @objc open func configureView(_ contentProvider: ReaderPostContentProvider?) {

@@ -45,6 +45,7 @@ private extension TwoColumnCell {
     func applyStyles() {
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
         viewMoreLabel.textColor = Style.actionTextColor
+        Style.configureCell(self)
         Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }

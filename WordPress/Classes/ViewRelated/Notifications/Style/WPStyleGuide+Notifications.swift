@@ -10,7 +10,7 @@ extension WPStyleGuide {
         //
 
         // NoteTableViewHeader
-        public static let sectionHeaderBackgroundColor  = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
+        public static let sectionHeaderBackgroundColor = UIColor.tableBackground
 
         public static var sectionHeaderRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: sectionHeaderParagraph,
@@ -20,13 +20,13 @@ extension WPStyleGuide {
 
         // NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
-        public static let noticonTextColor          = UIColor.white
-        public static let noticonReadColor          = UIColor.neutral(shade: .shade20)
+        public static let noticonTextColor          = UIColor.textInverted
+        public static let noticonReadColor          = UIColor.listSmallIcon
         public static let noticonUnreadColor        = UIColor.primary
         public static let noticonUnmoderatedColor   = UIColor.warning
 
-        public static let noteBackgroundReadColor   = UIColor.white
-        public static let noteBackgroundUnreadColor = UIColor.primary(shade: .shade0)
+        public static let noteBackgroundReadColor   = UIColor.tableForeground
+        public static let noteBackgroundUnreadColor = UIColor.tableForegroundUnread
 
         public static let noteSeparatorColor        = blockSeparatorColor
 
@@ -318,7 +318,7 @@ extension WPStyleGuide {
         )
 
         // Colors
-        fileprivate static let sectionHeaderTextColor   = UIColor.neutral(shade: .shade20)
+        fileprivate static let sectionHeaderTextColor   = UIColor.textSubtle
         fileprivate static let subjectTextColor         = UIColor.text
         fileprivate static let subjectNoticonColor      = noticonReadColor
         fileprivate static let footerTextColor          = UIColor.textSubtle
