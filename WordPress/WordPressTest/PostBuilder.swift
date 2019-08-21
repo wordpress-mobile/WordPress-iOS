@@ -3,15 +3,10 @@ import Foundation
 @testable import WordPress
 
 class PostBuilder {
+    private let post: Post
 
-    private var post: Post!
-
-    init() {
-        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: setUpInMemoryManagedObjectContext()) as? Post
-    }
-
-    init(_ context: NSManagedObjectContext) {
-        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as? Post
+    init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext()) {
+        post = Post(context: context)
     }
 
     func published() -> PostBuilder {
@@ -88,7 +83,7 @@ class PostBuilder {
         return post
     }
 
-    private func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
+    private static func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
 
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
