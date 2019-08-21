@@ -234,7 +234,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = Gridicon.iconOfType(.ellipsis, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(.neutral(shade: .shade30))
+        let tintedIcon = icon.imageWithTintColor(.neutral(.shade30))
         let highlightIcon = icon.imageWithTintColor(.neutral)
 
         menuButton.setImage(tintedIcon, for: .normal)

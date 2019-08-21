@@ -15,7 +15,7 @@ extension WPStyleGuide {
             var styleGuideColor: UIColor {
                 switch self {
                 case .blue:
-                    return .primary(shade: .shade40)
+                    return .primary(.shade40)
                 case .grey:
                     return .textQuaternary
                 case .darkGrey:
@@ -195,9 +195,9 @@ extension WPStyleGuide {
         static let secondaryTextColor = UIColor.textSubtle
         static let itemDetailTextColor = UIColor.textSubtle
         static let actionTextColor = UIColor.primary
-        static let summaryTextColor = UIColor.neutral(shade: .shade70)
+        static let summaryTextColor = UIColor.neutral(.shade70)
         static let substringHighlightTextColor = UIColor.primary
-        static let iconLoadingBackgroundColor = UIColor.neutral(shade: .shade10)
+        static let iconLoadingBackgroundColor = UIColor.neutral(.shade10)
 
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
@@ -208,13 +208,13 @@ extension WPStyleGuide {
         static let separatorColor = UIColor.divider
         static let dataBarColor = UIColor.textTertiary
         static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
-        static let verticalSeparatorColor = UIColor.neutral(shade: .shade5)
+        static let verticalSeparatorColor = UIColor.neutral(.shade5)
 
         static let defaultFilterTintColor = UIColor.filterBarSelected
         static let tabbedCardFilterTintColor = UIColor.filterBarSelected
         static let tabbedCardFilterSelectedTitleColor = UIColor.filterBarSelected
         static let filterDeselectedColor = UIColor.textSubtle
-        static let filterDividerColor = UIColor.neutral(shade: .shade10)
+        static let filterDividerColor = UIColor.neutral(.shade10)
 
         static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .regular)
         static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
@@ -233,8 +233,8 @@ extension WPStyleGuide {
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {
-            static let range1 = UIColor.neutral(shade: .shade10)
-            static let range2 = UIColor.primary(shade: .shade5)
+            static let range1 = UIColor.neutral(.shade10)
+            static let range2 = UIColor.primary(.shade5)
             static let range3 = UIColor.primaryLight
             static let range4 = UIColor.primary
             static let range5 = UIColor.primaryDark

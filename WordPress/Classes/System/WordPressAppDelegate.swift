@@ -448,19 +448,19 @@ extension WordPressAppDelegate {
     private func setupFancyAlertAppearance() {
         let appearance = FancyAlertView.appearance()
 
-        appearance.titleTextColor = .neutral(shade: .shade70)
+        appearance.titleTextColor = .neutral(.shade70)
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
 
-        appearance.bodyTextColor = .neutral(shade: .shade70)
+        appearance.bodyTextColor = .neutral(.shade70)
         appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
 
         appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         appearance.infoTintColor = WPStyleGuide.wordPressBlue()
 
-        appearance.topDividerColor = .neutral(shade: .shade5)
-        appearance.bottomDividerColor = .neutral(shade: .shade0)
-        appearance.headerBackgroundColor = .neutral(shade: .shade0)
+        appearance.topDividerColor = .neutral(.shade5)
+        appearance.bottomDividerColor = .neutral(.shade0)
+        appearance.headerBackgroundColor = .neutral(.shade0)
     }
 
     /// Setup: FancyButton's Appearance
@@ -476,13 +476,13 @@ extension WordPressAppDelegate {
 
         appearance.secondaryTitleColor = .text
         appearance.secondaryNormalBackgroundColor = UIColor.textInverted
-        appearance.secondaryNormalBorderColor = UIColor.neutral(shade: .shade10)
-        appearance.secondaryHighlightBackgroundColor = UIColor.neutral(shade: .shade10)
-        appearance.secondaryHighlightBorderColor = UIColor.neutral(shade: .shade40)
+        appearance.secondaryNormalBorderColor = UIColor.neutral(.shade10)
+        appearance.secondaryHighlightBackgroundColor = UIColor.neutral(.shade10)
+        appearance.secondaryHighlightBorderColor = UIColor.neutral(.shade40)
 
-        appearance.disabledTitleColor = .neutral(shade: .shade20)
+        appearance.disabledTitleColor = .neutral(.shade20)
         appearance.disabledBackgroundColor = .textInverted
-        appearance.disabledBorderColor = .neutral(shade: .shade10)
+        appearance.disabledBorderColor = .neutral(.shade10)
     }
 }
 
@@ -797,7 +797,7 @@ extension WordPressAppDelegate {
         WPStyleGuide.configureSearchBarAppearance()
 
         // SVProgressHUD
-        SVProgressHUD.setBackgroundColor(UIColor.neutral(shade: .shade70).withAlphaComponent(0.95))
+        SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
@@ -805,13 +805,13 @@ extension WordPressAppDelegate {
         // Media Picker styles
         let barItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
         barItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: WPFontManager.systemSemiBoldFont(ofSize: 16.0)], for: .disabled)
-        UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = .neutral(shade: .shade5)
+        UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = .neutral(.shade5)
 
 
         let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
         cellAppearance.loadingBackgroundColor = .tableBackground
-        cellAppearance.placeholderBackgroundColor = .neutral(shade: .shade70)
-        cellAppearance.placeholderTintColor = .neutral(shade: .shade5)
+        cellAppearance.placeholderBackgroundColor = .neutral(.shade70)
+        cellAppearance.placeholderTintColor = .neutral(.shade5)
         cellAppearance.setCellTintColor(.primary)
 
         UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
