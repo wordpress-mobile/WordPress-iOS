@@ -5,7 +5,13 @@ enum PostNoticeUserInfoKey {
 }
 
 struct PostNoticeViewModel {
-    let post: AbstractPost
+    private let post: AbstractPost
+    private let postCoordinator: PostCoordinator
+
+    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared) {
+        self.post = post
+        self.postCoordinator = postCoordinator
+    }
 
     /// Returns the Notice represented by this view model.
     ///
@@ -192,7 +198,7 @@ struct PostNoticeViewModel {
         }
 
         post.status = .publish
-        PostCoordinator.shared.save(post: post)
+        postCoordinator.save(post: post)
     }
 
     private func retryUpload() {
@@ -200,7 +206,7 @@ struct PostNoticeViewModel {
             return
         }
 
-        PostCoordinator.shared.save(post: post)
+        postCoordinator.save(post: post)
     }
 
     private var postInContext: AbstractPost? {
