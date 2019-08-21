@@ -42,13 +42,20 @@ struct PostNoticeViewModel {
     }
 
     private var failureNotice: Notice {
+        let failureAction = self.failureAction
+
         return Notice(title: failureTitle,
                       message: message,
                       feedbackType: .error,
                       notificationInfo: notificationInfo,
-                      actionTitle: failureActionTitle,
+                      actionTitle: failureAction.title,
                       actionHandler: { _ in
-                        self.retryUpload()
+                        switch failureAction {
+                        case .cancel:
+                            self.cancelAutoUpload()
+                        case .retry:
+                            self.retryUpload()
+                        }
         })
     }
 
@@ -175,22 +182,34 @@ struct PostNoticeViewModel {
         }
     }
 
+    private enum FailureAction {
+        case retry
+        case cancel
+
+        var title: String {
+            switch self {
+            case .retry:
+                return FailureActionTitles.retry
+            case .cancel:
+                return FailureActionTitles.cancel
+            }
+        }
+    }
+
     private var action: Action {
         return (post.status == .draft) ? .publish : .view
     }
 
-    private var failureActionTitle: String {
-        if post.status == .publish {
-            return FailureActionTitles.cancel
-        } else {
-            return FailureActionTitles.retry
-        }
+    private var failureAction: FailureAction {
+        let interactor = PostAutoUploadInteractor()
+        return interactor.canCancelAutoUpload(of: post) ? .cancel : .retry
     }
+
+    // MARK: - Action Handlers
 
     private func viewPost() {
         PostNoticeNavigationCoordinator.presentPostEpilogue(for: post)
     }
-
 
     private func publishPost() {
         guard let post = postInContext else {
@@ -207,6 +226,14 @@ struct PostNoticeViewModel {
         }
 
         postCoordinator.save(post: post)
+    }
+
+    private func cancelAutoUpload() {
+        guard let post = postInContext else {
+            return
+        }
+
+        postCoordinator.cancelAutoUploadOf(post)
     }
 
     private var postInContext: AbstractPost? {
