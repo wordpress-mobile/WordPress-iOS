@@ -145,6 +145,40 @@ extension URL {
         let components = pathComponents.filter({ $0 != "/" })
         return components.count == 4 && hasWordPressDotComHostname
     }
+    
+    func refreshLocalPath() -> URL? {
+        guard isFileURL else {
+            return self
+        }
+        
+        let nsString = absoluteString as NSString
+        let results = absoluteString.matches(regex: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}")
+        let uuids = results.map { result in
+            (0..<result.numberOfRanges).map {
+                result.range(at: $0).location != NSNotFound
+                    ? nsString.substring(with: result.range(at: $0))
+                    : ""
+            }
+        }
+        
+        let nsString2 = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!.absoluteString as NSString
+        let results2 = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!.absoluteString.matches(regex: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}")
+        let uuids2 = results2.map { result in
+            (0..<result.numberOfRanges).map {
+                result.range(at: $0).location != NSNotFound
+                    ? nsString2.substring(with: result.range(at: $0))
+                    : ""
+            }
+        }
+        
+        var finalUrl = absoluteString
+        
+        for (index, uuid) in uuids.enumerated() {
+            finalUrl = finalUrl.replacingOccurrences(of: uuid.first!, with: uuids2[index].first!)
+        }
+        
+        return URL(string: finalUrl)
+    }
 }
 
 extension NSURL {
