@@ -66,7 +66,7 @@ class EditPostViewController: UIViewController {
             if !post.originalIsDraft() {
                 editingExistingPost = true
             }
-            
+
             post.refreshLocalMediaPaths()
         }
         self.blog = blog

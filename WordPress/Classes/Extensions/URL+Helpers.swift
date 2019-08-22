@@ -145,24 +145,24 @@ extension URL {
         let components = pathComponents.filter({ $0 != "/" })
         return components.count == 4 && hasWordPressDotComHostname
     }
-    
+
     func refreshLocalPath() -> URL? {
         guard isFileURL,
             let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first else {
             return self
         }
-        
+
         let originalUUIDs = UUID.extract(from: absoluteString)
         let refreshedUUIDs = UUID.extract(from: cachesDirectory.absoluteString)
         var refreshedURL = absoluteString
-        
+
         for (index, uuid) in originalUUIDs.enumerated() {
             if refreshedUUIDs.indices.contains(index) {
                 refreshedURL = refreshedURL.replacingOccurrences(of: uuid.uuidString, with: refreshedUUIDs[index].uuidString)
             }
-            
+
         }
-        
+
         return URL(string: refreshedURL)
     }
 }
