@@ -793,11 +793,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return [self titleForHeaderInSection:settingsSection];
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    [WPStyleGuide configureTableViewSectionHeader:view];
-}
-
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
     NSString *headingTitle = nil;

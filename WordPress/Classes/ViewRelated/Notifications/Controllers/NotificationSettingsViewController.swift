@@ -207,10 +207,6 @@ open class NotificationSettingsViewController: UIViewController {
         return theSection.headerText()
     }
 
-    @objc open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
-    }
-
     @objc open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         // Hide when the section is empty!
         if isSectionEmpty(section) {

@@ -189,10 +189,6 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return noResultsViewModel != nil ? nil : tableViewModel.sections[section].headerText
     }
-
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
-    }
 }
 
 // MARK: - No Results Handling Private Extension

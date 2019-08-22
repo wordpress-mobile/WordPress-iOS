@@ -487,11 +487,6 @@ FeaturedImageViewControllerDelegate>
     return nil;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    [WPStyleGuide configureTableViewSectionHeader:view];
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ([self tableView:tableView numberOfRowsInSection:section] == 0) {

@@ -352,10 +352,6 @@ extension ShareModularViewController: UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
-    }
-
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if tableView == modulesTableView {
             if isModulesSectionEmpty(section) {
