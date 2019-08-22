@@ -147,37 +147,23 @@ extension URL {
     }
     
     func refreshLocalPath() -> URL? {
-        guard isFileURL else {
+        guard isFileURL,
+            let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first else {
             return self
         }
         
-        let nsString = absoluteString as NSString
-        let results = absoluteString.matches(regex: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}")
-        let uuids = results.map { result in
-            (0..<result.numberOfRanges).map {
-                result.range(at: $0).location != NSNotFound
-                    ? nsString.substring(with: result.range(at: $0))
-                    : ""
+        let originalUUIDs = UUID.extract(from: absoluteString)
+        let refreshedUUIDs = UUID.extract(from: cachesDirectory.absoluteString)
+        var refreshedURL = absoluteString
+        
+        for (index, uuid) in originalUUIDs.enumerated() {
+            if refreshedUUIDs.indices.contains(index) {
+                refreshedURL = refreshedURL.replacingOccurrences(of: uuid.uuidString, with: refreshedUUIDs[index].uuidString)
             }
+            
         }
         
-        let nsString2 = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!.absoluteString as NSString
-        let results2 = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!.absoluteString.matches(regex: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}")
-        let uuids2 = results2.map { result in
-            (0..<result.numberOfRanges).map {
-                result.range(at: $0).location != NSNotFound
-                    ? nsString2.substring(with: result.range(at: $0))
-                    : ""
-            }
-        }
-        
-        var finalUrl = absoluteString
-        
-        for (index, uuid) in uuids.enumerated() {
-            finalUrl = finalUrl.replacingOccurrences(of: uuid.first!, with: uuids2[index].first!)
-        }
-        
-        return URL(string: finalUrl)
+        return URL(string: refreshedURL)
     }
 }
 
