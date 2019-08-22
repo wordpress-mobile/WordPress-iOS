@@ -273,7 +273,7 @@ extension PostCoordinator: Uploader {
     /// Cancel active and pending automatic uploads of the post.
     func cancelAutoUploadOf(_ post: AbstractPost) {
         cancelAnyPendingSaveOf(post: post)
-        
+
         #warning("stub")
         post.managedObjectContext?.perform {
             post.confirmedAutoUpload = false
