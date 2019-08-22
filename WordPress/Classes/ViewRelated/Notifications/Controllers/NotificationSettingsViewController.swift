@@ -40,7 +40,7 @@ open class NotificationSettingsViewController: UIViewController {
     // MARK: - Setup Helpers
 
     fileprivate func setupNavigationItem() {
-        title = NSLocalizedString("Notifications", comment: "Title displayed in the Notification settings")
+        title = NSLocalizedString("Notification Settings", comment: "Title displayed in the Notification settings")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
     }
 
