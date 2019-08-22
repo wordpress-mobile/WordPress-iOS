@@ -45,6 +45,12 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  */
 @property (nonatomic, strong, nullable) NSArray *revisions;
 
+/**
+ This property is used to confirm that the post we'll be trying to automatically retry uploading,
+ hasn't changed since user has tapped on "confirm". The hash value is calculated using `-changesConfirmedContentHashValue` method.
+ */
+@property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
+
 // Revision management
 - (AbstractPost *)createRevision;
 - (void)deleteRevision;
@@ -79,6 +85,9 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 #pragma mark - Conveniece Methods
 - (void)publishImmediately;
 - (BOOL)shouldPublishImmediately;
+
+- (BOOL)shouldAttemptAutoUpload;
+
 - (NSString *)authorNameForDisplay;
 - (NSString *)blavatarForDisplay;
 - (NSString *)dateStringForDisplay;

@@ -110,10 +110,13 @@ private extension PostCoordinatorUploadActionUseCaseTests {
         let post = Post(context: context)
         post.status = status
         post.remoteStatus = remoteStatus
-        post.confirmedAutoUpload = confirmedAutoUpload
 
         if hasRemote {
             post.postID = NSNumber(value: Int.random(in: 1...Int.max))
+        }
+
+        if confirmedAutoUpload {
+            post.confirmedChangesHash = post.changesConfirmedContentHashValue()
         }
 
         return post

@@ -274,9 +274,13 @@ extension PostCoordinator: Uploader {
     func cancelAutoUploadOf(_ post: AbstractPost) {
         cancelAnyPendingSaveOf(post: post)
 
-        #warning("stub")
-        post.managedObjectContext?.perform {
-            post.confirmedAutoUpload = false
+        // nil-ing this out will make the `shouldAttemptAutoUpload` property to return false.
+        post.confirmedChangesHash = nil
+
+        let moc = post.managedObjectContext
+
+        moc?.perform {
+            try? moc?.save()
         }
     }
 }

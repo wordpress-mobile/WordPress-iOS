@@ -84,6 +84,8 @@ extension PostEditor where Self: UIViewController {
                 }
             }
 
+            self.post.confirmedChangesHash = self.post.changesConfirmedContentHashValue()
+
             if let analyticsStat = analyticsStat {
                 self.trackPostSave(stat: analyticsStat)
             }
@@ -353,11 +355,6 @@ extension PostEditor where Self: UIViewController {
         postEditorStateContext.updated(isBeingPublished: true)
 
         mapUIContentToPostAndSave(immediate: true)
-
-        #warning("stub")
-        if post.status == .publish {
-            post.confirmedAutoUpload = true
-        }
 
         post.updatePathForDisplayImageBasedOnContent()
 
