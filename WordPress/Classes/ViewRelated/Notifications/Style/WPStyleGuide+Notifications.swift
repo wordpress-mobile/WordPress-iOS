@@ -126,8 +126,8 @@ extension WPStyleGuide {
 
         public static let blockApprovedBgColor      = UIColor.clear
 
-        public static let blockUnapprovedSideColor  = UIColor.warning(shade: .shade60)
-        public static let blockUnapprovedBgColor    = UIColor.warning(shade: .shade0)
+        public static let blockUnapprovedSideColor  = UIColor.warning(.shade60)
+        public static let blockUnapprovedBgColor    = UIColor.warning(.shade0)
         public static let blockUnapprovedTextColor  = UIColor.errorDark
         public static let blockUnapprovedLinkColor  = UIColor.primary
 
@@ -198,7 +198,7 @@ extension WPStyleGuide {
         }
 
         // Action Buttons
-        public static let blockActionDisabledColor  = UIColor.neutral(shade: .shade30)
+        public static let blockActionDisabledColor  = UIColor.neutral(.shade30)
         public static let blockActionEnabledColor   = UIColor.primary
 
         // RichText Helpers
@@ -245,8 +245,8 @@ extension WPStyleGuide {
             button.titleLabel?.font = WPStyleGuide.subtitleFont()
 
             // Color(s)
-            let normalColor = UIColor.neutral(shade: .shade50)
-            let highlightedColor = UIColor.neutral(shade: .shade40)
+            let normalColor = UIColor.neutral(.shade50)
+            let highlightedColor = UIColor.neutral(.shade40)
             let selectedColor = UIColor.success
 
             button.setTitleColor(normalColor, for: .normal)

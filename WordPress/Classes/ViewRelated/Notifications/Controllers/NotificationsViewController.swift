@@ -354,7 +354,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             }
             completionHandler(true)
         })
-        action.backgroundColor = .neutral(shade: .shade50)
+        action.backgroundColor = .neutral(.shade50)
 
         return UISwipeActionsConfiguration(actions: [action])
     }
@@ -532,8 +532,8 @@ private extension NotificationsViewController {
     func setupFilterBar() {
         filterTabBar.backgroundColor = .filterBarBackground
         filterTabBar.tintColor = .primary
-        filterTabBar.deselectedTabColor = .neutral(shade: .shade40)
-        filterTabBar.dividerColor = .neutral(shade: .shade10)
+        filterTabBar.deselectedTabColor = .neutral(.shade40)
+        filterTabBar.dividerColor = .neutral(.shade10)
 
         filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
