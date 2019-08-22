@@ -60,7 +60,7 @@ struct MurielColor {
     static let brand = MurielColor(name: .wordPressBlue)
     static let divider = MurielColor(name: .gray, shade: .shade10)
     static let error = MurielColor(name: .red)
-    static let neutral = MurielColor(name: .gray)
+    static let gray = MurielColor(name: .gray)
     static let primary = MurielColor(name: .blue)
     static let success = MurielColor(name: .green)
     static let text = MurielColor(name: .gray, shade: .shade80)

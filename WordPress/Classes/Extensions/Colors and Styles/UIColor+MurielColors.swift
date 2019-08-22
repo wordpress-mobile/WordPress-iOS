@@ -2,7 +2,7 @@ extension UIColor {
     /// Get a UIColor from the Muriel color palette
     ///
     /// - Parameters:
-    ///   - color: an instance of a MurielColorIdentifier
+    ///   - color: an instance of a MurielColor
     /// - Returns: UIColor. Red in cases of error
     class func muriel(color murielColor: MurielColor) -> UIColor {
         let assetName = murielColor.assetName()
@@ -34,12 +34,6 @@ extension UIColor {
         return muriel(color: MurielColor(from: .error, shade: shade))
     }
 
-    /// Muriel neutral color
-    static var neutral = muriel(color: .neutral)
-    class func neutral(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .neutral, shade: shade))
-    }
-
     /// Muriel primary color
     static var primary = muriel(color: .primary)
     static var primaryLight = muriel(color: MurielColor(from: .primary, shade: .shade30))
@@ -58,6 +52,58 @@ extension UIColor {
     static var warning = muriel(color: .warning)
     class func warning(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .warning, shade: shade))
+    }
+}
+
+// MARK: - Grays
+extension UIColor {
+    /// Muriel gray palette
+    /// - Parameter shade: a MurielColorShade of the desired shade of gray
+    class func gray(_ shade: MurielColorShade) -> UIColor {
+        return muriel(color: MurielColor(from: .gray, shade: shade))
+    }
+
+    /// Muriel neutral colors, which invert in dark mode
+    /// - Parameter shade: a MurielColorShade of the desired neutral shade
+    static var neutral: UIColor {
+        return neutral(.shade50)
+    }
+    class func neutral(_ shade: MurielColorShade) -> UIColor {
+        switch shade {
+        case .shade0:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade0)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade90)))
+            case .shade5:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade5)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade80)))
+            case .shade10:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade10)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade70)))
+            case .shade20:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade20)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade60)))
+            case .shade30:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade30)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade50)))
+            case .shade40:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade40)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade40)))
+            case .shade50:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade50)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade30)))
+            case .shade60:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade60)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade20)))
+            case .shade70:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade70)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade10)))
+            case .shade80:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade80)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade5)))
+            case .shade90:
+            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade90)),
+                           dark: muriel(color: MurielColor(name: .gray, shade: .shade0)))
+        }
     }
 }
 
@@ -90,7 +136,7 @@ extension UIColor {
                 return .secondaryLabel
             }
         #endif
-        return muriel(color: .neutral)
+        return muriel(color: .gray)
     }
 
     /// Very low contrast text
