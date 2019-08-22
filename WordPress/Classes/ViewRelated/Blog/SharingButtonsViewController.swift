@@ -828,7 +828,6 @@ extension SharingButtonsViewController {
     override func tableView(_ tableView: UITableView,
                             willDisplayHeaderView view: UIView,
                             forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
     override func tableView(_ tableView: UITableView,

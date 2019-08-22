@@ -502,8 +502,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 {
     if ([self.delegate respondsToSelector:@selector(tableView:willDisplayHeaderView:forSection:)]) {
         [self.delegate tableView:tableView willDisplayHeaderView:view forSection:section];
-    } else {
-        [WPStyleGuide configureTableViewSectionHeader:view];
     }
 }
 

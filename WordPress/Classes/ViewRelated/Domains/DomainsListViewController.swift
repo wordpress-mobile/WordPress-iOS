@@ -150,10 +150,6 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.sections[section].headerText
     }
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
-    }
 }
 
 extension DomainsListViewController: NSFetchedResultsControllerDelegate {
