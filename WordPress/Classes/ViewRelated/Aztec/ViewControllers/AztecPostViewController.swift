@@ -1553,7 +1553,12 @@ extension AztecPostViewController {
     func toggleList(fromItem item: FormatBarItem) {
         trackFormatBarAnalytics(stat: .editorTappedList)
         let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
-            let title = NSAttributedString(string: listType.description, attributes: [:])
+            let attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.text
+            ]
+
+            let title = NSAttributedString(string: listType.description, attributes: attributes)
+
             return OptionsTableViewOption(image: listType.iconImage,
                                           title: title,
                                           accessibilityLabel: listType.accessibilityLabel)
@@ -1891,7 +1896,7 @@ extension AztecPostViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: UIColor.neutral(shade: .shade70)
+                .foregroundColor: UIColor.text
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -2067,6 +2072,7 @@ extension AztecPostViewController {
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
 
+        toolbar.backgroundColor = .filterBarBackground
         toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
@@ -2074,7 +2080,10 @@ extension AztecPostViewController {
         toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
 
-        toolbar.leadingItem = makeToolbarButton(identifier: .media)
+        let mediaButton = makeToolbarButton(identifier: .media)
+        mediaButton.normalTintColor = .primary
+        toolbar.leadingItem = mediaButton
+
         updateToolbar(toolbar, forMode: .text)
 
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight)

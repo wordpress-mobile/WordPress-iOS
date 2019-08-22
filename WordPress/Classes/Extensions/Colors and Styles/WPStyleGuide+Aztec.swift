@@ -3,15 +3,15 @@ import Gridicons
 import WordPressShared
 
 extension WPStyleGuide {
-    static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
+    static let aztecFormatBarInactiveColor: UIColor = .listIcon
 
-    static let aztecFormatBarActiveColor: UIColor = UIColor(hexString: "11181D")
+    static let aztecFormatBarActiveColor: UIColor = .primary
 
     static let aztecFormatBarDisabledColor = UIColor.neutral(shade: .shade10)
 
-    static let aztecFormatBarDividerColor = UIColor.neutral(shade: .shade5)
+    static let aztecFormatBarDividerColor: UIColor = .divider
 
-    static let aztecFormatBarBackgroundColor = UIColor.white
+    static let aztecFormatBarBackgroundColor = UIColor.basicBackground
 
     static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
         get {
