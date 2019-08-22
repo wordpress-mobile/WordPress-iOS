@@ -915,14 +915,6 @@ class AbstractPostListViewController: UIViewController,
         present(alertController, animated: true)
     }
 
-    @objc func schedulePost(_ apost: AbstractPost) {
-        WPAnalytics.track(.postListScheduleAction, withProperties: propertiesForAnalytics())
-
-        apost.status = .scheduled
-        uploadPost(apost)
-        updateFilterWithPostStatus(.scheduled)
-    }
-
     @objc func moveToDraft(_ apost: AbstractPost) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
