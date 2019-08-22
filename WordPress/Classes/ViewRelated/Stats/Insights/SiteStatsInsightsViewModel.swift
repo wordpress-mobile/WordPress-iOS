@@ -75,7 +75,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                  statSection: .insightsAllTime,
                                                                  siteStatsInsightsDelegate: nil)
                 }, loadingRow: {
-                    return StatsGhostImmutableRow.twoColumnRow
+                    return StatsGhostTwoColumnImmutableRow()
                 }))
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
@@ -86,7 +86,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                  statSection: .insightsFollowerTotals,
                                                                  siteStatsInsightsDelegate: nil)
                 }, loadingRow: {
-                    return StatsGhostImmutableRow.twoColumnRow
+                    return StatsGhostTwoColumnImmutableRow()
                 }))
             case .mostPopularTime:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
@@ -97,7 +97,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                  statSection: .insightsMostPopularTime,
                                                                  siteStatsInsightsDelegate: nil)
                 }, loadingRow: {
-                    return StatsGhostImmutableRow.twoColumnRow
+                    return StatsGhostTwoColumnImmutableRow()
                 }))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTagsAndCategories.title))
@@ -114,7 +114,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                  statSection: .insightsAnnualSiteStats,
                                                                  siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loadingRow: {
-                    return StatsGhostImmutableRow.twoColumnRow
+                    return StatsGhostTwoColumnImmutableRow()
                 }))
             case .comments:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsCommentsPosts.title))
@@ -131,7 +131,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                  statSection: .insightsTodaysStats,
                                                                  siteStatsInsightsDelegate: nil)
                 }, loadingRow: {
-                    return StatsGhostImmutableRow.twoColumnRow
+                    return StatsGhostTwoColumnImmutableRow()
                 }))
             case .postingActivity:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPostingActivity.title))
@@ -506,20 +506,20 @@ private extension SiteStatsInsightsViewModel {
                                  statSection: .insightsAddInsight)
     }
 
-    func row(for insight: InsightType, rowStatus: StoreFetchingStatus, rowBlock: () -> ImmuTableRow, loadingRow: (() -> ImmuTableRow)? = nil) -> ImmuTableRow {
+    func row(for insight: InsightType, rowStatus: StoreFetchingStatus, rowBlock: () -> ImmuTableRow, loadingRow: () -> ImmuTableRow) -> ImmuTableRow {
+        return loadingRow()
+
         if insightsStore.containsCachedData(for: insight) {
             return rowBlock()
         }
 
-        let row = StatsErrorRow(rowStatus: rowStatus, statType: .insights)
-
         switch rowStatus {
         case .loading, .idle:
-            return loadingRow?() ?? row
+            return loadingRow()
         case .success:
             return rowBlock()
         case .error:
-            return row
+            return StatsErrorRow(rowStatus: rowStatus, statType: .insights)
         }
     }
 }

@@ -601,6 +601,6 @@ struct StatsErrorRow: ImmuTableRow {
         }
 
         noDataRow.configure(forType: statType, rowStatus: rowStatus)
-        cell.insert(view: noDataRow, animated: false)
+        cell.insert(view: noDataRow)
     }
 }

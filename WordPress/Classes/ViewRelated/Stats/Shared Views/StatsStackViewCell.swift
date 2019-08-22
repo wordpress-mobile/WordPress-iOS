@@ -11,17 +11,10 @@ class StatsStackViewCell: UITableViewCell, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         Style.configureCell(self)
+        stackView.removeAllSubviews()
     }
 
     func insert(view: UIView, animated: Bool = true) {
-        if !stackView.subviews.isEmpty {
-            stackView.removeAllSubviews()
-        }
-        if animated {
-            view.startGhostAnimation()
-        } else {
-            view.stopGhostAnimation()
-        }
         stackView.addArrangedSubview(view)
     }
 }
