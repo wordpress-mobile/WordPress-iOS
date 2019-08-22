@@ -78,27 +78,29 @@ extension UIColor {
     class func neutral(_ shade: MurielColorShade) -> UIColor {
         switch shade {
         case .shade0:
-            return UIColor(light: muriel(color: .gray, .shade0), dark: muriel(color: .gray, .shade90))
+            return UIColor(light: muriel(color: .gray, .shade0), dark: muriel(color: .gray, .shade100))
             case .shade5:
-            return UIColor(light: muriel(color: .gray, .shade5), dark: muriel(color: .gray, .shade80))
+            return UIColor(light: muriel(color: .gray, .shade5), dark: muriel(color: .gray, .shade90))
             case .shade10:
-            return UIColor(light: muriel(color: .gray, .shade10), dark: muriel(color: .gray, .shade70))
+            return UIColor(light: muriel(color: .gray, .shade10), dark: muriel(color: .gray, .shade80))
             case .shade20:
-            return UIColor(light: muriel(color: .gray, .shade20), dark: muriel(color: .gray, .shade60))
+            return UIColor(light: muriel(color: .gray, .shade20), dark: muriel(color: .gray, .shade70))
             case .shade30:
-            return UIColor(light: muriel(color: .gray, .shade30), dark: muriel(color: .gray, .shade50))
+            return UIColor(light: muriel(color: .gray, .shade30), dark: muriel(color: .gray, .shade60))
             case .shade40:
-            return UIColor(light: muriel(color: .gray, .shade40), dark: muriel(color: .gray, .shade40))
+            return UIColor(light: muriel(color: .gray, .shade40), dark: muriel(color: .gray, .shade50))
             case .shade50:
-            return UIColor(light: muriel(color: .gray, .shade50), dark: muriel(color: .gray, .shade30))
+            return UIColor(light: muriel(color: .gray, .shade50), dark: muriel(color: .gray, .shade40))
             case .shade60:
-            return UIColor(light: muriel(color: .gray, .shade60), dark: muriel(color: .gray, .shade20))
+            return UIColor(light: muriel(color: .gray, .shade60), dark: muriel(color: .gray, .shade30))
             case .shade70:
-            return UIColor(light: muriel(color: .gray, .shade70), dark: muriel(color: .gray, .shade10))
+            return UIColor(light: muriel(color: .gray, .shade70), dark: muriel(color: .gray, .shade20))
             case .shade80:
-            return UIColor(light: muriel(color: .gray, .shade80), dark: muriel(color: .gray, .shade5))
+            return UIColor(light: muriel(color: .gray, .shade80), dark: muriel(color: .gray, .shade10))
             case .shade90:
-            return UIColor(light: muriel(color: .gray, .shade90), dark: muriel(color: .gray, .shade0))
+            return UIColor(light: muriel(color: .gray, .shade90), dark: muriel(color: .gray, .shade5))
+            case .shade100:
+            return UIColor(light: muriel(color: .gray, .shade100), dark: muriel(color: .gray, .shade0))
         }
     }
 }

@@ -34,6 +34,7 @@ enum MurielColorShade: Int, CustomStringConvertible {
     case shade70 = 70
     case shade80 = 80
     case shade90 = 90
+    case shade100 = 100
 
     var description: String {
         return "\(rawValue)"
