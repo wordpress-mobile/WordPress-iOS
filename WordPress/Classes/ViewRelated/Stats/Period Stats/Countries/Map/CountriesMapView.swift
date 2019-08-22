@@ -67,10 +67,10 @@ class CountriesMapView: UIView, NibLoadable {
         #if XCODE11
         if #available(iOS 13, *) {
             if traitCollection.userInterfaceStyle == .dark {
-                return [.accent(shade: .shade90), .accent]
+                return [.accent(.shade90), .accent]
             }
         }
         #endif
-        return [.accent(shade: .shade5), .accent]
+        return [.accent(.shade5), .accent]
     }
 }

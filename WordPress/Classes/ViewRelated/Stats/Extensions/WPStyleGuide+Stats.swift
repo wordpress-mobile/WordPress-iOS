@@ -247,7 +247,7 @@ extension WPStyleGuide {
                 return .systemGray5
             }
             #endif
-            return .neutral(shade: .shade10)
+            return .neutral(.shade10)
         }
 
         // MARK: - Posting Activity Collection View Styles
