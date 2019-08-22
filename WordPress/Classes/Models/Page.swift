@@ -60,6 +60,6 @@ class Page: AbstractPost {
         guard let path = pathForDisplayImage else {
             return nil
         }
-        return URL(string: path)
+        return URL(string: path)?.refreshLocalPath()
     }
 }
