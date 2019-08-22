@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18G87" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="confirmedChangesHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="confirmedChangesTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
@@ -907,7 +908,7 @@
         <attribute name="visitorsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="210"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="255"/>
         <element name="AllTimeStatsRecordValue" positionX="27" positionY="162" width="128" height="120"/>

@@ -116,7 +116,7 @@ private extension PostCoordinatorUploadActionUseCaseTests {
         }
 
         if confirmedAutoUpload {
-            post.confirmedChangesHash = post.changesConfirmedContentHashValue()
+            post.shouldAttemptAutoUpload = true
         }
 
         return post

@@ -420,10 +420,10 @@ class PostTests: XCTestCase {
 
         let correctHash = "36d7cd8138748d779453d30e8f758592b40b61af464921133c9db12cd71cf0ca"
 
-        XCTAssertEqual(post.changesConfirmedContentHashValue(), correctHash)
+        XCTAssertEqual(post.calculateConfirmedChangesContentHash(), correctHash)
 
         post.isStickyPost = false
 
-        XCTAssertNotEqual(post.confirmedChangesHash, correctHash)
+        XCTAssertNotEqual(post.calculateConfirmedChangesContentHash(), correctHash)
     }
 }

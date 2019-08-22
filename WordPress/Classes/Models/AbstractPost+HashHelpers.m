@@ -4,7 +4,7 @@
 
 @implementation AbstractPost (HashHelpers)
 
-- (NSString *)changesConfirmedContentHashValue {
+- (NSString *)calculateConfirmedChangesContentHash {
     // The list of the properties we're taking into account here broadly mirrors: https://github.com/wordpress-mobile/WordPress-FluxC-Android/blob/f9e7fbae2479ad71bd2d1c7039f6f2bbbcc9444d/fluxc/src/main/java/org/wordpress/android/fluxc/model/PostModel.java#L443-L473
     // Note that some of the properties aren't found on `AbstractPost`, but rather on `Post` and/or `Page` —
     // that's the purpose of the `-additionalContentHashes` extension point.

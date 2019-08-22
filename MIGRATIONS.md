@@ -5,7 +5,7 @@ data model as well as any custom migrations.
 
 ## WordPress 90
 @jklausa 2019-08-19
-- `AbstractPost`: Addded a  `confirmedChangesHash` property. 
+- `AbstractPost`: Addded a  `confirmedChangesHash`  and  `confirmedChangesTimestamp`  properties. 
 
 ## WordPress 89
 
