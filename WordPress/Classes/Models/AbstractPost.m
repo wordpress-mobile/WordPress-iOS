@@ -611,11 +611,16 @@
 }
 
 - (void)setShouldAttemptAutoUpload:(BOOL)shouldAttemptAutoUpload {
-    NSString *currentHash = [self calculateConfirmedChangesContentHash];
-    NSDate *now = [NSDate date];
+    if (shouldAttemptAutoUpload) {
+        NSString *currentHash = [self calculateConfirmedChangesContentHash];
+        NSDate *now = [NSDate date];
 
-    self.confirmedChangesHash = currentHash;
-    self.confirmedChangesTimestamp = now;
+        self.confirmedChangesHash = currentHash;
+        self.confirmedChangesTimestamp = now;
+    } else {
+        self.confirmedChangesHash = nil;
+        self.confirmedChangesTimestamp = nil;
+    }
 }
 
 - (void)updatePathForDisplayImageBasedOnContent
