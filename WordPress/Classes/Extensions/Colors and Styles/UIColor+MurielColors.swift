@@ -144,7 +144,7 @@ extension UIColor {
                 return .tertiaryLabel
             }
         #endif
-        return UIColor.neutral(.shade10)
+        return UIColor.neutral(.shade20)
     }
 
     /// Very, very low contrast text
