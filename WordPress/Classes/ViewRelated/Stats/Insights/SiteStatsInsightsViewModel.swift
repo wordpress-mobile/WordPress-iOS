@@ -101,10 +101,16 @@ class SiteStatsInsightsViewModel: Observable {
                 }))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTagsAndCategories.title))
-                tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
-                                                   dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
-                                                   dataRows: createTagsAndCategoriesRows(),
-                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(row(for: .tagsAndCategories,
+                                     rowStatus: insightsStore.tagsAndCategoriesStatus,
+                                     rowBlock: {
+                                        return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                                        dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
+                                                                        dataRows: createTagsAndCategoriesRows(),
+                                                                        siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loadingRow: {
+                    return StatsGhostTopImmutableRow()
+                }))
             case .annualSiteStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAnnualSiteStats.title))
                 tableRows.append(row(for: .annualSiteStats,
@@ -138,10 +144,16 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(createPostingActivityRow())
             case .publicize:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPublicize.title))
-                tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
-                                                          dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
-                                                          dataRows: createPublicizeRows(),
-                                                          siteStatsInsightsDelegate: nil))
+                tableRows.append(row(for: .publicize,
+                                     rowStatus: insightsStore.publicizeFollowersStatus,
+                                     rowBlock: {
+                                        return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
+                                                                        dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
+                                                                        dataRows: createPublicizeRows(),
+                                                                        siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTopImmutableRow()
+                }))
             }
         }
 
