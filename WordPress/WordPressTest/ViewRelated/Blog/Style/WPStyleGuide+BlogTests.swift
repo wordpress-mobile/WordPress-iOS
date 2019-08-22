@@ -22,6 +22,6 @@ class WPStyleGuide_BlogTests: XCTestCase {
 
     func testConfigureTableViewBlogCellSetsBackgroundColor() {
         WPStyleGuide.configureTableViewBlogCell(testCell)
-        XCTAssertEqual(UIColor.tableForeground, testCell.backgroundColor)
+        XCTAssertEqual(UIColor.listForeground, testCell.backgroundColor)
     }
 }

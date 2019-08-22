@@ -68,9 +68,6 @@ struct MurielColor {
     static let textSubtle = MurielColor(name: .gray, shade: .shade50)
     static let warning = MurielColor(name: .yellow)
 
-    // MARK: - Additional iOS semantic colors
-    static let tableBackground = MurielColor(name: .gray, shade: .shade0)
-
     /// The full name of the color, with required shade value
     func assetName() -> String {
         return "\(name)\(shade)"

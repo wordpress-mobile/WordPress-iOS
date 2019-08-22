@@ -51,7 +51,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 instructionColor: .text,
                                                 subheadlineColor: .textSubtle,
                                                 placeholderColor: .textPlaceholder,
-                                                viewControllerBackgroundColor: .tableBackground,
+                                                viewControllerBackgroundColor: .listBackground,
                                                 navBarImage: Gridicon.iconOfType(.mySites),
                                                 navBarBadgeColor: .accent(.shade20),
                                                 prologueBackgroundColor: .primary,

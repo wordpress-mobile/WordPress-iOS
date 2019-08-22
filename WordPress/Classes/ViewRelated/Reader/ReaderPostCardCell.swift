@@ -257,8 +257,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     */
     fileprivate func applyStyles() {
         backgroundColor = .clear
-        contentView.backgroundColor = .tableBackground
-        borderedView.backgroundColor = .tableForeground
+        contentView.backgroundColor = .listBackground
+        borderedView.backgroundColor = .listForeground
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = .hairlineBorderWidth
 
@@ -277,12 +277,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
     fileprivate func applyOpaqueBackgroundColors() {
-        blogNameLabel.backgroundColor = .tableForeground
-        bylineLabel.backgroundColor = .tableForeground
-        titleLabel.backgroundColor = .tableForeground
-        summaryLabel.backgroundColor = .tableForeground
-        commentActionButton.titleLabel?.backgroundColor = .tableForeground
-        likeActionButton.titleLabel?.backgroundColor = .tableForeground
+        blogNameLabel.backgroundColor = .listForeground
+        bylineLabel.backgroundColor = .listForeground
+        titleLabel.backgroundColor = .listForeground
+        summaryLabel.backgroundColor = .listForeground
+        commentActionButton.titleLabel?.backgroundColor = .listForeground
+        likeActionButton.titleLabel?.backgroundColor = .listForeground
     }
 
     @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {

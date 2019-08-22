@@ -161,7 +161,7 @@ extension UIColor {
     static var textPlaceholder = neutral(.shade30)
 
     /// Muriel/iOS navigation color
-    static var navigationBar = UIColor(light: .brand, dark: .gray(.shade90))
+    static var appBar = UIColor(light: .brand, dark: .gray(.shade90))
 
     // MARK: - Table Views
 
@@ -175,7 +175,7 @@ extension UIColor {
     }
 
     /// WP color for table foregrounds (cells, etc)
-    static var tableForeground: UIColor {
+    static var listForeground: UIColor {
         #if XCODE11
             if #available(iOS 13, *) {
                 return .secondarySystemGroupedBackground
@@ -184,7 +184,7 @@ extension UIColor {
         return .white
     }
 
-    static var tableForegroundUnread: UIColor {
+    static var listForegroundUnread: UIColor {
         #if XCODE11
             if #available(iOS 13, *) {
                 return .tertiarySystemGroupedBackground
@@ -193,13 +193,13 @@ extension UIColor {
         return .primary(.shade0)
     }
 
-    static var tableBackground: UIColor {
+    static var listBackground: UIColor {
         #if XCODE11
             if #available(iOS 13, *) {
                 return .systemGroupedBackground
             }
         #endif
-        return muriel(color: .tableBackground)
+        return muriel(color: .gray, .shade0)
     }
 
     /// For icons that are present in a table view, or similar list
