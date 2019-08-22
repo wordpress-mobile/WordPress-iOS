@@ -14,3 +14,5 @@ class StatsGhostBaseCell: UITableViewCell {
 
 class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable { }
+class StatsGhostTabbedCell: StatsGhostBaseCell, NibLoadable { }
+class StatsGhostPostingActivityCell: StatsGhostBaseCell, NibLoadable { }

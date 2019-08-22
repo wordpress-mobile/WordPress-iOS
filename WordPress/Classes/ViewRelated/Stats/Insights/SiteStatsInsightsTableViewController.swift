@@ -156,7 +156,9 @@ private extension SiteStatsInsightsTableViewController {
                 TopTotalsInsightStatsRow.self,
                 TableFooterRow.self,
                 StatsGhostTwoColumnImmutableRow.self,
-                StatsGhostTopImmutableRow.self]
+                StatsGhostTopImmutableRow.self,
+                StatsGhostTabbedImmutableRow.self,
+                StatsGhostPostingActivitiesImmutableRow.self]
     }
 
     // MARK: - Table Refreshing

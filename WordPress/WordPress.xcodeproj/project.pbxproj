@@ -1213,6 +1213,8 @@
 		9A9E3FAD230E9DD000909BC4 /* StatsGhostCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E3FAB230E9DD000909BC4 /* StatsGhostCells.swift */; };
 		9A9E3FAE230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */; };
 		9A9E3FB0230EA7A300909BC4 /* StatsGhostTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */; };
+		9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */; };
+		9A9E3FB4230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FB3230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib */; };
 		9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */; };
 		9AF9551821A1D7970057827C /* DiffAbstractValue+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9551721A1D7970057827C /* DiffAbstractValue+Attributes.swift */; };
 		9F3EFC9E208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */; };
@@ -3380,6 +3382,8 @@
 		9A9E3FAB230E9DD000909BC4 /* StatsGhostCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsGhostCells.swift; sourceTree = "<group>"; };
 		9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostTwoColumnCell.xib; sourceTree = "<group>"; };
 		9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostTopCell.xib; sourceTree = "<group>"; };
+		9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostTabbedCell.xib; sourceTree = "<group>"; };
+		9A9E3FB3230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostPostingActivityCell.xib; sourceTree = "<group>"; };
 		9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 82.xcdatamodel"; sourceTree = "<group>"; };
 		9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPageSettingsViewController.swift; sourceTree = "<group>"; };
 		9AF9551721A1D7970057827C /* DiffAbstractValue+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiffAbstractValue+Attributes.swift"; sourceTree = "<group>"; };
@@ -7154,6 +7158,8 @@
 			children = (
 				9A09F91D230C4C0200F42AB7 /* StatsGhostTableViewRows.swift */,
 				9A9E3FAB230E9DD000909BC4 /* StatsGhostCells.swift */,
+				9A9E3FB3230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib */,
+				9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */,
 				9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */,
 				9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */,
 			);
@@ -9777,6 +9783,7 @@
 				17DC4C5622C5E6D60059CA11 /* open_source_icon_29pt@3x.png in Resources */,
 				17DC4C3B22C5E6910059CA11 /* open_source_dark_icon_76pt.png in Resources */,
 				173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */,
+				9A9E3FB4230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib in Resources */,
 				435B762A2297484200511813 /* ColorPalette.xcassets in Resources */,
 				17E3639922C41DBA000E0C79 /* hot_pink_icon_76pt.png in Resources */,
 				402FFB1C218C27C100FF4A0B /* RegisterDomain.storyboard in Resources */,
@@ -9798,6 +9805,7 @@
 				436D562D2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
+				9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */,
 				17E3639F22C41DBA000E0C79 /* hot_pink_icon_20pt.png in Resources */,
 				4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */,
 				17DC4C5B22C5E6D60059CA11 /* open_source_icon_29pt.png in Resources */,

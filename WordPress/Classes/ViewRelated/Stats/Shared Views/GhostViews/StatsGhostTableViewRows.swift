@@ -23,6 +23,18 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
     }()
 }
 
+struct StatsGhostTabbedImmutableRow: StatsRowGhostable {
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(StatsGhostTabbedCell.defaultNib, StatsGhostTabbedCell.self)
+    }()
+}
+
+struct StatsGhostPostingActivitiesImmutableRow: StatsRowGhostable {
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(StatsGhostPostingActivityCell.defaultNib, StatsGhostPostingActivityCell.self)
+    }()
+}
+
 private enum GhostCellStyle {
     static let muriel = GhostStyle(beatDuration: TimeInterval(0.75),
                                    beatStartColor: .neutral(shade: .shade0),

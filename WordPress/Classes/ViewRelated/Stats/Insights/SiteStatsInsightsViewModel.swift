@@ -124,10 +124,22 @@ class SiteStatsInsightsViewModel: Observable {
                 }))
             case .comments:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsCommentsPosts.title))
-                tableRows.append(createCommentsRow())
+                tableRows.append(row(for: .comments,
+                                     rowStatus: insightsStore.commentsInsightStatus,
+                                     rowBlock: {
+                                        return createCommentsRow()
+                }, loadingRow: {
+                    return StatsGhostTabbedImmutableRow()
+                }))
             case .followers:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowersWordPress.title))
-                tableRows.append(createFollowersRow())
+                tableRows.append(row(for: .followers,
+                                     rowStatus: insightsStore.followersTotalsStatus,
+                                     rowBlock: {
+                                        return createFollowersRow()
+                }, loadingRow: {
+                    return StatsGhostTabbedImmutableRow()
+                }))
             case .todaysStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTodaysStats.title))
                 tableRows.append(row(for: .todaysStats,
@@ -141,7 +153,13 @@ class SiteStatsInsightsViewModel: Observable {
                 }))
             case .postingActivity:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPostingActivity.title))
-                tableRows.append(createPostingActivityRow())
+                tableRows.append(row(for: .postingActivity,
+                                     rowStatus: insightsStore.postingActivityStatus,
+                                     rowBlock: {
+                                        return createPostingActivityRow()
+                }, loadingRow: {
+                    return StatsGhostPostingActivitiesImmutableRow()
+                }))
             case .publicize:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPublicize.title))
                 tableRows.append(row(for: .publicize,
