@@ -1,4 +1,5 @@
 import XCTest
+import Nimble
 
 @testable import WordPress
 
@@ -13,10 +14,8 @@ class AbstractPostRefreshLocalMediaPathsTests: XCTestCase {
         
         post.refreshLocalMediaPaths()
         
-        XCTAssertEqual(
-            post.content,
-            "<img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/\(currentUUIDs[0].uuidString)/data/Containers/Data/Application/\(currentUUIDs[1].uuidString)/Library/Caches/Media/thumbnail-p16-1792x1792.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\">"
-        )
+        expect(post.content)
+            .to(equal("<img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/\(currentUUIDs[0].uuidString)/data/Containers/Data/Application/\(currentUUIDs[1].uuidString)/Library/Caches/Media/thumbnail-p16-1792x1792.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\">"))
     }
     
     func testUpdateAllLocalMediaPathsButDoesNotChangeRemotePaths() {
@@ -27,10 +26,8 @@ class AbstractPostRefreshLocalMediaPathsTests: XCTestCase {
         
         post.refreshLocalMediaPaths()
         
-        XCTAssertEqual(
-            post.content,
-            "<img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/\(currentUUIDs[0].uuidString)/data/Containers/Data/Application/\(currentUUIDs[1].uuidString)/Library/Caches/Media/thumbnail-p16-1792x1792.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\"><p>Lorem ipsum</p><img src=\"https://wordpress.com/\">"
-        )
+        expect(post.content)
+            .to(equal("<img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/\(currentUUIDs[0].uuidString)/data/Containers/Data/Application/\(currentUUIDs[1].uuidString)/Library/Caches/Media/thumbnail-p16-1792x1792.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\"><p>Lorem ipsum</p><img src=\"https://wordpress.com/\">"))
     }
 }
 

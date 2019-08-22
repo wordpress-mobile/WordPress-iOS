@@ -1,4 +1,5 @@
 import XCTest
+import Nimble
 
 @testable import WordPress
 
@@ -17,7 +18,8 @@ class URLRefreshLocalPathTests: XCTestCase {
         
         let refreshedUrl = oldUrl?.refreshLocalPath()
         
-        XCTAssertEqual(refreshedUrl?.absoluteString, cacheDirectory.appendingPathComponent("Media/thumbnail-p16-1792x1792.jpeg").absoluteString)
+        expect(refreshedUrl?.absoluteString)
+            .to(equal(cacheDirectory.appendingPathComponent("Media/thumbnail-p16-1792x1792.jpeg").absoluteString))
     }
     
     func testCorrectlyRefreshUUIDForAssetsInDocumentsFolder() {
@@ -25,7 +27,8 @@ class URLRefreshLocalPathTests: XCTestCase {
         
         let refreshedUrl = oldUrl?.refreshLocalPath()
         
-        XCTAssertEqual(refreshedUrl?.absoluteString, documentDirectory.appendingPathComponent("Media/thumbnail-p16-1792x1792.jpeg").absoluteString)
+        expect(refreshedUrl?.absoluteString)
+            .to(equal(documentDirectory.appendingPathComponent("Media/thumbnail-p16-1792x1792.jpeg").absoluteString))
     }
     
     func testDoesntChangeRemoteURLs() {
@@ -33,6 +36,6 @@ class URLRefreshLocalPathTests: XCTestCase {
         
         let refreshedUrl = url?.refreshLocalPath()
         
-        XCTAssertEqual(refreshedUrl, url)
+        expect(refreshedUrl).to(equal(url))
     }
 }
