@@ -11,47 +11,54 @@ extension UIColor {
         }
         return color
     }
+    /// Get a UIColor from the Muriel color palette, adjusted to a given shade
+    /// - Parameter color: an instance of a MurielColor
+    /// - Parameter shade: a MurielColorShade
+    class func muriel(color: MurielColor, _ shade: MurielColorShade) -> UIColor {
+        let newColor = MurielColor(from: color, shade: shade)
+        return muriel(color: newColor)
+    }
 }
 // MARK: - Basic Colors
 extension UIColor {
     /// Muriel accent color
     static var accent = muriel(color: .accent)
-    static var accentDark = muriel(color: MurielColor(from: .accent, shade: .shade70))
+    static var accentDark = muriel(color: .accent, .shade70)
     class func accent(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .accent, shade: shade))
+        return muriel(color: .accent, shade)
     }
 
     /// Muriel brand color
     static var brand = muriel(color: .brand)
     class func brand(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .brand, shade: shade))
+        return muriel(color: .brand, shade)
     }
 
     /// Muriel error color
     static var error = muriel(color: .error)
-    static var errorDark = muriel(color: MurielColor(from: .error, shade: .shade70))
+    static var errorDark = muriel(color: .error, .shade70)
     class func error(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .error, shade: shade))
+        return muriel(color: .error, shade)
     }
 
     /// Muriel primary color
     static var primary = muriel(color: .primary)
-    static var primaryLight = muriel(color: MurielColor(from: .primary, shade: .shade30))
-    static var primaryDark = muriel(color: MurielColor(from: .primary, shade: .shade70))
+    static var primaryLight = muriel(color: .primary, .shade30)
+    static var primaryDark = muriel(color: .primary, .shade70)
     class func primary(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .primary, shade: shade))
+        return muriel(color: .primary, shade)
     }
 
     /// Muriel success color
     static var success = muriel(color: .success)
     class func success(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .success, shade: shade))
+        return muriel(color: .success, shade)
     }
 
     /// Muriel warning color
     static var warning = muriel(color: .warning)
     class func warning(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .warning, shade: shade))
+        return muriel(color: .warning, shade)
     }
 }
 
@@ -60,7 +67,7 @@ extension UIColor {
     /// Muriel gray palette
     /// - Parameter shade: a MurielColorShade of the desired shade of gray
     class func gray(_ shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .gray, shade: shade))
+        return muriel(color: .gray, shade)
     }
 
     /// Muriel neutral colors, which invert in dark mode
@@ -71,38 +78,38 @@ extension UIColor {
     class func neutral(_ shade: MurielColorShade) -> UIColor {
         switch shade {
         case .shade0:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade0)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade90)))
+            return UIColor(light: muriel(color: .gray, .shade0),
+                           dark: muriel(color: .gray, .shade90))
             case .shade5:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade5)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade80)))
+            return UIColor(light: muriel(color: .gray, .shade5),
+                           dark: muriel(color: .gray, .shade80))
             case .shade10:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade10)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade70)))
+            return UIColor(light: muriel(color: .gray, .shade10),
+                           dark: muriel(color: .gray, .shade70))
             case .shade20:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade20)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade60)))
+            return UIColor(light: muriel(color: .gray, .shade20),
+                           dark: muriel(color: .gray, .shade60))
             case .shade30:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade30)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade50)))
+            return UIColor(light: muriel(color: .gray, .shade30),
+                           dark: muriel(color: .gray, .shade50))
             case .shade40:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade40)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade40)))
+            return UIColor(light: muriel(color: .gray, .shade40),
+                           dark: muriel(color: .gray, .shade40))
             case .shade50:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade50)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade30)))
+            return UIColor(light: muriel(color: .gray, .shade50),
+                           dark: muriel(color: .gray, .shade30))
             case .shade60:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade60)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade20)))
+            return UIColor(light: muriel(color: .gray, .shade60),
+                           dark: muriel(color: .gray, .shade20))
             case .shade70:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade70)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade10)))
+            return UIColor(light: muriel(color: .gray, .shade70),
+                           dark: muriel(color: .gray, .shade10))
             case .shade80:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade80)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade5)))
+            return UIColor(light: muriel(color: .gray, .shade80),
+                           dark: muriel(color: .gray, .shade5))
             case .shade90:
-            return UIColor(light: muriel(color: MurielColor(name: .gray, shade: .shade90)),
-                           dark: muriel(color: MurielColor(name: .gray, shade: .shade0)))
+            return UIColor(light: muriel(color: .gray, .shade90),
+                           dark: muriel(color: .gray, .shade0))
         }
     }
 }
@@ -248,8 +255,8 @@ extension UIColor {
 // MARK: - WP Fancy Buttons
     static var primaryButtonBackground = accent
     static var primaryButtonBorder = accentDark
-    static var primaryButtonDownBackground = muriel(color: MurielColor(name: .pink, shade: .shade80))
-    static var primaryButtonDownBorder = muriel(color: MurielColor(name: .pink, shade: .shade90))
+    static var primaryButtonDownBackground = muriel(color: .accent, .shade80)
+    static var primaryButtonDownBorder = muriel(color: .accent, .shade90)
 }
 
 extension UIColor {
