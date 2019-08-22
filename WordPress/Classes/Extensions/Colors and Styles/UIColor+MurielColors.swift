@@ -78,38 +78,27 @@ extension UIColor {
     class func neutral(_ shade: MurielColorShade) -> UIColor {
         switch shade {
         case .shade0:
-            return UIColor(light: muriel(color: .gray, .shade0),
-                           dark: muriel(color: .gray, .shade90))
+            return UIColor(light: muriel(color: .gray, .shade0), dark: muriel(color: .gray, .shade90))
             case .shade5:
-            return UIColor(light: muriel(color: .gray, .shade5),
-                           dark: muriel(color: .gray, .shade80))
+            return UIColor(light: muriel(color: .gray, .shade5), dark: muriel(color: .gray, .shade80))
             case .shade10:
-            return UIColor(light: muriel(color: .gray, .shade10),
-                           dark: muriel(color: .gray, .shade70))
+            return UIColor(light: muriel(color: .gray, .shade10), dark: muriel(color: .gray, .shade70))
             case .shade20:
-            return UIColor(light: muriel(color: .gray, .shade20),
-                           dark: muriel(color: .gray, .shade60))
+            return UIColor(light: muriel(color: .gray, .shade20), dark: muriel(color: .gray, .shade60))
             case .shade30:
-            return UIColor(light: muriel(color: .gray, .shade30),
-                           dark: muriel(color: .gray, .shade50))
+            return UIColor(light: muriel(color: .gray, .shade30), dark: muriel(color: .gray, .shade50))
             case .shade40:
-            return UIColor(light: muriel(color: .gray, .shade40),
-                           dark: muriel(color: .gray, .shade40))
+            return UIColor(light: muriel(color: .gray, .shade40), dark: muriel(color: .gray, .shade40))
             case .shade50:
-            return UIColor(light: muriel(color: .gray, .shade50),
-                           dark: muriel(color: .gray, .shade30))
+            return UIColor(light: muriel(color: .gray, .shade50), dark: muriel(color: .gray, .shade30))
             case .shade60:
-            return UIColor(light: muriel(color: .gray, .shade60),
-                           dark: muriel(color: .gray, .shade20))
+            return UIColor(light: muriel(color: .gray, .shade60), dark: muriel(color: .gray, .shade20))
             case .shade70:
-            return UIColor(light: muriel(color: .gray, .shade70),
-                           dark: muriel(color: .gray, .shade10))
+            return UIColor(light: muriel(color: .gray, .shade70), dark: muriel(color: .gray, .shade10))
             case .shade80:
-            return UIColor(light: muriel(color: .gray, .shade80),
-                           dark: muriel(color: .gray, .shade5))
+            return UIColor(light: muriel(color: .gray, .shade80), dark: muriel(color: .gray, .shade5))
             case .shade90:
-            return UIColor(light: muriel(color: .gray, .shade90),
-                           dark: muriel(color: .gray, .shade0))
+            return UIColor(light: muriel(color: .gray, .shade90), dark: muriel(color: .gray, .shade0))
         }
     }
 }
@@ -166,11 +155,11 @@ extension UIColor {
         return UIColor.neutral(.shade10)
     }
 
-    static var textInverted = UIColor(light: .white, dark: .neutral(.shade0))
+    static var textInverted = UIColor(light: .white, dark: .gray(.shade90))
     static var textPlaceholder = neutral(.shade30)
 
     /// Muriel/iOS navigation color
-    static var navigationBar = UIColor(light: .brand, dark: .neutral(.shade0))
+    static var navigationBar = UIColor(light: .brand, dark: .gray(.shade90))
 
     // MARK: - Table Views
 
@@ -234,7 +223,7 @@ extension UIColor {
     static var filterBarBackground: UIColor {
         #if XCODE11
             if #available(iOS 13, *) {
-                return UIColor(light: white, dark: .neutral(.shade0))
+                return UIColor(light: white, dark: .gray(.shade90))
             }
         #endif
         return white
@@ -250,7 +239,7 @@ extension UIColor {
     }
 
     /// Tab bar unselected color
-    static var tabUnselected: UIColor =  UIColor(light: .neutral(.shade20), dark: .neutral(.shade50))
+    static var tabUnselected: UIColor =  UIColor(light: .gray(.shade20), dark: .gray(.shade50))
 
 // MARK: - WP Fancy Buttons
     static var primaryButtonBackground = accent
