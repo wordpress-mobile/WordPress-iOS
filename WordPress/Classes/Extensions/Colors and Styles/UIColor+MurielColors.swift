@@ -157,11 +157,11 @@ extension UIColor {
         return UIColor.neutral(.shade10)
     }
 
-    static var textInverted = UIColor(light: .white, dark: .gray(.shade90))
+    static var textInverted = UIColor(light: .white, dark: .gray(.shade100))
     static var textPlaceholder = neutral(.shade30)
 
     /// Muriel/iOS navigation color
-    static var appBar = UIColor(light: .brand, dark: .gray(.shade90))
+    static var appBar = UIColor(light: .brand, dark: .gray(.shade100))
 
     // MARK: - Table Views
 
@@ -225,7 +225,7 @@ extension UIColor {
     static var filterBarBackground: UIColor {
         #if XCODE11
             if #available(iOS 13, *) {
-                return UIColor(light: white, dark: .gray(.shade90))
+                return UIColor(light: white, dark: .gray(.shade100))
             }
         #endif
         return white
@@ -241,7 +241,7 @@ extension UIColor {
     }
 
     /// Tab bar unselected color
-    static var tabUnselected: UIColor =  UIColor(light: .gray(.shade20), dark: .gray(.shade50))
+    static var tabUnselected: UIColor =  UIColor(light: .gray(.shade20), dark: .gray(.shade40))
 
 // MARK: - WP Fancy Buttons
     static var primaryButtonBackground = accent
