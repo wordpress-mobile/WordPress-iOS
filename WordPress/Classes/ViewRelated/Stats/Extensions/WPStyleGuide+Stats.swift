@@ -223,7 +223,7 @@ extension WPStyleGuide {
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {
-            static let range1 = UIColor.neutral(shade: .shade10)
+            static let range1 = UIColor.neutral(shade: .shade5)
             static let range2 = UIColor.primary(shade: .shade5)
             static let range3 = UIColor.primaryLight
             static let range4 = UIColor.primary
