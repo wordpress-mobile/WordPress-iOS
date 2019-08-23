@@ -31,10 +31,12 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
             createPost(.publish, confirmedAutoUpload: true): .upload,
             // Published local drafts with no confirmation will be remote auto-saved
             createPost(.publish): .autoSave,
-            // Draft and published posts with remote are currently unsupported. This will be
-            // fixed soon.
-            createPost(.draft, hasRemote: true): .nothing,
-            createPost(.publish, hasRemote: true): .nothing,
+            // Posts with remote that do not have confirmation will be remote auto-saved
+            createPost(.draft, hasRemote: true): .autoSave,
+            createPost(.publish, hasRemote: true): .autoSave,
+            // Posts with remote that have confirmation will be automatically uploaded
+            createPost(.draft, hasRemote: true, confirmedAutoUpload: true): .upload,
+            createPost(.publish, hasRemote: true, confirmedAutoUpload: true): .upload,
             // Other statuses are currently ignored
             createPost(.publishPrivate, confirmedAutoUpload: true): .nothing,
             createPost(.scheduled, confirmedAutoUpload: true): .nothing,
@@ -67,7 +69,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
     }
 
     /// Test which auto-uploaded post types can be canceled by the user
-    func testCancelAutoUploadMethodAppliesToLocalDraftsAndConfirmedUploads() {
+    func testCancelAutoUploadMethodAppliesToDraftsAndConfirmedUploads() {
         // Arrange
         let postsAndExpectedCancelableResult: [Post: Bool] = [
             // Local drafts are automatically uploaded and do not need to be canceled. We consider
@@ -79,10 +81,9 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
             // auto-saved is considered safe and do not need to be canceled. It should also happen
             // in the background without any interaction from the user.
             createPost(.publish): false,
-            // Draft and published posts with remote are currently unsupported. These should
-            // allow cancelation. This will be fixed soon.
-            createPost(.draft, hasRemote: true, confirmedAutoUpload: true): false,
-            createPost(.publish, hasRemote: true, confirmedAutoUpload: true): false,
+            // Confirmed draft and published posts with remote will be automatically uploaded.
+            createPost(.draft, hasRemote: true, confirmedAutoUpload: true): true,
+            createPost(.publish, hasRemote: true, confirmedAutoUpload: true): true,
             // Posts with remote that have no confirmation will be remote auto-saved.
             createPost(.draft, hasRemote: true): false,
             createPost(.publish, hasRemote: true): false,

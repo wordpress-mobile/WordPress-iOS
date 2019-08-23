@@ -29,11 +29,11 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
             createPost(status: .draft),
             createPost(status: .draft),
             createPost(status: .draft),
-            createPost(status: .publish)
-        ]
-        let unexpectedPosts = [
+            createPost(status: .publish),
             createPost(status: .draft, hasRemote: true),
             createPost(status: .publish, hasRemote: true),
+        ]
+        let unexpectedPosts = [
             createPost(status: .publishPrivate),
             createPost(status: .publishPrivate, hasRemote: true),
             createPost(status: .scheduled),
