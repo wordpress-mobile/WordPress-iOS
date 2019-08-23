@@ -12,35 +12,35 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="185" id="mup-p4-lY9" customClass="StatsGhostPostingActivityCell" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="399" height="185"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="198" id="mup-p4-lY9" customClass="StatsGhostPostingActivityCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="391" height="198"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mup-p4-lY9" id="gKB-vs-9LT">
-                <rect key="frame" x="0.0" y="0.0" width="399" height="184.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="391" height="197.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qz9-Fi-Yby">
-                        <rect key="frame" x="16" y="8.5" width="367" height="135"/>
+                        <rect key="frame" x="16" y="8" width="359" height="135"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="8x7-Ll-Xdo">
-                                <rect key="frame" x="0.0" y="0.0" width="367" height="112"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="8x7-Ll-Xdo">
+                                <rect key="frame" x="0.0" y="0.0" width="359" height="112"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6G1-YA-lvI">
-                                        <rect key="frame" x="8" y="0.0" width="85" height="112"/>
+                                        <rect key="frame" x="8" y="0.0" width="93" height="112"/>
                                         <color key="backgroundColor" name="Gray0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="112" id="9tP-nk-eZ2"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0CM-Vz-vCK">
-                                        <rect key="frame" x="141" y="0.0" width="85" height="112"/>
+                                        <rect key="frame" x="133" y="0.0" width="93" height="112"/>
                                         <color key="backgroundColor" name="Gray0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="112" id="36L-aS-sDA"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZTk-K4-dnm">
-                                        <rect key="frame" x="274" y="0.0" width="85" height="112"/>
+                                        <rect key="frame" x="258" y="0.0" width="93" height="112"/>
                                         <color key="backgroundColor" name="Gray0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="112" id="VYL-Yt-Nm2"/>
@@ -49,25 +49,25 @@
                                 </subviews>
                                 <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="64" translatesAutoresizingMaskIntoConstraints="NO" id="8YI-id-F2W">
-                                <rect key="frame" x="0.0" y="120" width="367" height="15"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="8YI-id-F2W">
+                                <rect key="frame" x="0.0" y="120" width="359" height="15"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EfR-hg-HXT">
-                                        <rect key="frame" x="16" y="0.0" width="69" height="15"/>
+                                        <rect key="frame" x="16" y="0.0" width="77" height="15"/>
                                         <color key="backgroundColor" name="Gray0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="k25-SA-VbR"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bt8-Yt-UFK">
-                                        <rect key="frame" x="149" y="0.0" width="69" height="15"/>
+                                        <rect key="frame" x="141" y="0.0" width="77" height="15"/>
                                         <color key="backgroundColor" name="Gray0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="erf-zb-uEl"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XfE-Ae-MZG">
-                                        <rect key="frame" x="282" y="0.0" width="69" height="15"/>
+                                        <rect key="frame" x="266" y="0.0" width="77" height="15"/>
                                         <color key="backgroundColor" name="Gray0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="cvx-Yy-2TW"/>
@@ -85,7 +85,7 @@
                         </constraints>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6z-rs-9uG">
-                        <rect key="frame" x="16" y="159.5" width="143.5" height="16"/>
+                        <rect key="frame" x="16" y="159" width="140.5" height="16"/>
                         <color key="backgroundColor" name="Gray0"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="UKT-Wk-QIc"/>
@@ -102,7 +102,7 @@
                     <constraint firstItem="G6z-rs-9uG" firstAttribute="leading" secondItem="gKB-vs-9LT" secondAttribute="leading" constant="16" id="w5Q-Ug-Gvj"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="128.2608695652174" y="152.34375"/>
+            <point key="canvasLocation" x="67.391304347826093" y="152.67857142857142"/>
         </tableViewCell>
     </objects>
     <resources>
