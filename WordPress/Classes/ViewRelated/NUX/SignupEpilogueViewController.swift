@@ -73,7 +73,18 @@ class SignupEpilogueViewController: NUXViewController {
     // MARK: - analytics
 
     private func tracksProperties() -> [AnyHashable: Any] {
-        let source = socialService != nil ? "google" : "email"
+        let source: String = {
+            guard let service = socialService else {
+                return "email"
+            }
+            switch service {
+            case .google:
+                return "google"
+            case .apple:
+                return "apple"
+            }
+        }()
+
         return ["source": source]
     }
 }
