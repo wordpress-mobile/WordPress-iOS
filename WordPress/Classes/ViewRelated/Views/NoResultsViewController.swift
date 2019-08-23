@@ -194,7 +194,7 @@ import Reachability
         removeFromParent()
     }
 
-    /// Public method to show a 'Dismiss' button in the navigation bar in place of the 'Back' button.
+    /// Public method to show a 'Dismiss' button in the navigation bar
     ///
     func showDismissButton() {
         navigationItem.hidesBackButton = true
@@ -204,7 +204,7 @@ import Reachability
                                             target: self,
                                             action: #selector(self.dismissButtonPressed))
         dismissButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss button title.")
-        navigationItem.leftBarButtonItem = dismissButton
+        navigationItem.rightBarButtonItem = dismissButton
     }
 
     /// Public method to get the view height when adding the No Results View to a table cell.
