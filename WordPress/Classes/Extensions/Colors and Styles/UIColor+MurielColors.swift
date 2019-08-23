@@ -203,7 +203,7 @@ extension UIColor {
                 return .secondaryLabel
             }
         #endif
-        return .neutral(shade: .shade30)
+        return .neutral(.shade30)
     }
 
     /// Tab bar unselected color
