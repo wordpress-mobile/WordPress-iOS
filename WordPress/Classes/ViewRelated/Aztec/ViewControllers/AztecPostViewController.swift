@@ -1813,7 +1813,12 @@ extension AztecPostViewController {
         picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = options
         picker.delegate = self
-        picker.modalPresentationStyle = .currentContext
+        if #available(iOS 13.0, *) {
+            picker.modalPresentationStyle = .automatic
+        } else {
+            picker.modalPresentationStyle = .overCurrentContext
+        }
+
         if let previousPicker = mediaPickerInputViewController?.mediaPicker {
             picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
         }

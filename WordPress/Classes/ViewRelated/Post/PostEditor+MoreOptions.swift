@@ -11,7 +11,13 @@ extension PostEditor where Self: UIViewController {
             settingsViewController = PostSettingsViewController(post: post)
         }
         settingsViewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(settingsViewController, animated: true)
+
+        if #available(iOS 13.0, *) {
+            let navigationController = UINavigationController(rootViewController: settingsViewController)
+            present(navigationController, animated: true)
+        } else {
+            self.navigationController?.pushViewController(settingsViewController, animated: true)
+        }
     }
 
     private func createPostRevisionBeforePreview(completion: @escaping (() -> Void)) {
@@ -61,7 +67,15 @@ extension PostEditor where Self: UIViewController {
     private func displayPreviewNotAvailable(title: String, subtitle: String? = nil) {
         let noResultsController = NoResultsViewController.controllerWith(title: title, subtitle: subtitle)
         noResultsController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(noResultsController, animated: true)
+
+        if #available(iOS 13.0, *) {
+            noResultsController.showDismissButton()
+
+            let navigationController = UINavigationController(rootViewController: noResultsController)
+            self.present(navigationController, animated: true)
+        } else {
+            navigationController?.pushViewController(noResultsController, animated: true)
+        }
     }
 
     func displayPreview() {
@@ -88,7 +102,13 @@ extension PostEditor where Self: UIViewController {
                 previewController = PostPreviewViewController(post: self.post)
             }
             previewController.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(previewController, animated: true)
+
+            if #available(iOS 13.0, *) {
+                let navigationController = UINavigationController(rootViewController: previewController)
+                self.present(navigationController, animated: true)
+            } else {
+                self.navigationController?.pushViewController(previewController, animated: true)
+            }
         }
     }
 
