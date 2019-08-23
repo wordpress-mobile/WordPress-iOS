@@ -13,9 +13,15 @@ extension BlogService {
     @objc(deduplicateBlogsForAccount:)
     func deduplicateBlogs(for account: WPAccount) {
         // Group all the account blogs by ID so it's easier to find duplicates
-        let blogsById = Dictionary(grouping: account.blogs, by: { $0.dotComID })
+        let blogsById = Dictionary(grouping: account.blogs, by: { $0.dotComID?.intValue ?? 0 })
         // For any group with more than one blog, remove duplicates
-        for (_, group) in blogsById where group.count > 1 {
+        for (blogID, group) in blogsById where group.count > 1 {
+            assert(blogID > 0, "There should not be a Blog without ID if it has an account")
+            guard blogID > 0 else {
+                DDLogError("Found one or more WordPress.com blogs without ID, skipping de-duplication")
+                continue
+            }
+            DDLogWarn("Found \(group.count - 1) duplicates for blog with ID \(blogID)")
             deduplicate(group: group)
         }
     }
@@ -31,9 +37,11 @@ extension BlogService {
             // If there are other blogs with local drafts, we reassing them to the blog that
             // is not going to be deleted
             for draft in localDrafts(for: blog) {
+                DDLogInfo("Migrating local draft \(draft.postTitle ?? "<Untitled>") to de-duplicated blog")
                 draft.blog = candidate
             }
             // Once the drafts are moved (if any), we can safely delete the duplicate
+            DDLogInfo("Deleting duplicate blog \(blog.logDescription())")
             managedObjectContext.delete(blog)
         }
     }
