@@ -147,18 +147,21 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [CellHeaderRow.self,
-                CustomizeInsightsRow.self,
-                LatestPostSummaryRow.self,
-                TwoColumnStatsRow.self,
-                PostingActivityRow.self,
-                TabbedTotalsStatsRow.self,
-                TopTotalsInsightStatsRow.self,
-                TableFooterRow.self,
-                StatsGhostTwoColumnImmutableRow.self,
-                StatsGhostTopImmutableRow.self,
-                StatsGhostTabbedImmutableRow.self,
-                StatsGhostPostingActivitiesImmutableRow.self]
+        var rows: [ImmuTableRow.Type] = [CellHeaderRow.self,
+                                         CustomizeInsightsRow.self,
+                                         LatestPostSummaryRow.self,
+                                         TwoColumnStatsRow.self,
+                                         PostingActivityRow.self,
+                                         TabbedTotalsStatsRow.self,
+                                         TopTotalsInsightStatsRow.self,
+                                         TableFooterRow.self]
+        if asyncLoadingActivated {
+            rows.append(contentsOf: [StatsGhostTwoColumnImmutableRow.self,
+                                     StatsGhostTopImmutableRow.self,
+                                     StatsGhostTabbedImmutableRow.self,
+                                     StatsGhostPostingActivitiesImmutableRow.self])
+        }
+        return rows
     }
 
     // MARK: - Table Refreshing
