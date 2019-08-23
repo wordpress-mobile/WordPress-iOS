@@ -188,6 +188,10 @@ class SiteStatsDetailsViewModel: Observable {
         case .periodPublished:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
             tableRows.append(contentsOf: publishedRows())
+        case .periodFileDownloads:
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodFileDownloads.dataSubtitle))
+            tableRows.append(contentsOf: fileDownloadsRows())
         case .postStatsMonthsYears:
             tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
                                                                dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle))
@@ -289,6 +293,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshPublished(date: selectedDate, period: selectedPeriod))
     }
 
+    func refreshFileDownloads() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+        ActionDispatcher.dispatch(PeriodAction.refreshFileDownloads(date: selectedDate, period: selectedPeriod))
+    }
+
     func refreshPostStats() {
         guard let postID = postID else {
             return
@@ -344,6 +356,8 @@ private extension SiteStatsDetailsViewModel {
             return .allCountries(date: selectedDate, period: selectedPeriod)
         case .periodPublished:
             return .allPublished(date: selectedDate, period: selectedPeriod)
+        case .periodFileDownloads:
+            return .allFileDownloads(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }
@@ -496,13 +510,13 @@ private extension SiteStatsDetailsViewModel {
 
             switch $0.kind {
             case .homepage:
-                icon = Style.imageForGridiconType(.house)
+                icon = Style.imageForGridiconType(.house, withTint: .icon)
             case .page:
-                icon = Style.imageForGridiconType(.pages)
+                icon = Style.imageForGridiconType(.pages, withTint: .icon)
             case .post:
-                icon = Style.imageForGridiconType(.posts)
+                icon = Style.imageForGridiconType(.posts, withTint: .icon)
             case .unknown:
-                icon = Style.imageForGridiconType(.posts)
+                icon = Style.imageForGridiconType(.posts, withTint: .icon)
             }
 
             return StatsTotalRowData(name: $0.title,
@@ -677,6 +691,19 @@ private extension SiteStatsDetailsViewModel {
                                                                                      showDisclosure: true,
                                                                                      disclosureURL: $0.postURL,
                                                                                      statSection: .periodPublished) }
+            ?? []
+    }
+
+    // MARK: - File Downloads
+
+    func fileDownloadsRows() -> [DetailDataRow] {
+        return dataRowsFor(fileDownloadsRowData())
+    }
+
+    func fileDownloadsRowData() -> [StatsTotalRowData] {
+        return periodStore.getTopFileDownloads()?.fileDownloads.map { StatsTotalRowData(name: $0.file,
+                                                                                        data: $0.downloadCount.abbreviatedString(),
+                                                                                        statSection: .periodFileDownloads) }
             ?? []
     }
 

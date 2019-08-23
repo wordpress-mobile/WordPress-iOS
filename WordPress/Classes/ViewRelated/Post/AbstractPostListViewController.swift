@@ -233,9 +233,10 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func configureFilterBar() {
+        filterTabBar.backgroundColor = .filterBarBackground
         filterTabBar.tintColor = .primary
-        filterTabBar.deselectedTabColor = .neutral(shade: .shade40)
-        filterTabBar.dividerColor = .neutral(shade: .shade10)
+        filterTabBar.deselectedTabColor = .neutral(.shade40)
+        filterTabBar.dividerColor = .neutral(.shade10)
 
         filterTabBar.items = filterSettings.availablePostListFilters()
 
@@ -912,14 +913,6 @@ class AbstractPostListViewController: UIViewController,
         }
 
         present(alertController, animated: true)
-    }
-
-    @objc func schedulePost(_ apost: AbstractPost) {
-        WPAnalytics.track(.postListScheduleAction, withProperties: propertiesForAnalytics())
-
-        apost.status = .scheduled
-        uploadPost(apost)
-        updateFilterWithPostStatus(.scheduled)
     }
 
     @objc func moveToDraft(_ apost: AbstractPost) {

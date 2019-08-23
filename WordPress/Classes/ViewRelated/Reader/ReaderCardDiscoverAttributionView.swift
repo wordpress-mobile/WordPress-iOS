@@ -67,8 +67,9 @@ private enum ReaderCardDiscoverAttribution: Int {
      Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
      */
     fileprivate func applyOpaqueBackgroundColors() {
-        imageView.backgroundColor = UIColor.white
-        textLabel.backgroundColor = UIColor.white
+        backgroundColor = .listForeground
+        imageView.backgroundColor = .listForeground
+        textLabel.backgroundColor = .listForeground
     }
 
     @objc open func configureView(_ contentProvider: ReaderPostContentProvider?) {
@@ -107,7 +108,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
                                             blogName: contentProvider.sourceBlogNameForDisplay())
         let attributes = originalAttributionParagraphAttributes
-        textLabel.textColor = .neutral(shade: .shade30)
+        textLabel.textColor = .neutral(.shade30)
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
         attributionAction = .none
     }

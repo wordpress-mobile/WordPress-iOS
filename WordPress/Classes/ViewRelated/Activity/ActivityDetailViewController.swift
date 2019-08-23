@@ -45,7 +45,7 @@ class ActivityDetailViewController: UIViewController {
     var router: ActivityContentRouter?
 
     override func viewDidLoad() {
-        setupFonts()
+        setupLabelStyles()
         setupViews()
         setupText()
         setupAccesibility()
@@ -56,9 +56,15 @@ class ActivityDetailViewController: UIViewController {
         rewindPresenter?.presentRewindFor(activity: activity!)
     }
 
-    private func setupFonts() {
+    private func setupLabelStyles() {
+        nameLabel.textColor = .text
         nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,
                                            weight: .semibold)
+        textLabel.textColor = .text
+        summaryLabel.textColor = .textSubtle
+
+        rewindButton.setTitleColor(.primary, for: .normal)
+        rewindButton.setTitleColor(.primaryDark, for: .highlighted)
     }
 
     private func setupViews() {
@@ -66,9 +72,9 @@ class ActivityDetailViewController: UIViewController {
             return
         }
 
+        view.backgroundColor = .listBackground
 
         textLabel.isHidden = true
-
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
 
@@ -78,7 +84,7 @@ class ActivityDetailViewController: UIViewController {
         }
 
         if let avatar = activity.actor?.avatarURL, let avatarURL = URL(string: avatar) {
-            imageView.backgroundColor = .neutral(shade: .shade20)
+            imageView.backgroundColor = .neutral(.shade20)
             imageView.downloadImage(from: avatarURL, placeholderImage: Gridicon.iconOfType(.user, withSize: Constants.gridiconSize))
         } else if let iconType = WPStyleGuide.ActivityStyleGuide.getGridiconTypeForActivity(activity) {
             imageView.contentMode = .center
@@ -170,7 +176,7 @@ class ActivityDetailViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            setupFonts()
+            setupLabelStyles()
             setupAccesibility()
         }
     }

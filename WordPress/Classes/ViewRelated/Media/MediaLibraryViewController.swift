@@ -34,9 +34,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Initializers
 
     @objc init(blog: Blog) {
-        WPMediaCollectionViewCell.appearance().placeholderTintColor = .neutral(shade: .shade5)
-        WPMediaCollectionViewCell.appearance().placeholderBackgroundColor = .neutral(shade: .shade70)
-        WPMediaCollectionViewCell.appearance().loadingBackgroundColor = .tableBackground
+        WPMediaCollectionViewCell.appearance().placeholderTintColor = .neutral(.shade5)
+        WPMediaCollectionViewCell.appearance().placeholderBackgroundColor = .neutral(.shade70)
+        WPMediaCollectionViewCell.appearance().loadingBackgroundColor = .listBackground
 
         self.blog = blog
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)
@@ -90,6 +90,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         noResultsView.delegate = self
 
         updateViewState(for: pickerDataSource.totalAssetCount)
+
+        if let collectionView = collectionView {
+            WPStyleGuide.configureColors(view: view, collectionView: collectionView)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

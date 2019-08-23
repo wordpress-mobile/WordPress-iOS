@@ -2,20 +2,19 @@ import SVProgressHUD
 import WordPressAuthenticator
 
 
-class SignupUsernameTableViewController: NUXTableViewController {
+class SignupUsernameTableViewController: NUXTableViewController, SearchTableViewCellDelegate {
     open var currentUsername: String?
     open var displayName: String?
     open var delegate: SignupUsernameViewControllerDelegate?
+    open var suggestions: [String] = []
     private var service: AccountSettingsService?
-    private var suggestions: [String] = []
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let bundle = WordPressAuthenticator.bundle
-        tableView.register(UINib(nibName: "SearchTableViewCell", bundle: bundle), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
+        registerNibs()
         setupBackgroundTapGestureRecognizer()
     }
 
@@ -39,7 +38,7 @@ class SignupUsernameTableViewController: NUXTableViewController {
 
         suggestUsernames(for: nameToSearch) { [weak self] (suggestions) in
             self?.suggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.suggestions.rawValue), with: .automatic)
+            self?.reloadSections()
         }
     }
 
@@ -48,29 +47,15 @@ class SignupUsernameTableViewController: NUXTableViewController {
         SVProgressHUD.dismiss()
     }
 
-    private func suggestUsernames(for searchTerm: String, addSuggestions: @escaping ([String]) ->()) {
-        guard !isSearching else {
-            return
-        }
+    func registerNibs() {
+        let bundle = WordPressAuthenticator.bundle
+        tableView.register(UINib(nibName: "SearchTableViewCell", bundle: bundle), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
+    }
 
-        isSearching = true
-
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.defaultWordPressComAccount(),
-            let api = account.wordPressComRestApi else {
-            return
-        }
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process."))
-
-        let service = AccountSettingsService(userID: account.userID.intValue, api: api)
-        service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
-            if newSuggestions.count == 0 {
-                WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
-            }
-            self?.isSearching = false
-            SVProgressHUD.dismiss()
-            addSuggestions(newSuggestions)
+    func reloadSections(includingAllSections: Bool = true) {
+        DispatchQueue.main.async {
+            let set = includingAllSections ? IndexSet(integersIn: Sections.searchField.rawValue...Sections.suggestions.rawValue) : IndexSet(integer: Sections.suggestions.rawValue)
+            self.tableView.reloadSections(set, with: .automatic)
         }
     }
 
@@ -81,6 +66,37 @@ class SignupUsernameTableViewController: NUXTableViewController {
         })
         gestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(gestureRecognizer)
+    }
+
+    func buildHeaderDescription() -> NSAttributedString {
+        guard let currentUsername = currentUsername, let displayName = displayName else {
+            return NSAttributedString(string: "")
+        }
+
+        let baseDescription = String(format: NSLocalizedString("Your current username is %@. With few exceptions, others will only ever see your display name, %@.", comment: "Instructional text that displays the current username and display name."), currentUsername, displayName)
+        guard let rangeOfUsername = baseDescription.range(of: currentUsername),
+            let rangeOfDisplayName = baseDescription.range(of: displayName) else {
+                return NSAttributedString(string: baseDescription)
+        }
+        let boldFont = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        let plainFont = UIFont.preferredFont(forTextStyle: .subheadline)
+        let description = NSMutableAttributedString(string: baseDescription, attributes: [.font: plainFont])
+        description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfUsername))
+        description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfDisplayName))
+        return description
+    }
+
+    // MARK: - SearchTableViewCellDelegate
+
+    func startSearch(for searchTerm: String) {
+        guard searchTerm.count > 0 else {
+            return
+        }
+
+        suggestUsernames(for: searchTerm) { [weak self] suggestions in
+            self?.suggestions = suggestions
+            self?.reloadSections(includingAllSections: false)
+        }
     }
 }
 
@@ -142,7 +158,7 @@ extension SignupUsernameTableViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == Sections.suggestions.rawValue {
             let footer = UIView()
-            footer.backgroundColor = .neutral(shade: .shade10)
+            footer.backgroundColor = .neutral(.shade10)
             return footer
         }
         return nil
@@ -164,24 +180,6 @@ extension SignupUsernameTableViewController {
         return cell
     }
 
-    private func buildHeaderDescription() -> NSAttributedString {
-        guard let currentUsername = currentUsername, let displayName = displayName else {
-            return NSAttributedString(string: "")
-        }
-
-        let baseDescription = String(format: NSLocalizedString("Your current username is %@. With few exceptions, others will only ever see your display name, %@.", comment: "Instructional text that displays the current username and display name."), currentUsername, displayName)
-        guard let rangeOfUsername = baseDescription.range(of: currentUsername),
-            let rangeOfDisplayName = baseDescription.range(of: displayName) else {
-                return NSAttributedString(string: baseDescription)
-        }
-        let boldFont = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
-        let plainFont = UIFont.preferredFont(forTextStyle: .subheadline)
-        let description = NSMutableAttributedString(string: baseDescription, attributes: [.font: plainFont])
-        description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfUsername))
-        description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfDisplayName))
-        return description
-    }
-
     private func searchFieldCell() -> SearchTableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.reuseIdentifier) as? SearchTableViewCell else {
             fatalError()
@@ -198,13 +196,39 @@ extension SignupUsernameTableViewController {
         let cell = UITableViewCell()
 
         cell.textLabel?.text = username
-        cell.textLabel?.textColor = .neutral(shade: .shade70)
+        cell.textLabel?.textColor = .neutral(.shade70)
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
         if checked {
             cell.accessoryType = .checkmark
         }
         return cell
+    }
+
+    private func suggestUsernames(for searchTerm: String, addSuggestions: @escaping ([String]) ->()) {
+        guard !isSearching else {
+            return
+        }
+
+        isSearching = true
+
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        guard let account = accountService.defaultWordPressComAccount(),
+            let api = account.wordPressComRestApi else {
+                return
+        }
+        SVProgressHUD.show(withStatus: NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process."))
+
+        let service = AccountSettingsService(userID: account.userID.intValue, api: api)
+        service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
+            if newSuggestions.count == 0 {
+                WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
+            }
+            self?.isSearching = false
+            SVProgressHUD.dismiss()
+            addSuggestions(newSuggestions)
+        }
     }
 }
 
@@ -247,22 +271,6 @@ extension SignupUsernameTableViewController {
         if let cell = self.tableView.cellForRow(at: indexPath) {
             cell.accessoryType = .checkmark
             selectedCell = cell
-        }
-    }
-}
-
-
-// MARK: - SearchTableViewCellDelegate
-
-extension SignupUsernameTableViewController: SearchTableViewCellDelegate {
-    func startSearch(for searchTerm: String) {
-        guard searchTerm.count > 0 else {
-            return
-        }
-
-        suggestUsernames(for: searchTerm) { [weak self] suggestions in
-            self?.suggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
     }
 }

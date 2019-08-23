@@ -7,7 +7,6 @@
 #import "WordPress-Swift.h"
 
 @import Gridicons;
-@import SVProgressHUD;
 @import WordPressUI;
 
 
@@ -19,6 +18,7 @@
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *doneBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *statusButtonItem;
 @property (nonatomic, strong) PostPreviewGenerator *generator;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) id reachabilityObserver;
@@ -43,7 +43,6 @@
         self.apost = aPost;
         self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost];
         self.generator.delegate = self;
-        self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     }
     return self;
 }
@@ -55,7 +54,6 @@
         self.apost = aPost;
         self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost previewURL:previewURL];
         self.generator.delegate = self;
-        self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     }
     return self;
 }
@@ -85,6 +83,7 @@
         [rightButtons addObject:[self shareBarButtonItem]];
     }
     [self.navigationItem setRightBarButtonItems:rightButtons animated:YES];
+    self.navigationItem.leftItemsSupplementBackButton = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -96,7 +95,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self stopLoading];
     [self stopWaitingForConnectionRestored];
 }
 
@@ -113,18 +111,21 @@
     [self.view addSubview:self.webView];
 }
 
-#pragma mark - Loading
+#pragma mark - Loading Animations
 
-- (void)startLoading
+- (void)startLoadAnimation
 {
-    [SVProgressHUD show];
+    [self.navigationItem setLeftBarButtonItem:[self statusButtonItem] animated:YES];
+    self.navigationItem.title = nil;
 }
 
-- (void)stopLoading
+- (void)stopLoadAnimation
 {
-    [SVProgressHUD dismiss];
-    [self.webView stopLoading];
+    self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
+    self.navigationItem.title  = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
 }
+
+#pragma mark - Reachability
 
 - (void)reloadWhenConnectionRestored
 {
@@ -153,7 +154,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)awebView
 {
     DDLogMethod();
-    [self stopLoading];
+    [self stopLoadAnimation];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -178,7 +179,8 @@
         return;
     }
 
-    [self stopLoading];
+    [self stopLoadAnimation];
+    
     [self.generator previewRequestFailedWithReason:[NSString stringWithFormat:@"Generic web view error Error. Error code: %d, Error domain: %@", error.code, error.domain]];
 }
 
@@ -213,6 +215,7 @@
     if (navigationType == UIWebViewNavigationTypeFormSubmitted) {
         return NO;
     }
+    
     return YES;
 }
 
@@ -224,7 +227,7 @@
 }
 
 - (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
-    [self startLoading];
+    [self startLoadAnimation];
     [self.webView loadRequest:request];
     [self.noResultsViewController removeFromView];
 }
@@ -287,6 +290,17 @@
     }
 
     return _doneBarButtonItem;
+}
+
+- (UIBarButtonItem *)statusButtonItem
+{
+    if (!_statusButtonItem) {
+        LoadingStatusView *statusView = [[LoadingStatusView alloc] initWithTitle: NSLocalizedString(@"Loading", @"Label for button to present loading preview status")];
+        _statusButtonItem = [[UIBarButtonItem alloc] initWithCustomView:statusView];
+        _statusButtonItem.accessibilityIdentifier = @"Preview Status";
+    }
+    
+    return _statusButtonItem;
 }
 
 - (void)sharePost

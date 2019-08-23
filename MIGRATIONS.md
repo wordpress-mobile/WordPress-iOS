@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 89
+
+@scoutharris 2019-08-xx
+- Added `FileDownloadsStatsRecordValue` entity.
+
 ## WordPress 88
 
 @danielebogo 2019-07-24

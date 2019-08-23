@@ -55,7 +55,7 @@ class LoginEpilogueViewController: UIViewController {
 
         refreshInterface(with: credentials)
 
-        view.backgroundColor = .neutral(shade: .shade0)
+        view.backgroundColor = .neutral(.shade0)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -149,7 +149,7 @@ private extension LoginEpilogueViewController {
             buttonPanel.backgroundColor = .white
             shadowView.isHidden = false
         } else {
-            buttonPanel.backgroundColor = .tableBackground
+            buttonPanel.backgroundColor = .listBackground
             shadowView.isHidden = true
         }
     }

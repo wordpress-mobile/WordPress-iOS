@@ -141,7 +141,9 @@ extension BlogDetailsViewController {
 
             let alert = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
                 InteractiveNotificationsManager.shared.requestAuthorization {
-                    controller.dismiss(animated: true)
+                    DispatchQueue.main.async {
+                        controller.dismiss(animated: true)
+                    }
                 }
             }
             alert.modalPresentationStyle = .custom

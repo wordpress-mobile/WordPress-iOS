@@ -456,11 +456,27 @@ private class TabBarButton: UIButton {
         static let maxSize: CGFloat = 28.0
     }
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        setFont()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
+        setFont()
+    }
+
+    private func setFont() {
+        titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+            setFont()
         }
     }
 }

@@ -448,19 +448,19 @@ extension WordPressAppDelegate {
     private func setupFancyAlertAppearance() {
         let appearance = FancyAlertView.appearance()
 
-        appearance.titleTextColor = .neutral(shade: .shade70)
+        appearance.titleTextColor = .neutral(.shade70)
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
 
-        appearance.bodyTextColor = .neutral(shade: .shade70)
+        appearance.bodyTextColor = .neutral(.shade70)
         appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
 
         appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         appearance.infoTintColor = WPStyleGuide.wordPressBlue()
 
-        appearance.topDividerColor = .neutral(shade: .shade5)
-        appearance.bottomDividerColor = .neutral(shade: .shade0)
-        appearance.headerBackgroundColor = .neutral(shade: .shade0)
+        appearance.topDividerColor = .neutral(.shade5)
+        appearance.bottomDividerColor = .neutral(.shade0)
+        appearance.headerBackgroundColor = .neutral(.shade0)
     }
 
     /// Setup: FancyButton's Appearance
@@ -476,13 +476,13 @@ extension WordPressAppDelegate {
 
         appearance.secondaryTitleColor = .text
         appearance.secondaryNormalBackgroundColor = UIColor.textInverted
-        appearance.secondaryNormalBorderColor = UIColor.neutral(shade: .shade10)
-        appearance.secondaryHighlightBackgroundColor = UIColor.neutral(shade: .shade10)
-        appearance.secondaryHighlightBorderColor = UIColor.neutral(shade: .shade40)
+        appearance.secondaryNormalBorderColor = UIColor.neutral(.shade10)
+        appearance.secondaryHighlightBackgroundColor = UIColor.neutral(.shade10)
+        appearance.secondaryHighlightBorderColor = UIColor.neutral(.shade40)
 
-        appearance.disabledTitleColor = .neutral(shade: .shade20)
+        appearance.disabledTitleColor = .neutral(.shade20)
         appearance.disabledBackgroundColor = .textInverted
-        appearance.disabledBorderColor = .neutral(shade: .shade10)
+        appearance.disabledBorderColor = .neutral(.shade10)
     }
 }
 
@@ -777,26 +777,12 @@ extension WordPressAppDelegate {
 
 extension WordPressAppDelegate {
     func customizeAppearance() {
-        window?.backgroundColor = WPStyleGuide.itsEverywhereGrey()
+        window?.backgroundColor = .black
         window?.tintColor = WPStyleGuide.wordPressBlue()
 
         WPStyleGuide.configureTabBarAppearance()
         WPStyleGuide.configureNavigationAppearance()
         WPStyleGuide.configureDefaultTint()
-        if !FeatureFlag.murielColors.enabled {
-            UITabBar.appearance().shadowImage = UIImage(color: UIColor(red: 210.0/255.0, green: 222.0/255.0, blue: 230.0/255.0, alpha: 1.0))
-
-            let navigationAppearance = UINavigationBar.appearance()
-            navigationAppearance.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
-            navigationAppearance.shadowImage = WPStyleGuide.navigationBarShadowImage()
-            navigationAppearance.barStyle = WPStyleGuide.navigationBarBarStyle()
-
-            let tabBarTextColor = WPStyleGuide.wordPressBlue()
-            let tabBarUnselectedTextColor = UIColor.neutral(shade: .shade30)
-
-            UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarUnselectedTextColor], for: .normal)
-            UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarTextColor], for: .selected)
-        }
 
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UIToolbar.appearance().barTintColor = .primary
@@ -811,7 +797,7 @@ extension WordPressAppDelegate {
         WPStyleGuide.configureSearchBarAppearance()
 
         // SVProgressHUD
-        SVProgressHUD.setBackgroundColor(UIColor.neutral(shade: .shade70).withAlphaComponent(0.95))
+        SVProgressHUD.setBackgroundColor(UIColor.neutral(.shade70).withAlphaComponent(0.95))
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
@@ -819,13 +805,13 @@ extension WordPressAppDelegate {
         // Media Picker styles
         let barItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
         barItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: WPFontManager.systemSemiBoldFont(ofSize: 16.0)], for: .disabled)
-        UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = .neutral(shade: .shade5)
+        UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = .neutral(.shade5)
 
 
         let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
-        cellAppearance.loadingBackgroundColor = .tableBackground
-        cellAppearance.placeholderBackgroundColor = .neutral(shade: .shade70)
-        cellAppearance.placeholderTintColor = .neutral(shade: .shade5)
+        cellAppearance.loadingBackgroundColor = .listBackground
+        cellAppearance.placeholderBackgroundColor = .neutral(.shade70)
+        cellAppearance.placeholderTintColor = .neutral(.shade5)
         cellAppearance.setCellTintColor(.primary)
 
         UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary

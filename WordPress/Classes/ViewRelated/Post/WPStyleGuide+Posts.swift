@@ -15,13 +15,13 @@ extension WPStyleGuide {
     }
 
     // MARK: - Card View Styles
-    static let postCardBorderColor: UIColor = .neutral(shade: .shade10)
+    static let postCardBorderColor: UIColor = .neutral(.shade10)
 
     static let separatorHeight: CGFloat = .hairlineBorderWidth
 
     class func applyPostCardStyle(_ cell: UITableViewCell) {
-        cell.backgroundColor = .tableBackground
-        cell.contentView.backgroundColor = .tableBackground
+        cell.backgroundColor = .listBackground
+        cell.contentView.backgroundColor = .listBackground
     }
 
     class func applyPostTitleStyle(_ label: UILabel) {
@@ -83,7 +83,7 @@ extension WPStyleGuide {
             marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor),
             marginMask.heightAnchor.constraint(equalToConstant: topMargin)
             ])
-        marginMask.backgroundColor = .neutral(shade: .shade5)
+        marginMask.backgroundColor = .neutral(.shade5)
     }
 
     // MARK: - Attributed String Attributes
