@@ -27,7 +27,7 @@ extension BlogService {
         let candidate = group[candidateIndex]
 
         // We look through every other blog
-        for (index, blog) in group.enumerated() where index != candidateIndex  {
+        for (index, blog) in group.enumerated() where index != candidateIndex {
             // If there are other blogs with local drafts, we reassing them to the blog that
             // is not going to be deleted
             for draft in localDrafts(for: blog) {
