@@ -166,6 +166,12 @@ FeaturedImageViewControllerDelegate>
     // reachability callbacks to trigger before such initial setup completes.
     //
     [self setupReachability];
+    
+    if ([self isModal]) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                               target:self
+                                                                                               action:@selector(dismiss)];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -361,6 +367,10 @@ FeaturedImageViewControllerDelegate>
     [self.tableView reloadData];
 }
 
+- (void)dismiss
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - TextField Delegate Methods
 

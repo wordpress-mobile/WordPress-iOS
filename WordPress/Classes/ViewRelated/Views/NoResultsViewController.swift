@@ -462,7 +462,11 @@ private extension NoResultsViewController {
     }
 
     @objc func dismissButtonPressed() {
-        delegate?.dismissButtonPressed?()
+        if let dismiss = delegate?.dismissButtonPressed {
+            dismiss()
+        } else {
+            presentingViewController?.dismiss(animated: true, completion: nil)
+        }
     }
 
     // MARK: - Helpers
