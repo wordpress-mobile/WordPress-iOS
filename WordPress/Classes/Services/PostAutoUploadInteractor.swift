@@ -31,7 +31,7 @@ final class PostAutoUploadInteractor {
                 return .nothing
         }
 
-        if post.isLocalDraft || post.shouldAttemptAutoUpload() {
+        if post.isLocalDraft || post.shouldAttemptAutoUpload {
             return .upload
         } else {
             // TODO This is currently not supported by PostCoordinator

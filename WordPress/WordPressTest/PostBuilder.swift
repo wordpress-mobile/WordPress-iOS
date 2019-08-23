@@ -80,7 +80,7 @@ class PostBuilder {
     }
 
     func confirmedAutoUpload() -> PostBuilder {
-        post.confirmedChangesHash = post.changesConfirmedContentHashValue()
+        post.shouldAttemptAutoUpload = true
         return self
     }
 
