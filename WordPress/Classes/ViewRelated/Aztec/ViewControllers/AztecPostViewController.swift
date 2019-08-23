@@ -1814,7 +1814,9 @@ extension AztecPostViewController {
         picker.mediaPicker.options = options
         picker.delegate = self
         if #available(iOS 13.0, *) {
+#if XCODE11
             picker.modalPresentationStyle = .automatic
+#endif
         } else {
             picker.modalPresentationStyle = .overCurrentContext
         }
