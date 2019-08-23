@@ -17,7 +17,7 @@ class StatsChildRowsView: UIView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor = .tableForeground
+        backgroundColor = .listForeground
         WPStyleGuide.Stats.configureViewAsSeparator(bottomSeperatorLine)
     }
 }

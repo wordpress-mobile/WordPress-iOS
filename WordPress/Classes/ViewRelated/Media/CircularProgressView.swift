@@ -39,7 +39,7 @@ class CircularProgressView: UIView {
                     progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: .primary(.shade40)),
                     backgroundColor: .clear,
                     accessoryViewTintColor: .neutral(.shade70),
-                    accessoryViewBackgroundColor: .tableBackground)
+                    accessoryViewBackgroundColor: .listBackground)
             case .mediaCell:
                 return Appearance(
                     progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: .white),

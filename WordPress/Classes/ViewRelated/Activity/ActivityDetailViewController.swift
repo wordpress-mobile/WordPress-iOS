@@ -72,7 +72,7 @@ class ActivityDetailViewController: UIViewController {
             return
         }
 
-        view.backgroundColor = .tableBackground
+        view.backgroundColor = .listBackground
 
         textLabel.isHidden = true
         textView.textContainerInset = .zero

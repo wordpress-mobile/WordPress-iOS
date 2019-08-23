@@ -24,7 +24,7 @@ extension WPStyleGuide {
         let navigationAppearance = UINavigationBar.appearance()
         navigationAppearance.isTranslucent = false
         navigationAppearance.tintColor = .white
-        navigationAppearance.barTintColor = .navigationBar
+        navigationAppearance.barTintColor = .appBar
         navigationAppearance.barStyle = .black
 
 #if XCODE11
@@ -32,7 +32,7 @@ extension WPStyleGuide {
             // Required to fix detail navigation controller appearance due to https://stackoverflow.com/q/56615513
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .navigationBar
+            appearance.backgroundColor = .appBar
             appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationAppearance.standardAppearance = appearance
             navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
@@ -74,14 +74,14 @@ extension WPStyleGuide {
             return
         }
 
-        tableView.backgroundColor = .tableBackground
+        tableView.backgroundColor = .listBackground
         tableView.separatorColor = .neutral(.shade10)
     }
 
     class func configureColors(view: UIView, collectionView: UICollectionView) {
         configureTableViewColors(view: view)
         collectionView.backgroundView = nil
-        collectionView.backgroundColor = .tableBackground
+        collectionView.backgroundColor = .listBackground
     }
 
     @objc

@@ -34,6 +34,7 @@ enum MurielColorShade: Int, CustomStringConvertible {
     case shade70 = 70
     case shade80 = 80
     case shade90 = 90
+    case shade100 = 100
 
     var description: String {
         return "\(rawValue)"
@@ -60,15 +61,12 @@ struct MurielColor {
     static let brand = MurielColor(name: .wordPressBlue)
     static let divider = MurielColor(name: .gray, shade: .shade10)
     static let error = MurielColor(name: .red)
-    static let neutral = MurielColor(name: .gray)
+    static let gray = MurielColor(name: .gray)
     static let primary = MurielColor(name: .blue)
     static let success = MurielColor(name: .green)
     static let text = MurielColor(name: .gray, shade: .shade80)
     static let textSubtle = MurielColor(name: .gray, shade: .shade50)
     static let warning = MurielColor(name: .yellow)
-
-    // MARK: - Additional iOS semantic colors
-    static let tableBackground = MurielColor(name: .gray, shade: .shade0)
 
     /// The full name of the color, with required shade value
     func assetName() -> String {
