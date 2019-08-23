@@ -7,6 +7,7 @@
 * Stats: added File Downloads to period stats.
 * Stats Periods: Fixed an issue that made the Post stats title button unable.
 * Adds a Publish Now action to posts in the posts list.
+* Stats Periods: Fixed a bug that affected the header date when the site and the device timezones were different.
 * My Sites: Fixed a problem where some sites would appear duplicated.
  
 13.0
