@@ -120,7 +120,7 @@ extension WPStyleGuide {
 
         public static let blockTextColor            = UIColor.text
         public static let blockQuotedColor          = UIColor.neutral
-        public static let blockBackgroundColor      = UIColor.white
+        public static let blockBackgroundColor      = UIColor.tableForeground
         public static let blockLinkColor            = UIColor.primary
         public static let blockSeparatorColor       = UIColor.divider
 
