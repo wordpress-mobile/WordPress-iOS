@@ -95,4 +95,14 @@
     static func murielListIcon() -> UIColor {
         return .listIcon
     }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielTableForeground() -> UIColor {
+        return .tableForeground
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielTableBackground() -> UIColor {
+        return .tableBackground
+    }
 }
