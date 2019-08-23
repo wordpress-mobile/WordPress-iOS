@@ -196,6 +196,16 @@ extension UIColor {
         return .primary
     }
 
+    /// For icons that are present in a toolbar or similar view
+    static var toolbarInactive: UIColor {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                return .secondaryLabel
+            }
+        #endif
+        return .neutral(shade: .shade30)
+    }
+
     /// Tab bar unselected color
     static var tabUnselected: UIColor =  UIColor(light: .neutral(shade: .shade20), dark: .neutral(shade: .shade50))
 

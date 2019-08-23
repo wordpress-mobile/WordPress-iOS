@@ -3,7 +3,7 @@ import Gridicons
 import WordPressShared
 
 extension WPStyleGuide {
-    static let aztecFormatBarInactiveColor: UIColor = .listIcon
+    static let aztecFormatBarInactiveColor: UIColor = .toolbarInactive
 
     static let aztecFormatBarActiveColor: UIColor = .primary
 
