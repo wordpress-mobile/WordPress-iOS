@@ -163,10 +163,6 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
 
     }
 
-    func schedule(_ post: AbstractPost) {
-
-    }
-
     func restore(_ post: AbstractPost) {
 
     }

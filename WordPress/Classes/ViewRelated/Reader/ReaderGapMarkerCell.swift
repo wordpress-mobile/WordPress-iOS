@@ -24,7 +24,7 @@ open class ReaderGapMarkerCell: UITableViewCell {
         // Draw the tear
         drawTearBackground()
 
-        activityViewBackgroundView.backgroundColor = .neutral(shade: .shade40)
+        activityViewBackgroundView.backgroundColor = .neutral(.shade40)
         activityViewBackgroundView.layer.cornerRadius = 4.0
         activityViewBackgroundView.layer.masksToBounds = true
 

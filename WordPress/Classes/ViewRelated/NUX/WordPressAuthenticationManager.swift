@@ -38,14 +38,14 @@ class WordPressAuthenticationManager: NSObject {
                                                 primaryHighlightBackgroundColor: .primaryButtonDownBackground,
                                                 primaryHighlightBorderColor: .primaryButtonDownBorder,
                                                 secondaryNormalBackgroundColor: .textInverted,
-                                                secondaryNormalBorderColor: .neutral(shade: .shade10),
-                                                secondaryHighlightBackgroundColor: .neutral(shade: .shade10),
-                                                secondaryHighlightBorderColor: .neutral(shade: .shade40),
+                                                secondaryNormalBorderColor: .neutral(.shade10),
+                                                secondaryHighlightBackgroundColor: .neutral(.shade10),
+                                                secondaryHighlightBorderColor: .neutral(.shade40),
                                                 disabledBackgroundColor: .textInverted,
-                                                disabledBorderColor: .neutral(shade: .shade10),
+                                                disabledBorderColor: .neutral(.shade10),
                                                 primaryTitleColor: .textInverted,
                                                 secondaryTitleColor: .text,
-                                                disabledTitleColor: .neutral(shade: .shade20),
+                                                disabledTitleColor: .neutral(.shade20),
                                                 textButtonColor: .primary,
                                                 textButtonHighlightColor: .primaryDark,
                                                 instructionColor: .text,
@@ -53,9 +53,10 @@ class WordPressAuthenticationManager: NSObject {
                                                 placeholderColor: .textPlaceholder,
                                                 viewControllerBackgroundColor: .tableBackground,
                                                 navBarImage: Gridicon.iconOfType(.mySites),
-                                                navBarBadgeColor: .accent(shade: .shade20),
+                                                navBarBadgeColor: .accent(.shade20),
                                                 prologueBackgroundColor: .primary,
-                                                prologueTitleColor: .textInverted)
+                                                prologueTitleColor: .textInverted,
+                                                statusBarStyle: .lightContent)
 
         WordPressAuthenticator.initialize(configuration: configuration,
                                           style: style)

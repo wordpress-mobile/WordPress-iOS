@@ -11,7 +11,7 @@ class WPRichTextFormatter {
     static let blockquoteIdentifier = "WPBLOCKQUOTEIDENTIFIER"
     let blockquoteIndentation = CGFloat(20.0)
     let defaultParagraphSpacing = CGFloat(14.0)
-    var horizontalRuleColor: UIColor = .neutral(shade: .shade5)
+    var horizontalRuleColor: UIColor = .neutral(.shade5)
 
     /// An array of HTMLTagProcessors
     ///
