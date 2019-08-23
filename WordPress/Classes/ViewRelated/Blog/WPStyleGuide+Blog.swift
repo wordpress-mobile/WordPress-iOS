@@ -28,9 +28,9 @@ extension WPStyleGuide {
         cell.detailTextLabel?.sizeToFit()
         cell.detailTextLabel?.textColor = .text
 
-        cell.imageView?.layer.borderColor = UIColor.neutral(shade: .shade10).cgColor
+        cell.imageView?.layer.borderColor = UIColor.neutral(.shade10).cgColor
         cell.imageView?.layer.borderWidth = 1
-        cell.imageView?.tintColor = .neutral(shade: .shade30)
+        cell.imageView?.tintColor = .neutral(.shade30)
 
         cell.backgroundColor = .tableBackground
     }

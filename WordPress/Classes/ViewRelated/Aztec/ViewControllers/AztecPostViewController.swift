@@ -148,7 +148,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.textAttachmentDelegate = self
 
         textView.backgroundColor = Colors.aztecBackground
-        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor, dark: .neutral(shade: .shade5))
+        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor, dark: .neutral(.shade5))
         textView.blockquoteBorderColor = .listIcon
 
         textView.linkTextAttributes = linkAttributes
@@ -3317,8 +3317,8 @@ extension AztecPostViewController {
         static let progressBackground           = UIColor.primary
         static let progressTint                 = UIColor.white
         static let progressTrack                = UIColor.primary
-        static let mediaProgressOverlay         = UIColor.neutral(shade: .shade70).withAlphaComponent(CGFloat(0.6))
-        static let mediaProgressBarBackground   = UIColor.neutral(shade: .shade0)
+        static let mediaProgressOverlay         = UIColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaProgressBarBackground   = UIColor.neutral(.shade0)
         static let mediaProgressBarTrack        = UIColor.primary
         static let aztecLinkColor               = UIColor.primary
         static let mediaOverlayBorderColor      = UIColor.primary

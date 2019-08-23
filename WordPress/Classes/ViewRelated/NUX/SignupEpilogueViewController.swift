@@ -46,7 +46,7 @@ class SignupEpilogueViewController: NUXViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        view.backgroundColor = .neutral(shade: .shade0)
+        view.backgroundColor = .neutral(.shade0)
     }
 
     // MARK: - Navigation
@@ -73,7 +73,18 @@ class SignupEpilogueViewController: NUXViewController {
     // MARK: - analytics
 
     private func tracksProperties() -> [AnyHashable: Any] {
-        let source = socialService != nil ? "google" : "email"
+        let source: String = {
+            guard let service = socialService else {
+                return "email"
+            }
+            switch service {
+            case .google:
+                return "google"
+            case .apple:
+                return "apple"
+            }
+        }()
+
         return ["source": source]
     }
 }

@@ -7,6 +7,7 @@ class CountriesMapView: UIView, NibLoadable {
     private lazy var colors: [UIColor] = {
         return mapColors()
     }()
+
     @IBOutlet private var minViewsCountLabel: UILabel! {
         didSet {
             decorate(minViewsCountLabel)
@@ -50,7 +51,7 @@ class CountriesMapView: UIView, NibLoadable {
 
     private func decorate(_ label: UILabel) {
         label.font = WPStyleGuide.fontForTextStyle(.footnote)
-        label.textColor = .neutral(shade: .shade70)
+        label.textColor = .neutral(.shade70)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -66,10 +67,10 @@ class CountriesMapView: UIView, NibLoadable {
         #if XCODE11
         if #available(iOS 13, *) {
             if traitCollection.userInterfaceStyle == .dark {
-                return [.accent(shade: .shade90), .accent]
+                return [.accent(.shade90), .accent]
             }
         }
         #endif
-        return [.accent(shade: .shade5), .accent]
+        return [.accent(.shade5), .accent]
     }
 }

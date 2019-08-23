@@ -53,6 +53,9 @@ extension LoginEpilogueUserInfo {
         case .google(let user):
             fullName = user.profile.name
             email = user.profile.email
+        case .apple(let user):
+            fullName = user.fullName
+            email = user.email
         }
     }
 }

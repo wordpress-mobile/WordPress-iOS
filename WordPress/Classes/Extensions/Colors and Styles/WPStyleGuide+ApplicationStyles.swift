@@ -75,7 +75,7 @@ extension WPStyleGuide {
         }
 
         tableView.backgroundColor = .tableBackground
-        tableView.separatorColor = .neutral(shade: .shade10)
+        tableView.separatorColor = .neutral(.shade10)
     }
 
     class func configureColors(view: UIView, collectionView: UICollectionView) {
@@ -97,7 +97,7 @@ extension WPStyleGuide {
 
         // we only set the text subtle color, so that system colors are used otherwise
         cell.detailTextLabel?.textColor = .textSubtle
-        cell.imageView?.tintColor = .neutral(shade: .shade30)
+        cell.imageView?.tintColor = .neutral(.shade30)
 
     }
 

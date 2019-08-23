@@ -17,26 +17,26 @@ extension UIColor {
     /// Muriel accent color
     static var accent = muriel(color: .accent)
     static var accentDark = muriel(color: MurielColor(from: .accent, shade: .shade70))
-    class func accent(shade: MurielColorShade) -> UIColor {
+    class func accent(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .accent, shade: shade))
     }
 
     /// Muriel brand color
     static var brand = muriel(color: .brand)
-    class func brand(shade: MurielColorShade) -> UIColor {
+    class func brand(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .brand, shade: shade))
     }
 
     /// Muriel error color
     static var error = muriel(color: .error)
     static var errorDark = muriel(color: MurielColor(from: .error, shade: .shade70))
-    class func error(shade: MurielColorShade) -> UIColor {
+    class func error(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .error, shade: shade))
     }
 
     /// Muriel neutral color
     static var neutral = muriel(color: .neutral)
-    class func neutral(shade: MurielColorShade) -> UIColor {
+    class func neutral(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .neutral, shade: shade))
     }
 
@@ -44,19 +44,19 @@ extension UIColor {
     static var primary = muriel(color: .primary)
     static var primaryLight = muriel(color: MurielColor(from: .primary, shade: .shade30))
     static var primaryDark = muriel(color: MurielColor(from: .primary, shade: .shade70))
-    class func primary(shade: MurielColorShade) -> UIColor {
+    class func primary(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .primary, shade: shade))
     }
 
     /// Muriel success color
     static var success = muriel(color: .success)
-    class func success(shade: MurielColorShade) -> UIColor {
+    class func success(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .success, shade: shade))
     }
 
     /// Muriel warning color
     static var warning = muriel(color: .warning)
-    class func warning(shade: MurielColorShade) -> UIColor {
+    class func warning(_ shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .warning, shade: shade))
     }
 }
@@ -100,7 +100,7 @@ extension UIColor {
                 return .tertiaryLabel
             }
         #endif
-        return UIColor.neutral(shade: .shade10)
+        return UIColor.neutral(.shade10)
     }
 
     /// Very, very low contrast text
@@ -110,14 +110,14 @@ extension UIColor {
                 return .quaternaryLabel
             }
         #endif
-        return UIColor.neutral(shade: .shade10)
+        return UIColor.neutral(.shade10)
     }
 
-    static var textInverted = UIColor(light: .white, dark: .neutral(shade: .shade0))
-    static var textPlaceholder = neutral(shade: .shade30)
+    static var textInverted = UIColor(light: .white, dark: .neutral(.shade0))
+    static var textPlaceholder = neutral(.shade30)
 
     /// Muriel/iOS navigation color
-    static var navigationBar = UIColor(light: .brand, dark: .neutral(shade: .shade0))
+    static var navigationBar = UIColor(light: .brand, dark: .neutral(.shade0))
 
     // MARK: - Table Views
 
@@ -146,7 +146,7 @@ extension UIColor {
                 return .tertiarySystemGroupedBackground
             }
         #endif
-        return .primary(shade: .shade0)
+        return .primary(.shade0)
     }
 
     static var tableBackground: UIColor {
@@ -165,7 +165,7 @@ extension UIColor {
                 return .secondaryLabel
             }
         #endif
-        return .neutral(shade: .shade20)
+        return .neutral(.shade20)
     }
 
     /// For small icons, such as the badges on notification gravatars
@@ -175,13 +175,13 @@ extension UIColor {
                 return .systemGray
             }
         #endif
-        return UIColor.neutral(shade: .shade20)
+        return UIColor.neutral(.shade20)
     }
 
     static var filterBarBackground: UIColor {
         #if XCODE11
             if #available(iOS 13, *) {
-                return UIColor(light: white, dark: .neutral(shade: .shade0))
+                return UIColor(light: white, dark: .neutral(.shade0))
             }
         #endif
         return white
@@ -207,7 +207,7 @@ extension UIColor {
     }
 
     /// Tab bar unselected color
-    static var tabUnselected: UIColor =  UIColor(light: .neutral(shade: .shade20), dark: .neutral(shade: .shade50))
+    static var tabUnselected: UIColor =  UIColor(light: .neutral(.shade20), dark: .neutral(.shade50))
 
 // MARK: - WP Fancy Buttons
     static var primaryButtonBackground = accent

@@ -7,6 +7,6 @@ extension WPStyleGuide {
     }
 
     static func styleProgressViewForMediaCell(_ progressView: CircularProgressView) {
-        progressView.backgroundColor = .neutral(shade: .shade70)
+        progressView.backgroundColor = .neutral(.shade70)
     }
 }

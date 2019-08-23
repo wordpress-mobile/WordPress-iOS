@@ -262,7 +262,7 @@ open class NotificationSettingsViewController: UIViewController {
             cell.imageView?.image = .siteIconPlaceholder
 
             cell.accessoryType = .disclosureIndicator
-            cell.imageView?.backgroundColor = .neutral(shade: .shade5)
+            cell.imageView?.backgroundColor = .neutral(.shade5)
 
             cell.textLabel?.text = site.title
             cell.detailTextLabel?.text = URL(string: site.siteURL)?.host
