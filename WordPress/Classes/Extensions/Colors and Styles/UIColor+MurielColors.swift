@@ -204,6 +204,24 @@ extension UIColor {
     static var primaryButtonBorder = accentDark
     static var primaryButtonDownBackground = muriel(color: MurielColor(name: .pink, shade: .shade80))
     static var primaryButtonDownBorder = muriel(color: MurielColor(name: .pink, shade: .shade90))
+
+    static var secondaryButtonBackground: UIColor {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                return UIColor(light: .white, dark: .systemGray5)
+            }
+        #endif
+        return UIColor(light: .white, dark: .neutral(.shade80))
+    }
+
+    static var secondaryButtonBorder: UIColor {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                return .systemGray3
+            }
+        #endif
+        return UIColor(light: .neutral(.shade20), dark: .neutral(.shade60))
+    }
 }
 
 extension UIColor {
