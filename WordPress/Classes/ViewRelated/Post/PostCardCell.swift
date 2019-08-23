@@ -127,7 +127,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             interactivePostViewDelegate?.cancelAutoUpload(post)
         }
     }
-    
+
     @IBAction func publish() {
         if let post = post {
             interactivePostViewDelegate?.publish(post)

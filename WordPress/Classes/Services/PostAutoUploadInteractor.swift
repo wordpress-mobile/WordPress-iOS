@@ -64,8 +64,7 @@ final class PostAutoUploadInteractor {
 
         return !PostAutoUploadInteractor.allowedStatuses.contains(status)
     }
-    
-    
+
     /// Returns true if any of the following conditions are true:
     ///
     /// * The post is a draft.

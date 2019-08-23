@@ -107,7 +107,7 @@ class PostCardStatusViewModel: NSObject {
     var canCancelAutoUpload: Bool {
         return autoUploadInteractor.canCancelAutoUpload(of: post)
     }
-    
+
     var canPublish: Bool {
          return autoUploadInteractor.canPublish(of: post)
     }
