@@ -600,8 +600,9 @@
     NSTimeInterval timeDifference = [[NSDate date] timeIntervalSinceDate:self.confirmedChangesTimestamp];
 
     BOOL timeDifferenceWithinRange = timeDifference <= (60 * 60 * 24 * 2);
-    // I know, I know. This isn't how a date comparison _should_ be done!
-    // However, going thru NSCalendar can get really expensive and this method can potentially be called a lot during
+    // We want the user's confirmation to upload a thing to expire after 48h.
+    // This probably should be calculated using NSCalendar APIs — but those
+    // can get really expensive. This method can potentially be called a lot during
     // scrolling of a Post List — and for our specific use-case, being slightly innacurate here in terms of
     // leap seconds or other calendrical oddities doesn't actually matter.
 
@@ -611,11 +612,16 @@
 }
 
 - (void)setShouldAttemptAutoUpload:(BOOL)shouldAttemptAutoUpload {
-    NSString *currentHash = [self calculateConfirmedChangesContentHash];
-    NSDate *now = [NSDate date];
+    if (shouldAttemptAutoUpload) {
+        NSString *currentHash = [self calculateConfirmedChangesContentHash];
+        NSDate *now = [NSDate date];
 
-    self.confirmedChangesHash = currentHash;
-    self.confirmedChangesTimestamp = now;
+        self.confirmedChangesHash = currentHash;
+        self.confirmedChangesTimestamp = now;
+    } else {
+        self.confirmedChangesHash = nil;
+        self.confirmedChangesTimestamp = nil;
+    }
 }
 
 - (void)updatePathForDisplayImageBasedOnContent

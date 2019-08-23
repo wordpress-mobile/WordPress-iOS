@@ -256,6 +256,9 @@ class PostCoordinator: NSObject {
         moc?.perform {
             try? moc?.save()
         }
+
+        let notice = Notice(title: NSLocalizedString("Changes will not be published", comment: "title for notice displayed on cancel auto-upload"), message: "")
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }
 

@@ -426,4 +426,26 @@ class PostTests: XCTestCase {
 
         XCTAssertNotEqual(post.calculateConfirmedChangesContentHash(), correctHash)
     }
+
+    func testAutoUploadExpiration() {
+        let post = newTestPost()
+
+        post.shouldAttemptAutoUpload = false
+        XCTAssertEqual(post.shouldAttemptAutoUpload, false)
+
+        post.shouldAttemptAutoUpload = true
+        XCTAssertEqual(post.shouldAttemptAutoUpload, true)
+
+        let threeDaysAgo = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -3, to: Date())!
+
+        post.setValue(threeDaysAgo, forKey: "confirmedChangesTimestamp")
+        // It's not great that we're setting a private property, but it's deliberately one that's private.
+        // We still want to test it though!
+        XCTAssertEqual(post.shouldAttemptAutoUpload, false)
+
+        let aDayAgo = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -1, to: Date())!
+        post.setValue(aDayAgo, forKey: "confirmedChangesTimestamp")
+
+        XCTAssertEqual(post.shouldAttemptAutoUpload, true)
+    }
 }
