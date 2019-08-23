@@ -47,7 +47,7 @@ extension BlogService {
     }
 
     private func localDrafts(for blog: Blog) -> [AbstractPost] {
-        // The original predicate from Post service was:
+        // The original predicate from PostService.countPostsWithoutRemote() was:
         //   "postID = NULL OR postID <= 0"
         // Swift optionals make things a bit more verbose, but this should be equivalent
         return blog.posts?.filter({ (post) -> Bool in
