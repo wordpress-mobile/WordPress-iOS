@@ -36,7 +36,7 @@ class ViewMoreRow: UIView, NibLoadable, Accessible {
 private extension ViewMoreRow {
 
     func applyStyles() {
-        backgroundColor = .tableForeground
+        backgroundColor = .listForeground
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
         viewMoreLabel.textColor = WPStyleGuide.Stats.actionTextColor
     }

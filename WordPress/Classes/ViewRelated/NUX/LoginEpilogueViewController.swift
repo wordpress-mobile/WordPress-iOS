@@ -149,7 +149,7 @@ private extension LoginEpilogueViewController {
             buttonPanel.backgroundColor = .white
             shadowView.isHidden = false
         } else {
-            buttonPanel.backgroundColor = .tableBackground
+            buttonPanel.backgroundColor = .listBackground
             shadowView.isHidden = true
         }
     }

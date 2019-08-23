@@ -203,8 +203,8 @@ extension WPStyleGuide {
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 
-        static let tableBackgroundColor = UIColor.tableBackground
-        static let cellBackgroundColor = UIColor.tableForeground
+        static let tableBackgroundColor = UIColor.listBackground
+        static let cellBackgroundColor = UIColor.listForeground
         static let separatorColor = UIColor.divider
         static let dataBarColor = UIColor.textTertiary
         static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale

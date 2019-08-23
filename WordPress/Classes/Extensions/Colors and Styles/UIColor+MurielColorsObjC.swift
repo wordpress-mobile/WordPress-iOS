@@ -97,12 +97,12 @@
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielTableForeground() -> UIColor {
-        return .tableForeground
+    static func murielListForeground() -> UIColor {
+        return .listForeground
     }
 
     @available(swift, obsoleted: 1.0)
-    static func murielTableBackground() -> UIColor {
-        return .tableBackground
+    static func murielListBackground() -> UIColor {
+        return .listBackground
     }
 }

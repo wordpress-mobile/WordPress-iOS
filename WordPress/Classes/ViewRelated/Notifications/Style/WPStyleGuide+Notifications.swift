@@ -10,7 +10,7 @@ extension WPStyleGuide {
         //
 
         // NoteTableViewHeader
-        public static let sectionHeaderBackgroundColor = UIColor.tableBackground
+        public static let sectionHeaderBackgroundColor = UIColor.listBackground
 
         public static var sectionHeaderRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: sectionHeaderParagraph,
@@ -25,8 +25,8 @@ extension WPStyleGuide {
         public static let noticonUnreadColor        = UIColor.primary
         public static let noticonUnmoderatedColor   = UIColor.warning
 
-        public static let noteBackgroundReadColor   = UIColor.tableForeground
-        public static let noteBackgroundUnreadColor = UIColor.tableForegroundUnread
+        public static let noteBackgroundReadColor   = UIColor.listForeground
+        public static let noteBackgroundUnreadColor = UIColor.listForegroundUnread
 
         public static let noteSeparatorColor        = blockSeparatorColor
 
@@ -120,7 +120,7 @@ extension WPStyleGuide {
 
         public static let blockTextColor            = UIColor.text
         public static let blockQuotedColor          = UIColor.neutral
-        public static let blockBackgroundColor      = UIColor.tableForeground
+        public static let blockBackgroundColor      = UIColor.listForeground
         public static let blockLinkColor            = UIColor.primary
         public static let blockSeparatorColor       = UIColor.divider
 

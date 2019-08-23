@@ -1292,13 +1292,13 @@ fileprivate extension ShareExtensionEditorViewController {
 
         static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
             get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? .tableBackground : .neutral(.shade5)
+                return (UIDevice.current.userInterfaceIdiom == .pad) ? .listBackground : .neutral(.shade5)
             }
         }
 
         static var aztecFormatPickerBackgroundColor: UIColor {
             get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? .white : .tableBackground
+                return (UIDevice.current.userInterfaceIdiom == .pad) ? .white : .listBackground
             }
         }
     }

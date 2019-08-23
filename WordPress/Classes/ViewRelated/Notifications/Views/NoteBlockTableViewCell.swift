@@ -22,7 +22,7 @@ class NoteBlockTableViewCell: WPTableViewCell {
     }
     @objc var separatorsView: SeparatorsView = {
         let view = SeparatorsView()
-        view.backgroundColor = .tableForeground
+        view.backgroundColor = .listForeground
         return view
     }()
 
@@ -51,7 +51,7 @@ class NoteBlockTableViewCell: WPTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundView = separatorsView
-        backgroundColor = .tableForeground
+        backgroundColor = .listForeground
     }
 
     // MARK: - Private

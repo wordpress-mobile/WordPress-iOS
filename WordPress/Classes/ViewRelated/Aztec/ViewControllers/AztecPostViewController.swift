@@ -146,7 +146,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.delegate = self
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
+
         textView.backgroundColor = Colors.aztecBackground
+        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor, dark: .neutral(.shade5))
+        textView.blockquoteBorderColor = .listIcon
+
         textView.linkTextAttributes = linkAttributes
 
         // We need this false to be able to set negative `scrollInset` values.
@@ -211,7 +215,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let titleParagraphStyle = NSMutableParagraphStyle()
         titleParagraphStyle.alignment = .natural
 
-        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.darkText,
+        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.text,
                                                         .font: Fonts.title,
                                                         .paragraphStyle: titleParagraphStyle]
 
@@ -221,7 +225,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.delegate = self
         textView.font = Fonts.title
         textView.returnKeyType = .next
-        textView.textColor = UIColor.darkText
+        textView.textColor = .text
         textView.typingAttributes = attributes
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
@@ -239,7 +243,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
         let titlePlaceholderLabel = UILabel()
 
-        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Colors.title, .font: Fonts.title]
+        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Colors.placeholder, .font: Fonts.title]
 
         titlePlaceholderLabel.attributedText = NSAttributedString(string: placeholderText, attributes: attributes)
         titlePlaceholderLabel.sizeToFit()
@@ -658,7 +662,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
         textView.accessibilityLabel = accessibilityLabel
         textView.keyboardDismissMode = .interactive
-        textView.textColor = UIColor.darkText
+        textView.textColor = .text
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
@@ -684,7 +688,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func configureView() {
         edgesForExtendedLayout = UIRectEdge()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.aztecBackground
     }
 
     func configureSubviews() {
@@ -1553,7 +1557,12 @@ extension AztecPostViewController {
     func toggleList(fromItem item: FormatBarItem) {
         trackFormatBarAnalytics(stat: .editorTappedList)
         let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
-            let title = NSAttributedString(string: listType.description, attributes: [:])
+            let attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.text
+            ]
+
+            let title = NSAttributedString(string: listType.description, attributes: attributes)
+
             return OptionsTableViewOption(image: listType.iconImage,
                                           title: title,
                                           accessibilityLabel: listType.accessibilityLabel)
@@ -1891,7 +1900,7 @@ extension AztecPostViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: UIColor.neutral(.shade70)
+                .foregroundColor: UIColor.text
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -2067,6 +2076,7 @@ extension AztecPostViewController {
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
 
+        toolbar.backgroundColor = .filterBarBackground
         toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
@@ -2074,7 +2084,10 @@ extension AztecPostViewController {
         toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
 
-        toolbar.leadingItem = makeToolbarButton(identifier: .media)
+        let mediaButton = makeToolbarButton(identifier: .media)
+        mediaButton.normalTintColor = .primary
+        toolbar.leadingItem = mediaButton
+
         updateToolbar(toolbar, forMode: .text)
 
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight)
@@ -3297,10 +3310,10 @@ extension AztecPostViewController {
     }
 
     struct Colors {
-        static let aztecBackground              = UIColor.clear
-        static let title                        = UIColor.neutral(.shade30)
-        static let separator                    = UIColor.neutral(.shade5)
-        static let placeholder                  = UIColor.neutral(.shade30)
+        static let aztecBackground              = UIColor.basicBackground
+        static let title                        = UIColor.text
+        static let separator                    = UIColor.divider
+        static let placeholder                  = UIColor.textPlaceholder
         static let progressBackground           = UIColor.primary
         static let progressTint                 = UIColor.white
         static let progressTrack                = UIColor.primary

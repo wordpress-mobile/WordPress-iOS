@@ -126,7 +126,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor murielTableBackground];
+    self.view.backgroundColor = [UIColor murielListBackground];
 
     [self checkIfLoggedIn];
 
@@ -313,7 +313,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     self.tableView.preservesSuperviewLayoutMargins = YES;
-    self.tableView.backgroundColor = [UIColor murielTableBackground];
+    self.tableView.backgroundColor = [UIColor murielListBackground];
     [self.view addSubview:self.tableView];
 
     UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];

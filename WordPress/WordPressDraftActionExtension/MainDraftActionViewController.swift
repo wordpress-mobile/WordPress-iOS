@@ -37,7 +37,7 @@ private extension MainDraftActionViewController {
     func setupAppearance() {
         self.view.backgroundColor = .white
         let navigationBarAppearace = UINavigationBar.appearance()
-        navigationBarAppearace.barTintColor = .tableBackground
+        navigationBarAppearace.barTintColor = .listBackground
         navigationBarAppearace.barStyle = .default
         navigationBarAppearace.tintColor = .primary
         navigationBarAppearace.titleTextAttributes = [.foregroundColor: UIColor.primary]
