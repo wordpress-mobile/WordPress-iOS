@@ -19,67 +19,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="391" height="197.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qz9-Fi-Yby">
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="qz9-Fi-Yby">
                         <rect key="frame" x="16" y="8" width="359" height="135"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="8x7-Ll-Xdo">
-                                <rect key="frame" x="0.0" y="0.0" width="359" height="112"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6G1-YA-lvI">
-                                        <rect key="frame" x="8" y="0.0" width="93" height="112"/>
-                                        <color key="backgroundColor" name="Gray0"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="112" id="9tP-nk-eZ2"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0CM-Vz-vCK">
-                                        <rect key="frame" x="133" y="0.0" width="93" height="112"/>
-                                        <color key="backgroundColor" name="Gray0"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="112" id="36L-aS-sDA"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZTk-K4-dnm">
-                                        <rect key="frame" x="258" y="0.0" width="93" height="112"/>
-                                        <color key="backgroundColor" name="Gray0"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="112" id="VYL-Yt-Nm2"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="8"/>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="8YI-id-F2W">
-                                <rect key="frame" x="0.0" y="120" width="359" height="15"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EfR-hg-HXT">
-                                        <rect key="frame" x="16" y="0.0" width="77" height="15"/>
-                                        <color key="backgroundColor" name="Gray0"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="15" id="k25-SA-VbR"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bt8-Yt-UFK">
-                                        <rect key="frame" x="141" y="0.0" width="77" height="15"/>
-                                        <color key="backgroundColor" name="Gray0"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="15" id="erf-zb-uEl"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XfE-Ae-MZG">
-                                        <rect key="frame" x="266" y="0.0" width="77" height="15"/>
-                                        <color key="backgroundColor" name="Gray0"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="15" id="cvx-Yy-2TW"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="15" id="eTw-QH-54p"/>
-                                </constraints>
-                                <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
-                            </stackView>
-                        </subviews>
                         <constraints>
                             <constraint firstAttribute="height" constant="135" id="OVs-SG-kYL"/>
                         </constraints>
@@ -102,6 +43,9 @@
                     <constraint firstItem="G6z-rs-9uG" firstAttribute="leading" secondItem="gKB-vs-9LT" secondAttribute="leading" constant="16" id="w5Q-Ug-Gvj"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="stackView" destination="qz9-Fi-Yby" id="k0s-X9-NiX"/>
+            </connections>
             <point key="canvasLocation" x="67.391304347826093" y="152.67857142857142"/>
         </tableViewCell>
     </objects>
