@@ -16,6 +16,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var retryButton: UIButton!
     @IBOutlet weak var cancelAutoUploadButton: UIButton!
+    @IBOutlet weak var publishButton: UIButton!
     @IBOutlet weak var viewButton: UIButton!
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var actionBarView: UIStackView!
@@ -124,6 +125,12 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBAction func cancelAutoUpload() {
         if let post = post {
             interactivePostViewDelegate?.cancelAutoUpload(post)
+        }
+    }
+    
+    @IBAction func publish() {
+        if let post = post {
+            interactivePostViewDelegate?.publish(post)
         }
     }
 
@@ -266,6 +273,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
 
         retryButton.isHidden = !viewModel.canRetryUpload
         cancelAutoUploadButton.isHidden = !viewModel.canCancelAutoUpload
+        publishButton.isHidden = !viewModel.canPublish
         viewButton.isHidden = !viewModel.canPreview
     }
 

@@ -612,7 +612,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func publish(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
+        //TODO: This is not following our principals. Handle differently ReachabilityUtils.onAvailableInternetConnectionDo {
             publishPost(post)
         }
     }
