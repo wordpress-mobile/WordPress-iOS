@@ -206,9 +206,9 @@ PODS:
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (1.1.4)
-  - WordPress-Aztec-iOS (1.8.0)
-  - WordPress-Editor-iOS (1.8.0):
-    - WordPress-Aztec-iOS (= 1.8.0)
+  - WordPress-Aztec-iOS (1.8.1)
+  - WordPress-Editor-iOS (1.8.1):
+    - WordPress-Aztec-iOS (= 1.8.1)
   - WordPressAuthenticator (1.8.0-beta.7):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
@@ -297,7 +297,7 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (~> 1.8.0)
+  - WordPress-Editor-iOS (~> 1.8.1)
   - WordPressAuthenticator (~> 1.8.0-beta.7)
   - WordPressKit (~> 4.5.0-beta.2)
   - WordPressMocks (~> 0.0.5)
@@ -340,6 +340,8 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
+    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
@@ -406,12 +408,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.10.3
-  WordPress-Aztec-iOS:
-    :branch: feature/format-bar-customization
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-Editor-iOS:
-    :branch: feature/format-bar-customization
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.10.3/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -425,12 +421,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.10.3
-  WordPress-Aztec-iOS:
-    :commit: 8b3780dfc43b5c59f6dd0743b639d5bdc9e7e084
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-Editor-iOS:
-    :commit: 8b3780dfc43b5c59f6dd0743b639d5bdc9e7e084
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -489,8 +479,8 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
-  WordPress-Aztec-iOS: 5022d76e7c4cd2a492f670944e24b9dd05639763
-  WordPress-Editor-iOS: e0116fe2c4d3e0d2c325f053d9becdf637bfd708
+  WordPress-Aztec-iOS: 898336652f474b4bf940a80dc0f0172ace39f0c0
+  WordPress-Editor-iOS: ca06c5868d1ac68144a4626465b9c1eef1c53e40
   WordPressAuthenticator: 310eb6cbe6510c05eea1d7cbc4035d228a76cf8e
   WordPressKit: 6fb3101e9542398c895517d64ac435d3a4e83e25
   WordPressMocks: d8088f718439556ff3856d5881aef581740cd26a
@@ -502,6 +492,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: c2e49fd16a73e43e490f777cea67dd852b819ace
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 81281053d2879393c1551417d3815e1960b2fc95
+PODFILE CHECKSUM: 506e017b1fda4a99c317e5a080a28b6f705332e3
 
 COCOAPODS: 1.6.1
