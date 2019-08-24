@@ -108,12 +108,13 @@ class PostCardStatusViewModel: NSObject {
         return autoUploadInteractor.canCancelAutoUpload(of: post)
     }
 
-    var canPublish: Bool {
-         return autoUploadInteractor.canPublish(of: post)
-    }
-
     var canPreview: Bool {
         return !post.isFailed
+    }
+
+    var canPublish: Bool {
+        let isNotCancelableWithFailedToUploadChanges: Bool = post.isFailed && post.hasLocalChanges() && !autoUploadInteractor.canCancelAutoUpload(of: post)
+        return post.isDraft() || isNotCancelableWithFailedToUploadChanges
     }
 
     var shouldShowMore: Bool {

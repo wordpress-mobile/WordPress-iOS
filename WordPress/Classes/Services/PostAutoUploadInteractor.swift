@@ -64,14 +64,4 @@ final class PostAutoUploadInteractor {
 
         return !PostAutoUploadInteractor.allowedStatuses.contains(status)
     }
-
-    /// Returns true if any of the following conditions are true:
-    ///
-    /// * The post is a draft.
-    /// * The post failed to upload and has local changes but the user canceled auto-uploading
-    /// * The upload failed and the user cannot Cancel it anymore. This happens when we reached the maximum number of retries.
-    func canPublish(of post: AbstractPost) -> Bool {
-        let isNotCancelablePublishedWithFailedToUploadChanges: Bool = post.isFailed && post.hasLocalChanges() && !canCancelAutoUpload(of: post)
-        return post.isDraft() || isNotCancelablePublishedWithFailedToUploadChanges
-    }
 }
