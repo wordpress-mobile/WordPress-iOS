@@ -31,7 +31,7 @@ class PostActionSheet {
             }
         }
 
-        if post.status != .draft  {
+        if post.status != .draft {
             actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
                 self?.interactivePostViewDelegate?.draft(post)
             }

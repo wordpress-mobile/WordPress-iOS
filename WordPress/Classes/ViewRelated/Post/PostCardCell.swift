@@ -134,7 +134,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             interactivePostViewDelegate?.publish(post)
         }
     }
-    
+
     @IBAction func trash() {
         if let post = post {
             interactivePostViewDelegate?.trash(post)
@@ -284,7 +284,6 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         viewButton.isHidden = !viewModel.canPreview
         moreButton.isHidden = !viewModel.shouldShowMore
         trashButton.isHidden = !viewModel.shouldShowTrash
-        
     }
 
     private func setupBorders() {

@@ -115,7 +115,7 @@ class PostCardStatusViewModel: NSObject {
     var canPreview: Bool {
         return !post.isFailed
     }
-    
+
     var shouldShowMore: Bool {
         return !post.isDraft()
     }
