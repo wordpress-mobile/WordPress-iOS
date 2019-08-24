@@ -18,6 +18,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var cancelAutoUploadButton: UIButton!
     @IBOutlet weak var publishButton: UIButton!
     @IBOutlet weak var viewButton: UIButton!
+    @IBOutlet weak var trashButton: UIButton!
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var actionBarView: UIStackView!
     @IBOutlet weak var containerView: UIView!
@@ -131,6 +132,12 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBAction func publish() {
         if let post = post {
             interactivePostViewDelegate?.publish(post)
+        }
+    }
+    
+    @IBAction func trash() {
+        if let post = post {
+            interactivePostViewDelegate?.trash(post)
         }
     }
 
@@ -275,6 +282,9 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         cancelAutoUploadButton.isHidden = !viewModel.canCancelAutoUpload
         publishButton.isHidden = !viewModel.canPublish
         viewButton.isHidden = !viewModel.canPreview
+        moreButton.isHidden = !viewModel.shouldShowMore
+        trashButton.isHidden = !viewModel.shouldShowTrash
+        
     }
 
     private func setupBorders() {

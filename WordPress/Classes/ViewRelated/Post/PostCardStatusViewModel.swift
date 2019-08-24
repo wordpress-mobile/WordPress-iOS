@@ -115,7 +115,14 @@ class PostCardStatusViewModel: NSObject {
     var canPreview: Bool {
         return !post.isFailed
     }
+    
+    var shouldShowMore: Bool {
+        return !post.isDraft()
+    }
 
+    var shouldShowTrash: Bool {
+        return post.isDraft()
+    }
     func statusAndBadges(separatedBy separator: String) -> String {
         let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
         let status = self.status ?? ""

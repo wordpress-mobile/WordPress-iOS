@@ -31,11 +31,7 @@ class PostActionSheet {
             }
         }
 
-        if post.status == .draft {
-            actionSheetController.addDefaultActionWithTitle(Titles.publish) { [weak self] _ in
-                self?.interactivePostViewDelegate?.publish(post)
-            }
-        } else {
+        if post.status != .draft  {
             actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
                 self?.interactivePostViewDelegate?.draft(post)
             }
