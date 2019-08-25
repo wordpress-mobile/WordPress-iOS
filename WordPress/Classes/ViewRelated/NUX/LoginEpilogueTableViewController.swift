@@ -35,7 +35,7 @@ class LoginEpilogueTableViewController: UITableViewController {
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
 
-        view.backgroundColor = .neutral(.shade0)
+        view.backgroundColor = .listBackground
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
@@ -90,6 +90,14 @@ extension LoginEpilogueTableViewController {
         }
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard cell is EpilogueUserInfoCell else {
+            return
+        }
+
+        cell.contentView.backgroundColor = .listForeground
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
