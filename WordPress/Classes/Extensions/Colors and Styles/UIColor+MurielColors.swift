@@ -265,7 +265,7 @@ extension UIColor {
             return UIColor(light: .white, dark: .systemGray5)
         }
         #endif
-        return UIColor(light: .white, dark: .neutral(.shade80))
+        return .white
     }
 
     static var secondaryButtonBorder: UIColor {
@@ -274,7 +274,7 @@ extension UIColor {
             return .systemGray3
         }
         #endif
-        return UIColor(light: .neutral(.shade20), dark: .neutral(.shade60))
+        return .neutral(.shade20)
     }
 
     static var secondaryButtonDownBackground: UIColor {
@@ -283,7 +283,7 @@ extension UIColor {
             return .systemGray3
         }
         #endif
-        return UIColor(light: .neutral(.shade20), dark: .neutral(.shade60))
+        return .neutral(.shade20)
     }
 
     static var secondaryButtonDownBorder: UIColor {
