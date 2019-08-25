@@ -197,7 +197,8 @@ extension UIColor {
     }
 
     /// Tab bar unselected color
-    static var tabUnselected: UIColor =  UIColor(light: .neutral(.shade20), dark: .neutral(.shade50))
+    /// Note: these values are intended to match the iOS defaults
+    static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
 
 // MARK: - WP Fancy Buttons
     static var primaryButtonBackground = accent
