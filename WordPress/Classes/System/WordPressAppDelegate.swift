@@ -809,7 +809,7 @@ extension WordPressAppDelegate {
 
 
         let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
-        cellAppearance.loadingBackgroundColor = .tableBackground
+        cellAppearance.loadingBackgroundColor = .listBackground
         cellAppearance.placeholderBackgroundColor = .neutral(.shade70)
         cellAppearance.placeholderTintColor = .neutral(.shade5)
         cellAppearance.setCellTintColor(.primary)
