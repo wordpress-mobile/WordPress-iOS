@@ -92,6 +92,16 @@
     }
 
     @available(swift, obsoleted: 1.0)
+    static func murielListForeground() -> UIColor {
+        return .listForeground
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielListBackground() -> UIColor {
+        return .listBackground
+    }
+
+    @available(swift, obsoleted: 1.0)
     static func murielListIcon() -> UIColor {
         return .listIcon
     }
