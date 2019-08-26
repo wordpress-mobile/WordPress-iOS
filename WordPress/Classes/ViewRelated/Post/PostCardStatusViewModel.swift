@@ -112,6 +112,11 @@ class PostCardStatusViewModel: NSObject {
         return !post.isFailed
     }
 
+    /// Returns true if any of the following conditions are true:
+    ///
+    /// * The post is a draft.
+    /// * The post failed to upload and has local changes but the user canceled auto-uploading
+    /// * The upload failed and the user cannot Cancel it anymore. This happens when we reached the maximum number of retries.
     var canPublish: Bool {
         let isNotCancelableWithFailedToUploadChanges: Bool = post.isFailed && post.hasLocalChanges() && !autoUploadInteractor.canCancelAutoUpload(of: post)
         return post.isDraft() || isNotCancelableWithFailedToUploadChanges
