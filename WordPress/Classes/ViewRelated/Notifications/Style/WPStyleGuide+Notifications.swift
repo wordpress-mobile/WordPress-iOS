@@ -198,7 +198,7 @@ extension WPStyleGuide {
         }
 
         // Action Buttons
-        public static let blockActionDisabledColor  = UIColor.neutral(.shade30)
+        public static let blockActionDisabledColor  = UIColor.listIcon
         public static let blockActionEnabledColor   = UIColor.primary
 
         // RichText Helpers
