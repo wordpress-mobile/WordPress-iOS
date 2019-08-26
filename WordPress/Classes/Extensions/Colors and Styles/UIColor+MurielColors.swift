@@ -250,8 +250,8 @@ extension UIColor {
         return .neutral(.shade30)
     }
 
-    /// Tab bar unselected color
-    static var tabUnselected: UIColor =  UIColor(light: .gray(.shade20), dark: .gray(.shade40))
+    /// Note: these values are intended to match the iOS defaults
+    static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
 
 // MARK: - WP Fancy Buttons
     static var primaryButtonBackground = accent
@@ -261,9 +261,9 @@ extension UIColor {
 
     static var secondaryButtonBackground: UIColor {
         #if XCODE11
-            if #available(iOS 13, *) {
-                return UIColor(light: .white, dark: .systemGray5)
-            }
+        if #available(iOS 13, *) {
+            return UIColor(light: .white, dark: .systemGray5)
+        }
         #endif
         return .white
     }
@@ -275,6 +275,19 @@ extension UIColor {
             }
         #endif
         return .neutral(.shade20)
+    }
+
+    static var secondaryButtonDownBackground: UIColor {
+        #if XCODE11
+        if #available(iOS 13, *) {
+            return .systemGray3
+        }
+        #endif
+        return .neutral(.shade20)
+    }
+
+    static var secondaryButtonDownBorder: UIColor {
+        return secondaryButtonBorder
     }
 }
 
