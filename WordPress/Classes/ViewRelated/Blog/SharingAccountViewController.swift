@@ -11,6 +11,7 @@ import WordPressShared
     @objc var existingPublicizeConnections: [PublicizeConnection]?
     @objc var immutableHandler: ImmuTableViewHandler!
     @objc var delegate: SharingAccountSelectionDelegate?
+    private let keyringAccountHelper: KeyringAccountHelper
 
     fileprivate lazy var noResultsViewController: NoResultsViewController = {
         let controller = NoResultsViewController.controller()
@@ -25,10 +26,11 @@ import WordPressShared
     // MARK: - Lifecycle Methods
 
 
-    @objc init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
+    @objc init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?, keyringAccountHelper: KeyringAccountHelper) {
         publicizeService = service
         keyringConnections = connections
         existingPublicizeConnections = existingConnections
+        self.keyringAccountHelper = keyringAccountHelper
 
         super.init(style: .grouped)
 
@@ -99,7 +101,7 @@ import WordPressShared
     fileprivate func tableViewModel() -> ImmuTable {
         var sections = [ImmuTableSection]()
         var connectedAccounts = [KeyringAccount]()
-        var accounts = keyringAccountsFromKeyringConnections(keyringConnections)
+        var accounts = keyringAccountHelper.accountsFromKeyringConnections(keyringConnections, with: publicizeService)
 
         if accounts.count == 0 {
             showNoResultsViewController()
@@ -204,33 +206,6 @@ import WordPressShared
         }
 
         return rows
-    }
-
-
-    /// Normalizes available accounts for a KeyringConnection and its `additionalExternalUsers`
-    ///
-    /// - Parameter connections: An array of `KeyringConnection` instances to normalize.
-    ///
-    /// - Returns: An array of `KeyringAccount` objects.
-    ///
-    fileprivate func keyringAccountsFromKeyringConnections(_ connections: [KeyringConnection]) -> [KeyringAccount] {
-        var accounts = [KeyringAccount]()
-
-        for connection in connections {
-            let acct = KeyringAccount(name: connection.externalDisplay, externalID: nil, externalIDForConnection: connection.externalID, keyringConnection: connection)
-
-            // Do not include the service if it only supports external users.
-            if !publicizeService.externalUsersOnly {
-                accounts.append(acct)
-            }
-
-            for externalUser in connection.additionalExternalUsers {
-                let acct = KeyringAccount(name: externalUser.externalName, externalID: externalUser.externalID, externalIDForConnection: externalUser.externalID, keyringConnection: connection)
-                accounts.append(acct)
-            }
-        }
-
-        return accounts
     }
 
 

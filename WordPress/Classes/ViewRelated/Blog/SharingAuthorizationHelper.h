@@ -5,6 +5,7 @@
 @class KeyringConnection;
 @class PublicizeConnection;
 @class Blog;
+@class ConfirmationAlertFields;
 
 /**
  A helper class for managing aspects of a publicize service.  Supports creating,
@@ -64,10 +65,7 @@
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionCancelledForService:(PublicizeService *)service;
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper
-    showFacebookPublicityAlertFrom:(UIViewController*)viewController
-                         withTitle:(NSString *)title
-                          withBody:(NSString *)body
-                  usingCancelTitle:(NSString *)cancelTitle
-               usingLearnMoreTitle:(NSString *)learnMoreTitle;
+                     showAlertFrom:(UIViewController *)viewController
+                        withFields:(ConfirmationAlertFields *)fields;
 
 @end

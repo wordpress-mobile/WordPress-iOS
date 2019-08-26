@@ -205,8 +205,15 @@
             return;
         }
 
-        [weakSelf showAccountSelectorForKeyrings:marr];
+        KeyringAccountHelper *keyringAccount = [KeyringAccountHelper new];
 
+        //Check errors over accounts and show alert if it's needed
+        if ([keyringAccount showNoticeFromConnections:[weakSelf connectionsForService] with:weakSelf.publicizeService]) {
+            [weakSelf showAlertFromConnectionsWithKeyringAccountHelper:keyringAccount];
+            return;
+        }
+
+        [weakSelf showAccountSelectorForKeyrings:marr withKeyringAccountHelper:keyringAccount];
     } failure:^(NSError *error) {
         if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:keyringFetchFailedForService:)]) {
             [self.delegate sharingAuthorizationHelper:self keyringFetchFailedForService:self.publicizeService];
@@ -224,19 +231,14 @@
 
  @param keyringConnections: An array of `KeyringConnection` instances.
  */
-- (void)showAccountSelectorForKeyrings:(NSArray *)keyringConnections
+- (void)showAccountSelectorForKeyrings:(NSArray *)keyringConnections withKeyringAccountHelper:(KeyringAccountHelper *)keyringAccountHelper
 {
     NSParameterAssert([[keyringConnections firstObject] isKindOfClass:[KeyringConnection class]]);
-    KeyringAccountController *keyringAccount = [KeyringAccountController new];
-
-    if ([keyringAccount showFacebookNoticeFromConnections:[self connectionsForService] with:self.publicizeService]) {
-        [self showFacebookPublicizeAlert];
-        return;
-    }
 
     SharingAccountViewController *controller = [[SharingAccountViewController alloc] initWithService:self.publicizeService
                                                                            connections:keyringConnections
-                                                                   existingConnections:[self connectionsForService]];
+                                                                   existingConnections:[self connectionsForService]
+                                                                                keyringAccountHelper: keyringAccountHelper];
     controller.delegate = self;
 
     // Set the view controller stack vs push so there is no back button to contend with.
@@ -244,19 +246,17 @@
     [self.navController setViewControllers:@[controller] animated:YES];
 }
 
--(void)showFacebookPublicizeAlert
+-(void)showAlertFromConnectionsWithKeyringAccountHelper:(KeyringAccountHelper *)keyringAccountHelper
 {
-    NSString *alertHeaderMessage = NSLocalizedString(@"No Pages Found", @"Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.");
-    NSString *alertBodyMessage = NSLocalizedString(@"The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.", @"Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.");
-    NSString *continueActionTitle = NSLocalizedString(@"Learn more", @"A button title.");
-    NSString *cancelActionTitle = NSLocalizedString(@"OK", comment: @"Cancel action title");
+    ConfirmationAlertFields *alertFields = [keyringAccountHelper createErrorAlertFieldsFor:self.publicizeService];
+
+    if (alertFields == nil) {
+        return;
+    }
 
     [self.delegate sharingAuthorizationHelper:self
-               showFacebookPublicityAlertFrom:self.navController
-                                    withTitle:alertHeaderMessage
-                                     withBody: alertBodyMessage
-                             usingCancelTitle:cancelActionTitle
-                          usingLearnMoreTitle:continueActionTitle];
+                                showAlertFrom:self.navController
+                                   withFields:alertFields];
 }
 
 

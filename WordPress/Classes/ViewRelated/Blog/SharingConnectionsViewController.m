@@ -269,29 +269,26 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 }
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper
-    showFacebookPublicityAlertFrom:(UIViewController*)viewController
-                         withTitle:(NSString *)title
-                          withBody:(NSString *)body
-                  usingCancelTitle:(NSString *)cancelTitle
-               usingLearnMoreTitle:(NSString *)learnMoreTitle
+                     showAlertFrom:(UIViewController *)viewController
+                        withFields:(ConfirmationAlertFields *)fields
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title
-                                                                     message:body
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:fields.header
+                                                                     message:fields.body
                                                             preferredStyle:UIAlertControllerStyleAlert];
 
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:cancelTitle
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:fields.cancelTitle
                                                             style:UIAlertActionStyleCancel
                                                           handler:nil];
     __weak SharingConnectionsViewController *sharingConnectionsVC = self;
-    UIAlertAction* learnMoreAction = [UIAlertAction actionWithTitle:learnMoreTitle
+    UIAlertAction* continueAction = [UIAlertAction actionWithTitle:fields.continueTitle
                                                               style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
                                                               [sharingConnectionsVC handleLearMoreTapped];
                                                           }];
 
-    [alertVC addAction:learnMoreAction];
+    [alertVC addAction:continueAction];
     [alertVC addAction:cancelAction];
     [self presentViewController:alertVC animated:YES completion:nil];
 }
