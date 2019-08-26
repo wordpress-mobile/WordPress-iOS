@@ -4,10 +4,12 @@ import Foundation
 
 class PostBuilder {
 
+    static var context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext()
+
     var post: Post!
 
     init() {
-        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: setUpInMemoryManagedObjectContext()) as? Post
+        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: PostBuilder.context) as? Post
     }
 
     func published() -> PostBuilder {
@@ -70,6 +72,19 @@ class PostBuilder {
         return self
     }
 
+    func with(image: String) -> PostBuilder {
+        guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: PostBuilder.context) as? Media else {
+             return self
+        }
+        media.localURL = image
+        media.localThumbnailURL = "thumb-\(image)"
+
+        media.addPostsObject(post)
+        post.addMediaObject(media)
+
+        return self
+    }
+
     func `is`(sticked: Bool) -> PostBuilder {
         post.isStickyPost = sticked
         return self
@@ -79,7 +94,7 @@ class PostBuilder {
         return post
     }
 
-    private func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
+    static func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
 
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
