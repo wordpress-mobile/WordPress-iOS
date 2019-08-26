@@ -56,7 +56,7 @@ extension WPStyleGuide {
         }
 
         public static func backgroundColor(isApproved approved: Bool) -> UIColor {
-            return approved ? .listForeground : UIColor(light: .warning(.shade5), dark: .warning(.shade100))
+            return approved ? .listForeground : UIColor(light: .warning(.shade0), dark: .warning(.shade100))
         }
 
         public static func timestampImage(isApproved approved: Bool) -> UIImage {
