@@ -84,6 +84,12 @@ class PostBuilder {
         return self
     }
 
+    /// Sets a random postID to emulate that self exists in the server.
+    func withRemote() -> PostBuilder {
+        post.postID = NSNumber(value: arc4random_uniform(UINT32_MAX))
+        return self
+    }
+
     func build() -> Post {
         return post
     }

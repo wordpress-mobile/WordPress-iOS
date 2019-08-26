@@ -18,7 +18,7 @@ class PostCardStatusViewModel: NSObject {
         case cancel
     }
 
-    struct ButtonGroups {
+    struct ButtonGroups: Equatable {
         /// The main buttons shown in the Post List
         let primary: [Button]
         /// Shown under the _More_
@@ -153,7 +153,7 @@ class PostCardStatusViewModel: NSObject {
                 b.append(.publish)
             }
 
-            if post.status == .publish {
+            if post.status == .publish && post.hasRemote() {
                 b.append(.stats)
             }
 
