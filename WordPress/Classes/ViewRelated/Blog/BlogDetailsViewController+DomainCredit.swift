@@ -7,7 +7,7 @@ extension BlogDetailsViewController {
         let row = BlogDetailsRow(title: NSLocalizedString("Register Domain", comment: "Action to redeem domain credit."),
                                  accessibilityIdentifier: "Register domain from site dashboard",
                                  image: image,
-                                 imageColor: UIColor.warning(shade: .shade20)) { [weak self] in
+                                 imageColor: UIColor.warning(.shade20)) { [weak self] in
                                     WPAnalytics.track(.domainCreditRedemptionTapped)
                                     self?.showDomainCreditRedemption()
         }

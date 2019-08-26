@@ -5,7 +5,7 @@ class LoginFlow {
     static func login(siteUrl: String, username: String, password: String) -> MySiteScreen {
         logoutIfNeeded()
 
-        return WelcomeScreen().login()
+        return WelcomeScreen().selectLogin()
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: siteUrl)
             .proceedWith(username: username, password: password)

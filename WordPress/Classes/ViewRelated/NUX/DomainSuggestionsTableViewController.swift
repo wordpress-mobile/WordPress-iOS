@@ -47,7 +47,7 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
     }
 
     private var parentDomainColor: UIColor {
-        return useFadedColorForParentDomains ? .neutral(shade: .shade30) : .neutral(shade: .shade70)
+        return useFadedColorForParentDomains ? .neutral(.shade30) : .neutral(.shade70)
     }
 
     // MARK: - Init
@@ -225,7 +225,7 @@ extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == Sections.suggestions.rawValue {
             let footer = UIView()
-            footer.backgroundColor = .neutral(shade: .shade10)
+            footer.backgroundColor = .neutral(.shade10)
             return footer
         }
         return nil
@@ -283,7 +283,7 @@ extension DomainSuggestionsTableViewController {
             return styledDomain
         }
         styledDomain.addAttribute(.foregroundColor,
-                                  value: UIColor.neutral(shade: .shade70),
+                                  value: UIColor.neutral(.shade70),
                                   range: NSMakeRange(0, dotPosition.utf16Offset(in: domain)))
         return styledDomain
     }

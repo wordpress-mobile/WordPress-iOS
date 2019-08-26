@@ -9,8 +9,8 @@ class DomainListDomainCell: WPTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        domainLabel?.textColor = .neutral(shade: .shade60)
-        registeredMappedLabel?.textColor = .neutral(shade: .shade40)
+        domainLabel?.textColor = .neutral(.shade60)
+        registeredMappedLabel?.textColor = .neutral(.shade40)
     }
 }
 
@@ -149,10 +149,6 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.sections[section].headerText
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 }
 
