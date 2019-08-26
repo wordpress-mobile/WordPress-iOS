@@ -114,7 +114,8 @@ def gutenberg_dependencies(options)
         'react-native-keyboard-aware-scroll-view',
         'react-native-safe-area',
         'react-native-video',
-        'RNSVG'
+        'RNSVG',
+        'ReactNativeDarkMode',
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -141,7 +142,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.10.3'
+    gutenberg :tag => 'v1.11.0'
 
     ## Third party libraries
     ## =====================
