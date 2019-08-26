@@ -15,7 +15,8 @@ class PostActionSheet {
     }
 
     func show(for postCardStatusViewModel: PostCardStatusViewModel, from view: UIView, showViewOption: Bool = false) {
-        let post = postCardStatusViewModel.post 
+        let post = postCardStatusViewModel.post
+        let buttons = postCardStatusViewModel.buttonGroups.secondary
 
         let actionSheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -27,25 +28,28 @@ class PostActionSheet {
             }
         }
 
-        if post.status == .publish {
-            actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
-                self?.interactivePostViewDelegate?.stats(for: post)
+        buttons.forEach { button in
+            switch button {
+            case .stats:
+                actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
+                    self?.interactivePostViewDelegate?.stats(for: post)
+                }
+            case .publish:
+                actionSheetController.addDefaultActionWithTitle(Titles.publish) { [weak self] _ in
+                    self?.interactivePostViewDelegate?.publish(post)
+                }
+            case .moveToDraft:
+                actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
+                    self?.interactivePostViewDelegate?.draft(post)
+                }
+            case .trash:
+                let destructiveTitle = post.status == .trash ? Titles.delete : Titles.trash
+                actionSheetController.addDestructiveActionWithTitle(destructiveTitle) { [weak self] _ in
+                    self?.interactivePostViewDelegate?.trash(post)
+                }
+            default:
+                assertionFailure("Unsupported button in More: \(button)")
             }
-        }
-
-        if post.status == .draft {
-            actionSheetController.addDefaultActionWithTitle(Titles.publish) { [weak self] _ in
-                self?.interactivePostViewDelegate?.publish(post)
-            }
-        } else {
-            actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
-                self?.interactivePostViewDelegate?.draft(post)
-            }
-        }
-
-        let destructiveTitle = post.status == .trash ? Titles.delete : Titles.trash
-        actionSheetController.addDestructiveActionWithTitle(destructiveTitle) { [weak self] _ in
-            self?.interactivePostViewDelegate?.trash(post)
         }
 
         if let presentationController = actionSheetController.popoverPresentationController {

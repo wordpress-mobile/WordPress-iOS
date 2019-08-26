@@ -279,7 +279,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         }
 
         // Convert to Set for O(1) complexity of contains()
-        let primaryButtons = Set(viewModel.primaryButtons)
+        let primaryButtons = Set(viewModel.buttonGroups.primary)
 
         editButton.isHidden = !primaryButtons.contains(.edit)
         retryButton.isHidden = !primaryButtons.contains(.retry)

@@ -18,6 +18,13 @@ class PostCardStatusViewModel: NSObject {
         case cancel
     }
 
+    struct ButtonGroups {
+        /// The main buttons shown in the Post List
+        let primary: [Button]
+        /// Shown under the _More_
+        let secondary: [Button]
+    }
+
     let post: Post
     private var progressObserverUUID: UUID? = nil
 
@@ -114,46 +121,74 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    private var allButtons: [Button] {
-        var buttons = [Button]()
+    /// Returns what buttons are visible
+    ///
+    /// The order matters here. For the primary buttons, we do not currently support dynamic
+    /// buttons in the UI. Technically, we may end up with situations where there are no buttons
+    /// visible. But we've carefully considered the possible situations so this does not happen.
+    ///
+    /// The order of the Buttons are important here, especially for the secondary buttons which
+    /// dictate what buttons are shown in the action sheet after pressing _More_.
+    var buttonGroups: ButtonGroups {
+        let maxPrimaryButtons = PostCardStatusViewModel.maximumPrimaryButtons
 
-        buttons.append(.edit)
+        let allButtons: [Button] = {
+            var b = [Button]()
 
-        if !post.isFailed {
-            buttons.append(.view)
-        }
+            b.append(.edit)
 
-        if autoUploadInteractor.canRetryUpload(of: post) {
-            buttons.append(.retry)
-        }
+            if !post.isFailed {
+                b.append(.view)
+            }
 
-        if canCancelAutoUpload {
-            buttons.append(.cancel)
-        }
+            if autoUploadInteractor.canRetryUpload(of: post) {
+                b.append(.retry)
+            }
 
-        if canPublish {
-            buttons.append(.publish)
-        }
+            if canCancelAutoUpload {
+                b.append(.cancel)
+            }
 
-        if post.status == .publish {
-            buttons.append(.stats)
-        }
+            if canPublish {
+                b.append(.publish)
+            }
 
-        buttons.append(.trash)
+            if post.status == .publish {
+                b.append(.stats)
+            }
 
-        return buttons
-    }
+            if post.status != .draft {
+                b.append(.moveToDraft)
+            }
 
-    var primaryButtons: [Button] {
-        let max = PostCardStatusViewModel.maximumPrimaryButtons
-        var buttons = self.allButtons
+            b.append(.trash)
 
-        if buttons.count > max {
-            buttons.insert(.more, at: max - 1)
-            return Array(buttons.prefix(max))
-        } else {
-            return buttons
-        }
+            return b
+        }()
+
+        // If allButtons is [one, two, three, four], set the primary to [one, two, “more”].
+        // If allButtons is [one, two, three], set the primary to the same.
+        let primaryButtons: [Button] = {
+            if allButtons.count <= maxPrimaryButtons {
+                return allButtons
+            }
+
+            var primary = allButtons.prefix(maxPrimaryButtons - 1)
+            primary.append(.more)
+            return Array(primary)
+        }()
+
+        // If allButtons is [one, two, three, four], set the secondary to [three, four].
+        // If allButtons is [one, two, three], set the secondary to [].
+        let secondaryButtons: [Button] = {
+            if allButtons.count > maxPrimaryButtons {
+                return Array(allButtons.suffix(from: maxPrimaryButtons - 1))
+            } else {
+                return []
+            }
+        }()
+
+        return ButtonGroups(primary: primaryButtons, secondary: secondaryButtons)
     }
 
     private var canCancelAutoUpload: Bool {
