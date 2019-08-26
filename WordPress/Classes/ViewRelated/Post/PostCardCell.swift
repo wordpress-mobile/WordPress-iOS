@@ -278,12 +278,16 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
-        retryButton.isHidden = !viewModel.canRetryUpload
-        cancelAutoUploadButton.isHidden = !viewModel.canCancelAutoUpload
-        publishButton.isHidden = !viewModel.canPublish
-        viewButton.isHidden = !viewModel.canPreview
-        moreButton.isHidden = !viewModel.shouldShowMore
-        trashButton.isHidden = !viewModel.shouldShowTrash
+        // Convert to Set for O(1) complexity of contains()
+        let primaryButtons = Set(viewModel.primaryButtons)
+
+        editButton.isHidden = !primaryButtons.contains(.edit)
+        retryButton.isHidden = !primaryButtons.contains(.retry)
+        cancelAutoUploadButton.isHidden = !primaryButtons.contains(.cancel)
+        publishButton.isHidden = !primaryButtons.contains(.publish)
+        viewButton.isHidden = !primaryButtons.contains(.view)
+        moreButton.isHidden = !primaryButtons.contains(.more)
+        trashButton.isHidden = !primaryButtons.contains(.trash)
     }
 
     private func setupBorders() {

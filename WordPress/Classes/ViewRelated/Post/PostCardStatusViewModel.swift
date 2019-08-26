@@ -4,6 +4,20 @@ import Gridicons
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///
 class PostCardStatusViewModel: NSObject {
+    private static let maximumPrimaryButtons = 3
+
+    enum Button {
+        case edit
+        case retry
+        case view
+        case more
+        case publish
+        case stats
+        case moveToDraft
+        case trash
+        case cancel
+    }
+
     let post: Post
     private var progressObserverUUID: UUID? = nil
 
@@ -100,16 +114,50 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    var canRetryUpload: Bool {
-        return autoUploadInteractor.canRetryUpload(of: post)
+    private var allButtons: [Button] {
+        var buttons = [Button]()
+
+        buttons.append(.edit)
+
+        if !post.isFailed {
+            buttons.append(.view)
+        }
+
+        if autoUploadInteractor.canRetryUpload(of: post) {
+            buttons.append(.retry)
+        }
+
+        if canCancelAutoUpload {
+            buttons.append(.cancel)
+        }
+
+        if canPublish {
+            buttons.append(.publish)
+        }
+
+        if post.status == .publish {
+            buttons.append(.stats)
+        }
+
+        buttons.append(.trash)
+
+        return buttons
     }
 
-    var canCancelAutoUpload: Bool {
+    var primaryButtons: [Button] {
+        let max = PostCardStatusViewModel.maximumPrimaryButtons
+        var buttons = self.allButtons
+
+        if buttons.count > max {
+            buttons.insert(.more, at: max - 1)
+            return Array(buttons.prefix(max))
+        } else {
+            return buttons
+        }
+    }
+
+    private var canCancelAutoUpload: Bool {
         return autoUploadInteractor.canCancelAutoUpload(of: post)
-    }
-
-    var canPreview: Bool {
-        return !post.isFailed
     }
 
     /// Returns true if any of the following conditions are true:
@@ -117,18 +165,11 @@ class PostCardStatusViewModel: NSObject {
     /// * The post is a draft.
     /// * The post failed to upload and has local changes but the user canceled auto-uploading
     /// * The upload failed and the user cannot Cancel it anymore. This happens when we reached the maximum number of retries.
-    var canPublish: Bool {
+    private var canPublish: Bool {
         let isNotCancelableWithFailedToUploadChanges: Bool = post.isFailed && post.hasLocalChanges() && !autoUploadInteractor.canCancelAutoUpload(of: post)
         return post.isDraft() || isNotCancelableWithFailedToUploadChanges
     }
 
-    var shouldShowMore: Bool {
-        return !post.isDraft()
-    }
-
-    var shouldShowTrash: Bool {
-        return post.isDraft()
-    }
     func statusAndBadges(separatedBy separator: String) -> String {
         let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
         let status = self.status ?? ""
