@@ -411,6 +411,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             }
         }
 
+        cell.contentView.backgroundColor = UIColor.listForeground
+
         cell.configureCell(page)
     }
 
