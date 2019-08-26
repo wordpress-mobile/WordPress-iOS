@@ -76,7 +76,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
 
         let buttonTitle = NSLocalizedString("Clear search history", comment: "Title of a button.")
         clearButton.setTitle(buttonTitle, for: UIControl.State())
-        let buttonBackgroundImage = UIImage(color: .tableBackground)
+        let buttonBackgroundImage = UIImage(color: .listBackground)
         clearButton.setBackgroundImage(buttonBackgroundImage, for: UIControl.State())
 
         borderImageView.image = UIImage(color: .neutral(.shade20), havingSize: CGSize(width: stackView.frame.width, height: 1))

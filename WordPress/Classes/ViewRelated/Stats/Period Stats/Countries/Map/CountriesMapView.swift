@@ -27,7 +27,7 @@ class CountriesMapView: UIView, NibLoadable {
 
     @IBOutlet private var mapContainer: UIView! {
         didSet {
-            map.strokeColor = .tableForeground
+            map.strokeColor = .listForeground
             map.fillColor = WPStyleGuide.Stats.mapBackground
             map.loadMap("world-map", withData: [:], colorAxis: colors)
             mapContainer.addSubview(map)
@@ -36,8 +36,8 @@ class CountriesMapView: UIView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor = .tableForeground
-        map.backgroundColor = .tableForeground
+        backgroundColor = .listForeground
+        map.backgroundColor = .listForeground
         colors = mapColors()
     }
 
