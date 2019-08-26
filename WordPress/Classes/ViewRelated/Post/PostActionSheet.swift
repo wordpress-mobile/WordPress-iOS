@@ -1,7 +1,7 @@
 import Foundation
 
 @objc protocol PostActionSheetDelegate {
-    func showActionSheet(_ post: AbstractPost, from view: UIView)
+    func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView)
 }
 
 class PostActionSheet {
@@ -14,7 +14,9 @@ class PostActionSheet {
         self.interactivePostViewDelegate = interactivePostViewDelegate
     }
 
-    func show(for post: Post, from view: UIView, showViewOption: Bool = false) {
+    func show(for postCardStatusViewModel: PostCardStatusViewModel, from view: UIView, showViewOption: Bool = false) {
+        let post = postCardStatusViewModel.post 
+
         let actionSheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         actionSheetController.addCancelActionWithTitle(Titles.cancel)
@@ -31,7 +33,7 @@ class PostActionSheet {
             }
         }
 
-        if post.status != .draft {
+        if post.status == .draft {
             actionSheetController.addDefaultActionWithTitle(Titles.publish) { [weak self] _ in
                 self?.interactivePostViewDelegate?.publish(post)
             }

@@ -108,11 +108,11 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     @IBAction func more(_ sender: Any) {
-        guard let button = sender as? UIButton, let post = post else {
+        guard let button = sender as? UIButton, let viewModel = viewModel else {
             return
         }
 
-        actionSheetDelegate?.showActionSheet(post, from: button)
+        actionSheetDelegate?.showActionSheet(viewModel, from: button)
     }
 
     @IBAction func retry() {

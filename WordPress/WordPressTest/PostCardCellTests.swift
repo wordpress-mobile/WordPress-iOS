@@ -324,8 +324,10 @@ class PostActionSheetDelegateMock: PostActionSheetDelegate {
     var calledWithPost: AbstractPost?
     var calledWithView: UIView?
 
-    func showActionSheet(_ post: AbstractPost, from view: UIView) {
-        calledWithPost = post
-        calledWithView = view
+    func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
+        if let post = postCardStatusViewModel.post {
+            calledWithPost = post
+            calledWithView = view
+        }
     }
 }

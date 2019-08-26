@@ -4,7 +4,7 @@ import Gridicons
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///
 class PostCardStatusViewModel: NSObject {
-    private let post: Post
+    let post: Post
     private var progressObserverUUID: UUID? = nil
 
     private let autoUploadInteractor = PostAutoUploadInteractor()

@@ -828,12 +828,8 @@ private extension PostListViewController {
 }
 
 extension PostListViewController: PostActionSheetDelegate {
-    func showActionSheet(_ post: AbstractPost, from view: UIView) {
-        guard let post = post as? Post else {
-            return
-        }
-
+    func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
         let isCompactOrSearching = isCompact || searchController.isActive
-        postActionSheet.show(for: post, from: view, showViewOption: isCompactOrSearching)
+        postActionSheet.show(for: postCardStatusViewModel, from: view, showViewOption: isCompactOrSearching)
     }
 }
