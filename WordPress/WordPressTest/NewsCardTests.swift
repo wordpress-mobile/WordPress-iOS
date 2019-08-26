@@ -60,10 +60,6 @@ final class NewsCardTests: XCTestCase {
         super.tearDown()
     }
 
-    func testViewHasTheExpectedBackgroundColor() {
-        XCTAssertEqual(subject?.view.backgroundColor, .clear)
-    }
-
     func testTitleHasTheExpectedColor() {
         XCTAssertEqual(subject?.newsTitle.textColor, .text)
     }
