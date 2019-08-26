@@ -34,6 +34,21 @@ extension BasePost {
         case trash = "trash"
         case deleted = "deleted" // Returned by wpcom REST API when a post is permanently deleted.
     }
+
+    static let pathForDisplayImageKeyPath = "pathForDisplayImage"
+    var pathForDisplayImage: String? {
+        get {
+            willAccessValue(forKey: BasePost.pathForDisplayImageKeyPath)
+            let result = primitiveValue(forKey: BasePost.pathForDisplayImageKeyPath) as? String
+            didAccessValue(forKey: BasePost.pathForDisplayImageKeyPath)
+
+            if let result = result {
+                return URL(string: result)?.refreshLocalPath()?.absoluteString
+            }
+
+            return result
+        }
+    }
 }
 
 extension Sequence where Iterator.Element == BasePost.Status {

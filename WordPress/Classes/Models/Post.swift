@@ -313,6 +313,6 @@ class Post: AbstractPost {
             return nil
         }
 
-        return URL(string: path)?.refreshLocalPath()
+        return URL(string: path)
     }
 }

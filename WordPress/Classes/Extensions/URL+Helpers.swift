@@ -147,22 +147,23 @@ extension URL {
     }
 
     func refreshLocalPath() -> URL? {
-        guard isFileURL,
-            let applicationDirectory = FileManager.default.urls(for: .applicationDirectory, in: .allDomainsMask).first else {
+        guard isFileURL else {
             return self
         }
 
-        let originalUUIDs = UUID.extract(from: absoluteString)
-        let refreshedUUIDs = UUID.extract(from: applicationDirectory.absoluteString)
-        var refreshedURL = absoluteString
-
-        for (index, uuid) in originalUUIDs.enumerated() {
-            if refreshedUUIDs.indices.contains(index) {
-                refreshedURL = refreshedURL.replacingOccurrences(of: uuid.uuidString, with: refreshedUUIDs[index].uuidString)
+        if let mediaCache = try? MediaFileManager.cache.directoryURL().appendingPathComponent(self.lastPathComponent) {
+            if FileManager.default.fileExists(atPath: mediaCache.path) {
+                return mediaCache
             }
         }
 
-        return URL(string: refreshedURL)
+        if let mediaDocument = try? MediaFileManager().directoryURL().appendingPathComponent(self.lastPathComponent) {
+            if FileManager.default.fileExists(atPath: mediaDocument.path) {
+                return mediaDocument
+            }
+        }
+
+        return nil
     }
 }
 
