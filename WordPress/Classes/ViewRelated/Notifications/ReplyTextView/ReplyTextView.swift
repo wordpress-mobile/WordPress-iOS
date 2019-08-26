@@ -230,6 +230,7 @@ import WordPressShared.WPStyleGuide
         textView.scrollsToTop = false
         textView.contentInset = .zero
         textView.textContainerInset = .zero
+        textView.backgroundColor = WPStyleGuide.Reply.textViewBackground
         textView.font = WPStyleGuide.Reply.textFont
         textView.textColor = WPStyleGuide.Reply.textColor
         textView.textContainer.lineFragmentPadding = 0
@@ -256,6 +257,7 @@ import WordPressShared.WPStyleGuide
 
         // Bezier
         bezierContainerView.bezierColor = WPStyleGuide.Reply.separatorColor
+        bezierContainerView.bezierFillColor = WPStyleGuide.Reply.textViewBackground
         bezierContainerView.translatesAutoresizingMaskIntoConstraints = false
 
         // Separators
