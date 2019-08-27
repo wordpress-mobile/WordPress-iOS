@@ -181,8 +181,10 @@ private extension SiteStatsInsightsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        if asyncLoadingActivated && viewModel.fetchingFailed() {
-            displayFailureViewIfNecessary()
+        if asyncLoadingActivated {
+            if viewModel.fetchingFailed() {
+                displayFailureViewIfNecessary()
+            }
         } else {
             if viewModel.fetchingFailed() &&
                 !viewModel.containsCachedData() {
