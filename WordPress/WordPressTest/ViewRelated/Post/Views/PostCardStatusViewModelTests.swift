@@ -21,10 +21,10 @@ class PostCardStatusViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func testExpectedButtonGroups() {
+    func testExpectedButtonGroupsForVariousPostAttributeCombinations() {
         // Arrange
         let expectations: [Post: ButtonGroups] = [
-            // Draft that was successfully uploaded to the server
+            // Draft with remote
             PostBuilder(context).drafted().withRemote().build():
                 ButtonGroups(primary: [.edit, .view, .more], secondary: [.publish, .trash]),
             // Draft that was not uploaded to the server
@@ -35,7 +35,10 @@ class PostCardStatusViewModelTests: XCTestCase {
                 ButtonGroups(primary: [.edit, .cancel, .more], secondary: [.moveToDraft, .trash]),
             // Local published draft with canceled auto-upload.
             PostBuilder(context).published().with(remoteStatus: .failed).build():
-                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.moveToDraft, .trash])
+                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.moveToDraft, .trash]),
+            // Published post
+            PostBuilder(context).published().withRemote().build():
+                ButtonGroups(primary: [.edit, .view, .more], secondary: [.stats, .moveToDraft, .trash]),
         ]
 
         // Act and Assert
