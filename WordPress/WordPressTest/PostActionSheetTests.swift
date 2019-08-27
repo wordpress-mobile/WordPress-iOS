@@ -18,7 +18,7 @@ class PostActionSheetTests: XCTestCase {
     }
 
     func testPublishedPostOptions() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
 
         postActionSheet.show(for: viewModel, from: view)
 
@@ -54,7 +54,7 @@ class PostActionSheetTests: XCTestCase {
     }
 
     func testPublishedPostOptionsWithView() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
 
         postActionSheet.show(for: viewModel, from: view, showViewOption: true)
 
@@ -63,7 +63,7 @@ class PostActionSheetTests: XCTestCase {
     }
 
     func testCallDelegateWhenStatsTapped() {
-        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
 
         postActionSheet.show(for: viewModel, from: view)
         tap("Stats", in: viewControllerMock.viewControllerPresented)

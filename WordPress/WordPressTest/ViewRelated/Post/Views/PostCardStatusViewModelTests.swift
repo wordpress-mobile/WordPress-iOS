@@ -23,8 +23,6 @@ class PostCardStatusViewModelTests: XCTestCase {
 
     func testExpectedButtonGroups() {
         // Arrange
-        expect([0, 1, 2]).to(equal([0, 1, 2]))
-
         let expectations: [Post: ButtonGroups] = [
             // Draft that was successfully uploaded to the server
             PostBuilder(context).drafted().withRemote().build():
