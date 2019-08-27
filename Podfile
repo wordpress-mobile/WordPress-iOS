@@ -120,7 +120,7 @@ def gutenberg_dependencies(options)
     if options[:path]
         podspec_prefix = options[:path]
     else
-        tag_or_commit = options[:tag] || options[:commit]
+        tag_or_commit = options[:tag] || options[:commit] || options[:branch]
         podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
     end
 
@@ -142,7 +142,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.11.0'
+    gutenberg :branch => 'callstack/media-upload-multiple'
 
     ## Third party libraries
     ## =====================
