@@ -9,6 +9,7 @@
 #import "ContextManager.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";
 
@@ -89,7 +90,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor murielListForeground];
 
     self.headerView.item = self.item;
 
