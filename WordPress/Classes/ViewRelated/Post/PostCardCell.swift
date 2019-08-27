@@ -154,6 +154,9 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostButtonStyle(retryButton)
         WPStyleGuide.applyPostButtonStyle(viewButton)
         WPStyleGuide.applyPostButtonStyle(moreButton)
+        WPStyleGuide.applyPostButtonStyle(cancelAutoUploadButton)
+        WPStyleGuide.applyPostButtonStyle(publishButton)
+        WPStyleGuide.applyPostButtonStyle(trashButton)
 
         setupActionBar()
         setupFeaturedImage()
