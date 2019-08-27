@@ -24,6 +24,14 @@ class WordPressComSyncService {
         })
     }
 
+    /// Syncs or associates blogs for the specified account.
+    ///
+    /// - Parameters:
+    ///   - account: The WPAccount for which to sync/associate blogs.
+    ///   - isJetpackLogin: Whether a Jetpack connected account is being logged into.
+    ///   - onSuccess: Success block
+    ///   - onFailure: Failure block
+    ///
     func syncOrAssociateBlogs(account: WPAccount, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)

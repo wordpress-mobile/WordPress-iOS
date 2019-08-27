@@ -137,6 +137,14 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
                             failure:(nullable void (^)(NSError *error))failure;
 
 
+/**
+ Syncs the details for the account associated with the provided auth token, then
+ creates or updates a WPAccount with the synced information.
+
+ @param authToken The auth token associated with the account being created/updated.
+ @param success A success block.
+ @param failure A failure block.
+ */
 - (void)syncAccountDetailsAndCreateAccount:(NSString *)authToken
                                    success:(void (^)(WPAccount * _Nonnull))success
                                    failure:(void (^)(NSError * _Nonnull))failure;

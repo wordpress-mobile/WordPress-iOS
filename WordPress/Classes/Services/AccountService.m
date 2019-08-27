@@ -264,7 +264,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [results firstObject];
 }
 
-
 - (void)syncAccountDetailsAndCreateAccount:(NSString *)authToken
                                    success:(void (^)(WPAccount * _Nonnull))success
                                    failure:(void (^)(NSError * _Nonnull))failure
