@@ -15,7 +15,7 @@ class PostCardStatusViewModel: NSObject {
         case stats
         case moveToDraft
         case trash
-        case cancel
+        case cancelAutoUpload
     }
 
     struct ButtonGroups: Equatable {
@@ -146,7 +146,7 @@ class PostCardStatusViewModel: NSObject {
             }
 
             if canCancelAutoUpload {
-                b.append(.cancel)
+                b.append(.cancelAutoUpload)
             }
 
             if canPublish {

@@ -56,7 +56,7 @@ class PostActionSheet {
                     actionSheetController.addDestructiveActionWithTitle(destructiveTitle) { [weak self] _ in
                         self?.interactivePostViewDelegate?.trash(post)
                     }
-                case .cancel:
+                case .cancelAutoUpload:
                     actionSheetController.addDefaultActionWithTitle(Titles.cancelAutoUpload) { [weak self] _ in
                         self?.interactivePostViewDelegate?.cancelAutoUpload(post)
                     }

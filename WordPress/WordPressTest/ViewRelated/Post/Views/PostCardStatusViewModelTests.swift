@@ -32,7 +32,7 @@ class PostCardStatusViewModelTests: XCTestCase {
                 ButtonGroups(primary: [.edit, .publish, .trash], secondary: []),
             // Local published draft with confirmed auto-upload.
             PostBuilder(context).published().with(remoteStatus: .failed).confirmedAutoUpload().build():
-                ButtonGroups(primary: [.edit, .cancel, .more], secondary: [.moveToDraft, .trash]),
+                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.moveToDraft, .trash]),
             // Local published draft with canceled auto-upload.
             PostBuilder(context).published().with(remoteStatus: .failed).build():
                 ButtonGroups(primary: [.edit, .publish, .more], secondary: [.moveToDraft, .trash]),

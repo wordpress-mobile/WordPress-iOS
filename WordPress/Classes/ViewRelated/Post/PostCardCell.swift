@@ -286,7 +286,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
 
         editButton.isHidden = !primaryButtons.contains(.edit)
         retryButton.isHidden = !primaryButtons.contains(.retry)
-        cancelAutoUploadButton.isHidden = !primaryButtons.contains(.cancel)
+        cancelAutoUploadButton.isHidden = !primaryButtons.contains(.cancelAutoUpload)
         publishButton.isHidden = !primaryButtons.contains(.publish)
         viewButton.isHidden = !primaryButtons.contains(.view)
         moreButton.isHidden = !primaryButtons.contains(.more)
