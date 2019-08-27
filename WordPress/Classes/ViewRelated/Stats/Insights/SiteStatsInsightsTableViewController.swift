@@ -156,7 +156,8 @@ private extension SiteStatsInsightsTableViewController {
                                          TopTotalsInsightStatsRow.self,
                                          TableFooterRow.self]
         if asyncLoadingActivated {
-            rows.append(contentsOf: [StatsGhostChartImmutableRow.self,
+            rows.append(contentsOf: [StatsErrorRow.self,
+                                     StatsGhostChartImmutableRow.self,
                                      StatsGhostTwoColumnImmutableRow.self,
                                      StatsGhostTopImmutableRow.self,
                                      StatsGhostTabbedImmutableRow.self,
