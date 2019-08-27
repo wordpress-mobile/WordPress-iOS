@@ -19,6 +19,8 @@
 {
     [super awakeFromNib];
 
+    self.backgroundColor = [UIColor murielListForeground];
+
     [self setupCancelButton];
     [self setupTrashButton];
     [self setupSaveButton];

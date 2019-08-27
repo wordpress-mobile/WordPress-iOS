@@ -35,7 +35,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor murielListForeground];
 
         [self setupStackView];
         [self setupLabel];
@@ -83,7 +83,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.font = [WPStyleGuide tableviewTextFont];
     label.textColor = [UIColor murielNeutral60];
-    label.backgroundColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByTruncatingTail;
     _label = label;

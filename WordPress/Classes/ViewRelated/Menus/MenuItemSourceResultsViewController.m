@@ -33,7 +33,7 @@ static CGFloat const SearchBarHeight = 44.0;
     [super viewDidLoad];
 
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor murielListForeground];
 
     [self setupTableView];
     [self setupStackedTableHeaderView];

@@ -36,7 +36,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     if (self) {
 
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor murielListForeground];
 
         _drawsLineSeparator = YES;
 
@@ -55,7 +55,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     contentView.drawDelegate = self;
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
     contentView.tintColor = [self iconTintColor];
-    contentView.backgroundColor = [UIColor whiteColor];
+    contentView.backgroundColor = [UIColor murielListForeground];
 
     [self addSubview:contentView];
     _contentView = contentView;
@@ -245,7 +245,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     if (self.highlighted) {
         color = [UIColor murielPrimary40];
     } else  {
-        color = [UIColor whiteColor];
+        color = [UIColor murielListForeground];
     }
 
     return color;
@@ -257,7 +257,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     if (self.highlighted) {
         color = [UIColor whiteColor];
     } else  {
-        color = [UIColor murielNeutral70];
+        color = [UIColor murielText];
     }
 
     return color;

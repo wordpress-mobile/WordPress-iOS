@@ -168,10 +168,7 @@ extension WPStyleGuide {
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar,
                                           forTabbedCard: Bool = false,
                                           forOverviewCard: Bool = false) {
-            filterTabBar.dividerColor = filterDividerColor
-            filterTabBar.deselectedTabColor = filterDeselectedColor
-            filterTabBar.backgroundColor = .filterBarBackground
-            filterTabBar.tintColor = defaultFilterTintColor
+            WPStyleGuide.configureFilterTabBar(filterTabBar)
 
             // For FilterTabBar on TabbedTotalsCell
             if forTabbedCard {
@@ -213,8 +210,6 @@ extension WPStyleGuide {
         static let defaultFilterTintColor = UIColor.filterBarSelected
         static let tabbedCardFilterTintColor = UIColor.filterBarSelected
         static let tabbedCardFilterSelectedTitleColor = UIColor.filterBarSelected
-        static let filterDeselectedColor = UIColor.textSubtle
-        static let filterDividerColor = UIColor.neutral(.shade10)
 
         static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .regular)
         static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
