@@ -43,7 +43,7 @@ extension BasePost {
             didAccessValue(forKey: BasePost.pathForDisplayImageKeyPath)
 
             if let result = result {
-                return URL(string: result)?.refreshLocalPath()?.absoluteString
+                return URL(string: result)?.fixedMediaLocalURL()?.absoluteString
             }
 
             return result

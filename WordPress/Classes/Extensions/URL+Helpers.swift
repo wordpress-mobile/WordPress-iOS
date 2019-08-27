@@ -146,7 +146,10 @@ extension URL {
         return components.count == 4 && hasWordPressDotComHostname
     }
 
-    func refreshLocalPath() -> URL? {
+    /// In case of an app migration, the UUID of local paths can change.
+    /// This method returns the correct path for a given file URL.
+    ///
+    func fixedMediaLocalURL() -> URL? {
         guard isFileURL else {
             return self
         }
