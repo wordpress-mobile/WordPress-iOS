@@ -230,6 +230,7 @@ PODS:
     - UIDeviceIdentifier (~> 1.1.4)
     - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
+  - WordPressMocks (0.0.5)
   - WordPressShared (1.8.7-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
@@ -263,7 +264,7 @@ DEPENDENCIES:
   - GiphyCoreSDK (~> 1.4.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/callstack/media-upload-multiple/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
   - Gridicons (~> 0.16)
-  - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, branch `callstack/media-upload-multiple`)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, branch `callstack/media-upload-multiple`)
   - HockeySDK (= 5.1.4)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
@@ -295,13 +296,14 @@ DEPENDENCIES:
   - React-RCTWebSocket (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/callstack/media-upload-multiple/react-native-gutenberg-bridge/third-party-podspecs/React-RCTWebSocket.podspec.json`)
   - ReactNativeDarkMode (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/callstack/media-upload-multiple/react-native-gutenberg-bridge/third-party-podspecs/ReactNativeDarkMode.podspec.json`)
   - RNSVG (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/callstack/media-upload-multiple/react-native-gutenberg-bridge/third-party-podspecs/RNSVG.podspec.json`)
-  - RNTAztecView (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, branch `callstack/media-upload-multiple`)
+  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, branch `callstack/media-upload-multiple`)
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.8.1)
   - WordPressAuthenticator (~> 1.8.0-beta.10)
   - WordPressKit (~> 4.5.0-beta.2)
+  - WordPressMocks (~> 0.0.5)
   - WordPressShared (~> 1.8.7-beta.1)
   - WordPressUI (~> 1.3.4)
   - WPMediaPicker (~> 1.4.2)
@@ -345,6 +347,7 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
+    - WordPressMocks
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -362,7 +365,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/callstack/media-upload-multiple/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json
   Gutenberg:
     :branch: callstack/media-upload-multiple
-    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
+    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/callstack/media-upload-multiple/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   React-Core:
@@ -409,7 +412,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/callstack/media-upload-multiple/react-native-gutenberg-bridge/third-party-podspecs/RNSVG.podspec.json
   RNTAztecView:
     :branch: callstack/media-upload-multiple
-    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
+    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/callstack/media-upload-multiple/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -419,10 +422,10 @@ CHECKOUT OPTIONS:
     :tag: 0.1.1
   Gutenberg:
     :commit: 4ca35aaea7cfbeb6da3f0f69900234affc7eec47
-    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
+    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNTAztecView:
     :commit: 4ca35aaea7cfbeb6da3f0f69900234affc7eec47
-    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
+    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -486,6 +489,7 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: ca06c5868d1ac68144a4626465b9c1eef1c53e40
   WordPressAuthenticator: bb13b6c7da6b3b2cdbf76a71ff6dc68cd60dd051
   WordPressKit: 6fb3101e9542398c895517d64ac435d3a4e83e25
+  WordPressMocks: d8088f718439556ff3856d5881aef581740cd26a
   WordPressShared: fc1ef47c3dc91237ef225706bb21ea10c9e4388f
   WordPressUI: 065de4c33212b9ca3ae458d43c73f2ce2738d3d4
   WPMediaPicker: 1897f312c7b41114ffd239fb782431ae602134a1
@@ -494,6 +498,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: c2e49fd16a73e43e490f777cea67dd852b819ace
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 5aa5d642e56565517b5b66d7418d9e4ce1deb6fa
+PODFILE CHECKSUM: 1f1405614d18206f09a6245c283256d0dcdded0b
 
 COCOAPODS: 1.6.1
