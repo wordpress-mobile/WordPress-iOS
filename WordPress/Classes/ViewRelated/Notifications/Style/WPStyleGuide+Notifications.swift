@@ -120,7 +120,7 @@ extension WPStyleGuide {
 
         public static let blockTextColor            = UIColor.text
         public static let blockQuotedColor          = UIColor.neutral
-        public static let blockBackgroundColor      = UIColor.white
+        public static let blockBackgroundColor      = UIColor.listForeground
         public static let blockLinkColor            = UIColor.primary
         public static let blockSeparatorColor       = UIColor.divider
 
@@ -198,7 +198,7 @@ extension WPStyleGuide {
         }
 
         // Action Buttons
-        public static let blockActionDisabledColor  = UIColor.neutral(.shade30)
+        public static let blockActionDisabledColor  = UIColor.listIcon
         public static let blockActionEnabledColor   = UIColor.primary
 
         // RichText Helpers

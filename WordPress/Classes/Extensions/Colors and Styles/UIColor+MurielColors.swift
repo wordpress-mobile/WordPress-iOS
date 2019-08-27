@@ -270,9 +270,9 @@ extension UIColor {
 
     static var secondaryButtonBorder: UIColor {
         #if XCODE11
-        if #available(iOS 13, *) {
-            return .systemGray3
-        }
+            if #available(iOS 13, *) {
+                return .systemGray3
+            }
         #endif
         return .neutral(.shade20)
     }

@@ -31,6 +31,11 @@ private enum ReaderCardDiscoverAttribution: Int {
 
     @objc weak var delegate: ReaderCardDiscoverAttributionViewDelegate?
 
+    override open var backgroundColor: UIColor? {
+        didSet {
+            applyOpaqueBackgroundColors()
+        }
+    }
 
     // MARK: - Lifecycle Methods
 
@@ -57,6 +62,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         textLabel.isUserInteractionEnabled = true
         imageView.isUserInteractionEnabled = true
 
+        backgroundColor = .listForeground
         applyOpaqueBackgroundColors()
     }
 
@@ -67,9 +73,8 @@ private enum ReaderCardDiscoverAttribution: Int {
      Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
      */
     fileprivate func applyOpaqueBackgroundColors() {
-        backgroundColor = .listForeground
-        imageView.backgroundColor = .listForeground
-        textLabel.backgroundColor = .listForeground
+        imageView?.backgroundColor = backgroundColor
+        textLabel?.backgroundColor = backgroundColor
     }
 
     @objc open func configureView(_ contentProvider: ReaderPostContentProvider?) {

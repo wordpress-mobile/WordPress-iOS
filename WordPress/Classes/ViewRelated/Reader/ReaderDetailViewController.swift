@@ -57,6 +57,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // Header realated Views
     @IBOutlet fileprivate weak var headerView: UIView!
+    @IBOutlet fileprivate weak var headerViewBackground: UIView!
     @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
     @IBOutlet fileprivate weak var blogNameButton: UIButton!
     @IBOutlet fileprivate weak var blogURLLabel: UILabel!
@@ -84,6 +85,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var featuredImageBottomPaddingView: UIView!
     @IBOutlet fileprivate weak var titleBottomPaddingView: UIView!
     @IBOutlet fileprivate weak var bylineBottomPaddingView: UIView!
+    @IBOutlet fileprivate weak var footerDivider: UIView!
 
     @objc open var shouldHideComments = false
     fileprivate var didBumpStats = false
@@ -515,6 +517,24 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
+
+        view.backgroundColor = .listBackground
+        headerView.backgroundColor = .listForeground
+        footerView.backgroundColor = .listForeground
+        footerDivider.backgroundColor = .divider
+
+        #if XCODE11
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle == .dark {
+                attributionView.backgroundColor = .listBackground
+            }
+        }
+        #endif
+
+        bylineGradientViews.forEach({ view in
+            view.fromColor = .listBackground
+            view.toColor = UIColor.listBackground.withAlphaComponent(0.0)
+        })
     }
 
 

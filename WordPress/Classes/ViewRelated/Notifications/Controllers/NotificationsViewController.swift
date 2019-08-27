@@ -531,7 +531,8 @@ private extension NotificationsViewController {
 
     func setupFilterBar() {
         filterTabBar.backgroundColor = .filterBarBackground
-        filterTabBar.tintColor = .primary
+        filterTabBar.superview?.backgroundColor = .filterBarBackground
+        filterTabBar.tintColor = .filterBarSelected
         filterTabBar.deselectedTabColor = .textSubtle
         filterTabBar.dividerColor = .neutral(.shade10)
 
