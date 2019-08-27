@@ -12,7 +12,16 @@ class StatsGhostBaseCell: UITableViewCell {
     }
 }
 
-class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable { }
+class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable {
+    @IBOutlet private var stackView: UIStackView! {
+        didSet {
+            let row = StatsTwoColumnRow.loadFromNib()
+            let data = StatsTwoColumnRowData(leftColumnName: "", leftColumnData: "", rightColumnName: "", rightColumnData: "")
+            row.configure(rowData: data)
+            stackView.addArrangedSubview(row)
+        }
+    }
+}
 class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTabbedCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostPostingActivityCell: StatsGhostBaseCell, NibLoadable {
