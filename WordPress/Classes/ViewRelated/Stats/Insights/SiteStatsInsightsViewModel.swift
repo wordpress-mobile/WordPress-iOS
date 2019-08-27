@@ -543,7 +543,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func row(for insight: InsightType, rowStatus: StoreFetchingStatus, rowBlock: () -> ImmuTableRow, loadingRow: () -> ImmuTableRow) -> ImmuTableRow {
-        if insightsStore.containsCachedData(for: insight) {
+        if insightsStore.containsCachedData(for: insight) || !Feature.enabled(.statsAsyncLoading) {
             return rowBlock()
         }
 
