@@ -128,6 +128,9 @@
 		08F8CD371EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 08F8CD341EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg */; };
 		08F8CD391EBD2C970049D0C0 /* MediaURLExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD381EBD2C970049D0C0 /* MediaURLExporter.swift */; };
 		08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */; };
+		0B479F7D2313A8C700F2859B /* ExpandableInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B479F7C2313A8C700F2859B /* ExpandableInputAccessoryView.swift */; };
+		0B479F7F2313AA0C00F2859B /* ExpandableInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B479F7E2313AA0C00F2859B /* ExpandableInputAccessoryView.xib */; };
+		0B479F812313AA4400F2859B /* ExpandableInputAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B479F802313AA4400F2859B /* ExpandableInputAccessoryViewController.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
 		1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1703D04B20ECD93800D292E9 /* Routes+Post.swift */; };
@@ -2188,6 +2191,9 @@
 		08F8CD341EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image-device-photo-gps.jpg"; sourceTree = "<group>"; };
 		08F8CD381EBD2C970049D0C0 /* MediaURLExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaURLExporter.swift; sourceTree = "<group>"; };
 		08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaURLExporterTests.swift; sourceTree = "<group>"; };
+		0B479F7C2313A8C700F2859B /* ExpandableInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableInputAccessoryView.swift; sourceTree = "<group>"; };
+		0B479F7E2313AA0C00F2859B /* ExpandableInputAccessoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExpandableInputAccessoryView.xib; sourceTree = "<group>"; };
+		0B479F802313AA4400F2859B /* ExpandableInputAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableInputAccessoryViewController.swift; sourceTree = "<group>"; };
 		0F01F606071B0B9BD9DB34DE /* Pods-WordPressTodayWidget.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		10BBFF34EBDA2F9B8CB48DF6 /* Pods-WordPressUITests.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUITests.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUITests/Pods-WordPressUITests.release-internal.xcconfig"; sourceTree = "<group>"; };
 		131D0EE49695795ECEDAA446 /* Pods-WordPressTest.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-alpha.xcconfig"; sourceTree = "<group>"; };
@@ -4544,6 +4550,9 @@
 				1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */,
 				177076201EA206C000705A4A /* PlayIconView.swift */,
 				2F161B0522CC2DC70066A5C5 /* LoadingStatusView.swift */,
+				0B479F7E2313AA0C00F2859B /* ExpandableInputAccessoryView.xib */,
+				0B479F802313AA4400F2859B /* ExpandableInputAccessoryViewController.swift */,
+				0B479F7C2313A8C700F2859B /* ExpandableInputAccessoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -9727,6 +9736,7 @@
 				9826AE8C21B5CC8D00C851FA /* PostingActivityMonth.xib in Resources */,
 				08D499671CDD20450004809A /* Menus.storyboard in Resources */,
 				9A3BDA1022944F4D00FBF510 /* CountriesMapView.xib in Resources */,
+				0B479F7F2313AA0C00F2859B /* ExpandableInputAccessoryView.xib in Resources */,
 				98797DBD222F434500128C21 /* OverviewCell.xib in Resources */,
 				17E3639D22C41DBA000E0C79 /* hot_pink_icon_40pt@3x.png in Resources */,
 				9A8ECE1E2254AE4E0043C8DA /* JetpackRemoteInstallStateView.xib in Resources */,
@@ -11419,6 +11429,7 @@
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
 				7E4123C820F417EF00DF8486 /* FormattableActivity.swift in Sources */,
+				0B479F812313AA4400F2859B /* ExpandableInputAccessoryViewController.swift in Sources */,
 				9A162F2B21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift in Sources */,
 				73D86969223AF4040064920F /* StatsChartLegendView.swift in Sources */,
 				FF286C761DE70A4500383A62 /* NSURL+Exporters.swift in Sources */,
@@ -11441,6 +11452,7 @@
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
 				9A4E271D22EF33F5001F6A6B /* AccountSettingsStore.swift in Sources */,
 				4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
+				0B479F7D2313A8C700F2859B /* ExpandableInputAccessoryView.swift in Sources */,
 				73FF7032221F469100541798 /* Charts+Support.swift in Sources */,
 				171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */,
 				173F6DFC21232F2A00A4C8E2 /* NoResultsGiphyConfiguration.swift in Sources */,
