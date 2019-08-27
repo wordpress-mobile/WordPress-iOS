@@ -254,7 +254,7 @@ class WebKitViewController: UIViewController {
         guard let toolBar = navigationController?.toolbar else {
             return
         }
-        toolBar.barTintColor = UIColor.white
+        toolBar.barTintColor = .appBar
         fixBarButtonsColorForBoldText(on: toolBar)
     }
 
@@ -266,12 +266,12 @@ class WebKitViewController: UIViewController {
 
     private func fixBarButtonsColorForBoldText(on bar: UIView) {
         if UIAccessibility.isBoldTextEnabled {
-            bar.tintColor = .neutral(.shade20)
+            bar.tintColor = .listIcon
         }
     }
 
     private func styleBarButton(_ button: UIBarButtonItem) {
-        button.tintColor = .neutral(.shade20)
+        button.tintColor = .listIcon
     }
 
     // MARK: Reachability Helpers
