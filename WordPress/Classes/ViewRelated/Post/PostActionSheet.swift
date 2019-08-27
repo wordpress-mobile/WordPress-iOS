@@ -1,4 +1,5 @@
 import Foundation
+import AutomatticTracks
 
 @objc protocol PostActionSheetDelegate {
     func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView)
@@ -61,7 +62,7 @@ class PostActionSheet {
                         self?.interactivePostViewDelegate?.cancelAutoUpload(post)
                     }
                 default:
-                    assertionFailure("Cannnot handle unexpected button: \(button)")
+                    CrashLogging.logMessage("Cannot handle unexpected button for post action sheet: \(button). This is a configuration error.", level: .error)
                 }
         }
 
