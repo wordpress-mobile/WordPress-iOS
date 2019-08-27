@@ -915,17 +915,8 @@ extension StatsInsightsStore {
     }
 
     var fetchingOverviewHasFailed: Bool {
-        return
-            state.lastPostSummaryStatus == .error &&
-            state.allTimeStatus == .error &&
-            state.annualAndMostPopularTimeStatus == .error &&
-            state.dotComFollowersStatus == .error &&
-            state.emailFollowersStatus == .error &&
-            state.todaysStatsStatus == .error &&
-            state.tagsAndCategoriesStatus == .error &&
-            state.publicizeFollowersStatus == .error &&
-            state.commentsInsightStatus == .error &&
-            state.postingActivityStatus == .error
+        let mirror = Mirror(reflecting: state)
+        return mirror.children.compactMap { $0.value as? StoreFetchingStatus }.first { $0 != .error } == nil
     }
 
     func fetchingFailed(for query: InsightQuery) -> Bool {
