@@ -63,9 +63,15 @@ class SiteStatsInsightsViewModel: Observable {
                 }
             case .latestPostSummary:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
-                tableRows.append(LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
-                                                      chartData: insightsStore.getPostStats(),
-                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(row(for: .latestPostSummary,
+                                     rowStatus: insightsStore.lastPostSummaryStatus,
+                                     rowBlock: {
+                                        return LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
+                                                                    chartData: insightsStore.getPostStats(),
+                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loadingRow: {
+                    return StatsGhostChartImmutableRow()
+                }))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
                 tableRows.append(row(for: .allTimeStats,
@@ -538,7 +544,6 @@ private extension SiteStatsInsightsViewModel {
 
     func row(for insight: InsightType, rowStatus: StoreFetchingStatus, rowBlock: () -> ImmuTableRow, loadingRow: () -> ImmuTableRow) -> ImmuTableRow {
         return loadingRow()
-
         if insightsStore.containsCachedData(for: insight) {
             return rowBlock()
         }
