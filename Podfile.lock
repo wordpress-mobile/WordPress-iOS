@@ -447,7 +447,7 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   Gridicons: dc92efbe5fd60111d2e8ea051d84a60cca552abc
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
-  Gutenberg: fc70bd7e10c768368ed2e3a827e4186120de1f78
+  Gutenberg: 1b7bf6d523d1d4b891398c018ec89753228f9019
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -479,7 +479,7 @@ SPEC CHECKSUMS:
   React-RCTWebSocket: 47dfd49bb143d4847fae643816e02646b7bce1b9
   ReactNativeDarkMode: f61376360c5d983907e5c316e8e1c853a8c2f348
   RNSVG: c820516df826221ce4969594bf3e822a464abd51
-  RNTAztecView: 6fc2265ea5bc95e30a6f6efee2744fdc4d46f353
+  RNTAztecView: ee0b1d8634942b61104dcc26be847b227386be8e
   Sentry: 26650184fe71eb7476dfd2737acb5ea6cc64b4b1
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
@@ -500,4 +500,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 490c9b631d27050fbf14f57d092b7a32ac46e54f
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.5
