@@ -235,7 +235,7 @@ class AbstractPostListViewController: UIViewController,
     func configureFilterBar() {
         filterTabBar.backgroundColor = .filterBarBackground
         filterTabBar.tintColor = .primary
-        filterTabBar.deselectedTabColor = .neutral(.shade40)
+        filterTabBar.deselectedTabColor = .textSubtle
         filterTabBar.dividerColor = .neutral(.shade10)
 
         filterTabBar.items = filterSettings.availablePostListFilters()

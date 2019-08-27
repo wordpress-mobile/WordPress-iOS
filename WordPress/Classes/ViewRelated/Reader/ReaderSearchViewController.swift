@@ -169,7 +169,7 @@ import Gridicons
 
     func configureFilterBar() {
         filterBar.tintColor = .primary
-        filterBar.deselectedTabColor = .neutral(.shade40)
+        filterBar.deselectedTabColor = .textSubtle
         filterBar.dividerColor = .neutral(.shade10)
         filterBar.tabSizingStyle = .equalWidths
         filterBar.items = sections
