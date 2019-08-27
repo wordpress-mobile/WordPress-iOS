@@ -3,6 +3,8 @@ import XCTest
 
 @testable import WordPress
 
+private typealias Titles = PostActionSheet.Titles
+
 class PostActionSheetTests: XCTestCase {
 
     private var postActionSheet: PostActionSheet!
@@ -24,6 +26,15 @@ class PostActionSheetTests: XCTestCase {
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "Stats", "Move to Draft", "Move to Trash"], options)
+    }
+
+    func testLocallyPublishedPostShowsCancelAutoUploadOption() {
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build())
+
+        postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
+
+        let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
+        XCTAssertEqual([Titles.cancel, Titles.cancelAutoUpload, Titles.draft, Titles.trash], options)
     }
 
     func testDraftedPostOptions() {
@@ -107,6 +118,15 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallView)
     }
 
+    func testCallsDelegateWhenCancelAutoUploadIsTapped() {
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build())
+
+        postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
+        tap(Titles.cancelAutoUpload, in: viewControllerMock.viewControllerPresented)
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallCancelAutoUpload)
+    }
+
     func tap(_ label: String, in alertController: UIAlertController?) {
         typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
 
@@ -132,12 +152,13 @@ class UIViewControllerMock: UIViewController {
 }
 
 class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
-    var didCallHandleStats = false
-    var didCallHandleDraft = false
-    var didCallHandleTrashPost = false
-    var didCallEdit = false
-    var didCallView = false
-    var didCallRetry = false
+    private(set) var didCallHandleStats = false
+    private(set) var didCallHandleDraft = false
+    private(set) var didCallHandleTrashPost = false
+    private(set) var didCallEdit = false
+    private(set) var didCallView = false
+    private(set) var didCallRetry = false
+    private(set) var didCallCancelAutoUpload = false
 
     func stats(for post: AbstractPost) {
         didCallHandleStats = true
@@ -176,6 +197,6 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     }
 
     func cancelAutoUpload(_ post: AbstractPost) {
-        // noop
+        didCallCancelAutoUpload = true
     }
 }
