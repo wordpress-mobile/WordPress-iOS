@@ -15,32 +15,11 @@ class WordPressComSyncService {
     ///     - onFailure: Closure to be executed upon failure.
     ///
     func syncWPCom(authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
-        syncAccountDetailsAndCreateAccount(authToken: authToken, onSuccess: { account in
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        accountService.syncAccountDetailsAndCreateAccount(authToken, success: { account in
             self.syncOrAssociateBlogs(account: account, isJetpackLogin: isJetpackLogin, onSuccess: onSuccess, onFailure: onFailure)
-        }, onFailure: { error in
-            onFailure(error)
-        })
-    }
-
-    func syncAccountDetailsAndCreateAccount(authToken: String, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
-        let api = WordPressComRestApi(oAuthToken: authToken, userAgent: WPUserAgent.defaultUserAgent())
-        let remote = AccountServiceRemoteREST(wordPressComRestApi: api)
-        remote.getAccountDetails(success: { remoteUser in
-            guard let remoteUser = remoteUser else {
-                // The passed remoteUser should never be nil. Wrangling a default error until we
-                // can update WordPressKit to assum non nil.
-                onFailure(WordPressComRestApiError.unknown)
-                return
-            }
-
-            let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-            let account = accountService.createOrUpdateAccount(withUserDetails: remoteUser, authToken: authToken)
-            onSuccess(account)
-
         }, failure: { error in
-            // The passed error should never be nil. Wrangling a default until we
-            // can update WordPressKit to assum non nil.
-            let error = error ?? WordPressComRestApiError.unknown
             onFailure(error)
         })
     }

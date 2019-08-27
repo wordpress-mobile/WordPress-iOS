@@ -136,6 +136,11 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
                             success:(nullable void (^)(void))success
                             failure:(nullable void (^)(NSError *error))failure;
 
+
+- (void)syncAccountDetailsAndCreateAccount:(NSString *)authToken
+                                   success:(void (^)(WPAccount * _Nonnull))success
+                                   failure:(void (^)(NSError * _Nonnull))failure;
+
 /**
  Initializes the WordPress iOS Extensions with the WordPress.com Default Account.
  */
