@@ -32,13 +32,13 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func insertFromSiteMediaLibrary(media: [Media], callback: @escaping MediaPickerDidPickMediaCallback) {
         let foramttedMedia = media.map { item in
-            return (item.mediaID?.int32Value , item.remoteURL)
+            return (item.mediaID?.int32Value, item.remoteURL)
         }
         callback(foramttedMedia)
     }
-    
+
     func insertFromDevice(assets: [PHAsset], callback: @escaping MediaPickerDidPickMediaCallback) {
-        var mediaCollection: [(Int32?,String?)] = []
+        var mediaCollection: [(Int32?, String?)] = []
         let group = DispatchGroup()
         assets.forEach { asset in
             group.enter()
@@ -52,7 +52,7 @@ class GutenbergMediaInserterHelper: NSObject {
                 group.leave()
             })
         }
-        
+
         group.notify(queue: .main) {
             callback(mediaCollection)
         }
