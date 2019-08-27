@@ -602,6 +602,17 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
         let mediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
 
+        let failedMedia = mediaProgressCoordinator.failedMedia
+        let backgroundContext = self.backgroundContext
+
+        backgroundContext.perform {
+            failedMedia.forEach({ media in
+                //media.uploadFailureCount += 1
+
+                ContextManager.sharedInstance().save(backgroundContext)
+            })
+        }
+
         if !mediaErrorsAreMissingFilesErrors,
             mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
 
@@ -623,14 +634,8 @@ extension MediaCoordinator: Uploader {
     func resume() {
         let service = MediaService(managedObjectContext: mainContext)
 
-        service.getFailedMedia { [weak self] media in
-            guard let self = self else {
-                return
-            }
-
-            media.forEach() {
-                self.retryMedia($0)
-            }
+        service.failedMediaForAutoupload().forEach() {
+            self.retryMedia($0)
         }
     }
 }

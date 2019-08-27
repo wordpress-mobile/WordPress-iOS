@@ -48,6 +48,8 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, strong, nullable) NSNumber *width;
 @property (nonatomic, strong, nullable) NSError *error;
 
+// WIP
+@property (nonatomic, strong, nonnull) NSNumber *uploadFailureCount;
 
 // Relationships
 
