@@ -14,42 +14,55 @@ class PostActionSheet {
         self.interactivePostViewDelegate = interactivePostViewDelegate
     }
 
-    func show(for postCardStatusViewModel: PostCardStatusViewModel, from view: UIView, showViewOption: Bool = false) {
+    func show(for postCardStatusViewModel: PostCardStatusViewModel, from view: UIView, isCompactOrSearching: Bool = false) {
+        let unsupportedButtons: [PostCardStatusViewModel.Button] = [.edit, .more]
         let post = postCardStatusViewModel.post
-        let buttons = postCardStatusViewModel.buttonGroups.secondary
+
+        let buttons: [PostCardStatusViewModel.Button] = {
+            let groups = postCardStatusViewModel.buttonGroups
+            // If we're in compact mode, include both primary and secondary
+            if isCompactOrSearching {
+                return groups.primary + groups.secondary
+            } else {
+                return groups.secondary
+            }
+        }()
 
         let actionSheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
         actionSheetController.addCancelActionWithTitle(Titles.cancel)
 
-        if showViewOption {
-            actionSheetController.addDefaultActionWithTitle(Titles.view) { [weak self] _ in
-                self?.interactivePostViewDelegate?.view(post)
-            }
-        }
-
-        buttons.forEach { button in
-            switch button {
-            case .stats:
-                actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
-                    self?.interactivePostViewDelegate?.stats(for: post)
+        buttons
+            .filter { !unsupportedButtons.contains($0) }
+            .forEach { button in
+                switch button {
+                case .view:
+                    actionSheetController.addDefaultActionWithTitle(Titles.view) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.view(post)
+                    }
+                case .stats:
+                    actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.stats(for: post)
+                    }
+                case .publish:
+                    actionSheetController.addDefaultActionWithTitle(Titles.publish) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.publish(post)
+                    }
+                case .moveToDraft:
+                    actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.draft(post)
+                    }
+                case .trash:
+                    let destructiveTitle = post.status == .trash ? Titles.delete : Titles.trash
+                    actionSheetController.addDestructiveActionWithTitle(destructiveTitle) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.trash(post)
+                    }
+                case .cancel:
+                    actionSheetController.addDefaultActionWithTitle(Titles.cancelAutoUpload) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.cancelAutoUpload(post)
+                    }
+                default:
+                    assertionFailure("Cannnot handle unexpected button: \(button)")
                 }
-            case .publish:
-                actionSheetController.addDefaultActionWithTitle(Titles.publish) { [weak self] _ in
-                    self?.interactivePostViewDelegate?.publish(post)
-                }
-            case .moveToDraft:
-                actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
-                    self?.interactivePostViewDelegate?.draft(post)
-                }
-            case .trash:
-                let destructiveTitle = post.status == .trash ? Titles.delete : Titles.trash
-                actionSheetController.addDestructiveActionWithTitle(destructiveTitle) { [weak self] _ in
-                    self?.interactivePostViewDelegate?.trash(post)
-                }
-            default:
-                assertionFailure("Unsupported button in More: \(button)")
-            }
         }
 
         if let presentationController = actionSheetController.popoverPresentationController {
@@ -63,6 +76,7 @@ class PostActionSheet {
 
     struct Titles {
         static let cancel = NSLocalizedString("Cancel", comment: "Dismiss the post action sheet")
+        static let cancelAutoUpload = NSLocalizedString("Cancel Upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
         static let stats = NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
         static let publish = NSLocalizedString("Publish Now", comment: "Label for an option that moves a publishes a post immediately")
         static let draft = NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder")

@@ -56,7 +56,7 @@ class PostActionSheetTests: XCTestCase {
     func testPublishedPostOptionsWithView() {
         let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
 
-        postActionSheet.show(for: viewModel, from: view, showViewOption: true)
+        postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "View", "Stats", "Move to Draft", "Move to Trash"], options)
@@ -101,7 +101,7 @@ class PostActionSheetTests: XCTestCase {
     func testCallDelegateWhenViewTapped() {
         let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
 
-        postActionSheet.show(for: viewModel, from: view, showViewOption: true)
+        postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
         tap("View", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallView)

@@ -830,6 +830,6 @@ private extension PostListViewController {
 extension PostListViewController: PostActionSheetDelegate {
     func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
         let isCompactOrSearching = isCompact || searchController.isActive
-        postActionSheet.show(for: postCardStatusViewModel, from: view, showViewOption: isCompactOrSearching)
+        postActionSheet.show(for: postCardStatusViewModel, from: view, isCompactOrSearching: isCompactOrSearching)
     }
 }
