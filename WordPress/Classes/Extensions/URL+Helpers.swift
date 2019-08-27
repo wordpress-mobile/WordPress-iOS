@@ -157,7 +157,7 @@ extension URL {
             }
         }
 
-        if let mediaDocument = try? MediaFileManager().directoryURL().appendingPathComponent(self.lastPathComponent) {
+        if let mediaDocument = try? MediaFileManager.default.directoryURL().appendingPathComponent(self.lastPathComponent) {
             if FileManager.default.fileExists(atPath: mediaDocument.path) {
                 return mediaDocument
             }
