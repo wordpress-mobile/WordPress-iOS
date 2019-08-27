@@ -168,9 +168,8 @@ import Gridicons
     }
 
     func configureFilterBar() {
-        filterBar.tintColor = .primary
-        filterBar.deselectedTabColor = .textSubtle
-        filterBar.dividerColor = .neutral(.shade10)
+        WPStyleGuide.configureFilterTabBar(filterBar)
+
         filterBar.tabSizingStyle = .equalWidths
         filterBar.items = sections
 

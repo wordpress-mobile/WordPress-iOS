@@ -528,14 +528,11 @@ private extension NotificationsViewController {
     func setupNoResultsView() {
         noResultsViewController.delegate = self
     }
-
+    
     func setupFilterBar() {
-        filterTabBar.backgroundColor = .filterBarBackground
+        WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.superview?.backgroundColor = .filterBarBackground
-        filterTabBar.tintColor = .filterBarSelected
-        filterTabBar.deselectedTabColor = .textSubtle
-        filterTabBar.dividerColor = .neutral(.shade10)
-
+        
         filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }

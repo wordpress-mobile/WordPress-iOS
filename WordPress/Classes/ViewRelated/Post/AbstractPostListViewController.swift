@@ -233,10 +233,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func configureFilterBar() {
-        filterTabBar.backgroundColor = .filterBarBackground
-        filterTabBar.tintColor = .primary
-        filterTabBar.deselectedTabColor = .textSubtle
-        filterTabBar.dividerColor = .neutral(.shade10)
+        WPStyleGuide.configureFilterTabBar(filterTabBar)
 
         filterTabBar.items = filterSettings.availablePostListFilters()
 
