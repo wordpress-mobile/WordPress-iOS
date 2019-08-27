@@ -55,6 +55,7 @@ class WebProgressView: UIProgressView {
 
     private func configure() {
         progressTintColor = .primary
+        backgroundColor = .listBackground
     }
 
     private enum Progress {
