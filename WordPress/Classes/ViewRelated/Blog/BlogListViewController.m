@@ -353,6 +353,9 @@ static NSInteger HideSearchMinSites = 3;
         return;
     }
 
+    if (![self.tableView.refreshControl isRefreshing]) {
+        [self.tableView.refreshControl beginRefreshing];
+    }
     self.isSyncing = YES;
     __weak __typeof(self) weakSelf = self;
     void (^completionBlock)(void) = ^() {
