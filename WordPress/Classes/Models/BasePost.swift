@@ -35,19 +35,12 @@ extension BasePost {
         case deleted = "deleted" // Returned by wpcom REST API when a post is permanently deleted.
     }
 
-    static let pathForDisplayImageKeyPath = "pathForDisplayImage"
-    var pathForDisplayImage: String? {
-        get {
-            willAccessValue(forKey: BasePost.pathForDisplayImageKeyPath)
-            let result = primitiveValue(forKey: BasePost.pathForDisplayImageKeyPath) as? String
-            didAccessValue(forKey: BasePost.pathForDisplayImageKeyPath)
-
-            if let result = result {
-                return URL(string: result)?.fixedMediaLocalURL()?.absoluteString
-            }
-
-            return result
+    @objc var featuredImageURL: URL? {
+        guard let pathForDisplayImage = pathForDisplayImage else {
+            return nil
         }
+
+        return URL(string: pathForDisplayImage)?.fixedMediaLocalURL()
     }
 }
 

@@ -306,13 +306,4 @@ class Post: AbstractPost {
 
         return title
     }
-
-    override func featuredImageURLForDisplay() -> URL? {
-
-        guard let path = pathForDisplayImage else {
-            return nil
-        }
-
-        return URL(string: path)
-    }
 }

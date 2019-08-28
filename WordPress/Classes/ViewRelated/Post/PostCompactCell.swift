@@ -99,7 +99,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureFeaturedImage() {
-        if let post = post, let url = post.featuredImageURLForDisplay() {
+        if let post = post, let url = post.featuredImageURL {
             featuredImageView.isHidden = false
             labelsContainerTrailing.isActive = true
             imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: featuredImageView.frame.width, height: featuredImageView.frame.height))
