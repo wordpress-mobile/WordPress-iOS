@@ -13,7 +13,7 @@ extension AbstractPost {
             }
 
             extractMediaNamesAndPaths(from: media)?.forEach { filename, absolutePath in
-                content = content.replacingMatches(of: "src\\s*=\\s*\"(file://.+?/\(NSRegularExpression.escapedPattern(for: filename)))\"", with: "src=\"\(absolutePath)\"")
+                content = content.replacingMatches(of: "src\\s*=\\s*\"(file://.[^\"]+?/\(NSRegularExpression.escapedPattern(for: filename)))\"", with: "src=\"\(absolutePath)\"")
             }
         }
 
