@@ -14,6 +14,7 @@ class URLFixedMediaLocalURLTests: XCTestCase {
     private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
 
     override func setUp() {
+        super.setUp()
         createTemporaryImages()
     }
 
