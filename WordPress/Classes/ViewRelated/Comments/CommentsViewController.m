@@ -297,6 +297,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     }
     
     UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:actions];
+    swipeActions.performsFirstActionWithFullSwipe = FALSE;
     return swipeActions;
 }
 
