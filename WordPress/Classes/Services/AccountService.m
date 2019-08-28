@@ -34,25 +34,41 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (WPAccount *)defaultWordPressComAccount
 {
     NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    if (uuid.length == 0) {
-        return nil;
+    if (uuid.length > 0) {
+        NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
+        fetchRequest.predicate = predicate;
+
+        NSError *error = nil;
+        NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects.count > 0) {
+            WPAccount *defaultAccount = fetchedObjects.firstObject;
+            defaultAccount.displayName = [defaultAccount.displayName stringByDecodingXMLCharacters];
+            return defaultAccount;
+        }
     }
 
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
-    fetchRequest.predicate = predicate;
-    
-    NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    WPAccount *defaultAccount = nil;
-    if (fetchedObjects.count > 0) {
-        defaultAccount = fetchedObjects.firstObject;
-        defaultAccount.displayName = [defaultAccount.displayName stringByDecodingXMLCharacters];
-    } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    // Attempt to restore a default account that has somehow been disassociated.
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO];
+    NSArray *accounts = [[self allAccounts] sortedArrayUsingDescriptors:@[sort]];
+
+    for (WPAccount *account in accounts) {
+        // Skip accounts that were likely added to Jetpack-connected self-hosted
+        // sites, while there was an existing default wpcom account.
+        if ([self isJetpackAccount:account]) {
+            continue;
+        }
+
+        // Assume we have a good candidate account and make it the default account in the app.
+        // Note that this should be the account with the most blogs.
+        // Update user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
+        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+        return account;
     }
-    
-    return defaultAccount;
+
+    // No account, or no default account set. Clear the defaults key.
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    return nil;
 }
 
 /**
@@ -240,6 +256,39 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         count = 0;
     }
     return count;
+}
+
+/**
+ Returns all accounts currently existing in core data.
+
+ @return An array of WPAccounts.
+ */
+- (NSArray<WPAccount *> *)allAccounts
+{
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        return @[];
+    }
+    return fetchedObjects;
+}
+
+/**
+ Checks an account to see if it is just used to connect to Jetpack.
+
+ @param account The account to inspect.
+ @return True if used only for a Jetpack connection.
+ */
+- (BOOL)isJetpackAccount:(WPAccount *)account
+{
+    // If an account has multiple blogs, or zero blogs, then it is not an account
+    // that was connected via Jetpack login while another default wpcom account existed.
+    if ([account.blogs count] != 1 ) {
+        return NO;
+    }
+    Blog *blog = [account.blogs anyObject];
+    return !blog.isHostedAtWPcom;
 }
 
 - (WPAccount *)findAccountWithUsername:(NSString *)username
