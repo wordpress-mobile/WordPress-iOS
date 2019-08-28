@@ -2,7 +2,7 @@ import Foundation
 
 extension MediaService {
 
-    private static let maxUploadFailureCount = 3
+    private static let maxUploadFailureCount = 4
 
     /// Returns a list of Media objects that should be autouploaded on the next attempt.
     ///
