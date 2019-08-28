@@ -1,7 +1,7 @@
 import Foundation
 
 extension AbstractPost {
-    func refreshLocalMediaPaths() {
+    func fixedMediaLocalURL() {
         guard isFailed,
             var content = self.content else {
             return

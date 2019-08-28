@@ -999,7 +999,7 @@
 		85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */; };
 		8B93856E22DC08060010BF02 /* PageListSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */; };
 		8BFE36F4230DDDDC0061EBA8 /* URL+FixedMediaLocalURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36F3230DDDDC0061EBA8 /* URL+FixedMediaLocalURLTests.swift */; };
-		8BFE36FD230F16580061EBA8 /* AbstractPost+refreshLocalMediaPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FC230F16580061EBA8 /* AbstractPost+refreshLocalMediaPaths.swift */; };
+		8BFE36FD230F16580061EBA8 /* AbstractPost+fixedMediaLocalURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FC230F16580061EBA8 /* AbstractPost+fixedMediaLocalURL.swift */; };
 		8BFE36FF230F1C850061EBA8 /* AbstractPost+refreshLocalMediaPathsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE36FE230F1C850061EBA8 /* AbstractPost+refreshLocalMediaPathsTests.swift */; };
 		91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */; };
 		912347192213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */; };
@@ -3122,7 +3122,7 @@
 		85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationServiceTests.swift; sourceTree = "<group>"; };
 		8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListSectionHeaderView.swift; sourceTree = "<group>"; };
 		8BFE36F3230DDDDC0061EBA8 /* URL+FixedMediaLocalURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+FixedMediaLocalURLTests.swift"; sourceTree = "<group>"; };
-		8BFE36FC230F16580061EBA8 /* AbstractPost+refreshLocalMediaPaths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+refreshLocalMediaPaths.swift"; sourceTree = "<group>"; };
+		8BFE36FC230F16580061EBA8 /* AbstractPost+fixedMediaLocalURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+fixedMediaLocalURL.swift"; sourceTree = "<group>"; };
 		8BFE36FE230F1C850061EBA8 /* AbstractPost+refreshLocalMediaPathsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+refreshLocalMediaPathsTests.swift"; sourceTree = "<group>"; };
 		8CE5BBD00FF1470AC4B88247 /* Pods_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -7759,7 +7759,7 @@
 				086C4D0C1E81F7920011D960 /* Media */,
 				B587798319B799EB00E57C5A /* Notifications */,
 				7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */,
-				8BFE36FC230F16580061EBA8 /* AbstractPost+refreshLocalMediaPaths.swift */,
+				8BFE36FC230F16580061EBA8 /* AbstractPost+fixedMediaLocalURL.swift */,
 				E1AB5A061E0BF17500574B4E /* Array.swift */,
 				9A2CD5362146B8C700AE5055 /* Array+Page.swift */,
 				7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */,
@@ -10583,7 +10583,7 @@
 				D8CB56202181A8CE00554EAE /* SiteSegmentsService.swift in Sources */,
 				E11E775A1E72932F0072AD40 /* BlogListDataSource.swift in Sources */,
 				1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */,
-				8BFE36FD230F16580061EBA8 /* AbstractPost+refreshLocalMediaPaths.swift in Sources */,
+				8BFE36FD230F16580061EBA8 /* AbstractPost+fixedMediaLocalURL.swift in Sources */,
 				1750BD6D201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift in Sources */,
 				E6ED09091D46AD29003283C4 /* ReaderFollowedSitesStreamHeader.swift in Sources */,
 				E66969E41B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift in Sources */,
