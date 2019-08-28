@@ -566,7 +566,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     
     if (purge) {
         // Set up predicate for fetching any posts that could be purged for the sync.
-        NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL OR status = 'trash') AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
         if ([statuses count] > 0) {
             NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", statuses];
             predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];
