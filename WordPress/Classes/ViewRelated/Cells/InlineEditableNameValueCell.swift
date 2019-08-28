@@ -12,8 +12,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     enum Const {
         enum Color {
-            static let nameText = UIColor.neutral(shade: .shade70)
-            static let valueText = UIColor.neutral(shade: .shade40)
+            static let nameText = UIColor.neutral(.shade70)
+            static let valueText = UIColor.neutral(.shade40)
         }
     }
 

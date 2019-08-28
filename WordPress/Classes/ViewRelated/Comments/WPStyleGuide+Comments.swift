@@ -13,11 +13,11 @@ extension WPStyleGuide {
         }
 
         public static func separatorsColor(isApproved approved: Bool) -> UIColor {
-            return approved ? WPStyleGuide.readGrey() : WPStyleGuide.alertYellowDark()
+            return approved ? .divider : UIColor(light: .warning(.shade90), dark: .warning(.shade40))
         }
 
         public static func detailsRegularStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertYellowDark()
+            let color = approved ? .textSubtle : UIColor(light: .warning(.shade90), dark: .warning(.shade40))
 
             return  [.paragraphStyle: titleParagraph,
                      .font: titleRegularFont,
@@ -25,7 +25,7 @@ extension WPStyleGuide {
         }
 
         public static func detailsRegularRedStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : .errorDark
+            let color = approved ? .text : UIColor(light: .error(.shade90), dark: .error(.shade40))
 
             return  [.paragraphStyle: titleParagraph,
                      .font: titleRegularFont,
@@ -33,7 +33,7 @@ extension WPStyleGuide {
         }
 
         public static func detailsItalicsStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : .errorDark
+            let color = approved ? .text : UIColor(light: .error(.shade90), dark: .error(.shade40))
 
             return  [.paragraphStyle: titleParagraph,
                      .font: titleItalicsFont,
@@ -41,7 +41,7 @@ extension WPStyleGuide {
         }
 
         public static func detailsBoldStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : .errorDark
+            let color = approved ? .text : UIColor(light: .error(.shade90), dark: .error(.shade40))
 
             return  [.paragraphStyle: titleParagraph,
                      .font: titleBoldFont,
@@ -49,14 +49,14 @@ extension WPStyleGuide {
         }
 
         public static func timestampStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.allTAllShadeGrey() : WPStyleGuide.alertYellowDark()
+            let color = approved ? .textSubtle : UIColor(light: .warning(.shade90), dark: .warning(.shade40))
 
             return  [.font: timestampFont,
                      .foregroundColor: color ]
         }
 
         public static func backgroundColor(isApproved approved: Bool) -> UIColor {
-            return approved ? UIColor.white : WPStyleGuide.alertYellowLighter()
+            return approved ? .listForeground : UIColor(light: .warning(.shade0), dark: .warning(.shade100))
         }
 
         public static func timestampImage(isApproved approved: Bool) -> UIImage {

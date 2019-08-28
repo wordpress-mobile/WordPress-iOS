@@ -302,7 +302,7 @@ import WordPressShared
         let row = SortableSharingSwitchRow(buttonID: button.buttonID)
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
             cell.imageView?.image = self.iconForSharingButton(button)
-            cell.imageView?.tintColor = .neutral(shade: .shade10)
+            cell.imageView?.tintColor = .listIcon
 
             cell.editingAccessoryView = nil
             cell.editingAccessoryType = .none
@@ -373,7 +373,7 @@ import WordPressShared
         cell.editingAccessoryView = cell.accessoryView
         cell.editingAccessoryType = cell.accessoryType
         cell.imageView?.image = self.iconForSharingButton(button)
-        cell.imageView?.tintColor = .neutral(shade: .shade10)
+        cell.imageView?.tintColor = .neutral(.shade10)
         cell.textLabel?.text = button.name
     }
 
@@ -828,7 +828,6 @@ extension SharingButtonsViewController {
     override func tableView(_ tableView: UITableView,
                             willDisplayHeaderView view: UIView,
                             forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
     override func tableView(_ tableView: UITableView,

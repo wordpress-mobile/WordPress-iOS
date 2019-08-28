@@ -98,7 +98,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
     }
 
     private func resetBackgroundColors() {
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = .listForeground
     }
 
     override func layoutSubviews() {

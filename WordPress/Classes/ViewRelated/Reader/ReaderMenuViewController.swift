@@ -535,10 +535,6 @@ import WordPressShared
         return viewModel.titleForSection(section)
     }
 
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
-    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let menuItem = viewModel.menuItemAtIndexPath(indexPath)
         if menuItem?.type == .addItem {

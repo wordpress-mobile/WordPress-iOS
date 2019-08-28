@@ -53,10 +53,6 @@ final class WebAddressTableViewProvider: NSObject, TableViewProvider {
         return data.count
     }
 
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
-    }
-
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard isShowingImplicitSuggestions else {
             return nil
@@ -95,11 +91,11 @@ final class WebAddressTableViewProvider: NSObject, TableViewProvider {
     private func addBorder(cell: UITableViewCell, at: IndexPath) {
         let row = at.row
         if row == 0 {
-            cell.addTopBorder(withColor: .neutral(shade: .shade10))
+            cell.addTopBorder(withColor: .neutral(.shade10))
         }
 
         if row == data.count - 1 {
-            cell.addBottomBorder(withColor: .neutral(shade: .shade10))
+            cell.addBottomBorder(withColor: .neutral(.shade10))
         }
     }
 }

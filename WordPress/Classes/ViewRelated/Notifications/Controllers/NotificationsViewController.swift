@@ -3,6 +3,7 @@ import CoreData
 import CocoaLumberjack
 import WordPressShared
 import WordPressAuthenticator
+import Gridicons
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -85,6 +86,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         let indicator = UIActivityIndicatorView(style: .white)
         indicator.hidesWhenStopped = true
         return indicator
+    }()
+
+    /// Notification Settings button
+    lazy var notificationSettingsButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
+        button.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
+        return button
     }()
 
     // MARK: - View Lifecycle
@@ -346,7 +354,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             }
             completionHandler(true)
         })
-        action.backgroundColor = .neutral(shade: .shade50)
+        action.backgroundColor = .neutral(.shade50)
 
         return UISwipeActionsConfiguration(actions: [action])
     }
@@ -433,6 +441,14 @@ private extension NotificationsViewController {
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
 
+    func updateNavigationItems() {
+        navigationItem.rightBarButtonItem = shouldDisplaySettingsButton ? notificationSettingsButton : nil
+    }
+
+    @objc func closeNotificationSettings() {
+        dismiss(animated: true, completion: nil)
+    }
+
     func setupConstraints() {
         precondition(inlinePromptSpaceConstraint != nil)
 
@@ -514,9 +530,8 @@ private extension NotificationsViewController {
     }
 
     func setupFilterBar() {
-        filterTabBar.tintColor = .primary
-        filterTabBar.deselectedTabColor = .neutral(shade: .shade40)
-        filterTabBar.dividerColor = .neutral(shade: .shade10)
+        WPStyleGuide.configureFilterTabBar(filterTabBar)
+        filterTabBar.superview?.backgroundColor = .filterBarBackground
 
         filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -716,6 +731,19 @@ extension NotificationsViewController {
 
         // Dispatch the Action block
         perform(#selector(deleteNoteWithID), with: noteObjectID, afterDelay: Syncing.undoTimeout)
+    }
+
+    /// Presents the Notifications Settings screen.
+    ///
+    @objc func showNotificationSettings() {
+        let controller = NotificationSettingsViewController()
+        controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(closeNotificationSettings))
+
+        let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .formSheet
+        navigationController.modalTransitionStyle = .coverVertical
+
+        present(navigationController, animated: true, completion: nil)
     }
 }
 
@@ -1114,6 +1142,7 @@ private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
         noResultsViewController.removeFromView()
         updateSplitViewAppearanceForNoResultsView()
+        updateNavigationItems()
 
         // Hide the filter header if we're showing the Jetpack prompt
         hideFiltersSegmentedControlIfApplicable()
@@ -1188,6 +1217,10 @@ private extension NotificationsViewController {
 
     var shouldDisplayJetpackPrompt: Bool {
         return AccountHelper.isDotcomAvailable() == false
+    }
+
+    var shouldDisplaySettingsButton: Bool {
+        return AccountHelper.isDotcomAvailable()
     }
 
     var shouldDisplayNoResultsView: Bool {

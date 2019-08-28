@@ -305,8 +305,142 @@ static ContextManager *_override;
     
     if ([context hasChanges] && ![context save:&error]) {
         DDLogError(@"Unresolved core data error\n%@:", error);
-        @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
-                                       reason:@"Unresolved Core Data save error"
+
+        // error handling based on https://stackoverflow.com/a/3510918
+        NSArray *errors = nil;
+        NSString *errorName = nil;
+        NSString *reasons = @"Reasons: ";
+        if ([error code] == NSValidationMultipleErrorsError) {
+            errors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
+        } else {
+            errors = [NSArray arrayWithObject:error];
+        }
+
+        if (errors && [errors count] > 0) {
+            for (NSError * error in errors) {
+                NSString *entityName = [[[[error userInfo] objectForKey:@"NSValidationErrorObject"] entity] name];
+                NSString *attributeName = [[error userInfo] objectForKey:@"NSValidationErrorKey"];
+                NSString *msg;
+                switch ([error code]) {
+                        // MARK: general errors
+                    case NSCoreDataError:
+                        msg = @"General Core Data error";
+                        break;
+                    case NSSQLiteError:
+                        msg = @"General SQLite error";
+                        break;
+                    case NSInferredMappingModelError:
+                        msg = @"Inferred mapping model creation error";
+                        break;
+                    case NSExternalRecordImportError:
+                        msg = @"General error encountered while importing external records";
+                        break;
+                    case NSPersistentHistoryTokenExpiredError:
+                        msg = @"The history token passed to NSPersistentChangeRequest was invalid";
+                        break;
+
+                        // MARK: managed object errors
+                    case NSManagedObjectValidationError:
+                        // Note: there are several specific validation errors not handled here since we don't use much (or any) CD validation
+                        msg = @"Generic validation error.";
+                        break;
+                    case NSManagedObjectContextLockingError:
+                        msg = @"Couldn't acquire a lock in a managed object context";
+                        break;
+                    case NSPersistentStoreCoordinatorLockingError:
+                        msg = @"Couldn't acquire a lock in a persistent store coordinator";
+                        break;
+                    case NSManagedObjectReferentialIntegrityError:
+                        msg = @"Attempt to fire a fault pointing to an object that does not exist: %@";
+                        break;
+                    case NSManagedObjectExternalRelationshipError:
+                        msg = @"An object being saved has a relationship containing an object from another store";
+                        break;
+                    case NSManagedObjectMergeError:
+                        msg = @"Unable to complete merging";
+                        break;
+                    case NSManagedObjectConstraintMergeError:
+                        msg = @"Unable to complete merging due to multiple conflicting constraint violations";
+                        break;
+
+                        // MARK: persistent store errors
+                    case NSPersistentStoreInvalidTypeError:
+                        msg = @"Unknown persistent store type/format/version";
+                        break;
+                    case NSPersistentStoreTypeMismatchError:
+                        msg = @"Store was accessed that does not match the specified type";
+                        break;
+                    case NSPersistentStoreIncompatibleSchemaError:
+                        msg = @"Store returned an error for save operation";
+                        break;
+                    case NSPersistentStoreSaveError:
+                        msg = @"Unclassified save error";
+                        break;
+                    case NSPersistentStoreIncompleteSaveError:
+                        msg = @"One or more of the stores returned an error during save";
+                        break;
+                    case NSPersistentStoreSaveConflictsError:
+                        attributeName = [[error userInfo] objectForKey:@"NSPersistentStoreSaveConflictsErrorKey"];
+                        msg = [NSString stringWithFormat:@"An unresolved merge conflict was encountered on '%@'", attributeName];
+                        break;
+                    case NSPersistentStoreOperationError:
+                        msg = @"The persistent store operation failed";
+                        break;
+                    case NSPersistentStoreOpenError:
+                        msg = @"An error occurred while attempting to open the persistent store";
+                        break;
+                    case NSPersistentStoreTimeoutError:
+                        msg = @"Failed to connect to the persistent store within the specified timeout";
+                        break;
+                    case NSPersistentStoreUnsupportedRequestTypeError:
+                        msg = @"An NSPersistentStore subclass was passed an NSPersistentStoreRequest that it did not understand";
+                        break;
+                    case NSPersistentStoreIncompatibleVersionHashError:
+                        msg = @"Entity version hashes incompatible with data model";
+                        break;
+
+                        // MARK: migration errors
+                    case NSMigrationError:
+                        msg = @"General migration error";
+                        break;
+                    case NSMigrationConstraintViolationError:
+                        msg = @"Migration failed due to a violated uniqueness constraint";
+                        break;
+                    case NSMigrationCancelledError:
+                        msg = @"Migration failed due to manual cancellation";
+                        break;
+                    case NSMigrationMissingSourceModelError:
+                        msg = @"Migration failed due to missing source data model";
+                        break;
+                    case NSMigrationMissingMappingModelError:
+                        msg = @"Migration failed due to missing mapping model";
+                        break;
+                    case NSMigrationManagerSourceStoreError:
+                        msg = @"Migration failed due to a problem with the source data store";
+                        break;
+                    case NSMigrationManagerDestinationStoreError:
+                        msg = @"Migration failed due to a problem with the destination data store";
+                        break;
+                    case NSEntityMigrationPolicyError:
+                        msg = @"Migration failed during processing of the entity migration policy";
+                        break;
+
+                    default:
+                        msg = [NSString stringWithFormat:@"Unknown error (code %i).", [error code]];
+                        break;
+                }
+
+                if (errorName == nil) {
+                    errorName = [NSString stringWithFormat:@"Unresolved Core Data save error: %@", msg];
+                    reasons = [reasons stringByAppendingFormat:@"%@\n", (entityName? : @"no entity name provided")];
+                } else {
+                    reasons = [reasons stringByAppendingFormat:@"%@%@%@\n", (entityName?:@""),(entityName?@": ":@""),msg];
+                }
+            }
+        }
+
+        @throw [NSException exceptionWithName:errorName
+                                       reason:reasons
                                      userInfo:error.userInfo];
     }
 }

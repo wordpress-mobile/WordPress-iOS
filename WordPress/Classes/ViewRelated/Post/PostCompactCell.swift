@@ -81,8 +81,9 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
 
-        backgroundColor = innerView.backgroundColor
-        contentView.backgroundColor = innerView.backgroundColor
+        innerView.backgroundColor = .listForeground
+        backgroundColor = .listForeground
+        contentView.backgroundColor = .listForeground
     }
 
     private func setupSeparator() {
@@ -185,6 +186,7 @@ extension PostCompactCell: GhostableView {
         menuButton.isGhostableDisabled = true
         separator.isGhostableDisabled = true
         ghostView.isHidden = !visible
+        ghostView.backgroundColor = .listForeground
         featuredImageView.isHidden = true
     }
 

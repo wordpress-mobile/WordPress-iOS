@@ -22,7 +22,7 @@
 {
     [super awakeFromNib];
 
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor murielListForeground];
     self.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     self.layer.borderWidth = MenusDesignStrokeWidth;
     if (![WPDeviceIdentification isRetina]) {

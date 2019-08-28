@@ -8,7 +8,7 @@
 
     @available(swift, obsoleted: 1.0)
     static func murielPrimary40() -> UIColor {
-        return .primary(shade: .shade40)
+        return .primary(.shade40)
     }
 
     @available(swift, obsoleted: 1.0)
@@ -23,42 +23,42 @@
 
     @available(swift, obsoleted: 1.0)
     static func murielNeutral0() -> UIColor {
-        return .neutral(shade: .shade0)
+        return .neutral(.shade0)
     }
 
     @available(swift, obsoleted: 1.0)
     static func murielNeutral5() -> UIColor {
-        return .neutral(shade: .shade5)
+        return .neutral(.shade5)
     }
 
     @available(swift, obsoleted: 1.0)
     static func murielNeutral10() -> UIColor {
-        return .neutral(shade: .shade10)
+        return .neutral(.shade10)
     }
 
     @available(swift, obsoleted: 1.0)
     static func murielNeutral20() -> UIColor {
-        return .neutral(shade: .shade20)
+        return .neutral(.shade20)
     }
 
     @available(swift, obsoleted: 1.0)
     static func murielNeutral30() -> UIColor {
-        return .neutral(shade: .shade30)
+        return .neutral(.shade30)
     }
 
     @available(swift, obsoleted: 1.0)
     static func murielNeutral40() -> UIColor {
-        return .neutral(shade: .shade40)
+        return .neutral(.shade40)
     }
 
     @available(swift, obsoleted: 1.0)
     static func murielNeutral60() -> UIColor {
-        return .neutral(shade: .shade60)
+        return .neutral(.shade60)
     }
 
     @available(swift, obsoleted: 1.0)
     static func murielNeutral70() -> UIColor {
-        return .neutral(shade: .shade70)
+        return .neutral(.shade70)
     }
 
     @available(swift, obsoleted: 1.0)
@@ -83,11 +83,36 @@
 
     @available(swift, obsoleted: 1.0)
     static func murielWarningDark() -> UIColor {
-        return .warning(shade: .shade70)
+        return .warning(.shade70)
     }
 
     @available(swift, obsoleted: 1.0)
     static func murielError() -> UIColor {
         return .error
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielBasicBackground() -> UIColor {
+        return .basicBackground
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielTextPlaceholder() -> UIColor {
+        return .textPlaceholder
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielListForeground() -> UIColor {
+        return .listForeground
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielListBackground() -> UIColor {
+        return .listBackground
+    }
+
+    @available(swift, obsoleted: 1.0)
+    static func murielListIcon() -> UIColor {
+        return .listIcon
     }
 }

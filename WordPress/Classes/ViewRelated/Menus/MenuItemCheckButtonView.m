@@ -24,7 +24,7 @@ static CGFloat const iconPadding = 3.0;
     if (self) {
 
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor clearColor];
         self.contentMode = UIViewContentModeRedraw;
 
         [self setupIconView];
@@ -39,8 +39,9 @@ static CGFloat const iconPadding = 3.0;
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.image = [Gridicon iconOfType:GridiconTypeCheckmark];
-    iconView.tintColor = [UIColor murielPrimary40];
+    iconView.tintColor = [UIColor murielListIcon];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
+    iconView.backgroundColor = [UIColor clearColor];
     iconView.alpha = 0.0;
     [self addSubview:iconView];
 
@@ -57,11 +58,11 @@ static CGFloat const iconPadding = 3.0;
 {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
-    label.backgroundColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
 
     NSDictionary *attributes = [self attributesForText];
     label.font = [attributes objectForKey:NSFontAttributeName];
-    label.textColor = [UIColor murielNeutral60];
+    label.textColor = [UIColor murielTextSubtle];
 
     [self addSubview:label];
 
@@ -102,7 +103,7 @@ static CGFloat const iconPadding = 3.0;
 
 - (NSDictionary *)attributesForText
 {
-    return @{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:14.0], NSForegroundColorAttributeName: [UIColor blackColor]};
+    return @{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:14.0], NSForegroundColorAttributeName: [UIColor murielText]};
 }
 
 - (void)drawRect:(CGRect)rect
