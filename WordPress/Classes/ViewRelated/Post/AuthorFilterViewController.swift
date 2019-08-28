@@ -39,7 +39,12 @@ class AuthorFilterViewController: UITableViewController {
         self.onSelectionChanged = onSelectionChanged
         self.currentSelection = initialSelection
 
-        super.init(style: .plain)
+        var style: UITableView.Style = .plain
+        if #available(iOS 13, *) {
+            style = .grouped
+        }
+
+        super.init(style: style)
 
         tableView.register(AuthorFilterCell.self, forCellReuseIdentifier: Identifiers.authorFilterCell)
 
@@ -48,9 +53,6 @@ class AuthorFilterViewController: UITableViewController {
         tableView.separatorColor = .neutral(.shade10)
         tableView.isScrollEnabled = false
         tableView.showsVerticalScrollIndicator = false
-        if #available(iOS 13, *) {
-            tableView.contentInsetAdjustmentBehavior = .always
-        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -61,12 +63,6 @@ class AuthorFilterViewController: UITableViewController {
         set {}
         get {
             let height = CGFloat(tableView(self.tableView, numberOfRowsInSection: 0)) * Metrics.rowHeight
-            if #available(iOS 13, *) {
-                // Popovers in iOS 13 use safe area. This means the safe area is over the last row.
-                // I need to add the safe area bottom inset to the height.
-                let bottomSafeInset = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
-                return CGSize(width: Metrics.preferredWidth, height: height + bottomSafeInset)
-            }
             return CGSize(width: Metrics.preferredWidth, height: height)
         }
     }
@@ -129,6 +125,24 @@ class AuthorFilterViewController: UITableViewController {
         return UIView()
     }
 
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if #available(iOS 13, *) {
+            return Metrics.topinset
+        }
+        return 0
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: Metrics.topinset))
+                view.backgroundColor = .secondarySystemGroupedBackground
+                return view
+            }
+        #endif
+        return nil
+    }
+
     // MARK: - Constants
 
     private enum Identifiers {
@@ -138,6 +152,7 @@ class AuthorFilterViewController: UITableViewController {
     private enum Metrics {
         static let rowHeight: CGFloat = 44.0
         static let preferredWidth: CGFloat = 220.0
+        static let topinset: CGFloat = 13.0
     }
 }
 
