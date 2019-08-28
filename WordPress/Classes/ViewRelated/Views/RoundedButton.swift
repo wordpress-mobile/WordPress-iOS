@@ -14,6 +14,12 @@ class RoundedButton: UIButton {
         }
     }
 
+    @IBInspectable var borderColor: UIColor? = nil {
+        didSet {
+            updateAppearance()
+        }
+    }
+
     @IBInspectable var horizontalEdgeInset: CGFloat = 19.0 {
         didSet {
             updateAppearance()
@@ -50,7 +56,7 @@ class RoundedButton: UIButton {
         layer.masksToBounds = true
         layer.cornerRadius = cornerRadius
         layer.borderWidth = borderWidth
-        layer.borderColor = tintColor.cgColor
+        layer.borderColor = borderColor?.cgColor ?? tintColor.cgColor
 
         setTitleColor(tintColor, for: UIControl.State())
         setBackgroundImage(UIImage(color: tintColor), for: .highlighted)

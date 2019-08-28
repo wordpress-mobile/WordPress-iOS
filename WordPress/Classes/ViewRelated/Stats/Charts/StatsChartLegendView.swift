@@ -51,7 +51,7 @@ class StatsChartLegendView: UIView {
             label.preferredMaxLayoutWidth = Constants.intrinsicWidth - Constants.capsuleWidth
 
             label.font = WPStyleGuide.fixedFont(for: .caption2)
-            label.textColor = .neutral(shade: .shade50)
+            label.textColor = .neutral(.shade50)
             label.text = title
 
             label.sizeToFit()
@@ -76,7 +76,7 @@ class StatsChartLegendView: UIView {
 
     private func initialize() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .white
+        backgroundColor = WPStyleGuide.Stats.cellBackgroundColor
 
         addSubview(capsule)
         addSubview(label)

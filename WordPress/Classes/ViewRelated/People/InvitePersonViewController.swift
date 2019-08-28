@@ -372,13 +372,15 @@ private extension InvitePersonViewController {
 
     func setupRoleCell() {
         roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
+        roleCell.textLabel?.textColor = .text
         roleCell.accessoryType = .disclosureIndicator
         WPStyleGuide.configureTableViewCell(roleCell)
     }
 
     func setupMessageTextView() {
         messageTextView.font = WPStyleGuide.tableviewTextFont()
-        messageTextView.textColor = .neutral(shade: .shade70)
+        messageTextView.textColor = .text
+        messageTextView.backgroundColor = .listForeground
     }
 
     func setupNavigationBar() {
@@ -414,12 +416,12 @@ private extension InvitePersonViewController {
     func refreshUsernameCell() {
         guard let usernameOrEmail = usernameOrEmail?.nonEmptyString() else {
             usernameCell.textLabel?.text = NSLocalizedString("Email or Username...", comment: "Invite Username Placeholder")
-            usernameCell.textLabel?.textColor = .neutral(shade: .shade30)
+            usernameCell.textLabel?.textColor = .textPlaceholder
             return
         }
 
         usernameCell.textLabel?.text = usernameOrEmail
-        usernameCell.textLabel?.textColor = .neutral(shade: .shade70)
+        usernameCell.textLabel?.textColor = .text
     }
 
     func refreshRoleCell() {

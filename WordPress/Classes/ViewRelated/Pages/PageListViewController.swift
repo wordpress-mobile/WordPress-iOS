@@ -24,7 +24,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
-        footer.backgroundColor = .neutral(shade: .shade10)
+        footer.backgroundColor = .neutral(.shade10)
         return footer
     }()
 
@@ -410,6 +410,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 self?.handleRestoreAction(fromCell: cell, forPage: page)
             }
         }
+
+        cell.contentView.backgroundColor = UIColor.listForeground
 
         cell.configureCell(page)
     }

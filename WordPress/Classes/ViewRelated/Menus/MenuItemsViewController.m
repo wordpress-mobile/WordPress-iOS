@@ -45,6 +45,7 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
     [super viewDidLoad];
 
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
+    self.view.backgroundColor = [UIColor murielListForeground];
     self.view.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     self.view.layer.borderWidth = MenusDesignStrokeWidth;
     if (![WPDeviceIdentification isRetina]) {

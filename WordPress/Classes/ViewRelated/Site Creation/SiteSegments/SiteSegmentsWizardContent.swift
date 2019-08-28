@@ -63,7 +63,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = .neutral(shade: .shade5)
+        view.backgroundColor = .neutral(.shade5)
     }
 
     override func viewDidLayoutSubviews() {
@@ -81,11 +81,11 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = .neutral(shade: .shade5)
+        table.backgroundColor = .neutral(.shade5)
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = .neutral(shade: .shade10)
+        table.separatorColor = .neutral(.shade10)
     }
 
     private func hideSeparators() {

@@ -24,7 +24,7 @@
     if (self) {
 
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor murielListForeground];
         self.contentMode = UIViewContentModeRedraw;
 
         [self setupStackView];
@@ -72,8 +72,8 @@
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.contentMode = UIViewContentModeScaleAspectFit;
-    iconView.backgroundColor = [UIColor whiteColor];
-    iconView.tintColor = [UIColor murielNeutral30];
+    iconView.backgroundColor = [UIColor clearColor];
+    iconView.tintColor = [UIColor murielListIcon];
 
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:iconView];
@@ -92,7 +92,7 @@
     label.numberOfLines = 5;
     label.lineBreakMode = NSLineBreakByTruncatingTail;
     label.font = [WPStyleGuide tableviewTextFont];
-    label.backgroundColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor murielNeutral60];
 
     NSAssert(_stackView != nil, @"stackView is nil");
@@ -109,8 +109,8 @@
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.contentMode = UIViewContentModeScaleAspectFit;
-    iconView.backgroundColor = [UIColor whiteColor];
-    iconView.tintColor = [UIColor murielNeutral30];
+    iconView.backgroundColor = [UIColor clearColor];
+    iconView.tintColor = [UIColor murielListIcon];
     iconView.image = [Gridicon iconOfType:GridiconTypeChevronRight];
 
     NSAssert(_stackView != nil, @"stackView is nil");
