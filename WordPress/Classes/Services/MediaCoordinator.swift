@@ -635,7 +635,7 @@ extension MediaCoordinator: Uploader {
         let service = MediaService(managedObjectContext: mainContext)
 
         service.failedMediaForAutoupload().forEach() {
-            self.retryMedia($0)
+            retryMedia($0)
         }
     }
 }
