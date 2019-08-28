@@ -32,11 +32,11 @@ class QuickStartChecklistCell: UITableViewCell {
 
                 titleLabel.attributedText = NSAttributedString(string: titleText,
                                                                attributes: [.strikethroughStyle: 1,
-                                                                            .foregroundColor: UIColor.neutral(shade: .shade30)])
-                descriptionLabel.textColor = .neutral(shade: .shade30)
+                                                                            .foregroundColor: UIColor.neutral(.shade30)])
+                descriptionLabel.textColor = .neutral(.shade30)
             } else {
-                titleLabel.textColor = .neutral(shade: .shade70)
-                descriptionLabel.textColor = .neutral(shade: .shade70)
+                titleLabel.textColor = .neutral(.shade70)
+                descriptionLabel.textColor = .neutral(.shade70)
             }
         }
     }
@@ -44,7 +44,7 @@ class QuickStartChecklistCell: UITableViewCell {
         didSet {
             titleLabel.text = tour?.title
             descriptionLabel.text = tour?.description
-            iconView?.image = tour?.icon.imageWithTintColor(.neutral(shade: .shade20))
+            iconView?.image = tour?.icon.imageWithTintColor(.neutral(.shade20))
 
             if let hint = tour?.accessibilityHintText, !hint.isEmpty {
                 accessibilityHint = hint

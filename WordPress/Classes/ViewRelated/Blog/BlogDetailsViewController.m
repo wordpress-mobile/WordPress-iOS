@@ -109,7 +109,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                     identifier:identifier
        accessibilityIdentifier:accessibilityIdentifier
                          image:image
-                    imageColor:[UIColor murielNeutral30]
+                    imageColor:[UIColor murielListIcon]
                       callback:callback];
 }
     
@@ -1186,11 +1186,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
     
     [self presentViewController:removeSheet animated:YES completion:nil];
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath

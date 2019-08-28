@@ -46,7 +46,8 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     @objc func applyStyles() {
-        backgroundColor = .tableBackground
+        backgroundColor = .listBackground
+        borderedView.backgroundColor = .listForeground
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = .hairlineBorderWidth
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)

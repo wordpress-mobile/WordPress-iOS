@@ -285,10 +285,6 @@ extension ParentPageSettingsViewController: UITableViewDataSource {
 
 
 extension ParentPageSettingsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
-    }
-
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].headerText
     }

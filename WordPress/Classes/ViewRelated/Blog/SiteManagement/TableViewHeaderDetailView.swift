@@ -122,10 +122,10 @@ extension WPStyleGuide {
         // MARK: - Text Styles
 
         public static let titleFont = WPStyleGuide.tableviewSectionHeaderFont()
-        public static let titleColor = UIColor.neutral(shade: .shade50)
+        public static let titleColor = UIColor.neutral(.shade50)
 
         public static let detailFont = WPStyleGuide.tableviewSectionHeaderFont()
-        public static let detailColor = UIColor.neutral(shade: .shade40)
+        public static let detailColor = UIColor.neutral(.shade40)
 
         // MARK: - Metrics
         public static let headerDetailSpacing: CGFloat = 8

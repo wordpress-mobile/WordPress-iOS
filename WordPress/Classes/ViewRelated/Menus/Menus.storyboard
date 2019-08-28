@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MJZ-q0-1DX">
-    <device id="ipad9_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MJZ-q0-1DX">
+    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -70,6 +67,7 @@
                                         </constraints>
                                     </stackView>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="rKi-z3-DxP" firstAttribute="leading" secondItem="jeR-f3-QEg" secondAttribute="leading" id="8gY-Em-9tg"/>
                                     <constraint firstItem="rKi-z3-DxP" firstAttribute="centerX" secondItem="jeR-f3-QEg" secondAttribute="centerX" id="Fyv-sX-5KK"/>
@@ -114,7 +112,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="OQY-P1-Jeo">
-                                <rect key="frame" x="0.0" y="20" width="768" height="875"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="895"/>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -232,19 +230,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="SjG-3s-G5l">
-                                <rect key="frame" x="0.0" y="20" width="768" height="45"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="65"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Fyw-BZ-Tlx" customClass="MenusSelectionView">
-                                        <rect key="frame" x="0.0" y="0.0" width="367" height="45"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="367" height="50"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="D5M-Tv-O2r">
-                                                <rect key="frame" x="0.0" y="0.0" width="367" height="45"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="367" height="50"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Glt-4z-Ehn" customClass="MenusSelectionDetailView">
-                                                        <rect key="frame" x="0.0" y="0.0" width="367" height="45"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="367" height="50"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2dT-vV-4hP">
-                                                                <rect key="frame" x="0.0" y="0.0" width="366.5" height="45"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="367" height="50"/>
                                                             </stackView>
                                                         </subviews>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -285,16 +283,16 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="k6Q-Ut-cV3" customClass="MenusSelectionView">
-                                        <rect key="frame" x="401.5" y="0.0" width="366.5" height="45"/>
+                                        <rect key="frame" x="401.5" y="0.0" width="366.5" height="50"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="flg-cx-nu7">
-                                                <rect key="frame" x="0.0" y="0.0" width="366.5" height="45"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="366.5" height="50"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xgb-Ci-5mG" customClass="MenusSelectionDetailView">
-                                                        <rect key="frame" x="0.0" y="0.0" width="366.5" height="45"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="366.5" height="50"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="gZZ-lD-ySJ">
-                                                                <rect key="frame" x="0.0" y="0.0" width="366" height="45"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="366.5" height="50"/>
                                                             </stackView>
                                                         </subviews>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

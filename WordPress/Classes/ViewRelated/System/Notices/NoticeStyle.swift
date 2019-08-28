@@ -32,7 +32,7 @@ public struct NormalNoticeStyle: NoticeStyle {
 
     public let titleColor: UIColor = .textInverted
     public let messageColor: UIColor = .textInverted
-    public let backgroundColor: UIColor = .neutral(shade: .shade80)
+    public let backgroundColor: UIColor = .neutral(.shade80)
 
     public let layoutMargins = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
 
@@ -49,8 +49,8 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
 
     public let titleColor: UIColor = .white
-    public let messageColor: UIColor = .neutral(shade: .shade10)
-    public let backgroundColor: UIColor = UIColor.neutral(shade: .shade70).withAlphaComponent(0.88)
+    public let messageColor: UIColor = .neutral(.shade10)
+    public let backgroundColor: UIColor = UIColor.neutral(.shade70).withAlphaComponent(0.88)
 
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 

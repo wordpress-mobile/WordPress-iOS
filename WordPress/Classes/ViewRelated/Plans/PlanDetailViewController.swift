@@ -73,12 +73,12 @@ class PlanDetailViewController: UIViewController {
     }
 
     fileprivate func configureAppearance() {
-        planTitleLabel.textColor = .neutral(shade: .shade70)
-        planDescriptionLabel.textColor = .neutral(shade: .shade30)
+        planTitleLabel.textColor = .neutral(.shade70)
+        planDescriptionLabel.textColor = .neutral(.shade30)
         dropshadowImageView.backgroundColor = UIColor.white
         configurePlanImageDropshadow()
 
-        separator.backgroundColor = .neutral(shade: .shade5)
+        separator.backgroundColor = .neutral(.shade5)
     }
 
     fileprivate func configureTableView() {
@@ -88,7 +88,7 @@ class PlanDetailViewController: UIViewController {
 
     fileprivate func configurePlanImageDropshadow() {
         dropshadowImageView.layer.masksToBounds = false
-        dropshadowImageView.layer.shadowColor = UIColor.neutral(shade: .shade5).cgColor
+        dropshadowImageView.layer.shadowColor = UIColor.neutral(.shade5).cgColor
         dropshadowImageView.layer.shadowOpacity = 1.0
         dropshadowImageView.layer.shadowRadius = planImageDropshadowRadius
         dropshadowImageView.layer.shadowOffset = .zero
@@ -188,10 +188,6 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return noResultsViewModel != nil ? nil : tableViewModel.sections[section].headerText
-    }
-
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 }
 

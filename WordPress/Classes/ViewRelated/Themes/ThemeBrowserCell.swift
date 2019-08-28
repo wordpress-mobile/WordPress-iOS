@@ -142,6 +142,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
             nameLabel.text = theme.name
             if theme.isCurrentTheme() {
                 backgroundColor = Styles.activeCellBackgroundColor
+                infoBar.backgroundColor = Styles.activeCellBackgroundColor
                 layer.borderColor = Styles.activeCellBorderColor.cgColor
                 infoBar.layer.borderColor = Styles.activeCellDividerColor.cgColor
                 actionButton.layer.borderColor = Styles.activeCellDividerColor.cgColor
@@ -152,6 +153,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
                 backgroundColor = Styles.inactiveCellBackgroundColor
+                infoBar.backgroundColor = Styles.inactiveCellBackgroundColor
                 layer.borderColor = Styles.inactiveCellBorderColor.cgColor
                 infoBar.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
                 actionButton.layer.borderColor = Styles.inactiveCellDividerColor.cgColor

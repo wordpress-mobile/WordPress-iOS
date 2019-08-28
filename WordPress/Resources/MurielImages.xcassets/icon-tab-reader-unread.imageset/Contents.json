@@ -3,6 +3,16 @@
     {
       "idiom" : "universal",
       "filename" : "icon-tab-reader-unread-muriel.pdf"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "icon-tab-reader-unread-muriel-dark.pdf",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ]
     }
   ],
   "info" : {
