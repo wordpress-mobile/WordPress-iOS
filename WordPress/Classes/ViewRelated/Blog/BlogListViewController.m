@@ -7,7 +7,6 @@ static NSInteger HideAllMinSites = 10;
 static NSInteger HideAllSitesThreshold = 6;
 static NSTimeInterval HideAllSitesInterval = 2.0;
 static NSInteger HideSearchMinSites = 3;
-static NSTimeInterval AutoSyncInterval = 300;
 
 @interface BlogListViewController () <UIViewControllerRestoration,
                                         UIDataSourceModelAssociation,
@@ -32,7 +31,6 @@ static NSTimeInterval AutoSyncInterval = 300;
 @property (nonatomic) NSInteger hideCount;
 @property (nonatomic) BOOL visible;
 @property (nonatomic) BOOL isSyncing;
-@property (nonatomic, strong) NSDate *lastSyncDate;
 @end
 
 @implementation BlogListViewController
@@ -148,7 +146,7 @@ static NSTimeInterval AutoSyncInterval = 300;
     [self maybeShowNUX];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
-    [self autoSyncBlogs];
+    [self syncBlogs];
     [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
 }
@@ -340,13 +338,6 @@ static NSTimeInterval AutoSyncInterval = 300;
     }
 }
 
-- (void)autoSyncBlogs
-{
-    if (!self.lastSyncDate || fabs([self.lastSyncDate timeIntervalSinceNow]) > AutoSyncInterval) {
-        [self syncBlogs];
-    }
-}
-
 - (void)syncBlogs
 {
     if (self.isSyncing) {
@@ -385,7 +376,6 @@ static NSTimeInterval AutoSyncInterval = 300;
 - (void)handleSyncEnded
 {
     self.isSyncing = NO;
-    self.lastSyncDate = [NSDate date];
     [self.tableView.refreshControl endRefreshing];
 }
 
