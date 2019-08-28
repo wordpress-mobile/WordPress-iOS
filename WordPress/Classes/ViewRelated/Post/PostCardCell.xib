@@ -286,6 +286,7 @@
                 <outlet property="featuredImage" destination="doZ-n4-W7C" id="Jd2-4a-6Zs"/>
                 <outlet property="featuredImageHeight" destination="a2g-RS-Lb9" id="hcy-Ow-AXq"/>
                 <outlet property="featuredImageStackView" destination="qax-CV-9QZ" id="DuA-CB-LTQ"/>
+                <outlet property="ghostHolder" destination="pUW-s6-y3t" id="qNT-rh-KBM"/>
                 <outlet property="ghostStackView" destination="O86-Za-gd3" id="SyQ-1N-CSA"/>
                 <outlet property="moreButton" destination="ud6-kQ-Qkb" id="gGi-Ty-OCg"/>
                 <outlet property="progressView" destination="33v-Uz-9S6" id="Ie3-MT-W3v"/>
