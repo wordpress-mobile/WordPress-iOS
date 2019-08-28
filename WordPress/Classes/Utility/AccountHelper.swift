@@ -45,7 +45,7 @@ import Foundation
         let defaultAccount = accountService.defaultWordPressComAccount()
 
         let accountCount = accountService.numberOfAccounts()
-        let otherAccounts = accountCount > 1 ? " + \(accountCount) others" : ""
+        let otherAccounts = accountCount > 1 ? " + \(accountCount - 1) others" : ""
         let accountsDescription = "wp.com account: " + (defaultAccount?.logDescription ?? "<none>") + otherAccounts
 
         let blogTree = blogsByAccount.map({ (account, blogs) -> String in
