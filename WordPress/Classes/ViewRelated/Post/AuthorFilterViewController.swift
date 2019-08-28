@@ -62,6 +62,8 @@ class AuthorFilterViewController: UITableViewController {
         get {
             let height = CGFloat(tableView(self.tableView, numberOfRowsInSection: 0)) * Metrics.rowHeight
             if #available(iOS 13, *) {
+                // Popovers in iOS 13 use safe area. This means the safe area is over the last row.
+                // I need to add the safe area bottom inset to the height.
                 let bottomSafeInset = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
                 return CGSize(width: Metrics.preferredWidth, height: height + bottomSafeInset)
             }
