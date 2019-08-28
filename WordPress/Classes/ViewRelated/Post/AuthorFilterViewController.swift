@@ -39,12 +39,7 @@ class AuthorFilterViewController: UITableViewController {
         self.onSelectionChanged = onSelectionChanged
         self.currentSelection = initialSelection
 
-        var style: UITableView.Style = .plain
-        if #available(iOS 13, *) {
-            style = .grouped
-        }
-
-        super.init(style: style)
+        super.init(style: .grouped)
 
         tableView.register(AuthorFilterCell.self, forCellReuseIdentifier: Identifiers.authorFilterCell)
 
@@ -53,6 +48,11 @@ class AuthorFilterViewController: UITableViewController {
         tableView.separatorColor = .neutral(.shade10)
         tableView.isScrollEnabled = false
         tableView.showsVerticalScrollIndicator = false
+        if #available(iOS 13, *) {
+            tableView.contentInset = .zero
+        } else {
+            tableView.contentInset = UIEdgeInsets(top: -13.0, left: 0, bottom: 0, right: 0)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -126,21 +126,13 @@ class AuthorFilterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if #available(iOS 13, *) {
-            return Metrics.topinset
-        }
-        return 0
+        return Metrics.topinset
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: Metrics.topinset))
-                view.backgroundColor = .listForeground
-                return view
-            }
-        #endif
-        return nil
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: Metrics.topinset))
+        view.backgroundColor = .listForeground
+        return view
     }
 
     // MARK: - Constants
