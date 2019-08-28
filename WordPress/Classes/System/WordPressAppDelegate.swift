@@ -563,11 +563,6 @@ extension WordPressAppDelegate {
         let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        let blogs = blogService.blogsForAllAccounts()
-
-        let accountService = AccountService(managedObjectContext: context)
-        let account = accountService.defaultWordPressComAccount()
 
         let detailedVersionNumber = Bundle(for: type(of: self)).detailedVersionNumber() ?? unknown
 
@@ -596,19 +591,7 @@ extension WordPressAppDelegate {
         DDLogInfo("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
         DDLogInfo("Launch options: \(String(describing: launchOptions ?? [:]))")
 
-        if let account = account,
-            let username = account.username,
-            let userID = account.userID {
-            DDLogInfo("wp.com account: \(username) (ID: \(userID)) (\(account.verificationStatus.rawValue))")
-        }
-
-        if let blogs = blogs as? [Blog], blogs.count > 0 {
-            DDLogInfo("All blogs on device:")
-            blogs.forEach({ DDLogInfo("\($0.logDescription())") })
-        } else {
-            DDLogInfo("No blogs configured on device.")
-        }
-
+        AccountHelper.logBlogsAndAccounts(context: context)
         DDLogInfo("===========================================================================")
     }
 
