@@ -48,6 +48,9 @@ class AuthorFilterViewController: UITableViewController {
         tableView.separatorColor = .neutral(.shade10)
         tableView.isScrollEnabled = false
         tableView.showsVerticalScrollIndicator = false
+        if #available(iOS 13, *) {
+            tableView.contentInsetAdjustmentBehavior = .always
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -58,6 +61,10 @@ class AuthorFilterViewController: UITableViewController {
         set {}
         get {
             let height = CGFloat(tableView(self.tableView, numberOfRowsInSection: 0)) * Metrics.rowHeight
+            if #available(iOS 13, *) {
+                let bottomSafeInset = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
+                return CGSize(width: Metrics.preferredWidth, height: height + bottomSafeInset)
+            }
             return CGSize(width: Metrics.preferredWidth, height: height)
         }
     }
