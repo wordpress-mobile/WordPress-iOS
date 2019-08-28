@@ -7,6 +7,7 @@ static NSInteger HideAllMinSites = 10;
 static NSInteger HideAllSitesThreshold = 6;
 static NSTimeInterval HideAllSitesInterval = 2.0;
 static NSInteger HideSearchMinSites = 3;
+static NSTimeInterval AutoSyncInterval = 300;
 
 @interface BlogListViewController () <UIViewControllerRestoration,
                                         UIDataSourceModelAssociation,
@@ -30,7 +31,8 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
 @property (nonatomic) BOOL visible;
-
+@property (nonatomic) BOOL isSyncing;
+@property (nonatomic, strong) NSDate *lastSyncDate;
 @end
 
 @implementation BlogListViewController
@@ -146,7 +148,7 @@ static NSInteger HideSearchMinSites = 3;
     [self maybeShowNUX];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
-    [self syncBlogs];
+    [self autoSyncBlogs];
     [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
 }
@@ -338,32 +340,53 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
+- (void)autoSyncBlogs
+{
+    if (!self.lastSyncDate || fabs([self.lastSyncDate timeIntervalSinceNow]) > AutoSyncInterval) {
+        [self syncBlogs];
+    }
+}
+
 - (void)syncBlogs
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    if (self.isSyncing) {
+        return;
+    }
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (!defaultAccount) {
+        [self handleSyncEnded];
+        return;
+    }
+
+    self.isSyncing = YES;
     __weak __typeof(self) weakSelf = self;
+    void (^completionBlock)(void) = ^() {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf handleSyncEnded];
+        });
+    };
+
+    context = [[ContextManager sharedInstance] newDerivedContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
     [context performBlock:^{
-        void (^completionBlock)(void) = ^() {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.tableView.refreshControl endRefreshing];
-            });
-        };
-
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        if (defaultAccount) {
-            [blogService syncBlogsForAccount:defaultAccount success:^{
-                completionBlock();
-            } failure:^(NSError * _Nonnull error) {
-                completionBlock();
-            }];
-        } else {
+        [blogService syncBlogsForAccount:defaultAccount success:^{
             completionBlock();
-        }
+        } failure:^(NSError * _Nonnull error) {
+            completionBlock();
+        }];
     }];
+}
+
+- (void)handleSyncEnded
+{
+    self.isSyncing = NO;
+    self.lastSyncDate = [NSDate date];
+    [self.tableView.refreshControl endRefreshing];
 }
 
 - (void)removeBlogItemsFromSpotlight:(Blog *)blog {
