@@ -136,7 +136,7 @@ class AuthorFilterViewController: UITableViewController {
         #if XCODE11
             if #available(iOS 13, *) {
                 let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: Metrics.topinset))
-                view.backgroundColor = .secondarySystemGroupedBackground
+                view.backgroundColor = .listForeground
                 return view
             }
         #endif
