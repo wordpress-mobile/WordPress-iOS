@@ -10,10 +10,11 @@ extension MediaService {
     ///
     func failedMediaForAutoupload() -> [Media] {
         let request = NSFetchRequest<Media>(entityName: Media.entityName())
-
         request.predicate = NSPredicate(format: "remoteStatusNumber == %d AND uploadFailureCount < %d", MediaRemoteStatus.failed.rawValue, MediaService.maxUploadFailureCount)
 
-        return (try? request.execute()) ?? []
+        let media = (try? request.execute()) ?? []
+
+        return media
     }
 
     /// This method checks the status of all media objects and updates them to the correct status if needed.

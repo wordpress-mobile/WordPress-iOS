@@ -144,14 +144,16 @@ class PostCoordinator: NSObject {
 
     /// Retries the upload and save of the post and any associated media with it.
     ///
-    /// - Parameter post: the post to retry the upload
+    /// - Parameters:
+    ///     - post: the post to retry the upload
+    ///     - isAutomaticRetry: whether the retry was automatically or manually initiated.
     ///
-    @objc func retrySave(of post: AbstractPost) {
+    @objc func retrySave(of post: AbstractPost, isAutomaticRetry: Bool = false) {
         for media in post.media {
             guard media.remoteStatus == .failed else {
                 continue
             }
-            mediaCoordinator.retryMedia(media)
+            mediaCoordinator.retryMedia(media, isAutomaticRetry: isAutomaticRetry)
         }
         save(post: post)
     }
@@ -259,7 +261,7 @@ extension PostCoordinator: Uploader {
                 let shouldRetry = post.status == .draft && !post.hasRemote()
 
                 if shouldRetry {
-                    self.retrySave(of: post)
+                    self.retrySave(of: post, isAutomaticRetry: true)
                 }
             }
         }
