@@ -5,13 +5,13 @@ import Nimble
 
 class URLFixedMediaLocalURLTests: XCTestCase {
 
-    var localUser: String = {
+    private var localUser: String = {
         let splitedApplicationDirectory = FileManager.default.urls(for: .applicationDirectory, in: .allDomainsMask).first!.absoluteString.split(separator: "/")
         return String(splitedApplicationDirectory[2])
     }()
 
-    let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!
-    let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
+    private let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!
+    private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
 
     override func setUp() {
         createTemporaryImages()

@@ -4,9 +4,9 @@ import Nimble
 @testable import WordPress
 
 class AbstractPostFixedMediaLocalURLTests: XCTestCase {
-    let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!
-    let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
-    let context = TestContextManager().newDerivedContext()
+    private let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!
+    private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
+    private let context = TestContextManager().newDerivedContext()
 
     func testUpdateLocalMediaPathsInCachesDirectory() {
         let post = PostBuilder(context)
