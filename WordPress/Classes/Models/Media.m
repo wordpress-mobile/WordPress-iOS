@@ -29,6 +29,7 @@
 @dynamic postID;
 @dynamic error;
 @dynamic featuredOnPosts;
+@dynamic uploadFailureCount;
 
 #pragma mark -
 
@@ -148,6 +149,16 @@
         type = MediaTypeDocument;
     }    
     self.mediaType = type;
+}
+
+#pragma mark - Upload Failure Counter
+
+- (void)incrementUploadFailureCount {
+    self.uploadFailureCount = @([self.uploadFailureCount unsignedIntegerValue] + 1);
+}
+
+- (void)resetUploadFailureCount {
+    self.uploadFailureCount = @0;
 }
 
 #pragma mark - Remote Status

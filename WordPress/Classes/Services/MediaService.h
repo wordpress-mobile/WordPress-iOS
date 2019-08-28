@@ -54,15 +54,16 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
  Uploads the Media object to the server.
  
  @param media object to upload to the server.
+ @param isAutomaticRetry Whether we're uploading media due to an automatic upload retry.
  @param progress a NSProgress that tracks the upload progress to the server.
  @param success a block that will be invoked when the media upload finished with success
  @param failure a block that will be invoked when there is upload error.
  */
 - (void)uploadMedia:(nonnull Media *)media
+   isAutomaticRetry:(BOOL)isAutomaticRetry
            progress:(NSProgress * __nullable __autoreleasing * __nullable) progress
             success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nullable error))failure;
-
 
 /**
  Updates the media object details to the server. This method doesn't allow you to update media file,

@@ -196,6 +196,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 }
 
 - (void)uploadMedia:(Media *)media
+   isAutomaticRetry:(BOOL)isAutomaticRetry
            progress:(NSProgress **)progress
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
@@ -220,6 +221,11 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
                 mediaInContext.error = customError;
+                
+                if (isAutomaticRetry) {
+                    [mediaInContext incrementUploadFailureCount];
+                }
+                
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                     if (failure) {
                         failure(customError);
@@ -247,6 +253,11 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
             mediaInContext.error = nil;
+            
+            if (!isAutomaticRetry) {
+                [mediaInContext resetUploadFailureCount];
+            }
+            
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
     }];
@@ -258,7 +269,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             if (!mediaInContext){
                 DDLogError(@"Error retrieving media object: %@", error);
                 if (failure){
-                    failure(error);
+                    failureBlock(error);
                 }
                 return;
             }

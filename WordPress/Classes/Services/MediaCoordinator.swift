@@ -165,7 +165,7 @@ class MediaCoordinator: NSObject {
     ///
     /// - Parameter media: the media object to retry the upload
     ///
-    func retryMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil) {
+    func retryMedia(_ media: Media, isAutomatticRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .failed else {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
@@ -176,7 +176,7 @@ class MediaCoordinator: NSObject {
         let coordinator = self.coordinator(for: media)
 
         coordinator.track(numberOfItems: 1)
-        let uploadProgress = uploadMedia(media)
+        let uploadProgress = uploadMedia(media, isAutomatticRetry: isAutomatticRetry)
         coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
 
@@ -254,12 +254,14 @@ class MediaCoordinator: NSObject {
                             failure: failure)
     }
 
-    @discardableResult private func uploadMedia(_ media: Media) -> Progress {
+    @discardableResult
+    private func uploadMedia(_ media: Media, isAutomatticRetry: Bool = false) -> Progress {
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
 
         service.uploadMedia(media,
+                            isAutomaticRetry: isAutomatticRetry,
                             progress: &progress,
                             success: {
                                 self.end(media)
@@ -602,17 +604,6 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
         let mediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
 
-        let failedMedia = mediaProgressCoordinator.failedMedia
-        let backgroundContext = self.backgroundContext
-
-        backgroundContext.perform {
-            failedMedia.forEach({ media in
-                //media.uploadFailureCount += 1
-
-                ContextManager.sharedInstance().save(backgroundContext)
-            })
-        }
-
         if !mediaErrorsAreMissingFilesErrors,
             mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
 
@@ -635,7 +626,7 @@ extension MediaCoordinator: Uploader {
         let service = MediaService(managedObjectContext: mainContext)
 
         service.failedMediaForAutoupload().forEach() {
-            retryMedia($0)
+            retryMedia($0, isAutomatticRetry: true)
         }
     }
 }
