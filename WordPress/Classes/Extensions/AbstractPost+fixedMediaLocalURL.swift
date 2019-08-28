@@ -1,6 +1,10 @@
 import Foundation
 
 extension AbstractPost {
+    /// If a post is in the failed state it can contain references to local files.
+    /// When updating the app through the App Store the local paths can change.
+    /// This will fix any outdated local path with the correct one.
+    ///
     func fixedMediaLocalURL() {
         guard isFailed,
             var content = self.content else {
