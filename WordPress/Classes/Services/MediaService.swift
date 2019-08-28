@@ -2,6 +2,8 @@ import Foundation
 
 extension MediaService {
 
+    // MARK: - Failed Media for Autouploading
+
     private static let maxUploadFailureCount = 4
 
     /// Returns a list of Media objects that should be autouploaded on the next attempt.
@@ -10,12 +12,25 @@ extension MediaService {
     ///
     func failedMediaForAutoupload() -> [Media] {
         let request = NSFetchRequest<Media>(entityName: Media.entityName())
-        request.predicate = NSPredicate(format: "remoteStatusNumber == %d AND uploadFailureCount < %d", MediaRemoteStatus.failed.rawValue, MediaService.maxUploadFailureCount)
+        request.predicate = NSPredicate(format: "\(#keyPath(Media.remoteStatusNumber)) == %d AND \(#keyPath(Media.uploadFailureCount)) < %d", MediaRemoteStatus.failed.rawValue, MediaService.maxUploadFailureCount)
 
-        let media = (try? request.execute()) ?? []
+        let media = (try? managedObjectContext.fetch(request)) ?? []
 
         return media
     }
+
+    /// Returns a list of Media objects from a post, that should be autouploaded on the next attempt.
+    ///
+    /// - Parameters:
+    ///     - post: the post to look auto-uploadable media for.
+    ///
+    /// - Returns: the Media objects that should be autouploaded.
+    ///
+    func failedMediaForAutoUpload(in post: AbstractPost) -> [Media] {
+        return post.media.filter({ $0.remoteStatus == .failed && $0.uploadFailureCount.intValue < MediaService.maxUploadFailureCount })
+    }
+
+    // MARK: - Misc
 
     /// This method checks the status of all media objects and updates them to the correct status if needed.
     /// The main cause of wrong status is the app being killed while uploads of media are happening.
