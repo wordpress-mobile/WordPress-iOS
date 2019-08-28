@@ -267,11 +267,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [results firstObject];
 }
 
-- (void)syncAccountDetailsAndCreateAccount:(NSString *)authToken
+- (void)createOrUpdateAccountWithAuthToken:(NSString *)authToken
                                    success:(void (^)(WPAccount * _Nonnull))success
                                    failure:(void (^)(NSError * _Nonnull))failure
 {
-    WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:authToken userAgent:[WPUserAgent defaultUserAgent]];
+    WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:authToken userAgent:[WPUserAgent defaultUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];
     AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:api];
     [remote getAccountDetailsWithSuccess:^(RemoteUser *remoteUser) {
         WPAccount *account = [self createOrUpdateAccountWithUserDetails:remoteUser authToken:authToken];

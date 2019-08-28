@@ -85,17 +85,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 ///-----------------------
 
 /**
- A convenience method for creating an Account from an auth token and remote user.
-
- This method makes a pass through call to `createOrUpdateAccountWithUsername:authToken:`, see it for details.
-
- @param remoteUser a RemoteUser instance.
- @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:authToken:
- @return a WordPress.com `WPAccount` object
- */
-- (WPAccount *)createOrUpdateAccountWithUserDetails:(RemoteUser *)remoteUser authToken:(NSString *)authToken;
-
-/**
  Creates a new WordPress.com account or updates the password if there is a matching account
  
  There can only be one WordPress.com account per username, so if one already exists for the given `username` its password is updated
@@ -145,7 +134,7 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @param success A success block.
  @param failure A failure block.
  */
-- (void)syncAccountDetailsAndCreateAccount:(NSString *)authToken
+- (void)createOrUpdateAccountWithAuthToken:(NSString *)authToken
                                    success:(void (^)(WPAccount * _Nonnull))success
                                    failure:(void (^)(NSError * _Nonnull))failure;
 
