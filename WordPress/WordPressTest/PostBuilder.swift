@@ -6,14 +6,11 @@ class PostBuilder {
 
     var post: Post!
 
-    var context: NSManagedObjectContext?
-
     init() {
         post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: setUpInMemoryManagedObjectContext()) as? Post
     }
 
     init(_ context: NSManagedObjectContext) {
-        self.context = context
         post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as? Post
     }
 
@@ -78,7 +75,11 @@ class PostBuilder {
     }
 
     func with(image: String) -> PostBuilder {
-        guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context ?? setUpInMemoryManagedObjectContext()) as? Media else {
+        guard let context = post.managedObjectContext else {
+            return self
+        }
+
+        guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as? Media else {
              return self
         }
         media.localURL = image
