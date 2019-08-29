@@ -130,7 +130,7 @@ class StatsDataHelper {
 }
 
 fileprivate extension Date {
-    func convert(from timeZone: TimeZone, to target: TimeZone = TimeZone.current) -> Date {
+    func convert(from timeZone: TimeZone, comparedWith target: TimeZone = TimeZone.current) -> Date {
         let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - target.secondsFromGMT(for: self))
         return addingTimeInterval(delta)
     }
