@@ -208,7 +208,7 @@
         KeyringAccountHelper *keyringAccount = [KeyringAccountHelper new];
 
         //Check errors over accounts and show alert if it's needed
-        if ([keyringAccount showNoticeFromConnections:[weakSelf connectionsForService] with:weakSelf.publicizeService]) {
+        if ([keyringAccount showNoticeFromConnections:marr with:weakSelf.publicizeService]) {
             [weakSelf showAlertFromConnectionsWithKeyringAccountHelper:keyringAccount];
             return;
         }
