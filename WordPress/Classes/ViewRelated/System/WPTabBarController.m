@@ -714,16 +714,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     });
 }
 
-- (void)switchMeTabToNotificationSettings
+- (void)switchNotificationsTabToNotificationSettings
 {
-    [self showMeTab];
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
+    [self showNotificationsTab];
+    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 
-    // If we don't dispatch_async here, the top inset of the app
-    // settings VC isn't correct when pushed...
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.meViewController navigateToNotificationSettings];
-    });
+    [self.notificationsViewController showNotificationSettings];
 }
 
 - (void)switchMeTabToSupport

@@ -10,15 +10,18 @@ extension WPStyleGuide {
             case blue
             case grey
             case darkGrey
+            case icon
 
             var styleGuideColor: UIColor {
                 switch self {
                 case .blue:
-                    return .primary(shade: .shade40)
+                    return .primary(.shade40)
                 case .grey:
-                    return .neutral(shade: .shade20)
+                    return .textQuaternary
                 case .darkGrey:
-                    return .neutral(shade: .shade70)
+                    return .textSubtle
+                case .icon:
+                    return .listIcon
                 }
             }
         }
@@ -35,6 +38,11 @@ extension WPStyleGuide {
             cell.contentView.backgroundColor = cellBackgroundColor
         }
 
+        static func configureHeaderCell(_ cell: UITableViewCell) {
+            cell.backgroundColor = tableBackgroundColor
+            cell.contentView.backgroundColor = tableBackgroundColor
+        }
+
         static func configureViewAsSeparator(_ separatorView: UIView) {
             separatorView.backgroundColor = separatorColor
             separatorView.constraints.first(where: { $0.firstAttribute == .height })?.isActive = false
@@ -46,7 +54,7 @@ extension WPStyleGuide {
         }
 
         static func configureViewAsDataBar(_ dataBar: UIView) {
-            dataBar.backgroundColor = separatorColor
+            dataBar.backgroundColor = dataBarColor
             dataBar.layer.cornerRadius = dataBar.frame.height * 0.5
         }
 
@@ -74,7 +82,7 @@ extension WPStyleGuide {
         }
 
         static func configureLabelAsData(_ label: UILabel) {
-            label.textColor = secondaryTextColor
+            label.textColor = defaultTextColor
         }
 
         static func configureLabelAsChildRowTitle(_ label: UILabel) {
@@ -160,9 +168,7 @@ extension WPStyleGuide {
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar,
                                           forTabbedCard: Bool = false,
                                           forOverviewCard: Bool = false) {
-            filterTabBar.dividerColor = filterDividerColor
-            filterTabBar.deselectedTabColor = filterDeselectedColor
-            filterTabBar.tintColor = defaultFilterTintColor
+            WPStyleGuide.configureFilterTabBar(filterTabBar)
 
             // For FilterTabBar on TabbedTotalsCell
             if forTabbedCard {
@@ -181,30 +187,29 @@ extension WPStyleGuide {
 
         // MARK: - Style Values
 
-        static let defaultTextColor = UIColor.neutral(shade: .shade70)
-        static let headerTextColor = UIColor.neutral(shade: .shade50)
-        static let secondaryTextColor = UIColor.neutral(shade: .shade30)
-        static let itemDetailTextColor = UIColor.neutral(shade: .shade40)
+        static let defaultTextColor = UIColor.text
+        static let headerTextColor = UIColor.textSubtle
+        static let secondaryTextColor = UIColor.textSubtle
+        static let itemDetailTextColor = UIColor.textSubtle
         static let actionTextColor = UIColor.primary
-        static let summaryTextColor = UIColor.neutral(shade: .shade70)
+        static let summaryTextColor = UIColor.neutral(.shade70)
         static let substringHighlightTextColor = UIColor.primary
-        static let iconLoadingBackgroundColor = UIColor.neutral(shade: .shade10)
+        static let iconLoadingBackgroundColor = UIColor.neutral(.shade10)
 
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 
-        static let tableBackgroundColor = UIColor.tableBackground
-        static let cellBackgroundColor = UIColor.white
-        static let separatorColor = UIColor.neutral(shade: .shade10)
+        static let tableBackgroundColor = UIColor.listBackground
+        static let cellBackgroundColor = UIColor.listForeground
+        static let separatorColor = UIColor.divider
+        static let dataBarColor = UIColor.textTertiary
         static let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
-        static let verticalSeparatorColor = UIColor.neutral(shade: .shade5)
+        static let verticalSeparatorColor = UIColor.neutral(.shade5)
 
-        static let defaultFilterTintColor: UIColor = .primary
-        static let tabbedCardFilterTintColor = UIColor.neutral(shade: .shade10)
-        static let tabbedCardFilterSelectedTitleColor = UIColor.neutral(shade: .shade70)
-        static let filterDeselectedColor = UIColor.neutral(shade: .shade40)
-        static let filterDividerColor = UIColor.neutral(shade: .shade10)
+        static let defaultFilterTintColor = UIColor.filterBarSelected
+        static let tabbedCardFilterTintColor = UIColor.filterBarSelected
+        static let tabbedCardFilterSelectedTitleColor = UIColor.filterBarSelected
 
         static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .regular)
         static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
@@ -223,12 +228,21 @@ extension WPStyleGuide {
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {
-            static let range1 = UIColor.neutral(shade: .shade5)
-            static let range2 = UIColor.primary(shade: .shade5)
+            static let range1 = UIColor.neutral(.shade5)
+            static let range2 = UIColor.primary(.shade5)
             static let range3 = UIColor.primaryLight
             static let range4 = UIColor.primary
             static let range5 = UIColor.primaryDark
             static let selectedDay = UIColor.accent
+        }
+
+        static var mapBackground: UIColor {
+            #if XCODE11
+            if #available(iOS 13, *) {
+                return .systemGray5
+            }
+            #endif
+            return .neutral(.shade10)
         }
 
         // MARK: - Posting Activity Collection View Styles

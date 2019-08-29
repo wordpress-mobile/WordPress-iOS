@@ -80,7 +80,7 @@
 {
     UIView *textFieldContainerView = [[UIView alloc] init];
     textFieldContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-    textFieldContainerView.backgroundColor = [UIColor whiteColor];
+    textFieldContainerView.backgroundColor = [UIColor murielListForeground];
 
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:textFieldContainerView];

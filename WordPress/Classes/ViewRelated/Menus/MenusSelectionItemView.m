@@ -72,7 +72,7 @@
     label.backgroundColor = [UIColor clearColor];
     label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleSubheadline maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
-    label.textColor = [UIColor murielNeutral70];
+    label.textColor = [UIColor murielText];
     [self addSubview:label];
     _label = label;
 

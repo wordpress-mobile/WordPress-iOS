@@ -291,7 +291,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = .neutral(shade: .shade5)
+        view.backgroundColor = .neutral(.shade5)
     }
 
     private func setupCellHeight() {
@@ -333,7 +333,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupButtonWrapper() {
-        buttonWrapper.backgroundColor = .neutral(shade: .shade5)
+        buttonWrapper.backgroundColor = .neutral(.shade5)
     }
 
     private func setupNextButton() {
@@ -362,7 +362,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = .neutral(shade: .shade5)
+        table.backgroundColor = .neutral(.shade5)
     }
 
     private func setupTableHeaderWithPrompt(_ prompt: SiteVerticalsPrompt) {
@@ -380,7 +380,7 @@ final class VerticalsWizardContent: UIViewController {
         header.accessibilityTraits = .header
 
         let placeholderText = prompt.hint
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade30))
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade30))
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         header.textField.attributedPlaceholder = attributedPlaceholder
         header.textField.returnKeyType = .done
@@ -408,7 +408,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = .neutral(shade: .shade10)
+        table.separatorColor = .neutral(.shade10)
     }
 
     private func trackVerticalSelection(_ vertical: SiteVertical) {

@@ -17,6 +17,7 @@ class StatsNoDataRow: UIView, NibLoadable, Accessible {
     func configure(forType statType: StatType, rowStatus: StoreFetchingStatus = .idle) {
         noDataLabel.text = text(for: statType, rowStatus: rowStatus)
         WPStyleGuide.Stats.configureLabelAsNoData(noDataLabel)
+        backgroundColor = .listForeground
         prepareForVoiceOver()
     }
 

@@ -337,11 +337,6 @@ fileprivate extension SearchManager {
         return true
     }
 
-    func openNotificationSettingsScreen() -> Bool {
-        WPTabBarController.sharedInstance().switchMeTabToNotificationSettings()
-        return true
-    }
-
     func openAppSettingsScreen() -> Bool {
         WPTabBarController.sharedInstance().switchMeTabToAppSettings()
         return true
@@ -356,6 +351,11 @@ fileprivate extension SearchManager {
 
     func openNotificationsTab() -> Bool {
         WPTabBarController.sharedInstance().showNotificationsTab()
+        return true
+    }
+
+    func openNotificationSettingsScreen() -> Bool {
+        WPTabBarController.sharedInstance().switchNotificationsTabToNotificationSettings()
         return true
     }
 

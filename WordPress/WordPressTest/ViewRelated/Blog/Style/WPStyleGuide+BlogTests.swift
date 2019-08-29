@@ -1,5 +1,6 @@
 import XCTest
 import WordPressShared.WPStyleGuide
+@testable import WordPress
 
 class WPStyleGuide_BlogTests: XCTestCase {
     var testCell: UITableViewCell!
@@ -21,6 +22,6 @@ class WPStyleGuide_BlogTests: XCTestCase {
 
     func testConfigureTableViewBlogCellSetsBackgroundColor() {
         WPStyleGuide.configureTableViewBlogCell(testCell)
-        XCTAssertEqual(UIColor.white, testCell.backgroundColor)
+        XCTAssertEqual(UIColor.listForeground, testCell.backgroundColor)
     }
 }

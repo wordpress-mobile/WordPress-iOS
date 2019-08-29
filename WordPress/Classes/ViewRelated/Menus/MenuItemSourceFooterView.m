@@ -42,7 +42,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     self = [super initWithFrame:frame];
     if (self) {
 
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor murielListBackground];
 
         [self setupSourceCell];
         [self setupDrawView];
@@ -65,7 +65,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 - (void)setupDrawView
 {
     MenuItemSourceLoadingDrawView *drawView = [[MenuItemSourceLoadingDrawView alloc] initWithFrame:self.bounds];
-    drawView.backgroundColor = [UIColor whiteColor];
+    drawView.backgroundColor = [UIColor murielListBackground];
     drawView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     drawView.drawDelegate = self;
     drawView.contentMode = UIViewContentModeRedraw;
