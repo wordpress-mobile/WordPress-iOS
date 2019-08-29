@@ -36,11 +36,35 @@ extension BasePost {
     }
 
     @objc var featuredImageURL: URL? {
-        guard let pathForDisplayImage = pathForDisplayImage else {
+        guard let pathForDisplayImage = pathForDisplayImage,
+            let url = URL(string: pathForDisplayImage) else {
             return nil
         }
 
-        return URL(string: pathForDisplayImage)?.fixedMediaLocalURL()
+        return fixedMediaLocalURL(url: url)
+    }
+
+    /// In case of an app migration, the UUID of local paths can change.
+    /// This method returns the correct path for a given file URL.
+    ///
+    private func fixedMediaLocalURL(url: URL) -> URL? {
+        guard url.isFileURL else {
+            return url
+        }
+
+        if let mediaCache = try? MediaFileManager.cache.directoryURL().appendingPathComponent(url.lastPathComponent) {
+            if FileManager.default.fileExists(atPath: mediaCache.path) {
+                return mediaCache
+            }
+        }
+
+        if let mediaDocument = try? MediaFileManager.default.directoryURL().appendingPathComponent(url.lastPathComponent) {
+            if FileManager.default.fileExists(atPath: mediaDocument.path) {
+                return mediaDocument
+            }
+        }
+
+        return nil
     }
 }
 

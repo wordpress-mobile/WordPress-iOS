@@ -44,6 +44,11 @@ class PostBuilder {
         return self
     }
 
+    func with(pathForDisplayImage: String) -> PostBuilder {
+        post.pathForDisplayImage = pathForDisplayImage
+        return self
+    }
+
     func with(title: String) -> PostBuilder {
         post.postTitle = title
         return self

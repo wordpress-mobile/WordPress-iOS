@@ -145,29 +145,6 @@ extension URL {
         let components = pathComponents.filter({ $0 != "/" })
         return components.count == 4 && hasWordPressDotComHostname
     }
-
-    /// In case of an app migration, the UUID of local paths can change.
-    /// This method returns the correct path for a given file URL.
-    ///
-    func fixedMediaLocalURL() -> URL? {
-        guard isFileURL else {
-            return self
-        }
-
-        if let mediaCache = try? MediaFileManager.cache.directoryURL().appendingPathComponent(self.lastPathComponent) {
-            if FileManager.default.fileExists(atPath: mediaCache.path) {
-                return mediaCache
-            }
-        }
-
-        if let mediaDocument = try? MediaFileManager.default.directoryURL().appendingPathComponent(self.lastPathComponent) {
-            if FileManager.default.fileExists(atPath: mediaDocument.path) {
-                return mediaDocument
-            }
-        }
-
-        return nil
-    }
 }
 
 extension NSURL {
