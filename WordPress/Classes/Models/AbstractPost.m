@@ -619,15 +619,14 @@
         self.confirmedChangesHash = currentHash;
         self.confirmedChangesTimestamp = now;
     } else {
-        self.confirmedChangesHash = nil;
-        self.confirmedChangesTimestamp = nil;
+        self.confirmedChangesHash = @"";
+        self.confirmedChangesTimestamp = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
     }
 }
 
 - (BOOL)wasAutoUploadCancelled {
-    return self.confirmedChangesHash == nil
-        && self.confirmedChangesTimestamp == nil
-        && self.isFailed;
+    return [self.confirmedChangesHash isEqualToString:@""]
+    && [self.confirmedChangesTimestamp isEqualToDate:[NSDate dateWithTimeIntervalSinceReferenceDate:0]];
 }
 
 - (void)updatePathForDisplayImageBasedOnContent

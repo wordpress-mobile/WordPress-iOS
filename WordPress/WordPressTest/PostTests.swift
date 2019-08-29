@@ -448,4 +448,14 @@ class PostTests: XCTestCase {
 
         XCTAssertEqual(post.shouldAttemptAutoUpload, true)
     }
+
+    func testAutoUploadCancellationProperty() {
+        let post = newTestPost()
+
+        XCTAssertEqual(post.wasAutoUploadCancelled, false)
+
+        post.shouldAttemptAutoUpload = false
+
+        XCTAssertEqual(post.wasAutoUploadCancelled, true)
+    }
 }
