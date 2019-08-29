@@ -7,6 +7,7 @@ class PostStatsTitleCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var postTitleLabel: UILabel!
     @IBOutlet weak var bottomSeparatorLine: UIView!
+    @IBOutlet private var labelsView: UIView!
 
     private typealias Style = WPStyleGuide.Stats
     private var postURL: URL?
@@ -26,6 +27,8 @@ private extension PostStatsTitleCell {
 
     func applyStyles() {
         titleLabel.text = NSLocalizedString("Showing stats for:", comment: "Label on Post Stats view indicating which post the stats are for.")
+
+        labelsView.backgroundColor = .listForeground
 
         Style.configureCell(self)
         Style.configureLabelAsPostStatsTitle(titleLabel)
