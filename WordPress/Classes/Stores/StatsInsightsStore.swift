@@ -892,6 +892,10 @@ extension StatsInsightsStore {
     }
 
     var isFetchingOverview: Bool {
+        /*
+         * Use reflection here to inspect all the members of type StoreFetchingStatus
+         * with value .loading. If at least one exists then the store is still fetching the overview.
+         */
         let mirror = Mirror(reflecting: state)
         return mirror.children.compactMap { $0.value as? StoreFetchingStatus }.first { $0 == .loading } != nil
     }
@@ -915,6 +919,11 @@ extension StatsInsightsStore {
     }
 
     var fetchingOverviewHasFailed: Bool {
+        /*
+         * Use reflection here to inspect all the members of type StoreFetchingStatus
+         * with value different from .error.
+         * If the result is nil the store failed loading the overview.
+         */
         let mirror = Mirror(reflecting: state)
         return mirror.children.compactMap { $0.value as? StoreFetchingStatus }.first { $0 != .error } == nil
     }
