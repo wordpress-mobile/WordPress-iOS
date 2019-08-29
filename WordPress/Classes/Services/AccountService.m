@@ -282,13 +282,18 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  */
 - (BOOL)isJetpackAccount:(WPAccount *)account
 {
-    // If an account has multiple blogs, or zero blogs, then it is not an account
-    // that was connected via Jetpack login while another default wpcom account existed.
-    if ([account.blogs count] != 1 ) {
+    if ([account.blogs count] == 0) {
+        // Most likly, this is a blogless account used for the reader or commenting and not Jetpack.
         return NO;
     }
-    Blog *blog = [account.blogs anyObject];
-    return !blog.isHostedAtWPcom;
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.isHostedAtWPcom = true"];
+    NSSet *wpcomBlogs = [account.blogs filteredSetUsingPredicate:predicate];
+    if ([wpcomBlogs count] > 0) {
+        return NO;
+    }
+
+    return YES;
 }
 
 - (WPAccount *)findAccountWithUsername:(NSString *)username
