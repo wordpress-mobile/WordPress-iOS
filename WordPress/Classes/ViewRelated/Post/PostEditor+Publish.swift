@@ -44,6 +44,7 @@ extension PostEditor where Self: UIViewController {
             displayHasFailedMediaAlert(then: {
                 // Failed media is removed, try again.
                 // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
+                self.removeFailedMedia()
                 self.publishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
             })
             return
@@ -133,7 +134,6 @@ extension PostEditor where Self: UIViewController {
     fileprivate func displayHasFailedMediaAlert(then: @escaping () -> ()) {
         let alertController = UIAlertController(title: FailedMediaRemovalAlert.title, message: FailedMediaRemovalAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(FailedMediaRemovalAlert.acceptTitle) { [weak self] alertAction in
-            self?.removeFailedMedia()
             then()
         }
 
