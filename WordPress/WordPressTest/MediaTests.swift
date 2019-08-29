@@ -76,17 +76,17 @@ class MediaTests: XCTestCase {
 
         media.incrementAutoUploadFailureCount()
         XCTAssertEqual(media.autoUploadFailureCount, 1)
-        
+
         media.incrementAutoUploadFailureCount()
         XCTAssertEqual(media.autoUploadFailureCount, 2)
     }
-    
+
     func testThatResetAutoUploadFailureCountWorks() {
         let media = newTestMedia()
-        
+
         media.incrementAutoUploadFailureCount()
         media.incrementAutoUploadFailureCount()
-        
+
         media.resetAutoUploadFailureCount()
         XCTAssertEqual(media.autoUploadFailureCount, 0)
     }
