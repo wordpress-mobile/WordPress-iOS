@@ -3,7 +3,7 @@ import Foundation
 extension Media {
 
     // MARK: - AutoUpload Failure Count
-    
+
     static let maxAutoUploadFailureCount = 3
 
     /// Increments the AutoUpload failure count for this Media object.

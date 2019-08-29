@@ -60,9 +60,9 @@ extension AbstractPost {
             return status
         }
     }
-    
+
     // MARK: - Failed Media
-    
+
     func failedMedia() -> [Media] {
         return media.filter({ $0.remoteStatus == .failed })
     }

@@ -1,9 +1,9 @@
 import Foundation
 
 extension PostService {
-    
+
     // MARK: - Failed Media for Uploading
-    
+
     /// Returns `true` if the post has failed media that cannot be Auto Uploaded because autoUploads failed
     /// too many times.
     ///
@@ -12,7 +12,7 @@ extension PostService {
             return media.remoteStatus == .failed && media.autoUploadFailureCount.intValue >= Media.maxAutoUploadFailureCount
         }) != nil
     }
-    
+
     /// Returns a list of Media objects from a post, that should be autoUploaded on the next attempt.
     ///
     /// - Parameters:
