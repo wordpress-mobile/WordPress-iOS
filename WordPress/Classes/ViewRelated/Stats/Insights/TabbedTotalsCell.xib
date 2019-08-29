@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,11 +14,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="198.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="BCs-rZ-yvc" userLabel="Content Stack View">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="198.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0D1-nR-ode" customClass="FilterTabBar" customModule="WordPress">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
@@ -30,7 +28,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lNV-f4-WuQ" userLabel="Labels Stack View">
-                                <rect key="frame" x="0.0" y="46" width="320" height="102.5"/>
+                                <rect key="frame" x="0.0" y="46" width="320" height="103"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rbk-YO-aQi" userLabel="Count View">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
@@ -51,16 +49,16 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="10R-ih-Pr7">
-                                        <rect key="frame" x="0.0" y="56" width="320" height="46.5"/>
+                                        <rect key="frame" x="0.0" y="56" width="320" height="47"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ABk-vW-HsC">
-                                                <rect key="frame" x="16" y="7" width="33" height="32.5"/>
+                                                <rect key="frame" x="16" y="7" width="33" height="33"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A1z-Hh-le1">
-                                                <rect key="frame" x="271" y="7" width="33" height="32.5"/>
+                                                <rect key="frame" x="271" y="7" width="33" height="33"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -79,10 +77,10 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="EG5-87-rU0">
-                                <rect key="frame" x="0.0" y="148.5" width="320" height="50"/>
+                                <rect key="frame" x="0.0" y="149" width="320" height="50"/>
                             </stackView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rq8-nV-ybk">
-                                <rect key="frame" x="0.0" y="198.5" width="320" height="0.0"/>
+                                <rect key="frame" x="0.0" y="199" width="320" height="0.0"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -95,7 +93,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mrX-mq-7oM" userLabel="Bottom Seperator Line">
-                        <rect key="frame" x="0.0" y="198" width="320" height="0.5"/>
+                        <rect key="frame" x="0.0" y="198.5" width="320" height="0.5"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="QHX-ho-GbS"/>
@@ -121,6 +119,7 @@
                 <outlet property="dataSubtitleLabel" destination="A1z-Hh-le1" id="X6f-Pa-GFA"/>
                 <outlet property="filterTabBar" destination="0D1-nR-ode" id="vHL-h2-cY0"/>
                 <outlet property="itemSubtitleLabel" destination="ABk-vW-HsC" id="BRR-gC-H8q"/>
+                <outlet property="labelsContainer" destination="10R-ih-Pr7" id="wKp-hW-ViQ"/>
                 <outlet property="labelsStackView" destination="lNV-f4-WuQ" id="4Gk-Jp-fLW"/>
                 <outlet property="noResultsView" destination="Rq8-nV-ybk" id="h9y-ph-Bba"/>
                 <outlet property="rowsStackView" destination="EG5-87-rU0" id="pEz-Ra-CwP"/>
