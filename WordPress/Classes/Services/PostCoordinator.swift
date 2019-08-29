@@ -36,7 +36,7 @@ class PostCoordinator: NSObject {
 
         change(post: post, status: .pushing)
 
-        if mediaCoordinator.isUploadingMedia(for: post) {
+        if mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia {
             change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
