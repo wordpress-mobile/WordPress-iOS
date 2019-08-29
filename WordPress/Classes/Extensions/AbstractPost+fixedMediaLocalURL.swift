@@ -16,7 +16,7 @@ extension AbstractPost {
                 return
             }
 
-            extractFilenameAndAbsolutePath(from: media)?.forEach { filename, absolutePath in
+            filenamesAndAbsolutePaths(from: media).forEach { filename, absolutePath in
                 content = content.replacingMatches(of: "src\\s*=\\s*\"(file://.[^\"]+?/\(NSRegularExpression.escapedPattern(for: filename)))\"", with: "src=\"\(absolutePath)\"")
             }
         }
@@ -24,19 +24,19 @@ extension AbstractPost {
         self.content = content
     }
 
-    private func extractFilenameAndAbsolutePath(from media: Media) -> [(String, String)]? {
-        var namesAndPaths: [(String, String)] = []
+    private func filenamesAndAbsolutePaths(from media: Media) -> [(filename: String, absolutePath: String)] {
+        var filenamesAndAbsolutePaths: [(String, String)] = []
 
         if let localThumbnailURL = media.localThumbnailURL,
             let absoluteThumbnailLocalURLString = media.absoluteThumbnailLocalURL?.absoluteString {
-            namesAndPaths.append((localThumbnailURL, absoluteThumbnailLocalURLString))
+            filenamesAndAbsolutePaths.append((localThumbnailURL, absoluteThumbnailLocalURLString))
         }
 
         if let localURL = media.localURL,
             let absoluteLocalURLString = media.absoluteLocalURL?.absoluteString {
-            namesAndPaths.append((localURL, absoluteLocalURLString))
+            filenamesAndAbsolutePaths.append((localURL, absoluteLocalURLString))
         }
 
-        return namesAndPaths
+        return filenamesAndAbsolutePaths
     }
 }
