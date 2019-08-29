@@ -67,7 +67,7 @@ class EditPostViewController: UIViewController {
                 editingExistingPost = true
             }
 
-            post.fixedMediaLocalURL()
+            post.fixLocalMediaURLs()
         }
         self.blog = blog
         super.init(nibName: nil, bundle: nil)

@@ -5,7 +5,7 @@ extension AbstractPost {
     /// When updating the app through the App Store the local paths can change.
     /// This will fix any outdated local path with the correct one.
     ///
-    func fixedMediaLocalURL() {
+    func fixLocalMediaURLs() {
         guard isFailed,
             var content = self.content else {
             return
