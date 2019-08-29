@@ -98,10 +98,13 @@ private extension PostingActivityViewController {
 
     func addLegend() {
         let legend = PostingActivityLegend.loadFromNib()
+        legend.backgroundColor = .listBackground
         legendView.addSubview(legend)
     }
 
     func applyStyles() {
+        view.backgroundColor = .listBackground
+        collectionView.backgroundColor = .listBackground
         Style.configureLabelAsPostingDate(dateLabel)
         Style.configureLabelAsPostingCount(postCountLabel)
         Style.configureViewAsSeparator(separatorLine)
