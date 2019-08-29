@@ -45,13 +45,13 @@ class AuthorFilterViewController: UITableViewController {
 
         tableView.rowHeight = Metrics.rowHeight
         tableView.separatorInset = .zero
-        tableView.separatorColor = .neutral(.shade10)
+        tableView.separatorColor = .clear
         tableView.isScrollEnabled = false
         tableView.showsVerticalScrollIndicator = false
         if #available(iOS 13, *) {
             tableView.contentInset = .zero
         } else {
-            tableView.contentInset = UIEdgeInsets(top: -13.0, left: 0, bottom: 0, right: 0)
+            tableView.contentInset = UIEdgeInsets(top: -Metrics.topinset, left: 0, bottom: 0, right: 0)
         }
     }
 
@@ -93,6 +93,7 @@ class AuthorFilterViewController: UITableViewController {
             cell.accessoryType = (filter == currentSelection) ? .checkmark : .none
 
             cell.title = filter.stringValue
+            cell.separatorIsHidden = indexPath.row != 0
         }
 
         return cell
@@ -180,9 +181,22 @@ private class AuthorFilterCell: UITableViewCell {
         return stackView
     }()
 
+    private let separator: UIView = {
+        let separator = UIView()
+        separator.backgroundColor = .divider
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        return separator
+    }()
+
     var title: String = "" {
         didSet {
             titleLabel.text = title
+        }
+    }
+
+    var separatorIsHidden: Bool = false {
+        didSet {
+            separator.isHidden = separatorIsHidden
         }
     }
 
@@ -190,6 +204,7 @@ private class AuthorFilterCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         addSubview(stackView)
+        addSubview(separator)
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.horizontalPadding),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.horizontalPadding),
@@ -201,6 +216,13 @@ private class AuthorFilterCell: UITableViewCell {
 
         stackView.addArrangedSubview(gravatarImageView)
         stackView.addArrangedSubview(titleLabel)
+
+        NSLayoutConstraint.activate([
+            separator.leadingAnchor.constraint(equalTo: leadingAnchor),
+            separator.trailingAnchor.constraint(equalTo: trailingAnchor),
+            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
+            ])
 
         tintColor = .primary(.shade40)
     }
