@@ -16,12 +16,19 @@ extension AbstractPost {
                 return
             }
 
+            /// It would be better to use HTMLProcessor here. But since this is an entity
+            /// from Aztec we decided to use a REGEX to have an editor-agnostic solution.
+            ///
             filenamesAndAbsolutePaths(from: media).forEach { filename, absolutePath in
-                content = content.replacingMatches(of: "src\\s*=\\s*\"(file://.[^\"]+?/\(NSRegularExpression.escapedPattern(for: filename)))\"", with: "src=\"\(absolutePath)\"")
+                content = content.replacingMatches(of: regexOfHTMLSourceContaining(localFilename: filename), with: "src=\"\(absolutePath)\"")
             }
         }
 
         self.content = content
+    }
+
+    private func regexOfHTMLSourceContaining(localFilename: String) -> String {
+        return "src\\s*=\\s*\"(file://.[^\"]+?/\(NSRegularExpression.escapedPattern(for: localFilename)))\""
     }
 
     private func filenamesAndAbsolutePaths(from media: Media) -> [(filename: String, absolutePath: String)] {
