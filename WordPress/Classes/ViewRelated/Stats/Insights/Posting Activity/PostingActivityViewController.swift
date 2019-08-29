@@ -103,8 +103,8 @@ private extension PostingActivityViewController {
     }
 
     func applyStyles() {
-        view.backgroundColor = .listBackground
-        collectionView.backgroundColor = .listBackground
+        view.backgroundColor = .listForeground
+        collectionView.backgroundColor = .listForeground
         Style.configureLabelAsPostingDate(dateLabel)
         Style.configureLabelAsPostingCount(postCountLabel)
         Style.configureViewAsSeparator(separatorLine)
