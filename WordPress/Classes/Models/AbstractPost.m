@@ -624,6 +624,12 @@
     }
 }
 
+- (BOOL)wasAutoUploadCancelled {
+    return self.confirmedChangesHash == nil
+        && self.confirmedChangesTimestamp == nil
+        && self.isFailed;
+}
+
 - (void)updatePathForDisplayImageBasedOnContent
 {
     // First lets check the post content for a suitable image
