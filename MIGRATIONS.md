@@ -6,7 +6,7 @@ data model as well as any custom migrations.
 ## WordPress 90
 
 @diegoreymendez 2019-08-28
-- `Media` added `uploadFailureCount` property.
+- `Media` added `autouploadFailureCount` property.
 
 ## WordPress 89
 

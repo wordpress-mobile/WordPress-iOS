@@ -47,7 +47,7 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, strong, nullable) NSString *videopressGUID;
 @property (nonatomic, strong, nullable) NSNumber *width;
 @property (nonatomic, strong, nullable) NSError *error;
-@property (nonatomic, strong, nonnull) NSNumber *uploadFailureCount;
+@property (nonatomic, strong, nonnull) NSNumber *autouploadFailureCount;
 
 // Relationships
 
@@ -86,11 +86,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 - (void)setMediaTypeForExtension:(NSString *)extension;
 
 - (void)setMediaTypeForMimeType:(NSString *)mimeType;
-
-// Upload Failure Counter
-
-- (void)incrementUploadFailureCount;
-- (void)resetUploadFailureCount;
 
 // CoreData helpers
 
