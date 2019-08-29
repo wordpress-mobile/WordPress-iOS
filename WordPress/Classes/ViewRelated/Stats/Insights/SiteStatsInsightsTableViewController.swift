@@ -201,6 +201,7 @@ private extension SiteStatsInsightsTableViewController {
         refreshControl?.beginRefreshing()
         clearExpandedRows()
         refreshInsights()
+        hideNoResults()
     }
 
     func applyTableUpdates() {
@@ -281,6 +282,9 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
                                          subtitle: NoResultConstants.errorSubtitle,
                                          buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
                                             noResults.delegate = self
+                                            if !noResults.isReachable {
+                                                noResults.resetButtonText()
+                                            }
             }
         } else {
             updateNoResults(title: NoResultConstants.errorTitle,
