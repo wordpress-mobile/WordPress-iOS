@@ -14,6 +14,11 @@ class StatsStackViewCell: UITableViewCell, NibLoadable {
         stackView.removeAllSubviews()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        stackView.removeAllSubviews()
+    }
+
     func insert(view: UIView, animated: Bool = true) {
         stackView.addArrangedSubview(view)
     }
