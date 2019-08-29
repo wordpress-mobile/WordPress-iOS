@@ -61,12 +61,6 @@ extension AbstractPost {
         }
     }
 
-    // MARK: - Failed Media
-
-    func failedMedia() -> [Media] {
-        return media.filter({ $0.remoteStatus == .failed })
-    }
-
     // MARK: - Misc
 
     /// Represent the supported properties used to sort posts.
