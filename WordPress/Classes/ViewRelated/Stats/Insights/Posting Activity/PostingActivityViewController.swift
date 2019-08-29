@@ -98,7 +98,7 @@ private extension PostingActivityViewController {
 
     func addLegend() {
         let legend = PostingActivityLegend.loadFromNib()
-        legend.backgroundColor = .listBackground
+        legend.backgroundColor = .listForeground
         legendView.addSubview(legend)
     }
 
