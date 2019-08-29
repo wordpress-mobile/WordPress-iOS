@@ -223,7 +223,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 mediaInContext.error = customError;
                 
                 if (isAutomatedRetry) {
-                    [mediaInContext incrementAutouploadFailureCount];
+                    [mediaInContext incrementAutoUploadFailureCount];
                 }
                 
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
@@ -255,7 +255,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             mediaInContext.error = nil;
             
             if (!isAutomatedRetry) {
-                [mediaInContext resetAutouploadFailureCount];
+                [mediaInContext resetAutoUploadFailureCount];
             }
             
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];

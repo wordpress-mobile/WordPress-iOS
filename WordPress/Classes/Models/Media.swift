@@ -2,19 +2,21 @@ import Foundation
 
 extension Media {
 
-    // MARK: - Autoupload Failure Count
+    // MARK: - AutoUpload Failure Count
+    
+    static let maxAutoUploadFailureCount = 3
 
-    /// Increments the autoupload failure count for this Media object.
+    /// Increments the AutoUpload failure count for this Media object.
     ///
     @objc
-    func incrementAutouploadFailureCount() {
-        autouploadFailureCount = NSNumber(value: autouploadFailureCount.intValue + 1)
+    func incrementAutoUploadFailureCount() {
+        autoUploadFailureCount = NSNumber(value: autoUploadFailureCount.intValue + 1)
     }
 
-    /// Resets the autoupload failure count for this Media object.
+    /// Resets the AutoUpload failure count for this Media object.
     ///
     @objc
-    func resetAutouploadFailureCount() {
-        autouploadFailureCount = 0
+    func resetAutoUploadFailureCount() {
+        autoUploadFailureCount = 0
     }
 }

@@ -625,7 +625,7 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
 extension MediaCoordinator: Uploader {
     func resume() {
-        let service = MediaService(managedObjectContext: mainContext)
+        let service = MediaService(managedObjectContext: backgroundContext)
 
         service.failedMediaForUpload(forAutomatedRetry: true).forEach() {
             retryMedia($0, isAutomatedRetry: true)
