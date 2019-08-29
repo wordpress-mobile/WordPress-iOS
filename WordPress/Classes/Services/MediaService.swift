@@ -6,13 +6,24 @@ extension MediaService {
 
     private static let maxUploadFailureCount = 4
 
-    /// Returns a list of Media objects that should be autouploaded on the next attempt.
+    /// Returns a list of Media objects that should be uploaded given the input parameters.
+    ///
+    /// - Parameters:
+    ///     - forAutomatedRetry: whether the media to upload is the result of an automated retry.
     ///
     /// - Returns: the Media objects that should be autouploaded.
     ///
-    func failedMediaForAutoupload() -> [Media] {
+    func failedMediaForUpload(forAutomatedRetry: Bool) -> [Media] {
         let request = NSFetchRequest<Media>(entityName: Media.entityName())
-        request.predicate = NSPredicate(format: "\(#keyPath(Media.remoteStatusNumber)) == %d AND \(#keyPath(Media.uploadFailureCount)) < %d", MediaRemoteStatus.failed.rawValue, MediaService.maxUploadFailureCount)
+        let failedMediaPredicate = NSPredicate(format: "\(#keyPath(Media.remoteStatusNumber)) == %d", MediaRemoteStatus.failed.rawValue)
+
+        if forAutomatedRetry {
+            let autouploadFailureCountPredicate = NSPredicate(format: "\(#keyPath(Media.uploadFailureCount)) < %d", MediaService.maxUploadFailureCount)
+
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [failedMediaPredicate, autouploadFailureCountPredicate])
+        } else {
+            request.predicate = failedMediaPredicate
+        }
 
         let media = (try? managedObjectContext.fetch(request)) ?? []
 
@@ -26,8 +37,11 @@ extension MediaService {
     ///
     /// - Returns: the Media objects that should be autouploaded.
     ///
-    func failedMediaForAutoUpload(in post: AbstractPost) -> [Media] {
-        return post.media.filter({ $0.remoteStatus == .failed && $0.uploadFailureCount.intValue < MediaService.maxUploadFailureCount })
+    func failedMediaForUpload(in post: AbstractPost, forAutomatedRetry: Bool) -> [Media] {
+        return post.media.filter({ media in
+            return media.remoteStatus == .failed
+                && (!forAutomatedRetry || media.uploadFailureCount.intValue < MediaService.maxUploadFailureCount)
+        })
     }
 
     // MARK: - Misc

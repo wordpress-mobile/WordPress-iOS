@@ -196,7 +196,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 }
 
 - (void)uploadMedia:(Media *)media
-   isAutomaticRetry:(BOOL)isAutomaticRetry
+   isAutomatedRetry:(BOOL)isAutomatedRetry
            progress:(NSProgress **)progress
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
@@ -251,7 +251,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
             mediaInContext.error = nil;
             
-            if (!isAutomaticRetry) {
+            if (!isAutomatedRetry) {
                 [mediaInContext resetUploadFailureCount];
             }
             
