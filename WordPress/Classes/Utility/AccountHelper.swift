@@ -35,8 +35,7 @@ import Foundation
         return !AccountHelper.isDotcomAvailable()
     }
 
-    @discardableResult
-    static func logBlogsAndAccounts(context: NSManagedObjectContext) -> String {
+    static func logBlogsAndAccounts(context: NSManagedObjectContext) {
         let accountService = AccountService(managedObjectContext: context)
         let blogService = BlogService(managedObjectContext: context)
         let allBlogs = blogService.blogsForAllAccounts()
@@ -61,6 +60,5 @@ import Foundation
 
         let result = accountsDescription + "\nAll accounts and blogs:\n" + blogTreeDescription
         DDLogInfo(result)
-        return result
     }
 }
