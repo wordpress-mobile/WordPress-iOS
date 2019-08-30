@@ -414,15 +414,19 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
 extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
+        defer {
+            addViewModelListeners()
+            refreshInsights()
+        }
+
         if asyncLoadingActivated {
             hideNoResults()
-        } else {
-            updateNoResults(title: NoResultConstants.successTitle,
-                            accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
-                                noResults.hideImageView(false)
-            }
+            return
         }
-        addViewModelListeners()
-        refreshInsights()
+
+        updateNoResults(title: NoResultConstants.successTitle,
+                        accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
+                            noResults.hideImageView(false)
+        }
     }
 }
