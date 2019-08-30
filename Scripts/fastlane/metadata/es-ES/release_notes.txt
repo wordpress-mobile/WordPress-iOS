@@ -1,9 +1,5 @@
-13.0
+13.1
 -----
-Tu teléfono tiene un ajuste de zona horaria. Tu web usa una diferente. ¿En qué se basan las estadísticas de tu sitio? ¿El aumento de tráfico ha ocurrido esta mañana o esta tarde? Respuesta: ahora tus estadísticas se basan en los ajustes de la zona horaria de tu web.
-
-Los esquemas de color consistentes, con un buen contraste, hacen que la aplicación sea accesible e intuitiva, lo que crea usuarios felices. La versión 13.0 es más consistente; disfruta de la felicidad.
-
-El editor de bloques se mantiene cada vez mejor. ¿Dices que no es posible? ¡Bah! Déjanos contar las formas: se activa automáticamente la primera vez que comienzas una entrada basada en bloques* y puedes activarlo y desactivarlo en cada sitio, por lo que cada usuario obtiene la experiencia del editor que quiere. Al añadir bloques desde el título de la entrada, se muestra el indicador de «añadir un bloque aquí» para simplificar la creación de contenido y, al añadir nuevos bloques, se deselecciona el título de la entrada para que el foco esté en el nuevo bloque.
-
-* ¡Salvo que lo hayas desactivado en la versión 12.9! No somos monstruos.
+- Ahora puedes cambiar tu nombre de usuario en la aplicación.
+- Los datos sobre tus descargas de archivos ahora están disponibles en las estadísticas del período.
+- Ahora puedes publicar borradores en la lista de entradas pulsando en la nueva acción «Publicar ahora» accesible desde el menú «...».

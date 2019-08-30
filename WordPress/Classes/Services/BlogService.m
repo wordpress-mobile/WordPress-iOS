@@ -671,6 +671,17 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         [self updateBlogWithRemoteBlog:remoteBlog account:account];
     }
 
+    /*
+     Sometimes bad things happen and blogs get duplicated. 👭
+     Hopefully we'll fix all the causes and this should never happen again 🤞🤞🤞
+     But even if it never happens again, it has already happened so we need to clean up. 🧹
+     Otherwise, users would have to reinstall the app to get rid of duplicates 🙅‍♀️
+
+     More context here:
+     https://github.com/wordpress-mobile/WordPress-iOS/issues/7886#issuecomment-524221031
+     */
+    [self deduplicateBlogsForAccount:account];
+
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     if (completion != nil) {
