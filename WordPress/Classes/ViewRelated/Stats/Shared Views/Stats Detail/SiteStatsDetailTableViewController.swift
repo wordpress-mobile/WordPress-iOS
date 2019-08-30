@@ -24,10 +24,15 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsDetailsViewModel?
+
+    private var receipt: Receipt?
+
     private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsChangeReceipt: Receipt?
     private let periodStore = StoreContainer.shared.statsPeriod
     private var periodChangeReceipt: Receipt?
+
+    private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoading)
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -71,7 +76,9 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.detailsTitle
         initViewModel()
-        displayLoadingViewIfNecessary()
+        if !asyncLoadingActivated {
+            displayLoadingViewIfNecessary()
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -133,69 +140,51 @@ private extension SiteStatsDetailTableViewController {
             return
         }
 
+        if asyncLoadingActivated {
+            receipt = viewModel?.onChange { [weak self] in
+                self?.refreshTableView()
+            }
+        } else {
+            if statType == .insights {
+                insightsChangeReceipt = viewModel?.onChange { [weak self] in
+                    guard self?.viewModel?.storeIsFetching(statSection: statSection) == false else {
+                        return
+                    }
+                    self?.refreshTableView()
+                }
+            } else {
+                periodChangeReceipt = viewModel?.onChange { [weak self] in
+                    guard self?.viewModel?.storeIsFetching(statSection: statSection) == false else {
+                        return
+                    }
+                    self?.refreshTableView()
+                }
+            }
+        }
+
         viewModel?.fetchDataFor(statSection: statSection,
                                 selectedDate: selectedDate,
                                 selectedPeriod: selectedPeriod,
                                 postID: postID)
-
-        if statType == .insights {
-            insightsChangeReceipt = viewModel?.onChange { [weak self] in
-                guard self?.storeIsFetching(statSection: statSection) == false else {
-                    return
-                }
-                self?.refreshTableView()
-            }
-        } else {
-            periodChangeReceipt = viewModel?.onChange { [weak self] in
-                guard self?.storeIsFetching(statSection: statSection) == false else {
-                    return
-                }
-                self?.refreshTableView()
-            }
-        }
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [DetailDataRow.self,
-                DetailExpandableRow.self,
-                DetailExpandableChildRow.self,
-                DetailSubtitlesHeaderRow.self,
-                DetailSubtitlesTabbedHeaderRow.self,
-                DetailSubtitlesCountriesHeaderRow.self,
-                CountriesMapRow.self]
-    }
-
-    func storeIsFetching(statSection: StatSection) -> Bool {
-        switch statSection {
-        case .insightsFollowersWordPress, .insightsFollowersEmail:
-            return insightsStore.isFetchingFollowers
-        case .insightsCommentsAuthors, .insightsCommentsPosts:
-            return insightsStore.isFetchingComments
-        case .insightsTagsAndCategories:
-            return insightsStore.isFetchingTagsAndCategories
-        case .periodPostsAndPages:
-            return periodStore.isFetchingPostsAndPages
-        case .periodSearchTerms:
-            return periodStore.isFetchingSearchTerms
-        case .periodVideos:
-            return periodStore.isFetchingVideos
-        case .periodClicks:
-            return periodStore.isFetchingClicks
-        case .periodAuthors:
-            return periodStore.isFetchingAuthors
-        case .periodReferrers:
-            return periodStore.isFetchingReferrers
-        case .periodCountries:
-            return periodStore.isFetchingCountries
-        case .periodPublished:
-            return periodStore.isFetchingPublished
-        case .periodFileDownloads:
-            return periodStore.isFetchingFileDownloads
-        case .postStatsMonthsYears, .postStatsAverageViews:
-            return periodStore.isFetchingPostStats(for: postID)
-        default:
-            return false
+        var rows: [ImmuTableRow.Type] = [DetailDataRow.self,
+                                         DetailExpandableRow.self,
+                                         DetailExpandableChildRow.self,
+                                         DetailSubtitlesHeaderRow.self,
+                                         DetailSubtitlesTabbedHeaderRow.self,
+                                         DetailSubtitlesCountriesHeaderRow.self,
+                                         CountriesMapRow.self]
+        if asyncLoadingActivated {
+            rows.append(contentsOf: [StatsErrorRow.self,
+                                     StatsGhostChartImmutableRow.self,
+                                     StatsGhostTwoColumnImmutableRow.self,
+                                     StatsGhostTopImmutableRow.self,
+                                     StatsGhostTabbedImmutableRow.self,
+                                     StatsGhostPostingActivitiesImmutableRow.self])
         }
+        return rows
     }
 
     // MARK: - Table Refreshing
@@ -359,6 +348,19 @@ extension SiteStatsDetailTableViewController: NoResultsViewHost {
             return
         }
 
+        if asyncLoadingActivated {
+            configureAndDisplayNoResults(on: tableView,
+                                         title: NoResultConstants.errorTitle,
+                                         subtitle: NoResultConstants.errorSubtitle,
+                                         buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                                            noResults.delegate = self
+                                            if !noResults.isReachable {
+                                                noResults.resetButtonText()
+                                            }
+            }
+            return
+        }
+
         updateNoResults(title: NoResultConstants.errorTitle,
                         subtitle: NoResultConstants.errorSubtitle,
                         buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
@@ -379,11 +381,19 @@ extension SiteStatsDetailTableViewController: NoResultsViewHost {
 
 extension SiteStatsDetailTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
+        defer {
+            refreshData()
+        }
+
+        if asyncLoadingActivated {
+            hideNoResults()
+            return
+        }
+
         updateNoResults(title: NoResultConstants.successTitle,
                         accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
                             noResults.hideImageView(false)
         }
-        refreshData()
     }
 }
 

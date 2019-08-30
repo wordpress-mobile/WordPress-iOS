@@ -52,28 +52,28 @@ class SiteStatsDetailsViewModel: Observable {
                 return
             }
 
-            insightsReceipt = insightsStore.query(storeQuery)
             insightsChangeReceipt = insightsStore.onChange { [weak self] in
                 self?.emitChange()
             }
+            insightsReceipt = insightsStore.query(storeQuery)
         case let statSection where StatSection.allPeriods.contains(statSection):
             guard let storeQuery = queryForPeriodStatSection(statSection) else {
                 return
             }
 
-            periodReceipt = periodStore.query(storeQuery)
             periodChangeReceipt = periodStore.onChange { [weak self] in
                 self?.emitChange()
             }
+            periodReceipt = periodStore.query(storeQuery)
         case let statSection where StatSection.allPostStats.contains(statSection):
             guard let postID = postID else {
                 return
             }
 
-            periodReceipt = periodStore.query(.postStats(postID: postID))
             periodChangeReceipt = periodStore.onChange { [weak self] in
                 self?.emitChange()
             }
+            periodReceipt = periodStore.query(.postStats(postID: postID))
         default:
             break
         }
@@ -103,6 +103,41 @@ class SiteStatsDetailsViewModel: Observable {
         }
     }
 
+    func storeIsFetching(statSection: StatSection) -> Bool {
+        switch statSection {
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            return insightsStore.isFetchingFollowers
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            return insightsStore.isFetchingComments
+        case .insightsTagsAndCategories:
+            return insightsStore.isFetchingTagsAndCategories
+        case .insightsAnnualSiteStats:
+            return insightsStore.isFetchingAnnual
+        case .periodPostsAndPages:
+            return periodStore.isFetchingPostsAndPages
+        case .periodSearchTerms:
+            return periodStore.isFetchingSearchTerms
+        case .periodVideos:
+            return periodStore.isFetchingVideos
+        case .periodClicks:
+            return periodStore.isFetchingClicks
+        case .periodAuthors:
+            return periodStore.isFetchingAuthors
+        case .periodReferrers:
+            return periodStore.isFetchingReferrers
+        case .periodCountries:
+            return periodStore.isFetchingCountries
+        case .periodPublished:
+            return periodStore.isFetchingPublished
+        case .periodFileDownloads:
+            return periodStore.isFetchingFileDownloads
+        case .postStatsMonthsYears, .postStatsAverageViews:
+            return periodStore.isFetchingPostStats(for: postID)
+        default:
+            return false
+        }
+    }
+
     func updateSelectedDate(_ selectedDate: Date) {
         self.selectedDate = selectedDate
     }
@@ -123,6 +158,9 @@ class SiteStatsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
+
+            //fetchingFollowersStatus
+
             let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
             let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
             let emailTabData = tabDataForFollowerType(.insightsFollowersEmail)
@@ -884,4 +922,18 @@ private extension SiteStatsDetailsViewModel {
         return StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
     }
 
+    func rows(for rowStatus: StoreFetchingStatus, rowsBlock: () -> [ImmuTableRow]) -> [ImmuTableRow] {
+        if !Feature.enabled(.statsAsyncLoading) {
+            return rowsBlock()
+        }
+
+        switch rowStatus {
+        case .loading, .idle:
+            return []
+        case .success:
+            return rowsBlock()
+        case .error:
+            return []
+        }
+    }
 }
