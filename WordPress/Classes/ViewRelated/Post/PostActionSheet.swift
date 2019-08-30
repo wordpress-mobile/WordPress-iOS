@@ -21,7 +21,6 @@ class PostActionSheet {
 
         let buttons: [PostCardStatusViewModel.Button] = {
             let groups = postCardStatusViewModel.buttonGroups
-            // If we're in compact mode, include both primary and secondary
             if isCompactOrSearching {
                 return groups.primary + groups.secondary
             } else {
