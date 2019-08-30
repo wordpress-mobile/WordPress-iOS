@@ -35,30 +35,15 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
     if (uuid.length > 0) {
-        NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
-        fetchRequest.predicate = predicate;
-
-        NSError *error = nil;
-        NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        if (fetchedObjects.count > 0) {
-            WPAccount *defaultAccount = fetchedObjects.firstObject;
-            defaultAccount.displayName = [defaultAccount.displayName stringByDecodingXMLCharacters];
-            return defaultAccount;
+        WPAccount *account = [self accountWithUUID:uuid];
+        if (account) {
+            return account;
         }
     }
 
     // Attempt to restore a default account that has somehow been disassociated.
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO];
-    NSArray *accounts = [[self allAccounts] sortedArrayUsingDescriptors:@[sort]];
-
-    for (WPAccount *account in accounts) {
-        // Skip accounts that were likely added to Jetpack-connected self-hosted
-        // sites, while there was an existing default wpcom account.
-        if ([self isJetpackAccount:account]) {
-            continue;
-        }
-
+    WPAccount *account = [self findDefaultAccountCandidate];
+    if (account) {
         // Assume we have a good candidate account and make it the default account in the app.
         // Note that this should be the account with the most blogs.
         // Update user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
@@ -280,7 +265,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  @param account The account to inspect.
  @return True if used only for a Jetpack connection.
  */
-- (BOOL)isJetpackAccount:(WPAccount *)account
+- (BOOL)accountHasOnlyJetpackBlogs:(WPAccount *)account
 {
     if ([account.blogs count] == 0) {
         // Most likly, this is a blogless account used for the reader or commenting and not Jetpack.
@@ -294,6 +279,38 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     }
 
     return YES;
+}
+
+- (WPAccount *)accountWithUUID:(NSString *)uuid
+{
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
+    fetchRequest.predicate = predicate;
+
+    NSError *error = nil;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects.count > 0) {
+        WPAccount *defaultAccount = fetchedObjects.firstObject;
+        defaultAccount.displayName = [defaultAccount.displayName stringByDecodingXMLCharacters];
+        return defaultAccount;
+    }
+    return nil;
+}
+
+- (WPAccount *)findDefaultAccountCandidate
+{
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO];
+    NSArray *accounts = [[self allAccounts] sortedArrayUsingDescriptors:@[sort]];
+
+    for (WPAccount *account in accounts) {
+        // Skip accounts that were likely added to Jetpack-connected self-hosted
+        // sites, while there was an existing default wpcom account.
+        if ([self accountHasOnlyJetpackBlogs:account]) {
+            continue;
+        }
+        return account;
+    }
+    return nil;
 }
 
 - (WPAccount *)findAccountWithUsername:(NSString *)username
