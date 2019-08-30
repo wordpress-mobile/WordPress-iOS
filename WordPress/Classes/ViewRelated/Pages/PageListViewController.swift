@@ -450,7 +450,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func retryPage(_ apost: AbstractPost) {
-        PostCoordinator.shared.retrySave(of: apost)
+        PostCoordinator.shared.save(apost)
     }
 
     fileprivate func showEditor(post: AbstractPost) {

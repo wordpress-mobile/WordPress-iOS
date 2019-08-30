@@ -7,15 +7,15 @@ extension MediaService {
     /// Returns a list of Media objects that should be uploaded for the given input parameters.
     ///
     /// - Parameters:
-    ///     - forAutomatedRetry: whether the media to upload is the result of an automated retry.
+    ///     - automatedRetry: whether the media to upload is the result of an automated retry.
     ///
     /// - Returns: the Media objects that should be uploaded for the given input parameters.
     ///
-    func failedMediaForUpload(forAutomatedRetry: Bool) -> [Media] {
+    func failedMediaForUpload(automatedRetry: Bool) -> [Media] {
         let request = NSFetchRequest<Media>(entityName: Media.entityName())
         let failedMediaPredicate = NSPredicate(format: "\(#keyPath(Media.remoteStatusNumber)) == %d", MediaRemoteStatus.failed.rawValue)
 
-        if forAutomatedRetry {
+        if automatedRetry {
             let autoUploadFailureCountPredicate = NSPredicate(format: "\(#keyPath(Media.autoUploadFailureCount)) < %d", Media.maxAutoUploadFailureCount)
 
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [failedMediaPredicate, autoUploadFailureCountPredicate])
@@ -32,13 +32,14 @@ extension MediaService {
     ///
     /// - Parameters:
     ///     - post: the post to look auto-uploadable media for.
+    ///     - automatedRetry: whether the media to upload is the result of an automated retry.
     ///
     /// - Returns: the Media objects that should be autoUploaded.
     ///
-    func failedMediaForUpload(in post: AbstractPost, forAutomatedRetry: Bool) -> [Media] {
+    func failedMediaForUpload(in post: AbstractPost, automatedRetry: Bool) -> [Media] {
         return post.media.filter({ media in
             return media.remoteStatus == .failed
-                && (!forAutomatedRetry || media.autoUploadFailureCount.intValue < Media.maxAutoUploadFailureCount)
+                && (!automatedRetry || media.autoUploadFailureCount.intValue < Media.maxAutoUploadFailureCount)
         })
     }
 

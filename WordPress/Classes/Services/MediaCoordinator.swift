@@ -165,9 +165,9 @@ class MediaCoordinator: NSObject {
     ///
     /// - Parameters:
     ///     - media: the media object to retry the upload
-    ///     - isAutomatedRetry: whether the retry was automatically or manually initiated.
+    ///     - automatedRetry: whether the retry was automatically or manually initiated.
     ///
-    func retryMedia(_ media: Media, isAutomatedRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
+    func retryMedia(_ media: Media, automatedRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .failed else {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
@@ -178,7 +178,7 @@ class MediaCoordinator: NSObject {
         let coordinator = self.coordinator(for: media)
 
         coordinator.track(numberOfItems: 1)
-        let uploadProgress = uploadMedia(media, isAutomatedRetry: isAutomatedRetry)
+        let uploadProgress = uploadMedia(media, automatedRetry: automatedRetry)
         coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
 
@@ -257,13 +257,13 @@ class MediaCoordinator: NSObject {
     }
 
     @discardableResult
-    private func uploadMedia(_ media: Media, isAutomatedRetry: Bool = false) -> Progress {
+    private func uploadMedia(_ media: Media, automatedRetry: Bool = false) -> Progress {
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
 
         service.uploadMedia(media,
-                            isAutomatedRetry: isAutomatedRetry,
+                            automatedRetry: automatedRetry,
                             progress: &progress,
                             success: {
                                 self.end(media)
@@ -627,8 +627,8 @@ extension MediaCoordinator: Uploader {
     func resume() {
         let service = MediaService(managedObjectContext: backgroundContext)
 
-        service.failedMediaForUpload(forAutomatedRetry: true).forEach() {
-            retryMedia($0, isAutomatedRetry: true)
+        service.failedMediaForUpload(automatedRetry: true).forEach() {
+            retryMedia($0, automatedRetry: true)
         }
     }
 }

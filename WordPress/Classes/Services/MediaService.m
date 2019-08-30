@@ -196,7 +196,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 }
 
 - (void)uploadMedia:(Media *)media
-   isAutomatedRetry:(BOOL)isAutomatedRetry
+     automatedRetry:(BOOL)automatedRetry
            progress:(NSProgress **)progress
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
@@ -222,7 +222,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
                 mediaInContext.error = customError;
                 
-                if (isAutomatedRetry) {
+                if (automatedRetry) {
                     [mediaInContext incrementAutoUploadFailureCount];
                 }
                 
@@ -248,13 +248,16 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         return;
     }
 
-    [self.managedObjectContext performBlock:^{
+    // It's important this data is up to date immediately, as we want the status of a media object to be synchronized
+    // as soon as this method exits.
+    //
+    [self.managedObjectContext performBlockAndWait:^{
         Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
             mediaInContext.error = nil;
             
-            if (!isAutomatedRetry) {
+            if (!automatedRetry) {
                 [mediaInContext resetAutoUploadFailureCount];
             }
             
