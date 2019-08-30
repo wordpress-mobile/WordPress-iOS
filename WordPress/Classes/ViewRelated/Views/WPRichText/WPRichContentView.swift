@@ -298,13 +298,17 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
         let index = mediaArray.count
         let indexPath = IndexPath(row: index, section: 1)
+        weak var weakImage = image
 
         image.loadImage(from: contentInformation, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
-            guard let richMedia = self?.mediaArray[indexPath.row] else {
+            guard
+                let richMedia = self?.mediaArray[indexPath.row],
+                let img = weakImage
+            else {
                 return
             }
 
-            richMedia.attachment.maxSize = image.contentSize()
+            richMedia.attachment.maxSize = img.contentSize()
 
             if isUsingTemporaryLayoutDimensions {
                 self?.layoutAttachmentViews()
