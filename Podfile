@@ -400,9 +400,7 @@ pre_install do |installer|
           next
         end
         static << pod
-        def pod.static_framework?;
-          true
-        end
+		pod.instance_variable_set(:@build_type, Pod::Target::BuildType.static_framework)
     end
     puts "Installing #{static.count} pods as static frameworks"
     puts "Installing #{dynamic.count} pods as dynamic frameworks"
