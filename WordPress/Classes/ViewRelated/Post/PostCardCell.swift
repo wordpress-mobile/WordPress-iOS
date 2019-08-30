@@ -161,6 +161,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         setupActionBar()
         setupFeaturedImage()
         setupBorders()
+        setupBackgrounds()
         setupLabels()
         setupSeparatorLabel()
         setupSelectedBackgroundView()
@@ -297,6 +298,15 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyBorderStyle(upperBorder)
         WPStyleGuide.applyBorderStyle(bottomBorder)
         WPStyleGuide.applyBorderStyle(actionBarSeparator)
+    }
+
+    private func setupBackgrounds() {
+        containerView.backgroundColor = .listForeground
+        titleLabel.backgroundColor = .listForeground
+        snippetLabel.backgroundColor = .listForeground
+        dateLabel.backgroundColor = .listForeground
+        authorLabel.backgroundColor = .listForeground
+        separatorLabel.backgroundColor = .listForeground
     }
 
     private func setupActionBar() {

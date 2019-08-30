@@ -53,7 +53,7 @@
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
-    iconView.tintColor = [UIColor murielNeutral30];
+    iconView.tintColor = [UIColor murielListIcon];
     [iconView.widthAnchor constraintEqualToConstant:24].active = YES;
     [iconView.heightAnchor constraintEqualToConstant:24].active = YES;
     [self.stackView addArrangedSubview:iconView];
@@ -80,7 +80,7 @@
     label.numberOfLines = 0;
     label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleFootnote maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
-    label.textColor = [UIColor murielNeutral30];
+    label.textColor = [UIColor murielTextSubtle];
     _subTitleLabel = label;
 
     NSAssert(_labelsStackView != nil, @"labelsStackView is nil");
@@ -94,7 +94,7 @@
     label.numberOfLines = 1;
     label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
-    label.textColor = [UIColor murielNeutral70];
+    label.textColor = [UIColor murielText];
     label.adjustsFontSizeToFitWidth = YES;
     label.minimumScaleFactor = 0.70;
     label.allowsDefaultTighteningForTruncation = YES;

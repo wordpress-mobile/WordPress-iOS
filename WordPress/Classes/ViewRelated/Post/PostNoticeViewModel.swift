@@ -5,7 +5,13 @@ enum PostNoticeUserInfoKey {
 }
 
 struct PostNoticeViewModel {
-    let post: AbstractPost
+    private let post: AbstractPost
+    private let postCoordinator: PostCoordinator
+
+    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared) {
+        self.post = post
+        self.postCoordinator = postCoordinator
+    }
 
     /// Returns the Notice represented by this view model.
     ///
@@ -36,13 +42,20 @@ struct PostNoticeViewModel {
     }
 
     private var failureNotice: Notice {
+        let failureAction = self.failureAction
+
         return Notice(title: failureTitle,
                       message: message,
                       feedbackType: .error,
                       notificationInfo: notificationInfo,
-                      actionTitle: failureActionTitle,
+                      actionTitle: failureAction.title,
                       actionHandler: { _ in
-                        self.retryUpload()
+                        switch failureAction {
+                        case .cancel:
+                            self.cancelAutoUpload()
+                        case .retry:
+                            self.retryUpload()
+                        }
         })
     }
 
@@ -169,18 +182,34 @@ struct PostNoticeViewModel {
         }
     }
 
+    private enum FailureAction {
+        case retry
+        case cancel
+
+        var title: String {
+            switch self {
+            case .retry:
+                return FailureActionTitles.retry
+            case .cancel:
+                return FailureActionTitles.cancel
+            }
+        }
+    }
+
     private var action: Action {
         return (post.status == .draft) ? .publish : .view
     }
 
-    private var failureActionTitle: String {
-        return NSLocalizedString("Retry", comment: "Button title. Retries uploading a post.")
+    private var failureAction: FailureAction {
+        let interactor = PostAutoUploadInteractor()
+        return interactor.canCancelAutoUpload(of: post) ? .cancel : .retry
     }
+
+    // MARK: - Action Handlers
 
     private func viewPost() {
         PostNoticeNavigationCoordinator.presentPostEpilogue(for: post)
     }
-
 
     private func publishPost() {
         guard let post = postInContext else {
@@ -188,7 +217,7 @@ struct PostNoticeViewModel {
         }
 
         post.status = .publish
-        PostCoordinator.shared.save(post: post)
+        postCoordinator.save(post: post)
     }
 
     private func retryUpload() {
@@ -196,7 +225,15 @@ struct PostNoticeViewModel {
             return
         }
 
-        PostCoordinator.shared.save(post: post)
+        postCoordinator.save(post: post)
+    }
+
+    private func cancelAutoUpload() {
+        guard let post = postInContext else {
+            return
+        }
+
+        postCoordinator.cancelAutoUploadOf(post)
     }
 
     private var postInContext: AbstractPost? {
@@ -210,5 +247,10 @@ struct PostNoticeViewModel {
     enum FailureTitles {
         static let postWillBePublished = NSLocalizedString("Post will be published the next time your device is online",
                                                            comment: "Text displayed in notice after a post if published while offline.")
+    }
+
+    enum FailureActionTitles {
+        static let retry = NSLocalizedString("Retry", comment: "Button title. Retries uploading a post.")
+        static let cancel = NSLocalizedString("Cancel", comment: "Button title. Cancels automatic uploading of the post when the device is back online.")
     }
 }

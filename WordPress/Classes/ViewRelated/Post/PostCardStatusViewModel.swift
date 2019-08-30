@@ -60,6 +60,10 @@ class PostCardStatusViewModel: NSObject {
                 return StatusMessages.postWillBePublished
             }
 
+            if post.wasAutoUploadCancelled {
+                return StatusMessages.localChanges
+            }
+
             return StatusMessages.uploadFailed
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
@@ -86,26 +90,26 @@ class PostCardStatusViewModel: NSObject {
 
     var statusColor: UIColor {
         guard let status = postStatus else {
-            return .neutral(shade: .shade70)
+            return .neutral(.shade70)
         }
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
-            return .neutral(shade: .shade30)
+            return .neutral(.shade30)
         }
 
         if post.isFailed {
-            return canCancelAutoUpload ? .warning : .error
+            return (canCancelAutoUpload || post.wasAutoUploadCancelled) ? .warning : .error
         }
 
         switch status {
         case .pending:
             return .success
         case .scheduled:
-            return .primary(shade: .shade40)
+            return .primary(.shade40)
         case .trash:
             return .error
         default:
-            return .neutral(shade: .shade70)
+            return .neutral(.shade70)
         }
     }
 
@@ -220,5 +224,6 @@ class PostCardStatusViewModel: NSObject {
         static let uploadFailed = NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
         static let postWillBePublished = NSLocalizedString("Post will be published next time your device is online",
                                                            comment: "Message shown in the posts list when a post is scheduled for publishing")
+        static let localChanges = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
     }
 }

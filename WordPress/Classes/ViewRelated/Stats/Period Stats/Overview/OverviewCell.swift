@@ -63,7 +63,7 @@ struct OverviewTabData: FilterTabBarItem {
         if let date = date,
             let period = period,
             StatsPeriodHelper().dateAvailableAfterDate(date, period: period) == false {
-            return .neutral(shade: .shade40)
+            return .neutral(.shade40)
         }
 
         return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor

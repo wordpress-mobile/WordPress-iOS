@@ -16,6 +16,7 @@ class PeopleCell: WPTableViewCell {
     func bindViewModel(_ viewModel: PeopleCellViewModel) {
         setAvatarURL(viewModel.avatarURL as URL?)
         displayNameLabel.text = viewModel.displayName
+        displayNameLabel.textColor = viewModel.usernameColor
         usernameLabel.text = viewModel.usernameText
         roleBadge.borderColor = viewModel.roleBorderColor
         roleBadge.backgroundColor = viewModel.roleBackgroundColor

@@ -32,16 +32,16 @@ extension WPStyleGuide {
     }
 
     @objc public class func readerCardBlogNameLabelDisabledTextColor() -> UIColor {
-        return .neutral(shade: .shade70)
+        return .neutral(.shade70)
     }
 
     // MARK: - Custom Colors
     @objc public class func readerCardCellBorderColor() -> UIColor {
-        return .neutral(shade: .shade10)
+        return .divider
     }
 
     @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
-        return .neutral(shade: .shade10)
+        return .neutral(.shade10)
     }
 
     // MARK: - Card Attributed Text Attributes
@@ -223,11 +223,11 @@ extension WPStyleGuide {
     // MARK: - Button Styles and Text
 
     public class func applyReaderActionButtonStyle(_ button: UIButton) {
-        let defaultColor: UIColor = .neutral(shade: .shade30)
+        let defaultColor: UIColor = .listIcon
         let highlightedColor: UIColor = .neutral
-        let selectedColor: UIColor = .primary(shade: .shade40)
+        let selectedColor: UIColor = .primary(.shade40)
         let bothColor: UIColor = .primaryLight
-        let disabledColor: UIColor = .neutral(shade: .shade10)
+        let disabledColor: UIColor = .neutral(.shade10)
 
         let normalImage = button.image(for: .normal)
         let highlightedImage = button.image(for: .highlighted)
@@ -352,7 +352,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func gapMarkerButtonBackgroundColor() -> UIColor {
-        return .neutral(shade: .shade40)
+        return .neutral(.shade40)
     }
 
     @objc public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {

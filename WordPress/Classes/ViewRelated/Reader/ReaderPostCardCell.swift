@@ -234,7 +234,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = Gridicon.iconOfType(.ellipsis, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(.neutral(shade: .shade30))
+        let tintedIcon = icon.imageWithTintColor(.neutral(.shade30))
         let highlightIcon = icon.imageWithTintColor(.neutral)
 
         menuButton.setImage(tintedIcon, for: .normal)
@@ -257,7 +257,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     */
     fileprivate func applyStyles() {
         backgroundColor = .clear
-        contentView.backgroundColor = .clear
+        contentView.backgroundColor = .listBackground
+        borderedView.backgroundColor = .listForeground
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = .hairlineBorderWidth
 
@@ -269,7 +270,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         WPStyleGuide.applyReaderActionButtonStyle(commentActionButton)
         WPStyleGuide.applyReaderActionButtonStyle(likeActionButton)
         WPStyleGuide.applyReaderActionButtonStyle(visitButton)
-        WPStyleGuide.applyReaderActionButtonStyle(saveForLaterButton)
     }
 
 
@@ -277,12 +277,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
     fileprivate func applyOpaqueBackgroundColors() {
-        blogNameLabel.backgroundColor = .white
-        bylineLabel.backgroundColor = .white
-        titleLabel.backgroundColor = .white
-        summaryLabel.backgroundColor = .white
-        commentActionButton.titleLabel?.backgroundColor = .white
-        likeActionButton.titleLabel?.backgroundColor = .white
+        blogNameLabel.backgroundColor = .listForeground
+        bylineLabel.backgroundColor = .listForeground
+        titleLabel.backgroundColor = .listForeground
+        summaryLabel.backgroundColor = .listForeground
+        commentActionButton.titleLabel?.backgroundColor = .listForeground
+        likeActionButton.titleLabel?.backgroundColor = .listForeground
     }
 
     @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {

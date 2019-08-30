@@ -55,7 +55,7 @@ class LoginEpilogueViewController: UIViewController {
 
         refreshInterface(with: credentials)
 
-        view.backgroundColor = .neutral(shade: .shade0)
+        view.backgroundColor = .neutral(.shade0)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -146,10 +146,10 @@ private extension LoginEpilogueViewController {
         let panelHeight = buttonPanel.frame.height
 
         if contentSize.height > (screenHeight - panelHeight) {
-            buttonPanel.backgroundColor = .white
+            buttonPanel.backgroundColor = WordPressAuthenticator.shared.style.viewControllerBackgroundColor
             shadowView.isHidden = false
         } else {
-            buttonPanel.backgroundColor = .tableBackground
+            buttonPanel.backgroundColor = .listBackground
             shadowView.isHidden = true
         }
     }

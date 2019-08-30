@@ -117,17 +117,17 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     @objc func configureSearchBar() {
         let placeholderText = NSLocalizedString("Enter the URL of a site to follow", comment: "Placeholder text prompting the user to type the name of the URL they would like to follow.")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade30))
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade30))
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade60))
+        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade60))
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
 
         searchBar.autocapitalizationType = .none
         searchBar.keyboardType = .URL
         searchBar.isTranslucent = false
-        searchBar.tintColor = .neutral(shade: .shade30)
-        searchBar.barTintColor = .neutral(shade: .shade5)
+        searchBar.tintColor = .neutral(.shade30)
+        searchBar.barTintColor = .neutral(.shade5)
         searchBar.backgroundImage = UIImage()
         searchBar.returnKeyType = .done
         searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
@@ -412,7 +412,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         cell.imageView?.image = .siteIconPlaceholder
 
         cell.accessoryType = .disclosureIndicator
-        cell.imageView?.backgroundColor = .neutral(shade: .shade5)
+        cell.imageView?.backgroundColor = .neutral(.shade5)
 
         cell.textLabel?.text = site.title
         cell.detailTextLabel?.text = URL(string: site.siteURL)?.host

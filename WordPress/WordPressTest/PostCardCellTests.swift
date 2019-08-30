@@ -309,6 +309,23 @@ class PostCardCellTests: XCTestCase {
         }
     }
 
+    func testDoesntShowFailedForCancelledAutoUploads() {
+        // Given
+        let post = PostBuilder()
+            .published()
+            .with(remoteStatus: .failed)
+            .confirmedAutoUpload()
+            .cancelledAutoUpload()
+            .build()
+
+        // When
+        postCell.configure(with: post)
+
+        // Then
+        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.localChanges)
+        XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
+    }
+
     private func postCellFromNib() -> PostCardCell {
         let bundle = Bundle(for: PostCardCell.self)
         guard let postCell = bundle.loadNibNamed("PostCardCell", owner: nil)?.first as? PostCardCell else {

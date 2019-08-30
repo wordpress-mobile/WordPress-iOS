@@ -26,7 +26,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
     [super viewDidLoad];
 
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
-    self.view.backgroundColor = [UIColor murielNeutral0];
+    self.view.backgroundColor = [UIColor murielListBackground];
 
     self.stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
 

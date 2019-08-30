@@ -21,7 +21,7 @@
     if (self) {
 
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor murielListForeground];
         self.contentMode = UIViewContentModeRedraw;
 
         [self setupStackView];
@@ -67,7 +67,7 @@
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
     iconView.contentMode = UIViewContentModeScaleAspectFit;
-    iconView.backgroundColor = [UIColor whiteColor];
+    iconView.backgroundColor = [UIColor clearColor];
     iconView.tintColor = [UIColor murielNeutral30];
     iconView.image = [Gridicon iconOfType:GridiconTypeChevronLeft];
 
@@ -87,7 +87,7 @@
     label.numberOfLines = 1;
     label.lineBreakMode = NSLineBreakByTruncatingTail;
     label.font = [WPFontManager systemRegularFontOfSize:16.0];
-    label.backgroundColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
 
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:label];
