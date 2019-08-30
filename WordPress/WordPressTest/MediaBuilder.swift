@@ -5,7 +5,7 @@ class MediaBuilder {
     private let context: NSManagedObjectContext
     private var media: Media
 
-    init(withContext context: NSManagedObjectContext) {
+    init(_ context: NSManagedObjectContext) {
         self.context = context
         self.media = NSEntityDescription.insertNewObject(forEntityName: Media.entityName(), into: context) as! Media
     }
