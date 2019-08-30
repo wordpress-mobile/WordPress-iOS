@@ -133,37 +133,37 @@ class PostCardStatusViewModel: NSObject {
         let maxPrimaryButtons = PostCardStatusViewModel.maximumPrimaryButtons
 
         let allButtons: [Button] = {
-            var b = [Button]()
+            var buttons = [Button]()
 
-            b.append(.edit)
+            buttons.append(.edit)
 
             if !post.isFailed {
-                b.append(.view)
+                buttons.append(.view)
             }
 
             if autoUploadInteractor.canRetryUpload(of: post) {
-                b.append(.retry)
+                buttons.append(.retry)
             }
 
             if canCancelAutoUpload {
-                b.append(.cancelAutoUpload)
+                buttons.append(.cancelAutoUpload)
             }
 
             if canPublish {
-                b.append(.publish)
+                buttons.append(.publish)
             }
 
             if post.status == .publish && post.hasRemote() {
-                b.append(.stats)
+                buttons.append(.stats)
             }
 
             if post.status != .draft {
-                b.append(.moveToDraft)
+                buttons.append(.moveToDraft)
             }
 
-            b.append(.trash)
+            buttons.append(.trash)
 
-            return b
+            return buttons
         }()
 
         // If allButtons is [one, two, three, four], set the primary to [one, two, “more”].
