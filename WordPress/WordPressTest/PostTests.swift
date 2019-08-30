@@ -454,6 +454,10 @@ class PostTests: XCTestCase {
 
         XCTAssertEqual(post.wasAutoUploadCancelled, false)
 
+        post.shouldAttemptAutoUpload = true
+
+        XCTAssertEqual(post.wasAutoUploadCancelled, false)
+
         post.shouldAttemptAutoUpload = false
 
         XCTAssertEqual(post.wasAutoUploadCancelled, true)

@@ -39,7 +39,7 @@ class PostCardStatusViewModel: NSObject {
                 return StatusMessages.postWillBePublished
             }
 
-            if didCancelAutoUpload {
+            if post.wasAutoUploadCancelled {
                 return StatusMessages.localChanges
             }
 
@@ -77,7 +77,7 @@ class PostCardStatusViewModel: NSObject {
         }
 
         if post.isFailed {
-            return (canCancelAutoUpload || didCancelAutoUpload) ? .warning : .error
+            return (canCancelAutoUpload || post.wasAutoUploadCancelled) ? .warning : .error
         }
 
         switch status {
@@ -110,10 +110,6 @@ class PostCardStatusViewModel: NSObject {
 
     var canCancelAutoUpload: Bool {
         return autoUploadInteractor.canCancelAutoUpload(of: post)
-    }
-
-    var didCancelAutoUpload: Bool {
-        return post.isFailed && post.wasAutoUploadCancelled
     }
 
     var canPreview: Bool {
