@@ -82,12 +82,10 @@ struct InsightStoreState {
     // Insights details
 
     var allDotComFollowers: StatsDotComFollowersInsight?
-    var fetchingAllDotComFollowers = false
-    var fetchingAllDotComFollowersHasFailed = false
+    var allDotComFollowersStatus: StoreFetchingStatus = .idle
 
     var allEmailFollowers: StatsEmailFollowersInsight?
-    var fetchingAllEmailFollowers = false
-    var fetchingAllEmailFollowersHasFailed = false
+    var allEmailFollowersStatus: StoreFetchingStatus = .idle
 
     var allCommentsInsight: StatsCommentsInsight?
     var fetchingAllCommentsInsight = false
@@ -517,8 +515,8 @@ private extension StatsInsightsStore {
             return
         }
 
-        state.fetchingAllDotComFollowers = true
-        state.fetchingAllEmailFollowers = true
+        state.allDotComFollowersStatus = .loading
+        state.allEmailFollowersStatus = .loading
 
         // The followers API returns a maximum of 100 results.
         // Using a limit of 0 returns the default 20 results.
@@ -593,8 +591,7 @@ private extension StatsInsightsStore {
             if allDotComFollowers != nil {
                 state.allDotComFollowers = allDotComFollowers
             }
-            state.fetchingAllDotComFollowers = false
-            state.fetchingAllDotComFollowersHasFailed = error != nil
+            state.allDotComFollowersStatus = error != nil ? .error : .success
         }
     }
 
@@ -603,8 +600,7 @@ private extension StatsInsightsStore {
             if allEmailFollowers != nil {
                 state.allEmailFollowers = allEmailFollowers
             }
-            state.fetchingAllEmailFollowers = false
-            state.fetchingAllEmailFollowersHasFailed = error != nil
+            state.allEmailFollowersStatus = error != nil ? .error : .success
         }
     }
 
@@ -901,9 +897,21 @@ extension StatsInsightsStore {
     }
 
     var isFetchingFollowers: Bool {
-        return
-            state.fetchingAllDotComFollowers ||
-            state.fetchingAllEmailFollowers
+        return state.allDotComFollowersStatus == .loading ||
+                state.allEmailFollowersStatus == .loading
+    }
+
+    var fetchingFollowersStatus: StoreFetchingStatus {
+        switch (state.allDotComFollowersStatus, state.allDotComFollowersStatus) {
+        case (let a, let b) where a == .loading || b == .loading:
+            return .loading
+        case (.error, .error):
+            return .error
+        case (let a, let b) where a == .success || b == .success:
+            return .success
+        default:
+            return .idle
+        }
     }
 
     var isFetchingComments: Bool {
@@ -933,8 +941,7 @@ extension StatsInsightsStore {
         case .insights:
             return fetchingOverviewHasFailed
         case .allFollowers:
-            return state.fetchingAllDotComFollowersHasFailed &&
-                state.fetchingAllEmailFollowersHasFailed
+            return fetchingFollowersStatus == .error
         case .allComments:
             return state.fetchingAllCommentsInsightHasFailed
         case .allTagsAndCategories:
