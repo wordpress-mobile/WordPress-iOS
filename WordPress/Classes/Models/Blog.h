@@ -4,6 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class AbstractPost;
 @class BlogSettings;
 @class WPAccount;
 @class WordPressComRestApi;
@@ -86,7 +87,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSString *apiKey;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPosts;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPages;
-@property (nonatomic, strong, readwrite, nullable) NSSet *posts;
+@property (nonatomic, strong, readwrite, nullable) NSSet<AbstractPost *> *posts;
 @property (nonatomic, strong, readwrite, nullable) NSSet *categories;
 @property (nonatomic, strong, readwrite, nullable) NSSet *tags;
 @property (nonatomic, strong, readwrite, nullable) NSSet *comments;
