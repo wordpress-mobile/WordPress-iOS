@@ -74,10 +74,12 @@ class TodayViewController: UIViewController {
     }
 
     func changeTextColor() {
-        configureMeLabel.textColor = UIColor.black
-        siteNameLabel.textColor = UIColor.black
-        visitorsCountLabel.textColor = UIColor.black
-        viewsCountLabel.textColor = UIColor.black
+        configureMeLabel.textColor = .text
+        siteNameLabel.textColor = .text
+        visitorsCountLabel.textColor = .text
+        viewsCountLabel.textColor = .text
+        visitorsLabel.textColor = .textSubtle
+        viewsLabel.textColor = .textSubtle
     }
 
     override func viewWillDisappear(_ animated: Bool) {
