@@ -28,6 +28,20 @@ extension MediaService {
         return media
     }
 
+    /// Returns a list of Media objects from a post, that should be autoUploaded on the next attempt.
+    ///
+    /// - Parameters:
+    ///     - post: the post to look auto-uploadable media for.
+    ///
+    /// - Returns: the Media objects that should be autoUploaded.
+    ///
+    func failedMediaForUpload(in post: AbstractPost, forAutomatedRetry: Bool) -> [Media] {
+        return post.media.filter({ media in
+            return media.remoteStatus == .failed
+                && (!forAutomatedRetry || media.autoUploadFailureCount.intValue < Media.maxAutoUploadFailureCount)
+        })
+    }
+
     // MARK: - Misc
 
     /// This method checks the status of all media objects and updates them to the correct status if needed.

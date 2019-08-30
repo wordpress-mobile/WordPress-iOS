@@ -34,6 +34,11 @@ class PostCoordinator: NSObject {
             post.deleteRevision()
         }
 
+        guard !post.hasFailedMedia else {
+            change(post: post, status: .failed)
+            return
+        }
+
         change(post: post, status: .pushing)
 
         if mediaCoordinator.isUploadingMedia(for: post) {
@@ -149,16 +154,13 @@ class PostCoordinator: NSObject {
     ///     - isAutomatedRetry: whether the retry was automatically or manually initiated.
     ///
     @objc func retrySave(of post: AbstractPost, isAutomatedRetry: Bool = false) {
-        let postService = PostService(managedObjectContext: backgroundContext)
-        let canUploadPost = !isAutomatedRetry || !postService.hasFailedMediaThatCannotBeAutoUploaded(post)
+        let mediaService = MediaService(managedObjectContext: backgroundContext)
 
-        for media in postService.failedMediaForUpload(in: post, forAutomatedRetry: isAutomatedRetry) {
+        for media in mediaService.failedMediaForUpload(in: post, forAutomatedRetry: isAutomatedRetry) {
             mediaCoordinator.retryMedia(media, isAutomatedRetry: isAutomatedRetry)
         }
 
-        if canUploadPost {
-            save(post: post)
-        }
+        save(post: post)
     }
 
     /// This method checks the status of all post objects and updates them to the correct status if needed.
