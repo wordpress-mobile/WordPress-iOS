@@ -329,14 +329,17 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                              ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
                                              if (!aPost) {
                                                  if (failure) {
-                                                     failure(error);
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         failure(error);
+                                                     });
                                                  }
                                                  return;
                                              }
 
-                                             BOOL includesNewComments = [self mergeHierarchicalComments:comments forPage:page forPost:aPost];
-
-                                             if (success) {
+                                             [self mergeHierarchicalComments:comments forPage:page forPost:aPost onComplete:^(BOOL includesNewComments) {
+                                                 if (!success) {
+                                                     return;
+                                                 }
                                                  // There are no more comments when:
                                                  // - There are fewer top level comments in the results than requested
                                                  // - Page > 1, the number of top level comments matches those requested, but there are no new comments
@@ -351,8 +354,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                                  dispatch_async(dispatch_get_main_queue(), ^{
                                                      success([comments count], hasMore);
                                                  });
-
-                                             }
+                                             }];
                                          }];
                                      } failure:^(NSError *error) {
                                          [self.managedObjectContext performBlock:^{
@@ -864,10 +866,11 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-- (BOOL)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
+- (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post onComplete:(void (^)(BOOL includesNewComments))onComplete
 {
     if (![comments count]) {
-        return NO;
+        onComplete(NO);
+        return;
     }
 
     NSMutableArray *ancestors = [NSMutableArray array];
@@ -907,9 +910,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         post.commentCount = @([commentsToKeep count]);
     }
 
-    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
-
-    return newCommentCount > 0;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        onComplete(newCommentCount > 0);
+    }];
 }
 
 // Does not save context
