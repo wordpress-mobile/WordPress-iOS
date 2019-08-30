@@ -1312,7 +1312,7 @@ private extension NotificationsViewController {
     }
 
     func loadNotification(near note: Notification, withIndexDelta delta: Int) -> Notification? {
-        guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+        guard let notifications = tableViewHandler?.resultsController.fetchedObjects as? [Notification] else {
             return nil
         }
 

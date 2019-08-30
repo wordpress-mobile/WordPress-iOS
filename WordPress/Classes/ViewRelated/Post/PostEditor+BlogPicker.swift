@@ -73,9 +73,9 @@ extension PostEditor where Self: UIViewController {
         newPost.content = contentByStrippingMediaAttachments()
         newPost.postTitle = post.postTitle
         newPost.password = post.password
-        newPost.status = post.status
         newPost.dateCreated = post.dateCreated
         newPost.dateModified = post.dateModified
+        newPost.status = post.status
 
         if let source = post as? Post, let target = newPost as? Post {
             target.tags = source.tags

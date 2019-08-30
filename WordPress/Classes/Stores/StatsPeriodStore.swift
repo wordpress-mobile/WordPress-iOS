@@ -14,6 +14,7 @@ enum PeriodAction: Action {
     case receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?, _ error: Error?)
     case receivedVideos(_ videos: StatsTopVideosTimeIntervalData?, _ error: Error?)
     case receivedCountries(_ countries: StatsTopCountryTimeIntervalData?, _ error: Error?)
+    case receivedFileDownloads(_ downloads: StatsFileDownloadsTimeIntervalData?, _ error: Error?)
     case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
 
     // Period details
@@ -25,6 +26,7 @@ enum PeriodAction: Action {
     case refreshSearchTerms(date: Date, period: StatsPeriodUnit)
     case refreshVideos(date: Date, period: StatsPeriodUnit)
     case refreshCountries(date: Date, period: StatsPeriodUnit)
+    case refreshFileDownloads(date: Date, period: StatsPeriodUnit)
 
     // Post Stats
     case receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int, _ error: Error?)
@@ -41,6 +43,7 @@ enum PeriodQuery {
     case allReferrers(date: Date, period: StatsPeriodUnit)
     case allCountries(date: Date, period: StatsPeriodUnit)
     case allPublished(date: Date, period: StatsPeriodUnit)
+    case allFileDownloads(date: Date, period: StatsPeriodUnit)
     case postStats(postID: Int)
 
     var postID: Int? {
@@ -72,6 +75,8 @@ enum PeriodQuery {
             return date
         case .allPublished(let date, _):
             return date
+        case .allFileDownloads(let date, _):
+            return date
         default:
             return StatsDataHelper.currentDateForSite().normalizedDate()
         }
@@ -96,6 +101,8 @@ enum PeriodQuery {
         case .allCountries( _, let period):
             return period
         case .allPublished( _, let period):
+            return period
+        case .allFileDownloads( _, let period):
             return period
         default:
             return .day
@@ -144,6 +151,10 @@ struct PeriodStoreState {
     var fetchingVideos = false
     var fetchingVideosHasFailed = false
 
+    var topFileDownloads: StatsFileDownloadsTimeIntervalData?
+    var fetchingFileDownloads = false
+    var fetchingFileDownloadsHasFailed = false
+
     // Post Stats
 
     var postStats = [Int: StatsPostDetails?]()
@@ -174,42 +185,46 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedLikesSummary(likes, error)
         case .receivedPostsAndPages(let postsAndPages, let error):
             receivedPostsAndPages(postsAndPages, error)
-        case .receivedReferrers(let referrers, let error):
-            receivedReferrers(referrers, error)
-        case .receivedClicks(let clicks, let error):
-            receivedClicks(clicks, error)
-        case .receivedPublished(let published, let error):
-            receivedPublished(published, error)
-        case .receivedAuthors(let authors, let error):
-            receivedAuthors(authors, error)
-        case .receivedSearchTerms(let searchTerms, let error):
-            receivedSearchTerms(searchTerms, error)
-        case .receivedVideos(let videos, let error):
-            receivedVideos(videos, error)
-        case .receivedCountries(let countries, let error):
-            receivedCountries(countries, error)
-        case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
-            refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
         case .refreshPostsAndPages(let date, let period):
             refreshPostsAndPages(date: date, period: period)
-        case .refreshSearchTerms(let date, let period):
-            refreshSearchTerms(date: date, period: period)
-        case .refreshVideos(let date, let period):
-            refreshVideos(date: date, period: period)
-        case .refreshClicks(let date, let period):
-            refreshClicks(date: date, period: period)
-        case .refreshAuthors(let date, let period):
-            refreshAuthors(date: date, period: period)
+        case .receivedReferrers(let referrers, let error):
+            receivedReferrers(referrers, error)
         case .refreshReferrers(let date, let period):
             refreshReferrers(date: date, period: period)
-        case .refreshCountries(let date, let period):
-            refreshCountries(date: date, period: period)
+        case .receivedClicks(let clicks, let error):
+            receivedClicks(clicks, error)
+        case .refreshClicks(let date, let period):
+            refreshClicks(date: date, period: period)
+        case .receivedPublished(let published, let error):
+            receivedPublished(published, error)
         case .refreshPublished(let date, let period):
             refreshPublished(date: date, period: period)
+        case .receivedAuthors(let authors, let error):
+            receivedAuthors(authors, error)
+        case .refreshAuthors(let date, let period):
+            refreshAuthors(date: date, period: period)
+        case .receivedSearchTerms(let searchTerms, let error):
+            receivedSearchTerms(searchTerms, error)
+        case .refreshSearchTerms(let date, let period):
+            refreshSearchTerms(date: date, period: period)
+        case .receivedVideos(let videos, let error):
+            receivedVideos(videos, error)
+        case .refreshVideos(let date, let period):
+            refreshVideos(date: date, period: period)
+        case .receivedCountries(let countries, let error):
+            receivedCountries(countries, error)
+        case .refreshCountries(let date, let period):
+            refreshCountries(date: date, period: period)
+        case .receivedFileDownloads(let downloads, let error):
+            receivedFileDownloads(downloads, error)
+        case .refreshFileDownloads(let date, let period):
+            refreshFileDownloads(date: date, period: period)
         case .receivedPostStats(let postStats, let postId, let error):
             receivedPostStats(postStats, postId, error)
         case .refreshPostStats(let postID):
             refreshPostStats(postID: postID)
+        case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
+            refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
         }
 
         if !isFetchingOverview {
@@ -239,9 +254,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         _ = state.topSearchTerms.flatMap { StatsRecord.record(from: $0, for: blog) }
         _ = state.topCountries.flatMap { StatsRecord.record(from: $0, for: blog) }
         _ = state.topVideos.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topFileDownloads.flatMap { StatsRecord.record(from: $0, for: blog) }
 
         try? ContextManager.shared.mainContext.save()
-        DDLogInfo("Stats: finished persisting Stats to disk.")
+        DDLogInfo("Stats: finished persisting Period Stats to disk.")
     }
 }
 
@@ -292,6 +308,10 @@ private extension StatsPeriodStore {
             case .allPublished:
                 if shouldFetchPublished() {
                     fetchAllPublished(date: query.date, period: query.period)
+                }
+            case .allFileDownloads:
+                if shouldFetchFileDownloads() {
+                    fetchAllFileDownloads(date: query.date, period: query.period)
                 }
             case .postStats:
                 if shouldFetchPostStats(for: query.postID) {
@@ -412,6 +432,18 @@ private extension StatsPeriodStore {
 
             self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries, error))
         }
+
+        // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
+        // 'num' relates to the "number of periods to include in the query".
+        statsRemote.getData(for: period, endingOn: date, limit: 1) { (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching file downloads: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats: Finished fetching file downloads.")
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedFileDownloads(downloads, error))
+        }
     }
 
     func fetchSummaryLikesData(date: Date, period: StatsPeriodUnit) {
@@ -447,8 +479,9 @@ private extension StatsPeriodStore {
         let searchTerms = StatsRecord.timeIntervalData(for: blog, type: .searchTerms, period: StatsRecordPeriodType(remoteStatus: period), date: date)
         let countries = StatsRecord.timeIntervalData(for: blog, type: .countryViews, period: StatsRecordPeriodType(remoteStatus: period), date: date)
         let videos = StatsRecord.timeIntervalData(for: blog, type: .videos, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let fileDownloads = StatsRecord.timeIntervalData(for: blog, type: .fileDownloads, period: StatsRecordPeriodType(remoteStatus: period), date: date)
 
-        DDLogInfo("Stats: Finished loading data from Core Data.")
+        DDLogInfo("Stats: Finished loading Period data from Core Data.")
 
         transaction { state in
             state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
@@ -460,8 +493,9 @@ private extension StatsPeriodStore {
             state.topSearchTerms = searchTerms.flatMap { StatsSearchTermTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topCountries = countries.flatMap { StatsTopCountryTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topVideos = videos.flatMap { StatsTopVideosTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topFileDownloads = fileDownloads.flatMap { StatsFileDownloadsTimeIntervalData(statsRecordValues: $0.recordValues) }
 
-            DDLogInfo("Stats: Finished setting data to store from Core Data.")
+            DDLogInfo("Stats: Finished setting data to Period store from Core Data.")
         }
 
         cachedDataListener?(containsCachedData)
@@ -704,6 +738,36 @@ private extension StatsPeriodStore {
         fetchAllPublished(date: date, period: period)
     }
 
+    func fetchAllFileDownloads(date: Date, period: StatsPeriodUnit) {
+        guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        state.fetchingFileDownloads = true
+
+        // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
+        // 'num' relates to the "number of periods to include in the query".
+        statsRemote.getData(for: period, endingOn: date, limit: 1) { (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching all file downloads: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats: Finished fetching all file downloads.")
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedFileDownloads(downloads, error))
+            self.persistToCoreData()
+        }
+    }
+
+    func refreshFileDownloads(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchFileDownloads() else {
+            DDLogInfo("Stats Period File Downloads refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllFileDownloads(date: date, period: period)
+    }
+
     func fetchPostStats(postID: Int?) {
         guard
             let postID = postID,
@@ -862,6 +926,17 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedFileDownloads(_ downloads: StatsFileDownloadsTimeIntervalData?, _ error: Error?) {
+        transaction { state in
+            state.fetchingFileDownloads = false
+            state.fetchingFileDownloadsHasFailed = error != nil
+
+            if downloads != nil {
+                state.topFileDownloads = downloads
+            }
+        }
+    }
+
     func receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int, _ error: Error?) {
         transaction { state in
             state.fetchingPostStats[postId] = false
@@ -950,6 +1025,9 @@ private extension StatsPeriodStore {
         return !isFetchingPublished
     }
 
+    func shouldFetchFileDownloads() -> Bool {
+        return !isFetchingFileDownloads
+    }
     func shouldFetchPostStats(for postId: Int?) -> Bool {
         return !isFetchingPostStats(for: postId)
     }
@@ -995,6 +1073,10 @@ extension StatsPeriodStore {
         return state.topCountries
     }
 
+    func getTopFileDownloads() -> StatsFileDownloadsTimeIntervalData? {
+        return state.topFileDownloads
+    }
+
     func getPostStats(for postId: Int?) -> StatsPostDetails? {
         guard let postId = postId else {
             return nil
@@ -1022,7 +1104,8 @@ extension StatsPeriodStore {
             state.fetchingAuthors ||
             state.fetchingSearchTerms ||
             state.fetchingVideos ||
-            state.fetchingCountries
+            state.fetchingCountries ||
+            state.fetchingFileDownloads
     }
 
     var isFetchingSummaryLikes: Bool {
@@ -1061,6 +1144,10 @@ extension StatsPeriodStore {
         return state.fetchingPublished
     }
 
+    var isFetchingFileDownloads: Bool {
+        return state.fetchingFileDownloads
+    }
+
     var fetchingOverviewHasFailed: Bool {
         return state.fetchingSummaryHasFailed &&
             state.fetchingPostsAndPagesHasFailed &&
@@ -1070,7 +1157,8 @@ extension StatsPeriodStore {
             state.fetchingAuthorsHasFailed &&
             state.fetchingSearchTermsHasFailed &&
             state.fetchingVideosHasFailed &&
-            state.fetchingCountriesHasFailed
+            state.fetchingCountriesHasFailed &&
+            state.fetchingFileDownloadsHasFailed
     }
 
     func fetchingFailed(for query: PeriodQuery) -> Bool {
@@ -1093,6 +1181,8 @@ extension StatsPeriodStore {
             return state.fetchingCountriesHasFailed
         case .allPublished:
             return state.fetchingPublishedHasFailed
+        case .allFileDownloads:
+            return state.fetchingFileDownloadsHasFailed
         case .postStats(let postId):
             return state.fetchingPostStatsHasFailed[postId] ?? true
         }
@@ -1107,7 +1197,8 @@ extension StatsPeriodStore {
             state.topAuthors != nil ||
             state.topSearchTerms != nil ||
             state.topCountries != nil ||
-            state.topVideos != nil {
+            state.topVideos != nil ||
+            state.topFileDownloads != nil {
             return true
         }
 

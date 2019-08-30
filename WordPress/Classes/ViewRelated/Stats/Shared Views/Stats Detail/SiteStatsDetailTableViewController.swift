@@ -189,6 +189,8 @@ private extension SiteStatsDetailTableViewController {
             return periodStore.isFetchingCountries
         case .periodPublished:
             return periodStore.isFetchingPublished
+        case .periodFileDownloads:
+            return periodStore.isFetchingFileDownloads
         case .postStatsMonthsYears, .postStatsAverageViews:
             return periodStore.isFetchingPostStats(for: postID)
         default:
@@ -246,6 +248,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshCountries()
         case .periodPublished:
             viewModel?.refreshPublished()
+        case .periodFileDownloads:
+            viewModel?.refreshFileDownloads()
         case .postStatsMonthsYears, .postStatsAverageViews:
             viewModel?.refreshPostStats()
         default:

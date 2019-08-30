@@ -90,6 +90,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         noResultsView.delegate = self
 
         updateViewState(for: pickerDataSource.totalAssetCount)
+
+        if let collectionView = collectionView {
+            WPStyleGuide.configureColors(view: view, collectionView: collectionView)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

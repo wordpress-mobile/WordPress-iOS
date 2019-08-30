@@ -17,6 +17,7 @@
 #import "WordPress-Swift.h"
 #import "WPWebViewController.h"
 #import <wpxmlrpc/WPXMLRPC.h>
+#import "AccountService.h"
 @import WordPressKit;
 
 
@@ -149,6 +150,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                                              selector:@selector(handleDataModelChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:self.blog.managedObjectContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAccountChange:)
+                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
+                                               object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -161,6 +166,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     [self refreshData];
     [self observeTimeZoneStore];
+
+    self.tableView.accessibilityIdentifier = @"siteSettingsTable";
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -324,6 +331,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if (!_editorSelectorCell) {
         _editorSelectorCell = [SwitchTableViewCell new];
         _editorSelectorCell.name = NSLocalizedString(@"Use block editor", @"Option to enable the block editor for new posts");
+        _editorSelectorCell.flipSwitch.accessibilityIdentifier = @"useBlockEditorSwitch";
         __weak Blog *blog = self.blog;
         _editorSelectorCell.onChange = ^(BOOL value){
             [GutenbergSettings setGutenbergEnabled:value forBlog:blog];
@@ -1344,6 +1352,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if ([updatedObjects containsObject:self.blog]) {
         [self.tableView reloadData];
     }
+}
+
+- (void)handleAccountChange:(NSNotification *)notification
+{
+    [self.tableView reloadData];
 }
 
 @end

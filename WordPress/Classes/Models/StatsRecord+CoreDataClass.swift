@@ -45,6 +45,7 @@ public enum StatsRecordType: Int16 {
     case topViewedPost
     case videos
     case topViewedAuthor
+    case fileDownloads
 
     fileprivate var requiresDate: Bool {
         // For some kinds of data, we'll only support storing one dataPoint (it doesn't make a whole
@@ -71,7 +72,8 @@ public enum StatsRecordType: Int16 {
               .topViewedAuthor,
               .topViewedPost,
               .videos,
-              .postViews:
+              .postViews,
+              .fileDownloads:
 
             return true
         }

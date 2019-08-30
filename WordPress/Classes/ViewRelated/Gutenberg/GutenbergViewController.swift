@@ -92,7 +92,7 @@ class GutenbergViewController: UIViewController, PostEditor {
                 let mediaURL = URL(string: mediaURLString) else {
                     continue
             }
-            gutenberg.appendMedia(id: mediaID, url: mediaURL)
+            gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
         }
         mediaToInsertOnPost = []
     }
@@ -112,7 +112,7 @@ class GutenbergViewController: UIViewController, PostEditor {
                                                                 let mediaURL = URL(string: mediaURLString) else {
                                                                 return
                                                             }
-                                                            self.gutenberg.appendMedia(id: mediaID, url: mediaURL)
+                                                            self.gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
                                                         })
         })
     }

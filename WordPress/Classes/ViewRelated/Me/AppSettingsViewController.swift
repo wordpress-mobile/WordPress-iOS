@@ -308,7 +308,6 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
 }
 
 // MARK: - Table Sections Private Extension
-
 private extension AppSettingsViewController {
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
