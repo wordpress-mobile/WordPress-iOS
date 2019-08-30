@@ -82,6 +82,11 @@ class PostBuilder {
         return self
     }
 
+    func cancelledAutoUpload() -> PostBuilder {
+        post.shouldAttemptAutoUpload = false
+        return self
+    }
+
     func build() -> Post {
         return post
     }
