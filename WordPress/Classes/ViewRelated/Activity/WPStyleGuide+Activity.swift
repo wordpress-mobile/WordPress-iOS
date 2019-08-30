@@ -46,7 +46,7 @@ extension WPStyleGuide {
         }
 
         public static func backgroundColor() -> UIColor {
-            return UIColor.white
+            return .listForeground
         }
 
         public static func backgroundDiscardedColor() -> UIColor {
