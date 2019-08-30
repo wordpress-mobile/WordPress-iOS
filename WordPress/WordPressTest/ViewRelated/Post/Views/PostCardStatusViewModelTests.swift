@@ -23,8 +23,6 @@ class PostCardStatusViewModelTests: XCTestCase {
 
     func testExpectedButtonGroupsForVariousPostAttributeCombinations() {
         // Arrange
-        print(String(describing: PostCardStatusViewModel.Button.edit))
-
         let expectations: [(String, Post, ButtonGroups)] = [
             (
                 "Draft with remote",
