@@ -81,8 +81,9 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
 
-        backgroundColor = innerView.backgroundColor
-        contentView.backgroundColor = innerView.backgroundColor
+        innerView.backgroundColor = .listForeground
+        backgroundColor = .listForeground
+        contentView.backgroundColor = .listForeground
     }
 
     private func setupSeparator() {
@@ -99,7 +100,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureFeaturedImage() {
-        if let post = post, let url = post.featuredImageURLForDisplay() {
+        if let post = post, let url = post.featuredImageURL {
             featuredImageView.isHidden = false
             labelsContainerTrailing.isActive = true
             imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: featuredImageView.frame.width, height: featuredImageView.frame.height))
@@ -184,6 +185,7 @@ extension PostCompactCell: GhostableView {
         menuButton.isGhostableDisabled = true
         separator.isGhostableDisabled = true
         ghostView.isHidden = !visible
+        ghostView.backgroundColor = .listForeground
         featuredImageView.isHidden = true
     }
 

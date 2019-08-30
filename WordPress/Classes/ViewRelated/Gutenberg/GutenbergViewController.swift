@@ -323,6 +323,7 @@ extension GutenbergViewController {
     private func setupGutenbergView() {
         view.backgroundColor = .white
         gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
+        gutenberg.rootView.backgroundColor = .basicBackground
         view.addSubview(gutenberg.rootView)
 
         view.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true

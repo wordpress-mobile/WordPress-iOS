@@ -137,6 +137,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         setupActionBar()
         setupFeaturedImage()
         setupBorders()
+        setupBackgrounds()
         setupLabels()
         setupSeparatorLabel()
         setupSelectedBackgroundView()
@@ -158,7 +159,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
-        if let url = post.featuredImageURLForDisplay(),
+        if let url = post.featuredImageURL,
             let desiredWidth = UIApplication.shared.keyWindow?.frame.size.width {
             featuredImageStackView.isHidden = false
             topPadding.constant = Constants.margin
@@ -265,6 +266,15 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyBorderStyle(upperBorder)
         WPStyleGuide.applyBorderStyle(bottomBorder)
         WPStyleGuide.applyBorderStyle(actionBarSeparator)
+    }
+
+    private func setupBackgrounds() {
+        containerView.backgroundColor = .listForeground
+        titleLabel.backgroundColor = .listForeground
+        snippetLabel.backgroundColor = .listForeground
+        dateLabel.backgroundColor = .listForeground
+        authorLabel.backgroundColor = .listForeground
+        separatorLabel.backgroundColor = .listForeground
     }
 
     private func setupActionBar() {

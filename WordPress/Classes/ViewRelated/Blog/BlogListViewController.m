@@ -30,7 +30,7 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
 @property (nonatomic) BOOL visible;
-
+@property (nonatomic) BOOL isSyncing;
 @end
 
 @implementation BlogListViewController
@@ -340,30 +340,46 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)syncBlogs
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    if (self.isSyncing) {
+        return;
+    }
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (!defaultAccount) {
+        [self handleSyncEnded];
+        return;
+    }
+
+    if (![self.tableView.refreshControl isRefreshing]) {
+        [self.tableView.refreshControl beginRefreshing];
+    }
+    self.isSyncing = YES;
     __weak __typeof(self) weakSelf = self;
+    void (^completionBlock)(void) = ^() {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf handleSyncEnded];
+        });
+    };
+
+    context = [[ContextManager sharedInstance] newDerivedContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
     [context performBlock:^{
-        void (^completionBlock)(void) = ^() {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.tableView.refreshControl endRefreshing];
-            });
-        };
-
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        if (defaultAccount) {
-            [blogService syncBlogsForAccount:defaultAccount success:^{
-                completionBlock();
-            } failure:^(NSError * _Nonnull error) {
-                completionBlock();
-            }];
-        } else {
+        [blogService syncBlogsForAccount:defaultAccount success:^{
             completionBlock();
-        }
+        } failure:^(NSError * _Nonnull error) {
+            completionBlock();
+        }];
     }];
+}
+
+- (void)handleSyncEnded
+{
+    self.isSyncing = NO;
+    [self.tableView.refreshControl endRefreshing];
 }
 
 - (void)removeBlogItemsFromSpotlight:(Blog *)blog {
@@ -580,11 +596,6 @@ static NSInteger HideSearchMinSites = 3;
 }
 
 #pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    cell.backgroundColor = [UIColor whiteColor];
-}
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {

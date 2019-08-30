@@ -7,8 +7,8 @@ extension WPStyleGuide {
     public struct Themes {
         // MARK: - Current Theme Styles
 
-        public static let currentThemeBackgroundColor: UIColor = .white
-        public static let currentThemeDividerColor: UIColor = .neutral(shade: .shade5)
+        public static let currentThemeBackgroundColor: UIColor = .listForeground
+        public static let currentThemeDividerColor: UIColor = .divider
 
         public static let currentThemeLabelFont = WPFontManager.systemRegularFont(ofSize: 11)
         public static let currentThemeLabelColor: UIColor = .textSubtle
@@ -22,15 +22,16 @@ extension WPStyleGuide {
         public static func styleCurrentThemeButton(_ button: UIButton) {
             button.titleLabel?.font = currentThemeButtonFont
             button.setTitleColor(currentThemeButtonColor, for: UIControl.State())
+            button.backgroundColor = currentThemeBackgroundColor
         }
 
         // MARK: - Search Styles
 
-        public static let searchBarBackgroundColor: UIColor = .tableBackground
-        public static let searchBarBorderColor: UIColor = .neutral(shade: .shade10)
+        public static let searchBarBackgroundColor: UIColor = .listBackground
+        public static let searchBarBorderColor: UIColor = .neutral(.shade10)
 
         public static let searchTypeTitleFont = WPFontManager.systemSemiBoldFont(ofSize: 14)
-        public static let searchTypeTitleColor: UIColor = .neutral(shade: .shade70)
+        public static let searchTypeTitleColor: UIColor = .neutral(.shade70)
 
         public static func styleSearchTypeButton(_ button: UIButton, title: String) {
             button.setTitleColor(searchTypeTitleColor, for: UIControl.State())
@@ -47,18 +48,18 @@ extension WPStyleGuide {
         public static let cellNameFont = WPFontManager.systemSemiBoldFont(ofSize: 14)
         public static let cellInfoFont = WPFontManager.systemSemiBoldFont(ofSize: 12)
 
-        public static let placeholderColor: UIColor = .neutral(shade: .shade10)
+        public static let placeholderColor: UIColor = .neutral(.shade10)
 
-        public static let activeCellBackgroundColor: UIColor = .neutral(shade: .shade40)
-        public static let activeCellBorderColor: UIColor = .neutral(shade: .shade40)
-        public static let activeCellDividerColor: UIColor = .neutral(shade: .shade20)
-        public static let activeCellNameColor: UIColor = .white
+        public static let activeCellBackgroundColor: UIColor = .neutral(.shade40)
+        public static let activeCellBorderColor: UIColor = .neutral(.shade40)
+        public static let activeCellDividerColor: UIColor = .neutral(.shade20)
+        public static let activeCellNameColor: UIColor = .textInverted
         public static let activeCellInfoColor: UIColor = .primaryLight
 
-        public static let inactiveCellBackgroundColor: UIColor = .white
-        public static let inactiveCellBorderColor: UIColor = .neutral(shade: .shade10)
-        public static let inactiveCellDividerColor: UIColor = .neutral(shade: .shade5)
-        public static let inactiveCellNameColor: UIColor = .neutral(shade: .shade70)
+        public static let inactiveCellBackgroundColor: UIColor = .listForeground
+        public static let inactiveCellBorderColor: UIColor = .neutral(.shade10)
+        public static let inactiveCellDividerColor: UIColor = .neutral(.shade5)
+        public static let inactiveCellNameColor: UIColor = .neutral(.shade70)
         public static let inactiveCellPriceColor: UIColor = .success
 
         // MARK: - Metrics

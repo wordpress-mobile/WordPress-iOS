@@ -55,10 +55,10 @@ class PagedViewController: UIViewController {
     }
 
     fileprivate func applyWPStyles() {
-        view.backgroundColor = .neutral(shade: .shade5)
-        divider.backgroundColor = .neutral(shade: .shade5)
-        pageControl.currentPageIndicatorTintColor = .neutral(shade: .shade30)
-        pageControl.pageIndicatorTintColor = UIColor.neutral(shade: .shade30).withAlphaComponent(0.5)
+        view.backgroundColor = .neutral(.shade5)
+        divider.backgroundColor = .neutral(.shade5)
+        pageControl.currentPageIndicatorTintColor = .neutral(.shade30)
+        pageControl.pageIndicatorTintColor = UIColor.neutral(.shade30).withAlphaComponent(0.5)
     }
 
     fileprivate func addViewControllers() {

@@ -187,10 +187,15 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 /// @name Account creation
 ///-----------------------
 
-- (WPAccount *)createOrUpdateAccountWithAuthToken:(NSString *)authToken
+- (WPAccount *)createOrUpdateAccountWithUserDetails:(RemoteUser *)remoteUser authToken:(NSString *)authToken
 {
-    NSString *tempUsername = [[NSUUID UUID] UUIDString];
-    return [self createOrUpdateAccountWithUsername:tempUsername authToken:authToken];
+    WPAccount *account = [self findAccountWithUserID:remoteUser.userID];
+    if (!account) {
+        NSString *username = remoteUser.username;
+        account = [self createOrUpdateAccountWithUsername:username authToken:authToken];
+    }
+    [self updateAccount:account withUserDetails:remoteUser];
+    return account;
 }
 
 /**
@@ -260,6 +265,20 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
     return [results firstObject];
+}
+
+- (void)createOrUpdateAccountWithAuthToken:(NSString *)authToken
+                                   success:(void (^)(WPAccount * _Nonnull))success
+                                   failure:(void (^)(NSError * _Nonnull))failure
+{
+    WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:authToken userAgent:[WPUserAgent defaultUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];
+    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:api];
+    [remote getAccountDetailsWithSuccess:^(RemoteUser *remoteUser) {
+        WPAccount *account = [self createOrUpdateAccountWithUserDetails:remoteUser authToken:authToken];
+        success(account);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
 }
 
 - (void)updateUserDetailsForAccount:(WPAccount *)account
