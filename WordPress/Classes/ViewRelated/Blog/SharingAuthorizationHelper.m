@@ -205,15 +205,15 @@
             return;
         }
 
-        KeyringAccountHelper *keyringAccount = [KeyringAccountHelper new];
-
         //Check errors over accounts and show alert if it's needed
-        if ([keyringAccount showNoticeFromConnections:marr with:weakSelf.publicizeService]) {
-            [weakSelf showAlertFromConnectionsWithKeyringAccountHelper:keyringAccount];
+        KeyringAccountHelper *keyringAccount = [KeyringAccountHelper new];
+        ValidationError *validationError = [keyringAccount validateConnections:marr with:weakSelf.publicizeService];
+        if (validationError) {
+            [weakSelf showAlertFromConnectionsWithValidationError:validationError];
             return;
         }
 
-        [weakSelf showAccountSelectorForKeyrings:marr withKeyringAccountHelper:keyringAccount];
+        [weakSelf showAccountSelectorForKeyrings:marr];
     } failure:^(NSError *error) {
         if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:keyringFetchFailedForService:)]) {
             [self.delegate sharingAuthorizationHelper:self keyringFetchFailedForService:self.publicizeService];
@@ -231,14 +231,13 @@
 
  @param keyringConnections: An array of `KeyringConnection` instances.
  */
-- (void)showAccountSelectorForKeyrings:(NSArray *)keyringConnections withKeyringAccountHelper:(KeyringAccountHelper *)keyringAccountHelper
+- (void)showAccountSelectorForKeyrings:(NSArray *)keyringConnections
 {
     NSParameterAssert([[keyringConnections firstObject] isKindOfClass:[KeyringConnection class]]);
 
     SharingAccountViewController *controller = [[SharingAccountViewController alloc] initWithService:self.publicizeService
                                                                            connections:keyringConnections
-                                                                   existingConnections:[self connectionsForService]
-                                                                                keyringAccountHelper: keyringAccountHelper];
+                                                                   existingConnections:[self connectionsForService]];
     controller.delegate = self;
 
     // Set the view controller stack vs push so there is no back button to contend with.
@@ -246,17 +245,11 @@
     [self.navController setViewControllers:@[controller] animated:YES];
 }
 
--(void)showAlertFromConnectionsWithKeyringAccountHelper:(KeyringAccountHelper *)keyringAccountHelper
+-(void)showAlertFromConnectionsWithValidationError:(ValidationError *)validationError
 {
-    ConfirmationAlertFields *alertFields = [keyringAccountHelper createErrorAlertFieldsFor:self.publicizeService];
-
-    if (alertFields == nil) {
-        return;
-    }
-
     [self.delegate sharingAuthorizationHelper:self
-                                showAlertFrom:self.navController
-                                   withFields:alertFields];
+                 requestToShowValidationError:validationError
+                           fromViewController:self.navController];
 }
 
 

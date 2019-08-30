@@ -12,45 +12,42 @@ struct KeyringAccount {
     var keyringConnection: KeyringConnection
 }
 
-@objc class ConfirmationAlertFields: NSObject {
-    @objc let header: String
-    @objc let body: String
-    @objc let continueTitle: String
-    @objc let cancelTitle: String
-
-    init(header: String, body: String, continueTitle: String, cancelTitle: String) {
-        self.header = header
-        self.body = body
-        self.continueTitle = continueTitle
-        self.cancelTitle = cancelTitle
-    }
-}
-
 @objc class KeyringAccountHelper: NSObject {
 
-    @objc func showNoticeFromConnections(_  connections: [KeyringConnection], with publicize: PublicizeService) -> Bool {
-        guard publicize.serviceID == PublicizeService.facebookServiceID else {
-            return false
-        }
+    @objc class ValidationError: NSObject {
+        @objc let header: String
+        @objc let body: String
+        @objc let continueTitle: String
+        @objc let cancelTitle: String
 
-        let accounts = accountsFromKeyringConnections(connections, with: publicize)
-        return accounts.isEmpty
+        @objc let continueURL: URL?
+
+        init(header: String, body: String, continueTitle: String, cancelTitle: String, continueURL: URL? = nil) {
+            self.header = header
+            self.body = body
+            self.continueTitle = continueTitle
+            self.cancelTitle = cancelTitle
+            self.continueURL = continueURL
+        }
     }
 
-    /// Validate which account type has error and return the information for an alert
+    /// Validate which account type has an error and return the information for an alert
     ///
-    /// - Parameter publicize: The publicize service for the fetched keyring connections.
+    /// - Parameters:
+    ///     - connections: An array of `KeyringConnection` instances to normalize.
+    ///     - publicizeService: The publicize service for the fetched keyring connections.
     ///
-    /// - Returns: An instance of `ConfirmationAlertFields` object, this is a plain object just with the information for an alert.
+    /// - Returns: An instance of `ValidationError` object, this is a plain object just with the information for an alert.
     ///
-    @objc func createErrorAlertFields(for publicize: PublicizeService) -> ConfirmationAlertFields? {
-        if publicize.serviceID == PublicizeService.facebookServiceID {
+    @objc func validateConnections(_  connections: [KeyringConnection], with publicizeService: PublicizeService) -> ValidationError? {
+        let accounts = accountsFromKeyringConnections(connections, with: publicizeService)
+
+        if publicizeService.serviceID == PublicizeService.facebookServiceID, accounts.isEmpty {
             return facebookPublicizeAlertFields()
         }
 
         return nil
     }
-
 
     /// Normalizes available accounts for a KeyringConnection and its `additionalExternalUsers`
     ///
@@ -58,14 +55,14 @@ struct KeyringAccount {
     ///
     /// - Returns: An array of `KeyringAccount` objects.
     ///
-    func accountsFromKeyringConnections(_ connections: [KeyringConnection], with publicize: PublicizeService) -> [KeyringAccount] {
+    func accountsFromKeyringConnections(_ connections: [KeyringConnection], with publicizeService: PublicizeService) -> [KeyringAccount] {
         var accounts = [KeyringAccount]()
 
         for connection in connections {
             let acct = KeyringAccount(name: connection.externalDisplay, externalID: nil, externalIDForConnection: connection.externalID, keyringConnection: connection)
 
             // Do not include the service if it only supports external users.
-            if !publicize.externalUsersOnly {
+            if !publicizeService.externalUsersOnly {
                 accounts.append(acct)
             }
 
@@ -84,18 +81,19 @@ struct KeyringAccount {
 
 private extension KeyringAccountHelper {
 
-    func facebookPublicizeAlertFields() -> ConfirmationAlertFields {
+    func facebookPublicizeAlertFields() -> ValidationError {
         let alertHeaderMessage = NSLocalizedString("Not connected",
                                                    comment: "Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
         let alertBodyMessage = NSLocalizedString("The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.",
                                                  comment: "Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
         let continueActionTitle = NSLocalizedString("Learn more", comment: "A button title.")
-        let cancelActionTitle = NSLocalizedString("OK", comment: "Cancel action title")
+        let cancelActionTitle = NSLocalizedString("OK", comment: "A button title for closing the dialog.")
 
-        return ConfirmationAlertFields(header: alertHeaderMessage,
-                                       body: alertBodyMessage,
-                                       continueTitle: continueActionTitle,
-                                       cancelTitle: cancelActionTitle)
+        return ValidationError(header: alertHeaderMessage,
+                               body: alertBodyMessage,
+                               continueTitle: continueActionTitle,
+                               cancelTitle: cancelActionTitle,
+                               continueURL: URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages"))
     }
 
 }

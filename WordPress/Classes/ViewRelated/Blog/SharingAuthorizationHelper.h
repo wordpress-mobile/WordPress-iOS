@@ -5,7 +5,7 @@
 @class KeyringConnection;
 @class PublicizeConnection;
 @class Blog;
-@class ConfirmationAlertFields;
+@class ValidationError;
 
 /**
  A helper class for managing aspects of a publicize service.  Supports creating,
@@ -65,7 +65,7 @@
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionCancelledForService:(PublicizeService *)service;
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper
-                     showAlertFrom:(UIViewController *)viewController
-                        withFields:(ConfirmationAlertFields *)fields;
+      requestToShowValidationError:(ValidationError *)validationError
+                fromViewController:(UIViewController *)viewController;
 
 @end

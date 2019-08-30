@@ -231,13 +231,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.helper connectPublicizeService];
 }
 
-- (void)handleLearMoreTapped
+- (void)handleLearnMoreTappedWithLearnMoreURL:(NSURL*)learnMoreURL
 {
-    NSURL *learMoreURL =[[NSURL alloc] initWithString:@"https://en.support.wordpress.com/publicize/#facebook-pages"];
     UIApplication *application = [UIApplication sharedApplication];
 
-    if ([application canOpenURL:learMoreURL]) {
-        [application openURL:learMoreURL options:@{} completionHandler:nil];
+    if ([application canOpenURL:learnMoreURL]) {
+        [application openURL:learnMoreURL options:@{} completionHandler:nil];
     }
 }
 
@@ -264,23 +263,25 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 }
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper
-                     showAlertFrom:(UIViewController *)viewController
-                        withFields:(ConfirmationAlertFields *)fields
+      requestToShowValidationError:(ValidationError *)validationError
+                fromViewController:(UIViewController *)viewController
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:fields.header
-                                                                     message:fields.body
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:validationError.header
+                                                                     message:validationError.body
                                                             preferredStyle:UIAlertControllerStyleAlert];
 
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:fields.cancelTitle
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:validationError.cancelTitle
                                                             style:UIAlertActionStyleCancel
                                                           handler:nil];
     __weak SharingConnectionsViewController *sharingConnectionsVC = self;
-    UIAlertAction* continueAction = [UIAlertAction actionWithTitle:fields.continueTitle
+    UIAlertAction* continueAction = [UIAlertAction actionWithTitle:validationError.continueTitle
                                                               style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
-                                                              [sharingConnectionsVC handleLearMoreTapped];
+                                                              if (validationError.continueURL) {
+                                                                  [sharingConnectionsVC handleLearnMoreTappedWithLearnMoreURL: validationError.continueURL];
+                                                              }
                                                           }];
 
     [alertVC addAction:continueAction];

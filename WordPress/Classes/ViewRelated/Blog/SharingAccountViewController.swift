@@ -11,7 +11,7 @@ import WordPressShared
     @objc var existingPublicizeConnections: [PublicizeConnection]?
     @objc var immutableHandler: ImmuTableViewHandler!
     @objc var delegate: SharingAccountSelectionDelegate?
-    private let keyringAccountHelper: KeyringAccountHelper
+    private let keyringAccountHelper = KeyringAccountHelper()
 
     fileprivate lazy var noResultsViewController: NoResultsViewController = {
         let controller = NoResultsViewController.controller()
@@ -26,11 +26,10 @@ import WordPressShared
     // MARK: - Lifecycle Methods
 
 
-    @objc init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?, keyringAccountHelper: KeyringAccountHelper) {
+    @objc init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
         publicizeService = service
         keyringConnections = connections
         existingPublicizeConnections = existingConnections
-        self.keyringAccountHelper = keyringAccountHelper
 
         super.init(style: .grouped)
 
