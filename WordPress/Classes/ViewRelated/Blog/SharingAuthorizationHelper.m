@@ -209,10 +209,12 @@
         KeyringAccountHelper *keyringAccount = [KeyringAccountHelper new];
         ValidationError *validationError = [keyringAccount validateConnections:marr with:weakSelf.publicizeService];
         if (validationError) {
-            [weakSelf showAlertFromConnectionsWithValidationError:validationError];
+            [weakSelf.delegate sharingAuthorizationHelper:weakSelf
+                         requestToShowValidationError:validationError
+                                   fromViewController:weakSelf.navController];
             return;
         }
-
+        
         [weakSelf showAccountSelectorForKeyrings:marr];
     } failure:^(NSError *error) {
         if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:keyringFetchFailedForService:)]) {
@@ -243,13 +245,6 @@
     // Set the view controller stack vs push so there is no back button to contend with.
     // There should be no reason for the user to click back to the authorization vc.
     [self.navController setViewControllers:@[controller] animated:YES];
-}
-
--(void)showAlertFromConnectionsWithValidationError:(ValidationError *)validationError
-{
-    [self.delegate sharingAuthorizationHelper:self
-                 requestToShowValidationError:validationError
-                           fromViewController:self.navController];
 }
 
 

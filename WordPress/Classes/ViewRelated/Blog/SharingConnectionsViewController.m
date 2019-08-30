@@ -231,12 +231,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.helper connectPublicizeService];
 }
 
-- (void)handleLearnMoreTappedWithLearnMoreURL:(NSURL*)learnMoreURL
+- (void)handleContinueURLTapped:(NSURL*)url
 {
     UIApplication *application = [UIApplication sharedApplication];
 
-    if ([application canOpenURL:learnMoreURL]) {
-        [application openURL:learnMoreURL options:@{} completionHandler:nil];
+    if ([application canOpenURL:url]) {
+        [application openURL:url options:@{} completionHandler:nil];
     }
 }
 
@@ -280,7 +280,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
                                                               style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
                                                               if (validationError.continueURL) {
-                                                                  [sharingConnectionsVC handleLearnMoreTappedWithLearnMoreURL: validationError.continueURL];
+                                                                  [sharingConnectionsVC handleContinueURLTapped: validationError.continueURL];
                                                               }
                                                           }];
 
