@@ -71,7 +71,7 @@ class PostCardStatusViewModel: NSObject {
 
             switch postStatus {
             case .draft:
-                return StatusMessages.draftWillBeUploaded
+                return canCancelAutoUpload ? StatusMessages.draftWillBeUploaded : StatusMessages.localChanges
             case .publish:
                 return StatusMessages.postWillBePublished
             default:
