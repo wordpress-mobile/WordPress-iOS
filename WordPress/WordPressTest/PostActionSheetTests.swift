@@ -3,6 +3,8 @@ import XCTest
 
 @testable import WordPress
 
+private typealias Titles = PostActionSheet.Titles
+
 class PostActionSheetTests: XCTestCase {
 
     private var postActionSheet: PostActionSheet!
@@ -18,93 +20,111 @@ class PostActionSheetTests: XCTestCase {
     }
 
     func testPublishedPostOptions() {
-        let post = PostBuilder().published().build()
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
 
-        postActionSheet.show(for: post, from: view)
+        postActionSheet.show(for: viewModel, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "Stats", "Move to Draft", "Move to Trash"], options)
     }
 
-    func testDraftedPostOptions() {
-        let post = PostBuilder().drafted().build()
+    func testLocallyPublishedPostShowsCancelAutoUploadOption() {
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build())
 
-        postActionSheet.show(for: post, from: view)
+        postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
+
+        let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
+        XCTAssertEqual([Titles.cancel, Titles.cancelAutoUpload, Titles.draft, Titles.trash], options)
+    }
+
+    func testDraftedPostOptions() {
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().drafted().build())
+
+        postActionSheet.show(for: viewModel, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "Publish Now", "Move to Trash"], options)
     }
 
     func testScheduledPostOptions() {
-        let post = PostBuilder().scheduled().build()
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().scheduled().build())
 
-        postActionSheet.show(for: post, from: view)
+        postActionSheet.show(for: viewModel, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "Move to Draft", "Move to Trash"], options)
     }
 
     func testTrashedPostOptions() {
-        let post = PostBuilder().trashed().build()
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().trashed().build())
 
-        postActionSheet.show(for: post, from: view)
+        postActionSheet.show(for: viewModel, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "Move to Draft", "Delete Permanently"], options)
     }
 
     func testPublishedPostOptionsWithView() {
-        let post = PostBuilder().published().build()
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
 
-        postActionSheet.show(for: post, from: view, showViewOption: true)
+        postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "View", "Stats", "Move to Draft", "Move to Trash"], options)
     }
 
     func testCallDelegateWhenStatsTapped() {
-        let post = PostBuilder().published().build()
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().withRemote().build())
 
-        postActionSheet.show(for: post, from: view)
+        postActionSheet.show(for: viewModel, from: view)
         tap("Stats", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleStats)
     }
 
     func testCallDelegateWhenMoveToDraftTapped() {
-        let post = PostBuilder().published().build()
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
 
-        postActionSheet.show(for: post, from: view)
+        postActionSheet.show(for: viewModel, from: view)
         tap("Move to Draft", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleDraft)
     }
 
     func testCallDelegateWhenDeletePermanentlyTapped() {
-        let post = PostBuilder().trashed().build()
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().trashed().build())
 
-        postActionSheet.show(for: post, from: view)
+        postActionSheet.show(for: viewModel, from: view)
         tap("Delete Permanently", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
     }
 
     func testCallDelegateWhenMoveToTrashTapped() {
-        let post = PostBuilder().published().build()
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
 
-        postActionSheet.show(for: post, from: view)
+        postActionSheet.show(for: viewModel, from: view)
         tap("Move to Trash", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
     }
 
     func testCallDelegateWhenViewTapped() {
-        let post = PostBuilder().published().build()
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().build())
 
-        postActionSheet.show(for: post, from: view, showViewOption: true)
+        postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
         tap("View", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallView)
+    }
+
+    func testCallsDelegateWhenCancelAutoUploadIsTapped() {
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build())
+
+        postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
+        tap(Titles.cancelAutoUpload, in: viewControllerMock.viewControllerPresented)
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallCancelAutoUpload)
     }
 
     func tap(_ label: String, in alertController: UIAlertController?) {
@@ -132,12 +152,13 @@ class UIViewControllerMock: UIViewController {
 }
 
 class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
-    var didCallHandleStats = false
-    var didCallHandleDraft = false
-    var didCallHandleTrashPost = false
-    var didCallEdit = false
-    var didCallView = false
-    var didCallRetry = false
+    private(set) var didCallHandleStats = false
+    private(set) var didCallHandleDraft = false
+    private(set) var didCallHandleTrashPost = false
+    private(set) var didCallEdit = false
+    private(set) var didCallView = false
+    private(set) var didCallRetry = false
+    private(set) var didCallCancelAutoUpload = false
 
     func stats(for post: AbstractPost) {
         didCallHandleStats = true
@@ -172,6 +193,6 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     }
 
     func cancelAutoUpload(_ post: AbstractPost) {
-        // noop
+        didCallCancelAutoUpload = true
     }
 }

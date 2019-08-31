@@ -4,7 +4,28 @@ import Gridicons
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///
 class PostCardStatusViewModel: NSObject {
-    private let post: Post
+    private static let maximumPrimaryButtons = 3
+
+    enum Button {
+        case edit
+        case retry
+        case view
+        case more
+        case publish
+        case stats
+        case moveToDraft
+        case trash
+        case cancelAutoUpload
+    }
+
+    struct ButtonGroups: Equatable {
+        /// The main buttons shown in the Post List
+        let primary: [Button]
+        /// Shown under the _More_
+        let secondary: [Button]
+    }
+
+    let post: Post
     private var progressObserverUUID: UUID? = nil
 
     private let autoUploadInteractor = PostAutoUploadInteractor()
@@ -104,16 +125,88 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    var canRetryUpload: Bool {
-        return autoUploadInteractor.canRetryUpload(of: post)
+    /// Returns what buttons are visible
+    ///
+    /// The order matters here. For the primary buttons, we do not currently support dynamic
+    /// buttons in the UI. Technically, we may end up with situations where there are no buttons
+    /// visible. But we've carefully considered the possible situations so this does not happen.
+    ///
+    /// The order of the Buttons are important here, especially for the secondary buttons which
+    /// dictate what buttons are shown in the action sheet after pressing _More_.
+    var buttonGroups: ButtonGroups {
+        let maxPrimaryButtons = PostCardStatusViewModel.maximumPrimaryButtons
+
+        let allButtons: [Button] = {
+            var buttons = [Button]()
+
+            buttons.append(.edit)
+
+            if !post.isFailed {
+                buttons.append(.view)
+            }
+
+            if autoUploadInteractor.canRetryUpload(of: post) {
+                buttons.append(.retry)
+            }
+
+            if canCancelAutoUpload {
+                buttons.append(.cancelAutoUpload)
+            }
+
+            if canPublish {
+                buttons.append(.publish)
+            }
+
+            if post.status == .publish && post.hasRemote() {
+                buttons.append(.stats)
+            }
+
+            if post.status != .draft {
+                buttons.append(.moveToDraft)
+            }
+
+            buttons.append(.trash)
+
+            return buttons
+        }()
+
+        // If allButtons is [one, two, three, four], set the primary to [one, two, “more”].
+        // If allButtons is [one, two, three], set the primary to the same.
+        let primaryButtons: [Button] = {
+            if allButtons.count <= maxPrimaryButtons {
+                return allButtons
+            }
+
+            var primary = allButtons.prefix(maxPrimaryButtons - 1)
+            primary.append(.more)
+            return Array(primary)
+        }()
+
+        // If allButtons is [one, two, three, four], set the secondary to [three, four].
+        // If allButtons is [one, two, three], set the secondary to [].
+        let secondaryButtons: [Button] = {
+            if allButtons.count > maxPrimaryButtons {
+                return Array(allButtons.suffix(from: maxPrimaryButtons - 1))
+            } else {
+                return []
+            }
+        }()
+
+        return ButtonGroups(primary: primaryButtons, secondary: secondaryButtons)
     }
 
-    var canCancelAutoUpload: Bool {
+    private var canCancelAutoUpload: Bool {
         return autoUploadInteractor.canCancelAutoUpload(of: post)
     }
 
-    var canPreview: Bool {
-        return !post.isFailed
+    /// Returns true if any of the following conditions are true:
+    ///
+    /// * The post is a draft.
+    /// * The post failed to upload and has local changes but the user canceled auto-uploading
+    /// * The upload failed and the user cannot Cancel it anymore. This happens when we reached the maximum number of retries.
+    private var canPublish: Bool {
+        let isNotCancelableWithFailedToUploadChanges: Bool = post.isFailed && post.hasLocalChanges() && !autoUploadInteractor.canCancelAutoUpload(of: post)
+        return post.isDraft() || isNotCancelableWithFailedToUploadChanges
     }
 
     func statusAndBadges(separatedBy separator: String) -> String {

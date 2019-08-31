@@ -44,11 +44,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     @IBAction func more(_ sender: Any) {
-        guard let post = post, let button = sender as? UIButton else {
+        guard let viewModel = viewModel, let button = sender as? UIButton else {
             return
         }
 
-        actionSheetDelegate?.showActionSheet(post, from: button)
+        actionSheetDelegate?.showActionSheet(viewModel, from: button)
     }
 
     override func awakeFromNib() {
