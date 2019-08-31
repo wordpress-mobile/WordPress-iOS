@@ -35,6 +35,16 @@ class PostCardStatusViewModelTests: XCTestCase {
                 ButtonGroups(primary: [.edit, .publish, .trash], secondary: [])
             ),
             (
+                "Draft with remote and confirmed local changes",
+                PostBuilder(context).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build(),
+                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.publish, .trash])
+            ),
+            (
+                "Draft with remote and canceled local changes",
+                PostBuilder(context).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().cancelledAutoUpload().build(),
+                ButtonGroups(primary: [.edit, .publish, .trash], secondary: [])
+            ),
+            (
                 "Local published draft with confirmed auto-upload",
                 PostBuilder(context).published().with(remoteStatus: .failed).confirmedAutoUpload().build(),
                 ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.moveToDraft, .trash])
@@ -48,7 +58,17 @@ class PostCardStatusViewModelTests: XCTestCase {
                 "Published post",
                 PostBuilder(context).published().withRemote().build(),
                 ButtonGroups(primary: [.edit, .view, .more], secondary: [.stats, .moveToDraft, .trash])
-            )
+            ),
+            (
+                "Published post with local confirmed changes",
+                PostBuilder(context).published().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build(),
+                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.stats, .moveToDraft, .trash])
+            ),
+            (
+                "Published post with canceled local changes",
+                PostBuilder(context).published().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build(),
+                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.stats, .moveToDraft, .trash])
+            ),
         ]
 
         // Act and Assert
