@@ -332,21 +332,28 @@ class PostCardCellTests: XCTestCase {
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
-    func testShowsWillBeUploadedMessageForDrafts() {
-        // Arrange
-        let posts = [
-            PostBuilder(context).drafted().with(remoteStatus: .failed).confirmedAutoUpload().build(),
-            PostBuilder(context).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build()
-        ]
+    func testShowsWillBeUploadedMessageForDraftsWithRemote() {
+        // Given
+        let post = PostBuilder(context).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
-        posts.forEach { post in
-            // Act
-            postCell.configure(with: post)
+        // When
+        postCell.configure(with: post)
 
-            // Assert
-            XCTAssertEqual(postCell.statusLabel.text, StatusMessages.draftWillBeUploaded)
-            XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
-        }
+        // Then
+        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.draftWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
+    }
+
+    func testShowsLocalChangesMessageForLocalDrafts() {
+        // Given
+        let post = PostBuilder(context).drafted().with(remoteStatus: .failed).build()
+
+        // When
+        postCell.configure(with: post)
+
+        // Then
+        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.localChanges)
+        XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
     private func postCellFromNib() -> PostCardCell {
