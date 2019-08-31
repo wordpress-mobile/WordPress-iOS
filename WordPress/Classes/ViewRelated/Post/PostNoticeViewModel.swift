@@ -7,6 +7,7 @@ enum PostNoticeUserInfoKey {
 struct PostNoticeViewModel {
     private let post: AbstractPost
     private let postCoordinator: PostCoordinator
+    private let autoUploadInteractor = PostAutoUploadInteractor()
 
     init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared) {
         self.post = post
@@ -201,8 +202,7 @@ struct PostNoticeViewModel {
     }
 
     private var failureAction: FailureAction {
-        let interactor = PostAutoUploadInteractor()
-        return interactor.canCancelAutoUpload(of: post) ? .cancel : .retry
+        return autoUploadInteractor.canCancelAutoUpload(of: post) ? .cancel : .retry
     }
 
     // MARK: - Action Handlers
