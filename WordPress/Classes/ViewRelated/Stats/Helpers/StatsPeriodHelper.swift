@@ -47,7 +47,7 @@ class StatsPeriodHelper {
 
         switch period {
         case .day:
-            return date < currentDate
+            return date < currentDate.normalizedDate()
         case .week:
             let week = weekIncludingDate(date)
             guard let weekEnd = week?.weekEnd,

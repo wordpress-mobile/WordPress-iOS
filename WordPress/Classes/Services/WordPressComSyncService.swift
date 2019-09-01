@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressKit
 
 /// WordPressComSyncService encapsulates all of the logic related to Logging into a WordPress.com account, and syncing the
 /// User's blogs.
@@ -17,7 +17,24 @@ class WordPressComSyncService {
     func syncWPCom(authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
-        let newAccount = accountService.createOrUpdateAccount(withAuthToken: authToken)
+        accountService.createOrUpdateAccount(withAuthToken: authToken, success: { account in
+            self.syncOrAssociateBlogs(account: account, isJetpackLogin: isJetpackLogin, onSuccess: onSuccess, onFailure: onFailure)
+        }, failure: { error in
+            onFailure(error)
+        })
+    }
+
+    /// Syncs or associates blogs for the specified account.
+    ///
+    /// - Parameters:
+    ///   - account: The WPAccount for which to sync/associate blogs.
+    ///   - isJetpackLogin: Whether a Jetpack connected account is being logged into.
+    ///   - onSuccess: Success block
+    ///   - onFailure: Failure block
+    ///
+    func syncOrAssociateBlogs(account: WPAccount, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
 
         let onFailureInternal = { (error: Error) in
             /// At this point the user is authed and there is a valid account in core data. Make a note of the error and just dismiss
@@ -28,23 +45,21 @@ class WordPressComSyncService {
         }
 
         let onSuccessInternal = {
-            accountService.updateUserDetails(for: newAccount, success: {
-                onSuccess(newAccount)
-            }, failure: onFailureInternal)
+            onSuccess(account)
         }
 
-        if isJetpackLogin && !accountService.isDefaultWordPressComAccount(newAccount) {
+        if isJetpackLogin && !accountService.isDefaultWordPressComAccount(account) {
             let blogService = BlogService(managedObjectContext: context)
-            blogService.associateSyncedBlogs(toJetpackAccount: newAccount, success: onSuccessInternal, failure: onFailureInternal)
+            blogService.associateSyncedBlogs(toJetpackAccount: account, success: onSuccessInternal, failure: onFailureInternal)
 
         } else {
-            if accountService.defaultWordPressComAccount()?.isEqual(newAccount) == false {
+            if accountService.defaultWordPressComAccount()?.isEqual(account) == false {
                 accountService.removeDefaultWordPressComAccount()
             }
 
-            accountService.setDefaultWordPressComAccount(newAccount)
+            accountService.setDefaultWordPressComAccount(account)
 
-            BlogSyncFacade().syncBlogs(for: newAccount, success: onSuccessInternal, failure: onFailureInternal)
+            BlogSyncFacade().syncBlogs(for: account, success: onSuccessInternal, failure: onFailureInternal)
         }
     }
 }
