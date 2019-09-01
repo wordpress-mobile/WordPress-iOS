@@ -792,7 +792,10 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        tableView.displayGhostContent(options: ghostOptions)
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        tableView.displayGhostContent(options: ghostOptions, style: style)
         tableView.isScrollEnabled = false
         noResultsViewController.view.isHidden = true
     }
