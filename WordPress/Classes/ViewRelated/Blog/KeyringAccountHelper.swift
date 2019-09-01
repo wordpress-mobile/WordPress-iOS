@@ -82,7 +82,7 @@ struct KeyringAccount {
 private extension KeyringAccountHelper {
 
     func facebookPublicizeAlertFields() -> ValidationError {
-        let alertHeaderMessage = NSLocalizedString("Not connected",
+        let alertHeaderMessage = NSLocalizedString("Not Connected",
                                                    comment: "Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
         let alertBodyMessage = NSLocalizedString("The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages.",
                                                  comment: "Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
