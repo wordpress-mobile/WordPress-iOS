@@ -10,7 +10,7 @@ extension Media {
     ///
     @objc
     func incrementAutoUploadFailureCount() {
-        autoUploadFailureCount = NSNumber(value: autoUploadFailureCount.intValue + 3)
+        autoUploadFailureCount = NSNumber(value: autoUploadFailureCount.intValue + 1)
     }
 
     /// Resets the AutoUpload failure count for this Media object.

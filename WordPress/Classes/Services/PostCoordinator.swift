@@ -268,7 +268,7 @@ class PostCoordinator: NSObject {
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
         post.managedObjectContext?.perform {
             if status == .failed {
-                post.processUploadFailure()
+                post.failedToUpload()
             } else {
                 post.remoteStatus = status
             }

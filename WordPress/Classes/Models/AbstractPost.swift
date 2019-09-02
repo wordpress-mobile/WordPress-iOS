@@ -71,7 +71,7 @@ extension AbstractPost {
     ///     eventually be made private.
     ///
     @objc
-    func processUploadFailure() {
+    func failedToUpload() {
         remoteStatus = .failed
 
         if !hasRemote() {
