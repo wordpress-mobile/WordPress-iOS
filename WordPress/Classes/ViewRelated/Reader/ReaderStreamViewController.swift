@@ -979,14 +979,18 @@ import WordPressFlux
             return
         }
 
-        guard let post = content.content?.last as? ReaderPost else {
+        guard
+            let posts = content.content,
+            let post = posts.last as? ReaderPost,
+            let sortDate = post.sortDate
+        else {
             DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
         footerView.showSpinner(true)
 
-        let earlierThan = post.sortDate
+        let earlierThan = sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
         let offset = content.contentCount
