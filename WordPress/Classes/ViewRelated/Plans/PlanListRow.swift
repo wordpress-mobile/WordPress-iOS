@@ -25,6 +25,7 @@ struct PlanListRow: ImmuTableRow {
         cell.detailTextLabel?.textColor = .neutral(.shade30)
         cell.detailTextLabel?.font = WPFontManager.systemRegularFont(ofSize: 14.0)
         cell.separatorInset = UIEdgeInsets.zero
+        cell.backgroundColor = .listForeground
     }
 
     fileprivate var attributedTitle: NSAttributedString {

@@ -32,7 +32,7 @@ enum FeatureFlag: Int {
             if BuildConfiguration.current == .a8cBranchTest || BuildConfiguration.current == .a8cPrereleaseTesting {
                 return false
             }
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .statsAsyncLoading:
             return BuildConfiguration.current == .localDeveloper
         }

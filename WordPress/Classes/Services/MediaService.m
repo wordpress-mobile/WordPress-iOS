@@ -256,12 +256,12 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
             mediaInContext.error = nil;
-            
+
             if (!automatedRetry) {
                 [mediaInContext resetAutoUploadFailureCount];
             }
             
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
         }
     }];
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {

@@ -63,13 +63,14 @@ class PostCoordinator: NSObject {
     ///
     func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
         var post = postToSave
+
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
             post = originalPost
             post.applyRevision()
             post.deleteRevision()
         }
 
-        guard uploadMedia(for: postToSave, automatedRetry: automatedRetry) else {
+        guard uploadMedia(for: post, automatedRetry: automatedRetry) else {
             change(post: post, status: .failed)
             return
         }
@@ -273,13 +274,13 @@ class PostCoordinator: NSObject {
             }
 
             try? post.managedObjectContext?.save()
-            }
+        }
     }
 }
 
 extension PostCoordinator: Uploader {
     func resume() {
-        let service = PostService(managedObjectContext: mainContext)
+        let service = PostService(managedObjectContext: backgroundContext)
 
         service.getFailedPosts { [weak self] posts in
             guard let self = self else {

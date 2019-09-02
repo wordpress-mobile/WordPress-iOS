@@ -86,9 +86,18 @@ open class CommentsTableViewCell: WPTableViewCell {
     }
 
     fileprivate func refreshTimestampLabel() {
+        guard let timestamp = timestamp else {
+            return
+        }
         let style               = Style.timestampStyle(isApproved: approved)
-        let unwrappedTimestamp  = timestamp ?? String()
-        timestampLabel?.attributedText = NSAttributedString(string: unwrappedTimestamp, attributes: style)
+        let formattedTimestamp: String
+        if approved {
+            formattedTimestamp = timestamp
+        } else {
+            let pendingLabel = NSLocalizedString("Pending", comment: "Status name for a comment that hasn't yet been approved.")
+            formattedTimestamp = "\(timestamp) · \(pendingLabel)"
+        }
+        timestampLabel?.attributedText = NSAttributedString(string: formattedTimestamp, attributes: style)
     }
 
     fileprivate func refreshBackground() {
