@@ -135,23 +135,6 @@ static ContextManager *_override;
 
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
 {
-    __block NSManagedObjectContext *currentContext = context;
-    
-    while (currentContext.parentContext != nil) {
-        [currentContext performBlockAndWait:^{
-            NSError *error;
-            
-            if (![currentContext save:&error]) {
-                DDLogError(@"Fatal Core Data Error encountered — throwing an exception. Underlying error is:\n %@", error);
-                @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
-                                               reason:[NSString stringWithFormat:@"Unresolved Core Data save error - derived context. Core Data Error Domain: %@, code: %i", error.domain, error.code]
-                                             userInfo:error.userInfo];
-            }
-            
-            currentContext = currentContext.parentContext;
-        }];
-    }
-    
     [context performBlockAndWait:^{
         [self internalSaveContext:context];
     }];
