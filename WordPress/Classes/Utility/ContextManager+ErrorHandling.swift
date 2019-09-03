@@ -51,18 +51,21 @@ private let coreDataKnownErrorCodes = [
 ]
 
 private extension NSExceptionName {
-    static let coreDataSaveException = NSExceptionName("Unresolved Core Data save error")
+    static let coreDataSaveMainException = NSExceptionName("Unresolved Core Data save error (Main Context)")
+    static let coreDataSaveDerivedException = NSExceptionName("Unresolved Core Data save error (Derived Context)")
 }
 
 extension ContextManager {
-    @objc
-    func handleSaveError(_ error: NSError) {
+    @objc(handleSaveError:inContext:)
+    func handleSaveError(_ error: NSError, in context: NSManagedObjectContext) {
+        let isMainContext = context == mainContext
+        let exceptionName: NSExceptionName = isMainContext ? .coreDataSaveMainException : .coreDataSaveDerivedException
         let reason = reasonForError(error)
         DDLogError("Unresolved Core Data save error: \(error)")
         DDLogError("Generating exception with reason:\n\(reason)")
         // Sentry is choking when userInfo is too big and not sending crash reports
         // For debugging we can still see the userInfo details since we're logging the full error above
-        let exception = NSException(name: .coreDataSaveException, reason: reason, userInfo: nil)
+        let exception = NSException(name: exceptionName, reason: reason, userInfo: nil)
         exception.raise()
     }
 

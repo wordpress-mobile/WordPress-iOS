@@ -117,7 +117,7 @@ static ContextManager *_override;
         }
 
         if (![context save:&error]) {
-            [self handleSaveError:error];
+            [self handleSaveError:error inContext:context];
         }
 
         if (completionBlock) {
@@ -302,7 +302,7 @@ static ContextManager *_override;
     }
     
     if ([context hasChanges] && ![context save:&error]) {
-        [self handleSaveError:error];
+        [self handleSaveError:error inContext:context];
     }
 }
 
