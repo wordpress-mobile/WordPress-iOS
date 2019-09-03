@@ -9,10 +9,7 @@ extension AccountService {
         }
 
         let accountGroups = Dictionary(grouping: accounts) { $0.userID }
-        for key in accountGroups.keys {
-            guard let group = accountGroups[key], group.count > 1 else {
-                continue
-            }
+        for group in accountGroups.values where group.count > 1 {
             mergeDuplicateAccounts(accounts: group)
         }
 
@@ -34,10 +31,7 @@ extension AccountService {
             destination = defaultAccount
         }
 
-        for account in accounts {
-            if account == destination {
-                continue
-            }
+        for account in accounts where account != destination {
             mergeAccount(account: account, into: destination)
         }
 
@@ -48,7 +42,6 @@ extension AccountService {
     private func mergeAccount(account: WPAccount, into destination: WPAccount) {
         // Move all blogs to the destination account
         destination.addBlogs(account.blogs)
-        account.removeBlogs(account.blogs)
         managedObjectContext.delete(account)
     }
 
