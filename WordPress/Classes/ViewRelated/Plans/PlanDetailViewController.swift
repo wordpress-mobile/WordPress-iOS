@@ -34,6 +34,7 @@ class PlanDetailViewController: UIViewController {
     @IBOutlet weak var planTitleLabel: UILabel!
     @IBOutlet weak var planDescriptionLabel: UILabel!
     @IBOutlet weak var separator: UIView!
+    @IBOutlet weak var headerContainerView: UIView!
 
     fileprivate lazy var currentPlanLabel: UIView = {
         let label = UILabel()
@@ -73,12 +74,19 @@ class PlanDetailViewController: UIViewController {
     }
 
     fileprivate func configureAppearance() {
-        planTitleLabel.textColor = .neutral(.shade70)
-        planDescriptionLabel.textColor = .neutral(.shade30)
+        view.backgroundColor = .basicBackground
+        tableView.backgroundColor = .basicBackground
+
+        planTitleLabel.textColor = .primary
+        planDescriptionLabel.textColor = .text
         dropshadowImageView.backgroundColor = UIColor.white
         configurePlanImageDropshadow()
 
-        separator.backgroundColor = .neutral(.shade5)
+        separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth).isActive = true
+        separator.backgroundColor = .divider
+
+        headerView.backgroundColor = .listBackground
+        headerContainerView.backgroundColor = .listBackground
     }
 
     fileprivate func configureTableView() {
@@ -184,6 +192,8 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             cell.separatorInset = UIEdgeInsets(top: 0, left: separatorInset, bottom: 0, right: separatorInset)
         }
+
+        cell.contentView.backgroundColor = .listForeground
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

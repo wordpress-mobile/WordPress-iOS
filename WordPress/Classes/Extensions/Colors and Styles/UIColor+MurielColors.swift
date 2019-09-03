@@ -159,6 +159,22 @@ extension UIColor {
 
     static var textInverted = UIColor(light: .white, dark: .gray(.shade100))
     static var textPlaceholder = neutral(.shade30)
+    static var placeholderElement: UIColor {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                return UIColor(light: .systemGray5, dark: .systemGray4)
+            }
+        #endif
+        return .gray(.shade10)
+    }
+    static var placeholderElementFaded: UIColor {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                return UIColor(light: .systemGray6, dark: .systemGray5)
+            }
+        #endif
+        return .gray(.shade5)
+    }
 
     /// Muriel/iOS navigation color
     static var appBar = UIColor(light: .brand, dark: .gray(.shade100))
