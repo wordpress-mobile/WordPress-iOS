@@ -60,7 +60,9 @@ extension ContextManager {
         let reason = reasonForError(error)
         DDLogError("Unresolved Core Data save error: \(error)")
         DDLogError("Generating exception with reason:\n\(reason)")
-        let exception = NSException(name: .coreDataSaveException, reason: reason, userInfo: error.userInfo)
+        // Sentry is choking when userInfo is too big and not sending crash reports
+        // For debugging we can still see the userInfo details since we're logging the full error above
+        let exception = NSException(name: .coreDataSaveException, reason: reason, userInfo: nil)
         exception.raise()
     }
 
