@@ -56,7 +56,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
-        AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
         // Configure WPCom API overrides
         configureWordPressComApi()
 
@@ -235,6 +234,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Deferred tasks to speed up app launch
         DispatchQueue.global(qos: .background).async { [weak self] in
+            AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
             MediaCoordinator.shared.refreshMediaStatus()
             PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
