@@ -242,12 +242,12 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         return;
     }
 
-    [self.managedObjectContext performBlockAndWait:^{
+    [self.managedObjectContext performBlock:^{
         Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
             mediaInContext.error = nil;
-            [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
     }];
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
