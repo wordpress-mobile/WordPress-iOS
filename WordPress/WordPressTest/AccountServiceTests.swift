@@ -159,9 +159,9 @@ class AccountServiceTests: XCTestCase {
         account3.uuid = UUID().uuidString
 
         let context = contextManager.mainContext
-        account1.addBlogs(createMockBlogs(withIDs: [1,2,3,4,5,6], in: context))
-        account2.addBlogs(createMockBlogs(withIDs: [1,2,3], in: context))
-        account3.addBlogs(createMockBlogs(withIDs: [4,5,6], in: context))
+        account1.addBlogs(createMockBlogs(withIDs: [1, 2, 3, 4, 5, 6], in: context))
+        account2.addBlogs(createMockBlogs(withIDs: [1, 2, 3], in: context))
+        account3.addBlogs(createMockBlogs(withIDs: [4, 5, 6], in: context))
         contextManager.save(context)
 
         accountService.mergeDuplicatesIfNecessary()
