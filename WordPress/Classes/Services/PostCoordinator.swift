@@ -34,9 +34,18 @@ class PostCoordinator: NSObject {
             post.deleteRevision()
         }
 
+        if post.hasFailedMedia {
+            for media in post.media {
+                guard media.remoteStatus == .failed else {
+                    continue
+                }
+                mediaCoordinator.retryMedia(media)
+            }
+        }
+
         change(post: post, status: .pushing)
 
-        if mediaCoordinator.isUploadingMedia(for: post) {
+        if mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia {
             change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
@@ -147,12 +156,6 @@ class PostCoordinator: NSObject {
     /// - Parameter post: the post to retry the upload
     ///
     @objc func retrySave(of post: AbstractPost) {
-        for media in post.media {
-            guard media.remoteStatus == .failed else {
-                continue
-            }
-            mediaCoordinator.retryMedia(media)
-        }
         save(post: post)
     }
 
@@ -240,7 +243,12 @@ class PostCoordinator: NSObject {
 
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
         post.managedObjectContext?.perform {
-            post.remoteStatus = status
+            if status == .failed {
+                post.failedToUpload()
+            } else {
+                post.remoteStatus = status
+            }
+
             try? post.managedObjectContext?.save()
         }
     }
