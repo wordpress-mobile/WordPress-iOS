@@ -254,7 +254,7 @@ class MediaCoordinator: NSObject {
                             failure: failure)
     }
 
-    @discardableResult private func uploadMedia(_ media: Media) -> Progress {
+    @discardableResult private func uploadMedia(_ media: Media) -> Progress {        
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
@@ -621,7 +621,7 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
 extension MediaCoordinator: Uploader {
     func resume() {
-        let service = MediaService(managedObjectContext: mainContext)
+        let service = MediaService(managedObjectContext: backgroundContext)
 
         service.getFailedMedia { [weak self] media in
             guard let self = self else {

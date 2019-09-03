@@ -208,6 +208,19 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
     remoteMedia.file = [remoteMedia.file stringByReplacingOccurrencesOfString:@".jpeg" withString:@".jpg"];
     NSManagedObjectID *mediaObjectID = media.objectID;
+    
+    // To avoid deadlocks we're creating a derived context instead of using self.managedObjectContext directly.
+    NSManagedObjectContext *synchronousContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    synchronousContext.parentContext = self.managedObjectContext;
+    
+    [synchronousContext performBlockAndWait:^{
+        Media *mediaInContext = (Media *)[synchronousContext existingObjectWithID:mediaObjectID error:nil];
+        if (mediaInContext) {
+            mediaInContext.remoteStatus = MediaRemoteStatusPushing;
+            mediaInContext.error = nil;
+            [[ContextManager sharedInstance] saveContextAndWait:synchronousContext];
+        }
+    }];
 
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         [self.managedObjectContext performBlock:^{
@@ -242,14 +255,6 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         return;
     }
 
-    [self.managedObjectContext performBlockAndWait:^{
-        Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
-        if (mediaInContext) {
-            mediaInContext.remoteStatus = MediaRemoteStatusPushing;
-            mediaInContext.error = nil;
-            [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
-        }
-    }];
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
             [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadSuccessful withBlog:blog];            

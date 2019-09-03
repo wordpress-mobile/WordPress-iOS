@@ -248,7 +248,7 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        let service = PostService(managedObjectContext: mainContext)
+        let service = PostService(managedObjectContext: backgroundContext)
 
         service.getFailedPosts { [weak self] posts in
             guard let self = self else {
