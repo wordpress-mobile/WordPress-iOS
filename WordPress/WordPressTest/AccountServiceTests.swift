@@ -210,7 +210,7 @@ class AccountServiceTests: XCTestCase {
         XCTAssertFalse(account3.isDeleted)
     }
 
-    func createMockBlogs(withIDs IDs:[Int], in context: NSManagedObjectContext) -> Set<Blog> {
+    func createMockBlogs(withIDs IDs: [Int], in context: NSManagedObjectContext) -> Set<Blog> {
         var blogs = Set<Blog>()
         for id in IDs {
             let blog = Blog(context: context)
