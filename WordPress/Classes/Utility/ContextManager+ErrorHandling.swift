@@ -68,7 +68,9 @@ extension ContextManager {
         let exception = NSException(name: exceptionName, reason: reason, userInfo: nil)
         exception.raise()
     }
+}
 
+private extension ContextManager {
     func reasonForError(_ error: NSError) -> String {
         if error.code == NSValidationMultipleErrorsError {
             guard let errors = error.userInfo[NSDetailedErrorsKey] as? [NSError] else {
