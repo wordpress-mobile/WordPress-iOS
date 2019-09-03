@@ -56,7 +56,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
-        AccountService.init(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
+        AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
         // Configure WPCom API overrides
         configureWordPressComApi()
 
