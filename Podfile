@@ -36,12 +36,12 @@ end
 
 def wordpress_ui
     ## for production:
-#    pod 'WordPressUI', '~> 1.3.5.beta.2'
+    pod 'WordPressUI', '~> 1.3.5-beta.2'
 
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'fix/fancy-alert-dark-mode'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'fix/fancy-alert-dark-mode'
 end
 
 def wordpress_kit
@@ -176,9 +176,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.8.0-beta.13'
+    pod 'WordPressAuthenticator', '~> 1.8.0-beta.14'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/more-dark-mode'
+#    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issues/12398-signup-siwa-button'
 
     aztec
     wordpress_ui
