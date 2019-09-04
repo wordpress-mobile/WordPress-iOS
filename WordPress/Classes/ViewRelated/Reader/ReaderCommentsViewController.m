@@ -430,7 +430,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
 
     // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
@@ -473,7 +473,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 //                                                         multiplier:1.0
 //                                                           constant:0.0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
@@ -755,6 +755,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.tableView deselectSelectedRowWithAnimation:YES];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
+    [self.expandableInputAccessoryView resignFirstResponder];
 //    [self.replyTextView resignFirstResponder];
 #pragma clang diagnostic pop
 //    [self refreshReplyTextViewPlaceholder];
