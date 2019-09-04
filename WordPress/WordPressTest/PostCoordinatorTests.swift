@@ -11,7 +11,7 @@ class PostCoordinatorTests: XCTestCase {
     func testDoNotUploadAPostWithFailedMedia() {
         let post = PostBuilder(context).with(image: "test.jpeg", status: .failed).build()
         let postServiceMock = PostServiceMock()
-        let postCoordinator = PostCoordinator(foregroundService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
 
         postCoordinator.save(post: post)
 
@@ -22,7 +22,7 @@ class PostCoordinatorTests: XCTestCase {
     func testUploadAPostWithNoFailedMedia() {
         let post = PostBuilder(context).with(image: "test.jpeg").build()
         let postServiceMock = PostServiceMock()
-        let postCoordinator = PostCoordinator(foregroundService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
 
         postCoordinator.save(post: post)
 

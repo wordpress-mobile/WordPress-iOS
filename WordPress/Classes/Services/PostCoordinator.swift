@@ -6,13 +6,9 @@ class PostCoordinator: NSObject {
 
     @objc static let shared = PostCoordinator()
 
-    private(set) var backgroundContext: NSManagedObjectContext = {
-        let context = ContextManager.sharedInstance().newDerivedContext()
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
+    private let backgroundContext: NSManagedObjectContext
 
-    private let mainContext = ContextManager.sharedInstance().mainContext
+    private let mainContext: NSManagedObjectContext
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
@@ -24,19 +20,19 @@ class PostCoordinator: NSObject {
 
     private let backgroundService: PostService
 
-    private let foregroundService: PostService
+    private let mainService: PostService
 
-    init(foregroundService: PostService? = nil, backgroundService: PostService? = nil) {
-        let backgroundContext: NSManagedObjectContext = {
-            let context = ContextManager.sharedInstance().newDerivedContext()
-            context.automaticallyMergesChangesFromParent = true
-            return context
-        }()
+    init(mainContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext,
+         backgroundContext: NSManagedObjectContext = ContextManager.sharedInstance().newDerivedContext(),
+         mainService: PostService? = nil,
+         backgroundService: PostService? = nil) {
 
-        let mainContext = ContextManager.sharedInstance().mainContext
+        self.mainContext = mainContext
+        self.backgroundContext = backgroundContext
+        backgroundContext.automaticallyMergesChangesFromParent = true
 
         self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
-        self.foregroundService = foregroundService ?? PostService(managedObjectContext: mainContext)
+        self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
     }
 
     /// Saves the post to both the local database and the server if available.
@@ -184,7 +180,7 @@ class PostCoordinator: NSObject {
     }
 
     private func upload(post: AbstractPost) {
-        foregroundService.uploadPost(post, success: { uploadedPost in
+        mainService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             SearchManager.shared.indexItem(uploadedPost)
@@ -271,7 +267,7 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        foregroundService.getFailedPosts { [weak self] posts in
+        mainService.getFailedPosts { [weak self] posts in
             guard let self = self else {
                 return
             }
