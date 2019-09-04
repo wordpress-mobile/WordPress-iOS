@@ -6,7 +6,12 @@ import Nimble
 
 class PostCoordinatorTests: XCTestCase {
 
-    private let context = TestContextManager().newDerivedContext()
+    private var context: NSManagedObjectContext!
+
+    override func setUp() {
+        super.setUp()
+        context = TestContextManager().newDerivedContext()
+    }
 
     func testDoNotUploadAPostWithFailedMedia() {
         let postServiceMock = PostServiceMock()
