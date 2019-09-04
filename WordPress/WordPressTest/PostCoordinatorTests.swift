@@ -46,8 +46,8 @@ class PostCoordinatorTests: XCTestCase {
     }
 }
 
-class PostServiceMock: PostService {
-    var didCallUploadPost = false
+private class PostServiceMock: PostService {
+    private(set) var didCallUploadPost = false
 
     override func uploadPost(_ post: AbstractPost, success: ((AbstractPost) -> Void)?, failure: @escaping (Error?) -> Void) {
         didCallUploadPost = true
