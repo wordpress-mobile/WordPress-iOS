@@ -89,7 +89,10 @@ class PostBuilder {
         }
         media.localURL = image
         media.localThumbnailURL = "thumb-\(image)"
-        if let status = status { media.remoteStatus = status }
+        
+        if let status = status {
+            media.remoteStatus = status
+        }
 
         media.addPostsObject(post)
         post.addMediaObject(media)
