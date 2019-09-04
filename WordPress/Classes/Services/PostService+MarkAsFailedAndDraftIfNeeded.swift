@@ -8,7 +8,7 @@
     ///     and the logic behind processing an upload failure.  In fact I think the `remoteStatus` setter should
     ///     eventually be made private.
     ///
-    func markAsFailedAndDraft(post: AbstractPost) {
+    func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
         guard post.remoteStatus != .failed, !post.hasRemote() else {
             return
         }

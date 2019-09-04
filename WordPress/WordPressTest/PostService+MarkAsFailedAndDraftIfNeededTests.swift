@@ -9,7 +9,7 @@ class PostServiceMarkAsFailedAndDraftTests: XCTestCase {
         let post = PostBuilder().build()
         let postService = PostService()
 
-        postService.markAsFailedAndDraft(post: post)
+        postService.markAsFailedAndDraftIfNeeded(post: post)
 
         expect(post.remoteStatus).to(equal(.failed))
         expect(post.status).to(equal(.draft))
