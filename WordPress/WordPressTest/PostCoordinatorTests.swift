@@ -7,7 +7,7 @@ import Nimble
 class PostCoordinatorTests: XCTestCase {
 
     private let context = TestContextManager().newDerivedContext()
-    
+
     func testDoNotUploadAPostWithFailedMedia() {
         let post = PostBuilder(context).with(image: "test.jpeg", status: .failed).build()
         let postServiceMock = PostServiceMock()
