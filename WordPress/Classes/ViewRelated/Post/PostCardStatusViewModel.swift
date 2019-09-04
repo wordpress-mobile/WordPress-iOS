@@ -68,12 +68,15 @@ class PostCardStatusViewModel: NSObject {
             if autoUploadInteractor.autoUploadAction(for: post) != .upload {
                 return defaultFailedMessage
             }
+            if post.hasRemote() {
+                return StatusMessages.changesWillBeUploaded
+            }
 
             switch postStatus {
             case .draft:
-                return canCancelAutoUpload ? StatusMessages.changesWillBeUploaded : StatusMessages.draftWillBeUploaded
+                return StatusMessages.draftWillBeUploaded
             case .publish:
-                return post.hasRemote() ? StatusMessages.changesWillBeUploaded : StatusMessages.postWillBePublished
+                return StatusMessages.postWillBePublished
             default:
                 return defaultFailedMessage
             }

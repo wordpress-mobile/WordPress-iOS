@@ -114,10 +114,12 @@ struct PostNoticeViewModel {
         }
 
         guard let postStatus = post.status,
-            autoUploadInteractor.autoUploadAction(for: post) == .upload,
-            autoUploadInteractor.canCancelAutoUpload(of: post) else {
-                
+            autoUploadInteractor.autoUploadAction(for: post) == .upload else {
             return defaultTitle
+        }
+
+        if post.hasRemote() {
+            return FailureTitles.changesWillBeUploaded
         }
 
         switch postStatus {
@@ -266,6 +268,8 @@ struct PostNoticeViewModel {
                                                           comment: "Title of notification displayed when a page has failed to upload.")
         static let postFailedToUpload = NSLocalizedString("Post failed to upload",
                                                           comment: "Title of notification displayed when a post has failed to upload.")
+        static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
+                                                             comment: "Text displayed in notice after the app fails to upload a post.")
     }
 
     enum FailureActionTitles {
