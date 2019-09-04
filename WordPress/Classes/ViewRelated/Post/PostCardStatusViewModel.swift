@@ -71,9 +71,9 @@ class PostCardStatusViewModel: NSObject {
 
             switch postStatus {
             case .draft:
-                return canCancelAutoUpload ? StatusMessages.draftWillBeUploaded : StatusMessages.localChanges
+                return canCancelAutoUpload ? StatusMessages.changesWillBeUploaded : StatusMessages.draftWillBeUploaded
             case .publish:
-                return StatusMessages.postWillBePublished
+                return post.hasRemote() ? StatusMessages.changesWillBeUploaded : StatusMessages.postWillBePublished
             default:
                 return defaultFailedMessage
             }
@@ -240,5 +240,7 @@ class PostCardStatusViewModel: NSObject {
         static let localChanges = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
         static let draftWillBeUploaded = NSLocalizedString("Draft will be uploaded next time your device is online",
                                                            comment: "Message shown in post list when a draft is scheduled to be automatically uploaded.")
+        static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
+                                                             comment: "Message shown in post list when a post's local changes will be automatically uploaded when the device is online.")
     }
 }
