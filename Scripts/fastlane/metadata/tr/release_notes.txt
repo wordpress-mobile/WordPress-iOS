@@ -1,9 +1,0 @@
-13.0
------
-Telefonunuzda tek bir saat dilimi ayarı var. Web siteniz farklı bir ayar kullanıyor. Site istatistikleriniz neyi temel alıyor? Bu trafik artışı sabah mı yoksa akşam mı gerçekleşti? Yanıt: İstatistikleriniz artık web sitenizin saat dilimi ayarlarını temel alıyor.
-
-Uygun kontrasta sahip tutarlı renk düzenleri, kullanıcıları memnun eden erişilebilir ve kullanımı kolay bir uygulama oluşturuyor. 13.0 sürümü daha tutarlı. Bu memnuniyetin keyfini çıkarın.
-
-Blok düzenleyici her geçen gün daha da iyileşiyor. Mümkün değil mi dediniz? O zaman sayalım: İlk kez blok tabanlı bir gönderi* oluşturduğunuzda otomatik olarak etkinleştirilir ve bunu site bazında etkinleştirip devre dışı bırakabildiğinizden her kullanıcı, istediği düzenleyici deneyimini elde eder. İçerik oluşturma işleminin basitleştirilmesi için, gönderi başlığından blok eklenirken bir “bloğu buraya ekleyin” göstergesi görünür. Yeni blok eklendiğinde odağın yeni blokta olması için gönderi başlığının seçimi kaldırılır.
-
-* 12.9 sürümünde hizmeti kapatmadıysanız! Biz canavar değiliz.
