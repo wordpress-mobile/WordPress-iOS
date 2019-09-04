@@ -106,6 +106,10 @@ extension AbstractPost {
     ///
     @objc
     func failedToUpload() {
+        guard remoteStatus != .failed, !hasRemote() else {
+            return
+        }
+        
         remoteStatus = .failed
 
         if !hasRemote() {
