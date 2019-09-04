@@ -22,17 +22,18 @@ class PostCoordinator: NSObject {
 
     private let mainService: PostService
 
-    init(mainContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext,
-         backgroundContext: NSManagedObjectContext = ContextManager.sharedInstance().newDerivedContext(),
-         mainService: PostService? = nil,
-         backgroundService: PostService? = nil) {
+    init(mainService: PostService? = nil, backgroundService: PostService? = nil) {
+        let contextManager = ContextManager.sharedInstance()
+
+        let mainContext = contextManager.mainContext
+        let backgroundContext = contextManager.newDerivedContext()
+        backgroundContext.automaticallyMergesChangesFromParent = true
 
         self.mainContext = mainContext
         self.backgroundContext = backgroundContext
-        backgroundContext.automaticallyMergesChangesFromParent = true
 
-        self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
+        self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
     }
 
     /// Saves the post to both the local database and the server if available.
