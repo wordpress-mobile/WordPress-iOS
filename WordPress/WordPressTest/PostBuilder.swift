@@ -85,11 +85,11 @@ class PostBuilder {
         }
 
         guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as? Media else {
-             return self
+            return self
         }
         media.localURL = image
         media.localThumbnailURL = "thumb-\(image)"
-        
+
         if let status = status {
             media.remoteStatus = status
         }
