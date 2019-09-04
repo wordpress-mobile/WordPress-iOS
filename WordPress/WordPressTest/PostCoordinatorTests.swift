@@ -9,9 +9,10 @@ class PostCoordinatorTests: XCTestCase {
     private let context = TestContextManager().newDerivedContext()
 
     func testDoNotUploadAPostWithFailedMedia() {
-        let post = PostBuilder(context).with(image: "test.jpeg", status: .failed).build()
         let postServiceMock = PostServiceMock()
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let post = PostBuilder(context).with(image: "test.jpeg", status: .failed).build()
+        post.remoteStatus = .local
 
         postCoordinator.save(post: post)
 
@@ -27,6 +28,16 @@ class PostCoordinatorTests: XCTestCase {
         postCoordinator.save(post: post)
 
         expect(postServiceMock.didCallUploadPost).to(beTrue())
+    }
+
+    func testEventuallyMarkThePostRemoteStatusAsUploading() {
+        let post = PostBuilder(context).with(image: "test.jpeg").build()
+        let postServiceMock = PostServiceMock()
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.save(post: post)
+
+        expect(post.remoteStatus).toEventually(equal(.pushing))
     }
 }
 
