@@ -234,7 +234,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Deferred tasks to speed up app launch
         DispatchQueue.global(qos: .background).async { [weak self] in
-            AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
+            self?.mergeDuplicateAccountsIfNeeded()
             MediaCoordinator.shared.refreshMediaStatus()
             PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
@@ -248,6 +248,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = WPTabBarController.sharedInstance()
 
         setupNoticePresenter()
+    }
+
+    private func mergeDuplicateAccountsIfNeeded() {
+        let context = ContextManager.shared.mainContext
+        context.perform {
+            AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
+        }
     }
 
     private func setupPingHub() {
