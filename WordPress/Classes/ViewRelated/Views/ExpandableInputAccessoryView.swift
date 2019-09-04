@@ -76,6 +76,7 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
         case normal
     }
     
+    @IBOutlet weak var dividerViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var dividerView: UIView!
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var textViewTrailingConstraint: NSLayoutConstraint!
@@ -126,6 +127,7 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             self.textViewTrailingConstraint.constant = self.expandedTextViewConstraints.trailing
             self.textViewLeadingConstraint.constant = self.expandedTextViewConstraints.leading
             self.textViewTopConstraint.constant = self.expandedTextViewConstraints.top
+            self.dividerViewTopConstraint.constant = 44.0
             self.headerLabel.alpha = 1
             self.superview?.setNeedsLayout()
             self.superview?.layoutIfNeeded()
@@ -145,6 +147,7 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             self.textViewTrailingConstraint.constant = self.collapsedTextViewConstraints.trailing
             self.textViewLeadingConstraint.constant = self.collapsedTextViewConstraints.leading
             self.textViewTopConstraint.constant = self.collapsedTextViewConstraints.top
+            self.dividerViewTopConstraint.constant = 0
             self.headerLabel.alpha = 0
             self.superview?.setNeedsLayout()
             self.superview?.layoutIfNeeded()
