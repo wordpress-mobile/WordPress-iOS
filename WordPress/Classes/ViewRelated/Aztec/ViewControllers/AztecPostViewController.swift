@@ -1904,7 +1904,11 @@ extension AztecPostViewController {
             processMediaAttachments()
         }
 
-        refreshTextViewTextColor()
+        #if XCODE11
+        if #available(iOS 13, *) {
+            refreshTextViewTextColor()
+        }
+        #endif
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
