@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="Aw3-5A-8B3" customClass="ExpandableInputAccessoryView" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z6P-QG-lRU">
@@ -41,7 +41,7 @@
                     <state key="normal" title="Send"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reply to post" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2VP-Vh-Erd" userLabel="Placeholder">
-                    <rect key="frame" x="50" y="12" width="100.5" height="21"/>
+                    <rect key="frame" x="51" y="12" width="100.5" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.63529411759999999" green="0.65490196079999996" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -73,14 +73,13 @@
                 <constraint firstAttribute="trailing" secondItem="vkS-sS-MKg" secondAttribute="trailing" constant="12" id="FxP-Ee-OlV"/>
                 <constraint firstItem="z6P-QG-lRU" firstAttribute="centerX" secondItem="Kom-M1-ozf" secondAttribute="centerX" id="KGE-jJ-s28"/>
                 <constraint firstItem="wAM-wr-uzv" firstAttribute="top" secondItem="Aw3-5A-8B3" secondAttribute="top" constant="6" id="M0b-Go-7VP"/>
-                <constraint firstItem="z6P-QG-lRU" firstAttribute="leading" secondItem="2VP-Vh-Erd" secondAttribute="trailing" constant="19" id="Px0-m0-Ep8"/>
                 <constraint firstItem="wAM-wr-uzv" firstAttribute="leading" secondItem="Aw3-5A-8B3" secondAttribute="leading" constant="45" id="Tbx-3b-KVU"/>
+                <constraint firstItem="mvj-xP-Obp" firstAttribute="top" secondItem="Aw3-5A-8B3" secondAttribute="top" constant="8" id="ajX-xn-YWC"/>
                 <constraint firstItem="UIn-74-tKQ" firstAttribute="leading" secondItem="Aw3-5A-8B3" secondAttribute="leading" id="cey-10-XUj"/>
                 <constraint firstItem="vkS-sS-MKg" firstAttribute="top" secondItem="Aw3-5A-8B3" secondAttribute="top" constant="7" id="gdq-G1-oj8"/>
                 <constraint firstItem="2VP-Vh-Erd" firstAttribute="top" secondItem="wAM-wr-uzv" secondAttribute="top" constant="6" id="kfJ-9x-KAO"/>
-                <constraint firstAttribute="bottom" secondItem="mvj-xP-Obp" secondAttribute="bottom" constant="4" id="msN-pJ-oFd"/>
-                <constraint firstAttribute="bottom" secondItem="wAM-wr-uzv" secondAttribute="bottom" constant="6" id="nD5-9f-cc9"/>
-                <constraint firstItem="2VP-Vh-Erd" firstAttribute="leading" secondItem="wAM-wr-uzv" secondAttribute="leading" constant="5" id="shU-HW-tWa"/>
+                <constraint firstAttribute="bottom" secondItem="wAM-wr-uzv" secondAttribute="bottom" constant="22" id="nD5-9f-cc9"/>
+                <constraint firstItem="2VP-Vh-Erd" firstAttribute="leading" secondItem="wAM-wr-uzv" secondAttribute="leading" constant="6" id="shU-HW-tWa"/>
                 <constraint firstAttribute="trailing" secondItem="wAM-wr-uzv" secondAttribute="trailing" constant="60" id="tqB-sk-iuo"/>
                 <constraint firstItem="mvj-xP-Obp" firstAttribute="leading" secondItem="Aw3-5A-8B3" secondAttribute="leading" constant="5" id="wul-D0-NdK"/>
             </constraints>
@@ -98,7 +97,7 @@
                 <outlet property="textViewTopConstraint" destination="M0b-Go-7VP" id="nDb-bS-DcZ"/>
                 <outlet property="textViewTrailingConstraint" destination="tqB-sk-iuo" id="Up3-sc-O3A"/>
             </connections>
-            <point key="canvasLocation" x="47.826086956521742" y="-273.88392857142856"/>
+            <point key="canvasLocation" x="47.826086956521742" y="-271.20535714285711"/>
         </view>
     </objects>
     <resources>
