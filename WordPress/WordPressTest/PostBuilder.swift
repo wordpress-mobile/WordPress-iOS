@@ -79,7 +79,7 @@ class PostBuilder {
         return self
     }
 
-    func with(image: String) -> PostBuilder {
+    func with(image: String, status: MediaRemoteStatus? = nil) -> PostBuilder {
         guard let context = post.managedObjectContext else {
             return self
         }
@@ -89,6 +89,7 @@ class PostBuilder {
         }
         media.localURL = image
         media.localThumbnailURL = "thumb-\(image)"
+        if let status = status { media.remoteStatus = status }
 
         media.addPostsObject(post)
         post.addMediaObject(media)

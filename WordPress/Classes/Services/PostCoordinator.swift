@@ -22,6 +22,23 @@ class PostCoordinator: NSObject {
         return MediaCoordinator.shared
     }()
 
+    private let backgroundService: PostService
+
+    private let foregroundService: PostService
+
+    init(foregroundService: PostService? = nil, backgroundService: PostService? = nil) {
+        let backgroundContext: NSManagedObjectContext = {
+            let context = ContextManager.sharedInstance().newDerivedContext()
+            context.automaticallyMergesChangesFromParent = true
+            return context
+        }()
+
+        let mainContext = ContextManager.sharedInstance().mainContext
+
+        self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
+        self.foregroundService = foregroundService ?? PostService(managedObjectContext: mainContext)
+    }
+
     /// Saves the post to both the local database and the server if available.
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
     ///
@@ -163,13 +180,11 @@ class PostCoordinator: NSObject {
     /// The main cause of wrong status is the app being killed while uploads of posts are happening.
     ///
     @objc func refreshPostStatus() {
-        let service = PostService(managedObjectContext: backgroundContext)
-        service.refreshPostStatus()
+        backgroundService.refreshPostStatus()
     }
 
     private func upload(post: AbstractPost) {
-        let postService = PostService(managedObjectContext: mainContext)
-        postService.uploadPost(post, success: { uploadedPost in
+        foregroundService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             SearchManager.shared.indexItem(uploadedPost)
@@ -256,9 +271,7 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        let service = PostService(managedObjectContext: mainContext)
-
-        service.getFailedPosts { [weak self] posts in
+        foregroundService.getFailedPosts { [weak self] posts in
             guard let self = self else {
                 return
             }
