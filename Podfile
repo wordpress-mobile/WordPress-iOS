@@ -176,9 +176,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    # pod 'WordPressAuthenticator', '~> 1.8.0-beta.15'
+    # pod 'WordPressAuthenticator', '~> 1.8.0-beta.16'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/12442-siwa_error_alert'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/12434-siwa_epilogue_user_info'
 
     aztec
     wordpress_ui
