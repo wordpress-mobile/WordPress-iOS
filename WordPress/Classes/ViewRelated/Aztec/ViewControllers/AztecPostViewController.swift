@@ -542,6 +542,18 @@ class AztecPostViewController: UIViewController, PostEditor {
         configureMediaProgressView(in: navigationController.navigationBar)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        #if XCODE11
+            if #available(iOS 13, *) {
+                if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true {
+                    refreshTextViewTextColor()
+                }
+            }
+        #endif
+    }
+
 
     // MARK: - Title and Title placeholder position methods
 
@@ -769,6 +781,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         } else {
             navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         }
+    }
+
+    func refreshTextViewTextColor() {
+        htmlTextView.textColor = .text
     }
 
     func setHTML(_ html: String) {
@@ -1887,6 +1903,8 @@ extension AztecPostViewController {
         if editorView.editingMode == .richText {
             processMediaAttachments()
         }
+
+        refreshTextViewTextColor()
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
