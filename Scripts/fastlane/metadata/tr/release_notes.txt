@@ -1,5 +1,6 @@
-13.1
------
-- Artık uygulama içinden kullanıcı adınızı değiştirebilirsiniz.
-- İndirilebilir Dosyalarınızla ilgili veriler artık Dönem istatistiklerinde mevcuttur.
-- Artık “…” menüsünden erişilebilen yeni “Hemen Yayımla” düğmesine dokunarak Gönderiler listesindeki taslakları yayımlayabilirsiniz.
+* Boşta, boşta demektir: Uygulamayı kullanmadığınızda, daha az iş yapar ve cihazınızın performansını artırır.
+* Site listenizde aynı site bazen birden fazla kez mi gösteriliyordu? Bunu düzelttik.
+* Bildirim ayarlarınızı Bildirimler ekranından yönetin. (Kulağa mantıklı geliyor değil mi?)
+* Görüntülenen tarih ve sitenizin saat dilimi artık kusursuz biçimde eşitlenmiş durumda.
+* Daha kolay ve daha istikrarlı gönderi önizlemelerinin keyfini çıkarın.
+
