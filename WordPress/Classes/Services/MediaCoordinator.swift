@@ -255,7 +255,7 @@ class MediaCoordinator: NSObject {
     }
 
     @discardableResult private func uploadMedia(_ media: Media) -> Progress {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().newDerivedContext())
 
         var progress: Progress? = nil
 
