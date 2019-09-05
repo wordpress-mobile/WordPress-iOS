@@ -621,7 +621,7 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
 extension MediaCoordinator: Uploader {
     func resume() {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = MediaService(managedObjectContext: mainContext)
 
         service.getFailedMedia { [weak self] media in
             guard let self = self else {
