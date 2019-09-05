@@ -3,11 +3,11 @@ import Foundation
 extension AccountService {
 
     func mergeDuplicatesIfNecessary() {
-        let accounts = allAccounts()
-        guard accounts.count > 1 else {
+        guard numberOfAccounts() > 1 else {
             return
         }
 
+        let accounts = allAccounts()
         let accountGroups = Dictionary(grouping: accounts) { $0.userID }
         for group in accountGroups.values where group.count > 1 {
             mergeDuplicateAccounts(accounts: group)
