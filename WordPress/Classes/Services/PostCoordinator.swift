@@ -6,13 +6,9 @@ class PostCoordinator: NSObject {
 
     @objc static let shared = PostCoordinator()
 
-    private(set) var backgroundContext: NSManagedObjectContext = {
-        let context = ContextManager.sharedInstance().newDerivedContext()
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
+    private let backgroundContext: NSManagedObjectContext
 
-    private let mainContext = ContextManager.sharedInstance().mainContext
+    private let mainContext: NSManagedObjectContext
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
@@ -21,6 +17,24 @@ class PostCoordinator: NSObject {
     private lazy var mediaCoordinator: MediaCoordinator = {
         return MediaCoordinator.shared
     }()
+
+    private let backgroundService: PostService
+
+    private let mainService: PostService
+
+    init(mainService: PostService? = nil, backgroundService: PostService? = nil) {
+        let contextManager = ContextManager.sharedInstance()
+
+        let mainContext = contextManager.mainContext
+        let backgroundContext = contextManager.newDerivedContext()
+        backgroundContext.automaticallyMergesChangesFromParent = true
+
+        self.mainContext = mainContext
+        self.backgroundContext = backgroundContext
+
+        self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
+        self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
+    }
 
     /// Saves the post to both the local database and the server if available.
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
@@ -34,9 +48,18 @@ class PostCoordinator: NSObject {
             post.deleteRevision()
         }
 
+        if post.hasFailedMedia {
+            for media in post.media {
+                guard media.remoteStatus == .failed else {
+                    continue
+                }
+                mediaCoordinator.retryMedia(media)
+            }
+        }
+
         change(post: post, status: .pushing)
 
-        if mediaCoordinator.isUploadingMedia(for: post) {
+        if mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia {
             change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
@@ -147,12 +170,6 @@ class PostCoordinator: NSObject {
     /// - Parameter post: the post to retry the upload
     ///
     @objc func retrySave(of post: AbstractPost) {
-        for media in post.media {
-            guard media.remoteStatus == .failed else {
-                continue
-            }
-            mediaCoordinator.retryMedia(media)
-        }
         save(post: post)
     }
 
@@ -160,13 +177,11 @@ class PostCoordinator: NSObject {
     /// The main cause of wrong status is the app being killed while uploads of posts are happening.
     ///
     @objc func refreshPostStatus() {
-        let service = PostService(managedObjectContext: backgroundContext)
-        service.refreshPostStatus()
+        backgroundService.refreshPostStatus()
     }
 
     private func upload(post: AbstractPost) {
-        let postService = PostService(managedObjectContext: mainContext)
-        postService.uploadPost(post, success: { uploadedPost in
+        mainService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             SearchManager.shared.indexItem(uploadedPost)
@@ -240,7 +255,12 @@ class PostCoordinator: NSObject {
 
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
         post.managedObjectContext?.perform {
-            post.remoteStatus = status
+            if status == .failed {
+                self.mainService.markAsFailedAndDraftIfNeeded(post: post)
+            } else {
+                post.remoteStatus = status
+            }
+
             try? post.managedObjectContext?.save()
         }
     }
