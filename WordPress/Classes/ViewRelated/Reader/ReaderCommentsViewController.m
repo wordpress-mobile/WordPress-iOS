@@ -31,7 +31,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                             UIViewControllerRestoration,
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
-                                            SuggestionsTableViewDelegate>
+                                            SuggestionsTableViewDelegate,
+                                            ExpandableInputAccessoryViewParentDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
@@ -56,7 +57,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
-@property (nonatomic, strong) UIView *expandableInputAccessoryView;
+@property (nonatomic, strong) ProgrammaticExpandableInputAccessoryView *expandableInputAccessoryView;
 
 @end
 
@@ -364,7 +365,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configureInputAccessoryView
 {
-    self.expandableInputAccessoryView = [[ProgrammaticExpandableInputAccessoryView alloc] initWithFrame:(CGRectZero)];
+//    self.expandableInputAccessoryView = [[ProgrammaticExpandableInputAccessoryView alloc] initWithFrame:(CGRectZero)];
+    self.expandableInputAccessoryView = [[ProgrammaticExpandableInputAccessoryView alloc] initWithParentDelegate: self];
+
 //    ExpandableInputAccessoryViewController *vc = [[ExpandableInputAccessoryViewController alloc] init];
 //    self.expandableInputAccessoryView = vc.view;
 }
@@ -1037,6 +1040,16 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.keyboardManager scrollViewWillEndDragging:scrollView withVelocity:velocity];
 }
 
+#pragma mark - ExpandableInputAccessoryViewParentDelegate
+- (void)expandableInputAccessoryViewDidBeginEditing
+{
+    self.tapOffKeyboardGesture.enabled = YES;
+}
+
+- (void)expandableInputAccessoryViewDidEndEditing
+{
+    self.tapOffKeyboardGesture.enabled = NO;
+}
 
 #pragma mark - SuggestionsTableViewDelegate
 

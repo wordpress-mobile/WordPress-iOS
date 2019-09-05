@@ -18,16 +18,16 @@ struct TextViewConstraintStore {
 
 @objc class ProgrammaticExpandableInputAccessoryView: UIView, ExpandableInputAccessoryViewDelegate {
     
-    let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
+    @objc let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
     var topConstraint: NSLayoutConstraint?
 //    var heightConstraint: NSLayoutConstraint?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    @objc init(parentDelegate: ExpandableInputAccessoryViewParentDelegate) {
+        super.init(frame: CGRect.zero)
         backgroundColor = .blue
         expandableInputAccessoryView.translatesAutoresizingMaskIntoConstraints = false
         expandableInputAccessoryView.delegate = self
+        expandableInputAccessoryView.parentDelegate = parentDelegate
         self.addSubview(expandableInputAccessoryView)
         
         self.autoresizingMask = .flexibleHeight
@@ -69,6 +69,11 @@ protocol ExpandableInputAccessoryViewDelegate: class {
     func didMoveTo(_ state: ExpandableInputAccessoryView.ExpandedState)
 }
 
+@objc protocol ExpandableInputAccessoryViewParentDelegate: class {
+    func expandableInputAccessoryViewDidBeginEditing()
+    func expandableInputAccessoryViewDidEndEditing()
+}
+
 class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
     
     enum ExpandedState {
@@ -91,6 +96,7 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
         }
     }
     weak var delegate: ExpandableInputAccessoryViewDelegate?
+    weak var parentDelegate: ExpandableInputAccessoryViewParentDelegate?
     var isExpanded = false
     var explicityCollapsed = false
     var wasAutomatticallyExpanded = false
@@ -159,8 +165,15 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
         return CGSize(width: self.bounds.width, height: textSize.height)
     }
     
-    
     // MARK: TextView delegates
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        parentDelegate?.expandableInputAccessoryViewDidBeginEditing()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        parentDelegate?.expandableInputAccessoryViewDidEndEditing()
+    }
     
     func textViewDidChange(_ textView: UITextView) {
         // Re-calculate intrinsicContentSize when text changes
