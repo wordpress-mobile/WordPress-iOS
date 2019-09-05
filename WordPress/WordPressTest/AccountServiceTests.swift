@@ -139,4 +139,89 @@ class AccountServiceTests: XCTestCase {
         XCTAssertNil(accountService.defaultWordPressComAccount())
     }
 
+    func testMergeMultipleDuplicateAccounts() {
+        let account1 = WPAccount(context: contextManager.mainContext)
+        account1.userID = 1
+        account1.username = "username"
+        account1.authToken = "authToken"
+        account1.uuid = UUID().uuidString
+
+        let account2 = WPAccount(context: contextManager.mainContext)
+        account2.userID = 1
+        account2.username = "username"
+        account2.authToken = "authToken"
+        account2.uuid = UUID().uuidString
+
+        let account3 = WPAccount(context: contextManager.mainContext)
+        account3.userID = 1
+        account3.username = "username"
+        account3.authToken = "authToken"
+        account3.uuid = UUID().uuidString
+
+        let context = contextManager.mainContext
+        account1.addBlogs(createMockBlogs(withIDs: [1, 2, 3, 4, 5, 6], in: context))
+        account2.addBlogs(createMockBlogs(withIDs: [1, 2, 3], in: context))
+        account3.addBlogs(createMockBlogs(withIDs: [4, 5, 6], in: context))
+        contextManager.save(context)
+
+        accountService.mergeDuplicatesIfNecessary()
+        contextManager.save(context)
+
+        XCTAssertFalse(account1.isDeleted)
+        XCTAssertTrue(account2.isDeleted)
+        XCTAssertTrue(account3.isDeleted)
+
+        let service = BlogService(managedObjectContext: contextManager.mainContext)
+        let blogs = service.blogsForAllAccounts()
+        XCTAssertTrue(blogs.count == 6)
+        XCTAssertTrue(account1.blogs.count == 6)
+    }
+
+    func testMergeDuplicateAccountsKeepingNonDups() {
+        let account1 = WPAccount(context: contextManager.mainContext)
+        account1.userID = 1
+        account1.username = "username"
+        account1.authToken = "authToken"
+        account1.uuid = UUID().uuidString
+
+        let account2 = WPAccount(context: contextManager.mainContext)
+        account2.userID = 1
+        account2.username = "username"
+        account2.authToken = "authToken"
+        account2.uuid = UUID().uuidString
+
+        let account3 = WPAccount(context: contextManager.mainContext)
+        account3.userID = 3
+        account3.username = "username3"
+        account3.authToken = "authToken3"
+        account3.uuid = UUID().uuidString
+
+        let context = contextManager.mainContext
+        account1.addBlogs(createMockBlogs(withIDs: [1, 2, 3, 4, 5, 6], in: context))
+        account2.addBlogs(createMockBlogs(withIDs: [1, 2, 3], in: context))
+        account3.addBlogs(createMockBlogs(withIDs: [4, 5, 6], in: context))
+        contextManager.save(context)
+
+        accountService.mergeDuplicatesIfNecessary()
+        contextManager.save(context)
+
+        XCTAssertFalse(account1.isDeleted)
+        XCTAssertTrue(account2.isDeleted)
+        XCTAssertFalse(account3.isDeleted)
+    }
+
+    func createMockBlogs(withIDs IDs: [Int], in context: NSManagedObjectContext) -> Set<Blog> {
+        var blogs = Set<Blog>()
+        for id in IDs {
+            let blog = Blog(context: context)
+            blog.dotComID = NSNumber(integerLiteral: id)
+            blog.xmlrpc = "http://test.blog/\(id)/xmlrpc.php"
+            blog.username = "admin"
+            blog.url = "http://test.blog/\(id)"
+            blog.isHostedAtWPcom = true
+            blogs.insert(blog)
+        }
+        return blogs
+    }
+
 }
