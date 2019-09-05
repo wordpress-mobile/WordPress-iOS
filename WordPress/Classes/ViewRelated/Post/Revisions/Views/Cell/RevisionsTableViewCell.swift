@@ -76,9 +76,12 @@ private extension RevisionsTableViewCell {
     private func setupStyles() {
         // Setup cell style
         WPStyleGuide.configureTableViewCell(self)
+        contentView.backgroundColor = .listForeground
 
         // Setup labels
+        titleLabel.backgroundColor = .listForeground
         titleLabel.textColor = .neutral(.shade70)
+        subTitleLabel.backgroundColor = .listForeground
         subTitleLabel.textColor = .neutral(.shade40)
 
         // Setup del operations
