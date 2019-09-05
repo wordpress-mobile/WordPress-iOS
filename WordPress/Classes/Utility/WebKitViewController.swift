@@ -194,7 +194,7 @@ class WebKitViewController: UIViewController {
 
     private func setupNavBarTitleView() {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
-        titleView.titleLabel.textColor = .neutral(.shade70)
+        titleView.titleLabel.textColor = UIColor(light: .white, dark: .neutral(.shade70))
         titleView.subtitleLabel.textColor = .neutral(.shade30)
 
         if let title = customTitle {
@@ -254,12 +254,12 @@ class WebKitViewController: UIViewController {
         guard let toolBar = navigationController?.toolbar else {
             return
         }
-        toolBar.barTintColor = .appBar
+        toolBar.barTintColor = UIColor(light: .white, dark: .appBar)
         fixBarButtonsColorForBoldText(on: toolBar)
     }
 
     private func styleToolBarButtons() {
-        navigationController?.toolbar.items?.forEach(styleBarButton)
+        navigationController?.toolbar.items?.forEach(styleToolBarButton)
     }
 
     // MARK: Helpers
@@ -271,6 +271,10 @@ class WebKitViewController: UIViewController {
     }
 
     private func styleBarButton(_ button: UIBarButtonItem) {
+        button.tintColor = UIColor(light: .white, dark: .neutral(.shade70))
+    }
+
+    private func styleToolBarButton(_ button: UIBarButtonItem) {
         button.tintColor = .listIcon
     }
 
