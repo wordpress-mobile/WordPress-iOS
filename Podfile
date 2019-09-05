@@ -225,6 +225,12 @@ target 'WordPress' do
                              color: #1a1a1a;
                              margin: 20px;
                            }
+                          @media (prefers-color-scheme: dark) {
+                           body {
+                            background: #1a1a1a;
+                            color: white;
+                           }
+                          }
                            pre {
                             white-space: pre-wrap;
                            }
