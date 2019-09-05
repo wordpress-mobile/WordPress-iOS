@@ -134,10 +134,33 @@ static ContextManager *_override;
 }
 
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
-{    
-    [context performBlockAndWait:^{
-        [self internalSaveContext:context];
-    }];
+{
+    if (context != self.mainContext) {
+        [context performBlockAndWait:^{
+            NSError *error = nil;
+            
+            if ([context hasChanges] && ![context save:&error]) {
+                DDLogError(@"Fatal Core Data Error encountered — throwing an exception. Underlying error is:\n %@", error);
+                @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
+                                               reason:[NSString stringWithFormat:@"Unresolved Core Data save error - derived context. Core Data Error Domain: %@, code: %i", error.domain, error.code]
+                                             userInfo:error.userInfo];
+            }
+        }];
+        
+        if (context.parentContext != nil) {
+            // It's not ideal for a context to be the one to define when its parent is saved, but in order
+            // to follow the existing architecture, we can at least ensure saving the parent is safe, and
+            // that we're not deadlocking the current thread to do that.
+            //
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                [self saveContext:context.parentContext];
+            });
+        }
+    } else {
+        [context performBlockAndWait:^{
+            [self internalSaveContext:context];
+        }];
+    }
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context
@@ -279,6 +302,7 @@ static ContextManager *_override;
 - (void)startListeningToMainContextNotifications
 {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    
     [nc addObserver:self selector:@selector(mainContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:self.mainContext];
 }
 
