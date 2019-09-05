@@ -50,9 +50,8 @@
                             </mask>
                         </variation>
                     </view>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q7F-mg-QOb" userLabel="Post Title Button">
-                        <rect key="frame" x="16" y="33" width="374" height="20.5"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q7F-mg-QOb" userLabel="Post Title Button">
+                        <rect key="frame" x="16" y="31" width="374" height="22.5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
                             <action selector="didTapPostTitle:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="DVU-yE-MhC"/>
@@ -69,10 +68,14 @@
                 <constraints>
                     <constraint firstItem="kmu-MC-d7s" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="0m8-gH-SnY"/>
                     <constraint firstAttribute="trailing" secondItem="kmu-MC-d7s" secondAttribute="trailing" constant="16" id="1KZ-6V-3Bg"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="width" secondItem="IAo-11-r7k" secondAttribute="width" id="2XF-P5-GKT"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="centerX" secondItem="IAo-11-r7k" secondAttribute="centerX" id="8aY-Wo-TjT"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="centerY" secondItem="IAo-11-r7k" secondAttribute="centerY" id="Byk-hQ-anf"/>
                     <constraint firstAttribute="bottom" secondItem="dJu-H6-3qo" secondAttribute="bottom" id="MKS-QE-IDd"/>
                     <constraint firstAttribute="trailing" secondItem="dJu-H6-3qo" secondAttribute="trailing" id="QCn-b6-3ob"/>
                     <constraint firstAttribute="bottom" secondItem="kmu-MC-d7s" secondAttribute="bottom" constant="16" id="YEv-TF-quq"/>
                     <constraint firstItem="kmu-MC-d7s" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ZCZ-Mb-8ya"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="height" secondItem="IAo-11-r7k" secondAttribute="height" id="s3s-89-orz"/>
                     <constraint firstItem="dJu-H6-3qo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="t4N-kv-EoQ"/>
                 </constraints>
             </tableViewCellContentView>
