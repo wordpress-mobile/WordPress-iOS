@@ -1,0 +1,6 @@
+* Inaktiv bedeutet inaktiv: Wenn du die App nicht verwendest, macht sie weniger und verbessert die Performance deines Geräts.
+* Wurde auf deiner Websiteliste manchmal die gleiche Website mehrmals angezeigt? Wir haben das behoben.
+* Verwalte deine Benachrichtigungseinstellungen über den Bildschirm „Benachrichtigungen“ (das ergibt Sinn, oder?).
+* Das angezeigte Datum und die Zeitzone deiner Website sind jetzt perfekt synchronisiert.
+* Profitiere von flüssigerem, stabilerem Laden von Beitragsvorschauen.
+
