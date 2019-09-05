@@ -197,6 +197,8 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         // Style!
         WPStyleGuide.configureColors(view: view, tableView: sitesTableView)
         WPStyleGuide.configureAutomaticHeightRows(for: sitesTableView)
+
+        sitesTableView.separatorColor = .divider
     }
 
     override func updateViewConstraints() {
