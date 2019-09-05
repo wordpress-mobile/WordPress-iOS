@@ -125,10 +125,15 @@ class StatsDataHelper {
 
     class func currentDateForSite() -> Date {
         let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
-        let delta = TimeInterval(siteTimeZone.secondsFromGMT())
-        return Date().addingTimeInterval(delta)
+        return Date().convert(from: siteTimeZone)
     }
+}
 
+fileprivate extension Date {
+    func convert(from timeZone: TimeZone, comparedWith target: TimeZone = TimeZone.current) -> Date {
+        let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - target.secondsFromGMT(for: self))
+        return addingTimeInterval(delta)
+    }
 }
 
 private extension StatsDataHelper {

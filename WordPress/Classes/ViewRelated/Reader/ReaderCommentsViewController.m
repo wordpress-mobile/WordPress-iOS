@@ -126,7 +126,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor murielListBackground];
 
     [self checkIfLoggedIn];
 
@@ -275,7 +275,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         [weakSelf handleHeaderTapped];
     };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
-    headerView.backgroundColor = [UIColor whiteColor];
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
     [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
     [headerWrapper addSubview:headerView];
@@ -314,7 +313,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     self.tableView.preservesSuperviewLayoutMargins = YES;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = [UIColor murielListBackground];
     [self.view addSubview:self.tableView];
 
     UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];

@@ -20,7 +20,11 @@ class NoteBlockTableViewCell: WPTableViewCell {
         insets.right = frame.size.width - (readableLayoutFrame.origin.x + readableLayoutFrame.size.width)
         return insets
     }
-    @objc var separatorsView = SeparatorsView()
+    @objc var separatorsView: SeparatorsView = {
+        let view = SeparatorsView()
+        view.backgroundColor = .listForeground
+        return view
+    }()
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -47,6 +51,7 @@ class NoteBlockTableViewCell: WPTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundView = separatorsView
+        backgroundColor = .listForeground
     }
 
     // MARK: - Private

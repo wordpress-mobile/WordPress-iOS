@@ -29,7 +29,7 @@ class RevisionsTableViewFooter: UIView {
 
 private extension RevisionsTableViewFooter {
     private func setupUI() {
-        backgroundColor = .neutral(shade: .shade5)
+        backgroundColor = .neutral(.shade5)
 
         autoresizingMask = .flexibleWidth
 
@@ -40,7 +40,7 @@ private extension RevisionsTableViewFooter {
                                             height: frame.height))
         footerLabel.autoresizingMask = .flexibleWidth
         footerLabel.font = UIFont.systemFont(ofSize: 14.0)
-        footerLabel.textColor = .neutral(shade: .shade40)
+        footerLabel.textColor = .neutral(.shade40)
         footerLabel.textAlignment = .center
         footerLabel.numberOfLines = 2
 

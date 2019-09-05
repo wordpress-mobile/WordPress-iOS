@@ -46,11 +46,11 @@ extension WPStyleGuide {
         }
 
         public static func backgroundColor() -> UIColor {
-            return UIColor.white
+            return .listForeground
         }
 
         public static func backgroundDiscardedColor() -> UIColor {
-            return .neutral(shade: .shade5)
+            return .neutral(.shade5)
         }
 
         public static func backgroundRewindableColor() -> UIColor {
@@ -78,7 +78,7 @@ extension WPStyleGuide {
             case ActivityStatus.warning:
                 return .warning
             default:
-                return .neutral(shade: .shade20)
+                return .neutral(.shade20)
             }
         }
 

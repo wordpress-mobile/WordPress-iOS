@@ -24,7 +24,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
-        footer.backgroundColor = .neutral(shade: .shade10)
+        footer.backgroundColor = .neutral(.shade10)
         return footer
     }()
 
@@ -410,6 +410,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 self?.handleRestoreAction(fromCell: cell, forPage: page)
             }
         }
+
+        cell.contentView.backgroundColor = UIColor.listForeground
 
         cell.configureCell(page)
     }
@@ -798,8 +800,7 @@ private extension PageListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-            noResultsViewController.configure(title: noConnectionMessage(),
-                                              image: noResultsImageName)
+              noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: NoResultsText.buttonTitle, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
             return
         }
 
@@ -859,7 +860,7 @@ private extension PageListViewController {
     }
 
     struct NoResultsText {
-        static let buttonTitle = NSLocalizedString("Create a Page", comment: "Button title, encourages users to create their first page on their blog.")
+        static let buttonTitle = NSLocalizedString("Create Page", comment: "Button title, encourages users to create their first page on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         static let noMatchesTitle = NSLocalizedString("No pages matching your search", comment: "Displayed when the user is searching the pages list and there are no matching pages")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
@@ -867,6 +868,8 @@ private extension PageListViewController {
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
         static let noPublishedTitle = NSLocalizedString("You haven't published any pages yet", comment: "Displayed when the user views published pages in the pages list and there are no pages")
         static let searchPages = NSLocalizedString("Search pages", comment: "Text displayed when the search controller will be presented")
+        static let noConnectionTitle: String = NSLocalizedString("Unable to load pages right now.", comment: "Title for No results full page screen displayedfrom pages list when there is no connection")
+        static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a page.", comment: "Subtitle for No results full page screen displayed from pages list when there is no connection")
     }
 
 }

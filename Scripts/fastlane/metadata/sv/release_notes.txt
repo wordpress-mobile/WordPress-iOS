@@ -1,5 +1,6 @@
-13.1
------
-- Nu kan du ändra ditt användarnamn inifrån appen.
-- Information om filnedladdningar visas nu i periodstatistiken.
-- Nu kan du publicera utkast direkt från inläggslistan genom att trycka på åtgärden ”Publicera nu” i menyn ”...”.
+* Ledig betyder ledig: när du inte använder appen kommer den att utföra mindre arbete och på det sättet förbättra enhetens prestanda.
+* Brukade din lista med webbplatser ibland visa samma webbplats flera gånger? Hur som helst har vi rättat det nu.
+* Hantera inställningar för notiser från sidan för notiser (det känns väl vettigt?).
+* Nu är visat datum och webbplatsens tidszon perfekt synkroniserade.
+* Förhandsvisningar laddas nu smidigare och mer stabilt än tidigare.
+

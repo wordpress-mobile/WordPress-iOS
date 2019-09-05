@@ -233,9 +233,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func configureFilterBar() {
-        filterTabBar.tintColor = .primary
-        filterTabBar.deselectedTabColor = .neutral(shade: .shade40)
-        filterTabBar.dividerColor = .neutral(shade: .shade10)
+        WPStyleGuide.configureFilterTabBar(filterTabBar)
 
         filterTabBar.items = filterSettings.availablePostListFilters()
 
@@ -794,7 +792,10 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        tableView.displayGhostContent(options: ghostOptions)
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        tableView.displayGhostContent(options: ghostOptions, style: style)
         tableView.isScrollEnabled = false
         noResultsViewController.view.isHidden = true
     }
@@ -912,14 +913,6 @@ class AbstractPostListViewController: UIViewController,
         }
 
         present(alertController, animated: true)
-    }
-
-    @objc func schedulePost(_ apost: AbstractPost) {
-        WPAnalytics.track(.postListScheduleAction, withProperties: propertiesForAnalytics())
-
-        apost.status = .scheduled
-        uploadPost(apost)
-        updateFilterWithPostStatus(.scheduled)
     }
 
     @objc func moveToDraft(_ apost: AbstractPost) {

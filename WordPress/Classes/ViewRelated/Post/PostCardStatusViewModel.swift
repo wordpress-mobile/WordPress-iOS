@@ -96,11 +96,11 @@ class PostCardStatusViewModel: NSObject {
     @objc
     var statusColor: UIColor {
         guard let status = postStatus else {
-            return .neutral(shade: .shade70)
+            return .neutral(.shade70)
         }
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
-            return .neutral(shade: .shade30)
+            return .neutral(.shade30)
         }
 
         if post.isFailed {
@@ -111,11 +111,11 @@ class PostCardStatusViewModel: NSObject {
         case .pending:
             return .success
         case .scheduled:
-            return .primary(shade: .shade40)
+            return .primary(.shade40)
         case .trash:
             return .error
         default:
-            return .neutral(shade: .shade70)
+            return .neutral(.shade70)
         }
     }
 

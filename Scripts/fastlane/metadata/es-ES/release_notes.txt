@@ -1,5 +1,6 @@
-13.1
------
-- Ahora puedes cambiar tu nombre de usuario en la aplicación.
-- Los datos sobre tus descargas de archivos ahora están disponibles en las estadísticas del período.
-- Ahora puedes publicar borradores en la lista de entradas pulsando en la nueva acción «Publicar ahora» accesible desde el menú «...».
+* En reposo, significa en reposo: cuando no uses la aplicación, hará menos y mejorará el rendimiento de tu dispositivo.
+* ¿Tu lista de sitios muestra algunas veces el mismo sitio más de una vez? Bien, lo hemos corregido.
+* Gestiona los ajustes de tus avisos desde la pantalla de avisos (tiene sentido, ¿verdad?).
+* Ahora, la fecha mostrada y la zona horaria de tu sitio están sincronizadas perfectamente.
+* Disfruta de una carga más suave y estable de la vista previa de las entradas.
+

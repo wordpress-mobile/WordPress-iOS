@@ -26,7 +26,15 @@ class FeatureItemCell: WPTableViewCell {
 
         layoutMargins = UIEdgeInsets.zero
 
-        separator.backgroundColor = .neutral(shade: .shade5)
+        configureAppearance()
+    }
+
+    private func configureAppearance() {
+        separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth).isActive = true
+        separator.backgroundColor = .divider
+
+        featureTitleLabel.textColor = .primary
+        featureDescriptionLabel.textColor = .text
     }
 
     override func prepareForReuse() {

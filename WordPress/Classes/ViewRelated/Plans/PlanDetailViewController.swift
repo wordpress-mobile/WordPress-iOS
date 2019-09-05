@@ -34,6 +34,7 @@ class PlanDetailViewController: UIViewController {
     @IBOutlet weak var planTitleLabel: UILabel!
     @IBOutlet weak var planDescriptionLabel: UILabel!
     @IBOutlet weak var separator: UIView!
+    @IBOutlet weak var headerContainerView: UIView!
 
     fileprivate lazy var currentPlanLabel: UIView = {
         let label = UILabel()
@@ -73,12 +74,19 @@ class PlanDetailViewController: UIViewController {
     }
 
     fileprivate func configureAppearance() {
-        planTitleLabel.textColor = .neutral(shade: .shade70)
-        planDescriptionLabel.textColor = .neutral(shade: .shade30)
+        view.backgroundColor = .basicBackground
+        tableView.backgroundColor = .basicBackground
+
+        planTitleLabel.textColor = .primary
+        planDescriptionLabel.textColor = .text
         dropshadowImageView.backgroundColor = UIColor.white
         configurePlanImageDropshadow()
 
-        separator.backgroundColor = .neutral(shade: .shade5)
+        separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth).isActive = true
+        separator.backgroundColor = .divider
+
+        headerView.backgroundColor = .listBackground
+        headerContainerView.backgroundColor = .listBackground
     }
 
     fileprivate func configureTableView() {
@@ -88,7 +96,7 @@ class PlanDetailViewController: UIViewController {
 
     fileprivate func configurePlanImageDropshadow() {
         dropshadowImageView.layer.masksToBounds = false
-        dropshadowImageView.layer.shadowColor = UIColor.neutral(shade: .shade5).cgColor
+        dropshadowImageView.layer.shadowColor = UIColor.neutral(.shade5).cgColor
         dropshadowImageView.layer.shadowOpacity = 1.0
         dropshadowImageView.layer.shadowRadius = planImageDropshadowRadius
         dropshadowImageView.layer.shadowOffset = .zero
@@ -184,14 +192,12 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             cell.separatorInset = UIEdgeInsets(top: 0, left: separatorInset, bottom: 0, right: separatorInset)
         }
+
+        cell.contentView.backgroundColor = .listForeground
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return noResultsViewModel != nil ? nil : tableViewModel.sections[section].headerText
-    }
-
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 }
 

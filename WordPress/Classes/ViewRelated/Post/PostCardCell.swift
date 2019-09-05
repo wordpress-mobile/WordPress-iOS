@@ -25,6 +25,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var topPadding: NSLayoutConstraint!
     @IBOutlet weak var contentStackView: UIStackView!
     @IBOutlet weak var ghostStackView: UIStackView!
+    @IBOutlet weak var ghostHolder: UIView!
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
@@ -137,6 +138,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         setupActionBar()
         setupFeaturedImage()
         setupBorders()
+        setupBackgrounds()
         setupLabels()
         setupSeparatorLabel()
         setupSelectedBackgroundView()
@@ -265,6 +267,16 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyBorderStyle(upperBorder)
         WPStyleGuide.applyBorderStyle(bottomBorder)
         WPStyleGuide.applyBorderStyle(actionBarSeparator)
+    }
+
+    private func setupBackgrounds() {
+        containerView.backgroundColor = .listForeground
+        titleLabel.backgroundColor = .listForeground
+        snippetLabel.backgroundColor = .listForeground
+        dateLabel.backgroundColor = .listForeground
+        authorLabel.backgroundColor = .listForeground
+        separatorLabel.backgroundColor = .listForeground
+        ghostHolder.backgroundColor = .listForeground
     }
 
     private func setupActionBar() {

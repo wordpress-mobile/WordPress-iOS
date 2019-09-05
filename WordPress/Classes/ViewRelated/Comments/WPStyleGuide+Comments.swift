@@ -13,50 +13,40 @@ extension WPStyleGuide {
         }
 
         public static func separatorsColor(isApproved approved: Bool) -> UIColor {
-            return approved ? WPStyleGuide.readGrey() : WPStyleGuide.alertYellowDark()
+            return .divider
         }
 
         public static func detailsRegularStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertYellowDark()
-
             return  [.paragraphStyle: titleParagraph,
                      .font: titleRegularFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.textSubtle ]
         }
 
         public static func detailsRegularRedStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : .errorDark
-
             return  [.paragraphStyle: titleParagraph,
                      .font: titleRegularFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.text ]
         }
 
         public static func detailsItalicsStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : .errorDark
-
             return  [.paragraphStyle: titleParagraph,
                      .font: titleItalicsFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.text ]
         }
 
         public static func detailsBoldStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : .errorDark
-
             return  [.paragraphStyle: titleParagraph,
                      .font: titleBoldFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.text ]
         }
 
         public static func timestampStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.allTAllShadeGrey() : WPStyleGuide.alertYellowDark()
-
             return  [.font: timestampFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.textSubtle ]
         }
 
         public static func backgroundColor(isApproved approved: Bool) -> UIColor {
-            return approved ? UIColor.white : WPStyleGuide.alertYellowLighter()
+            return approved ? .listForeground : UIColor(light: .warning(.shade0), dark: .warning(.shade90))
         }
 
         public static func timestampImage(isApproved approved: Bool) -> UIImage {

@@ -11,6 +11,8 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    @IBOutlet private var viewMoreView: UIView!
+
     private typealias Style = WPStyleGuide.Stats
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
@@ -38,8 +40,10 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
 private extension PostingActivityCell {
 
     func applyStyles() {
+        viewMoreView.backgroundColor = .listForeground
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more posting activity.")
         viewMoreLabel.textColor = Style.actionTextColor
+        Style.configureCell(self)
         Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }

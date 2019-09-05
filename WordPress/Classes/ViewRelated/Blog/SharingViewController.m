@@ -90,11 +90,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    [WPStyleGuide configureTableViewSectionHeader:view];
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (section == SharingPublicizeServices) {
@@ -173,7 +168,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     // Configure the image
     UIImage *image = [WPStyleGuide iconForService: publicizer.serviceID];
     [cell.imageView setImage:image];
-    cell.imageView.tintColor = ([connections count] > 0) ? [WPStyleGuide tintColorForConnectedService: publicizer.serviceID] : [UIColor murielNeutral10];
+    cell.imageView.tintColor = ([connections count] > 0) ? [WPStyleGuide tintColorForConnectedService: publicizer.serviceID] : [UIColor murielListIcon];
 
     // Configure the text
     cell.textLabel.text = publicizer.label;

@@ -39,15 +39,20 @@ class AuthorFilterViewController: UITableViewController {
         self.onSelectionChanged = onSelectionChanged
         self.currentSelection = initialSelection
 
-        super.init(style: .plain)
+        super.init(style: .grouped)
 
         tableView.register(AuthorFilterCell.self, forCellReuseIdentifier: Identifiers.authorFilterCell)
 
         tableView.rowHeight = Metrics.rowHeight
         tableView.separatorInset = .zero
-        tableView.separatorColor = .neutral(shade: .shade10)
+        tableView.separatorColor = .clear
         tableView.isScrollEnabled = false
         tableView.showsVerticalScrollIndicator = false
+        if #available(iOS 13, *) {
+            tableView.contentInset = .zero
+        } else {
+            tableView.contentInset = UIEdgeInsets(top: -Metrics.topinset, left: 0, bottom: 0, right: 0)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -88,6 +93,7 @@ class AuthorFilterViewController: UITableViewController {
             cell.accessoryType = (filter == currentSelection) ? .checkmark : .none
 
             cell.title = filter.stringValue
+            cell.separatorIsHidden = indexPath.row != 0
         }
 
         return cell
@@ -120,6 +126,16 @@ class AuthorFilterViewController: UITableViewController {
         return UIView()
     }
 
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return Metrics.topinset
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: Metrics.topinset))
+        view.backgroundColor = .listForeground
+        return view
+    }
+
     // MARK: - Constants
 
     private enum Identifiers {
@@ -129,6 +145,7 @@ class AuthorFilterViewController: UITableViewController {
     private enum Metrics {
         static let rowHeight: CGFloat = 44.0
         static let preferredWidth: CGFloat = 220.0
+        static let topinset: CGFloat = 13.0
     }
 }
 
@@ -164,9 +181,22 @@ private class AuthorFilterCell: UITableViewCell {
         return stackView
     }()
 
+    private let separator: UIView = {
+        let separator = UIView()
+        separator.backgroundColor = .divider
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        return separator
+    }()
+
     var title: String = "" {
         didSet {
             titleLabel.text = title
+        }
+    }
+
+    var separatorIsHidden: Bool = false {
+        didSet {
+            separator.isHidden = separatorIsHidden
         }
     }
 
@@ -174,6 +204,7 @@ private class AuthorFilterCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         addSubview(stackView)
+        addSubview(separator)
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.horizontalPadding),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.horizontalPadding),
@@ -186,7 +217,14 @@ private class AuthorFilterCell: UITableViewCell {
         stackView.addArrangedSubview(gravatarImageView)
         stackView.addArrangedSubview(titleLabel)
 
-        tintColor = .primary(shade: .shade40)
+        NSLayoutConstraint.activate([
+            separator.leadingAnchor.constraint(equalTo: leadingAnchor),
+            separator.trailingAnchor.constraint(equalTo: trailingAnchor),
+            separator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separator.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth)
+            ])
+
+        tintColor = .primary(.shade40)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -222,9 +260,9 @@ private class AuthorFilterCell: UITableViewCell {
     }
 
     private enum Appearance {
-        static let textColor = UIColor.neutral(shade: .shade70)
-        static let placeholderTintColor = UIColor.neutral(shade: .shade70)
-        static let placeholderBackgroundColor = UIColor.neutral(shade: .shade10)
+        static let textColor = UIColor.neutral(.shade70)
+        static let placeholderTintColor = UIColor.neutral(.shade70)
+        static let placeholderBackgroundColor = UIColor.neutral(.shade10)
     }
 
     private enum Metrics {

@@ -17,7 +17,7 @@ extension WPStyleGuide {
             cell.detailTextLabel?.sizeToFit()
             cell.detailTextLabel?.textColor = .textSubtle
 
-            cell.backgroundColor = UIColor.white
+            cell.backgroundColor = .listForeground
             cell.separatorInset = UIEdgeInsets.zero
         }
 
@@ -27,7 +27,7 @@ extension WPStyleGuide {
             cell.textLabel?.textColor = .text
             cell.textLabel?.numberOfLines = 0
 
-            cell.backgroundColor = UIColor.white
+            cell.backgroundColor = .listForeground
             cell.separatorInset = UIEdgeInsets.zero
             cell.tintColor = .primary
         }
@@ -37,7 +37,7 @@ extension WPStyleGuide {
             cell.textLabel?.sizeToFit()
             cell.textLabel?.textColor = .text
 
-            cell.backgroundColor = UIColor.white
+            cell.backgroundColor = .listForeground
             cell.separatorInset = UIEdgeInsets.zero
         }
 
@@ -46,7 +46,7 @@ extension WPStyleGuide {
             cell.textLabel?.sizeToFit()
             cell.textLabel?.textColor = .text
 
-            cell.backgroundColor = .neutral(shade: .shade5)
+            cell.backgroundColor = .neutral(.shade5)
             cell.separatorInset = UIEdgeInsets.zero
         }
 
@@ -67,14 +67,14 @@ extension WPStyleGuide {
 
             cell.detailTextLabel?.font = subtitleFont()
             cell.detailTextLabel?.sizeToFit()
-            cell.detailTextLabel?.textColor = greyDarken10()
+            cell.detailTextLabel?.textColor = .textSubtle
             cell.detailTextLabel?.numberOfLines = 0
 
             cell.imageView?.layer.borderColor = UIColor.white.cgColor
             cell.imageView?.layer.borderWidth = 1
-            cell.imageView?.tintColor = greyLighten10()
+            cell.imageView?.tintColor = .neutral(.shade30)
 
-            cell.backgroundColor = UIColor.white
+            cell.backgroundColor = .listForeground
             cell.tintColor = .primary
         }
     }

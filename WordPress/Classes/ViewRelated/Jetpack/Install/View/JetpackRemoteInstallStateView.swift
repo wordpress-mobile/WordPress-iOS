@@ -46,13 +46,13 @@ class JetpackRemoteInstallStateView: UIViewController {
 
 private extension JetpackRemoteInstallStateView {
     func setupUI() {
-        view.backgroundColor = .neutral(shade: .shade5)
+        view.backgroundColor = .neutral(.shade5)
 
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title2)
-        titleLabel.textColor = .neutral(shade: .shade40)
+        titleLabel.textColor = .neutral(.shade40)
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = .neutral(shade: .shade70)
+        descriptionLabel.textColor = .neutral(.shade70)
 
         mainButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 

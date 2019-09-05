@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
-
+import WordPressUI
+import MobileCoreServices
 
 /// An NSTextAttachment for representing remote HTML content such as images, iframes and video.
 ///
@@ -38,7 +39,8 @@ open class WPTextAttachment: NSTextAttachment {
         self.tagName = tagName
         self.src = src
 
-        super.init(data: nil, ofType: nil)
+        // Initialize with default image data to prevent placeholder graphics appearing on iOS 13.
+        super.init(data: UIImage(color: .basicBackground).pngData(), ofType: kUTTypePNG as String)
     }
 
 

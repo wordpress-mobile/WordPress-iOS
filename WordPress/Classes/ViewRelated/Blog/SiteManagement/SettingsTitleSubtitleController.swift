@@ -175,7 +175,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.clearButtonMode = .whileEditing
         textField.font = WPStyleGuide.tableviewTextFont()
-        textField.textColor = .neutral(shade: .shade70)
+        textField.textColor = .text
         textField.delegate = self
         textField.returnKeyType = .done
 
@@ -188,7 +188,8 @@ final class SettingsTitleSubtitleController: UITableViewController {
         let textView = UITextView(frame: .zero, textContainer: nil)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = .neutral(shade: .shade70)
+        textView.textColor = .text
+        textView.backgroundColor = .listForeground
         textView.delegate = self
         textView.returnKeyType = .done
 
