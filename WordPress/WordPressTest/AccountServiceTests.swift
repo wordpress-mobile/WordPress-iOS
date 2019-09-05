@@ -105,4 +105,38 @@ class AccountServiceTests: XCTestCase {
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
     }
 
+    func testRestoreDefaultAccount() {
+        XCTAssertNil(accountService.defaultWordPressComAccount())
+
+        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
+
+        UserDefaults.standard.removeObject(forKey: "AccountDefaultDotcomUUID")
+
+        XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
+    }
+
+    func testAccountUsedForJetpackIsNotRestored() {
+        XCTAssertNil(accountService.defaultWordPressComAccount())
+
+        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
+
+        let context = contextManager.mainContext
+        let jetpackAccount = accountService.createOrUpdateAccount(withUsername: "jetpack", authToken: "jetpack")
+        let blog = Blog(context: context)
+        blog.xmlrpc = "http://test.blog/xmlrpc.php"
+        blog.username = "admin"
+        blog.url = "http://test.blog/"
+        blog.isHostedAtWPcom = false
+        blog.account = jetpackAccount
+        contextManager.save(context)
+
+        UserDefaults.standard.removeObject(forKey: "AccountDefaultDotcomUUID")
+        XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
+
+        accountService.removeDefaultWordPressComAccount()
+        XCTAssertNil(accountService.defaultWordPressComAccount())
+    }
+
 }
