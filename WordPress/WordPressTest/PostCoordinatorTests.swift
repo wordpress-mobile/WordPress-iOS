@@ -13,11 +13,18 @@ class PostCoordinatorTests: XCTestCase {
         context = TestContextManager().newDerivedContext()
     }
 
+    override func tearDown() {
+        super.tearDown()
+        context = nil
+    }
+
     func testDoNotUploadAPostWithFailedMedia() {
         let postServiceMock = PostServiceMock()
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
-        let post = PostBuilder(context).with(image: "test.jpeg", status: .failed).build()
-        post.remoteStatus = .local
+        let post = PostBuilder(context)
+            .with(image: "test.jpeg", status: .failed)
+            .with(remoteStatus: .local)
+            .build()
 
         postCoordinator.save(post: post)
 
@@ -26,9 +33,11 @@ class PostCoordinatorTests: XCTestCase {
     }
 
     func testUploadAPostWithNoFailedMedia() {
-        let post = PostBuilder(context).with(image: "test.jpeg").build()
         let postServiceMock = PostServiceMock()
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let post = PostBuilder(context)
+            .with(image: "test.jpeg")
+            .build()
 
         postCoordinator.save(post: post)
 
@@ -36,9 +45,11 @@ class PostCoordinatorTests: XCTestCase {
     }
 
     func testEventuallyMarkThePostRemoteStatusAsUploading() {
-        let post = PostBuilder(context).with(image: "test.jpeg").build()
         let postServiceMock = PostServiceMock()
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let post = PostBuilder(context)
+            .with(image: "test.jpeg")
+            .build()
 
         postCoordinator.save(post: post)
 
