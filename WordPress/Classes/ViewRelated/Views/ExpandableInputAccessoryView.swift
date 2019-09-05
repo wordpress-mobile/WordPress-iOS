@@ -18,7 +18,7 @@ struct TextViewConstraintStore {
 
 @objc class ProgrammaticExpandableInputAccessoryView: UIView, ExpandableInputAccessoryViewDelegate {
     
-    @objc let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
+    let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
     var topConstraint: NSLayoutConstraint?
 //    var heightConstraint: NSLayoutConstraint?
     
@@ -55,6 +55,14 @@ struct TextViewConstraintStore {
         }
     }
     
+    @objc func resignResponder() {
+        expandableInputAccessoryView.textView.resignFirstResponder()
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
     override var intrinsicContentSize: CGSize {
         return CGSize(width: self.bounds.width, height: expandableInputAccessoryView.intrinsicContentSize.height)
     }
@@ -71,7 +79,6 @@ protocol ExpandableInputAccessoryViewDelegate: class {
 
 @objc protocol ExpandableInputAccessoryViewParentDelegate: class {
     func expandableInputAccessoryViewDidBeginEditing()
-    func expandableInputAccessoryViewDidEndEditing()
 }
 
 class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
@@ -120,6 +127,8 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
         }
     }
 
+    override var canBecomeFirstResponder: Bool { return true }
+    
     fileprivate func expandToFullScreen(automatically: Bool = false) {
         isExpanded = true
         wasAutomatticallyExpanded = automatically
@@ -169,10 +178,6 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         parentDelegate?.expandableInputAccessoryViewDidBeginEditing()
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        parentDelegate?.expandableInputAccessoryViewDidEndEditing()
     }
     
     func textViewDidChange(_ textView: UITextView) {

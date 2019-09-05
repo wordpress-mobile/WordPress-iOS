@@ -57,7 +57,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
-@property (nonatomic, strong) ProgrammaticExpandableInputAccessoryView *expandableInputAccessoryView;
+@property (nonatomic, strong) ProgrammaticExpandableInputAccessoryView *accessoryView;
 
 @end
 
@@ -365,16 +365,16 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configureInputAccessoryView
 {
-//    self.expandableInputAccessoryView = [[ProgrammaticExpandableInputAccessoryView alloc] initWithFrame:(CGRectZero)];
-    self.expandableInputAccessoryView = [[ProgrammaticExpandableInputAccessoryView alloc] initWithParentDelegate: self];
+//    self.accessoryView = [[ProgrammaticExpandableInputAccessoryView alloc] initWithFrame:(CGRectZero)];
+    self.accessoryView = [[ProgrammaticExpandableInputAccessoryView alloc] initWithParentDelegate: self];
 
 //    ExpandableInputAccessoryViewController *vc = [[ExpandableInputAccessoryViewController alloc] init];
-//    self.expandableInputAccessoryView = vc.view;
+//    self.accessoryView = vc.view;
 }
 
 - (UIView *)inputAccessoryView
 {
-    return self.expandableInputAccessoryView;
+    return self.accessoryView;
 }
 
 - (void)configureSuggestionsTableView
@@ -758,7 +758,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.tableView deselectSelectedRowWithAnimation:YES];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
-    [self.expandableInputAccessoryView resignFirstResponder];
+    
+    [self.accessoryView resignResponder];
 //    [self.replyTextView resignFirstResponder];
 #pragma clang diagnostic pop
 //    [self refreshReplyTextViewPlaceholder];
