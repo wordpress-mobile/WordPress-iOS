@@ -1,9 +1,0 @@
-13.0
------
-Il fuso orario impostato sul tuo telefono è diverso da quello utilizzato dal sito Web. Su cosa si basano le statistiche del tuo sito? Quel picco di traffico si è verificato questa mattina o questo pomeriggio? Risposta: le statistiche si basano ora sul fuso orario del tuo sito Web.
-
-Schemi di colore coerenti, con buoni contrasti, creano un'app accessibile, intuitiva e gradevole per gli utenti. La Versione 13.0 è più coerente: scopri com'è piacevole.
-
-L'editor dei blocchi continua a migliorare. Come dici? Impossibile? Beh, vediamo un po': viene abilitato automaticamente non appena viene iniziato un articolo basato su blocchi* ed è possibile attivarlo o disattivarlo a livello di singoli siti, offrendo a ciascun utente l'esperienza desiderata con l'editor. L'aggiunta di blocchi a partire dal titolo dell'articolo avviene tramite visualizzazione di un apposito indicatore, consentendo una creazione più semplice dei contenuti, mentre l'aggiunta di nuovi blocchi comporta la deselezione dei titolo dell'articolo, con focalizzazione sul nuovo blocco.
-
-* Salvo disattivazione nella versione 12.9. Non siamo mostri.
