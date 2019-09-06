@@ -244,10 +244,12 @@ final class SiteAssemblyContentView: UIView {
             return
         }
 
+        buttonContainerView.backgroundColor = .basicBackground
+
         // This wrapper view provides underlap for Home indicator
         let buttonContainerContainer = UIView(frame: .zero)
         buttonContainerContainer.translatesAutoresizingMaskIntoConstraints = false
-        buttonContainerContainer.backgroundColor = .white
+        buttonContainerContainer.backgroundColor = .basicBackground
         buttonContainerContainer.addSubview(buttonContainerView)
         addSubview(buttonContainerContainer)
         self.buttonContainerContainer = buttonContainerContainer

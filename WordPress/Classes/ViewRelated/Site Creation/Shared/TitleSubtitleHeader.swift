@@ -71,7 +71,7 @@ final class TitleSubtitleHeader: UIView {
     }
 
     private func styleBackground() {
-        backgroundColor = .neutral(.shade5)
+        backgroundColor = .listBackground
     }
 
     private func styleTitle() {

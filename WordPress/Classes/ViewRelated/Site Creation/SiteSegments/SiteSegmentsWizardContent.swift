@@ -63,7 +63,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = .neutral(.shade5)
+        view.backgroundColor = .listBackground
     }
 
     override func viewDidLayoutSubviews() {

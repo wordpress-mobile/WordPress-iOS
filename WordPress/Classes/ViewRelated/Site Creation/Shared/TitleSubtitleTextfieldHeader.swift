@@ -68,17 +68,28 @@ final class SearchTextField: UITextField {
     private func initialize() {
         translatesAutoresizingMaskIntoConstraints = false
 
-        backgroundColor = .white
+        backgroundColor = .listForeground
         clearButtonMode = .whileEditing
         font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        textColor = .neutral(.shade70)
+        textColor = .text
 
         autocapitalizationType = .none
         autocorrectionType = .no
         adjustsFontForContentSizeCategory = true
 
+        setIconImage()
+
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: Constants.searchHeight),
+            ])
+
+        addTopBorder(withColor: .divider)
+        addBottomBorder(withColor: .divider)
+    }
+
+    private func setIconImage() {
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
-        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
+        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(.listIcon)?.imageFlippedForRightToLeftLayoutDirection()
         let imageView = UIImageView(image: loupeIcon)
 
         if traitCollection.layoutDirection == .rightToLeft {
@@ -88,13 +99,16 @@ final class SearchTextField: UITextField {
             leftView = imageView
             leftViewMode = .always
         }
+    }
 
-        NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: Constants.searchHeight),
-            ])
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
 
-        addTopBorder(withColor: .neutral(.shade10))
-        addBottomBorder(withColor: .neutral(.shade10))
+        #if XCODE11
+            if #available(iOS 13, *) {
+                setIconImage()
+            }
+        #endif
     }
 }
 
@@ -162,7 +176,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
     }
 
     private func setStyles() {
-        backgroundColor = .neutral(.shade5)
+        backgroundColor = .clear
     }
 
     func setTitle(_ text: String) {
