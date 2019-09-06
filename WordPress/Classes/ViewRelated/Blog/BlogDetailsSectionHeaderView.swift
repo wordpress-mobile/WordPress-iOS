@@ -6,7 +6,7 @@ class BlogDetailsSectionHeaderView: UITableViewHeaderFooterView {
 
     @objc @IBOutlet private(set) var ellipsisButton: UIButton? {
         didSet {
-            ellipsisButton?.setImage(Gridicon.iconOfType(.ellipsis).imageWithTintColor(.neutral(.shade30)), for: .normal)
+            ellipsisButton?.setImage(Gridicon.iconOfType(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
         }
     }
 
@@ -17,6 +17,11 @@ class BlogDetailsSectionHeaderView: UITableViewHeaderFooterView {
     }
 
     @objc var ellipsisButtonDidTouch: EllipsisCallback?
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        titleLabel?.textColor = .textSubtle
+    }
 
     @IBAction func ellipsisTapped() {
         ellipsisButtonDidTouch?(self)
