@@ -141,12 +141,20 @@ open class AboutViewController: UITableViewController {
         displayWebView(URL(string: urlString))
     }
 
-    private func displayWebView(_ url: URL?) {
+    private func displayWebView(_ url: URL?, title: String? = nil) {
         guard let url = url else {
             return
         }
 
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        if let title = title {
+            present(webViewController: WebViewControllerFactory.controller(url: url, title: title))
+        }
+        else {
+            present(webViewController: WebViewControllerFactory.controller(url: url))
+        }
+    }
+
+    private func present(webViewController: UIViewController) {
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
         } else {
@@ -202,6 +210,8 @@ open class AboutViewController: UITableViewController {
     fileprivate var rows: [[Row]] {
         let appsBlogHostname = URL(string: WPAutomatticAppsBlogURL)?.host ?? String()
 
+        let acknowledgementsString = NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use")
+
         return [
             [
                 Row(title: NSLocalizedString("Version", comment: "Displays the version of the App"),
@@ -233,9 +243,12 @@ open class AboutViewController: UITableViewController {
                     details: nil,
                     handler: { self.displayWebView(WPGithubMainURL) }),
 
-                Row(title: NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use"),
+                Row(title: acknowledgementsString,
                     details: nil,
-                    handler: { self.displayWebView(Bundle.main.url(forResource: "acknowledgements", withExtension: "html")) }),
+                    handler: {
+                        let url = Bundle.main.url(forResource: "acknowledgements", withExtension: "html")
+                        self.displayWebView(url, title: acknowledgementsString)
+                }),
             ]
         ]
     }
