@@ -234,6 +234,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Deferred tasks to speed up app launch
         DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.mergeDuplicateAccountsIfNeeded()
             MediaCoordinator.shared.refreshMediaStatus()
             PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
@@ -247,6 +248,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = WPTabBarController.sharedInstance()
 
         setupNoticePresenter()
+    }
+
+    private func mergeDuplicateAccountsIfNeeded() {
+        let context = ContextManager.shared.mainContext
+        context.perform {
+            AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
+        }
     }
 
     private func setupPingHub() {
@@ -453,6 +461,7 @@ extension WordPressAppDelegate {
 
         appearance.bodyTextColor = .neutral(.shade70)
         appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
+        appearance.bodyBackgroundColor = .neutral(.shade0)
 
         appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
@@ -461,6 +470,8 @@ extension WordPressAppDelegate {
         appearance.topDividerColor = .neutral(.shade5)
         appearance.bottomDividerColor = .neutral(.shade0)
         appearance.headerBackgroundColor = .neutral(.shade0)
+
+        appearance.bottomBackgroundColor = .neutral(.shade0)
     }
 
     /// Setup: FancyButton's Appearance
