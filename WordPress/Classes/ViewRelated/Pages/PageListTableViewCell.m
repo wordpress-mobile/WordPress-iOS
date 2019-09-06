@@ -109,8 +109,8 @@ static CGFloat const FeaturedImageSize = 120.0;
     self.titleLabel.font = [WPStyleGuide notoBoldFontForTextStyle:UIFontTextStyleHeadline];
     self.titleLabel.adjustsFontForContentSizeCategory = YES;
     
-    self.titleLabel.textColor = [UIColor murielNeutral70];
-    self.badgesLabel.textColor = [UIColor murielNeutral];
+    self.titleLabel.textColor = [UIColor murielText];
+    self.badgesLabel.textColor = [UIColor murielTextSubtle];
     self.menuButton.tintColor = [UIColor murielTextSubtle];
     [self.menuButton setImage:[Gridicon iconOfType:GridiconTypeEllipsis] forState:UIControlStateNormal];
 
