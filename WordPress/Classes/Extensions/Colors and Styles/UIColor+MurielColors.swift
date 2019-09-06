@@ -158,7 +158,14 @@ extension UIColor {
     }
 
     static var textInverted = UIColor(light: .white, dark: .gray(.shade100))
-    static var textPlaceholder = neutral(.shade30)
+    static var textPlaceholder: UIColor {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                return .tertiaryLabel
+            }
+        #endif
+        return neutral(.shade30)
+    }
     static var placeholderElement: UIColor {
         #if XCODE11
             if #available(iOS 13, *) {
