@@ -1,5 +1,8 @@
 13.3
 -----
+* Block editor: Add rich text styling to video captions
+* Block editor: Blocks that would be replaced are now hidden when add block bottom sheet displays
+* Block editor: Tapping on empty editor area now always inserts new block at end of post
  
 13.2
 -----
