@@ -67,7 +67,6 @@ class ExpandableCell: WPReusableTableViewCell {
         expandableTextView?.delegate = self
         expandableTextView?.textContainerInset = .zero
         expandableTextView?.textContainer.lineFragmentPadding = 0
-        expandableTextView?.textColor = .text
         expandableTextView?.backgroundColor = .clear
     }
 
