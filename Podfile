@@ -244,7 +244,7 @@ target 'WordPress' do
                        </body>"
           
           ## Remove the <h1>, since we've promoted it to <title>
-          styled_html = styled_html.sub("<h1>#{acknowledgements}</h1>", '')
+          styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
           
           ## The glog library's license contains a URL that does not wrap in the web view,
           ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
