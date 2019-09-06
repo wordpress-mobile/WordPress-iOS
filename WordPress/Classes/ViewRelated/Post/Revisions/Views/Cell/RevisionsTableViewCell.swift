@@ -80,9 +80,9 @@ private extension RevisionsTableViewCell {
 
         // Setup labels
         titleLabel.backgroundColor = .listForeground
-        titleLabel.textColor = .neutral(.shade70)
+        titleLabel.textColor = .text
         subTitleLabel.backgroundColor = .listForeground
-        subTitleLabel.textColor = .neutral(.shade40)
+        subTitleLabel.textColor = .textSubtle
 
         // Setup del operations
         delOperation = RevisionOperation(.del)
