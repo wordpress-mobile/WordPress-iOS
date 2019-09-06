@@ -1,6 +1,7 @@
 13.3
 -----
- 
+* Block editor: Fixed a performance issue that caused a freeze in the editor with long text content.
+
 13.2
 -----
 * When Log In is selected, all available options are displayed.
