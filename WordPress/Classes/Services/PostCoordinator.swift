@@ -59,7 +59,7 @@ class PostCoordinator: NSObject {
 
         change(post: post, status: .pushing)
 
-        if mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia {
+        if mediaCoordinator.isUploadingMedia(for: post) || post.hasLocalMedia() {
             change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
@@ -75,7 +75,7 @@ class PostCoordinator: NSObject {
                     let successHandler = {
                         self.updateReferences(to: media, in: post)
                         // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasLocalMedia() {
                             self.removeObserver(for: post)
                             self.upload(post: post)
                         }
