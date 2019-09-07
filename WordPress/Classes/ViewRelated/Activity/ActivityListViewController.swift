@@ -127,6 +127,7 @@ extension ActivityListViewController {
             return nil
         }
 
+        cell.separator.isHidden = true
         cell.titleLabel.text = NSLocalizedString("Since you're on a free plan, you'll see limited events in your Activity Log.", comment: "Text displayed as a footer of a table view with Activities when user is on a free plan")
 
         return cell
