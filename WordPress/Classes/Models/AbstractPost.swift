@@ -63,10 +63,16 @@ extension AbstractPost {
 
     // MARK: - Media
 
-    func hasLocalMedia() -> Bool {
-        let localMediaRemoteStatus: [MediaRemoteStatus] = [.local, .processing, .pushing, .failed]
+    func hasLocalMediaNotBeingUploaded() -> Bool {
+        let localMediaRemoteStatus: [MediaRemoteStatus] = [.local, .failed]
 
         return media.contains(where: { localMediaRemoteStatus.contains($0.remoteStatus) })
+    }
+
+    func hasLocalMediaBeingUploaded() -> Bool {
+        let relateRemoteStatus: [MediaRemoteStatus] = [.processing, .pushing]
+
+        return media.contains(where: { relateRemoteStatus.contains( $0.remoteStatus )})
     }
 
     // MARK: - Misc
