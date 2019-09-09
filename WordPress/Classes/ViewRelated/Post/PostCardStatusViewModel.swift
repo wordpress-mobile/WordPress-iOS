@@ -56,30 +56,7 @@ class PostCardStatusViewModel: NSObject {
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
         } else if post.isFailed {
-            let defaultFailedMessage = StatusMessages.uploadFailed
-            guard let postStatus = post.status else {
-                return defaultFailedMessage
-            }
-
-            if post.wasAutoUploadCancelled {
-                return StatusMessages.localChanges
-            }
-
-            if autoUploadInteractor.autoUploadAction(for: post) != .upload {
-                return defaultFailedMessage
-            }
-            if post.hasRemote() {
-                return StatusMessages.changesWillBeUploaded
-            }
-
-            switch postStatus {
-            case .draft:
-                return StatusMessages.draftWillBeUploaded
-            case .publish:
-                return StatusMessages.postWillBePublished
-            default:
-                return defaultFailedMessage
-            }
+            return generateFailedStatusMessage()
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
         } else {
@@ -230,6 +207,39 @@ class PostCardStatusViewModel: NSObject {
         let status = self.status ?? ""
 
         return [status, sticky].filter { !$0.isEmpty }.joined(separator: separator)
+    }
+
+    /// Determine what the failed status message should be and return it.
+    ///
+    /// This is a helper method for `status`.
+    private func generateFailedStatusMessage() -> String {
+        assert(post.remoteStatus == .failed, "This should only be used if the remoteStatus is .failed")
+
+        let defaultFailedMessage = StatusMessages.uploadFailed
+
+        guard post.remoteStatus == .failed, let postStatus = post.status else {
+            return defaultFailedMessage
+        }
+
+        if post.wasAutoUploadCancelled {
+            return StatusMessages.localChanges
+        }
+
+        if autoUploadInteractor.autoUploadAction(for: post) != .upload {
+            return defaultFailedMessage
+        }
+        if post.hasRemote() {
+            return StatusMessages.changesWillBeUploaded
+        }
+
+        switch postStatus {
+        case .draft:
+            return StatusMessages.draftWillBeUploaded
+        case .publish:
+            return StatusMessages.postWillBePublished
+        default:
+            return defaultFailedMessage
+        }
     }
 
     private enum Constants {
