@@ -213,11 +213,9 @@ class PostCardStatusViewModel: NSObject {
     ///
     /// This is a helper method for `status`.
     private func generateFailedStatusMessage() -> String {
-        assert(post.remoteStatus == .failed, "This should only be used if the remoteStatus is .failed")
-
         let defaultFailedMessage = StatusMessages.uploadFailed
 
-        guard post.remoteStatus == .failed, let postStatus = post.status else {
+        guard post.isFailed, let postStatus = post.status else {
             return defaultFailedMessage
         }
 
