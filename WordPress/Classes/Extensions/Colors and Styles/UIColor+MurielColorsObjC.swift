@@ -107,6 +107,11 @@
     }
 
     @available(swift, obsoleted: 1.0)
+    static func murielTertiaryBackground() -> UIColor {
+        return .tertiaryBackground
+    }
+
+    @available(swift, obsoleted: 1.0)
     static func murielTextPlaceholder() -> UIColor {
         return .textPlaceholder
     }

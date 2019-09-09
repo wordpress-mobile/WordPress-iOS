@@ -117,6 +117,16 @@ extension UIColor {
         return .white
     }
 
+    /// Tertiary background
+    static var tertiaryBackground: UIColor {
+        #if XCODE11
+            if #available(iOS 13, *) {
+                return .tertiarySystemBackground
+            }
+        #endif
+        return .neutral(.shade10)
+    }
+
     /// Default text color: high contrast
     static var text: UIColor {
         #if XCODE11
