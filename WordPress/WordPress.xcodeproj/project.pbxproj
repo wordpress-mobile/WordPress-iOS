@@ -4998,6 +4998,7 @@
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
+				E1B34C091CCDFFCE00889709 /* Credentials */,
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				E12F55F714A1F2640060A510 /* Vendor */,
@@ -8888,7 +8889,8 @@
 				E1B34C0B1CCDFFCE00889709 /* ApiCredentials.h */,
 				E1B34C0C1CCDFFCE00889709 /* ApiCredentials.m */,
 			);
-			path = Credentials;
+			name = Credentials;
+			path = ../config/Credentials;
 			sourceTree = "<group>";
 		};
 		E1B9127F1BB00EF1003C25B9 /* People */ = {
@@ -9122,7 +9124,6 @@
 		F14B5F6F208E648200439554 /* config */ = {
 			isa = PBXGroup;
 			children = (
-				E1B34C091CCDFFCE00889709 /* Credentials */,
 				98FB6E9F23074CE5002DDC8D /* SDKVersions.xcconfig */,
 				F14B5F75208E64F900439554 /* Version.internal.xcconfig */,
 				F14B5F74208E64F900439554 /* Version.public.xcconfig */,

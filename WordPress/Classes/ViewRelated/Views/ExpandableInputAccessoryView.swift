@@ -21,7 +21,6 @@ struct TextViewConstraintStore {
     let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
     var topConstraint: NSLayoutConstraint?
 //    var heightConstraint: NSLayoutConstraint?
-    
     @objc init(parentDelegate: ExpandableInputAccessoryViewParentDelegate) {
         super.init(frame: CGRect.zero)
         backgroundColor = .blue
@@ -29,9 +28,7 @@ struct TextViewConstraintStore {
         expandableInputAccessoryView.delegate = self
         expandableInputAccessoryView.parentDelegate = parentDelegate
         self.addSubview(expandableInputAccessoryView)
-        
         self.autoresizingMask = .flexibleHeight
-        
         NSLayoutConstraint(item: expandableInputAccessoryView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: expandableInputAccessoryView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: expandableInputAccessoryView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
@@ -70,7 +67,6 @@ struct TextViewConstraintStore {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 protocol ExpandableInputAccessoryViewDelegate: class {
@@ -82,12 +78,10 @@ protocol ExpandableInputAccessoryViewDelegate: class {
 }
 
 class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
-    
     enum ExpandedState {
         case fullScreen
         case normal
     }
-    
     @IBOutlet weak var dividerViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var dividerView: UIView!
     @IBOutlet weak var headerLabel: UILabel!
@@ -179,7 +173,6 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
     }
     
     // MARK: TextView delegates
-    
     func textViewDidBeginEditing(_ textView: UITextView) {
         parentDelegate?.expandableInputAccessoryViewDidBeginEditing()
     }
@@ -199,7 +192,6 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
                     self.superview?.setNeedsLayout()
                     self.superview?.layoutIfNeeded()
                 }
-                
             }
         }
     }
