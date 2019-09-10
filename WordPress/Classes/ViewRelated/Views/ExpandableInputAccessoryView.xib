@@ -17,14 +17,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z6P-QG-lRU">
-                    <rect key="frame" x="169.5" y="13.5" width="75" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="168" y="12.5" width="78.5" height="21"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wAM-wr-uzv">
                     <rect key="frame" x="45" y="6" width="309" height="32"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     <userDefinedRuntimeAttributes>
@@ -33,28 +32,29 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </textView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkS-sS-MKg">
-                    <rect key="frame" x="366" y="7" width="36" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkS-sS-MKg">
+                    <rect key="frame" x="378" y="12" width="24" height="24"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="36" id="fs4-qB-g9q"/>
+                        <constraint firstAttribute="width" constant="24" id="ADj-Y8-yTD"/>
+                        <constraint firstAttribute="height" constant="24" id="las-sE-cZI"/>
                     </constraints>
-                    <state key="normal" title="Send"/>
+                    <state key="normal" image="icon-send"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reply to post" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2VP-Vh-Erd" userLabel="Placeholder">
                     <rect key="frame" x="51" y="12" width="100.5" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.63529411759999999" green="0.65490196079999996" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.58823529411764708" green="0.61176470588235299" blue="0.63137254901960782" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UIn-74-tKQ" userLabel="Divider">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
-                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="yAb-iR-kg0"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mvj-xP-Obp" userLabel="ExpandButton">
-                    <rect key="frame" x="5" y="8" width="32" height="32"/>
+                    <rect key="frame" x="7" y="7" width="32" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="PgK-bU-05z"/>
                         <constraint firstAttribute="width" constant="32" id="tgW-MQ-5Lz"/>
@@ -74,14 +74,14 @@
                 <constraint firstItem="z6P-QG-lRU" firstAttribute="centerX" secondItem="Kom-M1-ozf" secondAttribute="centerX" id="KGE-jJ-s28"/>
                 <constraint firstItem="wAM-wr-uzv" firstAttribute="top" secondItem="Aw3-5A-8B3" secondAttribute="top" constant="6" id="M0b-Go-7VP"/>
                 <constraint firstItem="wAM-wr-uzv" firstAttribute="leading" secondItem="Aw3-5A-8B3" secondAttribute="leading" constant="45" id="Tbx-3b-KVU"/>
-                <constraint firstItem="mvj-xP-Obp" firstAttribute="top" secondItem="Aw3-5A-8B3" secondAttribute="top" constant="8" id="ajX-xn-YWC"/>
+                <constraint firstItem="mvj-xP-Obp" firstAttribute="top" secondItem="Aw3-5A-8B3" secondAttribute="top" constant="7" id="ajX-xn-YWC"/>
                 <constraint firstItem="UIn-74-tKQ" firstAttribute="leading" secondItem="Aw3-5A-8B3" secondAttribute="leading" id="cey-10-XUj"/>
-                <constraint firstItem="vkS-sS-MKg" firstAttribute="top" secondItem="Aw3-5A-8B3" secondAttribute="top" constant="7" id="gdq-G1-oj8"/>
+                <constraint firstItem="vkS-sS-MKg" firstAttribute="top" secondItem="Aw3-5A-8B3" secondAttribute="top" constant="12" id="gdq-G1-oj8"/>
                 <constraint firstItem="2VP-Vh-Erd" firstAttribute="top" secondItem="wAM-wr-uzv" secondAttribute="top" constant="6" id="kfJ-9x-KAO"/>
                 <constraint firstAttribute="bottom" secondItem="wAM-wr-uzv" secondAttribute="bottom" constant="22" id="nD5-9f-cc9"/>
                 <constraint firstItem="2VP-Vh-Erd" firstAttribute="leading" secondItem="wAM-wr-uzv" secondAttribute="leading" constant="6" id="shU-HW-tWa"/>
                 <constraint firstAttribute="trailing" secondItem="wAM-wr-uzv" secondAttribute="trailing" constant="60" id="tqB-sk-iuo"/>
-                <constraint firstItem="mvj-xP-Obp" firstAttribute="leading" secondItem="Aw3-5A-8B3" secondAttribute="leading" constant="5" id="wul-D0-NdK"/>
+                <constraint firstItem="mvj-xP-Obp" firstAttribute="leading" secondItem="Aw3-5A-8B3" secondAttribute="leading" constant="7" id="wul-D0-NdK"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="Kom-M1-ozf"/>
@@ -102,5 +102,6 @@
     </objects>
     <resources>
         <image name="icon-nav-chevron-highlight" width="14" height="8"/>
+        <image name="icon-send" width="48" height="48"/>
     </resources>
 </document>

@@ -108,15 +108,19 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
     var explicityCollapsed = false
     var wasAutomatticallyExpanded = false
     var topConstraint: NSLayoutConstraint?
-    let expandedTextViewConstraints = TextViewConstraintStore(leading: 4.0, trailing: 4.0, top: 44.0)
+    let expandedTextViewConstraints = TextViewConstraintStore(leading: 10.0, trailing: 4.0, top: 50.0)
     var collapsedTextViewConstraints = TextViewConstraintStore(leading: 45.0, trailing: 60.0, top: 6.0)
+    private let sendButtonDisabledTintColor = UIColor(red: 150/255, green: 156/255, blue: 161/255, alpha: 1.0)
+    private let sendButtonEnabledTintColor = UIColor(red: 213/255, green: 44/255, blue: 130/255, alpha: 1.0)
+    private let expandButtonCollapsedTransform = CGAffineTransform(rotationAngle: CGFloat.pi)
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.autoresizingMask = .flexibleHeight
         
         self.headerLabel.alpha = 0
-        self.dividerView.isHidden = true
+        self.sendButton.tintColor = sendButtonDisabledTintColor
+        expandButton.transform = expandButtonCollapsedTransform
     }
     
     @IBAction func expandButtonTapped(_ sender: UIButton) {
@@ -136,7 +140,6 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
         if topConstraint == nil {
 //            topConstraint = self.topAnchor.constraint(equalTo: self.window!.safeAreaLayoutGuide.topAnchor)
         }
-        dividerView.isHidden = false
         UIView.animate(withDuration: 0.2) {
 //            self.topConstraint?.isActive = true
             self.textViewTrailingConstraint.constant = self.expandedTextViewConstraints.trailing
@@ -144,6 +147,7 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             self.textViewTopConstraint.constant = self.expandedTextViewConstraints.top
             self.dividerViewTopConstraint.constant = 44.0
             self.headerLabel.alpha = 1
+            self.expandButton.transform = .identity
             self.superview?.setNeedsLayout()
             self.superview?.layoutIfNeeded()
         }
@@ -155,7 +159,6 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             explicityCollapsed = true
         }
         delegate?.didMoveTo(.normal)
-        dividerView.isHidden = true
         UIView.animate(withDuration: 0.2) {
             self.topConstraint?.isActive = false
             self.topAnchor.constraint(equalTo: self.window!.safeAreaLayoutGuide.topAnchor).isActive = false
@@ -164,6 +167,7 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             self.textViewTopConstraint.constant = self.collapsedTextViewConstraints.top
             self.dividerViewTopConstraint.constant = 0
             self.headerLabel.alpha = 0
+            self.expandButton.transform = self.expandButtonCollapsedTransform
             self.superview?.setNeedsLayout()
             self.superview?.layoutIfNeeded()
         }
@@ -182,7 +186,9 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
     
     func textViewDidChange(_ textView: UITextView) {
         // Re-calculate intrinsicContentSize when text changes
-        placeholerLabel.isHidden = textView.text.count > 0
+        placeholerLabel.isHidden = !textView.text.isEmpty
+        sendButton.tintColor = textView.text.isEmpty ? sendButtonDisabledTintColor : sendButtonEnabledTintColor
+
         if let fontLineHeight = self.textView.font?.lineHeight {
             let numLines = Int(self.textView.contentSize.height / fontLineHeight)
             if numLines > 4 && !self.isExpanded && !explicityCollapsed {

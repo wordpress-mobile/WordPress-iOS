@@ -60,6 +60,7 @@
 #import "PrivateSiteURLProtocol.h"
 
 #import "ReachabilityUtils.h"
+#import "EnhancedCommentingReaderCommentsViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderGapMarker.h"
 #import "ReaderPost.h"
