@@ -168,10 +168,7 @@ extension WPStyleGuide {
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar,
                                           forTabbedCard: Bool = false,
                                           forOverviewCard: Bool = false) {
-            filterTabBar.dividerColor = filterDividerColor
-            filterTabBar.deselectedTabColor = filterDeselectedColor
-            filterTabBar.backgroundColor = .filterBarBackground
-            filterTabBar.tintColor = defaultFilterTintColor
+            WPStyleGuide.configureFilterTabBar(filterTabBar)
 
             // For FilterTabBar on TabbedTotalsCell
             if forTabbedCard {
@@ -213,8 +210,6 @@ extension WPStyleGuide {
         static let defaultFilterTintColor = UIColor.filterBarSelected
         static let tabbedCardFilterTintColor = UIColor.filterBarSelected
         static let tabbedCardFilterSelectedTitleColor = UIColor.filterBarSelected
-        static let filterDeselectedColor = UIColor.textSubtle
-        static let filterDividerColor = UIColor.neutral(.shade10)
 
         static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .regular)
         static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
@@ -233,7 +228,7 @@ extension WPStyleGuide {
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {
-            static let range1 = UIColor.neutral(.shade10)
+            static let range1 = UIColor(light: .neutral(.shade5), dark: .neutral(.shade10))
             static let range2 = UIColor.primary(.shade5)
             static let range3 = UIColor.primaryLight
             static let range4 = UIColor.primary

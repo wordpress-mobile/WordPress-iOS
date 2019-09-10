@@ -224,6 +224,7 @@ class JetpackLoginViewController: UIViewController {
                                                             delegate: self,
                                                             promptType: promptType)
         let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
     }
 

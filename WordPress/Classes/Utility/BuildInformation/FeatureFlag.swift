@@ -9,6 +9,7 @@ enum FeatureFlag: Int {
     case statsInsightsManagement
     case domainCredit
     case signInWithApple
+    case statsAsyncLoading
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -31,6 +32,8 @@ enum FeatureFlag: Int {
             if BuildConfiguration.current == .a8cBranchTest || BuildConfiguration.current == .a8cPrereleaseTesting {
                 return false
             }
+            return true
+        case .statsAsyncLoading:
             return BuildConfiguration.current == .localDeveloper
         }
     }

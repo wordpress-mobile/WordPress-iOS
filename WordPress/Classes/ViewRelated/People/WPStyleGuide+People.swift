@@ -15,7 +15,7 @@ extension WPStyleGuide {
             }
 
             // MARK: Colors
-            public static let textColor = UIColor.white
+            public static let textColor = UIColor.textInverted
         }
 
         // MARK: Colors

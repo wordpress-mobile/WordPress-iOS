@@ -111,6 +111,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             defaultMissingImage: Assets.defaultMissingImage)
 
         editorView.clipsToBounds = false
+        editorView.htmlStorage.textColor = .text
         setupHTMLTextView(editorView.htmlTextView)
         setupRichTextView(editorView.richTextView)
 

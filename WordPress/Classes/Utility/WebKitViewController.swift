@@ -194,7 +194,11 @@ class WebKitViewController: UIViewController {
 
     private func setupNavBarTitleView() {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
-        titleView.titleLabel.textColor = .neutral(.shade70)
+        if #available(iOS 13.0, *) {
+            titleView.titleLabel.textColor = UIColor(light: .white, dark: .neutral(.shade70))
+        } else {
+            titleView.titleLabel.textColor = .neutral(.shade70)
+        }
         titleView.subtitleLabel.textColor = .neutral(.shade30)
 
         if let title = customTitle {
@@ -254,24 +258,32 @@ class WebKitViewController: UIViewController {
         guard let toolBar = navigationController?.toolbar else {
             return
         }
-        toolBar.barTintColor = UIColor.white
+        toolBar.barTintColor = UIColor(light: .white, dark: .appBar)
         fixBarButtonsColorForBoldText(on: toolBar)
     }
 
     private func styleToolBarButtons() {
-        navigationController?.toolbar.items?.forEach(styleBarButton)
+        navigationController?.toolbar.items?.forEach(styleToolBarButton)
     }
 
     // MARK: Helpers
 
     private func fixBarButtonsColorForBoldText(on bar: UIView) {
         if UIAccessibility.isBoldTextEnabled {
-            bar.tintColor = .neutral(.shade20)
+            bar.tintColor = .listIcon
         }
     }
 
     private func styleBarButton(_ button: UIBarButtonItem) {
-        button.tintColor = .neutral(.shade20)
+        if #available(iOS 13.0, *) {
+            button.tintColor = UIColor(light: .white, dark: .neutral(.shade70))
+        } else {
+            button.tintColor = .listIcon
+        }
+    }
+
+    private func styleToolBarButton(_ button: UIBarButtonItem) {
+        button.tintColor = .listIcon
     }
 
     // MARK: Reachability Helpers

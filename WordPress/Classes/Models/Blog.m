@@ -634,7 +634,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
     } else {
         extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
     }
-    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.settings.name, self.url, self.xmlrpc, extra];
+    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@ ObjectID: %@>", self.settings.name, self.url, self.xmlrpc, extra, self.objectID.URIRepresentation];
 }
 
 - (NSString *)supportDescription

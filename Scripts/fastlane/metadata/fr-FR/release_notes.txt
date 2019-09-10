@@ -1,9 +1,5 @@
-13.0
------
-Votre téléphone est régler sur un fuseau horaire. Votre site en utilise un différent. Sur quelle base horaire sont vos statistiques ? Est-ce que ce trafic a eu lieu ce matin ou cet après-midi ? Réponse : vos statistiques sont maintenant basées sur le réglage de fuseau horaire du site.
-
-Un jeu de couleurs cohérent avec un bon contraste rend l’app plus accessible et intuitive, et rend les utilisateurs plus heureux. La version 13.0 est plus cohérente. Profitez du bonheur.
-
-L’éditeur de blocs ne cesse de s’améliorer. Vous vous dites : impossible ! Pff, laissez-moi vous dire en quoi : il est automatiquement activé la première fois que vous commencer un article basé sur des blocs* et vous pouvez l’activer ou le désactiver par site comme ça chaque utilisateur choisit l’expérience de l’éditeur qu’il préfère. Pour ajouter un bloc depuis le titre de l’article, un indicateur « Ajouter un bloc ici » s’affiche pour simplifier la création de contenu. Et l’ajout d’un nouveau bloc désélectionne le titre de l’article pour garder l’attention sur le nouveau bloc.
-
-*À part si vous l’avez déjà désactivé sur la version 12.9 ! Nous ne sommes pas des monstres.
+* Inactive, vraiment : quand vous n’utilisez pas l’app, elle utilise moins le processeur, ce qui améliore les performances de votre appareil.
+* Votre liste de sites montrait-elle parfois le même site plus d'une fois ? Bon, c’est corrigé.
+* Gérez vos paramètres de notification à partir de l'écran Notifications (c'est logique, non ?).
+* La date affichée et le fuseau horaire de votre site sont maintenant parfaitement synchronisés.
+* Profitez d'un chargement plus fluide et plus stable des prévisualisations de messages.

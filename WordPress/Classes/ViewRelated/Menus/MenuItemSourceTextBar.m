@@ -34,7 +34,7 @@
     self = [super init];
     if (self) {
 
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor clearColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
 
         [self setupStackView];
@@ -61,7 +61,7 @@
 
         UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
         NSString *placeholder = NSLocalizedString(@"Search...", @"Menus search bar placeholder text.");
-        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor murielNeutral40]};
+        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor murielTextPlaceholder]};
         _textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
     }
 
@@ -104,7 +104,7 @@
         // Increase the stroke width on non-retina screens.
         contentView.layer.borderWidth = MenusDesignStrokeWidth * 2;
     }
-    contentView.backgroundColor = [UIColor whiteColor];
+    contentView.backgroundColor = [UIColor murielBasicBackground];
 
     NSAssert(_stackView != nil, @"stackView is nil");
 
@@ -183,7 +183,7 @@
 {
     UILabel *label = [[UILabel alloc] init];
     label.text = NSLocalizedString(@"Cancel", @"Menus cancel button within text bar while editing items.");
-    label.textColor = [UIColor murielNeutral];
+    label.textColor = [UIColor murielText];
     label.font = [WPFontManager systemRegularFontOfSize:14.0];
     label.userInteractionEnabled = YES;
 
