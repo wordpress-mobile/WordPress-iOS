@@ -1,5 +1,6 @@
-13.1
------
-- Je kunt nu je gebruikersnaam in de app wijzigen.
-- Gegevens over je bestandsdownloads worden nu weergegeven in de statistieken Periode.
-- Je kunt nu concepten in de lijst Berichten publiceren door op de nieuwe actie 'Nu publiceren' te tikken die beschikbaar is via het menu '...'.
+* Inactief is inactief: wanneer je de app niet gebruikt, doet deze minder, zodat de prestaties van je apparaat worden verbeterd.
+* Werd op de lijst met je sites soms meerdere keren dezelfde site weergegeven? Dat probleem hebben we nu opgelost.
+* Beheer je meldingsinstellingen vanuit het scherm Meldingen (logisch, toch?).
+* De weergegeven datum en de tijdzone van je site zijn nu perfect gesynchroniseerd.
+* Geniet van het verbeterd en stabieler laden van berichtvoorbeelden.
+

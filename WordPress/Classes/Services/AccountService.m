@@ -248,11 +248,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return count;
 }
 
-/**
- Returns all accounts currently existing in core data.
-
- @return An array of WPAccounts.
- */
 - (NSArray<WPAccount *> *)allAccounts
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];

@@ -1,5 +1,6 @@
-13.1
------
-- Sekarang Anda dapat mengubah nama pengguna Anda di dalam aplikasi.
-- Data tentang Unduhan File kini tersedia di statistik Periode.
-- Sekarang Anda dapat memublikasikan konsep dalam daftar Pos dengan mengetuk tindakan “Publikasikan Sekarang” yang baru yang dapat diakses dari menu “…”.
+* Tidak aktif berarti tidak aktif: ketika Anda tidak menggunakan aplikasi, kondisi ini akan membuatnya bekerja lebih ringan, dan meningkatkan performa perangkat Anda.
+* Apakah daftar situs Anda terkadang menampilkan situs yang sama lebih dari satu kali? Ya, kami telah memperbaikinya.
+* Kelola pengaturan pemberitahuan dari layar Pemberitahuan (masuk akal, kan?).
+* Tanggal yang ditampilkan dan zona waktu situs Anda sekarang telah disinkronkan dengan tepat.
+* Nikmati proses memuat yang lebih lancar dan stabil untuk pratinjau pos.
+
