@@ -120,7 +120,7 @@ def gutenberg_dependencies(options)
     if options[:path]
         podspec_prefix = options[:path]
     else
-        tag_or_commit = options[:tag] || options[:commit] || options[:branch]
+        tag_or_commit = options[:tag] || options[:commit]
         podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
     end
 
