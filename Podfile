@@ -142,7 +142,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :branch => 'callstack/media-upload-multiple'
+    gutenberg :commit => '8147c57bcfce8213d65404b42c5064a2d6542e9d'
 
     ## Third party libraries
     ## =====================
