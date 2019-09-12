@@ -6,10 +6,22 @@ extension UIColor {
     /// - Returns: UIColor. Red in cases of error
     class func muriel(color murielColor: MurielColor) -> UIColor {
         let assetName = murielColor.assetName()
-        guard let color = UIColor(named: assetName) else {
+        let color: UIColor?
+
+        // This is temporary work around as there's a bug in the
+        // GM seed of Xcode 11 which causes loading colors from asset
+        // catalogs to fail (54325712)
+        if #available(iOS 12.0, *) {
+            color = UIColor(named: assetName)
+        } else {
+            color = MurielPalette.color(from: assetName)
+        }
+
+        guard let unwrappedColor = color else {
             return .red
         }
-        return color
+
+        return unwrappedColor
     }
     /// Get a UIColor from the Muriel color palette, adjusted to a given shade
     /// - Parameter color: an instance of a MurielColor
