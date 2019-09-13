@@ -52,14 +52,14 @@ workflows:
           xcode-version: "11.0.0"
           workspace: WordPress.xcworkspace
           scheme: WordPress
-          device: iPhone Xs
+          device: iPhone 11
   ui_tests:
     jobs:
       - build-ui-tests:
           name: Build UI Tests
       - run-ui-tests:
-          name: UI Tests (iPhone Xs)
-          device: iPhone Xs
+          name: UI Tests (iPhone 11)
+          device: iPhone 11
           requires: [ "Build UI Tests" ]
       - run-ui-tests:
           name: UI Tests (iPad 6th generation)
