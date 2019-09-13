@@ -31,6 +31,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
 
     private lazy var buttonViewController: NUXButtonViewController = {
         let buttonViewController = NUXButtonViewController.instance()
+        buttonViewController.view.backgroundColor = .basicBackground
         buttonViewController.delegate = self
         buttonViewController.setButtonTitles(
             primary: NSLocalizedString("Choose domain",
