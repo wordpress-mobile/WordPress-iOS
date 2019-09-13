@@ -7,7 +7,7 @@ jobs:
   build-ui-tests:
     executor:
       name: ios/default
-      xcode-version: "10.2.0"
+      xcode-version: "11.0.0"
     steps:
       - checkout
       - ios/install-dependencies:
@@ -27,10 +27,10 @@ jobs:
         type: string
     executor:
       name: ios/default
-      xcode-version: "10.2.0"
+      xcode-version: "11.0.0"
     steps:
       - ios/boot-simulator:
-          xcode-version: "10.2.0"
+          xcode-version: "11.0.0"
           device: << parameters.device >>
       - attach_workspace:
           at: ./
@@ -49,7 +49,7 @@ workflows:
     jobs:
       - ios/test:
           name: build_and_test
-          xcode-version: "10.2.0"
+          xcode-version: "11.0.0"
           workspace: WordPress.xcworkspace
           scheme: WordPress
           device: iPhone XS
