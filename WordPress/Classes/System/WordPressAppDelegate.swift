@@ -40,7 +40,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         //
         // We're leaving as-is for now to avoid digressing.
         let uploaders: [Uploader] = [
-            MediaCoordinator.shared,
+            // Ideally we should be able to retry uploads of standalone media to the media library, but the truth is
+            // that uploads started from the MediaCoordinator are currently not updating their parent post references
+            // very well.  For this reason I'm disabling automated upload retries that don't start from PostCoordinator.
+            //
+            // MediaCoordinator.shared,
             PostCoordinator.shared
         ]
 
