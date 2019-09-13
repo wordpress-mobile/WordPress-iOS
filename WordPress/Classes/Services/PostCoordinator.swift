@@ -36,22 +36,21 @@ class PostCoordinator: NSObject {
     private func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
         let mediaService = MediaService(managedObjectContext: backgroundContext)
         let media: [Media]
+        let isPushingAllMedia: Bool
 
         if automatedRetry {
             media = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
+            isPushingAllMedia = media.count == post.media.count
         } else {
             media = post.media.filter({ $0.remoteStatus == .failed })
+            isPushingAllMedia = true
         }
 
         media.forEach { mediaObject in
             mediaCoordinator.retryMedia(mediaObject, automatedRetry: automatedRetry)
         }
 
-        // At this point we should not have media with remoteStatus == .failed
-        // So in order to signal if media uploads have been started for all local media, we can
-        // simply check if the post has failed media.
-        //
-        return !post.hasFailedMedia
+        return !isPushingAllMedia
     }
 
     // MARK: - Misc
