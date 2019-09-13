@@ -440,7 +440,7 @@ class ContentInformation: ImageSourceInformation {
 @objc fileprivate class BlockquoteBackgroundLayoutManager: NSLayoutManager {
     /// Blockquote's Left Border Color
     ///
-    let blockquoteBorderColor = UIColor.textSubtle
+    let blockquoteBorderColor = UIColor.listIcon
 
     /// Blockquote's Left Border width
     ///

@@ -1,5 +1,6 @@
-13.1
------
-- Du kannst jetzt deinen Benutzernamen in der App ändern.
-- Daten zu deinen Dateidownloads sind jetzt in der Statistik für die Zeiträume verfügbar.
-- Du kannst jetzt Entwürfe in der Liste der Beiträge veröffentlichen, indem du im Menü „…“ auf die neue Aktion „Jetzt veröffentlichen“ tippst.
+* Inaktiv bedeutet inaktiv: Wenn du die App nicht verwendest, macht sie weniger und verbessert die Performance deines Geräts.
+* Wurde auf deiner Websiteliste manchmal die gleiche Website mehrmals angezeigt? Wir haben das behoben.
+* Verwalte deine Benachrichtigungseinstellungen über den Bildschirm „Benachrichtigungen“ (das ergibt Sinn, oder?).
+* Das angezeigte Datum und die Zeitzone deiner Website sind jetzt perfekt synchronisiert.
+* Profitiere von flüssigerem, stabilerem Laden von Beitragsvorschauen.
+

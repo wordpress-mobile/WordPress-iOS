@@ -79,16 +79,20 @@ class PostBuilder {
         return self
     }
 
-    func with(image: String) -> PostBuilder {
+    func with(image: String, status: MediaRemoteStatus? = nil) -> PostBuilder {
         guard let context = post.managedObjectContext else {
             return self
         }
 
         guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as? Media else {
-             return self
+            return self
         }
         media.localURL = image
         media.localThumbnailURL = "thumb-\(image)"
+
+        if let status = status {
+            media.remoteStatus = status
+        }
 
         media.addPostsObject(post)
         post.addMediaObject(media)

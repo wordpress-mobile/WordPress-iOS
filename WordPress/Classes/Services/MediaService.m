@@ -248,20 +248,17 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         return;
     }
 
-    // It's important this data is up to date immediately, as we want the status of a media object to be synchronized
-    // as soon as this method exits.
-    //
-    [self.managedObjectContext performBlockAndWait:^{
+    [self.managedObjectContext performBlock:^{
         Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
             mediaInContext.error = nil;
-
+            
             if (!automatedRetry) {
                 [mediaInContext resetAutoUploadFailureCount];
             }
             
-            [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
     }];
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {

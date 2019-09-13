@@ -1,5 +1,6 @@
-13.1
------
-- Ora puoi cambiare il tuo nome utente nell'app.
-- I dati sui download dei file sono ora disponibili nelle statistiche del periodo.
-- Adesso puoi pubblicare le bozze nell'elenco Articoli toccando la nuova azione "Pubblica ora" accessibile dal menu "...".
+* Inattività significa inattività: quando non usi l'app, eseguirà meno azioni e migliorerà le prestazioni del tuo dispositivo.
+* Il tuo elenco dei siti a volte ha mostrato più volte lo stesso sito? Abbiamo risolto questo problema.
+* Gestisci le impostazioni delle notifiche dalla schermata Notifiche (ha senso, no?).
+* La data visualizzata e il fuso orario del sito ora sono perfettamente sincronizzati.
+* Goditi un caricamento più fluido e stabile delle anteprime degli articoli.
+

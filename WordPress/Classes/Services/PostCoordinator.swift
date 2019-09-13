@@ -6,13 +6,9 @@ class PostCoordinator: NSObject {
 
     @objc static let shared = PostCoordinator()
 
-    private(set) var backgroundContext: NSManagedObjectContext = {
-        let context = ContextManager.sharedInstance().newDerivedContext()
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
+    private let backgroundContext: NSManagedObjectContext
 
-    private let mainContext = ContextManager.sharedInstance().mainContext
+    private let mainContext: NSManagedObjectContext
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
@@ -21,6 +17,26 @@ class PostCoordinator: NSObject {
     private lazy var mediaCoordinator: MediaCoordinator = {
         return MediaCoordinator.shared
     }()
+    
+    private let backgroundService: PostService
+    
+    private let mainService: PostService
+    
+    // MARK: - Initializers
+    
+    init(mainService: PostService? = nil, backgroundService: PostService? = nil) {
+        let contextManager = ContextManager.sharedInstance()
+        
+        let mainContext = contextManager.mainContext
+        let backgroundContext = contextManager.newDerivedContext()
+        backgroundContext.automaticallyMergesChangesFromParent = true
+        
+        self.mainContext = mainContext
+        self.backgroundContext = backgroundContext
+        
+        self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
+        self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
+    }
 
     // MARK: - Uploading Media
 
@@ -50,7 +66,7 @@ class PostCoordinator: NSObject {
             mediaCoordinator.retryMedia(mediaObject, automatedRetry: automatedRetry)
         }
 
-        return !isPushingAllMedia
+        return isPushingAllMedia
     }
 
     // MARK: - Misc
@@ -76,7 +92,7 @@ class PostCoordinator: NSObject {
 
         change(post: post, status: .pushing)
 
-        if mediaCoordinator.isUploadingMedia(for: post) {
+        if mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia {
             change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
@@ -186,13 +202,11 @@ class PostCoordinator: NSObject {
     /// The main cause of wrong status is the app being killed while uploads of posts are happening.
     ///
     @objc func refreshPostStatus() {
-        let service = PostService(managedObjectContext: backgroundContext)
-        service.refreshPostStatus()
+        backgroundService.refreshPostStatus()
     }
 
     private func upload(post: AbstractPost) {
-        let postService = PostService(managedObjectContext: mainContext)
-        postService.uploadPost(post, success: { uploadedPost in
+        mainService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             SearchManager.shared.indexItem(uploadedPost)
@@ -267,7 +281,7 @@ class PostCoordinator: NSObject {
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
         post.managedObjectContext?.perform {
             if status == .failed {
-                post.failedToUpload()
+                self.mainService.markAsFailedAndDraftIfNeeded(post: post)
             } else {
                 post.remoteStatus = status
             }
@@ -279,9 +293,7 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        let service = PostService(managedObjectContext: backgroundContext)
-
-        service.getFailedPosts { [weak self] posts in
+        mainService.getFailedPosts { [weak self] posts in
             guard let self = self else {
                 return
             }

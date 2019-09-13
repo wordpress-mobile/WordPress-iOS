@@ -117,7 +117,7 @@ class ShareTagsPickerViewController: UIViewController {
         textView.isScrollEnabled = false
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: Constants.textViewTopBottomInset, left: 0, bottom: Constants.textViewTopBottomInset, right: 0)
-        textViewContainer.backgroundColor = UIColor.white
+        textViewContainer.backgroundColor = UIColor(light: .white, dark: .listBackground)
         textViewContainer.layer.masksToBounds = false
     }
 
