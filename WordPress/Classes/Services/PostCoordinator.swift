@@ -22,6 +22,8 @@ class PostCoordinator: NSObject {
 
     private let mainService: PostService
 
+    // MARK: - Initializers
+
     init(mainService: PostService? = nil, backgroundService: PostService? = nil) {
         let contextManager = ContextManager.sharedInstance()
 
@@ -36,25 +38,56 @@ class PostCoordinator: NSObject {
         self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
     }
 
+    // MARK: - Uploading Media
+
+    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
+    /// of the existing media for the post.
+    ///
+    /// - Parameters:
+    ///     - post: the post to get the media to upload from.
+    ///     - automatedRetry: true if this call is the result of an automated upload-retry attempt.
+    ///
+    /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
+    ///
+    private func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
+        let mediaService = MediaService(managedObjectContext: backgroundContext)
+        let media: [Media]
+        let isPushingAllMedia: Bool
+
+        if automatedRetry {
+            media = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
+            isPushingAllMedia = media.count == post.media.count
+        } else {
+            media = post.media.filter({ $0.remoteStatus == .failed })
+            isPushingAllMedia = true
+        }
+
+        media.forEach { mediaObject in
+            mediaCoordinator.retryMedia(mediaObject, automatedRetry: automatedRetry)
+        }
+
+        return isPushingAllMedia
+    }
+
+    // MARK: - Misc
+
     /// Saves the post to both the local database and the server if available.
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
     ///
     /// - Parameter post: the post to save
-    func save(post postToSave: AbstractPost) {
+    ///
+    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
         var post = postToSave
+
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
             post = originalPost
             post.applyRevision()
             post.deleteRevision()
         }
 
-        if post.hasFailedMedia {
-            for media in post.media {
-                guard media.remoteStatus == .failed else {
-                    continue
-                }
-                mediaCoordinator.retryMedia(media)
-            }
+        guard uploadMedia(for: post, automatedRetry: automatedRetry) else {
+            change(post: post, status: .failed)
+            return
         }
 
         change(post: post, status: .pushing)
@@ -165,14 +198,6 @@ class PostCoordinator: NSObject {
         return post.titleForDisplay()
     }
 
-    /// Retries the upload and save of the post and any associated media with it.
-    ///
-    /// - Parameter post: the post to retry the upload
-    ///
-    @objc func retrySave(of post: AbstractPost) {
-        save(post: post)
-    }
-
     /// This method checks the status of all post objects and updates them to the correct status if needed.
     /// The main cause of wrong status is the app being killed while uploads of posts are happening.
     ///
@@ -277,7 +302,7 @@ extension PostCoordinator: Uploader {
                 let shouldRetry = post.status == .draft && !post.hasRemote()
 
                 if shouldRetry {
-                    self.retrySave(of: post)
+                    self.save(post, automatedRetry: true)
                 }
             }
         }
