@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@0.0.29
+  ios: wordpress-mobile/ios@dev:xcode-11-fix
 
 jobs:
   build-ui-tests:
