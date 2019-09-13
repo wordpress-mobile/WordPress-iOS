@@ -17,23 +17,23 @@ class PostCoordinator: NSObject {
     private lazy var mediaCoordinator: MediaCoordinator = {
         return MediaCoordinator.shared
     }()
-    
+
     private let backgroundService: PostService
-    
+
     private let mainService: PostService
-    
+
     // MARK: - Initializers
-    
+
     init(mainService: PostService? = nil, backgroundService: PostService? = nil) {
         let contextManager = ContextManager.sharedInstance()
-        
+
         let mainContext = contextManager.mainContext
         let backgroundContext = contextManager.newDerivedContext()
         backgroundContext.automaticallyMergesChangesFromParent = true
-        
+
         self.mainContext = mainContext
         self.backgroundContext = backgroundContext
-        
+
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
         self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
     }
