@@ -1,9 +1,23 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@dev:xcode-11-fix
+  ios: wordpress-mobile/ios@dev:add/temporary-xc11-fix
 
 jobs:
+  unit-tests:
+    executor:
+      name: ios/default
+      xcode-version: "11.0.0"
+    steps:
+      - checkout
+      - run:
+          name: Load chruby
+          command: echo 'source /usr/local/opt/chruby/share/chruby/chruby.sh && source /usr/local/opt/chruby/share/chruby/auto.sh && chruby 2.5.5' >> $BASH_ENV
+      - ios/test:
+          xcode-version: "11.0.0"
+          workspace: WordPress.xcworkspace
+          scheme: WordPress
+          device: iPhone 11 
   build-ui-tests:
     executor:
       name: ios/default
@@ -12,7 +26,20 @@ jobs:
       - checkout
       - ios/install-dependencies:
           bundle-install: true
-          pod-install: true
+          pod-install: false
+      - run: 
+          name: "Download the CocoaPods Master Spec Repo"
+          command: |
+            REPOS_LOCATION="$HOME/.cocoapods/repos"
+            tempfile=$(mktemp)
+
+            curl -sS -L -o "$tempfile" "https://cocoapods-specs.circleci.com/latest.tar.gz"
+            echo "Uncompressing CocoaPods master repo..."
+
+            # We expect the structure with the "master" as the top dir in the archive.
+            tar -C "$REPOS_LOCATION" -xzf "$tempfile"
+
+            echo "Successfully downloaded CocoaPods master repo."
       - ios/xcodebuild:
           command: build-for-testing
           arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPressUITests' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
@@ -47,12 +74,8 @@ jobs:
 workflows:
   wordpress_ios:
     jobs:
-      - ios/test:
+      - unit-tests:
           name: build_and_test
-          xcode-version: "11.0.0"
-          workspace: WordPress.xcworkspace
-          scheme: WordPress
-          device: iPhone 11
   ui_tests:
     jobs:
       - build-ui-tests:
@@ -62,6 +85,6 @@ workflows:
           device: iPhone 11
           requires: [ "Build UI Tests" ]
       - run-ui-tests:
-          name: UI Tests (iPad 6th generation)
-          device: iPad \\(6th generation\\)
+          name: UI Tests (iPad Air 6th generation)
+          device: iPad Air \\(3rd generation\\)
           requires: [ "Build UI Tests" ]
