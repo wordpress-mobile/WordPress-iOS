@@ -26,7 +26,7 @@ class PostCoordinatorTests: XCTestCase {
             .with(remoteStatus: .local)
             .build()
 
-        postCoordinator.save(post: post)
+        postCoordinator.save(post)
 
         expect(post.remoteStatus).toEventually(equal(.failed))
         expect(postServiceMock.didCallUploadPost).to(beFalse())
@@ -39,7 +39,7 @@ class PostCoordinatorTests: XCTestCase {
             .with(image: "test.jpeg")
             .build()
 
-        postCoordinator.save(post: post)
+        postCoordinator.save(post)
 
         expect(postServiceMock.didCallUploadPost).to(beTrue())
     }
@@ -51,7 +51,7 @@ class PostCoordinatorTests: XCTestCase {
             .with(image: "test.jpeg")
             .build()
 
-        postCoordinator.save(post: post)
+        postCoordinator.save(post)
 
         expect(post.remoteStatus).toEventually(equal(.pushing))
     }
