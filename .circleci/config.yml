@@ -1,15 +1,27 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@0.0.29
+  ios: wordpress-mobile/ios@0.0.31
+  git: wordpress-mobile/git@0.0.31
 
 jobs:
+  unit-tests:
+    executor:
+      name: ios/default
+      xcode-version: "10.2.0"
+    steps:
+      - git/shallow-checkout
+      - ios/test:
+          xcode-version: "10.2.0"
+          workspace: WordPress.xcworkspace
+          scheme: WordPress
+          device: iPhone XS
   build-ui-tests:
     executor:
       name: ios/default
       xcode-version: "10.2.0"
     steps:
-      - checkout
+      - git/shallow-checkout
       - ios/install-dependencies:
           bundle-install: true
           pod-install: true
@@ -47,12 +59,8 @@ jobs:
 workflows:
   wordpress_ios:
     jobs:
-      - ios/test:
+      - unit-tests:
           name: build_and_test
-          xcode-version: "10.2.0"
-          workspace: WordPress.xcworkspace
-          scheme: WordPress
-          device: iPhone XS
   ui_tests:
     jobs:
       - build-ui-tests:
