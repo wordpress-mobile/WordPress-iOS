@@ -308,7 +308,7 @@ DEPENDENCIES:
   - WordPressUI (~> 1.3.5)
   - WPMediaPicker (~> 1.4.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.11.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
-  - ZendeskSDK (= 3.0.1)
+  - ZendeskSDK (from `https://github.com/zendesk/zendesk_sdk_ios`, tag `3.0.1-swift5.1-GM`)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
@@ -352,7 +352,6 @@ SPEC REPOS:
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
-    - ZendeskSDK
     - ZIPFoundation
 
 EXTERNAL SOURCES:
@@ -415,6 +414,9 @@ EXTERNAL SOURCES:
     :tag: v1.11.0
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.11.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
+  ZendeskSDK:
+    :git: https://github.com/zendesk/zendesk_sdk_ios
+    :tag: 3.0.1-swift5.1-GM
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -426,6 +428,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.11.0
+  ZendeskSDK:
+    :git: https://github.com/zendesk/zendesk_sdk_ios
+    :tag: 3.0.1-swift5.1-GM
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -495,9 +500,9 @@ SPEC CHECKSUMS:
   WPMediaPicker: 1897f312c7b41114ffd239fb782431ae602134a1
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 4e71c9a33abf45ba55af55ae9cbc86f4234bb2a9
-  ZendeskSDK: c2e49fd16a73e43e490f777cea67dd852b819ace
+  ZendeskSDK: ce880e75f12ae5dacaa3658f49e545f3c8471030
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: eb2662b2d1884c3526e73b23c2e5a9304da88f1d
+PODFILE CHECKSUM: 5b13fe8dfd51d742f27e91fbc2cf2ecb41643867
 
 COCOAPODS: 1.6.1
