@@ -24,8 +24,7 @@ jobs:
           xcode-version: "11.0.0"
           workspace: WordPress.xcworkspace
           scheme: WordPress
-          device: iPhone 11
-          cache-prefix: xc11-clear
+          device: iPhone 11 
   build-ui-tests:
     executor:
       name: ios/default
@@ -36,7 +35,6 @@ jobs:
       - ios/install-dependencies:
           bundle-install: true
           pod-install: true
-          cache-prefix: xc11-clear
       - ios/xcodebuild:
           command: build-for-testing
           arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPressUITests' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
