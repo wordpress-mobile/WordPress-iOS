@@ -103,63 +103,77 @@ static ContextManager *_override;
 
 #pragma mark - Context Saving and Merging
 
-- (void)saveDerivedContext:(NSManagedObjectContext *)context
-{
-    [self saveDerivedContext:context withCompletionBlock:nil];
-}
-
-- (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
-{
-    [context performBlock:^{
-        NSError *error;
-        if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
-            DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
-        }
-
-        if (![context save:&error]) {
-            [self handleSaveError:error inContext:context];
-        }
-
-        if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(), completionBlock);
-        }
-
-        // While this is needed because we don't observe change notifications for the derived context, it
-        // breaks concurrency rules for Core Data.  Provide a mechanism to destroy a derived context that
-        // unregisters it from the save notification instead and rely upon that for merging.
-        [self saveContext:self.mainContext];
-    }];
-}
-
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
 {
-    [context performBlockAndWait:^{
-        [self internalSaveContext:context];
-    }];
+    [self saveContext:context andWait:YES withCompletionBlock:nil];
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context
 {
-    [self saveContext:context withCompletionBlock:nil];
+    [self saveContext:context andWait:NO withCompletionBlock:nil];
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
+{
+    [self saveContext:context andWait:NO withCompletionBlock:completionBlock];
+}
+
+
+- (void)saveContext:(NSManagedObjectContext *)context andWait:(BOOL)wait withCompletionBlock:(void (^)(void))completionBlock
 {
     // Save derived contexts a little differently
     // TODO - When the service refactor is complete, remove this - calling methods to Services should know
     //        what kind of context it is and call the saveDerivedContext at the end of the work
     if (context.parentContext == self.mainContext) {
-        [self saveDerivedContext:context withCompletionBlock:completionBlock];
+        [self saveDerivedContext:context andWait:wait withCompletionBlock:completionBlock];
         return;
     }
 
-    [context performBlock:^{
-        [self internalSaveContext:context];
-        
-        if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(), completionBlock);
-        }
-    }];
+    if (wait) {
+        [context performBlockAndWait:^{
+            [self internalSaveContext:context withCompletionBlock:completionBlock];
+        }];
+    } else {
+        [context performBlock:^{
+            [self internalSaveContext:context withCompletionBlock:completionBlock];
+        }];
+    }
+}
+
+- (void)saveDerivedContext:(NSManagedObjectContext *)context andWait:(BOOL)wait withCompletionBlock:(void (^)(void))completionBlock
+{
+    if (wait) {
+        [context performBlockAndWait:^{
+            [self internalSaveDerivedContext:context];
+            [self saveContext:self.mainContext andWait:wait withCompletionBlock:completionBlock];
+        }];
+    } else {
+        [context performBlock:^{
+            [self internalSaveDerivedContext:context];
+            [self saveContext:self.mainContext andWait:wait withCompletionBlock:completionBlock];
+        }];
+    }
+}
+
+- (void)internalSaveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
+{
+    [self internalSaveContext:context];
+
+    if (completionBlock) {
+        dispatch_async(dispatch_get_main_queue(), completionBlock);
+    }
+}
+
+- (void)internalSaveDerivedContext:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
+        DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
+    }
+
+    if (![context save:&error]) {
+        [self handleSaveError:error inContext:context];
+    }
 }
 
 - (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject
