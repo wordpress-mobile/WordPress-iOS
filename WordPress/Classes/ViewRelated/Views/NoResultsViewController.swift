@@ -277,11 +277,12 @@ private extension NoResultsViewController {
         titleLabel.text = titleText
         titleLabel.textColor = .text
 
+        subtitleTextView.textColor = .textSubtle
+
         if let subtitleText = subtitleText {
             subtitleTextView.attributedText = nil
             subtitleTextView.text = subtitleText
             subtitleTextView.isSelectable = false
-            subtitleTextView.textColor = .textSubtle
         }
 
         if let attributedSubtitleText = attributedSubtitleText {

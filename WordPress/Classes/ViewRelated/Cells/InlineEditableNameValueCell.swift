@@ -12,8 +12,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     enum Const {
         enum Color {
-            static let nameText = UIColor.neutral(.shade70)
-            static let valueText = UIColor.neutral(.shade40)
+            static let nameText = UIColor.text
+            static let valueText = UIColor.textSubtle
         }
     }
 
@@ -39,6 +39,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setValueTextFieldAsFirstResponder(_:))))
 
         valueTextField.textColor = Const.Color.valueText
+        valueTextField.tintColor = .textPlaceholder
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
         valueTextField.addTarget(self,
