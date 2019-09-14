@@ -1,5 +1,5 @@
-13.1
------
-- Vous pouvez changer votre nom d’utilisateur dans l’app.
-- Les données des téléchargements de fichier sont maintenant disponibles dans statistiques de période.
-- Vous pouvez à présent publier des brouillons dans la liste des articles en touchant la nouvelle action « Publiez maintenant » accessible depuis le menu « … ».
+* Inactive, vraiment : quand vous n’utilisez pas l’app, elle utilise moins le processeur, ce qui améliore les performances de votre appareil.
+* Votre liste de sites montrait-elle parfois le même site plus d'une fois ? Bon, c’est corrigé.
+* Gérez vos paramètres de notification à partir de l'écran Notifications (c'est logique, non ?).
+* La date affichée et le fuseau horaire de votre site sont maintenant parfaitement synchronisés.
+* Profitez d'un chargement plus fluide et plus stable des prévisualisations de messages.

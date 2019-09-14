@@ -1,5 +1,6 @@
-13.1
------
-- You can now change your username in the app.
-- Data about your File Downloads is now available in Period stats.
-- You can now publish drafts in the Posts list by tapping the new “Publish Now” action accessible from the “…” menu.
+* Idle means idle: when you don’t use the app, it’ll do less, and improve the performance of your device.
+* Did your site list sometimes show the same site more than once? Well, we fixed that.
+* Manage your notification settings from the notifications screen (makes sense, right?).
+* The displayed date and your site’s time zone are now in perfect sync.
+* Enjoy smoother, more stable loading of post previews.
+

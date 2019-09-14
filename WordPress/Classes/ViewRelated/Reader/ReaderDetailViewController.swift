@@ -299,6 +299,15 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // This is something we do to help with the resizing that can occur with
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
+
+        #if XCODE11
+        if #available(iOS 13.0, *) {
+            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true {
+                reloadGradientColors()
+                configureRichText()
+            }
+        }
+        #endif
     }
 
 
@@ -519,6 +528,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
 
         view.backgroundColor = .listBackground
+
+        titleLabel.backgroundColor = .basicBackground
+        titleBottomPaddingView.backgroundColor = .basicBackground
+        bylineView.backgroundColor = .basicBackground
+        bylineBottomPaddingView.backgroundColor = .basicBackground
+
         headerView.backgroundColor = .listForeground
         footerView.backgroundColor = .listForeground
         footerDivider.backgroundColor = .divider
@@ -531,9 +546,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
         #endif
 
+        reloadGradientColors()
+    }
+
+    fileprivate func reloadGradientColors() {
         bylineGradientViews.forEach({ view in
-            view.fromColor = .listBackground
-            view.toColor = UIColor.listBackground.withAlphaComponent(0.0)
+            view.fromColor = .basicBackground
+            view.toColor = UIColor.basicBackground.withAlphaComponent(0.0)
         })
     }
 
