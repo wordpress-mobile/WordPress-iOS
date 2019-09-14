@@ -34,7 +34,7 @@ jobs:
       - load-chruby
       - ios/install-dependencies:
           bundle-install: true
-          pod-install: false
+          pod-install: true
       - ios/xcodebuild:
           command: build-for-testing
           arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPressUITests' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
