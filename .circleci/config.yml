@@ -3,6 +3,15 @@ version: 2.1
 orbs:
   ios: wordpress-mobile/ios@dev:add/temporary-xc11-fix
 
+commands:
+  load-chruby:
+    steps:
+      - run:
+          name: Load chruby
+          command: |
+            # Force chruby to load to work around CircleCI Xcode 11 image issue
+            echo 'source /usr/local/opt/chruby/share/chruby/chruby.sh' >> $BASH_ENV
+
 jobs:
   unit-tests:
     executor:
@@ -10,11 +19,7 @@ jobs:
       xcode-version: "11.0.0"
     steps:
       - checkout
-      - run:
-          name: Load chruby
-          command: |
-            # Force chruby to load to work around CircleCI Xcode 11 image issue
-            echo 'source /usr/local/opt/chruby/share/chruby/chruby.sh' >> $BASH_ENV
+      - load-chruby
       - ios/test:
           xcode-version: "11.0.0"
           workspace: WordPress.xcworkspace
@@ -26,22 +31,10 @@ jobs:
       xcode-version: "11.0.0"
     steps:
       - checkout
+      - load-chruby
       - ios/install-dependencies:
           bundle-install: true
           pod-install: false
-      - run: 
-          name: "Download the CocoaPods Master Spec Repo"
-          command: |
-            REPOS_LOCATION="$HOME/.cocoapods/repos"
-            tempfile=$(mktemp)
-
-            curl -sS -L -o "$tempfile" "https://cocoapods-specs.circleci.com/latest.tar.gz"
-            echo "Uncompressing CocoaPods master repo..."
-
-            # We expect the structure with the "master" as the top dir in the archive.
-            tar -C "$REPOS_LOCATION" -xzf "$tempfile"
-
-            echo "Successfully downloaded CocoaPods master repo."
       - ios/xcodebuild:
           command: build-for-testing
           arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPressUITests' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
