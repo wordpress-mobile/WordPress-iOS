@@ -265,7 +265,7 @@ extension DomainSuggestionsTableViewController {
         }
 
         cell.placeholder = searchFieldPlaceholder
-        cell.reloadTextFieldIcon()
+        cell.reloadTextfieldStyle()
         cell.delegate = self
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
@@ -392,7 +392,8 @@ extension DomainSuggestionsTableViewController: SearchTableViewCellDelegate {
 }
 
 extension SearchTableViewCell {
-    fileprivate func reloadTextFieldIcon() {
+    fileprivate func reloadTextfieldStyle() {
+        textField.textColor = .text
         textField.leftViewImage = UIImage(named: "icon-post-search")
     }
 }
