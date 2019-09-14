@@ -938,7 +938,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                                                                          WPAccount *account = [accountService defaultWordPressComAccount];
                                                                          [accountService setVisibility:visible forBlogs:[account.blogs allObjects]];
-                                                                         [[ContextManager sharedInstance] saveDerivedContext:context];
+                                                                         [[ContextManager sharedInstance] saveContext:context];
                                                                      }];
                                                                  }];
             [alertController addAction:cancelAction];

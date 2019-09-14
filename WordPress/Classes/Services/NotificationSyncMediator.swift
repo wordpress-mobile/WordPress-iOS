@@ -250,7 +250,7 @@ class NotificationSyncMediator {
                 derivedContext.deleteObject(orphan)
             }
 
-            self.contextManager.saveDerivedContext(derivedContext)
+            self.contextManager.save(derivedContext)
         }
     }
 
@@ -267,7 +267,7 @@ class NotificationSyncMediator {
 
             notification.notificationHash = nil
 
-            self.contextManager.saveDerivedContext(derivedContext)
+            self.contextManager.save(derivedContext)
         }
     }
 }
@@ -329,7 +329,7 @@ private extension NotificationSyncMediator {
                 localNote.update(with: remoteNote)
             }
 
-            self.contextManager.saveDerivedContext(derivedContext) {
+            self.contextManager.save(derivedContext) {
                 DispatchQueue.main.async {
                     completion?()
                 }
@@ -354,7 +354,7 @@ private extension NotificationSyncMediator {
                 derivedContext.deleteObject(orphan)
             }
 
-            self.contextManager.saveDerivedContext(derivedContext) {
+            self.contextManager.save(derivedContext) {
                 DispatchQueue.main.async {
                     completion()
                 }

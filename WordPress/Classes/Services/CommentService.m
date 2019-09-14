@@ -720,7 +720,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
 
     [self deleteUnownedComments];
-    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext withCompletionBlock:^{
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
         if (completion) {
             dispatch_async(dispatch_get_main_queue(), completion);
         }

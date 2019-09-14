@@ -73,8 +73,9 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         }
         media.mediaType = exportable.assetMediaType;
         media.remoteStatus = MediaRemoteStatusProcessing;
+
         [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
-        [self.managedObjectContext save: nil];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
     NSManagedObjectID *mediaObjectID = media.objectID;
     [self.managedObjectContext performBlock:^{
@@ -541,7 +542,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
            if (success){
                success(media);
            }
-           [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
        }];
     } failure:^(NSError *error) {
         if (failure) {
@@ -773,7 +774,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             [self.managedObjectContext deleteObject:deleteMedia];
         }
     }
-    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     if (completion) {
         completion();
     }

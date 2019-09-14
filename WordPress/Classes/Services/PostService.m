@@ -602,8 +602,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             }
         }
     }
-    
-    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     if (completion) {
         completion(posts);
     }
