@@ -16,12 +16,11 @@ extension XCUIElement {
      */
     func clearTextIfNeeded() -> Void {
         let app = XCUIApplication()
-        let content = self.value as! String
 
-        if content.count > 0 && content != self.placeholderValue {
-            self.press(forDuration: 1.2)
-            app.menuItems.element(boundBy: 1).tap() // Select All (in the text edit menu)
-            app.menuItems.element(boundBy: 0).tap() // Cut (in the text edit menu)
+        self.tap()
+
+        for _ in 0...(self.stringValue?.count ?? 0) {
+            app.keys["delete"].tap()
         }
     }
 
@@ -33,6 +32,10 @@ extension XCUIElement {
         clearTextIfNeeded()
         self.tap()
         self.typeText(text)
+    }
+
+    var stringValue: String? {
+        return self.value as? String
     }
 }
 
