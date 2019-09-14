@@ -17,11 +17,8 @@ extension XCUIElement {
     func clearTextIfNeeded() -> Void {
         let app = XCUIApplication()
 
-        self.tap()
-
-        for _ in 0...(self.stringValue?.count ?? 0) {
-            app.keys["delete"].tap()
-        }
+        self.press(forDuration: 1.2)
+        app.keys["delete"].tap()
     }
 
     /**
