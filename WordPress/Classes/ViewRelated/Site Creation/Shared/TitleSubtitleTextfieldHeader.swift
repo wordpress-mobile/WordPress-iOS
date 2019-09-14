@@ -104,11 +104,9 @@ final class SearchTextField: UITextField {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        #if XCODE11
-            if #available(iOS 13, *) {
-                setIconImage()
-            }
-        #endif
+        if #available(iOS 13, *) {
+            setIconImage()
+        }
     }
 }
 

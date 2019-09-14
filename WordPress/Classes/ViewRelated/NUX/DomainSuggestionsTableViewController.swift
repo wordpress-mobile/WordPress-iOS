@@ -99,13 +99,11 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        #if XCODE11
-            if #available(iOS 13, *) {
-                if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-                    tableView.reloadData()
-                }
+        if #available(iOS 13, *) {
+            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                tableView.reloadData()
             }
-        #endif
+        }
     }
 
     /// Fetches new domain suggestions based on the provided string
