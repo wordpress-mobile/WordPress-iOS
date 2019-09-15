@@ -2195,6 +2195,10 @@
 		0B05025F2321E0A8006F7B5E /* ReaderCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentsViewController.h; sourceTree = "<group>"; };
 		0B479F7C2313A8C700F2859B /* ExpandableInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableInputAccessoryView.swift; sourceTree = "<group>"; };
 		0B479F7E2313AA0C00F2859B /* ExpandableInputAccessoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExpandableInputAccessoryView.xib; sourceTree = "<group>"; };
+		0B6876DD232D543C00FC6859 /* ApiCredentials.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApiCredentials.m; sourceTree = "<group>"; };
+		0B6876DE232D543C00FC6859 /* gencredentials.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = gencredentials.rb; sourceTree = "<group>"; };
+		0B6876DF232D543C00FC6859 /* wpcom_app_credentials.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = wpcom_app_credentials.txt; sourceTree = "<group>"; };
+		0B6876E0232D543C00FC6859 /* ApiCredentials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApiCredentials.h; sourceTree = "<group>"; };
 		0F01F606071B0B9BD9DB34DE /* Pods-WordPressTodayWidget.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		10BBFF34EBDA2F9B8CB48DF6 /* Pods-WordPressUITests.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUITests.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUITests/Pods-WordPressUITests.release-internal.xcconfig"; sourceTree = "<group>"; };
 		131D0EE49695795ECEDAA446 /* Pods-WordPressTest.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-alpha.xcconfig"; sourceTree = "<group>"; };
@@ -4021,9 +4025,6 @@
 		E1ADE0EA20A9EF6200D6AADC /* PrivacySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsViewController.swift; sourceTree = "<group>"; };
 		E1AFA8C21E8E34230004A323 /* WordPressShare.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WordPressShare.js; path = WordPressShareExtension/WordPressShare.js; sourceTree = SOURCE_ROOT; };
 		E1B23B071BFB3B370006559B /* MyProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
-		E1B34C0A1CCDFFCE00889709 /* gencredentials.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = gencredentials.rb; sourceTree = "<group>"; };
-		E1B34C0B1CCDFFCE00889709 /* ApiCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiCredentials.h; sourceTree = "<group>"; };
-		E1B34C0C1CCDFFCE00889709 /* ApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiCredentials.m; sourceTree = "<group>"; };
 		E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebViewController.h; sourceTree = "<group>"; };
 		E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebViewController.m; sourceTree = "<group>"; };
 		E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTestHelper.swift; sourceTree = "<group>"; };
@@ -4338,7 +4339,6 @@
 		FFB3132E204D59F400C177E7 /* WordPress 73.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 73.xcdatamodel"; sourceTree = "<group>"; };
 		FFB7B81D1A0012E80032E723 /* ApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiCredentials.m; sourceTree = "<group>"; };
 		FFC02B82222687BF00E64FDE /* GutenbergImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergImageLoader.swift; sourceTree = "<group>"; };
-		FFC245D91D8C2033007F7518 /* wpcom_app_credentials.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wpcom_app_credentials.txt; sourceTree = "<group>"; };
 		FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataService.m; sourceTree = "<group>"; };
@@ -4723,6 +4723,17 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
+		0B6876DC232D543C00FC6859 /* Credentials */ = {
+			isa = PBXGroup;
+			children = (
+				0B6876DD232D543C00FC6859 /* ApiCredentials.m */,
+				0B6876DE232D543C00FC6859 /* gencredentials.rb */,
+				0B6876DF232D543C00FC6859 /* wpcom_app_credentials.txt */,
+				0B6876E0232D543C00FC6859 /* ApiCredentials.h */,
+			);
+			path = Credentials;
+			sourceTree = "<group>";
+		};
 		1719633E1D378D1E00898E8B /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -4998,7 +5009,7 @@
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
-				E1B34C091CCDFFCE00889709 /* Credentials */,
+				0B6876DC232D543C00FC6859 /* Credentials */,
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				E12F55F714A1F2640060A510 /* Vendor */,
@@ -8879,18 +8890,6 @@
 				E1A03F47174283E00085D192 /* BlogToJetpackAccount.m */,
 			);
 			path = "10-11";
-			sourceTree = "<group>";
-		};
-		E1B34C091CCDFFCE00889709 /* Credentials */ = {
-			isa = PBXGroup;
-			children = (
-				FFC245D91D8C2033007F7518 /* wpcom_app_credentials.txt */,
-				E1B34C0A1CCDFFCE00889709 /* gencredentials.rb */,
-				E1B34C0B1CCDFFCE00889709 /* ApiCredentials.h */,
-				E1B34C0C1CCDFFCE00889709 /* ApiCredentials.m */,
-			);
-			name = Credentials;
-			path = ../config/Credentials;
 			sourceTree = "<group>";
 		};
 		E1B9127F1BB00EF1003C25B9 /* People */ = {

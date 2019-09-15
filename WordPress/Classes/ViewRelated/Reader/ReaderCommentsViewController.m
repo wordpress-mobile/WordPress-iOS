@@ -1014,7 +1014,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.keyboardManager scrollViewWillEndDragging:scrollView withVelocity:velocity];
 }
 
-
 #pragma mark - SuggestionsTableViewDelegate
 
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text

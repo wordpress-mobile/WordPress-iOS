@@ -20,7 +20,7 @@ struct TextViewConstraintStore {
     
     let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
     var topConstraint: NSLayoutConstraint?
-//    var heightConstraint: NSLayoutConstraint?
+
     @objc init(parentDelegate: ExpandableInputAccessoryViewParentDelegate) {
         super.init(frame: CGRect.zero)
         backgroundColor = .blue
@@ -38,16 +38,11 @@ struct TextViewConstraintStore {
     func didMoveTo(_ state: ExpandableInputAccessoryView.ExpandedState) {
         switch state {
         case .fullScreen:
-//            if self.heightConstraint == nil {
-//                self.heightConstraint = self.heightAnchor.constraint(equalToConstant: 300)
-//            }
-//            heightConstraint?.isActive = true
             if topConstraint == nil {
                 topConstraint = self.topAnchor.constraint(equalTo: self.window!.safeAreaLayoutGuide.topAnchor)
             }
             topConstraint?.isActive = true
         case .normal:
-//            heightConstraint?.isActive = false
             topConstraint?.isActive = false
         }
     }
@@ -75,6 +70,10 @@ protocol ExpandableInputAccessoryViewDelegate: class {
 
 @objc protocol ExpandableInputAccessoryViewParentDelegate: class {
     func expandableInputAccessoryViewDidBeginEditing()
+    func expandableInputAccessoryViewDidEndEditing()
+    func didExpandTextView()
+    func didCollapseTextView()
+    func sendReply(with content: String)
 }
 
 class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
@@ -91,6 +90,8 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
     @IBOutlet weak var placeholerLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var expandButton: UIButton!
+    @IBOutlet weak var expandButtonBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var expandButtonTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var textView: UITextView! {
         didSet {
             textView.delegate = self
@@ -124,18 +125,22 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             collapseTextView()
         }
     }
-
+    
+    @IBAction func sendButtonTapped(_ sender: UIButton) {
+        guard let content = textView.text, !content.isEmpty else { return }
+        parentDelegate?.sendReply(with: content)
+    }
+    
     override var canBecomeFirstResponder: Bool { return true }
     
     fileprivate func expandToFullScreen(automatically: Bool = false) {
         isExpanded = true
         wasAutomatticallyExpanded = automatically
         delegate?.didMoveTo(.fullScreen)
-        if topConstraint == nil {
-//            topConstraint = self.topAnchor.constraint(equalTo: self.window!.safeAreaLayoutGuide.topAnchor)
-        }
+        parentDelegate?.didExpandTextView()
+        expandButtonBottomConstraint.isActive = false
+        expandButtonTopConstraint.isActive = true
         UIView.animate(withDuration: 0.2) {
-//            self.topConstraint?.isActive = true
             self.textViewTrailingConstraint.constant = self.expandedTextViewConstraints.trailing
             self.textViewLeadingConstraint.constant = self.expandedTextViewConstraints.leading
             self.textViewTopConstraint.constant = self.expandedTextViewConstraints.top
@@ -153,6 +158,9 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             explicityCollapsed = true
         }
         delegate?.didMoveTo(.normal)
+        parentDelegate?.didCollapseTextView()
+        expandButtonBottomConstraint.isActive = true
+        expandButtonTopConstraint.isActive = false
         UIView.animate(withDuration: 0.2) {
             self.topConstraint?.isActive = false
             self.topAnchor.constraint(equalTo: self.window!.safeAreaLayoutGuide.topAnchor).isActive = false
@@ -175,6 +183,12 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
     // MARK: TextView delegates
     func textViewDidBeginEditing(_ textView: UITextView) {
         parentDelegate?.expandableInputAccessoryViewDidBeginEditing()
+        displaySendButton()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        parentDelegate?.expandableInputAccessoryViewDidEndEditing()
+        hideSendButton()
     }
     
     func textViewDidChange(_ textView: UITextView) {
@@ -193,6 +207,21 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
                     self.superview?.layoutIfNeeded()
                 }
             }
+        }
+    }
+    
+    private func displaySendButton() {
+        sendButton.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.sendButton.alpha = 1.0
+        }
+    }
+    
+    private func hideSendButton() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.sendButton.alpha = 0
+        }) { _ in
+            self.sendButton.isHidden = true
         }
     }
 }
