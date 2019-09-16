@@ -5,7 +5,6 @@ final class ReaderCommentAction {
             return
         }
         guard let controller = EnhancedCommentingReaderCommentsViewController(post: postInMainContext) else { return }
-        
         origin.navigationController?.pushViewController(controller, animated: true)
     }
 }

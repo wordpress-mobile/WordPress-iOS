@@ -14,10 +14,8 @@ struct TextViewConstraintStore {
     var trailing: CGFloat
     var top: CGFloat
 }
-
 @objc class ProgrammaticExpandableInputAccessoryView: UIView, ExpandableInputAccessoryViewDelegate {
-    
-    @objc let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
+    let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
     var topConstraint: NSLayoutConstraint?
 
     @objc init(parentDelegate: ExpandableInputAccessoryViewParentDelegate) {
@@ -37,7 +35,6 @@ struct TextViewConstraintStore {
     @objc func updatePlaceholder(text: String) {
         self.expandableInputAccessoryView.placeholerLabel.text = text
     }
-    
     func didMoveTo(_ state: ExpandableInputAccessoryView.ExpandedState) {
         switch state {
         case .fullScreen:
@@ -133,7 +130,6 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             collapseTextView()
         }
     }
-    
     @IBAction func sendButtonTapped(_ sender: UIButton) {
         guard let content = textView.text, !content.isEmpty else { return }
         parentDelegate?.sendReply(with: content)
@@ -144,17 +140,14 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
         parentDelegate?.expandableInputAccessoryViewDidBeginEditing()
         displaySendButton()
     }
-    
     func textViewDidEndEditing(_ textView: UITextView) {
         parentDelegate?.expandableInputAccessoryViewDidEndEditing()
         hideSendButton()
     }
-    
     func textViewDidChange(_ textView: UITextView) {
         // Re-calculate intrinsicContentSize when text changes
         placeholerLabel.isHidden = !textView.text.isEmpty
         sendButton.tintColor = textView.text.isEmpty ? sendButtonDisabledTintColor : sendButtonEnabledTintColor
-        
         if let fontLineHeight = self.textView.font?.lineHeight {
             let numLines = Int(self.textView.contentSize.height / fontLineHeight)
             if numLines > 4 && !self.isExpanded && !explicityCollapsed {
@@ -168,7 +161,6 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             }
         }
     }
-    
     override var canBecomeFirstResponder: Bool { return true }
     
     fileprivate func expandToFullScreen(automatically: Bool = false) {
@@ -189,7 +181,6 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             self.superview?.layoutIfNeeded()
         }
     }
-    
     fileprivate func collapseTextView() {
         isExpanded = false
         if wasAutomatticallyExpanded {
@@ -212,7 +203,7 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
             self.superview?.layoutIfNeeded()
         }
     }
-    
+
     override var intrinsicContentSize: CGSize {
         let textSize = self.textView.sizeThatFits(CGSize(width: self.textView.bounds.width, height: CGFloat.greatestFiniteMagnitude))
         return CGSize(width: self.bounds.width, height: textSize.height)
