@@ -4,12 +4,8 @@ final class ReaderCommentAction {
         guard let postInMainContext = ReaderActionHelpers.postInMainContext(post) else {
             return
         }
-        var controller: UIViewController
-        if Feature.enabled(.enhancedCommenting) {
-            controller = EnhancedCommentingReaderCommentsViewController(post: postInMainContext)
-        } else {
-            controller = ReaderCommentsViewController(post: postInMainContext)
-        }
+        guard let controller = EnhancedCommentingReaderCommentsViewController(post: postInMainContext) else { return }
+        
         origin.navigationController?.pushViewController(controller, animated: true)
     }
 }

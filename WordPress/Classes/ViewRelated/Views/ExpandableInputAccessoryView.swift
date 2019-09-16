@@ -15,10 +15,9 @@ struct TextViewConstraintStore {
     var top: CGFloat
 }
 
-
 @objc class ProgrammaticExpandableInputAccessoryView: UIView, ExpandableInputAccessoryViewDelegate {
     
-    let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
+    @objc let expandableInputAccessoryView = ExpandableInputAccessoryView.loadFromNib()
     var topConstraint: NSLayoutConstraint?
 
     @objc init(parentDelegate: ExpandableInputAccessoryViewParentDelegate) {
@@ -33,6 +32,10 @@ struct TextViewConstraintStore {
         NSLayoutConstraint(item: expandableInputAccessoryView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: expandableInputAccessoryView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: expandableInputAccessoryView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0).isActive = true
+    }
+    
+    @objc func updatePlaceholder(text: String) {
+        self.expandableInputAccessoryView.placeholerLabel.text = text
     }
     
     func didMoveTo(_ state: ExpandableInputAccessoryView.ExpandedState) {
@@ -51,6 +54,10 @@ struct TextViewConstraintStore {
         expandableInputAccessoryView.textView.resignFirstResponder()
     }
     
+    @objc func becomeResponder() {
+        expandableInputAccessoryView.textView.becomeFirstResponder()
+    }
+
     override var canBecomeFirstResponder: Bool {
         return true
     }
@@ -81,6 +88,7 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
         case fullScreen
         case normal
     }
+    
     @IBOutlet weak var dividerViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var dividerView: UIView!
     @IBOutlet weak var headerLabel: UILabel!
@@ -129,6 +137,36 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
     @IBAction func sendButtonTapped(_ sender: UIButton) {
         guard let content = textView.text, !content.isEmpty else { return }
         parentDelegate?.sendReply(with: content)
+    }
+
+    // MARK: TextView delegates
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        parentDelegate?.expandableInputAccessoryViewDidBeginEditing()
+        displaySendButton()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        parentDelegate?.expandableInputAccessoryViewDidEndEditing()
+        hideSendButton()
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        // Re-calculate intrinsicContentSize when text changes
+        placeholerLabel.isHidden = !textView.text.isEmpty
+        sendButton.tintColor = textView.text.isEmpty ? sendButtonDisabledTintColor : sendButtonEnabledTintColor
+        
+        if let fontLineHeight = self.textView.font?.lineHeight {
+            let numLines = Int(self.textView.contentSize.height / fontLineHeight)
+            if numLines > 4 && !self.isExpanded && !explicityCollapsed {
+                self.expandToFullScreen(automatically: true)
+            } else {
+                UIView.animate(withDuration: 0.2) {
+                    self.invalidateIntrinsicContentSize()
+                    self.superview?.setNeedsLayout()
+                    self.superview?.layoutIfNeeded()
+                }
+            }
+        }
     }
     
     override var canBecomeFirstResponder: Bool { return true }
@@ -179,37 +217,7 @@ class ExpandableInputAccessoryView: UIView, UITextViewDelegate, NibLoadable {
         let textSize = self.textView.sizeThatFits(CGSize(width: self.textView.bounds.width, height: CGFloat.greatestFiniteMagnitude))
         return CGSize(width: self.bounds.width, height: textSize.height)
     }
-    
-    // MARK: TextView delegates
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        parentDelegate?.expandableInputAccessoryViewDidBeginEditing()
-        displaySendButton()
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        parentDelegate?.expandableInputAccessoryViewDidEndEditing()
-        hideSendButton()
-    }
-    
-    func textViewDidChange(_ textView: UITextView) {
-        // Re-calculate intrinsicContentSize when text changes
-        placeholerLabel.isHidden = !textView.text.isEmpty
-        sendButton.tintColor = textView.text.isEmpty ? sendButtonDisabledTintColor : sendButtonEnabledTintColor
 
-        if let fontLineHeight = self.textView.font?.lineHeight {
-            let numLines = Int(self.textView.contentSize.height / fontLineHeight)
-            if numLines > 4 && !self.isExpanded && !explicityCollapsed {
-                self.expandToFullScreen(automatically: true)
-            } else {
-                UIView.animate(withDuration: 0.2) {
-                    self.invalidateIntrinsicContentSize()
-                    self.superview?.setNeedsLayout()
-                    self.superview?.layoutIfNeeded()
-                }
-            }
-        }
-    }
-    
     private func displaySendButton() {
         sendButton.isHidden = false
         UIView.animate(withDuration: 0.3) {

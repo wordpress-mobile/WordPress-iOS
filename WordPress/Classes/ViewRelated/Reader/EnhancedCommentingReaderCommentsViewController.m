@@ -27,7 +27,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 @interface EnhancedCommentingReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             ReaderCommentCellDelegate,
-                                            ReplyTextViewDelegate,
                                             UIViewControllerRestoration,
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
@@ -42,7 +41,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
-@property (nonatomic, strong) ReplyTextView *replyTextView;
 @property (nonatomic, strong) KeyboardDismissHelper *keyboardManager;
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
 @property (nonatomic, strong) UIView *postHeaderWrapper;
@@ -139,12 +137,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self configureTableView];
     [self configureTableViewHandler];
     [self configureNoResultsView];
-    [self configureReplyTextView];
     [self configureInputAccessoryView];
     [self configureSuggestionsTableView];
     [self configureKeyboardGestureRecognizer];
     [self configureViewConstraints];
-    [self configureKeyboardManager];
     
     [self refreshAndSync];
 }
@@ -174,9 +170,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tabBarController.tabBar.hidden = false;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
-    [self.replyTextView resignFirstResponder];
+    [self.accessoryView resignResponder];
 #pragma clang diagnostic pop
-    [self.keyboardManager stopListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -192,7 +187,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         if (selectedIndexPath) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
-            [self.replyTextView becomeFirstResponder];
+            [self.accessoryView becomeResponder];
 #pragma clang diagnostic pop
             [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
@@ -346,24 +341,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.noResultsViewController = [NoResultsViewController controller];
 }
 
-- (void)configureReplyTextView
-{
-    //    __typeof(self) __weak weakSelf = self;
-    
-    //    ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
-    //    replyTextView.replyText = [NSLocalizedString(@"Reply", @"") uppercaseString];
-    //    replyTextView.onReply = ^(NSString *content) {
-    //        [weakSelf sendReplyWithNewContent:content];
-    //    };
-    //    replyTextView.delegate = self;
-    //    self.replyTextView = replyTextView;
-    //
-    //    [self refreshReplyTextViewPlaceholder];
-    
-    //    [self.view addSubview:self.replyTextView];
-    //    [self.view bringSubviewToFront:self.replyTextView];
-}
-
 - (void)configureInputAccessoryView
 {
     if (self.shouldDisplayReplyTextView) {
@@ -395,26 +372,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
 }
 
-- (void)configureKeyboardManager
-{
-    
-    //    self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
-    //                                                                  scrollView:self.tableView
-    //                                                          dismissableControl:self.replyTextView
-    //                                                      bottomLayoutConstraint:self.replyTextViewBottomConstraint];
-    // TODO
-    //    __weak UITableView *weakTableView = self.tableView;
-    //    __weak ReaderCommentsViewController *weakSelf = self;
-    //    self.keyboardManager.onWillHide = ^{
-    //        [weakTableView deselectSelectedRowWithAnimation:YES];
-    //        [weakSelf refreshNoResultsView];
-    //    };
-    //    self.keyboardManager.onWillShow = ^{
-    //        [weakSelf refreshNoResultsView];
-    //    };
-}
-
-
 #pragma mark - Autolayout Helpers
 
 - (void)configureViewConstraints
@@ -424,7 +381,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                     @"postHeader"       : self.postHeaderWrapper,
                                     @"mainView"         : self.view,
                                     @"suggestionsview"  : self.suggestionsTableView
-                                    //        @"replyTextView"    : self.replyTextView
                                     };
     
     // PostHeader Constraints
@@ -441,21 +397,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-    
-    // ReplyTextView Constraints
-    //    [[self.replyTextView.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
-    //    [[self.replyTextView.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
-    
-    //    self.replyTextViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
-    //                                                                      attribute:NSLayoutAttributeBottom
-    //                                                                      relatedBy:NSLayoutRelationEqual
-    //                                                                         toItem:self.replyTextView
-    //                                                                      attribute:NSLayoutAttributeBottom
-    //                                                                     multiplier:1.0
-    //                                                                       constant:0.0];
-    //    self.replyTextViewBottomConstraint.priority = UILayoutPriorityDefaultHigh;
-    
-    //    [self.view addConstraint:self.replyTextViewBottomConstraint];
     
     // Suggestions Constraints
     // Pin the suggestions view left and right edges to the reply view edges
@@ -479,17 +420,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-    
-    // TODO:
-    // This LayoutConstraint is just a helper, meant to hide / display the ReplyTextView, as needed.
-    // Whenever iOS 8 is set as the deployment target, let's always attach this one, and enable / disable it as needed!
-    //    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.replyTextView
-    //                                                                      attribute:NSLayoutAttributeHeight
-    //                                                                      relatedBy:NSLayoutRelationEqual
-    //                                                                         toItem:nil
-    //                                                                      attribute:0
-    //                                                                     multiplier:1
-    //                                                                       constant:0];
 }
 
 
@@ -586,7 +516,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)refreshAndSync
 {
     [self refreshPostHeaderView];
-    [self refreshReplyTextView];
     [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
     [self refreshTableViewAndNoResultsView];
@@ -618,30 +547,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 }
 
-- (void)refreshReplyTextView
-{
-    //    BOOL showsReplyTextView = self.shouldDisplayReplyTextView;
-    //    self.replyTextView.hidden = !showsReplyTextView;
-    //
-    //    if (showsReplyTextView) {
-    //        [self.view removeConstraint:self.replyTextViewHeightConstraint];
-    //    } else {
-    //        [self.view addConstraint:self.replyTextViewHeightConstraint];
-    //    }
-}
-
 - (void)refreshSuggestionsTableView
 {
     self.suggestionsTableView.enabled = self.shouldDisplaySuggestionsTableView;
 }
 
-- (void)refreshReplyTextViewPlaceholder
+- (void)refreshCommentViewPlaceholder
 {
-    //    if (self.tableView.indexPathForSelectedRow) {
-    //        self.replyTextView.placeholder = NSLocalizedString(@"Reply to comment…", @"Placeholder text for replying to a comment");
-    //    } else {
-    //        self.replyTextView.placeholder = NSLocalizedString(@"Reply to post…", @"Placeholder text for replying to a post");
-    //    }
+    if (self.tableView.indexPathForSelectedRow) {
+        [self.accessoryView updatePlaceholderWithText:@"Reply to comment"];
+    } else {
+        [self.accessoryView updatePlaceholderWithText:@"Reply to post"];
+    }
 }
 
 - (void)refreshInfiniteScroll
@@ -760,9 +677,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 #pragma clang diagnostic ignored "-Wunused-result"
     
     [self.accessoryView resignResponder];
-    //    [self.replyTextView resignFirstResponder];
 #pragma clang diagnostic pop
-    //    [self refreshReplyTextViewPlaceholder];
+    [self refreshCommentViewPlaceholder];
 }
 
 - (void)sendReplyWithNewContent:(NSString *)content
@@ -779,7 +695,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         
         [weakSelf trackReplyToComment];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
-        //        [weakSelf refreshReplyTextViewPlaceholder];
+        [weakSelf refreshCommentViewPlaceholder];
         
         [weakSelf refreshTableViewAndNoResultsView];
     };
@@ -1008,7 +924,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self refreshReplyTextViewPlaceholder];
+    [self refreshCommentViewPlaceholder];
     
     [self.tableView deselectSelectedRowWithAnimation:YES];
     
@@ -1058,28 +974,23 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
-    //    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
-    //    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)didCollapseTextView
 {
     self.commentsViewIsExpanded = false;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    //    self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
-    //    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)sendReplyWith:(NSString * _Nonnull)content {
-//    [self sendReplyWithNewContent:content];
+    [self sendReplyWithNewContent:content];
 }
 
 #pragma mark - SuggestionsTableViewDelegate
 
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
-    [self.replyTextView replaceTextAtCaret:text withText:suggestion];
+//    [self.replyTextView replaceTextAtCaret:text withText:suggestion];
     [suggestionsTableView showSuggestionsForWord:@""];
     self.tapOffKeyboardGesture.enabled = YES;
 }
@@ -1100,14 +1011,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)cell:(ReaderCommentCell *)cell didTapReply:(Comment *)comment
 {
-    // if a row is already selected don't allow selection of another
-    if (self.replyTextView.isFirstResponder) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-result"
-        [self.replyTextView resignFirstResponder];
-#pragma clang diagnostic pop
-        return;
-    }
     
     if (!self.canComment) {
         return;
@@ -1115,12 +1018,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
-    [self.replyTextView becomeFirstResponder];
+    [self.accessoryView becomeResponder];
 #pragma clang diagnostic pop
     
     self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
     [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
-    [self refreshReplyTextViewPlaceholder];
+    [self refreshCommentViewPlaceholder];
+    
+    self.tapOffKeyboardGesture.enabled = YES;
 }
 
 - (void)cell:(ReaderCommentCell *)cell didTapLike:(Comment *)comment
@@ -1237,11 +1142,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return YES;
 }
 
-- (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
-{
-    // Disable the gestures recognizer when showing suggestions
-    BOOL showsSuggestions = [self.suggestionsTableView showSuggestionsForWord:word];
-    self.tapOffKeyboardGesture.enabled = !showsSuggestions;
-}
+//- (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
+//{
+//    // Disable the gestures recognizer when showing suggestions
+//    BOOL showsSuggestions = [self.suggestionsTableView showSuggestionsForWord:word];
+//    self.tapOffKeyboardGesture.enabled = !showsSuggestions;
+//}
 
 @end
