@@ -28,7 +28,7 @@ class PostCoordinatorTests: XCTestCase {
 
         postCoordinator.save(post)
 
-        expect(post.remoteStatus).toEventually(equal(.failed))
+        expect(post.remoteStatus).to(equal(.failed))
         expect(postServiceMock.didCallUploadPost).to(beFalse())
     }
 
