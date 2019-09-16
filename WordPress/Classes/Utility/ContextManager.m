@@ -144,12 +144,12 @@ static ContextManager *_override;
 {
     if (wait) {
         [context performBlockAndWait:^{
-            [self internalSaveDerivedContext:context];
+            [self internalSaveContext:context];
             [self saveContext:self.mainContext andWait:wait withCompletionBlock:completionBlock];
         }];
     } else {
         [context performBlock:^{
-            [self internalSaveDerivedContext:context];
+            [self internalSaveContext:context];
             [self saveContext:self.mainContext andWait:wait withCompletionBlock:completionBlock];
         }];
     }
@@ -161,18 +161,6 @@ static ContextManager *_override;
 
     if (completionBlock) {
         dispatch_async(dispatch_get_main_queue(), completionBlock);
-    }
-}
-
-- (void)internalSaveDerivedContext:(NSManagedObjectContext *)context
-{
-    NSError *error;
-    if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
-        DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
-    }
-
-    if (![context save:&error]) {
-        [self handleSaveError:error inContext:context];
     }
 }
 
