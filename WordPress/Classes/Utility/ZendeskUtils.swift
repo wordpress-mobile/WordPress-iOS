@@ -612,7 +612,8 @@ private extension ZendeskUtils {
 
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        guard let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 else {
+        let allBlogs = blogService.blogsForAllAccounts()
+        guard allBlogs.count > 0 else {
             return Constants.noValue
         }
 
@@ -630,9 +631,10 @@ private extension ZendeskUtils {
 
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
+        let allBlogs = blogService.blogsForAllAccounts()
 
         // If there are no sites, then the user has an empty WP account.
-        guard let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 else {
+        guard allBlogs.count > 0 else {
             return [Constants.wpComTag]
         }
 

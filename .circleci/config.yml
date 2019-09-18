@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   ios: wordpress-mobile/ios@0.0.31
+  git: wordpress-mobile/git@0.0.31
 
 commands:
   load-chruby:
@@ -18,7 +19,7 @@ jobs:
       name: ios/default
       xcode-version: "11.0.0"
     steps:
-      - checkout
+      - git/shallow-checkout
       - load-chruby
       - ios/test:
           xcode-version: "11.0.0"
@@ -30,7 +31,7 @@ jobs:
       name: ios/default
       xcode-version: "11.0.0"
     steps:
-      - checkout
+      - git/shallow-checkout
       - load-chruby
       - ios/install-dependencies:
           bundle-install: true

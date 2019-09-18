@@ -11,6 +11,7 @@ import WordPressShared
     @objc var existingPublicizeConnections: [PublicizeConnection]?
     @objc var immutableHandler: ImmuTableViewHandler!
     @objc var delegate: SharingAccountSelectionDelegate?
+    private let keyringAccountHelper = KeyringAccountHelper()
 
     fileprivate lazy var noResultsViewController: NoResultsViewController = {
         let controller = NoResultsViewController.controller()
@@ -89,17 +90,6 @@ import WordPressShared
         noResultsViewController.configure(title: title, subtitle: message)
     }
 
-
-    fileprivate func showFacebookNotice() {
-        let message = NSLocalizedString("The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.",
-                                       comment: "Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
-
-        let buttonTitle = NSLocalizedString("Learn more", comment: "A button title.")
-        noResultsViewController.configure(title: "", buttonTitle: buttonTitle, subtitle: message)
-        noResultsViewController.delegate = self
-    }
-
-
     // MARK: - View Model Wrangling
 
 
@@ -110,14 +100,10 @@ import WordPressShared
     fileprivate func tableViewModel() -> ImmuTable {
         var sections = [ImmuTableSection]()
         var connectedAccounts = [KeyringAccount]()
-        var accounts = keyringAccountsFromKeyringConnections(keyringConnections)
+        var accounts = keyringAccountHelper.accountsFromKeyringConnections(keyringConnections, with: publicizeService)
 
         if accounts.count == 0 {
-            if publicizeService.serviceID == PublicizeService.facebookServiceID {
-                showFacebookNotice()
-            } else {
-                showNoResultsViewController()
-            }
+            showNoResultsViewController()
             return ImmuTable(sections: [])
         }
 
@@ -222,33 +208,6 @@ import WordPressShared
     }
 
 
-    /// Normalizes available accounts for a KeyringConnection and its `additionalExternalUsers`
-    ///
-    /// - Parameter connections: An array of `KeyringConnection` instances to normalize.
-    ///
-    /// - Returns: An array of `KeyringAccount` objects.
-    ///
-    fileprivate func keyringAccountsFromKeyringConnections(_ connections: [KeyringConnection]) -> [KeyringAccount] {
-        var accounts = [KeyringAccount]()
-
-        for connection in connections {
-            let acct = KeyringAccount(name: connection.externalDisplay, externalID: nil, externalIDForConnection: connection.externalID, keyringConnection: connection)
-
-            // Do not include the service if it only supports external users.
-            if !publicizeService.externalUsersOnly {
-                accounts.append(acct)
-            }
-
-            for externalUser in connection.additionalExternalUsers {
-                let acct = KeyringAccount(name: externalUser.externalName, externalID: externalUser.externalID, externalIDForConnection: externalUser.externalID, keyringConnection: connection)
-                accounts.append(acct)
-            }
-        }
-
-        return accounts
-    }
-
-
     /// Checks if the specified keyring account is connected.
     ///
     /// - Parameter keyringAccount: The keyring account to check.
@@ -285,20 +244,6 @@ import WordPressShared
     }
 
 
-    // MARK: - Structs
-
-
-    /// KeyringAccount is used to normalize the list of avaiable accounts while
-    /// preserving the owning keyring connection.
-    ///
-    struct KeyringAccount {
-        var name: String // The account name
-        var externalID: String? // The actual externalID value that should be passed when creating/updating a publicize connection.
-        var externalIDForConnection: String // The effective external ID that should be used for comparing a keyring account with a PublicizeConnection.
-        var keyringConnection: KeyringConnection
-    }
-
-
     /// An ImmuTableRow class.
     ///
     struct KeyringRow: ImmuTableRow {
@@ -323,14 +268,4 @@ import WordPressShared
 @objc protocol SharingAccountSelectionDelegate: NSObjectProtocol {
     func didDismissSharingAccountViewController(_ controller: SharingAccountViewController)
     func sharingAccountViewController(_ controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)
-}
-
-
-extension SharingAccountViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        if let url = URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages") {
-            UIApplication.shared.open(url)
-        }
-        dismiss(animated: true)
-    }
 }

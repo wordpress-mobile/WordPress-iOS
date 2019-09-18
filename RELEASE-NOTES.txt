@@ -1,10 +1,13 @@
 13.3
 -----
- 
+* Block editor: Add rich text styling to video captions
+* Block editor: Blocks that would be replaced are now hidden when add block bottom sheet displays
+* Block editor: Tapping on empty editor area now always inserts new block at end of post
+
 13.2
 -----
 * When Log In is selected, all available options are displayed.
-
+* Shows an alert instead of showing a new screen for facebook publicize error.
  
 13.1
 -----
@@ -13,6 +16,11 @@
 * Stats: added File Downloads to period stats.
 * Adds a Publish Now action to posts in the posts list. 
  
+* Stats Periods: Fixed an issue that made the Post stats title button unable.
+* Stats Periods: Fixed a bug that affected the header date when the site and the device timezones were different.
+* Adds a Publish Now action to posts in the posts list.
+* My Sites: Fixed a problem where some sites would appear duplicated.
+
 13.0
 -----
 * Stats: now use site timezone instead of device.

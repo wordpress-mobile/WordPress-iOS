@@ -205,8 +205,17 @@
             return;
         }
 
+        //Check errors over accounts and show alert if it's needed
+        KeyringAccountHelper *keyringAccount = [KeyringAccountHelper new];
+        ValidationError *validationError = [keyringAccount validateConnections:marr with:weakSelf.publicizeService];
+        if (validationError) {
+            [weakSelf.delegate sharingAuthorizationHelper:weakSelf
+                         requestToShowValidationError:validationError
+                                   fromViewController:weakSelf.navController];
+            return;
+        }
+        
         [weakSelf showAccountSelectorForKeyrings:marr];
-
     } failure:^(NSError *error) {
         if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:keyringFetchFailedForService:)]) {
             [self.delegate sharingAuthorizationHelper:self keyringFetchFailedForService:self.publicizeService];

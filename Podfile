@@ -142,7 +142,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.11.0'
+    gutenberg :tag => 'v1.12.0'
 
     ## Third party libraries
     ## =====================
@@ -164,9 +164,9 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4'
+    pod 'Automattic-Tracks-iOS', '~> 0.4.2-beta.1'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'a15db91a24499913affae84243d45be0e353472a'
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => '0cc8960098791cfe1b02914b15a662af20b60389'
 
     pod 'NSURL+IDN', '0.3'
 
@@ -390,9 +390,7 @@ pre_install do |installer|
           next
         end
         static << pod
-        def pod.static_framework?;
-          true
-        end
+		pod.instance_variable_set(:@build_type, Pod::Target::BuildType.static_framework)
     end
     puts "Installing #{static.count} pods as static frameworks"
     puts "Installing #{dynamic.count} pods as dynamic frameworks"

@@ -2,6 +2,49 @@ import Foundation
 
 extension MediaService {
 
+    // MARK: - Failed Media for Uploading
+
+    /// Returns a list of Media objects that should be uploaded for the given input parameters.
+    ///
+    /// - Parameters:
+    ///     - automatedRetry: whether the media to upload is the result of an automated retry.
+    ///
+    /// - Returns: the Media objects that should be uploaded for the given input parameters.
+    ///
+    func failedMediaForUpload(automatedRetry: Bool) -> [Media] {
+        let request = NSFetchRequest<Media>(entityName: Media.entityName())
+        let failedMediaPredicate = NSPredicate(format: "\(#keyPath(Media.remoteStatusNumber)) == %d", MediaRemoteStatus.failed.rawValue)
+
+        if automatedRetry {
+            let autoUploadFailureCountPredicate = NSPredicate(format: "\(#keyPath(Media.autoUploadFailureCount)) < %d", Media.maxAutoUploadFailureCount)
+
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [failedMediaPredicate, autoUploadFailureCountPredicate])
+        } else {
+            request.predicate = failedMediaPredicate
+        }
+
+        let media = (try? managedObjectContext.fetch(request)) ?? []
+
+        return media
+    }
+
+    /// Returns a list of Media objects from a post, that should be autoUploaded on the next attempt.
+    ///
+    /// - Parameters:
+    ///     - post: the post to look auto-uploadable media for.
+    ///     - automatedRetry: whether the media to upload is the result of an automated retry.
+    ///
+    /// - Returns: the Media objects that should be autoUploaded.
+    ///
+    func failedMediaForUpload(in post: AbstractPost, automatedRetry: Bool) -> [Media] {
+        return post.media.filter({ media in
+            return media.remoteStatus == .failed
+                && (!automatedRetry || media.autoUploadFailureCount.intValue < Media.maxAutoUploadFailureCount)
+        })
+    }
+
+    // MARK: - Misc
+
     /// This method checks the status of all media objects and updates them to the correct status if needed.
     /// The main cause of wrong status is the app being killed while uploads of media are happening.
     ///

@@ -47,7 +47,7 @@ class PostNoticeNavigationCoordinator {
 
     static func retryPostUpload(with userInfo: NSDictionary) {
         if let post = self.post(from: userInfo) {
-            PostCoordinator.shared.save(post: post)
+            PostCoordinator.shared.save(post)
         }
     }
 

@@ -183,7 +183,7 @@ struct PostNoticeViewModel {
         }
 
         post.status = .publish
-        PostCoordinator.shared.save(post: post)
+        PostCoordinator.shared.save(post)
     }
 
     private func retryUpload() {
@@ -191,7 +191,7 @@ struct PostNoticeViewModel {
             return
         }
 
-        PostCoordinator.shared.save(post: post)
+        PostCoordinator.shared.save(post)
     }
 
     private var postInContext: AbstractPost? {

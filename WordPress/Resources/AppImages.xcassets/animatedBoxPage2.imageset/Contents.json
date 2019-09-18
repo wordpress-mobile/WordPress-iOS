@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "animatedBoxPage2.png"
+      "filename" : "animatedBoxPage2.pdf"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "animatedBoxPage2@2x.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "animatedBoxPage2-dark.pdf",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ]
     }
   ],
   "info" : {
