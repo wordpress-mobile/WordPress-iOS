@@ -1,39 +1,46 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@0.0.31
-  git: wordpress-mobile/git@0.0.31
+  ios: wordpress-mobile/ios@0.0.32
+  git: wordpress-mobile/git@0.0.32
 
 jobs:
-  unit-tests:
-    executor:
-      name: ios/default
-      xcode-version: "10.2.0"
-    steps:
-      - git/shallow-checkout
-      - ios/test:
-          xcode-version: "10.2.0"
-          workspace: WordPress.xcworkspace
-          scheme: WordPress
-          device: iPhone XS
-  build-ui-tests:
+  Build Tests:
     executor:
       name: ios/default
       xcode-version: "10.2.0"
     steps:
       - git/shallow-checkout
       - ios/install-dependencies:
-          bundle-install: true
-          pod-install: true
+            bundle-install: true
+            pod-install: true
       - ios/xcodebuild:
           command: build-for-testing
           arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPressUITests' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
+      - ios/xcodebuild:
+          command: build-for-testing
+          arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPress' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
       - persist_to_workspace:
           root: ./
           paths:
             - DerivedData/Build/Products
             - Pods/WordPressMocks
-  run-ui-tests:
+  Unit Tests:
+    executor:
+      name: ios/default
+      xcode-version: "10.2.0"
+    steps:
+      - ios/boot-simulator:
+          xcode-version: "10.2.0"
+          device: iPhone XS
+      - attach_workspace:
+          at: ./
+      - ios/wait-for-simulator
+      - ios/xcodebuild:
+          command: test-without-building
+          arguments: -xctestrun DerivedData/Build/Products/WordPress_iphonesimulator12.2-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
+      - ios/save-xcodebuild-artifacts
+  UI Tests:
     parameters:
       device:
         type: string
@@ -59,17 +66,14 @@ jobs:
 workflows:
   wordpress_ios:
     jobs:
-      - unit-tests:
-          name: build_and_test
-  ui_tests:
-    jobs:
-      - build-ui-tests:
-          name: Build UI Tests
-      - run-ui-tests:
+      - Build Tests
+      - Unit Tests:
+          requires: [ "Build Tests" ]
+      - UI Tests:
           name: UI Tests (iPhone Xs)
           device: iPhone Xs
-          requires: [ "Build UI Tests" ]
-      - run-ui-tests:
+          requires: [ "Build Tests" ]
+      - UI Tests:
           name: UI Tests (iPad 6th generation)
           device: iPad \\(6th generation\\)
-          requires: [ "Build UI Tests" ]
+          requires: [ "Build Tests" ]
