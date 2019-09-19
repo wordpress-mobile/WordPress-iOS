@@ -26,8 +26,7 @@ final class PostAutoUploadInteractor {
     func autoUploadAction(for post: AbstractPost) -> AutoUploadAction {
         guard post.isFailed,
             let status = post.status,
-            PostAutoUploadInteractor.allowedStatuses.contains(status),
-            !post.hasRemote() else {
+            PostAutoUploadInteractor.allowedStatuses.contains(status) else {
                 return .nothing
         }
 

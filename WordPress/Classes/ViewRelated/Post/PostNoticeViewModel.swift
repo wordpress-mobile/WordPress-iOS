@@ -7,6 +7,7 @@ enum PostNoticeUserInfoKey {
 struct PostNoticeViewModel {
     private let post: AbstractPost
     private let postCoordinator: PostCoordinator
+    private let autoUploadInteractor = PostAutoUploadInteractor()
 
     init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared) {
         self.post = post
@@ -103,16 +104,31 @@ struct PostNoticeViewModel {
         }
     }
 
-    // TODO Move strings to FailureTitles enum
     private var failureTitle: String {
-        if post.status == .publish {
-            return FailureTitles.postWillBePublished
+        var defaultTitle: String {
+            if post is Page {
+                return FailureTitles.pageFailedToUpload
+            } else {
+                return FailureTitles.postFailedToUpload
+            }
         }
 
-        if post is Page {
-            return NSLocalizedString("Page failed to upload", comment: "Title of notification displayed when a page has failed to upload.")
-        } else {
-            return NSLocalizedString("Post failed to upload", comment: "Title of notification displayed when a post has failed to upload.")
+        guard let postStatus = post.status,
+            autoUploadInteractor.autoUploadAction(for: post) == .upload else {
+            return defaultTitle
+        }
+
+        if post.hasRemote() {
+            return FailureTitles.changesWillBeUploaded
+        }
+
+        switch postStatus {
+        case .draft:
+            return FailureTitles.draftWillBeUploaded
+        case .publish:
+            return FailureTitles.postWillBePublished
+        default:
+            return defaultTitle
         }
     }
 
@@ -201,8 +217,7 @@ struct PostNoticeViewModel {
     }
 
     private var failureAction: FailureAction {
-        let interactor = PostAutoUploadInteractor()
-        return interactor.canCancelAutoUpload(of: post) ? .cancel : .retry
+        return autoUploadInteractor.canCancelAutoUpload(of: post) ? .cancel : .retry
     }
 
     // MARK: - Action Handlers
@@ -247,6 +262,14 @@ struct PostNoticeViewModel {
     enum FailureTitles {
         static let postWillBePublished = NSLocalizedString("Post will be published the next time your device is online",
                                                            comment: "Text displayed in notice after a post if published while offline.")
+        static let draftWillBeUploaded = NSLocalizedString("Draft will be uploaded next time your device is online",
+                                                           comment: "Text displayed in notice after the app fails to upload a draft.")
+        static let pageFailedToUpload = NSLocalizedString("Page failed to upload",
+                                                          comment: "Title of notification displayed when a page has failed to upload.")
+        static let postFailedToUpload = NSLocalizedString("Post failed to upload",
+                                                          comment: "Title of notification displayed when a post has failed to upload.")
+        static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
+                                                             comment: "Text displayed in notice after the app fails to upload a post.")
     }
 
     enum FailureActionTitles {

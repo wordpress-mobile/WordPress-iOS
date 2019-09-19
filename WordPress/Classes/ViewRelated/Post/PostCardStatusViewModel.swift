@@ -56,15 +56,7 @@ class PostCardStatusViewModel: NSObject {
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
         } else if post.isFailed {
-            if canCancelAutoUpload {
-                return StatusMessages.postWillBePublished
-            }
-
-            if post.wasAutoUploadCancelled {
-                return StatusMessages.localChanges
-            }
-
-            return StatusMessages.uploadFailed
+            return generateFailedStatusMessage()
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
         } else {
@@ -98,7 +90,8 @@ class PostCardStatusViewModel: NSObject {
         }
 
         if post.isFailed {
-            return (canCancelAutoUpload || post.wasAutoUploadCancelled) ? .warning : .error
+            let autoUploadAction = autoUploadInteractor.autoUploadAction(for: post)
+            return (autoUploadAction == .upload || post.wasAutoUploadCancelled) ? .warning : .error
         }
 
         switch status {
@@ -216,6 +209,37 @@ class PostCardStatusViewModel: NSObject {
         return [status, sticky].filter { !$0.isEmpty }.joined(separator: separator)
     }
 
+    /// Determine what the failed status message should be and return it.
+    ///
+    /// This is a helper method for `status`.
+    private func generateFailedStatusMessage() -> String {
+        let defaultFailedMessage = StatusMessages.uploadFailed
+
+        guard post.isFailed, let postStatus = post.status else {
+            return defaultFailedMessage
+        }
+
+        if post.wasAutoUploadCancelled {
+            return StatusMessages.localChanges
+        }
+
+        if autoUploadInteractor.autoUploadAction(for: post) != .upload {
+            return defaultFailedMessage
+        }
+        if post.hasRemote() {
+            return StatusMessages.changesWillBeUploaded
+        }
+
+        switch postStatus {
+        case .draft:
+            return StatusMessages.draftWillBeUploaded
+        case .publish:
+            return StatusMessages.postWillBePublished
+        default:
+            return defaultFailedMessage
+        }
+    }
+
     private enum Constants {
         static let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
     }
@@ -225,5 +249,9 @@ class PostCardStatusViewModel: NSObject {
         static let postWillBePublished = NSLocalizedString("Post will be published next time your device is online",
                                                            comment: "Message shown in the posts list when a post is scheduled for publishing")
         static let localChanges = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
+        static let draftWillBeUploaded = NSLocalizedString("Draft will be uploaded next time your device is online",
+                                                           comment: "Message shown in post list when a draft is scheduled to be automatically uploaded.")
+        static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
+                                                             comment: "Message shown in post list when a post's local changes will be automatically uploaded when the device is online.")
     }
 }

@@ -14,6 +14,7 @@ class PostCardCellTests: XCTestCase {
     private var postActionSheetDelegateMock: PostActionSheetDelegateMock!
 
     override func setUp() {
+        super.setUp()
         contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
 
@@ -263,9 +264,21 @@ class PostCardCellTests: XCTestCase {
         XCTAssertFalse(postCell.separatorLabel.isHidden)
     }
 
-    func testShowsWarningMessageForFailedPublishedPosts() {
+    func testShowsChangesWillBeUploadedWarningForFailedPublishedPostsWithRemote() {
         // Given
-        let post = PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build()
+        let post = PostBuilder(context).published().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build()
+
+        // When
+        postCell.configure(with: post)
+
+        // Then
+        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.changesWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
+    }
+
+    func testShowsPostWillBePublishedWarningForLocallyPublishedPosts() {
+        // Given
+        let post = PostBuilder(context).published().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         // When
         postCell.configure(with: post)
@@ -323,6 +336,30 @@ class PostCardCellTests: XCTestCase {
 
         // Then
         XCTAssertEqual(postCell.statusLabel.text, StatusMessages.localChanges)
+        XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
+    }
+
+    func testShowsChangesWillBeUploadedMessageForDraftsWithRemote() {
+        // Given
+        let post = PostBuilder(context).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build()
+
+        // When
+        postCell.configure(with: post)
+
+        // Then
+        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.changesWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
+    }
+
+    func testShowsDraftWillBeUploadedMessageForLocalDrafts() {
+        // Given
+        let post = PostBuilder(context).drafted().with(remoteStatus: .failed).build()
+
+        // When
+        postCell.configure(with: post)
+
+        // Then
+        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.draftWillBeUploaded)
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
