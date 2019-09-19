@@ -71,12 +71,12 @@ class PostBuilder {
         post.author = author
         return self
     }
-    
+
     func with(userName: String) -> PostBuilder {
         post.blog.username = userName
         return self
     }
-    
+
     func with(password: String) -> PostBuilder {
         post.blog.password = password
         return self

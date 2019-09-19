@@ -113,7 +113,7 @@ class PostNoticeViewModelTests: XCTestCase {
         // Then
         expect(postCoordinator.cancelAutoUploadOfInvocations).to(equal(1))
     }
-    
+
     func testFailedPublishedUploadedDraftPostsPublishButtonWillMarkForAutoUpload() {
         // Given
         let context = ContextManager.shared.mainContext
@@ -126,13 +126,13 @@ class PostNoticeViewModelTests: XCTestCase {
             .with(password: "ThisIsABadPassword")
             .build()
         try! context.save()
-        
+
         let postCoordinator = MockPostCoordinator()
         let notice = PostNoticeViewModel(post: post, postCoordinator: postCoordinator).notice
-        
+
         // When
         notice.actionHandler?(true)
- 
+
         // Then
         expect(post.shouldAttemptAutoUpload).to(beTrue())
     }
