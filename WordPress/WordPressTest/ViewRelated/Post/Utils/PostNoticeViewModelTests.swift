@@ -122,8 +122,6 @@ class PostNoticeViewModelTests: XCTestCase {
             .with(title: "I've been drafted!")
             .withRemote()
             .with(remoteStatus: .sync)
-            .with(userName: "Meee")
-            .with(password: "ThisIsABadPassword")
             .build()
         try! context.save()
 
@@ -158,6 +156,9 @@ class PostNoticeViewModelTests: XCTestCase {
 
         override func cancelAutoUploadOf(_ post: AbstractPost) {
             cancelAutoUploadOfInvocations += 1
+        }
+        override func save(post postToSave: AbstractPost) {
+
         }
     }
 }
