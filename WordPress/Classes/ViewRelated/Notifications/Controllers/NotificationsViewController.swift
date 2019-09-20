@@ -42,6 +42,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// NoResults View
     ///
     private let noResultsViewController = NoResultsViewController.controller()
+    
+    /// Will be used in viewWillLayoutSubviews to ensure layout is only preformed once
+    ///
+    private var layoutForTheFirstTIme = true
 
     /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
     ///
@@ -180,6 +184,19 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .none
     }
+    
+    override func viewWillLayoutSubviews() {
+           // in iOS 13, traitCollectionDidChange gets called when the view is created as oppose to
+           // previous versions where it was called when added to the view hierarchy
+           // which created this bug: https://github.com/wordpress-mobile/WordPress-iOS/issues/12495.
+           // Apple suggests to perform any work involving traits in one of the layout methods
+           // and then rely on traitCollectionDidChange for any future size class changes.
+           if layoutForTheFirstTIme {
+               layoutForTheFirstTIme = false
+               setupTableHeaderView()
+               setupNoResultsView()
+           }
+       }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
