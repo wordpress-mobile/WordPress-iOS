@@ -509,6 +509,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
+    func editorDidAutosave() {
+        // FIXME
+    }
+
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
         switch logLevel {
         case .trace:
