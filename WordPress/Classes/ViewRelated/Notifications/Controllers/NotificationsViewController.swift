@@ -115,8 +115,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         setupNavigationBar()
         setupTableView()
-        setupTableHeaderView()
         setupTableFooterView()
+        layoutHeaderIfNeeded()
         setupConstraints()
         setupTableHandler()
         setupRefreshControl()
@@ -184,19 +184,29 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .none
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        layoutHeaderIfNeeded()
+    }
+    
+    private func layoutHeaderIfNeeded() {
+        precondition(tableHeaderView != nil)
+        // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
+        let requiredSize = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        var headerFrame = tableHeaderView.frame
+        if headerFrame.height != requiredSize.height {
+            headerFrame.size.height = requiredSize.height
+            tableHeaderView.frame = headerFrame
+            adjustNoResultsViewSize()
 
-    override func viewWillLayoutSubviews() {
-           // in iOS 13, traitCollectionDidChange gets called when the view is created as oppose to
-           // previous versions where it was called when added to the view hierarchy
-           // which created this bug: https://github.com/wordpress-mobile/WordPress-iOS/issues/12495.
-           // Apple suggests to perform any work involving traits in one of the layout methods
-           // and then rely on traitCollectionDidChange for any future size class changes.
-           if layoutForTheFirstTIme {
-               layoutForTheFirstTIme = false
-               setupTableHeaderView()
-               setupNoResultsView()
-           }
-       }
+            tableHeaderView.layoutIfNeeded()
+
+            // We reassign the tableHeaderView to force the UI to refresh. Yes, really.
+            tableView.tableHeaderView = tableHeaderView
+            tableView.setNeedsLayout()
+        }
+    }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -204,10 +214,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        // table header views are a special kind of broken. This dispatch forces the table header to get a new layout
-        // on the next redraw tick, which seems to be required.
         DispatchQueue.main.async {
-            self.setupTableHeaderView()
             self.showNoResultsViewIfNeeded()
         }
 
@@ -491,23 +498,6 @@ private extension NotificationsViewController {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
-    func setupTableHeaderView() {
-        precondition(tableHeaderView != nil)
-
-        // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-        let requiredSize = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        var headerFrame = tableHeaderView.frame
-        headerFrame.size.height = requiredSize.height
-        tableHeaderView.frame = headerFrame
-        adjustNoResultsViewSize()
-
-        tableHeaderView.layoutIfNeeded()
-
-        // We reassign the tableHeaderView to force the UI to refresh. Yes, really.
-        tableView.tableHeaderView = tableHeaderView
-        tableView.setNeedsLayout()
-    }
-
     func setupTableFooterView() {
         //  Fix: Hide the cellSeparators, when the table is empty
         tableView.tableFooterView = UIView()
@@ -534,6 +524,8 @@ private extension NotificationsViewController {
             setupAppRatings()
             showInlinePrompt()
         }
+
+        layoutHeaderIfNeeded()
     }
 
     func setupRefreshControl() {
@@ -1284,7 +1276,7 @@ internal extension NotificationsViewController {
         self.inlinePromptSpaceConstraint.isActive = true
         UIView.animate(withDuration: WPAnimationDurationDefault, delay: InlinePrompt.animationDelay, options: .curveEaseIn, animations: {
             self.inlinePromptView.alpha = WPAlphaFull
-            self.setupTableHeaderView()
+            self.layoutHeaderIfNeeded()
         })
 
         WPAnalytics.track(.appReviewsSawPrompt)
@@ -1296,7 +1288,7 @@ internal extension NotificationsViewController {
                        delay: delay,
                        animations: {
             self.inlinePromptView.alpha = WPAlphaZero
-            self.setupTableHeaderView()
+            self.layoutHeaderIfNeeded()
         })
     }
 }
