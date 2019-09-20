@@ -178,7 +178,7 @@ target 'WordPress' do
 
     # pod 'WordPressAuthenticator', '~> 1.9.0-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/siwa-missing-tracks-signin'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/siwa-missing-tracks-signuptap'
 
     aztec
     wordpress_ui
