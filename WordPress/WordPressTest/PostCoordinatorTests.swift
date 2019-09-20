@@ -20,13 +20,12 @@ class PostCoordinatorTests: XCTestCase {
 
     func testDoNotUploadAPostWithFailedMedia() {
         let postServiceMock = PostServiceMock()
-        let mediaCoordinatorMock = MediaCoordinatorMock()
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
         let post = PostBuilder(context)
             .with(image: "test.jpeg", status: .failed)
             .with(remoteStatus: .local)
             .build()
-        mediaCoordinatorMock.mediaState = .failed(error: NSError())
+        let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: NSError()))
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
 
         postCoordinator.save(post)
 
@@ -73,14 +72,20 @@ private class PostServiceMock: PostService {
 }
 
 private class MediaCoordinatorMock: MediaCoordinator {
-    var mediaState: MediaState = .ended
+    var media: Media
+    var mediaState: MediaState
+
+    init(media: Media, mediaState: MediaState) {
+        self.media = media
+        self.mediaState = mediaState
+    }
 
     override func addObserver(_ onUpdate: @escaping MediaCoordinator.ObserverBlock, for media: Media? = nil) -> UUID {
-        guard let media = media else {
-            return UUID()
-        }
+        return UUID()
+    }
 
-        onUpdate(media, mediaState)
+    override func addObserver(_ onUpdate: @escaping MediaCoordinator.ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
+        onUpdate(self.media, mediaState)
         return UUID()
     }
 }
