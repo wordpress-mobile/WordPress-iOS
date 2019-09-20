@@ -189,7 +189,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewDidLayoutSubviews()
         layoutHeaderIfNeeded()
     }
-    
+
     private func layoutHeaderIfNeeded() {
         precondition(tableHeaderView != nil)
         // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
