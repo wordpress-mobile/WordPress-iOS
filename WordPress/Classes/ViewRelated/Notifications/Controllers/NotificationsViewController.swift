@@ -1293,7 +1293,6 @@ internal extension NotificationsViewController {
     }
 }
 
-
 // MARK: - Sync'ing Helpers
 //
 private extension NotificationsViewController {
