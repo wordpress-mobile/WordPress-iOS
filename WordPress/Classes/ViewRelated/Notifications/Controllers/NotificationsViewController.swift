@@ -42,7 +42,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// NoResults View
     ///
     private let noResultsViewController = NoResultsViewController.controller()
-    
+
     /// Will be used in viewWillLayoutSubviews to ensure layout is only preformed once
     ///
     private var layoutForTheFirstTIme = true
@@ -184,7 +184,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .none
     }
-    
+
     override func viewWillLayoutSubviews() {
            // in iOS 13, traitCollectionDidChange gets called when the view is created as oppose to
            // previous versions where it was called when added to the view hierarchy
