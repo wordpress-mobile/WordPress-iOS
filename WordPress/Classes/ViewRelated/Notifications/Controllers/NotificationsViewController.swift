@@ -180,7 +180,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .none
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         layoutHeaderIfNeeded()
