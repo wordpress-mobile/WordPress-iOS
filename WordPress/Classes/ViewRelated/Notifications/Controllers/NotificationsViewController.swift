@@ -43,10 +43,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     private let noResultsViewController = NoResultsViewController.controller()
 
-    /// Will be used in viewWillLayoutSubviews to ensure layout is only preformed once
-    ///
-    private var layoutForTheFirstTIme = true
-
     /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
     ///
     fileprivate var lastReloadDate = Date()
