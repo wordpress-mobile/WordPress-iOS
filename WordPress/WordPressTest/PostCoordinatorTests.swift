@@ -20,15 +20,17 @@ class PostCoordinatorTests: XCTestCase {
 
     func testDoNotUploadAPostWithFailedMedia() {
         let postServiceMock = PostServiceMock()
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let mediaCoordinatorMock = MediaCoordinatorMock()
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
         let post = PostBuilder(context)
             .with(image: "test.jpeg", status: .failed)
             .with(remoteStatus: .local)
             .build()
+        mediaCoordinatorMock.mediaState = .failed(error: NSError())
 
         postCoordinator.save(post)
 
-        expect(post.remoteStatus).to(equal(.failed))
+        expect(postServiceMock.didCallMarkAsFailedAndDraftIfNeeded).toEventually(beTrue())
         expect(postServiceMock.didCallUploadPost).to(beFalse())
     }
 
@@ -59,8 +61,26 @@ class PostCoordinatorTests: XCTestCase {
 
 private class PostServiceMock: PostService {
     private(set) var didCallUploadPost = false
+    private(set) var didCallMarkAsFailedAndDraftIfNeeded = false
 
     override func uploadPost(_ post: AbstractPost, success: ((AbstractPost) -> Void)?, failure: @escaping (Error?) -> Void) {
         didCallUploadPost = true
+    }
+
+    override func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
+        didCallMarkAsFailedAndDraftIfNeeded = true
+    }
+}
+
+private class MediaCoordinatorMock: MediaCoordinator {
+    var mediaState: MediaState = .ended
+
+    override func addObserver(_ onUpdate: @escaping MediaCoordinator.ObserverBlock, for media: Media? = nil) -> UUID {
+        guard let media = media else {
+            return UUID()
+        }
+
+        onUpdate(media, mediaState)
+        return UUID()
     }
 }

@@ -14,9 +14,7 @@ class PostCoordinator: NSObject {
 
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
-    private lazy var mediaCoordinator: MediaCoordinator = {
-        return MediaCoordinator.shared
-    }()
+    private var mediaCoordinator: MediaCoordinator
 
     private let backgroundService: PostService
 
@@ -24,7 +22,7 @@ class PostCoordinator: NSObject {
 
     // MARK: - Initializers
 
-    init(mainService: PostService? = nil, backgroundService: PostService? = nil) {
+    init(mainService: PostService? = nil, backgroundService: PostService? = nil, mediaCoordinator: MediaCoordinator? = nil) {
         let contextManager = ContextManager.sharedInstance()
 
         let mainContext = contextManager.mainContext
@@ -36,6 +34,7 @@ class PostCoordinator: NSObject {
 
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
         self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
+        self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
     }
 
     // MARK: - Uploading Media
