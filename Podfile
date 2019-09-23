@@ -165,7 +165,7 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4.2-beta.1'
+    pod 'Automattic-Tracks-iOS', '~> 0.4.2'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => '0cc8960098791cfe1b02914b15a662af20b60389'
 
@@ -177,7 +177,7 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.9.0-beta.1'
+    pod 'WordPressAuthenticator', '~> 1.9.0'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
