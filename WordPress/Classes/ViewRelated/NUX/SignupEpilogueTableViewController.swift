@@ -58,6 +58,12 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
 
     // MARK: - View
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = .listBackground
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -142,6 +148,14 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
         }
 
         return super.tableView(tableView, cellForRowAt: indexPath)
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard cell is EpilogueUserInfoCell else {
+            return
+        }
+
+        cell.contentView.backgroundColor = .listForeground
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {

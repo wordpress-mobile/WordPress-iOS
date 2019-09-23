@@ -307,15 +307,6 @@ class Post: AbstractPost {
         return title
     }
 
-    override func featuredImageURLForDisplay() -> URL? {
-
-        guard let path = pathForDisplayImage else {
-            return nil
-        }
-
-        return URL(string: path)
-    }
-
     override func additionalContentHashes() -> [Data] {
         // Since the relationship between the categories and a Post is a `Set` and not a `OrderedSet`, we
         // need to sort it manually here, so it won't magically change between runs.

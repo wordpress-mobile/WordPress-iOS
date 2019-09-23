@@ -1,9 +1,6 @@
-13.0
------
-Dein Smartphone hat eine Zeitzoneneinstellung. Deine Website verwendet jedoch eine andere. Worauf basieren deine Website-Statistiken? Gab es diese Traffic-Spitze an diesem Morgen oder diesem Nachmittag? Antwort: Deine Statistiken basieren jetzt auf den Zeitzoneneinstellungen deiner Website.
+* Inaktiv bedeutet inaktiv: Wenn du die App nicht verwendest, macht sie weniger und verbessert die Performance deines Geräts.
+* Wurde auf deiner Websiteliste manchmal die gleiche Website mehrmals angezeigt? Wir haben das behoben.
+* Verwalte deine Benachrichtigungseinstellungen über den Bildschirm „Benachrichtigungen“ (das ergibt Sinn, oder?).
+* Das angezeigte Datum und die Zeitzone deiner Website sind jetzt perfekt synchronisiert.
+* Profitiere von flüssigerem, stabilerem Laden von Beitragsvorschauen.
 
-Konsistente Farbschemas mit hohen Kontrasten ergeben eine benutzerfreundliche, intuitive App und damit glückliche Benutzer. Version 13.0 ist jetzt noch konsistenter – wir wünschen dir viel Spaß!
-
-Der Block-Editor wird immer besser. Du meinst, das ist nicht möglich? Pah! Lass uns mal sehen: Er wird automatisch aktiviert, wenn du das erste Mal einen blockbasierten Beitrag* startest, und du kannst ihn für jede Website aktivieren und deaktivieren, sodass jeder Benutzer genau die Editor-Erfahrung erhält, die er möchte. Wenn du Blöcke aus dem Beitragstitel hinzufügst, wird ein „Block hier einfügen“-Indikator angezeigt, um die Erstellung von Inhalten zu vereinfachen, und durch das Hinzufügen neuer Blöcke wird die Auswahl des Beitragstitels aufgehoben, sodass der Fokus auf dem neuen Block liegt.
-
-* Wenn du dies nicht in Version 12.9 deaktiviert hast! Wir sind keine Monster.

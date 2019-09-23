@@ -17,7 +17,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    CFPropertyList (3.0.0)
+    CFPropertyList (3.0.1)
     activesupport (4.2.11.1)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -27,12 +27,12 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     atomos (0.1.3)
     babosa (1.0.2)
-    claide (1.0.2)
-    cocoapods (1.6.1)
+    claide (1.0.3)
+    cocoapods (1.7.5)
       activesupport (>= 4.0.2, < 5)
       claide (>= 1.0.2, < 2.0)
-      cocoapods-core (= 1.6.1)
-      cocoapods-deintegrate (>= 1.0.2, < 2.0)
+      cocoapods-core (= 1.7.5)
+      cocoapods-deintegrate (>= 1.0.3, < 2.0)
       cocoapods-downloader (>= 1.2.2, < 2.0)
       cocoapods-plugins (>= 1.0.0, < 2.0)
       cocoapods-search (>= 1.0.0, < 2.0)
@@ -41,13 +41,13 @@ GEM
       cocoapods-try (>= 1.1.0, < 2.0)
       colored2 (~> 3.1)
       escape (~> 0.0.4)
-      fourflusher (>= 2.2.0, < 3.0)
+      fourflusher (>= 2.3.0, < 3.0)
       gh_inspector (~> 1.0)
       molinillo (~> 0.6.6)
       nap (~> 1.0)
       ruby-macho (~> 1.4)
-      xcodeproj (>= 1.8.1, < 2.0)
-    cocoapods-core (1.6.1)
+      xcodeproj (>= 1.10.0, < 2.0)
+    cocoapods-core (1.7.5)
       activesupport (>= 4.0.2, < 6)
       fuzzy_match (~> 2.0.4)
       nap (~> 1.0)
@@ -59,7 +59,7 @@ GEM
       cocoapods (~> 1.0, >= 1.3.0)
     cocoapods-search (1.0.0)
     cocoapods-stats (1.1.0)
-    cocoapods-trunk (1.3.1)
+    cocoapods-trunk (1.4.0)
       nap (>= 0.8, < 2.0)
       netrc (~> 0.11)
     cocoapods-try (1.1.0)
@@ -76,10 +76,10 @@ GEM
     digest-crc (0.4.1)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    dotenv (2.7.4)
+    dotenv (2.7.5)
     emoji_regex (1.0.1)
     escape (0.0.4)
-    excon (0.65.0)
+    excon (0.66.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     faraday-cookie_jar (0.0.6)
@@ -138,9 +138,9 @@ GEM
       representable (~> 3.0)
       retriable (>= 2.0, < 4.0)
       signet (~> 0.9)
-    google-cloud-core (1.3.0)
+    google-cloud-core (1.3.1)
       google-cloud-env (~> 1.0)
-    google-cloud-env (1.2.0)
+    google-cloud-env (1.2.1)
       faraday (~> 0.11)
     google-cloud-storage (1.16.0)
       digest-crc (~> 0.4)
@@ -237,7 +237,7 @@ GEM
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
     word_wrap (1.0.0)
-    xcodeproj (1.11.0)
+    xcodeproj (1.12.0)
       CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.3)
       claide (>= 1.0.2, < 2.0)
@@ -252,7 +252,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods (= 1.6.1)!
+  cocoapods (~> 1.7.0)!
   cocoapods-repo-update (~> 0.0.3)!
   commonmarker!
   dotenv!
@@ -266,4 +266,4 @@ DEPENDENCIES
   xcpretty-travis-formatter!
 
 BUNDLED WITH
-   1.17.3
+   2.0.2

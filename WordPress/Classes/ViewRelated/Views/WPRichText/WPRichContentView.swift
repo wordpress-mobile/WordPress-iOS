@@ -111,10 +111,6 @@ class WPRichContentView: UITextView {
         setupView()
     }
 
-    deinit {
-        mediaArray.forEach { $0.image.clean() }
-    }
-
     /// A convenience method for one-time, common setup that should be done in init.
     ///
     @objc func setupView() {
@@ -302,13 +298,17 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
         let index = mediaArray.count
         let indexPath = IndexPath(row: index, section: 1)
+        weak var weakImage = image
 
         image.loadImage(from: contentInformation, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
-            guard let richMedia = self?.mediaArray[indexPath.row] else {
+            guard
+                let richMedia = self?.mediaArray[indexPath.row],
+                let img = weakImage
+            else {
                 return
             }
 
-            richMedia.attachment.maxSize = image.contentSize()
+            richMedia.attachment.maxSize = img.contentSize()
 
             if isUsingTemporaryLayoutDimensions {
                 self?.layoutAttachmentViews()
@@ -440,7 +440,7 @@ class ContentInformation: ImageSourceInformation {
 @objc fileprivate class BlockquoteBackgroundLayoutManager: NSLayoutManager {
     /// Blockquote's Left Border Color
     ///
-    let blockquoteBorderColor = UIColor.textSubtle
+    let blockquoteBorderColor = UIColor.listIcon
 
     /// Blockquote's Left Border width
     ///

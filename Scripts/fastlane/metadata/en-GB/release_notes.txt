@@ -1,9 +1,6 @@
-13.0
------
-Your phone has one time zone setting. Your website uses a different one. What are your site stats based on? Did that traffic spike happen this morning, or this afternoon? Answer: your stats are now based on the time zone settings of your website.
+* Idle means idle: when you don’t use the app, it’ll do less, and improve the performance of your device.
+* Did your site list sometimes show the same site more than once? Well, we fixed that.
+* Manage your notification settings from the notifications screen (makes sense, right?).
+* The displayed date and your site’s time zone are now in perfect sync.
+* Enjoy smoother, more stable loading of post previews.
 
-Consistent colour schemes with good contrast make an accessible, intuitive app, which makes happy users. Version 13.0 is more consistent; enjoy the happiness.
-
-The block editor keeps getting better and better. Not possible, you say? Well, let us count the ways: it’s automatically enabled the first time you start a block based post* and you can enable and disable it on a per site basis, so every user gets the editor experience they want. Adding blocks from the post title shows an “add block here” indicator, to simplify content creation, and adding new blocks deselects the post title so the focus is on the new block.
-
-* Unless you opted out in version 12.9! We’re not monsters.

@@ -47,7 +47,7 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, strong, nullable) NSString *videopressGUID;
 @property (nonatomic, strong, nullable) NSNumber *width;
 @property (nonatomic, strong, nullable) NSError *error;
-
+@property (nonatomic, strong, nonnull) NSNumber *autoUploadFailureCount;
 
 // Relationships
 

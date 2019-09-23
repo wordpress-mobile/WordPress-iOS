@@ -38,13 +38,13 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v13.1-whats-new"
+msgctxt "v13.2.1-whats-new"
 msgid ""
-"13.1\n"
+"13.2.1\n"
 "-----\n"
-"- You can now change your username in the app.\n"
-"- Data about your File Downloads is now available in Period stats.\n"
-"- You can now publish drafts in the Posts list by tapping the new “Publish Now” action accessible from the “…” menu.\n"
+"* Adds support for iOS 13.\n"
+"* Give Dark Mode a try!\n"
+"* Now available: Sign In with Apple.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

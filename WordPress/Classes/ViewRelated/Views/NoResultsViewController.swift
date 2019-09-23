@@ -31,6 +31,8 @@ import Reachability
     @IBOutlet weak var accessoryView: UIView!
     @IBOutlet weak var accessoryStackView: UIStackView!
 
+    private(set) var isReachable = false
+
     // To allow storing values until view is loaded.
     private var titleText: String?
     private var subtitleText: String?
@@ -156,8 +158,8 @@ import Reachability
                          image: String? = nil,
                          subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
-        let isReachable = reachability?.isReachable()
-        if isReachable == false {
+        isReachable = reachability?.isReachable() ?? false
+        if !isReachable {
             titleText = noConnectionTitle != nil ? noConnectionTitle : NoConnection.title
             let subtitle = noConnectionSubtitle != nil ? noConnectionSubtitle : NoConnection.subTitle
             subtitleText = subtitle
@@ -170,9 +172,9 @@ import Reachability
 
         configureAttributedSubtitle = attributedSubtitleConfiguration
         buttonText = buttonTitle
-        imageName = isReachable == false ? NoConnection.imageName : image
+        imageName = !isReachable ? NoConnection.imageName : image
         subtitleImageName = subtitleImage
-        accessorySubview = isReachable == false ? nil : accessoryView
+        accessorySubview = !isReachable ? nil : accessoryView
         displayTitleViewOnly = false
     }
 
@@ -257,6 +259,12 @@ import Reachability
         startAnimatingIfNeeded()
     }
 
+    /// Public method to reset the button text
+    ///
+    func resetButtonText() {
+        buttonText = nil
+    }
+
     /// Public method to expose the private set accessory views method
     ///
     func updateAccessoryViewsVisibility() {
@@ -277,11 +285,12 @@ private extension NoResultsViewController {
         titleLabel.text = titleText
         titleLabel.textColor = .text
 
+        subtitleTextView.textColor = .textSubtle
+
         if let subtitleText = subtitleText {
             subtitleTextView.attributedText = nil
             subtitleTextView.text = subtitleText
             subtitleTextView.isSelectable = false
-            subtitleTextView.textColor = .textSubtle
         }
 
         if let attributedSubtitleText = attributedSubtitleText {
