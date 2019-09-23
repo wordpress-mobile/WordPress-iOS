@@ -157,6 +157,7 @@ class PostNoticeViewModelTests: XCTestCase {
         override func cancelAutoUploadOf(_ post: AbstractPost) {
             cancelAutoUploadOfInvocations += 1
         }
+
         override func save(post postToSave: AbstractPost) {
 
         }
