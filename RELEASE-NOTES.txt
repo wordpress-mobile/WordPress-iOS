@@ -3,6 +3,7 @@
 * Block editor: Add rich text styling to video captions
 * Block editor: Blocks that would be replaced are now hidden when add block bottom sheet displays
 * Block editor: Tapping on empty editor area now always inserts new block at end of post
+* Block editor: Fixed a performance issue that caused a freeze in the editor with long text content.
 
 13.2
 -----
