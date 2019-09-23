@@ -12,6 +12,8 @@ class RevisionDiffsBrowserViewController: UIViewController {
     private var contentPreviewState: ContentPreviewState = .html
 
     @IBOutlet private var containerView: UIView!
+    @IBOutlet private var strokeView: UIView!
+    @IBOutlet private var revisionContainer: UIView!
     @IBOutlet private var revisionTitle: UILabel!
     @IBOutlet private var previousButton: UIButton!
     @IBOutlet private var nextButton: UIButton!
@@ -143,6 +145,8 @@ private extension RevisionDiffsBrowserViewController {
         navigationItem.leftBarButtonItems = [doneBarButtonItem]
         navigationItem.rightBarButtonItems = [moreBarButtonItem, loadBarButtonItem]
         navigationItem.title = NSLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
+        strokeView.backgroundColor = .divider
+        revisionContainer.backgroundColor = .listForeground
     }
 
     private func updateNextPreviousButtons() {

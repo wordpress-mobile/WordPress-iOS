@@ -12,8 +12,16 @@ class QuickStartChecklistCell: UITableViewCell {
         }
     }
     @IBOutlet private var iconView: UIImageView?
-    @IBOutlet private var stroke: UIView?
-    @IBOutlet private var topSeparator: UIView?
+    @IBOutlet private var stroke: UIView? {
+        didSet {
+            stroke?.backgroundColor = .divider
+        }
+    }
+    @IBOutlet private var topSeparator: UIView? {
+        didSet {
+            topSeparator?.backgroundColor = .divider
+        }
+    }
 
     private var bottomStrokeLeading: NSLayoutConstraint?
     private var contentViewLeadingAnchor: NSLayoutXAxisAnchor {
@@ -34,9 +42,11 @@ class QuickStartChecklistCell: UITableViewCell {
                                                                attributes: [.strikethroughStyle: 1,
                                                                             .foregroundColor: UIColor.neutral(.shade30)])
                 descriptionLabel.textColor = .neutral(.shade30)
+                iconView?.tintColor = .neutral(.shade30)
             } else {
-                titleLabel.textColor = .neutral(.shade70)
-                descriptionLabel.textColor = .neutral(.shade70)
+                titleLabel.textColor = .text
+                descriptionLabel.textColor = .textSubtle
+                iconView?.tintColor = .listIcon
             }
         }
     }
@@ -44,7 +54,7 @@ class QuickStartChecklistCell: UITableViewCell {
         didSet {
             titleLabel.text = tour?.title
             descriptionLabel.text = tour?.description
-            iconView?.image = tour?.icon.imageWithTintColor(.neutral(.shade20))
+            iconView?.image = tour?.icon.withRenderingMode(.alwaysTemplate)
 
             if let hint = tour?.accessibilityHintText, !hint.isEmpty {
                 accessibilityHint = hint
@@ -67,6 +77,7 @@ class QuickStartChecklistCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentView.backgroundColor = .listForeground
         setupConstraints()
     }
 

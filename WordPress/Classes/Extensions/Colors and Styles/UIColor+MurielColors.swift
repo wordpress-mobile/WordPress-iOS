@@ -6,10 +6,22 @@ extension UIColor {
     /// - Returns: UIColor. Red in cases of error
     class func muriel(color murielColor: MurielColor) -> UIColor {
         let assetName = murielColor.assetName()
-        guard let color = UIColor(named: assetName) else {
+        let color: UIColor?
+
+        // This is temporary work around as there's a bug in the
+        // GM seed of Xcode 11 which causes loading colors from asset
+        // catalogs to fail (54325712)
+        if #available(iOS 12.0, *) {
+            color = UIColor(named: assetName)
+        } else {
+            color = MurielPalette.color(from: assetName)
+        }
+
+        guard let unwrappedColor = color else {
             return .red
         }
-        return color
+
+        return unwrappedColor
     }
     /// Get a UIColor from the Muriel color palette, adjusted to a given shade
     /// - Parameter color: an instance of a MurielColor
@@ -109,70 +121,77 @@ extension UIColor {
 extension UIColor {
     /// The most basic background: white in light mode, black in dark mode
     static var basicBackground: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .systemBackground
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .systemBackground
+        }
         return .white
+    }
+
+    /// Tertiary background
+    static var tertiaryBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .tertiarySystemBackground
+        }
+
+        return .neutral(.shade10)
     }
 
     /// Default text color: high contrast
     static var text: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .label
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .label
+        }
+
         return muriel(color: .text)
     }
 
     /// Secondary text color: less contrast
     static var textSubtle: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .secondaryLabel
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .secondaryLabel
+        }
+
         return muriel(color: .gray)
     }
 
     /// Very low contrast text
     static var textTertiary: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .tertiaryLabel
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .tertiaryLabel
+        }
+
         return UIColor.neutral(.shade20)
     }
 
     /// Very, very low contrast text
     static var textQuaternary: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .quaternaryLabel
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .quaternaryLabel
+        }
+
         return UIColor.neutral(.shade10)
     }
 
     static var textInverted = UIColor(light: .white, dark: .gray(.shade100))
-    static var textPlaceholder = neutral(.shade30)
+    static var textPlaceholder: UIColor {
+        if #available(iOS 13, *) {
+            return .tertiaryLabel
+        }
+
+        return neutral(.shade30)
+    }
     static var placeholderElement: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return UIColor(light: .systemGray5, dark: .systemGray4)
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return UIColor(light: .systemGray5, dark: .systemGray4)
+        }
+
         return .gray(.shade10)
     }
     static var placeholderElementFaded: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return UIColor(light: .systemGray6, dark: .systemGray5)
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return UIColor(light: .systemGray6, dark: .systemGray5)
+        }
+
         return .gray(.shade5)
     }
 
@@ -182,87 +201,78 @@ extension UIColor {
     // MARK: - Table Views
 
     static var divider: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .separator
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .separator
+        }
+
         return muriel(color: .divider)
     }
 
     /// WP color for table foregrounds (cells, etc)
     static var listForeground: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .secondarySystemGroupedBackground
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .secondarySystemGroupedBackground
+        }
+
         return .white
     }
 
     static var listForegroundUnread: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .tertiarySystemGroupedBackground
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .tertiarySystemGroupedBackground
+        }
+
         return .primary(.shade0)
     }
 
     static var listBackground: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .systemGroupedBackground
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .systemGroupedBackground
+        }
+
         return muriel(color: .gray, .shade0)
     }
 
     /// For icons that are present in a table view, or similar list
     static var listIcon: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .secondaryLabel
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .secondaryLabel
+        }
+
         return .neutral(.shade20)
     }
 
     /// For small icons, such as the badges on notification gravatars
     static var listSmallIcon: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .systemGray
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .systemGray
+        }
+
         return UIColor.neutral(.shade20)
     }
 
     static var filterBarBackground: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return UIColor(light: white, dark: .gray(.shade100))
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return UIColor(light: white, dark: .gray(.shade100))
+        }
+
         return white
     }
 
     static var filterBarSelected: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return UIColor(light: .primary, dark: .label)
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return UIColor(light: .primary, dark: .label)
+        }
+
         return .primary
     }
 
     /// For icons that are present in a toolbar or similar view
     static var toolbarInactive: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .secondaryLabel
-            }
-        #endif
+        if #available(iOS 13, *) {
+               return .secondaryLabel
+           }
+
         return .neutral(.shade30)
     }
 
@@ -276,29 +286,27 @@ extension UIColor {
     static var primaryButtonDownBorder = muriel(color: .accent, .shade90)
 
     static var secondaryButtonBackground: UIColor {
-        #if XCODE11
         if #available(iOS 13, *) {
             return UIColor(light: .white, dark: .systemGray5)
         }
-        #endif
+
         return .white
     }
 
     static var secondaryButtonBorder: UIColor {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                return .systemGray3
-            }
-        #endif
+        if #available(iOS 13, *) {
+            return .systemGray3
+        }
+
         return .neutral(.shade20)
     }
 
     static var secondaryButtonDownBackground: UIColor {
-        #if XCODE11
+
         if #available(iOS 13, *) {
             return .systemGray3
         }
-        #endif
+
         return .neutral(.shade20)
     }
 
@@ -310,24 +318,18 @@ extension UIColor {
 extension UIColor {
     // A way to create dynamic colors that's compatible with iOS 11 & 12
     convenience init(light: UIColor, dark: UIColor) {
-        #if XCODE11
-            if #available(iOS 13, *) {
-                self.init { traitCollection in
-                    if traitCollection.userInterfaceStyle == .dark {
-                        return dark
-                    } else {
-                        return light
-                    }
+        if #available(iOS 13, *) {
+            self.init { traitCollection in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return dark
+                } else {
+                    return light
                 }
-            } else {
-                // in older versions of iOS, we assume light mode
-                self.init(color: light)
             }
-        #else
-            // ditto
+        } else {
+            // in older versions of iOS, we assume light mode
             self.init(color: light)
-        #endif
-
+        }
     }
 
     convenience init(color: UIColor) {
