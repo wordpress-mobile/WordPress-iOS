@@ -110,7 +110,7 @@
     UIImageView *accessoryView = [[UIImageView alloc] init];
     accessoryView.contentMode = UIViewContentModeScaleAspectFit;
     accessoryView.image = [Gridicon iconOfType:GridiconTypeChevronDown];
-    accessoryView.tintColor = [UIColor murielNeutral10];
+    accessoryView.tintColor = [UIColor murielTextTertiary];
     [accessoryView.widthAnchor constraintEqualToConstant:24].active = YES;
     [accessoryView.heightAnchor constraintEqualToConstant:24].active = YES;
     _accessoryView = accessoryView;

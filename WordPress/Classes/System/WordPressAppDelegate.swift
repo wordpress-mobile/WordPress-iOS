@@ -7,9 +7,7 @@ import WordPressComStatsiOS
 import WordPressShared
 import AlamofireNetworkActivityIndicator
 
-#if !XCODE11
 import ZendeskCoreSDK
-#endif
 
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -206,13 +204,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
 
-#if DEBUG
+        #if DEBUG
         KeychainTools.processKeychainDebugArguments()
-        #if !XCODE11
-            CoreLogger.enabled = true
-            CoreLogger.logLevel = .debug
+        CoreLogger.enabled = true
+        CoreLogger.logLevel = .debug
         #endif
-#endif
 
         ZendeskUtils.setup()
 
@@ -234,6 +230,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Deferred tasks to speed up app launch
         DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.mergeDuplicateAccountsIfNeeded()
             MediaCoordinator.shared.refreshMediaStatus()
             PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
@@ -247,6 +244,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = WPTabBarController.sharedInstance()
 
         setupNoticePresenter()
+    }
+
+    private func mergeDuplicateAccountsIfNeeded() {
+        let context = ContextManager.shared.mainContext
+        context.perform {
+            AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
+        }
     }
 
     private func setupPingHub() {
