@@ -6,7 +6,7 @@ import Nimble
 
 class PostServiceMarkAsFailedAndDraftTests: XCTestCase {
     func testMarkAPostAsFailedAndDraftIt() {
-        let post = PostBuilder().build()
+        let post = PostBuilder().with(status: .pending).build()
         let postService = PostService()
 
         postService.markAsFailedAndDraftIfNeeded(post: post)

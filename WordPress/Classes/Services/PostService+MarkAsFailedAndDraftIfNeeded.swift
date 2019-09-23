@@ -15,7 +15,15 @@
 
         post.remoteStatus = .failed
 
-        if !post.hasRemote() {
+        // If the post was not created on the server yet we convert the post to a local draft
+        // with the current date. This post upload will be automatically retried later as a draft.
+        //
+        // However, if the post was supposed to be published or draft, we will leave it as is.
+        // This is intentional because we currently want to automatically retry posts that
+        // are either published or drafts. In the future, we will automatically retry all statuses.
+        //
+        // Automatic uploads happen in `PostCoordinator.resume()`.
+        if !post.hasRemote() && post.status != .publish {
             // If the post was not created on the server yet we convert the post to a local draft post with the current date.
             post.status = .draft
             post.dateModified = Date()

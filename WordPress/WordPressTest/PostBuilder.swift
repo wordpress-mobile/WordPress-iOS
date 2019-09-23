@@ -12,10 +12,6 @@ class PostBuilder {
         post.blog = BlogBuilder(context).build()
     }
 
-    init(_ context: NSManagedObjectContext) {
-        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as? Post
-    }
-
     func published() -> PostBuilder {
         post.status = .publish
         return self
