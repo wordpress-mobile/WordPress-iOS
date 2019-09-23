@@ -155,7 +155,7 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSDK', '3.0.1'
+    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.1-swift5.1-GM'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.1.1'
 
@@ -176,7 +176,7 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.8.1-beta.2'
+    pod 'WordPressAuthenticator', '~> 1.9.0-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
@@ -191,23 +191,7 @@ target 'WordPress' do
     end
 
     
-    post_install do
-      
-        ## Append SDKVersions.xcconfig contents to WordPressAuthenticator config files
-        Dir.glob("Pods/Target Support Files/WordPressAuthenticator/*.xcconfig") do |xc_config_filename|
-          
-          ## Get WPAuth config file
-          xcconfig_path = "#{Dir.pwd}/#{xc_config_filename}"
-          xc_config = File.read(xcconfig_path)
-
-          ## Get WPiOS config file
-          custom_xcconfig_path = "#{Dir.pwd}/config/SDKVersions.xcconfig"
-          custom_xc_config = File.read(custom_xcconfig_path)
-
-          ## Write back to WPAuth config file, appending both configs.
-          File.open(xcconfig_path, 'w') { |file| file << xc_config << custom_xc_config }
-        end
-      
+    post_install do      
       
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
@@ -225,6 +209,12 @@ target 'WordPress' do
                              color: #1a1a1a;
                              margin: 20px;
                            }
+                          @media (prefers-color-scheme: dark) {
+                           body {
+                            background: #1a1a1a;
+                            color: white;
+                           }
+                          }
                            pre {
                             white-space: pre-wrap;
                            }
@@ -238,7 +228,7 @@ target 'WordPress' do
                        </body>"
           
           ## Remove the <h1>, since we've promoted it to <title>
-          styled_html = styled_html.sub("<h1>#{acknowledgements}</h1>", '')
+          styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
           
           ## The glog library's license contains a URL that does not wrap in the web view,
           ## leading to a large right-hand whitespace gutter.  Work around this by explicitly

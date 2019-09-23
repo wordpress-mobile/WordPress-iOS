@@ -78,7 +78,7 @@ final class WebAddressWizardContent: UIViewController {
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
             label.textAlignment = .center
-            label.textColor = .neutral(.shade40)
+            label.textColor = .text
 
             let noResultsMessage = NSLocalizedString("No available addresses matching your search", comment: "Advises the user that no Domain suggestions could be found for the search query.")
             label.text = noResultsMessage
@@ -254,11 +254,11 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = .neutral(.shade5)
+        view.backgroundColor = .listBackground
     }
 
     private func setupButtonWrapper() {
-        buttonWrapper.backgroundColor = .neutral(.shade5)
+        buttonWrapper.backgroundColor = .listBackground
     }
 
     private func setupCreateSiteButton() {
@@ -347,7 +347,7 @@ final class WebAddressWizardContent: UIViewController {
         header.accessibilityTraits = .header
 
         let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade30))
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.textPlaceholder)
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         header.textField.attributedPlaceholder = attributedPlaceholder
 
@@ -378,11 +378,11 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = .neutral(.shade5)
+        table.backgroundColor = .listBackground
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = .neutral(.shade10)
+        table.separatorColor = .divider
     }
 
     private func setupConstraints() {

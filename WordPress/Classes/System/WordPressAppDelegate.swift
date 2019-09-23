@@ -8,9 +8,7 @@ import WordPressShared
 import AlamofireNetworkActivityIndicator
 import AutomatticTracks
 
-#if !XCODE11
 import ZendeskCoreSDK
-#endif
 
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -222,13 +220,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
 
-#if DEBUG
+        #if DEBUG
         KeychainTools.processKeychainDebugArguments()
-        #if !XCODE11
-            CoreLogger.enabled = true
-            CoreLogger.logLevel = .debug
+        CoreLogger.enabled = true
+        CoreLogger.logLevel = .debug
         #endif
-#endif
 
         ZendeskUtils.setup()
 
