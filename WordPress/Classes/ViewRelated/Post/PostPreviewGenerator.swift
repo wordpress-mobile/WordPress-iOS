@@ -38,9 +38,6 @@ class PostPreviewGenerator: NSObject {
     }
 
     @objc func previewRequestFailed(reason: String) {
-        let message = "Preview failed"
-        let properties = ["reason": reason]
-        CrashLogging.logMessage(message, properties: properties)
         delegate?.previewFailed(self, message: NSLocalizedString("There has been an error while trying to reach your site.", comment: "An error message."))
     }
 
