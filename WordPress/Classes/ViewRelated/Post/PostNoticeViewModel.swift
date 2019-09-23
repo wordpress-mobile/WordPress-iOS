@@ -232,6 +232,7 @@ struct PostNoticeViewModel {
         }
 
         post.status = .publish
+        post.shouldAttemptAutoUpload = true
         postCoordinator.save(post: post)
     }
 

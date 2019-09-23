@@ -114,6 +114,28 @@ class PostNoticeViewModelTests: XCTestCase {
         expect(postCoordinator.cancelAutoUploadOfInvocations).to(equal(1))
     }
 
+    func testFailedPublishedUploadedDraftPostsPublishButtonWillMarkForAutoUpload() {
+        // Given
+        let context = ContextManager.shared.mainContext
+        let post = PostBuilder(context)
+            .drafted()
+            .with(title: "I've been drafted!")
+            .withRemote()
+            .with(remoteStatus: .sync)
+            .build()
+        try! context.save()
+
+        let postCoordinator = MockPostCoordinator()
+        let notice = PostNoticeViewModel(post: post, postCoordinator: postCoordinator).notice
+
+        // When
+        notice.actionHandler?(true)
+
+        // Then
+        expect(post.shouldAttemptAutoUpload).to(beTrue())
+    }
+
+
     private func createPost(_ status: BasePost.Status, hasRemote: Bool = false) -> Post {
         var builder = PostBuilder(context)
             .with(title: UUID().uuidString)
@@ -134,6 +156,10 @@ class PostNoticeViewModelTests: XCTestCase {
 
         override func cancelAutoUploadOf(_ post: AbstractPost) {
             cancelAutoUploadOfInvocations += 1
+        }
+
+        override func save(post postToSave: AbstractPost) {
+
         }
     }
 }

@@ -72,6 +72,16 @@ class PostBuilder {
         return self
     }
 
+    func with(userName: String) -> PostBuilder {
+        post.blog.username = userName
+        return self
+    }
+
+    func with(password: String) -> PostBuilder {
+        post.blog.password = password
+        return self
+    }
+
     func with(remoteStatus: AbstractPostRemoteStatus) -> PostBuilder {
         post.remoteStatus = remoteStatus
         return self
