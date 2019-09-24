@@ -61,4 +61,21 @@ import Foundation
         let result = accountsDescription + "\nAll accounts and blogs:\n" + blogTreeDescription
         DDLogInfo(result)
     }
+    
+    static func logOutDefaultWordPressComAccount() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        service.removeDefaultWordPressComAccount()
+
+        // Delete local notification on logout
+        PushNotificationsManager.shared.deletePendingLocalNotifications()
+
+        // Also clear the spotlight index
+        SearchManager.shared.deleteAllSearchableItems()
+
+        // Delete donated user activities (e.g., for Siri Shortcuts)
+        if #available(iOS 12.0, *) {
+            NSUserActivity.deleteAllSavedUserActivities {}
+        }
+    }
 }
