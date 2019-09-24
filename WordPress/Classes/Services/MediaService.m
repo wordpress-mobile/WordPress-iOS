@@ -75,7 +75,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         media.remoteStatus = MediaRemoteStatusProcessing;
 
         [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
-        [self.managedObjectContext save: nil];
+        [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     }];
     NSManagedObjectID *mediaObjectID = media.objectID;
     [self.managedObjectContext performBlock:^{
