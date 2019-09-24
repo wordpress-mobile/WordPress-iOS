@@ -94,11 +94,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (void)updateTopic:(NSManagedObjectID *)topicObjectID withAlgorithm:(NSString *)algorithm
 {
-    NSError *error;
-    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
-    topic.algorithm = algorithm;
+    [self.managedObjectContext performBlock:^{
+            NSError *error;
+        ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+        topic.algorithm = algorithm;
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
 }
 
 
@@ -120,11 +122,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                     count:[self numberToSyncForTopic:topic]
                                    before:date
                                   success:^(NSArray *posts, NSString *algorithm) {
-
-                                      // Save any returned algorithm on the topic for use when requesting more posts.
-                                      NSError *error;
-                                      ReaderAbstractTopic *readerTopic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
-                                      readerTopic.algorithm = algorithm;
+                                      [self updateTopic:topicObjectID withAlgorithm:algorithm];
 
                                       // Construct a rank from the date provided
                                       NSNumber *rank = @([date timeIntervalSinceReferenceDate]);
