@@ -139,18 +139,20 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                              forBlog:blog
                        purgeExisting:YES
                    completionHandler:^{
-                       [[self class] stopSyncingCommentsForBlog:blogID];
-                       
-                       blogInContext.lastCommentsSync = [NSDate date];
-                       [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                       
-                       if (success) {
-                           // Note:
-                           // We'll assume that if the requested page size couldn't be filled, there are no
-                           // more comments left to retrieve.
-                           BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
-                           success(hasMore);
-                       }
+                     [[self class] stopSyncingCommentsForBlog:blogID];
+
+                     [self.managedObjectContext performBlock:^{
+                         blogInContext.lastCommentsSync = [NSDate date];
+                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                             if (success) {
+                                 // Note:
+                                 // We'll assume that if the requested page size couldn't be filled, there are no
+                                 // more comments left to retrieve.
+                                 BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
+                                 success(hasMore);
+                             }
+                         }];
+                     }];
                    }];
              }
          }];
