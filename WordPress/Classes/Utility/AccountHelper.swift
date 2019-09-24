@@ -61,7 +61,7 @@ import Foundation
         let result = accountsDescription + "\nAll accounts and blogs:\n" + blogTreeDescription
         DDLogInfo(result)
     }
-    
+
     static func logOutDefaultWordPressComAccount() {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
