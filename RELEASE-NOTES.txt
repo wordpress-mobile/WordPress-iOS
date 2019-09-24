@@ -1,3 +1,7 @@
+13.4
+-----
+* Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account on app launch.
+
 13.3
 -----
 * Block editor: Add rich text styling to video captions
