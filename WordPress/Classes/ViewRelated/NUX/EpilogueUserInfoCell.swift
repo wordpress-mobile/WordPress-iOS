@@ -59,8 +59,7 @@ class EpilogueUserInfoCell: UITableViewCell {
         fullNameLabel.text = userInfo.fullName
         fullNameLabel.fadeInAnimation()
 
-        let username = userInfo.username.characterCount > 0 ? "@\(userInfo.username)" : ""
-        usernameLabel.text = showEmail ? userInfo.email : username
+        usernameLabel.text = showEmail ? userInfo.email : "@\(userInfo.username)"
         usernameLabel.fadeInAnimation()
         usernameLabel.accessibilityIdentifier = "login-epilogue-username-label"
 

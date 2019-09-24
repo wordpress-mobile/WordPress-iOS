@@ -142,7 +142,8 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.11.0'
+    gutenberg :tag => 'v1.13.0'
+    ## gutenberg :commit => '719c111dc0f927e6fa2cfa382f9678d14e5506cd'
 
     ## Third party libraries
     ## =====================
@@ -164,9 +165,9 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4'
+    pod 'Automattic-Tracks-iOS', '~> 0.4.2'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'a15db91a24499913affae84243d45be0e353472a'
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => '0cc8960098791cfe1b02914b15a662af20b60389'
 
     pod 'NSURL+IDN', '0.3'
 
@@ -176,7 +177,7 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.9.0-beta.3'
+    pod 'WordPressAuthenticator', '~> 1.9.0'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/siwa-missing-tracks-signuptap'
 
@@ -390,9 +391,7 @@ pre_install do |installer|
           next
         end
         static << pod
-        def pod.static_framework?;
-          true
-        end
+		pod.instance_variable_set(:@build_type, Pod::Target::BuildType.static_framework)
     end
     puts "Installing #{static.count} pods as static frameworks"
     puts "Installing #{dynamic.count} pods as dynamic frameworks"

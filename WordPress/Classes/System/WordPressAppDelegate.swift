@@ -6,6 +6,7 @@ import WordPressAuthenticator
 import WordPressComStatsiOS
 import WordPressShared
 import AlamofireNetworkActivityIndicator
+import AutomatticTracks
 
 import ZendeskCoreSDK
 
@@ -38,7 +39,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         //
         // We're leaving as-is for now to avoid digressing.
         let uploaders: [Uploader] = [
-            MediaCoordinator.shared,
+            // Ideally we should be able to retry uploads of standalone media to the media library, but the truth is
+            // that uploads started from the MediaCoordinator are currently not updating their parent post references
+            // very well.  For this reason I'm disabling automated upload retries that don't start from PostCoordinator.
+            //
+            // MediaCoordinator.shared,
             PostCoordinator.shared
         ]
 
@@ -76,6 +81,17 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
+
+        let queue = DispatchQueue(label: "asd", qos: .background)
+        let deviceInformation = TracksDeviceInformation()
+
+        queue.async {
+            let height = deviceInformation.statusBarHeight
+            let orientation = deviceInformation.orientation!
+
+            print("Height: \(height); orientation: \(orientation)")
+        }
+
 
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         showWelcomeScreenIfNeeded(animated: false)
@@ -570,11 +586,6 @@ extension WordPressAppDelegate {
         let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        let blogs = blogService.blogsForAllAccounts()
-
-        let accountService = AccountService(managedObjectContext: context)
-        let account = accountService.defaultWordPressComAccount()
 
         let detailedVersionNumber = Bundle(for: type(of: self)).detailedVersionNumber() ?? unknown
 
@@ -603,19 +614,7 @@ extension WordPressAppDelegate {
         DDLogInfo("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
         DDLogInfo("Launch options: \(String(describing: launchOptions ?? [:]))")
 
-        if let account = account,
-            let username = account.username,
-            let userID = account.userID {
-            DDLogInfo("wp.com account: \(username) (ID: \(userID)) (\(account.verificationStatus.rawValue))")
-        }
-
-        if let blogs = blogs as? [Blog], blogs.count > 0 {
-            DDLogInfo("All blogs on device:")
-            blogs.forEach({ DDLogInfo("\($0.logDescription())") })
-        } else {
-            DDLogInfo("No blogs configured on device.")
-        }
-
+        AccountHelper.logBlogsAndAccounts(context: context)
         DDLogInfo("===========================================================================")
     }
 
