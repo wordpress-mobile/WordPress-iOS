@@ -70,7 +70,7 @@ class MediaThumbnailService: LocalCoreDataService {
             // Configure a handler for any thumbnail exports
             let onThumbnailExport: MediaThumbnailExporter.OnThumbnailExport = { (identifier, export) in
                 self.managedObjectContext.perform {
-                    self.handleThumbnailExport(media: media,
+                    self.handleThumbnailExport(media: mediaInContext,
                                                identifier: identifier,
                                                export: export,
                                                onCompletion: onCompletion)
