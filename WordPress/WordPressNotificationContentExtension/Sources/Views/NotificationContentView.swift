@@ -108,6 +108,7 @@ class NotificationContentView: UIView {
         label.numberOfLines = 0
 
         label.attributedText = viewModel.attributedSubject
+        label.textColor = .text
         label.sizeToFit()
 
         return label
@@ -121,6 +122,7 @@ class NotificationContentView: UIView {
         label.numberOfLines = 0
 
         label.attributedText = viewModel.attributedBody
+        label.textColor = .textSubtle
         label.sizeToFit()
 
         return label
@@ -138,6 +140,15 @@ class NotificationContentView: UIView {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    /// Reload the content when the trait did change
+    func reloadContent() {
+        subjectLabel.attributedText = viewModel.attributedSubject
+        subjectLabel.textColor = .text
+
+        bodyLabel.attributedText = viewModel.attributedBody
+        bodyLabel.textColor = .textSubtle
     }
 
     // MARK: Private behavior
