@@ -200,11 +200,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     // Do all of this work on a background thread.
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    ReaderAbstractTopic *topic = [topicService topicForFollowedSites];
-    if (topic) {
-        ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-        [service fetchPostsForTopic:topic earlierThan:[NSDate date] deletingEarlier:YES success:nil failure:nil];
-    }
+    [context performBlock:^{
+        ReaderAbstractTopic *topic = [topicService topicForFollowedSites];
+        if (topic) {
+            ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+            [service fetchPostsForTopic:topic earlierThan:[NSDate date] deletingEarlier:YES success:nil failure:nil];
+        }
+    }];
 }
 
 
