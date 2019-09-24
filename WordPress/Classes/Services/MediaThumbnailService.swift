@@ -118,7 +118,9 @@ class MediaThumbnailService: LocalCoreDataService {
                                              onError: { (error) in
                                                 // If an error occurred with the remote video URL, try and download the Media's
                                                 // remote thumbnail instead.
-                                                attemptDownloadingThumbnail()
+                                                self.managedObjectContext.perform {
+                                                    attemptDownloadingThumbnail()
+                                                }
                     })
                 }
                 return
