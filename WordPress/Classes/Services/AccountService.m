@@ -190,11 +190,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (WPAccount *)createOrUpdateAccountWithUserDetails:(RemoteUser *)remoteUser authToken:(NSString *)authToken
 {
-    WPAccount *account = [self findAccountWithUserID:remoteUser.userID];
-    if (!account) {
-        NSString *username = remoteUser.username;
-        account = [self createOrUpdateAccountWithUsername:username authToken:authToken];
-    }
+    NSString *username = remoteUser.username;
+    WPAccount *account = [self createOrUpdateAccountWithUsername:username authToken:authToken];
     [self updateAccount:account withUserDetails:remoteUser];
     return account;
 }
