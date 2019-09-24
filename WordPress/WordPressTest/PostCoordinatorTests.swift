@@ -88,4 +88,8 @@ private class MediaCoordinatorMock: MediaCoordinator {
         onUpdate(self.media, mediaState)
         return UUID()
     }
+
+    override func retryMedia(_ media: Media, automatedRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
+        // noop
+    }
 }
