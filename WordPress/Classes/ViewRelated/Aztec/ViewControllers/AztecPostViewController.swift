@@ -2293,7 +2293,7 @@ extension AztecPostViewController {
         case .processing:
             DDLogInfo("Creating media")
         case .thumbnailReady(let url):
-            handleThumbnailURL(url, attachment: attachment)
+            handleThumbnailURL(url, attachment: attachment, then: { self.post.content = self.getHTML() })
         case .uploading:
             handleUploadStarted(attachment: attachment)
         case .ended:
@@ -2451,7 +2451,8 @@ extension AztecPostViewController {
         return videoAttachment
     }
 
-    private func handleThumbnailURL(_ thumbnailURL: URL, attachment: MediaAttachment) {
+    private func handleThumbnailURL(_ thumbnailURL: URL, attachment: MediaAttachment,
+                                    then afterCallback: (() -> ())? = nil) {
         DispatchQueue.main.async {
             if let attachment = attachment as? ImageAttachment {
                 attachment.updateURL(thumbnailURL)
@@ -2461,6 +2462,7 @@ extension AztecPostViewController {
                 attachment.posterURL = thumbnailURL
                 self.richTextView.refresh(attachment)
             }
+            afterCallback?()
         }
     }
 
