@@ -301,7 +301,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         view.layoutIfNeeded()
 
         if #available(iOS 13.0, *) {
-            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true {
+            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true, UIApplication.shared.applicationState != .background {
                 reloadGradientColors()
                 configureRichText()
             }
