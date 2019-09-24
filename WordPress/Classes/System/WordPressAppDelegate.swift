@@ -102,6 +102,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
+        if #available(iOS 13, *) {
+            checkAppleIDCredentialState()
+        }
+
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         return true
     }
@@ -427,6 +431,46 @@ extension WordPressAppDelegate {
         authManager?.startRelayingSupportNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
+    }
+
+    @available(iOS 13.0, *)
+    func checkAppleIDCredentialState() {
+
+        // If not logged in, remove the Apple User ID from the keychain, if it exists.
+        guard AccountHelper.isLoggedIn else {
+            do {
+                try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
+                                                 andServiceName: WPAppleIDKeychainUsernameKey)
+            } catch {
+                DDLogDebug("Error while removing Apple User ID: \(error)")
+            }
+            return
+        }
+
+        // Get the Apple User ID from the keychain
+        let appleUserID: String
+        do {
+            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
+                                                                  andServiceName: WPAppleIDKeychainServiceName)
+        } catch {
+            DDLogInfo("checkAppleIDCredentialState: No Apple ID found.")
+            return
+        }
+
+        // Get the Apple User ID state. If not authorized, log out the account.
+        WordPressAuthenticator.shared.checkAppleIDCredentialState(for: appleUserID) { (authorized, error) in
+            if !authorized {
+                DispatchQueue.main.async {
+                    DDLogInfo("checkAppleIDCredentialState: Unauthorized Apple ID. User signed out.")
+                    AccountHelper.logOutDefaultWordPressComAccount()
+                }
+
+                if let error = error {
+                    // An error exists only for the 'not found' state.
+                    DDLogInfo("checkAppleIDCredentialState: Apple ID state not found: \(error)")
+                }
+            }
+        }
     }
 
     func handleWebActivity(_ activity: NSUserActivity) {
