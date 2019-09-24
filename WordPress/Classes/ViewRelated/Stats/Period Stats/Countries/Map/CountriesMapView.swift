@@ -64,13 +64,11 @@ class CountriesMapView: UIView, NibLoadable {
     }
 
     private func mapColors() -> [UIColor] {
-        #if XCODE11
         if #available(iOS 13, *) {
             if traitCollection.userInterfaceStyle == .dark {
                 return [.accent(.shade90), .accent]
             }
         }
-        #endif
         return [.accent(.shade5), .accent]
     }
 }

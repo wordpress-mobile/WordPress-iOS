@@ -373,7 +373,7 @@ import WordPressShared
         cell.editingAccessoryView = cell.accessoryView
         cell.editingAccessoryType = cell.accessoryType
         cell.imageView?.image = self.iconForSharingButton(button)
-        cell.imageView?.tintColor = .neutral(.shade10)
+        cell.imageView?.tintColor = .listIcon
         cell.textLabel?.text = button.name
     }
 

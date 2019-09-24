@@ -13,7 +13,11 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell {
         }
     }
 
-    @IBOutlet private var mainLabel: UILabel?
+    @IBOutlet private var mainLabel: UILabel? {
+        didSet {
+            mainLabel?.textColor = .textSubtle
+        }
+    }
     @IBOutlet private var secondaryLabel: UILabel?
     @IBOutlet public private(set) var button: NUXButton?
 

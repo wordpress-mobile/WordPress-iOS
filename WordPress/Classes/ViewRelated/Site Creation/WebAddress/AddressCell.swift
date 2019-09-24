@@ -3,8 +3,10 @@ import WordPressKit
 
 final class AddressCell: UITableViewCell, ModelSettableCell {
     private struct TextStyleAttributes {
-        static let defaults: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: UIColor.neutral(.shade30)]
-        static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: UIColor.neutral(.shade70)]
+        static let defaults: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+                                                              .foregroundColor: UIColor.textSubtle]
+        static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+                                                                .foregroundColor: UIColor.text]
     }
 
     @IBOutlet weak var title: UILabel!

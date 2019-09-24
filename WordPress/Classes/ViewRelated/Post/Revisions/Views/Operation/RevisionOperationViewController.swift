@@ -15,6 +15,8 @@ class RevisionOperationViewController: UIViewController {
     }
 
     private func setupViews() {
+        view.backgroundColor = .listForeground
+
         addView = RevisionOperation(.add).internalView
         delView = RevisionOperation(.del).internalView
 

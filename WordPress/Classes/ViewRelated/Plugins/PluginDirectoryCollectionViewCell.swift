@@ -26,7 +26,6 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
         nameLabel.font = WPStyleGuide.subtitleFontBold()
         logoImageView.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
     }

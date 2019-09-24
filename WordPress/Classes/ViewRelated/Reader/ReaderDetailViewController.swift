@@ -300,14 +300,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
 
-        #if XCODE11
         if #available(iOS 13.0, *) {
             if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true {
                 reloadGradientColors()
                 configureRichText()
             }
         }
-        #endif
     }
 
 
@@ -538,13 +536,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         footerView.backgroundColor = .listForeground
         footerDivider.backgroundColor = .divider
 
-        #if XCODE11
         if #available(iOS 13.0, *) {
             if traitCollection.userInterfaceStyle == .dark {
                 attributionView.backgroundColor = .listBackground
             }
         }
-        #endif
 
         reloadGradientColors()
     }

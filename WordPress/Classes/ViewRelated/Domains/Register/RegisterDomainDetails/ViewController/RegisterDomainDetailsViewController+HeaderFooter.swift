@@ -57,10 +57,11 @@ extension RegisterDomainDetailsViewController {
                 return nil
         }
         view.titleLabel?.attributedText = termsAndConditionsFooterTitle
+        view.titleLabel?.textColor = .textSubtle
         view.titleLabel?.numberOfLines = 0
         view.titleLabel?.lineBreakMode = .byWordWrapping
         view.topConstraint.constant = Constant.privacyProtectionSectionTitleTopDistance
-        view.contentView.backgroundColor = .neutral(.shade5)
+        view.contentView.backgroundColor = .listBackground
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTermsAndConditionsTap(_:)))
         view.addGestureRecognizer(tap)
         return view
@@ -77,8 +78,8 @@ extension RegisterDomainDetailsViewController {
     }
 
     var termsAndConditionsFooterTitle: NSAttributedString {
-        let bodyColor = UIColor.neutral(.shade50)
-        let linkColor = UIColor.neutral(.shade70)
+        let bodyColor = UIColor.textSubtle
+        let linkColor = UIColor.textSubtle
         let font = UIFont.preferredFont(forTextStyle: .footnote)
 
         let attributes: StyledHTMLAttributes = [

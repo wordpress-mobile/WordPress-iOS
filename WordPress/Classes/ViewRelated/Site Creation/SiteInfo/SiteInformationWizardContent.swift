@@ -81,7 +81,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = .neutral(.shade5)
+        view.backgroundColor = .listBackground
     }
 
     private func setupTable() {
@@ -97,11 +97,11 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = .neutral(.shade5)
+        table.backgroundColor = .listBackground
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = .neutral(.shade10)
+        table.separatorColor = .divider
     }
 
     private func registerCell() {
@@ -117,7 +117,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupButtonWrapper() {
-        buttonWrapper.backgroundColor = .neutral(.shade5)
+        buttonWrapper.backgroundColor = .listBackground
     }
 
     private func setupNextButton() {
@@ -287,11 +287,15 @@ extension SiteInformationWizardContent: UITableViewDataSource {
             cell.addBottomBorder(withColor: .neutral(.shade10))
         }
 
+        cell.contentView.backgroundColor = .listForeground
+
         cell.nameLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        cell.nameLabel.textColor = .neutral(.shade70)
+        cell.nameLabel.textColor = .text
+        cell.nameLabel.backgroundColor = .listForeground
 
         cell.valueTextField.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        cell.valueTextField.textColor = .neutral(.shade60)
+        cell.valueTextField.textColor = .text
+        cell.valueTextField.backgroundColor = .listForeground
 
         if cell.delegate == nil {
             cell.delegate = self
@@ -300,7 +304,7 @@ extension SiteInformationWizardContent: UITableViewDataSource {
 
     private func attributedPlaceholder(text: String) -> NSAttributedString {
         let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.neutral(.shade30),
+            .foregroundColor: UIColor.textPlaceholder,
             .font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         ]
 

@@ -37,6 +37,7 @@ open class DeleteSiteViewController: UITableViewController {
     @IBOutlet fileprivate weak var sectionThreeBody: UILabel!
     @IBOutlet fileprivate weak var supportButton: UIButton!
     @IBOutlet fileprivate weak var deleteSiteButton: UIButton!
+    @IBOutlet private var deleteButtonContainerView: UIView!
 
     // MARK: - View Lifecycle
 
@@ -151,10 +152,15 @@ open class DeleteSiteViewController: UITableViewController {
     /// One time setup of fourth section (delete button)
     ///
     fileprivate func setupDeleteButton() {
+        deleteButtonContainerView.backgroundColor = .listForeground
+
         let trashIcon = Gridicon.iconOfType(.trash)
         deleteSiteButton.setTitle(NSLocalizedString("Delete Site", comment: "Button label for deleting the current site"), for: .normal)
         deleteSiteButton.tintColor = .error
-        deleteSiteButton.setImage(trashIcon, for: .normal)
+        deleteSiteButton.setImage(trashIcon.imageWithTintColor(.error), for: .normal)
+        deleteSiteButton.setImage(trashIcon.imageWithTintColor(.error(.shade70)), for: .highlighted)
+        deleteSiteButton.setTitleColor(.error, for: .normal)
+        deleteSiteButton.setTitleColor(.error(.shade70), for: .highlighted)
         deleteSiteButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
     }
 
