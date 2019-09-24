@@ -1,0 +1,3 @@
+* Adiciona suporte para o iOS 13.
+* Teste o modo escuro!
+* Lançamento: Acessar com ID da Apple.

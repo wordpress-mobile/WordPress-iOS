@@ -1,0 +1,3 @@
+* Aggiunge supporto per iOS 13.
+* Dai una chance alla Dark Mode.
+* Ora è disponibile l'accesso con Apple.

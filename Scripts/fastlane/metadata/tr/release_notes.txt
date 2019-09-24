@@ -1,0 +1,3 @@
+* iOS 13 için destek ekler.
+* Karanlık Modu deneyin!
+* Şimdi kullanılabilir: Apple ile Giriş Yap.

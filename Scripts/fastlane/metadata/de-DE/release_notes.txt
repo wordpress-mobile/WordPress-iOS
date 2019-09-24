@@ -1,0 +1,3 @@
+• Support für iOS 13 hinzugefügt
+* Teste den dunklen Modus!
+* Jetzt verfügbar: Anmeldung mit Apple.
