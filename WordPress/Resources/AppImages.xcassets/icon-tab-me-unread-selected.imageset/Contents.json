@@ -2,7 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icon-tab-me-unread-selected.pdf"
+      "filename" : "icon-tab-me-unread-selected-muriel.pdf"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "icon-tab-me-unread-selected-muriel-dark.pdf",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ]
     }
   ],
   "info" : {

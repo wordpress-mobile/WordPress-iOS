@@ -56,7 +56,10 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = ShareColors.aztecBackground
+        textView.textColor = .text
         textView.tintColor = ShareColors.aztecCursorColor
+        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor, dark: .neutral(.shade5))
+        textView.blockquoteBorderColor = .listIcon
         textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
 
@@ -86,7 +89,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         let titleParagraphStyle = NSMutableParagraphStyle()
         titleParagraphStyle.alignment = .natural
 
-        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.darkText,
+        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.text,
                                                         .font: ShareFonts.title,
                                                         .paragraphStyle: titleParagraphStyle]
 
@@ -96,7 +99,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.delegate = self
         textView.font = ShareFonts.title
         textView.returnKeyType = .next
-        textView.textColor = UIColor.darkText
+        textView.textColor = .text
         textView.typingAttributes = attributes
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
@@ -356,7 +359,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     func configureView() {
         edgesForExtendedLayout = UIRectEdge()
-        view.backgroundColor = .white
+        view.backgroundColor = .basicBackground
     }
 
     func configureSubviews() {
@@ -460,6 +463,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
 
+        toolbar.backgroundColor = .filterBarBackground
         toolbar.tintColor = ShareColors.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = ShareColors.aztecFormatBarActiveColor
         toolbar.selectedTintColor = ShareColors.aztecFormatBarActiveColor
@@ -1276,19 +1280,19 @@ fileprivate extension ShareExtensionEditorViewController {
     }
 
     struct ShareColors {
-        static let title                          = UIColor.neutral(.shade30)
-        static let separator                      = UIColor.neutral(.shade5)
-        static let placeholder                    = UIColor.neutral(.shade30)
+        static let title                          = UIColor.text
+        static let separator                      = UIColor.divider
+        static let placeholder                    = UIColor.textPlaceholder
         static let mediaProgressOverlay           = UIColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
         static let mediaOverlayBorderColor        = UIColor.primary
-        static let aztecBackground                = UIColor.clear
-        static let aztecLinkColor                 = UIColor.primary(.shade40)
+        static let aztecBackground                = UIColor.basicBackground
+        static let aztecLinkColor                 = UIColor.primary
         static let aztecFormatBarDisabledColor    = UIColor.neutral(.shade10)
-        static let aztecFormatBarDividerColor     = UIColor.neutral(.shade5)
+        static let aztecFormatBarDividerColor     = UIColor.divider
         static let aztecCursorColor               = UIColor.primary
-        static let aztecFormatBarBackgroundColor  = UIColor.white
-        static let aztecFormatBarInactiveColor    = UIColor(hexString: "7B9AB1")
-        static let aztecFormatBarActiveColor      = UIColor(hexString: "11181D")
+        static let aztecFormatBarBackgroundColor  = UIColor.basicBackground
+        static let aztecFormatBarInactiveColor    = UIColor.toolbarInactive
+        static let aztecFormatBarActiveColor      = UIColor.primary
 
         static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
             get {

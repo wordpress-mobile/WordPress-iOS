@@ -97,7 +97,7 @@
 
         [self.cancelButton setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
         self.addButton.tintColor = [UIColor murielPrimary];
-        self.orderingButton.tintColor = [UIColor murielNeutral10];
+        self.orderingButton.tintColor = [UIColor murielTextTertiary];
     }
 }
 

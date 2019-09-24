@@ -28,6 +28,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var topPadding: NSLayoutConstraint!
     @IBOutlet weak var contentStackView: UIStackView!
     @IBOutlet weak var ghostStackView: UIStackView!
+    @IBOutlet weak var ghostHolder: UIView!
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
@@ -183,7 +184,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
-        if let url = post.featuredImageURLForDisplay(),
+        if let url = post.featuredImageURL,
             let desiredWidth = UIApplication.shared.keyWindow?.frame.size.width {
             featuredImageStackView.isHidden = false
             topPadding.constant = Constants.margin
@@ -307,6 +308,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         dateLabel.backgroundColor = .listForeground
         authorLabel.backgroundColor = .listForeground
         separatorLabel.backgroundColor = .listForeground
+        ghostHolder.backgroundColor = .listForeground
     }
 
     private func setupActionBar() {

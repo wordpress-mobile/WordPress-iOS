@@ -51,7 +51,7 @@ class SiteStatsInsightsViewModel: Observable {
         var tableRows = [ImmuTableRow]()
 
         if insightsStore.fetchingFailed(for: .insights) &&
-            !insightsStore.containsCachedData {
+            !containsCachedData() {
             return ImmuTable.Empty
         }
 
@@ -63,55 +63,121 @@ class SiteStatsInsightsViewModel: Observable {
                 }
             case .latestPostSummary:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
-                tableRows.append(LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
-                                                      chartData: insightsStore.getPostStats(),
-                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(row(for: .latestPostSummary,
+                                     rowStatus: insightsStore.lastPostSummaryStatus,
+                                     rowBlock: {
+                                        return LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
+                                                                    chartData: insightsStore.getPostStats(),
+                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loadingRow: {
+                    return StatsGhostChartImmutableRow()
+                }))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createAllTimeStatsRows(),
-                                                   statSection: .insightsAllTime,
-                                                   siteStatsInsightsDelegate: nil))
+                tableRows.append(row(for: .allTimeStats,
+                                     rowStatus: insightsStore.allTimeStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createAllTimeStatsRows(),
+                                                                 statSection: .insightsAllTime,
+                                                                 siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createTotalFollowersRows(),
-                                                   statSection: .insightsFollowerTotals,
-                                                   siteStatsInsightsDelegate: nil))
+                tableRows.append(row(for: .followersTotals,
+                                     rowStatus: insightsStore.followersTotalsStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createTotalFollowersRows(),
+                                                                 statSection: .insightsFollowerTotals,
+                                                                 siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
             case .mostPopularTime:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createMostPopularStatsRows(),
-                                                   statSection: .insightsMostPopularTime,
-                                                   siteStatsInsightsDelegate: nil))
+                tableRows.append(row(for: .mostPopularTime,
+                                     rowStatus: insightsStore.annualAndMostPopularTimeStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createMostPopularStatsRows(),
+                                                                 statSection: .insightsMostPopularTime,
+                                                                 siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTagsAndCategories.title))
-                tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
-                                                   dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
-                                                   dataRows: createTagsAndCategoriesRows(),
-                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(row(for: .tagsAndCategories,
+                                     rowStatus: insightsStore.tagsAndCategoriesStatus,
+                                     rowBlock: {
+                                        return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                                        dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
+                                                                        dataRows: createTagsAndCategoriesRows(),
+                                                                        siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loadingRow: {
+                    return StatsGhostTopImmutableRow()
+                }))
             case .annualSiteStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAnnualSiteStats.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createAnnualRows(),
-                                                   statSection: .insightsAnnualSiteStats,
-                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(row(for: .annualSiteStats,
+                                     rowStatus: insightsStore.annualAndMostPopularTimeStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createAnnualRows(),
+                                                                 statSection: .insightsAnnualSiteStats,
+                                                                 siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
             case .comments:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsCommentsPosts.title))
-                tableRows.append(createCommentsRow())
+                tableRows.append(row(for: .comments,
+                                     rowStatus: insightsStore.commentsInsightStatus,
+                                     rowBlock: {
+                                        return createCommentsRow()
+                }, loadingRow: {
+                    return StatsGhostTabbedImmutableRow()
+                }))
             case .followers:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowersWordPress.title))
-                tableRows.append(createFollowersRow())
+                tableRows.append(row(for: .followers,
+                                     rowStatus: insightsStore.followersTotalsStatus,
+                                     rowBlock: {
+                                        return createFollowersRow()
+                }, loadingRow: {
+                    return StatsGhostTabbedImmutableRow()
+                }))
             case .todaysStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTodaysStats.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createTodaysStatsRows(),
-                                                   statSection: .insightsTodaysStats,
-                                                   siteStatsInsightsDelegate: nil))
+                tableRows.append(row(for: .todaysStats,
+                                     rowStatus: insightsStore.todaysStatsStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createTodaysStatsRows(),
+                                                                 statSection: .insightsTodaysStats,
+                                                                 siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
             case .postingActivity:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPostingActivity.title))
-                tableRows.append(createPostingActivityRow())
+                tableRows.append(row(for: .postingActivity,
+                                     rowStatus: insightsStore.postingActivityStatus,
+                                     rowBlock: {
+                                        return createPostingActivityRow()
+                }, loadingRow: {
+                    return StatsGhostPostingActivitiesImmutableRow()
+                }))
             case .publicize:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPublicize.title))
-                tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
-                                                          dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
-                                                          dataRows: createPublicizeRows(),
-                                                          siteStatsInsightsDelegate: nil))
+                tableRows.append(row(for: .publicize,
+                                     rowStatus: insightsStore.publicizeFollowersStatus,
+                                     rowBlock: {
+                                        return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
+                                                                        dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
+                                                                        dataRows: createPublicizeRows(),
+                                                                        siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTopImmutableRow()
+                }))
             }
         }
 
@@ -137,7 +203,7 @@ class SiteStatsInsightsViewModel: Observable {
     }
 
     func containsCachedData() -> Bool {
-        return insightsStore.containsCachedData
+        return insightsStore.containsCachedData(for: insightsToShow)
     }
 
     func yearlyPostingActivity(from date: Date = Date()) -> [[PostingStreakEvent]] {
@@ -476,4 +542,18 @@ private extension SiteStatsInsightsViewModel {
                                  statSection: .insightsAddInsight)
     }
 
+    func row(for insight: InsightType, rowStatus: StoreFetchingStatus, rowBlock: () -> ImmuTableRow, loadingRow: () -> ImmuTableRow) -> ImmuTableRow {
+        if insightsStore.containsCachedData(for: insight) || !Feature.enabled(.statsAsyncLoading) {
+            return rowBlock()
+        }
+
+        switch rowStatus {
+        case .loading, .idle:
+            return loadingRow()
+        case .success:
+            return rowBlock()
+        case .error:
+            return StatsErrorRow(rowStatus: rowStatus, statType: .insights)
+        }
+    }
 }

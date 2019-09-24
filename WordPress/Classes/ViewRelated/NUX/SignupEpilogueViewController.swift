@@ -32,6 +32,7 @@ class SignupEpilogueViewController: NUXViewController {
         let buttonViewController = NUXButtonViewController.instance()
         buttonViewController.delegate = self
         buttonViewController.setButtonTitles(primary: ButtonTitles.primary, primaryAccessibilityId: ButtonTitles.primaryAccessibilityId)
+        buttonViewController.backgroundColor = WordPressAuthenticator.shared.style.viewControllerBackgroundColor
         return buttonViewController
     }()
 

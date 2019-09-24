@@ -1,9 +1,6 @@
-13.0
------
-Ponsel Anda memiliki satu pengaturan zona waktu. Situs web Anda menggunakan zona waktu yang berbeda. Apa dasar pembuatan statistik situs Anda? Apakah lonjakan lalu lintas itu terjadi pagi ini, atau siang ini? Jawaban: statistik Anda kini berdasarkan pengaturan zona waktu situs web Anda.
+* Tidak aktif berarti tidak aktif: ketika Anda tidak menggunakan aplikasi, kondisi ini akan membuatnya bekerja lebih ringan, dan meningkatkan performa perangkat Anda.
+* Apakah daftar situs Anda terkadang menampilkan situs yang sama lebih dari satu kali? Ya, kami telah memperbaikinya.
+* Kelola pengaturan pemberitahuan dari layar Pemberitahuan (masuk akal, kan?).
+* Tanggal yang ditampilkan dan zona waktu situs Anda sekarang telah disinkronkan dengan tepat.
+* Nikmati proses memuat yang lebih lancar dan stabil untuk pratinjau pos.
 
-Skema warna konsisten dengan kontras yang baik menghasilkan aplikasi yang mudah diakses dan intuitif, sehingga membuat pengunjung senang. Versi 13.0 lebih konsisten. Nikmati kepuasan pengunjung.
-
-Penyunting blok semakin baik lagi. Apa? Tidak mungkin? Biar kami tunjukkan cara-caranya: fitur ini otomatis diaktifkan pertama kali Anda memulai pos berbasis blok* dan Anda dapat mengaktifkan serta menonaktifkannya untuk setiap situs, jadi setiap pengguna mendapatkan pengalaman penyunting yang mereka inginkan. Menambahkan blok dari judul pos menampilkan indikator “tambahkan blok di sini”, untuk menyederhanakan pembuatan konten, dan menambahkan blok baru akan membatalkan pilihan judul pos, jadi fokusnya ada pada blok baru.
-
-* Kecuali Anda tidak memilihnya di versi 12.9! Kami bukan monster.

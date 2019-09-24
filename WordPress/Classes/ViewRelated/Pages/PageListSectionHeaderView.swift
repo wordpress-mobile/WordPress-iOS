@@ -11,6 +11,9 @@ class PageListSectionHeaderView: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        backgroundColor = .listBackground
+        titleLabel.backgroundColor = .listBackground
         WPStyleGuide.applyBorderStyle(separator)
     }
 }

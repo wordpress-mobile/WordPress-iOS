@@ -13,50 +13,40 @@ extension WPStyleGuide {
         }
 
         public static func separatorsColor(isApproved approved: Bool) -> UIColor {
-            return approved ? .divider : UIColor(light: .warning(.shade90), dark: .warning(.shade40))
+            return .divider
         }
 
         public static func detailsRegularStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? .textSubtle : UIColor(light: .warning(.shade90), dark: .warning(.shade40))
-
             return  [.paragraphStyle: titleParagraph,
                      .font: titleRegularFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.textSubtle ]
         }
 
         public static func detailsRegularRedStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? .text : UIColor(light: .error(.shade90), dark: .error(.shade40))
-
             return  [.paragraphStyle: titleParagraph,
                      .font: titleRegularFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.text ]
         }
 
         public static func detailsItalicsStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? .text : UIColor(light: .error(.shade90), dark: .error(.shade40))
-
             return  [.paragraphStyle: titleParagraph,
                      .font: titleItalicsFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.text ]
         }
 
         public static func detailsBoldStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? .text : UIColor(light: .error(.shade90), dark: .error(.shade40))
-
             return  [.paragraphStyle: titleParagraph,
                      .font: titleBoldFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.text ]
         }
 
         public static func timestampStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? .textSubtle : UIColor(light: .warning(.shade90), dark: .warning(.shade40))
-
             return  [.font: timestampFont,
-                     .foregroundColor: color ]
+                     .foregroundColor: UIColor.textSubtle ]
         }
 
         public static func backgroundColor(isApproved approved: Bool) -> UIColor {
-            return approved ? .listForeground : UIColor(light: .warning(.shade0), dark: .warning(.shade100))
+            return approved ? .listForeground : UIColor(light: .warning(.shade0), dark: .warning(.shade90))
         }
 
         public static func timestampImage(isApproved approved: Bool) -> UIImage {

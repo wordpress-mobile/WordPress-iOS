@@ -47,6 +47,11 @@ class PostBuilder {
         return self
     }
 
+    func with(pathForDisplayImage: String) -> PostBuilder {
+        post.pathForDisplayImage = pathForDisplayImage
+        return self
+    }
+
     func with(title: String) -> PostBuilder {
         post.postTitle = title
         return self
@@ -84,6 +89,33 @@ class PostBuilder {
 
     func with(remoteStatus: AbstractPostRemoteStatus) -> PostBuilder {
         post.remoteStatus = remoteStatus
+        return self
+    }
+
+    func with(image: String, status: MediaRemoteStatus? = nil) -> PostBuilder {
+        guard let context = post.managedObjectContext else {
+            return self
+        }
+
+        guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as? Media else {
+            return self
+        }
+        media.localURL = image
+        media.localThumbnailURL = "thumb-\(image)"
+
+        if let status = status {
+            media.remoteStatus = status
+        }
+
+        media.addPostsObject(post)
+        post.addMediaObject(media)
+
+        return self
+    }
+
+    func with(media: [Media]) -> PostBuilder {
+        post.media = Set(media)
+
         return self
     }
 

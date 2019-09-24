@@ -53,7 +53,7 @@ class BaseScreen {
             safari.launch()
 
             // Select the URL bar when Safari opens
-            let urlBar = safari.otherElements["URL"]
+            let urlBar = safari.textFields.firstMatch
             waitFor(element: urlBar, predicate: "exists == true")
             urlBar.tap()
 
@@ -62,7 +62,7 @@ class BaseScreen {
             magicLinkComponents.path = "/magic-link"
             magicLinkComponents.queryItems = [URLQueryItem(name: "scheme", value: "wpdebug")]
 
-            safari.textFields["URL"].typeText("\(magicLinkComponents.url!.absoluteString)\n")
+            urlBar.typeText("\(magicLinkComponents.url!.absoluteString)\n")
 
             // Accept the prompt to open the deep link
             safari.scrollViews.element(boundBy: 0).buttons.element(boundBy: 1).tap()

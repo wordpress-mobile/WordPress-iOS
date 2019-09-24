@@ -28,6 +28,10 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
     // MARK: Lifecycle
 
+    deinit {
+        imageView.clean()
+    }
+
     override init(frame: CGRect) {
         imageView = CachedAnimatedImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

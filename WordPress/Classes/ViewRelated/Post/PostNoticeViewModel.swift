@@ -233,7 +233,7 @@ struct PostNoticeViewModel {
 
         post.status = .publish
         post.shouldAttemptAutoUpload = true
-        postCoordinator.save(post: post)
+        postCoordinator.save(post)
     }
 
     private func retryUpload() {
@@ -241,7 +241,7 @@ struct PostNoticeViewModel {
             return
         }
 
-        postCoordinator.save(post: post)
+        postCoordinator.save(post)
     }
 
     private func cancelAutoUpload() {

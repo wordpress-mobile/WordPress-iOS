@@ -28,9 +28,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
             if let modelIcon = model?.icon {
                 icon.downloadImage(from: modelIcon, placeholderImage: nil, success: { [weak self] downloadedImage in
                     let tintedImage = downloadedImage.withRenderingMode(.alwaysTemplate)
-                    if let tintColor = self?.model?.iconTintColor {
-                        self?.icon.tintColor = tintColor
-                    }
+                    self?.icon.tintColor = .listIcon
                     self?.icon.image = tintedImage
                 }, failure: nil)
             }
@@ -61,18 +59,18 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleBackground() {
-        backgroundColor = .white
+        backgroundColor = .listForeground
     }
 
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-        title.textColor = .neutral(.shade70)
+        title.textColor = .text
         title.adjustsFontForContentSizeCategory = true
     }
 
     private func styleSubtitle() {
         subtitle.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
-        subtitle.textColor = .neutral(.shade70)
+        subtitle.textColor = .textSubtle
         subtitle.adjustsFontForContentSizeCategory = true
     }
 

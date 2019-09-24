@@ -26,6 +26,9 @@ open class ActivityTableViewCell: WPTableViewCell {
         summaryLabel.text = activity.summary
         contentLabel.text = activity.text
 
+        summaryLabel.textColor = .textSubtle
+        contentLabel.textColor = .text
+
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
         if let iconImage = Style.getIconForActivity(activity) {
             iconImageView.image = iconImage.imageFlippedForRightToLeftLayoutDirection()

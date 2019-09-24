@@ -358,7 +358,7 @@ extension PostEditor where Self: UIViewController {
 
         post.updatePathForDisplayImageBasedOnContent()
 
-        PostCoordinator.shared.save(post: post)
+        PostCoordinator.shared.save(post)
 
         dismissOrPopView()
 

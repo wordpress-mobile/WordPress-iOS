@@ -39,7 +39,6 @@ class StatsTwoColumnRow: UIView, NibLoadable {
 
         applyStyles()
     }
-
 }
 
 // MARK: - Private Extension

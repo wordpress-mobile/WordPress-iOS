@@ -3,9 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 90
+## WordPress 91
 @jklausa 2019-08-19
 - `AbstractPost`: Addded a  `confirmedChangesHash`  and  `confirmedChangesTimestamp`  properties. 
+
+## WordPress 90
+
+@diegoreymendez 2019-08-28
+- `Media` added `autoUploadFailureCount` property.
 
 ## WordPress 89
 

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,11 +14,11 @@
             <rect key="frame" x="0.0" y="0.0" width="406" height="70"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="406" height="69.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="406" height="70"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmu-MC-d7s" userLabel="Labels View">
-                        <rect key="frame" x="16" y="16" width="374" height="37.5"/>
+                        <rect key="frame" x="16" y="16" width="374" height="38"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Showing stats for:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VQc-hL-Bbc">
                                 <rect key="frame" x="0.0" y="0.0" width="374" height="16"/>
@@ -29,7 +27,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Site Name" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IAo-11-r7k">
-                                <rect key="frame" x="0.0" y="15" width="374" height="22.5"/>
+                                <rect key="frame" x="0.0" y="15" width="374" height="23"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -52,16 +50,15 @@
                             </mask>
                         </variation>
                     </view>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q7F-mg-QOb" userLabel="Post Title Button">
-                        <rect key="frame" x="16" y="33" width="374" height="20.5"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q7F-mg-QOb" userLabel="Post Title Button">
+                        <rect key="frame" x="16" y="31" width="374" height="22.5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
                             <action selector="didTapPostTitle:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="DVU-yE-MhC"/>
                         </connections>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dJu-H6-3qo" userLabel="Bottom Separator Line">
-                        <rect key="frame" x="0.0" y="69" width="406" height="0.5"/>
+                        <rect key="frame" x="0.0" y="69.5" width="406" height="0.5"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="y0D-Z6-7PP"/>
@@ -71,16 +68,21 @@
                 <constraints>
                     <constraint firstItem="kmu-MC-d7s" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="0m8-gH-SnY"/>
                     <constraint firstAttribute="trailing" secondItem="kmu-MC-d7s" secondAttribute="trailing" constant="16" id="1KZ-6V-3Bg"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="width" secondItem="IAo-11-r7k" secondAttribute="width" id="2XF-P5-GKT"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="centerX" secondItem="IAo-11-r7k" secondAttribute="centerX" id="8aY-Wo-TjT"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="centerY" secondItem="IAo-11-r7k" secondAttribute="centerY" id="Byk-hQ-anf"/>
                     <constraint firstAttribute="bottom" secondItem="dJu-H6-3qo" secondAttribute="bottom" id="MKS-QE-IDd"/>
                     <constraint firstAttribute="trailing" secondItem="dJu-H6-3qo" secondAttribute="trailing" id="QCn-b6-3ob"/>
                     <constraint firstAttribute="bottom" secondItem="kmu-MC-d7s" secondAttribute="bottom" constant="16" id="YEv-TF-quq"/>
                     <constraint firstItem="kmu-MC-d7s" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ZCZ-Mb-8ya"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="height" secondItem="IAo-11-r7k" secondAttribute="height" id="s3s-89-orz"/>
                     <constraint firstItem="dJu-H6-3qo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="t4N-kv-EoQ"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="bottomSeparatorLine" destination="dJu-H6-3qo" id="9aa-at-qTn"/>
+                <outlet property="labelsView" destination="kmu-MC-d7s" id="B8g-Tc-y8R"/>
                 <outlet property="postTitleLabel" destination="IAo-11-r7k" id="Vq3-Qu-ku2"/>
                 <outlet property="titleLabel" destination="VQc-hL-Bbc" id="4KO-Om-16S"/>
             </connections>

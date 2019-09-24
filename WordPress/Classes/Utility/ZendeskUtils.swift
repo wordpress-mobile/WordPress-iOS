@@ -2,10 +2,8 @@ import Foundation
 import CoreTelephony
 import WordPressAuthenticator
 
-#if !XCODE11
 import ZendeskSDK
 import ZendeskCoreSDK
-#endif
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
@@ -16,8 +14,6 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationReceivedNotification = NSNotification.Name.ZendeskPushNotificationReceivedNotification
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
-
-#if !XCODE11
 
 /// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
 /// as well as displaying views for the Help Center, new tickets, and ticket list.
@@ -616,7 +612,8 @@ private extension ZendeskUtils {
 
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        guard let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 else {
+        let allBlogs = blogService.blogsForAllAccounts()
+        guard allBlogs.count > 0 else {
             return Constants.noValue
         }
 
@@ -634,9 +631,10 @@ private extension ZendeskUtils {
 
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
+        let allBlogs = blogService.blogsForAllAccounts()
 
         // If there are no sites, then the user has an empty WP account.
-        guard let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 else {
+        guard allBlogs.count > 0 else {
             return [Constants.wpComTag]
         }
 
@@ -979,84 +977,3 @@ extension ZendeskUtils: UITextFieldDelegate {
     }
 
 }
-
-
-
-#else
-
-/// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
-/// as well as displaying views for the Help Center, new tickets, and ticket list.
-///
-@objc class ZendeskUtils: NSObject {
-
-    // MARK: - Public Properties
-
-    static var sharedInstance: ZendeskUtils = ZendeskUtils()
-    static var zendeskEnabled = false
-    @objc static var unreadNotificationsCount = 0
-
-    @objc static var showSupportNotificationIndicator: Bool {
-        return false
-    }
-
-    struct PushNotificationIdentifiers {
-        static let key = "type"
-        static let type = "zendesk"
-    }
-
-    // MARK: - Private Properties
-
-    private override init() {}
-    private var sourceTag: WordPressSupportSourceTag?
-
-    private var userName: String?
-    private var userEmail: String?
-    private var deviceID: String?
-    private var haveUserIdentity = false
-    private var alertNameField: UITextField?
-    private var sitePlansCache = [Int: RemotePlanSimpleDescription]()
-
-    private static var zdAppID: String?
-    private static var zdUrl: String?
-    private static var zdClientId: String?
-    private static var presentInController: UIViewController?
-
-    private static var appVersion: String {
-        return Bundle.main.shortVersionString() ?? ""
-    }
-
-    private static var appLanguage: String {
-        return Locale.preferredLanguages[0]
-    }
-
-    // MARK: - Public Methods
-
-    @objc static func setup() {}
-
-    // MARK: - Show Zendesk Views
-
-    func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {}
-    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {}
-    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {}
-    func showSupportEmailPrompt(from controller: UIViewController, completion: @escaping (Bool) -> Void) {}
-
-    func cacheUnlocalizedSitePlans() {}
-
-    // MARK: - Device Registration
-    static func setNeedToRegisterDevice(_ identifier: String) {}
-    static func unregisterDevice() {}
-
-    // MARK: - Push Notifications
-
-    static func handlePushNotification(_ userInfo: NSDictionary) {}
-    static func pushNotificationReceived() {}
-    static func pushNotificationRead() {}
-
-    // MARK: - Helpers
-
-    static func userSupportEmail() -> String? {
-        return nil
-    }
-}
-
-#endif

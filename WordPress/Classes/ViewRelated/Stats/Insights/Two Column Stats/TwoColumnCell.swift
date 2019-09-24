@@ -43,6 +43,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
 private extension TwoColumnCell {
 
     func applyStyles() {
+        viewMoreView.backgroundColor = .listForeground
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
         viewMoreLabel.textColor = Style.actionTextColor
         Style.configureCell(self)

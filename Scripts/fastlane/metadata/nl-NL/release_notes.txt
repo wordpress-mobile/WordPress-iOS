@@ -1,9 +1,6 @@
-13.0
------
-Je telefoon heeft een instelling voor de tijdzone. Je website gebruikt een andere. Waar zijn je sitestatistieken op gebaseerd? Is dat grote bezoekersaantal vanochtend geweest of vanmiddag? Antwoord: Je statistieken zijn nu gebaseerd op de tijdzone van je website.
+* Inactief is inactief: wanneer je de app niet gebruikt, doet deze minder, zodat de prestaties van je apparaat worden verbeterd.
+* Werd op de lijst met je sites soms meerdere keren dezelfde site weergegeven? Dat probleem hebben we nu opgelost.
+* Beheer je meldingsinstellingen vanuit het scherm Meldingen (logisch, toch?).
+* De weergegeven datum en de tijdzone van je site zijn nu perfect gesynchroniseerd.
+* Geniet van het verbeterd en stabieler laden van berichtvoorbeelden.
 
-Consistente kleurenschema's met goed contrast zorgen voor een toegankelijke, intuïtieve app, die op zijn beurt zorgt voor blije gebruikers. Versie 13.0 is consistenter. Geniet van de blijheid!
-
-De blokeditor blijft steeds beter worden. Is dat volgens jou niet mogelijk? Laat ons dan eens de manieren opnoemen: Het wordt de eerste keer dat je een blokbericht* wilt beginnen automatisch ingeschakeld. Je kunt het per site in- en uitschakelen, waardoor iedere gebruiker de ervaring krijgt die ze willen. Blokken toevoegen vanuit de berichttitel laat een indicator 'blok hier toevoegen' zien om het aanmaken van inhoud te vereenvoudigen. Het toevoegen van nieuwe blokken deselecteert de berichttitel zodat de aandacht op het nieuwe blok gericht is.
-
-* tenzij je je hebt uitgeschreven in versie 12.9! We zijn geen monsters.

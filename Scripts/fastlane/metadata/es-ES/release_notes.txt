@@ -1,9 +1,6 @@
-13.0
------
-Tu teléfono tiene un ajuste de zona horaria. Tu web usa una diferente. ¿En qué se basan las estadísticas de tu sitio? ¿El aumento de tráfico ha ocurrido esta mañana o esta tarde? Respuesta: ahora tus estadísticas se basan en los ajustes de la zona horaria de tu web.
+* En reposo, significa en reposo: cuando no uses la aplicación, hará menos y mejorará el rendimiento de tu dispositivo.
+* ¿Tu lista de sitios muestra algunas veces el mismo sitio más de una vez? Bien, lo hemos corregido.
+* Gestiona los ajustes de tus avisos desde la pantalla de avisos (tiene sentido, ¿verdad?).
+* Ahora, la fecha mostrada y la zona horaria de tu sitio están sincronizadas perfectamente.
+* Disfruta de una carga más suave y estable de la vista previa de las entradas.
 
-Los esquemas de color consistentes, con un buen contraste, hacen que la aplicación sea accesible e intuitiva, lo que crea usuarios felices. La versión 13.0 es más consistente; disfruta de la felicidad.
-
-El editor de bloques se mantiene cada vez mejor. ¿Dices que no es posible? ¡Bah! Déjanos contar las formas: se activa automáticamente la primera vez que comienzas una entrada basada en bloques* y puedes activarlo y desactivarlo en cada sitio, por lo que cada usuario obtiene la experiencia del editor que quiere. Al añadir bloques desde el título de la entrada, se muestra el indicador de «añadir un bloque aquí» para simplificar la creación de contenido y, al añadir nuevos bloques, se deselecciona el título de la entrada para que el foco esté en el nuevo bloque.
-
-* ¡Salvo que lo hayas desactivado en la versión 12.9! No somos monstruos.

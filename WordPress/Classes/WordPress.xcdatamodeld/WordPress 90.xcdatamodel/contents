@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18G87" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18G87" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
-        <attribute name="confirmedChangesHash" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="confirmedChangesTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
@@ -387,6 +385,7 @@
     </entity>
     <entity name="Media" representedClassName="Media">
         <attribute name="alt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="autoUploadFailureCount" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="caption" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO">
             <userInfo/>
@@ -908,7 +907,7 @@
         <attribute name="visitorsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="255"/>
         <element name="AllTimeStatsRecordValue" positionX="27" positionY="162" width="128" height="120"/>
@@ -929,7 +928,7 @@
         <element name="FollowersCountStatsRecordValue" positionX="45" positionY="153" width="128" height="75"/>
         <element name="FollowersStatsRecordValue" positionX="27" positionY="153" width="128" height="105"/>
         <element name="LastPostStatsRecordValue" positionX="45" positionY="504" width="128" height="150"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="420"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="435"/>
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
         <element name="MenuItem" positionX="45" positionY="180" width="128" height="255"/>
         <element name="MenuLocation" positionX="54" positionY="189" width="128" height="120"/>

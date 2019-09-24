@@ -125,10 +125,15 @@ class StatsDataHelper {
 
     class func currentDateForSite() -> Date {
         let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
-        let delta = TimeInterval(siteTimeZone.secondsFromGMT())
-        return Date().addingTimeInterval(delta)
+        return Date().convert(from: siteTimeZone)
     }
+}
 
+fileprivate extension Date {
+    func convert(from timeZone: TimeZone, comparedWith target: TimeZone = TimeZone.current) -> Date {
+        let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - target.secondsFromGMT(for: self))
+        return addingTimeInterval(delta)
+    }
 }
 
 private extension StatsDataHelper {
@@ -166,18 +171,9 @@ private extension StatsDataHelper {
 extension Date {
 
     func normalizedForSite() -> Date {
-        var calendar = StatsDataHelper.calendarForSite
-
-        let flags: NSCalendar.Unit = [.day, .month, .year]
-        let components = (calendar as NSCalendar).components(flags, from: self)
-
-        var normalized = DateComponents()
-        normalized.day = components.day
-        normalized.month = components.month
-        normalized.year = components.year
-
-        calendar.timeZone = .autoupdatingCurrent
-        return calendar.date(from: normalized) ?? self
+        let calendar = StatsDataHelper.calendar
+        let components = calendar.dateComponents([.day, .month, .year], from: self)
+        return calendar.date(from: components) ?? self
     }
 
     func relativeStringInPast() -> String {

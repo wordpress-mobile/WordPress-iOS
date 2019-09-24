@@ -15,6 +15,12 @@ class WebViewControllerFactory: NSObject {
         return controller(configuration: configuration)
     }
 
+    @objc static func controller(url: URL, title: String) -> UIViewController {
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.customTitle = title
+        return controller(configuration: configuration)
+    }
+
     @objc static func controller(url: URL, blog: Blog) -> UIViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticate(blog: blog)

@@ -1,9 +1,6 @@
-13.0
------
-Din telefon har en inställning för tidszon och din webbplats har en annan. Vilken tidszon används för din statistik? Inträffade den där trafiktoppen på morgonen eller på eftermiddagen? Svar: Nu baseras statistiken på den tidszon som är inställd för webbplatsen.
+* Ledig betyder ledig: när du inte använder appen kommer den att utföra mindre arbete och på det sättet förbättra enhetens prestanda.
+* Brukade din lista med webbplatser ibland visa samma webbplats flera gånger? Hur som helst har vi rättat det nu.
+* Hantera inställningar för notiser från sidan för notiser (det känns väl vettigt?).
+* Nu är visat datum och webbplatsens tidszon perfekt synkroniserade.
+* Förhandsvisningar laddas nu smidigare och mer stabilt än tidigare.
 
-Konsekventa färgscheman med god kontrast ger oss en tillgänglighetsanpassad, intuitivt förståelig app, vilket leder till nöjda användare. Version 13.0 är mer konsekvent, något att glädja sig åt.
-
-Blockredigeraren blir allt bättre. The block editor keeps getting better and better. Och du trodde att det inte var möjligt? Kolla bara in: den aktiveras automatiskt första gången du påbörjar ett blockbaserat inlägg* och du kan aktivera och inaktivera den för varje webbplats för sig så att varje användare får den redigeringsmiljö han/hon vill ha. Om man lägger till block från inläggsrubriken visas en anvisning ”lägg till block här” för att underlätta innehållsskapande, och när man lägger till nya block avmarkeras inläggsrubriken så att fokuset landar på det nya blocket.
-
-* Om du inte tackade nej i version 12.9! Ser du hur omtänksamma vi är!
