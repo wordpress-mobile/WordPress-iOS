@@ -14,7 +14,7 @@ class PostCoordinator: NSObject {
 
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
-    private var mediaCoordinator: MediaCoordinator
+    private let mediaCoordinator: MediaCoordinator
 
     private let backgroundService: PostService
 
