@@ -6,10 +6,9 @@ import WordPressAuthenticator
 import WordPressComStatsiOS
 import WordPressShared
 import AlamofireNetworkActivityIndicator
+import AutomatticTracks
 
-#if !XCODE11
 import ZendeskCoreSDK
-#endif
 
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -40,7 +39,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         //
         // We're leaving as-is for now to avoid digressing.
         let uploaders: [Uploader] = [
-            MediaCoordinator.shared,
+            // Ideally we should be able to retry uploads of standalone media to the media library, but the truth is
+            // that uploads started from the MediaCoordinator are currently not updating their parent post references
+            // very well.  For this reason I'm disabling automated upload retries that don't start from PostCoordinator.
+            //
+            // MediaCoordinator.shared,
             PostCoordinator.shared
         ]
 
@@ -78,6 +81,17 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
+
+        let queue = DispatchQueue(label: "asd", qos: .background)
+        let deviceInformation = TracksDeviceInformation()
+
+        queue.async {
+            let height = deviceInformation.statusBarHeight
+            let orientation = deviceInformation.orientation!
+
+            print("Height: \(height); orientation: \(orientation)")
+        }
+
 
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         showWelcomeScreenIfNeeded(animated: false)
@@ -206,13 +220,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
 
-#if DEBUG
+        #if DEBUG
         KeychainTools.processKeychainDebugArguments()
-        #if !XCODE11
-            CoreLogger.enabled = true
-            CoreLogger.logLevel = .debug
+        CoreLogger.enabled = true
+        CoreLogger.logLevel = .debug
         #endif
-#endif
 
         ZendeskUtils.setup()
 

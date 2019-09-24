@@ -100,6 +100,12 @@ class PostBuilder {
         return self
     }
 
+    func with(media: [Media]) -> PostBuilder {
+        post.media = Set(media)
+
+        return self
+    }
+
     func `is`(sticked: Bool) -> PostBuilder {
         post.isStickyPost = sticked
         return self

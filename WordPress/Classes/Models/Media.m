@@ -29,6 +29,7 @@
 @dynamic postID;
 @dynamic error;
 @dynamic featuredOnPosts;
+@dynamic autoUploadFailureCount;
 
 #pragma mark -
 

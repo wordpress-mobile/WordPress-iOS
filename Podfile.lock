@@ -3,7 +3,7 @@ PODS:
   - Alamofire (4.7.3)
   - AlamofireNetworkActivityIndicator (2.3.0):
     - Alamofire (~> 4.7)
-  - Automattic-Tracks-iOS (0.4.1):
+  - Automattic-Tracks-iOS (0.4.2):
     - CocoaLumberjack (~> 3.5.2)
     - Reachability (~> 3.1)
     - Sentry (~> 4)
@@ -211,7 +211,7 @@ PODS:
   - WordPress-Aztec-iOS (1.9.0)
   - WordPress-Editor-iOS (1.9.0):
     - WordPress-Aztec-iOS (= 1.9.0)
-  - WordPressAuthenticator (1.8.1-beta.2):
+  - WordPressAuthenticator (1.9.0):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.5)
@@ -253,7 +253,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - Alamofire (= 4.7.3)
   - AlamofireNetworkActivityIndicator (~> 2.3)
-  - Automattic-Tracks-iOS (~> 0.4)
+  - Automattic-Tracks-iOS (~> 0.4.2)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.5.2)
   - Down (~> 0.6.6)
@@ -301,7 +301,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.9.0)
-  - WordPressAuthenticator (~> 1.8.1-beta.2)
+  - WordPressAuthenticator (~> 1.9.0)
   - WordPressKit (~> 4.5.0)
   - WordPressMocks (~> 0.0.5)
   - WordPressShared (~> 1.8.7)
@@ -352,7 +352,6 @@ SPEC REPOS:
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
-    - ZendeskSDK
     - ZIPFoundation
 
 EXTERNAL SOURCES:
@@ -366,6 +365,7 @@ EXTERNAL SOURCES:
   Gutenberg:
     :commit: a6f1d7ef3b64afed81ba937fea1d855acd8a6cc5
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v1.13.0
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a6f1d7ef3b64afed81ba937fea1d855acd8a6cc5/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   React-Core:
@@ -413,6 +413,7 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: a6f1d7ef3b64afed81ba937fea1d855acd8a6cc5
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v1.13.0
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a6f1d7ef3b64afed81ba937fea1d855acd8a6cc5/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -423,15 +424,20 @@ CHECKOUT OPTIONS:
   Gutenberg:
     :commit: a6f1d7ef3b64afed81ba937fea1d855acd8a6cc5
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v1.13.0
   RNTAztecView:
     :commit: a6f1d7ef3b64afed81ba937fea1d855acd8a6cc5
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v1.13.0
+  ZendeskSDK:
+    :git: https://github.com/zendesk/zendesk_sdk_ios
+    :tag: 3.0.1-swift5.1-GM
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireNetworkActivityIndicator: 18346ff6d770d9513d0ac6f2d99706f40f93dbaa
-  Automattic-Tracks-iOS: a176848be4c95aa208184fe96d0322594ce230eb
+  Automattic-Tracks-iOS: 4958112090127397a28e8338c776b0e3a9ad7425
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
@@ -487,7 +493,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: e58c7ab55b0bae53418a705876093fed314b6586
   WordPress-Editor-iOS: 36114a1e155b0696939dba80989652c185e91e01
-  WordPressAuthenticator: 989acfe503d267e15d154d0c9ac9d5aab5792886
+  WordPressAuthenticator: 4a047f354ff6486b2b446a2c4d517611800eed48
   WordPressKit: 87ba4cce3f5269e26a09568a749ec1b8b2ba2267
   WordPressMocks: d8088f718439556ff3856d5881aef581740cd26a
   WordPressShared: 09cf184caa614835f5811e8609227165201e6d3e
@@ -495,9 +501,9 @@ SPEC CHECKSUMS:
   WPMediaPicker: 1897f312c7b41114ffd239fb782431ae602134a1
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 4e71c9a33abf45ba55af55ae9cbc86f4234bb2a9
-  ZendeskSDK: c2e49fd16a73e43e490f777cea67dd852b819ace
+  ZendeskSDK: 787414f9240ee6ef8cfe4ea0f00e8b4d01d2d264
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
 PODFILE CHECKSUM: 1c906a4ab14061bb99b3b8e9feb05ef09293c50d
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.5

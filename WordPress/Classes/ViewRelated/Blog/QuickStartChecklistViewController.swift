@@ -51,7 +51,7 @@ class QuickStartChecklistViewController: UITableViewController {
     private lazy var successScreen: NoResultsViewController = {
         let successScreen = NoResultsViewController.controller()
         successScreen.view.frame = tableView.bounds
-        successScreen.view.backgroundColor = .white
+        successScreen.view.backgroundColor = .listBackground
         successScreen.configure(title: tasksCompleteScreen.title,
                                 subtitle: tasksCompleteScreen.subtitle,
                                 image: tasksCompleteScreen.imageName)
@@ -151,6 +151,7 @@ private extension QuickStartChecklistViewController {
 
         tableView.backgroundView = successScreen.view
         self.tableView = tableView
+        WPStyleGuide.configureTableViewColors(view: self.tableView)
     }
 
     func startObservingForQuickStart() {

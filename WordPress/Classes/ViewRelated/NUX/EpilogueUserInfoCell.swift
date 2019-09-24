@@ -61,6 +61,7 @@ class EpilogueUserInfoCell: UITableViewCell {
 
         usernameLabel.text = showEmail ? userInfo.email : "@\(userInfo.username)"
         usernameLabel.fadeInAnimation()
+        usernameLabel.accessibilityIdentifier = "login-epilogue-username-label"
 
         gravatarAddIcon.isHidden = !allowGravatarUploads
 

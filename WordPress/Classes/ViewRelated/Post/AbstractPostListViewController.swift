@@ -924,7 +924,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     fileprivate func uploadPost(_ apost: AbstractPost) {
-        PostCoordinator.shared.save(post: apost)
+        PostCoordinator.shared.save(apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {

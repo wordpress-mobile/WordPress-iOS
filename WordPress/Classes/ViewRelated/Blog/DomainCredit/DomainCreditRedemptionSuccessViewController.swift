@@ -47,7 +47,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
             return nil
         }
         let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-        newAttributedString.setAttributes([.font: font, .foregroundColor: UIColor.neutral(.shade70)],
+        newAttributedString.setAttributes([.font: font, .foregroundColor: UIColor.text],
                                           range: range)
         return newAttributedString
     }
