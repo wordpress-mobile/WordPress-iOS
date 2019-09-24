@@ -1344,6 +1344,12 @@ extension AztecPostViewController: UITextViewDelegate {
         return true
     }
 
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        let position = characterRange.location
+        textView.selectedRange = NSRange(location: position, length: 0)
+        return false
+    }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         refreshTitlePosition()
     }
