@@ -319,52 +319,59 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                 failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
-    CommentServiceRemoteREST *service = [self restRemoteForSite:post.siteID];
-    [service syncHierarchicalCommentsForPost:post.postID
-                                        page:page
-                                      number:WPTopLevelHierarchicalCommentsPerPage
-                                     success:^(NSArray *comments) {
-                                         [self.managedObjectContext performBlock:^{
-                                             NSError *error;
-                                             ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-                                             if (!aPost) {
+    NSNumber *siteID = post.siteID;
+    NSNumber *postID = post.postID;
+    [self.managedObjectContext performBlock:^{
+        CommentServiceRemoteREST *service = [self restRemoteForSite:siteID];
+        [service syncHierarchicalCommentsForPost:postID
+                                            page:page
+                                          number:WPTopLevelHierarchicalCommentsPerPage
+                                         success:^(NSArray *comments) {
+                                             [self.managedObjectContext performBlock:^{
+                                                 NSError *error;
+                                                 ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+                                                 if (!aPost) {
+                                                     if (failure) {
+                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                             failure(error);
+                                                         });
+                                                     }
+                                                     return;
+                                                 }
+
+                                                 [self mergeHierarchicalComments:comments forPage:page forPost:aPost onComplete:^(BOOL includesNewComments) {
+                                                     if (!success) {
+                                                         return;
+                                                     }
+
+                                                     [self.managedObjectContext performBlock:^{
+                                                         // There are no more comments when:
+                                                         // - There are fewer top level comments in the results than requested
+                                                         // - Page > 1, the number of top level comments matches those requested, but there are no new comments
+                                                         // We check this way because the API can return the last page of results instead
+                                                         // of returning zero results when the requested page is the last + 1.
+                                                         NSArray *parents = [self topLevelCommentsForPage:page forPost:aPost];
+                                                         BOOL hasMore = YES;
+                                                         if (([parents count] < WPTopLevelHierarchicalCommentsPerPage) || (page > 1 && !includesNewComments)) {
+                                                             hasMore = NO;
+                                                         }
+
+                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                             success([comments count], hasMore);
+                                                         });
+                                                     }];
+                                                 }];
+                                             }];
+                                         } failure:^(NSError *error) {
+                                             [self.managedObjectContext performBlock:^{
                                                  if (failure) {
                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                          failure(error);
                                                      });
                                                  }
-                                                 return;
-                                             }
-
-                                             [self mergeHierarchicalComments:comments forPage:page forPost:aPost onComplete:^(BOOL includesNewComments) {
-                                                 if (!success) {
-                                                     return;
-                                                 }
-                                                 // There are no more comments when:
-                                                 // - There are fewer top level comments in the results than requested
-                                                 // - Page > 1, the number of top level comments matches those requested, but there are no new comments
-                                                 // We check this way because the API can return the last page of results instead
-                                                 // of returning zero results when the requested page is the last + 1.
-                                                 NSArray *parents = [self topLevelCommentsForPage:page forPost:aPost];
-                                                 BOOL hasMore = YES;
-                                                 if (([parents count] < WPTopLevelHierarchicalCommentsPerPage) || (page > 1 && !includesNewComments)) {
-                                                     hasMore = NO;
-                                                 }
-
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     success([comments count], hasMore);
-                                                 });
                                              }];
                                          }];
-                                     } failure:^(NSError *error) {
-                                         [self.managedObjectContext performBlock:^{
-                                             if (failure) {
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     failure(error);
-                                                 });
-                                             }
-                                         }];
-                                     }];
+    }];
 }
 
 - (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post
