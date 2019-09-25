@@ -20,9 +20,12 @@ class PostCoordinator: NSObject {
 
     private let mainService: PostService
 
+    private let failedPostsFetcher: FailedPostsFetcher
+
     // MARK: - Initializers
 
-    init(mainService: PostService? = nil, backgroundService: PostService? = nil, mediaCoordinator: MediaCoordinator? = nil) {
+    init(mainService: PostService? = nil, backgroundService: PostService? = nil,
+         mediaCoordinator: MediaCoordinator? = nil, failedPostsFetcher: FailedPostsFetcher? = nil) {
         let contextManager = ContextManager.sharedInstance()
 
         let mainContext = contextManager.mainContext
@@ -35,6 +38,7 @@ class PostCoordinator: NSObject {
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
         self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
+        self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
     }
 
     // MARK: - Uploading Media
@@ -204,19 +208,29 @@ class PostCoordinator: NSObject {
     }
 
     private func upload(post: AbstractPost) {
-        mainService.uploadPost(post, success: { uploadedPost in
-            print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
+        let interactor = PostAutoUploadInteractor()
+        let action = interactor.autoUploadAction(for: post)
+        if action == .upload {
+            mainService.uploadPost(post, success: { uploadedPost in
+                print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
-            SearchManager.shared.indexItem(uploadedPost)
+                SearchManager.shared.indexItem(uploadedPost)
 
-            let model = PostNoticeViewModel(post: uploadedPost)
-            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
-        }, failure: { error in
-            let model = PostNoticeViewModel(post: post)
-            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+                let model = PostNoticeViewModel(post: uploadedPost)
+                ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+            }, failure: { error in
+                let model = PostNoticeViewModel(post: post)
+                ActionDispatcher.dispatch(NoticeAction.post(model.notice))
 
-            print("Post Coordinator -> upload error: \(String(describing: error))")
-        })
+                print("Post Coordinator -> upload error: \(String(describing: error))")
+            })
+        } else {
+            mainService.autoSave(post, success: { uploadedPost, _ in
+
+            }, failure: { _ in
+
+            })
+        }
     }
 
     private func updateReferences(to media: Media, in post: AbstractPost) {
@@ -309,8 +323,7 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        let fetcher = FailedPostsFetcher(mainContext)
-        fetcher.getFailedPostsAndRetryActions { [weak self] postsAndActions in
+        failedPostsFetcher.postsAndRetryActions { [weak self] postsAndActions in
             guard let self = self else {
                 return
             }
@@ -320,7 +333,7 @@ extension PostCoordinator: Uploader {
                 case .upload:
                     self.save(post, automatedRetry: true)
                 case .autoSave:
-                    // TODO: Create a revision for the post
+                    self.save(post, automatedRetry: true)
                     return
                 case .nothing:
                     return
@@ -343,7 +356,7 @@ extension PostCoordinator {
             postService = PostService(managedObjectContext: managedObjectContext)
         }
 
-        func getFailedPostsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
+        func postsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
             let interactor = PostAutoUploadInteractor()
 
             postService.getFailedPosts { posts in

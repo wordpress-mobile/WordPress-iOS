@@ -56,14 +56,33 @@ class PostCoordinatorTests: XCTestCase {
 
         expect(post.remoteStatus).toEventually(equal(.pushing))
     }
+
+    func testAutoSavePost() {
+        let postServiceMock = PostServiceMock()
+        let failedPostsFetcherMock = FailedPostsFetcherMock(context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, failedPostsFetcher: failedPostsFetcherMock)
+        let post = PostBuilder(context)
+            .with(status: .draft)
+            .build()
+        failedPostsFetcherMock.postsAndActions = [post: .autoSave]
+
+        postCoordinator.resume()
+
+        expect(postServiceMock.didCallAutoSave).to(beTrue())
+    }
 }
 
 private class PostServiceMock: PostService {
     private(set) var didCallUploadPost = false
     private(set) var didCallMarkAsFailedAndDraftIfNeeded = false
+    private(set) var didCallAutoSave = false
 
     override func uploadPost(_ post: AbstractPost, success: ((AbstractPost) -> Void)?, failure: @escaping (Error?) -> Void) {
         didCallUploadPost = true
+    }
+
+    override func autoSave(_ post: AbstractPost, success: ((AbstractPost, String) -> Void)?, failure: @escaping (Error?) -> Void) {
+        didCallAutoSave = true
     }
 
     override func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
@@ -91,5 +110,13 @@ private class MediaCoordinatorMock: MediaCoordinator {
 
     override func retryMedia(_ media: Media, automatedRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
         // noop
+    }
+}
+
+private class FailedPostsFetcherMock: PostCoordinator.FailedPostsFetcher {
+    var postsAndActions: [AbstractPost : PostAutoUploadInteractor.AutoUploadAction] = [:]
+
+    override func postsAndRetryActions(result: @escaping ([AbstractPost : PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
+        result(postsAndActions)
     }
 }
