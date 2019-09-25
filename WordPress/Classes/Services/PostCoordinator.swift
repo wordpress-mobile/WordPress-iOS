@@ -77,8 +77,10 @@ class PostCoordinator: NSObject {
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
     ///
     /// - Parameter post: the post to save
+    /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
+    /// - Parameter then: a block to perform after post is ready to be saved
     ///
-    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
+    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (AbstractPost) -> ()) {
         var post = postToSave
 
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
@@ -112,7 +114,7 @@ class PostCoordinator: NSObject {
                         // Let's check if media uploading is still going, if all finished with success then we can upload the post
                         if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
                             self.removeObserver(for: post)
-                            self.upload(post: post)
+                            completion(post)
                         }
                     }
                     switch media.mediaType {
@@ -139,7 +141,19 @@ class PostCoordinator: NSObject {
             return
         }
 
-        upload(post: post)
+        completion(post)
+    }
+
+    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
+        prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
+            self.upload(post: post)
+        }
+    }
+
+    func autoSave(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
+        prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
+            self.uploadRevision(post: post)
+        }
     }
 
     func cancelAnyPendingSaveOf(post: AbstractPost) {
@@ -208,29 +222,33 @@ class PostCoordinator: NSObject {
     }
 
     private func upload(post: AbstractPost) {
-        let interactor = PostAutoUploadInteractor()
-        let action = interactor.autoUploadAction(for: post)
-        if action == .upload {
-            mainService.uploadPost(post, success: { uploadedPost in
-                print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
+        mainService.uploadPost(post, success: { uploadedPost in
+            print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
-                SearchManager.shared.indexItem(uploadedPost)
+            SearchManager.shared.indexItem(uploadedPost)
 
-                let model = PostNoticeViewModel(post: uploadedPost)
-                ActionDispatcher.dispatch(NoticeAction.post(model.notice))
-            }, failure: { error in
-                let model = PostNoticeViewModel(post: post)
-                ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+            let model = PostNoticeViewModel(post: uploadedPost)
+            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+        }, failure: { error in
+            let model = PostNoticeViewModel(post: post)
+            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
 
-                print("Post Coordinator -> upload error: \(String(describing: error))")
-            })
-        } else {
-            mainService.autoSave(post, success: { uploadedPost, _ in
+            print("Post Coordinator -> upload error: \(String(describing: error))")
+        })
+    }
 
-            }, failure: { _ in
-
-            })
+    private func uploadRevision(post: AbstractPost) {
+        guard post.hasRemote() else {
+            post.status = .draft
+            upload(post: post)
+            return
         }
+
+        mainService.autoSave(post, success: { uploadedPost, _ in
+
+        }, failure: { _ in
+
+        })
     }
 
     private func updateReferences(to media: Media, in post: AbstractPost) {
@@ -333,7 +351,7 @@ extension PostCoordinator: Uploader {
                 case .upload:
                     self.save(post, automatedRetry: true)
                 case .autoSave:
-                    self.save(post, automatedRetry: true)
+                    self.autoSave(post, automatedRetry: true)
                     return
                 case .nothing:
                     return

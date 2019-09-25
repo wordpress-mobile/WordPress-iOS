@@ -57,11 +57,12 @@ class PostCoordinatorTests: XCTestCase {
         expect(post.remoteStatus).toEventually(equal(.pushing))
     }
 
-    func testAutoSavePost() {
+    func testAutoSavePostThatHasRemote() {
         let postServiceMock = PostServiceMock()
         let failedPostsFetcherMock = FailedPostsFetcherMock(context)
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, failedPostsFetcher: failedPostsFetcherMock)
         let post = PostBuilder(context)
+            .withRemote()
             .with(status: .draft)
             .build()
         failedPostsFetcherMock.postsAndActions = [post: .autoSave]
@@ -69,6 +70,20 @@ class PostCoordinatorTests: XCTestCase {
         postCoordinator.resume()
 
         expect(postServiceMock.didCallAutoSave).to(beTrue())
+    }
+
+    func testDraftAndUploadPostWithoutRemote() {
+        let postServiceMock = PostServiceMock()
+        let failedPostsFetcherMock = FailedPostsFetcherMock(context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, failedPostsFetcher: failedPostsFetcherMock)
+        let post = PostBuilder(context)
+            .build()
+        failedPostsFetcherMock.postsAndActions = [post: .autoSave]
+
+        postCoordinator.resume()
+
+        expect(postServiceMock.didCallUploadPost).to(beTrue())
+        expect(post.status).to(equal(.draft))
     }
 }
 
