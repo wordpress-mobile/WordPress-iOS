@@ -433,46 +433,6 @@ extension WordPressAppDelegate {
         WordPressAuthenticator.shared.delegate = authManager
     }
 
-    @available(iOS 13.0, *)
-    func checkAppleIDCredentialState() {
-
-        // If not logged in, remove the Apple User ID from the keychain, if it exists.
-        guard AccountHelper.isLoggedIn else {
-            do {
-                try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
-                                                 andServiceName: WPAppleIDKeychainUsernameKey)
-            } catch {
-                DDLogDebug("Unable to remove Apple User ID from keychain: \(error.localizedDescription)")
-            }
-            return
-        }
-
-        // Get the Apple User ID from the keychain
-        let appleUserID: String
-        do {
-            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
-                                                                  andServiceName: WPAppleIDKeychainServiceName)
-        } catch {
-            DDLogInfo("checkAppleIDCredentialState: No Apple ID found.")
-            return
-        }
-
-        // Get the Apple User ID state. If not authorized, log out the account.
-        WordPressAuthenticator.shared.checkAppleIDCredentialState(for: appleUserID) { (authorized, error) in
-            if !authorized {
-                DispatchQueue.main.async {
-                    DDLogInfo("checkAppleIDCredentialState: Unauthorized Apple ID. User signed out.")
-                    AccountHelper.logOutDefaultWordPressComAccount()
-                }
-
-                if let error = error {
-                    // An error exists only for the 'not found' state.
-                    DDLogInfo("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-
     func handleWebActivity(_ activity: NSUserActivity) {
         guard AccountHelper.isLoggedIn,
             activity.activityType == NSUserActivityTypeBrowsingWeb,
@@ -879,4 +839,67 @@ extension WordPressAppDelegate {
 
         SVProgressHUD.setFont(WPStyleGuide.fontForTextStyle(UIFont.TextStyle.headline, maximumPointSize: maximumPointSize))
     }
+}
+
+// MARK: - Apple Account Handling
+
+@available(iOS 13.0, *)
+extension WordPressAppDelegate {
+
+    func checkAppleIDCredentialState() {
+
+        // If not logged in, remove the Apple User ID from the keychain, if it exists.
+        guard AccountHelper.isLoggedIn else {
+            do {
+                try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
+                                                 andServiceName: WPAppleIDKeychainUsernameKey)
+            } catch {
+                DDLogDebug("Unable to remove Apple User ID from keychain: \(error.localizedDescription)")
+            }
+            return
+        }
+
+        // Get the Apple User ID from the keychain
+        let appleUserID: String
+        do {
+            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
+                                                                  andServiceName: WPAppleIDKeychainServiceName)
+        } catch {
+            DDLogInfo("checkAppleIDCredentialState: No Apple ID found.")
+            return
+        }
+
+        // Get the Apple User ID state. If not authorized, log out the account.
+        WordPressAuthenticator.shared.checkAppleIDCredentialState(for: appleUserID) { [weak self] (authorized, error) in
+            if !authorized {
+                DDLogInfo("checkAppleIDCredentialState: Unauthorized Apple ID. User signed out.")
+                self?.logOutDefaultWordPressComAccount()
+
+                if let error = error {
+                    // An error exists only for the 'not found' state.
+                    DDLogInfo("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    func startObservingAppleIDCredentialRevoked() {
+        WordPressAuthenticator.shared.startObservingAppleIDCredentialRevoked { [weak self] in
+            if AccountHelper.isLoggedIn {
+                DDLogInfo("Apple credentialRevokedNotification received. User signed out.")
+                self?.logOutDefaultWordPressComAccount()
+            }
+        }
+    }
+
+    func stopObservingAppleIDCredentialRevoked() {
+        WordPressAuthenticator.shared.stopObservingAppleIDCredentialRevoked()
+    }
+
+    func logOutDefaultWordPressComAccount() {
+        DispatchQueue.main.async {
+            AccountHelper.logOutDefaultWordPressComAccount()
+        }
+    }
+
 }
