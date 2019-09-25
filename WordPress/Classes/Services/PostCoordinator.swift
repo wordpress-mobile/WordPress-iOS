@@ -228,11 +228,7 @@ class PostCoordinator: NSObject {
             return
         }
 
-        mainService.autoSave(post, success: { uploadedPost, _ in
-
-        }, failure: { _ in
-
-        })
+        mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
     }
 
     private func updateReferences(to media: Media, in post: AbstractPost) {
