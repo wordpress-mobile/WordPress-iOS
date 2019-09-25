@@ -442,7 +442,7 @@ extension WordPressAppDelegate {
                 try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
                                                  andServiceName: WPAppleIDKeychainUsernameKey)
             } catch {
-                DDLogDebug("Error while removing Apple User ID: \(error)")
+                DDLogDebug("Unable to remove Apple User ID from keychain: \(error.localizedDescription)")
             }
             return
         }
@@ -467,7 +467,7 @@ extension WordPressAppDelegate {
 
                 if let error = error {
                     // An error exists only for the 'not found' state.
-                    DDLogInfo("checkAppleIDCredentialState: Apple ID state not found: \(error)")
+                    DDLogInfo("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
                 }
             }
         }
