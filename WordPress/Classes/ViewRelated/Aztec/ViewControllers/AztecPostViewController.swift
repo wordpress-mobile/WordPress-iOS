@@ -2293,7 +2293,7 @@ extension AztecPostViewController {
         case .processing:
             DDLogInfo("Creating media")
         case .thumbnailReady(let url):
-            handleThumbnailURL(url, attachment: attachment, then: { self.post.content = self.getHTML() })
+            handleThumbnailURL(url, attachment: attachment, then: { self.mapUIContentToPostAndSave(immediate: true) })
         case .uploading:
             handleUploadStarted(attachment: attachment)
         case .ended:
