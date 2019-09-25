@@ -104,6 +104,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         if #available(iOS 13, *) {
             checkAppleIDCredentialState()
+            startObservingAppleIDCredentialRevoked()
         }
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
@@ -695,12 +696,20 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupShareExtensionToken()
             configureNotificationExtension()
+            
+            if #available(iOS 13, *) {
+                startObservingAppleIDCredentialRevoked()
+            }
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             showWelcomeScreenIfNeeded(animated: false)
+            
+            if #available(iOS 13, *) {
+                stopObservingAppleIDCredentialRevoked()
+            }
         }
 
         toggleExtraDebuggingIfNeeded()
