@@ -41,109 +41,6 @@ class PostCoordinator: NSObject {
         self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
     }
 
-    // MARK: - Uploading Media
-
-    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
-    /// of the existing media for the post.
-    ///
-    /// - Parameters:
-    ///     - post: the post to get the media to upload from.
-    ///     - automatedRetry: true if this call is the result of an automated upload-retry attempt.
-    ///
-    /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
-    ///
-    private func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
-        let mediaService = MediaService(managedObjectContext: backgroundContext)
-        let failedMedia: [Media] = post.media.filter({ $0.remoteStatus == .failed })
-        let mediasToUpload: [Media]
-
-        if automatedRetry {
-            mediasToUpload = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
-        } else {
-            mediasToUpload = failedMedia
-        }
-
-        mediasToUpload.forEach { mediaObject in
-            mediaCoordinator.retryMedia(mediaObject, automatedRetry: automatedRetry)
-        }
-
-        let isPushingAllPendingMedia = mediasToUpload.count == failedMedia.count
-        return isPushingAllPendingMedia
-    }
-
-    // MARK: - Misc
-
-    /// Saves the post to both the local database and the server if available.
-    /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
-    ///
-    /// - Parameter post: the post to save
-    /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
-    /// - Parameter then: a block to perform after post is ready to be saved
-    ///
-    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (AbstractPost) -> ()) {
-        var post = postToSave
-
-        if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
-            post = originalPost
-            post.applyRevision()
-            post.deleteRevision()
-        }
-
-        guard uploadMedia(for: post, automatedRetry: automatedRetry) else {
-            change(post: post, status: .failed)
-            return
-        }
-
-        change(post: post, status: .pushing)
-
-        if mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia {
-            change(post: post, status: .pushingMedia)
-            // Only observe if we're not already
-            guard !isObserving(post: post) else {
-                return
-            }
-
-            let uuid = mediaCoordinator.addObserver({ [weak self](media, state) in
-                guard let `self` = self else {
-                    return
-                }
-                switch state {
-                case .ended:
-                    let successHandler = {
-                        self.updateReferences(to: media, in: post)
-                        // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
-                            self.removeObserver(for: post)
-                            completion(post)
-                        }
-                    }
-                    switch media.mediaType {
-                    case .video:
-                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
-                            switch result {
-                            case .error:
-                                self?.change(post: post, status: .failed)
-                            case .success(let value):
-                                media.remoteURL = value.videoURL.absoluteString
-                                successHandler()
-                            }
-                        }
-                    default:
-                        successHandler()
-                    }
-                case .failed:
-                    self.change(post: post, status: .failed)
-                default:
-                    DDLogInfo("Post Coordinator -> Media state: \(state)")
-                }
-            }, forMediaFor: post)
-            trackObserver(receipt: uuid, for: post)
-            return
-        }
-
-        completion(post)
-    }
-
     func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
         prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
             self.upload(post: post)
@@ -219,6 +116,93 @@ class PostCoordinator: NSObject {
     ///
     @objc func refreshPostStatus() {
         backgroundService.refreshPostStatus()
+    }
+
+    /// Cancel active and pending automatic uploads of the post.
+    func cancelAutoUploadOf(_ post: AbstractPost) {
+        cancelAnyPendingSaveOf(post: post)
+
+        post.shouldAttemptAutoUpload = false
+
+        let moc = post.managedObjectContext
+
+        moc?.perform {
+            try? moc?.save()
+        }
+
+        let notice = Notice(title: NSLocalizedString("Changes will not be published", comment: "title for notice displayed on cancel auto-upload"), message: "")
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    /// Saves the post to both the local database and the server if available.
+    /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
+    ///
+    /// - Parameter post: the post to save
+    /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
+    /// - Parameter then: a block to perform after post is ready to be saved
+    ///
+    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (AbstractPost) -> ()) {
+        var post = postToSave
+
+        if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
+            post = originalPost
+            post.applyRevision()
+            post.deleteRevision()
+        }
+
+        guard uploadMedia(for: post, automatedRetry: automatedRetry) else {
+            change(post: post, status: .failed)
+            return
+        }
+
+        change(post: post, status: .pushing)
+
+        if mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia {
+            change(post: post, status: .pushingMedia)
+            // Only observe if we're not already
+            guard !isObserving(post: post) else {
+                return
+            }
+
+            let uuid = mediaCoordinator.addObserver({ [weak self](media, state) in
+                guard let `self` = self else {
+                    return
+                }
+                switch state {
+                case .ended:
+                    let successHandler = {
+                        self.updateReferences(to: media, in: post)
+                        // Let's check if media uploading is still going, if all finished with success then we can upload the post
+                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                            self.removeObserver(for: post)
+                            completion(post)
+                        }
+                    }
+                    switch media.mediaType {
+                    case .video:
+                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
+                            switch result {
+                            case .error:
+                                self?.change(post: post, status: .failed)
+                            case .success(let value):
+                                media.remoteURL = value.videoURL.absoluteString
+                                successHandler()
+                            }
+                        }
+                    default:
+                        successHandler()
+                    }
+                case .failed:
+                    self.change(post: post, status: .failed)
+                default:
+                    DDLogInfo("Post Coordinator -> Media state: \(state)")
+                }
+            }, forMediaFor: post)
+            trackObserver(receipt: uuid, for: post)
+            return
+        }
+
+        completion(post)
     }
 
     private func upload(post: AbstractPost) {
@@ -320,20 +304,35 @@ class PostCoordinator: NSObject {
         }
     }
 
-    /// Cancel active and pending automatic uploads of the post.
-    func cancelAutoUploadOf(_ post: AbstractPost) {
-        cancelAnyPendingSaveOf(post: post)
+    // MARK: - Uploading Media
 
-        post.shouldAttemptAutoUpload = false
+    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
+    /// of the existing media for the post.
+    ///
+    /// - Parameters:
+    ///     - post: the post to get the media to upload from.
+    ///     - automatedRetry: true if this call is the result of an automated upload-retry attempt.
+    ///
+    /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
+    ///
+    private func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
+        let mediaService = MediaService(managedObjectContext: backgroundContext)
+        let media: [Media]
+        let isPushingAllMedia: Bool
 
-        let moc = post.managedObjectContext
-
-        moc?.perform {
-            try? moc?.save()
+        if automatedRetry {
+            media = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
+            isPushingAllMedia = media.count == post.media.count
+        } else {
+            media = post.media.filter({ $0.remoteStatus == .failed })
+            isPushingAllMedia = true
         }
 
-        let notice = Notice(title: NSLocalizedString("Changes will not be published", comment: "title for notice displayed on cancel auto-upload"), message: "")
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
+        media.forEach { mediaObject in
+            mediaCoordinator.retryMedia(mediaObject, automatedRetry: automatedRetry)
+        }
+
+        return isPushingAllMedia
     }
 }
 
