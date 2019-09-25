@@ -56,7 +56,7 @@ jobs:
             then
               git fetch --force origin "refs/tags/${CIRCLE_TAG}" --depth 1
             else
-              git fetch --force origin "${CIRCLE_BRANCH}:remotes/origin/${CIRCLE_BRANCH}" --depth 1
+              git fetch --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}" --depth 1
             fi
 
 
