@@ -95,7 +95,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (void)updateTopic:(NSManagedObjectID *)topicObjectID withAlgorithm:(NSString *)algorithm
 {
     [self.managedObjectContext performBlock:^{
-            NSError *error;
+        NSError *error;
         ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
         topic.algorithm = algorithm;
 
