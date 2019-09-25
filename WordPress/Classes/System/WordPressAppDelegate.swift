@@ -103,7 +103,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
         if #available(iOS 13, *) {
-            checkAppleIDCredentialState()
             startObservingAppleIDCredentialRevoked()
         }
 
@@ -150,6 +149,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
+
+        // This is done here so the check is done on app launch and app switching.
+        if #available(iOS 13, *) {
+            checkAppleIDCredentialState()
+        }
     }
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -696,7 +700,7 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupShareExtensionToken()
             configureNotificationExtension()
-            
+
             if #available(iOS 13, *) {
                 startObservingAppleIDCredentialRevoked()
             }
@@ -706,7 +710,7 @@ extension WordPressAppDelegate {
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             showWelcomeScreenIfNeeded(animated: false)
-            
+
             if #available(iOS 13, *) {
                 stopObservingAppleIDCredentialRevoked()
             }
