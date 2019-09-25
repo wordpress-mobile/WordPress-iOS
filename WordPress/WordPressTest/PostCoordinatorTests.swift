@@ -129,9 +129,9 @@ private class MediaCoordinatorMock: MediaCoordinator {
 }
 
 private class FailedPostsFetcherMock: PostCoordinator.FailedPostsFetcher {
-    var postsAndActions: [AbstractPost : PostAutoUploadInteractor.AutoUploadAction] = [:]
+    var postsAndActions: [AbstractPost: PostAutoUploadInteractor.AutoUploadAction] = [:]
 
-    override func postsAndRetryActions(result: @escaping ([AbstractPost : PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
+    override func postsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
         result(postsAndActions)
     }
 }
