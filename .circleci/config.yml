@@ -19,7 +19,7 @@ jobs:
       name: ios/default
       xcode-version: "11.0.0"
     steps:
-      - git/shallow-checkout
+      - checkout
       - load-chruby
       - ios/install-dependencies:
             bundle-install: true
