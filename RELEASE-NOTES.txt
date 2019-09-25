@@ -1,7 +1,6 @@
 13.4
 -----
-* Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account on app launch.
-
+* Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account.
  
 13.3
 -----
