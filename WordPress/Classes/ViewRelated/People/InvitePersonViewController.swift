@@ -47,6 +47,8 @@ class InvitePersonViewController: UITableViewController {
 
             // Note: This is a workaround. For some reason, the textView's properties are getting reset
             setupMessageTextView()
+            tableView.beginUpdates()
+            tableView.endUpdates()
         }
     }
 
@@ -381,6 +383,7 @@ private extension InvitePersonViewController {
         messageTextView.font = WPStyleGuide.tableviewTextFont()
         messageTextView.textColor = .text
         messageTextView.backgroundColor = .listForeground
+        messageTextView.isScrollEnabled = false
     }
 
     func setupNavigationBar() {
