@@ -148,7 +148,9 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
                 }
             }];
         } else {
-            [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
+            });
         }
     }
     return _wordPressComRestApi;

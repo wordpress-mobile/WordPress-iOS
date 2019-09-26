@@ -986,7 +986,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return;
         }
         NSProgress *uploadProgress;
-        [mediaService uploadMedia:media progress:&uploadProgress success:^{
+        [mediaService uploadMedia:media
+                   automatedRetry:false
+                         progress:&uploadProgress
+                          success:^{
             [weakSelf updateBlogIconWithMedia:media];
             completion();
         } failure:^(NSError * _Nonnull error) {

@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 
 private struct ElementStringIDs {
-    static let usernameField = "username"
+    static let usernameField = "login-epilogue-username-label"
     static let siteUrlField = "siteUrl"
     static let connectSiteButton = "connectSite"
     static let continueButton = "Continue"

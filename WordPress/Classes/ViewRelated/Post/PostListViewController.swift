@@ -676,7 +676,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func retry(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
-            PostCoordinator.shared.retrySave(of: post)
+            PostCoordinator.shared.save(post)
         }
     }
 
