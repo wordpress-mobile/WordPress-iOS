@@ -1,6 +1,3 @@
-* Inactief is inactief: wanneer je de app niet gebruikt, doet deze minder, zodat de prestaties van je apparaat worden verbeterd.
-* Werd op de lijst met je sites soms meerdere keren dezelfde site weergegeven? Dat probleem hebben we nu opgelost.
-* Beheer je meldingsinstellingen vanuit het scherm Meldingen (logisch, toch?).
-* De weergegeven datum en de tijdzone van je site zijn nu perfect gesynchroniseerd.
-* Geniet van het verbeterd en stabieler laden van berichtvoorbeelden.
-
+* Ondersteuning voor iOS 13 toegevoegd.
+* Probeer de donkere modus eens!
+* Nu beschikbaar: Aanmelden via Apple.
