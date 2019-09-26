@@ -142,7 +142,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.13.0'
+    gutenberg :tag => 'v1.13.1'
     ## gutenberg :commit => '719c111dc0f927e6fa2cfa382f9678d14e5506cd'
 
     ## Third party libraries
@@ -179,7 +179,7 @@ target 'WordPress' do
 
     pod 'WordPressAuthenticator', '~> 1.10.0-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/siwa-missing-tracks-signuptap'
 
     aztec
     wordpress_ui

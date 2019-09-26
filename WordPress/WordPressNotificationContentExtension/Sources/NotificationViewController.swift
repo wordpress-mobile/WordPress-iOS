@@ -45,6 +45,13 @@ class NotificationViewController: UIViewController {
         contentView = nil
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        DispatchQueue.main.async {
+            self.contentView?.reloadContent()
+        }
+    }
+
     // MARK: Private behavior
 
     /// Responsible for instantiation, installation & configuration of the content view
