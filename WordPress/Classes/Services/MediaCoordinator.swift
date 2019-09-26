@@ -11,11 +11,6 @@ import enum Alamofire.AFError
 class MediaCoordinator: NSObject {
     @objc static let shared = MediaCoordinator()
 
-    override init() {
-        super.init()
-        addObserverForDeletedFiles()
-    }
-
     private(set) var backgroundContext: NSManagedObjectContext = {
         let context = ContextManager.sharedInstance().newDerivedContext()
         context.automaticallyMergesChangesFromParent = true
@@ -38,6 +33,40 @@ class MediaCoordinator: NSObject {
 
     /// Tracks uploads of media for specific posts
     private var postMediaProgressCoordinators = [AbstractPost: MediaProgressCoordinator]()
+
+    override init() {
+        super.init()
+        addObserverForDeletedFiles()
+    }
+
+    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
+    /// of the existing media for the post.
+    ///
+    /// - Parameters:
+    ///     - post: the post to get the media to upload from.
+    ///     - automatedRetry: true if this call is the result of an automated upload-retry attempt.
+    ///
+    /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
+    ///
+    func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
+        let mediaService = MediaService(managedObjectContext: backgroundContext)
+        let media: [Media]
+        let isPushingAllMedia: Bool
+
+        if automatedRetry {
+            media = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
+            isPushingAllMedia = media.count == post.media.count
+        } else {
+            media = post.media.filter({ $0.remoteStatus == .failed })
+            isPushingAllMedia = true
+        }
+
+        media.forEach { mediaObject in
+            retryMedia(mediaObject, automatedRetry: automatedRetry)
+        }
+
+        return isPushingAllMedia
+    }
 
     /// - returns: The progress coordinator for the specified post. If a coordinator
     ///            does not exist, one will be created.
