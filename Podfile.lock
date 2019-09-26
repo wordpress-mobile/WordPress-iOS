@@ -259,7 +259,7 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.13.0/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.1.1`)
+  - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.13.0/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
@@ -359,7 +359,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.13.0/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
-    :tag: 0.1.1
+    :tag: 0.2.0
   glog:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.13.0/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json
   Gutenberg:
@@ -421,7 +421,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
-    :tag: 0.1.1
+    :tag: 0.2.0
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.13.0
@@ -503,6 +503,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 787414f9240ee6ef8cfe4ea0f00e8b4d01d2d264
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 532f5964d93ab16b09ff5486149f1d3dd4a2ef65
+PODFILE CHECKSUM: 8f59b1551f5d5836e0be5a20c8e7895d7bee12a6
 
 COCOAPODS: 1.7.5

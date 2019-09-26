@@ -158,7 +158,7 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.1-swift5.1-GM'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
-    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.1.1'
+    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
 
     ## Automattic libraries
     ## ====================
