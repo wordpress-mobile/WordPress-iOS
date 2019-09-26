@@ -163,12 +163,16 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
     }()
 
-    /// For autosaving - We are now using the Gutenberg side autosaving mechanism, so we don't need
-    /// a local scheduler any longer. We keep the debouncer to reuse the shared PostEditor+Publish save code.
+    /// For autosaving - The debouncer will execute local saving every defined number of seconds.
+    /// In this case every 0.5 second
     ///
     fileprivate(set) lazy var debouncer: Debouncer = {
-        return Debouncer(delay: 0, callback: debouncerCallback)
+        return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
     }()
+
+    lazy var autosaver = Autosaver { [weak self] in
+        self?.requestHTML(for: .autoSave)
+    }
 
     /// Media Library Data Source
     ///
@@ -330,7 +334,7 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
     func editorDidAutosave() {
-        requestHTML(for: .autoSave)
+        autosaver.contentDidChange()
     }
 
     func gutenbergDidRequestMedia(from source: MediaPickerSource, filter: [MediaFilter]?, with callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -502,10 +506,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         if !editorSession.started {
             editorSession.start(unsupportedBlocks: unsupportedBlockNames)
         }
-    }
-
-    func editorDidAutosave() {
-        // Currently using native side `autoSaveTimer` for autosave purposes.
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
