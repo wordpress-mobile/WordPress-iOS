@@ -38,13 +38,11 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v13.2.1-whats-new"
+msgctxt "v13.3-whats-new"
 msgid ""
-"13.2.1\n"
-"-----\n"
-"* Adds support for iOS 13.\n"
-"* Give Dark Mode a try!\n"
-"* Now available: Sign In with Apple.\n"
+"* After a recent round of improvements, the Block Editor is faster and performs more smoothly on the app.\n"
+"* Some of you were having trouble with Dark Mode on iPads; we sorted it out (adios, uninvited glare!).\n"
+"* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
