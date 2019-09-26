@@ -77,6 +77,11 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey          = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVisitorCount";
 
+/// Apple ID Constants
+///
+NSString *const WPAppleIDKeychainUsernameKey                        = @"Username";
+NSString *const WPAppleIDKeychainServiceName                        = @"AppleID";
+
 /// iTunes Constants
 ///
 NSString *const WPiTunesAppId                                       = @"335703880";

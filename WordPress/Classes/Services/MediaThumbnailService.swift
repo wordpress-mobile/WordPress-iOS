@@ -70,7 +70,7 @@ class MediaThumbnailService: LocalCoreDataService {
             // Configure a handler for any thumbnail exports
             let onThumbnailExport: MediaThumbnailExporter.OnThumbnailExport = { (identifier, export) in
                 self.managedObjectContext.perform {
-                    self.handleThumbnailExport(media: media,
+                    self.handleThumbnailExport(media: mediaInContext,
                                                identifier: identifier,
                                                export: export,
                                                onCompletion: onCompletion)
@@ -118,7 +118,9 @@ class MediaThumbnailService: LocalCoreDataService {
                                              onError: { (error) in
                                                 // If an error occurred with the remote video URL, try and download the Media's
                                                 // remote thumbnail instead.
-                                                attemptDownloadingThumbnail()
+                                                self.managedObjectContext.perform {
+                                                    attemptDownloadingThumbnail()
+                                                }
                     })
                 }
                 return
