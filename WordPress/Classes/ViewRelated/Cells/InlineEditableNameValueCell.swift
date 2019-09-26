@@ -60,6 +60,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
+        textField.text = textField.text?.replacingOccurrences(of: " ", with: "\u{00a0}")
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: textField)
     }
 
