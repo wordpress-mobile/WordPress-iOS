@@ -48,6 +48,7 @@ class MediaCoordinator: NSObject {
     ///
     /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
     ///
+    @discardableResult
     func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
         let mediaService = MediaService(managedObjectContext: backgroundContext)
         let media: [Media]
