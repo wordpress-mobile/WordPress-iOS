@@ -1,3 +1,3 @@
-* We have made a number improvements to the Block Editor, including improved performance.
-* Fixed an issue where Dark Mode may not work correctly on iPads.
-* We have made creating posts with media a bit more reliable.
+* After a recent round of improvements, the Block Editor is faster and performs more smoothly on the app.
+* Some of you were having trouble with Dark Mode on iPads; we sorted it out (adios, uninvited glare!).
+* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.
