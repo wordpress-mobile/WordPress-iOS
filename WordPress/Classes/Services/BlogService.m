@@ -505,7 +505,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [self blogsWithPredicate:predicate];
 }
 
-- (NSArray *)blogsForAllAccounts
+- (NSArray<Blog *> *)blogsForAllAccounts
 {
     return [self blogsWithPredicate:nil];
 }

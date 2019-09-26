@@ -367,7 +367,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let alert  = UIAlertController(title: logOutAlertTitle, message: nil, preferredStyle: .alert)
         alert.addActionWithTitle(LogoutAlert.cancelAction, style: .cancel)
         alert.addActionWithTitle(LogoutAlert.logoutAction, style: .destructive) { _ in
-            self.logOut()
+            AccountHelper.logOutDefaultWordPressComAccount()
         }
 
         present(alert, animated: true)
@@ -385,24 +385,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let format = count > 1 ? LogoutAlert.unsavedTitlePlural : LogoutAlert.unsavedTitleSingular
         return String(format: format, count)
     }
-
-    fileprivate func logOut() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        service.removeDefaultWordPressComAccount()
-
-        // Delete local notification on logout
-        PushNotificationsManager.shared.deletePendingLocalNotifications()
-
-        // Also clear the spotlight index
-        SearchManager.shared.deleteAllSearchableItems()
-
-        // Delete donated user activities (e.g., for Siri Shortcuts)
-        if #available(iOS 12.0, *) {
-            NSUserActivity.deleteAllSavedUserActivities {}
-        }
-    }
-
 
     // MARK: - Private Properties
 
