@@ -6,7 +6,7 @@ class PostBuilder {
 
     var post: Post!
 
-    private static func bulidPost(context: NSManagedObjectContext) -> Post {
+    private static func buildPost(context: NSManagedObjectContext) -> Post {
         let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
         blog.xmlrpc = "http://example.com/xmlrpc.php"
         blog.url = "http://example.com"
@@ -20,11 +20,11 @@ class PostBuilder {
     }
 
     init() {
-        post = PostBuilder.bulidPost(context: setUpInMemoryManagedObjectContext())
+        post = PostBuilder.buildPost(context: setUpInMemoryManagedObjectContext())
     }
 
     init(_ context: NSManagedObjectContext) {
-        post = PostBuilder.bulidPost(context: context)
+        post = PostBuilder.buildPost(context: context)
     }
 
     func published() -> PostBuilder {
