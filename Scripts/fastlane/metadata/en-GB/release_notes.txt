@@ -1,6 +1,3 @@
-* Idle means idle: when you don’t use the app, it’ll do less, and improve the performance of your device.
-* Did your site list sometimes show the same site more than once? Well, we fixed that.
-* Manage your notification settings from the notifications screen (makes sense, right?).
-* The displayed date and your site’s time zone are now in perfect sync.
-* Enjoy smoother, more stable loading of post previews.
-
+* Adds support for iOS 13.
+* Give dark mode a try!
+* Now available: sign in with Apple.

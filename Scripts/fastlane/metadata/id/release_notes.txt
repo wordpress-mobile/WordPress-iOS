@@ -1,6 +1,3 @@
-* Tidak aktif berarti tidak aktif: ketika Anda tidak menggunakan aplikasi, kondisi ini akan membuatnya bekerja lebih ringan, dan meningkatkan performa perangkat Anda.
-* Apakah daftar situs Anda terkadang menampilkan situs yang sama lebih dari satu kali? Ya, kami telah memperbaikinya.
-* Kelola pengaturan pemberitahuan dari layar Pemberitahuan (masuk akal, kan?).
-* Tanggal yang ditampilkan dan zona waktu situs Anda sekarang telah disinkronkan dengan tepat.
-* Nikmati proses memuat yang lebih lancar dan stabil untuk pratinjau pos.
-
+• Menambahkan dukungan untuk iOS 13.
+* Cobalah Mode Gelap!
+* Kini tersedia: Masuk dengan Apple.
