@@ -886,14 +886,16 @@ extension WordPressAppDelegate {
 
         // Get the Apple User ID state. If not authorized, log out the account.
         WordPressAuthenticator.shared.checkAppleIDCredentialState(for: appleUserID) { [weak self] (authorized, error) in
+
+            // An error exists only for the 'not found' state.
+            // 'not found' is a valid state when logging in with an Apple account for the first time.
+            if let error = error {
+                DDLogDebug("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
+            }
+
             if !authorized {
                 DDLogInfo("checkAppleIDCredentialState: Unauthorized Apple ID. User signed out.")
                 self?.logOutDefaultWordPressComAccount()
-
-                if let error = error {
-                    // An error exists only for the 'not found' state.
-                    DDLogInfo("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
-                }
             }
         }
     }

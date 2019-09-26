@@ -431,7 +431,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.13.1
   WordPressAuthenticator:
-    :commit: d0171b66b41a309097eae0864f6ec87bd8e4a6e9
+    :commit: 4b6daab9a668b5871f45f547309b9bacf3c6283a
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
