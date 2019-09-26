@@ -25,6 +25,11 @@ class PostingActivityMonth: UIView, NibLoadable {
         addDays()
     }
 
+    func configureGhost(monthData: [PostingStreakEvent]) {
+        self.monthData = monthData
+        monthLabel.text = ""
+        addDays()
+    }
 }
 
 // MARK: - Private Extension

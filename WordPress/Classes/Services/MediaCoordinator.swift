@@ -163,9 +163,11 @@ class MediaCoordinator: NSObject {
 
     /// Retry the upload of a media object that previously has failed.
     ///
-    /// - Parameter media: the media object to retry the upload
+    /// - Parameters:
+    ///     - media: the media object to retry the upload
+    ///     - automatedRetry: whether the retry was automatically or manually initiated.
     ///
-    func retryMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil) {
+    func retryMedia(_ media: Media, automatedRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .failed else {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
@@ -176,7 +178,7 @@ class MediaCoordinator: NSObject {
         let coordinator = self.coordinator(for: media)
 
         coordinator.track(numberOfItems: 1)
-        let uploadProgress = uploadMedia(media)
+        let uploadProgress = uploadMedia(media, automatedRetry: automatedRetry)
         coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
 
@@ -254,12 +256,14 @@ class MediaCoordinator: NSObject {
                             failure: failure)
     }
 
-    @discardableResult private func uploadMedia(_ media: Media) -> Progress {
+    @discardableResult
+    private func uploadMedia(_ media: Media, automatedRetry: Bool = false) -> Progress {
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
 
         service.uploadMedia(media,
+                            automatedRetry: automatedRetry,
                             progress: &progress,
                             success: {
                                 self.end(media)
@@ -621,16 +625,10 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
 extension MediaCoordinator: Uploader {
     func resume() {
-        let service = MediaService(managedObjectContext: mainContext)
+        let service = MediaService(managedObjectContext: backgroundContext)
 
-        service.getFailedMedia { [weak self] media in
-            guard let self = self else {
-                return
-            }
-
-            media.forEach() {
-                self.retryMedia($0)
-            }
+        service.failedMediaForUpload(automatedRetry: true).forEach() {
+            retryMedia($0, automatedRetry: true)
         }
     }
 }
