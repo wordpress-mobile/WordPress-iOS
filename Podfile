@@ -343,7 +343,7 @@ end
 
 def wordpress_mocks
   # pod 'WordPressMocks', '~> 0.0.5'
-  pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => 'd9a3613503ebb8629fa8413731c2e10c551ec562'
+  pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => 'a876329c4e128420523baffad31fa694d574a629'
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 
