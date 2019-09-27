@@ -65,6 +65,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     }
 
     @objc func textEditingDidEnd(textField: UITextField) {
+        textField.text = textField.text?.replacingOccurrences(of: "\u{00a0}", with: " ")
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: textField)
     }
 
