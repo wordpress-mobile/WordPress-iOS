@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  */
 @property (nonatomic, strong, nullable) NSArray *revisions;
 
-@property (nonatomic, strong, nonnull) NSNumber *autoUploadFailureCount;
+@property (nonatomic, strong, nonnull) NSNumber *autoUploadAttemptsCount;
 
 // Revision management
 - (AbstractPost *)createRevision;

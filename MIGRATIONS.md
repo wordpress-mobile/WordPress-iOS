@@ -7,7 +7,7 @@ data model as well as any custom migrations.
 @jklausa 2019-08-19
 - `AbstractPost`: Addded a  `confirmedChangesHash`  and  `confirmedChangesTimestamp`  properties. 
 @leandroalonso 2019-09-27
--`AbstractPost`: Added `autoUploadFailureCount` property.
+-`AbstractPost`: Added `autoUploadAttemptsCount` property.
 
 ## WordPress 90
 

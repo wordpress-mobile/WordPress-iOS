@@ -128,7 +128,7 @@ private extension PostCoordinatorUploadActionUseCaseTests {
         let post = Post(context: context)
         post.status = status
         post.remoteStatus = remoteStatus
-        post.autoUploadFailureCount = NSNumber(value: autoUploadFailureCount)
+        post.autoUploadAttemptsCount = NSNumber(value: autoUploadFailureCount)
 
         if hasRemote {
             post.postID = NSNumber(value: Int.random(in: 1...Int.max))

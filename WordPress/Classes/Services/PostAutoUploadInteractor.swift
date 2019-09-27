@@ -29,7 +29,7 @@ final class PostAutoUploadInteractor {
         guard post.isFailed,
             let status = post.status,
             PostAutoUploadInteractor.allowedStatuses.contains(status),
-        post.autoUploadFailureCount.intValue < maxNumberOfAttempts else {
+            post.autoUploadAttemptsCount.intValue < maxNumberOfAttempts else {
                 return .nothing
         }
 

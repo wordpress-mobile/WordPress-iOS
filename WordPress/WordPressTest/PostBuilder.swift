@@ -119,8 +119,8 @@ class PostBuilder {
         return self
     }
 
-    func with(autoUploadFailureCount: Int) -> PostBuilder {
-        post.autoUploadFailureCount = NSNumber(value: autoUploadFailureCount)
+    func with(autoUploadAttemptsCount: Int) -> PostBuilder {
+        post.autoUploadAttemptsCount = NSNumber(value: autoUploadAttemptsCount)
         
         return self
     }
