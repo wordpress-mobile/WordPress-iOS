@@ -50,17 +50,6 @@
 
 #pragma mark - Life Cycle Methods
 
-- (void)awakeFromFetch
-{
-    [super awakeFromFetch];
-
-    if (!self.isDeleted && self.remoteStatus == AbstractPostRemoteStatusPushing) {
-        // If we've just been fetched and our status is AbstractPostRemoteStatusPushing then something
-        // when wrong saving -- the app crashed for instance. So change our remote status to failed.
-        [self setPrimitiveValue:@(AbstractPostRemoteStatusFailed) forKey:@"remoteStatusNumber"];
-    }
-}
-
 - (void)remove
 {
     if (self.remoteStatus == AbstractPostRemoteStatusPushing || self.remoteStatus == AbstractPostRemoteStatusLocal) {
