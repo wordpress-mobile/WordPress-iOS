@@ -301,7 +301,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.9.0)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `issue/12535-siwa_observe_revoked_notification`)
+  - WordPressAuthenticator (~> 1.10.0-beta.2)
   - WordPressKit (~> 4.5.0)
   - WordPressMocks (~> 0.0.5)
   - WordPressShared (~> 1.8.7)
@@ -345,6 +345,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -411,9 +412,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 640455e3203791f84b207974fa8c3e307f1fa586
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :branch: issue/12535-siwa_observe_revoked_notification
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/640455e3203791f84b207974fa8c3e307f1fa586/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -430,9 +428,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 640455e3203791f84b207974fa8c3e307f1fa586
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :commit: 4b6daab9a668b5871f45f547309b9bacf3c6283a
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 3.0.1-swift5.1-GM
@@ -508,6 +503,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 787414f9240ee6ef8cfe4ea0f00e8b4d01d2d264
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: d7347cbbec7014ede5e8e005360082601f1dbee5
+PODFILE CHECKSUM: 440a0b8b731a1aaeafe3e331fdbe621d61069c38
 
 COCOAPODS: 1.7.5
