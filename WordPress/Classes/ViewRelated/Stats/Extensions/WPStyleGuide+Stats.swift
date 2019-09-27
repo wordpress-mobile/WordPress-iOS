@@ -238,7 +238,7 @@ extension WPStyleGuide {
 
         static var mapBackground: UIColor {
             if #available(iOS 13, *) {
-                return .systemGray5
+                return .systemGray4
             }
             return .neutral(.shade10)
         }

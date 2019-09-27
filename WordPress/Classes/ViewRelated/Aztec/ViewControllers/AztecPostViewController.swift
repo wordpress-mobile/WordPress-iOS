@@ -1348,6 +1348,18 @@ extension AztecPostViewController: UITextViewDelegate {
         return true
     }
 
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        // Sergio Estevao: This shouldn't happen in an editable textView, but it looks we have a system bug in iOS13 so we need this workaround
+        if !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
+        let position = characterRange.location
+        textView.selectedRange = NSRange(location: position, length: 0)
+        textView.typingAttributes = textView.attributedText.attributes(at: position, effectiveRange: nil)
+        updateFormatBar()
+        return false
+    }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         refreshTitlePosition()
     }

@@ -142,7 +142,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'dd3a6d6730d8265ed76acb0f60e3ddad89902c1e'
+    gutenberg :commit => '640455e3203791f84b207974fa8c3e307f1fa586'
 
     ## Third party libraries
     ## =====================
@@ -157,7 +157,7 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.1-swift5.1-GM'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
-    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.1.1'
+    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
 
     ## Automattic libraries
     ## ====================
@@ -178,7 +178,7 @@ target 'WordPress' do
 
     pod 'WordPressAuthenticator', '~> 1.10.0-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/siwa-missing-tracks-signuptap'
 
     aztec
     wordpress_ui
