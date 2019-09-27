@@ -83,6 +83,8 @@ class PostCoordinator: NSObject {
             post.deleteRevision()
         }
 
+        post.autoUploadFailureCount = NSNumber(value: automatedRetry ? post.autoUploadFailureCount.intValue + 1 : 1)
+
         guard uploadMedia(for: post, automatedRetry: automatedRetry) else {
             change(post: post, status: .failed)
             return
