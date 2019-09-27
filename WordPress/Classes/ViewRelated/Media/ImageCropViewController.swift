@@ -31,6 +31,8 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         // Title
         title = NSLocalizedString("Resize & Crop", comment: "Screen title. Resize and crop an image.")
 
+        view.backgroundColor = .basicBackground
+
         // Setup: NavigationItem
         let useButtonTitle = NSLocalizedString("Use", comment: "Use the current image")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: useButtonTitle,
@@ -57,6 +59,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
 
         // Setup: Overlay
         overlayView.borderColor = .primary(.shade40)
+        overlayView.outerColor = overlayColor
         overlayView.maskShape = maskShape
     }
 
@@ -112,15 +115,40 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         onCancel?()
     }
 
+    private let overlayColor = UIColor.basicBackground.withAlphaComponent(0.78)
 
     // MARK: - Private Constants
-    fileprivate let maximumScaleFactor  = CGFloat(3)
+    private let maximumScaleFactor  = CGFloat(3)
 
     // MARK: - Private Properties
-    fileprivate var rawImage: UIImage!
+    private var rawImage: UIImage!
 
     // MARK: - IBOutlets
-    @IBOutlet fileprivate var scrollView: UIScrollView!
-    @IBOutlet fileprivate var imageView: UIImageView!
-    @IBOutlet fileprivate var overlayView: ImageCropOverlayView!
+    @IBOutlet private var scrollView: UIScrollView! {
+        didSet {
+            scrollView.backgroundColor = .basicBackground
+        }
+    }
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var overlayView: ImageCropOverlayView!
+    @IBOutlet private var topView: UIView! {
+        didSet {
+            topView.backgroundColor = overlayColor
+        }
+    }
+    @IBOutlet private var bottomView: UIView! {
+        didSet {
+            bottomView.backgroundColor = overlayColor
+        }
+    }
+    @IBOutlet private var rightView: UIView! {
+        didSet {
+            rightView.backgroundColor = overlayColor
+        }
+    }
+    @IBOutlet private var leftView: UIView! {
+        didSet {
+            leftView.backgroundColor = overlayColor
+        }
+    }
 }
