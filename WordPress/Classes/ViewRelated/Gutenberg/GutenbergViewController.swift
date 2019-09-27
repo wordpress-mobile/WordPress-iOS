@@ -117,12 +117,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         })
     }
 
-    // MARK: - Auto save post
-
-    static let autoSaveInterval: TimeInterval = 5
-
-    var autoSaveTimer: Timer?
-
     // MARK: - Set content
 
     func setTitle(_ title: String) {
@@ -176,6 +170,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
     }()
 
+    lazy var autosaver = Autosaver { [weak self] in
+        self?.requestHTML(for: .autoSave)
+    }
+
     /// Media Library Data Source
     ///
     lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
@@ -228,7 +226,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     deinit {
-        stopAutoSave()
         gutenberg.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
     }
@@ -336,6 +333,9 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+    func editorDidAutosave() {
+        autosaver.contentDidChange()
+    }
 
     func gutenbergDidRequestMedia(from source: MediaPickerSource, filter: [MediaFilter]?, with callback: @escaping MediaPickerDidPickMediaCallback) {
         let flags = mediaFilterFlags(using: filter)
@@ -503,14 +503,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidMount(unsupportedBlockNames: [String]) {
-        startAutoSave()
         if !editorSession.started {
             editorSession.start(unsupportedBlocks: unsupportedBlockNames)
         }
-    }
-
-    func editorDidAutosave() {
-        // Currently using native side `autoSaveTimer` for autosave purposes.
     }
 
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
@@ -614,22 +609,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
         navigationItem.leftBarButtonItems = items
-    }
-}
-
-// MARK: - Auto Save
-
-extension GutenbergViewController {
-
-    func startAutoSave() {
-        autoSaveTimer = Timer.scheduledTimer(withTimeInterval: GutenbergViewController.autoSaveInterval, repeats: true, block: { [weak self](timer) in
-            self?.requestHTML(for: .autoSave)
-        })
-    }
-
-    func stopAutoSave() {
-        autoSaveTimer?.invalidate()
-        autoSaveTimer = nil
     }
 }
 
