@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageCropViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="bottomView" destination="CIV-wF-xm3" id="HDz-n6-Tah"/>
                 <outlet property="imageView" destination="MlB-lW-cDq" id="yPd-ZA-8aI"/>
+                <outlet property="leftView" destination="JDj-Kq-dIA" id="LuO-Al-V2g"/>
                 <outlet property="overlayView" destination="yWF-i0-HDh" id="sEm-Qi-wwm"/>
+                <outlet property="rightView" destination="vtv-wR-v7J" id="Yrg-Sx-iAB"/>
                 <outlet property="scrollView" destination="iG3-Bs-5pI" id="Wfv-GY-6fJ"/>
+                <outlet property="topView" destination="wMs-L3-kiw" id="Zh4-4c-jxk"/>
                 <outlet property="view" destination="iN0-l3-epB" id="gy0-14-5mK"/>
             </connections>
         </placeholder>
@@ -101,6 +102,7 @@
                 <constraint firstItem="iG3-Bs-5pI" firstAttribute="top" secondItem="yWF-i0-HDh" secondAttribute="top" id="xZ8-Zi-fGu"/>
                 <constraint firstItem="iG3-Bs-5pI" firstAttribute="leading" secondItem="yWF-i0-HDh" secondAttribute="leading" id="zi7-sK-Kjp"/>
             </constraints>
+            <point key="canvasLocation" x="138" y="154"/>
         </view>
     </objects>
 </document>
