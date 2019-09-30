@@ -65,9 +65,10 @@ class PostCardStatusViewModelTests: XCTestCase {
                 ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.stats, .moveToDraft, .trash])
             ),
             (
-                "Published post with canceled local changes",
-                PostBuilder(context).published().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.stats, .moveToDraft, .trash])
+                "Post with the max number of auto uploades retry reached",
+                PostBuilder(context).with(remoteStatus: .failed)
+                    .with(autoUploadAttemptsCount: 3).confirmedAutoUpload().build(),
+                ButtonGroups(primary: [.edit, .retry, .more], secondary: [.moveToDraft, .trash])
             ),
         ]
 
@@ -87,6 +88,24 @@ class PostCardStatusViewModelTests: XCTestCase {
                 return .succeeded
             }).to(succeed())
         }
+    }
+
+    func testFailedMessageWhenAttemptToAutoUpload() {
+        let post = PostBuilder(context).with(remoteStatus: .failed).with(autoUploadAttemptsCount: 2).build()
+        let viewModel = PostCardStatusViewModel(post: post)
+
+        let message = viewModel.statusAndBadges(separatedBy: "")
+
+        expect(message).to(equal("Post couldn't be published. We'll try again later"))
+    }
+
+    func testFailedMessageWhenMaxNumberOfAttemptsToAutoUploadIsReached() {
+        let post = PostBuilder(context).with(remoteStatus: .failed).with(autoUploadAttemptsCount: 3).build()
+        let viewModel = PostCardStatusViewModel(post: post)
+
+        let message = viewModel.statusAndBadges(separatedBy: "")
+
+        expect(message).to(equal("Couldn't perform operation. Post not published"))
     }
 }
 

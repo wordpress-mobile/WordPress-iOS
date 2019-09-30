@@ -146,7 +146,9 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.cancelAutoUpload)
             }
 
-            if canPublish {
+            if post.autoUploadAttemptsCount.intValue >= autoUploadInteractor.maxNumberOfAttempts {
+                buttons.append(.retry)
+            } else if canPublish {
                 buttons.append(.publish)
             }
 
@@ -223,6 +225,13 @@ class PostCardStatusViewModel: NSObject {
             return StatusMessages.localChanges
         }
 
+        let autoUploadAttemptsCount = post.autoUploadAttemptsCount.intValue
+        if autoUploadAttemptsCount >= autoUploadInteractor.maxNumberOfAttempts {
+            return StatusMessages.postFailedToUploadWillNotAttempt
+        } else if autoUploadAttemptsCount > 0 {
+            return StatusMessages.postWillAtemptLater
+        }
+
         if autoUploadInteractor.autoUploadAction(for: post) != .upload {
             return defaultFailedMessage
         }
@@ -253,5 +262,9 @@ class PostCardStatusViewModel: NSObject {
                                                            comment: "Message shown in post list when a draft is scheduled to be automatically uploaded.")
         static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
                                                              comment: "Message shown in post list when a post's local changes will be automatically uploaded when the device is online.")
+        static let postWillAtemptLater = NSLocalizedString("Post couldn't be published. We'll try again later",
+                                                           comment: "Message shown in the posts list when a post failed to be auto uploaded but we'll try again later.")
+        static let postFailedToUploadWillNotAttempt = NSLocalizedString("Couldn't perform operation. Post not published",
+                                                            comment: "Message shown in the posts list when a post failed to be auto uploaded several times and we'll not try again.")
     }
 }
