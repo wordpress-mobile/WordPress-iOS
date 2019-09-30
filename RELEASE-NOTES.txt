@@ -3,6 +3,7 @@
 * Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account.
 * Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account on app launch.
 * Dark Mode: General improvements
+* Share Extension: Fixed the text view content inset
 
  
 13.3
