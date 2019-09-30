@@ -909,9 +909,8 @@ class AbstractPostListViewController: UIViewController,
             apost.date_created_gmt = Date()
             apost.status = .publish
             apost.shouldAttemptAutoUpload = true
-            self.uploadPost(apost) { [weak self] in
-                self?.updateFilterWithPostStatus(.publish)
-            }
+            self.uploadPost(apost)
+            self.updateFilterWithPostStatus(.publish)
         }
 
         present(alertController, animated: true)
@@ -925,8 +924,8 @@ class AbstractPostListViewController: UIViewController,
         updateFilterWithPostStatus(.draft)
     }
 
-    fileprivate func uploadPost(_ apost: AbstractPost, success successCallback: (() -> ())? = nil) {
-        PostCoordinator.shared.save(apost, success: successCallback)
+    fileprivate func uploadPost(_ apost: AbstractPost) {
+        PostCoordinator.shared.save(apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {
