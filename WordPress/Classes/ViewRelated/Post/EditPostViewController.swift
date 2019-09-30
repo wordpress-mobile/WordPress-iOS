@@ -63,9 +63,11 @@ class EditPostViewController: UIViewController {
     fileprivate init(post: Post?, blog: Blog) {
         self.post = post
         if let post = post {
-            if !post.isDraft() {
+            if !post.originalIsDraft() {
                 editingExistingPost = true
             }
+
+            post.fixLocalMediaURLs()
         }
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
@@ -216,7 +218,7 @@ class EditPostViewController: UIViewController {
         if postPost.revealPost {
             return true
         }
-        if post.isDraft() {
+        if post.originalIsDraft() {
             return false
         }
         return hasChanges

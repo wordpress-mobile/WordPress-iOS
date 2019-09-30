@@ -4,7 +4,18 @@ import WordPressShared
 import WordPressUI
 import QuartzCore
 import Gridicons
-import AFNetworking
+import MobileCoreServices
+
+class ReaderPlaceholderAttachment: NSTextAttachment {
+    init() {
+        // Initialize with default image data to prevent placeholder graphics appearing on iOS 13.
+        super.init(data: UIImage(color: .basicBackground).pngData(), ofType: kUTTypePNG as String)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+}
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
@@ -46,6 +57,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // Header realated Views
     @IBOutlet fileprivate weak var headerView: UIView!
+    @IBOutlet fileprivate weak var headerViewBackground: UIView!
     @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
     @IBOutlet fileprivate weak var blogNameButton: UIButton!
     @IBOutlet fileprivate weak var blogURLLabel: UILabel!
@@ -59,13 +71,21 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate var bylineGradientViews: [GradientView]!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet fileprivate weak var textView: WPRichContentView!
     @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
+    private let textView: WPRichContentView = {
+        let textView = WPRichContentView(frame: .zero, textContainer: nil)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.alpha = 0
+        textView.isEditable = false
+
+        return textView
+    }()
 
     // Spacers
     @IBOutlet fileprivate weak var featuredImageBottomPaddingView: UIView!
     @IBOutlet fileprivate weak var titleBottomPaddingView: UIView!
     @IBOutlet fileprivate weak var bylineBottomPaddingView: UIView!
+    @IBOutlet fileprivate weak var footerDivider: UIView!
 
     @objc open var shouldHideComments = false
     fileprivate var didBumpStats = false
@@ -76,7 +96,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     private let noResultsViewController = NoResultsViewController.controller()
 
-    private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.ReaderRoutes)
+    private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes)
+
+    private let topMarginAttachment = ReaderPlaceholderAttachment()
+
+    private let bottomMarginAttachment = ReaderPlaceholderAttachment()
 
     @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
@@ -213,8 +237,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupTextView()
         setupContentHeaderAndFooter()
-        textView.alpha = 0
         footerView.isHidden = true
 
         // Hide the featured image and its padding until we know there is one to load.
@@ -275,6 +299,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // This is something we do to help with the resizing that can occur with
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
+
+        if #available(iOS 13.0, *) {
+            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true, UIApplication.shared.applicationState != .background {
+                reloadGradientColors()
+                configureRichText()
+            }
+        }
     }
 
 
@@ -286,8 +317,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         coordinator.animate(
             alongsideTransition: { (_) in
-                if let position = position, let textRange = self.textView.textRange(from: position, to: position) {
+                if let position = position,
+                    let textRange = self.textView.textRange(from: position, to: position) {
+
                     let rect = self.textView.firstRect(for: textRange)
+
                     if rect.origin.y.isFinite {
                         self.textView.setContentOffset(CGPoint(x: 0.0, y: rect.origin.y), animated: false)
                     }
@@ -374,6 +408,21 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         })
     }
 
+    /// Setup the Text View.
+    fileprivate func setupTextView() {
+        // This method should be called exactly once.
+        assert(textView.superview == nil)
+
+        textView.delegate = self
+
+        view.addSubview(textView)
+        view.addConstraints([
+            view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: textView.topAnchor),
+            view.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
+            textView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
+            ])
+    }
 
     /// Composes the views for the post header and Discover attribution.
     fileprivate func setupContentHeaderAndFooter() {
@@ -400,8 +449,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     /// Sets the left and right textContainerInset to preserve readable content margins.
     fileprivate func updateContentInsets() {
         var insets = textView.textContainerInset
-
         let margin = view.readableContentGuide.layoutFrame.origin.x
+
         insets.left = margin - DetailConstants.MarginOffset
         insets.right = margin - DetailConstants.MarginOffset
         textView.textContainerInset = insets
@@ -431,9 +480,25 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     /// Updates the bounds of the placeholder top and bottom text attachments so
     /// there is enough vertical space for the text header and footer views.
     fileprivate func updateTextViewMargins() {
-        textView.topMargin = textHeaderStackView.frame.height
-        textView.bottomMargin = textFooterStackView.frame.height
+        updateTopMargin()
+        updateBottomMargin()
         textFooterTopConstraint.constant = textFooterYOffset()
+    }
+
+    fileprivate func updateTopMargin() {
+        var bounds = topMarginAttachment.bounds
+        bounds.size.height = max(1, textHeaderStackView.frame.height)
+        bounds.size.width = textView.textContainer.size.width
+        topMarginAttachment.bounds = bounds
+        textView.ensureLayoutForAttachment(topMarginAttachment)
+    }
+
+    fileprivate func updateBottomMargin() {
+        var bounds = bottomMarginAttachment.bounds
+        bounds.size.height = max(1, textFooterStackView.frame.height)
+        bounds.size.width = textView.textContainer.size.width
+        bottomMarginAttachment.bounds = bounds
+        textView.ensureLayoutForAttachment(bottomMarginAttachment)
     }
 
 
@@ -459,6 +524,32 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
+
+        view.backgroundColor = .listBackground
+
+        titleLabel.backgroundColor = .basicBackground
+        titleBottomPaddingView.backgroundColor = .basicBackground
+        bylineView.backgroundColor = .basicBackground
+        bylineBottomPaddingView.backgroundColor = .basicBackground
+
+        headerView.backgroundColor = .listForeground
+        footerView.backgroundColor = .listForeground
+        footerDivider.backgroundColor = .divider
+
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle == .dark {
+                attributionView.backgroundColor = .listBackground
+            }
+        }
+
+        reloadGradientColors()
+    }
+
+    fileprivate func reloadGradientColors() {
+        bylineGradientViews.forEach({ view in
+            view.fromColor = .basicBackground
+            view.toColor = UIColor.basicBackground.withAlphaComponent(0.0)
+        })
     }
 
 
@@ -515,7 +606,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
         if let url = post?.siteIconForDisplay(ofSize: Int(size)) {
-            blavatarImageView.setImageWith(url, placeholderImage: placeholder)
+            blavatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         }
         // Site name
         let blogName = post?.blogNameForDisplay()
@@ -636,7 +727,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         if let avatarURLString = post?.authorAvatarURL,
             let url = URL(string: avatarURLString) {
-            avatarImageView.setImageWith(url, placeholderImage: placeholder)
+            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         }
 
         // Byline
@@ -670,13 +761,35 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
     }
 
-
     fileprivate func configureRichText() {
         guard let post = post else {
             return
         }
         textView.isPrivate = post.isPrivate()
         textView.content = post.contentForDisplay()
+
+        // TODO: Get attributed string
+        // Modify the attributed string. Add top and bottom embeds
+        // Ensure formatting for embeds.
+        // Assign attributed string to textView.
+        // Besure that embed bounds are updated.
+        let attrStr = WPRichContentView.formattedAttributedStringForString(post.contentForDisplay())
+        let mAttrStr = NSMutableAttributedString(attributedString: attrStr)
+
+        // Ensure the starting paragraph style is applied to the topMarginAttachment else the
+        // first paragraph might not have the correct line height.
+        var paraStyle = NSParagraphStyle.default
+        if attrStr.length > 0 {
+            if let pstyle = attrStr.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
+                paraStyle = pstyle
+            }
+        }
+
+        mAttrStr.insert(NSAttributedString(attachment: topMarginAttachment), at: 0)
+        mAttrStr.addAttributes([.paragraphStyle: paraStyle], range: NSRange(location: 0, length: 1))
+        mAttrStr.append(NSAttributedString(attachment: bottomMarginAttachment))
+
+        textView.attributedText = mAttrStr
 
         updateTextViewMargins()
     }
@@ -753,9 +866,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         button.setTitle(title, for: .disabled)
         button.setImage(image, for: UIControl.State())
         button.setImage(highlightedImage, for: .highlighted)
+        button.setImage(highlightedImage, for: .selected)
+        button.setImage(highlightedImage, for: [.highlighted, .selected])
         button.setImage(image, for: .disabled)
         button.isSelected = selected
         button.isHidden = false
+
+        WPStyleGuide.applyReaderActionButtonStyle(button)
     }
 
 
@@ -763,11 +880,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         likeButton.isEnabled = ReaderHelpers.isLoggedIn()
 
         let title = post!.likeCountForDisplay()
-        let imageName = post!.isLiked ? "icon-reader-liked" : "icon-reader-like"
-        let image = UIImage(named: imageName)
-        let highlightImage = UIImage(named: "icon-reader-like-highlight")
         let selected = post!.isLiked
-        configureActionButton(likeButton, title: title, image: image, highlightedImage: highlightImage, selected: selected)
+        let likeImage = UIImage(named: "icon-reader-like")
+        let likedImage = UIImage(named: "icon-reader-liked")
+
+        configureActionButton(likeButton, title: title, image: likeImage, highlightedImage: likedImage, selected: selected)
 
         if animated {
             playLikeButtonAnimation()
@@ -937,6 +1054,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         if hidden {
+            // Do not hide the navigation bars if VoiceOver is running because switching between
+            // hidden and visible causes the dictation to assume that the number of pages has
+            // changed. For example, when transitioning from hidden to visible, VoiceOver will
+            // dictate "page 4 of 4" and then dictate "page 5 of 5".
+            if UIAccessibility.isVoiceOverRunning {
+                return
+            }
+
             // Hides the navbar and footer view
             navigationController?.setNavigationBarHidden(true, animated: animated)
             currentPreferredStatusBarStyle = .default
@@ -961,7 +1086,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                             self.view.layoutIfNeeded()
                             self.navigationController?.setNavigationBarHidden(false, animated: animated)
                             if pinToBottom {
-                                let y = self.textView.contentSize.height - self.textView.frame.height
+                                let contentSizeHeight = self.textView.contentSize.height
+                                let frameHeight = self.textView.frame.height
+                                let y =  contentSizeHeight - frameHeight
                                 self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
                             }
 
@@ -1329,6 +1456,17 @@ extension ReaderDetailViewController: Accessible {
         prepareHeaderForVoiceOver()
         prepareContentForVoiceOver()
         prepareActionButtonsForVoiceOver()
+
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(setBarsAsVisibleIfVoiceOverIsEnabled),
+            name: UIAccessibility.voiceOverStatusDidChangeNotification,
+            object: nil)
+    }
+
+    @objc func setBarsAsVisibleIfVoiceOverIsEnabled() {
+        if UIAccessibility.isVoiceOverRunning {
+            setBarsHidden(false)
+        }
     }
 
     private func prepareMenuForVoiceOver() {

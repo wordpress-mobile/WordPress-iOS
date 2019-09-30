@@ -42,16 +42,21 @@ struct StatsTotalRowData {
         self.childRows = childRows
         self.statSection = statSection
     }
+
+    var hasIcon: Bool {
+        return self.icon != nil || self.socialIconURL != nil || self.userIconURL != nil
+    }
 }
 
 @objc protocol StatsTotalRowDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
+    @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
+    @objc optional func showAddInsight()
 }
 
-class StatsTotalRow: UIView, NibLoadable {
+class StatsTotalRow: UIView, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -67,6 +72,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var itemDetailLabel: UILabel!
@@ -86,13 +92,12 @@ class StatsTotalRow: UIView, NibLoadable {
     private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: StatsTotalRowDelegate?
+    private var forDetails = false
+    private(set) weak var parentRow: StatsTotalRow?
 
     // This view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
     weak var childRowsView: StatsChildRowsView?
-
-    // This is set by the containing cell when child rows are added.
-    weak var parentRow: StatsTotalRow?
 
     var showSeparator = true {
         didSet {
@@ -124,28 +129,32 @@ class StatsTotalRow: UIView, NibLoadable {
             showSeparator = (parentRow != nil) ? false : !expanded
             showTopExpandedSeparator = expanded
 
-            let rotation = expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [weak self] in
-                self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
-            })
+            // Detail rows are updated differently,
+            // so those disclosure icons are updated on configure.
+            if !forDetails {
+                rotateDisclosure()
+            }
         }
     }
 
     var hasIcon: Bool {
-        guard let rowData = rowData else {
-            return false
-        }
-        return rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
+        return rowData?.hasIcon ?? false
     }
 
     // MARK: - Configure
 
-    func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
+    func configure(rowData: StatsTotalRowData,
+                   delegate: StatsTotalRowDelegate? = nil,
+                   forDetails: Bool = false,
+                   parentRow: StatsTotalRow? = nil) {
         self.rowData = rowData
         self.delegate = delegate
+        self.forDetails = forDetails
+        self.parentRow = parentRow
 
-        configureExpandedState()
         configureIcon()
+        configureExpandedState()
+        configureDetailDisclosure()
 
         // Set values
         itemLabel.text = rowData.name
@@ -153,14 +162,15 @@ class StatsTotalRow: UIView, NibLoadable {
         dataLabel.text = rowData.data
 
         // Toggle optionals
+        configureDisclosureButton()
         disclosureImageView.isHidden = !rowData.showDisclosure
-        disclosureButton.isEnabled = rowData.showDisclosure
         itemDetailLabel.isHidden = (rowData.nameDetail == nil)
         dataBarView.isHidden = (rowData.dataBarPercent == nil)
         separatorLine.isHidden = !showSeparator
         dataLabel.isHidden = rowData.data.isEmpty
 
         applyStyles()
+        prepareForVoiceOver()
     }
 
     override func layoutSubviews() {
@@ -168,11 +178,43 @@ class StatsTotalRow: UIView, NibLoadable {
         configureDataBar()
     }
 
+    // MARK: - Accessibility
+
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+
+        let itemTitle = itemLabel.text ?? ""
+        let dataTitle = dataLabel.text ?? ""
+        accessibilityLabel = [itemTitle, dataTitle].joined(separator: ", ")
+
+        if let statSection = rowData?.statSection, statSection == .insightsAddInsight {
+            accessibilityTraits = .button
+            accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint")
+            return
+        }
+
+        let showDisclosure = rowData?.showDisclosure ?? false
+        accessibilityTraits = (showDisclosure) ? .button : .staticText
+        accessibilityHint = (showDisclosure) ? NSLocalizedString("Tap for more detail.", comment: "Accessibility hint") : ""
+
+        switch (showDisclosure, hasChildRows) {
+        case (true, true):
+            accessibilityHint = expanded
+                                    ? NSLocalizedString("Expanded. Tap to collapse.", comment: "Accessibility hint")
+                                    : NSLocalizedString("Collapsed. Tap to expand.", comment: "Accessibility hint")
+        case (true, false):
+            accessibilityHint = NSLocalizedString("Tap for more detail.", comment: "Accessibility hint")
+        default:
+            break
+        }
+    }
 }
 
 private extension StatsTotalRow {
 
     func applyStyles() {
+        backgroundColor = .listForeground
+        contentView.backgroundColor = .listForeground
         Style.configureLabelAsCellRowTitle(itemLabel)
         Style.configureLabelItemDetail(itemDetailLabel)
         Style.configureLabelAsData(dataLabel)
@@ -181,15 +223,54 @@ private extension StatsTotalRow {
         Style.configureViewAsDataBar(dataBar)
     }
 
-    func configureExpandedState() {
+    func configureDisclosureButton() {
+        guard let rowData = rowData else {
+            disclosureButton.isEnabled = false
+            return
+        }
 
-        guard let name = rowData?.name,
-        let statSection = rowData?.statSection else {
+        disclosureButton.isEnabled = rowData.showDisclosure
+
+        // Add Insight doesn't have a disclosure icon, but it needs a tap action.
+        if rowData.statSection == .insightsAddInsight {
+            disclosureButton.isEnabled = true
+        }
+    }
+
+    func configureExpandedState() {
+        guard let name = rowData?.name, let statSection = rowData?.statSection else {
             expanded = false
             return
         }
 
-        expanded = StatsDataHelper.expandedRowLabels[statSection]?.contains(name) ?? false
+        let expandedLabels = forDetails ? StatsDataHelper.expandedRowLabelsDetails : StatsDataHelper.expandedRowLabels
+        expanded = expandedLabels[statSection]?.contains(name) ?? false
+    }
+
+    func configureDetailDisclosure() {
+        guard hasChildRows, forDetails else {
+            return
+        }
+
+        // If the detail row has been expanded/collapsed, animate the icon rotation.
+        // Otherwise, just set the rotation.
+
+        if StatsDataHelper.detailRowDisclosureNeedsUpdating == rowData?.name {
+            StatsDataHelper.detailRowDisclosureNeedsUpdating = nil
+            rotateDisclosure()
+        } else {
+            disclosureImageView.transform = CGAffineTransform(rotationAngle: disclosureRotation())
+        }
+    }
+
+    func rotateDisclosure() {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+            self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: self?.disclosureRotation() ?? 0)
+        })
+    }
+
+    func disclosureRotation() -> CGFloat {
+        return expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
     }
 
     func configureIcon() {
@@ -198,28 +279,51 @@ private extension StatsTotalRow {
             return
         }
 
-        imageView.isHidden = !hasIcon
+        let imageSize = rowData.statSection?.imageSize ?? StatSection.defaultImageSize
+
+        // If the parent row has an icon and this row does not,
+        // show the image view to make this row appear "indented" by the icon width.
+        if let parentRow = parentRow, parentRow.hasIcon, !hasIcon {
+            imageView.isHidden = false
+            imageWidthConstraint.constant = parentRow.imageWidthConstraint.constant
+            imageHeightConstraint.constant = 1
+        } else {
+            imageView.isHidden = !hasIcon
+            imageWidthConstraint.constant = imageSize
+            imageHeightConstraint.constant = imageSize
+        }
 
         if let icon = rowData.icon {
-            imageWidthConstraint.constant = Constants.defaultImageSize
             imageView.image = icon
         }
 
         if let iconURL = rowData.socialIconURL {
-            imageWidthConstraint.constant = Constants.socialImageSize
+            // Show a grey box with rounded corners until image is loaded.
+            imageView.backgroundColor = Style.iconLoadingBackgroundColor
+            imageView.layer.cornerRadius = 4.0
             downloadImageFrom(iconURL)
         }
 
         if let iconURL = rowData.userIconURL {
-            imageWidthConstraint.constant = Constants.userImageSize
-            imageView.layer.cornerRadius = Constants.userImageSize * 0.5
+            // Show user icon as a circle.
+            imageView.layer.cornerRadius = imageSize * 0.5
             imageView.clipsToBounds = true
 
-            // Use placeholder image until real image is loaded.
+            // Use placeholder image until image is loaded.
             imageView.image = Style.gravatarPlaceholderImage()
 
             downloadImageFrom(iconURL)
         }
+    }
+
+    func downloadImageFrom(_ iconURL: URL) {
+        WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
+            self.imageView.image = image
+            self.imageView.backgroundColor = .clear
+        }, failure: { error in
+            DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
+            self.imageView.isHidden = true
+        })
     }
 
     func configureDataBar() {
@@ -249,24 +353,16 @@ private extension StatsTotalRow {
         dataBarWidthConstraint.constant = CGFloat(distanceFromMax)
     }
 
-    func downloadImageFrom(_ iconURL: URL) {
-        WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
-            self.imageView.image = image
-        }, failure: { error in
-            DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
-            self.imageView.isHidden = true
-        })
-    }
-
     struct Constants {
-        static let defaultImageSize = CGFloat(24)
-        static let socialImageSize = CGFloat(20)
-        static let userImageSize = CGFloat(28)
         static let disclosureImageUp = CGFloat.pi * 1.5
         static let disclosureImageDown = CGFloat.pi / 2
     }
 
     @IBAction func didTapDisclosureButton(_ sender: UIButton) {
+
+        if let statSection = rowData?.statSection {
+            captureAnalyticsEventsFor(statSection)
+        }
 
         if let mediaID = rowData?.mediaID {
             delegate?.displayMediaWithID?(mediaID)
@@ -275,7 +371,8 @@ private extension StatsTotalRow {
 
         if hasChildRows {
             expanded.toggle()
-            delegate?.toggleChildRowsForRow?(self)
+            prepareForVoiceOver()
+            delegate?.toggleChildRows?(for: self, didSelectRow: true)
             return
         }
 
@@ -293,7 +390,49 @@ private extension StatsTotalRow {
             return
         }
 
+        if let statSection = rowData?.statSection, statSection == .insightsAddInsight {
+            delegate?.showAddInsight?()
+            return
+        }
+
         DDLogInfo("Stat row selection action not supported.")
     }
 
+    func captureAnalyticsEventsFor(_ statSection: StatSection) {
+        guard let event = statSection.analyticsItemTappedEvent else {
+            return
+        }
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event)
+        }
+    }
+
+}
+
+// MARK: - Analytics support
+
+private extension StatSection {
+    var analyticsItemTappedEvent: WPAnalyticsStat? {
+        switch self {
+        case .periodAuthors, .insightsCommentsAuthors:
+            return .statsItemTappedAuthors
+        case .periodClicks:
+            return .statsItemTappedClicks
+        case .periodPostsAndPages:
+            return .statsItemTappedPostsAndPages
+        case .periodSearchTerms:
+            return .statsItemTappedSearchTerms
+        case .insightsTagsAndCategories:
+            return .statsItemTappedTagsAndCategories
+        case .periodVideos:
+            return .statsItemTappedVideoTapped
+        case .insightsAddInsight:
+            return .statsItemTappedInsightsAddStat
+        default:
+            return nil
+        }
+    }
 }

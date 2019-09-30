@@ -54,8 +54,8 @@ open class ReaderCrossPostCell: UITableViewCell {
     // MARK: - Appearance
 
     fileprivate func applyStyles() {
-        contentView.backgroundColor = WPStyleGuide.greyLighten30()
-        label?.backgroundColor = WPStyleGuide.greyLighten30()
+        contentView.backgroundColor = .listBackground
+        label?.backgroundColor = .listBackground
     }
 
     fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
@@ -92,7 +92,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
         let url = contentProvider?.siteIconForDisplay(ofSize: Int(size))
         if url != nil {
-            blavatarImageView.setImageWith(url!, placeholderImage: placeholder)
+            blavatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         } else {
             blavatarImageView.image = placeholder
         }
@@ -106,7 +106,7 @@ open class ReaderCrossPostCell: UITableViewCell {
 
         let url = contentProvider?.avatarURLForDisplay()
         if url != nil {
-            avatarImageView.setImageWith(url!, placeholderImage: placeholder)
+            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
         }

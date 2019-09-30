@@ -65,7 +65,7 @@ extension WPStyleGuide {
     ///
     @objc public class func tintColorForConnectedService(_ service: String) -> UIColor {
         guard let name = SharingServiceNames(rawValue: service) else {
-            return WPStyleGuide.wordPressBlue()
+            return .primary
         }
 
         switch name {

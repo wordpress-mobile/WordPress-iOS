@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
-
+import WordPressFlux
 
 func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewController? {
     guard let api = account.wordPressComRestApi else {
@@ -75,11 +75,16 @@ private class AccountSettingsController: SettingsController {
     // MARK: - Model mapping
 
     func mapViewModel(_ settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
-        let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
 
         let username = TextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
             value: settings?.username ?? ""
+        )
+
+        let editableUsername = EditableTextRow(
+            title: NSLocalizedString("Username", comment: "Account Settings Username label"),
+            value: settings?.username ?? "",
+            action: presenter.push(changeUsername(with: settings, service: service))
         )
 
         let email = EditableTextRow(
@@ -88,9 +93,17 @@ private class AccountSettingsController: SettingsController {
             action: presenter.push(editEmailAddress(settings, service: service))
         )
 
+        var primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) } ?? ""
+
+        // If the primary site has no Site Title, then show the displayURL.
+        if primarySiteName.isEmpty {
+            let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            primarySiteName = blogService.primaryBlog()?.displayURL as String? ?? ""
+        }
+
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
-            value: primarySiteName ?? "",
+            value: primarySiteName,
             action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service)))
         )
 
@@ -109,7 +122,7 @@ private class AccountSettingsController: SettingsController {
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: [
-                    username,
+                    (settings?.usernameCanBeChanged ?? false) ? editableUsername : username,
                     email,
                     password,
                     primarySite,
@@ -156,6 +169,18 @@ private class AccountSettingsController: SettingsController {
                             SVProgressHUD.showError(withStatus: errorMessage)
                         }
                     })
+                }
+            }
+        }
+    }
+
+    func changeUsername(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> ChangeUsernameViewController {
+        return { _ in
+            return ChangeUsernameViewController(service: service, settings: settings) { [weak self] username in
+                self?.refreshModel()
+                if let username = username {
+                    let notice = Notice(title: String(format: Constants.usernameChanged, username))
+                    ActionDispatcher.dispatch(NoticeAction.post(notice))
                 }
             }
         }
@@ -231,5 +256,6 @@ private class AccountSettingsController: SettingsController {
         static let changingPassword = NSLocalizedString("Changing password", comment: "Loader title displayed by the loading view while the password is changing")
         static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
+        static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
     }
 }

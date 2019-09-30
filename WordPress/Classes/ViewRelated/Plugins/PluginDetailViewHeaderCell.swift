@@ -6,12 +6,12 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        if #available(iOS 11, *) {
-            nameLabel?.font = UIFontMetrics.default.scaledFont(for: nameLabel!.font)
-        }
+        nameLabel?.font = UIFontMetrics.default.scaledFont(for: nameLabel!.font)
     }
 
     open func configureCell(_ directoryEntry: PluginDirectoryEntry) {
+        contentView.backgroundColor = .listForeground
+
         if let banner = directoryEntry.banner {
             headerImageView?.isHidden = false
             headerImageView?.downloadImage(from: banner)
@@ -21,15 +21,17 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
         let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 40, height: 40))
         iconImageView?.downloadImage(from: directoryEntry.icon, placeholderImage: iconPlaceholder)
+        iconImageView?.backgroundColor = .listForeground
+        iconImageView?.tintColor = .neutral
 
         nameLabel?.text = directoryEntry.name
 
         let author = directoryEntry.author
 
         let defaultAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .subheadline),
-                                                               .foregroundColor: WPStyleGuide.darkGrey()]
+                                                               .foregroundColor: UIColor.neutral(.shade70)]
 
-        let authorAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: WPStyleGuide.mediumBlue()]
+        let authorAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary(.shade40)]
 
         let string = NSLocalizedString("by %@", comment: "Used when displaying author of a plugin.")
         let attrString = NSMutableAttributedString(string: String(format: string, author), attributes: defaultAttributes)

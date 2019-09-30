@@ -6,6 +6,7 @@ class PagedViewController: UIViewController {
     @IBOutlet weak var divider: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var pageControlContainer: UIView!
 
     @objc let viewControllers: [UIViewController]
     @objc var currentIndex: Int = 0 {
@@ -55,10 +56,14 @@ class PagedViewController: UIViewController {
     }
 
     fileprivate func applyWPStyles() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
-        divider.backgroundColor = WPStyleGuide.greyLighten30()
-        pageControl.currentPageIndicatorTintColor = WPStyleGuide.grey()
-        pageControl.pageIndicatorTintColor = WPStyleGuide.grey().withAlphaComponent(0.5)
+        view.backgroundColor = .listBackground
+        pageControlContainer.backgroundColor = .listBackground
+
+        divider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth).isActive = true
+        divider.backgroundColor = .divider
+
+        pageControl.currentPageIndicatorTintColor = .listSmallIcon
+        pageControl.pageIndicatorTintColor = UIColor.listSmallIcon.withAlphaComponent(0.5)
     }
 
     fileprivate func addViewControllers() {

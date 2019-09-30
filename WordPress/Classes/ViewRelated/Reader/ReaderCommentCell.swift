@@ -21,14 +21,23 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc var enableLoggedInFeatures = false
 
+    @IBOutlet var parentStackView: UIStackView!
     @IBOutlet var avatarImageView: UIImageView!
     @IBOutlet var authorButton: UIButton!
     @IBOutlet var timeLabel: LongPressGestureLabel!
-    @IBOutlet var textView: WPRichContentView!
     @IBOutlet var replyButton: UIButton!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var actionBar: UIStackView!
     @IBOutlet var leadingContentConstraint: NSLayoutConstraint!
+
+    private let textView: WPRichContentView = {
+        let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
+        newTextView.isScrollEnabled = false
+        newTextView.isEditable = false
+        newTextView.translatesAutoresizingMaskIntoConstraints = false
+
+        return newTextView
+    }()
 
     @objc weak var delegate: ReaderCommentCellDelegate? {
         didSet {
@@ -37,6 +46,8 @@ class ReaderCommentCell: UITableViewCell {
     }
 
     @objc var comment: Comment?
+
+    @objc var attributedString: NSAttributedString?
 
     @objc var showReply: Bool {
         get {
@@ -68,6 +79,7 @@ class ReaderCommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        setupContentView()
         setupReplyButton()
         setupLikeButton()
         applyStyles()
@@ -76,7 +88,6 @@ class ReaderCommentCell: UITableViewCell {
 
     // MARK: = Setup
 
-
     @objc func applyStyles() {
         WPStyleGuide.applyReaderCardSiteButtonStyle(authorButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(timeLabel)
@@ -84,42 +95,50 @@ class ReaderCommentCell: UITableViewCell {
         authorButton.titleLabel?.lineBreakMode = .byTruncatingTail
 
         textView.textContainerInset = Constants.textViewInsets
+
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .primary(.shade0)
+        selectedBackgroundView = backgroundView
     }
 
+    func setupContentView() {
+        // This method should be called exactly once.
+        assert(textView.superview == nil)
+
+        parentStackView.insertArrangedSubview(textView, at: 1)
+    }
 
     @objc func setupReplyButton() {
-        let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.grey())?.rotate180Degrees()
-        let highlightedIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())?.rotate180Degrees()
-
-        replyButton.setImage(tintedIcon, for: .normal)
-        replyButton.setImage(highlightedIcon, for: .highlighted)
+        let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize).rotate180Degrees()
+        replyButton.setImage(icon, for: .normal)
+        replyButton.setImage(icon, for: .highlighted)
 
         let title = NSLocalizedString("Reply", comment: "Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post.")
         replyButton.setTitle(title, for: .normal)
-        replyButton.setTitleColor(WPStyleGuide.grey(), for: .normal)
+
+        WPStyleGuide.applyReaderActionButtonStyle(replyButton)
     }
 
 
     @objc func setupLikeButton() {
         let size = Constants.buttonSize
-        let tintedIcon = Gridicon.iconOfType(.starOutline, withSize: size).imageWithTintColor(WPStyleGuide.grey())
-        let highlightedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(WPStyleGuide.lightBlue())
-        let selectedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(WPStyleGuide.jazzyOrange())
+        let star = Gridicon.iconOfType(.star, withSize: size)
+        let starOutline = Gridicon.iconOfType(.starOutline, withSize: size)
 
-        likeButton.setImage(tintedIcon, for: .normal)
-        likeButton.setImage(highlightedIcon, for: .highlighted)
-        likeButton.setImage(selectedIcon, for: .selected)
+        likeButton.setImage(starOutline, for: .normal)
+        likeButton.setImage(star, for: .highlighted)
+        likeButton.setImage(star, for: .selected)
+        likeButton.setImage(star, for: [.selected, .highlighted])
 
-        likeButton.setTitleColor(WPStyleGuide.grey(), for: .normal)
+        WPStyleGuide.applyReaderActionButtonStyle(likeButton)
     }
-
 
     // MARK: - Configuration
 
 
-    @objc func configureCell(comment: Comment) {
+    @objc func configureCell(comment: Comment, attributedString: NSAttributedString) {
         self.comment = comment
+        self.attributedString = attributedString
 
         configureAvatar()
         configureAuthorButton()
@@ -136,7 +155,7 @@ class ReaderCommentCell: UITableViewCell {
 
         let placeholder = UIImage(named: "gravatar")
         if let url = comment.avatarURLForDisplay() {
-            avatarImageView.setImageWith(url, placeholderImage: placeholder)
+            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
         }
@@ -150,13 +169,13 @@ class ReaderCommentCell: UITableViewCell {
 
         authorButton.isEnabled = true
         authorButton.setTitle(comment.authorForDisplay(), for: .normal)
-        authorButton.setTitleColor(WPStyleGuide.lightBlue(), for: .highlighted)
-        authorButton.setTitleColor(WPStyleGuide.greyDarken30(), for: .disabled)
+        authorButton.setTitleColor(.primaryLight, for: .highlighted)
+        authorButton.setTitleColor(.neutral(.shade60), for: .disabled)
 
         if comment.authorIsPostAuthor() {
-            authorButton.setTitleColor(WPStyleGuide.jazzyOrange(), for: .normal)
+            authorButton.setTitleColor(.accent, for: .normal)
         } else if comment.hasAuthorUrl() {
-            authorButton.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+            authorButton.setTitleColor(.primary, for: .normal)
         } else {
             authorButton.isEnabled = false
         }
@@ -175,14 +194,14 @@ class ReaderCommentCell: UITableViewCell {
 
 
     @objc func configureText() {
-        guard let comment = comment else {
+        guard let comment = comment, let attributedString = attributedString else {
             return
         }
 
         textView.isPrivate = comment.isPrivateContent()
         // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
         // correctly formatted during the sync process.
-        textView.content = comment.content
+        textView.attributedText = attributedString
     }
 
 

@@ -17,11 +17,20 @@ struct PostEditorAnalyticsSession {
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(hasUnsupportedBlocks: Bool) {
+    mutating func start(unsupportedBlocks: [String] = []) {
         assert(!started, "An editor session was attempted to start more than once")
-        self.hasUnsupportedBlocks = hasUnsupportedBlocks
-        WPAppAnalytics.track(.editorSessionStart, withProperties: commonProperties)
+        hasUnsupportedBlocks = !unsupportedBlocks.isEmpty
+
+        let properties = startEventProperties(with: unsupportedBlocks)
+
+        WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
+    }
+
+    private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
+        return [
+            Property.unsupportedBlocks: unsupportedBlocks
+        ].merging(commonProperties, uniquingKeysWith: { $1 })
     }
 
     mutating func `switch`(editor: Editor) {
@@ -58,6 +67,7 @@ private extension PostEditorAnalyticsSession {
         static let contentType = "content_type"
         static let editor = "editor"
         static let hasUnsupportedBlocks = "has_unsupported_blocks"
+        static let unsupportedBlocks = "unsupported_blocks"
         static let postType = "post_type"
         static let outcome = "outcome"
         static let sessionId = "session_id"

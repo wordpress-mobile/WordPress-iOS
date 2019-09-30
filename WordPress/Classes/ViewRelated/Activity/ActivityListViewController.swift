@@ -70,7 +70,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
@@ -127,6 +127,7 @@ extension ActivityListViewController {
             return nil
         }
 
+        cell.separator.isHidden = true
         cell.titleLabel.text = NSLocalizedString("Since you're on a free plan, you'll see limited events in your Activity Log.", comment: "Text displayed as a footer of a table view with Activities when user is on a free plan")
 
         return cell
@@ -174,7 +175,7 @@ extension ActivityListViewController {
                                                 handler: { [weak self] _, indexPath in
                                                     self?.presentRewindFor(activity: row.activity)
         })
-        rewindAction.backgroundColor = WPStyleGuide.mediumBlue()
+        rewindAction.backgroundColor = .primary(.shade40)
 
         return [rewindAction]
     }

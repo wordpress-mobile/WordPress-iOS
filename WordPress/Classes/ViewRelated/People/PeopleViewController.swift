@@ -502,9 +502,7 @@ private extension PeopleViewController {
     }
 
     func setupFilterBar() {
-        filterBar.tintColor = WPStyleGuide.wordPressBlue()
-        filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterBar.dividerColor = WPStyleGuide.greyLighten20()
+        WPStyleGuide.configureFilterTabBar(filterBar)
 
         filterBar.items = filtersAvailableForBlog(blog)
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -532,7 +530,7 @@ private extension PeopleViewController {
                                                             target: self,
                                                             action: #selector(invitePersonWasPressed))
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         setupFilterBar()

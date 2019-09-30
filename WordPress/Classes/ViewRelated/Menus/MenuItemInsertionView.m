@@ -1,4 +1,5 @@
 #import "MenuItemInsertionView.h"
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -14,7 +15,7 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
         [self.contentView addGestureRecognizer:tap];
 
-        self.iconView.tintColor = [WPStyleGuide wordPressBlue];
+        self.iconView.tintColor = [UIColor murielPrimary];
         self.iconView.image = [Gridicon iconOfType:GridiconTypePlus];
     }
 
@@ -56,7 +57,7 @@
     if (self.highlighted) {
         color = [super textLabelColor];
     } else  {
-        color = [WPStyleGuide wordPressBlue];
+        color = [UIColor murielPrimary];
     }
 
     return color;

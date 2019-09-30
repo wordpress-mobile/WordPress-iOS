@@ -26,7 +26,6 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
         nameLabel.font = WPStyleGuide.subtitleFontBold()
         logoImageView.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
     }
@@ -35,7 +34,7 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
 
         accessoryView?.removeFromSuperview()
-        logoImageView.cancelImageDownloadTask()
+        logoImageView.cancelImageDownload()
         logoImageView.image = nil
     }
 
@@ -56,8 +55,11 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
             logoImageView.image = iconPlaceholder
         }
 
-        authorLabel?.text = author
         nameLabel?.text = name
+        authorLabel?.text = author
+
+        nameLabel?.textColor = .text
+        authorLabel?.textColor = .textSubtle
     }
 
 }

@@ -30,30 +30,15 @@ class RemoteNotificationStyles: FormattableContentStyles {
     }()
 
     private lazy var prevailingBoldFont: UIFont = {
-        if #available(iOS 11.0, *) {
-            return WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: .traitBold)
-        } else {
-            let prevailingFontSize = UIDevice.isPad() ? CGFloat(16) : CGFloat(12)
-            return WPFontManager.systemBoldFont(ofSize: prevailingFontSize)
-        }
+        return WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: .traitBold)
     }()
 
     private lazy var prevailingItalicizedFont: UIFont = {
-        if #available(iOS 11.0, *) {
-            return WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: .traitItalic)
-        } else {
-            let prevailingFontSize = UIDevice.isPad() ? CGFloat(16) : CGFloat(12)
-            return WPFontManager.systemItalicFont(ofSize: prevailingFontSize)
-        }
+        return WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: .traitItalic)
     }()
 
     private lazy var prevailingFont: UIFont = {
-        if #available(iOS 11.0, *) {
-            return WPStyleGuide.fontForTextStyle(.footnote)
-        } else {
-            let prevailingFontSize = UIDevice.isPad() ? CGFloat(16) : CGFloat(12)
-            return WPFontManager.systemRegularFont(ofSize: prevailingFontSize)
-        }
+        return WPStyleGuide.fontForTextStyle(.footnote)
     }()
 
     // MARK: FormattableContentStyles

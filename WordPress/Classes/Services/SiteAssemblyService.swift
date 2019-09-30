@@ -37,7 +37,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
         if let wpcomApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
             api = wpcomApi
         } else {
-            api = WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+            api = WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
         }
         self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
 

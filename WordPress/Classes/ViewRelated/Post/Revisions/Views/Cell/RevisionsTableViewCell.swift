@@ -76,10 +76,13 @@ private extension RevisionsTableViewCell {
     private func setupStyles() {
         // Setup cell style
         WPStyleGuide.configureTableViewCell(self)
+        contentView.backgroundColor = .listForeground
 
         // Setup labels
-        titleLabel.textColor = WPStyleGuide.darkGrey()
-        subTitleLabel.textColor = WPStyleGuide.greyDarken10()
+        titleLabel.backgroundColor = .listForeground
+        titleLabel.textColor = .text
+        subTitleLabel.backgroundColor = .listForeground
+        subTitleLabel.textColor = .textSubtle
 
         // Setup del operations
         delOperation = RevisionOperation(.del)

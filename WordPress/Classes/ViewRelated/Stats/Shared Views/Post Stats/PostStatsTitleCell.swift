@@ -4,21 +4,20 @@ class PostStatsTitleCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
-    @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var postTitleLabel: UILabel!
     @IBOutlet weak var bottomSeparatorLine: UIView!
+    @IBOutlet private var labelsView: UIView!
 
     private typealias Style = WPStyleGuide.Stats
-    private var postTitle: String?
     private var postURL: URL?
     private weak var postStatsDelegate: PostStatsDelegate?
 
     // MARK: - Configure
 
     func configure(postTitle: String, postURL: URL?, postStatsDelegate: PostStatsDelegate? = nil) {
-        self.postTitle = postTitle
         self.postURL = postURL
+        postTitleLabel.text = postTitle
         self.postStatsDelegate = postStatsDelegate
         applyStyles()
     }
@@ -29,16 +28,12 @@ private extension PostStatsTitleCell {
     func applyStyles() {
         titleLabel.text = NSLocalizedString("Showing stats for:", comment: "Label on Post Stats view indicating which post the stats are for.")
 
+        labelsView.backgroundColor = .listForeground
+
+        Style.configureCell(self)
         Style.configureLabelAsPostStatsTitle(titleLabel)
         Style.configureLabelAsPostTitle(postTitleLabel)
-        Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
-
-        guard let postTitle = postTitle else {
-            return
-        }
-
-        postTitleLabel.attributedText = Style.highlightString(postTitle, inString: postTitle)
     }
 
     @IBAction func didTapPostTitle(_ sender: UIButton) {

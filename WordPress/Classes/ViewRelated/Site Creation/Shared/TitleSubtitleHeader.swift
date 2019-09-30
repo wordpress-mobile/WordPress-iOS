@@ -61,7 +61,6 @@ final class TitleSubtitleHeader: UIView {
         ])
 
         setStyles()
-
         prepareForVoiceOver()
     }
 
@@ -72,27 +71,27 @@ final class TitleSubtitleHeader: UIView {
     }
 
     private func styleBackground() {
-        backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .listBackground
     }
 
     private func styleTitle() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
-        titleLabel.textColor = WPStyleGuide.darkGrey()
+        titleLabel.textColor = .text
     }
 
     private func styleSubtitle() {
         subtitleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        subtitleLabel.textColor = WPStyleGuide.greyDarken10()
+        subtitleLabel.textColor = .textSubtle
     }
 
     func setTitle(_ text: String) {
         titleLabel.text = text
-        titleLabel.accessibilityLabel = text
+        refreshAccessibilityLabel()
     }
 
     func setSubtitle(_ text: String) {
         subtitleLabel.text = text
-        subtitleLabel.accessibilityLabel = text
+        refreshAccessibilityLabel()
     }
 }
 
@@ -110,8 +109,17 @@ extension TitleSubtitleHeader {
     }
 }
 
-extension TitleSubtitleHeader: Accessible {
-    func prepareForVoiceOver() {
+// MARK: - VoiceOver
 
+private extension TitleSubtitleHeader {
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+        accessibilityTraits = .header
+        refreshAccessibilityLabel()
+    }
+
+    func refreshAccessibilityLabel() {
+        let strings = [titleLabel.text ?? "", subtitleLabel.text ?? ""]
+        accessibilityLabel = strings.joined(separator: ". ")
     }
 }

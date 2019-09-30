@@ -54,7 +54,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
         if let wpcomApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
             api = wpcomApi
         } else {
-            api = WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+            api = WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
         }
         let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
 

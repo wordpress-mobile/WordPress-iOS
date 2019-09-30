@@ -156,13 +156,13 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     /// Returns the accessibility label for the Approve Button
     ///
     fileprivate var approveAccesibilityLabel: String {
-        return isApproveOn ? ApproveComment.TitleStrings.selected : ApproveComment.TitleStrings.approve
+        return isApproveOn ? ApproveComment.TitleStrings.unapprove : ApproveComment.TitleStrings.approve
     }
 
     /// Returns the accessibility hint for the Approve Button
     ///
     fileprivate var approveAccesibilityHint: String {
-        return isApproveOn ? ApproveComment.TitleHints.selected : ApproveComment.TitleHints.approve
+        return isApproveOn ? ApproveComment.TitleHints.unapprove : ApproveComment.TitleHints.approve
     }
 
     /// Returns the accessibility label for the Like Button
@@ -203,24 +203,27 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         btnLike.setTitleColor(textSelectedColor, for: .selected)
 
         btnApprove.setTitle(ApproveComment.TitleStrings.approve, for: UIControl.State())
-        btnApprove.setTitle(ApproveComment.TitleStrings.selected, for: .highlighted)
-        btnApprove.setTitle(ApproveComment.TitleStrings.selected, for: .selected)
+        btnApprove.setTitle(ApproveComment.TitleStrings.unapprove, for: .highlighted)
+        btnApprove.setTitle(ApproveComment.TitleStrings.unapprove, for: .selected)
         btnApprove.setTitleColor(textNormalColor, for: UIControl.State())
         btnApprove.setTitleColor(textSelectedColor, for: .highlighted)
         btnApprove.setTitleColor(textSelectedColor, for: .selected)
 
         btnEdit.setTitle(EditComment.title, for: UIControl.State())
         btnEdit.setTitleColor(textNormalColor, for: UIControl.State())
+        btnEdit.tintColor = textNormalColor
         btnEdit.accessibilityLabel = EditComment.title
         btnEdit.accessibilityHint = EditComment.hint
 
         btnSpam.setTitle(MarkAsSpam.title, for: .normal)
         btnSpam.setTitleColor(textNormalColor, for: UIControl.State())
+        btnSpam.tintColor = textNormalColor
         btnSpam.accessibilityLabel = MarkAsSpam.title
         btnSpam.accessibilityHint = MarkAsSpam.hint
 
         btnTrash.setTitle(TrashComment.title, for: .normal)
         btnTrash.setTitleColor(textNormalColor, for: UIControl.State())
+        btnTrash.tintColor = textNormalColor
         btnTrash.accessibilityLabel = TrashComment.title
         btnTrash.accessibilityHint = TrashComment.hint
     }

@@ -58,6 +58,12 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
 
     // MARK: - View
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = .listBackground
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -93,8 +99,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
             fatalError("Failed to get a section header cell")
         }
         cell.titleLabel?.text = sectionTitle
-        cell.contentView.backgroundColor = WPStyleGuide.greyLighten30()
-
+        cell.titleLabel?.accessibilityIdentifier = "New Account Header"
         return cell
     }
 
@@ -145,6 +150,14 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
         return super.tableView(tableView, cellForRowAt: indexPath)
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard cell is EpilogueUserInfoCell else {
+            return
+        }
+
+        cell.contentView.backgroundColor = .listForeground
+    }
+
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         return Constants.headerFooterHeight
     }
@@ -180,7 +193,7 @@ private extension SignupEpilogueTableViewController {
         let userInfoNib = UINib(nibName: CellNibNames.epilogueUserInfoCell, bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: CellIdentifiers.epilogueUserInfoCell)
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         // remove empty cells
         tableView.tableFooterView = UIView()

@@ -1,5 +1,6 @@
 import XCTest
 import WordPressShared.WPStyleGuide
+@testable import WordPress
 
 class WPStyleGuide_BlogTests: XCTestCase {
     var testCell: UITableViewCell!
@@ -19,13 +20,8 @@ class WPStyleGuide_BlogTests: XCTestCase {
         XCTAssertEqual(WPStyleGuide.subtitleFont(), testCell.detailTextLabel!.font)
     }
 
-    func testConfigureTableViewBlogCellSetsDetailTextLabelColor() {
-        WPStyleGuide.configureTableViewBlogCell(testCell)
-        XCTAssertEqual(WPStyleGuide.greyDarken10(), testCell.detailTextLabel!.textColor)
-    }
-
     func testConfigureTableViewBlogCellSetsBackgroundColor() {
         WPStyleGuide.configureTableViewBlogCell(testCell)
-        XCTAssertEqual(UIColor.white, testCell.backgroundColor)
+        XCTAssertEqual(UIColor.listForeground, testCell.backgroundColor)
     }
 }

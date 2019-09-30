@@ -11,6 +11,6 @@ extension WPAccount {
         let userAgent = WPUserAgent.wordPress()
         let localeKey = WordPressComRestApi.LocaleKeyV2
 
-        return WordPressComRestApi(oAuthToken: token, userAgent: userAgent, localeKey: localeKey)
+        return WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: userAgent, localeKey: localeKey)
     }
 }

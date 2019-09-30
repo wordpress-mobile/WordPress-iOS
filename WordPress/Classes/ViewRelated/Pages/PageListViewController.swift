@@ -24,7 +24,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
-        footer.backgroundColor = WPStyleGuide.greyLighten20()
+        footer.backgroundColor = .neutral(.shade10)
         return footer
     }()
 
@@ -131,18 +131,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Configuration
 
     private func configureFilterBarTopConstraint() {
-        // Not an ideal solution, but fixes an issue where the filter bar
-        // wasn't showing up on iOS 10: https://github.com/wordpress-mobile/WordPress-iOS/issues/8937
-        if #available(iOS 11.0, *) {
-            filterTabBariOS10TopConstraint.isActive = false
-        } else {
-            extendedLayoutIncludesOpaqueBars = false
-            edgesForExtendedLayout = []
-
-            filterTabBarTopConstraint.isActive = false
-
-            view.layoutIfNeeded()
-        }
+        filterTabBariOS10TopConstraint.isActive = false
     }
 
     override func configureTableView() {
@@ -160,7 +149,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let restorePageCellNib = UINib(nibName: Constant.Identifiers.restorePageCellNibName, bundle: bundle)
         tableView.register(restorePageCellNib, forCellReuseIdentifier: Constant.Identifiers.restorePageCellIdentifier)
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     override func configureSearchController() {
@@ -356,17 +345,17 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return Constant.Size.pageCellWithTagEstimatedRowHeight
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard _tableViewHandler.groupResults else {
             return UIView(frame: .zero)
         }
 
         let sectionInfo = _tableViewHandler.resultsController.sections?[section]
         let nibName = String(describing: PageListSectionHeaderView.self)
-        let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
+        let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? PageListSectionHeaderView
 
-        if let sectionInfo = sectionInfo {
-            headerView.setTitle(sectionInfo.name)
+        if let sectionInfo = sectionInfo, let headerView = headerView {
+            headerView.setTitle(PostSearchHeader.title(forStatus: sectionInfo.name))
         }
 
         return headerView
@@ -422,6 +411,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             }
         }
 
+        cell.contentView.backgroundColor = UIColor.listForeground
+
         cell.configureCell(page)
     }
 
@@ -459,7 +450,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func retryPage(_ apost: AbstractPost) {
-        PostCoordinator.shared.retrySave(of: apost)
+        PostCoordinator.shared.save(apost)
     }
 
     fileprivate func showEditor(post: AbstractPost) {
@@ -765,13 +756,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         filterTabBar.alpha = WPAlphaZero
 
-        if #available(iOS 11.0, *) {
-            tableView.contentInset.top = -searchController.searchBar.bounds.height
-            return
-        }
-
-        filterTabBarBottomConstraint.isActive = false
-        tableViewTopConstraint.isActive = true
+        tableView.contentInset.top = -searchController.searchBar.bounds.height
     }
 
     override func updateSearchResults(for searchController: UISearchController) {
@@ -785,9 +770,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func didPresentSearchController(_ searchController: UISearchController) {
-        if #available(iOS 11.0, *) {
-            tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - topLayoutGuide.length
-        }
+        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - view.safeAreaInsets.top
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
@@ -796,13 +779,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }) { _ in
             self.hideNoResultsView()
         }
-
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        tableViewTopConstraint.isActive = false
-        filterTabBarBottomConstraint.isActive = true
     }
 
     enum Animations {
@@ -824,8 +800,7 @@ private extension PageListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-            noResultsViewController.configure(title: noConnectionMessage(),
-                                              image: noResultsImageName)
+              noResultsViewController.configure(title: "", noConnectionTitle: NoResultsText.noConnectionTitle, buttonTitle: NoResultsText.buttonTitle, subtitle: nil, noConnectionSubtitle: NoResultsText.noConnectionSubtitle, attributedSubtitle: nil, attributedSubtitleConfiguration: nil, image: nil, subtitleImage: nil, accessoryView: nil)
             return
         }
 
@@ -885,7 +860,7 @@ private extension PageListViewController {
     }
 
     struct NoResultsText {
-        static let buttonTitle = NSLocalizedString("Create a Page", comment: "Button title, encourages users to create their first page on their blog.")
+        static let buttonTitle = NSLocalizedString("Create Page", comment: "Button title, encourages users to create their first page on their blog.")
         static let fetchingTitle = NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         static let noMatchesTitle = NSLocalizedString("No pages matching your search", comment: "Displayed when the user is searching the pages list and there are no matching pages")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
@@ -893,6 +868,8 @@ private extension PageListViewController {
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
         static let noPublishedTitle = NSLocalizedString("You haven't published any pages yet", comment: "Displayed when the user views published pages in the pages list and there are no pages")
         static let searchPages = NSLocalizedString("Search pages", comment: "Text displayed when the search controller will be presented")
+        static let noConnectionTitle: String = NSLocalizedString("Unable to load pages right now.", comment: "Title for No results full page screen displayedfrom pages list when there is no connection")
+        static let noConnectionSubtitle: String = NSLocalizedString("Check your network connection and try again. Or draft a page.", comment: "Subtitle for No results full page screen displayed from pages list when there is no connection")
     }
 
 }

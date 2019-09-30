@@ -46,7 +46,7 @@ struct PlanDetailViewModel {
         case .ready:
             return nil
         case .error:
-            if let appDelegate = WordPressAppDelegate.sharedInstance(),
+            if let appDelegate = WordPressAppDelegate.shared,
                 appDelegate.connectionAvailable {
                 return NoResultsViewController.Model(title: LocalizedText.errorTitle,
                                                      subtitle: LocalizedText.errorSubtitle,

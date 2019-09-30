@@ -4,12 +4,11 @@
 enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
-    case automatedTransfersCustomDomain
-    case revisions
     case statsRefresh
-    case gutenberg
-    case quickStartV2
+    case statsInsightsManagement
     case domainCredit
+    case signInWithApple
+    case statsAsyncLoading
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -18,18 +17,21 @@ enum FeatureFlag: Int {
             return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .automatedTransfersCustomDomain:
-            return true
-        case .revisions:
-            return true
         case .statsRefresh:
+            return true
+        case .statsInsightsManagement:
             return BuildConfiguration.current == .localDeveloper
-        case .gutenberg:
-            return true
-        case .quickStartV2:
-            return true
         case .domainCredit:
-            return false
+            return true
+        case .signInWithApple:
+            // SIWA can NOT be enabled for internal builds
+            // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
+            if BuildConfiguration.current == .a8cBranchTest || BuildConfiguration.current == .a8cPrereleaseTesting {
+                return false
+            }
+            return true
+        case .statsAsyncLoading:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }

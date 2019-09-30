@@ -17,9 +17,8 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
 
     open var siteName: String?
     open var delegate: DomainSuggestionsTableViewControllerDelegate?
-    open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType {
-        return .onlyWordPressDotCom
-    }
+    open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom
+
     open var useFadedColorForParentDomains: Bool {
         return true
     }
@@ -48,7 +47,7 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
     }
 
     private var parentDomainColor: UIColor {
-        return useFadedColorForParentDomains ? WPStyleGuide.grey() : WPStyleGuide.darkGrey()
+        return useFadedColorForParentDomains ? .neutral(.shade30) : .neutral(.shade70)
     }
 
     // MARK: - Init
@@ -70,7 +69,7 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Title for the site creation flow.")
@@ -97,6 +96,16 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
         SVProgressHUD.dismiss()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13, *) {
+            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                tableView.reloadData()
+            }
+        }
+    }
+
     /// Fetches new domain suggestions based on the provided string
     ///
     /// - Parameters:
@@ -110,7 +119,7 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
         isSearching = true
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi(oAuthToken: "")
+        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
 
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
@@ -226,7 +235,7 @@ extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == Sections.suggestions.rawValue {
             let footer = UIView()
-            footer.backgroundColor = WPStyleGuide.greyLighten20()
+            footer.backgroundColor = .neutral(.shade10)
             return footer
         }
         return nil
@@ -254,10 +263,10 @@ extension DomainSuggestionsTableViewController {
         }
 
         cell.placeholder = searchFieldPlaceholder
+        cell.reloadTextfieldStyle()
         cell.delegate = self
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
-
         return cell
     }
 
@@ -284,7 +293,7 @@ extension DomainSuggestionsTableViewController {
             return styledDomain
         }
         styledDomain.addAttribute(.foregroundColor,
-                                  value: WPStyleGuide.darkGrey(),
+                                  value: UIColor.neutral(.shade70),
                                   range: NSMakeRange(0, dotPosition.utf16Offset(in: domain)))
         return styledDomain
     }
@@ -377,5 +386,12 @@ extension DomainSuggestionsTableViewController: SearchTableViewCellDelegate {
             self?.searchSuggestions = suggestions
             self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
+    }
+}
+
+extension SearchTableViewCell {
+    fileprivate func reloadTextfieldStyle() {
+        textField.textColor = .text
+        textField.leftViewImage = UIImage(named: "icon-post-search")
     }
 }

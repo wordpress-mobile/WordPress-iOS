@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +14,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="395"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="394.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="395"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It's been 999 months since Your Post was published. Here's how the post performed so far." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnQ-57-h8x" userLabel="Summary Label">
@@ -33,7 +31,7 @@
                         </connections>
                     </button>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="bEY-vj-O3h" userLabel="Content Stack View">
-                        <rect key="frame" x="0.0" y="91" width="375" height="303.5"/>
+                        <rect key="frame" x="0.0" y="91" width="375" height="304"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="irr-i0-AM0" userLabel="Views Stack View">
                                 <rect key="frame" x="16" y="0.0" width="343" height="50"/>
@@ -54,7 +52,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="GLF-sc-SL2" firstAttribute="leading" secondItem="GRi-20-ac2" secondAttribute="leading" id="6DY-VA-8WB"/>
                                             <constraint firstItem="ioe-GD-QRv" firstAttribute="leading" secondItem="GLF-sc-SL2" secondAttribute="trailing" constant="8" id="Mqa-xa-dGu"/>
@@ -66,10 +64,10 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dVi-l5-zbj" userLabel="Chart Stack View">
-                                <rect key="frame" x="16" y="65" width="343" height="129.5"/>
+                                <rect key="frame" x="16" y="65" width="343" height="130"/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="BoB-0m-Daq" userLabel="Bottom Stack View">
-                                <rect key="frame" x="0.0" y="209.5" width="375" height="94"/>
+                                <rect key="frame" x="0.0" y="210" width="375" height="94"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="SgZ-KL-6tA" userLabel="Rows Stack View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
@@ -124,7 +122,7 @@
                         </constraints>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3OP-qA-To0" userLabel="Action Button">
-                        <rect key="frame" x="0.0" y="350.5" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="351" width="375" height="44"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
                             <action selector="didTapActionButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="crC-F5-hoa"/>
@@ -138,7 +136,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogd-ft-cmW" userLabel="Bottom Seperator Line">
-                        <rect key="frame" x="0.0" y="394" width="375" height="0.5"/>
+                        <rect key="frame" x="0.0" y="394.5" width="375" height="0.5"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="DlC-nH-qYA"/>

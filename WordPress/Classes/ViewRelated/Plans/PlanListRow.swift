@@ -22,15 +22,16 @@ struct PlanListRow: ImmuTableRow {
         cell.textLabel?.attributedText = attributedTitle
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description
-        cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+        cell.detailTextLabel?.textColor = .textSubtle
         cell.detailTextLabel?.font = WPFontManager.systemRegularFont(ofSize: 14.0)
         cell.separatorInset = UIEdgeInsets.zero
+        cell.backgroundColor = .listForeground
     }
 
     fileprivate var attributedTitle: NSAttributedString {
         let titleAttributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.tableviewTextFont(),
-            .foregroundColor: WPStyleGuide.tableViewActionColor()
+            .foregroundColor: UIColor.primary
         ]
         return NSAttributedString(string: title, attributes: titleAttributes)
     }

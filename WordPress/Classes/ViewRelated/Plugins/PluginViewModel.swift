@@ -183,7 +183,7 @@ class PluginViewModel: Observable {
                         return
                     }
 
-                    if FeatureFlag.automatedTransfersCustomDomain.enabled && !hasCustomDomain && hasDomainCredits {
+                    if !hasCustomDomain && hasDomainCredits {
                         let alert = self.confirmRegisterDomainAlert(for: directoryEntry)
                         WPAnalytics.track(.automatedTransferCustomDomainDialogShown)
                         self.present?(alert)
@@ -248,7 +248,7 @@ class PluginViewModel: Observable {
     }
 
     private func getNoResultsErrorModel() -> NoResultsViewController.Model {
-        let appDelegate = WordPressAppDelegate.sharedInstance()
+        let appDelegate = WordPressAppDelegate.shared
         let hasConnection = appDelegate?.connectionAvailable ?? true //defaults to unknown error.
         if hasConnection {
             return noResultsUnknownErrorModel
@@ -562,7 +562,7 @@ class PluginViewModel: Observable {
             guard let font = value as? UIFont, font.familyName == "Times New Roman" else { return }
 
             copy.addAttribute(.font, value: WPStyleGuide.subtitleFont(), range: range)
-            copy.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: range)
+            copy.addAttribute(.foregroundColor, value: UIColor.text, range: range)
         }
 
 

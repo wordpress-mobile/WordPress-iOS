@@ -11,7 +11,6 @@
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "PublishDatePickerView.h"
-#import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
@@ -488,11 +487,6 @@ FeaturedImageViewControllerDelegate>
     return nil;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    [WPStyleGuide configureTableViewSectionHeader:view];
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ([self tableView:tableView numberOfRowsInSection:section] == 0) {
@@ -712,7 +706,7 @@ FeaturedImageViewControllerDelegate>
 - (void)configureVisibilityButtonForPasswordCell:(WPTextFieldTableViewCell *)textCell
 {
     self.passwordVisibilityButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.passwordVisibilityButton.tintColor = [WPStyleGuide greyLighten10];
+    self.passwordVisibilityButton.tintColor = [UIColor murielNeutral20];
     [self.passwordVisibilityButton addTarget:self action:@selector(togglePasswordVisibility) forControlEvents:UIControlEventTouchUpInside];
     
     [self refreshPasswordVisibilityButton];
@@ -782,6 +776,7 @@ FeaturedImageViewControllerDelegate>
 {
     WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
     activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
+    activityCell.accessibilityIdentifier = @"SetFeaturedImage";
     activityCell.tag = PostSettingsRowFeaturedImageAdd;
 
     return activityCell;
@@ -1326,15 +1321,20 @@ FeaturedImageViewControllerDelegate>
     options.filter = WPMediaTypeImage;
     options.showSearchBar = YES;
     options.badgedUTTypes = [NSSet setWithObject: (__bridge NSString *)kUTTypeGIF];
+    options.preferredStatusBarStyle = UIStatusBarStyleLightContent;
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
-    self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
-                                                             initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
-    picker.dataSource = self.mediaDataSource;
+
+    WPAndDeviceMediaLibraryDataSource *mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
+                                                                                           initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
+
+    picker.dataSource = mediaDataSource;
     picker.delegate = self;
     [self registerChangeObserverForPicker:picker.mediaPicker];
 
     picker.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:picker animated:YES completion:nil];
+
+    self.mediaDataSource = mediaDataSource;
 }
 
 - (void)showCategoriesSelection

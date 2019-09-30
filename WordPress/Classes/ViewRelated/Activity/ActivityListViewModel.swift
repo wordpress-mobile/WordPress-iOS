@@ -63,7 +63,7 @@ class ActivityListViewModel: Observable {
             return NoResultsViewController.Model(title: NoResultsText.noActivitiesTitle, subtitle: NoResultsText.noActivitiesSubtitle)
         }
 
-        let appDelegate = WordPressAppDelegate.sharedInstance()
+        let appDelegate = WordPressAppDelegate.shared
         if (appDelegate?.connectionAvailable)! {
             return NoResultsViewController.Model(title: NoResultsText.errorTitle,
                                                  subtitle: NoResultsText.errorSubtitle,

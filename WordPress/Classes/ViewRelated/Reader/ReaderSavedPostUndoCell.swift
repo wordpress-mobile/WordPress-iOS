@@ -42,14 +42,14 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
     private func setupUndoButton() {
         undoButton.setTitle(Strings.undo, for: .normal)
         let icon = Gridicon.iconOfType(.undo)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.wordPressBlue())
+        let tintedIcon = icon.imageWithTintColor(.primary)
 
         undoButton.setImage(tintedIcon, for: .normal)
     }
 
     private func applyStyles() {
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = 1.0
+        borderedView.layer.borderWidth = .hairlineBorderWidth
 
         WPStyleGuide.applyRestoreSavedPostLabelStyle(removed)
         WPStyleGuide.applyRestoreSavedPostTitleLabelStyle(title)

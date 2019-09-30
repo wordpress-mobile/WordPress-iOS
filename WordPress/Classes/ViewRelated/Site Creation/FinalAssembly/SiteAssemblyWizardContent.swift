@@ -111,9 +111,20 @@ final class SiteAssemblyWizardContent: UIViewController {
                     self.installErrorStateViewController(with: errorType)
                 } else if status == .succeeded {
                     let blog = self.service.createdBlog
+                    // Default all new blogs to use Gutenberg
+                    if let createdBlog = blog {
+                        let gutenbergSettings = GutenbergSettings()
+                        gutenbergSettings.softSetGutenbergEnabled(true, for: createdBlog, source: .onSiteCreation)
+                        gutenbergSettings.postSettingsToRemote(for: createdBlog)
+                    }
+
                     self.contentView.siteURLString = blog?.url as String?
                     self.contentView.siteName = blog?.displayURL as String?
                     self.createdBlog = blog
+
+                    // This stat is part of a funnel that provides critical information.  Before
+                    // making ANY modification to this stat please refer to: p4qSXL-35X-p2
+                    WPAnalytics.track(.createdSite)
                 }
 
                 self.contentView.status = status
@@ -211,7 +222,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             guard let blog = createdBlog else {
                 return
             }
-            WPAnalytics.track(.enhancedSiteCreationCompleted)
+            WPAnalytics.track(.enhancedSiteCreationSuccessPreviewOkButtonTapped)
             WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
 
             self?.showQuickStartAlert(for: blog)

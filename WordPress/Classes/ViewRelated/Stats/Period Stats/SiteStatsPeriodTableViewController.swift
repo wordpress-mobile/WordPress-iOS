@@ -5,17 +5,16 @@ import WordPressFlux
 @objc protocol SiteStatsPeriodDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
 
-class SiteStatsPeriodTableViewController: UITableViewController {
+class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
+    static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
-
-    private let siteID = SiteStatsInformation.sharedInstance.siteID
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -46,6 +45,8 @@ class SiteStatsPeriodTableViewController: UITableViewController {
             } else {
                 refreshData()
             }
+
+            displayLoadingViewIfNecessary()
         }
     }
 
@@ -53,9 +54,12 @@ class SiteStatsPeriodTableViewController: UITableViewController {
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel?
+    private var tableHeaderView: SiteStatsTableHeaderView?
+
+    private let analyticsTracker = BottomScrollAnalyticsTracker()
 
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
@@ -78,14 +82,21 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         }
 
         cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
-
+        tableHeaderView = cell
         return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return SiteStatsTableHeaderView.height
+        return SiteStatsTableHeaderView.headerHeight()
     }
+}
 
+extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        if let intervalDate = viewModel?.chartDate(for: entryIndex) {
+            tableHeaderView?.updateDate(with: intervalDate)
+        }
+    }
 }
 
 // MARK: - Private Extension
@@ -105,15 +116,51 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self)
+        viewModel?.statsBarChartViewDelegate = self
+        addViewModelListeners()
+        viewModel?.startFetchingOverview()
+    }
+
+    func addViewModelListeners() {
+        if changeReceipt != nil {
+            return
+        }
 
         changeReceipt = viewModel?.onChange { [weak self] in
-            guard let store = self?.store,
-                !store.isFetchingOverview else {
+            self?.refreshTableView()
+        }
+
+        viewModel?.overviewStoreStatusOnChange = { [weak self] status in
+            guard let self = self,
+                let viewModel = self.viewModel,
+                self.changeReceipt != nil else {
                     return
             }
 
-            self?.refreshTableView()
+            self.tableHandler.viewModel = viewModel.tableViewModel()
+
+            switch status {
+            case .fetchingData:
+                self.displayLoadingViewIfNecessary()
+            case .fetchingCacheData(let hasCache):
+                if hasCache {
+                    self.hideNoResults()
+                }
+            case .fetchingDataCompleted(let error):
+                self.refreshControl?.endRefreshing()
+
+                if error {
+                    self.displayFailureViewIfNecessary()
+                } else {
+                    self.hideNoResults()
+                }
+            }
         }
+    }
+
+    func removeViewModelListeners() {
+        changeReceipt = nil
+        viewModel?.overviewStoreStatusOnChange = nil
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
@@ -121,6 +168,7 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
+                CountriesMapRow.self,
                 OverviewRow.self,
                 TableFooterRow.self]
     }
@@ -128,18 +176,13 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-
         guard let viewModel = viewModel,
-        viewIsVisible() else {
+            viewIsVisible(),
+            !store.isFetchingOverview else {
             return
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
-        refreshControl?.endRefreshing()
-
-        // Scroll to the top of the table.
-        // TODO: look at removing this when loading view is added.
-        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
 
     @objc func userInitiatedRefresh() {
@@ -151,22 +194,18 @@ private extension SiteStatsPeriodTableViewController {
     func refreshData() {
 
         guard let selectedDate = selectedDate,
-            let selectedPeriod = selectedPeriod else {
+            let selectedPeriod = selectedPeriod,
+            viewIsVisible() else {
                 refreshControl?.endRefreshing()
                 return
         }
-
+        addViewModelListeners()
         viewModel?.refreshPeriodOverviewData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
     func applyTableUpdates() {
-        if #available(iOS 11.0, *) {
-            tableView.performBatchUpdates({
-            })
-        } else {
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        }
+        tableView.performBatchUpdates({
+        })
     }
 
     func clearExpandedRows() {
@@ -177,6 +216,60 @@ private extension SiteStatsPeriodTableViewController {
         return isViewLoaded && view.window != nil
     }
 
+}
+
+// MARK: - NoResultsViewHost
+
+extension SiteStatsPeriodTableViewController: NoResultsViewHost {
+    private func displayLoadingViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        if noResultsViewController.view.superview != nil {
+            return
+        }
+
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        noResults.hideImageView(false)
+                                        noResults.updateView()
+        }
+    }
+
+    private func displayFailureViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        updateNoResults(title: NoResultConstants.errorTitle,
+                        subtitle: NoResultConstants.errorSubtitle,
+                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                            noResults.delegate = self
+                            noResults.hideImageView()
+        }
+    }
+
+    private enum NoResultConstants {
+        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate methods
+
+extension SiteStatsPeriodTableViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        updateNoResults(title: NoResultConstants.successTitle,
+                        accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
+                            noResults.hideImageView(false)
+        }
+        refreshData()
+    }
 }
 
 // MARK: - SiteStatsPeriodDelegate Methods
@@ -191,7 +284,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
     func displayMediaWithID(_ mediaID: NSNumber) {
 
-        guard let siteID = siteID,
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
             let blog = blogService.blog(byBlogId: siteID) else {
                 DDLogInfo("Unable to get blog when trying to show media from Stats.")
                 return
@@ -205,8 +298,10 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         })
     }
 
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
+    func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool) {
+        if didSelectRow {
+            applyTableUpdates()
+        }
         StatsDataHelper.updatedExpandedState(forRow: row)
     }
 
@@ -214,6 +309,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         guard StatSection.allPeriods.contains(statSection) else {
             return
         }
+
+        removeViewModelListeners()
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection,
@@ -223,6 +320,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
+        removeViewModelListeners()
+
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
@@ -232,11 +331,15 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
 // MARK: - SiteStatsTableHeaderDelegate Methods
 
-extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDelegate {
-
+extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDateButtonDelegate {
     func dateChangedTo(_ newDate: Date?) {
         selectedDate = newDate
         refreshData()
     }
 
+    func didTouchHeaderButton(forward: Bool) {
+        if let intervalDate = viewModel?.updateDate(forward: forward) {
+            tableHeaderView?.updateDate(with: intervalDate)
+        }
+    }
 }

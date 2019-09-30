@@ -10,4 +10,8 @@ public extension UIImage {
     static var gravatarUnapprovedImage: UIImage {
         return UIImage(named: "gravatar-unapproved")!
     }
+
+    static var siteIconPlaceholder: UIImage {
+        return UIImage(named: "blavatar-default")!
+    }
 }

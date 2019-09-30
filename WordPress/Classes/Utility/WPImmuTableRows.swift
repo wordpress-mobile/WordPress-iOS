@@ -11,13 +11,15 @@ struct NavigationItemRow: ImmuTableRow {
     let icon: UIImage?
     let action: ImmuTableAction?
     let accessoryType: UITableViewCell.AccessoryType
+    let accessibilityIdentifer: String?
 
-    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
+    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil) {
         self.title = title
         self.detail = detail
         self.icon = icon
         self.accessoryType = accessoryType
         self.action = action
+        self.accessibilityIdentifer = accessibilityIdentifier
     }
 
     func configureCell(_ cell: UITableViewCell) {
@@ -25,6 +27,7 @@ struct NavigationItemRow: ImmuTableRow {
         cell.detailTextLabel?.text = detail
         cell.accessoryType = accessoryType
         cell.imageView?.image = icon
+        cell.accessibilityIdentifier = accessibilityIdentifer
 
         WPStyleGuide.configureTableViewCell(cell)
     }
@@ -251,12 +254,14 @@ struct SwitchRow: ImmuTableRow {
     let icon: UIImage?
     let action: ImmuTableAction? = nil
     let onChange: (Bool) -> Void
+    let accessibilityIdentifier: String?
 
-    init(title: String, value: Bool, icon: UIImage? = nil, onChange: @escaping (Bool) -> Void) {
+    init(title: String, value: Bool, icon: UIImage? = nil, onChange: @escaping (Bool) -> Void, accessibilityIdentifier: String? = nil) {
         self.title = title
         self.value = value
         self.icon = icon
         self.onChange = onChange
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     func configureCell(_ cell: UITableViewCell) {
@@ -267,6 +272,7 @@ struct SwitchRow: ImmuTableRow {
         cell.selectionStyle = .none
         cell.on = value
         cell.onChange = onChange
+        cell.flipSwitch.accessibilityIdentifier = accessibilityIdentifier
     }
 }
 

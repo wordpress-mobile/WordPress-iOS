@@ -10,16 +10,16 @@ final class ApproveCommentActionTests: XCTestCase {
     }
 
     private class MockNotificationActionsService: NotificationActionsService {
-        var unaproveWasCalled: Bool = false
-        var aproveWasCalled: Bool = false
+        var unapproveWasCalled: Bool = false
+        var approveWasCalled: Bool = false
 
         override func unapproveCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
-            unaproveWasCalled = true
+            unapproveWasCalled = true
             completion?(true)
         }
 
         override func approveCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
-            aproveWasCalled = true
+            approveWasCalled = true
             completion?(true)
         }
     }
@@ -49,49 +49,23 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.on, Constants.initialStatus)
     }
 
+    func testActionTitleIsExpected() {
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.approve)
+    }
+
     func testSettingActionOnSetsExpectedTitle() {
         action?.on = true
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.unapprove)
-    }
 
-    func testSettingActionOnSetsExpectedAccessibilityLabel() {
-        action?.on = true
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.unapprove)
-    }
-
-    func testSettingActionOnSetsExpectedAccessibilityHint() {
-        action?.on = true
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.unapprove)
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.unapprove)
     }
 
     func testSettingActionOffSetsExpectedTitle() {
         action?.on = false
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
+
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.approve)
     }
 
-    func testSettingActionOffSetsExpectedAccessibilityLabel() {
-        action?.on = false
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
-    }
-
-    func testSettingActionOffSetsExpectedAccessibilityHint() {
-        action?.on = false
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
-    }
-
-    func testDefaultTitleIsExpected() {
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
-    }
-
-    func testDefaultAccessibilityLabelIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
-    }
-
-    func testDefaultAccessibilityHintIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
-    }
-
-    func testExecuteCallsUnapproveWhenIconIsOn() {
+    func testExecuteCallsUnapproveWhenActionIsOn() {
         action?.on = true
 
         action?.execute(context: utility.mockCommentContext())
@@ -101,34 +75,17 @@ final class ApproveCommentActionTests: XCTestCase {
             return
         }
 
-        XCTAssertTrue(mockService.unaproveWasCalled)
+        XCTAssertTrue(mockService.unapproveWasCalled)
     }
 
-    func testExecuteUpdatesIconTitleWhenIconIsOn() {
+    func testExecuteUpdatesActionTitleWhenActionIsOn() {
         action?.on = true
 
         action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.approve)
     }
 
-    func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOn() {
-        action?.on = true
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
-    }
-
-    func testExecuteUpdatesIconAccessibilityHintWhenIconIsOn() {
-        action?.on = true
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
-    }
-
-    func testExecuteCallsApproveWhenIconIsOff() {
+    func testExecuteCallsApproveWhenActionIsOff() {
         action?.on = false
 
         action?.execute(context: utility.mockCommentContext())
@@ -138,30 +95,13 @@ final class ApproveCommentActionTests: XCTestCase {
             return
         }
 
-        XCTAssertTrue(mockService.aproveWasCalled)
+        XCTAssertTrue(mockService.approveWasCalled)
     }
 
-    func testExecuteUpdatesIconTitleWhenIconIsOff() {
+    func testExecuteUpdatesActionTitleWhenActionIsOff() {
         action?.on = false
 
         action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.unapprove)
-    }
-
-    func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOff() {
-        action?.on = false
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.unapprove)
-    }
-
-    func testExecuteUpdatesIconAccessibilityHintWhenIconIsOff() {
-        action?.on = false
-
-        action?.execute(context: utility.mockCommentContext())
-
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.unapprove)
+        XCTAssertEqual(action?.actionTitle, ApproveComment.TitleStrings.unapprove)
     }
 }

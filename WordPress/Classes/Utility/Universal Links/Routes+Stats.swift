@@ -46,7 +46,7 @@ extension StatsRoute: Route {
 }
 
 extension StatsRoute: NavigationAction {
-    func perform(_ values: [String: String]?, source: UIViewController? = nil) {
+    func perform(_ values: [String: String], source: UIViewController? = nil) {
         guard let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator else {
             return
         }
@@ -86,7 +86,7 @@ extension StatsRoute: NavigationAction {
         }
     }
 
-    private func showStatsForBlog(from values: [String: String]?,
+    private func showStatsForBlog(from values: [String: String],
                                   timePeriod: StatsPeriodType,
                                   using coordinator: MySitesCoordinator) {
         if let blog = blog(from: values) {
@@ -99,7 +99,7 @@ extension StatsRoute: NavigationAction {
     }
 
     private func showMySitesAndFailureNotice(using coordinator: MySitesCoordinator,
-                                             values: [String: String]?) {
+                                             values: [String: String]) {
         WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
 
         if failAndBounce(values) == false {
@@ -109,13 +109,13 @@ extension StatsRoute: NavigationAction {
         }
     }
 
-    private func showStatsForDefaultBlog(from values: [String: String]?,
+    private func showStatsForDefaultBlog(from values: [String: String],
                                          with coordinator: MySitesCoordinator) {
         // It's possible that the stats route can come in without a domain
         // as the last component, if the user is viewing stats for "All My Sites" in Calypso.
         // In this case, we'll check whether the last component is actually a
         // time period, and if so we'll show that time period for the default site.
-        guard let component = values?["domain"],
+        guard let component = values["domain"],
             let timePeriod = StatsPeriodType.fromString(component),
             let blog = defaultBlog() else {
             return

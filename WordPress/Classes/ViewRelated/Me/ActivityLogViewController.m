@@ -1,5 +1,4 @@
 #import "ActivityLogViewController.h"
-#import "WordPressAppDelegate.h"
 #import "ActivityLogDetailViewController.h"
 #import <CocoaLumberjack/DDFileLogger.h>
 #import "WordPress-Swift.h"
@@ -112,11 +111,6 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         return NSLocalizedString(@"Log Files By Created Date", @"");
     }
     return nil;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section

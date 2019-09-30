@@ -1,5 +1,4 @@
 import Foundation
-import WordPressComStatsiOS
 import WordPressFlux
 
 /// The view model used by Stats Insights.
@@ -11,26 +10,37 @@ class SiteStatsInsightsViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
-    private let store: StatsInsightsStore
-    private let insightsReceipt: Receipt
-    private var changeReceipt: Receipt?
+
+    private let insightsStore = StoreContainer.shared.statsInsights
+    private var insightsReceipt: Receipt?
+    private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
+
+    private var periodReceipt: Receipt?
+
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Constructor
 
     init(insightsToShow: [InsightType],
-         insightsDelegate: SiteStatsInsightsDelegate,
-         store: StatsInsightsStore = StoreContainer.shared.statsInsights) {
+         insightsDelegate: SiteStatsInsightsDelegate) {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
-        self.store = store
 
-        insightsReceipt = store.query(.insights)
-        store.actionDispatcher.dispatch(InsightAction.refreshInsights)
-
-        changeReceipt = store.onChange { [weak self] in
+        insightsChangeReceipt = insightsStore.onChange { [weak self] in
             self?.emitChange()
+        }
+    }
+
+    func fetchInsights() {
+        insightsReceipt = insightsStore.query(.insights)
+    }
+
+    // MARK: - Refresh Data
+
+    func refreshInsights() {
+        if !insightsStore.isFetchingOverview {
+            ActionDispatcher.dispatch(InsightAction.refreshInsights)
         }
     }
 
@@ -40,48 +50,140 @@ class SiteStatsInsightsViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
+        if insightsStore.fetchingFailed(for: .insights) &&
+            !containsCachedData() {
+            return ImmuTable.Empty
+        }
+
         insightsToShow.forEach { insightType in
             switch insightType {
+            case .customize:
+                if FeatureFlag.statsInsightsManagement.enabled {
+                    tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                }
             case .latestPostSummary:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
-                tableRows.append(LatestPostSummaryRow(summaryData: store.getLastPostInsight(),
-                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(row(for: .latestPostSummary,
+                                     rowStatus: insightsStore.lastPostSummaryStatus,
+                                     rowBlock: {
+                                        return LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
+                                                                    chartData: insightsStore.getPostStats(),
+                                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loadingRow: {
+                    return StatsGhostChartImmutableRow()
+                }))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createAllTimeStatsRows()))
+                tableRows.append(row(for: .allTimeStats,
+                                     rowStatus: insightsStore.allTimeStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createAllTimeStatsRows(),
+                                                                 statSection: .insightsAllTime,
+                                                                 siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
-            case .mostPopularDayAndHour:
+                tableRows.append(row(for: .followersTotals,
+                                     rowStatus: insightsStore.followersTotalsStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createTotalFollowersRows(),
+                                                                 statSection: .insightsFollowerTotals,
+                                                                 siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
+            case .mostPopularTime:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createMostPopularStatsRows()))
+                tableRows.append(row(for: .mostPopularTime,
+                                     rowStatus: insightsStore.annualAndMostPopularTimeStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createMostPopularStatsRows(),
+                                                                 statSection: .insightsMostPopularTime,
+                                                                 siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTagsAndCategories.title))
-                tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
-                                                   dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
-                                                   dataRows: createTagsAndCategoriesRows(),
-                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                tableRows.append(row(for: .tagsAndCategories,
+                                     rowStatus: insightsStore.tagsAndCategoriesStatus,
+                                     rowBlock: {
+                                        return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                                        dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
+                                                                        dataRows: createTagsAndCategoriesRows(),
+                                                                        siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loadingRow: {
+                    return StatsGhostTopImmutableRow()
+                }))
             case .annualSiteStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAnnualSiteStats.title))
-                tableRows.append(createAnnualSiteStatsRow())
+                tableRows.append(row(for: .annualSiteStats,
+                                     rowStatus: insightsStore.annualAndMostPopularTimeStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createAnnualRows(),
+                                                                 statSection: .insightsAnnualSiteStats,
+                                                                 siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
             case .comments:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsCommentsPosts.title))
-                tableRows.append(createCommentsRow())
+                tableRows.append(row(for: .comments,
+                                     rowStatus: insightsStore.commentsInsightStatus,
+                                     rowBlock: {
+                                        return createCommentsRow()
+                }, loadingRow: {
+                    return StatsGhostTabbedImmutableRow()
+                }))
             case .followers:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowersWordPress.title))
-                tableRows.append(createFollowersRow())
+                tableRows.append(row(for: .followers,
+                                     rowStatus: insightsStore.followersTotalsStatus,
+                                     rowBlock: {
+                                        return createFollowersRow()
+                }, loadingRow: {
+                    return StatsGhostTabbedImmutableRow()
+                }))
             case .todaysStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTodaysStats.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createTodaysStatsRows()))
+                tableRows.append(row(for: .todaysStats,
+                                     rowStatus: insightsStore.todaysStatsStatus,
+                                     rowBlock: {
+                                        return TwoColumnStatsRow(dataRows: createTodaysStatsRows(),
+                                                                 statSection: .insightsTodaysStats,
+                                                                 siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTwoColumnImmutableRow()
+                }))
             case .postingActivity:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPostingActivity.title))
-                tableRows.append(createPostingActivityRow())
+                tableRows.append(row(for: .postingActivity,
+                                     rowStatus: insightsStore.postingActivityStatus,
+                                     rowBlock: {
+                                        return createPostingActivityRow()
+                }, loadingRow: {
+                    return StatsGhostPostingActivitiesImmutableRow()
+                }))
             case .publicize:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPublicize.title))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
-                                                               dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
-                                                               dataRows: createPublicizeRows()))
+                tableRows.append(row(for: .publicize,
+                                     rowStatus: insightsStore.publicizeFollowersStatus,
+                                     rowBlock: {
+                                        return TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
+                                                                        dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
+                                                                        dataRows: createPublicizeRows(),
+                                                                        siteStatsInsightsDelegate: nil)
+                }, loadingRow: {
+                    return StatsGhostTopImmutableRow()
+                }))
             }
+        }
+
+        if FeatureFlag.statsInsightsManagement.enabled {
+            tableRows.append(TableFooterRow())
+            tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
         }
 
         tableRows.append(TableFooterRow())
@@ -92,10 +194,28 @@ class SiteStatsInsightsViewModel: Observable {
             ])
     }
 
-    // MARK: - Refresh Data
+    func isFetchingOverview() -> Bool {
+        return insightsStore.isFetchingOverview
+    }
 
-    func refreshInsights() {
-        ActionDispatcher.dispatch(InsightAction.refreshInsights)
+    func fetchingFailed() -> Bool {
+        return insightsStore.fetchingFailed(for: .insights)
+    }
+
+    func containsCachedData() -> Bool {
+        return insightsStore.containsCachedData(for: insightsToShow)
+    }
+
+    func yearlyPostingActivity(from date: Date = Date()) -> [[PostingStreakEvent]] {
+        return insightsStore.getYearlyPostingActivityFrom(date: date)
+    }
+
+    func annualInsightsYear() -> Int? {
+        return insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear
+    }
+
+    func updateInsightsToShow(insights: [InsightType]) {
+        insightsToShow = insights
     }
 
 }
@@ -106,197 +226,158 @@ private extension SiteStatsInsightsViewModel {
 
     struct AllTimeStats {
         static let postsTitle = NSLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
-        static let postsIcon = Style.imageForGridiconType(.posts)
         static let viewsTitle = NSLocalizedString("Views", comment: "All Time Stats 'Views' label")
-        static let viewsIcon = Style.imageForGridiconType(.visible)
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "All Time Stats 'Visitors' label")
-        static let visitorsIcon = Style.imageForGridiconType(.user)
-        static let bestViewsEverTitle = NSLocalizedString("Best Views Ever", comment: "All Time Stats 'Best Views Ever' label")
-        static let bestViewsIcon = Style.imageForGridiconType(.trophy)
+        static let bestViewsEverTitle = NSLocalizedString("Best views ever", comment: "All Time Stats 'Best views ever' label")
     }
 
     struct MostPopularStats {
-        static let percentOfViews = NSLocalizedString("%i%% of views", comment: "'Most Popular Time' label displaying percent of views. %i is the percent value.")
+        static let bestDay = NSLocalizedString("Best Day", comment: "'Best Day' label for Most Popular stat.")
+        static let bestHour = NSLocalizedString("Best Hour", comment: "'Best Hour' label for Most Popular stat.")
     }
 
     struct FollowerTotals {
+        static let total = NSLocalizedString("Total", comment: "Label for total followers")
         static let wordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
         static let email = NSLocalizedString("Email", comment: "Label for email followers")
         static let social = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
-        static let wordPressIcon = Style.imageForGridiconType(.mySites)
-        static let emailIcon = Style.imageForGridiconType(.mail)
-        static let socialIcon = Style.imageForGridiconType(.share)
     }
 
     struct TodaysStats {
         static let viewsTitle = NSLocalizedString("Views", comment: "Today's Stats 'Views' label")
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
         static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
-        static let likesIcon = Style.imageForGridiconType(.star)
         static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
-        static let viewsIcon = Style.imageForGridiconType(.visible)
-        static let visitorsIcon = Style.imageForGridiconType(.user)
-        static let commentsIcon = Style.imageForGridiconType(.comment)
     }
 
-    struct AnnualSiteStats {
-        static let totalPosts = NSLocalizedString("Total Posts", comment: "'Annual Site Stats' label for the total number of posts.")
-        static let comments = NSLocalizedString("Comments", comment: "'Annual Site Stats' label for total number of comments.")
-        static let likes = NSLocalizedString("Likes", comment: "'Annual Site Stats' label for total number of likes.")
-        static let words = NSLocalizedString("Words", comment: "'Annual Site Stats' label for total number of words.")
-        static let commentsPerPost = NSLocalizedString("Comments Per Post", comment: "'Annual Site Stats' label for average comments per post.")
-        static let likesPerPost = NSLocalizedString("Likes Per Post", comment: "'Annual Site Stats' label for average likes per post.")
-        static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
-    }
-
-    func createAllTimeStatsRows() -> [StatsTotalRowData] {
-        guard let allTimeInsight = store.getAllTimeStats() else {
+    func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {
+        guard let allTimeInsight = insightsStore.getAllTimeStats() else {
             return []
         }
 
-        var dataRows = [StatsTotalRowData]()
+        let totalCounts = allTimeInsight.viewsCount +
+                          allTimeInsight.visitorsCount +
+                          allTimeInsight.postsCount +
+                          allTimeInsight.bestViewsPerDayCount
 
-        if allTimeInsight.postsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
-                                                   data: allTimeInsight.postsCount.abbreviatedString(),
-                                                   icon: AllTimeStats.postsIcon))
+        guard totalCounts > 0 else {
+            return []
         }
 
-        if allTimeInsight.viewsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
-                                                   data: allTimeInsight.viewsCount.abbreviatedString(),
-                                                   icon: AllTimeStats.viewsIcon))
-        }
+        var dataRows = [StatsTwoColumnRowData]()
 
-        if allTimeInsight.visitorsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
-                                                   data: allTimeInsight.visitorsCount.abbreviatedString(),
-                                                   icon: AllTimeStats.visitorsIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AllTimeStats.viewsTitle,
+                                                   leftColumnData: allTimeInsight.viewsCount.abbreviatedString(),
+                                                   rightColumnName: AllTimeStats.visitorsTitle,
+                                                   rightColumnData: allTimeInsight.visitorsCount.abbreviatedString()))
 
-        if allTimeInsight.bestViewsPerDayCount > 0 {
-            let formattedDate = { () -> String in
-                let df = DateFormatter()
-                df.dateStyle = .medium
-                df.timeStyle = .none
-                return df.string(from: allTimeInsight.bestViewsDay)
-            }()
-
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
-                                                   data: allTimeInsight.bestViewsPerDayCount.abbreviatedString(),
-                                                   icon: AllTimeStats.bestViewsIcon,
-                                                   nameDetail: formattedDate))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AllTimeStats.postsTitle,
+                                                   leftColumnData: allTimeInsight.postsCount.abbreviatedString(),
+                                                   rightColumnName: AllTimeStats.bestViewsEverTitle,
+                                                   rightColumnData: allTimeInsight.bestViewsPerDayCount.abbreviatedString()))
 
         return dataRows
     }
 
-    func createMostPopularStatsRows() -> [StatsTotalRowData] {
-        guard let mostPopularStats = store.getAnnualAndMostPopularTime(),
-                let mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
-                let mostPopularHour = mostPopularStats.mostPopularHour.hour,
-                mostPopularStats.mostPopularDayOfWeekPercentage > 0
-         else {
+    func createMostPopularStatsRows() -> [StatsTwoColumnRowData] {
+        guard let mostPopularStats = insightsStore.getAnnualAndMostPopularTime(),
+            var mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
+            let mostPopularHour = mostPopularStats.mostPopularHour.hour,
+            mostPopularStats.mostPopularDayOfWeekPercentage > 0
+            else {
                 return []
         }
 
         var calendar = Calendar.init(identifier: .gregorian)
         calendar.locale = Locale.autoupdatingCurrent
 
-        let dayString = calendar.standaloneWeekdaySymbols[mostPopularWeekday - 1]
+        // Back up mostPopularWeekday by 1 to get correct index for standaloneWeekdaySymbols.
+        mostPopularWeekday = mostPopularWeekday == 0 ? calendar.standaloneWeekdaySymbols.count - 1 : mostPopularWeekday - 1
+        let dayString = calendar.standaloneWeekdaySymbols[mostPopularWeekday]
 
-        let nowWithChangedHour = calendar.date(bySettingHour: mostPopularHour, minute: 0, second: 0, of: Date())
-
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateStyle = .none
-        timeFormatter.timeStyle = .short
-
-        guard let timeModifiedDate = nowWithChangedHour else {
-
+        guard let timeModifiedDate = calendar.date(bySettingHour: mostPopularHour, minute: 0, second: 0, of: Date()) else {
             return []
         }
 
+        let timeFormatter = DateFormatter()
+        timeFormatter.setLocalizedDateFormatFromTemplate("h a")
+
         let timeString = timeFormatter.string(from: timeModifiedDate)
 
-        return [StatsTotalRowData(name: dayString,
-                                  data: String(format: MostPopularStats.percentOfViews,
-                                               mostPopularStats.mostPopularDayOfWeekPercentage),
-                                  icon: Style.imageForGridiconType(.calendar, withTint: .darkGrey)),
-                StatsTotalRowData(name: timeString.replacingOccurrences(of: ":00", with: ""),
-                                  data: String(format: MostPopularStats.percentOfViews,
-                                               mostPopularStats.mostPopularHourPercentage),
-                                  icon: Style.imageForGridiconType(.time, withTint: .darkGrey))]
+        return [StatsTwoColumnRowData.init(leftColumnName: MostPopularStats.bestDay,
+                                   leftColumnData: dayString,
+                                   rightColumnName: MostPopularStats.bestHour,
+                                   rightColumnData: timeString.uppercased())]
+    }
+
+    func createTotalFollowersRows() -> [StatsTwoColumnRowData] {
+        let totalDotComFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount ?? 0
+        let totalEmailFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount ?? 0
+
+        var totalPublicize = 0
+        if let publicize = insightsStore.getPublicize(), !publicize.publicizeServices.isEmpty {
+            totalPublicize = publicize.publicizeServices.compactMap({$0.followers}).reduce(0, +)
         }
 
-    func createTotalFollowersRows() -> [StatsTotalRowData] {
-        var dataRows = [StatsTotalRowData]()
+        let totalFollowers = totalDotComFollowers + totalEmailFollowers + totalPublicize
 
-        if let totalDotComFollowers = store.getDotComFollowers()?.dotComFollowersCount,
-            totalDotComFollowers > 0 {
-            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.wordPress,
-                                                   data: totalDotComFollowers.abbreviatedString(),
-                                                   icon: FollowerTotals.wordPressIcon))
+        guard totalFollowers > 0 else {
+            return []
         }
 
-        if let totalEmailFollowers = store.getEmailFollowers()?.emailFollowersCount,
-            totalEmailFollowers > 0 {
-            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.email,
-                                                   data: totalEmailFollowers.abbreviatedString(),
-                                                   icon: FollowerTotals.emailIcon))
-        }
+        var dataRows = [StatsTwoColumnRowData]()
 
-        if let publicize = store.getPublicize(), !publicize.publicizeServices.isEmpty {
-            let publicizeSum = publicize.publicizeServices.reduce(0) { $0 + $1.followers }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: FollowerTotals.total,
+                                                   leftColumnData: totalFollowers.abbreviatedString(),
+                                                   rightColumnName: FollowerTotals.wordPress,
+                                                   rightColumnData: totalDotComFollowers.abbreviatedString()))
 
-            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.social,
-                                                   data: publicizeSum.abbreviatedString(),
-                                                   icon: FollowerTotals.socialIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: FollowerTotals.email,
+                                                   leftColumnData: totalEmailFollowers.abbreviatedString(),
+                                                   rightColumnName: FollowerTotals.social,
+                                                   rightColumnData: totalPublicize.abbreviatedString()))
 
         return dataRows
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
-        guard let services = store.getPublicize()?.publicizeServices else {
+        guard let services = insightsStore.getPublicize()?.publicizeServices else {
             return []
         }
 
         return services.map {
             return StatsTotalRowData(name: $0.name,
                                      data: $0.followers.abbreviatedString(),
-                                     socialIconURL: $0.iconURL)
+                                     socialIconURL: $0.iconURL,
+                                     statSection: .insightsPublicize)
         }
     }
 
-    func createTodaysStatsRows() -> [StatsTotalRowData] {
-        guard let todaysStats = store.getTodaysStats() else {
+    func createTodaysStatsRows() -> [StatsTwoColumnRowData] {
+        guard let todaysStats = insightsStore.getTodaysStats() else {
             return []
         }
-        var dataRows = [StatsTotalRowData]()
 
-        if todaysStats.viewsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.viewsTitle,
-                                                   data: todaysStats.viewsCount.abbreviatedString(),
-                                                   icon: TodaysStats.viewsIcon))
+        let totalCounts = todaysStats.viewsCount +
+                          todaysStats.visitorsCount +
+                          todaysStats.likesCount +
+                          todaysStats.commentsCount
+
+        guard totalCounts > 0 else {
+            return []
         }
 
-        if todaysStats.visitorsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.visitorsTitle,
-                                                   data: todaysStats.visitorsCount.abbreviatedString(),
-                                                   icon: TodaysStats.visitorsIcon))
-        }
+        var dataRows = [StatsTwoColumnRowData]()
 
-        if todaysStats.likesCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.likesTitle,
-                                                   data: todaysStats.likesCount.abbreviatedString(),
-                                                   icon: TodaysStats.likesIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: TodaysStats.viewsTitle,
+                                                   leftColumnData: todaysStats.viewsCount.abbreviatedString(),
+                                                   rightColumnName: TodaysStats.visitorsTitle,
+                                                   rightColumnData: todaysStats.visitorsCount.abbreviatedString()))
 
-        if todaysStats.commentsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.commentsTitle,
-                                                   data: todaysStats.commentsCount.abbreviatedString(),
-                                                   icon: TodaysStats.commentsIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: TodaysStats.likesTitle,
+                                                   leftColumnData: todaysStats.likesCount.abbreviatedString(),
+                                                   rightColumnName: TodaysStats.commentsTitle,
+                                                   rightColumnData: todaysStats.commentsCount.abbreviatedString()))
 
         return dataRows
     }
@@ -305,20 +386,20 @@ private extension SiteStatsInsightsViewModel {
         var monthsData = [[PostingStreakEvent]]()
 
         if let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: Date()) {
-            monthsData.append(store.getMonthlyPostingActivityFor(date: twoMonthsAgo))
+            monthsData.append(insightsStore.getMonthlyPostingActivityFor(date: twoMonthsAgo))
         }
 
         if let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
-            monthsData.append(store.getMonthlyPostingActivityFor(date: oneMonthAgo))
+            monthsData.append(insightsStore.getMonthlyPostingActivityFor(date: oneMonthAgo))
         }
 
-        monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
+        monthsData.append(insightsStore.getMonthlyPostingActivityFor(date: Date()))
 
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 
     func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
-        guard let tagsAndCategories = store.getTopTagsAndCategories()?.topTagsAndCategories else {
+        guard let tagsAndCategories = insightsStore.getTopTagsAndCategories()?.topTagsAndCategories else {
             return []
         }
 
@@ -336,37 +417,36 @@ private extension SiteStatsInsightsViewModel {
         }
     }
 
-    func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {
-        guard let annualInsights = store.getAnnualAndMostPopularTime(),
+    func createAnnualRows() -> [StatsTwoColumnRowData] {
+
+        guard let annualInsights = insightsStore.getAnnualAndMostPopularTime(),
             annualInsights.annualInsightsTotalPostsCount > 0 else {
-                return AnnualSiteStatsRow(totalPostsRowData: nil, totalsDataRows: nil, averagesDataRows: nil)
+                return []
         }
 
-        // Total Posts row
-        let totalPostsRowData = StatsTotalRowData(name: AnnualSiteStats.totalPosts,
-                                                  data: annualInsights.annualInsightsTotalPostsCount.abbreviatedString())
+        var dataRows = [StatsTwoColumnRowData]()
 
-        // Totals rows
-        let totalCommentsRow = StatsTotalRowData(name: AnnualSiteStats.comments,
-                                                 data: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString())
-        let totalLikesRow = StatsTotalRowData(name: AnnualSiteStats.likes,
-                                              data: annualInsights.annualInsightsTotalLikesCount.abbreviatedString())
-        let totalWordsRow = StatsTotalRowData(name: AnnualSiteStats.words,
-                                              data: annualInsights.annualInsightsTotalWordsCount.abbreviatedString())
-        let totalsDataRows = [totalCommentsRow, totalLikesRow, totalWordsRow]
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.year,
+                                                   leftColumnData: String(annualInsights.annualInsightsYear),
+                                                   rightColumnName: AnnualSiteStats.totalPosts,
+                                                   rightColumnData: annualInsights.annualInsightsTotalPostsCount.abbreviatedString()))
 
-        // Averages rows
-        let averageCommentsRow = StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
-                                                   data: annualInsights.annualInsightsAverageCommentsCount.abbreviatedString())
-        let averageLikesRow = StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
-                                                data: annualInsights.annualInsightsAverageLikesCount.abbreviatedString())
-        let averageWordsRow = StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
-                                                data: annualInsights.annualInsightsAverageWordsCount.abbreviatedString())
-        let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalComments,
+                                                   leftColumnData: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString(),
+                                                   rightColumnName: AnnualSiteStats.commentsPerPost,
+                                                   rightColumnData: Int(round(annualInsights.annualInsightsAverageCommentsCount)).abbreviatedString()))
 
-        return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,
-                                  totalsDataRows: totalsDataRows,
-                                  averagesDataRows: averageDataRows)
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalLikes,
+                                                   leftColumnData: annualInsights.annualInsightsTotalLikesCount.abbreviatedString(),
+                                                   rightColumnName: AnnualSiteStats.likesPerPost,
+                                                   rightColumnData: Int(round(annualInsights.annualInsightsAverageLikesCount)).abbreviatedString()))
+
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalWords,
+                                                   leftColumnData: annualInsights.annualInsightsTotalWordsCount.abbreviatedString(),
+                                                   rightColumnName: AnnualSiteStats.wordsPerPost,
+                                                   rightColumnData: Int(round(annualInsights.annualInsightsAverageWordsCount)).abbreviatedString()))
+
+        return dataRows
 
     }
 
@@ -378,13 +458,18 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func tabDataForCommentType(_ commentType: StatSection) -> TabData {
-        let commentsInsight = store.getTopCommentsInsight()
+        let commentsInsight = insightsStore.getTopCommentsInsight()
 
         var rowItems: [StatsTotalRowData] = []
 
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/11713
+        // For now, don't show `View more` for Insights Comments.
+        // To accomplish this, return only the max number of rows displayed on the Insights card,
+        // as `View more` is added if the number of rows exceeds the max.
+
         switch commentType {
         case .insightsCommentsAuthors:
-            let authors = commentsInsight?.topAuthors ?? []
+            let authors = commentsInsight?.topAuthors.prefix(StatsDataHelper.maxRowsToDisplay) ?? []
             rowItems = authors.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -393,7 +478,7 @@ private extension SiteStatsInsightsViewModel {
                                   statSection: .insightsCommentsAuthors)
             }
         case .insightsCommentsPosts:
-            let posts = commentsInsight?.topPosts ?? []
+            let posts = commentsInsight?.topPosts.prefix(StatsDataHelper.maxRowsToDisplay) ?? []
             rowItems = posts.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -425,11 +510,11 @@ private extension SiteStatsInsightsViewModel {
 
         switch followerType {
         case .insightsFollowersWordPress:
-            followers = store.getDotComFollowers()?.topDotComFollowers
-            totalFollowers = store.getDotComFollowers()?.dotComFollowersCount
+            followers = insightsStore.getDotComFollowers()?.topDotComFollowers
+            totalFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount
         case .insightsFollowersEmail:
-            followers = store.getEmailFollowers()?.topEmailFollowers
-            totalFollowers = store.getEmailFollowers()?.emailFollowersCount
+            followers = insightsStore.getEmailFollowers()?.topEmailFollowers
+            totalFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount
         default:
             break
         }
@@ -450,4 +535,25 @@ private extension SiteStatsInsightsViewModel {
                        dataRows: followersData ?? [])
     }
 
+    func createAddInsightRow() -> StatsTotalRowData {
+        return StatsTotalRowData(name: StatSection.insightsAddInsight.title,
+                                 data: "",
+                                 icon: Style.imageForGridiconType(.plus, withTint: .darkGrey),
+                                 statSection: .insightsAddInsight)
+    }
+
+    func row(for insight: InsightType, rowStatus: StoreFetchingStatus, rowBlock: () -> ImmuTableRow, loadingRow: () -> ImmuTableRow) -> ImmuTableRow {
+        if insightsStore.containsCachedData(for: insight) || !Feature.enabled(.statsAsyncLoading) {
+            return rowBlock()
+        }
+
+        switch rowStatus {
+        case .loading, .idle:
+            return loadingRow()
+        case .success:
+            return rowBlock()
+        case .error:
+            return StatsErrorRow(rowStatus: rowStatus, statType: .insights)
+        }
+    }
 }

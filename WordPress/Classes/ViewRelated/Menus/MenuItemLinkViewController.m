@@ -2,6 +2,7 @@
 #import "MenuItemCheckButtonView.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 static CGFloat const LinkTextBarHeight = 48.0;
 
@@ -29,7 +30,7 @@ static CGFloat const LinkTextBarHeight = 48.0;
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.text = [NSLocalizedString(@"Link Address (URL)", @"Menus title label when editing a menu item as a link.") uppercaseString];
-    label.textColor = [WPStyleGuide greyDarken10];
+    label.textColor = [UIColor murielNeutral40];
     label.font = [WPFontManager systemSemiBoldFontOfSize:12.0];
 
     [self.stackView addArrangedSubview:label];

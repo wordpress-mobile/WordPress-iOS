@@ -26,6 +26,9 @@ open class ActivityTableViewCell: WPTableViewCell {
         summaryLabel.text = activity.summary
         contentLabel.text = activity.text
 
+        summaryLabel.textColor = .textSubtle
+        contentLabel.textColor = .text
+
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
         if let iconImage = Style.getIconForActivity(activity) {
             iconImageView.image = iconImage.imageFlippedForRightToLeftLayoutDirection()
@@ -74,7 +77,7 @@ open class RewindStatusTableViewCell: ActivityTableViewCell {
         contentLabel.text = title
         summaryLabel.text = summary
 
-        iconBackgroundImageView.backgroundColor = WPStyleGuide.wordPressBlue()
+        iconBackgroundImageView.backgroundColor = .primary
         iconImageView.image = Gridicon.iconOfType(.noticeOutline).imageWithTintColor(.white)
         iconImageView.isHidden = false
         rewindIconContainer.isHidden = true

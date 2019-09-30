@@ -32,7 +32,7 @@ extension RegisterDomainDetailsViewController {
 
         func valueColor(row: EditableKeyValueRow) -> UIColor? {
             //we don't want to show red fonts before user taps register button
-            return row.isValid(inContext: .serverSide) ? nil : WPStyleGuide.errorRed()
+            return row.isValid(inContext: .serverSide) ? nil : .error
         }
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InlineEditableNameValueCell.defaultReuseID)

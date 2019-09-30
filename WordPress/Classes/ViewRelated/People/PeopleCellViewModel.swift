@@ -20,6 +20,10 @@ struct PeopleCellViewModel {
         return "@" + username
     }
 
+    var usernameColor: UIColor {
+        return .text
+    }
+
     var roleBorderColor: UIColor {
         return role?.color ?? WPStyleGuide.People.otherRoleColor
     }

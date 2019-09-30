@@ -40,16 +40,8 @@ final class MarkAsSpamActionTests: XCTestCase {
         XCTAssertEqual(action?.on, Constants.initialStatus)
     }
 
-    func testDefaultTitleIsExpected() {
-        XCTAssertEqual(action?.icon?.titleLabel?.text, MarkAsSpam.title)
-    }
-
-    func testDefaultAccessibilityLabelIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityLabel, MarkAsSpam.title)
-    }
-
-    func testDefaultAccessibilityHintIsExpected() {
-        XCTAssertEqual(action?.icon?.accessibilityHint, MarkAsSpam.hint)
+    func testActionTitleIsExpected() {
+        XCTAssertEqual(action?.actionTitle, MarkAsSpam.title)
     }
 
     func testExecuteCallsSpam() {

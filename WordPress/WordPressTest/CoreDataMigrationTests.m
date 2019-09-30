@@ -967,6 +967,100 @@
     XCTAssertNotNil(ps);
 }
 
+- (void)testMigrate87to88
+{
+    NSURL *model87Url = [self urlForModelName:@"WordPress 87" inDirectory:nil];
+    NSURL *model88Url = [self urlForModelName:@"WordPress 88" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress87.sqlite"];
+
+        // Load a Model 74 Stack
+    NSManagedObjectModel *model87 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model87Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model87];
+
+    NSDictionary *options = @{
+                              NSInferMappingModelAutomaticallyOption          : @(YES),
+                              NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+                              };
+
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    XCTAssertNil(error, @"Error while loading the PSC for Model 74");
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+
+    NSManagedObject *account1 = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+    [account1 setValue:@"dotcomuser1" forKey:@"username"];
+
+    //WPCom Blog
+    NSManagedObject *blog1 = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    [blog1 setValue:@(1001) forKey:@"blogID"];
+    [blog1 setValue:@"https://test1.wordpress.com" forKey:@"url"];
+    [blog1 setValue:@"https://test1.wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
+    [blog1 setValue:account1 forKey:@"account"];
+
+    //SelfHosted Blog
+    NSManagedObject *blog2 = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    [blog2 setValue:@(1002) forKey:@"blogID"];
+    [blog2 setValue:@"https://test1.wordpress.com" forKey:@"url"];
+    [blog2 setValue:@"https://test1.wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
+
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+
+    // Cleanup
+    XCTAssertNotNil(ps);
+    psc = nil;
+
+    // Migrate to Model 88
+    NSManagedObjectModel *model88 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model88Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model88
+                                                orderedModelNames:@[@"WordPress 87", @"WordPress 88"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertTrue(migrateResult);
+
+    // Load a Model 88 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model88];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogID" ascending:YES]];
+
+    NSArray *results = [context executeFetchRequest:request error:nil];
+    XCTAssert(results.count == 2, @"Error Fetching Blogs");
+
+    // WPCom/Jetpack sites should migrate to Aztec
+
+    NSManagedObject *wpcomBlog = [results firstObject];
+    XCTAssertEqualObjects([wpcomBlog valueForKey:@"mobileEditor"], @"aztec");
+
+    // SelfHosted (non-jetpack) should migrate to Aztec
+
+    NSManagedObject *selfHostedBlog = [results lastObject];
+    XCTAssertEqualObjects([selfHostedBlog valueForKey:@"mobileEditor"], @"aztec");
+
+    XCTAssertNil(error, @"Error while loading the PSC for Model 88");
+    XCTAssertNotNil(ps);
+}
+
 #pragma mark - Private Helpers
 
 // Returns the URL for a model file with the given name in the given directory.

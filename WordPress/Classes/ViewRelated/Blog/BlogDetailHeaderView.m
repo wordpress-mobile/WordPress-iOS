@@ -4,7 +4,6 @@
 #import "WordPress-Swift.h"
 
 
-
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
 const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
@@ -38,12 +37,15 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)performSetup
 {
     self.preservesSuperviewLayoutMargins = YES;
+    
     [self setupStackView];
     [self setupBlavatarImageView];
     [self setupBlavatarDropTarget];
     [self setupLabelsStackView];
     [self setupTitleLabel];
     [self setupSubtitleLabel];
+    
+    self.accessibilityElements = @[self.stackView, self.blavatarDropTarget];
 }
 
 #pragma mark - Public Methods
@@ -60,12 +62,16 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self setSubtitleText:blog.displayURL];
     [self.labelsStackView setNeedsLayout];
     
-    if (@available(iOS 11.0, *)) {
-        if ([self.delegate siteIconShouldAllowDroppedImages]) {
-            UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
-            [self.blavatarDropTarget addInteraction:dropInteraction];
-        }
+    if ([self.delegate siteIconShouldAllowDroppedImages]) {
+        UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
+        [self.blavatarDropTarget addInteraction:dropInteraction];
     }
+    
+    NSString *localizedLabel =
+        NSLocalizedString(@"%@, at %@",
+                          @"Accessibility label for the site header. The first variable is the blog name, the second is the domain.");
+    self.stackView.accessibilityLabel =
+        [NSString stringWithFormat:localizedLabel, title, blog.displayURL];
 }
 
 - (void)setTitleText:(NSString *)title
@@ -98,9 +104,15 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     if (self.blog.hasIcon) {
         [self.blavatarImageView downloadSiteIconFor:self.blog placeholderImage:nil];
     } else {
-        self.blavatarImageView.image = [UIImage siteIconPlaceholderImage];
+        self.blavatarImageView.image = [UIImage siteIconPlaceholder];
     }
 
+    [self refreshSpotlight];
+}
+
+- (void)refreshSpotlight {
+    [self removeQuickStartSpotlight];
+    
     if ([[QuickStartTourGuide find] isCurrentElement:QuickStartTourElementSiteIcon]) {
         [self addQuickStartSpotlight];
     }
@@ -141,6 +153,9 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                               [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
                                               [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
                                               ]];
+    
+    stackView.isAccessibilityElement = YES;
+
     _stackView = stackView;
 }
 
@@ -168,6 +183,10 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     self.blavatarDropTarget = [UIView new];
     [self.blavatarDropTarget setTranslatesAutoresizingMaskIntoConstraints:NO];
     self.blavatarDropTarget.backgroundColor = [UIColor clearColor];
+    self.blavatarDropTarget.accessibilityLabel = NSLocalizedString(@"Site Icon", @"Site Icon accessibility label.");
+    self.blavatarDropTarget.accessibilityTraits = UIAccessibilityTraitImage | UIAccessibilityTraitButton;
+    self.blavatarDropTarget.accessibilityHint = NSLocalizedString(@"Shows a menu for changing the Site Icon.", @"Accessibility hint describing what happens if the Site Icon is tapped.");
+    self.blavatarDropTarget.isAccessibilityElement = YES;
 
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                 action:@selector(blavatarImageTapped)];
@@ -223,7 +242,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.numberOfLines = 1;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide littleEddieGrey];
+    label.textColor = [UIColor murielText];
     label.adjustsFontSizeToFitWidth = NO;
     [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCallout];
 
@@ -241,7 +260,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.numberOfLines = 1;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide allTAllShadeGrey];
+    label.textColor = [UIColor murielNeutral];
     label.adjustsFontSizeToFitWidth = NO;
     [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCaption1 symbolicTraits:UIFontDescriptorTraitItalic];
 

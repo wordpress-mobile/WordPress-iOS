@@ -127,15 +127,25 @@ class WPSplitViewController: UISplitViewController {
     override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
         guard let collection = super.overrideTraitCollection(forChild: childViewController) else { return nil }
 
+        var traits = [collection]
+
         // By default, the detail view controller of a split view is passed the same size class as the split view itself.
         // However, if the splitview is smaller than full screen (i.e. multitasking is active), a number of our
         // view controllers will display better if we tell them they're compact even though the split view is regular.
         if childViewController == viewControllers.last && shouldOverrideDetailViewControllerHorizontalSizeClass {
-            return UITraitCollection(traitsFrom: [collection, UITraitCollection(horizontalSizeClass: .compact)])
+            traits.append(UITraitCollection(horizontalSizeClass: .compact))
+        } else {
+            traits.append(UITraitCollection(horizontalSizeClass: traitCollection.horizontalSizeClass))
         }
 
-        let overrideCollection = UITraitCollection(horizontalSizeClass: self.traitCollection.horizontalSizeClass)
-        return UITraitCollection(traitsFrom: [collection, overrideCollection])
+        // This is to work around an apparent bug in iOS 13 where the detail view is assuming the system is in dark
+        // mode when switching out of the app and then back in. Here we ensure the overridden user interface style
+        // traits are replaced with the correct current traits before we use them.
+        if #available(iOS 12.0, *) {
+            traits.append(UITraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle))
+        }
+
+        return UITraitCollection(traitsFrom: traits)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -200,7 +210,7 @@ class WPSplitViewController: UISplitViewController {
 
     fileprivate lazy var dimmingView: UIView = {
         let dimmingView = UIView()
-        dimmingView.backgroundColor = WPStyleGuide.greyDarken30()
+        dimmingView.backgroundColor = .neutral(.shade60)
         return dimmingView
     }()
 
@@ -346,7 +356,7 @@ class WPSplitViewController: UISplitViewController {
         navigationController.restorationIdentifier = type(of: self).navigationControllerRestorationIdentifier
         navigationController.delegate = self
         navigationController.extendedLayoutIncludesOpaqueBars = true
-        WPStyleGuide.configureColors(for: navigationController.view, andTableView: nil)
+        WPStyleGuide.configureColors(view: navigationController.view, tableView: nil)
 
         return navigationController
     }
@@ -453,7 +463,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             navigationController.delegate = self
             navigationController.restorationIdentifier = type(of: self).navigationControllerRestorationIdentifier
             navigationController.viewControllers = viewControllers
-            WPStyleGuide.configureColors(for: navigationController.view, andTableView: nil)
+            WPStyleGuide.configureColors(view: navigationController.view, tableView: nil)
 
             return navigationController
         }

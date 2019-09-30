@@ -12,8 +12,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     enum Const {
         enum Color {
-            static let nameText = WPStyleGuide.darkGrey()
-            static let valueText = WPStyleGuide.greyDarken10()
+            static let nameText = UIColor.text
+            static let valueText = UIColor.textSubtle
         }
     }
 
@@ -24,9 +24,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     override var accessoryType: UITableViewCell.AccessoryType {
         didSet {
-            if accessoryType != .none {
-                valueTextField.isEnabled = false
-            }
+            let textFieldEnabled = accessoryType == .none
+            valueTextField.isEnabled = textFieldEnabled
         }
     }
 
@@ -40,11 +39,14 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setValueTextFieldAsFirstResponder(_:))))
 
         valueTextField.textColor = Const.Color.valueText
+        valueTextField.tintColor = .textPlaceholder
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
-        valueTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)),
+        valueTextField.addTarget(self,
+                                 action: #selector(textFieldDidChange(textField:)),
                                  for: UIControl.Event.editingChanged)
-        valueTextField.addTarget(self, action: #selector(textEditingDidEnd(textField:)),
+        valueTextField.addTarget(self,
+                                 action: #selector(textEditingDidEnd(textField:)),
                                  for: UIControl.Event.editingDidEnd)
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next inverse_text_alignment
@@ -58,10 +60,12 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
+        textField.text = textField.text?.replacingOccurrences(of: " ", with: "\u{00a0}")
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: textField)
     }
 
     @objc func textEditingDidEnd(textField: UITextField) {
+        textField.text = textField.text?.replacingOccurrences(of: "\u{00a0}", with: " ")
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: textField)
     }
 

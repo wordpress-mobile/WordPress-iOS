@@ -1,9 +1,9 @@
 import Foundation
 import CoreData
 import CocoaLumberjack
-import MGSwipeTableCell
 import WordPressShared
 import WordPressAuthenticator
+import Gridicons
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -88,6 +88,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         return indicator
     }()
 
+    /// Notification Settings button
+    lazy var notificationSettingsButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
+        button.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
+        return button
+    }()
+
     // MARK: - View Lifecycle
 
     required init?(coder aDecoder: NSCoder) {
@@ -104,8 +111,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         setupNavigationBar()
         setupTableView()
-        setupTableHeaderView()
         setupTableFooterView()
+        layoutHeaderIfNeeded()
         setupConstraints()
         setupTableHandler()
         setupRefreshControl()
@@ -174,13 +181,36 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         tableViewHandler.updateRowAnimation = .none
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        layoutHeaderIfNeeded()
+    }
+
+    private func layoutHeaderIfNeeded() {
+        precondition(tableHeaderView != nil)
+        // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
+        let requiredSize = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        var headerFrame = tableHeaderView.frame
+        if headerFrame.height != requiredSize.height {
+            headerFrame.size.height = requiredSize.height
+            tableHeaderView.frame = headerFrame
+            adjustNoResultsViewSize()
+
+            tableHeaderView.layoutIfNeeded()
+
+            // We reassign the tableHeaderView to force the UI to refresh. Yes, really.
+            tableView.tableHeaderView = tableHeaderView
+            tableView.setNeedsLayout()
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        // table header views are a special kind of broken. This dispatch forces the table header to get a new layout
-        // on the next redraw tick, which seems to be required.
         DispatchQueue.main.async {
-            self.setupTableHeaderView()
             self.showNoResultsViewIfNeeded()
         }
 
@@ -240,6 +270,20 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         if let filterTabBar = filterTabBar, filterTabBar.selectedIndex != restorableSelectedSegmentIndex {
             filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex, animated: false)
+        }
+    }
+
+    override func applicationFinishedRestoringState() {
+        super.applicationFinishedRestoringState()
+
+        guard let navigationControllers = navigationController?.children else {
+            return
+        }
+
+        for case let detailVC as NotificationDetailsViewController in navigationControllers {
+            if detailVC.onDeletionRequestCallback == nil, let note = detailVC.note {
+                configureDetailsViewController(detailVC, withNote: note)
+            }
         }
     }
 
@@ -309,6 +353,79 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         showDetails(for: note)
     }
 
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
+            return nil
+        }
+
+        let isRead = note.read
+
+        let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") : NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
+
+        let action = UIContextualAction(style: .normal, title: title, handler: { (action, view, completionHandler) in
+            if isRead {
+                self.markAsUnread(note: note)
+            } else {
+                self.markAsRead(note: note)
+            }
+            completionHandler(true)
+        })
+        action.backgroundColor = .neutral(.shade50)
+
+        return UISwipeActionsConfiguration(actions: [action])
+    }
+
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+            let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            return nil
+        }
+
+        var actions: [UIContextualAction] = []
+
+        // Trash comment
+        if let trashAction = block.action(id: TrashCommentAction.actionIdentifier()),
+            let command = trashAction.command,
+            let title = command.actionTitle {
+            let action = UIContextualAction(style: .normal, title: title, handler: { (_, _, completionHandler) in
+                let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
+                    guard let request = request else {
+                        return
+                    }
+                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                })
+                trashAction.execute(context: actionContext)
+                completionHandler(true)
+            })
+            action.backgroundColor = command.actionColor
+            actions.append(action)
+        }
+
+        // Approve comment
+        guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled, approveEnabled == true else {
+            return nil
+        }
+
+        let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
+        if let title = approveAction?.command?.actionTitle {
+            let action = UIContextualAction(style: .normal, title: title, handler: { (_, _, completionHandler) in
+                let actionContext = ActionContext(block: block)
+                approveAction?.execute(context: actionContext)
+                completionHandler(true)
+            })
+            action.backgroundColor = approveAction?.command?.actionColor
+            actions.append(action)
+        }
+
+        let configuration = UISwipeActionsConfiguration(actions: actions)
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let note = sender as? Notification else {
             return
@@ -344,6 +461,14 @@ private extension NotificationsViewController {
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
 
+    func updateNavigationItems() {
+        navigationItem.rightBarButtonItem = shouldDisplaySettingsButton ? notificationSettingsButton : nil
+    }
+
+    @objc func closeNotificationSettings() {
+        dismiss(animated: true, completion: nil)
+    }
+
     func setupConstraints() {
         precondition(inlinePromptSpaceConstraint != nil)
 
@@ -366,24 +491,7 @@ private extension NotificationsViewController {
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
-    }
-
-    func setupTableHeaderView() {
-        precondition(tableHeaderView != nil)
-
-        // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-        let requiredSize = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        var headerFrame = tableHeaderView.frame
-        headerFrame.size.height = requiredSize.height
-        tableHeaderView.frame = headerFrame
-        adjustNoResultsViewSize()
-
-        tableHeaderView.layoutIfNeeded()
-
-        // We reassign the tableHeaderView to force the UI to refresh. Yes, really.
-        tableView.tableHeaderView = tableHeaderView
-        tableView.setNeedsLayout()
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     func setupTableFooterView() {
@@ -412,6 +520,8 @@ private extension NotificationsViewController {
             setupAppRatings()
             showInlinePrompt()
         }
+
+        layoutHeaderIfNeeded()
     }
 
     func setupRefreshControl() {
@@ -425,9 +535,8 @@ private extension NotificationsViewController {
     }
 
     func setupFilterBar() {
-        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
-        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
+        WPStyleGuide.configureFilterTabBar(filterTabBar)
+        filterTabBar.superview?.backgroundColor = .filterBarBackground
 
         filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -443,9 +552,7 @@ private extension NotificationsViewController {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         nc.addObserver(self, selector: #selector(notificationsWereUpdated), name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
-        if #available(iOS 11.0, *) {
-            nc.addObserver(self, selector: #selector(dynamicTypeDidChange), name: UIContentSizeCategory.didChangeNotification, object: nil)
-        }
+        nc.addObserver(self, selector: #selector(dynamicTypeDidChange), name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
 
     func startListeningToAccountNotifications() {
@@ -630,6 +737,19 @@ extension NotificationsViewController {
         // Dispatch the Action block
         perform(#selector(deleteNoteWithID), with: noteObjectID, afterDelay: Syncing.undoTimeout)
     }
+
+    /// Presents the Notifications Settings screen.
+    ///
+    @objc func showNotificationSettings() {
+        let controller = NotificationSettingsViewController()
+        controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(closeNotificationSettings))
+
+        let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .formSheet
+        navigationController.modalTransitionStyle = .coverVertical
+
+        present(navigationController, animated: true, completion: nil)
+    }
 }
 
 
@@ -690,6 +810,14 @@ private extension NotificationsViewController {
         }
 
         NotificationSyncMediator()?.markAsRead(note)
+    }
+
+    func markAsUnread(note: Notification) {
+        guard note.read else {
+            return
+        }
+
+        NotificationSyncMediator()?.markAsUnread(note)
     }
 }
 
@@ -947,28 +1075,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         }
 
         cell.downloadIconWithURL(note.iconURL)
-
-        configureCellActions(cell, note: note)
-    }
-
-    @objc func configureCellActions(_ cell: NoteTableViewCell, note: Notification) {
-        // Let "Mark as Read" expand
-        let leadingExpansionButton = 0
-
-        // Don't expand "Trash"
-        let trailingExpansionButton = -1
-
-        if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
-            cell.leftButtons = leadingButtons(note: note)
-            cell.leftExpansion.buttonIndex = leadingExpansionButton
-            cell.rightButtons = trailingButtons(note: note)
-            cell.rightExpansion.buttonIndex = trailingExpansionButton
-        } else {
-            cell.rightButtons = leadingButtons(note: note)
-            cell.rightExpansion.buttonIndex = trailingExpansionButton
-            cell.leftButtons = trailingButtons(note: note)
-            cell.leftExpansion.buttonIndex = trailingExpansionButton
-        }
     }
 
     func sectionNameKeyPath() -> String {
@@ -1006,68 +1112,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 }
 
 
-
-// MARK: - Actions
-//
-private extension NotificationsViewController {
-    func leadingButtons(note: Notification) -> [MGSwipeButton] {
-        guard !note.read else {
-            return []
-        }
-
-        return [
-            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"),
-                          backgroundColor: WPStyleGuide.greyDarken20(),
-                          callback: { _ in
-                            self.markAsRead(note: note)
-                            return true
-            })
-        ]
-    }
-
-    func trailingButtons(note: Notification) -> [MGSwipeButton] {
-        var rightButtons = [MGSwipeButton]()
-
-        guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
-            return []
-        }
-
-        // Comments: Trash
-        if let trashAction = block.action(id: TrashCommentAction.actionIdentifier()), let button = trashAction.command?.icon as? MGSwipeButton {
-            button.callback = { [weak self] _ in
-                let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
-                    guard let request = request else {
-                        return
-                    }
-                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
-                })
-                trashAction.execute(context: actionContext)
-                return true
-            }
-            rightButtons.append(button)
-        }
-
-        guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled, approveEnabled == true else {
-            return rightButtons
-        }
-
-        let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
-        let button = approveAction?.command?.icon as? MGSwipeButton
-
-        button?.callback = { _ in
-            let actionContext = ActionContext(block: block)
-            approveAction?.execute(context: actionContext)
-            return true
-        }
-
-        rightButtons.append(button!)
-
-        return rightButtons
-    }
-}
-
-
-
 // MARK: - Filter Helpers
 //
 private extension NotificationsViewController {
@@ -1103,6 +1147,7 @@ private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
         noResultsViewController.removeFromView()
         updateSplitViewAppearanceForNoResultsView()
+        updateNavigationItems()
 
         // Hide the filter header if we're showing the Jetpack prompt
         hideFiltersSegmentedControlIfApplicable()
@@ -1179,6 +1224,10 @@ private extension NotificationsViewController {
         return AccountHelper.isDotcomAvailable() == false
     }
 
+    var shouldDisplaySettingsButton: Bool {
+        return AccountHelper.isDotcomAvailable()
+    }
+
     var shouldDisplayNoResultsView: Bool {
         return tableViewHandler.resultsController.fetchedObjects?.count == 0 && !shouldDisplayJetpackPrompt
     }
@@ -1223,7 +1272,7 @@ internal extension NotificationsViewController {
         self.inlinePromptSpaceConstraint.isActive = true
         UIView.animate(withDuration: WPAnimationDurationDefault, delay: InlinePrompt.animationDelay, options: .curveEaseIn, animations: {
             self.inlinePromptView.alpha = WPAlphaFull
-            self.setupTableHeaderView()
+            self.layoutHeaderIfNeeded()
         })
 
         WPAnalytics.track(.appReviewsSawPrompt)
@@ -1235,11 +1284,10 @@ internal extension NotificationsViewController {
                        delay: delay,
                        animations: {
             self.inlinePromptView.alpha = WPAlphaZero
-            self.setupTableHeaderView()
+            self.layoutHeaderIfNeeded()
         })
     }
 }
-
 
 // MARK: - Sync'ing Helpers
 //
@@ -1301,7 +1349,7 @@ private extension NotificationsViewController {
     }
 
     func loadNotification(near note: Notification, withIndexDelta delta: Int) -> Notification? {
-        guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+        guard let notifications = tableViewHandler?.resultsController.fetchedObjects as? [Notification] else {
             return nil
         }
 

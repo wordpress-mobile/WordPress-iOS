@@ -51,7 +51,7 @@ extension ReaderRoute: Route {
 }
 
 extension ReaderRoute: NavigationAction {
-    func perform(_ values: [String: String]?, source: UIViewController? = nil) {
+    func perform(_ values: [String: String], source: UIViewController? = nil) {
         guard let coordinator = WPTabBarController.sharedInstance().readerCoordinator else {
             return
         }
@@ -80,21 +80,21 @@ extension ReaderRoute: NavigationAction {
         case .manageFollowing:
             coordinator.showManageFollowing()
         case .list:
-            if let username = values?["username"],
-                let listName = values?["list_name"] {
+            if let username = values["username"],
+                let listName = values["list_name"] {
                 coordinator.showList(named: listName, forUser: username)
             }
         case .tag:
-            if let tagName = values?["tag_name"] {
+            if let tagName = values["tag_name"] {
                 coordinator.showTag(named: tagName)
             }
         case .feed:
-            if let feedIDValue = values?["feed_id"],
+            if let feedIDValue = values["feed_id"],
                 let feedID = Int(feedIDValue) {
                 coordinator.showStream(with: feedID, isFeed: true)
             }
         case .blog:
-            if let blogIDValue = values?["blog_id"],
+            if let blogIDValue = values["blog_id"],
                 let blogID = Int(blogIDValue) {
                 coordinator.showStream(with: blogID, isFeed: false)
             }

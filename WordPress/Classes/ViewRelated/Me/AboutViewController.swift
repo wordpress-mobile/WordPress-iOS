@@ -45,7 +45,7 @@ open class AboutViewController: UITableViewController {
 
     fileprivate func setupTableView() {
         // Load and Tint the Logo
-        let color                   = WPStyleGuide.wordPressBlue()
+        let color                   = UIColor.primary
         let tintedImage             = UIImage(named: "icon-wp")?.withRenderingMode(.alwaysTemplate)
         let imageView               = UIImageView(image: tintedImage)
         imageView.tintColor = color
@@ -59,7 +59,7 @@ open class AboutViewController: UITableViewController {
         tableView.tableHeaderView   = imageView
         tableView.contentInset      = WPTableViewContentInsets
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
@@ -141,12 +141,20 @@ open class AboutViewController: UITableViewController {
         displayWebView(URL(string: urlString))
     }
 
-    private func displayWebView(_ url: URL?) {
+    private func displayWebView(_ url: URL?, title: String? = nil) {
         guard let url = url else {
             return
         }
 
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        if let title = title {
+            present(webViewController: WebViewControllerFactory.controller(url: url, title: title))
+        }
+        else {
+            present(webViewController: WebViewControllerFactory.controller(url: url))
+        }
+    }
+
+    private func present(webViewController: UIViewController) {
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
         } else {
@@ -202,6 +210,8 @@ open class AboutViewController: UITableViewController {
     fileprivate var rows: [[Row]] {
         let appsBlogHostname = URL(string: WPAutomatticAppsBlogURL)?.host ?? String()
 
+        let acknowledgementsString = NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use")
+
         return [
             [
                 Row(title: NSLocalizedString("Version", comment: "Displays the version of the App"),
@@ -210,7 +220,7 @@ open class AboutViewController: UITableViewController {
 
                 Row(title: NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
                     details: nil,
-                    handler: { self.displayWebView(URL(string: WPAutomatticTermsOfServiceURL)?.prependLocaleAsSubdomain()) }),
+                    handler: { self.displayWebView(URL(string: WPAutomatticTermsOfServiceURL)?.appendingLocale()) }),
 
                 Row(title: NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web"),
                     details: nil,
@@ -232,6 +242,13 @@ open class AboutViewController: UITableViewController {
                 Row(title: NSLocalizedString("Source Code", comment: "Opens the Github Repository Web"),
                     details: nil,
                     handler: { self.displayWebView(WPGithubMainURL) }),
+
+                Row(title: acknowledgementsString,
+                    details: nil,
+                    handler: {
+                        let url = Bundle.main.url(forResource: "acknowledgements", withExtension: "html")
+                        self.displayWebView(url, title: acknowledgementsString)
+                }),
             ]
         ]
     }

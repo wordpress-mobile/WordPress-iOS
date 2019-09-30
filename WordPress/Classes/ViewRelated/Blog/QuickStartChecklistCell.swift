@@ -12,8 +12,16 @@ class QuickStartChecklistCell: UITableViewCell {
         }
     }
     @IBOutlet private var iconView: UIImageView?
-    @IBOutlet private var stroke: UIView?
-    @IBOutlet private var topSeparator: UIView?
+    @IBOutlet private var stroke: UIView? {
+        didSet {
+            stroke?.backgroundColor = .divider
+        }
+    }
+    @IBOutlet private var topSeparator: UIView? {
+        didSet {
+            topSeparator?.backgroundColor = .divider
+        }
+    }
 
     private var bottomStrokeLeading: NSLayoutConstraint?
     private var contentViewLeadingAnchor: NSLayoutXAxisAnchor {
@@ -30,22 +38,15 @@ class QuickStartChecklistCell: UITableViewCell {
                     return
                 }
 
-                if Feature.enabled(.quickStartV2) {
-                    titleLabel.attributedText = NSAttributedString(string: titleText,
-                                                                   attributes: [.strikethroughStyle: 1,
-                                                                                .foregroundColor: WPStyleGuide.grey()])
-                    descriptionLabel.textColor = WPStyleGuide.grey()
-                } else {
-                    titleLabel.attributedText = NSAttributedString(string: titleText, attributes: [.strikethroughStyle: 1])
-                    accessoryView = UIImageView(image: Gridicon.iconOfType(.checkmark))
-                }
+                titleLabel.attributedText = NSAttributedString(string: titleText,
+                                                               attributes: [.strikethroughStyle: 1,
+                                                                            .foregroundColor: UIColor.neutral(.shade30)])
+                descriptionLabel.textColor = .neutral(.shade30)
+                iconView?.tintColor = .neutral(.shade30)
             } else {
-                if Feature.enabled(.quickStartV2) {
-                    titleLabel.textColor = WPStyleGuide.darkGrey()
-                    descriptionLabel.textColor = WPStyleGuide.darkGrey()
-                } else {
-                    accessoryView = nil
-                }
+                titleLabel.textColor = .text
+                descriptionLabel.textColor = .textSubtle
+                iconView?.tintColor = .listIcon
             }
         }
     }
@@ -53,17 +54,17 @@ class QuickStartChecklistCell: UITableViewCell {
         didSet {
             titleLabel.text = tour?.title
             descriptionLabel.text = tour?.description
-            iconView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+            iconView?.image = tour?.icon.withRenderingMode(.alwaysTemplate)
 
-            if !Feature.enabled(.quickStartV2) {
-                accessoryType = .disclosureIndicator
+            if let hint = tour?.accessibilityHintText, !hint.isEmpty {
+                accessibilityHint = hint
             }
         }
     }
 
     public var lastRow: Bool = false {
         didSet {
-            bottomStrokeLeading?.isActive = !lastRow && Feature.enabled(.quickStartV2)
+            bottomStrokeLeading?.isActive = !lastRow
         }
     }
 
@@ -76,10 +77,8 @@ class QuickStartChecklistCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        if Feature.enabled(.quickStartV2) {
-            setupConstraints()
-        }
+        contentView.backgroundColor = .listForeground
+        setupConstraints()
     }
 
     static let reuseIdentifier = "QuickStartChecklistCell"

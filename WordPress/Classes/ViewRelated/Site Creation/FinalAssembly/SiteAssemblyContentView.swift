@@ -36,9 +36,6 @@ final class SiteAssemblyContentView: UIView {
     /// This influences the top of the assembled site, which varies by device & orientation.
     private var assembledSiteTopConstraint: NSLayoutConstraint?
 
-    /// This influences the height of the assembled site, which varies by device & orientation.
-    private var assembledSiteHeightConstraint: NSLayoutConstraint?
-
     /// This influences the width of the assembled site, which varies by device & orientation.
     private var assembledSiteWidthConstraint: NSLayoutConstraint?
 
@@ -93,7 +90,7 @@ final class SiteAssemblyContentView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
-            label.textColor = WPStyleGuide.darkGrey()
+            label.textColor = .text
             label.textAlignment = .center
 
             let createdText = NSLocalizedString("Your site has been created!",
@@ -111,7 +108,7 @@ final class SiteAssemblyContentView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
-            label.textColor = WPStyleGuide.greyDarken10()
+            label.textColor = .textSubtle
             label.textAlignment = .center
 
             let statusText = NSLocalizedString("We’re creating your new site.",
@@ -127,7 +124,7 @@ final class SiteAssemblyContentView: UIView {
 
             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
             activityIndicator.hidesWhenStopped = true
-            activityIndicator.color = WPStyleGuide.greyDarken10()
+            activityIndicator.color = .textSubtle
             activityIndicator.startAnimating()
 
             return activityIndicator
@@ -188,7 +185,7 @@ final class SiteAssemblyContentView: UIView {
         translatesAutoresizingMaskIntoConstraints = true
         autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
 
-        backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .listBackground
 
         statusStackView.addArrangedSubviews([ statusLabel, activityIndicator ])
         addSubviews([ completionLabel, statusStackView ])
@@ -227,8 +224,6 @@ final class SiteAssemblyContentView: UIView {
         let assembledSiteTopInset = Parameters.verticalSpacing
 
         let preferredAssembledSiteSize = assembledSiteView.preferredSize
-        let assembledSiteHeightConstraint = assembledSiteView.heightAnchor.constraint(greaterThanOrEqualToConstant: preferredAssembledSiteSize.height)
-        self.assembledSiteHeightConstraint = assembledSiteHeightConstraint
 
         let assembledSiteWidthConstraint = assembledSiteView.widthAnchor.constraint(equalToConstant: preferredAssembledSiteSize.width)
         self.assembledSiteWidthConstraint = assembledSiteWidthConstraint
@@ -236,10 +231,9 @@ final class SiteAssemblyContentView: UIView {
         NSLayoutConstraint.activate([
             initialSiteTopConstraint,
             assembledSiteView.topAnchor.constraint(greaterThanOrEqualTo: completionLabel.bottomAnchor, constant: assembledSiteTopInset),
-            assembledSiteView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor),
+            assembledSiteView.bottomAnchor.constraint(equalTo: buttonContainerView?.topAnchor ?? bottomAnchor),
             assembledSiteView.centerXAnchor.constraint(equalTo: centerXAnchor),
             assembledSiteWidthConstraint,
-            assembledSiteHeightConstraint
         ])
 
         self.assembledSiteView = assembledSiteView
@@ -250,10 +244,12 @@ final class SiteAssemblyContentView: UIView {
             return
         }
 
+        buttonContainerView.backgroundColor = .basicBackground
+
         // This wrapper view provides underlap for Home indicator
         let buttonContainerContainer = UIView(frame: .zero)
         buttonContainerContainer.translatesAutoresizingMaskIntoConstraints = false
-        buttonContainerContainer.backgroundColor = .white
+        buttonContainerContainer.backgroundColor = .basicBackground
         buttonContainerContainer.addSubview(buttonContainerView)
         addSubview(buttonContainerContainer)
         self.buttonContainerContainer = buttonContainerContainer
@@ -297,16 +293,28 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func layoutInProgress() {
-        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [errorStateView, statusStackView] in
-            errorStateView?.alpha = 0
-            statusStackView.alpha = 1
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.errorStateView?.alpha = 0
+            self.statusStackView.alpha = 1
+            self.accessibilityElements = [ self.statusLabel ]
         })
     }
 
     private func layoutFailed() {
-        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [errorStateView, statusStackView] in
-            errorStateView?.alpha = 1
-            statusStackView.alpha = 0
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.statusStackView.alpha = 0
+
+            if let errorView = self.errorStateView {
+                errorView.alpha = 1
+                self.accessibilityElements = [ errorView ]
+            }
         })
     }
 
@@ -339,6 +347,13 @@ final class SiteAssemblyContentView: UIView {
                                 }
 
                                 self.completionLabel.alpha = 1
+
+                                if let buttonView = self.buttonContainerView {
+                                    self.accessibilityElements = [ self.completionLabel, buttonView ]
+                                } else {
+                                    self.accessibilityElements = [ self.completionLabel ]
+                                }
+
                                 self.layoutIfNeeded()
                 })
         })

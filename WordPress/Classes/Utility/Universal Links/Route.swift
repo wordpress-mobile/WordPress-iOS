@@ -13,15 +13,15 @@ protocol Route {
 }
 
 protocol NavigationAction {
-    func perform(_ values: [String: String]?, source: UIViewController?)
+    func perform(_ values: [String: String], source: UIViewController?)
 }
 
 extension NavigationAction {
     /// Fails the navigation and attempts to bounce the user back to Safari
     /// - returns: True if we attempted to launch the URL, otherwise false
     @discardableResult
-    func failAndBounce(_ values: [String: String]?) -> Bool {
-        guard let urlString = values?[MatchedRouteURLComponentKey.url.rawValue],
+    func failAndBounce(_ values: [String: String]) -> Bool {
+        guard let urlString = values[MatchedRouteURLComponentKey.url.rawValue],
             let url = URL(string: urlString) else {
                 return false
         }
@@ -33,7 +33,7 @@ extension NavigationAction {
 }
 
 struct FailureNavigationAction: NavigationAction {
-    func perform(_ values: [String: String]?, source: UIViewController?) {
+    func perform(_ values: [String: String], source: UIViewController?) {
         // This navigation action exists only to fail navigations
     }
 

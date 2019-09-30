@@ -137,8 +137,9 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     if (!_wordPressComRestApi) {
         if (self.authToken.length > 0) {
             __weak __typeof(self) weakSelf = self;
-            _wordPressComRestApi = [[WordPressComRestApi alloc] initWithOAuthToken:self.authToken
-                                                                         userAgent: [WPUserAgent wordPressUserAgent]];
+            _wordPressComRestApi = [WordPressComRestApi defaultApiWithOAuthToken:self.authToken
+                                                                       userAgent:[WPUserAgent wordPressUserAgent]
+                                                                       localeKey:[WordPressComRestApi LocaleKeyDefault]];
             [_wordPressComRestApi setInvalidTokenHandler:^{
                 [weakSelf setAuthToken:nil];
                 [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
@@ -147,7 +148,9 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
                 }
             }];
         } else {
-            [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
+            });
         }
     }
     return _wordPressComRestApi;

@@ -86,7 +86,7 @@ struct TimeZoneSelectorViewModel: Observable {
         case .ready:
             return nil
         case .error:
-            let appDelegate = WordPressAppDelegate.sharedInstance()
+            let appDelegate = WordPressAppDelegate.shared
             if (appDelegate?.connectionAvailable)! {
                 return NoResultsViewController.Model(title: LocalizedText.errorTitle,
                                                      subtitle: LocalizedText.errorSubtitle,
@@ -151,7 +151,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
     override func viewDidLoad() {
         super.viewDidLoad()
         ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureSearchBar(searchController.searchBar)
         tableView.tableHeaderView = searchController.searchBar
 

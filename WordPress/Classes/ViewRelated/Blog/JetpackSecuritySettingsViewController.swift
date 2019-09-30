@@ -42,7 +42,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
         title = NSLocalizedString("Security", comment: "Title for the Jetpack Security Settings Screen")
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         reloadViewModel()
     }
 

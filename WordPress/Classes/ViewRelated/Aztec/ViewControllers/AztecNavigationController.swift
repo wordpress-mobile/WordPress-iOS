@@ -22,6 +22,9 @@ class AztecNavigationController: UINavigationController {
         return delegate as? AztecNavigationControllerDelegate
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
     // MARK: - Overriden Methods
 

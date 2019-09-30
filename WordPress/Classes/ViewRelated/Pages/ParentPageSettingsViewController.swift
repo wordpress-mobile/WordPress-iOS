@@ -127,7 +127,7 @@ class ParentPageSettingsViewController: UIViewController {
         tableView.tableFooterView = UIView()
 
         // Style!
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         tableView.dataSource = self
@@ -285,10 +285,6 @@ extension ParentPageSettingsViewController: UITableViewDataSource {
 
 
 extension ParentPageSettingsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
-    }
-
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].headerText
     }

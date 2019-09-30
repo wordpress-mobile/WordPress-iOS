@@ -1,5 +1,4 @@
 #import "WPWebViewController.h"
-#import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
 #import "WPUserAgent.h"
@@ -119,8 +118,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
     // Toolbar: Hidden by default!
     self.toolbar.barTintColor               = [UIColor whiteColor];
-    self.backButton.tintColor               = [WPStyleGuide greyLighten10];
-    self.forwardButton.tintColor            = [WPStyleGuide greyLighten10];
+    self.backButton.tintColor               = [UIColor murielNeutral20];
+    self.forwardButton.tintColor            = [UIColor murielNeutral20];
     self.toolbarBottomConstraint.constant   = WPWebViewToolbarHiddenConstant;
 
     // WebView
@@ -136,7 +135,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     [self loadWebViewRequest];
 
     if (UIAccessibilityIsBoldTextEnabled()) {
-        self.navigationController.navigationBar.tintColor = [WPStyleGuide greyLighten10];
+        self.navigationController.navigationBar.tintColor = [UIColor murielNeutral20];
     }
 }
 
@@ -162,11 +161,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     navigationBar.barStyle                  = UIBarStyleDefault;
     [navigationBar setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
 
-    self.titleView.titleLabel.textColor     = [WPStyleGuide darkGrey];
-    self.titleView.subtitleLabel.textColor  = [WPStyleGuide grey];
+    self.titleView.titleLabel.textColor     = [UIColor murielNeutral70];
+    self.titleView.subtitleLabel.textColor  = [UIColor murielNeutral30];
 
-    self.dismissButton.tintColor            = [WPStyleGuide greyLighten10];
-    self.optionsButton.tintColor            = [WPStyleGuide greyLighten10];
+    self.dismissButton.tintColor            = [UIColor murielNeutral20];
+    self.optionsButton.tintColor            = [UIColor murielNeutral20];
 
     self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }

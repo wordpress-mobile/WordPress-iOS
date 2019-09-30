@@ -4,7 +4,7 @@ import WordPressShared
 
 // MARK: - SearchTextField
 
-private final class SearchTextField: UITextField {
+final class SearchTextField: UITextField {
 
     // MARK: Properties
 
@@ -15,6 +15,14 @@ private final class SearchTextField: UITextField {
         static let clearButtonInset = CGFloat(-9)
         static let searchHeight     = CGFloat(44)
         static let textInset        = CGFloat(56)
+    }
+
+    // MARK: Becoming First Responder
+
+    var allowFirstResponderStatus: Bool = true
+
+    override var canBecomeFirstResponder: Bool {
+        return allowFirstResponderStatus
     }
 
     // MARK: UIView
@@ -60,17 +68,28 @@ private final class SearchTextField: UITextField {
     private func initialize() {
         translatesAutoresizingMaskIntoConstraints = false
 
-        backgroundColor = .white
+        backgroundColor = .listForeground
         clearButtonMode = .whileEditing
         font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        textColor = WPStyleGuide.darkGrey()
+        textColor = .text
 
         autocapitalizationType = .none
         autocorrectionType = .no
         adjustsFontForContentSizeCategory = true
 
+        setIconImage()
+
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: Constants.searchHeight),
+            ])
+
+        addTopBorder(withColor: .divider)
+        addBottomBorder(withColor: .divider)
+    }
+
+    private func setIconImage() {
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
-        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
+        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(.listIcon)?.imageFlippedForRightToLeftLayoutDirection()
         let imageView = UIImageView(image: loupeIcon)
 
         if traitCollection.layoutDirection == .rightToLeft {
@@ -80,13 +99,14 @@ private final class SearchTextField: UITextField {
             leftView = imageView
             leftViewMode = .always
         }
+    }
 
-        NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: Constants.searchHeight),
-            ])
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
 
-        addTopBorder(withColor: WPStyleGuide.greyLighten20())
-        addBottomBorder(withColor: WPStyleGuide.greyLighten20())
+        if #available(iOS 13, *) {
+            setIconImage()
+        }
     }
 }
 
@@ -108,7 +128,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
         return returnValue
     }()
 
-    private(set) var textField: UITextField = SearchTextField()
+    private(set) var textField = SearchTextField()
 
     private lazy var stackView: UIStackView = {
 
@@ -154,7 +174,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
     }
 
     private func setStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .clear
     }
 
     func setTitle(_ text: String) {
@@ -168,8 +188,6 @@ final class TitleSubtitleTextfieldHeader: UIView {
 
 extension TitleSubtitleTextfieldHeader: Accessible {
     func prepareForVoiceOver() {
-        titleSubtitle.prepareForVoiceOver()
-
         prepareSearchFieldForVoiceOver()
     }
 

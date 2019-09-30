@@ -339,6 +339,24 @@ static CGFloat const DefaultCellHeight = 44.0;
     return nil;
 }
 
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView leadingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:leadingSwipeActionsConfigurationForRowAtIndexPath:)]) {
+        return [self.delegate tableView:tableView leadingSwipeActionsConfigurationForRowAtIndexPath:indexPath];
+    }
+
+    return nil;
+}
+
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:trailingSwipeActionsConfigurationForRowAtIndexPath:)]) {
+        return [self.delegate tableView:tableView trailingSwipeActionsConfigurationForRowAtIndexPath:indexPath];
+    }
+
+    return nil;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(tableView:cellForRowAtIndexPath:)]) {
@@ -484,8 +502,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 {
     if ([self.delegate respondsToSelector:@selector(tableView:willDisplayHeaderView:forSection:)]) {
         [self.delegate tableView:tableView willDisplayHeaderView:view forSection:section];
-    } else {
-        [WPStyleGuide configureTableViewSectionHeader:view];
     }
 }
 

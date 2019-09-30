@@ -1,6 +1,5 @@
 #import "PostCategoriesViewController.h"
 #import "PostCategory.h"
-#import "WordPressAppDelegate.h"
 #import "WPAddPostCategoryViewController.h"
 #import "WPCategoryTree.h"
 #import "CustomHighlightButton.h"

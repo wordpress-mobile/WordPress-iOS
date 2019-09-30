@@ -15,6 +15,13 @@ class ReplyBezierView: UIView {
             setNeedsDisplay()
         }
     }
+
+    @objc var bezierFillColor: UIColor? = nil {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+
     @objc var bezierRadius = CGFloat(5) {
         didSet {
             setNeedsDisplay()
@@ -52,6 +59,11 @@ class ReplyBezierView: UIView {
         bezierRect.size.width   -= insets.left + insets.right
         let bezier              = UIBezierPath(roundedRect: bezierRect, cornerRadius: bezierRadius)
         let outer               = UIBezierPath(rect: bounds)
+
+        if let fillColor = bezierFillColor {
+            fillColor.set()
+            bezier.fill()
+        }
 
         bezierColor.set()
         bezier.stroke()

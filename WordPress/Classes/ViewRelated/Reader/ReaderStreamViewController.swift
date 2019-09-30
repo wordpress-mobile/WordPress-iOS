@@ -243,7 +243,7 @@ import WordPressFlux
 
         observeNetworkStatus()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         didSetupView = true
 
@@ -768,7 +768,7 @@ import WordPressFlux
     }
 
     @objc func connectionAvailable() -> Bool {
-        return WordPressAppDelegate.sharedInstance()!.connectionAvailable
+        return WordPressAppDelegate.shared!.connectionAvailable
     }
 
 
@@ -785,7 +785,7 @@ import WordPressFlux
             return
         }
 
-        guard WordPressAppDelegate.sharedInstance().runningInBackground == false else {
+        guard WordPressAppDelegate.shared?.runningInBackground == false else {
             return
         }
 
@@ -979,14 +979,18 @@ import WordPressFlux
             return
         }
 
-        guard let post = content.content?.last as? ReaderPost else {
+        guard
+            let posts = content.content,
+            let post = posts.last as? ReaderPost,
+            let sortDate = post.sortDate
+        else {
             DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
         footerView.showSpinner(true)
 
-        let earlierThan = post.sortDate
+        let earlierThan = sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
         let offset = content.contentCount
@@ -1570,6 +1574,7 @@ private extension ReaderStreamViewController {
         tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
         resultsStatusView.view.frame = tableView.frame
         resultsStatusView.didMove(toParent: tableViewController)
+        resultsStatusView.updateView()
         footerView.isHidden = true
     }
 

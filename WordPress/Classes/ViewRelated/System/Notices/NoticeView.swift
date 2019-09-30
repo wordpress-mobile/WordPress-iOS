@@ -14,6 +14,7 @@ class NoticeView: UIView {
     private let cancelButton = UIButton(type: .system)
 
     internal let notice: Notice
+    internal var dualButtonsStackView: UIStackView?
 
     var dismissHandler: (() -> Void)?
 
@@ -113,7 +114,6 @@ class NoticeView: UIView {
         labelStackView.alignment = .leading
         labelStackView.axis = .vertical
         labelStackView.spacing = Metrics.labelLineSpacing
-        labelStackView.isBaselineRelativeArrangement = true
         labelStackView.isLayoutMarginsRelativeArrangement = true
         labelStackView.layoutMargins = notice.style.layoutMargins
 
@@ -123,9 +123,8 @@ class NoticeView: UIView {
         contentStackView.addArrangedSubview(labelStackView)
 
         labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor).isActive = true
-
-        titleLabel.font = notice.style.titleLabelFont
-        messageLabel.font = notice.style.messageLabelFont
+        titleLabel.adjustsFontForContentSizeCategory = true
+        messageLabel.adjustsFontForContentSizeCategory = true
         messageLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
         titleLabel.textColor = notice.style.titleColor
@@ -161,8 +160,8 @@ class NoticeView: UIView {
 
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
-        actionButton.titleLabel?.font = notice.style.actionButtonFont
-        actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
+        actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        actionButton.setTitleColor(.primary(.shade40), for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
@@ -183,8 +182,22 @@ class NoticeView: UIView {
         let buttonStackView = UIStackView(arrangedSubviews: [cancelBackgroundView, actionBackgroundView])
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonStackView.axis = .horizontal
+
         buttonStackView.distribution = .fillEqually
         contentStackView.addArrangedSubview(buttonStackView)
+
+        dualButtonsStackView = buttonStackView
+
+        actionButton.titleLabel?.lineBreakMode = .byWordWrapping
+        cancelButton.titleLabel?.lineBreakMode = .byWordWrapping
+        actionButton.titleLabel?.numberOfLines = 0
+        cancelButton.titleLabel?.numberOfLines = 0
+        if let label = actionButton.titleLabel {
+            actionButton.pinSubviewToAllEdgeMargins(label)
+        }
+        if let label = cancelButton.titleLabel {
+            cancelButton.pinSubviewToAllEdgeMargins(label)
+        }
 
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
@@ -202,19 +215,42 @@ class NoticeView: UIView {
         cancelBackgroundView.addTopBorder()
         cancelBackgroundView.addTrailingBorder()
 
-        actionButton.titleLabel?.font = notice.style.actionButtonFont
+        actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
         actionButton.setTitleColor(.white, for: .normal)
         actionButton.on(.touchUpInside) { [weak self] _ in
             self?.actionButtonTapped()
         }
         actionButton.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        cancelButton.titleLabel?.font = notice.style.cancelButtonFont
+        cancelButton.titleLabel?.adjustsFontForContentSizeCategory = true
         cancelButton.setTitleColor(notice.style.messageColor, for: .normal)
         cancelButton.on(.touchUpInside) { [weak self] _ in
             self?.cancelButtonTapped()
         }
         cancelButton.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    private func preferredContentSizeDidChange() {
+        cancelButton.titleLabel?.font = notice.style.cancelButtonFont
+        actionButton.titleLabel?.font = notice.style.actionButtonFont
+        titleLabel.font = notice.style.titleLabelFont
+
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            dualButtonsStackView?.axis = .vertical
+            actionButton.titleLabel?.textAlignment = .center
+            cancelButton.titleLabel?.textAlignment = .center
+        } else {
+            dualButtonsStackView?.axis = .horizontal
+            actionButton.titleLabel?.textAlignment = .natural
+            cancelButton.titleLabel?.textAlignment = .natural
+        }
     }
 
     private func configureDismissRecognizer() {
@@ -260,7 +296,7 @@ class NoticeView: UIView {
     private enum Metrics {
         static let cornerRadius: CGFloat = 4.0
         static let dualLayoutMargins = UIEdgeInsets(top: 6.0, left: 6.0, bottom: 6.0, right: 6.0)
-        static let labelLineSpacing: CGFloat = 18.0
+        static let labelLineSpacing: CGFloat = 3.0
     }
 
     private enum Appearance {
@@ -277,7 +313,7 @@ fileprivate extension UIView {
         let borderView = makeBorderView()
 
         NSLayoutConstraint.activate([
-            borderView.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale),
+            borderView.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
             borderView.topAnchor.constraint(equalTo: topAnchor),
             borderView.centerXAnchor.constraint(equalTo: centerXAnchor),
             borderView.widthAnchor.constraint(equalTo: widthAnchor)
@@ -291,7 +327,7 @@ fileprivate extension UIView {
             borderView.heightAnchor.constraint(equalTo: heightAnchor),
             borderView.trailingAnchor.constraint(equalTo: trailingAnchor),
             borderView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            borderView.widthAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale)
+            borderView.widthAnchor.constraint(equalToConstant: .hairlineBorderWidth)
             ])
     }
 

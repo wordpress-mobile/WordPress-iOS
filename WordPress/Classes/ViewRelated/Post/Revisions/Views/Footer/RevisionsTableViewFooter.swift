@@ -29,7 +29,7 @@ class RevisionsTableViewFooter: UIView {
 
 private extension RevisionsTableViewFooter {
     private func setupUI() {
-        backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .listBackground
 
         autoresizingMask = .flexibleWidth
 
@@ -40,7 +40,7 @@ private extension RevisionsTableViewFooter {
                                             height: frame.height))
         footerLabel.autoresizingMask = .flexibleWidth
         footerLabel.font = UIFont.systemFont(ofSize: 14.0)
-        footerLabel.textColor = WPStyleGuide.greyDarken10()
+        footerLabel.textColor = .neutral(.shade40)
         footerLabel.textAlignment = .center
         footerLabel.numberOfLines = 2
 

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -70,7 +69,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="J2Y-Yo-5I1" secondAttribute="trailing" id="0rY-qi-Fsw"/>
-                    <constraint firstItem="rgQ-sb-b7a" firstAttribute="top" secondItem="B30-uC-0a3" secondAttribute="bottom" constant="5" id="6v9-jN-jDW"/>
+                    <constraint firstItem="rgQ-sb-b7a" firstAttribute="top" secondItem="B30-uC-0a3" secondAttribute="bottom" priority="999" constant="5" id="6v9-jN-jDW"/>
                     <constraint firstItem="J2Y-Yo-5I1" firstAttribute="top" secondItem="GbU-dc-vAM" secondAttribute="topMargin" constant="-2" id="BbX-mc-1hp"/>
                     <constraint firstAttribute="bottomMargin" secondItem="rgQ-sb-b7a" secondAttribute="bottom" id="EnP-lZ-Ym3"/>
                     <constraint firstItem="rgQ-sb-b7a" firstAttribute="leading" secondItem="GbU-dc-vAM" secondAttribute="leadingMargin" id="OG7-0A-RZJ"/>
@@ -89,6 +88,7 @@
                 <outlet property="textView" destination="rgQ-sb-b7a" id="kg8-w4-JH9"/>
                 <outlet property="titleLabel" destination="J2Y-Yo-5I1" id="ZAu-qL-HWO"/>
             </connections>
+            <point key="canvasLocation" x="20" y="9"/>
         </tableViewCell>
     </objects>
 </document>

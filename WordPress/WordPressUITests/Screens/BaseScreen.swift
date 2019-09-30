@@ -14,16 +14,20 @@ class BaseScreen {
         app = XCUIApplication()
         expectedElement = element
         waitTimeout = 20
-        _ = try! waitForPage()
+        try! waitForPage()
     }
 
+    @discardableResult
     func waitForPage() throws -> BaseScreen {
-        let result = waitFor(element: expectedElement, predicate: "isEnabled == true", timeout: 20)
-        XCTAssert(result, "Page \(self) is not loaded.")
-        Logger.log(message: "Page \(self) is loaded", event: .i)
+        XCTContext.runActivity(named: "Confirm page \(self) is loaded") { (activity) in
+            let result = waitFor(element: expectedElement, predicate: "isEnabled == true", timeout: 20)
+            XCTAssert(result, "Page \(self) is not loaded.")
+            Logger.log(message: "Page \(self) is loaded", event: .i)
+        }
         return self
     }
 
+    @discardableResult
     func waitFor(element: XCUIElement, predicate: String, timeout: Int? = nil) -> Bool {
         let timeoutValue = timeout ?? 5
 
@@ -41,6 +45,28 @@ class BaseScreen {
         let networkLoadingIndicator = XCUIApplication().otherElements.deviceStatusBars.networkLoadingIndicators.element
         let networkLoadingIndicatorDisappeared = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: networkLoadingIndicator)
         _ = XCTWaiter.wait(for: [networkLoadingIndicatorDisappeared], timeout: timeout)
+    }
+
+    func openMagicLink() {
+        XCTContext.runActivity(named: "Open magic link in Safari") { (activity) in
+            let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+            safari.launch()
+
+            // Select the URL bar when Safari opens
+            let urlBar = safari.textFields.firstMatch
+            waitFor(element: urlBar, predicate: "exists == true")
+            urlBar.tap()
+
+            // Follow the magic link
+            var magicLinkComponents = URLComponents(url: WireMock.URL(), resolvingAgainstBaseURL: false)!
+            magicLinkComponents.path = "/magic-link"
+            magicLinkComponents.queryItems = [URLQueryItem(name: "scheme", value: "wpdebug")]
+
+            urlBar.typeText("\(magicLinkComponents.url!.absoluteString)\n")
+
+            // Accept the prompt to open the deep link
+            safari.scrollViews.element(boundBy: 0).buttons.element(boundBy: 1).tap()
+        }
     }
 }
 

@@ -3,7 +3,7 @@ import XCTest
 
 private struct ElementStringIDs {
     static let passwordOption = "Use Password"
-    static let linkButton = "Send Link"
+    static let linkButton = "Send Link Button"
 }
 
 class LinkOrPasswordScreen: BaseScreen {

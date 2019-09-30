@@ -3,6 +3,7 @@
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -33,7 +34,7 @@
     self = [super init];
     if (self) {
 
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor clearColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
 
         [self setupStackView];
@@ -60,7 +61,7 @@
 
         UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
         NSString *placeholder = NSLocalizedString(@"Search...", @"Menus search bar placeholder text.");
-        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [WPStyleGuide greyDarken10]};
+        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor murielTextPlaceholder]};
         _textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
     }
 
@@ -97,13 +98,13 @@
 {
     UIView *contentView = [[UIView alloc] init];
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    contentView.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
+    contentView.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     contentView.layer.borderWidth = MenusDesignStrokeWidth;
     if (![WPDeviceIdentification isRetina]) {
         // Increase the stroke width on non-retina screens.
         contentView.layer.borderWidth = MenusDesignStrokeWidth * 2;
     }
-    contentView.backgroundColor = [UIColor whiteColor];
+    contentView.backgroundColor = [UIColor murielBasicBackground];
 
     NSAssert(_stackView != nil, @"stackView is nil");
 
@@ -137,7 +138,7 @@
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
-    iconView.tintColor = [WPStyleGuide greyDarken10];
+    iconView.tintColor = [UIColor murielNeutral40];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
 
     NSAssert(_contentStackView != nil, @"contentStackView is nil");
@@ -182,7 +183,7 @@
 {
     UILabel *label = [[UILabel alloc] init];
     label.text = NSLocalizedString(@"Cancel", @"Menus cancel button within text bar while editing items.");
-    label.textColor = [WPStyleGuide greyDarken20];
+    label.textColor = [UIColor murielText];
     label.font = [WPFontManager systemRegularFontOfSize:14.0];
     label.userInteractionEnabled = YES;
 

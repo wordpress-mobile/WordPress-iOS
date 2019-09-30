@@ -36,11 +36,10 @@ class MainShareViewController: UIViewController {
 private extension MainShareViewController {
     func setupAppearance() {
         let navigationBarAppearace = UINavigationBar.appearance()
-        navigationBarAppearace.barTintColor = WPStyleGuide.lightGrey()
-        navigationBarAppearace.barStyle = .default
-        navigationBarAppearace.tintColor = WPStyleGuide.wordPressBlue()
-        navigationBarAppearace.titleTextAttributes = [.foregroundColor: WPStyleGuide.wordPressBlue()]
         navigationBarAppearace.isTranslucent = false
+        navigationBarAppearace.tintColor = .white
+        navigationBarAppearace.barTintColor = .appBar
+        navigationBarAppearace.barStyle = .default
     }
 
     func loadAndPresentNavigationVC() {

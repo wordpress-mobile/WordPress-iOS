@@ -46,9 +46,10 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     @objc func applyStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .listBackground
+        borderedView.backgroundColor = .listForeground
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = 1.0
+        borderedView.layer.borderWidth = .hairlineBorderWidth
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
         WPStyleGuide.applyReaderSiteStreamDescriptionStyle(descriptionLabel)
@@ -91,7 +92,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         let url = URL(string: path)
         if url != nil {
-            avatarImageView.setImageWith(url!, placeholderImage: placeholder)
+            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
         }

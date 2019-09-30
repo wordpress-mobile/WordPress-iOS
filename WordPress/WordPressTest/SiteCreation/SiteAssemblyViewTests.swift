@@ -4,18 +4,6 @@ import XCTest
 
 class SiteAssemblyViewTests: XCTestCase {
 
-    func testContentView_BackgroundColor_IsCorrect() {
-        // Given
-        let contentView = SiteAssemblyContentView()
-
-        // When
-        let actualBackgroundColor = contentView.backgroundColor
-
-        // Then
-        let expectedBackgroundColor = WPStyleGuide.greyLighten30()
-        XCTAssertEqual(actualBackgroundColor, expectedBackgroundColor)
-    }
-
     func testContentView_ViewIsCorrect_WhenStatusIsIdle() {
         // Given
         let contentView = SiteAssemblyContentView()

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,7 +16,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xw2-zx-vFl">
-                    <rect key="frame" x="-1" y="-1" width="322" height="66"/>
+                    <rect key="frame" x="-1" y="0.0" width="322" height="64"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="66b-Vx-jim">
@@ -68,9 +68,9 @@
                 <constraint firstItem="66b-Vx-jim" firstAttribute="leading" secondItem="Vwe-fC-L9o" secondAttribute="leading" id="DrB-NJ-7H5"/>
                 <constraint firstItem="EFi-ME-clV" firstAttribute="trailing" secondItem="66b-Vx-jim" secondAttribute="trailing" id="F3b-dE-zr6"/>
                 <constraint firstItem="Xw2-zx-vFl" firstAttribute="leading" secondItem="66b-Vx-jim" secondAttribute="leading" constant="-1" id="FHM-OF-ETt"/>
-                <constraint firstItem="Xw2-zx-vFl" firstAttribute="bottom" secondItem="66b-Vx-jim" secondAttribute="bottom" constant="1" id="Lhh-zn-p0L"/>
+                <constraint firstItem="Xw2-zx-vFl" firstAttribute="bottom" secondItem="66b-Vx-jim" secondAttribute="bottom" id="Lhh-zn-p0L"/>
                 <constraint firstItem="EFi-ME-clV" firstAttribute="leading" secondItem="66b-Vx-jim" secondAttribute="leading" id="Lm7-gy-xkH"/>
-                <constraint firstItem="Xw2-zx-vFl" firstAttribute="top" secondItem="66b-Vx-jim" secondAttribute="top" constant="-1" id="Xxl-3x-g1u"/>
+                <constraint firstItem="Xw2-zx-vFl" firstAttribute="top" secondItem="66b-Vx-jim" secondAttribute="top" id="Xxl-3x-g1u"/>
                 <constraint firstAttribute="trailing" secondItem="66b-Vx-jim" secondAttribute="trailing" id="dMM-Of-rln"/>
                 <constraint firstAttribute="bottom" secondItem="66b-Vx-jim" secondAttribute="bottom" priority="999" constant="8" id="gSJ-ga-kkv"/>
                 <constraint firstItem="66b-Vx-jim" firstAttribute="trailing" secondItem="Xw2-zx-vFl" secondAttribute="trailing" constant="-1" id="lz9-34-niQ"/>

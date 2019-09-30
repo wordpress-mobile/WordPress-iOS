@@ -1,5 +1,6 @@
 import Foundation
 import Photos
+import WordPressFlux
 
 extension PostSettingsViewController {
 
@@ -64,7 +65,14 @@ extension PostSettingsViewController {
                 apost.removeMediaObject(media)
                 break
             }
-            WPError.showAlert(withTitle: NSLocalizedString("Couldn't upload the featured image", comment: "The title for an alert that says to the user that the featured image he selected couldn't be uploaded."), message: error.localizedDescription)
+
+            let errorTitle = NSLocalizedString("Couldn't upload the featured image", comment: "The title for an alert that says to the user that the featured image he selected couldn't be uploaded.")
+            let notice = Notice(title: errorTitle, message: error.localizedDescription)
+
+            ActionDispatcher.dispatch(NoticeAction.clearWithTag(MediaProgressCoordinatorNoticeViewModel.uploadErrorNoticeTag))
+            // The Media coordinator shows its own notice about a failed upload. We have a better, more explanatory message for users here
+            // so we want to supress the one coming from the coordinator and show ours.
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
         case .progress:
             break
         }

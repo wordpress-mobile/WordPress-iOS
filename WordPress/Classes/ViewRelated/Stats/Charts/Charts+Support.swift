@@ -18,7 +18,7 @@ extension BarChartDataSet {
 
 // MARK: - Charts protocols
 
-/// Describes the visual appearance of a BarChartView. Implementation TBD.
+/// Describes the visual appearance of a BarChartView.
 ///
 protocol BarChartStyling {
 
@@ -37,6 +37,9 @@ protocol BarChartStyling {
     /// This corresponds to the color of labels on the chart
     var labelColor: UIColor { get }
 
+    /// This corresponds to the legend color; currently only applicable when Views/Visitors overlaid.
+    var legendColor: UIColor? { get }
+
     /// If specified, a legend will be presented with this value. It maps to the secondary bar color above.
     var legendTitle: String? { get }
 
@@ -53,7 +56,11 @@ protocol BarChartStyling {
 /// Transforms a given data set for consumption by BarChartView in the Charts framework.
 ///
 protocol BarChartDataConvertible {
+
+    /// Describe the chart for VoiceOver usage
     var accessibilityDescription: String { get }
+
+    /// Adapts the original data format for consumption by the Charts framework.
     var barChartData: BarChartData { get }
 }
 

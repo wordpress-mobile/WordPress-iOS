@@ -78,7 +78,7 @@ final class WebAddressWizardContent: UIViewController {
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
             label.textAlignment = .center
-            label.textColor = WPStyleGuide.greyDarken10()
+            label.textColor = .text
 
             let noResultsMessage = NSLocalizedString("No available addresses matching your search", comment: "Advises the user that no Domain suggestions could be found for the search query.")
             label.text = noResultsMessage
@@ -124,11 +124,14 @@ final class WebAddressWizardContent: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         resignTextFieldResponderIfNeeded()
+        disallowTextFieldFirstResponder()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         restoreSearchIfNeeded()
+        allowTextFieldFirstResponder()
+        postScreenChangedForVoiceOver()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -136,6 +139,36 @@ final class WebAddressWizardContent: UIViewController {
 
         tableViewOffsetCoordinator?.stopListeningToKeyboardNotifications()
         clearContent()
+    }
+
+    // MARK: Workaround: Text Field First Responder Issues
+
+    /// This method is uses as a workaround for what appears to be an SDK bug.
+    ///
+    /// There's an issue that's causing `textField.resignFirstResponder()` to be ignored when called from
+    /// within `viewDidDisappear(animated:)`.  This method makes it so that the text field just can't
+    /// have first responder whenever we don't want it to.
+    ///
+    /// Issue: https://github.com/wordpress-mobile/WordPress-iOS/issues/11702
+    ///
+    private func allowTextFieldFirstResponder() {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return
+        }
+
+        header.textField.allowFirstResponderStatus = true
+    }
+
+    /// This method makes it impossible for the text field to become first responder.
+    ///
+    /// Read the documentation of `allowTextFieldFirstResponder` for more details.
+    ///
+    private func disallowTextFieldFirstResponder() {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return
+        }
+
+        header.textField.allowFirstResponderStatus = false
     }
 
     // MARK: Private behavior
@@ -221,11 +254,11 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func setupBackground() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+        view.backgroundColor = .listBackground
     }
 
     private func setupButtonWrapper() {
-        buttonWrapper.backgroundColor = WPStyleGuide.greyLighten30()
+        buttonWrapper.backgroundColor = .listBackground
     }
 
     private func setupCreateSiteButton() {
@@ -264,6 +297,7 @@ final class WebAddressWizardContent: UIViewController {
 
         let textField = header.textField
         textField.resignFirstResponder()
+        textField.allowFirstResponderStatus = false
     }
 
     private func restoreSearchIfNeeded() {
@@ -271,24 +305,11 @@ final class WebAddressWizardContent: UIViewController {
             return
         }
 
-        let textField = header.textField
-
-        let inputText: String
-        if let text = textField.text, !text.isEmpty {
-            inputText = text
-        } else if let text = siteCreator.information?.title, !text.isEmpty {
-            inputText = text
-        } else {
-            return
-        }
-
-        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
-        performSearchIfNeeded(query: inputText)
+        search(withInputFrom: header.textField)
     }
 
     private func prepareViewIfNeeded() {
         guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
-
             return
         }
 
@@ -326,7 +347,7 @@ final class WebAddressWizardContent: UIViewController {
         header.accessibilityTraits = .header
 
         let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.textPlaceholder)
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         header.textField.attributedPlaceholder = attributedPlaceholder
 
@@ -357,11 +378,11 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = WPStyleGuide.greyLighten30()
+        table.backgroundColor = .listBackground
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = WPStyleGuide.greyLighten20()
+        table.separatorColor = .divider
     }
 
     private func setupConstraints() {
@@ -404,13 +425,7 @@ final class WebAddressWizardContent: UIViewController {
 
     @objc
     private func textChanged(sender: UITextField) {
-        guard let query = query(from: sender) else {
-            clearContent()
-            return
-        }
-
-        performSearchIfNeeded(query: query)
-        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+        search(withInputFrom: sender)
     }
 
     private func clearSelectionAndCreateSiteButton() {
@@ -426,6 +441,18 @@ final class WebAddressWizardContent: UIViewController {
         ]
 
         WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
+    }
+
+    // MARK: - Search logic
+
+    private func search(withInputFrom textField: UITextField) {
+        guard let query = query(from: textField), query.isEmpty == false else {
+            clearContent()
+            return
+        }
+
+        performSearchIfNeeded(query: query)
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 }
 
@@ -461,5 +488,13 @@ extension WebAddressWizardContent {
 
     func preferredContentSizeDidChange() {
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+    }
+}
+
+// MARK: - VoiceOver
+
+private extension WebAddressWizardContent {
+    func postScreenChangedForVoiceOver() {
+        UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
     }
 }

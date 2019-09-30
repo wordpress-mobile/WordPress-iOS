@@ -4,7 +4,6 @@
 
 #import "StatsViewController.h"
 #import "Blog.h"
-#import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "BlogService.h"
@@ -76,7 +75,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.title = self.blog.settings.name;
     }
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:appDelegate.internetReachability];
 
     [self initStats];
@@ -90,16 +89,16 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)addStatsViewControllerToView
 {
+    if (self.presentingViewController == nil) {
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+        self.navigationItem.rightBarButtonItem = settingsButton;
+    }
+
     if ([Feature enabled:FeatureFlagStatsRefresh]) {
         [self addChildViewController:self.siteStatsDashboardVC];
         [self.view addSubview:self.siteStatsDashboardVC.view];
         [self.siteStatsDashboardVC didMoveToParentViewController:self];
     } else {
-        if (self.presentingViewController == nil) {
-            UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
-            self.navigationItem.rightBarButtonItem = settingsButton;
-        }
-        
         [self addChildViewController:self.statsVC];
         [self.view addSubview:self.statsVC.view];
         self.statsVC.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -111,8 +110,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats
 {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
-    if (!appDelegate.connectionAvailable) {
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
+    if (!appDelegate.connectionAvailable && ![Feature enabled:FeatureFlagStatsRefresh]) {
         [self showNoResults];
         self.offline = YES;
         return;
@@ -167,10 +166,18 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)saveSiteDetailsForTodayWidget
 {
     TodayExtensionService *service = [TodayExtensionService new];
-    [service configureTodayWidgetWithSiteID:self.statsVC.siteID
-                                   blogName:self.blog.settings.name
-                               siteTimeZone:self.statsVC.siteTimeZone
-                             andOAuth2Token:self.statsVC.oauth2Token];
+    
+    if ([Feature enabled:FeatureFlagStatsRefresh]) {
+        [service configureTodayWidgetWithSiteID:SiteStatsInformation.sharedInstance.siteID
+                                       blogName:self.blog.settings.name
+                                   siteTimeZone:SiteStatsInformation.sharedInstance.siteTimeZone
+                                 andOAuth2Token:SiteStatsInformation.sharedInstance.oauth2Token];
+    } else {
+        [service configureTodayWidgetWithSiteID:self.statsVC.siteID
+                                       blogName:self.blog.settings.name
+                                   siteTimeZone:self.statsVC.siteTimeZone
+                                 andOAuth2Token:self.statsVC.oauth2Token];
+    }
 }
 
 
@@ -248,6 +255,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                                                     buttonTitle:nil
                                                                        subtitle:subtitle
                                                              attributedSubtitle:nil
+                                                attributedSubtitleConfiguration:nil
                                                                           image:nil
                                                                   subtitleImage:nil
                                                                   accessoryView:nil];

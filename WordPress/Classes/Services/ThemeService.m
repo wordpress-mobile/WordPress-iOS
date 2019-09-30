@@ -376,7 +376,7 @@ const NSInteger ThemeOrderTrailing = 9999;
     NSParameterAssert(page > 0);
     NSParameterAssert([category isKindOfClass:[NSString class]]);
     
-    WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
+    WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:nil userAgent:nil localeKey:[WordPressComRestApi LocaleKeyDefault]];
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api];
     
     [remote getStartingThemesForCategory:category

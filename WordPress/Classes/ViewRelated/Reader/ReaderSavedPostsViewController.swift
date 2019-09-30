@@ -39,7 +39,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
         setupFooterView()
         setupContentHandler()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         updateAndPerformFetchRequest()
     }

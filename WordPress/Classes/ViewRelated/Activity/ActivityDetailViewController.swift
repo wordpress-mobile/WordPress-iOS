@@ -35,6 +35,7 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var headerStackView: UIStackView!
     @IBOutlet private var rewindStackView: UIStackView!
     @IBOutlet private var contentStackView: UIStackView!
+    @IBOutlet private var containerView: UIView!
 
     @IBOutlet private var bottomConstaint: NSLayoutConstraint!
 
@@ -45,7 +46,7 @@ class ActivityDetailViewController: UIViewController {
     var router: ActivityContentRouter?
 
     override func viewDidLoad() {
-        setupFonts()
+        setupLabelStyles()
         setupViews()
         setupText()
         setupAccesibility()
@@ -56,9 +57,19 @@ class ActivityDetailViewController: UIViewController {
         rewindPresenter?.presentRewindFor(activity: activity!)
     }
 
-    private func setupFonts() {
+    private func setupLabelStyles() {
+        nameLabel.textColor = .text
         nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,
                                            weight: .semibold)
+        textLabel.textColor = .text
+        summaryLabel.textColor = .textSubtle
+
+        roleLabel.textColor = .textSubtle
+        dateLabel.textColor = .textSubtle
+        timeLabel.textColor = .textSubtle
+
+        rewindButton.setTitleColor(.primary, for: .normal)
+        rewindButton.setTitleColor(.primaryDark, for: .highlighted)
     }
 
     private func setupViews() {
@@ -66,9 +77,10 @@ class ActivityDetailViewController: UIViewController {
             return
         }
 
+        view.backgroundColor = .listBackground
+        containerView.backgroundColor = .listForeground
 
         textLabel.isHidden = true
-
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
 
@@ -78,7 +90,7 @@ class ActivityDetailViewController: UIViewController {
         }
 
         if let avatar = activity.actor?.avatarURL, let avatarURL = URL(string: avatar) {
-            imageView.backgroundColor = WPStyleGuide.greyLighten10()
+            imageView.backgroundColor = .neutral(.shade20)
             imageView.downloadImage(from: avatarURL, placeholderImage: Gridicon.iconOfType(.user, withSize: Constants.gridiconSize))
         } else if let iconType = WPStyleGuide.ActivityStyleGuide.getGridiconTypeForActivity(activity) {
             imageView.contentMode = .center
@@ -130,26 +142,24 @@ class ActivityDetailViewController: UIViewController {
         textLabel.isAccessibilityElement = false
         summaryLabel.isAccessibilityElement = false
 
-        if #available(iOS 11.0, *) {
-            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-                headerStackView.axis = .vertical
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            headerStackView.axis = .vertical
 
-                dateLabel.textAlignment = .center
-                timeLabel.textAlignment = .center
+            dateLabel.textAlignment = .center
+            timeLabel.textAlignment = .center
+        } else {
+            headerStackView.axis = .horizontal
+
+            if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
+                // swiftlint:disable:next inverse_text_alignment
+                dateLabel.textAlignment = .right
+                // swiftlint:disable:next inverse_text_alignment
+                timeLabel.textAlignment = .right
             } else {
-                headerStackView.axis = .horizontal
-
-                if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
-                    // swiftlint:disable:next inverse_text_alignment
-                    dateLabel.textAlignment = .right
-                    // swiftlint:disable:next inverse_text_alignment
-                    timeLabel.textAlignment = .right
-                } else {
-                    // swiftlint:disable:next natural_text_alignment
-                    dateLabel.textAlignment = .left
-                    // swiftlint:disable:next natural_text_alignment
-                    timeLabel.textAlignment = .left
-                }
+                // swiftlint:disable:next natural_text_alignment
+                dateLabel.textAlignment = .left
+                // swiftlint:disable:next natural_text_alignment
+                timeLabel.textAlignment = .left
             }
         }
     }
@@ -172,7 +182,7 @@ class ActivityDetailViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            setupFonts()
+            setupLabelStyles()
             setupAccesibility()
         }
     }

@@ -1,7 +1,6 @@
 #import <WordPressShared/WPAnalytics.h>
 #import <XCTest/XCTest.h>
 
-#import "WordPressAppDelegate.h"
 #import "AccountService.h"
 #import "ApiCredentials.h"
 #import "WPAppAnalytics.h"

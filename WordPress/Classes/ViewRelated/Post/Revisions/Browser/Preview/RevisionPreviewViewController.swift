@@ -22,13 +22,11 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
                               defaultMissingImage: UIImage())
         aztext.translatesAutoresizingMaskIntoConstraints = false
         aztext.isEditable = false
-        aztext.delegate = self
         return aztext
     }()
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = WPFontManager.notoBoldFont(ofSize: 24.0)
-        label.autoresizingMask = [.flexibleWidth]
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .natural
@@ -45,7 +43,6 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
 
     override func updateViewConstraints() {
         updateTitleHeight()
-        refreshTitlePosition()
         super.updateViewConstraints()
     }
 
@@ -90,7 +87,6 @@ private extension RevisionPreviewViewController {
         textView.setHTML(html)
 
         updateTitleHeight()
-        refreshTitlePosition()
     }
 }
 
@@ -100,31 +96,30 @@ private extension RevisionPreviewViewController {
 //
 private extension RevisionPreviewViewController {
     private func addSubviews() {
+        view.backgroundColor = .basicBackground
         view.addSubview(textView)
-        view.addSubview(titleLabel)
+        textView.addSubview(titleLabel)
     }
 
     private func configureConstraints() {
         updateTitleHeight()
 
+        let guide = view.readableContentGuide
         NSLayoutConstraint.activate([
-            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: textViewInsets.left),
-            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -textViewInsets.right),
+            textView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            textView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
             textView.topAnchor.constraint(equalTo: view.topAnchor),
             textView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
     }
 
-    private func refreshTitlePosition() {
-        titleLabel.frame.origin.y = -(textView.contentOffset.y + textView.contentInset.top) + titleInsets.top
-    }
-
     private func updateTitleHeight() {
-        let size = titleLabel.sizeThatFits(CGSize(width: view.frame.width - (titleInsets.left * 2.0), height: CGFloat.greatestFiniteMagnitude))
-        titleLabel.frame = CGRect(x: titleInsets.left, y: titleInsets.top, width: size.width, height: size.height)
+        let size = titleLabel.sizeThatFits(CGSize(width: textView.frame.width,
+                                                  height: CGFloat.greatestFiniteMagnitude))
+        titleLabel.frame = CGRect(x: 0, y: -(titleInsets.top + size.height), width: size.width, height: size.height)
 
         var contentInset = textView.contentInset
-        contentInset.top = titleLabel.frame.maxY + titleInsets.bottom
+        contentInset.top = titleInsets.top + size.height + titleInsets.bottom
         textView.contentInset = contentInset
         textView.setContentOffset(CGPoint(x: 0, y: -textView.contentInset.top), animated: false)
 
@@ -134,17 +129,8 @@ private extension RevisionPreviewViewController {
     private func updateScrollInsets() {
         var scrollInsets = textView.contentInset
         var rightMargin = (view.frame.maxX - textView.frame.maxX)
-        if #available(iOS 11.0, *) {
-            rightMargin -= view.safeAreaInsets.right
-        }
+        rightMargin -= view.safeAreaInsets.right
         scrollInsets.right = -rightMargin
         textView.scrollIndicatorInsets = scrollInsets
-    }
-}
-
-
-extension RevisionPreviewViewController: UITextViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        refreshTitlePosition()
     }
 }

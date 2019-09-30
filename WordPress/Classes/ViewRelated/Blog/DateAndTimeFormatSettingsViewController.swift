@@ -46,7 +46,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
         super.viewDidLoad()
         title = NSLocalizedString("Date and Time Format", comment: "Title for the Date and Time Format Settings Screen")
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         reloadViewModel()
     }
 
@@ -214,7 +214,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
 
     fileprivate func saveSettings() {
         service.updateSettings(for: blog,
-                               success: nil,
+                               success: { SiteStatsInformation.sharedInstance.updateTimeZone() },
                                failure: { [weak self] (error: Error) -> Void in
                                     self?.refreshSettings()
                                     DDLogError("Error while persisting settings: \(error)")

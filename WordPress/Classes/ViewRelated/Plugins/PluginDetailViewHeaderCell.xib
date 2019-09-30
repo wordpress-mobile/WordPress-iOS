@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -29,15 +28,13 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Mru-gt-rZz">
-                                <rect key="frame" x="0.0" y="240" width="741" height="162.5"/>
+                                <rect key="frame" x="0.0" y="240" width="148" height="162.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="xnc-Ub-bwQ">
-                                        <rect key="frame" x="0.0" y="59" width="44" height="44"/>
+                                        <rect key="frame" x="14" y="59" width="44" height="44"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="j3r-BA-ohO">
-                                                <rect key="frame" x="0.0" y="2" width="40" height="40"/>
-                                                <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="deviceRGB"/>
-                                                <color key="tintColor" red="0.6588235294117647" green="0.74901960784313726" blue="0.81176470588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                                <rect key="frame" x="2" y="2" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="V6c-02-jRC"/>
                                                     <constraint firstAttribute="height" priority="999" constant="40" id="bDE-cw-nZF"/>
@@ -55,20 +52,20 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="-5" translatesAutoresizingMaskIntoConstraints="NO" id="ELc-B1-A79">
-                                        <rect key="frame" x="0.0" y="61" width="0.0" height="40"/>
+                                        <rect key="frame" x="72" y="15.5" width="76" height="131"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="1" translatesAutoresizingMaskIntoConstraints="NO" id="9vT-Of-2n7">
-                                                <rect key="frame" x="0.0" y="10.5" width="0.0" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="10" width="76" height="91"/>
                                                 <string key="text">This is 
 a 
 mutliline
 label</string>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
-                                                <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fTl-o8-Hoz">
-                                                <rect key="frame" x="0.0" y="10" width="46" height="30"/>
+                                                <rect key="frame" x="0.0" y="101" width="46" height="30"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <inset key="titleEdgeInsets" minX="0.0" minY="-10" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="Button"/>
@@ -90,7 +87,6 @@ label</string>
                         </constraints>
                     </stackView>
                 </subviews>
-                <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="deviceRGB"/>
                 <constraints>
                     <constraint firstItem="CPT-b8-8Kc" firstAttribute="leading" secondItem="ico-oq-JhH" secondAttribute="leading" id="6DP-nG-T7c"/>
                     <constraint firstAttribute="bottom" secondItem="CPT-b8-8Kc" secondAttribute="bottom" id="PGv-yt-Lwi"/>

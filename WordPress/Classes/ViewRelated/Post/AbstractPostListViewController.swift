@@ -1,4 +1,5 @@
 import Foundation
+import Gridicons
 import CocoaLumberjack
 import WordPressShared
 import wpxmlrpc
@@ -123,13 +124,23 @@ class AbstractPostListViewController: UIViewController,
     @objc var postListFooterView: PostListFooterView!
 
     @IBOutlet var filterTabBar: FilterTabBar!
-    @IBOutlet var rightBarButtonView: UIView!
-    @IBOutlet var addButton: UIButton!
+
+    @objc lazy var addButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: Gridicon.iconOfType(.plus), style: .plain, target: self, action: #selector(handleAddButtonTapped))
+    }()
 
     @objc var searchController: UISearchController!
     @objc var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     fileprivate var searchesSyncing = 0
+
+    var ghostOptions: GhostOptions?
+
+    private var emptyResults: Bool {
+        return tableViewHandler.resultsController.fetchedObjects?.count == 0
+    }
+
+    private var atLeastSyncedOnce = false
 
     // MARK: - Lifecycle
 
@@ -148,7 +159,7 @@ class AbstractPostListViewController: UIViewController,
         configureAuthorFilter()
         configureSearchBackingView()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.reloadData()
 
         observeNetworkStatus()
@@ -156,6 +167,8 @@ class AbstractPostListViewController: UIViewController,
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        startGhost()
 
         if reloadTableViewBeforeAppearing {
             reloadTableViewBeforeAppearing = false
@@ -166,58 +179,10 @@ class AbstractPostListViewController: UIViewController,
         updateSelectedFilter()
 
         refreshResults()
-        registerForKeyboardNotifications()
-    }
-
-    fileprivate func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardDidShow(_:)),
-                                               name: UIResponder.keyboardDidShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardDidHide(_:)),
-                                               name: UIResponder.keyboardDidHideNotification,
-                                               object: nil)
-    }
-
-    fileprivate func unregisterForKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardDidShowNotification,
-                                                  object: nil)
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardDidHideNotification,
-                                                  object: nil)
-    }
-
-    @objc fileprivate func keyboardDidShow(_ notification: Foundation.Notification) {
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        // The following adjustments don't appear to be necessary on iOS 11.
-        let keyboardFrame = localKeyboardFrameFromNotification(notification)
-        let keyboardHeight = tableView.frame.maxY - keyboardFrame.origin.y
-
-        tableView.contentInset.top = topLayoutGuide.length
-        tableView.contentInset.bottom = keyboardHeight
-        tableView.scrollIndicatorInsets.top = searchBarHeight
-        tableView.scrollIndicatorInsets.bottom = keyboardHeight
-    }
-
-    @objc fileprivate func keyboardDidHide(_ notification: Foundation.Notification) {
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        // The following adjustments don't appear to be necessary on iOS 11.
-        tableView.contentInset.top = topLayoutGuide.length
-        tableView.contentInset.bottom = 0
-        tableView.scrollIndicatorInsets.top = searchController.isActive ? searchBarHeight : topLayoutGuide.length
-        tableView.scrollIndicatorInsets.bottom = 0
     }
 
     fileprivate var searchBarHeight: CGFloat {
-        return searchController.searchBar.bounds.height + topLayoutGuide.length
+        return searchController.searchBar.bounds.height + view.safeAreaInsets.top
     }
 
     fileprivate func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
@@ -233,10 +198,6 @@ class AbstractPostListViewController: UIViewController,
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !searchController.isActive {
-            configureInitialScrollInsets()
-        }
-
         automaticallySyncIfAppropriate()
     }
 
@@ -250,7 +211,6 @@ class AbstractPostListViewController: UIViewController,
         dismissAllNetworkErrorNotices()
 
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-        unregisterForKeyboardNotifications()
     }
 
     // MARK: - Configuration
@@ -269,16 +229,11 @@ class AbstractPostListViewController: UIViewController,
         //
         let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backButton
-
-        let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
-        rightBarButtonItem.width = rightBarButtonView.frame.size.width
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)
+        navigationItem.rightBarButtonItem = addButton
     }
 
     func configureFilterBar() {
-        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
-        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
+        WPStyleGuide.configureFilterTabBar(filterTabBar)
 
         filterTabBar.items = filterSettings.availablePostListFilters()
 
@@ -321,8 +276,21 @@ class AbstractPostListViewController: UIViewController,
         }
 
         hideNoResultsView()
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if emptyResults {
+            stopGhostIfConnectionIsNotAvailable()
             showNoResultsView()
+        }
+
+        updateBackgroundColor()
+    }
+
+    // Update controller's background color to avoid a white line below
+    // the search bar - due to a margin between searchBar and the tableView
+    private func updateBackgroundColor() {
+        if searchController.isActive && emptyResults {
+            view.backgroundColor = noResultsViewController.view.backgroundColor
+        } else {
+            view.backgroundColor = tableView.backgroundColor
         }
     }
 
@@ -349,22 +317,16 @@ class AbstractPostListViewController: UIViewController,
     }
 
     fileprivate func configureInitialScrollInsets() {
-        if #available(iOS 11.0, *) {
-            tableView.scrollIndicatorInsets.top = 0
-            tableView.contentInset.top = 0
-        } else {
-            tableView.scrollIndicatorInsets.top = topLayoutGuide.length
-        }
+        tableView.layoutIfNeeded()
+        tableView.contentInset = .zero
+        tableView.scrollIndicatorInsets = .zero
+        tableView.contentOffset = .zero
     }
 
     fileprivate func configureSearchBackingView() {
         // This mask view is required to cover the area between the top of the search
         // bar and the top of the screen on an iPhone X and on iOS 10.
-        var topAnchor = topLayoutGuide.bottomAnchor
-
-        if #available(iOS 11.0, *) {
-            topAnchor = view.safeAreaLayoutGuide.topAnchor
-        }
+        let topAnchor = view.safeAreaLayoutGuide.topAnchor
 
         let backingView = UIView()
         view.addSubview(backingView)
@@ -407,18 +369,16 @@ class AbstractPostListViewController: UIViewController,
 
     func hideNoResultsView() {
         postListFooterView.isHidden = false
-        rightBarButtonView.isHidden = false
         noResultsViewController.removeFromView()
     }
 
     func showNoResultsView() {
 
-        guard refreshNoResultsViewController != nil else {
+        guard refreshNoResultsViewController != nil, atLeastSyncedOnce else {
             return
         }
 
         postListFooterView.isHidden = true
-        rightBarButtonView.isHidden = true
         refreshNoResultsViewController(noResultsViewController)
 
         // Only add no results view if it isn't already in the table view
@@ -595,7 +555,7 @@ class AbstractPostListViewController: UIViewController,
         WPAnalytics.track(.postListPullToRefresh, withProperties: propertiesForAnalytics())
     }
 
-    @IBAction func handleAddButtonTapped(_ sender: AnyObject) {
+    @objc func handleAddButtonTapped() {
         createPost()
     }
 
@@ -609,7 +569,7 @@ class AbstractPostListViewController: UIViewController,
         }
 
         // Do not start auto-sync if connection is down
-        let appDelegate = WordPressAppDelegate.sharedInstance()
+        let appDelegate = WordPressAppDelegate.shared
 
         if appDelegate?.connectionAvailable == false {
             refreshResults()
@@ -762,12 +722,19 @@ class AbstractPostListViewController: UIViewController,
             })
     }
 
+    func syncContentStart(_ syncHelper: WPContentSyncHelper) {
+        startGhost()
+        atLeastSyncedOnce = true
+    }
+
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         refreshControl?.endRefreshing()
         postListFooterView.showSpinner(false)
         noResultsViewController.removeFromView()
 
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        stopGhost()
+
+        if emptyResults {
             // This is a special case.  Core data can be a bit slow about notifying
             // NSFetchedResultsController delegates about changes to the fetched results.
             // To compensate, call configureNoResultsView after a short delay.
@@ -785,6 +752,8 @@ class AbstractPostListViewController: UIViewController,
             promptForPassword()
             return
         }
+
+        stopGhost()
 
         dismissAllNetworkErrorNotices()
 
@@ -816,6 +785,35 @@ class AbstractPostListViewController: UIViewController,
         }
     }
 
+    // MARK: - Ghost cells
+
+    func startGhost() {
+        guard let ghostOptions = ghostOptions, emptyResults else {
+            return
+        }
+
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        tableView.displayGhostContent(options: ghostOptions, style: style)
+        tableView.isScrollEnabled = false
+        noResultsViewController.view.isHidden = true
+    }
+
+    func stopGhost() {
+        tableView.removeGhostContent()
+        tableView.isScrollEnabled = true
+        noResultsViewController.view.isHidden = false
+    }
+
+    func stopGhostIfConnectionIsNotAvailable() {
+        guard WordPressAppDelegate.shared?.connectionAvailable == false else {
+            return
+        }
+
+        atLeastSyncedOnce = true
+        stopGhost()
+    }
 
     // MARK: - Searching
 
@@ -832,7 +830,7 @@ class AbstractPostListViewController: UIViewController,
         tableView.reloadData()
 
         let filter = filterSettings.currentPostListFilter()
-        if filter.hasMore && tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if filter.hasMore && emptyResults {
             // If the filter detects there are more posts, but there are none that match the current search
             // hide the no results view while the upcoming syncPostsMatchingSearchText() may in fact load results.
             hideNoResultsView()
@@ -917,16 +915,16 @@ class AbstractPostListViewController: UIViewController,
         present(alertController, animated: true)
     }
 
-    @objc func schedulePost(_ apost: AbstractPost) {
-        WPAnalytics.track(.postListScheduleAction, withProperties: propertiesForAnalytics())
+    @objc func moveToDraft(_ apost: AbstractPost) {
+        WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
-        apost.status = .scheduled
+        apost.status = .draft
         uploadPost(apost)
-        updateFilterWithPostStatus(.scheduled)
+        updateFilterWithPostStatus(.draft)
     }
 
     fileprivate func uploadPost(_ apost: AbstractPost) {
-        PostCoordinator.shared.save(post: apost)
+        PostCoordinator.shared.save(apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {
@@ -1113,7 +1111,12 @@ class AbstractPostListViewController: UIViewController,
         filterSettings.setCurrentFilterIndex(filterBar.selectedIndex)
 
         refreshAndReload()
+
+        startGhost()
+
         syncItemsWithUserInteraction(false)
+
+        configureInitialScrollInsets()
 
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
@@ -1146,8 +1149,14 @@ class AbstractPostListViewController: UIViewController,
         return ReachabilityUtils.noConnectionMessage()
     }
 
-    func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
+    // MARK: - Others
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        // We override this method to dismiss any Notice that is currently being shown. If we
+        // don't do this, the present Notice will be shown on top of the ViewController we are
+        // presenting.
+        dismissAllNetworkErrorNotices()
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
     }
 }
 

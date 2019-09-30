@@ -20,9 +20,9 @@ extension NetworkAware {
     }
 }
 
-extension NetworkAwareUI {
+extension NetworkAwareUI where Self: UIViewController {
     func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !contentIsEmpty()
+        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
     }
 
     func handleConnectionError() {

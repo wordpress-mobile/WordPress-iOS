@@ -1,42 +1,30 @@
 import Foundation
 
-protocol GutenbergFlagsUserDefaultsProtocol {
-    func set(_ value: Bool, forKey defaultName: String)
-    func bool(forKey defaultName: String) -> Bool
-}
-
-extension UserDefaults: GutenbergFlagsUserDefaultsProtocol {
-
-}
-
 /// This extension handles Alert operations.
 extension GutenbergViewController {
 
     enum InfoDialog {
-        static let key = "Gutenberg.InformativeDialog"
         static let message = NSLocalizedString(
-            "This post was originally created in the Block Editor, so we've also enabled it on this Post. Switch back to Classic at any time by tapping ••• in the top bar.",
-            comment: "Popup content about why this post is being opened in Block Editor"
+            "You're currently using the block editor to create new posts. Want to use the classic editor by default? Head to Site Settings.",
+            comment: "Popup content about why this post is being opened in block editor"
         )
-        static let title = NSLocalizedString("Block Editor Enabled", comment: "Popup title about why this post is being opened in Block Editor")
+        static let title = NSLocalizedString(
+            "Block editor enabled",
+            comment: "Popup title about why this post is being opened in block editor"
+        )
         static let okButtonTitle   = NSLocalizedString("OK", comment: "OK button to close the informative dialog on Gutenberg editor")
     }
 
     func showInformativeDialogIfNecessary() {
-        GutenbergViewController.showInformativeDialogIfNecessary(showing: post, on: self)
+        if shouldPresentInformativeDialog {
+            GutenbergViewController.showInformativeDialog(on: self)
+        }
     }
 
-    static func showInformativeDialogIfNecessary(
-        using userDefaults: GutenbergFlagsUserDefaultsProtocol = UserDefaults.standard,
-        showing post: AbstractPost,
+    static func showInformativeDialog(
         on viewController: UIViewControllerTransitioningDelegate & UIViewController,
         animated: Bool = true
     ) {
-        guard !userDefaults.bool(forKey: InfoDialog.key),
-            post.containsGutenbergBlocks() else {
-            // Don't show if this was shown before or the post does not contain blocks
-            return
-        }
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
         (
             title: InfoDialog.okButtonTitle,
@@ -58,7 +46,5 @@ extension GutenbergViewController {
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = viewController
         viewController.present(alert, animated: animated)
-        // Save that this alert is shown
-        userDefaults.set(true, forKey: InfoDialog.key)
     }
 }

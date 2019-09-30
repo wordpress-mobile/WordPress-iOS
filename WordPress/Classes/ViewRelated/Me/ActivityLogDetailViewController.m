@@ -33,7 +33,8 @@
     textView.editable = NO;
     textView.text = self.logText;
     textView.font = [WPStyleGuide subtitleFont];
-    textView.backgroundColor = [UIColor whiteColor];
+    textView.textColor = [UIColor murielText];
+    textView.backgroundColor = [UIColor murielListBackground];
     textView.textAlignment = NSTextAlignmentLeft; // Logs aren't RTL friendly
     [self.view addSubview:textView];
     textView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -99,10 +100,7 @@
 
     NSMutableArray<UIActivityType> *activityTypes = [NSMutableArray arrayWithArray:systemActivityTypes];
 
-    if (@available(iOS 11, *)) {
-        [activityTypes addObject:UIActivityTypeMarkupAsPDF];
-    }
-
+    [activityTypes addObject:UIActivityTypeMarkupAsPDF];
     [activityTypes addObject:[SharePost activityType]];
 
     return activityTypes;

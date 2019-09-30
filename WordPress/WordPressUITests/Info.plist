@@ -20,5 +20,9 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>WIREMOCK_HOST</key>
+	<string>$(WIREMOCK_HOST)</string>
+	<key>WIREMOCK_PORT</key>
+	<string>$(WIREMOCK_PORT)</string>
 </dict>
 </plist>

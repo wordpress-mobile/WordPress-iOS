@@ -273,10 +273,10 @@ class PostTests: XCTestCase {
         XCTAssertNil(post.statusForDisplay())
 
         post.status = .scheduled
-        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .scheduled))
+        XCTAssertEqual(post.statusForDisplay(), "")
 
         post.status = .trash
-        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .trash))
+        XCTAssertEqual(post.statusForDisplay(), "")
 
         post.status = .deleted
         XCTAssertEqual(post.statusForDisplay(), Post.title(for: .deleted))
@@ -302,11 +302,11 @@ class PostTests: XCTestCase {
 
         revision.status = .scheduled
         let scheduledStatusDisplay = "\(Post.title(for: .scheduled))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), scheduledStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), local)
 
         revision.status = .trash
         let trashStatusDisplay = "\(Post.title(for: .trash))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), trashStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), local)
 
         revision.status = .deleted
         let deletedStatusDisplay = "\(Post.title(for: .deleted))"

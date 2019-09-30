@@ -37,6 +37,11 @@ class NoticePresenter: NSObject {
         let notice: Notice
         let containerView: NoticeContainerView?
     }
+    /// Used to determine if the keyboard is currently shown and what its height is.
+    private enum KeyboardPresentation {
+        case present(height: CGFloat)
+        case notPresent
+    }
 
     private let store: NoticeStore
     private let window: UntouchableWindow
@@ -51,6 +56,7 @@ class NoticePresenter: NSObject {
     private var storeReceipt: Receipt?
 
     private var currentNoticePresentation: NoticePresentation?
+    private var currentKeyboardPresentation: KeyboardPresentation = .notPresent
 
     private init(store: NoticeStore) {
         self.store = store
@@ -96,21 +102,26 @@ class NoticePresenter: NSObject {
     private func listenToKeyboardEvents() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
-                let currentContainer = self.currentNoticePresentation?.containerView,
                 let userInfo = notification.userInfo,
                 let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
                     return
             }
-            let keyboardFrame = keyboardFrameValue.cgRectValue
-            let keyboardHeight = keyboardFrame.size.height
+
+            self.currentKeyboardPresentation = .present(height: keyboardFrameValue.cgRectValue.size.height)
+
+            guard let currentContainer = self.currentNoticePresentation?.containerView else {
+                return
+            }
 
             UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                currentContainer.bottomConstraint?.constant = -keyboardHeight
+                currentContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant
                 self.view.layoutIfNeeded()
             })
         }
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { [weak self] (notification) in
+            self?.currentKeyboardPresentation = .notPresent
+
             guard let self = self,
                 let currentContainer = self.currentNoticePresentation?.containerView,
                 let userInfo = notification.userInfo,
@@ -119,7 +130,7 @@ class NoticePresenter: NSObject {
             }
 
             UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                currentContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
+                currentContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant
                 self.view.layoutIfNeeded()
             })
         }
@@ -281,7 +292,14 @@ class NoticePresenter: NSObject {
             }
 
             noticeContainer.noticeView.alpha = WPAlphaZero
-            noticeContainer.bottomConstraint?.constant = self.window.untouchableViewController.offsetOffscreen
+            noticeContainer.bottomConstraint?.constant = {
+                switch self.currentKeyboardPresentation {
+                case .present(let keyboardHeight):
+                    return -keyboardHeight + noticeContainer.bounds.height
+                case .notPresent:
+                    return self.window.untouchableViewController.offsetOffscreen
+                }
+            }()
 
             self.view.layoutIfNeeded()
         }
@@ -294,9 +312,18 @@ class NoticePresenter: NSObject {
             }
 
             noticeContainer.noticeView.alpha = WPAlphaFull
-            noticeContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
+            noticeContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant
 
             self.view.layoutIfNeeded()
+        }
+    }
+
+    private var onscreenNoticeContainerBottomConstraintConstant: CGFloat {
+        switch self.currentKeyboardPresentation {
+        case .present(let keyboardHeight):
+            return -keyboardHeight
+        case .notPresent:
+            return -window.untouchableViewController.offsetOnscreen
         }
     }
 

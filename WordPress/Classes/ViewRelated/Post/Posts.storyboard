@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -61,40 +60,15 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
                         <outlet property="filterTabBar" destination="Nmf-Iz-jkG" id="Ydz-ff-EUy"/>
                         <outlet property="filterTabBarBottomConstraint" destination="Hb8-6N-iSm" id="GsJ-Hc-dE5"/>
                         <outlet property="filterTabBarTopConstraint" destination="ZFh-Do-F2v" id="hq3-Iz-dZu"/>
                         <outlet property="filterTabBariOS10TopConstraint" destination="fGy-cf-WIB" id="2s9-pa-9Ee"/>
-                        <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
                         <outlet property="searchWrapperView" destination="sFK-WP-z2Z" id="CJ1-ul-bLt"/>
                         <outlet property="tableViewTopConstraint" destination="UwE-7o-GHb" id="4mJ-Ry-6Xa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrN-zD-yTr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ph-e4-iOe">
-                    <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Az-zB-Hwe">
-                            <rect key="frame" x="40" y="0.0" width="40" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="40" id="Moj-01-1lI"/>
-                            </constraints>
-                            <state key="normal" image="icon-post-add">
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <state key="highlighted" image="icon-post-add-highlight"/>
-                            <connections>
-                                <action selector="handleAddButtonTapped:" destination="VTO-0U-HpP" eventType="touchUpInside" id="fEv-yc-HXV"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <constraints>
-                        <constraint firstItem="9Az-zB-Hwe" firstAttribute="top" secondItem="8Ph-e4-iOe" secondAttribute="top" id="Hjj-Ra-6M9"/>
-                        <constraint firstAttribute="trailing" secondItem="9Az-zB-Hwe" secondAttribute="trailing" id="STW-Iw-FBG"/>
-                        <constraint firstAttribute="bottom" secondItem="9Az-zB-Hwe" secondAttribute="bottom" id="Usu-ZA-zoK"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" id="sFK-WP-z2Z" customClass="SearchWrapperView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -120,7 +94,6 @@
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="yaY-3g-ZFU">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YkQ-BC-2ME" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -128,8 +101,4 @@
             <point key="canvasLocation" x="1202" y="318"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="icon-post-add" width="22" height="22"/>
-        <image name="icon-post-add-highlight" width="22" height="22"/>
-    </resources>
 </document>

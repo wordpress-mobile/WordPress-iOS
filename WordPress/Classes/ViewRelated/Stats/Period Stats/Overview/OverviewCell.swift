@@ -3,25 +3,47 @@ import UIKit
 struct OverviewTabData: FilterTabBarItem {
     var tabTitle: String
     var tabData: Int
+    var tabDataStub: String?
     var difference: Int
     var differencePercent: Int
+    var date: Date?
+    var period: StatsPeriodUnit?
+    var analyticsStat: WPAnalyticsStat?
 
-    init(tabTitle: String, tabData: Int, difference: Int, differencePercent: Int) {
+    init(tabTitle: String,
+         tabData: Int,
+         tabDataStub: String? = nil,
+         difference: Int,
+         differencePercent: Int,
+         date: Date? = nil,
+         period: StatsPeriodUnit? = nil,
+         analyticsStat: WPAnalyticsStat? = nil) {
         self.tabTitle = tabTitle
         self.tabData = tabData
+        self.tabDataStub = tabDataStub
         self.difference = difference
         self.differencePercent = differencePercent
+        self.date = date
+        self.period = period
+        self.analyticsStat = analyticsStat
     }
 
     var attributedTitle: NSAttributedString? {
 
         let attributedTitle = NSMutableAttributedString(string: tabTitle.localizedUppercase)
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
-                                       range: NSMakeRange(0, attributedTitle.string.count))
+                                      range: NSMakeRange(0, attributedTitle.string.count))
 
-        let attributedData = NSMutableAttributedString(string: tabData.abbreviatedString())
+        let dataString: String = {
+            if let tabDataStub = tabDataStub {
+                return tabDataStub
+            }
+            return tabData.abbreviatedString()
+        }()
+
+        let attributedData = NSMutableAttributedString(string: dataString)
         attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
-                                       range: NSMakeRange(0, attributedData.string.count))
+                                     range: NSMakeRange(0, attributedData.string.count))
 
         attributedTitle.append(NSAttributedString(string: "\n"))
         attributedTitle.append(attributedData)
@@ -38,6 +60,12 @@ struct OverviewTabData: FilterTabBarItem {
     }
 
     var differenceTextColor: UIColor {
+        if let date = date,
+            let period = period,
+            StatsPeriodHelper().dateAvailableAfterDate(date, period: period) == false {
+            return .neutral(.shade40)
+        }
+
         return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
     }
 
@@ -69,14 +97,10 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
     private var chartData: [BarChartDataConvertible] = []
     private var chartStyling: [BarChartStyling] = []
+    private weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+    private var chartHighlightIndex: Int?
 
-    private var period: StatsPeriodUnit? {
-        didSet {
-            if chartContainerView.subviews.isEmpty || oldValue != period {
-                configureChartView()
-            }
-        }
-    }
+    private var period: StatsPeriodUnit?
 
     // MARK: - Configure
 
@@ -85,12 +109,15 @@ class OverviewCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = [], period: StatsPeriodUnit? = nil) {
+    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = [], period: StatsPeriodUnit? = nil, statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil, barChartHighlightIndex: Int? = nil) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
+        self.statsBarChartViewDelegate = statsBarChartViewDelegate
+        self.chartHighlightIndex = barChartHighlightIndex
         self.period = period
 
+        configureChartView()
         setupFilterBar()
         updateLabels()
     }
@@ -101,6 +128,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
 private extension OverviewCell {
 
     func applyStyles() {
+        Style.configureCell(self)
         Style.configureLabelForOverview(selectedLabel)
         Style.configureLabelForOverview(selectedData)
         Style.configureViewAsSeparator(topSeparatorLine)
@@ -115,13 +143,7 @@ private extension OverviewCell {
     ///
     func configureFonts() {
 
-        let prevailingFont: UIFont
-        if #available(iOS 11.0, *) {
-            prevailingFont = WPStyleGuide.fontForTextStyle(UIFont.TextStyle.largeTitle)
-        } else {
-            let fontSize = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1).pointSize
-            prevailingFont = WPFontManager.systemRegularFont(ofSize: fontSize)
-        }
+        let prevailingFont = WPStyleGuide.fontForTextStyle(UIFont.TextStyle.largeTitle)
         selectedData.font = prevailingFont
 
         selectedData.adjustsFontForContentSizeCategory = true   // iOS 10
@@ -132,6 +154,9 @@ private extension OverviewCell {
         // If there is only one tab data, this is being displayed on the
         // Post Stats view, which does not have a filterTabBar.
         filterTabBar.isHidden = tabsData.count == 1
+
+        // The filterTabBar has a bottom line, so hide the bottom line on the cell if the filterTabBar is showing.
+        bottomSeparatorLine.isHidden = !filterTabBar.isHidden
 
         chartBottomConstraint.constant = filterTabBar.isHidden ?
             ChartBottomMargin.filterTabBarHidden :
@@ -146,6 +171,10 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        if let event = tabsData[filterTabBar.selectedIndex].analyticsStat {
+            captureAnalyticsEvent(event)
+        }
+
         configureChartView()
         updateLabels()
     }
@@ -167,15 +196,13 @@ private extension OverviewCell {
             return
         }
 
-        let barChartData = chartData[filterSelectedIndex]
-        let barChartStyling = chartStyling[filterSelectedIndex]
-        let analyticsGranularity = period?.analyticsGranularity
+        let configuration = StatsBarChartConfiguration(data: chartData[filterSelectedIndex],
+                                                       styling: chartStyling[filterSelectedIndex],
+                                                       analyticsGranularity: period?.analyticsGranularity,
+                                                       indexToHighlight: chartHighlightIndex)
+        let chartView = StatsBarChartView(configuration: configuration, delegate: statsBarChartViewDelegate)
 
-        for subview in chartContainerView.subviews {
-            subview.removeFromSuperview()
-        }
-
-        let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling, analyticsGranularity: analyticsGranularity)
+        resetChartContainerView()
         chartContainerView.addSubview(chartView)
 
         NSLayoutConstraint.activate([
@@ -183,12 +210,30 @@ private extension OverviewCell {
             chartView.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor),
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
-        ])
+            ])
+    }
+
+    func resetChartContainerView() {
+        for subview in chartContainerView.subviews {
+            subview.removeFromSuperview()
+        }
     }
 
     enum ChartBottomMargin {
         static let filterTabBarShown = CGFloat(16)
         static let filterTabBarHidden = CGFloat(24)
+    }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
+        }
     }
 
 }

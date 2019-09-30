@@ -65,6 +65,26 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     return page;
 }
 
+
+- (void)getFailedPosts:(void (^)( NSArray<AbstractPost *>* posts))result {
+    [self.managedObjectContext performBlock:^{
+        NSString *entityName = NSStringFromClass([AbstractPost class]);
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+        
+        request.predicate = [NSPredicate predicateWithFormat:@"remoteStatusNumber == %d", AbstractPostRemoteStatusFailed];
+        
+        NSError *error = nil;
+        NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+        
+        if (!results) {
+            result(@[]);
+        } else {
+            result(results);
+        }
+    }];
+}
+
+
 - (void)getPostWithID:(NSNumber *)postID
               forBlog:(Blog *)blog
               success:(void (^)(AbstractPost *post))success
@@ -215,21 +235,13 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
 
-                NSPredicate *unattachedMediaPredicate = [NSPredicate predicateWithFormat:@"postID <= 0"];
-                NSArray<Media *> *mediaToUpdate = [[postInContext.media filteredSetUsingPredicate:unattachedMediaPredicate] allObjects];
-                for (Media *media in mediaToUpdate) {
-                    media.postID = post.postID;
-                }
-
-                MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                [mediaService updateMedia:mediaToUpdate overallSuccess:^{
-                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
+                [self updateMediaForPost:postInContext success:^{
                     if (success) {
                         success(postInContext);
                     }
-                } failure:^(NSError *error){
-                    // Sergio Estevao (2018-02-27): even if media fails to attach we are answering with success because the post uploaded sucessfull and the only thing that failed was attaching the media to it.
+                } failure:^(NSError * _Nullable error) {
+                    DDLogInfo(@"Error in updateMediaForPost while uploading post. description: %@", error.localizedDescription);
+                    // even if media fails to attach we are answering with success because the post upload was successful.
                     if (success) {
                         success(postInContext);
                     }
@@ -246,12 +258,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [self.managedObjectContext performBlock:^{
             Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
-                // If the post was not created on the server yet we convert the post to a local draft post with the current date.
-                if (!postInContext.hasRemote) {
-                    postInContext.status = PostStatusDraft;
-                    postInContext.dateModified = [NSDate date];
-                }
+                [self markAsFailedAndDraftIfNeededWithPost:post];
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
@@ -268,6 +275,70 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [remote createPost:remotePost
                    success:successBlock
                    failure:failureBlock];
+    }
+}
+
+- (void)autoSave:(AbstractPost *)post
+         success:(void (^)(AbstractPost *post, NSString *previewURL))success
+         failure:(void (^)(NSError * _Nullable error))failure
+{
+    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    
+    if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
+        PostServiceRemoteREST *restRemote = (PostServiceRemoteREST*) remote;
+        RemotePost *remotePost = [self remotePostWithPost:post];
+        NSManagedObjectID *postObjectID = post.objectID;
+        
+        void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
+            [self.managedObjectContext performBlock:^{
+                AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+                if (postInContext) {
+                    postInContext.remoteStatus = AbstractPostRemoteStatusAutoSaved;
+                    [self updateMediaForPost:postInContext success:^{
+                        if (success) {
+                            success(postInContext, previewURL);
+                        }
+                    } failure:^(NSError * _Nullable error) {
+                        DDLogInfo(@"Error in updateMediaForPost while remote auto-saving post. description: %@", error.localizedDescription);
+                        // even if media fails to attach we are answering with success because the post auto-save was successful.
+                        if (success) {
+                            success(postInContext, previewURL);
+                        }
+                    }];
+                } else {
+                    // This can happen if the post was deleted right after triggering the auto-save.
+                    if (success) {
+                        success(nil, nil);
+                    }
+                }
+            }];
+        };
+        
+        void (^failureBlock)(NSError *error) = ^(NSError *error) {
+            failure(error);
+        };
+        
+        BOOL needsUploading = [post isDraft] && [post.postID longLongValue] <= 0;
+        
+        if (needsUploading) {
+            [self uploadPost:post
+                     success:^(AbstractPost * _Nonnull post) {
+                         success(post, nil);
+                     }
+                     failure:failure];
+        } else {
+            [restRemote autoSave:remotePost
+                         success:successBlock
+                         failure:failureBlock];
+        }
+    } else if ([post originalIsDraft] && [post isDraft]) {
+        [self uploadPost:post
+                 success:^(AbstractPost * _Nonnull post) {
+                     success(post, nil);
+                 } failure:failure];
+    } else {
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." };
+        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
     }
 }
 
@@ -531,8 +602,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             }
         }
     }
-    
-    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     if (completion) {
         completion(posts);
     }

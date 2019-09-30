@@ -22,6 +22,7 @@ class PostingActivityDay: UIView, NibLoadable {
         visible = dayData != nil
         active = delegate != nil
         self.delegate = delegate
+        backgroundColor = .clear
         configureButton()
     }
 
@@ -35,6 +36,7 @@ class PostingActivityDay: UIView, NibLoadable {
 private extension PostingActivityDay {
 
     func configureButton() {
+        dayButton.isGhostableDisabled = !visible
         dayButton.isEnabled = visible && active
         dayButton.backgroundColor = visible ? colorForCount() : .clear
     }
@@ -48,7 +50,7 @@ private extension PostingActivityDay {
     }
 
     @IBAction func dayButtonPressed(_ sender: UIButton) {
-        dayButton.backgroundColor = WPStyleGuide.Stats.PostingActivityColors.orange
+        dayButton.backgroundColor = WPStyleGuide.Stats.PostingActivityColors.selectedDay
         delegate?.daySelected(self)
     }
 

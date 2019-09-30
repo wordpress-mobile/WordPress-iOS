@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -40,7 +40,7 @@
                         </constraints>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="w2N-OJ-hIR">
-                        <rect key="frame" x="0.0" y="30" width="323" height="169.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="323" height="199.5"/>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBd-Ut-Uch" userLabel="Top Seperator Line">
                         <rect key="frame" x="0.0" y="0.0" width="323" height="0.5"/>
@@ -62,7 +62,6 @@
                     <constraint firstItem="cBd-Ut-Uch" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="3tF-WR-xtY"/>
                     <constraint firstItem="Tyj-5B-MLc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="3w8-O5-egA"/>
                     <constraint firstAttribute="bottom" secondItem="w2N-OJ-hIR" secondAttribute="bottom" id="42h-SA-4TJ"/>
-                    <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="Tyj-5B-MLc" secondAttribute="bottom" constant="7" id="EHT-9C-hjv"/>
                     <constraint firstItem="w2N-OJ-hIR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="HgO-4i-Tfs"/>
                     <constraint firstAttribute="trailing" secondItem="w2N-OJ-hIR" secondAttribute="trailing" id="J0K-LT-LLo"/>
                     <constraint firstItem="cBd-Ut-Uch" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="MkM-w2-NRz"/>
@@ -71,13 +70,8 @@
                     <constraint firstAttribute="trailing" secondItem="cBd-Ut-Uch" secondAttribute="trailing" id="bwo-8W-tHL"/>
                     <constraint firstAttribute="bottom" secondItem="9px-XX-eCP" secondAttribute="bottom" id="e26-py-r2V"/>
                     <constraint firstItem="9px-XX-eCP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="qfo-Hn-1HP"/>
-                    <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" priority="999" id="sza-97-qoA"/>
+                    <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="sza-97-qoA"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="sza-97-qoA"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
@@ -86,8 +80,8 @@
                 <outlet property="itemSubtitleLabel" destination="vbE-CG-voj" id="eZl-wI-KfG"/>
                 <outlet property="rowsStackView" destination="w2N-OJ-hIR" id="5DU-xj-fcC"/>
                 <outlet property="rowsStackViewTopConstraint" destination="sza-97-qoA" id="s2p-EA-TTR"/>
-                <outlet property="rowsStackViewTopConstraintWithSubtitles" destination="EHT-9C-hjv" id="XOV-Qp-fub"/>
                 <outlet property="subtitleStackView" destination="Tyj-5B-MLc" id="Ddg-AW-G7w"/>
+                <outlet property="subtitlesStackViewTopConstraint" destination="3w8-O5-egA" id="Qsd-dr-iv9"/>
                 <outlet property="topSeparatorLine" destination="cBd-Ut-Uch" id="C1i-Zd-yPU"/>
             </connections>
             <point key="canvasLocation" x="55.200000000000003" y="17.991004497751124"/>

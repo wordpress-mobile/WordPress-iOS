@@ -44,7 +44,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         initCancelButton()
 
         prepareForVoiceOver()
-	WPAnalytics.track(.enhancedSiteCreationSegmentsViewed)
+        WPAnalytics.track(.enhancedSiteCreationSegmentsViewed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -53,12 +53,17 @@ final class SiteSegmentsWizardContent: UIViewController {
         observeNetworkStatus()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        postScreenChangedForVoiceOver()
+    }
+
     private func applyTitle() {
         title = NSLocalizedString("Create Site", comment: "Site creation. Step 1. Screen title")
     }
 
     private func setupBackground() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+        view.backgroundColor = .listBackground
     }
 
     override func viewDidLayoutSubviews() {
@@ -76,11 +81,11 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupTableBackground() {
-        table.backgroundColor = WPStyleGuide.greyLighten30()
+        table.backgroundColor = .listBackground
     }
 
     private func setupTableSeparator() {
-        table.separatorColor = WPStyleGuide.greyLighten20()
+        table.separatorColor = .divider
     }
 
     private func hideSeparators() {
@@ -109,8 +114,6 @@ final class SiteSegmentsWizardContent: UIViewController {
         let header = TitleSubtitleHeader(frame: initialHeaderFrame)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
-
-        header.accessibilityTraits = .header
 
         table.tableHeaderView = header
 
@@ -196,7 +199,7 @@ final class SiteSegmentsWizardContent: UIViewController {
             errorVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorVC.view.topAnchor.constraint(equalTo: view.topAnchor),
             errorVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            ])
+        ])
         errorVC.didMove(toParent: self)
 
 
@@ -254,7 +257,10 @@ extension SiteSegmentsWizardContent: Accessible {
     }
 
     private func prepareTableForVoiceOver() {
-        table.accessibilityLabel = NSLocalizedString("The kinds of sites that can be created", comment: "Accessibility hint for list ")
-        table.accessibilityTraits = UIAccessibilityTraits.allowsDirectInteraction
+        table.accessibilityLabel = NSLocalizedString("The kinds of sites that can be created", comment: "Accessibility hint for list")
+    }
+
+    private func postScreenChangedForVoiceOver() {
+        UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
     }
 }

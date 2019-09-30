@@ -84,12 +84,12 @@ final class NewsCard: UIViewController {
     }
 
     private func styleBackground() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+        view.backgroundColor = .listForeground
     }
 
     private func styleBorderedView() {
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = 1.0
+        borderedView.layer.borderWidth = .hairlineBorderWidth
     }
 
     private func styleLabels() {

@@ -5,15 +5,31 @@
 
 ## Build Instructions
 
-### Download Xcode
+Please refer to the sections below for more detailed information.
 
-At the moment *WordPress for iOS* uses Swift 4.2 and requires Xcode 10 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
+1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. *WordPress for iOS* requires Xcode 10.2 or newer.
+1. `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
+1. `cd WordPress-iOS` to enter the working directory.
+1. `rake dependencies` to install all dependencies required to run the project (this may take some time to complete).
+1. `rake xcode` to open the project in Xcode. 
+1. Compile and run the app on a device or an simulator.
+
+In order to login to WordPress.com using the app:
+
+1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one).
+1. Create an application at https://developer.wordpress.com/apps/.
+1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
+1. Copy the `Client ID` and `Client Secret` from the OAuth Information. 
+1. `mkdir -p ~/.mobile-secrets/iOS/WPiOS/` to create a place to store app credentials.
+1. `cp ./WordPress/Credentials/wpcom_app_credentials.txt ~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials` to copy the sample credentials file to your home folder.
+1. Paste `Client ID` and `Client Secret` from the app you created into `WPCOM_APP_ID` and `WPCOM_APP_SECRET` in `~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials`.
+1. Recompile and run the app on a device or an simulator.
+
+You can only log in with the WordPress.com account that you used to create the WordPress application.
 
 ### Third party tools
 
-We use a few tools to help with development. To install or update the required dependencies, run the follow command on the command line:
-
-`rake dependencies`
+We use a few tools to help with development. Running `rake dependencies` will configure them for you.
 
 #### CocoaPods
 
@@ -70,46 +86,30 @@ In order to use these details, you'll need to create a credential file in your b
 
 Then edit the `~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials` file and change the `WPCOM_APP_ID` and `WPCOM_APP_SECRET` fields to the values you got for your app.
 
-Then you can compile and run the app on a device or an emulator and log in with a WordPress.com account.  Note that authenticating to WordPress.com via Google is not supported in development builds of the app, only in the official release.
+Then you can compile and run the app on a simulator and log in with a WordPress.com account.  Note that authenticating to WordPress.com via Google is not supported in development builds of the app, only in the official release.
 
 **Remember the only account you will be able to login in with is the one affiliated with your developer account.** 
 
 Read more about [OAuth2](https://developer.wordpress.com/docs/oauth2/) and the [WordPress.com REST endpoint](https://developer.wordpress.com/docs/api/).
 
+## Contributing
 
-## How we work ##
+Read our [Contributing Guide](CONTRIBUTING.md) to learn about reporting issues, contributing code, and more ways to contribute.
 
-You can read more about [Code Style Guidelines](https://github.com/wordpress-mobile/WordPress-iOS/wiki/WordPress-for-iOS-Style-Guide) we adopted, and
-how we're organizing branches in our repository in the [Contribution Guide](https://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/).
+## Security
 
-## Need help to build or hack? ##
+If you happen to find a security vulnerability, we would appreciate you letting us know at https://hackerone.com/automattic and allowing us to respond before disclosing the issue publicly.
 
-Say hello on our [Slack](https://chat.wordpress.org) channel: `#mobile`.
+## Getting in Touch ##
+
+If you have questions about getting setup or just want to say hi, join the [WordPress Slack](https://chat.wordpress.org) and drop a message on the `#mobile` channel.
+
+## Resources
+
+- The [Wiki](https://github.com/wordpress-mobile/WordPress-iOS/wiki) contains information about our development practices.
+- [WordPress Mobile Blog](http://make.wordpress.org/mobile)
+- [WordPress Mobile Handbook](http://make.wordpress.org/mobile/handbook/)
 
 ## License
 
 WordPress for iOS is an Open Source project covered by the [GNU General Public License version 2](LICENSE).
-
-## Resources
-
-### Developer blog & Handbook
-
-Blog: http://make.wordpress.org/mobile
-
-Handbook: http://make.wordpress.org/mobile/handbook/
-
-### To report an issue
-
-https://github.com/wordpress-mobile/WordPress-iOS/issues
-
-### Source Code
-
-GitHub: https://github.com/wordpress-mobile/WordPress-iOS/
-
-### How to Contribute
-
-http://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/
-
-### How to help with translations
-
-https://translate.wordpress.org/projects/apps/ios

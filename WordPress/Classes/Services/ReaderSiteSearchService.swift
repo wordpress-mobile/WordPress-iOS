@@ -18,7 +18,7 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
             return api
         }
 
-        return WordPressComRestApi(oAuthToken: nil, userAgent: WPUserAgent.wordPress())
+        return WordPressComRestApi.defaultApi(oAuthToken: nil, userAgent: WPUserAgent.wordPress())
     }
 
     /// Performs a search for sites / feeds matching the specified query.

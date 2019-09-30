@@ -380,7 +380,7 @@ private extension ActivityStore {
             return nil
         }
 
-        let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
+        let api = WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
 
         return ActivityServiceRemote(wordPressComRestApi: api)
     }
@@ -389,7 +389,7 @@ private extension ActivityStore {
         guard let token = CredentialsService().getOAuthToken(site: site) else {
             return nil
         }
-        let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
+        let api = WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
 
         return ActivityServiceRemote_ApiVersion1_0(wordPressComRestApi: api)
     }

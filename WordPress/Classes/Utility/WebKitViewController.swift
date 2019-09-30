@@ -128,10 +128,9 @@ class WebKitViewController: UIViewController {
             self.dismiss(animated: false)
         }
 
-        guard let authenticator = authenticator,
-            #available(iOS 11, *) else {
-                load(request: URLRequest(url: url))
-                return
+        guard let authenticator = authenticator else {
+            load(request: URLRequest(url: url))
+            return
         }
 
         DispatchQueue.main.async { [weak self] in
@@ -195,8 +194,12 @@ class WebKitViewController: UIViewController {
 
     private func setupNavBarTitleView() {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
-        titleView.titleLabel.textColor = WPStyleGuide.darkGrey()
-        titleView.subtitleLabel.textColor = WPStyleGuide.grey()
+        if #available(iOS 13.0, *) {
+            titleView.titleLabel.textColor = UIColor(light: .white, dark: .neutral(.shade70))
+        } else {
+            titleView.titleLabel.textColor = .neutral(.shade70)
+        }
+        titleView.subtitleLabel.textColor = .neutral(.shade30)
 
         if let title = customTitle {
             self.title = title
@@ -210,7 +213,7 @@ class WebKitViewController: UIViewController {
             return
         }
         navigationBar.barStyle = .default
-        navigationBar.titleTextAttributes = [.foregroundColor: WPStyleGuide.darkGrey()]
+        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.neutral(.shade70)]
         navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
         navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
 
@@ -255,24 +258,32 @@ class WebKitViewController: UIViewController {
         guard let toolBar = navigationController?.toolbar else {
             return
         }
-        toolBar.barTintColor = UIColor.white
+        toolBar.barTintColor = UIColor(light: .white, dark: .appBar)
         fixBarButtonsColorForBoldText(on: toolBar)
     }
 
     private func styleToolBarButtons() {
-        navigationController?.toolbar.items?.forEach(styleBarButton)
+        navigationController?.toolbar.items?.forEach(styleToolBarButton)
     }
 
     // MARK: Helpers
 
     private func fixBarButtonsColorForBoldText(on bar: UIView) {
         if UIAccessibility.isBoldTextEnabled {
-            bar.tintColor = WPStyleGuide.greyLighten10()
+            bar.tintColor = .listIcon
         }
     }
 
     private func styleBarButton(_ button: UIBarButtonItem) {
-        button.tintColor = WPStyleGuide.greyLighten10()
+        if #available(iOS 13.0, *) {
+            button.tintColor = UIColor(light: .white, dark: .neutral(.shade70))
+        } else {
+            button.tintColor = .listIcon
+        }
+    }
+
+    private func styleToolBarButton(_ button: UIBarButtonItem) {
+        button.tintColor = .listIcon
     }
 
     // MARK: Reachability Helpers

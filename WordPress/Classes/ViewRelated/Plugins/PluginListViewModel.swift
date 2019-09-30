@@ -188,7 +188,7 @@ class PluginListViewModel: Observable {
             return NoResultsViewController.Model(title: NoResultsText.noResultsTitle)
 
         case .error:
-            let appDelegate = WordPressAppDelegate.sharedInstance()
+            let appDelegate = WordPressAppDelegate.shared
             if (appDelegate?.connectionAvailable)! {
                 return NoResultsViewController.Model(title: NoResultsText.errorTitle,
                                                      subtitle: NoResultsText.errorSubtitle,

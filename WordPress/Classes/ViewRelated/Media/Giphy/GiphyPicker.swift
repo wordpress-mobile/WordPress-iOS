@@ -32,6 +32,7 @@ final class GiphyPicker: NSObject {
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.preferredStatusBarStyle = .lightContent
         return options
     }()
 

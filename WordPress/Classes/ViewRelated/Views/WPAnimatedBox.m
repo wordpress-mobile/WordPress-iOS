@@ -113,7 +113,7 @@ static CGFloat const WPAnimatedBoxYPosPage3 = WPAnimatedBoxAnimationTolerance + 
         [UIView animateWithDuration:0.8 delay:2.0 usingSpringWithDamping:0.8 initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             [weakSelf moveAnimationToFirstFrame];
         } completion:^(BOOL finished) {
-            if (weakSelf.isAnimating) {
+            if (weakSelf.isAnimating && weakSelf.window != nil) {
                 [weakSelf playAnimation];
             }
         }];

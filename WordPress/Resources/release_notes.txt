@@ -1,11 +1,3 @@
-Love apps like iA Writer, 1Writer, Bear, and Ulysses? Move from app to WordPress draft fast — the app now imports images from TextBundle and TextPack files and supports importing Markdown files, too.
-
-Notifications for internet connectivity problems no longer eat up your entire device screen. Now there’s a small popup instead, so you can keep using offline abilities (like deleting posts, which now happens more reliably if you’re offline).
-
-Some text in Activity Log would sometimes show up in a wrong language. Not useful! And now fixed.
-
-Also not useful: crashes. Crashes that sometimes occurred during site creation or when loading stats are resolved.
-
-Jetpack Remote Install is supported, so you can install and activate Jetpack on a self-hosted site right from the app.
-
-Stats are more accessible — if you use voiceover in the app, it’ll read your stats to you.
+* After a recent round of improvements, the Block Editor is faster and performs more smoothly on the app.
+* Some of you were having trouble with Dark Mode on iPads; we sorted it out (adios, uninvited glare!).
+* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.

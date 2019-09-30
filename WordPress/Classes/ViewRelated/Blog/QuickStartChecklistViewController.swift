@@ -51,7 +51,7 @@ class QuickStartChecklistViewController: UITableViewController {
     private lazy var successScreen: NoResultsViewController = {
         let successScreen = NoResultsViewController.controller()
         successScreen.view.frame = tableView.bounds
-        successScreen.view.backgroundColor = .white
+        successScreen.view.backgroundColor = .listBackground
         successScreen.configure(title: tasksCompleteScreen.title,
                                 subtitle: tasksCompleteScreen.subtitle,
                                 image: tasksCompleteScreen.imageName)
@@ -63,6 +63,10 @@ class QuickStartChecklistViewController: UITableViewController {
         cancelButton.leftSpacing = Constants.cancelButtonPadding.left
         cancelButton.rightSpacing = Constants.cancelButtonPadding.right
         cancelButton.setContentHuggingPriority(.required, for: .horizontal)
+
+        let accessibleFormat = NSLocalizedString("Dismiss %@ Quick Start step", comment: "Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step.")
+        cancelButton.accessibilityLabel = String(format: accessibleFormat, self.configuration.title)
+
         return UIBarButtonItem(customView: cancelButton)
     }()
 
@@ -88,13 +92,18 @@ class QuickStartChecklistViewController: UITableViewController {
         dataManager = QuickStartChecklistManager(blog: blog,
                                                  tours: configuration.tours,
                                                  didSelectTour: { [weak self] tour in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
-                self?.dismiss(animated: true) {
-                    if let blog = self?.blog,
-                        let tourGuide = QuickStartTourGuide.find() {
-                        tourGuide.start(tour: tour, for: blog)
-                    }
+
+                guard let self = self else {
+                    return
+                }
+
+                let tourGuide = QuickStartTourGuide.find()
+                tourGuide?.prepare(tour: tour, for: self.blog)
+
+                self.dismiss(animated: true) {
+                    tourGuide?.begin()
                 }
             }
         }, didTapHeader: { [unowned self] expand in
@@ -142,6 +151,7 @@ private extension QuickStartChecklistViewController {
 
         tableView.backgroundView = successScreen.view
         self.tableView = tableView
+        WPStyleGuide.configureTableViewColors(view: self.tableView)
     }
 
     func startObservingForQuickStart() {

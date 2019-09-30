@@ -13,22 +13,19 @@ extension UITableViewCell {
                  toStackView rowsStackView: UIStackView,
                  forType statType: StatType,
                  limitRowsDisplayed: Bool = true,
-                 forDetailsList: Bool = false,
                  rowDelegate: StatsTotalRowDelegate? = nil,
                  viewMoreDelegate: ViewMoreRowDelegate? = nil) {
 
         let numberOfDataRows = dataRows.count
 
         guard numberOfDataRows > 0 else {
-            if !forDetailsList {
-                let row = StatsNoDataRow.loadFromNib()
-                row.configure(forType: statType)
-                rowsStackView.addArrangedSubview(row)
-            }
+            let row = StatsNoDataRow.loadFromNib()
+            row.configure(forType: statType)
+            rowsStackView.addArrangedSubview(row)
             return
         }
 
-        let maxRows = maxRowsToDisplay()
+        let maxRows = StatsDataHelper.maxRowsToDisplay
 
         let numberOfRowsToAdd: Int = {
             if limitRowsDisplayed {
@@ -70,10 +67,6 @@ extension UITableViewCell {
         let row = ViewMoreRow.loadFromNib()
         row.configure(statSection: statSection, delegate: delegate)
         rowsStackView.addArrangedSubview(row)
-    }
-
-    func maxRowsToDisplay() -> Int {
-        return 6
     }
 
 }

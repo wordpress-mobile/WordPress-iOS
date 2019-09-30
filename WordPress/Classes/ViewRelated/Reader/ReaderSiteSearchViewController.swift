@@ -67,7 +67,7 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: self.view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: self.view, tableView: tableView)
 
         tableView.register(WPBlogTableViewCell.self, forCellReuseIdentifier: WPBlogTableViewCell.reuseIdentifier())
 
@@ -177,9 +177,9 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
 
         if let blavatarURL = feed.blavatarURL {
             cell.imageView?.downloadSiteIcon(at: blavatarURL.absoluteString,
-                                             placeholderImage: UIImage.siteIconPlaceholderImage)
+                                             placeholderImage: .siteIconPlaceholder)
         } else {
-            cell.imageView?.image = UIImage.siteIconPlaceholderImage
+            cell.imageView?.image = .siteIconPlaceholder
         }
     }
 
@@ -330,7 +330,7 @@ class ReaderSiteSearchHeaderView: UIView {
         frame.size.height = collapsedHeaderFooterHeight
 
         divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = WPStyleGuide.postCardBorderColor()
+        divider.backgroundColor = WPStyleGuide.postCardBorderColor
         addSubview(divider)
 
         NSLayoutConstraint.activate([
@@ -368,7 +368,7 @@ class ReaderSiteSearchFooterView: UIView {
         frame.size.height = ReaderSiteSearchFooterView.expandedHeight
 
         divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = WPStyleGuide.postCardBorderColor()
+        divider.backgroundColor = WPStyleGuide.postCardBorderColor
         addSubview(divider)
 
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false

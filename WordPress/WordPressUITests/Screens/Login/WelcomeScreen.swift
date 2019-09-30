@@ -3,29 +3,30 @@ import XCTest
 
 private struct ElementStringIDs {
     static let loginButton = "Prologue Log In Button"
-    static let createNewSiteButton = "nextButton"
+    static let signupButton = "Prologue Signup Button"
 }
 
 class WelcomeScreen: BaseScreen {
     let logInButton: XCUIElement
-    let createNewSiteButton: XCUIElement
+    let signupButton: XCUIElement
 
     init() {
         logInButton = XCUIApplication().buttons[ElementStringIDs.loginButton]
-        createNewSiteButton = XCUIApplication().buttons[ElementStringIDs.createNewSiteButton]
+        signupButton = XCUIApplication().buttons[ElementStringIDs.signupButton]
 
         super.init(element: logInButton)
     }
 
-    func login() -> LoginEmailScreen {
-        logInButton.tap()
+    func selectSignup() -> WelcomeScreenSignupComponent {
+        signupButton.tap()
 
-        return LoginEmailScreen()
+        return WelcomeScreenSignupComponent()
     }
 
-    func createNewSite() -> SignupScreen {
-        createNewSiteButton.tap()
-        return SignupScreen()
+    func selectLogin() -> WelcomeScreenLoginComponent {
+        logInButton.tap()
+
+        return WelcomeScreenLoginComponent()
     }
 
     static func isLoaded() -> Bool {

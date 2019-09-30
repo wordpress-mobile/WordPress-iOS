@@ -1,5 +1,5 @@
 #import "PageListTableViewCell.h"
-#import "WPStyleGuide+Posts.h"
+#import "WPStyleGuide+Pages.h"
 #import "WordPress-Swift.h"
 
 @import Gridicons;
@@ -95,7 +95,6 @@ static CGFloat const FeaturedImageSize = 120.0;
     [self configureTitle];
     [self configureForStatus];
     [self configureBadges];
-    [self configureTimeStamp];
     [self configureFeaturedImage];
 }
 
@@ -110,14 +109,13 @@ static CGFloat const FeaturedImageSize = 120.0;
     self.titleLabel.font = [WPStyleGuide notoBoldFontForTextStyle:UIFontTextStyleHeadline];
     self.titleLabel.adjustsFontForContentSizeCategory = YES;
     
-    self.titleLabel.textColor = [WPStyleGuide darkGrey];
-    self.timestampLabel.textColor = [WPStyleGuide grey];
-    self.badgesLabel.textColor = [WPStyleGuide darkYellow];
-    self.menuButton.tintColor = [WPStyleGuide greyLighten10];
+    self.titleLabel.textColor = [UIColor murielText];
+    self.badgesLabel.textColor = [UIColor murielTextSubtle];
+    self.menuButton.tintColor = [UIColor murielTextSubtle];
     [self.menuButton setImage:[Gridicon iconOfType:GridiconTypeEllipsis] forState:UIControlStateNormal];
 
-    self.backgroundColor = [WPStyleGuide greyLighten30];
-    self.contentView.backgroundColor = [WPStyleGuide greyLighten30];
+    self.backgroundColor = [UIColor murielNeutral5];
+    self.contentView.backgroundColor = [UIColor murielNeutral5];
     
     self.featuredImageView.layer.cornerRadius = PageListTableViewCellTagLabelRadius;
 }
@@ -131,8 +129,8 @@ static CGFloat const FeaturedImageSize = 120.0;
 - (void)configureForStatus
 {
     if (self.post.isFailed && !self.post.hasLocalChanges) {
-        self.titleLabel.textColor = [WPStyleGuide errorRed];
-        self.menuButton.tintColor = [WPStyleGuide errorRed];
+        self.titleLabel.textColor = [UIColor murielError];
+        self.menuButton.tintColor = [UIColor murielError];
     }
 }
 
@@ -145,27 +143,22 @@ static CGFloat const FeaturedImageSize = 120.0;
 {
     Page *page = (Page *)self.post;
 
-    NSString *badgesString = @"";
+    NSMutableArray<NSString *> *badges = [NSMutableArray new];
+
+    NSString *timestamp = [self.post isScheduled] ? [self.dateFormatter stringFromDate:self.post.dateCreated] : [self.post.dateCreated mediumString];
+    [badges addObject:timestamp];
     
     if (page.hasPrivateState) {
-        badgesString = NSLocalizedString(@"Private", @"Title of the Private Badge");
+        [badges addObject:NSLocalizedString(@"Private", @"Title of the Private Badge")];
     } else if (page.hasPendingReviewState) {
-        badgesString = NSLocalizedString(@"Pending review", @"Title of the Pending Review Badge");
+        [badges addObject:NSLocalizedString(@"Pending review", @"Title of the Pending Review Badge")];
     }
     
     if (page.hasLocalChanges) {
-        if (badgesString.length > 0) {
-            badgesString = [badgesString stringByAppendingString:@" · "];
-        }
-        badgesString = [badgesString stringByAppendingString:NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge")];
+        [badges addObject:NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge")];
     }
     
-    self.badgesLabel.text = badgesString;
-}
-
-- (void)configureTimeStamp
-{
-    self.timestampLabel.text = [self.post isScheduled] ? [self.dateFormatter stringFromDate:self.post.dateCreated] : [self.post.dateCreated mediumString];
+    self.badgesLabel.text = [badges componentsJoinedByString:@" · "];
 }
 
 - (void)configureFeaturedImage

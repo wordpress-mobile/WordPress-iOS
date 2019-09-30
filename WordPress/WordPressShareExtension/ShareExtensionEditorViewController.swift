@@ -56,14 +56,15 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = ShareColors.aztecBackground
+        textView.textColor = .text
         textView.tintColor = ShareColors.aztecCursorColor
+        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor, dark: .neutral(.shade5))
+        textView.blockquoteBorderColor = .listIcon
         textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
 
-        if #available(iOS 11, *) {
-            textView.smartDashesType = .no
-            textView.smartQuotesType = .no
-        }
+        textView.smartDashesType = .no
+        textView.smartQuotesType = .no
 
         return textView
     }()
@@ -88,7 +89,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         let titleParagraphStyle = NSMutableParagraphStyle()
         titleParagraphStyle.alignment = .natural
 
-        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.darkText,
+        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.text,
                                                         .font: ShareFonts.title,
                                                         .paragraphStyle: titleParagraphStyle]
 
@@ -98,7 +99,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.delegate = self
         textView.font = ShareFonts.title
         textView.returnKeyType = .next
-        textView.textColor = UIColor.darkText
+        textView.textColor = .text
         textView.typingAttributes = attributes
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
@@ -358,7 +359,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     func configureView() {
         edgesForExtendedLayout = UIRectEdge()
-        view.backgroundColor = .white
+        view.backgroundColor = .basicBackground
     }
 
     func configureSubviews() {
@@ -462,6 +463,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
 
+        toolbar.backgroundColor = .filterBarBackground
         toolbar.tintColor = ShareColors.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = ShareColors.aztecFormatBarActiveColor
         toolbar.selectedTintColor = ShareColors.aztecFormatBarActiveColor
@@ -777,7 +779,7 @@ extension ShareExtensionEditorViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: WPStyleGuide.darkGrey()
+                .foregroundColor: UIColor.neutral(.shade70)
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -1278,29 +1280,29 @@ fileprivate extension ShareExtensionEditorViewController {
     }
 
     struct ShareColors {
-        static let title                                = WPStyleGuide.grey()
-        static let separator                            = WPStyleGuide.greyLighten30()
-        static let placeholder                          = WPStyleGuide.grey()
-        static let mediaProgressOverlay                 = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
-        static let mediaOverlayBorderColor              = WPStyleGuide.wordPressBlue()
-        static let aztecBackground                      = UIColor.clear
-        static let aztecLinkColor                       = WPStyleGuide.mediumBlue()
-        static let aztecFormatBarDisabledColor          = WPStyleGuide.greyLighten20()
-        static let aztecFormatBarDividerColor           = WPStyleGuide.greyLighten30()
-        static let aztecCursorColor                     = WPStyleGuide.wordPressBlue()
-        static let aztecFormatBarBackgroundColor        = UIColor.white
-        static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
-        static let aztecFormatBarActiveColor: UIColor   = UIColor(hexString: "11181D")
+        static let title                          = UIColor.text
+        static let separator                      = UIColor.divider
+        static let placeholder                    = UIColor.textPlaceholder
+        static let mediaProgressOverlay           = UIColor.neutral(.shade70).withAlphaComponent(CGFloat(0.6))
+        static let mediaOverlayBorderColor        = UIColor.primary
+        static let aztecBackground                = UIColor.basicBackground
+        static let aztecLinkColor                 = UIColor.primary
+        static let aztecFormatBarDisabledColor    = UIColor.neutral(.shade10)
+        static let aztecFormatBarDividerColor     = UIColor.divider
+        static let aztecCursorColor               = UIColor.primary
+        static let aztecFormatBarBackgroundColor  = UIColor.basicBackground
+        static let aztecFormatBarInactiveColor    = UIColor.toolbarInactive
+        static let aztecFormatBarActiveColor      = UIColor.primary
 
         static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
             get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? WPStyleGuide.lightGrey() : WPStyleGuide.greyLighten30()
+                return (UIDevice.current.userInterfaceIdiom == .pad) ? .listBackground : .neutral(.shade5)
             }
         }
 
         static var aztecFormatPickerBackgroundColor: UIColor {
             get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? .white : WPStyleGuide.lightGrey()
+                return (UIDevice.current.userInterfaceIdiom == .pad) ? .white : .listBackground
             }
         }
     }

@@ -5,4 +5,9 @@ class EpilogueSectionHeaderFooter: UITableViewHeaderFooterView {
 
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet var titleLabel: UILabel?
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        titleLabel?.textColor = .textSubtle
+    }
 }

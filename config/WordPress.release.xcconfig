@@ -1,1 +1,2 @@
 #include "Version.public.xcconfig"
+#include "SDKVersions.xcconfig"

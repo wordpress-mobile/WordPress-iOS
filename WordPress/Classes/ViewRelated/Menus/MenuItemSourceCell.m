@@ -2,6 +2,7 @@
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 #pragma mark - MenuItemSourceRadioButton
 
@@ -34,7 +35,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor murielListForeground];
 
         [self setupStackView];
         [self setupLabel];
@@ -81,8 +82,8 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.font = [WPStyleGuide tableviewTextFont];
-    label.textColor = [WPStyleGuide greyDarken30];
-    label.backgroundColor = [UIColor whiteColor];
+    label.textColor = [UIColor murielNeutral60];
+    label.backgroundColor = [UIColor clearColor];
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByTruncatingTail;
     _label = label;

@@ -18,6 +18,7 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     @IBOutlet weak var currentThemeContainer: UIView!
     @IBOutlet weak var currentThemeName: UILabel!
     @IBOutlet weak var customizeButton: UIButton!
+    @IBOutlet weak var customizeIcon: UIImageView!
     @IBOutlet weak var detailsButton: UIButton!
     @IBOutlet weak var detailsIcon: UIImageView!
     @IBOutlet weak var supportButton: UIButton!
@@ -85,6 +86,7 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
 
     fileprivate func applyStyles() {
         currentThemeBar.backgroundColor = Styles.currentThemeBackgroundColor
+        currentThemeContainer.backgroundColor = Styles.currentThemeBackgroundColor
         currentThemeDivider.backgroundColor = Styles.currentThemeDividerColor
 
         currentThemeLabel.font = Styles.currentThemeLabelFont
@@ -95,6 +97,8 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
 
         let currentThemeButtons = [customizeButton, detailsButton, supportButton]
         currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0!) }
+
+        [customizeIcon, detailsIcon, supportIcon].forEach { $0?.tintColor = .listIcon }
 
         spotlightCustomizeButtonIfTourIsActive()
 

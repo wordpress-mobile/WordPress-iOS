@@ -42,10 +42,12 @@ class AppSettingsViewController: UITableViewController {
         handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         addAccountSettingsChangedObserver()
+
+        tableView.accessibilityIdentifier = "appSettingsTable"
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -76,7 +78,6 @@ class AppSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
         let tableSections = [
-            editorTableSection(),
             mediaTableSection(),
             privacyTableSection(),
             otherTableSection()
@@ -196,10 +197,10 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func toggleGutenberg() -> (Bool) -> Void {
-        return { [weak self] _ in
-            GutenbergSettings().toggleGutenberg()
-            self?.reloadViewModel()
+    func pushAppIconSwitcher() -> ImmuTableAction {
+        return { [weak self] row in
+            let controller = AppIconViewController()
+            self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
@@ -307,28 +308,7 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
 }
 
 // MARK: - Table Sections Private Extension
-
 private extension AppSettingsViewController {
-
-    func editorTableSection() -> ImmuTableSection? {
-        guard Feature.enabled(.gutenberg) else {
-            return nil
-        }
-
-        let gutenbergSettings = GutenbergSettings()
-        let enabled = gutenbergSettings.isGutenbergEnabled()
-        let gutenbergEditor = SwitchRow(
-            title: NSLocalizedString("Use Block Editor", comment: "Option to enable the block editor for new posts"),
-            value: enabled,
-            onChange: toggleGutenberg()
-        )
-
-        let headerText = NSLocalizedString("Editor", comment: "Title for the editor settings section")
-        let footerText = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
-
-        return ImmuTableSection(headerText: headerText, rows: [gutenbergEditor], footerText: footerText)
-    }
-
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
 
@@ -411,6 +391,11 @@ private extension AppSettingsViewController {
     func otherTableSection() -> ImmuTableSection {
         let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
 
+        let iconRow = NavigationItemRow(
+            title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
+            action: pushAppIconSwitcher()
+        )
+
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
             action: openApplicationSettings()
@@ -421,12 +406,15 @@ private extension AppSettingsViewController {
             action: pushAbout()
         )
 
+        var rows = [settingsRow, aboutRow]
+        if #available(iOS 10.3, *),
+            UIApplication.shared.supportsAlternateIcons {
+                rows.insert(iconRow, at: 0)
+        }
+
         return ImmuTableSection(
             headerText: otherHeader,
-            rows: [
-                settingsRow,
-                aboutRow
-            ],
+            rows: rows,
             footerText: nil)
     }
 

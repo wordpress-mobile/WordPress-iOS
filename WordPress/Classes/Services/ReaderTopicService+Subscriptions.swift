@@ -19,7 +19,7 @@ extension ReaderTopicService {
             return api
         }
 
-        return WordPressComRestApi(oAuthToken: nil, userAgent: WPUserAgent.wordPress())
+        return WordPressComRestApi.defaultApi(oAuthToken: nil, userAgent: WPUserAgent.wordPress())
     }
 
     private func fetchSiteTopic(with siteId: Int, _ failure: @escaping (ReaderTopicServiceError?) -> Void) -> ReaderSiteTopic? {

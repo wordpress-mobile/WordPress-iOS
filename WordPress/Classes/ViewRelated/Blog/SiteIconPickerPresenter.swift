@@ -36,6 +36,7 @@ class SiteIconPickerPresenter: NSObject {
         options.allowMultipleSelection = false
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.preferredStatusBarStyle = .lightContent
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)
 
@@ -115,6 +116,7 @@ class SiteIconPickerPresenter: NSObject {
                         }
                         var uploadProgress: Progress?
                         mediaService.uploadMedia(media,
+                                                 automatedRetry: false,
                                                  progress: &uploadProgress,
                                                  success: {
                             WPAnalytics.track(.siteSettingsSiteIconUploaded)

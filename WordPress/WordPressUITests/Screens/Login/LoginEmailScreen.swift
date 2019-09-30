@@ -3,7 +3,6 @@ import XCTest
 
 private struct ElementStringIDs {
     static let navBar = "WordPress.LoginEmailView"
-    static let navBackButton = "Back"
     static let emailTextField = "Login Email Address"
     static let nextButton = "Login Email Next Button"
     static let siteAddressButton = "Self Hosted Login Button"
@@ -11,7 +10,6 @@ private struct ElementStringIDs {
 
 class LoginEmailScreen: BaseScreen {
     let navBar: XCUIElement
-    let navBackButton: XCUIElement
     let emailTextField: XCUIElement
     let nextButton: XCUIElement
     let siteAddressButton: XCUIElement
@@ -19,7 +17,6 @@ class LoginEmailScreen: BaseScreen {
     init() {
         let app = XCUIApplication()
         navBar = app.navigationBars[ElementStringIDs.navBar]
-        navBackButton = navBar.buttons[ElementStringIDs.navBackButton]
         emailTextField = app.textFields[ElementStringIDs.emailTextField]
         nextButton = app.buttons[ElementStringIDs.nextButton]
         siteAddressButton = app.buttons[ElementStringIDs.siteAddressButton]

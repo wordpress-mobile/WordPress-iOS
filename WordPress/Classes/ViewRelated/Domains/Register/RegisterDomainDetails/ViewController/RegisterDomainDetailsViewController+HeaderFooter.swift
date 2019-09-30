@@ -11,9 +11,7 @@ extension RegisterDomainDetailsViewController {
 
         var safeAreaInset: CGFloat = 0
 
-        if #available(iOS 11.0, *) {
-            safeAreaInset = tableView.safeAreaInsets.bottom
-        }
+        safeAreaInset = tableView.safeAreaInsets.bottom
 
         //Creating a UIView with a custom frame because table tableFooterView doesn't support autolayout
         let footer = UIView(frame: CGRect(x: 0,
@@ -59,10 +57,11 @@ extension RegisterDomainDetailsViewController {
                 return nil
         }
         view.titleLabel?.attributedText = termsAndConditionsFooterTitle
+        view.titleLabel?.textColor = .textSubtle
         view.titleLabel?.numberOfLines = 0
         view.titleLabel?.lineBreakMode = .byWordWrapping
         view.topConstraint.constant = Constant.privacyProtectionSectionTitleTopDistance
-        view.contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        view.contentView.backgroundColor = .listBackground
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTermsAndConditionsTap(_:)))
         view.addGestureRecognizer(tap)
         return view
@@ -79,8 +78,8 @@ extension RegisterDomainDetailsViewController {
     }
 
     var termsAndConditionsFooterTitle: NSAttributedString {
-        let bodyColor = WPStyleGuide.greyDarken20()
-        let linkColor = WPStyleGuide.darkGrey()
+        let bodyColor = UIColor.textSubtle
+        let linkColor = UIColor.textSubtle
         let font = UIFont.preferredFont(forTextStyle: .footnote)
 
         let attributes: StyledHTMLAttributes = [

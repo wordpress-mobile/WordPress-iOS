@@ -38,10 +38,7 @@ final class MediaLibraryMediaPickingCoordinator {
 
         menuAlert.addAction(giphyAction(origin: origin, blog: blog))
 
-        if #available(iOS 11.0, *) {
-            menuAlert.addAction(otherAppsAction(origin: origin, blog: blog))
-        }
-
+        menuAlert.addAction(otherAppsAction(origin: origin, blog: blog))
         menuAlert.addAction(cancelAction())
 
         menuAlert.popoverPresentationController?.sourceView = fromView
@@ -108,9 +105,7 @@ final class MediaLibraryMediaPickingCoordinator {
         let docTypes = blog.allowedTypeIdentifiers
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = origin
-        if #available(iOS 11.0, *) {
-            docPicker.allowsMultipleSelection = true
-        }
+        docPicker.allowsMultipleSelection = true
         WPStyleGuide.configureDocumentPickerNavBarAppearance()
         origin.present(docPicker, animated: true)
     }

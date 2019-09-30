@@ -47,21 +47,13 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
 
         let newSpotlightView = QuickStartSpotlightView()
         newSpotlightView.translatesAutoresizingMaskIntoConstraints = false
-        if #available(iOS 11, *) {
-            readerNav.navigationBar.addSubview(newSpotlightView)
-            readerNav.navigationBar.addConstraints([
-                    newSpotlightView.leadingAnchor.constraint(equalTo: readerNav.navigationBar.leadingAnchor, constant: 30.0),
-                    newSpotlightView.topAnchor.constraint(equalTo: readerNav.navigationBar.topAnchor, constant: 15.0),
-                ])
-        } else {
-            if let parentView = readerNav.navigationBar.window {
-                parentView.addSubview(newSpotlightView)
-                parentView.addConstraints([
-                    newSpotlightView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 30.0),
-                    newSpotlightView.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 15.0),
-                    ])
-            }
-        }
+
+        readerNav.navigationBar.addSubview(newSpotlightView)
+        readerNav.navigationBar.addConstraints([
+                newSpotlightView.leadingAnchor.constraint(equalTo: readerNav.navigationBar.leadingAnchor, constant: 30.0),
+                newSpotlightView.topAnchor.constraint(equalTo: readerNav.navigationBar.topAnchor, constant: 15.0),
+            ])
+
         spotlightView = newSpotlightView
     }
 

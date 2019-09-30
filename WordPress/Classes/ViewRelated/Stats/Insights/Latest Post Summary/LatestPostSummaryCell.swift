@@ -1,5 +1,4 @@
 import UIKit
-import WordPressComStatsiOS
 import Gridicons
 
 class LatestPostSummaryCell: UITableViewCell, NibLoadable {
@@ -27,22 +26,14 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var lastPostInsight: StatsLastPostInsight?
-    private var postTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
+    private var lastPostDetails: StatsPostDetails?
+    private var postTitle = StatSection.noPostTitle
 
     private var actionType: ActionType? {
         didSet {
             configureViewForAction()
         }
     }
-
-    // Introduced via #11061, to be replaced with real data via #11067
-    private lazy var latestPostSummaryStub: (data: BarChartDataConvertible, styling: BarChartStyling) = {
-        let stubbedData = LatestPostSummaryDataStub()
-        let firstStubbedDateInterval = stubbedData.summaryData.first?.date.timeIntervalSince1970 ?? 0
-        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
-
-        return (stubbedData, styling)
-    }()
 
     // MARK: - View
 
@@ -56,7 +47,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         removeRowsFromStackView(rowsStackView)
     }
 
-    func configure(withData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
+    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, chartData: StatsPostDetails?, andDelegate delegate: SiteStatsInsightsDelegate?) {
 
         siteStatsInsightsDelegate = delegate
 
@@ -74,6 +65,8 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
             actionType = .sharePost
             return
         }
+
+        lastPostDetails = chartData
 
         // If there is a post and post data, show View More option.
         actionType = .viewMore
@@ -213,6 +206,7 @@ private extension LatestPostSummaryCell {
             return
         }
 
+        WPAppAnalytics.track(.statsItemTappedLatestPostSummaryPost)
         siteStatsInsightsDelegate?.displayWebViewWithURL?(postURL)
     }
 
@@ -222,34 +216,45 @@ private extension LatestPostSummaryCell {
             return
         }
 
+        let event: WPAnalyticsStat
         switch actionType {
         case .viewMore:
             guard let postID = lastPostInsight?.postID else {
                 DDLogInfo("No postID available to show Post Stats.")
                 return
             }
+            event = .statsItemTappedLatestPostSummaryViewPostDetails
             siteStatsInsightsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: lastPostInsight?.url)
         case .sharePost:
             guard let postID = lastPostInsight?.postID else {
                 DDLogInfo("No postID available to share post.")
                 return
             }
+            event = .statsItemTappedLatestPostSummarySharePost
             siteStatsInsightsDelegate?.showShareForPost?(postID: postID as NSNumber, fromView: actionStackView)
         case .createPost:
+            event = .statsItemTappedLatestPostSummaryNewPost
             siteStatsInsightsDelegate?.showCreatePost?()
         }
+        WPAppAnalytics.track(event)
     }
 
     // MARK: - Chart support
 
-    func resetChartView() {
+    func resetChartContainerView() {
         chartStackView.removeAllSubviews()
     }
 
     func configureChartView() {
-        resetChartView()
+        guard let lastTwoWeeks = lastPostDetails?.lastTwoWeeks, !lastTwoWeeks.isEmpty else {
+            return
+        }
 
-        let chartView = StatsBarChartView(data: latestPostSummaryStub.data, styling: latestPostSummaryStub.styling)
+        let chart = PostChart(type: .latest, postViews: lastTwoWeeks)
+        let configuration = StatsBarChartConfiguration(data: chart, styling: chart.barChartStyling)
+        let chartView = StatsBarChartView(configuration: configuration)
+
+        resetChartContainerView()
         chartStackView.addArrangedSubview(chartView)
 
         NSLayoutConstraint.activate([

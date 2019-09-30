@@ -35,7 +35,7 @@ class PostTagPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         textView.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
@@ -51,12 +51,14 @@ class PostTagPickerViewController: UIViewController {
         textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = WPStyleGuide.darkGrey()
+        textView.textColor = .neutral(.shade70)
         textView.isScrollEnabled = false
         // Padding already provided by readable margins
         // Don't add extra padding so text aligns with suggestions
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
+        textView.accessibilityLabel = NSLocalizedString("Add new tags, separated by commas.", comment: "Voiceover accessibility label for the tags field in blog post settings.")
+        textView.accessibilityIdentifier = "add-tags"
 
         view.addSubview(tableView)
         textViewContainer.addSubview(textView)
@@ -83,7 +85,7 @@ class PostTagPickerViewController: UIViewController {
             ])
 
         textViewContainer.backgroundColor = UIColor.white
-        textViewContainer.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
+        textViewContainer.layer.borderColor = UIColor.neutral(.shade10).cgColor
         textViewContainer.layer.borderWidth = 0.5
         textViewContainer.layer.masksToBounds = false
 
@@ -105,6 +107,7 @@ class PostTagPickerViewController: UIViewController {
         if originalTags != tags {
             onValueChanged?(tags.joined(separator: ", "))
         }
+        WPError.dismissNetworkingNotice()
     }
 
     fileprivate func reloadTableData() {
@@ -141,6 +144,7 @@ private extension PostTagPickerViewController {
     func tagsFailedLoading(error: Error) {
         DDLogError("Error loading tags for \(String(describing: blog.url)): \(error)")
         dataSource = FailureDataSource()
+        WPError.showNetworkingNotice(title: NSLocalizedString("Couldn't load tags.", comment: "Error message when tag loading failed"), error: error as NSError)
     }
 }
 
@@ -330,17 +334,16 @@ private class FailureDataSource: NSObject, PostTagPickerDataSource {
     typealias Cell = UITableViewCell
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 0
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FailureDataSource.cellIdentifier, for: indexPath)
         WPStyleGuide.configureTableViewSuggestionCell(cell)
-        cell.textLabel?.text = NSLocalizedString("Couldn't load tags. Tap to retry.", comment: "Error message when tag loading failed")
         return cell
     }
 }
@@ -403,7 +406,7 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
 extension WPStyleGuide {
     @objc static func configureTableViewSuggestionCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewCell(cell)
-        cell.textLabel?.textColor = WPStyleGuide.greyDarken30()
-        cell.backgroundColor = WPStyleGuide.greyLighten30()
+        cell.textLabel?.textColor = .neutral(.shade60)
+        cell.backgroundColor = .neutral(.shade5)
     }
 }

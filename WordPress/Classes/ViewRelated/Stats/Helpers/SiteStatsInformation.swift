@@ -1,5 +1,4 @@
 import Foundation
-import WordPressComStatsiOS
 
 /// Singleton class to contain site related information for Stats.
 ///
@@ -14,22 +13,20 @@ import WordPressComStatsiOS
     @objc var siteTimeZone: TimeZone?
     @objc var oauth2Token: String?
 
-    static let cacheExpirationInterval = Double(300)
+    func updateTimeZone() {
+        let context = ContextManager.shared.mainContext
+        let blogService = BlogService.init(managedObjectContext: context)
 
-    // MARK: - Instance Methods
-
-    static func statsService() -> WPStatsService? {
-
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
-            let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone,
-            let oauth2Token = SiteStatsInformation.sharedInstance.oauth2Token else {
-                return nil
+        guard let siteID = siteID,
+        let blog = blogService.blog(byBlogId: siteID) else {
+            return
         }
 
-        return WPStatsService.init(siteId: siteID,
-                                   siteTimeZone: siteTimeZone,
-                                   oauth2Token: oauth2Token,
-                                   andCacheExpirationInterval: SiteStatsInformation.cacheExpirationInterval)
+        siteTimeZone = blogService.timeZone(for: blog)
+    }
+
+    func timeZoneMatchesDevice() -> Bool {
+        return siteTimeZone == TimeZone.current
     }
 
 }

@@ -1,4 +1,4 @@
-enum BuildConfiguration {
+enum BuildConfiguration: String {
     /// Development build, usually run from Xcode
     case localDeveloper
 

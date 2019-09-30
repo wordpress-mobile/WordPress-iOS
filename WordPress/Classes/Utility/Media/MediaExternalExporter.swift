@@ -81,11 +81,7 @@ class MediaExternalExporter: MediaExporter {
             }
         })
 
-        if #available(iOS 11.0, *) {
-            return task?.progress ?? Progress.discreteCompletedProgress()
-        } else {
-            return Progress.discreteCompletedProgress()
-        }
+        return task?.progress ?? Progress.discreteCompletedProgress()
     }
 
     /// Saves downloaded GIF data to the filesystem and exports it.

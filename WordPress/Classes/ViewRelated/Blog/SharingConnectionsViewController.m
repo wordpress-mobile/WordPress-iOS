@@ -116,11 +116,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     return title;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
-    [WPStyleGuide configureTableViewSectionHeader:view];
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if ([self hasConnectedAccounts] && section == 0) {
@@ -236,6 +231,15 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.helper connectPublicizeService];
 }
 
+- (void)handleContinueURLTapped:(NSURL*)url
+{
+    UIApplication *application = [UIApplication sharedApplication];
+
+    if ([application canOpenURL:url]) {
+        [application openURL:url options:@{} completionHandler:nil];
+    }
+}
+
 
 #pragma mark - SharingAuthorizationHelper Delegate Methods
 
@@ -256,6 +260,33 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     self.connecting = NO;
     [self.tableView reloadData];
     [self showDetailForConnection:keyringConnection];
+}
+
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper
+      requestToShowValidationError:(ValidationError *)validationError
+                fromViewController:(UIViewController *)viewController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:validationError.header
+                                                                     message:validationError.body
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:validationError.cancelTitle
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:nil];
+    __weak SharingConnectionsViewController *sharingConnectionsVC = self;
+    UIAlertAction* continueAction = [UIAlertAction actionWithTitle:validationError.continueTitle
+                                                              style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              if (validationError.continueURL) {
+                                                                  [sharingConnectionsVC handleContinueURLTapped: validationError.continueURL];
+                                                              }
+                                                          }];
+
+    [alertVC addAction:continueAction];
+    [alertVC addAction:cancelAction];
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 @end

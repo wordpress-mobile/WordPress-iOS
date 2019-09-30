@@ -1,5 +1,10 @@
 import Foundation
 
+/// Protocol for cart response, empty because there are no external details.
+protocol CartResponseProtocol {}
+
+extension CartResponse: CartResponseProtocol {}
+
 /// A proxy for being able to use dependency injection for RegisterDomainDetailsViewModel
 /// especially for unittest mocking purposes
 protocol RegisterDomainDetailsServiceProxyProtocol {
@@ -22,10 +27,10 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
     func createShoppingCart(siteID: Int,
                             domainSuggestion: DomainSuggestion,
                             privacyProtectionEnabled: Bool,
-                            success: @escaping (CartResponse) -> Void,
+                            success: @escaping (CartResponseProtocol) -> Void,
                             failure: @escaping (Error) -> Void)
 
-    func redeemCartUsingCredits(cart: CartResponse,
+    func redeemCartUsingCredits(cart: CartResponseProtocol,
                                 domainContactInformation: [String: String],
                                 success: @escaping () -> Void,
                                 failure: @escaping (Error) -> Void)
@@ -42,7 +47,7 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
 
     private lazy var restApi: WordPressComRestApi = {
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        return accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi(oAuthToken: "")
+        return accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
     }()
 
     private lazy var domainsServiceRemote = {
@@ -88,7 +93,7 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
     func createShoppingCart(siteID: Int,
                             domainSuggestion: DomainSuggestion,
                             privacyProtectionEnabled: Bool,
-                            success: @escaping (CartResponse) -> Void,
+                            success: @escaping (CartResponseProtocol) -> Void,
                             failure: @escaping (Error) -> Void) {
         transactionsServiceRemote.createShoppingCart(siteID: siteID,
                                                      domainSuggestion: domainSuggestion,
@@ -97,11 +102,14 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                                                      failure: failure)
     }
 
-    func redeemCartUsingCredits(cart: CartResponse,
+    func redeemCartUsingCredits(cart: CartResponseProtocol,
                                 domainContactInformation: [String: String],
                                 success: @escaping () -> Void,
                                 failure: @escaping (Error) -> Void) {
-        transactionsServiceRemote.redeemCartUsingCredits(cart: cart,
+        guard let cartResponse = cart as? CartResponse else {
+            fatalError()
+        }
+        transactionsServiceRemote.redeemCartUsingCredits(cart: cartResponse,
                                                          domainContactInformation: domainContactInformation,
                                                          success: success,
                                                          failure: failure)

@@ -23,28 +23,45 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
     // MARK: Properties
 
     private let initialDateInterval: TimeInterval
+    private let period: StatsPeriodUnit
+    private let periodHelper = StatsPeriodHelper()
 
-    private lazy var formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("MMM dd")
-
-        return formatter
-    }()
+    private lazy var formatter = DateFormatter()
 
     // MARK: HorizontalAxisFormatter
 
-    init(initialDateInterval: TimeInterval) {
+    init(initialDateInterval: TimeInterval, period: StatsPeriodUnit = .day) {
         self.initialDateInterval = initialDateInterval
+        self.period = period
     }
 
     // MARK: IAxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-        let adjustedValue = initialDateInterval + value
-        let date = Date(timeIntervalSince1970: adjustedValue)
-        let value = formatter.string(from: date)
+        updateFormatterTemplate()
 
-        return value
+        let adjustedValue = initialDateInterval + (value < 0 ? 0 : value)
+        let date = Date(timeIntervalSince1970: adjustedValue)
+
+        switch period {
+            case .week:
+                return formattedDate(forWeekContaining: date)
+            default:
+                return formatter.string(from: date)
+        }
+    }
+
+    private func updateFormatterTemplate() {
+        formatter.setLocalizedDateFormatFromTemplate(period.dateFormatTemplate)
+    }
+
+    private func formattedDate(forWeekContaining date: Date) -> String {
+        let week = periodHelper.weekIncludingDate(date)
+        guard let weekStart = week?.weekStart, let weekEnd = week?.weekEnd else {
+            return ""
+        }
+
+        return "\(formatter.string(from: weekStart)) – \(formatter.string(from: weekEnd))"
     }
 }
 
@@ -54,31 +71,31 @@ class VerticalAxisFormatter: IAxisValueFormatter {
 
     // MARK: Properties
 
-    private lazy var formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-
-        formatter.maximumFractionDigits = 0
-
-        return formatter
-    }()
+    private let largeValueFormatter = LargeValueFormatter()
 
     // MARK: IAxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-        let threshold = Double(1000)
-
-        let formattedValue: String
-        if value > threshold {
-            let numericValue = NSNumber(value: value/threshold)
-            let rawFormattedValue = formatter.string(from: numericValue) ?? "\(numericValue)"
-
-            // This is, admittedly NOT locale-sensitive formatting approach. It will be improved via #11143.
-            formattedValue = "\(rawFormattedValue)k"
-        } else {
-            let numericValue = NSNumber(value: value)
-            formattedValue = formatter.string(from: numericValue) ?? "\(value)"
+        if value <= 0.0 {
+            return "0"
         }
 
-        return formattedValue
+        return largeValueFormatter.stringForValue(value, axis: axis)
+    }
+
+    // Matches WPAndroid behavior to produce neater rounded values on
+    // the vertical axis.
+    static func roundUpAxisMaximum(_ input: Double) -> Double {
+        if input > 100 {
+            return roundUpAxisMaximum(input / 10) * 10
+        } else {
+            for i in 1..<25 {
+                let limit = Double(4 * i)
+                if input < limit {
+                    return limit
+                }
+            }
+            return Double(100)
+        }
     }
 }

@@ -13,7 +13,7 @@
     return WPCOM_API_CLIENT_SECRET;
 }
 
-+ (NSString *)crashlyticsApiKey {
++ (NSString *)sentryDSN {
     return @"";
 }
     

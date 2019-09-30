@@ -31,7 +31,7 @@ class SignupUsernameViewController: NUXViewController {
     private func configureView() {
         _ = addHelpButtonToNavController()
         navigationItem.title = NSLocalizedString("Change Username", comment: "Change Username title.")
-        WPStyleGuide.configureColors(for: view, andTableView: nil)
+        WPStyleGuide.configureColors(view: view, tableView: nil)
     }
 
     // MARK: - Segue

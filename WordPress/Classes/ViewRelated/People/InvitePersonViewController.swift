@@ -114,7 +114,7 @@ class InvitePersonViewController: UITableViewController {
         super.viewDidLoad()
         setupNavigationBar()
         setupDefaultRole()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
@@ -372,13 +372,15 @@ private extension InvitePersonViewController {
 
     func setupRoleCell() {
         roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
+        roleCell.textLabel?.textColor = .text
         roleCell.accessoryType = .disclosureIndicator
         WPStyleGuide.configureTableViewCell(roleCell)
     }
 
     func setupMessageTextView() {
         messageTextView.font = WPStyleGuide.tableviewTextFont()
-        messageTextView.textColor = WPStyleGuide.darkGrey()
+        messageTextView.textColor = .text
+        messageTextView.backgroundColor = .listForeground
     }
 
     func setupNavigationBar() {
@@ -414,12 +416,12 @@ private extension InvitePersonViewController {
     func refreshUsernameCell() {
         guard let usernameOrEmail = usernameOrEmail?.nonEmptyString() else {
             usernameCell.textLabel?.text = NSLocalizedString("Email or Username...", comment: "Invite Username Placeholder")
-            usernameCell.textLabel?.textColor = WPStyleGuide.grey()
+            usernameCell.textLabel?.textColor = .textPlaceholder
             return
         }
 
         usernameCell.textLabel?.text = usernameOrEmail
-        usernameCell.textLabel?.textColor = WPStyleGuide.darkGrey()
+        usernameCell.textLabel?.textColor = .text
     }
 
     func refreshRoleCell() {

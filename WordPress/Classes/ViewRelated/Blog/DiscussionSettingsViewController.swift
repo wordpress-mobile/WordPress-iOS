@@ -41,7 +41,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     fileprivate func setupTableView() {
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         // Note: We really want to handle 'Unselect' manually.
@@ -123,10 +123,6 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].headerText
-    }
-
-    open override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
     open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {

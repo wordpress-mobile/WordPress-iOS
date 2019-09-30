@@ -28,9 +28,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
             if let modelIcon = model?.icon {
                 icon.downloadImage(from: modelIcon, placeholderImage: nil, success: { [weak self] downloadedImage in
                     let tintedImage = downloadedImage.withRenderingMode(.alwaysTemplate)
-                    if let tintColor = self?.model?.iconTintColor {
-                        self?.icon.tintColor = tintColor
-                    }
+                    self?.icon.tintColor = .listIcon
                     self?.icon.image = tintedImage
                 }, failure: nil)
             }
@@ -41,12 +39,13 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
         title.text = segment.title
         subtitle.text = segment.subtitle
         if let segmentIcon = segment.icon {
-            icon.setImageWith(segmentIcon)
+            icon.downloadImage(from: segmentIcon)
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
         styleBackground()
         styleTitle()
         styleSubtitle()
@@ -60,18 +59,18 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleBackground() {
-        backgroundColor = .white
+        backgroundColor = .listForeground
     }
 
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
-        title.textColor = WPStyleGuide.darkGrey()
+        title.textColor = .text
         title.adjustsFontForContentSizeCategory = true
     }
 
     private func styleSubtitle() {
         subtitle.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
-        subtitle.textColor = WPStyleGuide.darkGrey()
+        subtitle.textColor = .textSubtle
         subtitle.adjustsFontForContentSizeCategory = true
     }
 
@@ -91,18 +90,5 @@ extension SiteSegmentsCell {
     func preferredContentSizeDidChange() {
         // Title needs to be forced to reset its style, otherwise the types do not change
         styleTitle()
-    }
-}
-
-extension SiteSegmentsCell: Accessible {
-    func prepareForVoiceOver() {
-        prepareIconForVoiceOver()
-    }
-
-    private func prepareIconForVoiceOver() {
-        let format = NSLocalizedString("Icon representing %@", comment: "Accessibility description for Site Segment icon. The %@ is a placeholder for the name of the kind of site. If the kind of site is unknown the phrase 'kind of site' is used.")
-        let site = model?.title ?? NSLocalizedString("Kind of site", comment: "Default accessibilty label for an unknown kind of site.")
-        icon.accessibilityLabel =  String(format: format, site )
-        icon.accessibilityTraits = .image
     }
 }

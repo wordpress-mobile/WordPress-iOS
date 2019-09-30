@@ -1,6 +1,5 @@
 #import "SharingAuthorizationWebViewController.h"
 #import "Blog.h"
-#import "WordPressAppDelegate.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
 

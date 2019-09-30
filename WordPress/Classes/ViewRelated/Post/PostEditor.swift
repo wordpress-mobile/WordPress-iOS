@@ -39,25 +39,16 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     ///
     func prepopulateMediaItems(_ media: [Media])
 
-    /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
-    ///
-    var shouldRemovePostOnDismiss: Bool { get }
-
     /// Cancels all ongoing uploads
     ///
-    ///TODO: We won't need this once media uploading is extracted to PostEditorUtil
     func cancelUploadOfAllMedia(for post: AbstractPost)
 
     /// Whether the editor has failed media or not
     ///
-    //TODO: We won't need this once media uploading is extracted to PostEditorUtil
     var hasFailedMedia: Bool { get }
 
-    //TODO: We won't need this once media uploading is extracted to PostEditorUtil
     var isUploadingMedia: Bool { get }
 
-    //TODO: We won't need this once media uploading is extracted to PostEditorUtil
-    //TODO: Otherwise the signature needs refactoring, it is too ambiguous for a protocol method
     func removeFailedMedia()
 
     /// Verification prompt helper
@@ -78,7 +69,7 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     /// Describes the editor type to be used in analytics reporting
     var analyticsEditorSource: String { get }
 
-    /// Error domain used when reporting error to Crashlytics
+    /// Error domain used when reporting error to Crash Logger
     var errorDomain: String { get }
 
     /// Returns true if the site mode is on
@@ -102,6 +93,8 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     /// Closure to call when the editor needs to be replaced with a different editor
     /// First argument is the existing editor, second argument is the replacement editor
     var replaceEditor: (EditorViewController, EditorViewController) -> () { get }
+
+    var autosaver: Autosaver { get set }
 }
 
 extension PostEditor {
@@ -132,4 +125,11 @@ extension PostEditor {
         return currentBlogCount <= 1 || post.hasRemote()
     }
 
+    var uploadFailureNoticeTag: Notice.Tag {
+        return "PostEditor.UploadFailed"
+    }
+
+    func uploadFailureNotice(action: PostEditorAction) -> Notice {
+        return Notice(title: action.publishingErrorLabel, tag: uploadFailureNoticeTag)
+    }
 }

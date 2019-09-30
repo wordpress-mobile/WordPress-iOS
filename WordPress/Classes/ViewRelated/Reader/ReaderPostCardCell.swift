@@ -152,18 +152,21 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         // Brent C. Aug/25/2016
         interfaceVerticalSizingHelperView.isHidden = true
 
-        applyStyles()
-        applyOpaqueBackgroundColors()
-        setupFeaturedImageView()
-        setupVisitButton()
-
-        setupSaveForLaterButton()
-
         setupMenuButton()
-        setupSummaryLabel()
-        setupAttributionView()
+        setupVisitButton()
+        setupSaveForLaterButton()
         setupCommentActionButton()
         setupLikeActionButton()
+
+        // Buttons must be set up before applying styles,
+        // as this tints the images used in the buttons
+        applyStyles()
+
+        applyOpaqueBackgroundColors()
+        setupFeaturedImageView()
+
+        setupSummaryLabel()
+        setupAttributionView()
         adjustInsetsForTextDirection()
         insetFollowButtonIcon()
     }
@@ -203,20 +206,21 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate func setupLikeActionButton() {
-        let image = UIImage(named: "icon-reader-like")
-        let highlightImage = UIImage(named: "icon-reader-like-highlight")
-        let selectedImage = UIImage(named: "icon-reader-liked")
-        likeActionButton.setImage(image, for: UIControl.State())
-        likeActionButton.setImage(highlightImage, for: .highlighted)
-        likeActionButton.setImage(selectedImage, for: .selected)
+        let likeImage = UIImage(named: "icon-reader-like")
+        let likedImage = UIImage(named: "icon-reader-liked")
+
+        likeActionButton.setImage(likeImage, for: .normal)
+        likeActionButton.setImage(likedImage, for: .highlighted)
+        likeActionButton.setImage(likedImage, for: .selected)
+        likeActionButton.setImage(likedImage, for: [.highlighted, .selected])
     }
 
     fileprivate func setupVisitButton() {
         let size = CGSize(width: 20, height: 20)
         let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
         let icon = Gridicon.iconOfType(.external, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())?.imageFlippedForRightToLeftLayoutDirection()
+        let tintedIcon = icon.imageFlippedForRightToLeftLayoutDirection()
+        let highlightIcon = icon.imageFlippedForRightToLeftLayoutDirection()
 
         visitButton.setTitle(title, for: UIControl.State())
         visitButton.setImage(tintedIcon, for: .normal)
@@ -230,8 +234,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = Gridicon.iconOfType(.ellipsis, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+        let tintedIcon = icon.imageWithTintColor(.neutral(.shade30))
+        let highlightIcon = icon.imageWithTintColor(.neutral)
 
         menuButton.setImage(tintedIcon, for: .normal)
         menuButton.setImage(highlightIcon, for: .highlighted)
@@ -252,20 +256,20 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies the default styles to the cell's subviews
     */
     fileprivate func applyStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
-        contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .clear
+        contentView.backgroundColor = .listBackground
+        borderedView.backgroundColor = .listForeground
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-        borderedView.layer.borderWidth = 1.0
+        borderedView.layer.borderWidth = .hairlineBorderWidth
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
-        WPStyleGuide.applyReaderCardActionButtonStyle(commentActionButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(likeActionButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(visitButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
+        WPStyleGuide.applyReaderActionButtonStyle(commentActionButton)
+        WPStyleGuide.applyReaderActionButtonStyle(likeActionButton)
+        WPStyleGuide.applyReaderActionButtonStyle(visitButton)
     }
 
 
@@ -273,12 +277,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
     fileprivate func applyOpaqueBackgroundColors() {
-        blogNameLabel.backgroundColor = .white
-        bylineLabel.backgroundColor = .white
-        titleLabel.backgroundColor = .white
-        summaryLabel.backgroundColor = .white
-        commentActionButton.titleLabel?.backgroundColor = .white
-        likeActionButton.titleLabel?.backgroundColor = .white
+        blogNameLabel.backgroundColor = .listForeground
+        bylineLabel.backgroundColor = .listForeground
+        titleLabel.backgroundColor = .listForeground
+        summaryLabel.backgroundColor = .listForeground
+        commentActionButton.titleLabel?.backgroundColor = .listForeground
+        likeActionButton.titleLabel?.backgroundColor = .listForeground
     }
 
     @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
@@ -305,8 +309,14 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         let size = avatarImageView.frame.size.width * UIScreen.main.scale
         if let url = provider.siteIconForDisplay(ofSize: Int(size)) {
-            avatarImageView.setImageWith(url)
+            if provider.isPrivate() {
+                let request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
+                avatarImageView.downloadImage(usingRequest: request)
+            } else {
+                avatarImageView.downloadImage(from: url)
+            }
             avatarImageView.isHidden = false
+
         } else {
             avatarImageView.isHidden = true
         }

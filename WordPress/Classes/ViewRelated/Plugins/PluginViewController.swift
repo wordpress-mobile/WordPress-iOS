@@ -80,7 +80,7 @@ class PluginViewController: UITableViewController {
 
     private func setupViews() {
         tableView.separatorInset = UIEdgeInsets()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     private func bindViewModel() {

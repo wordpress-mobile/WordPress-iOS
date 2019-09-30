@@ -5,6 +5,7 @@ import CocoaLumberjack
 @objc protocol WPContentSyncHelperDelegate: NSObjectProtocol {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
+    @objc optional func syncContentStart(_ syncHelper: WPContentSyncHelper)
     @objc optional func syncContentEnded(_ syncHelper: WPContentSyncHelper)
     @objc optional func syncContentFailed(_ syncHelper: WPContentSyncHelper)
     @objc optional func hasNoMoreContent(_ syncHelper: WPContentSyncHelper)
@@ -14,7 +15,13 @@ import CocoaLumberjack
 class WPContentSyncHelper: NSObject {
 
     @objc weak var delegate: WPContentSyncHelperDelegate?
-    @objc var isSyncing: Bool = false
+    @objc var isSyncing: Bool = false {
+        didSet {
+            if isSyncing {
+                delegate?.syncContentStart?(self)
+            }
+        }
+    }
     @objc var isLoadingMore: Bool = false
     @objc var hasMoreContent: Bool = true {
         didSet {

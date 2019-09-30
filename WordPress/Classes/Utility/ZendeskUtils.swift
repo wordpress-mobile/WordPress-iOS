@@ -1,8 +1,9 @@
 import Foundation
-import ZendeskSDK
-import ZendeskCoreSDK
 import CoreTelephony
 import WordPressAuthenticator
+
+import ZendeskSDK
+import ZendeskCoreSDK
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
@@ -44,6 +45,7 @@ extension NSNotification.Name {
     private var deviceID: String?
     private var haveUserIdentity = false
     private var alertNameField: UITextField?
+    private var sitePlansCache = [Int: RemotePlanSimpleDescription]()
 
     private static var zdAppID: String?
     private static var zdUrl: String?
@@ -119,11 +121,15 @@ extension NSNotification.Name {
         helpCenterConfig.labels = [Constants.articleLabel]
 
         // If we don't have the user's information, disable 'Contact Us' via the Help Center and Article view.
-        helpCenterConfig.hideContactSupport = !haveUserIdentity
+        helpCenterConfig.showContactOptions = haveUserIdentity
         let articleConfig = ArticleUiConfiguration()
-        articleConfig.hideContactSupport = !haveUserIdentity
+        articleConfig.showContactOptions = haveUserIdentity
 
-        let helpCenterController = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [helpCenterConfig, articleConfig])
+        // Get custom request configuration so new tickets from this path have all the necessary information.
+        let newRequestConfig = self.createRequest()
+
+
+        let helpCenterController = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [helpCenterConfig, articleConfig, newRequestConfig])
         ZendeskUtils.showZendeskView(helpCenterController)
     }
 
@@ -161,7 +167,10 @@ extension NSNotification.Name {
             self.sourceTag = sourceTag
             WPAnalytics.track(.supportTicketListViewed)
 
-            let requestListController = RequestUi.buildRequestList()
+            // Get custom request configuration so new tickets from this path have all the necessary information.
+            let newRequestConfig = self.createRequest()
+
+            let requestListController = RequestUi.buildRequestList(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(requestListController)
         }
     }
@@ -174,6 +183,24 @@ extension NSNotification.Name {
         ZendeskUtils.getUserInformationAndShowPrompt(withName: false) { success in
             completion(success)
         }
+    }
+
+    func cacheUnlocalizedSitePlans() {
+        guard !WordPressComLanguageDatabase().deviceLanguage.slug.hasPrefix("en") else {
+            // Don't fetch if its already "en".
+            return
+        }
+
+        let context = ContextManager.shared.mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        guard let account = accountService.defaultWordPressComAccount() else {
+            return
+        }
+
+        let planService = PlanService(managedObjectContext: context)
+        planService.getAllSitesNonLocalizedPlanDescriptionsForAccount(account, success: { plans in
+            self.sitePlansCache = plans
+        }, failure: { error in })
     }
 
     // MARK: - Device Registration
@@ -340,7 +367,7 @@ private extension ZendeskUtils {
          Steps to selecting which account to use:
          1. If there is a WordPress.com account, use that.
          2. If not, use selected site.
-        */
+         */
 
         let context = ContextManager.sharedInstance().mainContext
 
@@ -399,8 +426,8 @@ private extension ZendeskUtils {
     static func registerDeviceIfNeeded() {
 
         guard let deviceID = ZendeskUtils.sharedInstance.deviceID,
-        let zendeskInstance = Zendesk.instance else {
-            return
+            let zendeskInstance = Zendesk.instance else {
+                return
         }
 
         ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { (pushResponse, error) in
@@ -448,18 +475,13 @@ private extension ZendeskUtils {
             return
         }
 
-        // If the controller is a UIViewController, set the modal display for iPad.
-        if !presentInController.isKind(of: UINavigationController.self) && WPDeviceIdentification.isiPad() {
-            let navController = UINavigationController(rootViewController: zendeskView)
-            navController.modalPresentationStyle = .fullScreen
-            navController.modalTransitionStyle = .crossDissolve
-            presentInController.present(navController, animated: true)
-            return
-        }
-
-        if let navController = presentInController as? UINavigationController {
-            navController.pushViewController(zendeskView, animated: true)
-        }
+        // Presenting in a modal instead of pushing onto an existing navigation stack
+        // seems to fix this issue we were seeing when trying to add media to a ticket:
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/11397
+        let navController = UINavigationController(rootViewController: zendeskView)
+        navController.modalPresentationStyle = .formSheet
+        navController.modalTransitionStyle = .coverVertical
+        presentInController.present(navController, animated: true)
     }
 
     // MARK: - Get User Information
@@ -565,7 +587,7 @@ private extension ZendeskUtils {
     static func getLogFile() -> String {
 
         guard let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
-            let fileLogger = appDelegate.logger.fileLogger,
+            let fileLogger = appDelegate.logger?.fileLogger,
             let logFileInformation = fileLogger.logFileManager.sortedLogFileInfos.first,
             let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
             let logText = String(data: logData, encoding: .utf8) else {
@@ -590,25 +612,37 @@ private extension ZendeskUtils {
 
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        guard let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 else {
+        let allBlogs = blogService.blogsForAllAccounts()
+        guard allBlogs.count > 0 else {
             return Constants.noValue
         }
 
-        return (allBlogs.map { $0.supportDescription() }).joined(separator: Constants.blogSeperator)
+        let blogInfo: [String] = allBlogs.map {
+            var desc = $0.supportDescription()
+            if let blogID = $0.dotComID, let plan = ZendeskUtils.sharedInstance.sitePlansCache[blogID.intValue] {
+                desc = desc + "<Unlocalized Plan: \(plan.name) (\(plan.planID))>" // Do not localize this. :)
+            }
+            return desc
+        }
+        return blogInfo.joined(separator: Constants.blogSeperator)
     }
 
     static func getTags() -> [String] {
 
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
+        let allBlogs = blogService.blogsForAllAccounts()
 
         // If there are no sites, then the user has an empty WP account.
-        guard let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 else {
+        guard allBlogs.count > 0 else {
             return [Constants.wpComTag]
         }
 
         // Get all unique site plans
-        var tags = allBlogs.compactMap { $0.planTitle }.unique
+        var tags = ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name }.unique
+        if tags.count == 0 {
+            tags = allBlogs.compactMap { $0.planTitle }.unique
+        }
 
         // If any of the sites have jetpack installed, add jetpack tag.
         let jetpackBlog = allBlogs.first { $0.jetpack?.isInstalled == true }
@@ -631,9 +665,10 @@ private extension ZendeskUtils {
         tags.append(Constants.platformTag)
 
         // Add gutenbergIsDefault tag
-        let gutenbergSettings = GutenbergSettings()
-        if gutenbergSettings.isGutenbergEnabled() {
-            tags.append(Constants.gutenbergIsDefault)
+        if let blog = blogService.lastUsedBlog() {
+            if blog.isGutenbergEnabled {
+                tags.append(Constants.gutenbergIsDefault)
+            }
         }
 
         return tags
@@ -734,7 +769,9 @@ private extension ZendeskUtils {
         alertController.addTextField(configurationHandler: { textField in
             textField.clearButtonMode = .always
             textField.placeholder = LocalizedText.emailPlaceholder
+            textField.accessibilityLabel = LocalizedText.emailAccessibilityLabel
             textField.text = ZendeskUtils.sharedInstance.userEmail
+            textField.isEnabled = false
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
@@ -746,14 +783,22 @@ private extension ZendeskUtils {
             alertController.addTextField { textField in
                 textField.clearButtonMode = .always
                 textField.placeholder = LocalizedText.namePlaceholder
+                textField.accessibilityLabel = LocalizedText.nameAccessibilityLabel
                 textField.text = ZendeskUtils.sharedInstance.userName
                 textField.delegate = ZendeskUtils.sharedInstance
+                textField.isEnabled = false
                 ZendeskUtils.sharedInstance.alertNameField = textField
             }
         }
 
         // Show alert
-        presentInController?.present(alertController, animated: true)
+        presentInController?.present(alertController, animated: true) {
+            // Enable text fields only after the alert is shown so that VoiceOver will dictate
+            // the message first. 
+            alertController.textFields?.forEach { textField in
+                textField.isEnabled = true
+            }
+        }
     }
 
     @objc static func emailTextFieldDidChange(_ textField: UITextField) {
@@ -910,7 +955,9 @@ private extension ZendeskUtils {
         static let alertSubmit = NSLocalizedString("OK", comment: "Submit button on prompt for user information.")
         static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
         static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
+        static let emailAccessibilityLabel = NSLocalizedString("Email", comment: "Accessibility label for the Email text field.")
         static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
+        static let nameAccessibilityLabel = NSLocalizedString("Name", comment: "Accessibility label for the Email text field.")
     }
 
 }
@@ -921,8 +968,8 @@ extension ZendeskUtils: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard textField == ZendeskUtils.sharedInstance.alertNameField,
-        let text = textField.text else {
-            return true
+            let text = textField.text else {
+                return true
         }
 
         let newLength = text.count + string.count - range.length

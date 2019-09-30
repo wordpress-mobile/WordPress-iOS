@@ -23,7 +23,8 @@ typedef void (^StatsStreakCompletion)(StatsStreak *streak, NSError *error);
 - (instancetype)initWithSiteId:(NSNumber *)siteId
                   siteTimeZone:(NSTimeZone *)timeZone
                    oauth2Token:(NSString *)oauth2Token
-    andCacheExpirationInterval:(NSTimeInterval)cacheExpirationInterval;
+    andCacheExpirationInterval:(NSTimeInterval)cacheExpirationInterval
+              apiBaseUrlString:(NSString *)apiBaseUrlString;
 
 - (void)retrieveAllStatsForDate:(NSDate *)date
                            unit:(StatsPeriodUnit)unit

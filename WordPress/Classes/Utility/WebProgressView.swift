@@ -54,7 +54,8 @@ class WebProgressView: UIProgressView {
     }
 
     private func configure() {
-        progressTintColor = WPStyleGuide.lightBlue()
+        progressTintColor = .primary
+        backgroundColor = .listBackground
     }
 
     private enum Progress {

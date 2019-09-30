@@ -1,8 +1,11 @@
 import WordPressAuthenticator
+import AutomatticTracks
 
 @objc extension WordPressAppDelegate {
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        DDLogInfo("Application launched with URL: \(url)")
+
+        let redactedURL = LoggingURLRedactor.redactedURL(url)
+        DDLogInfo("Application launched with URL: \(redactedURL)")
 
         guard !handleHockey(url: url, options: options) else {
             return true
@@ -40,7 +43,7 @@ import WordPressAuthenticator
             hockeyOptions[key.rawValue] = value
         }
 
-        if hockey.handleOpen(url, options: hockeyOptions) {
+        if hockey?.handleOpen(url, options: hockeyOptions) == true {
             return true
         }
         return false
@@ -59,7 +62,7 @@ import WordPressAuthenticator
     private func handleMagicLogin(url: URL) -> Bool {
         DDLogInfo("App launched with authentication link")
         let allowWordPressComAuth = !AccountHelper.isDotcomAvailable()
-        guard let rvc = window.rootViewController else {
+        guard let rvc = window?.rootViewController else {
             return false
         }
         return WordPressAuthenticator.openAuthenticationURL(url,
@@ -110,8 +113,8 @@ import WordPressAuthenticator
             return false
         }
 
-        if debugKey == ApiCredentials.debuggingKey(), debugType == "crashlytics_crash" {
-            Crashlytics.sharedInstance().crash()
+        if debugKey == ApiCredentials.debuggingKey(), debugType == "force_crash" {
+            CrashLogging.crash()
         }
 
         return true

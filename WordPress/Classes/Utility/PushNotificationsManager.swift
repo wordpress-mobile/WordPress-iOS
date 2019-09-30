@@ -125,6 +125,13 @@ final public class PushNotificationsManager: NSObject {
     /// Unregister the device from WordPress.com notifications
     ///
     @objc func unregisterDeviceToken() {
+
+        // It's possible for the unregister server call to fail, so always unregister the device locally
+        // to fix https://github.com/wordpress-mobile/WordPress-iOS/issues/11779.
+        if UIApplication.shared.isRegisteredForRemoteNotifications {
+            UIApplication.shared.unregisterForRemoteNotifications()
+        }
+
         guard let knownDeviceId = deviceId else {
             return
         }
@@ -165,6 +172,9 @@ final public class PushNotificationsManager: NSObject {
         guard let type = userInfo.string(forKey: Notification.typeKey), type != Notification.badgeResetValue else {
             return
         }
+
+        // Analytics
+        trackNotification(with: userInfo)
 
         // Handling!
         let handlers = [handleSupportNotification,
@@ -338,6 +348,7 @@ extension PushNotificationsManager {
         return true
     }
 }
+
 
 // MARK: - Nested Types
 //

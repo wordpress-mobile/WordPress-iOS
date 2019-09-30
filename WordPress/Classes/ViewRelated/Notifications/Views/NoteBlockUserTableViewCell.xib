@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina5_5" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,11 +13,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="76"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="rfv-Np-qYy" id="spe-vQ-kSe">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="75.666666666666671"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="76"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Gw9-Ao-Lgs">
-                        <rect key="frame" x="15" y="11" width="290" height="54"/>
+                        <rect key="frame" x="16" y="11" width="288" height="54"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-ge-5Fb" userLabel="GravatarImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="46" height="46"/>
@@ -53,10 +51,10 @@
                                 </variation>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tJB-h9-inM">
-                                <rect key="frame" x="58" y="0.0" width="232" height="54"/>
+                                <rect key="frame" x="58" y="0.0" width="230" height="54"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="ilL-3r-WNn">
-                                        <rect key="frame" x="0.0" y="-2" width="232" height="56"/>
+                                        <rect key="frame" x="0.0" y="-2" width="230" height="56"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Lastname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBR-jy-KRp" userLabel="NameLabel">
                                                 <rect key="frame" x="0.0" y="0.0" width="88" height="14"/>
@@ -65,12 +63,12 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog URL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lsp-ya-PNI" userLabel="BlogUrlLabel">
-                                                <rect key="frame" x="0.0" y="14" width="52.333333333333329" height="14.333333333333336"/>
+                                                <rect key="frame" x="0.0" y="14" width="52.333333333333336" height="14.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7h0-qK-qQQ" userLabel="FollowButton">
-                                                <rect key="frame" x="0.0" y="28.333333333333339" width="100" height="27.666666666666661"/>
+                                                <rect key="frame" x="0.0" y="28.333333333333336" width="100" height="27.666666666666664"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="100" id="lla-7C-ydl"/>
                                                 </constraints>
@@ -85,7 +83,7 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="ilL-3r-WNn" secondAttribute="trailing" id="O56-bz-iWL"/>
                                     <constraint firstItem="ilL-3r-WNn" firstAttribute="top" secondItem="tJB-h9-inM" secondAttribute="top" constant="-2" id="Xjb-8R-L2Y"/>

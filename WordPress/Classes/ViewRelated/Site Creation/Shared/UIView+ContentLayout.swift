@@ -27,11 +27,7 @@ extension UIView {
         if WPDeviceIdentification.isiPad() {
             layoutGuide = readableContentGuide
         } else {
-            if #available(iOS 11.0, *) {
-                layoutGuide = safeAreaLayoutGuide
-            } else {
-                layoutGuide = layoutMarginsGuide
-            }
+            layoutGuide = safeAreaLayoutGuide
         }
 
         return layoutGuide

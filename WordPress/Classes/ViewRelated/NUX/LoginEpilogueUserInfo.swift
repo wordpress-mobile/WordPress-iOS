@@ -14,7 +14,7 @@ public struct LoginEpilogueUserInfo {
     /// Initializes the EpilogueUserInfo with all of the metadata contained within WPAccount.
     ///
     init(account: WPAccount) {
-        if let name = account.username, UUID(uuidString: name) == nil {
+        if let name = account.username {
             username = name
         }
         if let accountEmail = account.email {
@@ -53,6 +53,9 @@ extension LoginEpilogueUserInfo {
         case .google(let user):
             fullName = user.profile.name
             email = user.profile.email
+        case .apple(let user):
+            fullName = user.fullName
+            email = user.email
         }
     }
 }

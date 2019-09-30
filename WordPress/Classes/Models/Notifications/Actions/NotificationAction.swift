@@ -6,6 +6,14 @@ class DefaultNotificationActionCommand: FormattableContentActionCommand {
         return type(of: self).commandIdentifier()
     }
 
+    var actionTitle: String? {
+        return nil
+    }
+
+    var actionColor: UIColor? {
+        return .primary
+    }
+
     private(set) lazy var mainContext: NSManagedObjectContext? = {
         return ContextManager.sharedInstance().mainContext
     }()
@@ -13,10 +21,6 @@ class DefaultNotificationActionCommand: FormattableContentActionCommand {
     private(set) lazy var actionsService: NotificationActionsService? = {
         return NotificationActionsService(managedObjectContext: mainContext!)
     }()
-
-    var icon: UIButton? {
-        return nil
-    }
 
     init(on: Bool) {
         self.on = on

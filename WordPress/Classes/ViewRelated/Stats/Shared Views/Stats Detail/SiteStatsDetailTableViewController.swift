@@ -4,7 +4,7 @@ import WordPressFlux
 @objc protocol SiteStatsDetailsDelegate {
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
 }
@@ -20,7 +20,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
     private var statType: StatType = .period
-    private var selectedDate: Date?
+    private var selectedDate = StatsDataHelper.currentDateForSite()
     private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsDetailsViewModel?
@@ -33,7 +33,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    private let siteID = SiteStatsInformation.sharedInstance.siteID
+    private var postID: Int?
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -56,15 +56,22 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         Style.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.register(SiteStatsTableHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
     }
 
-    func configure(statSection: StatSection, selectedDate: Date? = nil, selectedPeriod: StatsPeriodUnit? = nil) {
+    func configure(statSection: StatSection,
+                   selectedDate: Date? = nil,
+                   selectedPeriod: StatsPeriodUnit? = nil,
+                   postID: Int? = nil) {
         self.statSection = statSection
-        self.selectedDate = selectedDate
+        self.selectedDate = selectedDate ?? StatsDataHelper.currentDateForSite()
         self.selectedPeriod = selectedPeriod
+        self.postID = postID
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
-        title = statSection.title
+        title = statSection.detailsTitle
         initViewModel()
+        displayLoadingViewIfNecessary()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -74,6 +81,43 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.reloadData()
         })
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        // Only show the date bar for Insights Annual details
+        guard let statSection = statSection,
+            statSection == .insightsAnnualSiteStats,
+            let allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights,
+            let mostRecentYear = allAnnualInsights.last?.year else {
+            return nil
+        }
+
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+            return nil
+        }
+
+        // Allow the date bar to only go up to the most recent year available.
+        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: StatsDataHelper.currentDateForSite())
+        dateComponents.year = mostRecentYear
+        let mostRecentDate = Calendar.current.date(from: dateComponents)
+
+        cell.configure(date: selectedDate,
+                       period: .year,
+                       delegate: self,
+                       expectedPeriodCount: allAnnualInsights.count,
+                       mostRecentDate: mostRecentDate)
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let statSection = statSection,
+            statSection == .insightsAnnualSiteStats else {
+                return 0
+        }
+
+        return SiteStatsTableHeaderView.headerHeight()
     }
 
 }
@@ -89,7 +133,10 @@ private extension SiteStatsDetailTableViewController {
             return
         }
 
-        viewModel?.fetchDataFor(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
+        viewModel?.fetchDataFor(statSection: statSection,
+                                selectedDate: selectedDate,
+                                selectedPeriod: selectedPeriod,
+                                postID: postID)
 
         if statType == .insights {
             insightsChangeReceipt = viewModel?.onChange { [weak self] in
@@ -109,10 +156,13 @@ private extension SiteStatsDetailTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [TabbedTotalsDetailStatsRow.self,
-                TopTotalsDetailStatsRow.self,
-                CountriesDetailStatsRow.self,
-                TopTotalsNoSubtitlesPeriodDetailStatsRow.self]
+        return [DetailDataRow.self,
+                DetailExpandableRow.self,
+                DetailExpandableChildRow.self,
+                DetailSubtitlesHeaderRow.self,
+                DetailSubtitlesTabbedHeaderRow.self,
+                DetailSubtitlesCountriesHeaderRow.self,
+                CountriesMapRow.self]
     }
 
     func storeIsFetching(statSection: StatSection) -> Bool {
@@ -139,6 +189,10 @@ private extension SiteStatsDetailTableViewController {
             return periodStore.isFetchingCountries
         case .periodPublished:
             return periodStore.isFetchingPublished
+        case .periodFileDownloads:
+            return periodStore.isFetchingFileDownloads
+        case .postStatsMonthsYears, .postStatsAverageViews:
+            return periodStore.isFetchingPostStats(for: postID)
         default:
             return false
         }
@@ -153,6 +207,12 @@ private extension SiteStatsDetailTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
         refreshControl?.endRefreshing()
+
+        if viewModel.fetchDataHasFailed() {
+            displayFailureViewIfNecessary()
+        } else {
+            hideNoResults()
+        }
     }
 
     @objc func refreshData() {
@@ -170,6 +230,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshComments()
         case .insightsTagsAndCategories:
             viewModel?.refreshTagsAndCategories()
+        case .insightsAnnualSiteStats:
+            viewModel?.refreshAnnual(selectedDate: selectedDate)
         case .periodPostsAndPages:
             viewModel?.refreshPostsAndPages()
         case .periodSearchTerms:
@@ -186,21 +248,19 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshCountries()
         case .periodPublished:
             viewModel?.refreshPublished()
+        case .periodFileDownloads:
+            viewModel?.refreshFileDownloads()
+        case .postStatsMonthsYears, .postStatsAverageViews:
+            viewModel?.refreshPostStats()
         default:
             refreshControl?.endRefreshing()
         }
     }
 
     func applyTableUpdates() {
-        if #available(iOS 11.0, *) {
-            tableView.performBatchUpdates({
-                updateStatSectionForFilterChange()
-            })
-        } else {
-            tableView.beginUpdates()
+        tableView.performBatchUpdates({
             updateStatSectionForFilterChange()
-            tableView.endUpdates()
-        }
+        })
     }
 
     func clearExpandedRows() {
@@ -245,9 +305,9 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         present(navController, animated: true)
     }
 
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
+    func toggleChildRowsForRow(_ row: StatsTotalRow) {
         StatsDataHelper.updatedExpandedState(forRow: row, inDetails: true)
+        refreshTableView()
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
@@ -258,7 +318,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
     func displayMediaWithID(_ mediaID: NSNumber) {
 
-        guard let siteID = siteID,
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
             let blog = blogService.blog(byBlogId: siteID) else {
                 DDLogInfo("Unable to get blog when trying to show media from Stats details.")
                 return
@@ -270,6 +330,77 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         }, failure: { (error) in
             DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
         })
+    }
+
+}
+
+// MARK: - NoResultsViewHost
+
+extension SiteStatsDetailTableViewController: NoResultsViewHost {
+    private func displayLoadingViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        if noResultsViewController.view.superview != nil {
+            return
+        }
+
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        noResults.hideImageView(false)
+        }
+    }
+
+    private func displayFailureViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        updateNoResults(title: NoResultConstants.errorTitle,
+                        subtitle: NoResultConstants.errorSubtitle,
+                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                            noResults.delegate = self
+                            noResults.hideImageView()
+        }
+    }
+
+    private enum NoResultConstants {
+        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate methods
+
+extension SiteStatsDetailTableViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        updateNoResults(title: NoResultConstants.successTitle,
+                        accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
+                            noResults.hideImageView(false)
+        }
+        refreshData()
+    }
+}
+
+// MARK: - SiteStatsTableHeaderDelegate Methods
+
+extension SiteStatsDetailTableViewController: SiteStatsTableHeaderDelegate {
+
+    func dateChangedTo(_ newDate: Date?) {
+        guard let newDate = newDate else {
+            return
+        }
+
+        // Since all Annual insights have already been fetched, don't refetch.
+        // Just update the date in the view model and refresh the table.
+        selectedDate = newDate
+        viewModel?.updateSelectedDate(newDate)
+        refreshTableView()
     }
 
 }

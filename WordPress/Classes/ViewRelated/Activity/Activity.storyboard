@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14295.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14270.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,10 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2EY-TD-6V1" userLabel="container view">
-                                <rect key="frame" x="0.0" y="20" width="375" height="357.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="331"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="mSI-6P-kcW">
-                                        <rect key="frame" x="16" y="16" width="343" height="325.5"/>
+                                        <rect key="frame" x="16" y="16" width="343" height="299"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="DDN-1Y-KHk" userLabel="header">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="38.5"/>
@@ -72,7 +70,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jlr-kR-xzq" userLabel="content">
-                                                <rect key="frame" x="0.0" y="68.5" width="343" height="257"/>
+                                                <rect key="frame" x="0.0" y="68.5" width="343" height="230.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZGb-bM-Y2p" customClass="RichTextVIew">
                                                         <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
@@ -81,22 +79,22 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3sW-BH-Aq9">
-                                                        <rect key="frame" x="0.0" y="28.5" width="343" height="200"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <rect key="frame" x="0.0" y="28.5" width="343" height="176"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     </textView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ASx-wD-w08">
-                                                        <rect key="frame" x="0.0" y="236.5" width="343" height="20.5"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                        <rect key="frame" x="0.0" y="212.5" width="343" height="18"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <color key="textColor" red="0.40000000000000002" green="0.55686274509803924" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                             </stackView>
                                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ouv-sN-axZ" userLabel="rewind">
-                                                <rect key="frame" x="0.0" y="325.5" width="343" height="44.5"/>
+                                                <rect key="frame" x="0.0" y="299" width="343" height="44.5"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yPg-ua-Eim">
                                                         <rect key="frame" x="0.0" y="0.0" width="343" height="0.5"/>
@@ -123,9 +121,10 @@
                                                 </subviews>
                                             </stackView>
                                         </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="mSI-6P-kcW" secondAttribute="bottom" constant="16" id="Fha-kb-hYl"/>
                                     <constraint firstAttribute="trailing" secondItem="mSI-6P-kcW" secondAttribute="trailing" constant="16" id="kcr-xl-FGY"/>
@@ -134,7 +133,6 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="fnA-qw-vPe" firstAttribute="trailing" secondItem="2EY-TD-6V1" secondAttribute="trailing" id="36M-yw-daV"/>
                             <constraint firstItem="2EY-TD-6V1" firstAttribute="top" secondItem="fnA-qw-vPe" secondAttribute="top" id="KcE-uG-uhl"/>
@@ -144,6 +142,7 @@
                     </view>
                     <connections>
                         <outlet property="bottomConstaint" destination="Fha-kb-hYl" id="vUN-uA-iaq"/>
+                        <outlet property="containerView" destination="2EY-TD-6V1" id="pkP-dO-mdo"/>
                         <outlet property="contentStackView" destination="jlr-kR-xzq" id="bkc-3M-MDt"/>
                         <outlet property="dateLabel" destination="YIh-B5-5mX" id="k3s-5c-AXy"/>
                         <outlet property="headerStackView" destination="DDN-1Y-KHk" id="FTi-Sr-BFK"/>

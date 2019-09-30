@@ -1,7 +1,7 @@
 @testable import WordPress
 import XCTest
 
-private extension JetpackSiteRef {
+extension JetpackSiteRef {
     static func mock(siteID: Int, username: String) -> JetpackSiteRef {
         let payload: NSString = """
         {
@@ -15,7 +15,6 @@ private extension JetpackSiteRef {
     }
 }
 
-
 class RegisterDomainDetailsViewModelTests: XCTestCase {
     typealias Change = RegisterDomainDetailsViewModel.Change
     typealias CellIndex = RegisterDomainDetailsViewModel.CellIndex
@@ -27,7 +26,6 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
 
     var viewModel: RegisterDomainDetailsViewModel!
     var changeArray: [Change] = []
-
 
     override func setUp() {
         super.setUp()
@@ -46,7 +44,7 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
         let addressSection = viewModel.sections[SectionIndex.address.rawValue]
         let initialRowCount = addressSection.rows.count
 
-        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock(success: true)
+        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock()
 
         viewModel.enableAddAddressRow()
         XCTAssert(addressSection.rows[1] ==
@@ -68,7 +66,7 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
     func testReplaceAddAddressRow() {
         let addressSection = viewModel.sections[SectionIndex.address.rawValue]
         let initialRowCount = addressSection.rows.count
-        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock(success: true)
+        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock()
 
         viewModel.enableAddAddressRow()
         viewModel.replaceAddNewAddressLine()
@@ -107,7 +105,7 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
     func testAddAddressRowMaxLimit() {
         let addressSection = viewModel.sections[SectionIndex.address.rawValue]
         let initialRowCount = addressSection.rows.count
-        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock(success: true)
+        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock()
 
         viewModel.enableAddAddressRow()
         viewModel.replaceAddNewAddressLine()
@@ -136,7 +134,7 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
     }
 
     func testEnableSubmitValidation() {
-        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock(success: true, emptyPrefillData: true)
+        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock(emptyPrefillData: true)
 
         XCTAssert(viewModel.isValid(inContext: .clientSide) == false)
 
@@ -167,7 +165,7 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
     }
 
     func testPrefillData() {
-        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock(success: true, emptyPrefillData: false)
+        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock(emptyPrefillData: false)
 
         viewModel.prefill()
 

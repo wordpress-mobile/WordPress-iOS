@@ -56,6 +56,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 @property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic) BOOL deviceIsRotating;
+@property (nonatomic, strong) NSCache *cachedAttributedStrings;
 
 @end
 
@@ -125,7 +126,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor murielListBackground];
 
     [self checkIfLoggedIn];
 
@@ -164,6 +165,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [self dismissNotice];
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
@@ -273,14 +275,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         [weakSelf handleHeaderTapped];
     };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
-    headerView.backgroundColor = [UIColor whiteColor];
     headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
     [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
     [headerWrapper addSubview:headerView];
 
     // Border
     CGSize borderSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 1.0);
-    UIImage *borderImage = [UIImage imageWithColor:[WPStyleGuide readGrey] havingSize:borderSize];
+    UIImage *borderImage = [UIImage imageWithColor:[UIColor murielNeutral5] havingSize:borderSize];
     UIImageView *borderView = [[UIImageView alloc] initWithImage:borderImage];
     borderView.translatesAutoresizingMaskIntoConstraints = NO;
     borderView.contentMode = UIViewContentModeScaleAspectFill;
@@ -312,7 +313,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     self.tableView.preservesSuperviewLayoutMargins = YES;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = [UIColor murielListBackground];
     [self.view addSubview:self.tableView];
 
     UINib *commentNib = [UINib nibWithNibName:@"ReaderCommentCell" bundle:nil];
@@ -322,6 +323,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     self.estimatedRowHeights = [[NSCache alloc] init];
+    self.cachedAttributedStrings = [[NSCache alloc] init];
 }
 
 - (void)configureTableViewHandler
@@ -673,11 +675,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         
         hideImageView = (WPDeviceIdentification.isiPhone && !isLandscape) || (WPDeviceIdentification.isiPad && isLandscape);
     }
-    
     [self.noResultsViewController configureWithTitle:self.noResultsTitleText
+                                   noConnectionTitle:nil
                                          buttonTitle:nil
                                             subtitle:nil
+                                noConnectionSubtitle:nil
                                   attributedSubtitle:nil
+                     attributedSubtitleConfiguration:nil
                                                image:nil
                                        subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
@@ -692,12 +696,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)updateTableViewForAttachments
 {
-    if (@available(iOS 11, *)) {
-        [self.tableView performBatchUpdates:nil completion:nil];
-    } else {
-        [self.tableView beginUpdates];
-        [self.tableView endUpdates];
-    }
+    [self.tableView performBatchUpdates:nil completion:nil];
 }
 
 
@@ -705,7 +704,32 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [self.tableViewHandler refreshTableView];
     [self refreshNoResultsView];
+    [self.managedObjectContext performBlock:^{
+        [self updateCachedContent];
+    }];
+
 }
+
+
+- (void)updateCachedContent
+{
+    NSArray *comments = self.tableViewHandler.resultsController.fetchedObjects;
+    for(Comment *comment in comments) {
+        [self cacheContentForComment:comment];
+    }
+}
+
+
+- (NSAttributedString *)cacheContentForComment:(Comment *)comment
+{
+    NSAttributedString *attrStr = [self.cachedAttributedStrings objectForKey:comment.commentID];
+    if (!attrStr) {
+        attrStr = [WPRichContentView formattedAttributedStringForString: comment.content];
+        [self.cachedAttributedStrings setObject:attrStr forKey:comment.commentID];
+    }
+    return attrStr;
+}
+
 
 #pragma mark - Actions
 
@@ -730,6 +754,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     void (^successBlock)(void) = ^void() {
         [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
+        NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
+        [weakSelf displayNoticeWithTitle:successMessage message:nil];
 
         [weakSelf trackReplyToComment];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
@@ -739,35 +765,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        NSUInteger lastIndex = content.length == 0 ? 0 : content.length - 1;
-        NSUInteger composedCharacterIndex = NSMaxRange([content rangeOfComposedCharacterSequenceAtIndex:MIN(lastIndex, 140)]);
-        // 140 is a somewhat arbitraily chosen number (old tweet length) — should be enough to let people know what
-        // comment failed to show, but not too long to display.
-
-        NSString *replyExcerpt = [content substringToIndex:composedCharacterIndex];
-
-        NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"There has been an unexpected error while sending your reply: \n\"%@\"", nil), replyExcerpt];
-        if (composedCharacterIndex < lastIndex) {
-            NSMutableString *mutString = alertMessage.mutableCopy;
-            [mutString insertString:@"…" atIndex:(alertMessage.length - 2)];
-
-            alertMessage = mutString.copy;
-        }
-
         DDLogError(@"Error sending reply: %@", error);
-
         [generator notificationOccurred:UINotificationFeedbackTypeError];
-
-        NSString *alertCancel = NSLocalizedString(@"Cancel", @"Verb. A button label. Tapping the button dismisses a prompt.");
-        NSString *alertTryAgain = NSLocalizedString(@"Try Again", @"A button label. Tapping the re-tries an action that previously failed.");
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                                 message:alertMessage
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addCancelActionWithTitle:alertCancel handler:nil];
-        [alertController addActionWithTitle:alertTryAgain style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [weakSelf sendReplyWithNewContent:content];
-        }];
-        [alertController presentFromRootViewController];
+        NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", "Reply Failure Message");
+        [weakSelf displayNoticeWithTitle:message message:nil];
 
         [weakSelf refreshTableViewAndNoResultsView];
     };
@@ -909,7 +910,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         return;
     }
 
-    [cell configureCellWithComment:comment];
+    NSAttributedString *attrStr = [self cacheContentForComment:comment];
+    [cell configureCellWithComment:comment attributedString:attrStr];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1064,7 +1066,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)cell:(ReaderCommentCell *)cell didTapLike:(Comment *)comment
 {
 
-    if (![WordPressAppDelegate sharedInstance].connectionAvailable) {
+    if (![WordPressAppDelegate shared].connectionAvailable) {
         NSString *title = NSLocalizedString(@"No Connection", @"Title of error prompt when no internet connection is available.");
         NSString *message = NSLocalizedString(@"The Internet connection appears to be offline.", @"Message of error prompt shown when a user tries to perform an action without an internet connection.");
         [WPError showAlertWithTitle:title message:message];

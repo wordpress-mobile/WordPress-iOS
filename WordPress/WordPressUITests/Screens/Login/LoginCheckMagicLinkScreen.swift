@@ -2,10 +2,8 @@ import Foundation
 import XCTest
 
 private struct ElementStringIDs {
-    static let passwordOption = "Enter your password instead."
-    static let mailButton = "Open Mail"
-    static let mailAlert = "Please check your email"
-    static let okButton = "OK"
+    static let passwordOption = "Use Password"
+    static let mailButton = "Open Mail Button"
 }
 
 class LoginCheckMagicLinkScreen: BaseScreen {
@@ -17,7 +15,7 @@ class LoginCheckMagicLinkScreen: BaseScreen {
         let app = XCUIApplication()
         passwordOption = app.buttons[ElementStringIDs.passwordOption]
         mailButton = app.buttons[ElementStringIDs.mailButton]
-        mailAlert = app.alerts[ElementStringIDs.mailAlert]
+        mailAlert = app.alerts.element(boundBy: 0)
 
         super.init(element: mailButton)
     }
@@ -28,11 +26,10 @@ class LoginCheckMagicLinkScreen: BaseScreen {
         return LoginPasswordScreen()
     }
 
-    func checkMagicLink() -> LoginCheckMagicLinkScreen {
-        mailButton.tap()
-        mailAlert.buttons[ElementStringIDs.okButton].tap()
+    func openMagicLoginLink() -> LoginEpilogueScreen {
+        openMagicLink()
 
-        return self
+        return LoginEpilogueScreen()
     }
 
     static func isLoaded() -> Bool {

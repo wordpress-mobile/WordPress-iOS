@@ -3,28 +3,24 @@ import XCTest
 class LoginTests: XCTestCase {
 
     override func setUp() {
-        super.setUp()
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
+        setUpTestSuite()
 
-        let app = XCUIApplication()
-        app.launchArguments = ["NoAnimations"]
-        app.activate()
-
-        // Logout first if needed
         LoginFlow.logoutIfNeeded()
     }
 
     override func tearDown() {
+        takeScreenshotOfFailedTest()
         LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 
     func testEmailPasswordLoginLogout() {
-        let welcomeScreen = WelcomeScreen().login()
+        let welcomeScreen = WelcomeScreen().selectLogin()
+            .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithPassword()
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSiteAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
             .tabBar.gotoMeScreen()
@@ -34,23 +30,29 @@ class LoginTests: XCTestCase {
     }
 
     /**
-     This test currently stops after requesting the magic link.
-     The rest of the flow should be tested after we set up network mocking.
+     This test opens safari to trigger the mocked magic link redirect
      */
     func testEmailMagicLinkLogin() {
-        _ = WelcomeScreen().login()
-        .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-        .proceedWithLink()
-        .checkMagicLink()
+        let welcomeScreen = WelcomeScreen().selectLogin()
+            .selectEmailLogin()
+            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
+            .proceedWithLink()
+            .openMagicLoginLink()
+            .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
+            .tabBar.gotoMeScreen()
+            .logout()
 
-        XCTAssert(LoginCheckMagicLinkScreen().isLoaded())
+        XCTAssert(welcomeScreen.isLoaded())
     }
 
     func testWpcomUsernamePasswordLogin() {
-        _ = WelcomeScreen().login()
+        _ = WelcomeScreen().selectLogin()
+            .selectEmailLogin()
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: "WordPress.com")
             .proceedWith(username: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSiteAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
 
@@ -58,10 +60,11 @@ class LoginTests: XCTestCase {
     }
 
     func testSelfHostedUsernamePasswordLoginLogout() {
-        _ = WelcomeScreen().login()
+        _ = WelcomeScreen().selectLogin()
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .continueWithSelectedSite()
             .removeSelfHostedSite()
 
@@ -69,7 +72,8 @@ class LoginTests: XCTestCase {
     }
 
     func testUnsuccessfulLogin() {
-        _ = WelcomeScreen().login()
+        _ = WelcomeScreen().selectLogin()
+            .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithPassword()
             .tryProceed(password: "invalidPswd")

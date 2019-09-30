@@ -67,7 +67,7 @@ struct TestWithNibImmuTableRow: ImmuTableRow {
     }
 }
 
-class MockTableView: CellRegistrator {
+class MockTableView: CellRegistrar {
     var registeredClasses = [(String, AnyClass)]()
     var registeredNibs = [(String, UINib)]()
     func register(_ cell: ImmuTableCell, cellReuseIdentifier identifier: String) {

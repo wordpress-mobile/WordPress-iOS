@@ -31,6 +31,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
 
     private lazy var buttonViewController: NUXButtonViewController = {
         let buttonViewController = NUXButtonViewController.instance()
+        buttonViewController.view.backgroundColor = .basicBackground
         buttonViewController.delegate = self
         buttonViewController.setButtonTitles(
             primary: NSLocalizedString("Choose domain",
@@ -45,6 +46,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
         controller.site = site
         controller.domainPurchasedCallback = domainPurchasedCallback
         controller.siteName = siteNameForSuggestions(for: site)
+
         return controller
     }
 
@@ -66,7 +68,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
     private func configure() {
         title = NSLocalizedString("Register domain",
                                   comment: "Register domain - Title for the Suggested domains screen")
-        WPStyleGuide.configureColors(for: view, andTableView: nil)
+        WPStyleGuide.configureColors(view: view, tableView: nil)
         let backButton = UIBarButtonItem()
         backButton.title = NSLocalizedString("Back", comment: "Back button title.")
         navigationItem.backBarButtonItem = backButton
@@ -80,6 +82,11 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
         if let vc = segue.destination as? RegisterDomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = siteName
+
+            if BlogService.blog(with: site)?.hasBloggerPlan == true {
+                vc.domainSuggestionType = .whitelistedTopLevelDomains(["blog"])
+            }
+
             domainsTableViewController = vc
         }
     }

@@ -1,7 +1,6 @@
 #import "WPTabBarController.h"
 #import <WordPressUI/UIImage+Util.h>
 
-#import "WordPressAppDelegate.h"
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "BlogService.h"
@@ -101,16 +100,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [self setRestorationIdentifier:WPTabBarRestorationID];
         [self setRestorationClass:[WPTabBarController class]];
-        [[self tabBar] setTranslucent:NO];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
-        // Create a background
-        // (not strictly needed when white, but left here for possible customization)
-        [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
-
-        // This can't be set using UIAppearance, otherwise it overrides the titleTextAttributes
-        // set for unselected items.
-        [[self tabBar] setUnselectedItemTintColor:[WPStyleGuide greyLighten10]];
+        [self setupColors];
 
         [self setViewControllers:@[self.blogListSplitViewController,
                                    self.readerSplitViewController,
@@ -353,9 +345,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _blogListSplitViewController = [WPSplitViewController new];
         _blogListSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
         _blogListSplitViewController.presentsWithGesture = NO;
-        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
-
         [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
+        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
 
@@ -371,6 +362,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _readerSplitViewController = [WPSplitViewController new];
         _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
         _readerSplitViewController.presentsWithGesture = NO;
+        [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
         _readerSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
         _readerSplitViewController.collapseMode = WPSplitViewControllerCollapseModeAlwaysKeepDetail;
 
@@ -383,8 +375,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             [_readerSplitViewController setOverrideTraitCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
         }
 
-        [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
-
         _readerSplitViewController.tabBarItem = self.readerNavigationController.tabBarItem;
     }
 
@@ -396,9 +386,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (!_meSplitViewController) {
         _meSplitViewController = [WPSplitViewController new];
         _meSplitViewController.restorationIdentifier = WPMeSplitViewRestorationID;
-        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
-
         [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
+        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
     }
@@ -411,10 +400,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (!_notificationsSplitViewController) {
         _notificationsSplitViewController = [WPSplitViewController new];
         _notificationsSplitViewController.restorationIdentifier = WPNotificationsSplitViewRestorationID;
+         [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
         _notificationsSplitViewController.fullscreenDisplayEnabled = NO;
         _notificationsSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
-
-        [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
 
         _notificationsSplitViewController.tabBarItem = self.notificationsNavigationController.tabBarItem;
     }
@@ -726,16 +714,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     });
 }
 
-- (void)switchMeTabToNotificationSettings
+- (void)switchNotificationsTabToNotificationSettings
 {
-    [self showMeTab];
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
+    [self showNotificationsTab];
+    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 
-    // If we don't dispatch_async here, the top inset of the app
-    // settings VC isn't correct when pushed...
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.meViewController navigateToNotificationSettings];
-    });
+    [self.notificationsViewController showNotificationSettings];
 }
 
 - (void)switchMeTabToSupport

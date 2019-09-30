@@ -38,19 +38,11 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v12.3-whats-new"
+msgctxt "v13.3-whats-new"
 msgid ""
-"Love apps like iA Writer, 1Writer, Bear, and Ulysses? Move from app to WordPress draft fast — the app now imports images from TextBundle and TextPack files and supports importing Markdown files, too.\n"
-"\n"
-"Notifications for internet connectivity problems no longer eat up your entire device screen. Now there’s a small popup instead, so you can keep using offline abilities (like deleting posts, which now happens more reliably if you’re offline).\n"
-"\n"
-"Some text in Activity Log would sometimes show up in a wrong language. Not useful! And now fixed.\n"
-"\n"
-"Also not useful: crashes. Crashes that sometimes occurred during site creation or when loading stats are resolved.\n"
-"\n"
-"Jetpack Remote Install is supported, so you can install and activate Jetpack on a self-hosted site right from the app.\n"
-"\n"
-"Stats are more accessible — if you use voiceover in the app, it’ll read your stats to you.\n"
+"* After a recent round of improvements, the Block Editor is faster and performs more smoothly on the app.\n"
+"* Some of you were having trouble with Dark Mode on iPads; we sorted it out (adios, uninvited glare!).\n"
+"* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -78,7 +70,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-1"
 msgid ""
 "Enjoy your\n"
@@ -86,7 +78,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-2"
 msgid ""
 "Get notified\n"
@@ -94,7 +86,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-3"
 msgid ""
 "Manage your site\n"
@@ -102,7 +94,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-4"
 msgid ""
 "Share your ideas\n"
@@ -110,7 +102,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-5"
 msgid ""
 "All the stats\n"

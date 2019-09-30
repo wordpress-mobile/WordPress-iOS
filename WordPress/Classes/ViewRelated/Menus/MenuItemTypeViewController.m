@@ -3,6 +3,7 @@
 #import "BlogService.h"
 #import "Blog.h"
 #import "PostType.h"
+#import "WordPress-Swift.h"
 
 @interface MenuItemTypeViewController () <MenuItemTypeViewDelegate>
 
@@ -152,7 +153,7 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
     CGContextSetLineWidth(context, 2.0);
-    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
+    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral5] CGColor]);
     CGContextMoveToPoint(context, rect.size.width, 0);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextStrokePath(context);

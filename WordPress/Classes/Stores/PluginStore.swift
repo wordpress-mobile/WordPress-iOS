@@ -734,7 +734,7 @@ private extension PluginStore {
     }
 
     func fetchFeaturedPlugins() {
-        let anonymousAPI = PluginServiceRemote.anonymousWordPressComRestApi(withUserAgent: WPUserAgent.wordPress())
+        let anonymousAPI = WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
         let remote = PluginServiceRemote(wordPressComRestApi: anonymousAPI)
 
         state.fetchingFeatured = true
@@ -800,7 +800,7 @@ private extension PluginStore {
         guard let token = CredentialsService().getOAuthToken(site: site) else {
             return nil
         }
-        let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
+        let api = WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
 
         return PluginServiceRemote(wordPressComRestApi: api)
     }

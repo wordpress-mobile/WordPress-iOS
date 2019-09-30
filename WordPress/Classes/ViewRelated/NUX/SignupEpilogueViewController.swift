@@ -31,7 +31,8 @@ class SignupEpilogueViewController: NUXViewController {
     private lazy var buttonViewController: NUXButtonViewController = {
         let buttonViewController = NUXButtonViewController.instance()
         buttonViewController.delegate = self
-        buttonViewController.setButtonTitles(primary: ButtonTitles.primary)
+        buttonViewController.setButtonTitles(primary: ButtonTitles.primary, primaryAccessibilityId: ButtonTitles.primaryAccessibilityId)
+        buttonViewController.backgroundColor = WordPressAuthenticator.shared.style.viewControllerBackgroundColor
         return buttonViewController
     }()
 
@@ -46,6 +47,7 @@ class SignupEpilogueViewController: NUXViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        view.backgroundColor = .neutral(.shade0)
     }
 
     // MARK: - Navigation
@@ -72,7 +74,18 @@ class SignupEpilogueViewController: NUXViewController {
     // MARK: - analytics
 
     private func tracksProperties() -> [AnyHashable: Any] {
-        let source = socialService != nil ? "google" : "email"
+        let source: String = {
+            guard let service = socialService else {
+                return "email"
+            }
+            switch service {
+            case .google:
+                return "google"
+            case .apple:
+                return "apple"
+            }
+        }()
+
         return ["source": source]
     }
 }
@@ -274,6 +287,7 @@ extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {
 private extension SignupEpilogueViewController {
     enum ButtonTitles {
         static let primary = NSLocalizedString("Continue", comment: "Button text on site creation epilogue page to proceed to My Sites.")
+        static let primaryAccessibilityId = "Continue Button"
     }
 
     enum HUDMessages {

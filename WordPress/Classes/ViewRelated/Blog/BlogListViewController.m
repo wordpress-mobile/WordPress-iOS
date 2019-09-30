@@ -1,5 +1,4 @@
 #import "BlogListViewController.h"
-
 #import "WordPress-Swift.h"
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
@@ -31,7 +30,7 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
 @property (nonatomic) BOOL visible;
-
+@property (nonatomic) BOOL isSyncing;
 @end
 
 @implementation BlogListViewController
@@ -75,11 +74,10 @@ static NSInteger HideSearchMinSites = 3;
                                                                   target:nil
                                                                   action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
-    
-    self.addSiteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-add"]
-                                                                                    style:UIBarButtonItemStylePlain
-                                                                                   target:self
-                                                                                   action:@selector(addSite)];
+
+    self.addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                       target:self
+                                                                       action:@selector(addSite)];
 
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
@@ -216,7 +214,7 @@ static NSInteger HideSearchMinSites = 3;
         return;
     }
     if (![self defaultWordPressComAccount]) {
-        [[WordPressAppDelegate sharedInstance] showWelcomeScreenIfNeededAnimated:YES];
+        [[WordPressAppDelegate shared] showWelcomeScreenIfNeededAnimated:YES];
     }
 }
 
@@ -263,13 +261,16 @@ static NSInteger HideSearchMinSites = 3;
     
     // If we have no sites, show the No Results VC.
     if (siteCount == 0) {
-            [self.noResultsViewController configureWithTitle: NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.")
-                                                 buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
-                                                    subtitle:nil
-                                          attributedSubtitle:nil
-                                                       image:@"mysites-nosites"
-                                               subtitleImage:nil
-                                               accessoryView:nil];
+        [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.")
+                                       noConnectionTitle:nil
+                                             buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
+                                                subtitle:nil
+                                    noConnectionSubtitle:nil
+                                      attributedSubtitle:nil
+                         attributedSubtitleConfiguration:nil
+                                                   image:@"mysites-nosites"
+                                           subtitleImage:nil
+                                           accessoryView:nil];
         [self addNoResultsToView];
     }
 }
@@ -281,7 +282,6 @@ static NSInteger HideSearchMinSites = 3;
     NSUInteger count = self.dataSource.allBlogsCount;
     
     NSString *singularTitle = NSLocalizedString(@"You have 1 hidden WordPress site.", @"Message informing the user that all of their sites are currently hidden (singular)");
-    NSString *singularSubtitle = NSLocalizedString(@"To manage it here, set it to visible.", @"Prompt asking user to make sites visible in order to use them in the app (singular)");
     
     NSString *multipleTitle = [NSString stringWithFormat:NSLocalizedString(@"You have %lu hidden WordPress sites.", @"Message informing the user that all of their sites are currently hidden (plural)"), count];
     NSString *multipleSubtitle = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
@@ -291,17 +291,23 @@ static NSInteger HideSearchMinSites = 3;
 
     if (count == 1) {
         [self.noResultsViewController configureWithTitle:singularTitle
+                                       noConnectionTitle:nil
                                              buttonTitle:buttonTitle
-                                                subtitle:singularSubtitle
+                                                subtitle:singularTitle
+                                    noConnectionSubtitle:nil
                                       attributedSubtitle:nil
+                         attributedSubtitleConfiguration:nil
                                                    image:imageName
                                            subtitleImage:nil
                                            accessoryView:nil];
     } else {
         [self.noResultsViewController configureWithTitle:multipleTitle
+                                       noConnectionTitle:nil
                                              buttonTitle:buttonTitle
                                                 subtitle:multipleSubtitle
+                                    noConnectionSubtitle:nil
                                       attributedSubtitle:nil
+                         attributedSubtitleConfiguration:nil
                                                    image:imageName
                                            subtitleImage:nil
                                            accessoryView:nil];
@@ -334,30 +340,46 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)syncBlogs
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    if (self.isSyncing) {
+        return;
+    }
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (!defaultAccount) {
+        [self handleSyncEnded];
+        return;
+    }
+
+    if (![self.tableView.refreshControl isRefreshing]) {
+        [self.tableView.refreshControl beginRefreshing];
+    }
+    self.isSyncing = YES;
     __weak __typeof(self) weakSelf = self;
+    void (^completionBlock)(void) = ^() {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf handleSyncEnded];
+        });
+    };
+
+    context = [[ContextManager sharedInstance] newDerivedContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
     [context performBlock:^{
-        void (^completionBlock)(void) = ^() {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.tableView.refreshControl endRefreshing];
-            });
-        };
-
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        if (defaultAccount) {
-            [blogService syncBlogsForAccount:defaultAccount success:^{
-                completionBlock();
-            } failure:^(NSError * _Nonnull error) {
-                completionBlock();
-            }];
-        } else {
+        [blogService syncBlogsForAccount:defaultAccount success:^{
             completionBlock();
-        }
+        } failure:^(NSError * _Nonnull error) {
+            completionBlock();
+        }];
     }];
+}
+
+- (void)handleSyncEnded
+{
+    self.isSyncing = NO;
+    [self.tableView.refreshControl endRefreshing];
 }
 
 - (void)removeBlogItemsFromSpotlight:(Blog *)blog {
@@ -392,7 +414,7 @@ static NSInteger HideSearchMinSites = 3;
         _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _headerLabel.numberOfLines = 0;
         _headerLabel.textAlignment = NSTextAlignmentCenter;
-        _headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        _headerLabel.textColor = [UIColor murielText];
         _headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
         _headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
     }
@@ -415,13 +437,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
 
-    // there is a display problem when showing this popup alert on iOS 10,
-    // so we show it from the empty screen's action button instead
-    if (@available(iOS 11, *)) {
-        [self showAddSiteAlertFrom:sourceView];
-    } else {
-        [self actionButtonPressed];
-    }
+    [self showAddSiteAlertFrom:sourceView];
 }
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
@@ -545,7 +561,7 @@ static NSInteger HideSearchMinSites = 3;
     UIEdgeInsets insets = self.tableView.contentInset;
 
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, insets.left, keyboardHeight, insets.right);
-    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.view.safeAreaInsets.top, insets.left, keyboardHeight, insets.right);
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification
@@ -581,11 +597,6 @@ static NSInteger HideSearchMinSites = 3;
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    cell.backgroundColor = [UIColor whiteColor];
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NSLocalizedString(@"Remove", @"Button label when removing a blog");
@@ -619,7 +630,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                       [weakSelf showRemoveSiteAlertForIndexPath:indexPath];
                                                                                   }];
                                                                               }];
-        removeAction.backgroundColor = [WPStyleGuide errorRed];
+        removeAction.backgroundColor = [UIColor murielError];
         [actions addObject:removeAction];
     } else {
         if (blog.visible) {
@@ -630,7 +641,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                         [weakSelf hideBlogAtIndexPath:indexPath];
                                                                                     }];
                                                                                 }];
-            hideAction.backgroundColor = [WPStyleGuide grey];
+            hideAction.backgroundColor = [UIColor murielNeutral30];
             [actions addObject:hideAction];
         } else {
             UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -640,7 +651,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                                           [weakSelf unhideBlogAtIndexPath:indexPath];
                                                                                       }];
                                                                                   }];
-            unhideAction.backgroundColor = [WPStyleGuide validGreen];
+            unhideAction.backgroundColor = [UIColor murielSuccess];
             [actions addObject:unhideAction];
         }
     }
@@ -730,7 +741,7 @@ static NSInteger HideSearchMinSites = 3;
         RecentSitesService *recentSites = [RecentSitesService new];
         [recentSites touchBlog:blog];
 
-        if (![blog isEqual:self.selectedBlog] && [Feature enabled:FeatureFlagQuickStartV2]) {
+        if (![blog isEqual:self.selectedBlog]) {
             [[PushNotificationsManager shared] deletePendingLocalNotifications];
         }
 
@@ -927,7 +938,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                                                                          WPAccount *account = [accountService defaultWordPressComAccount];
                                                                          [accountService setVisibility:visible forBlogs:[account.blogs allObjects]];
-                                                                         [[ContextManager sharedInstance] saveDerivedContext:context];
+                                                                         [[ContextManager sharedInstance] saveContext:context];
                                                                      }];
                                                                  }];
             [alertController addAction:cancelAction];
@@ -945,7 +956,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self.tableView reloadData];
     [self updateEditButton];
-    [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
+    [[WordPressAppDelegate shared] trackLogoutIfNeeded];
     [self maybeShowNUX];
     [self updateSearchVisibility];
     [self updateViewsForCurrentSiteCount];

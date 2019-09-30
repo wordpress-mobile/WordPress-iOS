@@ -1,5 +1,6 @@
 import Gridicons
 import UIKit
+import AutomatticTracks
 
 class PrivacySettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!
@@ -29,7 +30,7 @@ class PrivacySettingsViewController: UITableViewController {
         handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         addAccountSettingsChangedObserver()
@@ -107,14 +108,13 @@ class PrivacySettingsViewController: UITableViewController {
 
     func usageTrackingChanged() -> (Bool) -> Void {
         return { enabled in
-            let appAnalytics = WordPressAppDelegate.sharedInstance().analytics
+            let appAnalytics = WordPressAppDelegate.shared?.analytics
             appAnalytics?.setUserHasOptedOut(!enabled)
 
             let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             AccountSettingsHelper(accountService: accountService).updateTracksOptOutSetting(!enabled)
 
-            let crashlytics = WordPressAppDelegate.sharedInstance().crashlytics
-            crashlytics?.setUserHasOptedOut(!enabled)
+            CrashLogging.setNeedsDataRefresh()
         }
     }
 

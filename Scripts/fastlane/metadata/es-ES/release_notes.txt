@@ -1,6 +1,3 @@
-12.2
------
-* ¡Publica con confianza! Las vistas preliminares en borrador te mostrarán una versión más precisa de tus entradas.
-* Si prefieres escribir en aplicaciones como Bear o Ulysses (o cualquier otra aplicación que utilice los formatos TextBundle y TextPack), genial, sigue haciéndolo. Y ahora puedes importar texto de esas aplicaciones a esta.
-* Toda la aplicación recibió un estímulo de primavera - arreglamos algunos pequeños fallos visuales en el proceso de creación del sitio, ajustamos algunas palabras para dejar claro cuánto espacio de almacenamiento está usando tu sitio, y nos encargamos de un molesto fallo que a veces se producía cuando estabas tratando de administrar los plugins.
-
+* Añade compatibilidad con iOS 13.
+* ¡Prueba el modo oscuro!
+* Ya disponible: Accede con Apple.

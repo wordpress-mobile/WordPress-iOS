@@ -116,6 +116,17 @@ end
 
 CLOBBER << "vendor"
 
+desc "Mocks"
+task :mocks do
+  wordpress_mocks_path = "./Pods/WordPressMocks"
+  # If WordPressMocks is referenced by a local path, use that.
+  unless lockfile_hash.dig("EXTERNAL SOURCES", "WordPressMocks", :path).nil?
+    wordpress_mocks_path = lockfile_hash.dig("EXTERNAL SOURCES", "WordPressMocks", :path)
+  end
+
+  sh "#{wordpress_mocks_path}/scripts/start.sh 8282"
+end
+
 desc "Build #{XCODE_SCHEME}"
 task :build => [:dependencies] do
   xcodebuild(:build)
@@ -247,13 +258,17 @@ def pod(args)
   sh(*args)
 end
 
+def lockfile_hash
+  YAML.load(File.read("Podfile.lock"))
+end
+
 def lockfiles_match?
   File.file?('Pods/Manifest.lock') && FileUtils.compare_file('Podfile.lock', 'Pods/Manifest.lock')
 end
 
 def podfile_locked?
   podfile_checksum = Digest::SHA1.file("Podfile")
-  lockfile_checksum = YAML.load(File.read("Podfile.lock"))["PODFILE CHECKSUM"]
+  lockfile_checksum = lockfile_hash["PODFILE CHECKSUM"]
 
   podfile_checksum == lockfile_checksum
 end

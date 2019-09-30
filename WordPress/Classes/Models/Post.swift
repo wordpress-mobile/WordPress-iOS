@@ -277,14 +277,16 @@ class Post: AbstractPost {
     override func statusForDisplay() -> String? {
         var statusString: String?
 
-        if status != .publish && status != .draft {
-            statusString = statusTitle as String?
+        if status == .trash || status == .scheduled {
+            statusString = ""
+        } else if status != .publish && status != .draft {
+            statusString = statusTitle
         }
 
         if isRevision() {
             let localOnly = NSLocalizedString("Local", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
 
-            if let tempStatusString = statusString {
+            if let tempStatusString = statusString, !tempStatusString.isEmpty {
                 statusString = String(format: "%@, %@", tempStatusString, localOnly)
             } else {
                 statusString = localOnly
@@ -303,14 +305,5 @@ class Post: AbstractPost {
         }
 
         return title
-    }
-
-    override func featuredImageURLForDisplay() -> URL? {
-
-        guard let path = pathForDisplayImage else {
-            return nil
-        }
-
-        return URL(string: path)
     }
 }

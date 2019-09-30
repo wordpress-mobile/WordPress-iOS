@@ -11,6 +11,12 @@ protocol KeyValueDatabase {
     func removeObject(forKey defaultName: String)
 }
 
+extension KeyValueDatabase {
+    func bool(forKey key: String) -> Bool {
+        return object(forKey: key) as? Bool ?? false
+    }
+}
+
 // MARK: - Storage implementations
 
 extension UserDefaults: KeyValueDatabase {}

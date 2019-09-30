@@ -349,9 +349,11 @@ extension AppExtensionsService {
                     if let remoteMediaID = remoteMedia.mediaID?.int64Value,
                         let remoteMediaURLString = remoteMedia.url?.absoluteString,
                         let localFileName = mediaUploadOp.fileName,
-                        let remoteFileName = remoteMedia.file {
+                        let remoteFileName = remoteMedia.file,
+                        let localFileNoExt = URL(string: localFileName)?.deletingPathExtension().lastPathComponent {
 
-                        if localFileName.lowercased().trim() == remoteFileName.lowercased().trim() {
+                        // sometimes the remote file name has been altered, such as `localfile.jpg` becoming `localfile-1.jpg`
+                        if remoteFileName.lowercased().trim().contains(localFileNoExt.lowercased()) {
                             mediaUploadOp.remoteURL = remoteMediaURLString
                             mediaUploadOp.remoteMediaID = remoteMediaID
                             mediaUploadOp.currentStatus = .complete

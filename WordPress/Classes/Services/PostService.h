@@ -44,6 +44,13 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
               failure:(void (^)(NSError *))failure;
 
 /**
+ Get all posts that failed to upload.
+ 
+ @param result a block that will be invoked to return the requested posts.
+ */
+- (void)getFailedPosts:(nonnull void (^)( NSArray<AbstractPost *>* _Nonnull posts))result;
+
+/**
  Sync an initial batch of posts from the specified blog.
  Please note that success and/or failure are called in the context of the
  NSManagedObjectContext supplied when the PostService was initialized, and may not
@@ -91,6 +98,20 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 - (void)uploadPost:(AbstractPost *)post
            success:(nullable void (^)(AbstractPost *post))success
            failure:(void (^)(NSError * _Nullable error))failure;
+
+/**
+ Saves a post to the server.
+ 
+ @param post The post or page to be saved
+ @param success A success block.  If the post object exists locally (in CoreData) when the upload
+ succeeds, then this block will also return a pointer to the updated local AbstractPost
+ object.  It's important to note this object may not be the same one as the `post` input
+ parameter
+ @param failure A failure block
+ */
+- (void)autoSave:(AbstractPost *)post
+         success:(nullable void (^)(AbstractPost *post, NSString *previewURL))success
+         failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
  Attempts to delete the specified post outright vs moving it to the 

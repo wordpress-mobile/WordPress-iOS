@@ -103,7 +103,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     self.gravatarImageView.image = gravatarImage;
     
     // Note:
-    // We need to update AFNetworking's internal cache. Otherwise, any upcoming query to refresh the gravatar
+    // We need to update the internal cache. Otherwise, any upcoming query to refresh the gravatar
     // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
     //
     [self.gravatarImageView overrideGravatarImageCache:gravatarImage rating:GravatarRatingsX email:self.gravatarEmail];
@@ -119,13 +119,20 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     [self.stackView addArrangedSubview:spaceView];
     [self.stackView addArrangedSubview:self.displayNameLabel];
     [self.stackView addArrangedSubview:self.usernameLabel];
-
+    NSLayoutConstraint *heightConstraint =  [self.gravatarImageView.heightAnchor constraintEqualToConstant:MeHeaderViewGravatarSize];
+    heightConstraint.priority = 999;
+    NSLayoutConstraint *spaceHeightConstraint =  [spaceView.heightAnchor constraintEqualToConstant:MeHeaderViewVerticalSpacing];
+    heightConstraint.priority = 999;
+    NSLayoutConstraint *stackViewTopConstraint =  [self.stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:MeHeaderViewVerticalSpacing];
+    stackViewTopConstraint.priority = 999;
+    NSLayoutConstraint *stackViewBottomConstraint =  [self.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:MeHeaderViewVerticalSpacing];
+    stackViewBottomConstraint.priority = 999;
     NSArray *constraints = @[
-                             [self.gravatarImageView.heightAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
+                             heightConstraint,
                              [self.gravatarImageView.widthAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
-                             [spaceView.heightAnchor constraintEqualToConstant:MeHeaderViewVerticalSpacing],
-                             [self.stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:MeHeaderViewVerticalSpacing],
-                             [self.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:MeHeaderViewVerticalSpacing],
+                             spaceHeightConstraint,
+                             stackViewTopConstraint,
+                             stackViewBottomConstraint,
                              [self.stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
                              ];
 
@@ -155,9 +162,10 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.numberOfLines = 1;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide darkGrey];
+    label.textColor = [UIColor murielNeutral70];
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
+    label.accessibilityIdentifier = @"Display Name";
     [WPStyleGuide configureLabel:label
                        textStyle:UIFontTextStyleHeadline
                       fontWeight:UIFontWeightSemibold];
@@ -171,9 +179,10 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.numberOfLines = 1;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide grey];
+    label.textColor = [UIColor murielNeutral30];
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
+    label.accessibilityIdentifier = @"Username";
     [WPStyleGuide configureLabel:label
                        textStyle:UIFontTextStyleCallout];
 
@@ -207,11 +216,9 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
                                                                                 action:@selector(handleHeaderPress:)];
     singleTap.numberOfTapsRequired = 1;
     [dropTarget addGestureRecognizer:singleTap];
-    
-    if (@available(iOS 11.0, *)) {
-        UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
-        [dropTarget addInteraction:dropInteraction];
-    }
+
+    UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
+    [dropTarget addInteraction:dropInteraction];
     
     return dropTarget;
 }

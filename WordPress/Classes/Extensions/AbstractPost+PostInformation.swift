@@ -9,7 +9,7 @@ extension AbstractPost: ImageSourceInformation {
     }
 
     var isLocalRevision: Bool {
-        return self.isDraft() && self.isRevision() && self.remoteStatus == .local
+        return self.originalIsDraft() && self.isRevision() && self.remoteStatus == .local
     }
 
 }

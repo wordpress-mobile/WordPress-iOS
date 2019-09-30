@@ -114,7 +114,7 @@ class ShareCategoriesPickerViewController: UITableViewController {
     }
 
     fileprivate func setupTableView() {
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellReuseIdentifier)
         tableView.allowsMultipleSelection = true
@@ -147,10 +147,6 @@ class ShareCategoriesPickerViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {

@@ -35,6 +35,7 @@ class GutenbergMediaPickerHelper: NSObject {
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
         options.allowMultipleSelection = false
+        options.preferredStatusBarStyle = .lightContent
         return options
     }()
 
@@ -46,6 +47,7 @@ class GutenbergMediaPickerHelper: NSObject {
     }
 
     func presentMediaPickerFullScreen(animated: Bool,
+                                      filter: WPMediaType,
                                       dataSourceType: MediaPickerDataSourceType = .device,
                                       callback: @escaping GutenbergMediaPickerHelperCallback) {
 
@@ -63,6 +65,7 @@ class GutenbergMediaPickerHelper: NSObject {
         }
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
+        mediaPickerOptions.filter = filter
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
@@ -78,6 +81,7 @@ class GutenbergMediaPickerHelper: NSObject {
     }()
 
     func presentCameraCaptureFullScreen(animated: Bool,
+                                        filter: WPMediaType,
                                         callback: @escaping GutenbergMediaPickerHelperCallback) {
 
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
@@ -90,6 +94,7 @@ class GutenbergMediaPickerHelper: NSObject {
         cameraPicker.resetState(false)
         cameraPicker.modalPresentationStyle = .currentContext
         cameraPicker.viewControllerToUseToPresent = context
+        cameraPicker.options.filter = filter
         cameraPicker.showCapture()
     }
 }

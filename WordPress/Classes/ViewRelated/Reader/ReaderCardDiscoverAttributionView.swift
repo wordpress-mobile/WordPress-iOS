@@ -31,6 +31,11 @@ private enum ReaderCardDiscoverAttribution: Int {
 
     @objc weak var delegate: ReaderCardDiscoverAttributionViewDelegate?
 
+    override open var backgroundColor: UIColor? {
+        didSet {
+            applyOpaqueBackgroundColors()
+        }
+    }
 
     // MARK: - Lifecycle Methods
 
@@ -57,6 +62,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         textLabel.isUserInteractionEnabled = true
         imageView.isUserInteractionEnabled = true
 
+        backgroundColor = .listForeground
         applyOpaqueBackgroundColors()
     }
 
@@ -67,8 +73,8 @@ private enum ReaderCardDiscoverAttribution: Int {
      Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
      */
     fileprivate func applyOpaqueBackgroundColors() {
-        imageView.backgroundColor = UIColor.white
-        textLabel.backgroundColor = UIColor.white
+        imageView?.backgroundColor = backgroundColor
+        textLabel?.backgroundColor = backgroundColor
     }
 
     @objc open func configureView(_ contentProvider: ReaderPostContentProvider?) {
@@ -101,13 +107,13 @@ private enum ReaderCardDiscoverAttribution: Int {
     fileprivate func configurePostAttribution(_ contentProvider: ReaderPostContentProvider) {
         let url = contentProvider.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: gravatarImageName)
-        imageView.setImageWith(url!, placeholderImage: placeholder)
+        imageView.downloadImage(from: url, placeholderImage: placeholder)
         imageView.shouldRoundCorners = true
 
         let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
                                             blogName: contentProvider.sourceBlogNameForDisplay())
         let attributes = originalAttributionParagraphAttributes
-        textLabel.textColor = WPStyleGuide.grey()
+        textLabel.textColor = .neutral(.shade30)
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
         attributionAction = .none
     }
@@ -116,7 +122,7 @@ private enum ReaderCardDiscoverAttribution: Int {
     fileprivate func configureSiteAttribution(_ contentProvider: ReaderPostContentProvider, verboseAttribution verbose: Bool) {
         let url = contentProvider.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: blavatarImageName)
-        imageView.setImageWith(url!, placeholderImage: placeholder)
+        imageView.downloadImage(from: url, placeholderImage: placeholder)
         imageView.shouldRoundCorners = false
 
         let blogName = contentProvider.sourceBlogNameForDisplay()
@@ -128,8 +134,8 @@ private enum ReaderCardDiscoverAttribution: Int {
         let attributes = originalAttributionParagraphAttributes
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
         attributedString.addAttribute(.font, value: font, range: range)
-        textLabel.textColor = WPStyleGuide.mediumBlue()
-        textLabel.highlightedTextColor = WPStyleGuide.lightBlue()
+        textLabel.textColor = .primary
+        textLabel.highlightedTextColor = .primary
         textLabel.attributedText = attributedString
         attributionAction = .visitSite
     }

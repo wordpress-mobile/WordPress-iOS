@@ -15,22 +15,20 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
-
-    // If the subtitles are not shown, this is active.
+    @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
-    // If the subtitles are shown, this is active.
-    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
-
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private var forDetails = false
     private var limitRowsDisplayed = true
     private let maxChildRowsToDisplay = 10
-    private var dataRows = [StatsTotalRowData]()
+    fileprivate var dataRows = [StatsTotalRowData]()
     private var subtitlesProvided = true
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
+    private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
@@ -41,7 +39,9 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
-                   limitRowsDisplayed: Bool = true) {
+                   postStatsDelegate: PostStatsDelegate? = nil,
+                   limitRowsDisplayed: Bool = true,
+                   forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
@@ -49,21 +49,24 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
+        self.postStatsDelegate = postStatsDelegate
         self.limitRowsDisplayed = limitRowsDisplayed
+        self.forDetails = forDetails
 
-        let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
+        if !forDetails {
+            addRows(dataRows,
+                    toStackView: rowsStackView,
+                    forType: siteStatsPeriodDelegate != nil ? .period : .insights,
+                    limitRowsDisplayed: limitRowsDisplayed,
+                    rowDelegate: self,
+                    viewMoreDelegate: self)
 
-        addRows(dataRows,
-                toStackView: rowsStackView,
-                forType: statType,
-                limitRowsDisplayed: limitRowsDisplayed,
-                rowDelegate: self,
-                viewMoreDelegate: self)
+            initChildRows()
+        }
 
         setSubtitleVisibility()
-        initChildRows()
-
         applyStyles()
+        prepareForVoiceOver()
     }
 
     override func prepareForReuse() {
@@ -84,7 +87,6 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
         removeRowsFromStackView(rowsStackView)
     }
-
 }
 
 // MARK: - Private Extension
@@ -99,13 +101,22 @@ private extension TopTotalsCell {
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
-    /// Hide the subtitles if there is no data or Subtitles.
+    /// For Overview tables: Hide the subtitles if there is no data or subtitles.
+    /// For Details table:
+    /// - Hide the subtitles if none provided.
+    /// - Hide the stack view.
     ///
     func setSubtitleVisibility() {
-        let showSubtitles = dataRows.count > 0 && subtitlesProvided
-        subtitleStackView.isHidden = !showSubtitles
-        rowsStackViewTopConstraint.isActive = !showSubtitles
-        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
+        let subtitleHeight = subtitlesStackViewTopConstraint.constant * 2 + subtitleStackView.frame.height
+
+        if forDetails {
+            bottomSeparatorLine.isHidden = true
+            rowsStackViewTopConstraint.constant = subtitlesProvided ? subtitleHeight : 0
+            return
+        }
+
+        let showSubtitles = !dataRows.isEmpty && subtitlesProvided
+        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleHeight : 0
     }
 
     // MARK: - Child Row Handling
@@ -122,13 +133,13 @@ private extension TopTotalsCell {
                 return
             }
 
-            toggleChildRowsForRow(row)
+            toggleChildRows(for: row, didSelectRow: false)
 
             row.childRowsView?.rowsStackView.arrangedSubviews.forEach { child in
                 guard let childRow = child as? StatsTotalRow else {
                     return
                 }
-                toggleChildRowsForRow(childRow)
+                toggleChildRows(for: childRow, didSelectRow: false)
             }
         }
     }
@@ -146,7 +157,15 @@ private extension TopTotalsCell {
         // store that on the row (for possible removal later),
         // and add the child view to the row stack view.
 
-        let numberOfRowsToAdd = childRows.count > maxChildRowsToDisplay ? maxChildRowsToDisplay : childRows.count
+        let numberOfRowsToAdd: Int = {
+            // If this is on Post Stats, don't limit the number of child rows
+            // as it needs to show a year's worth of data.
+            if postStatsDelegate != nil {
+                return childRows.count
+            }
+            return childRows.count > maxChildRowsToDisplay ? maxChildRowsToDisplay : childRows.count
+        }()
+
         let containingStackView = stackViewContainingRow(row)
         let childRowsView = StatsChildRowsView.loadFromNib()
 
@@ -154,21 +173,14 @@ private extension TopTotalsCell {
             let childRowData = childRows[childRowsIndex]
             let childRow = StatsTotalRow.loadFromNib()
 
-            childRow.configure(rowData: childRowData, delegate: self)
+            childRow.configure(rowData: childRowData, delegate: self, parentRow: row)
             childRow.showSeparator = false
-            childRow.parentRow = row
 
             // If this child is just a child, then change the label color.
             // If this child is also a parent, then leave the color as default.
             if !childRow.hasChildRows {
                 Style.configureLabelAsChildRowTitle(childRow.itemLabel)
             }
-
-            // If the parent row has an icon, show the image view for the child
-            // to make the child row appear "indented".
-            // If the parent does not have an icon, don't indent the child row.
-            childRow.imageView.isHidden = row.imageView.isHidden
-            childRow.imageWidthConstraint.constant = row.imageWidthConstraint.constant
 
             childRowsView.rowsStackView.addArrangedSubview(childRow)
         }
@@ -279,17 +291,21 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsDetailsDelegate?.displayMediaWithID?(mediaID)
     }
 
-    func toggleChildRowsForRow(_ row: StatsTotalRow) {
+    func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool) {
         row.expanded ? addChildRowsForRow(row) : removeChildRowsForRow(row)
         toggleSeparatorsAroundRow(row)
-        siteStatsInsightsDelegate?.expandedRowUpdated?(row)
-        siteStatsPeriodDelegate?.expandedRowUpdated?(row)
-        siteStatsDetailsDelegate?.expandedRowUpdated?(row)
+        siteStatsInsightsDelegate?.expandedRowUpdated?(row, didSelectRow: didSelectRow)
+        siteStatsPeriodDelegate?.expandedRowUpdated?(row, didSelectRow: didSelectRow)
+        postStatsDelegate?.expandedRowUpdated?(row, didSelectRow: didSelectRow)
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
         siteStatsPeriodDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: postURL)
         siteStatsDetailsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: postURL)
+    }
+
+    func showAddInsight() {
+        siteStatsInsightsDelegate?.showAddInsight?()
     }
 
 }
@@ -301,6 +317,32 @@ extension TopTotalsCell: ViewMoreRowDelegate {
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
         siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
         siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
+        postStatsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
+}
+
+// MARK: - Accessibility
+
+extension TopTotalsCell: Accessible {
+    func prepareForVoiceOver() {
+        accessibilityTraits = .summaryElement
+
+        guard dataRows.count > 0 else {
+            return
+        }
+
+        let itemTitle = itemSubtitleLabel.text
+        let dataTitle = dataSubtitleLabel.text
+
+        if let itemTitle = itemTitle, let dataTitle = dataTitle {
+            let descriptionFormat = NSLocalizedString("Table showing %@ and %@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
+            accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle)
+        } else {
+            if let title = (itemTitle ?? dataTitle) {
+                let descriptionFormat = NSLocalizedString("Table showing %@", comment: "Accessibility of stats table. Placeholder will be populated with name of data shown in table.")
+                accessibilityLabel = String(format: descriptionFormat, title)
+            }
+        }
+    }
 }

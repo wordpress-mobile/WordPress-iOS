@@ -4,11 +4,16 @@ protocol SiteStatsTableHeaderDelegate: class {
     func dateChangedTo(_ newDate: Date?)
 }
 
-class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
+protocol SiteStatsTableHeaderDateButtonDelegate: SiteStatsTableHeaderDelegate {
+    func didTouchHeaderButton(forward: Bool)
+}
+
+class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Accessible {
 
     // MARK: - Properties
 
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var timezoneLabel: UILabel!
     @IBOutlet weak var backArrow: UIImageView!
     @IBOutlet weak var forwardArrow: UIImageView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
@@ -16,21 +21,28 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var forwardButton: UIButton!
 
-    static let height: CGFloat = 44
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: SiteStatsTableHeaderDelegate?
     private var date: Date?
     private var period: StatsPeriodUnit?
 
+    // Allow the date bar to only go up to the most recent date available.
+    // Used by Insights 'This Year' details view and Post Stats.
+    private var mostRecentDate: Date?
+
     // Limits how far back the date chooser can go.
     // Corresponds to the number of bars shown on the Overview chart.
-    private let backLimit = -12
+    static let defaultPeriodCount = 14
+    private var expectedPeriodCount = SiteStatsTableHeaderView.defaultPeriodCount
+    private var backLimit: Int {
+        return -(expectedPeriodCount - 1)
+    }
 
-    private lazy var calendar: Calendar = {
-        var cal = Calendar(identifier: .iso8601)
-        cal.timeZone = .autoupdatingCurrent
-        return cal
-    }()
+    // MARK: - Class Methods
+
+    class func headerHeight() -> CGFloat {
+        return SiteStatsInformation.sharedInstance.timeZoneMatchesDevice() ? Heights.default : Heights.withTimezone
+    }
 
     // MARK: - View
 
@@ -39,20 +51,62 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
         applyStyles()
     }
 
-    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate) {
-        self.date = date
+    func configure(date: Date?,
+                   period: StatsPeriodUnit?,
+                   delegate: SiteStatsTableHeaderDelegate,
+                   expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount,
+                   mostRecentDate: Date? = nil) {
+
+        self.date = {
+            if let date = date,
+                let mostRecentDate = mostRecentDate,
+                mostRecentDate < date {
+                return mostRecentDate
+            }
+            return date
+        }()
+
         self.period = period
         self.delegate = delegate
+        self.expectedPeriodCount = expectedPeriodCount
+        self.mostRecentDate = mostRecentDate
         dateLabel.text = displayDate()
+        displayTimezone()
         updateButtonStates()
+        prepareForVoiceOver()
     }
 
+    func prepareForVoiceOver() {
+        if let period = dateLabel.text {
+            let localizedLabel = NSLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
+            dateLabel.accessibilityLabel = .localizedStringWithFormat(localizedLabel, period)
+        }
+
+        backButton.accessibilityLabel = NSLocalizedString("Previous period", comment: "Accessibility label")
+        backButton.accessibilityHint = NSLocalizedString("Tap to select the previous period", comment: "Accessibility hint")
+
+        forwardButton.accessibilityLabel = NSLocalizedString("Next period", comment: "Accessibility label")
+        forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
+    }
+
+    func updateDate(with intervalDate: Date) {
+        guard let period = period else {
+            return
+        }
+
+        self.date = StatsPeriodHelper().endDate(from: intervalDate, period: period)
+
+        delegate?.dateChangedTo(self.date)
+        reloadView()
+    }
 }
 
 private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
+        contentView.backgroundColor = .basicBackground
         Style.configureLabelAsCellRowTitle(dateLabel)
+        Style.configureLabelAsChildRowTitle(timezoneLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
@@ -68,89 +122,76 @@ private extension SiteStatsTableHeaderView {
         case .day, .month, .year:
             return dateFormatter.string(from: date)
         case .week:
-            let week = weekIncludingDate(date)
+            let week = StatsPeriodHelper().weekIncludingDate(date)
             guard let weekStart = week?.weekStart, let weekEnd = week?.weekEnd else {
                 return nil
             }
 
-            let startDate = dateFormatter.string(from: weekStart)
-            let endDate = dateFormatter.string(from: weekEnd)
-
-            let weekFormat = NSLocalizedString("%@ - %@", comment: "Stats label for week date range. Ex: Mar 25 - Mar 31")
-            return String.localizedStringWithFormat(weekFormat, startDate, endDate)
+            return "\(dateFormatter.string(from: weekStart)) – \(dateFormatter.string(from: weekEnd))"
         }
     }
 
+    func displayTimezone() {
+        guard !SiteStatsInformation.sharedInstance.timeZoneMatchesDevice(),
+        let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone else {
+            timezoneLabel.isHidden = true
+            timezoneLabel.accessibilityLabel = nil
+            return
+        }
+
+        timezoneLabel.text = siteTimeZone.displayForStats()
+        timezoneLabel.accessibilityLabel = siteTimeZone.displayForStats()
+        timezoneLabel.isHidden = false
+    }
+
+    func reloadView() {
+        dateLabel.text = displayDate()
+        updateButtonStates()
+        prepareForVoiceOver()
+        postAccessibilityPeriodLabel()
+    }
+
     @IBAction func didTapBackButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedBackward)
         updateDate(forward: false)
     }
 
     @IBAction func didTapForwardButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedForward)
         updateDate(forward: true)
     }
 
     func updateDate(forward: Bool) {
+        if let delegate = delegate as? SiteStatsTableHeaderDateButtonDelegate {
+            delegate.didTouchHeaderButton(forward: forward)
+            return
+        }
+
         guard let date = date, let period = period else {
             return
         }
 
         let value = forward ? 1 : -1
-        self.date = calendar.date(byAdding: period.calendarComponent, value: value, to: date)
+
+        self.date = StatsPeriodHelper().calculateEndDate(from: date, offsetBy: value, unit: period)
+
         delegate?.dateChangedTo(self.date)
-        dateLabel.text = displayDate()
-        updateButtonStates()
+        reloadView()
     }
 
     func updateButtonStates() {
-
-        // Use dates without time
-        let currentDate = Date().normalizedDate()
-
-        guard var date = date,
-            let period = period,
-            var oldestDate = calendar.date(byAdding: period.calendarComponent, value: backLimit, to: currentDate) else {
-            backButton.isEnabled = false
+        guard let date = date, let period = period else {
             forwardButton.isEnabled = false
+            backButton.isEnabled = false
             updateArrowStates()
             return
         }
 
-        date = date.normalizedDate()
-        oldestDate = oldestDate.normalizedDate()
-
-        switch period {
-        case .day:
-            forwardButton.isEnabled = date < currentDate
-            backButton.isEnabled = date > oldestDate
-        case .week:
-            let week = weekIncludingDate(date)
-            if let weekStart = week?.weekStart,
-                let weekEnd = week?.weekEnd,
-                let currentWeekEnd = weekIncludingDate(currentDate)?.weekEnd,
-                let oldestWeekStart = weekIncludingDate(oldestDate)?.weekStart {
-                forwardButton.isEnabled = weekEnd < currentWeekEnd
-                backButton.isEnabled = weekStart > oldestWeekStart
-            } else {
-                forwardButton.isEnabled = false
-                backButton.isEnabled = false
-            }
-        case .month:
-            if let month = monthFromDate(date),
-                let currentMonth = monthFromDate(currentDate),
-                let oldestMonth = monthFromDate(oldestDate) {
-                forwardButton.isEnabled = month < currentMonth
-                backButton.isEnabled = month > oldestMonth
-            } else {
-                backButton.isEnabled = false
-                forwardButton.isEnabled = false
-            }
-        case .year:
-            let year = yearFromDate(date)
-            forwardButton.isEnabled = year < yearFromDate(currentDate)
-            backButton.isEnabled = year > yearFromDate(oldestDate)
-        }
-
+        let helper = StatsPeriodHelper()
+        forwardButton.isEnabled = helper.dateAvailableAfterDate(date, period: period, mostRecentDate: mostRecentDate)
+        backButton.isEnabled = helper.dateAvailableBeforeDate(date, period: period, backLimit: backLimit, mostRecentDate: mostRecentDate)
         updateArrowStates()
+        prepareForVoiceOver()
     }
 
     func updateArrowStates() {
@@ -158,55 +199,41 @@ private extension SiteStatsTableHeaderView {
         backArrow.image = Style.imageForGridiconType(.chevronLeft, withTint: (backButton.isEnabled ? .darkGrey : .grey))
     }
 
-    // MARK: - Date Helpers
+    func postAccessibilityPeriodLabel() {
+        UIAccessibility.post(notification: .screenChanged, argument: dateLabel)
+    }
 
-    func weekIncludingDate(_ date: Date) -> (weekStart: Date, weekEnd: Date)? {
-        // Note: Week is Monday - Sunday
+    // MARK: - Analytics support
 
-        guard let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)),
-            let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) else {
-                return nil
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
         }
-
-        return (weekStart, weekEnd)
     }
 
-    func monthFromDate(_ date: Date) -> Date? {
-        let dateComponents = calendar.dateComponents([.month, .year], from: date)
-        return calendar.date(from: dateComponents)
-    }
+    // MARK: - Header Heights
 
-    func yearFromDate(_ date: Date) -> Int {
-        return calendar.component(.year, from: date)
+    private struct Heights {
+        static let `default`: CGFloat = 44
+        static let withTimezone: CGFloat = 60
     }
 }
 
-private extension StatsPeriodUnit {
-
-    var dateFormatTemplate: String {
-        switch self {
-        case .day:
-            return "MMM d, yyyy"
-        case .week:
-            return "MMM d"
-        case .month:
-            return "MMM yyyy"
-        case .year:
-            return "yyyy"
+extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        guard let period = period, entryCount > 0, entryCount <= SiteStatsTableHeaderView.defaultPeriodCount else {
+            return
         }
-    }
 
-    var calendarComponent: Calendar.Component {
-        switch self {
-        case .day:
-            return .day
-        case .week:
-            return .weekOfYear
-        case .month:
-            return .month
-        case .year:
-            return .year
-        }
-    }
+        let periodShift = -((entryCount - 1) - entryIndex)
+        let fromDate = mostRecentDate?.normalizedDate() ?? StatsDataHelper.currentDateForSite().normalizedDate()
+        self.date = StatsPeriodHelper().calculateEndDate(from: fromDate, offsetBy: periodShift, unit: period)
 
+        delegate?.dateChangedTo(self.date)
+        reloadView()
+    }
 }

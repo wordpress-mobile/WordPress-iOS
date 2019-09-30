@@ -35,6 +35,8 @@ class SupportTableViewController: UITableViewController {
         WPAnalytics.track(.openedSupport)
         setupNavBar()
         setupTable()
+        checkForAutomatticEmail()
+        ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -100,7 +102,7 @@ private extension SupportTableViewController {
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         // remove empty cells
         tableView.tableFooterView = UIView()
 
@@ -120,6 +122,7 @@ private extension SupportTableViewController {
             helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator))
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
                                                    value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
+                                                   accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
                                                    action: supportEmailSelected()))
         } else {
             helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
@@ -220,8 +223,27 @@ private extension SupportTableViewController {
                 // if the value changed.
                 WPAnalytics.track(.supportIdentitySet)
                 self.reloadViewModel()
+                self.checkForAutomatticEmail()
             }
         }
+    }
+
+    /// Zendesk does not allow agents to submit tickets, and displays a 'Message failed to send' error upon attempt.
+    /// If the user email address is a8c, display a warning.
+    ///
+    func checkForAutomatticEmail() {
+        guard let email = ZendeskUtils.userSupportEmail(),
+            (Constants.automatticEmails.first { email.contains($0) }) != nil else {
+                return
+        }
+
+        let alert = UIAlertController(title: "Warning",
+                                      message: "Automattic email account detected. Please log in with a non-Automattic email to submit or view support tickets.",
+                                      preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alert.addAction(cancel)
+
+        present(alert, animated: true, completion: nil)
     }
 
     func extraDebugToggled() -> (_ newValue: Bool) -> Void {
@@ -257,8 +279,9 @@ private extension SupportTableViewController {
             let cell = cell as! WPTableViewCellIndicator
             cell.textLabel?.text = title
             WPStyleGuide.configureTableViewCell(cell)
-            cell.textLabel?.textColor = WPStyleGuide.wordPressBlue()
+            cell.textLabel?.textColor = .primary
             cell.showIndicator = showIndicator
+            cell.accessibilityTraits = .button
         }
     }
 
@@ -267,13 +290,16 @@ private extension SupportTableViewController {
 
         let title: String
         let value: String
+        let accessibilityHint: String
         let action: ImmuTableAction?
 
         func configureCell(_ cell: UITableViewCell) {
             cell.textLabel?.text = title
             cell.detailTextLabel?.text = value
             WPStyleGuide.configureTableViewCell(cell)
-            cell.textLabel?.textColor = WPStyleGuide.wordPressBlue()
+            cell.textLabel?.textColor = .primary
+            cell.accessibilityTraits = .button
+            cell.accessibilityHint = accessibilityHint
         }
     }
 
@@ -298,6 +324,7 @@ private extension SupportTableViewController {
         static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
         static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
         static let contactEmail = NSLocalizedString("Contact Email", comment: "Support email label.")
+        static let contactEmailAccessibilityHint = NSLocalizedString("Shows a dialog for changing the Contact Email.", comment: "Accessibility hint describing what happens if the Contact Email button is tapped.")
         static let emailNotSet = NSLocalizedString("Not Set", comment: "Display value for Support email field if there is no user email address.")
     }
 
@@ -312,6 +339,7 @@ private extension SupportTableViewController {
     struct Constants {
         static let appSupportURL = URL(string: "https://apps.wordpress.com/support")
         static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
+        static let automatticEmails = ["@automattic.com", "@a8c.com"]
     }
 
 }

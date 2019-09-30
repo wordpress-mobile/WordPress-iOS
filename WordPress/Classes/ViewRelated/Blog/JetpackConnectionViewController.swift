@@ -35,7 +35,7 @@ open class JetpackConnectionViewController: UITableViewController {
         super.viewDidLoad()
         title = NSLocalizedString("Manage Connection", comment: "Title for the Jetpack Manage Connection Screen")
         ImmuTable.registerRows([DestructiveButtonRow.self], tableView: tableView)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         reloadViewModel()
     }
 

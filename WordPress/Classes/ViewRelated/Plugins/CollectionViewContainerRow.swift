@@ -174,32 +174,24 @@ class CollectionViewContainerCell: UITableViewCell {
         titleLabel = UILabel(frame: .zero)
         titleLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title2).pointSize,
                                             weight: .bold)
-        titleLabel.textColor = WPStyleGuide.darkGrey()
+        titleLabel.textColor = .neutral(.shade70)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         self.addSubview(titleLabel)
 
         titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.spacing).isActive = true
 
-        if #available(iOS 11.0, *) {
-            titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: Constants.spacing).isActive = true
-        } else {
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.spacing).isActive = true
-        }
+        titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: Constants.spacing).isActive = true
 
         actionButton = UIButton(type: .custom)
-        actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
+        actionButton.setTitleColor(.primary(.shade40), for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
         actionButton.translatesAutoresizingMaskIntoConstraints = false
 
         self.addSubview(actionButton)
 
-        if #available(iOS 11.0, *) {
-            actionButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.spacing).isActive = true
-        } else {
-            actionButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.spacing).isActive = true
-        }
+        actionButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.spacing).isActive = true
 
         actionButton.lastBaselineAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor).isActive = true
         actionButton.setContentHuggingPriority(.required, for: .horizontal)

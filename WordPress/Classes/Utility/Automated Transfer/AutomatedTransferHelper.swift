@@ -18,7 +18,7 @@ class AutomatedTransferHelper {
             return nil
         }
 
-        let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
+        let api = WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
         let automatedTransferService = AutomatedTransferService(wordPressComRestApi: api)
 
         self.site = site

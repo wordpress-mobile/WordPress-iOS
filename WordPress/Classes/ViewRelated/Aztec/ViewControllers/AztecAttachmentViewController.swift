@@ -53,7 +53,7 @@ class AztecAttachmentViewController: UITableViewController {
         handler = ImmuTableViewHandler(takeOver: self)
         handler.viewModel = tableViewModel()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(AztecAttachmentViewController.handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton

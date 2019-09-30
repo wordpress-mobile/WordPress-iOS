@@ -34,6 +34,8 @@ class LoginEpilogueTableViewController: UITableViewController {
 
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
+
+        view.backgroundColor = .listBackground
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
@@ -90,12 +92,21 @@ extension LoginEpilogueTableViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard cell is EpilogueUserInfoCell else {
+            return
+        }
+
+        cell.contentView.backgroundColor = .listForeground
+    }
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
             fatalError("Failed to get a section header cell")
         }
 
         cell.titleLabel?.text = title(for: section)
+        cell.accessibilityIdentifier = "Login Cell"
 
         return cell
     }
@@ -136,8 +147,8 @@ extension LoginEpilogueTableViewController {
         }
 
         headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-        headerView.textLabel?.textColor = WPStyleGuide.greyDarken20()
-        headerView.contentView.backgroundColor = WPStyleGuide.lightGrey()
+        headerView.textLabel?.textColor = .neutral(.shade50)
+        headerView.contentView.backgroundColor = .listBackground
     }
 }
 

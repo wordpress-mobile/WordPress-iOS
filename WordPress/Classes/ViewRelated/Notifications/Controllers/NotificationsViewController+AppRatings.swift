@@ -40,11 +40,7 @@ extension NotificationsViewController {
         // in line and not prompt more than two times a year
         AppRatingUtility.shared.ratedCurrentVersion()
         DispatchQueue.main.async {
-            if #available(iOS 10.3, *) {
-                SKStoreReviewController.requestReview()
-            } else {
-                UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
-            }
+            SKStoreReviewController.requestReview()
         }
     }
 

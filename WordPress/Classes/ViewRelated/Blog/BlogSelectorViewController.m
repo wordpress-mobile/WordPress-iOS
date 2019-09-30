@@ -202,7 +202,7 @@
 }
 
 - (CGFloat)searchBarHeight {
-    return CGRectGetHeight(self.searchController.searchBar.bounds) + self.topLayoutGuide.length;
+    return CGRectGetHeight(self.searchController.searchBar.bounds) + self.view.safeAreaInsets.top;
 }
 
 - (void)keyboardDidShow:(NSNotification *)notification
@@ -213,14 +213,14 @@
     UIEdgeInsets insets = self.tableView.contentInset;
 
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake([self searchBarHeight], insets.left, keyboardHeight, insets.right);
-    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.view.safeAreaInsets.top, insets.left, keyboardHeight, insets.right);
 }
 
 - (void)keyboardDidHide:(NSNotification*)notification
 {
     CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
     UIEdgeInsets insets = self.tableView.contentInset;
-    insets.top = self.topLayoutGuide.length;
+    insets.top = self.view.safeAreaInsets.top;
     insets.bottom = tabBarHeight;
 
     self.tableView.contentInset = insets;

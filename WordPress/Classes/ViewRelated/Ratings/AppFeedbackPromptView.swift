@@ -32,7 +32,7 @@ class AppFeedbackPromptView: UIView {
         let textFont = WPStyleGuide.fontForTextStyle(.subheadline)
 
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(red: 50/255.0, green: 65/255.0, blue: 85/255.0, alpha: 1.0)
+        label.textColor = .textSubtle
         label.textAlignment = .center
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -48,18 +48,20 @@ class AppFeedbackPromptView: UIView {
 
         // Yes Button
         leftButton.translatesAutoresizingMaskIntoConstraints = false
-        leftButton.backgroundColor = UIColor(red: 0.0, green: 170/255.0, blue: 220/255.0, alpha: 1.0)
+        leftButton.backgroundColor = .primaryButtonBackground
         leftButton.tintColor = .white
-        leftButton.setTitleColor(UIColor.white, for: .normal)
+        leftButton.setTitleColor(.white, for: .normal)
         leftButton.titleLabel?.font = textFont
         leftButton.accessibilityIdentifier = "yes-button"
         buttonStack.addArrangedSubview(leftButton)
 
         // Could be Better Button
         rightButton.translatesAutoresizingMaskIntoConstraints = false
-        rightButton.backgroundColor = UIColor(red: 144/255.0, green: 174/255.0, blue: 194/255.0, alpha: 1.0)
-        rightButton.tintColor = .white
-        rightButton.setTitleColor(UIColor.white, for: .normal)
+        rightButton.backgroundColor = .secondaryButtonBackground
+        rightButton.borderWidth = 1.0
+        rightButton.borderColor = .secondaryButtonBorder
+        rightButton.tintColor = .text
+        rightButton.setTitleColor(.text, for: .normal)
         rightButton.titleLabel?.font = textFont
         rightButton.accessibilityIdentifier = "no-button"
         buttonStack.addArrangedSubview(rightButton)

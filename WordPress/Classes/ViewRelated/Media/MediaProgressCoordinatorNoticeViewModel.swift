@@ -5,6 +5,8 @@ enum MediaNoticeUserInfoKey {
 }
 
 struct MediaProgressCoordinatorNoticeViewModel {
+    static let uploadErrorNoticeTag: Notice.Tag = "MediaProgressCoordinatorNoticeViewModel.UploadError"
+
     private let mediaProgressCoordinator: MediaProgressCoordinator
     private let successfulMedia: [Media]
     private let failedMedia: [Media]
@@ -62,6 +64,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
                       feedbackType: .error,
                       notificationInfo: notificationInfo,
                       actionTitle: NSLocalizedString("Retry", comment: "User action to retry media upload."),
+                      tag: MediaProgressCoordinatorNoticeViewModel.uploadErrorNoticeTag,
                       actionHandler: { _ in
                         for media in self.failedMedia {
                             MediaCoordinator.shared.retryMedia(media)

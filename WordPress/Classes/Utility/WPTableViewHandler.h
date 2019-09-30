@@ -50,6 +50,8 @@
 #pragma mark - Editing actions
 
 - (nullable NSArray<UITableViewRowAction *> *)tableView:(nonnull UITableView *)tableView editActionsForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (nullable UISwipeActionsConfiguration *)tableView:(nonnull UITableView *)tableView leadingSwipeActionsConfigurationForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (nullable UISwipeActionsConfiguration *)tableView:(nonnull UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 #pragma mark - Tracking the removal of views
 

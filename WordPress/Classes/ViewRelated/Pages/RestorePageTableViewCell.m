@@ -1,5 +1,5 @@
 #import "RestorePageTableViewCell.h"
-#import "WPStyleGuide+Posts.h"
+#import "WPStyleGuide+Pages.h"
 
 @interface RestorePageTableViewCell()
 

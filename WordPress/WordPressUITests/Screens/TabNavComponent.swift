@@ -25,7 +25,10 @@ class TabNavComponent: BaseScreen {
     }
 
     func gotoMySiteScreen() -> MySiteScreen {
-        mySitesTabButton.tap()
+        // Avoid transitioning to the sites list if MySites is already on screen
+        if !MySiteScreen.isVisible {
+            mySitesTabButton.tap()
+        }
         return MySiteScreen()
     }
 
@@ -35,9 +38,14 @@ class TabNavComponent: BaseScreen {
         return MySitesScreen()
     }
 
-    func gotoEditorScreen() -> EditorScreen {
+    func gotoAztecEditorScreen() -> AztecEditorScreen {
         writeTabButton.tap()
-        return EditorScreen(mode: .rich)
+        return AztecEditorScreen(mode: .rich)
+    }
+
+    func gotoBlockEditorScreen() -> BlockEditorScreen {
+        writeTabButton.tap()
+        return BlockEditorScreen()
     }
 
     func gotoReaderScreen() -> ReaderScreen {
@@ -52,5 +60,9 @@ class TabNavComponent: BaseScreen {
 
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons["mySitesTabButton"].exists
+    }
+
+    static func isVisible() -> Bool {
+        return XCUIApplication().buttons["mySitesTabButton"].isHittable
     }
 }

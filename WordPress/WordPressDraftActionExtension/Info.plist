@@ -45,7 +45,7 @@
                 || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;public.tiff&quot;
                 || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.compuserve.gif&quot;
                 || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO &quot;com.microsoft.bmp&quot;
-                ).@count &lt; 3
+                ).@count &gt;= 1
                 OR
                 SUBQUERY(
                 $extensionItem.attachments,

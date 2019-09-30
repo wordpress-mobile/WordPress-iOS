@@ -27,11 +27,12 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.preservesSuperviewLayoutMargins = YES;
+        self.backgroundColor = [UIColor murielListForeground];
 
         [self setupStackView];
         [self setupAvatarImageView];
         [self setupLabelsStackView];
-        [self setupSubtTitleLabel];
+        [self setupSubtitleLabel];
         [self setupTitleLabel];
         [self setupDisclosureButton];
         [self setupTapGesture];
@@ -94,15 +95,15 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 }
 
-- (void)setupSubtTitleLabel
+- (void)setupSubtitleLabel
 {
     NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
 
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
-    label.backgroundColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor murielListForeground];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide allTAllShadeGrey];
+    label.textColor = [UIColor murielTextSubtle];
     label.font = [WPStyleGuide subtitleFont];
     label.adjustsFontForContentSizeCategory = YES;
 
@@ -116,9 +117,9 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
-    label.backgroundColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor murielListForeground];
     label.opaque = YES;
-    label.textColor = [WPStyleGuide littleEddieGrey];
+    label.textColor = [UIColor murielText];
     label.font = [WPStyleGuide subtitleFont];
     label.adjustsFontForContentSizeCategory = YES;
 
