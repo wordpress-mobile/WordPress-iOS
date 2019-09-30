@@ -227,9 +227,9 @@ class PostCardStatusViewModel: NSObject {
 
         let autoUploadAttemptsCount = post.autoUploadAttemptsCount.intValue
         if autoUploadAttemptsCount >= autoUploadInteractor.maxNumberOfAttempts {
-            return StatusMessages.postFailedToUploadWillNotAttempt
+            return StatusMessages.willNotAttemptToAutoUpload(for: post.status)
         } else if autoUploadAttemptsCount > 0 {
-            return StatusMessages.postWillAtemptLater
+            return StatusMessages.willAttemptToAutoUpload(for: post.status)
         }
 
         if autoUploadInteractor.autoUploadAction(for: post) != .upload {
@@ -262,9 +262,21 @@ class PostCardStatusViewModel: NSObject {
                                                            comment: "Message shown in post list when a draft is scheduled to be automatically uploaded.")
         static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
                                                              comment: "Message shown in post list when a post's local changes will be automatically uploaded when the device is online.")
-        static let postWillAtemptLater = NSLocalizedString("Post couldn't be published. We'll try again later",
-                                                           comment: "Message shown in the posts list when a post failed to be auto uploaded but we'll try again later.")
-        static let postFailedToUploadWillNotAttempt = NSLocalizedString("Couldn't perform operation. Post not published",
-                                                            comment: "Message shown in the posts list when a post failed to be auto uploaded several times and we'll not try again.")
+        static let willAttemptToPublishLater = NSLocalizedString("Post couldn't be published. We'll try again later",
+                                                           comment: "Message shown in the posts list when a post failed to be auto published but we'll try again later.")
+        static let willNotAttemptToPublishLater = NSLocalizedString("Couldn't perform operation. Post not published",
+                                                            comment: "Message shown in the posts list when a post failed to be auto published several times and we'll not try again.")
+        static let willAttemptToDraftLater = NSLocalizedString("Post couldn't be drafted. We'll try again later",
+                                                           comment: "Message shown in the posts list when a post failed to be auto drafted but we'll try again later.")
+        static let willNotAttemptToDraftLater = NSLocalizedString("Couldn't perform operation. Post not drafted",
+                                                            comment: "Message shown in the posts list when a post failed to be auto drafted several times and we'll not try again.")
+
+        static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
+            return postStatus == .publish ? StatusMessages.willAttemptToPublishLater : StatusMessages.willAttemptToDraftLater
+        }
+
+        static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
+            return postStatus == .publish ? StatusMessages.willNotAttemptToPublishLater : StatusMessages.willNotAttemptToDraftLater
+        }
     }
 }
