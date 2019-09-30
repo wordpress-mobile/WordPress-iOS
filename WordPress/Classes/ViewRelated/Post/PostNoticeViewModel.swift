@@ -113,11 +113,10 @@ struct PostNoticeViewModel {
             }
         }
 
-        if post.autoUploadAttemptsCount.intValue >= autoUploadInteractor.maxNumberOfAttempts {
+        let autoUploadAttemptsCount = post.autoUploadAttemptsCount.intValue
+        if autoUploadAttemptsCount >= autoUploadInteractor.maxNumberOfAttempts {
             return FailureTitles.postFailedToUploadWillNotAttempt
-        }
-
-        if post.autoUploadAttemptsCount.intValue > 0 {
+        } else if autoUploadAttemptsCount > 0 {
             return FailureTitles.postWillAtemptLater
         }
 
