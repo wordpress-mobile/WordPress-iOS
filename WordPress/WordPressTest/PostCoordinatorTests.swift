@@ -74,7 +74,7 @@ class PostCoordinatorTests: XCTestCase {
 
         postCoordinator.save(post, automatedRetry: false)
 
-        expect(post.autoUploadAttemptsCount).to(equal(1))
+        expect(post.autoUploadAttemptsCount).to(equal(0))
     }
 }
 
