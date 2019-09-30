@@ -72,15 +72,27 @@ class PostNoticeViewModelTests: XCTestCase {
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
-                scenario: "Post with at least 1 auto upload attempt",
+                scenario: "Post with at least 1 auto upload to publish attempt",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
                 title: "Post couldn't be published. We'll try again later",
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
-                scenario: "Post with the maximum number of auto upload attempts",
+                scenario: "Post with the maximum number of auto upload to publish attempts",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
                 title: "Couldn't perform operation. Post not published",
+                actionTitle: FailureActionTitles.retry
+            ),
+            Expectation(
+                scenario: "Post with at least 1 auto upload to draft attempt",
+                post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 2),
+                title: "Post couldn't be drafted. We'll try again later",
+                actionTitle: FailureActionTitles.cancel
+            ),
+            Expectation(
+                scenario: "Post with the maximum number of auto upload to draft attempts",
+                post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
+                title: "Couldn't perform operation. Post not drafted",
                 actionTitle: FailureActionTitles.retry
             ),
         ]
