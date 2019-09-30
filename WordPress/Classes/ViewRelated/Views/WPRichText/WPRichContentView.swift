@@ -66,17 +66,17 @@ class WPRichContentView: UITextView {
                                           blockQuoteColorHex: UIColor.textSubtle.hexString() ?? fallbackTextColorHex,
                                           linkColorHex: UIColor.primary.hexString() ?? fallbackTextColorHex,
                                           linkColorActiveHex: UIColor.primaryDark.hexString() ?? fallbackTextColorHex)
-        return formattedAttributedStringForString(string, style: style)
+        return formattedAttributedString(for: string, style: style)
     }
 
     @available(iOS 13, *)
-    class func formattedAttributedStringForString(_ string: String, style: UIUserInterfaceStyle) -> NSAttributedString {
+    class func formattedAttributedString(for string: String, style: UIUserInterfaceStyle) -> NSAttributedString {
         let trait = UITraitCollection(userInterfaceStyle: style)
         let style = AttributedStringStyle(textColorHex: UIColor.text.color(for: trait).hexString() ?? fallbackTextColorHex,
                                           blockQuoteColorHex: UIColor.textSubtle.color(for: trait).hexString() ?? fallbackTextColorHex,
                                           linkColorHex: UIColor.primary.color(for: trait).hexString() ?? fallbackTextColorHex,
                                           linkColorActiveHex: UIColor.primaryDark.color(for: trait).hexString() ?? fallbackTextColorHex)
-        return formattedAttributedStringForString(string, style: style)
+        return formattedAttributedString(for: string, style: style)
     }
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -153,7 +153,7 @@ class WPRichContentView: UITextView {
 }
 
 private extension WPRichContentView {
-    class func formattedAttributedStringForString(_ string: String, style: AttributedStringStyle) -> NSAttributedString {
+    class func formattedAttributedString(for string: String, style: AttributedStringStyle) -> NSAttributedString {
         let styleString = "<style>" +
             "body { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #\(style.textColorHex); }" +
             "blockquote { color:#\(style.blockQuoteColorHex); } " +

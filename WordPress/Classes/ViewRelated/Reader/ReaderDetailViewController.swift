@@ -791,9 +791,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     private func configureAttributedString() {
         if #available(iOS 13, *), let post = post {
-            let string: String = post.contentForDisplay()
-            let light = WPRichContentView.formattedAttributedStringForString(string, style: .light)
-            let dark = WPRichContentView.formattedAttributedStringForString(string, style: .dark)
+            let light = WPRichContentView.formattedAttributedString(for: post.contentForDisplay(), style: .light)
+            let dark = WPRichContentView.formattedAttributedString(for: post.contentForDisplay(), style: .dark)
             lightTextViewAttributedString = attributedString(with: light)
             darkTextViewAttributedString = attributedString(with: dark)
         }
