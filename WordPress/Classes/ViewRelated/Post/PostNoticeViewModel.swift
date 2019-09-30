@@ -113,6 +113,14 @@ struct PostNoticeViewModel {
             }
         }
 
+        if post.autoUploadAttemptsCount.intValue >= autoUploadInteractor.maxNumberOfAttempts {
+            return FailureTitles.postFailedToUploadWillNotAttempt
+        }
+
+        if post.autoUploadAttemptsCount.intValue > 0 {
+            return FailureTitles.postWillAtemptLater
+        }
+
         guard let postStatus = post.status,
             autoUploadInteractor.autoUploadAction(for: post) == .upload else {
             return defaultTitle
@@ -271,6 +279,10 @@ struct PostNoticeViewModel {
                                                           comment: "Title of notification displayed when a post has failed to upload.")
         static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
                                                              comment: "Text displayed in notice after the app fails to upload a post.")
+        static let postWillAtemptLater = NSLocalizedString("Post couldn't be published. We'll try again later",
+                                                           comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
+        static let postFailedToUploadWillNotAttempt = NSLocalizedString("Couldn't perform operation. Post not published",
+                                                            comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
     }
 
     enum FailureActionTitles {

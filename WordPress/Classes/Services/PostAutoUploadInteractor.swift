@@ -15,7 +15,7 @@ final class PostAutoUploadInteractor {
 
     private static let allowedStatuses: [BasePost.Status] = [.draft, .publish]
 
-    private let maxNumberOfAttempts = 3
+    let maxNumberOfAttempts = 3
 
     /// Returns what action should be executed when we retry a failed upload.
     ///

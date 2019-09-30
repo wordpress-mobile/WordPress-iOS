@@ -71,6 +71,18 @@ class PostNoticeViewModelTests: XCTestCase {
                 title: FailureTitles.postFailedToUpload,
                 actionTitle: FailureActionTitles.retry
             ),
+            Expectation(
+                scenario: "Post with at least 1 auto upload attempt",
+                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
+                title: "Post couldn't be published. We'll try again later",
+                actionTitle: FailureActionTitles.cancel
+            ),
+            Expectation(
+                scenario: "Post with the maximum number of auto upload attempts",
+                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
+                title: "Couldn't perform operation. Post not published",
+                actionTitle: FailureActionTitles.retry
+            ),
         ]
 
         expectations.forEach { expectation in
@@ -136,7 +148,7 @@ class PostNoticeViewModelTests: XCTestCase {
     }
 
 
-    private func createPost(_ status: BasePost.Status, hasRemote: Bool = false) -> Post {
+    private func createPost(_ status: BasePost.Status, hasRemote: Bool = false, autoUploadAttemptsCount: Int = 0) -> Post {
         var builder = PostBuilder(context)
             .with(title: UUID().uuidString)
             .with(status: status)
@@ -145,6 +157,8 @@ class PostNoticeViewModelTests: XCTestCase {
         if hasRemote {
             builder = builder.withRemote()
         }
+
+        builder = builder.with(autoUploadAttemptsCount: autoUploadAttemptsCount)
 
         builder = builder.confirmedAutoUpload()
 
