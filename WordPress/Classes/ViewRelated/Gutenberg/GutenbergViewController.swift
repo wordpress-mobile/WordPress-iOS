@@ -106,7 +106,7 @@ class GutenbergViewController: UIViewController, PostEditor {
                                                         guard let phAsset = asset as? PHAsset else {
                                                             return
                                                         }
-                                                        self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: { (mediaID, mediaURL) in
+                                                        self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: { (mediaID, mediaURL, mediaType) in
                                                             guard let mediaID = mediaID,
                                                                 let mediaURLString = mediaURL,
                                                                 let mediaURL = URL(string: mediaURLString) else {
@@ -379,7 +379,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        dataSourceType: .mediaLibrary,
                                                        callback: {(asset) in
                                                         guard let media = asset as? Media else {
-                                                            callback(nil, nil)
+                                                            callback(nil, nil, nil)
                                                             return
                                                         }
                                                         self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
@@ -392,7 +392,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        dataSourceType: .device,
                                                        callback: {(asset) in
                                                         guard let phAsset = asset as? PHAsset else {
-                                                            callback(nil, nil)
+                                                            callback(nil, nil, nil)
                                                             return
                                                         }
                                                         self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
@@ -404,7 +404,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                          filter: filter,
                                                          callback: {(asset) in
                                                             guard let phAsset = asset as? PHAsset else {
-                                                                callback(nil, nil)
+                                                                callback(nil, nil, nil)
                                                                 return
                                                             }
                                                             self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)

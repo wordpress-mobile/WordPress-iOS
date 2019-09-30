@@ -31,7 +31,7 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromSiteMediaLibrary(media: Media, callback: @escaping MediaPickerDidPickMediaCallback) {
-        callback(media.mediaID?.int32Value, media.remoteURL)
+        callback(media.mediaID?.int32Value, media.remoteURL, media.mediaTypeString)
     }
 
     func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -44,16 +44,16 @@ class GutenbergMediaInserterHelper: NSObject {
         // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
         PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
             guard let thumbImage = image, let resizedImage = thumbImage.resizedImage(asset.pixelSize(), interpolationQuality: CGInterpolationQuality.low) else {
-                callback(mediaUploadID, nil)
+                callback(mediaUploadID, nil, media.mediaTypeString)
                 return
             }
             let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
             let url = URL(fileURLWithPath: filePath)
             do {
                 try resizedImage.writeJPEGToURL(url)
-                callback(mediaUploadID, url.absoluteString)
+                callback(mediaUploadID, url.absoluteString, media.mediaTypeString)
             } catch {
-                callback(mediaUploadID, nil)
+                callback(mediaUploadID, nil, nil)
                 return
             }
         }
@@ -63,7 +63,7 @@ class GutenbergMediaInserterHelper: NSObject {
     func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
         let media = insert(exportableAsset: url as NSURL, source: .otherApps)
         let mediaUploadID = media.gutenbergUploadID
-        callback(mediaUploadID, url.absoluteString)
+        callback(mediaUploadID, url.absoluteString, media.mediaTypeString)
     }
 
     func syncUploads() {
