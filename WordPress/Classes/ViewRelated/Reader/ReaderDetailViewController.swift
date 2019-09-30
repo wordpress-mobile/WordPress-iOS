@@ -769,6 +769,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         guard let post = post else {
             return
         }
+
         textView.isPrivate = post.isPrivate()
         textView.content = post.contentForDisplay()
 
@@ -780,6 +781,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         guard let post = post else {
             return
         }
+
         if #available(iOS 13, *) {
             let isDark = traitCollection.userInterfaceStyle == .dark
             textView.attributedText = isDark ? darkTextViewAttributedString : lightTextViewAttributedString
