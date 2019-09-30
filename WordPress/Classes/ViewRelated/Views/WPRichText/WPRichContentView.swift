@@ -53,6 +53,8 @@ class WPRichContentView: UITextView {
         }
     }
 
+    private static let fallbackTextColorHex = "000"
+
     override var attributedText: NSAttributedString! {
         didSet {
             attachmentManager.enumerateAttachments()
@@ -60,34 +62,21 @@ class WPRichContentView: UITextView {
     }
 
     @objc class func formattedAttributedStringForString(_ string: String) -> NSAttributedString {
-        let fallbackTextColorHex = "000"
-        let textColorHex = UIColor.text.hexString() ?? fallbackTextColorHex
-        let blockQuoteColorHex = UIColor.textSubtle.hexString() ?? fallbackTextColorHex
-        let linkColorHex = UIColor.primary.hexString() ?? fallbackTextColorHex
-        let linkColorActiveHex = UIColor.primaryDark.hexString() ?? fallbackTextColorHex
+        let style = AttributedStringStyle(textColorHex: UIColor.text.hexString() ?? fallbackTextColorHex,
+                                          blockQuoteColorHex: UIColor.textSubtle.hexString() ?? fallbackTextColorHex,
+                                          linkColorHex: UIColor.primary.hexString() ?? fallbackTextColorHex,
+                                          linkColorActiveHex: UIColor.primaryDark.hexString() ?? fallbackTextColorHex)
+        return formattedAttributedStringForString(string, style: style)
+    }
 
-        let style = "<style>" +
-            "body { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #\(textColorHex); }" +
-            "blockquote { color:#\(blockQuoteColorHex); } " +
-            "em, i { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; font-style: italic; line-height:1.6; } " +
-            "a { color: #\(linkColorHex); text-decoration: none; } " +
-            "a:active { color: #\(linkColorActiveHex); } " +
-        "</style>"
-        let html = style + string
-
-        // Request the font to ensure it's loaded. Otherwise NSAttributedString
-        // falls back to Times New Roman :o
-        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6564
-        _ = WPFontManager.notoItalicFont(ofSize: 16)
-        do {
-            if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(html, defaultAttributes: nil) {
-                return attrTxt
-            }
-        } catch let error {
-            DDLogError("Error converting post content to attributed string: \(error)")
-        }
-        let text = NSLocalizedString("There was a problem displaying this post.", comment: "A short error message letting the user know about a problem displaying a post.")
-        return NSAttributedString(string: text)
+    @available(iOS 13, *)
+    class func formattedAttributedStringForString(_ string: String, style: UIUserInterfaceStyle) -> NSAttributedString {
+        let trait = UITraitCollection(userInterfaceStyle: style)
+        let style = AttributedStringStyle(textColorHex: UIColor.text.color(for: trait).hexString() ?? fallbackTextColorHex,
+                                          blockQuoteColorHex: UIColor.textSubtle.color(for: trait).hexString() ?? fallbackTextColorHex,
+                                          linkColorHex: UIColor.primary.color(for: trait).hexString() ?? fallbackTextColorHex,
+                                          linkColorActiveHex: UIColor.primaryDark.color(for: trait).hexString() ?? fallbackTextColorHex)
+        return formattedAttributedStringForString(string, style: style)
     }
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -155,8 +144,41 @@ class WPRichContentView: UITextView {
         }
     }
 
+    struct AttributedStringStyle {
+        let textColorHex: String
+        let blockQuoteColorHex: String
+        let linkColorHex: String
+        let linkColorActiveHex: String
+    }
+}
 
-    private func ensureLayoutForAttachment(_ attachment: NSTextAttachment, at range: NSRange) {
+private extension WPRichContentView {
+    class func formattedAttributedStringForString(_ string: String, style: AttributedStringStyle) -> NSAttributedString {
+        let styleString = "<style>" +
+            "body { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #\(style.textColorHex); }" +
+            "blockquote { color:#\(style.blockQuoteColorHex); } " +
+            "em, i { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; font-style: italic; line-height:1.6; } " +
+            "a { color: #\(style.linkColorHex); text-decoration: none; } " +
+            "a:active { color: #\(style.linkColorActiveHex); } " +
+        "</style>"
+        let html = styleString + string
+
+        // Request the font to ensure it's loaded. Otherwise NSAttributedString
+        // falls back to Times New Roman :o
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6564
+        _ = WPFontManager.notoItalicFont(ofSize: 16)
+        do {
+            if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(html, defaultAttributes: nil) {
+                return attrTxt
+            }
+        } catch let error {
+            DDLogError("Error converting post content to attributed string: \(error)")
+        }
+        let text = NSLocalizedString("There was a problem displaying this post.", comment: "A short error message letting the user know about a problem displaying a post.")
+        return NSAttributedString(string: text)
+    }
+
+    func ensureLayoutForAttachment(_ attachment: NSTextAttachment, at range: NSRange) {
         layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
         layoutManager.ensureLayout(forCharacterRange: range)
         attachmentManager.layoutAttachmentViews()
