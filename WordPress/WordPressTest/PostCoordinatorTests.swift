@@ -56,32 +56,14 @@ class PostCoordinatorTests: XCTestCase {
 
         expect(post.remoteStatus).toEventually(equal(.pushing))
     }
-
-    func testCallSuccessCallbackAfterSavingAPost() {
-        let postServiceMock = PostServiceMock()
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
-        let post = PostBuilder(context).build()
-        var callbackCalled = false
-
-        postServiceMock.succeed = true
-        postCoordinator.save(post, success: {
-            callbackCalled = true
-        })
-
-        expect(callbackCalled).to(beTrue())
-    }
 }
 
 private class PostServiceMock: PostService {
-    var succeed = false
-
     private(set) var didCallUploadPost = false
     private(set) var didCallMarkAsFailedAndDraftIfNeeded = false
 
     override func uploadPost(_ post: AbstractPost, success: ((AbstractPost) -> Void)?, failure: @escaping (Error?) -> Void) {
         didCallUploadPost = true
-
-        succeed ? success?(post) : nil
     }
 
     override func markAsFailedAndDraftIfNeeded(post: AbstractPost) {

@@ -74,7 +74,7 @@ class PostCoordinator: NSObject {
     ///
     /// - Parameter post: the post to save
     ///
-    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false, success successCallback: (() -> ())? = nil) {
+    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
         var post = postToSave
 
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
@@ -108,7 +108,7 @@ class PostCoordinator: NSObject {
                         // Let's check if media uploading is still going, if all finished with success then we can upload the post
                         if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
                             self.removeObserver(for: post)
-                            self.upload(post: post, success: successCallback)
+                            self.upload(post: post)
                         }
                     }
                     switch media.mediaType {
@@ -135,7 +135,7 @@ class PostCoordinator: NSObject {
             return
         }
 
-        upload(post: post, success: successCallback)
+        upload(post: post)
     }
 
     func cancelAnyPendingSaveOf(post: AbstractPost) {
@@ -203,7 +203,7 @@ class PostCoordinator: NSObject {
         backgroundService.refreshPostStatus()
     }
 
-    private func upload(post: AbstractPost, success: (() -> ())? = nil) {
+    private func upload(post: AbstractPost) {
         mainService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
@@ -211,8 +211,6 @@ class PostCoordinator: NSObject {
 
             let model = PostNoticeViewModel(post: uploadedPost)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
-
-            success?()
         }, failure: { error in
             let model = PostNoticeViewModel(post: post)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
