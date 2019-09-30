@@ -220,22 +220,6 @@ class PostCoordinator: NSObject {
         backgroundService.refreshPostStatus()
     }
 
-    /// Cancel active and pending automatic uploads of the post.
-    func cancelAutoUploadOf(_ post: AbstractPost) {
-        cancelAnyPendingSaveOf(post: post)
-
-        post.shouldAttemptAutoUpload = false
-
-        let moc = post.managedObjectContext
-
-        moc?.perform {
-            try? moc?.save()
-        }
-
-        let notice = Notice(title: NSLocalizedString("Changes will not be published", comment: "title for notice displayed on cancel auto-upload"), message: "")
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-
     private func upload(post: AbstractPost) {
         mainService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
@@ -329,6 +313,22 @@ class PostCoordinator: NSObject {
 
             try? post.managedObjectContext?.save()
         }
+    }
+
+    /// Cancel active and pending automatic uploads of the post.
+    func cancelAutoUploadOf(_ post: AbstractPost) {
+        cancelAnyPendingSaveOf(post: post)
+
+        post.shouldAttemptAutoUpload = false
+
+        let moc = post.managedObjectContext
+
+        moc?.perform {
+            try? moc?.save()
+        }
+
+        let notice = Notice(title: NSLocalizedString("Changes will not be published", comment: "title for notice displayed on cancel auto-upload"), message: "")
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }
 
