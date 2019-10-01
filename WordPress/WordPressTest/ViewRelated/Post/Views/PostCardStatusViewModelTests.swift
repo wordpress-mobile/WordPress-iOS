@@ -114,7 +114,7 @@ class PostCardStatusViewModelTests: XCTestCase {
 
         let message = viewModel.statusAndBadges(separatedBy: "")
 
-        expect(message).to(equal("Post couldn't be drafted. We'll try again later"))
+        expect(message).to(equal("Post couldn't be submitted. We'll try again later"))
     }
 
     func testFailedMessageWhenMaxNumberOfAttemptsToAutoDraftIsReached() {
@@ -123,7 +123,7 @@ class PostCardStatusViewModelTests: XCTestCase {
 
         let message = viewModel.statusAndBadges(separatedBy: "")
 
-        expect(message).to(equal("Couldn't perform operation. Post not drafted"))
+        expect(message).to(equal("Couldn't perform operation"))
     }
 }
 

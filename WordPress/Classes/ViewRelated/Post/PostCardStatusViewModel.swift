@@ -266,17 +266,17 @@ class PostCardStatusViewModel: NSObject {
                                                            comment: "Message shown in the posts list when a post failed to be auto published but we'll try again later.")
         static let willNotAttemptToPublishLater = NSLocalizedString("Couldn't perform operation. Post not published",
                                                             comment: "Message shown in the posts list when a post failed to be auto published several times and we'll not try again.")
-        static let willAttemptToDraftLater = NSLocalizedString("Post couldn't be drafted. We'll try again later",
-                                                           comment: "Message shown in the posts list when a post failed to be auto drafted but we'll try again later.")
-        static let willNotAttemptToDraftLater = NSLocalizedString("Couldn't perform operation. Post not drafted",
-                                                            comment: "Message shown in the posts list when a post failed to be auto drafted several times and we'll not try again.")
+        static let willAttemptToSubmitLater = NSLocalizedString("Post couldn't be submitted. We'll try again later",
+                                                           comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
+        static let willNotAttemptToSubmitLater = NSLocalizedString("Couldn't perform operation",
+                                                            comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
 
         static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-            return postStatus == .publish ? StatusMessages.willAttemptToPublishLater : StatusMessages.willAttemptToDraftLater
+            return postStatus == .publish ? StatusMessages.willAttemptToPublishLater : StatusMessages.willAttemptToSubmitLater
         }
 
         static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-            return postStatus == .publish ? StatusMessages.willNotAttemptToPublishLater : StatusMessages.willNotAttemptToDraftLater
+            return postStatus == .publish ? StatusMessages.willNotAttemptToPublishLater : StatusMessages.willNotAttemptToSubmitLater
         }
     }
 }

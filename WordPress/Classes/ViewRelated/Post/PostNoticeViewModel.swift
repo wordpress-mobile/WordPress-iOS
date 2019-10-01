@@ -282,17 +282,17 @@ struct PostNoticeViewModel {
                                                            comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
         static let willNotAttemptToPublishLater = NSLocalizedString("Couldn't perform operation. Post not published",
                                                             comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
-        static let willAttemptToDraftLater = NSLocalizedString("Post couldn't be drafted. We'll try again later",
+        static let willAttemptToSubmitLater = NSLocalizedString("Post couldn't be submitted. We'll try again later",
                                                            comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
-        static let willNotAttemptToDraftLater = NSLocalizedString("Couldn't perform operation. Post not drafted",
+        static let willNotAttemptToSubmitLater = NSLocalizedString("Couldn't perform operation",
                                                             comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
 
         static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-            return postStatus == .publish ? FailureTitles.willAttemptToPublishLater : FailureTitles.willAttemptToDraftLater
+            return postStatus == .publish ? FailureTitles.willAttemptToPublishLater : FailureTitles.willAttemptToSubmitLater
         }
 
         static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-            return postStatus == .publish ? FailureTitles.willNotAttemptToPublishLater : FailureTitles.willNotAttemptToDraftLater
+            return postStatus == .publish ? FailureTitles.willNotAttemptToPublishLater : FailureTitles.willNotAttemptToSubmitLater
         }
     }
 
