@@ -72,6 +72,16 @@ class PostCoordinatorTests: XCTestCase {
         expect(postServiceMock.didCallAutoSave).toEventually(beTrue())
     }
 
+    func testCancelAutoUploadOfAPost() {
+        let post = PostBuilder(context).build()
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.cancelAutoUploadOf(post)
+
+        expect(post.shouldAttemptAutoUpload).to(beFalse())
+    }
+
     func testCancelAutoUploadChangePostStatusToDraftWhenPostDoesntHasRemote() {
         let post = PostBuilder(context)
             .with(status: .pending)
