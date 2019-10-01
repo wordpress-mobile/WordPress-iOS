@@ -116,6 +116,12 @@ struct UniversalLinkRouter {
             trackDeepLink(matchCount: matches.count, url: url)
         }
 
+        if matches.isEmpty {
+            UIApplication.shared.open(url,
+                                      options: [:],
+                                      completionHandler: nil)
+        }
+
         for matchedRoute in matches {
             matchedRoute.action.perform(matchedRoute.values, source: source)
         }
