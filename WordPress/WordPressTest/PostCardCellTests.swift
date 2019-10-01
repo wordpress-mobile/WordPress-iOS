@@ -1,5 +1,6 @@
 import UIKit
 import XCTest
+import Nimble
 
 @testable import WordPress
 
@@ -272,7 +273,7 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.changesWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.text, AutoUploadMessages.changesWillBeUploaded)
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
@@ -284,7 +285,7 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.postWillBePublished)
+        XCTAssertEqual(postCell.statusLabel.text, AutoUploadMessages.postWillBePublished)
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
@@ -347,7 +348,7 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.changesWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.text, AutoUploadMessages.changesWillBeUploaded)
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
@@ -359,8 +360,26 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, StatusMessages.draftWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.text, AutoUploadMessages.draftWillBeUploaded)
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
+    }
+
+    func testShowsFailedMessageWhenAttemptToAutoUploadADraft() {
+        let post = PostBuilder(context).drafted().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 2).build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Post couldn't be submitted. We'll try again later"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
+    }
+
+    func testFailedMessageWhenMaxNumberOfAttemptsToAutoDraftIsReached() {
+        let post = PostBuilder(context).drafted().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 3).build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
     private func postCellFromNib() -> PostCardCell {

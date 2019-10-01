@@ -5,7 +5,6 @@ import Nimble
 @testable import WordPress
 
 private typealias FailureActionTitles = PostNoticeViewModel.FailureActionTitles
-private typealias FailureTitles = PostNoticeViewModel.FailureTitles
 
 class PostNoticeViewModelTests: XCTestCase {
     private var contextManager: TestContextManager!
@@ -38,37 +37,37 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Local draft",
                 post: createPost(.draft),
-                title: FailureTitles.draftWillBeUploaded,
+                title: AutoUploadMessages.draftWillBeUploaded,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with confirmed local changes",
                 post: createPost(.draft, hasRemote: true),
-                title: FailureTitles.changesWillBeUploaded,
+                title: AutoUploadMessages.changesWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Local published draft",
                 post: createPost(.publish),
-                title: FailureTitles.postWillBePublished,
+                title: AutoUploadMessages.postWillBePublished,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Published post with confirmed local changes",
                 post: createPost(.publish, hasRemote: true),
-                title: FailureTitles.changesWillBeUploaded,
+                title: AutoUploadMessages.changesWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Currently unsupported: Locally scheduled post",
                 post: createPost(.scheduled),
-                title: FailureTitles.postFailedToUpload,
+                title: AutoUploadMessages.postFailedToUpload,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Currently unsupported: Scheduled post with confirmed local changes",
                 post: createPost(.scheduled, hasRemote: true),
-                title: FailureTitles.postFailedToUpload,
+                title: AutoUploadMessages.postFailedToUpload,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(

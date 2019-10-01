@@ -89,42 +89,6 @@ class PostCardStatusViewModelTests: XCTestCase {
             }).to(succeed())
         }
     }
-
-    func testFailedMessageWhenAttemptToAutoPublish() {
-        let post = PostBuilder(context).with(remoteStatus: .failed).with(autoUploadAttemptsCount: 2).build()
-        let viewModel = PostCardStatusViewModel(post: post)
-
-        let message = viewModel.statusAndBadges(separatedBy: "")
-
-        expect(message).to(equal("Post couldn't be published. We'll try again later"))
-    }
-
-    func testFailedMessageWhenMaxNumberOfAttemptsToAutoPublishIsReached() {
-        let post = PostBuilder(context).with(remoteStatus: .failed).with(autoUploadAttemptsCount: 3).build()
-        let viewModel = PostCardStatusViewModel(post: post)
-
-        let message = viewModel.statusAndBadges(separatedBy: "")
-
-        expect(message).to(equal("Couldn't perform operation. Post not published"))
-    }
-
-    func testFailedMessageWhenAttemptToAutoDraft() {
-        let post = PostBuilder(context).drafted().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 2).build()
-        let viewModel = PostCardStatusViewModel(post: post)
-
-        let message = viewModel.statusAndBadges(separatedBy: "")
-
-        expect(message).to(equal("Post couldn't be submitted. We'll try again later"))
-    }
-
-    func testFailedMessageWhenMaxNumberOfAttemptsToAutoDraftIsReached() {
-        let post = PostBuilder(context).drafted().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 3).build()
-        let viewModel = PostCardStatusViewModel(post: post)
-
-        let message = viewModel.statusAndBadges(separatedBy: "")
-
-        expect(message).to(equal("Couldn't perform operation"))
-    }
 }
 
 private extension ButtonGroups {

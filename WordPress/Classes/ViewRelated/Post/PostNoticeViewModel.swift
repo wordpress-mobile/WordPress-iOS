@@ -107,17 +107,17 @@ struct PostNoticeViewModel {
     private var failureTitle: String {
         var defaultTitle: String {
             if post is Page {
-                return FailureTitles.pageFailedToUpload
+                return AutoUploadMessages.pageFailedToUpload
             } else {
-                return FailureTitles.postFailedToUpload
+                return AutoUploadMessages.postFailedToUpload
             }
         }
 
         let autoUploadAttemptsCount = post.autoUploadAttemptsCount.intValue
         if autoUploadAttemptsCount >= autoUploadInteractor.maxNumberOfAttempts {
-            return FailureTitles.willNotAttemptToAutoUpload(for: post.status)
+            return AutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
         } else if autoUploadAttemptsCount > 0 {
-            return FailureTitles.willAttemptToAutoUpload(for: post.status)
+            return AutoUploadMessages.willAttemptToAutoUpload(for: post.status)
         }
 
         guard let postStatus = post.status,
@@ -126,14 +126,14 @@ struct PostNoticeViewModel {
         }
 
         if post.hasRemote() {
-            return FailureTitles.changesWillBeUploaded
+            return AutoUploadMessages.changesWillBeUploaded
         }
 
         switch postStatus {
         case .draft:
-            return FailureTitles.draftWillBeUploaded
+            return AutoUploadMessages.draftWillBeUploaded
         case .publish:
-            return FailureTitles.postWillBePublished
+            return AutoUploadMessages.postWillBePublished
         default:
             return defaultTitle
         }
@@ -265,35 +265,6 @@ struct PostNoticeViewModel {
         let postInContext = objectInContext as? AbstractPost
 
         return postInContext
-    }
-
-    enum FailureTitles {
-        static let postWillBePublished = NSLocalizedString("Post will be published the next time your device is online",
-                                                           comment: "Text displayed in notice after a post if published while offline.")
-        static let draftWillBeUploaded = NSLocalizedString("Draft will be uploaded next time your device is online",
-                                                           comment: "Text displayed in notice after the app fails to upload a draft.")
-        static let pageFailedToUpload = NSLocalizedString("Page failed to upload",
-                                                          comment: "Title of notification displayed when a page has failed to upload.")
-        static let postFailedToUpload = NSLocalizedString("Post failed to upload",
-                                                          comment: "Title of notification displayed when a post has failed to upload.")
-        static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
-                                                             comment: "Text displayed in notice after the app fails to upload a post.")
-        static let willAttemptToPublishLater = NSLocalizedString("Post couldn't be published. We'll try again later",
-                                                           comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
-        static let willNotAttemptToPublishLater = NSLocalizedString("Couldn't perform operation. Post not published",
-                                                            comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
-        static let willAttemptToSubmitLater = NSLocalizedString("Post couldn't be submitted. We'll try again later",
-                                                           comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
-        static let willNotAttemptToSubmitLater = NSLocalizedString("Couldn't perform operation",
-                                                            comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
-
-        static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-            return postStatus == .publish ? FailureTitles.willAttemptToPublishLater : FailureTitles.willAttemptToSubmitLater
-        }
-
-        static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-            return postStatus == .publish ? FailureTitles.willNotAttemptToPublishLater : FailureTitles.willNotAttemptToSubmitLater
-        }
     }
 
     enum FailureActionTitles {
