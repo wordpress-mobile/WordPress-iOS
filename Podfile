@@ -342,8 +342,8 @@ target 'WordPressComStatsiOSTests' do
 end
 
 def wordpress_mocks
-  # pod 'WordPressMocks', '~> 0.0.5'
-  pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => '6ea64dcd7403cb6033586015c3cc3283c1e44816'
+  pod 'WordPressMocks', '~> 0.0.6'
+  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 
