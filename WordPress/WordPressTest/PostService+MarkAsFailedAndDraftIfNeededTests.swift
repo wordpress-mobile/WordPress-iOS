@@ -6,12 +6,27 @@ import Nimble
 
 class PostServiceMarkAsFailedAndDraftTests: XCTestCase {
     func testMarkAPostAsFailedAndDraftIt() {
-        let post = PostBuilder().with(status: .pending).build()
+        let post = PostBuilder()
+            .with(status: .pending)
+            .build()
         let postService = PostService()
 
         postService.markAsFailedAndDraftIfNeeded(post: post)
 
         expect(post.remoteStatus).to(equal(.failed))
         expect(post.status).to(equal(.draft))
+    }
+
+    func testMarkAPostAsFailedAndKeepItsStatus() {
+        let post = PostBuilder()
+            .with(status: .pending)
+            .withRemote()
+            .build()
+        let postService = PostService()
+
+        postService.markAsFailedAndDraftIfNeeded(post: post)
+
+        expect(post.remoteStatus).to(equal(.failed))
+        expect(post.status).to(equal(.pending))
     }
 }
