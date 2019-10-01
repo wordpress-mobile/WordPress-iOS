@@ -58,18 +58,18 @@ class PostCoordinatorTests: XCTestCase {
     }
 
     func testResumeWillAutoSaveUnconfirmedExistingPosts() {
-        let postServiceMock = PostServiceMock()
-        let failedPostsFetcherMock = FailedPostsFetcherMock(context)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, failedPostsFetcher: failedPostsFetcherMock)
-        let post = PostBuilder(context)
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        _ = PostBuilder(context)
             .withRemote()
             .with(status: .draft)
+            .with(remoteStatus: .failed)
             .build()
-        failedPostsFetcherMock.postsAndActions = [post: .autoSave]
+        try! context.save()
 
         postCoordinator.resume()
 
-        expect(postServiceMock.didCallAutoSave).to(beTrue())
+        expect(postServiceMock.didCallAutoSave).toEventually(beTrue())
     }
 }
 
@@ -111,13 +111,5 @@ private class MediaCoordinatorMock: MediaCoordinator {
 
     override func retryMedia(_ media: Media, automatedRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
         // noop
-    }
-}
-
-private class FailedPostsFetcherMock: PostCoordinator.FailedPostsFetcher {
-    var postsAndActions: [AbstractPost: PostAutoUploadInteractor.AutoUploadAction] = [:]
-
-    override func postsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
-        result(postsAndActions)
     }
 }
