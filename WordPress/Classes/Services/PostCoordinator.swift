@@ -84,8 +84,8 @@ class PostCoordinator: NSObject {
         }
     }
 
-    /// Saves the post to both the local database and the server if available.
-    /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
+    /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish.
+    /// Then, it calls the completion block with the post ready to be saved/uploaded.
     ///
     /// - Parameter post: the post to save
     /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
