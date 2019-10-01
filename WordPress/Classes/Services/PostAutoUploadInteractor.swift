@@ -13,7 +13,7 @@ final class PostAutoUploadInteractor {
         case nothing
     }
 
-    private static let allowedStatuses: [BasePost.Status] = [.draft, .publish]
+    private static let disallowedStatuses: [BasePost.Status] = [.trash, .deleted]
 
     let maxNumberOfAttempts = 3
 
@@ -28,7 +28,7 @@ final class PostAutoUploadInteractor {
     func autoUploadAction(for post: AbstractPost) -> AutoUploadAction {
         guard post.isFailed,
             let status = post.status,
-            PostAutoUploadInteractor.allowedStatuses.contains(status),
+            !PostAutoUploadInteractor.disallowedStatuses.contains(status),
             post.autoUploadAttemptsCount.intValue < maxNumberOfAttempts else {
                 return .nothing
         }
@@ -36,7 +36,6 @@ final class PostAutoUploadInteractor {
         if post.isLocalDraft || post.shouldAttemptAutoUpload {
             return .upload
         } else {
-            // TODO This is currently not supported by PostCoordinator
             return .autoSave
         }
     }
@@ -64,6 +63,6 @@ final class PostAutoUploadInteractor {
                 return false
         }
 
-        return !PostAutoUploadInteractor.allowedStatuses.contains(status)
+        return PostAutoUploadInteractor.disallowedStatuses.contains(status)
     }
 }
