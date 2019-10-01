@@ -154,7 +154,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 - (BOOL)isValidFileInMedia:(Media *)media error:(NSError **)error {
     Blog *blog = media.blog;
-    if (media.absoluteLocalURL == nil) {
+    if (media.absoluteLocalURL == nil || ![media.absoluteLocalURL checkResourceIsReachableAndReturnError:nil]) {
         if (error){
             *error = [NSError errorWithDomain:MediaServiceErrorDomain
                                          code:MediaServiceErrorFileDoesNotExist
