@@ -80,7 +80,8 @@ class PostCoordinator: NSObject {
 
     func autoSave(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
         prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
-            self.uploadRevision(post: post)
+            post.status = .draft
+            self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
         }
     }
 
@@ -234,11 +235,6 @@ class PostCoordinator: NSObject {
 
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })
-    }
-
-    private func uploadRevision(post: AbstractPost) {
-        post.status = .draft
-        mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
     }
 
     private func updateReferences(to media: Media, in post: AbstractPost) {
