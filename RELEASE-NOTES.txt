@@ -4,6 +4,7 @@
 * Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account on app launch.
 * Dark Mode: General improvements
 * Universal links: Pass back to Safari if we can't handle a URL.
+* Sign In With Apple: fixed issue with re-logging in on an existing WP account.
  
 13.3
 -----
