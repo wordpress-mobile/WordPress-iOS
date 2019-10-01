@@ -283,11 +283,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     private func updateContentInset(for referenceView: UITextView) {
         var contentInset = referenceView.contentInset
         contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
-        guard #available(iOS 13, *) else {
-            contentInset.bottom = Constants.editorBottomInset
-            referenceView.contentInset = contentInset
-            return
-        }
+        contentInset.bottom = Constants.editorBottomInset
         referenceView.contentInset = contentInset
     }
 
@@ -1198,33 +1194,12 @@ private extension ShareExtensionEditorViewController {
 
     func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = richTextView
-        let bottomInset = getBottomInset(for: keyboardFrame)
-        let editorBottominset = getEditorBottomInset()
+        let bottomInset = (view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom) + Constants.insetBottomPadding)
         let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: bottomInset, right: 0)
-        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: bottomInset + editorBottominset, right: 0)
+        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: bottomInset, right: 0)
 
         richTextView.scrollIndicatorInsets = scrollInsets
         richTextView.contentInset = contentInsets
-    }
-
-    /// Because on iOS 13 the keyboard is over the view, we need to calculate the textview bottom inset
-    /// using the keyboard frame from window base coordinate
-    ///
-    func getBottomInset(for keyboardFrame: CGRect) -> CGFloat {
-        guard #available(iOS 13, *) else {
-            return (view.frame.maxY - (keyboardFrame.minY + view.layoutMargins.bottom) + Constants.insetBottomPadding)
-        }
-        return currentKeyboardFrame.origin.y > 0 ? richTextView.frame.height - currentKeyboardFrame.origin.y - view.safeAreaInsets.bottom : 0
-    }
-
-    /// On iOS13 this method returns a padding for the textview in portrait mode only.
-    /// It replicates the behaviour adopted on iOS 12
-    ///
-    func getEditorBottomInset() -> CGFloat {
-        if #available(iOS 13, *) {
-            return Constants.editorBottomInset - view.safeAreaInsets.bottom
-        }
-        return 0
     }
 }
 
@@ -1296,7 +1271,7 @@ fileprivate extension ShareExtensionEditorViewController {
     struct Constants {
         static let placeholderPadding           = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let insetBottomPadding           = CGFloat(50.0)
-        static let editorBottomInset            = CGFloat(15.0)
+        static let editorBottomInset            = CGFloat(18.0)
         static let headers                      = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                        = [TextList.Style.unordered, .ordered]
         static let toolbarHeight                = CGFloat(44.0)
