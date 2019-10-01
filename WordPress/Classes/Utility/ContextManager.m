@@ -263,8 +263,9 @@ static ContextManager *_override;
                                                                  URL:storeURL
                                                              options:nil
                                                                error:&error]) {
-            DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            @throw [NSException exceptionWithName:@"Can't initialize Core Data stack"
+                                           reason:[error localizedDescription]
+                                         userInfo:[error userInfo]];
         }
     }
 

@@ -33,6 +33,8 @@ extension PostEditor where Self: UIViewController {
         dismissWhenDone: Bool,
         analyticsStat: WPAnalyticsStat?) {
 
+        MediaCoordinator.shared.uploadMedia(for: post)
+
         // Cancel publishing if media is currently being uploaded
         if !action.isAsync && !dismissWhenDone && isUploadingMedia {
             displayMediaIsUploadingAlert()
