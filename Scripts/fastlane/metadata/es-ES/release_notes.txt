@@ -1,6 +1,3 @@
-* En reposo, significa en reposo: cuando no uses la aplicación, hará menos y mejorará el rendimiento de tu dispositivo.
-* ¿Tu lista de sitios muestra algunas veces el mismo sitio más de una vez? Bien, lo hemos corregido.
-* Gestiona los ajustes de tus avisos desde la pantalla de avisos (tiene sentido, ¿verdad?).
-* Ahora, la fecha mostrada y la zona horaria de tu sitio están sincronizadas perfectamente.
-* Disfruta de una carga más suave y estable de la vista previa de las entradas.
-
+* Añade compatibilidad con iOS 13.
+* ¡Prueba el modo oscuro!
+* Ya disponible: Accede con Apple.

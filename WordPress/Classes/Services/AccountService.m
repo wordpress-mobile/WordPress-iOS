@@ -191,7 +191,12 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (WPAccount *)createOrUpdateAccountWithUserDetails:(RemoteUser *)remoteUser authToken:(NSString *)authToken
 {
     WPAccount *account = [self findAccountWithUserID:remoteUser.userID];
-    if (!account) {
+    if (account) {
+        // Even if we find an account via its userID we should still update
+        // its authtoken, otherwise the Authenticator's authtoken fixer won't
+        // work.
+        account.authToken = authToken;
+    } else {
         NSString *username = remoteUser.username;
         account = [self createOrUpdateAccountWithUsername:username authToken:authToken];
     }
