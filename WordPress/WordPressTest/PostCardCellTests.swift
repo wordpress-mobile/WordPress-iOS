@@ -1,5 +1,6 @@
 import UIKit
 import XCTest
+import Nimble
 
 @testable import WordPress
 
@@ -361,6 +362,15 @@ class PostCardCellTests: XCTestCase {
         // Then
         XCTAssertEqual(postCell.statusLabel.text, StatusMessages.draftWillBeUploaded)
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
+    }
+
+    func testMessageWhenPostIsArevision() {
+        let post = PostBuilder(context).revision().with(remoteStatus: .failed).with(remoteStatus: .local).build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Local changes"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
     private func postCellFromNib() -> PostCardCell {
