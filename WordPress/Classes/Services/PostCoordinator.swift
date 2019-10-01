@@ -237,12 +237,7 @@ class PostCoordinator: NSObject {
     }
 
     private func uploadRevision(post: AbstractPost) {
-        guard post.hasRemote() else {
-            post.status = .draft
-            upload(post: post)
-            return
-        }
-
+        post.status = .draft
         mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
     }
 
