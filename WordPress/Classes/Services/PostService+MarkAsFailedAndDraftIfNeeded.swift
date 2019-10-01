@@ -12,7 +12,7 @@
         guard post.remoteStatus != .failed else {
             return
         }
-        
+
         post.remoteStatus = .failed
 
         // If the post was not created on the server yet we convert the post to a local draft
