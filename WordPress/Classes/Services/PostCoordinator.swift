@@ -79,7 +79,6 @@ class PostCoordinator: NSObject {
 
     func autoSave(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
         prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
-            post.status = .draft
             self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
         }
     }
@@ -310,6 +309,10 @@ class PostCoordinator: NSObject {
         cancelAnyPendingSaveOf(post: post)
 
         post.shouldAttemptAutoUpload = false
+
+        if !post.hasRemote() {
+            post.status = .draft
+        }
 
         let moc = post.managedObjectContext
 
