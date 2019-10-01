@@ -612,10 +612,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func publish(_ post: AbstractPost) {
-        // TODO: this is not following our offline principals. Let's handle differently
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            publishPost(post)
-        }
+        publishPost(post)
     }
 
     func trash(_ post: AbstractPost) {
