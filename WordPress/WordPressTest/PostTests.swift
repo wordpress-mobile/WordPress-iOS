@@ -285,7 +285,7 @@ class PostTests: XCTestCase {
     func testThatStatusForDisplayWorksForRevisionPost() {
         let original = newTestPost()
         let revision = original.createRevision()
-        let local = NSLocalizedString("Local", comment: "Local")
+        let local = NSLocalizedString("Local changes", comment: "Local")
         revision.status = .draft
         XCTAssertEqual(revision.statusForDisplay(), local)
 
@@ -298,7 +298,7 @@ class PostTests: XCTestCase {
         XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), publishPrivateStatusDisplay, local))
 
         revision.status = .publish
-        XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local", comment: "Local"))
+        XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local changes", comment: "Local"))
 
         revision.status = .scheduled
         let scheduledStatusDisplay = "\(Post.title(for: .scheduled))"

@@ -89,6 +89,10 @@ class PostCardStatusViewModel: NSObject {
             return .neutral(.shade30)
         }
 
+        if post.isRevision() {
+            return .warning
+        }
+
         if post.isFailed {
             let autoUploadAction = autoUploadInteractor.autoUploadAction(for: post)
             return (autoUploadAction == .upload || post.wasAutoUploadCancelled) ? .warning : .error
