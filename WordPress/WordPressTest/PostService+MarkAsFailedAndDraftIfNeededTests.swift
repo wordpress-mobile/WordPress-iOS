@@ -4,6 +4,7 @@ import Nimble
 
 @testable import WordPress
 
+/// Test cases for PostService.markAsFailedAndDraftIfNeeded()
 class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
     func testMarkAPostAsFailedAndDraftIt() {
         let post = PostBuilder()
@@ -15,6 +16,16 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
 
         expect(post.remoteStatus).to(equal(.failed))
         expect(post.status).to(equal(.draft))
+    }
+
+    func testItWillMarkLocallyPublishedPostsAsFailedButKeepTheStatus() {
+        let post = PostBuilder().published().with(remoteStatus: .local).build()
+        let postService = PostService()
+
+        postService.markAsFailedAndDraftIfNeeded(post: post)
+
+        expect(post.remoteStatus).to(equal(.failed))
+        expect(post.status).to(equal(.publish))
     }
 
     func testMarkAPostAsFailedAndKeepItsStatus() {
