@@ -4,7 +4,7 @@ import Nimble
 
 @testable import WordPress
 
-class PostServiceMarkAsFailedAndDraftTests: XCTestCase {
+class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
     func testMarkAPostAsFailedAndDraftIt() {
         let post = PostBuilder()
             .with(status: .pending)
