@@ -127,8 +127,8 @@ extension WPStyleGuide {
         public static let blockApprovedBgColor      = UIColor.clear
 
         public static let blockUnapprovedSideColor  = UIColor.warning(.shade60)
-        public static let blockUnapprovedBgColor    = UIColor.warning(.shade0)
-        public static let blockUnapprovedTextColor  = UIColor.errorDark
+        public static let blockUnapprovedBgColor    = UIColor(light: .warning(.shade0), dark: .warning(.shade90))
+        public static let blockUnapprovedTextColor  = UIColor.text
         public static let blockUnapprovedLinkColor  = UIColor.primary
 
         public static var contentBlockRegularStyle: [NSAttributedString.Key: Any] {

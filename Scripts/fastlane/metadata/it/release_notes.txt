@@ -1,6 +1,3 @@
-* Inattività significa inattività: quando non usi l'app, eseguirà meno azioni e migliorerà le prestazioni del tuo dispositivo.
-* Il tuo elenco dei siti a volte ha mostrato più volte lo stesso sito? Abbiamo risolto questo problema.
-* Gestisci le impostazioni delle notifiche dalla schermata Notifiche (ha senso, no?).
-* La data visualizzata e il fuso orario del sito ora sono perfettamente sincronizzati.
-* Goditi un caricamento più fluido e stabile delle anteprime degli articoli.
-
+* Aggiunge supporto per iOS 13.
+* Dai una chance alla Dark Mode.
+* Ora è disponibile l'accesso con Apple.

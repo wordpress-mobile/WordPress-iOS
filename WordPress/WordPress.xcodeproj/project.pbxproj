@@ -935,6 +935,7 @@
 		7E8980CA22E8C7A600C567B0 /* BlogToBlogMigration87to88.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8980C922E8C7A600C567B0 /* BlogToBlogMigration87to88.swift */; };
 		7E92828921090E9A00BBD8A3 /* notifications-pingback.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E92828821090E9A00BBD8A3 /* notifications-pingback.json */; };
 		7E929CD12110D4F200BCAD88 /* FormattableRangesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E929CD02110D4F200BCAD88 /* FormattableRangesFactory.swift */; };
+		7E92A1FB233CB1B7006D281B /* Autosaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E92A1FA233CB1B7006D281B /* Autosaver.swift */; };
 		7E987F562108017B00CAFB88 /* NotificationContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */; };
 		7E987F58210811CC00CAFB88 /* NotificationContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */; };
 		7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F592108122A00CAFB88 /* NotificationUtility.swift */; };
@@ -3047,6 +3048,7 @@
 		7E8980C922E8C7A600C567B0 /* BlogToBlogMigration87to88.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogToBlogMigration87to88.swift; path = "87-88/BlogToBlogMigration87to88.swift"; sourceTree = "<group>"; };
 		7E92828821090E9A00BBD8A3 /* notifications-pingback.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-pingback.json"; sourceTree = "<group>"; };
 		7E929CD02110D4F200BCAD88 /* FormattableRangesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableRangesFactory.swift; sourceTree = "<group>"; };
+		7E92A1FA233CB1B7006D281B /* Autosaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Autosaver.swift; sourceTree = "<group>"; };
 		7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouter.swift; sourceTree = "<group>"; };
 		7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouterTests.swift; sourceTree = "<group>"; };
 		7E987F592108122A00CAFB88 /* NotificationUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtility.swift; sourceTree = "<group>"; };
@@ -5681,6 +5683,7 @@
 				570BFD8A22823D7B007859A8 /* PostActionSheet.swift */,
 				570265142298921800F2214C /* PostListTableViewHandler.swift */,
 				57047A4E22A961BC00B461DF /* PostSearchHeader.swift */,
+				7E92A1FA233CB1B7006D281B /* Autosaver.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -11442,6 +11445,7 @@
 				9A38DC6D218899FB006A409B /* DiffAbstractValue.swift in Sources */,
 				177B4C252123161900CF8084 /* GiphyPicker.swift in Sources */,
 				17B7C8C120EE2A870042E260 /* Routes+Notifications.swift in Sources */,
+				7E92A1FB233CB1B7006D281B /* Autosaver.swift in Sources */,
 				9A341E5621997A340036662E /* BlogAuthor.swift in Sources */,
 				9A341E5721997A340036662E /* Blog+BlogAuthors.swift in Sources */,
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,

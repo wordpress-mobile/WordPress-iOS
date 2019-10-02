@@ -73,6 +73,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
     }()
 
+    lazy var autosaver = Autosaver { [weak self] in
+        self?.mapUIContentToPostAndSave(immediate: true)
+    }
+
     // MARK: - Styling Options
 
     private lazy var optionsTablePresenter = OptionsTablePresenter(presentingViewController: self, presentingTextView: editorView.richTextView)
@@ -1306,7 +1310,7 @@ extension AztecPostViewController: UITextViewDelegate {
     }
 
     func textViewDidChange(_ textView: UITextView) {
-        mapUIContentToPostAndSave()
+        autosaver.contentDidChange()
         refreshPlaceholderVisibility()
 
         switch textView {
@@ -1342,6 +1346,18 @@ extension AztecPostViewController: UITextViewDelegate {
         }
 
         return true
+    }
+
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        // Sergio Estevao: This shouldn't happen in an editable textView, but it looks we have a system bug in iOS13 so we need this workaround
+        if !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
+        let position = characterRange.location
+        textView.selectedRange = NSRange(location: position, length: 0)
+        textView.typingAttributes = textView.attributedText.attributes(at: position, effectiveRange: nil)
+        updateFormatBar()
+        return false
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

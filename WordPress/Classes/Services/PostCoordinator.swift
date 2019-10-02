@@ -14,9 +14,7 @@ class PostCoordinator: NSObject {
 
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
-    private lazy var mediaCoordinator: MediaCoordinator = {
-        return MediaCoordinator.shared
-    }()
+    private let mediaCoordinator: MediaCoordinator
 
     private let backgroundService: PostService
 
@@ -24,7 +22,7 @@ class PostCoordinator: NSObject {
 
     // MARK: - Initializers
 
-    init(mainService: PostService? = nil, backgroundService: PostService? = nil) {
+    init(mainService: PostService? = nil, backgroundService: PostService? = nil, mediaCoordinator: MediaCoordinator? = nil) {
         let contextManager = ContextManager.sharedInstance()
 
         let mainContext = contextManager.mainContext
@@ -36,37 +34,7 @@ class PostCoordinator: NSObject {
 
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
         self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
-    }
-
-    // MARK: - Uploading Media
-
-    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
-    /// of the existing media for the post.
-    ///
-    /// - Parameters:
-    ///     - post: the post to get the media to upload from.
-    ///     - automatedRetry: true if this call is the result of an automated upload-retry attempt.
-    ///
-    /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
-    ///
-    private func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
-        let mediaService = MediaService(managedObjectContext: backgroundContext)
-        let media: [Media]
-        let isPushingAllMedia: Bool
-
-        if automatedRetry {
-            media = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
-            isPushingAllMedia = media.count == post.media.count
-        } else {
-            media = post.media.filter({ $0.remoteStatus == .failed })
-            isPushingAllMedia = true
-        }
-
-        media.forEach { mediaObject in
-            mediaCoordinator.retryMedia(mediaObject, automatedRetry: automatedRetry)
-        }
-
-        return isPushingAllMedia
+        self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
     }
 
     // MARK: - Misc
@@ -85,7 +53,7 @@ class PostCoordinator: NSObject {
             post.deleteRevision()
         }
 
-        guard uploadMedia(for: post, automatedRetry: automatedRetry) else {
+        guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
             change(post: post, status: .failed)
             return
         }
@@ -279,14 +247,17 @@ class PostCoordinator: NSObject {
     }
 
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
-        post.managedObjectContext?.perform {
+        guard let context = post.managedObjectContext else {
+            return
+        }
+        context.perform {
             if status == .failed {
                 self.mainService.markAsFailedAndDraftIfNeeded(post: post)
             } else {
                 post.remoteStatus = status
             }
 
-            try? post.managedObjectContext?.save()
+            ContextManager.sharedInstance().saveContextAndWait(context)
         }
     }
 }

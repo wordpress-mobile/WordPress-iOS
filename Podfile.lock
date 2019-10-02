@@ -211,7 +211,7 @@ PODS:
   - WordPress-Aztec-iOS (1.9.0)
   - WordPress-Editor-iOS (1.9.0):
     - WordPress-Aztec-iOS (= 1.9.0)
-  - WordPressAuthenticator (1.9.0):
+  - WordPressAuthenticator (1.10.0-beta.2):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.5)
@@ -259,7 +259,7 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/7671b26a8634430fccfc2509f847dc0ecfc05050/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.1.1`)
+  - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/7671b26a8634430fccfc2509f847dc0ecfc05050/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
@@ -301,7 +301,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.9.0)
-  - WordPressAuthenticator (~> 1.9.0)
+  - WordPressAuthenticator (~> 1.10.0-beta.2)
   - WordPressKit (~> 4.5.0)
   - WordPressMocks (~> 0.0.5)
   - WordPressShared (~> 1.8.7)
@@ -359,7 +359,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/7671b26a8634430fccfc2509f847dc0ecfc05050/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
-    :tag: 0.1.1
+    :tag: 0.2.0
   glog:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/7671b26a8634430fccfc2509f847dc0ecfc05050/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json
   Gutenberg:
@@ -421,7 +421,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
-    :tag: 0.1.1
+    :tag: 0.2.0
   Gutenberg:
     :commit: 7671b26a8634430fccfc2509f847dc0ecfc05050
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
@@ -492,7 +492,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: e58c7ab55b0bae53418a705876093fed314b6586
   WordPress-Editor-iOS: 36114a1e155b0696939dba80989652c185e91e01
-  WordPressAuthenticator: 4a047f354ff6486b2b446a2c4d517611800eed48
+  WordPressAuthenticator: df4fe0236ff746bcdc7d1d3b4f7124d4374739f3
   WordPressKit: 87ba4cce3f5269e26a09568a749ec1b8b2ba2267
   WordPressMocks: d8088f718439556ff3856d5881aef581740cd26a
   WordPressShared: 09cf184caa614835f5811e8609227165201e6d3e
