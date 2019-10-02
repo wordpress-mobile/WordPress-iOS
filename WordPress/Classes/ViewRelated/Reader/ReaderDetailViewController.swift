@@ -412,7 +412,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func setupTextView() {
         // This method should be called exactly once.
         assert(textView.superview == nil)
-        
+
         textView.delegate = self
 
         view.addSubview(textView)
@@ -1390,7 +1390,7 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             presentFullScreenImage(with: staticImage)
         }
     }
-    
+
     func interactWith(URL: URL) {
         if readerLinkRouter.canHandle(url: URL) {
             readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
