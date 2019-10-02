@@ -19,12 +19,32 @@ enum AutoUploadMessages {
                                                        comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
     static let willNotAttemptToSubmitLater = NSLocalizedString("Couldn't perform operation",
                                                         comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
+    static let privateWillBeUploaded = NSLocalizedString("Private post will be published when your device is back online",
+                                                       comment: "Text displayed in notice after the app fails to upload a draft.")
+    static let willAttemptToPublishPrivateLater = NSLocalizedString("Private post couldn't be published. We'll try again later",
+                                                        comment: "Text displayed after the app fails to upload a private post, it will attempt to upload it later.")
+    static let willNotAttemptToPublishPrivateLater = NSLocalizedString("Couldn't perform operation. Private post not published",
+                                                        comment: "Text displayed after the app fails to upload a private post, no new attempt will be made.")
 
     static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-        return postStatus == .publish ? AutoUploadMessages.willAttemptToPublishLater : AutoUploadMessages.willAttemptToSubmitLater
+        switch postStatus {
+        case .publish:
+            return AutoUploadMessages.willAttemptToPublishLater
+        case .publishPrivate:
+            return AutoUploadMessages.willAttemptToPublishPrivateLater
+        default:
+            return AutoUploadMessages.willAttemptToSubmitLater
+        }
     }
 
     static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-        return postStatus == .publish ? AutoUploadMessages.willNotAttemptToPublishLater : AutoUploadMessages.willNotAttemptToSubmitLater
+        switch postStatus {
+        case .publish:
+            return AutoUploadMessages.willNotAttemptToPublishLater
+        case .publishPrivate:
+            return AutoUploadMessages.willNotAttemptToPublishPrivateLater
+        default:
+            return AutoUploadMessages.willNotAttemptToSubmitLater
+        }
     }
 }

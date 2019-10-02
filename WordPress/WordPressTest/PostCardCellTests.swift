@@ -236,12 +236,12 @@ class PostCardCellTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallRetry)
     }
 
-    func testShowRetryButtonAndHideViewButton() {
+    func testShowPublishButtonAndHideViewButton() {
         let post = PostBuilder().private().with(remoteStatus: .failed).build()
 
         postCell.configure(with: post)
 
-        XCTAssertFalse(postCell.retryButton.isHidden)
+        XCTAssertFalse(postCell.publishButton.isHidden)
         XCTAssertTrue(postCell.viewButton.isHidden)
     }
 
@@ -380,6 +380,33 @@ class PostCardCellTests: XCTestCase {
 
         expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation"))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
+    }
+
+    func testShowsFailedMessageWhenAttemptToAutoUploadAPrivatePost() {
+        let post = PostBuilder(context).private().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 2).confirmedAutoUpload().build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Private post couldn't be published. We'll try again later"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
+    }
+
+    func testFailedMessageWhenMaxNumberOfAttemptsToUploadPrivateIsReached() {
+        let post = PostBuilder(context).private().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 3).build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation. Private post not published"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
+    }
+
+    func testShowsChangesWillBeUploadedMessageForPrivate() {
+        let post = PostBuilder(context).private().with(remoteStatus: .failed).confirmedAutoUpload().build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Private post will be published when your device is back online"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
     func testMessageWhenPostIsArevision() {
