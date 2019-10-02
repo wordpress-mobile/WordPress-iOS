@@ -31,6 +31,15 @@ enum AutoUploadMessages {
                                                         comment: "Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later.")
     static let willNotAttemptToScheduleLater = NSLocalizedString("Couldn't perform operation. Post not scheduled",
                                                         comment: "Text displayed after the app fails to upload a scheduled post, no new attempt will be made.")
+    static let changesWillNotBePublished = NSLocalizedString("Changes will not be published",
+                                                        comment: "Title for notice displayed on canceling auto-upload published post")
+    static let changesWillNotBeSubmitted = NSLocalizedString("Changes will not be submitted",
+                                                         comment: "Title for notice displayed on canceling auto-upload pending post")
+    static let changesWillNotBeScheduled = NSLocalizedString("Changes will not be scheduled",
+                                                         comment: "Title for notice displayed on canceling auto-upload of a scheduled post")
+    static let changesWillNotBeSaved = NSLocalizedString("We won't save the latest changes to your draft.",
+                                                         comment: "Title for notice displayed on canceling auto-upload of a draft post")
+    
 
     static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
@@ -55,6 +64,21 @@ enum AutoUploadMessages {
             return AutoUploadMessages.willNotAttemptToScheduleLater
         default:
             return AutoUploadMessages.willNotAttemptToSubmitLater
+        }
+    }
+
+    static func cancelMessage(for postStatus: BasePost.Status?) -> String {
+        switch postStatus {
+        case .publish:
+            return AutoUploadMessages.changesWillNotBePublished
+        case .publishPrivate:
+            return AutoUploadMessages.changesWillNotBePublished
+        case .scheduled:
+            return AutoUploadMessages.changesWillNotBeScheduled
+        case .draft:
+            return AutoUploadMessages.changesWillNotBeSaved
+        default:
+            return AutoUploadMessages.changesWillNotBeSubmitted
         }
     }
 }
