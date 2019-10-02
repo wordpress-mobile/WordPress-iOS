@@ -73,7 +73,7 @@ class PostCoordinatorTests: XCTestCase {
     }
 
     func testCancelAutoUploadOfAPost() {
-        let post = PostBuilder(context).build()
+        let post = PostBuilder(context).confirmedAutoUpload().build()
         let postServiceMock = PostServiceMock(managedObjectContext: context)
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
 
