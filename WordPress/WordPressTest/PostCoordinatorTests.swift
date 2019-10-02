@@ -76,14 +76,71 @@ class PostCoordinatorTests: XCTestCase {
 
         expect(post.autoUploadAttemptsCount).to(equal(0))
     }
+
+    func testResumeWillAutoSaveUnconfirmedExistingPosts() {
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        _ = PostBuilder(context)
+            .withRemote()
+            .with(status: .draft)
+            .with(remoteStatus: .failed)
+            .build()
+        try! context.save()
+
+        postCoordinator.resume()
+
+        expect(postServiceMock.didCallAutoSave).toEventually(beTrue())
+    }
+
+    func testCancelAutoUploadOfAPost() {
+        let post = PostBuilder(context).confirmedAutoUpload().build()
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.cancelAutoUploadOf(post)
+
+        expect(post.shouldAttemptAutoUpload).to(beFalse())
+    }
+
+    func testCancelAutoUploadChangePostStatusToDraftWhenPostDoesntHasRemote() {
+        let post = PostBuilder(context)
+            .with(status: .pending)
+            .with(remoteStatus: .failed)
+            .build()
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.cancelAutoUploadOf(post)
+
+        expect(post.status).to(equal(.draft))
+    }
+
+    func testCancelAutoUploadDoNotChangePostStatusToDraftWhenPostHasRemote() {
+        let post = PostBuilder(context)
+            .withRemote()
+            .with(status: .publish)
+            .with(remoteStatus: .failed)
+            .build()
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.cancelAutoUploadOf(post)
+
+        expect(post.status).to(equal(.publish))
+    }
 }
 
 private class PostServiceMock: PostService {
     private(set) var didCallUploadPost = false
     private(set) var didCallMarkAsFailedAndDraftIfNeeded = false
+    private(set) var didCallAutoSave = false
 
     override func uploadPost(_ post: AbstractPost, success: ((AbstractPost) -> Void)?, failure: @escaping (Error?) -> Void) {
         didCallUploadPost = true
+    }
+
+    override func autoSave(_ post: AbstractPost, success: ((AbstractPost, String) -> Void)?, failure: @escaping (Error?) -> Void) {
+        didCallAutoSave = true
     }
 
     override func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
@@ -113,3 +170,4 @@ private class MediaCoordinatorMock: MediaCoordinator {
         // noop
     }
 }
+

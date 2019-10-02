@@ -908,6 +908,7 @@ class AbstractPostListViewController: UIViewController,
 
             apost.date_created_gmt = Date()
             apost.status = .publish
+            apost.shouldAttemptAutoUpload = true
             self.uploadPost(apost)
             self.updateFilterWithPostStatus(.publish)
         }

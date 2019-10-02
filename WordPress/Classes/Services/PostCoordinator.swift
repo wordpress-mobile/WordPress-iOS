@@ -20,9 +20,12 @@ class PostCoordinator: NSObject {
 
     private let mainService: PostService
 
+    private let failedPostsFetcher: FailedPostsFetcher
+
     // MARK: - Initializers
 
-    init(mainService: PostService? = nil, backgroundService: PostService? = nil, mediaCoordinator: MediaCoordinator? = nil) {
+    init(mainService: PostService? = nil, backgroundService: PostService? = nil,
+         mediaCoordinator: MediaCoordinator? = nil, failedPostsFetcher: FailedPostsFetcher? = nil) {
         let contextManager = ContextManager.sharedInstance()
 
         let mainContext = contextManager.mainContext
@@ -35,6 +38,7 @@ class PostCoordinator: NSObject {
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
         self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
+        self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
     }
 
     // MARK: - Uploading Media
@@ -67,14 +71,26 @@ class PostCoordinator: NSObject {
         return isPushingAllPendingMedia
     }
 
-    // MARK: - Misc
+    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
+        prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
+            self.upload(post: post)
+        }
+    }
 
-    /// Saves the post to both the local database and the server if available.
-    /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
+    func autoSave(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
+        prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
+            self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
+        }
+    }
+
+    /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish.
+    /// Then, it calls the completion block with the post ready to be saved/uploaded.
     ///
     /// - Parameter post: the post to save
+    /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
+    /// - Parameter then: a block to perform after post is ready to be saved
     ///
-    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
+    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (AbstractPost) -> ()) {
         var post = postToSave
 
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
@@ -110,7 +126,7 @@ class PostCoordinator: NSObject {
                         // Let's check if media uploading is still going, if all finished with success then we can upload the post
                         if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
                             self.removeObserver(for: post)
-                            self.upload(post: post)
+                            completion(post)
                         }
                     }
                     switch media.mediaType {
@@ -137,7 +153,7 @@ class PostCoordinator: NSObject {
             return
         }
 
-        upload(post: post)
+        completion(post)
     }
 
     func cancelAnyPendingSaveOf(post: AbstractPost) {
@@ -296,6 +312,10 @@ class PostCoordinator: NSObject {
 
         post.shouldAttemptAutoUpload = false
 
+        if !post.hasRemote() {
+            post.status = .draft
+        }
+
         let moc = post.managedObjectContext
 
         moc?.perform {
@@ -311,8 +331,7 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        let fetcher = FailedPostsFetcher(mainContext)
-        fetcher.getFailedPostsAndRetryActions { [weak self] postsAndActions in
+        failedPostsFetcher.postsAndRetryActions { [weak self] postsAndActions in
             guard let self = self else {
                 return
             }
@@ -322,7 +341,7 @@ extension PostCoordinator: Uploader {
                 case .upload:
                     self.save(post, automatedRetry: true)
                 case .autoSave:
-                    // TODO: Create a revision for the post
+                    self.autoSave(post, automatedRetry: true)
                     return
                 case .nothing:
                     return
@@ -345,7 +364,7 @@ extension PostCoordinator {
             postService = PostService(managedObjectContext: managedObjectContext)
         }
 
-        func getFailedPostsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
+        func postsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
             let interactor = PostAutoUploadInteractor()
 
             postService.getFailedPosts { posts in

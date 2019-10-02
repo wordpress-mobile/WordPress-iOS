@@ -284,7 +284,7 @@ class Post: AbstractPost {
         }
 
         if isRevision() {
-            let localOnly = NSLocalizedString("Local", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
+            let localOnly = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
 
             if let tempStatusString = statusString, !tempStatusString.isEmpty {
                 statusString = String(format: "%@, %@", tempStatusString, localOnly)

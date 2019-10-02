@@ -9,7 +9,7 @@
     ///     eventually be made private.
     ///
     func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
-        guard post.remoteStatus != .failed, !post.hasRemote() else {
+        guard post.remoteStatus != .failed else {
             return
         }
 

@@ -382,6 +382,15 @@ class PostCardCellTests: XCTestCase {
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
+    func testMessageWhenPostIsArevision() {
+        let post = PostBuilder(context).revision().with(remoteStatus: .failed).with(remoteStatus: .local).build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Local changes"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
+    }
+
     private func postCellFromNib() -> PostCardCell {
         let bundle = Bundle(for: PostCardCell.self)
         guard let postCell = bundle.loadNibNamed("PostCardCell", owner: nil)?.first as? PostCardCell else {
@@ -402,3 +411,4 @@ class PostActionSheetDelegateMock: PostActionSheetDelegate {
         calledWithView = view
     }
 }
+

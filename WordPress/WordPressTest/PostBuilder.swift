@@ -37,6 +37,11 @@ class PostBuilder {
         return self
     }
 
+    func revision() -> PostBuilder {
+        post.setPrimitiveValue(post, forKey: "original")
+        return self
+    }
+
     func withImage() -> PostBuilder {
         post.pathForDisplayImage = "https://localhost/image.png"
         return self
