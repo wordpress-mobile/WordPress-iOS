@@ -142,7 +142,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '640455e3203791f84b207974fa8c3e307f1fa586'
+    gutenberg :commit => 'b8e8fe1f6b438b5cfcc9a9bf86d23616969eeff5'
 
     ## Third party libraries
     ## =====================
@@ -341,7 +341,7 @@ target 'WordPressComStatsiOSTests' do
 end
 
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.5'
+  pod 'WordPressMocks', '~> 0.0.6'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end

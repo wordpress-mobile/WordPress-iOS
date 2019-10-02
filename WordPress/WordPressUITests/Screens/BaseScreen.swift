@@ -53,9 +53,11 @@ class BaseScreen {
             safari.launch()
 
             // Select the URL bar when Safari opens
-            let urlBar = safari.textFields.firstMatch
+            let urlBar = safari.textFields["URL"]
             waitFor(element: urlBar, predicate: "exists == true")
-            urlBar.tap()
+            if !urlBar.exists {
+                safari.buttons["URL"].tap()
+            }
 
             // Follow the magic link
             var magicLinkComponents = URLComponents(url: WireMock.URL(), resolvingAgainstBaseURL: false)!
