@@ -31,7 +31,6 @@ class SignupEpilogueScreen: BaseScreen {
     }
 
     func verifyEpilogueContains(username: String, displayName: String) -> SignupEpilogueScreen {
-        print(app.debugDescription)
         let actualUsername = usernameField.value as! String
         let actualDisplayName = displayNameField.value as! String
 
