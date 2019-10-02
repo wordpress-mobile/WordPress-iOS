@@ -59,16 +59,16 @@ class PostNoticeViewModelTests: XCTestCase {
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
-                scenario: "Currently unsupported: Locally scheduled post",
+                scenario: "Locally scheduled post",
                 post: createPost(.scheduled),
-                title: AutoUploadMessages.postFailedToUpload,
-                actionTitle: FailureActionTitles.retry
+                title: "Post will be scheduled when your device is back online",
+                actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
-                scenario: "Currently unsupported: Scheduled post with confirmed local changes",
+                scenario: "Scheduled post with confirmed local changes",
                 post: createPost(.scheduled, hasRemote: true),
-                title: AutoUploadMessages.postFailedToUpload,
-                actionTitle: FailureActionTitles.retry
+                title: "Changes will be uploaded next time your device is online",
+                actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Post with at least 1 auto upload to publish attempt",
