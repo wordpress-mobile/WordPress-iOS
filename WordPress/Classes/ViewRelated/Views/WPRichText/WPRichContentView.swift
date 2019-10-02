@@ -15,34 +15,7 @@ import WordPressShared
 /// in tags like img, iframe, and video, are loaded manually and presented as subviews.
 ///
 class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
-    var richDelegate: WPRichContentViewDelegate?
-    
-    fileprivate lazy var linkTapGestureRecognizer: UITapGestureRecognizer = { [unowned self] in
-           let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
-           gestureRecognizer.cancelsTouchesInView = true
-           gestureRecognizer.delaysTouchesBegan = true
-           gestureRecognizer.delaysTouchesEnded = true
-           gestureRecognizer.delegate = self
-           return gestureRecognizer
-       }()
 
-       private func setupTouchDetection() {
-           for gesture in gestureRecognizers ?? [] {
-               gesture.require(toFail: linkTapGestureRecognizer)
-           }
-           addGestureRecognizer(linkTapGestureRecognizer)
-       }
-    
-    @objc func tapRecognized(_ recognizer: UIGestureRecognizer) {
-        let point = recognizer.location(in: self)
-        let characterIndex = self.layoutManager.characterIndex(for: point, in: self.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
-        let attributeValue = self.attributedText?.attribute(.link, at: characterIndex, effectiveRange: nil)
-        if let value = attributeValue,
-            let url = value as? URL,
-            let richDelegate = richDelegate {
-            richDelegate.interactWith?(URL: url)
-        }
-      }
     /// Used to keep references to image attachments.
     ///
     var mediaArray = [RichMedia]()
@@ -60,6 +33,15 @@ class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
         let side = max(bounds.size.width, bounds.size.height)
         return CGSize(width: side, height: side)
     }()
+
+    @objc lazy var linkTapGestureRecognizer: UITapGestureRecognizer = { [unowned self] in
+              let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
+              gestureRecognizer.cancelsTouchesInView = true
+              gestureRecognizer.delaysTouchesBegan = true
+              gestureRecognizer.delaysTouchesEnded = true
+              gestureRecognizer.delegate = self
+              return gestureRecognizer
+          }()
 
 
     override var textContainerInset: UIEdgeInsets {
@@ -146,15 +128,13 @@ class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
         // Because the attachment manager is a lazy property.
         _ = attachmentManager
 
-
         textContainerInset = Constants.textContainerInset
-        delegate = self
         setupTouchDetection()
     }
 
 
     @objc func layoutAttachmentViews() {
-        if let richDelegate = richDelegate {
+        if let richDelegate = delegate as? WPRichContentViewDelegate {
             if richDelegate.richContentViewShouldUpdateLayoutForAttachments?(self) == false {
                 return
             }
@@ -162,7 +142,7 @@ class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
 
         updateLayoutForAttachments()
 
-        if let richDelegate = richDelegate {
+        if let richDelegate = delegate as? WPRichContentViewDelegate {
             richDelegate.richContentViewDidUpdateLayoutForAttachments?(self)
         }
     }
@@ -185,7 +165,28 @@ class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
             }
         }
     }
+    
+    private func setupTouchDetection() {
+          for gesture in gestureRecognizers ?? [] {
+              gesture.require(toFail: linkTapGestureRecognizer)
+          }
+          addGestureRecognizer(linkTapGestureRecognizer)
+      }
 
+      @objc func tapRecognized(_ recognizer: UIGestureRecognizer) {
+          let point = recognizer.location(in: self)
+          let characterIndex = self.layoutManager.characterIndex(for: point, in: self.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+          // handle tap on link
+          if let linkAttribute = self.attributedText?.attribute(.link, at: characterIndex, effectiveRange: nil),
+              let url = linkAttribute as? URL,
+              let richDelegate = delegate as? WPRichContentViewDelegate {
+              richDelegate.interactWith?(URL: url)
+          // handle tap on attachement
+          } else if let attachmentAttribute = self.attributedText?.attribute(.attachment, at: characterIndex, effectiveRange: nil),
+              let attachment = attachmentAttribute as? WPTextAttachment {
+              handleImageTapped(imageForAttachment(attachment))
+          }
+      }
 
     private func ensureLayoutForAttachment(_ attachment: NSTextAttachment, at range: NSRange) {
         layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
@@ -428,7 +429,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             return
         }
 
-        guard let richDelegate = richDelegate else {
+        guard let richDelegate = delegate as? WPRichContentViewDelegate else {
             return
         }
         richDelegate.richContentView(self, didReceiveImageAction: sender)
@@ -582,9 +583,4 @@ fileprivate extension String {
 
         return paragraphSeparators.contains(endingString)
     }
-
-}
-
-extension WPRichContentView: UITextViewDelegate {
-
 }

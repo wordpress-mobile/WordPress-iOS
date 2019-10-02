@@ -412,6 +412,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func setupTextView() {
         // This method should be called exactly once.
         assert(textView.superview == nil)
+        
+        textView.delegate = self
 
         view.addSubview(textView)
         view.addConstraints([
@@ -420,8 +422,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             view.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
             textView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
             ])
-        
-        textView.richDelegate = self
     }
 
     /// Composes the views for the post header and Discover attribution.
@@ -1370,10 +1370,6 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             let frame = textView.frameForTextInRange(characterRange)
             let shareController = PostSharingController()
             shareController.shareURL(url: URL as NSURL, fromRect: frame, inView: textView, inViewController: self)
-        } else if readerLinkRouter.canHandle(url: URL) {
-            readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
-        } else if URL.isWordPressDotComPost {
-            presentReaderDetailViewControllerWithURL(URL)
         }
         return false
     }
@@ -1396,7 +1392,13 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
     }
     
     func interactWith(URL: URL) {
-        presentWebViewControllerWithURL(URL)
+        if readerLinkRouter.canHandle(url: URL) {
+            readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
+        } else if URL.isWordPressDotComPost {
+            presentReaderDetailViewControllerWithURL(URL)
+        } else {
+            presentWebViewControllerWithURL(URL)
+        }
     }
 }
 
