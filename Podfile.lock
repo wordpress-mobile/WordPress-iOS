@@ -433,10 +433,10 @@ CHECKOUT OPTIONS:
     :commit: b8e8fe1f6b438b5cfcc9a9bf86d23616969eeff5
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressAuthenticator:
-    :commit: 43b8a0208e544cf1b5c77b8dfb2789df73d445a4
+    :commit: ff0d62360b7b26358fb53f6b31064c6cfd6d6de0
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :commit: 9941f7b8cbcfd2842d8a16ca94716b1761f10b24
+    :commit: a60a06e6fbda33b413ab104f9d0d500b89dcf655
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
