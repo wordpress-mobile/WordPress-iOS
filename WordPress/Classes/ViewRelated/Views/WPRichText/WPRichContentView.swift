@@ -7,13 +7,42 @@ import WordPressShared
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
     @objc optional func richContentViewShouldUpdateLayoutForAttachments(_ richContentView: WPRichContentView) -> Bool
     @objc optional func richContentViewDidUpdateLayoutForAttachments(_ richContentView: WPRichContentView)
+    @objc optional func interactWith(URL: URL)
 }
 
 
 /// A subclass of UITextView for displaying HTML formatted strings.  Embedded content
 /// in tags like img, iframe, and video, are loaded manually and presented as subviews.
 ///
-class WPRichContentView: UITextView {
+class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
+    var richDelegate: WPRichContentViewDelegate?
+    
+    fileprivate lazy var linkTapGestureRecognizer: UITapGestureRecognizer = { [unowned self] in
+           let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
+           gestureRecognizer.cancelsTouchesInView = true
+           gestureRecognizer.delaysTouchesBegan = true
+           gestureRecognizer.delaysTouchesEnded = true
+           gestureRecognizer.delegate = self
+           return gestureRecognizer
+       }()
+
+       private func setupTouchDetection() {
+           for gesture in gestureRecognizers ?? [] {
+               gesture.require(toFail: linkTapGestureRecognizer)
+           }
+           addGestureRecognizer(linkTapGestureRecognizer)
+       }
+    
+    @objc func tapRecognized(_ recognizer: UIGestureRecognizer) {
+        let point = recognizer.location(in: self)
+        let characterIndex = self.layoutManager.characterIndex(for: point, in: self.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+        let attributeValue = self.attributedText?.attribute(.link, at: characterIndex, effectiveRange: nil)
+        if let value = attributeValue,
+            let url = value as? URL,
+            let richDelegate = richDelegate {
+            richDelegate.interactWith?(URL: url)
+        }
+      }
     /// Used to keep references to image attachments.
     ///
     var mediaArray = [RichMedia]()
@@ -119,11 +148,13 @@ class WPRichContentView: UITextView {
 
 
         textContainerInset = Constants.textContainerInset
+        delegate = self
+        setupTouchDetection()
     }
 
 
     @objc func layoutAttachmentViews() {
-        if let richDelegate = delegate as? WPRichContentViewDelegate {
+        if let richDelegate = richDelegate {
             if richDelegate.richContentViewShouldUpdateLayoutForAttachments?(self) == false {
                 return
             }
@@ -131,7 +162,7 @@ class WPRichContentView: UITextView {
 
         updateLayoutForAttachments()
 
-        if let richDelegate = delegate as? WPRichContentViewDelegate {
+        if let richDelegate = richDelegate {
             richDelegate.richContentViewDidUpdateLayoutForAttachments?(self)
         }
     }
@@ -397,7 +428,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             return
         }
 
-        guard let richDelegate = delegate as? WPRichContentViewDelegate else {
+        guard let richDelegate = richDelegate else {
             return
         }
         richDelegate.richContentView(self, didReceiveImageAction: sender)
@@ -551,5 +582,9 @@ fileprivate extension String {
 
         return paragraphSeparators.contains(endingString)
     }
+
+}
+
+extension WPRichContentView: UITextViewDelegate {
 
 }

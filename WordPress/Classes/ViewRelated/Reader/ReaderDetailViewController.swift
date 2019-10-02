@@ -413,8 +413,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // This method should be called exactly once.
         assert(textView.superview == nil)
 
-        textView.delegate = self
-
         view.addSubview(textView)
         view.addConstraints([
             view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: textView.topAnchor),
@@ -422,6 +420,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             view.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
             textView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
             ])
+        
+        textView.richDelegate = self
     }
 
     /// Composes the views for the post header and Discover attribution.
@@ -1374,8 +1374,6 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
         } else if URL.isWordPressDotComPost {
             presentReaderDetailViewControllerWithURL(URL)
-        } else {
-            presentWebViewControllerWithURL(URL)
         }
         return false
     }
@@ -1395,6 +1393,10 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
         } else if let staticImage = image.imageView.image {
             presentFullScreenImage(with: staticImage)
         }
+    }
+    
+    func interactWith(URL: URL) {
+        presentWebViewControllerWithURL(URL)
     }
 }
 
