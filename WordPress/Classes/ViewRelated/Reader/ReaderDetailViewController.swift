@@ -102,6 +102,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     private let bottomMarginAttachment = ReaderPlaceholderAttachment()
 
+    private var lightTextViewAttributedString: NSAttributedString?
+    private var darkTextViewAttributedString: NSAttributedString?
+
     @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
@@ -301,9 +304,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         view.layoutIfNeeded()
 
         if #available(iOS 13.0, *) {
-            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true, UIApplication.shared.applicationState != .background {
+            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true {
                 reloadGradientColors()
-                configureRichText()
+                updateRichText()
             }
         }
     }
@@ -561,6 +564,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         configureFeaturedImage()
         configureTitle()
         configureByLine()
+        configureAttributedString()
         configureRichText()
         configureDiscoverAttribution()
         configureTag()
@@ -765,22 +769,45 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         guard let post = post else {
             return
         }
+
         textView.isPrivate = post.isPrivate()
         textView.content = post.contentForDisplay()
 
-        // TODO: Get attributed string
-        // Modify the attributed string. Add top and bottom embeds
-        // Ensure formatting for embeds.
-        // Assign attributed string to textView.
-        // Besure that embed bounds are updated.
-        let attrStr = WPRichContentView.formattedAttributedStringForString(post.contentForDisplay())
-        let mAttrStr = NSMutableAttributedString(attributedString: attrStr)
+        updateRichText()
+        updateTextViewMargins()
+    }
+
+    private func updateRichText() {
+        guard let post = post else {
+            return
+        }
+
+        if #available(iOS 13, *) {
+            let isDark = traitCollection.userInterfaceStyle == .dark
+            textView.attributedText = isDark ? darkTextViewAttributedString : lightTextViewAttributedString
+        } else {
+            let attrStr = WPRichContentView.formattedAttributedStringForString(post.contentForDisplay())
+            textView.attributedText = attributedString(with: attrStr)
+        }
+    }
+
+    private func configureAttributedString() {
+        if #available(iOS 13, *), let post = post {
+            let light = WPRichContentView.formattedAttributedString(for: post.contentForDisplay(), style: .light)
+            let dark = WPRichContentView.formattedAttributedString(for: post.contentForDisplay(), style: .dark)
+            lightTextViewAttributedString = attributedString(with: light)
+            darkTextViewAttributedString = attributedString(with: dark)
+        }
+    }
+
+    private func attributedString(with attributedString: NSAttributedString) -> NSAttributedString {
+        let mAttrStr = NSMutableAttributedString(attributedString: attributedString)
 
         // Ensure the starting paragraph style is applied to the topMarginAttachment else the
         // first paragraph might not have the correct line height.
         var paraStyle = NSParagraphStyle.default
-        if attrStr.length > 0 {
-            if let pstyle = attrStr.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
+        if attributedString.length > 0 {
+            if let pstyle = attributedString.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
                 paraStyle = pstyle
             }
         }
@@ -789,11 +816,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         mAttrStr.addAttributes([.paragraphStyle: paraStyle], range: NSRange(location: 0, length: 1))
         mAttrStr.append(NSAttributedString(attachment: bottomMarginAttachment))
 
-        textView.attributedText = mAttrStr
-
-        updateTextViewMargins()
+        return mAttrStr
     }
-
 
     fileprivate func configureDiscoverAttribution() {
         if post?.sourceAttributionStyle() == SourceAttributionStyle.none {

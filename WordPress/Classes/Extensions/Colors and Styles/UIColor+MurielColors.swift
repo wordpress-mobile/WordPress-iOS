@@ -342,3 +342,12 @@ extension UIColor {
         self.init(red: r, green: g, blue: b, alpha: a)
     }
 }
+
+extension UIColor {
+    func color(for trait: UITraitCollection?) -> UIColor {
+        if #available(iOS 13, *), let trait = trait {
+            return resolvedColor(with: trait)
+        }
+        return self
+    }
+}
