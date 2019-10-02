@@ -248,6 +248,8 @@ class PostCardStatusViewModel: NSObject {
             return AutoUploadMessages.draftWillBeUploaded
         case .publishPrivate:
             return AutoUploadMessages.privateWillBeUploaded
+        case .scheduled:
+            return AutoUploadMessages.scheduledWillBeUploaded
         case .publish:
             return AutoUploadMessages.postWillBePublished
         default:

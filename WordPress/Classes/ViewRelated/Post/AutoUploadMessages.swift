@@ -25,6 +25,12 @@ enum AutoUploadMessages {
                                                         comment: "Text displayed after the app fails to upload a private post, it will attempt to upload it later.")
     static let willNotAttemptToPublishPrivateLater = NSLocalizedString("Couldn't perform operation. Private post not published",
                                                         comment: "Text displayed after the app fails to upload a private post, no new attempt will be made.")
+    static let scheduledWillBeUploaded = NSLocalizedString("Post will be scheduled when your device is back online",
+                                                       comment: "Text displayed after the app fails to upload a scheduled post.")
+    static let willAttemptToScheduleLater = NSLocalizedString("Post couldn't be scheduled. We'll try again later",
+                                                        comment: "Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later.")
+    static let willNotAttemptToScheduleLater = NSLocalizedString("Couldn't perform operation. Post not scheduled",
+                                                        comment: "Text displayed after the app fails to upload a scheduled post, no new attempt will be made.")
 
     static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
@@ -32,6 +38,8 @@ enum AutoUploadMessages {
             return AutoUploadMessages.willAttemptToPublishLater
         case .publishPrivate:
             return AutoUploadMessages.willAttemptToPublishPrivateLater
+        case .scheduled:
+            return AutoUploadMessages.willAttemptToScheduleLater
         default:
             return AutoUploadMessages.willAttemptToSubmitLater
         }
@@ -43,6 +51,8 @@ enum AutoUploadMessages {
             return AutoUploadMessages.willNotAttemptToPublishLater
         case .publishPrivate:
             return AutoUploadMessages.willNotAttemptToPublishPrivateLater
+        case .scheduled:
+            return AutoUploadMessages.willNotAttemptToScheduleLater
         default:
             return AutoUploadMessages.willNotAttemptToSubmitLater
         }

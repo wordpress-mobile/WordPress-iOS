@@ -409,6 +409,33 @@ class PostCardCellTests: XCTestCase {
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
+    func testShowsFailedMessageWhenAttemptToAutoUploadAScheduledPost() {
+        let post = PostBuilder(context).scheduled().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 2).confirmedAutoUpload().build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Post couldn't be scheduled. We'll try again later"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
+    }
+
+    func testFailedMessageWhenMaxNumberOfAttemptsToUploadScheduledIsReached() {
+        let post = PostBuilder(context).scheduled().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 3).build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation. Post not scheduled"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
+    }
+
+    func testShowsChangesWillBeUploadedMessageForScheduled() {
+        let post = PostBuilder(context).scheduled().with(remoteStatus: .failed).confirmedAutoUpload().build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Post will be scheduled when your device is back online"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
+    }
+
     func testMessageWhenPostIsArevision() {
         let post = PostBuilder(context).revision().with(remoteStatus: .failed).with(remoteStatus: .local).build()
 
