@@ -79,3 +79,8 @@ Scripts/fastlane/test_output/
 # Generated Internal Icons
 /WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
 /WordPress/Resources/Icons-Internal
+
+# Credentials
+WordPress/Credentials/wpcom_app_credentials
+WordPress/Credentials/wpcom_alpha_app_credentials
+WordPress/Credentials/wpcom_internal_app_credentials
