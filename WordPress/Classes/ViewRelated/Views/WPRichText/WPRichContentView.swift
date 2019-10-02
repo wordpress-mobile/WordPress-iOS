@@ -165,7 +165,7 @@ class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
             }
         }
     }
-    
+
     private func setupTouchDetection() {
           for gesture in gestureRecognizers ?? [] {
               gesture.require(toFail: linkTapGestureRecognizer)
