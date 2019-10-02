@@ -4,6 +4,8 @@
 * Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account on app launch.
 * Dark Mode: General improvements
 * Universal links: Pass back to Safari if we can't handle a URL.
+* Block editor: Fix a bug on iOS 13.0 were tapping on a link opens Safari
+* Block editor: Fix a link editing issue, where trying to add a empty link at the start of another link would remove the existing link.
  
 13.3
 -----
