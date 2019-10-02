@@ -312,10 +312,6 @@ class PostCoordinator: NSObject {
 
         post.shouldAttemptAutoUpload = false
 
-        if !post.hasRemote() {
-            post.status = .draft
-        }
-
         let moc = post.managedObjectContext
 
         moc?.perform {
