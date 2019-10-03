@@ -910,7 +910,6 @@ class AbstractPostListViewController: UIViewController,
             apost.status = .publish
             apost.shouldAttemptAutoUpload = true
             self.uploadPost(apost)
-            self.updateFilterWithPostStatus(.publish)
         }
 
         present(alertController, animated: true)
