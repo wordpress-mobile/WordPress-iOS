@@ -27,4 +27,16 @@ enum PostAutoUploadMessages {
     static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
         return postStatus == .publish ? PostAutoUploadMessages.willNotAttemptToPublishLater : PostAutoUploadMessages.willNotAttemptToSubmitLater
     }
+
+    static func attemptFailures(for post: AbstractPost,
+                                withState state: PostAutoUploadInteractor.AutoUploadAttemptState) -> String? {
+        switch state {
+        case .attempted:
+            return PostAutoUploadMessages.willAttemptToAutoUpload(for: post.status)
+        case .reachedLimit:
+            return PostAutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
+        default:
+            return nil
+        }
+    }
 }
