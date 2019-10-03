@@ -10,6 +10,8 @@ class ExtensionPresentationController: UIPresentationController {
 
     // MARK: - Private Properties
 
+    private var viewFrame = CGRect.zero
+
     fileprivate var direction: Direction
 
     fileprivate let dimmingView: UIView = {
@@ -57,15 +59,23 @@ class ExtensionPresentationController: UIPresentationController {
     }
 
     override func containerViewWillLayoutSubviews() {
-        presentedView?.frame = frameOfPresentedViewInContainerView
-        presentedView?.layer.cornerRadius = Appearance.cornerRadius
-        presentedView?.clipsToBounds = true
+        defer {
+            presentedView?.layer.cornerRadius = Appearance.cornerRadius
+            presentedView?.clipsToBounds = true
+        }
+        guard #available(iOS 13, *) else {
+            presentedView?.frame = frameOfPresentedViewInContainerView
+            return
+        }
+        presentedView?.frame = viewFrame
     }
 
     override func presentationTransitionWillBegin() {
         containerView?.insertSubview(dimmingView, at: 0)
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[dimmingView]|", options: [], metrics: nil, views: ["dimmingView": dimmingView]))
         NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[dimmingView]|", options: [], metrics: nil, views: ["dimmingView": dimmingView]))
+
+        viewFrame = frameOfPresentedViewInContainerView
 
         guard let coordinator = presentedViewController.transitionCoordinator else {
             dimmingView.alpha = Constants.fullAlpha
@@ -123,7 +133,7 @@ private extension ExtensionPresentationController {
     @objc func keyboardWasShown(notification: Notification) {
         let keyboardFrame = notification.keyboardEndFrame() ?? .zero
         let duration = notification.keyboardAnimationDuration() ?? Constants.defaultAnimationDuration
-        animateForWithKeyboardFrame(presentedView!.convert(keyboardFrame, from: nil), duration: duration)
+        animateForWithKeyboardFrame(presentedView!.convert(keyboardFrame, from: nil), duration: duration, keyboardWasShown: true)
     }
 
     @objc func keyboardWillHide (notification: Notification) {
@@ -132,9 +142,10 @@ private extension ExtensionPresentationController {
         animateForWithKeyboardFrame(presentedView!.convert(keyboardFrame, from: nil), duration: duration)
     }
 
-    func animateForWithKeyboardFrame(_ keyboardFrame: CGRect, duration: Double, force: Bool = false) {
+    func animateForWithKeyboardFrame(_ keyboardFrame: CGRect, duration: Double, force: Bool = false, keyboardWasShown: Bool = false) {
         let presentedFrame = frameOfPresentedViewInContainerView
         let translatedFrame = getTranslationFrame(keyboardFrame: keyboardFrame, presentedFrame: presentedFrame)
+        viewFrame = keyboardWasShown ? translatedFrame : frameOfPresentedViewInContainerView
         if force || translatedFrame != presentedFrame {
             UIView.animate(withDuration: duration, animations: {
                 self.presentedView?.frame = translatedFrame
