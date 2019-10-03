@@ -57,6 +57,26 @@ class PostCoordinatorTests: XCTestCase {
         expect(post.remoteStatus).toEventually(equal(.pushing))
     }
 
+    func testAttemptCountIsIncrementedAfterFailingToAutomaticallyUpload() {
+        let postServiceMock = PostServiceMock()
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let post = PostBuilder(context).build()
+
+        postCoordinator.save(post, automatedRetry: true)
+
+        expect(post.autoUploadAttemptsCount).to(equal(1))
+    }
+
+    func testAttemptCountIsResetWhenNotAutomaticallyUpload() {
+        let postServiceMock = PostServiceMock()
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let post = PostBuilder(context).with(autoUploadAttemptsCount: 3).build()
+
+        postCoordinator.save(post, automatedRetry: false)
+
+        expect(post.autoUploadAttemptsCount).to(equal(0))
+    }
+
     func testResumeWillAutoSaveUnconfirmedExistingPosts() {
         let postServiceMock = PostServiceMock(managedObjectContext: context)
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)

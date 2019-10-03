@@ -5,7 +5,6 @@ import Nimble
 @testable import WordPress
 
 private typealias FailureActionTitles = PostNoticeViewModel.FailureActionTitles
-private typealias FailureTitles = PostNoticeViewModel.FailureTitles
 
 class PostNoticeViewModelTests: XCTestCase {
     private var contextManager: TestContextManager!
@@ -38,37 +37,61 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Local draft",
                 post: createPost(.draft),
-                title: FailureTitles.draftWillBeUploaded,
+                title: PostAutoUploadMessages.draftWillBeUploaded,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with confirmed local changes",
                 post: createPost(.draft, hasRemote: true),
-                title: FailureTitles.changesWillBeUploaded,
+                title: PostAutoUploadMessages.changesWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Local published draft",
                 post: createPost(.publish),
-                title: FailureTitles.postWillBePublished,
+                title: PostAutoUploadMessages.postWillBePublished,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Published post with confirmed local changes",
                 post: createPost(.publish, hasRemote: true),
-                title: FailureTitles.changesWillBeUploaded,
+                title: PostAutoUploadMessages.changesWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Currently unsupported: Locally scheduled post",
                 post: createPost(.scheduled),
-                title: FailureTitles.postFailedToUpload,
+                title: PostAutoUploadMessages.postFailedToUpload,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Currently unsupported: Scheduled post with confirmed local changes",
                 post: createPost(.scheduled, hasRemote: true),
-                title: FailureTitles.postFailedToUpload,
+                title: PostAutoUploadMessages.postFailedToUpload,
+                actionTitle: FailureActionTitles.retry
+            ),
+            Expectation(
+                scenario: "Post with at least 1 auto upload to publish attempt",
+                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
+                title: i18n("Post couldn't be published. We'll try again later"),
+                actionTitle: FailureActionTitles.cancel
+            ),
+            Expectation(
+                scenario: "Post with the maximum number of auto upload to publish attempts",
+                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
+                title: i18n("Couldn't perform operation. Post not published"),
+                actionTitle: FailureActionTitles.retry
+            ),
+            Expectation(
+                scenario: "Draft with at least 1 auto upload attempt",
+                post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 2),
+                title: i18n("Post couldn't be submitted. We'll try again later"),
+                actionTitle: FailureActionTitles.cancel
+            ),
+            Expectation(
+                scenario: "Draft with the maximum number of auto upload attempts",
+                post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
+                title: i18n("Couldn't perform operation"),
                 actionTitle: FailureActionTitles.retry
             ),
         ]
@@ -136,7 +159,7 @@ class PostNoticeViewModelTests: XCTestCase {
     }
 
 
-    private func createPost(_ status: BasePost.Status, hasRemote: Bool = false) -> Post {
+    private func createPost(_ status: BasePost.Status, hasRemote: Bool = false, autoUploadAttemptsCount: Int = 0) -> Post {
         var builder = PostBuilder(context)
             .with(title: UUID().uuidString)
             .with(status: status)
@@ -145,6 +168,8 @@ class PostNoticeViewModelTests: XCTestCase {
         if hasRemote {
             builder = builder.withRemote()
         }
+
+        builder = builder.with(autoUploadAttemptsCount: autoUploadAttemptsCount)
 
         builder = builder.confirmedAutoUpload()
 

@@ -150,6 +150,10 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.cancelAutoUpload)
             }
 
+            if autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit {
+                buttons.append(.retry)
+            }
+
             if canPublish {
                 buttons.append(.publish)
             }
@@ -227,18 +231,22 @@ class PostCardStatusViewModel: NSObject {
             return StatusMessages.localChanges
         }
 
+        if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
+            return autoUploadMessage
+        }
+
         if autoUploadInteractor.autoUploadAction(for: post) != .upload {
             return defaultFailedMessage
         }
         if post.hasRemote() {
-            return StatusMessages.changesWillBeUploaded
+            return PostAutoUploadMessages.changesWillBeUploaded
         }
 
         switch postStatus {
         case .draft:
-            return StatusMessages.draftWillBeUploaded
+            return PostAutoUploadMessages.draftWillBeUploaded
         case .publish:
-            return StatusMessages.postWillBePublished
+            return PostAutoUploadMessages.postWillBePublished
         default:
             return defaultFailedMessage
         }
@@ -249,13 +257,9 @@ class PostCardStatusViewModel: NSObject {
     }
 
     enum StatusMessages {
-        static let uploadFailed = NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
-        static let postWillBePublished = NSLocalizedString("Post will be published next time your device is online",
-                                                           comment: "Message shown in the posts list when a post is scheduled for publishing")
-        static let localChanges = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
-        static let draftWillBeUploaded = NSLocalizedString("Draft will be uploaded next time your device is online",
-                                                           comment: "Message shown in post list when a draft is scheduled to be automatically uploaded.")
-        static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
-                                                             comment: "Message shown in post list when a post's local changes will be automatically uploaded when the device is online.")
+        static let uploadFailed = NSLocalizedString("Upload failed",
+                                                            comment: "Message displayed on a post's card when the post has failed to upload")
+        static let localChanges = NSLocalizedString("Local changes",
+                                                            comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
     }
 }

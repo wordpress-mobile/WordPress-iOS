@@ -13,7 +13,15 @@ final class PostAutoUploadInteractor {
         case nothing
     }
 
+    enum AutoUploadAttemptState {
+        case attempted
+        case reachedLimit
+        case notAttempted
+    }
+
     private static let allowedStatuses: [BasePost.Status] = [.draft, .publish]
+
+    static let maxNumberOfAttempts = 3
 
     /// Returns what action should be executed when we retry a failed upload.
     ///
@@ -26,7 +34,8 @@ final class PostAutoUploadInteractor {
     func autoUploadAction(for post: AbstractPost) -> AutoUploadAction {
         guard post.isFailed,
             let status = post.status,
-            PostAutoUploadInteractor.allowedStatuses.contains(status) else {
+            PostAutoUploadInteractor.allowedStatuses.contains(status),
+            post.autoUploadAttemptsCount.intValue < PostAutoUploadInteractor.maxNumberOfAttempts else {
                 return .nothing
         }
 
@@ -62,5 +71,18 @@ final class PostAutoUploadInteractor {
         }
 
         return !PostAutoUploadInteractor.allowedStatuses.contains(status)
+    }
+
+    /// Returns what is the auto upload attempt state for a given post
+    ///
+    func autoUploadAttemptState(of post: AbstractPost) -> AutoUploadAttemptState {
+        let autoUploadAttemptsCount = post.autoUploadAttemptsCount.intValue
+        if autoUploadAttemptsCount >= PostAutoUploadInteractor.maxNumberOfAttempts {
+            return .reachedLimit
+        } else if autoUploadAttemptsCount > 0 {
+            return .attempted
+        } else {
+            return .notAttempted
+        }
     }
 }

@@ -107,10 +107,14 @@ struct PostNoticeViewModel {
     private var failureTitle: String {
         var defaultTitle: String {
             if post is Page {
-                return FailureTitles.pageFailedToUpload
+                return PostAutoUploadMessages.pageFailedToUpload
             } else {
-                return FailureTitles.postFailedToUpload
+                return PostAutoUploadMessages.postFailedToUpload
             }
+        }
+
+        if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
+            return autoUploadMessage
         }
 
         guard let postStatus = post.status,
@@ -119,14 +123,14 @@ struct PostNoticeViewModel {
         }
 
         if post.hasRemote() {
-            return FailureTitles.changesWillBeUploaded
+            return PostAutoUploadMessages.changesWillBeUploaded
         }
 
         switch postStatus {
         case .draft:
-            return FailureTitles.draftWillBeUploaded
+            return PostAutoUploadMessages.draftWillBeUploaded
         case .publish:
-            return FailureTitles.postWillBePublished
+            return PostAutoUploadMessages.postWillBePublished
         default:
             return defaultTitle
         }
@@ -258,19 +262,6 @@ struct PostNoticeViewModel {
         let postInContext = objectInContext as? AbstractPost
 
         return postInContext
-    }
-
-    enum FailureTitles {
-        static let postWillBePublished = NSLocalizedString("Post will be published the next time your device is online",
-                                                           comment: "Text displayed in notice after a post if published while offline.")
-        static let draftWillBeUploaded = NSLocalizedString("Draft will be uploaded next time your device is online",
-                                                           comment: "Text displayed in notice after the app fails to upload a draft.")
-        static let pageFailedToUpload = NSLocalizedString("Page failed to upload",
-                                                          comment: "Title of notification displayed when a page has failed to upload.")
-        static let postFailedToUpload = NSLocalizedString("Post failed to upload",
-                                                          comment: "Title of notification displayed when a post has failed to upload.")
-        static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
-                                                             comment: "Text displayed in notice after the app fails to upload a post.")
     }
 
     enum FailureActionTitles {

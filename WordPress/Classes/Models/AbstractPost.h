@@ -44,6 +44,10 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  This array will contain a list of revision IDs.
  */
 @property (nonatomic, strong, nullable) NSArray *revisions;
+/**
+ The default value of autoUploadAttemptsCount is 0.
+*/
+@property (nonatomic, strong, nonnull) NSNumber *autoUploadAttemptsCount;
 
 // Revision management
 - (AbstractPost *)createRevision;

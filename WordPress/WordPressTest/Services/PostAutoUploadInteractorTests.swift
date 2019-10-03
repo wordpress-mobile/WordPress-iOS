@@ -101,16 +101,34 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
             expect(actualResult).to(equal(expectedCancelableResult))
         }
     }
+
+    func testReturnNothingAsPostActionWhenAttemptLimitIsReached() {
+        let post = createPost(.publish, confirmedAutoUpload: true, attemptsCount: 3)
+
+        let action = interactor.autoUploadAction(for: post)
+
+        expect(action).to(equal(.nothing))
+    }
+
+    func testReturnUploadAsPostActionWhenAttemptLimitIsNotReached() {
+        let post = createPost(.publish, confirmedAutoUpload: true, attemptsCount: 2)
+
+        let action = interactor.autoUploadAction(for: post)
+
+        expect(action).to(equal(.upload))
+    }
 }
 
 private extension PostCoordinatorUploadActionUseCaseTests {
     func createPost(_ status: BasePost.Status,
                     remoteStatus: AbstractPostRemoteStatus = .failed,
                     hasRemote: Bool = false,
-                    confirmedAutoUpload: Bool = false) -> Post {
+                    confirmedAutoUpload: Bool = false,
+                    attemptsCount: Int = 1) -> Post {
         let post = Post(context: context)
         post.status = status
         post.remoteStatus = remoteStatus
+        post.autoUploadAttemptsCount = NSNumber(value: attemptsCount)
 
         if hasRemote {
             post.postID = NSNumber(value: Int.random(in: 1...Int.max))

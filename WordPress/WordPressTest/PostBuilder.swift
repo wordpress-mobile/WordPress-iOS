@@ -124,6 +124,12 @@ class PostBuilder {
         return self
     }
 
+    func with(autoUploadAttemptsCount: Int) -> PostBuilder {
+        post.autoUploadAttemptsCount = NSNumber(value: autoUploadAttemptsCount)
+
+        return self
+    }
+
     func `is`(sticked: Bool) -> PostBuilder {
         post.isStickyPost = sticked
         return self
