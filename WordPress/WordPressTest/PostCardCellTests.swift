@@ -378,7 +378,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation"))
+        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation. Post not submitted"))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
@@ -434,6 +434,33 @@ class PostCardCellTests: XCTestCase {
 
         expect(self.postCell.statusLabel.text).to(equal("Post will be scheduled when your device is back online"))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
+    }
+
+    func testShowsChangesWillBeUploadedMessageForPendingPost() {
+        let post = PostBuilder(context).pending().with(remoteStatus: .failed).confirmedAutoUpload().build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Post will be submitted for review when your device is back online"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
+    }
+
+    func testShowsFailedMessageWhenAttemptToSubmitAPendingPost() {
+        let post = PostBuilder(context).pending().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 2).confirmedAutoUpload().build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Post couldn't be submitted. We'll try again later"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
+    }
+
+    func testFailedMessageWhenMaxNumberOfAttemptsToSubmitPendingPostIsReached() {
+        let post = PostBuilder(context).pending().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 3).build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation. Post not submitted"))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
     func testMessageWhenPostIsArevision() {

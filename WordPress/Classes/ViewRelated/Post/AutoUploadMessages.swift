@@ -15,9 +15,11 @@ enum AutoUploadMessages {
                                                        comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
     static let willNotAttemptToPublishLater = NSLocalizedString("Couldn't perform operation. Post not published",
                                                         comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
+    static let willSubmitLater = NSLocalizedString("Post will be submitted for review when your device is back online",
+                                                        comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
     static let willAttemptToSubmitLater = NSLocalizedString("Post couldn't be submitted. We'll try again later",
                                                        comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
-    static let willNotAttemptToSubmitLater = NSLocalizedString("Couldn't perform operation",
+    static let willNotAttemptToSubmitLater = NSLocalizedString("Couldn't perform operation. Post not submitted",
                                                         comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
     static let privateWillBeUploaded = NSLocalizedString("Private post will be published when your device is back online",
                                                        comment: "Text displayed in notice after the app fails to upload a draft.")

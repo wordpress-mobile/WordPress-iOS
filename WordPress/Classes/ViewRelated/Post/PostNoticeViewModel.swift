@@ -139,7 +139,7 @@ struct PostNoticeViewModel {
         case .publish:
             return AutoUploadMessages.postWillBePublished
         default:
-            return defaultTitle
+            return AutoUploadMessages.willSubmitLater
         }
     }
 

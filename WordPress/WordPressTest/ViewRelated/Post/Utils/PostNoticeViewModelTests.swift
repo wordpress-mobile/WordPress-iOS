@@ -91,7 +91,7 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Draft with the maximum number of auto upload attempts",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
-                title: "Couldn't perform operation",
+                title: "Couldn't perform operation. Post not submitted",
                 actionTitle: FailureActionTitles.retry
             ),
         ]

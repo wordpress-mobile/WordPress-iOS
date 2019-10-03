@@ -253,7 +253,7 @@ class PostCardStatusViewModel: NSObject {
         case .publish:
             return AutoUploadMessages.postWillBePublished
         default:
-            return defaultFailedMessage
+            return AutoUploadMessages.willSubmitLater
         }
     }
 
