@@ -114,7 +114,7 @@ struct PostNoticeViewModel {
         }
 
         let autoUploadAttemptsCount = post.autoUploadAttemptsCount.intValue
-        if autoUploadAttemptsCount >= autoUploadInteractor.maxNumberOfAttempts {
+        if autoUploadAttemptsCount >= PostAutoUploadInteractor.maxNumberOfAttempts {
             return AutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
         } else if autoUploadAttemptsCount > 0 {
             return AutoUploadMessages.willAttemptToAutoUpload(for: post.status)

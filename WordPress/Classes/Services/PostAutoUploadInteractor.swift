@@ -15,7 +15,7 @@ final class PostAutoUploadInteractor {
 
     private static let allowedStatuses: [BasePost.Status] = [.draft, .publish]
 
-    let maxNumberOfAttempts = 3
+    static let maxNumberOfAttempts = 3
 
     /// Returns what action should be executed when we retry a failed upload.
     ///
@@ -29,7 +29,7 @@ final class PostAutoUploadInteractor {
         guard post.isFailed,
             let status = post.status,
             PostAutoUploadInteractor.allowedStatuses.contains(status),
-            post.autoUploadAttemptsCount.intValue < maxNumberOfAttempts else {
+            post.autoUploadAttemptsCount.intValue < PostAutoUploadInteractor.maxNumberOfAttempts else {
                 return .nothing
         }
 
