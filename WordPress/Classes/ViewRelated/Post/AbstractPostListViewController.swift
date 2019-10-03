@@ -910,7 +910,6 @@ class AbstractPostListViewController: UIViewController,
             apost.status = .publish
             apost.shouldAttemptAutoUpload = true
             self.uploadPost(apost)
-            self.updateFilterWithPostStatus(.publish)
         }
 
         present(alertController, animated: true)
@@ -921,7 +920,6 @@ class AbstractPostListViewController: UIViewController,
 
         apost.status = .draft
         uploadPost(apost)
-        updateFilterWithPostStatus(.draft)
     }
 
     fileprivate func uploadPost(_ apost: AbstractPost) {
