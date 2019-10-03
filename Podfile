@@ -142,7 +142,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '89f4ba2e034aa2892e9dd0c227a6d1583b71d829'
+    gutenberg :commit => 'b8e8fe1f6b438b5cfcc9a9bf86d23616969eeff5'
 
     ## Third party libraries
     ## =====================
@@ -176,7 +176,7 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.0-beta.2'
+    pod 'WordPressAuthenticator', '~> 1.10.0-beta.3'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
@@ -341,7 +341,7 @@ target 'WordPressComStatsiOSTests' do
 end
 
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.5'
+  pod 'WordPressMocks', '~> 0.0.6'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end

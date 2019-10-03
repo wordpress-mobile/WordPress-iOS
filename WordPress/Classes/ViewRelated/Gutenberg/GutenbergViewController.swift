@@ -102,13 +102,16 @@ class GutenbergViewController: UIViewController, PostEditor {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        filter: .image,
                                                        dataSourceType: .device,
+                                                       allowMultipleSelection: false,
                                                        callback: {(asset) in
-                                                        guard let phAsset = asset as? PHAsset else {
+                                                        guard let phAsset = asset as? [PHAsset] else {
                                                             return
                                                         }
-                                                        self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: { (mediaID, mediaURL, mediaType) in
-                                                            guard let mediaID = mediaID,
-                                                                let mediaURLString = mediaURL,
+                                                        self.mediaInserterHelper.insertFromDevice(assets: phAsset, callback: { media in
+                                                            guard let media = media,
+                                                                let (id, url, _) = media.first,
+                                                                let mediaID = id,
+                                                                let mediaURLString = url,
                                                                 let mediaURL = URL(string: mediaURLString) else {
                                                                 return
                                                             }
@@ -337,13 +340,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         autosaver.contentDidChange()
     }
 
-    func gutenbergDidRequestMedia(from source: MediaPickerSource, filter: [MediaFilter]?, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMedia(from source: MediaPickerSource, filter: [MediaFilter]?, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         let flags = mediaFilterFlags(using: filter)
         switch source {
         case .mediaLibrary:
-            gutenbergDidRequestMediaFromSiteMediaLibrary(filter: flags, with: callback)
+            gutenbergDidRequestMediaFromSiteMediaLibrary(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
         case .deviceLibrary:
-            gutenbergDidRequestMediaFromDevicePicker(filter: flags, with: callback)
+            gutenbergDidRequestMediaFromDevicePicker(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
         }
@@ -373,38 +376,40 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         return WPMediaType.all
     }
 
-    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        filter: filter,
                                                        dataSourceType: .mediaLibrary,
-                                                       callback: {(asset) in
-                                                        guard let media = asset as? Media else {
-                                                            callback(nil, nil, nil)
+                                                       allowMultipleSelection: allowMultipleSelection,
+                                                       callback: {(assets) in
+                                                        guard let media = assets as? [Media] else {
+                                                            callback(nil)
                                                             return
                                                         }
                                                         self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
         })
     }
 
-    func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        filter: filter,
                                                        dataSourceType: .device,
-                                                       callback: {(asset) in
-                                                        guard let phAsset = asset as? PHAsset else {
-                                                            callback(nil, nil, nil)
+                                                       allowMultipleSelection: allowMultipleSelection,
+                                                       callback: {(assets) in
+                                                        guard let phAssets = assets as? [PHAsset] else {
+                                                            callback(nil)
                                                             return
                                                         }
-                                                        self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
+                                                        self.mediaInserterHelper.insertFromDevice(assets: phAssets, callback: callback)
         })
     }
 
     func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
                                                          filter: filter,
-                                                         callback: {(asset) in
-                                                            guard let phAsset = asset as? PHAsset else {
-                                                                callback(nil, nil, nil)
+                                                         callback: {(assets) in
+                                                            guard let phAsset = assets?.first as? PHAsset else {
+                                                                callback(nil)
                                                                 return
                                                             }
                                                             self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
