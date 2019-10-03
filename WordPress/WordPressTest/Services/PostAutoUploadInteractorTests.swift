@@ -103,7 +103,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
     }
 
     func testReturnNothingAsPostActionWhenAttemptLimitIsReached() {
-        let post = createPost(.publish, confirmedAutoUpload: true, autoUploadFailureCount: 3)
+        let post = createPost(.publish, confirmedAutoUpload: true, attemptsCount: 3)
 
         let action = interactor.autoUploadAction(for: post)
 
@@ -111,7 +111,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
     }
 
     func testReturnUploadAsPostActionWhenAttemptLimitIsNotReached() {
-        let post = createPost(.publish, confirmedAutoUpload: true, autoUploadFailureCount: 2)
+        let post = createPost(.publish, confirmedAutoUpload: true, attemptsCount: 2)
 
         let action = interactor.autoUploadAction(for: post)
 
@@ -124,11 +124,11 @@ private extension PostCoordinatorUploadActionUseCaseTests {
                     remoteStatus: AbstractPostRemoteStatus = .failed,
                     hasRemote: Bool = false,
                     confirmedAutoUpload: Bool = false,
-                    autoUploadFailureCount: Int = 1) -> Post {
+                    attemptsCount: Int = 1) -> Post {
         let post = Post(context: context)
         post.status = status
         post.remoteStatus = remoteStatus
-        post.autoUploadAttemptsCount = NSNumber(value: autoUploadFailureCount)
+        post.autoUploadAttemptsCount = NSNumber(value: attemptsCount)
 
         if hasRemote {
             post.postID = NSNumber(value: Int.random(in: 1...Int.max))
