@@ -498,13 +498,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
         let editor = EditPostViewController(post: post)
-        editor.onClose = { [weak self] changesSaved in
-            if changesSaved {
-                if let postStatus = editor.post?.status {
-                    self?.updateFilterWithPostStatus(postStatus)
-                }
-            }
-        }
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false)
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
