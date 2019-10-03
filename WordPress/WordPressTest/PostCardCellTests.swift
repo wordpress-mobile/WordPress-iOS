@@ -369,7 +369,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Post couldn't be submitted. We'll try again later"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Post couldn't be submitted. We'll try again later")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -378,7 +378,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation. Post not submitted"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Couldn't perform operation. Post not submitted")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
@@ -387,7 +387,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Private post couldn't be published. We'll try again later"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Private post couldn't be published. We'll try again later")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -396,7 +396,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation. Private post not published"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Couldn't perform operation. Private post not published")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
@@ -405,7 +405,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Private post will be published when your device is back online"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Private post will be published when your device is back online")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -414,7 +414,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Post couldn't be scheduled. We'll try again later"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Post couldn't be scheduled. We'll try again later")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -423,7 +423,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation. Post not scheduled"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Couldn't perform operation. Post not scheduled")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
@@ -432,7 +432,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Post will be scheduled when your device is back online"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Post will be scheduled when your device is back online")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -441,7 +441,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Post will be submitted for review when your device is back online"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Post will be submitted for review when your device is back online")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -450,7 +450,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Post couldn't be submitted. We'll try again later"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Post couldn't be submitted. We'll try again later")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -459,7 +459,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal("Couldn't perform operation. Post not submitted"))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Couldn't perform operation. Post not submitted")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
