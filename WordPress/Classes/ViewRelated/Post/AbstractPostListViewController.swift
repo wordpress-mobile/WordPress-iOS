@@ -907,7 +907,7 @@ class AbstractPostListViewController: UIViewController,
             WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
 
             // TODO: refactor and/or move
-            if (apost is Page) || (apost is Post && apost.status != .publishPrivate && apost.status != .scheduled) {
+            if (apost is Page) || (apost is Post && apost.status != .publishPrivate && apost.status != .scheduled && apost.status != .pending) {
                 apost.status = .publish
             }
 
