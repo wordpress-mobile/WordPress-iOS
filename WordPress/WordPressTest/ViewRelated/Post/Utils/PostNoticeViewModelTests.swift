@@ -73,25 +73,25 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Post with at least 1 auto upload to publish attempt",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
-                title: "Post couldn't be published. We'll try again later",
+                title: NSLocalizedString("Post couldn't be published. We'll try again later", comment: ""),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Post with the maximum number of auto upload to publish attempts",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
-                title: "Couldn't perform operation. Post not published",
+                title: NSLocalizedString("Couldn't perform operation. Post not published", comment: ""),
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with at least 1 auto upload attempt",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 2),
-                title: "Post couldn't be submitted. We'll try again later",
+                title: NSLocalizedString("Post couldn't be submitted. We'll try again later", comment: ""),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Draft with the maximum number of auto upload attempts",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
-                title: "Couldn't perform operation",
+                title: NSLocalizedString("Couldn't perform operation", comment: ""),
                 actionTitle: FailureActionTitles.retry
             ),
         ]
