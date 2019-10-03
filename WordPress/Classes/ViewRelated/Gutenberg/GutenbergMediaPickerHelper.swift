@@ -3,7 +3,7 @@ import CoreServices
 import WPMediaPicker
 import Gutenberg
 
-public typealias GutenbergMediaPickerHelperCallback = ([WPMediaAsset]?) -> Void
+public typealias GutenbergMediaPickerHelperCallback = (WPMediaAsset?) -> Void
 
 class GutenbergMediaPickerHelper: NSObject {
 
@@ -49,7 +49,6 @@ class GutenbergMediaPickerHelper: NSObject {
     func presentMediaPickerFullScreen(animated: Bool,
                                       filter: WPMediaType,
                                       dataSourceType: MediaPickerDataSourceType = .device,
-                                      allowMultipleSelection: Bool,
                                       callback: @escaping GutenbergMediaPickerHelperCallback) {
 
         didPickMediaCallback = callback
@@ -67,7 +66,6 @@ class GutenbergMediaPickerHelper: NSObject {
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
         mediaPickerOptions.filter = filter
-        mediaPickerOptions.allowMultipleSelection = allowMultipleSelection
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
@@ -104,7 +102,12 @@ class GutenbergMediaPickerHelper: NSObject {
 extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        invokeMediaPickerCallback(asset: assets)
+
+        guard let assetSelected = assets.first else {
+            return
+        }
+
+        invokeMediaPickerCallback(asset: assetSelected)
         picker.dismiss(animated: true, completion: nil)
     }
 
@@ -112,7 +115,7 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: nil) })
     }
 
-    fileprivate func invokeMediaPickerCallback(asset: [WPMediaAsset]?) {
+    fileprivate func invokeMediaPickerCallback(asset: WPMediaAsset?) {
         didPickMediaCallback?(asset)
         didPickMediaCallback = nil
     }
