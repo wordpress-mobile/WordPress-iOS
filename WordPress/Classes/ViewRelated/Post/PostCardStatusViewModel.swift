@@ -231,23 +231,23 @@ class PostCardStatusViewModel: NSObject {
 
         let autoUploadAttemptsCount = post.autoUploadAttemptsCount.intValue
         if autoUploadAttemptsCount >= PostAutoUploadInteractor.maxNumberOfAttempts {
-            return AutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
+            return PostAutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
         } else if autoUploadAttemptsCount > 0 {
-            return AutoUploadMessages.willAttemptToAutoUpload(for: post.status)
+            return PostAutoUploadMessages.willAttemptToAutoUpload(for: post.status)
         }
 
         if autoUploadInteractor.autoUploadAction(for: post) != .upload {
             return defaultFailedMessage
         }
         if post.hasRemote() {
-            return AutoUploadMessages.changesWillBeUploaded
+            return PostAutoUploadMessages.changesWillBeUploaded
         }
 
         switch postStatus {
         case .draft:
-            return AutoUploadMessages.draftWillBeUploaded
+            return PostAutoUploadMessages.draftWillBeUploaded
         case .publish:
-            return AutoUploadMessages.postWillBePublished
+            return PostAutoUploadMessages.postWillBePublished
         default:
             return defaultFailedMessage
         }

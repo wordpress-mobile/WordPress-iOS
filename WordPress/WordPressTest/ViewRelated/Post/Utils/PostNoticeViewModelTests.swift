@@ -37,37 +37,37 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Local draft",
                 post: createPost(.draft),
-                title: AutoUploadMessages.draftWillBeUploaded,
+                title: PostAutoUploadMessages.draftWillBeUploaded,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with confirmed local changes",
                 post: createPost(.draft, hasRemote: true),
-                title: AutoUploadMessages.changesWillBeUploaded,
+                title: PostAutoUploadMessages.changesWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Local published draft",
                 post: createPost(.publish),
-                title: AutoUploadMessages.postWillBePublished,
+                title: PostAutoUploadMessages.postWillBePublished,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Published post with confirmed local changes",
                 post: createPost(.publish, hasRemote: true),
-                title: AutoUploadMessages.changesWillBeUploaded,
+                title: PostAutoUploadMessages.changesWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Currently unsupported: Locally scheduled post",
                 post: createPost(.scheduled),
-                title: AutoUploadMessages.postFailedToUpload,
+                title: PostAutoUploadMessages.postFailedToUpload,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Currently unsupported: Scheduled post with confirmed local changes",
                 post: createPost(.scheduled, hasRemote: true),
-                title: AutoUploadMessages.postFailedToUpload,
+                title: PostAutoUploadMessages.postFailedToUpload,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(

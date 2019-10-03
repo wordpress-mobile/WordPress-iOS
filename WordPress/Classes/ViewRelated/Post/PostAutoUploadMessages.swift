@@ -1,6 +1,6 @@
 import Foundation
 
-enum AutoUploadMessages {
+enum PostAutoUploadMessages {
     static let postWillBePublished = NSLocalizedString("Post will be published next time your device is online",
                                                        comment: "Text displayed in notice after a post if published while offline.")
     static let draftWillBeUploaded = NSLocalizedString("Draft will be uploaded next time your device is online",
@@ -21,10 +21,10 @@ enum AutoUploadMessages {
                                                         comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
 
     static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-        return postStatus == .publish ? AutoUploadMessages.willAttemptToPublishLater : AutoUploadMessages.willAttemptToSubmitLater
+        return postStatus == .publish ? PostAutoUploadMessages.willAttemptToPublishLater : PostAutoUploadMessages.willAttemptToSubmitLater
     }
 
     static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-        return postStatus == .publish ? AutoUploadMessages.willNotAttemptToPublishLater : AutoUploadMessages.willNotAttemptToSubmitLater
+        return postStatus == .publish ? PostAutoUploadMessages.willNotAttemptToPublishLater : PostAutoUploadMessages.willNotAttemptToSubmitLater
     }
 }
