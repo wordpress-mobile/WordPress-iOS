@@ -906,12 +906,11 @@ class AbstractPostListViewController: UIViewController,
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
             WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
 
-            // TODO: refactor and/or move
-            if (apost is Page) || (apost is Post && apost.status != .publishPrivate && apost.status != .scheduled && apost.status != .pending) {
+            if apost.status == .draft {
                 apost.status = .publish
             }
 
-            if (apost is Page) || (apost.status != .scheduled) {
+            if apost.status != .scheduled {
                 apost.date_created_gmt = Date()
             }
 
