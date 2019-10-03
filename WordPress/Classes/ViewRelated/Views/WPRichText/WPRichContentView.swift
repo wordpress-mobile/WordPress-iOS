@@ -14,7 +14,7 @@ import WordPressShared
 /// A subclass of UITextView for displaying HTML formatted strings.  Embedded content
 /// in tags like img, iframe, and video, are loaded manually and presented as subviews.
 ///
-class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
+class WPRichContentView: UITextView {
 
     /// Used to keep references to image attachments.
     ///
@@ -33,6 +33,10 @@ class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
         let side = max(bounds.size.width, bounds.size.height)
         return CGSize(width: side, height: side)
     }()
+    
+    private func setupTouchDetection() {
+        addGestureRecognizer(linkTapGestureRecognizer)
+    }
 
     @objc lazy var linkTapGestureRecognizer: UITapGestureRecognizer = { [unowned self] in
               let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
@@ -42,7 +46,6 @@ class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
               gestureRecognizer.delegate = self
               return gestureRecognizer
           }()
-
 
     override var textContainerInset: UIEdgeInsets {
         didSet {
@@ -165,13 +168,6 @@ class WPRichContentView: UITextView, UIGestureRecognizerDelegate {
             }
         }
     }
-
-    private func setupTouchDetection() {
-          for gesture in gestureRecognizers ?? [] {
-              gesture.require(toFail: linkTapGestureRecognizer)
-          }
-          addGestureRecognizer(linkTapGestureRecognizer)
-      }
 
       @objc func tapRecognized(_ recognizer: UIGestureRecognizer) {
           let point = recognizer.location(in: self)
@@ -582,5 +578,22 @@ fileprivate extension String {
         let paragraphSeparators = [String(.carriageReturn), String(.lineFeed), String(.paragraphSeparator)]
 
         return paragraphSeparators.contains(endingString)
+    }
+}
+
+extension WPRichContentView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard gestureRecognizer == linkTapGestureRecognizer else {
+            return true
+        }
+        let point = touch.location(in: self)
+        let characterIndex = self.layoutManager.characterIndex(for: point, in: self.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+        // handle tap on link
+        if let linkAttribute = self.attributedText?.attribute(.link, at: characterIndex, effectiveRange: nil) {
+            return linkAttribute is URL
+        } else if let attachmentAttribute = self.attributedText?.attribute(.attachment, at: characterIndex, effectiveRange: nil) {
+            return attachmentAttribute is WPTextAttachment
+        }
+        return false
     }
 }
