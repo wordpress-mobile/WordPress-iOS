@@ -68,7 +68,7 @@ class PostCardStatusViewModelTests: XCTestCase {
                 "Post with the max number of auto uploades retry reached",
                 PostBuilder(context).with(remoteStatus: .failed)
                     .with(autoUploadAttemptsCount: 3).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .retry, .more], secondary: [.moveToDraft, .trash])
+                ButtonGroups(primary: [.edit, .retry, .more], secondary: [.publish, .moveToDraft, .trash])
             ),
         ]
 
