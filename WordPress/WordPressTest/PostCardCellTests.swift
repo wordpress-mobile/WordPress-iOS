@@ -411,4 +411,3 @@ class PostActionSheetDelegateMock: PostActionSheetDelegate {
         calledWithView = view
     }
 }
-

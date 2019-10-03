@@ -170,4 +170,3 @@ private class MediaCoordinatorMock: MediaCoordinator {
         // noop
     }
 }
-
