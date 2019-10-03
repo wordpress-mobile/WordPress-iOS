@@ -15,7 +15,7 @@ extension WPStyleGuide {
     }
 
     // MARK: - Card View Styles
-    static let postCardBorderColor: UIColor = .neutral(.shade10)
+    static let postCardBorderColor: UIColor = .divider
 
     static let separatorHeight: CGFloat = .hairlineBorderWidth
 
