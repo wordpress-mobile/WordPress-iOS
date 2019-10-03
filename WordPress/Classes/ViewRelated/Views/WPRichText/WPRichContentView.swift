@@ -33,7 +33,7 @@ class WPRichContentView: UITextView {
         let side = max(bounds.size.width, bounds.size.height)
         return CGSize(width: side, height: side)
     }()
-    
+
     private func setupTouchDetection() {
         addGestureRecognizer(linkTapGestureRecognizer)
     }
