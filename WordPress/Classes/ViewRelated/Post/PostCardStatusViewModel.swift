@@ -150,7 +150,7 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.cancelAutoUpload)
             }
 
-            if post.autoUploadAttemptsCount.intValue >= PostAutoUploadInteractor.maxNumberOfAttempts {
+            if autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit {
                 buttons.append(.retry)
             } else if canPublish {
                 buttons.append(.publish)
