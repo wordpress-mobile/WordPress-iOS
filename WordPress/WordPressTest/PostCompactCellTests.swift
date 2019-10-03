@@ -117,7 +117,7 @@ class PostCompactCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.badgesLabel.text, AutoUploadMessages.postWillBePublished)
+        XCTAssertEqual(postCell.badgesLabel.text, PostAutoUploadMessages.postWillBePublished)
         XCTAssertEqual(postCell.badgesLabel.textColor, UIColor.warning)
     }
 

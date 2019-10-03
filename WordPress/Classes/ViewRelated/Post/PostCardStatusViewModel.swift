@@ -150,9 +150,11 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.cancelAutoUpload)
             }
 
-            if post.autoUploadAttemptsCount.intValue >= autoUploadInteractor.maxNumberOfAttempts {
+            if autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit {
                 buttons.append(.retry)
-            } else if canPublish {
+            }
+
+            if canPublish {
                 buttons.append(.publish)
             }
 
@@ -229,31 +231,28 @@ class PostCardStatusViewModel: NSObject {
             return StatusMessages.localChanges
         }
 
-        let autoUploadAttemptsCount = post.autoUploadAttemptsCount.intValue
-        if autoUploadAttemptsCount >= autoUploadInteractor.maxNumberOfAttempts {
-            return AutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
-        } else if autoUploadAttemptsCount > 0 {
-            return AutoUploadMessages.willAttemptToAutoUpload(for: post.status)
+        if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
+            return autoUploadMessage
         }
 
         if autoUploadInteractor.autoUploadAction(for: post) != .upload {
             return defaultFailedMessage
         }
         if post.hasRemote() {
-            return AutoUploadMessages.changesWillBeUploaded
+            return PostAutoUploadMessages.changesWillBeUploaded
         }
 
         switch postStatus {
         case .draft:
-            return AutoUploadMessages.draftWillBeUploaded
+            return PostAutoUploadMessages.draftWillBeUploaded
         case .publishPrivate:
-            return AutoUploadMessages.privateWillBeUploaded
+            return PostAutoUploadMessages.privateWillBeUploaded
         case .scheduled:
-            return AutoUploadMessages.scheduledWillBeUploaded
+            return PostAutoUploadMessages.scheduledWillBeUploaded
         case .publish:
-            return AutoUploadMessages.postWillBePublished
+            return PostAutoUploadMessages.postWillBePublished
         default:
-            return AutoUploadMessages.willSubmitLater
+            return PostAutoUploadMessages.willSubmitLater
         }
     }
 

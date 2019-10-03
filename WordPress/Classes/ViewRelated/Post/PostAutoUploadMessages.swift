@@ -1,6 +1,6 @@
 import Foundation
 
-enum AutoUploadMessages {
+enum PostAutoUploadMessages {
     static let postWillBePublished = NSLocalizedString("Post will be published next time your device is online",
                                                        comment: "Text displayed in notice after a post if published while offline.")
     static let draftWillBeUploaded = NSLocalizedString("Draft will be uploaded next time your device is online",
@@ -41,46 +41,57 @@ enum AutoUploadMessages {
                                                          comment: "Title for notice displayed on canceling auto-upload of a scheduled post")
     static let changesWillNotBeSaved = NSLocalizedString("We won't save the latest changes to your draft.",
                                                          comment: "Title for notice displayed on canceling auto-upload of a draft post")
-    
 
     static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
         case .publish:
-            return AutoUploadMessages.willAttemptToPublishLater
+            return PostAutoUploadMessages.willAttemptToPublishLater
         case .publishPrivate:
-            return AutoUploadMessages.willAttemptToPublishPrivateLater
+            return PostAutoUploadMessages.willAttemptToPublishPrivateLater
         case .scheduled:
-            return AutoUploadMessages.willAttemptToScheduleLater
+            return PostAutoUploadMessages.willAttemptToScheduleLater
         default:
-            return AutoUploadMessages.willAttemptToSubmitLater
+            return PostAutoUploadMessages.willAttemptToSubmitLater
         }
     }
 
     static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
         case .publish:
-            return AutoUploadMessages.willNotAttemptToPublishLater
+            return PostAutoUploadMessages.willNotAttemptToPublishLater
         case .publishPrivate:
-            return AutoUploadMessages.willNotAttemptToPublishPrivateLater
+            return PostAutoUploadMessages.willNotAttemptToPublishPrivateLater
         case .scheduled:
-            return AutoUploadMessages.willNotAttemptToScheduleLater
+            return PostAutoUploadMessages.willNotAttemptToScheduleLater
         default:
-            return AutoUploadMessages.willNotAttemptToSubmitLater
+            return PostAutoUploadMessages.willNotAttemptToSubmitLater
         }
     }
 
     static func cancelMessage(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
         case .publish:
-            return AutoUploadMessages.changesWillNotBePublished
+            return PostAutoUploadMessages.changesWillNotBePublished
         case .publishPrivate:
-            return AutoUploadMessages.changesWillNotBePublished
+            return PostAutoUploadMessages.changesWillNotBePublished
         case .scheduled:
-            return AutoUploadMessages.changesWillNotBeScheduled
+            return PostAutoUploadMessages.changesWillNotBeScheduled
         case .draft:
-            return AutoUploadMessages.changesWillNotBeSaved
+            return PostAutoUploadMessages.changesWillNotBeSaved
         default:
-            return AutoUploadMessages.changesWillNotBeSubmitted
+            return PostAutoUploadMessages.changesWillNotBeSubmitted
+        }
+    }
+
+    static func attemptFailures(for post: AbstractPost,
+                                withState state: PostAutoUploadInteractor.AutoUploadAttemptState) -> String? {
+        switch state {
+        case .attempted:
+            return PostAutoUploadMessages.willAttemptToAutoUpload(for: post.status)
+        case .reachedLimit:
+            return PostAutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
+        default:
+            return nil
         }
     }
 }

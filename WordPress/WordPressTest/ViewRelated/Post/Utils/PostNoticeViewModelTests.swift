@@ -37,25 +37,25 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Local draft",
                 post: createPost(.draft),
-                title: AutoUploadMessages.draftWillBeUploaded,
+                title: PostAutoUploadMessages.draftWillBeUploaded,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with confirmed local changes",
                 post: createPost(.draft, hasRemote: true),
-                title: AutoUploadMessages.changesWillBeUploaded,
+                title: PostAutoUploadMessages.changesWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Local published draft",
                 post: createPost(.publish),
-                title: AutoUploadMessages.postWillBePublished,
+                title: PostAutoUploadMessages.postWillBePublished,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Published post with confirmed local changes",
                 post: createPost(.publish, hasRemote: true),
-                title: AutoUploadMessages.changesWillBeUploaded,
+                title: PostAutoUploadMessages.changesWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
@@ -73,19 +73,19 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Post with at least 1 auto upload to publish attempt",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
-                title: "Post couldn't be published. We'll try again later",
+                title: i18n("Post couldn't be published. We'll try again later"),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Post with the maximum number of auto upload to publish attempts",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
-                title: "Couldn't perform operation. Post not published",
+                title: i18n("Couldn't perform operation. Post not published"),
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with at least 1 auto upload attempt",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 2),
-                title: "Post couldn't be submitted. We'll try again later",
+                title: i18n("Post couldn't be submitted. We'll try again later"),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(

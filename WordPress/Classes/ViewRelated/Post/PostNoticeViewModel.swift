@@ -107,17 +107,14 @@ struct PostNoticeViewModel {
     private var failureTitle: String {
         var defaultTitle: String {
             if post is Page {
-                return AutoUploadMessages.pageFailedToUpload
+                return PostAutoUploadMessages.pageFailedToUpload
             } else {
-                return AutoUploadMessages.postFailedToUpload
+                return PostAutoUploadMessages.postFailedToUpload
             }
         }
 
-        let autoUploadAttemptsCount = post.autoUploadAttemptsCount.intValue
-        if autoUploadAttemptsCount >= autoUploadInteractor.maxNumberOfAttempts {
-            return AutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
-        } else if autoUploadAttemptsCount > 0 {
-            return AutoUploadMessages.willAttemptToAutoUpload(for: post.status)
+        if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
+            return autoUploadMessage
         }
 
         guard let postStatus = post.status,
@@ -126,20 +123,20 @@ struct PostNoticeViewModel {
         }
 
         if post.hasRemote() {
-            return AutoUploadMessages.changesWillBeUploaded
+            return PostAutoUploadMessages.changesWillBeUploaded
         }
 
         switch postStatus {
         case .draft:
-            return AutoUploadMessages.draftWillBeUploaded
+            return PostAutoUploadMessages.draftWillBeUploaded
         case .publishPrivate:
-            return AutoUploadMessages.privateWillBeUploaded
+            return PostAutoUploadMessages.privateWillBeUploaded
         case .scheduled:
-            return AutoUploadMessages.scheduledWillBeUploaded
+            return PostAutoUploadMessages.scheduledWillBeUploaded
         case .publish:
-            return AutoUploadMessages.postWillBePublished
+            return PostAutoUploadMessages.postWillBePublished
         default:
-            return AutoUploadMessages.willSubmitLater
+            return PostAutoUploadMessages.willSubmitLater
         }
     }
 
