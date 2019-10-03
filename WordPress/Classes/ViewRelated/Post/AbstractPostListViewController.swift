@@ -920,7 +920,6 @@ class AbstractPostListViewController: UIViewController,
 
         apost.status = .draft
         uploadPost(apost)
-        updateFilterWithPostStatus(.draft)
     }
 
     fileprivate func uploadPost(_ apost: AbstractPost) {
