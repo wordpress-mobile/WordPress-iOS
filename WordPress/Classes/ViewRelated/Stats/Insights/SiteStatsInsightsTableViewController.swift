@@ -104,6 +104,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     // A single site's dictionary contains the InsightType values for that site.
     private var allSitesInsights = [siteInsights]()
     private typealias siteInsights = [String: [Int]]
+
     private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoading)
 
     private lazy var mainContext: NSManagedObjectContext = {
@@ -260,17 +261,53 @@ private extension SiteStatsInsightsTableViewController {
         return isViewLoaded && view.window != nil
     }
 
+    func updateView() {
+        viewModel?.updateInsightsToShow(insights: insightsToShow)
+        refreshTableView()
+    }
+
     // MARK: User Defaults
 
     func loadInsightsFromUserDefaults() {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
+            insightsToShow = InsightType.defaultInsights
+            loadCustomizeCardSetting()
+            return
+        }
 
-        // TODO: remove when Manage Insights is implemented.
-        // For now, we'll show all Insights in the default order.
-        let allTypesInts = InsightType.allValues.map { $0.rawValue }
+        // Get Insights from User Defaults, and extract those for the current site.
+        allSitesInsights = UserDefaults.standard.object(forKey: userDefaultsInsightTypesKey) as? [siteInsights] ?? []
+        let siteInsights = allSitesInsights.first { $0.keys.first == siteID }
 
-        let insightTypesInt = UserDefaults.standard.array(forKey: userDefaultsInsightTypesKey) as? [Int] ?? allTypesInts
-        insightsToShow = insightTypesInt.compactMap { InsightType(rawValue: $0) }
+        // If no Insights for the current site, use the default Insights.
+        let insightTypesValues = siteInsights?.values.first ?? InsightType.defaultInsightsValues
+        insightsToShow = InsightType.typesForValues(insightTypesValues)
 
+        // Add the 'customize' card if necessary.
+        loadCustomizeCardSetting()
+    }
+
+    func writeInsightsToUserDefaults() {
+        writeCustomizeCardSetting()
+
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
+            return
+        }
+
+        // Remove 'customize' from array since it is not per site.
+        removeCustomizeCard()
+
+        let insightTypesValues = InsightType.valuesForTypes(insightsToShow)
+        let currentSiteInsights = [siteID: insightTypesValues]
+
+        // Remove existing dictionary from array, and add the updated one.
+        allSitesInsights = allSitesInsights.filter { $0.keys.first != siteID }
+        allSitesInsights.append(currentSiteInsights)
+
+        UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
+    }
+
+    func loadCustomizeCardSetting() {
         hideCustomizeCard = UserDefaults.standard.bool(forKey: userDefaultsHideCustomizeKey)
 
         if !hideCustomizeCard {
@@ -279,15 +316,12 @@ private extension SiteStatsInsightsTableViewController {
         }
     }
 
-    func writeInsightsToUserDefaults() {
-        // Remove customize from array since it is not per site.
-        // (insightsToShow is not yet per site, but it will be.)
-        insightsToShow = insightsToShow.filter { $0 != .customize }
-
-        let insightTypesInt = insightsToShow.compactMap { $0.rawValue }
-        UserDefaults.standard.set(insightTypesInt, forKey: userDefaultsInsightTypesKey)
-
+    func writeCustomizeCardSetting() {
         UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
+    }
+
+    func removeCustomizeCard() {
+        insightsToShow = insightsToShow.filter { $0 != .customize }
     }
 
     // MARK: - Insights Management
@@ -435,10 +469,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func customizeDismissButtonTapped() {
         hideCustomizeCard = true
-        insightsToShow = insightsToShow.filter { $0 != .customize }
-        viewModel?.updateInsightsToShow(insights: insightsToShow)
-        refreshTableView()
-        writeInsightsToUserDefaults()
+        removeCustomizeCard()
+        updateView()
     }
 
     func customizeTryButtonTapped() {
