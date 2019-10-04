@@ -6,6 +6,9 @@
 * Share Extension: Fixed the text view content inset
 
 * Universal links: Pass back to Safari if we can't handle a URL.
+* Sign In With Apple: fixed issue with re-logging in on an existing WP account.
+* Block editor: Fix a bug on iOS 13.0 were tapping on a link opens Safari
+* Block editor: Fix a link editing issue, where trying to add a empty link at the start of another link would remove the existing link.
  
 13.3
 -----

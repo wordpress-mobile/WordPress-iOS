@@ -440,6 +440,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
+        registerMediaObserver()
     }
 
     required init?(coder aDecoder: NSCoder) {
