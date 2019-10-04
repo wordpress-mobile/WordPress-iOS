@@ -55,7 +55,7 @@ namespace :dependencies do
 
   namespace :credentials do
     task :apply do
-      next unless File.file?(File.join(Dir.home, '.mobile-secrets/keys.json')) || ENV.key?('CONFIGURE_ENCRYPTION_KEY')
+      next unless Dir.exist?(File.join(Dir.home, '.mobile-secrets/.git')) || ENV.key?('CONFIGURE_ENCRYPTION_KEY')
       sh('FASTLANE_SKIP_UPDATE_CHECK=1 FASTLANE_ENV_PRINTER=1 bundle exec fastlane run configure_apply')
     end
   end
