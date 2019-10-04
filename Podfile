@@ -176,7 +176,7 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.0-beta.2'
+    pod 'WordPressAuthenticator', '~> 1.10.0-beta.5'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
@@ -341,7 +341,7 @@ target 'WordPressComStatsiOSTests' do
 end
 
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.5'
+  pod 'WordPressMocks', '~> 0.0.6'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
