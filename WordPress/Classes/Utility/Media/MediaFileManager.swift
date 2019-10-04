@@ -189,13 +189,6 @@ class MediaFileManager: NSObject {
         MediaFileManager.default.clearUnusedFilesFromDirectory(onCompletion: onCompletion, onError: onError)
     }
 
-    /// Helper method for calculating the size of the Media cache directory.
-    ///
-    class func calculateSizeOfMediaCacheDirectory(onCompletion: @escaping (Int64?) -> Void) {
-        let cacheManager = MediaFileManager(directory: .cache)
-        cacheManager.calculateSizeOfDirectory(onCompletion: onCompletion)
-    }
-
     /// Helper method for calculating the size of the Media directories.
     ///
     class func calculateSizeOfMediaDirectories(onCompletion: @escaping (Int64?) -> Void) {
