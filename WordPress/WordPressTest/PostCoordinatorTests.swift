@@ -167,7 +167,7 @@ class PostCoordinatorTests: XCTestCase {
 
         expect(post.status).to(equal(.draft))
     }
-    
+
     func testTracksAutoUploadPostInvoked() {
         let postServiceMock = PostServiceMock(managedObjectContext: context)
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
