@@ -341,10 +341,10 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        failedPostsFetcher.postsAndRetryActions { /*[weak self]*/ postsAndActions in
-//            guard let self = self else {
-//                return
-//            }
+        failedPostsFetcher.postsAndRetryActions { [weak self] postsAndActions in
+            guard let self = self else {
+                return
+            }
 
             postsAndActions.forEach { post, action in
                 if action != .nothing, let status = post.status {
