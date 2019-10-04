@@ -156,7 +156,7 @@ extension NSPersistentStoreCoordinator {
     /// - Returns: a NSManagedObjectID if the uri is valid or nil if not.
     ///
     public func safeManagedObjectID(forURIRepresentation uri: URL) -> NSManagedObjectID? {
-        guard let host = uri.host, host == "x-coredata" else {
+        guard let scheme = uri.scheme, scheme == "x-coredata" else {
             return nil
         }
         var result: NSManagedObjectID? = nil
