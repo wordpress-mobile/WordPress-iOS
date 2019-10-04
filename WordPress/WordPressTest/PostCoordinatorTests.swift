@@ -183,16 +183,17 @@ class PostCoordinatorTests: XCTestCase {
         guard let status = post.status else {
             return
         }
-        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
+
+        expect(TestAnalyticsTracker.tracked.count).toEventually(equal(1))
         let trackEvent = TestAnalyticsTracker.tracked.first
-        XCTAssertEqual(trackEvent?.stat, WPAnalyticsStat.autoUploadPostInvoked)
-        
+        expect(trackEvent?.stat).toEventually(equal(WPAnalyticsStat.autoUploadPostInvoked))
+
         let propertyAction = trackEvent?.properties["upload_action"] as? String
         let action = interactor.autoUploadAction(for: post)
-        XCTAssertEqual(propertyAction, action.rawValue)
-        
+        expect(propertyAction).toEventually(equal(action.rawValue))
+
         let propertyStatus = trackEvent?.properties["post_status"] as? String
-        XCTAssertEqual(propertyStatus, status.rawValue)
+        expect(propertyStatus).toEventually(equal(status.rawValue))
     }
 }
 
