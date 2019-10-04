@@ -341,12 +341,15 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        failedPostsFetcher.postsAndRetryActions { [weak self] postsAndActions in
-            guard let self = self else {
-                return
-            }
+        failedPostsFetcher.postsAndRetryActions { /*[weak self]*/ postsAndActions in
+//            guard let self = self else {
+//                return
+//            }
 
             postsAndActions.forEach { post, action in
+                if action != .nothing, let status = post.status {
+                    self.trackAutoUpload(action: action, status: status)
+                }
                 switch action {
                 case .upload:
                     self.save(post, automatedRetry: true)
@@ -358,6 +361,12 @@ extension PostCoordinator: Uploader {
                 }
             }
         }
+    }
+    
+    private func trackAutoUpload(action: PostAutoUploadInteractor.AutoUploadAction, status: BasePost.Status) {
+        WPAnalytics.track(.autoUploadPostInvoked, withProperties:
+            ["upload_action": action.rawValue,
+             "post_status": status.rawValue])
     }
 }
 
