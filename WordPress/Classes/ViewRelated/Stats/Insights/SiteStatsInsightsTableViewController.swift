@@ -88,17 +88,22 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
+
     private var insightsChangeReceipt: Receipt?
 
-    // TODO: update this array when Manage Insights is implemented.
     // Types of Insights to display. The array order dictates the display order.
     private var insightsToShow = [InsightType]()
     private let userDefaultsInsightTypesKey = "StatsInsightTypes"
 
-    // Store customize separately as it is not per site.
-    // (insightsToShow is not yet per site, but it will be.)
+    // Store 'customize' separately as it is not per site.
     private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
     private var hideCustomizeCard = false
+
+    // Store Insights settings for all sites.
+    // Used when writing to/reading from User Defaults.
+    // A single site's dictionary contains the InsightType values for that site.
+    private var allSitesInsights = [siteInsights]()
+    private typealias siteInsights = [String: [Int]]
     private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoading)
 
     private lazy var mainContext: NSManagedObjectContext = {
