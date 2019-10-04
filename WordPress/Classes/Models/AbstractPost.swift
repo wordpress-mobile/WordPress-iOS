@@ -29,6 +29,25 @@ extension AbstractPost {
         }
     }
 
+    var statusAfterSync: Status? {
+        get {
+            return rawValue(forKey: "statusAfterSync")
+        }
+        set {
+            setRawValue(newValue, forKey: "statusAfterSync")
+        }
+    }
+
+    @objc(statusAfterSync)
+    var statusAfterSyncString: String? {
+        get {
+            return statusAfterSync?.rawValue
+        }
+        set {
+            statusAfterSync = newValue.flatMap { Status(rawValue: $0) }
+        }
+    }
+
     static func title(for status: Status) -> String {
         return title(forStatus: status.rawValue)
     }
