@@ -33,6 +33,39 @@ enum InsightType: Int {
         return types.compactMap { $0.rawValue }
     }
 
+    static func typeForStatSection(_ statSection: StatSection) -> InsightType? {
+
+        guard StatSection.allInsights.contains(statSection) else {
+            return nil
+        }
+
+        switch statSection {
+        case .insightsLatestPostSummary:
+            return .latestPostSummary
+        case .insightsAllTime:
+            return .allTimeStats
+        case .insightsFollowerTotals:
+            return .followersTotals
+        case .insightsMostPopularTime:
+            return .mostPopularTime
+        case .insightsTagsAndCategories:
+            return .tagsAndCategories
+        case .insightsAnnualSiteStats:
+            return .annualSiteStats
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            return .comments
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            return .followers
+        case .insightsTodaysStats:
+            return .todaysStats
+        case .insightsPostingActivity:
+            return .postingActivity
+        case .insightsPublicize:
+            return .publicize
+        default:
+            return nil
+        }
+    }
 }
 
 @objc protocol SiteStatsInsightsDelegate {
