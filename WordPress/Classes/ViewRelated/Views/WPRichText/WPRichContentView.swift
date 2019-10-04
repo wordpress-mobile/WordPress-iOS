@@ -177,11 +177,7 @@ class WPRichContentView: UITextView {
               let url = linkAttribute as? URL,
               let richDelegate = delegate as? WPRichContentViewDelegate {
               richDelegate.interactWith?(URL: url)
-          // handle tap on attachement
-          } else if let attachmentAttribute = self.attributedText?.attribute(.attachment, at: characterIndex, effectiveRange: nil),
-              let attachment = attachmentAttribute as? WPTextAttachment {
-              handleImageTapped(imageForAttachment(attachment))
-          }
+        }
       }
 
     private func ensureLayoutForAttachment(_ attachment: NSTextAttachment, at range: NSRange) {
@@ -591,9 +587,8 @@ extension WPRichContentView: UIGestureRecognizerDelegate {
         // handle tap on link
         if let linkAttribute = self.attributedText?.attribute(.link, at: characterIndex, effectiveRange: nil) {
             return linkAttribute is URL
-        } else if let attachmentAttribute = self.attributedText?.attribute(.attachment, at: characterIndex, effectiveRange: nil) {
-            return attachmentAttribute is WPTextAttachment
         }
+
         return false
     }
 }
