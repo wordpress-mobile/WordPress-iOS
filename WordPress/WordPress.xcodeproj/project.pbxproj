@@ -4356,7 +4356,7 @@
 		FFB3132E204D59F400C177E7 /* WordPress 73.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 73.xcdatamodel"; sourceTree = "<group>"; };
 		FFB7B81D1A0012E80032E723 /* ApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiCredentials.m; sourceTree = "<group>"; };
 		FFC02B82222687BF00E64FDE /* GutenbergImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergImageLoader.swift; sourceTree = "<group>"; };
-		FFC245D91D8C2033007F7518 /* wpcom_app_credentials.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wpcom_app_credentials.txt; sourceTree = "<group>"; };
+		FFC245D91D8C2033007F7518 /* wpcom_app_credentials-example */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wpcom_app_credentials-example; sourceTree = "<group>"; };
 		FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataService.m; sourceTree = "<group>"; };
@@ -8908,7 +8908,7 @@
 		E1B34C091CCDFFCE00889709 /* Credentials */ = {
 			isa = PBXGroup;
 			children = (
-				FFC245D91D8C2033007F7518 /* wpcom_app_credentials.txt */,
+				FFC245D91D8C2033007F7518 /* wpcom_app_credentials-example */,
 				E1B34C0A1CCDFFCE00889709 /* gencredentials.rb */,
 				E1B34C0B1CCDFFCE00889709 /* ApiCredentials.h */,
 				E1B34C0C1CCDFFCE00889709 /* ApiCredentials.m */,
@@ -13254,7 +13254,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.mobile-secrets/iOS/WPiOS/wpcom_alpha_app_credentials";
+				WPCOM_CONFIG = "$(SRCROOT)/Credentials/wpcom_alpha_app_credentials";
 			};
 			name = "Release-Alpha";
 		};
@@ -13728,7 +13728,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.mobile-secrets/iOS/WPiOS/wpcom_internal_app_credentials";
+				WPCOM_CONFIG = "$(SRCROOT)/Credentials/wpcom_internal_app_credentials";
 			};
 			name = "Release-Internal";
 		};
@@ -14074,7 +14074,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
-				WPCOM_CONFIG = "$HOME/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials";
+				WPCOM_CONFIG = "$(SRCROOT)/Credentials/wpcom_app_credentials";
 			};
 			name = Debug;
 		};
@@ -14127,7 +14127,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials";
+				WPCOM_CONFIG = "$(SRCROOT)/Credentials/wpcom_app_credentials";
 			};
 			name = Release;
 		};
