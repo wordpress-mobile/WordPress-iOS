@@ -482,7 +482,13 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func addInsightSelected(_ insight: StatSection) {
-        NSLog("Add Insight selected: \(insight.insightManagementTitle)")
+        guard let insightType = InsightType.typeForStatSection(insight),
+            !insightsToShow.contains(insightType) else {
+                return
+        }
+
+        insightsToShow.append(insightType)
+        updateView()
     }
 
 }
