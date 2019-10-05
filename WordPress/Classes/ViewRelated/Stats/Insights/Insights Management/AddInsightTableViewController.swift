@@ -4,7 +4,8 @@ class AddInsightTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    weak var insightsDelegate: SiteStatsInsightsDelegate?
+    private weak var insightsDelegate: SiteStatsInsightsDelegate?
+    private var insightsShown = [StatSection]()
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -21,8 +22,10 @@ class AddInsightTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    required convenience init() {
+    convenience init(insightsDelegate: SiteStatsInsightsDelegate, insightsShown: [StatSection]) {
         self.init(style: .grouped)
+        self.insightsDelegate = insightsDelegate
+        self.insightsShown = insightsShown
     }
 
     // MARK: - View
