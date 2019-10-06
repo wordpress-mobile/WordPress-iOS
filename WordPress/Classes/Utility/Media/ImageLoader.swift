@@ -61,6 +61,14 @@ import MobileCoreServices
         imageView.addLoadingIndicator(loadingIndicator, style: .fullView)
     }
 
+    func startLoadingAnimation() {
+        loadingIndicator.startAnimating()
+    }
+
+    func stopLoadingAnimation() {
+        loadingIndicator.stopAnimating()
+    }
+
     /// Removes the gif animation and prevents it from animate again.
     /// Call this in a table/collection cell's `prepareForReuse()`.
     ///
@@ -242,7 +250,7 @@ import MobileCoreServices
             }
 
             if self.imageView.shouldShowLoadingIndicator {
-                self.loadingIndicator.state = .error
+                self.stopLoadingAnimation()
             }
 
             self.errorHandler?(error)

@@ -276,6 +276,15 @@ extension UIColor {
         return .neutral(.shade30)
     }
 
+    /// For now, just for the retry view background
+    static var retryBackground: UIColor {
+        if #available(iOS 13, *) {
+            return .systemGray6
+        }
+
+        return .gray(.shade10)
+    }
+
     /// Note: these values are intended to match the iOS defaults
     static var tabUnselected: UIColor =  UIColor(light: UIColor(hexString: "999999"), dark: UIColor(hexString: "757575"))
 

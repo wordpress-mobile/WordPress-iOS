@@ -4,10 +4,12 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
     // MARK: Properties
 
+    private var reloadImage: (() -> Void)?
     var contentURL: URL?
     var linkURL: URL?
 
     @objc fileprivate(set) var imageView: CachedAnimatedImageView
+    private lazy var retryImageView = ReaderRetryFailedImageView()
 
     fileprivate lazy var imageLoader: ImageLoader = {
         let imageLoader = ImageLoader(imageView: imageView, gifStrategy: .smallGIFs)
@@ -88,12 +90,28 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
             onSuccess?(indexPath)
         }
 
-        let errorHandler: ((Error?) -> Void)? = { error in
+        let errorHandler: ((Error?) -> Void)? = { [weak self] error in
+            guard let self = self else { return }
+
+            self.retryImageView.delegate = self
+            self.addSubview(self.retryImageView)
+            self.retryImageView.leftAnchor.constraint(equalTo: self.layoutMarginsGuide.leftAnchor).isActive = true
+            self.retryImageView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor).isActive = true
+            self.retryImageView.rightAnchor.constraint(equalTo: self.layoutMarginsGuide.rightAnchor).isActive = true
+            self.retryImageView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor).isActive = true
+
             onError?(indexPath, error)
         }
 
-        imageLoader.loadImage(with: contentURL, from: contentInformation, preferredSize: size, placeholder: nil, success: successHandler, error: errorHandler)
+        reloadImage = { [weak self] in
+            guard let self = self else { return }
+            self.retryImageView.removeFromSuperview()
+            self.imageLoader.startLoadingAnimation()
+            self.imageLoader.loadImage(with: contentURL, from: contentInformation, preferredSize: size, placeholder: nil, success: successHandler, error: errorHandler)
+        }
+        reloadImage?()
     }
+
 
     func contentSize() -> CGSize {
         let size = imageView.intrinsicContentSize
@@ -112,5 +130,11 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 private extension WPRichTextImage {
     enum Constants {
         static let readerPhotonQuality: UInt = 65
+    }
+}
+
+extension WPRichTextImage: ReaderRetryFailedImageDelegate {
+    func didTapRetry() {
+        reloadImage?()
     }
 }

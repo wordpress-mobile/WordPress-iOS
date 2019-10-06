@@ -132,6 +132,32 @@ extension WPStyleGuide {
         ]
     }
 
+    // MARK: - Detail Failed Image Attributes
+
+    @objc public class func readerDetailAttributesForRetryText() -> [NSAttributedString.Key: Any] {
+        let centeredParagraph = NSMutableParagraphStyle()
+        centeredParagraph.alignment = .center
+
+        return [
+            .foregroundColor: UIColor.textSubtle,
+            .font: UIFont.preferredFont(forTextStyle: .caption1),
+            .paragraphStyle: centeredParagraph,
+        ]
+    }
+
+    @objc public class func readerDetailAttributesForRetryButton() -> [NSAttributedString.Key: Any] {
+        let centeredParagraph = NSMutableParagraphStyle()
+        centeredParagraph.alignment = .center
+
+        return [
+            .font: WPStyleGuide.fontForTextStyle(.caption1),
+            .foregroundColor: UIColor.primary,
+            .paragraphStyle: centeredParagraph,
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .link: "tap://tap",
+        ]
+    }
+
 
     // MARK: - Stream Header Attributed Text Attributes
 
