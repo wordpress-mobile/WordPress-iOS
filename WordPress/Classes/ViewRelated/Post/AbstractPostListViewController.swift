@@ -917,12 +917,7 @@ class AbstractPostListViewController: UIViewController,
     @objc func moveToDraft(_ apost: AbstractPost) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
-        apost.status = .draft
-        uploadPost(apost)
-    }
-
-    fileprivate func uploadPost(_ apost: AbstractPost) {
-        PostCoordinator.shared.save(apost)
+        publishPostInteractor.moveToDraft(apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {

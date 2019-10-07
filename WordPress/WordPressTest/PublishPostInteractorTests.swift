@@ -52,6 +52,14 @@ class PublishPostInteractorTests: XCTestCase {
 
         expect(self.postCoordinatorMock.didCallSave).to(beTrue())
     }
+
+    func testChangePostToDraftWhenMovingToDraft() {
+        let post = PostBuilder(context).published().build()
+
+        publishPostInteractor.moveToDraft(post)
+
+        expect(post.status).to(equal(.draft))
+    }
 }
 
 private class PostCoordinatorMock: PostCoordinator {

@@ -20,4 +20,9 @@ class PublishPostInteractor {
 
         postCoordinator.save(post)
     }
+
+    func moveToDraft(_ post: AbstractPost) {
+        post.status = .draft
+        postCoordinator.save(post)
+    }
 }
