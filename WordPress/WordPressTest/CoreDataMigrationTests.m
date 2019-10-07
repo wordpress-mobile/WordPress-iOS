@@ -1100,8 +1100,10 @@
 
     NSNumber *blog1ID = @(987);
     NSNumber *blog2ID = @(4810);
+    NSNumber *blog3ID = @(76);
     NSManagedObject *blog1 = [self insertDummyBlogInContext:context blogID:blog1ID];
     NSManagedObject *blog2 = [self insertDummyBlogInContext:context blogID:blog2ID];
+    NSManagedObject *blog3 = [self insertDummyBlogInContext:context blogID:blog3ID];
 
     // Insert posts
     NSManagedObject *draftPost = [self insertDummyPostInContext:context blog:blog1];
@@ -1118,6 +1120,10 @@
     [publishedPage setValue:@"publish" forKey:@"status"];
     NSManagedObject *scheduledPage = [self insertDummyPageInContext:context blog:blog2];
     [scheduledPage setValue:@"future" forKey:@"status"];
+
+    // Insert post with null status
+    NSManagedObject *unknownPost = [self insertDummyPostInContext:context blog:blog3];
+    [unknownPost setValue:nil forKey:@"status"];
 
     [context save:&error];
     XCTAssertNil(error, @"Error while saving context");
@@ -1166,6 +1172,14 @@
         XCTAssertNotNil([post valueForKey:@"statusAfterSync"]);
         XCTAssertEqual([post valueForKey:@"status"], [post valueForKey:@"statusAfterSync"]);
     }
+
+    // Assert blog3 which has a post with null status
+    NSManagedObject *fetchedBlog3 = [context fetch:@"Blog" withPredicate:@"blogID = %i" arguments:@[blog3ID]].firstObject;
+    XCTAssertNotNil(fetchedBlog3);
+    NSSet<NSManagedObject *> *blog3Posts = [fetchedBlog3 valueForKey:@"posts"];
+    XCTAssertEqual(blog3Posts.count, 1);
+    XCTAssertNil([blog3Posts.anyObject valueForKey:@"status"]);
+    XCTAssertNil([blog3Posts.anyObject valueForKey:@"statusAfterSync"]);
 }
 
 #pragma mark - Private Helpers
