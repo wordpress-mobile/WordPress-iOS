@@ -142,14 +142,14 @@ private extension PostStatsViewModel {
     func yearsTableRows(forAverages: Bool = false) -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
-        let title = forAverages ? StatSection.postStatsAverageViews.title :
-                                  StatSection.postStatsMonthsYears.title
+        let statSection = forAverages ? StatSection.postStatsAverageViews :
+                                        StatSection.postStatsMonthsYears
         let itemSubtitle = forAverages ? StatSection.postStatsAverageViews.itemSubtitle :
                                          StatSection.postStatsMonthsYears.itemSubtitle
         let dataSubtitle = forAverages ? StatSection.postStatsAverageViews.dataSubtitle :
                                          StatSection.postStatsMonthsYears.dataSubtitle
 
-        tableRows.append(CellHeaderRow(title: title))
+        tableRows.append(CellHeaderRow(statSection: statSection))
         tableRows.append(TopTotalsPostStatsRow(itemSubtitle: itemSubtitle,
                                                dataSubtitle: dataSubtitle,
                                                dataRows: yearsDataRows(forAverages: forAverages),
@@ -196,7 +196,7 @@ private extension PostStatsViewModel {
     func recentWeeksTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
-        tableRows.append(CellHeaderRow(title: StatSection.postStatsRecentWeeks.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.postStatsRecentWeeks))
         tableRows.append(TopTotalsPostStatsRow(itemSubtitle: StatSection.postStatsRecentWeeks.itemSubtitle,
                                                dataSubtitle: StatSection.postStatsRecentWeeks.dataSubtitle,
                                                dataRows: recentWeeksDataRows(),

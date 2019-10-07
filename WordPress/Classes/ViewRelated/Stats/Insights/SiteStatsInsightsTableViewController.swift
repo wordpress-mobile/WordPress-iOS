@@ -187,7 +187,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        var rows: [ImmuTableRow.Type] = [CellHeaderRow.self,
+        var rows: [ImmuTableRow.Type] = [InsightCellHeaderRow.self,
                                          CustomizeInsightsRow.self,
                                          LatestPostSummaryRow.self,
                                          TwoColumnStatsRow.self,

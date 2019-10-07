@@ -11,6 +11,8 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
     @IBOutlet weak var stackViewHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
+    private var statSection: StatSection?
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var defaultStackViewTopConstraint: CGFloat = 0
     private var defaultStackViewHeightConstraint: CGFloat = 0
     private var adjustHeightForPostStats = false
@@ -23,9 +25,11 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
         defaultStackViewHeightConstraint = stackViewHeightConstraint.constant
     }
 
-    func configure(withTitle title: String, adjustHeightForPostStats: Bool = false) {
-        headerLabel.text = title
-        self.adjustHeightForPostStats = adjustHeightForPostStats
+    func configure(statSection: StatSection? = nil, siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil) {
+        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.statSection = statSection
+        headerLabel.text = statSection?.title ?? ""
+        self.adjustHeightForPostStats = (statSection == .postStatsGraph)
         prepareForVoiceOver()
         applyStyles()
     }
