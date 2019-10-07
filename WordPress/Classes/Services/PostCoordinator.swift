@@ -83,6 +83,25 @@ class PostCoordinator: NSObject {
         }
     }
 
+    func publish(_ post: AbstractPost) {
+        if post.status == .draft {
+            post.status = .publish
+        }
+
+        if post.status != .scheduled {
+            post.date_created_gmt = Date()
+        }
+
+        post.shouldAttemptAutoUpload = true
+
+        save(post)
+    }
+
+    func moveToDraft(_ post: AbstractPost) {
+        post.status = .draft
+        save(post)
+    }
+
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish.
     /// Then, it calls the completion block with the post ready to be saved/uploaded.
     ///
@@ -296,12 +315,7 @@ class PostCoordinator: NSObject {
 
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
         post.managedObjectContext?.perform {
-            if status == .failed {
-                self.mainService.markAsFailedAndDraftIfNeeded(post: post)
-            } else {
-                post.remoteStatus = status
-            }
-
+            post.remoteStatus = status
             try? post.managedObjectContext?.save()
         }
     }
@@ -312,17 +326,13 @@ class PostCoordinator: NSObject {
 
         post.shouldAttemptAutoUpload = false
 
-        if !post.hasRemote() {
-            post.status = .draft
-        }
-
         let moc = post.managedObjectContext
 
         moc?.perform {
             try? moc?.save()
         }
 
-        let notice = Notice(title: NSLocalizedString("Changes will not be published", comment: "title for notice displayed on cancel auto-upload"), message: "")
+        let notice = Notice(title: PostAutoUploadMessages.cancelMessage(for: post.status), message: "")
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }

@@ -37,9 +37,9 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
             // Posts with remote that have confirmation will be automatically uploaded
             createPost(.draft, hasRemote: true, confirmedAutoUpload: true): .upload,
             createPost(.publish, hasRemote: true, confirmedAutoUpload: true): .upload,
-            // Other statuses are currently ignored
-            createPost(.publishPrivate, confirmedAutoUpload: true): .nothing,
-            createPost(.scheduled, confirmedAutoUpload: true): .nothing,
+            createPost(.publishPrivate, hasRemote: true, confirmedAutoUpload: true): .upload,
+            createPost(.scheduled, hasRemote: true, confirmedAutoUpload: true): .upload,
+            // Trash and deleted are ignored
             createPost(.trash, confirmedAutoUpload: true): .nothing,
             createPost(.deleted, confirmedAutoUpload: true): .nothing,
         ]
@@ -77,6 +77,8 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
             createPost(.draft): false,
             // Published local drafts require confirmation and can be canceled
             createPost(.publish, confirmedAutoUpload: true): true,
+            createPost(.publishPrivate, confirmedAutoUpload: true): true,
+            createPost(.scheduled, confirmedAutoUpload: true): true,
             // Published local drafts with no confirmation will be remote auto-saved. Remote
             // auto-saved is considered safe and do not need to be canceled. It should also happen
             // in the background without any interaction from the user.
@@ -87,9 +89,9 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
             // Posts with remote that have no confirmation will be remote auto-saved.
             createPost(.draft, hasRemote: true): false,
             createPost(.publish, hasRemote: true): false,
-            // Other statuses are currently unsupported
-            createPost(.publishPrivate, confirmedAutoUpload: true): false,
-            createPost(.scheduled, confirmedAutoUpload: true): false,
+            createPost(.publishPrivate, hasRemote: true): false,
+            createPost(.scheduled, hasRemote: true): false,
+            // Trash and deleted are unsupported
             createPost(.trash, confirmedAutoUpload: true): false,
             createPost(.deleted, confirmedAutoUpload: true): false,
         ]

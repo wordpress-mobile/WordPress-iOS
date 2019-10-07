@@ -277,7 +277,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [self.managedObjectContext performBlock:^{
             Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                [self markAsFailedAndDraftIfNeededWithPost:postInContext];
+                postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {

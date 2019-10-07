@@ -23,7 +23,7 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
         contextManager = nil
     }
 
-    func testItOnlyReturnsLocalDrafts() {
+    func testItReturnsPostsThatCanBeAutoUploadedOrAutoSaved() {
         // Arrange
         let expectedPosts = [
             createPost(status: .draft),
@@ -32,12 +32,14 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
             createPost(status: .publish),
             createPost(status: .draft, hasRemote: true),
             createPost(status: .publish, hasRemote: true),
-        ]
-        let unexpectedPosts = [
             createPost(status: .publishPrivate),
             createPost(status: .publishPrivate, hasRemote: true),
             createPost(status: .scheduled),
             createPost(status: .scheduled, hasRemote: true),
+            createPost(status: .pending),
+            createPost(status: .pending, hasRemote: true),
+        ]
+        let unexpectedPosts = [
             createPost(status: .trash),
             createPost(status: .trash, hasRemote: true),
             // Local draft that we never attempted to upload so it never failed

@@ -906,10 +906,7 @@ class AbstractPostListViewController: UIViewController,
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
             WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
 
-            apost.date_created_gmt = Date()
-            apost.status = .publish
-            apost.shouldAttemptAutoUpload = true
-            self.uploadPost(apost)
+            PostCoordinator.shared.publish(apost)
         }
 
         present(alertController, animated: true)
@@ -918,12 +915,7 @@ class AbstractPostListViewController: UIViewController,
     @objc func moveToDraft(_ apost: AbstractPost) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
-        apost.status = .draft
-        uploadPost(apost)
-    }
-
-    fileprivate func uploadPost(_ apost: AbstractPost) {
-        PostCoordinator.shared.save(apost)
+        PostCoordinator.shared.moveToDraft(apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {

@@ -84,6 +84,8 @@ extension PostEditor where Self: UIViewController {
                 if self.post.status != .publishPrivate {
                     self.post.status = .publish
                 }
+            } else if action == .submitForReview {
+                self.post.status = .pending
             }
 
             self.post.shouldAttemptAutoUpload = true

@@ -37,6 +37,11 @@ class PostBuilder {
         return self
     }
 
+    func pending() -> PostBuilder {
+        post.status = .pending
+        return self
+    }
+
     func revision() -> PostBuilder {
         post.setPrimitiveValue(post, forKey: "original")
         return self
