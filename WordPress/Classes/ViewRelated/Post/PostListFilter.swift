@@ -125,10 +125,6 @@ import Foundation
             // Include other existing draft/pending posts with `nil` `statusAfterSync`. This is
             // unlikely but this ensures that those posts will show up somewhere.
             + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@))"
-
-        // The postID = -1 condition means that the post has not been uploaded to the server yet.
-        // The statusAfterSync should never be `nil` but we're adding it as part of the criteria
-        // so posts with nil statusAfterSync will still be shown somewhere and not disappear.
         let predicate = NSPredicate(format: query,
                                     statuses.strings,
                                     statuses.strings,
