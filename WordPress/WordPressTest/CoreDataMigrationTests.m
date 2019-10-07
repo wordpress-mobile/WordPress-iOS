@@ -1104,16 +1104,21 @@
 
 - (NSManagedObject *)insertDummyBlogInContext:(NSManagedObjectContext *)context
 {
+    return [self insertDummyBlogInContext:context blogID:@(123)];
+}
+
+- (NSManagedObject *)insertDummyBlogInContext:(NSManagedObjectContext *)context blogID:(NSNumber *)blogID {
+{
     // Insert a dummy blog with all of the required properties set
     NSManagedObject *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
-    
-    [blog setValue:@(123) forKey:@"blogID"];
+
+    [blog setValue:blogID forKey:@"blogID"];
     [blog setValue:@(false) forKey:@"geolocationEnabled"];
     [blog setValue:@(false) forKey:@"hasOlderPosts"];
     [blog setValue:@(false) forKey:@"visible"];
     [blog setValue:@"www.wordpress.com" forKey:@"url"];
     [blog setValue:@"www.wordpress.com" forKey:@"xmlrpc"];
-    
+
     return blog;
 }
 
