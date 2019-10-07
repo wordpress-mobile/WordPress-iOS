@@ -21,7 +21,7 @@ final class PostAutoUploadInteractor {
 
     private static let disallowedStatuses: [BasePost.Status] = [.trash, .deleted]
 
-    static let maxNumberOfAttempts = 3
+    private static let maxNumberOfAttempts = 3
 
     /// Returns what action should be executed when we retry a failed upload.
     ///
