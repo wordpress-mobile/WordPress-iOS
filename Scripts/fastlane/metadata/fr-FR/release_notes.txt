@@ -1,3 +1,3 @@
-* Ajout du support d’iOS 13.
-* Essayez le mode sombre !
-* Disponible dès maintenant : Se connecter avec Apple.
+- Après un tour récent d’améliorations, l’éditeur de blocs est plus rapide et fonctionne plus  rapidement dans l’app.
+- Quelques uns d’entre vous ont eu des problèmes avec le mode sombre sur iPads. Nous nous avons réglé le tout (adios, éblouisseur non invité !).
+- Vos visiteurs aiment les articles avec des médias, donc nous avons rendu l’experience pour les créer plus stable.

@@ -1394,12 +1394,6 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             let frame = textView.frameForTextInRange(characterRange)
             let shareController = PostSharingController()
             shareController.shareURL(url: URL as NSURL, fromRect: frame, inView: textView, inViewController: self)
-        } else if readerLinkRouter.canHandle(url: URL) {
-            readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
-        } else if URL.isWordPressDotComPost {
-            presentReaderDetailViewControllerWithURL(URL)
-        } else {
-            presentWebViewControllerWithURL(URL)
         }
         return false
     }
@@ -1418,6 +1412,16 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             presentWebViewControllerWithURL(linkURL as URL)
         } else if let staticImage = image.imageView.image {
             presentFullScreenImage(with: staticImage)
+        }
+    }
+
+    func interactWith(URL: URL) {
+        if readerLinkRouter.canHandle(url: URL) {
+            readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
+        } else if URL.isWordPressDotComPost {
+            presentReaderDetailViewControllerWithURL(URL)
+        } else {
+            presentWebViewControllerWithURL(URL)
         }
     }
 }
