@@ -1,3 +1,3 @@
-• Menambahkan dukungan untuk iOS 13.
-* Cobalah Mode Gelap!
-* Kini tersedia: Masuk dengan Apple.
+* Setelah proses penyempurnaan terbaru, Penyunting Blok kini lebih cepat dan lancar di aplikasi.
+* Beberapa dari Anda bermasalah dengan Mode Gelap di iPad; kami sudah membereskannya (selamat tinggal, silau!).
+* Pengunjung situs Anda suka pos dengan media, jadi kami membuat pengalaman pembuatannya lebih stabil.
