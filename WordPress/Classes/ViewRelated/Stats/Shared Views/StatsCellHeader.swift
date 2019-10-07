@@ -62,14 +62,14 @@ private extension StatsCellHeader {
     }
 
     func configureManageInsightButton() {
-        
+
         guard FeatureFlag.statsInsightsManagement.enabled,
             let statSection = statSection,
             StatSection.allInsights.contains(statSection) else {
                 manageInsightButton.isHidden = true
                 return
         }
-        
+
         manageInsightButton.isHidden = false
         manageInsightButton.tintColor = Style.organizeInsightsButtonTintColor
         manageInsightButton.setImage(Style.imageForGridiconType(.ellipsis, withTint: .darkGrey), for: .normal)
@@ -79,12 +79,12 @@ private extension StatsCellHeader {
     // MARK: - Button Action
 
     @IBAction func manageInsightButtonPressed(_ sender: UIButton) {
-        // TODO: remove alert when Manage Insights is added
-        let alertController =  UIAlertController(title: "Manage Insight options will be shown here",
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
+        guard let statSection = statSection else {
+            DDLogDebug("manageInsightButtonPressed: unknown statSection.")
+            return
+        }
+
+        siteStatsInsightsDelegate?.manageInsightSelected?(statSection, sender: sender)
     }
 
 }
