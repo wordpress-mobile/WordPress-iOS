@@ -142,8 +142,6 @@ class AbstractPostListViewController: UIViewController,
 
     private var atLeastSyncedOnce = false
 
-    private let publishPostInteractor = PublishPostInteractor()
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
