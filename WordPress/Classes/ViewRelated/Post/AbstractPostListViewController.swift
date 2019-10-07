@@ -142,6 +142,8 @@ class AbstractPostListViewController: UIViewController,
 
     private var atLeastSyncedOnce = false
 
+    private let publishPostInteractor = PublishPostInteractor()
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -906,16 +908,7 @@ class AbstractPostListViewController: UIViewController,
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
             WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
 
-            if apost.status == .draft {
-                apost.status = .publish
-            }
-
-            if apost.status != .scheduled {
-                apost.date_created_gmt = Date()
-            }
-
-            apost.shouldAttemptAutoUpload = true
-            self.uploadPost(apost)
+            self.publishPostInteractor.upload(apost)
         }
 
         present(alertController, animated: true)
