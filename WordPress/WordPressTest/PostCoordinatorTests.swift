@@ -115,6 +115,56 @@ class PostCoordinatorTests: XCTestCase {
 
         expect(post.status).to(equal(.publish))
     }
+
+    func testChangeDraftToPublishWhenPublishing() {
+        let post = PostBuilder(context).drafted().build()
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.publish(post)
+
+        expect(post.status).to(equal(.publish))
+    }
+
+    func testDoNotChangeDateCreatedForAScheduledPost() {
+        let post = PostBuilder(context).with(dateCreated: Date(timeIntervalSince1970: 50)).scheduled().build()
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.publish(post)
+
+        expect(post.date_created_gmt).to(equal(Date(timeIntervalSince1970: 50)))
+    }
+
+    func testSetShouldAttemptAutoUploadToTrue() {
+        let post = PostBuilder(context).drafted().build()
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.publish(post)
+
+        expect(post.shouldAttemptAutoUpload).to(beTrue())
+    }
+
+    func testCallPostCoordinatorToSaveAPost() {
+        let post = PostBuilder(context).drafted().build()
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.publish(post)
+
+        expect(postServiceMock.didCallUploadPost).to(beTrue())
+    }
+
+    func testChangePostToDraftWhenMovingToDraft() {
+        let post = PostBuilder(context).published().build()
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+
+        postCoordinator.moveToDraft(post)
+
+        expect(post.status).to(equal(.draft))
+    }
 }
 
 private class PostServiceMock: PostService {

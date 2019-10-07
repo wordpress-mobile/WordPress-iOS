@@ -908,7 +908,7 @@ class AbstractPostListViewController: UIViewController,
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
             WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
 
-            self.publishPostInteractor.upload(apost)
+            PostCoordinator.shared.publish(apost)
         }
 
         present(alertController, animated: true)
@@ -917,7 +917,7 @@ class AbstractPostListViewController: UIViewController,
     @objc func moveToDraft(_ apost: AbstractPost) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
-        publishPostInteractor.moveToDraft(apost)
+        PostCoordinator.shared.moveToDraft(apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {

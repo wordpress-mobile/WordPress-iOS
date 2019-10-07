@@ -83,6 +83,25 @@ class PostCoordinator: NSObject {
         }
     }
 
+    func publish(_ post: AbstractPost) {
+        if post.status == .draft {
+            post.status = .publish
+        }
+
+        if post.status != .scheduled {
+            post.date_created_gmt = Date()
+        }
+
+        post.shouldAttemptAutoUpload = true
+
+        save(post)
+    }
+
+    func moveToDraft(_ post: AbstractPost) {
+        post.status = .draft
+        save(post)
+    }
+
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish.
     /// Then, it calls the completion block with the post ready to be saved/uploaded.
     ///
