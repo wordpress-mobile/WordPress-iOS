@@ -38,6 +38,11 @@ extension AbstractPost {
         }
     }
 
+    /// The string value of `statusAfterSync` based on `BasePost.Status`.
+    ///
+    /// This should only be used in Objective-C. For Swift, use `statusAfterSync`.
+    ///
+    /// - SeeAlso: statusAfterSync
     @objc(statusAfterSync)
     var statusAfterSyncString: String? {
         get {
