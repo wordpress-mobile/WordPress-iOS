@@ -29,6 +29,19 @@ extension AbstractPost {
         }
     }
 
+    /// The status of self when we last received its data from the API.
+    ///
+    /// This is mainly used to identify which Post List tab should the post be shown in. For
+    /// example, if a published post is transitioned to a draft but the app has not finished
+    /// updating the server yet, we will continue to show the post in the Published list instead of
+    /// the Drafts list. We believe this behavior is less confusing for the user.
+    ///
+    /// This is not meant to be up to date with the remote API. Eventually, this information will
+    /// be outdated. For example, the user could have changed the status in the web while the device
+    /// was offline. So we wouldn't recommend using this value aside from its original intention.
+    ///
+    /// - SeeAlso: PostService
+    /// - SeeAlso: PostListFilter
     var statusAfterSync: Status? {
         get {
             return rawValue(forKey: "statusAfterSync")
