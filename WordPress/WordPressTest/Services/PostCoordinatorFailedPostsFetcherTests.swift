@@ -23,7 +23,7 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
         contextManager = nil
     }
 
-    func testItOnlyReturnsLocalDrafts() {
+    func testItReturnsPostsThatCanBeAutoUploadedOrAutoSaved() {
         // Arrange
         let expectedPosts = [
             createPost(status: .draft),
