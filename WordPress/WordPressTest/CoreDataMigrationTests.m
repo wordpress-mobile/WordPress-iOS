@@ -8,6 +8,12 @@
 
 @end
 
+@interface NSManagedObjectContext (Fetch)
+
+- (NSArray *)fetch:(NSString *)entityName withPredicate:(NSString *)predicate arguments:(NSArray *)arguments;
+
+@end
+
 @implementation CoreDataMigrationTests
 
 - (void)setUp {
@@ -1202,6 +1208,26 @@
     for (NSEntityDescription *entity in model.entities) {
         entity.managedObjectClassName = nil;
     }
+}
+
+@end
+
+@implementation NSManagedObjectContext (Fetch)
+
+- (NSArray *)fetch:(NSString *)entityName withPredicate:(NSString *)predicate arguments:(NSArray *)arguments
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:predicate argumentArray:arguments];
+
+    NSError *error = nil;
+    NSArray *result = [self executeFetchRequest:request error:&error];
+
+    if (error != nil) {
+        NSLog(@"Fetch request returned error: %@", error);
+    }
+    NSCAssert(error == nil, @"Failed to execute fetch request.");
+
+    return result;
 }
 
 @end
