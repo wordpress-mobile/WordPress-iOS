@@ -62,11 +62,17 @@ private extension StatsCellHeader {
     }
 
     func configureManageInsightButton() {
-        // TODO: remove this when Manage Insights implemented
-        manageInsightButton.isHidden = true
-
-        manageInsightButton.tintColor = Style.ImageTintColor.grey.styleGuideColor
-        manageInsightButton.setImage(Style.imageForGridiconType(.ellipsis), for: .normal)
+        
+        guard FeatureFlag.statsInsightsManagement.enabled,
+            let statSection = statSection,
+            StatSection.allInsights.contains(statSection) else {
+                manageInsightButton.isHidden = true
+                return
+        }
+        
+        manageInsightButton.isHidden = false
+        manageInsightButton.tintColor = Style.organizeInsightsButtonTintColor
+        manageInsightButton.setImage(Style.imageForGridiconType(.ellipsis, withTint: .darkGrey), for: .normal)
         manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Action button to display manage insight options.")
     }
 
