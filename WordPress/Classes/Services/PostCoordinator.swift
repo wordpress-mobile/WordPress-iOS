@@ -347,9 +347,6 @@ extension PostCoordinator: Uploader {
             }
 
             postsAndActions.forEach { post, action in
-                if action != .nothing, let status = post.status {
-                    self.trackAutoUpload(action: action, status: status)
-                }
                 switch action {
                 case .upload:
                     self.save(post, automatedRetry: true)
@@ -359,11 +356,16 @@ extension PostCoordinator: Uploader {
                 case .nothing:
                     return
                 }
+
+                self.trackAutoUpload(action: action, status: post.status)
             }
         }
     }
 
-    private func trackAutoUpload(action: PostAutoUploadInteractor.AutoUploadAction, status: BasePost.Status) {
+    private func trackAutoUpload(action: PostAutoUploadInteractor.AutoUploadAction, status: BasePost.Status?) {
+        guard action != .nothing, let status = status else {
+            return
+        }
         WPAnalytics.track(.autoUploadPostInvoked, withProperties:
             ["upload_action": action.rawValue,
              "post_status": status.rawValue])
