@@ -139,7 +139,7 @@ private class PostServiceRemoteMock: PostServiceRemoteREST {
         }
     }
 
-    override func getPostsOfType(_ postType: String!, options: [AnyHashable : Any]! = [:], success: (([RemotePost]?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func getPostsOfType(_ postType: String!, options: [AnyHashable: Any]! = [:], success: (([RemotePost]?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             success(self.remotePostsToReturnOnSyncPostsOfType)
         }
@@ -151,4 +151,3 @@ private class PostServiceRemoteMock: PostServiceRemoteREST {
         }
     }
 }
-
