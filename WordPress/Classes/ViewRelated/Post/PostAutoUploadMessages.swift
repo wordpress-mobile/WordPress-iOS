@@ -55,19 +55,6 @@ enum PostAutoUploadMessages {
         }
     }
 
-    static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-        switch postStatus {
-        case .publish:
-            return PostAutoUploadMessages.willNotAttemptToPublishLater
-        case .publishPrivate:
-            return PostAutoUploadMessages.willNotAttemptToPublishPrivateLater
-        case .scheduled:
-            return PostAutoUploadMessages.willNotAttemptToScheduleLater
-        default:
-            return PostAutoUploadMessages.willNotAttemptToSubmitLater
-        }
-    }
-
     static func cancelMessage(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
         case .publish:
@@ -92,6 +79,19 @@ enum PostAutoUploadMessages {
             return PostAutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
         default:
             return nil
+        }
+    }
+
+    private static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
+        switch postStatus {
+        case .publish:
+            return PostAutoUploadMessages.willNotAttemptToPublishLater
+        case .publishPrivate:
+            return PostAutoUploadMessages.willNotAttemptToPublishPrivateLater
+        case .scheduled:
+            return PostAutoUploadMessages.willNotAttemptToScheduleLater
+        default:
+            return PostAutoUploadMessages.willNotAttemptToSubmitLater
         }
     }
 }
