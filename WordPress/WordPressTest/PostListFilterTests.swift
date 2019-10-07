@@ -67,22 +67,28 @@ class PostListFilterTests: XCTestCase {
         }
     }
 
-    func testDraftFilterOnlyIncludesDraftsAndLocalPublishedPosts() {
+    func testDraftFilterIncludesLocalDraftsAndExistingDraftAndPendingPosts() {
         // Arrange
         let predicate = PostListFilter.draftFilter().predicateForFetchRequest
         let matchingPosts = [
             createPost(.draft),
-            createPost(.draft, hasRemote: true),
             createPost(.publish),
+            createPost(.scheduled),
+            createPost(.publishPrivate),
+            createPost(.pending),
+            createPost(.draft, hasRemote: true),
+            createPost(.pending, hasRemote: true),
+            createPost(.draft, hasRemote: true, statusAfterSync: .draft),
+            createPost(.pending, hasRemote: true, statusAfterSync: .pending),
         ]
         let nonMatchingPosts = [
-            createPost(.publish, hasRemote: true),
-            createPost(.publishPrivate),
-            createPost(.publishPrivate, hasRemote: true),
-            createPost(.scheduled),
-            createPost(.scheduled, hasRemote: true),
             createPost(.trash),
-            createPost(.trash, hasRemote: true)
+            createPost(.deleted),
+
+            createPost(.publish, hasRemote: true),
+            createPost(.publishPrivate, hasRemote: true),
+            createPost(.scheduled, hasRemote: true),
+            createPost(.trash, hasRemote: true),
         ]
 
         // Assert
@@ -90,34 +96,124 @@ class PostListFilterTests: XCTestCase {
         expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
     }
 
-    func testPublishedFilterOnlyIncludesPrivateAndRemotePublishedPosts() {
+    func testDraftFilterIncludesExistingDraftsAndPendingPostsTransitionedToOtherStatuses() {
+        // Arrange
+        let predicate = PostListFilter.draftFilter().predicateForFetchRequest
+        let matchingPosts = [
+            createPost(.publish, hasRemote: true, statusAfterSync: .draft),
+            createPost(.publishPrivate, hasRemote: true, statusAfterSync: .draft),
+            createPost(.scheduled, hasRemote: true, statusAfterSync: .draft),
+            createPost(.pending, hasRemote: true, statusAfterSync: .draft),
+            createPost(.trash, hasRemote: true, statusAfterSync: .draft),
+
+            createPost(.publish, hasRemote: true, statusAfterSync: .pending),
+            createPost(.publishPrivate, hasRemote: true, statusAfterSync: .pending),
+            createPost(.scheduled, hasRemote: true, statusAfterSync: .pending),
+            createPost(.pending, hasRemote: true, statusAfterSync: .pending),
+            createPost(.trash, hasRemote: true, statusAfterSync: .pending),
+        ]
+
+        // Assert
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+    }
+
+    func testPublishedFilterIncludesExistingPrivateAndRemotePublishedPosts() {
         // Arrange
         let predicate = PostListFilter.publishedFilter().predicateForFetchRequest
         let matchingPosts = [
             createPost(.publish, hasRemote: true),
-            createPost(.publishPrivate),
             createPost(.publishPrivate, hasRemote: true),
+            createPost(.publish, hasRemote: true, statusAfterSync: .publish),
+            createPost(.publishPrivate, hasRemote: true, statusAfterSync: .publishPrivate),
         ]
         let nonMatchingPosts = [
             createPost(.draft),
-            createPost(.draft, hasRemote: true),
             createPost(.publish),
+            createPost(.publishPrivate),
             createPost(.scheduled),
-            createPost(.scheduled, hasRemote: true),
             createPost(.trash),
-            createPost(.trash, hasRemote: true)
+            createPost(.deleted),
+
+            createPost(.draft, hasRemote: true),
+            createPost(.scheduled, hasRemote: true),
+            createPost(.trash, hasRemote: true),
         ]
 
         // Assert
         expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
         expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
     }
+
+    func testPublishedFilterIncludesExistingPublishedAndPrivatePostsTransitionedToOtherStatuses() {
+        // Arrange
+        let predicate = PostListFilter.publishedFilter().predicateForFetchRequest
+        let matchingPosts = [
+            createPost(.draft, hasRemote: true, statusAfterSync: .publish),
+            createPost(.publishPrivate, hasRemote: true, statusAfterSync: .publish),
+            createPost(.scheduled, hasRemote: true, statusAfterSync: .publish),
+            createPost(.pending, hasRemote: true, statusAfterSync: .publish),
+            createPost(.trash, hasRemote: true, statusAfterSync: .publish),
+
+            createPost(.draft, hasRemote: true, statusAfterSync: .publishPrivate),
+            createPost(.publishPrivate, hasRemote: true, statusAfterSync: .publishPrivate),
+            createPost(.scheduled, hasRemote: true, statusAfterSync: .publishPrivate),
+            createPost(.pending, hasRemote: true, statusAfterSync: .publishPrivate),
+            createPost(.trash, hasRemote: true, statusAfterSync: .publishPrivate),
+        ]
+
+        // Assert
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+    }
+
+    func testScheduledFilterIncludesExistingScheduledPostsOnly() {
+        // Arrange
+        let predicate = PostListFilter.scheduledFilter().predicateForFetchRequest
+        let matchingPosts = [
+            createPost(.scheduled, hasRemote: true),
+            createPost(.scheduled, hasRemote: true, statusAfterSync: .scheduled),
+        ]
+        let nonMatchingPosts = [
+            createPost(.draft),
+            createPost(.scheduled),
+            createPost(.publish),
+            createPost(.publishPrivate),
+            createPost(.trash),
+            createPost(.deleted),
+
+            createPost(.trash, hasRemote: true),
+            createPost(.draft, hasRemote: true),
+            createPost(.publish, hasRemote: true),
+            createPost(.publishPrivate, hasRemote: true),
+        ]
+
+        // Assert
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+    }
+
+    func testScheduledFilterIncludesExistingScheduledPostsTransitionedToOtherStatuses() {
+        // Arrange
+        let predicate = PostListFilter.scheduledFilter().predicateForFetchRequest
+        let matchingPosts = [
+            createPost(.draft, hasRemote: true, statusAfterSync: .scheduled),
+            createPost(.publish, hasRemote: true, statusAfterSync: .scheduled),
+            createPost(.publishPrivate, hasRemote: true, statusAfterSync: .scheduled),
+            createPost(.pending, hasRemote: true, statusAfterSync: .scheduled),
+            createPost(.trash, hasRemote: true, statusAfterSync: .scheduled),
+        ]
+
+        // Assert
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+    }
 }
 
 private extension PostListFilterTests {
-    func createPost(_ status: BasePost.Status, hasRemote: Bool = false) -> Post {
+    func createPost(_ status: BasePost.Status,
+                    hasRemote: Bool = false,
+                    statusAfterSync: BasePost.Status? = nil) -> Post {
         let post = Post(context: context)
         post.status = status
+        post.statusAfterSync = statusAfterSync
 
         if hasRemote {
             post.postID = NSNumber(value: Int.random(in: 1...Int.max))
