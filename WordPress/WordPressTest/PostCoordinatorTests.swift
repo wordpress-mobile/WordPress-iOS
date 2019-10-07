@@ -178,7 +178,7 @@ class PostCoordinatorTests: XCTestCase {
             .with(remoteStatus: .failed)
             .build()
         try! context.save()
-        
+
         postCoordinator.resume()
         guard let status = post.status else {
             return
