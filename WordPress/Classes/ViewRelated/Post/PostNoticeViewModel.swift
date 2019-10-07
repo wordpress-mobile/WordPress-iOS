@@ -129,10 +129,14 @@ struct PostNoticeViewModel {
         switch postStatus {
         case .draft:
             return PostAutoUploadMessages.draftWillBeUploaded
+        case .publishPrivate:
+            return PostAutoUploadMessages.privateWillBeUploaded
+        case .scheduled:
+            return PostAutoUploadMessages.scheduledWillBeUploaded
         case .publish:
             return PostAutoUploadMessages.postWillBePublished
         default:
-            return defaultTitle
+            return PostAutoUploadMessages.willSubmitLater
         }
     }
 

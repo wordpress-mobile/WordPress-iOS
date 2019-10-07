@@ -1,3 +1,7 @@
+??
+-----
+Fixed a bug that was not submiting posts for review
+
 13.3
 -----
 * Block editor: Add rich text styling to video captions

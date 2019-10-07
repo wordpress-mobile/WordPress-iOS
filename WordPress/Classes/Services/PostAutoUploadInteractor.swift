@@ -19,9 +19,9 @@ final class PostAutoUploadInteractor {
         case notAttempted
     }
 
-    private static let allowedStatuses: [BasePost.Status] = [.draft, .publish]
+    private static let disallowedStatuses: [BasePost.Status] = [.trash, .deleted]
 
-    static let maxNumberOfAttempts = 3
+    private static let maxNumberOfAttempts = 3
 
     /// Returns what action should be executed when we retry a failed upload.
     ///
@@ -34,7 +34,7 @@ final class PostAutoUploadInteractor {
     func autoUploadAction(for post: AbstractPost) -> AutoUploadAction {
         guard post.isFailed,
             let status = post.status,
-            PostAutoUploadInteractor.allowedStatuses.contains(status),
+            !PostAutoUploadInteractor.disallowedStatuses.contains(status),
             post.autoUploadAttemptsCount.intValue < PostAutoUploadInteractor.maxNumberOfAttempts else {
                 return .nothing
         }
@@ -42,7 +42,6 @@ final class PostAutoUploadInteractor {
         if post.isLocalDraft || post.shouldAttemptAutoUpload {
             return .upload
         } else {
-            // TODO This is currently not supported by PostCoordinator
             return .autoSave
         }
     }
@@ -70,7 +69,7 @@ final class PostAutoUploadInteractor {
                 return false
         }
 
-        return !PostAutoUploadInteractor.allowedStatuses.contains(status)
+        return PostAutoUploadInteractor.disallowedStatuses.contains(status)
     }
 
     /// Returns what is the auto upload attempt state for a given post

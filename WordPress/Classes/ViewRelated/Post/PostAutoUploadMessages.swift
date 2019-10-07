@@ -15,17 +15,46 @@ enum PostAutoUploadMessages {
                                                        comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
     static let willNotAttemptToPublishLater = NSLocalizedString("Couldn't perform operation. Post not published",
                                                         comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
+    static let willSubmitLater = NSLocalizedString("Post will be submitted for review when your device is back online",
+                                                        comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
     static let willAttemptToSubmitLater = NSLocalizedString("Post couldn't be submitted. We'll try again later",
                                                        comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
-    static let willNotAttemptToSubmitLater = NSLocalizedString("Couldn't perform operation",
+    static let willNotAttemptToSubmitLater = NSLocalizedString("Couldn't perform operation. Post not submitted",
                                                         comment: "Text displayed in notice after the app fails to upload a post, not new attempt will be made.")
+    static let privateWillBeUploaded = NSLocalizedString("Private post will be published when your device is back online",
+                                                       comment: "Text displayed in notice after the app fails to upload a draft.")
+    static let willAttemptToPublishPrivateLater = NSLocalizedString("Private post couldn't be published. We'll try again later",
+                                                        comment: "Text displayed after the app fails to upload a private post, it will attempt to upload it later.")
+    static let willNotAttemptToPublishPrivateLater = NSLocalizedString("Couldn't perform operation. Private post not published",
+                                                        comment: "Text displayed after the app fails to upload a private post, no new attempt will be made.")
+    static let scheduledWillBeUploaded = NSLocalizedString("Post will be scheduled when your device is back online",
+                                                       comment: "Text displayed after the app fails to upload a scheduled post.")
+    static let willAttemptToScheduleLater = NSLocalizedString("Post couldn't be scheduled. We'll try again later",
+                                                        comment: "Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later.")
+    static let willNotAttemptToScheduleLater = NSLocalizedString("Couldn't perform operation. Post not scheduled",
+                                                        comment: "Text displayed after the app fails to upload a scheduled post, no new attempt will be made.")
+    static let changesWillNotBePublished = NSLocalizedString("Changes will not be published",
+                                                        comment: "Title for notice displayed on canceling auto-upload published post")
+    static let changesWillNotBeSubmitted = NSLocalizedString("Changes will not be submitted",
+                                                         comment: "Title for notice displayed on canceling auto-upload pending post")
+    static let changesWillNotBeScheduled = NSLocalizedString("Changes will not be scheduled",
+                                                         comment: "Title for notice displayed on canceling auto-upload of a scheduled post")
+    static let changesWillNotBeSaved = NSLocalizedString("We won't save the latest changes to your draft.",
+                                                         comment: "Title for notice displayed on canceling auto-upload of a draft post")
 
-    static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-        return postStatus == .publish ? PostAutoUploadMessages.willAttemptToPublishLater : PostAutoUploadMessages.willAttemptToSubmitLater
-    }
-
-    static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-        return postStatus == .publish ? PostAutoUploadMessages.willNotAttemptToPublishLater : PostAutoUploadMessages.willNotAttemptToSubmitLater
+    static func cancelMessage(for postStatus: BasePost.Status?) -> String {
+        switch postStatus {
+        case .publish:
+            return PostAutoUploadMessages.changesWillNotBePublished
+        case .publishPrivate:
+            return PostAutoUploadMessages.changesWillNotBePublished
+        case .scheduled:
+            return PostAutoUploadMessages.changesWillNotBeScheduled
+        case .draft:
+            return PostAutoUploadMessages.changesWillNotBeSaved
+        default:
+            return PostAutoUploadMessages.changesWillNotBeSubmitted
+        }
     }
 
     static func attemptFailures(for post: AbstractPost,
@@ -37,6 +66,32 @@ enum PostAutoUploadMessages {
             return PostAutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
         default:
             return nil
+        }
+    }
+
+    private static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
+        switch postStatus {
+        case .publish:
+            return PostAutoUploadMessages.willAttemptToPublishLater
+        case .publishPrivate:
+            return PostAutoUploadMessages.willAttemptToPublishPrivateLater
+        case .scheduled:
+            return PostAutoUploadMessages.willAttemptToScheduleLater
+        default:
+            return PostAutoUploadMessages.willAttemptToSubmitLater
+        }
+    }
+
+    private static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
+        switch postStatus {
+        case .publish:
+            return PostAutoUploadMessages.willNotAttemptToPublishLater
+        case .publishPrivate:
+            return PostAutoUploadMessages.willNotAttemptToPublishPrivateLater
+        case .scheduled:
+            return PostAutoUploadMessages.willNotAttemptToScheduleLater
+        default:
+            return PostAutoUploadMessages.willNotAttemptToSubmitLater
         }
     }
 }
