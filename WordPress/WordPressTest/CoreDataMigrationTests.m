@@ -1107,7 +1107,7 @@
     return [self insertDummyBlogInContext:context blogID:@(123)];
 }
 
-- (NSManagedObject *)insertDummyBlogInContext:(NSManagedObjectContext *)context blogID:(NSNumber *)blogID {
+- (NSManagedObject *)insertDummyBlogInContext:(NSManagedObjectContext *)context blogID:(NSNumber *)blogID
 {
     // Insert a dummy blog with all of the required properties set
     NSManagedObject *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
@@ -1156,10 +1156,20 @@
 
 - (NSManagedObject *)insertDummyPostInContext:(NSManagedObjectContext *)context
 {
+    return [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:context];
+}
+
+- (NSManagedObject *)insertDummyPostInContext:(NSManagedObjectContext *)context blog:(NSManagedObject *)blog
+{
     NSManagedObject *post = [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:context];
+    [post setValue:blog forKey:@"blog"];
+    return post;
+}
 
-
-
+- (NSManagedObject *)insertDummyPageInContext:(NSManagedObjectContext *)context blog:(NSManagedObject *)blog
+{
+    NSManagedObject *post = [NSEntityDescription insertNewObjectForEntityForName:@"Page" inManagedObjectContext:context];
+    [post setValue:blog forKey:@"blog"];
     return post;
 }
 
