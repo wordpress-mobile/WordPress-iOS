@@ -42,19 +42,6 @@ enum PostAutoUploadMessages {
     static let changesWillNotBeSaved = NSLocalizedString("We won't save the latest changes to your draft.",
                                                          comment: "Title for notice displayed on canceling auto-upload of a draft post")
 
-    static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-        switch postStatus {
-        case .publish:
-            return PostAutoUploadMessages.willAttemptToPublishLater
-        case .publishPrivate:
-            return PostAutoUploadMessages.willAttemptToPublishPrivateLater
-        case .scheduled:
-            return PostAutoUploadMessages.willAttemptToScheduleLater
-        default:
-            return PostAutoUploadMessages.willAttemptToSubmitLater
-        }
-    }
-
     static func cancelMessage(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
         case .publish:
@@ -79,6 +66,19 @@ enum PostAutoUploadMessages {
             return PostAutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
         default:
             return nil
+        }
+    }
+
+    private static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
+        switch postStatus {
+        case .publish:
+            return PostAutoUploadMessages.willAttemptToPublishLater
+        case .publishPrivate:
+            return PostAutoUploadMessages.willAttemptToPublishPrivateLater
+        case .scheduled:
+            return PostAutoUploadMessages.willAttemptToScheduleLater
+        default:
+            return PostAutoUploadMessages.willAttemptToSubmitLater
         }
     }
 
