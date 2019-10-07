@@ -37,8 +37,8 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
             // Posts with remote that have confirmation will be automatically uploaded
             createPost(.draft, hasRemote: true, confirmedAutoUpload: true): .upload,
             createPost(.publish, hasRemote: true, confirmedAutoUpload: true): .upload,
-            createPost(.publishPrivate, confirmedAutoUpload: true): .upload,
-            createPost(.scheduled, confirmedAutoUpload: true): .upload,
+            createPost(.publishPrivate, hasRemote: true, confirmedAutoUpload: true): .upload,
+            createPost(.scheduled, hasRemote: true, confirmedAutoUpload: true): .upload,
             // Trash and deleted are ignored
             createPost(.trash, confirmedAutoUpload: true): .nothing,
             createPost(.deleted, confirmedAutoUpload: true): .nothing,
