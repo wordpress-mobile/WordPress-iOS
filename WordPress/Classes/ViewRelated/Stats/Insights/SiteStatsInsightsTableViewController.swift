@@ -15,19 +15,53 @@ enum InsightType: Int {
     case postingActivity
     case publicize
 
-    // TODO: remove when Manage Insights is implemented.
-    static let allValues = [InsightType.latestPostSummary,
-                            .todaysStats,
-                            .annualSiteStats,
-                            .allTimeStats,
-                            .mostPopularTime,
-                            .postingActivity,
-                            .comments,
-                            .tagsAndCategories,
-                            .followersTotals,
-                            .followers,
-                            .publicize
+    // These Insights will be displayed in this order if a site's Insights have not been customized.
+    static let defaultInsights = [InsightType.postingActivity,
+                                  .todaysStats,
+                                  .allTimeStats,
+                                  .mostPopularTime,
+                                  .comments
     ]
+
+    static let defaultInsightsValues = InsightType.defaultInsights.map { $0.rawValue }
+
+    static func typesForValues(_ values: [Int]) -> [InsightType] {
+        return values.compactMap { InsightType(rawValue: $0) }
+    }
+
+    static func valuesForTypes(_ types: [InsightType]) -> [Int] {
+        return types.compactMap { $0.rawValue }
+    }
+
+    var statSection: StatSection? {
+        switch self {
+        case .latestPostSummary:
+            return .insightsLatestPostSummary
+        case .allTimeStats:
+            return .insightsAllTime
+        case .followersTotals:
+            return .insightsFollowerTotals
+        case .mostPopularTime:
+            return .insightsMostPopularTime
+        case .tagsAndCategories:
+            return .insightsTagsAndCategories
+        case .annualSiteStats:
+            return .insightsAnnualSiteStats
+        case .comments:
+            return .insightsCommentsPosts
+        case .followers:
+            return .insightsFollowersEmail
+        case .todaysStats:
+            return .insightsTodaysStats
+        case .postingActivity:
+            return .insightsPostingActivity
+        case .publicize:
+            return .insightsPublicize
+        default:
+            return nil
+        }
+    }
+
 }
 
 @objc protocol SiteStatsInsightsDelegate {
@@ -50,17 +84,23 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
+
     private var insightsChangeReceipt: Receipt?
 
-    // TODO: update this array when Manage Insights is implemented.
     // Types of Insights to display. The array order dictates the display order.
     private var insightsToShow = [InsightType]()
     private let userDefaultsInsightTypesKey = "StatsInsightTypes"
 
-    // Store customize separately as it is not per site.
-    // (insightsToShow is not yet per site, but it will be.)
+    // Store 'customize' separately as it is not per site.
     private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
     private var hideCustomizeCard = false
+
+    // Store Insights settings for all sites.
+    // Used when writing to/reading from User Defaults.
+    // A single site's dictionary contains the InsightType values for that site.
+    private var allSitesInsights = [SiteInsights]()
+    private typealias SiteInsights = [String: [Int]]
+
     private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoading)
 
     private lazy var mainContext: NSManagedObjectContext = {
@@ -217,17 +257,53 @@ private extension SiteStatsInsightsTableViewController {
         return isViewLoaded && view.window != nil
     }
 
+    func updateView() {
+        viewModel?.updateInsightsToShow(insights: insightsToShow)
+        refreshTableView()
+    }
+
     // MARK: User Defaults
 
     func loadInsightsFromUserDefaults() {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
+            insightsToShow = InsightType.defaultInsights
+            loadCustomizeCardSetting()
+            return
+        }
 
-        // TODO: remove when Manage Insights is implemented.
-        // For now, we'll show all Insights in the default order.
-        let allTypesInts = InsightType.allValues.map { $0.rawValue }
+        // Get Insights from User Defaults, and extract those for the current site.
+        allSitesInsights = UserDefaults.standard.object(forKey: userDefaultsInsightTypesKey) as? [SiteInsights] ?? []
+        let siteInsights = allSitesInsights.first { $0.keys.first == siteID }
 
-        let insightTypesInt = UserDefaults.standard.array(forKey: userDefaultsInsightTypesKey) as? [Int] ?? allTypesInts
-        insightsToShow = insightTypesInt.compactMap { InsightType(rawValue: $0) }
+        // If no Insights for the current site, use the default Insights.
+        let insightTypesValues = siteInsights?.values.first ?? InsightType.defaultInsightsValues
+        insightsToShow = InsightType.typesForValues(insightTypesValues)
 
+        // Add the 'customize' card if necessary.
+        loadCustomizeCardSetting()
+    }
+
+    func writeInsightsToUserDefaults() {
+        writeCustomizeCardSetting()
+
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
+            return
+        }
+
+        // Remove 'customize' from array since it is not per site.
+        removeCustomizeCard()
+
+        let insightTypesValues = InsightType.valuesForTypes(insightsToShow)
+        let currentSiteInsights = [siteID: insightTypesValues]
+
+        // Remove existing dictionary from array, and add the updated one.
+        allSitesInsights = allSitesInsights.filter { $0.keys.first != siteID }
+        allSitesInsights.append(currentSiteInsights)
+
+        UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
+    }
+
+    func loadCustomizeCardSetting() {
         hideCustomizeCard = UserDefaults.standard.bool(forKey: userDefaultsHideCustomizeKey)
 
         if !hideCustomizeCard {
@@ -236,22 +312,19 @@ private extension SiteStatsInsightsTableViewController {
         }
     }
 
-    func writeInsightsToUserDefaults() {
-        // Remove customize from array since it is not per site.
-        // (insightsToShow is not yet per site, but it will be.)
-        insightsToShow = insightsToShow.filter { $0 != .customize }
-
-        let insightTypesInt = insightsToShow.compactMap { $0.rawValue }
-        UserDefaults.standard.set(insightTypesInt, forKey: userDefaultsInsightTypesKey)
-
+    func writeCustomizeCardSetting() {
         UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
+    }
+
+    func removeCustomizeCard() {
+        insightsToShow = insightsToShow.filter { $0 != .customize }
     }
 
     // MARK: - Insights Management
 
     func showAddInsightView() {
-        let controller = AddInsightTableViewController()
-        controller.insightsDelegate = self
+        let controller = AddInsightTableViewController(insightsDelegate: self,
+                                                       insightsShown: insightsToShow.compactMap { $0.statSection })
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -392,10 +465,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func customizeDismissButtonTapped() {
         hideCustomizeCard = true
-        insightsToShow = insightsToShow.filter { $0 != .customize }
-        viewModel?.updateInsightsToShow(insights: insightsToShow)
-        refreshTableView()
-        writeInsightsToUserDefaults()
+        removeCustomizeCard()
+        updateView()
     }
 
     func customizeTryButtonTapped() {
@@ -407,7 +478,13 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func addInsightSelected(_ insight: StatSection) {
-        NSLog("Add Insight selected: \(insight.insightManagementTitle)")
+        guard let insightType = insight.insightType,
+            !insightsToShow.contains(insightType) else {
+                return
+        }
+
+        insightsToShow.append(insightType)
+        updateView()
     }
 
 }
