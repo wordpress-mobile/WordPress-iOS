@@ -206,11 +206,17 @@ private class PostServiceRemoteFactoryMock: PostServiceRemoteFactory {
 }
 
 private class PostServiceRemoteMock: PostServiceRemoteREST {
+    enum StubbedBehavior {
+        case success(RemotePost?)
+        case fail
+    }
+
     var remotePostToReturnOnGetPostWithID: RemotePost?
     var remotePostsToReturnOnSyncPostsOfType = [RemotePost]()
     var remotePostToReturnOnUpdatePost: RemotePost?
     var remotePostToReturnOnCreatePost: RemotePost?
-    var remotePostToReturnOnAutoSave: RemotePost?
+
+    var autoSaveStubbedBehavior = StubbedBehavior.success(nil)
 
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
@@ -243,7 +249,12 @@ private class PostServiceRemoteMock: PostServiceRemoteREST {
     override func autoSave(_ post: RemotePost!, success: ((RemotePost?, String?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             self.invocationsCountOfAutoSave += 1
-            success(self.remotePostToReturnOnAutoSave, nil)
+            switch self.autoSaveStubbedBehavior {
+            case .fail:
+                failure(nil)
+            case .success(let remotePost):
+                success(remotePost, nil)
+            }
         }
     }
 }
