@@ -119,7 +119,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
 
         expect(action).to(equal(.upload))
     }
-    
+
     func testPageNotAutoUploaded() {
         let page = createPage(.draft)
         let action = interactor.autoUploadAction(for: page)
@@ -158,7 +158,7 @@ private extension PostCoordinatorUploadActionUseCaseTests {
         if hasRemote {
             page.postID = NSNumber(value: Int.random(in: 1...Int.max))
         }
-        
+
         return page
     }
 }
