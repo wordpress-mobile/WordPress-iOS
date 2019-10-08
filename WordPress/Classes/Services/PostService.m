@@ -17,6 +17,26 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 const NSUInteger PostServiceDefaultNumberToSync = 40;
 
+typedef NS_ENUM(NSInteger, CreationOption) {
+    /**
+     * Use the post's `status` and create it as is.
+     */
+    CreationOptionAsIs,
+    /**
+     * Ignore the post's status and create it in the server as a `draft`.
+     *
+     * This is useful if we want to create a post in the server with the intention of making
+     * it available for preview. If we create the post as is, and the user has set its `status` to
+     * `.published`, then we would publishing the post even if we just wanted to preview it!
+     *
+     * Another use case of this is to create the post in the background so we can periodically
+     * auto-save it. Again, we'd still want to create it as a `.draft` status.
+     *
+     * @see uploadPost
+     */
+    CreationOptionAsDraft,
+};
+
 @interface PostService ()
 
 @property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
@@ -235,6 +255,20 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
            success:(void (^)(AbstractPost *post))success
            failure:(void (^)(NSError *error))failure
 {
+    [self uploadPost:post
+      creationOption:CreationOptionAsIs
+             success:success
+             failure:failure];
+}
+
+/**
+ * @param creationOption The strategy to use if [remote createPost:] is invoked.
+ */
+- (void)uploadPost:(AbstractPost *)post
+    creationOption:(CreationOption)creationOption
+           success:(void (^)(AbstractPost *post))success
+           failure:(void (^)(NSError *error))failure
+{
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     RemotePost *remotePost = [self remotePostWithPost:post];
 
@@ -291,6 +325,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                    success:successBlock
                    failure:failureBlock];
     } else {
+        if (creationOption == CreationOptionAsDraft) {
+            remotePost.status = PostStatusDraft;
+        }
+
         [remote createPost:remotePost
                    success:successBlock
                    failure:failureBlock];
@@ -336,13 +374,14 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         void (^failureBlock)(NSError *error) = ^(NSError *error) {
             failure(error);
         };
-        
-        BOOL needsUploading = [post isDraft] && [post.postID longLongValue] <= 0;
 
         // The autoSave endpoint returns an exception on posts that do not exist on the server
-        // so we'll create the post instead.
-        if (needsUploading) {
+        // so we'll create the post instead if necessary.
+        BOOL mustBeCreated = ![post hasRemote];
+
+        if (mustBeCreated) {
             [self uploadPost:post
+              creationOption:CreationOptionAsDraft
                      success:^(AbstractPost * _Nonnull post) {
                          success(post, nil);
                      }

@@ -126,6 +126,25 @@ class PostServiceTests: XCTestCase {
         expect(post.remoteStatus).to(equal(.sync))
     }
 
+    /// Local drafts with `.published` status will be created on the server as a `.draft`.
+    func testAutoSavingALocallyPublishedDraftWillCreateThePostAsADraft() {
+        // Arrange
+        let post = PostBuilder(context).published().with(remoteStatus: .local).build()
+        try! context.save()
+
+        // Act
+        remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
+        waitUntil(timeout: 3) { done in
+            self.service.autoSave(post, success: { _, _ in
+                done()
+            }, failure: self.impossibleFailureBlock)
+        }
+
+        // Assert
+        expect(self.remoteMock.invocationsCountOfCreatePost).to(equal(1))
+        expect(post.remoteStatus).to(equal(.sync))
+    }
+
     func testAutoSavingAnExistingPostWillCallTheAutoSaveEndpoint() {
         // Arrange
         let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
