@@ -61,7 +61,7 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Locally scheduled post",
                 post: createPost(.scheduled),
-                title: i18n("Post will be scheduled when your device is back online"),
+                title: i18n("We'll schedule your post when your device is back online."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
@@ -73,25 +73,25 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Post with at least 1 auto upload to publish attempt",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
-                title: i18n("Post couldn't be published. We'll try again later"),
+                title: i18n("We couldn't publish this post, but we'll try again later."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Post with the maximum number of auto upload to publish attempts",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
-                title: i18n("Couldn't perform operation. Post not published"),
+                title: i18n("We couldn't complete this action, and didn't publish this post."),
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with at least 1 auto upload attempt",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 2),
-                title: i18n("Post couldn't be submitted. We'll try again later"),
+                title: i18n("We couldn't complete this action, but we'll try again later."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Draft with the maximum number of auto upload attempts",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
-                title: i18n("Couldn't perform operation. Post not submitted"),
+                title: i18n("We couldn't complete this action."),
                 actionTitle: FailureActionTitles.retry
             ),
         ]
