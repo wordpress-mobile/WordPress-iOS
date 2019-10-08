@@ -41,6 +41,16 @@ enum PostAutoUploadMessages {
                                                          comment: "Title for notice displayed on canceling auto-upload of a scheduled post")
     static let changesWillNotBeSaved = NSLocalizedString("We won't save the latest changes to your draft.",
                                                          comment: "Title for notice displayed on canceling auto-upload of a draft post")
+    static let failedMedia = NSLocalizedString("Couldn't upload media.",
+                                                         comment: "Text displayed if a media couldnt be uploaded.")
+    static let failedMediaForPublish = NSLocalizedString("Couldn't upload media. Post not published",
+                                                         comment: "Text displayed if a media couldn't be uploaded for a published post.")
+    static let failedMediaForPrivate = NSLocalizedString("Couldn't upload media. Private post not published",
+                                                         comment: "Text displayed if a media couldn't be uploaded for a private post.")
+    static let failedMediaForScheduled = NSLocalizedString("Couldn't upload media. Post not scheduled",
+                                                         comment: "Text displayed if a media couldn't be uploaded for a scheduled post.")
+    static let failedMediaForPending = NSLocalizedString("Couldn't upload media. Post not submitted",
+                                                         comment: "Text displayed if a media couldn't be uploaded for a pending post.")
 
     static func cancelMessage(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
@@ -63,9 +73,24 @@ enum PostAutoUploadMessages {
         case .attempted:
             return PostAutoUploadMessages.willAttemptToAutoUpload(for: post.status)
         case .reachedLimit:
-            return PostAutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
+            return post.hasFailedMedia ? PostAutoUploadMessages.failedMedia(for: post.status) : PostAutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
         default:
             return nil
+        }
+    }
+
+    static func failedMedia(for postStatus: BasePost.Status?) -> String {
+        switch postStatus {
+        case .publish:
+            return PostAutoUploadMessages.failedMediaForPublish
+        case .publishPrivate:
+            return PostAutoUploadMessages.failedMediaForPrivate
+        case .scheduled:
+            return PostAutoUploadMessages.failedMediaForScheduled
+        case .pending:
+            return PostAutoUploadMessages.failedMediaForPending
+        default:
+            return PostAutoUploadMessages.failedMedia
         }
     }
 

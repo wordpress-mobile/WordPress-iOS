@@ -382,6 +382,15 @@ class PostCardCellTests: XCTestCase {
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
+    func testFailedMessageWhenMaxNumberOfAttemptsToAutoDraftIsReachedAndPostHasFailedMedia() {
+        let post = PostBuilder(context).with(image: "", status: .failed).with(remoteStatus: .failed).with(autoUploadAttemptsCount: 3).build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal(i18n("Couldn't upload media. Post not published")))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
+    }
+
     func testShowsFailedMessageWhenAttemptToAutoUploadAPrivatePost() {
         let post = PostBuilder(context).private().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 2).confirmedAutoUpload().build()
 
