@@ -108,6 +108,42 @@ class PostServiceTests: XCTestCase {
         expect(postFromDB.status).to(equal(.draft))
     }
 
+    func testAutoSavingALocalDraftWillCallTheCreateEndpointInstead() {
+        // Arrange
+        let post = PostBuilder(context).drafted().with(remoteStatus: .local).build()
+        try! context.save()
+
+        // Act
+        remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
+        waitUntil(timeout: 3) { done in
+            self.service.autoSave(post, success: { _, _ in
+                done()
+            }, failure: self.impossibleFailureBlock)
+        }
+
+        // Assert
+        expect(self.remoteMock.invocationsCountOfCreatePost).to(equal(1))
+        expect(post.remoteStatus).to(equal(.sync))
+    }
+
+    func testAutoSavingAnExistingPostWillCallTheAutoSaveEndpoint() {
+        // Arrange
+        let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
+        try! context.save()
+
+        // Act
+        remoteMock.remotePostToReturnOnAutoSave = createRemotePost(.publish)
+        waitUntil(timeout: 3) { done in
+            self.service.autoSave(post, success: { _, _ in
+                done()
+            }, failure: self.impossibleFailureBlock)
+        }
+
+        // Assert
+        expect(self.remoteMock.invocationsCountOfAutoSave).to(equal(1))
+        expect(post.remoteStatus).to(equal(.autoSaved))
+    }
+
     private func createRemotePost(_ status: BasePost.Status = .draft) -> RemotePost {
         let remotePost = RemotePost(siteID: 1,
                                     status: status.rawValue,
@@ -130,6 +166,11 @@ private class PostServiceRemoteMock: PostServiceRemoteREST {
     var remotePostToReturnOnGetPostWithID: RemotePost?
     var remotePostsToReturnOnSyncPostsOfType = [RemotePost]()
     var remotePostToReturnOnUpdatePost: RemotePost?
+    var remotePostToReturnOnCreatePost: RemotePost?
+    var remotePostToReturnOnAutoSave: RemotePost?
+
+    private(set) var invocationsCountOfCreatePost = 0
+    private(set) var invocationsCountOfAutoSave = 0
 
     override func getPostWithID(_ postID: NSNumber!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
@@ -146,6 +187,20 @@ private class PostServiceRemoteMock: PostServiceRemoteREST {
     override func update(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             success(self.remotePostToReturnOnUpdatePost)
+        }
+    }
+
+    override func createPost(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
+        DispatchQueue.global().async {
+            self.invocationsCountOfCreatePost += 1
+            success(self.remotePostToReturnOnCreatePost)
+        }
+    }
+
+    override func autoSave(_ post: RemotePost!, success: ((RemotePost?, String?) -> Void)!, failure: ((Error?) -> Void)!) {
+        DispatchQueue.global().async {
+            self.invocationsCountOfAutoSave += 1
+            success(self.remotePostToReturnOnAutoSave, nil)
         }
     }
 }

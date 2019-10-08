@@ -338,7 +338,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         };
         
         BOOL needsUploading = [post isDraft] && [post.postID longLongValue] <= 0;
-        
+
+        // The autoSave endpoint returns an exception on posts that do not exist on the server
+        // so we'll create the post instead.
         if (needsUploading) {
             [self uploadPost:post
                      success:^(AbstractPost * _Nonnull post) {
