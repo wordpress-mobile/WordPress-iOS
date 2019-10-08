@@ -340,6 +340,11 @@ typedef NS_ENUM(NSInteger, CreationOption) {
          failure:(void (^)(NSError * _Nullable error))failure
 {
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
+
+    void (^callFailureBlockWithDefaultErrorMessage)(void) = ^{
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." };
+        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
+    };
     
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
         PostServiceRemoteREST *restRemote = (PostServiceRemoteREST*) remote;
@@ -380,6 +385,13 @@ typedef NS_ENUM(NSInteger, CreationOption) {
         BOOL mustBeCreated = ![post hasRemote];
 
         if (mustBeCreated) {
+            // Abort if the status is trashed/deleted. We'd rather not automatically create a
+            // locally trashed post as drafts in the server.
+            if ([post.status isEqualToString:PostStatusTrash] || [post.status isEqualToString:PostStatusDeleted]) {
+                callFailureBlockWithDefaultErrorMessage();
+                return;
+            }
+
             [self uploadPost:post
               creationOption:CreationOptionAsDraft
                      success:^(AbstractPost * _Nonnull post) {
@@ -397,8 +409,7 @@ typedef NS_ENUM(NSInteger, CreationOption) {
                      success(post, nil);
                  } failure:failure];
     } else {
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." };
-        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
+        callFailureBlockWithDefaultErrorMessage();
     }
 }
 

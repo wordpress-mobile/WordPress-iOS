@@ -145,6 +145,27 @@ class PostServiceTests: XCTestCase {
         expect(post.remoteStatus).to(equal(.sync))
     }
 
+    /// Local drafts with `.trash` status will not be automatically created on the server.
+    func testAutoSavingALocallyTrashedPostWillFail() {
+        // Arrange
+        let post = PostBuilder(context).trashed().with(remoteStatus: .local).build()
+        try! context.save()
+
+        // Act
+        var failureBlockCalled = false
+        waitUntil(timeout: 2) { done in
+            self.service.autoSave(post, success: { _, _ in
+                done()
+            }, failure: { _ in
+                failureBlockCalled = true
+                done()
+            })
+        }
+
+        // Assert
+        expect(failureBlockCalled).to(beTrue())
+    }
+
     func testAutoSavingAnExistingPostWillCallTheAutoSaveEndpoint() {
         // Arrange
         let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
