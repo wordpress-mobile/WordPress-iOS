@@ -98,8 +98,8 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     // Store Insights settings for all sites.
     // Used when writing to/reading from User Defaults.
     // A single site's dictionary contains the InsightType values for that site.
-    private var allSitesInsights = [siteInsights]()
-    private typealias siteInsights = [String: [Int]]
+    private var allSitesInsights = [SiteInsights]()
+    private typealias SiteInsights = [String: [Int]]
 
     private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoading)
 
@@ -272,7 +272,7 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         // Get Insights from User Defaults, and extract those for the current site.
-        allSitesInsights = UserDefaults.standard.object(forKey: userDefaultsInsightTypesKey) as? [siteInsights] ?? []
+        allSitesInsights = UserDefaults.standard.object(forKey: userDefaultsInsightTypesKey) as? [SiteInsights] ?? []
         let siteInsights = allSitesInsights.first { $0.keys.first == siteID }
 
         // If no Insights for the current site, use the default Insights.
