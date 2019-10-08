@@ -84,7 +84,7 @@ private extension StatsCellHeader {
             return
         }
 
-        siteStatsInsightsDelegate?.manageInsightSelected?(statSection, sender: sender)
+        siteStatsInsightsDelegate?.manageInsightSelected?(statSection, fromButton: sender)
     }
 
 }

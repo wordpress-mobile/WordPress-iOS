@@ -77,7 +77,7 @@ enum InsightType: Int {
     @objc optional func customizeTryButtonTapped()
     @objc optional func showAddInsight()
     @objc optional func addInsightSelected(_ insight: StatSection)
-    @objc optional func manageInsightSelected(_ insight: StatSection, sender: UIButton)
+    @objc optional func manageInsightSelected(_ insight: StatSection, fromButton: UIButton)
 
 }
 
@@ -503,7 +503,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         updateView()
     }
 
-    func manageInsightSelected(_ insight: StatSection, sender: UIButton) {
+    func manageInsightSelected(_ insight: StatSection, fromButton: UIButton) {
 
         guard let insightType = insight.insightType else {
             DDLogDebug("manageInsightSelected: unknown insightType for statSection: \(insight.title).")
@@ -532,7 +532,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         alert.addCancelActionWithTitle(ManageInsightConstants.cancel)
 
-        alert.popoverPresentationController?.sourceView = sender
+        alert.popoverPresentationController?.sourceView = fromButton
         present(alert, animated: true)
     }
 
