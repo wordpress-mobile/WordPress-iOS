@@ -3,14 +3,14 @@ import Foundation
 
 /// Decides what action should happen for post when it is auto-uploaded.
 final class PostAutoUploadInteractor {
-    enum AutoUploadAction {
+    enum AutoUploadAction: String {
         /// Upload the post as is.
         ///
         /// For example, if the post was published locally, it will be published when the server receives it.
-        case upload
+        case upload = "upload"
         /// Upload a revision to the server.
-        case autoSave
-        case nothing
+        case autoSave = "autoSave"
+        case nothing = "nothing"
     }
 
     enum AutoUploadAttemptState {
