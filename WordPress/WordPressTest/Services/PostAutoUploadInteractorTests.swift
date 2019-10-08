@@ -122,7 +122,9 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
 
     func testPageNotAutoUploaded() {
         let page = createPage(.draft)
+
         let action = interactor.autoUploadAction(for: page)
+
         expect(action).to(equal(.nothing))
     }
 }
