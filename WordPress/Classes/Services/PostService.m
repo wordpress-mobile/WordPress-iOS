@@ -109,7 +109,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
               success:(void (^)(AbstractPost *post))success
               failure:(void (^)(NSError *))failure
 {
-    id<PostServiceRemote> remote = [self.postServiceRemoteFactory remoteForBlog:blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
     [remote getPostWithID:postID
                   success:^(RemotePost *remotePost){
@@ -181,7 +181,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 failure:(PostServiceSyncFailure)failure
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
-    id<PostServiceRemote> remote = [self.postServiceRemoteFactory remoteForBlog:blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:blog];
     
     if (loadedPosts.count > 0) {
         options.offset = @(loadedPosts.count);
@@ -235,7 +235,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
            success:(void (^)(AbstractPost *post))success
            failure:(void (^)(NSError *error))failure
 {
-    id<PostServiceRemote> remote = [self.postServiceRemoteFactory remoteForBlog:post.blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     RemotePost *remotePost = [self remotePostWithPost:post];
 
     post.remoteStatus = AbstractPostRemoteStatusPushing;
@@ -301,7 +301,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
          success:(void (^)(AbstractPost *post, NSString *previewURL))success
          failure:(void (^)(NSError * _Nullable error))failure
 {
-    id<PostServiceRemote> remote = [self.postServiceRemoteFactory remoteForBlog:post.blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
         PostServiceRemoteREST *restRemote = (PostServiceRemoteREST*) remote;
@@ -369,7 +369,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         NSNumber *postID = post.postID;
         if ([postID longLongValue] > 0) {
             RemotePost *remotePost = [self remotePostWithPost:post];
-            id<PostServiceRemote> remote = [self.postServiceRemoteFactory remoteForBlog:post.blog];
+            id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
             [remote deletePost:remotePost success:success failure:failure];
         }
         [self.managedObjectContext deleteObject:post];
@@ -461,7 +461,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     };
     
     RemotePost *remotePost = [self remotePostWithPost:post];
-    id<PostServiceRemote> remote = [self.postServiceRemoteFactory remoteForBlog:post.blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     [remote trashPost:remotePost success:successBlock failure:failureBlock];
 }
 
@@ -542,7 +542,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         remotePost.status = PostStatusDraft;
     }
     
-    id<PostServiceRemote> remote = [self.postServiceRemoteFactory remoteForBlog:post.blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     [remote restorePost:remotePost success:successBlock failure:failureBlock];
 }
 

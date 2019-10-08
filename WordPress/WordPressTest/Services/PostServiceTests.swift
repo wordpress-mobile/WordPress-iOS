@@ -123,7 +123,7 @@ class PostServiceTests: XCTestCase {
 private class PostServiceRemoteFactoryMock: PostServiceRemoteFactory {
     var remoteToReturn: PostServiceRemote?
 
-    override func remoteForBlog(_ blog: Blog) -> PostServiceRemote? {
+    override func forBlog(_ blog: Blog) -> PostServiceRemote? {
         return remoteToReturn
     }
 }

@@ -3,7 +3,7 @@ import Foundation
 import WordPressKit
 
 @objc class PostServiceRemoteFactory: NSObject {
-    @objc func remoteForBlog(_ blog: Blog) -> PostServiceRemote? {
+    @objc func forBlog(_ blog: Blog) -> PostServiceRemote? {
         if blog.supports(.wpComRESTAPI),
             let api = blog.wordPressComRestApi(),
             let dotComID = blog.dotComID {
