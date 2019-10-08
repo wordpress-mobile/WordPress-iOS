@@ -330,12 +330,36 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func moveInsightUp(_ insight: InsightType) {
+        guard canMoveInsightUp(insight) else {
+            return
+        }
+
+        moveInsight(insight, by: -1)
     }
 
     func moveInsightDown(_ insight: InsightType) {
+        guard canMoveInsightDown(insight) else {
+            return
+        }
+
+        moveInsight(insight, by: 1)
     }
 
     func removeInsight(_ insight: InsightType) {
+        insightsToShow = insightsToShow.filter { $0 != insight }
+        updateView()
+    }
+
+    func moveInsight(_ insight: InsightType, by offset: Int) {
+        guard let currentIndex = indexOfInsight(insight) else {
+            return
+        }
+
+        insightsToShow.remove(at: currentIndex)
+        insightsToShow.insert(insight, at: currentIndex + offset)
+        updateView()
+    }
+
     func canMoveInsightUp(_ insight: InsightType) -> Bool {
         let minIndex = hideCustomizeCard ? 0 : 1
 
