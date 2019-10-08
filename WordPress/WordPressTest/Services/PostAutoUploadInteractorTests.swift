@@ -119,6 +119,14 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
 
         expect(action).to(equal(.upload))
     }
+
+    func testPageNotAutoUploaded() {
+        let page = createPage(.draft)
+
+        let action = interactor.autoUploadAction(for: page)
+
+        expect(action).to(equal(.nothing))
+    }
 }
 
 private extension PostCoordinatorUploadActionUseCaseTests {
@@ -141,5 +149,18 @@ private extension PostCoordinatorUploadActionUseCaseTests {
         }
 
         return post
+    }
+
+    func createPage(_ status: BasePost.Status,
+                    remoteStatus: AbstractPostRemoteStatus = .failed,
+                    hasRemote: Bool = false) -> Page {
+        let page = NSEntityDescription.insertNewObject(forEntityName: Page.entityName(), into: context) as! Page
+        page.remoteStatus = remoteStatus
+
+        if hasRemote {
+            page.postID = NSNumber(value: Int.random(in: 1...Int.max))
+        }
+
+        return page
     }
 }
