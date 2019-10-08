@@ -32,6 +32,7 @@
 @dynamic revisions;
 @dynamic confirmedChangesHash;
 @dynamic confirmedChangesTimestamp;
+@dynamic autoUploadAttemptsCount;
 
 @synthesize restorableStatus;
 
