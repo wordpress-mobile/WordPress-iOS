@@ -61,6 +61,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     // (insightsToShow is not yet per site, but it will be.)
     private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
     private var hideCustomizeCard = false
+    private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoading)
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -93,8 +94,11 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         loadInsightsFromUserDefaults()
         initViewModel()
-        displayLoadingViewIfNecessary()
         tableView.estimatedRowHeight = 500
+
+        if !asyncLoadingActivated {
+            displayLoadingViewIfNecessary()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -124,45 +128,70 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
-            if let viewModel = self?.viewModel,
-                viewModel.isFetchingOverview() {
-                    return
+            let asyncLoadingActivated = self?.asyncLoadingActivated ?? false
+            if !asyncLoadingActivated {
+                if let viewModel = self?.viewModel,
+                    viewModel.isFetchingOverview() {
+                        return
+                }
             }
             self?.refreshTableView()
         }
     }
 
     func removeViewModelListeners() {
+        if asyncLoadingActivated {
+            return
+        }
         insightsChangeReceipt = nil
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [CellHeaderRow.self,
-                CustomizeInsightsRow.self,
-                LatestPostSummaryRow.self,
-                TwoColumnStatsRow.self,
-                PostingActivityRow.self,
-                TabbedTotalsStatsRow.self,
-                TopTotalsInsightStatsRow.self,
-                TableFooterRow.self]
+        var rows: [ImmuTableRow.Type] = [CellHeaderRow.self,
+                                         CustomizeInsightsRow.self,
+                                         LatestPostSummaryRow.self,
+                                         TwoColumnStatsRow.self,
+                                         PostingActivityRow.self,
+                                         TabbedTotalsStatsRow.self,
+                                         TopTotalsInsightStatsRow.self,
+                                         TableFooterRow.self]
+        if asyncLoadingActivated {
+            rows.append(contentsOf: [StatsErrorRow.self,
+                                     StatsGhostChartImmutableRow.self,
+                                     StatsGhostTwoColumnImmutableRow.self,
+                                     StatsGhostTopImmutableRow.self,
+                                     StatsGhostTabbedImmutableRow.self,
+                                     StatsGhostPostingActivitiesImmutableRow.self])
+        }
+        return rows
     }
 
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-
-        guard let viewModel = viewModel,
-            viewIsVisible() else {
+        guard let viewModel = viewModel else {
                 return
+        }
+
+        if !asyncLoadingActivated {
+            guard viewIsVisible() else {
+                    return
+            }
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        if viewModel.fetchingFailed() &&
-            !viewModel.containsCachedData() {
-            displayFailureViewIfNecessary()
+        if asyncLoadingActivated {
+            if viewModel.fetchingFailed() {
+                displayFailureViewIfNecessary()
+            }
         } else {
-            hideNoResults()
+            if viewModel.fetchingFailed() &&
+                !viewModel.containsCachedData() {
+                displayFailureViewIfNecessary()
+            } else {
+                hideNoResults()
+            }
         }
 
         refreshControl?.endRefreshing()
@@ -172,6 +201,7 @@ private extension SiteStatsInsightsTableViewController {
         refreshControl?.beginRefreshing()
         clearExpandedRows()
         refreshInsights()
+        hideNoResults()
     }
 
     func applyTableUpdates() {
@@ -246,11 +276,23 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
             return
         }
 
-        updateNoResults(title: NoResultConstants.errorTitle,
-                        subtitle: NoResultConstants.errorSubtitle,
-                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
-                            noResults.delegate = self
-                            noResults.hideImageView()
+        if asyncLoadingActivated {
+            configureAndDisplayNoResults(on: tableView,
+                                         title: NoResultConstants.errorTitle,
+                                         subtitle: NoResultConstants.errorSubtitle,
+                                         buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                                            noResults.delegate = self
+                                            if !noResults.isReachable {
+                                                noResults.resetButtonText()
+                                            }
+            }
+        } else {
+            updateNoResults(title: NoResultConstants.errorTitle,
+                            subtitle: NoResultConstants.errorSubtitle,
+                            buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                                noResults.delegate = self
+                                noResults.hideImageView()
+            }
         }
     }
 
@@ -372,9 +414,13 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
 extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-        updateNoResults(title: NoResultConstants.successTitle,
-                        accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
-                            noResults.hideImageView(false)
+        if asyncLoadingActivated {
+            hideNoResults()
+        } else {
+            updateNoResults(title: NoResultConstants.successTitle,
+                            accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
+                                noResults.hideImageView(false)
+            }
         }
         addViewModelListeners()
         refreshInsights()

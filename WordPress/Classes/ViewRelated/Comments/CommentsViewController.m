@@ -254,54 +254,51 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     return YES;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    NSMutableArray *actions = [NSMutableArray array];
     __typeof(self) __weak weakSelf = self;
+    NSMutableArray *actions = [NSMutableArray array];
     
-    NSParameterAssert(comment);
+    // Trash Action
+    UIContextualAction *trash = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"Trash", @"Trashes a comment") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        [ReachabilityUtils onAvailableInternetConnectionDo:^{
+            [weakSelf deleteComment:comment];
+        }];
+        completionHandler(YES);
+    }];
     
-    UITableViewRowAction *trash = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
-                                                                     title:NSLocalizedString(@"Trash", @"Trashes a comment")
-                                                                   handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                       [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                                                                           [weakSelf deleteComment:comment];
-                                                                       }];
-                                                                   }];
     trash.backgroundColor = [UIColor murielError];
     [actions addObject:trash];
     
     if (comment.isApproved) {
-        UITableViewRowAction *unapprove = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                                             title:NSLocalizedString(@"Unapprove", @"Unapproves a Comment")
-                                                                           handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                               [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                                                                                   [weakSelf unapproveComment:comment];
-                                                                               }];
-                                                                           }];
+
+        // Unapprove Action
+        UIContextualAction *unapprove = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Unapprove", @"Unapproves a Comment") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                [weakSelf unapproveComment:comment];
+            }];
+            completionHandler(YES);
+        }];
         
         unapprove.backgroundColor = [UIColor murielNeutral30];
         [actions addObject:unapprove];
     } else {
-        UITableViewRowAction *approve = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                                           title:NSLocalizedString(@"Approve", @"Approves a Comment")
-                                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                             [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                                                                                 [weakSelf approveComment:comment];
-                                                                             }];
-                                                                         }];
+        // Approve Action
+        UIContextualAction *approve = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Approve", @"Approves a Comment") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                [weakSelf approveComment:comment];
+            }];
+            completionHandler(YES);
+        }];
         
         approve.backgroundColor = [UIColor murielPrimary];
         [actions addObject:approve];
     }
     
-    return actions;
+    UISwipeActionsConfiguration *swipeActions = [UISwipeActionsConfiguration configurationWithActions:actions];
+    swipeActions.performsFirstActionWithFullSwipe = NO;
+    return swipeActions;
 }
 
 - (void)approveComment:(Comment *)comment

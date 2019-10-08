@@ -11,11 +11,6 @@ import enum Alamofire.AFError
 class MediaCoordinator: NSObject {
     @objc static let shared = MediaCoordinator()
 
-    override init() {
-        super.init()
-        addObserverForDeletedFiles()
-    }
-
     private(set) var backgroundContext: NSManagedObjectContext = {
         let context = ContextManager.sharedInstance().newDerivedContext()
         context.automaticallyMergesChangesFromParent = true
@@ -38,6 +33,41 @@ class MediaCoordinator: NSObject {
 
     /// Tracks uploads of media for specific posts
     private var postMediaProgressCoordinators = [AbstractPost: MediaProgressCoordinator]()
+
+    override init() {
+        super.init()
+        addObserverForDeletedFiles()
+    }
+
+    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
+    /// of the existing media for the post.
+    ///
+    /// - Parameters:
+    ///     - post: the post to get the media to upload from.
+    ///     - automatedRetry: true if this call is the result of an automated upload-retry attempt.
+    ///
+    /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
+    ///
+    @discardableResult
+    func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
+        let mediaService = MediaService(managedObjectContext: backgroundContext)
+        let media: [Media]
+        let isPushingAllMedia: Bool
+
+        if automatedRetry {
+            media = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
+            isPushingAllMedia = media.count == post.media.count
+        } else {
+            media = post.media.filter({ $0.remoteStatus == .failed })
+            isPushingAllMedia = true
+        }
+
+        media.forEach { mediaObject in
+            retryMedia(mediaObject, automatedRetry: automatedRetry)
+        }
+
+        return isPushingAllMedia
+    }
 
     /// - returns: The progress coordinator for the specified post. If a coordinator
     ///            does not exist, one will be created.
@@ -163,9 +193,11 @@ class MediaCoordinator: NSObject {
 
     /// Retry the upload of a media object that previously has failed.
     ///
-    /// - Parameter media: the media object to retry the upload
+    /// - Parameters:
+    ///     - media: the media object to retry the upload
+    ///     - automatedRetry: whether the retry was automatically or manually initiated.
     ///
-    func retryMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil) {
+    func retryMedia(_ media: Media, automatedRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .failed else {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
@@ -176,7 +208,7 @@ class MediaCoordinator: NSObject {
         let coordinator = self.coordinator(for: media)
 
         coordinator.track(numberOfItems: 1)
-        let uploadProgress = uploadMedia(media)
+        let uploadProgress = uploadMedia(media, automatedRetry: automatedRetry)
         coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
 
@@ -254,12 +286,14 @@ class MediaCoordinator: NSObject {
                             failure: failure)
     }
 
-    @discardableResult private func uploadMedia(_ media: Media) -> Progress {
+    @discardableResult
+    private func uploadMedia(_ media: Media, automatedRetry: Bool = false) -> Progress {
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
 
         service.uploadMedia(media,
+                            automatedRetry: automatedRetry,
                             progress: &progress,
                             success: {
                                 self.end(media)
@@ -621,16 +655,10 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
 extension MediaCoordinator: Uploader {
     func resume() {
-        let service = MediaService(managedObjectContext: mainContext)
+        let service = MediaService(managedObjectContext: backgroundContext)
 
-        service.getFailedMedia { [weak self] media in
-            guard let self = self else {
-                return
-            }
-
-            media.forEach() {
-                self.retryMedia($0)
-            }
+        service.failedMediaForUpload(automatedRetry: true).forEach() {
+            retryMedia($0, automatedRetry: true)
         }
     }
 }
