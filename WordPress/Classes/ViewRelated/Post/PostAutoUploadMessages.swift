@@ -9,8 +9,6 @@ enum PostAutoUploadMessages {
                                                       comment: "Title of notification displayed when a page has failed to upload.")
     static let postFailedToUpload = NSLocalizedString("Post failed to upload",
                                                       comment: "Title of notification displayed when a post has failed to upload.")
-    static let changesWillBeUploaded = NSLocalizedString("Changes will be uploaded next time your device is online",
-                                                         comment: "Text displayed in notice after the app fails to upload a post.")
     static let willAttemptToPublishLater = NSLocalizedString("We couldn't publish this post, but we'll try again later.",
                                                        comment: "Text displayed in notice after the app fails to upload a post, it will attempt to upload it later.")
     static let willNotAttemptToPublishLater = NSLocalizedString("We couldn't complete this action, and didn't publish this post.",

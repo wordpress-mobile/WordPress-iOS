@@ -43,7 +43,7 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Draft with confirmed local changes",
                 post: createPost(.draft, hasRemote: true),
-                title: PostAutoUploadMessages.changesWillBeUploaded,
+                title: PostAutoUploadMessages.draftWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
@@ -55,7 +55,7 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Published post with confirmed local changes",
                 post: createPost(.publish, hasRemote: true),
-                title: PostAutoUploadMessages.changesWillBeUploaded,
+                title: PostAutoUploadMessages.postWillBePublished,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
@@ -67,7 +67,7 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Scheduled post with confirmed local changes",
                 post: createPost(.scheduled, hasRemote: true),
-                title: i18n("Changes will be uploaded next time your device is online"),
+                title: i18n("We'll schedule your post when your device is back online."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
