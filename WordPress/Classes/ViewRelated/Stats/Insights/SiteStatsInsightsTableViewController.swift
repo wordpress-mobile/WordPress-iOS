@@ -33,6 +33,35 @@ enum InsightType: Int {
         return types.compactMap { $0.rawValue }
     }
 
+    var statSection: StatSection? {
+        switch self {
+        case .latestPostSummary:
+            return .insightsLatestPostSummary
+        case .allTimeStats:
+            return .insightsAllTime
+        case .followersTotals:
+            return .insightsFollowerTotals
+        case .mostPopularTime:
+            return .insightsMostPopularTime
+        case .tagsAndCategories:
+            return .insightsTagsAndCategories
+        case .annualSiteStats:
+            return .insightsAnnualSiteStats
+        case .comments:
+            return .insightsCommentsPosts
+        case .followers:
+            return .insightsFollowersEmail
+        case .todaysStats:
+            return .insightsTodaysStats
+        case .postingActivity:
+            return .insightsPostingActivity
+        case .publicize:
+            return .insightsPublicize
+        default:
+            return nil
+        }
+    }
+
 }
 
 @objc protocol SiteStatsInsightsDelegate {
@@ -294,8 +323,8 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Insights Management
 
     func showAddInsightView() {
-        let controller = AddInsightTableViewController()
-        controller.insightsDelegate = self
+        let controller = AddInsightTableViewController(insightsDelegate: self,
+                                                       insightsShown: insightsToShow.compactMap { $0.statSection })
         navigationController?.pushViewController(controller, animated: true)
     }
 
