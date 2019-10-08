@@ -9,6 +9,10 @@ class PostServiceTests: XCTestCase {
     private var service: PostService!
     private var context: NSManagedObjectContext!
 
+    private let impossibleFailureBlock: (Error?) -> Void = { _ in
+        assertionFailure("This shouldn't happen.")
+    }
+
     override func setUp() {
         super.setUp()
 
@@ -41,9 +45,7 @@ class PostServiceTests: XCTestCase {
             self.service.getPostWithID(123, for: blog, success: { postFromAPI in
                 post = postFromAPI
                 done()
-            }) { _ in
-                assertionFailure("This shouldn't happen.")
-            }
+            }, failure: self.impossibleFailureBlock)
         }
 
         // Assert
@@ -65,9 +67,7 @@ class PostServiceTests: XCTestCase {
             self.service.syncPosts(ofType: .any, for: blog, success: { postsFromAPI in
                 posts = postsFromAPI
                 done()
-            }) { _ in
-                assertionFailure("This shouldn't happen.")
-            }
+            }, failure: self.impossibleFailureBlock)
         }
 
         // Assert
@@ -95,9 +95,7 @@ class PostServiceTests: XCTestCase {
             self.service.uploadPost(post, success: { aPost in
                 postFromAPI = aPost
                 done()
-            }) { _ in
-                assertionFailure("This shouldn't happen.")
-            }
+            }, failure: self.impossibleFailureBlock)
         }
 
         // Assert
