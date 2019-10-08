@@ -8,6 +8,12 @@
 
 @end
 
+@interface NSManagedObjectContext (Fetch)
+
+- (NSArray *)fetch:(NSString *)entityName withPredicate:(NSString *)predicate arguments:(NSArray *)arguments;
+
+@end
+
 @implementation CoreDataMigrationTests
 
 - (void)setUp {
@@ -1061,6 +1067,121 @@
     XCTAssertNotNil(ps);
 }
 
+/// Test that when migrating from 90 to 91, the values of Posts/Pages' `status` property will
+/// be copied over to their `statusAfterSync` property.
+- (void)testMigrationFrom90To91WillCopyStatusValuesToStatusAfterSync
+{
+    // Arrange
+    NSURL *model90Url = [self urlForModelName:@"WordPress 90" inDirectory:nil];
+    NSURL *model91Url = [self urlForModelName:@"WordPress 91" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress90.sqlite"];
+
+    // Load a Model 90 Stack
+    NSManagedObjectModel *model90 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model90Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model90];
+
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption       : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption : @(YES)
+    };
+
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+    XCTAssertNil(error, @"Error while loading the PSC for Model 90");
+    XCTAssertNotNil(ps);
+
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+
+    NSNumber *blog1ID = @(987);
+    NSNumber *blog2ID = @(4810);
+    NSNumber *blog3ID = @(76);
+    NSManagedObject *blog1 = [self insertDummyBlogInContext:context blogID:blog1ID];
+    NSManagedObject *blog2 = [self insertDummyBlogInContext:context blogID:blog2ID];
+    NSManagedObject *blog3 = [self insertDummyBlogInContext:context blogID:blog3ID];
+
+    // Insert posts
+    NSManagedObject *draftPost = [self insertDummyPostInContext:context blog:blog1];
+    [draftPost setValue:@"draft" forKey:@"status"];
+    NSManagedObject *publishedPost = [self insertDummyPostInContext:context blog:blog2];
+    [publishedPost setValue:@"publish" forKey:@"status"];
+    NSManagedObject *scheduledPost = [self insertDummyPostInContext:context blog:blog2];
+    [scheduledPost setValue:@"future" forKey:@"status"];
+
+    // Insert pages
+    NSManagedObject *draftPage = [self insertDummyPageInContext:context blog:blog2];
+    [draftPage setValue:@"draft" forKey:@"status"];
+    NSManagedObject *publishedPage = [self insertDummyPageInContext:context blog:blog1];
+    [publishedPage setValue:@"publish" forKey:@"status"];
+    NSManagedObject *scheduledPage = [self insertDummyPageInContext:context blog:blog2];
+    [scheduledPage setValue:@"future" forKey:@"status"];
+
+    // Insert post with null status
+    NSManagedObject *unknownPost = [self insertDummyPostInContext:context blog:blog3];
+    [unknownPost setValue:nil forKey:@"status"];
+
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+
+    // Cleanup
+    psc = nil;
+
+    // Act
+    // Migrate to Model 91
+    NSManagedObjectModel *model91 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model91Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model91
+                                                orderedModelNames:@[@"WordPress 90", @"WordPress 91"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertNil(error);
+    XCTAssertTrue(migrateResult);
+
+    // Load a Model 91 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model91];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    // Assert
+    NSManagedObject *fetchedBlog1 = [context fetch:@"Blog" withPredicate:@"blogID = %i" arguments:@[blog1ID]].firstObject;
+    XCTAssertNotNil(fetchedBlog1);
+    NSSet<NSManagedObject *> *blog1Posts = [fetchedBlog1 valueForKey:@"posts"];
+    XCTAssertEqual(blog1Posts.count, 2);
+
+    NSManagedObject *fetchedBlog2 = [context fetch:@"Blog" withPredicate:@"blogID = %i" arguments:@[blog2ID]].firstObject;
+    XCTAssertNotNil(fetchedBlog2);
+    NSSet<NSManagedObject *> *blog2Posts = [fetchedBlog2 valueForKey:@"posts"];
+    XCTAssertEqual(blog2Posts.count, 4);
+
+    for (NSManagedObject *post in [blog1Posts setByAddingObjectsFromSet:blog2Posts]) {
+        XCTAssertNotNil([post valueForKey:@"status"]);
+        XCTAssertNotNil([post valueForKey:@"statusAfterSync"]);
+        XCTAssertEqual([post valueForKey:@"status"], [post valueForKey:@"statusAfterSync"]);
+    }
+
+    // Assert blog3 which has a post with null status
+    NSManagedObject *fetchedBlog3 = [context fetch:@"Blog" withPredicate:@"blogID = %i" arguments:@[blog3ID]].firstObject;
+    XCTAssertNotNil(fetchedBlog3);
+    NSSet<NSManagedObject *> *blog3Posts = [fetchedBlog3 valueForKey:@"posts"];
+    XCTAssertEqual(blog3Posts.count, 1);
+    XCTAssertNil([blog3Posts.anyObject valueForKey:@"status"]);
+    XCTAssertNil([blog3Posts.anyObject valueForKey:@"statusAfterSync"]);
+}
+
 #pragma mark - Private Helpers
 
 // Returns the URL for a model file with the given name in the given directory.
@@ -1106,14 +1227,28 @@
 {
     // Insert a dummy blog with all of the required properties set
     NSManagedObject *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
-    
+
     [blog setValue:@(123) forKey:@"blogID"];
     [blog setValue:@(false) forKey:@"geolocationEnabled"];
     [blog setValue:@(false) forKey:@"hasOlderPosts"];
     [blog setValue:@(false) forKey:@"visible"];
     [blog setValue:@"www.wordpress.com" forKey:@"url"];
     [blog setValue:@"www.wordpress.com" forKey:@"xmlrpc"];
-    
+
+    return blog;
+}
+
+/// Insert a `Blog` entity with required values set.
+///
+/// This is validated to be compatible with model versions from 90 and up.
+- (NSManagedObject *)insertDummyBlogInContext:(NSManagedObjectContext *)context blogID:(NSNumber *)blogID
+{
+    NSManagedObject *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+
+    [blog setValue:blogID forKey:@"blogID"];
+    [blog setValue:@"https://example.com" forKey:@"url"];
+    [blog setValue:@"https://example.com/xmlrpc.php" forKey:@"xmlrpc"];
+
     return blog;
 }
 
@@ -1151,10 +1286,20 @@
 
 - (NSManagedObject *)insertDummyPostInContext:(NSManagedObjectContext *)context
 {
+    return [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:context];
+}
+
+- (NSManagedObject *)insertDummyPostInContext:(NSManagedObjectContext *)context blog:(NSManagedObject *)blog
+{
     NSManagedObject *post = [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:context];
+    [post setValue:blog forKey:@"blog"];
+    return post;
+}
 
-
-
+- (NSManagedObject *)insertDummyPageInContext:(NSManagedObjectContext *)context blog:(NSManagedObject *)blog
+{
+    NSManagedObject *post = [NSEntityDescription insertNewObjectForEntityForName:@"Page" inManagedObjectContext:context];
+    [post setValue:blog forKey:@"blog"];
     return post;
 }
 
@@ -1187,6 +1332,26 @@
     for (NSEntityDescription *entity in model.entities) {
         entity.managedObjectClassName = nil;
     }
+}
+
+@end
+
+@implementation NSManagedObjectContext (Fetch)
+
+- (NSArray *)fetch:(NSString *)entityName withPredicate:(NSString *)predicate arguments:(NSArray *)arguments
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:predicate argumentArray:arguments];
+
+    NSError *error = nil;
+    NSArray *result = [self executeFetchRequest:request error:&error];
+
+    if (error != nil) {
+        NSLog(@"Fetch request returned error: %@", error);
+    }
+    NSCAssert(error == nil, @"Failed to execute fetch request.");
+
+    return result;
 }
 
 @end

@@ -102,6 +102,11 @@ class PostBuilder {
         return self
     }
 
+    func with(statusAfterSync: BasePost.Status?) -> PostBuilder {
+        post.statusAfterSync = statusAfterSync
+        return self
+    }
+
     func with(image: String, status: MediaRemoteStatus? = nil) -> PostBuilder {
         guard let context = post.managedObjectContext else {
             return self
