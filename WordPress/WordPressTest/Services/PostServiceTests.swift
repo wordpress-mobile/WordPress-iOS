@@ -187,6 +187,27 @@ class PostServiceTests: XCTestCase {
         expect(post.remoteStatus).to(equal(.autoSaved))
     }
 
+    func testAnAutoSaveFailureWillSetTheRemoteStatusToFailed() {
+        // Arrange
+        let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
+        try! context.save()
+
+        remoteMock.autoSaveStubbedBehavior = .fail
+
+        // Act
+        waitUntil(timeout: 2) { done in
+            self.service.autoSave(post, success: { _, _ in
+                done()
+            }, failure: { _ in
+                done()
+            })
+        }
+
+        // Assert
+        expect(self.remoteMock.invocationsCountOfAutoSave).to(equal(1))
+        expect(post.remoteStatus).to(equal(.failed))
+    }
+
     private func createRemotePost(_ status: BasePost.Status = .draft) -> RemotePost {
         let remotePost = RemotePost(siteID: 1,
                                     status: status.rawValue,
@@ -249,6 +270,7 @@ private class PostServiceRemoteMock: PostServiceRemoteREST {
     override func autoSave(_ post: RemotePost!, success: ((RemotePost?, String?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             self.invocationsCountOfAutoSave += 1
+
             switch self.autoSaveStubbedBehavior {
             case .fail:
                 failure(nil)

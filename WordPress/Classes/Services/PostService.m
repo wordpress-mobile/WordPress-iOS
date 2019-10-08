@@ -341,11 +341,10 @@ typedef NS_ENUM(NSInteger, CreationOption) {
 {
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
 
-    void (^callFailureBlockWithDefaultErrorMessage)(void) = ^{
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." };
-        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
-    };
-    
+    NSError *defaultError = [NSError errorWithDomain:PostServiceErrorDomain
+                                                code:0
+                                            userInfo:@{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." }];
+
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
         PostServiceRemoteREST *restRemote = (PostServiceRemoteREST*) remote;
         RemotePost *remotePost = [self remotePostWithPost:post];
@@ -377,7 +376,14 @@ typedef NS_ENUM(NSInteger, CreationOption) {
         };
         
         void (^failureBlock)(NSError *error) = ^(NSError *error) {
-            failure(error);
+            [self.managedObjectContext performBlock:^{
+                AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+                if (postInContext) {
+                    postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
+                }
+
+                failure(error);
+            }];
         };
 
         // The autoSave endpoint returns an exception on posts that do not exist on the server
@@ -388,7 +394,7 @@ typedef NS_ENUM(NSInteger, CreationOption) {
             // Abort if the status is trashed/deleted. We'd rather not automatically create a
             // locally trashed post as drafts in the server.
             if ([post.status isEqualToString:PostStatusTrash] || [post.status isEqualToString:PostStatusDeleted]) {
-                callFailureBlockWithDefaultErrorMessage();
+                failureBlock(defaultError);
                 return;
             }
 
@@ -409,7 +415,7 @@ typedef NS_ENUM(NSInteger, CreationOption) {
                      success(post, nil);
                  } failure:failure];
     } else {
-        callFailureBlockWithDefaultErrorMessage();
+        failure(defaultError);
     }
 }
 
