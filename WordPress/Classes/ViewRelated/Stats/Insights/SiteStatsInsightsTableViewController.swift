@@ -336,6 +336,28 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func removeInsight(_ insight: InsightType) {
+    func canMoveInsightUp(_ insight: InsightType) -> Bool {
+        let minIndex = hideCustomizeCard ? 0 : 1
+
+        guard let currentIndex = indexOfInsight(insight),
+            (currentIndex - 1) >= minIndex else {
+                return false
+        }
+
+        return true
+    }
+
+    func canMoveInsightDown(_ insight: InsightType) -> Bool {
+        guard let currentIndex = indexOfInsight(insight),
+            (currentIndex + 1) < insightsToShow.endIndex else {
+                return false
+        }
+
+        return true
+    }
+
+    func indexOfInsight(_ insight: InsightType) -> Int? {
+        return insightsToShow.index(of: insight)
     }
 
     enum ManageInsightConstants {
@@ -344,6 +366,7 @@ private extension SiteStatsInsightsTableViewController {
         static let remove = NSLocalizedString("Remove from insights", comment: "Option to remove Insight from view.")
         static let cancel = NSLocalizedString("Cancel", comment: "Cancel Insight management action sheet.")
     }
+
 }
 
 // MARK: - SiteStatsInsightsDelegate Methods
@@ -467,16 +490,20 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
                                       message: nil,
                                       preferredStyle: .actionSheet)
 
-        alert.addDefaultActionWithTitle(ManageInsightConstants.moveUp) { _ in
-            self.moveInsightUp(insightType)
+        if canMoveInsightUp(insightType) {
+            alert.addDefaultActionWithTitle(ManageInsightConstants.moveUp) { [weak self] _ in
+                self?.moveInsightUp(insightType)
+            }
         }
 
-        alert.addDefaultActionWithTitle(ManageInsightConstants.moveDown) { _ in
-            self.moveInsightDown(insightType)
+        if canMoveInsightDown(insightType) {
+            alert.addDefaultActionWithTitle(ManageInsightConstants.moveDown) { [weak self] _ in
+                self?.moveInsightDown(insightType)
+            }
         }
 
-        alert.addDefaultActionWithTitle(ManageInsightConstants.remove) { _ in
-            self.removeInsight(insightType)
+        alert.addDefaultActionWithTitle(ManageInsightConstants.remove) { [weak self] _ in
+            self?.removeInsight(insightType)
         }
 
         alert.addCancelActionWithTitle(ManageInsightConstants.cancel)

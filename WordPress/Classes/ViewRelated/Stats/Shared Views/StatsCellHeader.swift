@@ -71,7 +71,7 @@ private extension StatsCellHeader {
         }
 
         manageInsightButton.isHidden = false
-        manageInsightButton.tintColor = Style.organizeInsightsButtonTintColor
+        manageInsightButton.tintColor = Style.manageInsightsButtonTintColor
         manageInsightButton.setImage(Style.imageForGridiconType(.ellipsis, withTint: .darkGrey), for: .normal)
         manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Action button to display manage insight options.")
     }
