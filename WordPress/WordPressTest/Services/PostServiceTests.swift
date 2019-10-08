@@ -113,8 +113,9 @@ class PostServiceTests: XCTestCase {
         let post = PostBuilder(context).drafted().with(remoteStatus: .local).build()
         try! context.save()
 
-        // Act
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
+
+        // Act
         waitUntil(timeout: 3) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
@@ -132,8 +133,9 @@ class PostServiceTests: XCTestCase {
         let post = PostBuilder(context).published().with(remoteStatus: .local).build()
         try! context.save()
 
-        // Act
         remoteMock.remotePostToReturnOnCreatePost = createRemotePost(.draft)
+
+        // Act
         waitUntil(timeout: 3) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
@@ -171,8 +173,9 @@ class PostServiceTests: XCTestCase {
         let post = PostBuilder(context).published().withRemote().with(remoteStatus: .sync).build()
         try! context.save()
 
+        remoteMock.autoSaveStubbedBehavior = .success(createRemotePost(.publish))
+
         // Act
-        remoteMock.remotePostToReturnOnAutoSave = createRemotePost(.publish)
         waitUntil(timeout: 3) { done in
             self.service.autoSave(post, success: { _, _ in
                 done()
