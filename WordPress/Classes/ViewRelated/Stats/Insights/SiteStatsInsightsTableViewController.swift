@@ -306,15 +306,14 @@ private extension SiteStatsInsightsTableViewController {
         allSitesInsights.append(currentSiteInsights)
 
         UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
+
+        // Add back 'customize'.
+        addCustomizeCard()
     }
 
     func loadCustomizeCardSetting() {
         hideCustomizeCard = UserDefaults.standard.bool(forKey: userDefaultsHideCustomizeKey)
-
-        if !hideCustomizeCard {
-            // Insert customize at the beginning of the array so it is displayed first.
-            insightsToShow.insert(.customize, at: 0)
-        }
+        addCustomizeCard()
     }
 
     func writeCustomizeCardSetting() {
@@ -323,6 +322,13 @@ private extension SiteStatsInsightsTableViewController {
 
     func removeCustomizeCard() {
         insightsToShow = insightsToShow.filter { $0 != .customize }
+    }
+
+    func addCustomizeCard() {
+        if !hideCustomizeCard && !insightsToShow.contains(.customize) {
+            // Insert customize at the beginning of the array so it is displayed first.
+            insightsToShow.insert(.customize, at: 0)
+        }
     }
 
     // MARK: - Insights Management
