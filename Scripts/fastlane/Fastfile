@@ -1,6 +1,15 @@
 default_platform(:ios)
 fastlane_require 'dotenv'
 
+# Use this instead of getting values from ENV directly
+# It will throw an error if the requested value is missing
+def get_required_env(key)
+  unless ENV.key?(key)
+    UI.user_error!("Environment variable '#{key}' is not set. Have you setup env/user.env correctly?")
+  end
+  ENV[key]
+end
+
 before_all do
   # Check that the env files exist
   UI.user_error!("env/user.env not found: Please copy env/user.env-example to env/user.env and fill in the values") unless File.file?('env/user.env')
@@ -204,14 +213,14 @@ import "./ScreenshotFastfile"
       clean: true,
       output_directory: "../build/",
       derived_data_path: "../derived-data/internal/",
-      export_team_id: ENV["INT_EXPORT_TEAM_ID"],
+      export_team_id: get_required_env("INT_EXPORT_TEAM_ID"),
       export_options: { method: "enterprise" })
 
     sh("mv ../../build/WordPress.ipa \"../../build/WordPress Internal.ipa\"")
 
     hockey(
-        api_token: ENV["HOCKEY_API_TOKEN"],        
-        public_identifier: ENV["HOCKEY_PUBLIC_ID"],
+        api_token: get_required_env("HOCKEY_API_TOKEN"),        
+        public_identifier: get_required_env("HOCKEY_PUBLIC_ID"),
         notify: "0",
         status: "1",
         ipa: "../build/WordPress Internal.ipa",
@@ -222,7 +231,7 @@ import "./ScreenshotFastfile"
     dSYM_PATH = File.dirname(File.dirname(Dir.pwd)) + "/build/WordPress.app.dSYM.zip"
 
     sentry_upload_dsym(
-      auth_token: ENV["SENTRY_AUTH_TOKEN"],
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
       org_slug: 'a8c',
       project_slug: 'wordpress-ios',
       dsym_path: dSYM_PATH,
@@ -251,7 +260,7 @@ import "./ScreenshotFastfile"
 
     gym(scheme: "WordPress", workspace: "../WordPress.xcworkspace",
       clean: true,
-      export_team_id: ENV["EXT_EXPORT_TEAM_ID"], 
+      export_team_id: get_required_env("EXT_EXPORT_TEAM_ID"), 
       derived_data_path: "../derived-data/itc/",
       export_options: { method: "app-store" }
     )
@@ -266,7 +275,7 @@ import "./ScreenshotFastfile"
 
     sentry_upload_dsym(
       dsym_path: dSYM_PATH,
-      auth_token: ENV["SENTRY_AUTH_TOKEN"],
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
       org_slug: 'a8c',
       project_slug: 'wordpress-ios',
     )
@@ -280,7 +289,7 @@ import "./ScreenshotFastfile"
   private_lane :internal_code_signing do |options|
     match(
       type: "enterprise",
-      team_id: ENV["INT_EXPORT_TEAM_ID"],
+      team_id: get_required_env("INT_EXPORT_TEAM_ID"),
       readonly: options[:readonly] || is_ci,
       app_identifier: ["org.wordpress.internal",
                        "org.wordpress.internal.WordPressShare",
@@ -293,7 +302,7 @@ import "./ScreenshotFastfile"
   private_lane :appstore_code_signing do |options|
     match(
       type: "appstore",
-      team_id: ENV["EXT_EXPORT_TEAM_ID"],
+      team_id: get_required_env("EXT_EXPORT_TEAM_ID"),
       readonly: options[:readonly] || is_ci,
       app_identifier: ["org.wordpress",
                        "org.wordpress.WordPressShare",
