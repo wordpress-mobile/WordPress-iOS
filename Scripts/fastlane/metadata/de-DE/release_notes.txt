@@ -1,6 +1,3 @@
-* Inaktiv bedeutet inaktiv: Wenn du die App nicht verwendest, macht sie weniger und verbessert die Performance deines Geräts.
-* Wurde auf deiner Websiteliste manchmal die gleiche Website mehrmals angezeigt? Wir haben das behoben.
-* Verwalte deine Benachrichtigungseinstellungen über den Bildschirm „Benachrichtigungen“ (das ergibt Sinn, oder?).
-* Das angezeigte Datum und die Zeitzone deiner Website sind jetzt perfekt synchronisiert.
-* Profitiere von flüssigerem, stabilerem Laden von Beitragsvorschauen.
-
+* Nach einer Reihe von Verbesserungen ist der Block-Editor schneller und arbeitet reibungsloser in der App.
+* Einige von euch hatten Probleme mit dem dunklen Modus auf dem iPad; wir haben das Problem gelöst (Adios, ungebetene Blendung!).
+* Deine Website-Besucher lieben Beiträge mit Medien, deshalb haben wir die Möglichkeit geschaffen, sie stabiler zu gestalten.

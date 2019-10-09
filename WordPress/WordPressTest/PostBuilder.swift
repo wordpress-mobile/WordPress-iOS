@@ -12,6 +12,19 @@ class PostBuilder {
         post.blog = BlogBuilder(context).build()
     }
 
+    private static func buildPost(context: NSManagedObjectContext) -> Post {
+        let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
+        blog.xmlrpc = "http://example.com/xmlrpc.php"
+        blog.url = "http://example.com"
+        blog.username = "test"
+        blog.password = "test"
+
+        let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
+        post.blog = blog
+
+        return post
+    }
+
     func published() -> PostBuilder {
         post.status = .publish
         return self
@@ -117,6 +130,7 @@ class PostBuilder {
         }
         media.localURL = image
         media.localThumbnailURL = "thumb-\(image)"
+        media.blog = post.blog
 
         if let status = status {
             media.remoteStatus = status
@@ -129,6 +143,9 @@ class PostBuilder {
     }
 
     func with(media: [Media]) -> PostBuilder {
+        for item in media {
+             item.blog = post.blog
+        }
         post.media = Set(media)
 
         return self

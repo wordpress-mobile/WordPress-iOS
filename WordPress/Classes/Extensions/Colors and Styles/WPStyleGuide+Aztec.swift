@@ -21,7 +21,7 @@ extension WPStyleGuide {
 
     static var aztecFormatPickerBackgroundColor: UIColor {
         get {
-            return (UIDevice.isPad()) ? .white : .neutral(.shade0)
+            return (UIDevice.isPad()) ? .basicBackground : .neutral(.shade0)
         }
     }
 

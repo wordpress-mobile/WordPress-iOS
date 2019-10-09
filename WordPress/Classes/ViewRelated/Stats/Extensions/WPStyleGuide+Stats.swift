@@ -217,10 +217,11 @@ extension WPStyleGuide {
         static let postTitleFont = WPFontManager.notoBoldFont(ofSize: 17.0)
 
         static let customizeInsightsTitleFont = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
-
         static let customizeInsightsButtonTextColor = UIColor.primary
         static let customizeInsightsDismissButtonFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let customizeInsightsTryButtonFont = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .medium)
+
+        static let manageInsightsButtonTintColor = UIColor.textSubtle
 
         static let positiveColor = UIColor.success
         static let negativeColor = UIColor.error
@@ -238,7 +239,7 @@ extension WPStyleGuide {
 
         static var mapBackground: UIColor {
             if #available(iOS 13, *) {
-                return .systemGray5
+                return .systemGray4
             }
             return .neutral(.shade10)
         }

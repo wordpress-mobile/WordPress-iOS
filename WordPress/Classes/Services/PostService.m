@@ -670,8 +670,8 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
             }
         }
     }
-    
-    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     if (completion) {
         completion(posts);
     }

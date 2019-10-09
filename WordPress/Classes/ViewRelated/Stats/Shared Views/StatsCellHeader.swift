@@ -11,6 +11,8 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
     @IBOutlet weak var stackViewHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
+    private var statSection: StatSection?
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var defaultStackViewTopConstraint: CGFloat = 0
     private var defaultStackViewHeightConstraint: CGFloat = 0
     private var adjustHeightForPostStats = false
@@ -23,9 +25,11 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
         defaultStackViewHeightConstraint = stackViewHeightConstraint.constant
     }
 
-    func configure(withTitle title: String, adjustHeightForPostStats: Bool = false) {
-        headerLabel.text = title
-        self.adjustHeightForPostStats = adjustHeightForPostStats
+    func configure(statSection: StatSection? = nil, siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil) {
+        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.statSection = statSection
+        headerLabel.text = statSection?.title ?? ""
+        self.adjustHeightForPostStats = (statSection == .postStatsGraph)
         prepareForVoiceOver()
         applyStyles()
     }
@@ -58,23 +62,29 @@ private extension StatsCellHeader {
     }
 
     func configureManageInsightButton() {
-        // TODO: remove this when Manage Insights implemented
-        manageInsightButton.isHidden = true
 
-        manageInsightButton.tintColor = Style.ImageTintColor.grey.styleGuideColor
-        manageInsightButton.setImage(Style.imageForGridiconType(.ellipsis), for: .normal)
+        guard FeatureFlag.statsInsightsManagement.enabled,
+            let statSection = statSection,
+            StatSection.allInsights.contains(statSection) else {
+                manageInsightButton.isHidden = true
+                return
+        }
+
+        manageInsightButton.isHidden = false
+        manageInsightButton.tintColor = Style.manageInsightsButtonTintColor
+        manageInsightButton.setImage(Style.imageForGridiconType(.ellipsis, withTint: .darkGrey), for: .normal)
         manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Action button to display manage insight options.")
     }
 
     // MARK: - Button Action
 
     @IBAction func manageInsightButtonPressed(_ sender: UIButton) {
-        // TODO: remove alert when Manage Insights is added
-        let alertController =  UIAlertController(title: "Manage Insight options will be shown here",
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
+        guard let statSection = statSection else {
+            DDLogDebug("manageInsightButtonPressed: unknown statSection.")
+            return
+        }
+
+        siteStatsInsightsDelegate?.manageInsightSelected?(statSection, fromButton: sender)
     }
 
 }

@@ -1095,7 +1095,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
 {
-    [self presentWebViewControllerWithURL:URL];
     return NO;
 }
 
@@ -1121,6 +1120,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         [self presentViewController:controller animated:YES completion:nil];
     }
 }
+
+- (void)interactWithURL:(NSURL *) URL {
+      [self presentWebViewControllerWithURL:URL];
+  }
 
 - (BOOL)richContentViewShouldUpdateLayoutForAttachments:(WPRichContentView *)richContentView
 {

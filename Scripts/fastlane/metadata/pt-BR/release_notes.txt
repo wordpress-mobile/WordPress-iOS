@@ -1,0 +1,3 @@
+* Após melhorias recentes, o editor de blocos está mais rápido e com melhor desempenho no aplicativo.
+* Alguns usuários tiveram problema com o modo escuro em iPads. Já corrigimos!
+* Seus visitantes adoram posts com arquivos de mídia. Então melhoramos a experiência de criação desse tipo de conteúdo.

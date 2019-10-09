@@ -102,6 +102,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         PushNotificationsManager.shared.deletePendingLocalNotifications()
 
+        if #available(iOS 13, *) {
+            startObservingAppleIDCredentialRevoked()
+        }
+
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         return true
     }
@@ -145,6 +149,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
+
+        // This is done here so the check is done on app launch and app switching.
+        if #available(iOS 13, *) {
+            checkAppleIDCredentialState()
+        }
     }
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -493,9 +502,7 @@ extension WordPressAppDelegate {
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.primaryTitleColor = .white
         appearance.primaryNormalBackgroundColor = .primaryButtonBackground
-        appearance.primaryNormalBorderColor = .primaryButtonBorder
         appearance.primaryHighlightBackgroundColor = .primaryButtonDownBackground
-        appearance.primaryHighlightBorderColor = .primaryButtonDownBorder
 
         appearance.secondaryTitleColor = .text
         appearance.secondaryNormalBackgroundColor = .secondaryButtonBackground
@@ -691,12 +698,20 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupShareExtensionToken()
             configureNotificationExtension()
+
+            if #available(iOS 13, *) {
+                startObservingAppleIDCredentialRevoked()
+            }
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             showWelcomeScreenIfNeeded(animated: false)
+
+            if #available(iOS 13, *) {
+                stopObservingAppleIDCredentialRevoked()
+            }
         }
 
         toggleExtraDebuggingIfNeeded()
@@ -835,4 +850,84 @@ extension WordPressAppDelegate {
 
         SVProgressHUD.setFont(WPStyleGuide.fontForTextStyle(UIFont.TextStyle.headline, maximumPointSize: maximumPointSize))
     }
+}
+
+// MARK: - Apple Account Handling
+
+@available(iOS 13.0, *)
+extension WordPressAppDelegate {
+
+    func checkAppleIDCredentialState() {
+
+        // If not logged in, remove the Apple User ID from the keychain, if it exists.
+        guard AccountHelper.isLoggedIn else {
+            removeAppleIDFromKeychain()
+            return
+        }
+
+        // Get the Apple User ID from the keychain
+        let appleUserID: String
+        do {
+            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
+                                                                  andServiceName: WPAppleIDKeychainServiceName)
+        } catch {
+            DDLogInfo("checkAppleIDCredentialState: No Apple ID found.")
+            return
+        }
+
+        // Get the Apple User ID state. If not authorized, log out the account.
+        WordPressAuthenticator.shared.getAppleIDCredentialState(for: appleUserID) { [weak self] (state, error) in
+
+            DDLogDebug("checkAppleIDCredentialState: Apple ID state: \(state.rawValue)")
+
+            switch state {
+            case .revoked:
+                DDLogInfo("checkAppleIDCredentialState: Revoked Apple ID. User signed out.")
+                self?.logOutRevokedAppleAccount()
+            default:
+                // An error exists only for the notFound state.
+                // notFound is a valid state when logging in with an Apple account for the first time.
+                if let error = error {
+                    DDLogDebug("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
+                }
+                break
+            }
+        }
+    }
+
+    func startObservingAppleIDCredentialRevoked() {
+        WordPressAuthenticator.shared.startObservingAppleIDCredentialRevoked { [weak self] in
+            if AccountHelper.isLoggedIn {
+                DDLogInfo("Apple credentialRevokedNotification received. User signed out.")
+                self?.logOutRevokedAppleAccount()
+            }
+        }
+    }
+
+    func stopObservingAppleIDCredentialRevoked() {
+        WordPressAuthenticator.shared.stopObservingAppleIDCredentialRevoked()
+    }
+
+    func logOutRevokedAppleAccount() {
+        removeAppleIDFromKeychain()
+        logOutDefaultWordPressComAccount()
+    }
+
+    func logOutDefaultWordPressComAccount() {
+        DispatchQueue.main.async {
+            AccountHelper.logOutDefaultWordPressComAccount()
+        }
+    }
+
+    func removeAppleIDFromKeychain() {
+        do {
+            try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
+                                             andServiceName: WPAppleIDKeychainUsernameKey)
+        } catch let error as NSError {
+            if error.code != errSecItemNotFound {
+                DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
+            }
+        }
+    }
+
 }
