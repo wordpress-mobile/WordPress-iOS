@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="391" height="198"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mup-p4-lY9" id="gKB-vs-9LT">
-                <rect key="frame" x="0.0" y="0.0" width="391" height="197.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="391" height="198"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="qz9-Fi-Yby">
@@ -27,12 +24,13 @@
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6z-rs-9uG">
                         <rect key="frame" x="16" y="159" width="140.5" height="16"/>
-                        <color key="backgroundColor" name="Gray0"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="UKT-Wk-QIc"/>
                         </constraints>
                     </view>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="G6z-rs-9uG" secondAttribute="trailing" multiplier="2.5" id="3Ei-m3-7Zv"/>
                     <constraint firstAttribute="trailing" secondItem="qz9-Fi-Yby" secondAttribute="trailing" constant="16" id="ApT-1q-Jf9"/>
@@ -43,15 +41,11 @@
                     <constraint firstItem="G6z-rs-9uG" firstAttribute="leading" secondItem="gKB-vs-9LT" secondAttribute="leading" constant="16" id="w5Q-Ug-Gvj"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="stackView" destination="qz9-Fi-Yby" id="k0s-X9-NiX"/>
             </connections>
             <point key="canvasLocation" x="67.391304347826093" y="152.67857142857142"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <namedColor name="Gray0">
-            <color red="0.96862745098039216" green="0.95686274509803926" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-    </resources>
 </document>
