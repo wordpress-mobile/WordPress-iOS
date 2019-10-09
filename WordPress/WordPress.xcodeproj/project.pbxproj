@@ -547,6 +547,7 @@
 		570BFD8B22823D7B007859A8 /* PostActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8A22823D7B007859A8 /* PostActionSheet.swift */; };
 		570BFD8D22823DE5007859A8 /* PostActionSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8C22823DE5007859A8 /* PostActionSheetTests.swift */; };
 		570BFD902282418A007859A8 /* PostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8F2282418A007859A8 /* PostBuilder.swift */; };
+		57240224234E5BE200227067 /* PostServiceSelfHostedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57240223234E5BE200227067 /* PostServiceSelfHostedTests.swift */; };
 		5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */; };
 		572FB401223A806000933C76 /* NoticeStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572FB400223A806000933C76 /* NoticeStoreTests.swift */; };
 		5749984722FA0F2E00CE86ED /* PostNoticeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5749984622FA0F2E00CE86ED /* PostNoticeViewModelTests.swift */; };
@@ -566,7 +567,7 @@
 		57C2331822FE0EC900A3863B /* PostAutoUploadInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C2331722FE0EC900A3863B /* PostAutoUploadInteractor.swift */; };
 		57D5812D2228526C002BAAD7 /* WPError+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D5812C2228526C002BAAD7 /* WPError+Swift.swift */; };
 		57D66B9A234BB206005A2D74 /* PostServiceRemoteFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D66B99234BB206005A2D74 /* PostServiceRemoteFactory.swift */; };
-		57D66B9D234BB78B005A2D74 /* PostServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D66B9C234BB78B005A2D74 /* PostServiceTests.swift */; };
+		57D66B9D234BB78B005A2D74 /* PostServiceWPComTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D66B9C234BB78B005A2D74 /* PostServiceWPComTests.swift */; };
 		57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D6C83D22945A10003DDC7E /* PostCompactCellTests.swift */; };
 		57D6C840229498C5003DDC7E /* InteractivePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D6C83F229498C4003DDC7E /* InteractivePostView.swift */; };
 		57DF04C1231489A200CC93D6 /* PostCardStatusViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DF04C0231489A200CC93D6 /* PostCardStatusViewModelTests.swift */; };
@@ -2635,6 +2636,7 @@
 		570BFD8A22823D7B007859A8 /* PostActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostActionSheet.swift; sourceTree = "<group>"; };
 		570BFD8C22823DE5007859A8 /* PostActionSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostActionSheetTests.swift; sourceTree = "<group>"; };
 		570BFD8F2282418A007859A8 /* PostBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBuilder.swift; sourceTree = "<group>"; };
+		57240223234E5BE200227067 /* PostServiceSelfHostedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostServiceSelfHostedTests.swift; path = Services/PostServiceSelfHostedTests.swift; sourceTree = "<group>"; };
 		5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePostViewDelegate.swift; sourceTree = "<group>"; };
 		572FB400223A806000933C76 /* NoticeStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeStoreTests.swift; sourceTree = "<group>"; };
 		5749984622FA0F2E00CE86ED /* PostNoticeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticeViewModelTests.swift; sourceTree = "<group>"; };
@@ -2654,7 +2656,7 @@
 		57C2331722FE0EC900A3863B /* PostAutoUploadInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAutoUploadInteractor.swift; sourceTree = "<group>"; };
 		57D5812C2228526C002BAAD7 /* WPError+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPError+Swift.swift"; sourceTree = "<group>"; };
 		57D66B99234BB206005A2D74 /* PostServiceRemoteFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostServiceRemoteFactory.swift; sourceTree = "<group>"; };
-		57D66B9C234BB78B005A2D74 /* PostServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostServiceTests.swift; path = Services/PostServiceTests.swift; sourceTree = "<group>"; };
+		57D66B9C234BB78B005A2D74 /* PostServiceWPComTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostServiceWPComTests.swift; path = Services/PostServiceWPComTests.swift; sourceTree = "<group>"; };
 		57D6C83D22945A10003DDC7E /* PostCompactCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCompactCellTests.swift; sourceTree = "<group>"; };
 		57D6C83F229498C4003DDC7E /* InteractivePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePostView.swift; sourceTree = "<group>"; };
 		57DF04C0231489A200CC93D6 /* PostCardStatusViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardStatusViewModelTests.swift; sourceTree = "<group>"; };
@@ -5030,7 +5032,7 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -8038,7 +8040,8 @@
 				7E8980B822E73F4000C567B0 /* EditorSettingsServiceTests.swift */,
 				570B037622F1FFF6009D8411 /* PostCoordinatorFailedPostsFetcherTests.swift */,
 				57569CF1230485680052EE14 /* PostAutoUploadInteractorTests.swift */,
-				57D66B9C234BB78B005A2D74 /* PostServiceTests.swift */,
+				57D66B9C234BB78B005A2D74 /* PostServiceWPComTests.swift */,
+				57240223234E5BE200227067 /* PostServiceSelfHostedTests.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -9677,7 +9680,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11930,6 +11933,7 @@
 				B532ACCF1DC3AB8E00FFFA57 /* NotificationSyncMediatorTests.swift in Sources */,
 				7E4A772F20F7FDF8001C706D /* ActivityLogTestData.swift in Sources */,
 				40E7FEC82211EEC00032834E /* LastPostStatsRecordValueTests.swift in Sources */,
+				57240224234E5BE200227067 /* PostServiceSelfHostedTests.swift in Sources */,
 				B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
 				D816B8D72112D75C0052CE4D /* NewsCardTests.swift in Sources */,
@@ -11984,7 +11988,7 @@
 				08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */,
 				027AC5212278983F0033E56E /* DomainCreditEligibilityTests.swift in Sources */,
 				E10F3DA11E5C2CE0008FAADA /* PostListFilterTests.swift in Sources */,
-				57D66B9D234BB78B005A2D74 /* PostServiceTests.swift in Sources */,
+				57D66B9D234BB78B005A2D74 /* PostServiceWPComTests.swift in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				D800D87820999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift in Sources */,
 				D816B8CA2112D2FD0052CE4D /* LocalNewsServiceTests.swift in Sources */,

@@ -235,6 +235,30 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
            success:(void (^)(AbstractPost *post))success
            failure:(void (^)(NSError *error))failure
 {
+    [self uploadPost:post
+forceDraftIfCreating:NO
+             success:success
+             failure:failure];
+}
+
+/**
+ * Creates or updates a post to the server.
+ *
+ * If the post only exists on the device, it will be created.
+ *
+ * Setting `forceDraftIfCreating` to `YES` is useful if we want to create a post in the server
+ * with the intention of making it available for preview. If we create the post as is, and the user
+ * has set its `status` to `.published`, then we would publishing the post even if we just
+ * wanted to preview it!
+ *
+ * Another use case of `forceDraftIfCreating` is to create the post in the background so we can
+ * periodically auto-save it. Again, we'd still want to create it as a `.draft` status.
+ */
+- (void)uploadPost:(AbstractPost *)post
+forceDraftIfCreating:(BOOL)forceDraftIfCreating
+           success:(void (^)(AbstractPost *post))success
+           failure:(void (^)(NSError *error))failure
+{
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     RemotePost *remotePost = [self remotePostWithPost:post];
 
@@ -291,6 +315,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                    success:successBlock
                    failure:failureBlock];
     } else {
+        if (forceDraftIfCreating) {
+            remotePost.status = PostStatusDraft;
+        }
+
         [remote createPost:remotePost
                    success:successBlock
                    failure:failureBlock];
@@ -301,13 +329,29 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
          success:(void (^)(AbstractPost *post, NSString *previewURL))success
          failure:(void (^)(NSError * _Nullable error))failure
 {
+    NSManagedObjectID *postObjectID = post.objectID;
+
+    NSError *defaultError =
+        [NSError errorWithDomain:PostServiceErrorDomain
+                            code:0
+                        userInfo:@{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." }];
+
+    void (^setPostAsFailedAndCallFailureBlock)(NSError *error) = ^(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            if (postInContext) {
+                postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
+            }
+
+            failure(error);
+        }];
+    };
+
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
-    
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
         PostServiceRemoteREST *restRemote = (PostServiceRemoteREST*) remote;
         RemotePost *remotePost = [self remotePostWithPost:post];
-        NSManagedObjectID *postObjectID = post.objectID;
-        
+
         void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
             [self.managedObjectContext performBlock:^{
                 AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
@@ -333,14 +377,20 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             }];
         };
         
-        void (^failureBlock)(NSError *error) = ^(NSError *error) {
-            failure(error);
-        };
-        
-        BOOL needsUploading = [post isDraft] && [post.postID longLongValue] <= 0;
-        
-        if (needsUploading) {
+        // The autoSave endpoint returns an exception on posts that do not exist on the server
+        // so we'll create the post instead if necessary.
+        BOOL mustBeCreated = ![post hasRemote];
+
+        if (mustBeCreated) {
+            // Abort if the status is trashed/deleted. We'd rather not automatically create a
+            // locally trashed post as drafts in the server.
+            if ([post.status isEqualToString:PostStatusTrash] || [post.status isEqualToString:PostStatusDeleted]) {
+                setPostAsFailedAndCallFailureBlock(defaultError);
+                return;
+            }
+
             [self uploadPost:post
+        forceDraftIfCreating:YES
                      success:^(AbstractPost * _Nonnull post) {
                          success(post, nil);
                      }
@@ -348,7 +398,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         } else {
             [restRemote autoSave:remotePost
                          success:successBlock
-                         failure:failureBlock];
+                         failure:setPostAsFailedAndCallFailureBlock];
         }
     } else if ([post originalIsDraft] && [post isDraft]) {
         [self uploadPost:post
@@ -356,8 +406,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                      success(post, nil);
                  } failure:failure];
     } else {
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." };
-        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
+        setPostAsFailedAndCallFailureBlock(defaultError);
     }
 }
 
