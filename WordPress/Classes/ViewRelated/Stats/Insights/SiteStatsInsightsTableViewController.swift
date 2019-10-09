@@ -77,6 +77,7 @@ enum InsightType: Int {
     @objc optional func customizeTryButtonTapped()
     @objc optional func showAddInsight()
     @objc optional func addInsightSelected(_ insight: StatSection)
+    @objc optional func manageInsightSelected(_ insight: StatSection, fromButton: UIButton)
 
 }
 
@@ -187,7 +188,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        var rows: [ImmuTableRow.Type] = [CellHeaderRow.self,
+        var rows: [ImmuTableRow.Type] = [InsightCellHeaderRow.self,
                                          CustomizeInsightsRow.self,
                                          LatestPostSummaryRow.self,
                                          TwoColumnStatsRow.self,
@@ -328,53 +329,68 @@ private extension SiteStatsInsightsTableViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
 
-}
-
-extension SiteStatsInsightsTableViewController: NoResultsViewHost {
-    private func displayLoadingViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
+    func moveInsightUp(_ insight: InsightType) {
+        guard canMoveInsightUp(insight) else {
             return
         }
 
-        configureAndDisplayNoResults(on: tableView,
-                                     title: NoResultConstants.successTitle,
-                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
-                                        noResults.delegate = self
-                                        noResults.hideImageView(false)
-        }
+        moveInsight(insight, by: -1)
     }
 
-    private func displayFailureViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
+    func moveInsightDown(_ insight: InsightType) {
+        guard canMoveInsightDown(insight) else {
             return
         }
 
-        if asyncLoadingActivated {
-            configureAndDisplayNoResults(on: tableView,
-                                         title: NoResultConstants.errorTitle,
-                                         subtitle: NoResultConstants.errorSubtitle,
-                                         buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
-                                            noResults.delegate = self
-                                            if !noResults.isReachable {
-                                                noResults.resetButtonText()
-                                            }
-            }
-        } else {
-            updateNoResults(title: NoResultConstants.errorTitle,
-                            subtitle: NoResultConstants.errorSubtitle,
-                            buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
-                                noResults.delegate = self
-                                noResults.hideImageView()
-            }
-        }
+        moveInsight(insight, by: 1)
     }
 
-    private enum NoResultConstants {
-        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
-        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
-        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
-        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
+    func removeInsight(_ insight: InsightType) {
+        insightsToShow = insightsToShow.filter { $0 != insight }
+        updateView()
     }
+
+    func moveInsight(_ insight: InsightType, by offset: Int) {
+        guard let currentIndex = indexOfInsight(insight) else {
+            return
+        }
+
+        insightsToShow.remove(at: currentIndex)
+        insightsToShow.insert(insight, at: currentIndex + offset)
+        updateView()
+    }
+
+    func canMoveInsightUp(_ insight: InsightType) -> Bool {
+        let minIndex = hideCustomizeCard ? 0 : 1
+
+        guard let currentIndex = indexOfInsight(insight),
+            (currentIndex - 1) >= minIndex else {
+                return false
+        }
+
+        return true
+    }
+
+    func canMoveInsightDown(_ insight: InsightType) -> Bool {
+        guard let currentIndex = indexOfInsight(insight),
+            (currentIndex + 1) < insightsToShow.endIndex else {
+                return false
+        }
+
+        return true
+    }
+
+    func indexOfInsight(_ insight: InsightType) -> Int? {
+        return insightsToShow.index(of: insight)
+    }
+
+    enum ManageInsightConstants {
+        static let moveUp = NSLocalizedString("Move up", comment: "Option to move Insight up in the view.")
+        static let moveDown = NSLocalizedString("Move down", comment: "Option to move Insight down in the view.")
+        static let remove = NSLocalizedString("Remove from insights", comment: "Option to remove Insight from view.")
+        static let cancel = NSLocalizedString("Cancel", comment: "Cancel Insight management action sheet.")
+    }
+
 }
 
 // MARK: - SiteStatsInsightsDelegate Methods
@@ -487,7 +503,42 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         updateView()
     }
 
+    func manageInsightSelected(_ insight: StatSection, fromButton: UIButton) {
+
+        guard let insightType = insight.insightType else {
+            DDLogDebug("manageInsightSelected: unknown insightType for statSection: \(insight.title).")
+            return
+        }
+
+        let alert = UIAlertController(title: insight.title,
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+
+        if canMoveInsightUp(insightType) {
+            alert.addDefaultActionWithTitle(ManageInsightConstants.moveUp) { [weak self] _ in
+                self?.moveInsightUp(insightType)
+            }
+        }
+
+        if canMoveInsightDown(insightType) {
+            alert.addDefaultActionWithTitle(ManageInsightConstants.moveDown) { [weak self] _ in
+                self?.moveInsightDown(insightType)
+            }
+        }
+
+        alert.addDefaultActionWithTitle(ManageInsightConstants.remove) { [weak self] _ in
+            self?.removeInsight(insightType)
+        }
+
+        alert.addCancelActionWithTitle(ManageInsightConstants.cancel)
+
+        alert.popoverPresentationController?.sourceView = fromButton
+        present(alert, animated: true)
+    }
+
 }
+
+// MARK: - No Results Handling
 
 extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
@@ -501,5 +552,52 @@ extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate 
         }
         addViewModelListeners()
         refreshInsights()
+    }
+}
+
+extension SiteStatsInsightsTableViewController: NoResultsViewHost {
+    private func displayLoadingViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        noResults.hideImageView(false)
+        }
+    }
+
+    private func displayFailureViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            configureAndDisplayNoResults(on: tableView,
+                                         title: NoResultConstants.errorTitle,
+                                         subtitle: NoResultConstants.errorSubtitle,
+                                         buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                                            noResults.delegate = self
+                                            if !noResults.isReachable {
+                                                noResults.resetButtonText()
+                                            }
+            }
+        } else {
+            updateNoResults(title: NoResultConstants.errorTitle,
+                            subtitle: NoResultConstants.errorSubtitle,
+                            buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                                noResults.delegate = self
+                                noResults.hideImageView()
+            }
+        }
+    }
+
+    private enum NoResultConstants {
+        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
     }
 }
