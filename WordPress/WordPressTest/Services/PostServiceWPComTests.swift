@@ -3,6 +3,10 @@ import Foundation
 import Nimble
 @testable import WordPress
 
+/// Tests common and WPCom-only PostService behavior.
+///
+/// - SeeAlso: PostServiceSelfHostedTests
+///
 class PostServiceWPComTests: XCTestCase {
 
     private var remoteMock: PostServiceRESTMock!

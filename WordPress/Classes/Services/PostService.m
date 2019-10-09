@@ -329,17 +329,29 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
          success:(void (^)(AbstractPost *post, NSString *previewURL))success
          failure:(void (^)(NSError * _Nullable error))failure
 {
+    NSManagedObjectID *postObjectID = post.objectID;
+
+    NSError *defaultError =
+        [NSError errorWithDomain:PostServiceErrorDomain
+                            code:0
+                        userInfo:@{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." }];
+
+    void (^setPostAsFailedAndCallFailureBlock)(NSError *error) = ^(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            if (postInContext) {
+                postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
+            }
+
+            failure(error);
+        }];
+    };
+
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
-
-    NSError *defaultError = [NSError errorWithDomain:PostServiceErrorDomain
-                                                code:0
-                                            userInfo:@{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." }];
-
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
         PostServiceRemoteREST *restRemote = (PostServiceRemoteREST*) remote;
         RemotePost *remotePost = [self remotePostWithPost:post];
-        NSManagedObjectID *postObjectID = post.objectID;
-        
+
         void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
             [self.managedObjectContext performBlock:^{
                 AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
@@ -365,17 +377,6 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
             }];
         };
         
-        void (^failureBlock)(NSError *error) = ^(NSError *error) {
-            [self.managedObjectContext performBlock:^{
-                AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
-                if (postInContext) {
-                    postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
-                }
-
-                failure(error);
-            }];
-        };
-
         // The autoSave endpoint returns an exception on posts that do not exist on the server
         // so we'll create the post instead if necessary.
         BOOL mustBeCreated = ![post hasRemote];
@@ -384,7 +385,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
             // Abort if the status is trashed/deleted. We'd rather not automatically create a
             // locally trashed post as drafts in the server.
             if ([post.status isEqualToString:PostStatusTrash] || [post.status isEqualToString:PostStatusDeleted]) {
-                failureBlock(defaultError);
+                setPostAsFailedAndCallFailureBlock(defaultError);
                 return;
             }
 
@@ -397,7 +398,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
         } else {
             [restRemote autoSave:remotePost
                          success:successBlock
-                         failure:failureBlock];
+                         failure:setPostAsFailedAndCallFailureBlock];
         }
     } else if ([post originalIsDraft] && [post isDraft]) {
         [self uploadPost:post
@@ -405,7 +406,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                      success(post, nil);
                  } failure:failure];
     } else {
-        failure(defaultError);
+        setPostAsFailedAndCallFailureBlock(defaultError);
     }
 }
 
