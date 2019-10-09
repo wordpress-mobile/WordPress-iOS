@@ -61,11 +61,11 @@ import MobileCoreServices
         imageView.addLoadingIndicator(loadingIndicator, style: .fullView)
     }
 
-    func startLoadingAnimation() {
+    internal func startLoadingAnimation() {
         loadingIndicator.startAnimating()
     }
 
-    func stopLoadingAnimation() {
+    private func stopLoadingAnimation() {
         loadingIndicator.stopAnimating()
     }
 

@@ -9,7 +9,12 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     var linkURL: URL?
 
     @objc fileprivate(set) var imageView: CachedAnimatedImageView
-    private lazy var retryImageView = ReaderRetryFailedImageView()
+    private lazy var retryImageView: ReaderRetryFailedImageView = {
+        guard let retryView = Bundle.main.loadNibNamed("ReaderRetryFailedImageView", owner: nil, options: nil)?.first as? ReaderRetryFailedImageView else {
+            fatalError("ReaderRetryFailedImageView xib must exist. This is an error.")
+        }
+        return retryView
+    }()
 
     fileprivate lazy var imageLoader: ImageLoader = {
         let imageLoader = ImageLoader(imageView: imageView, gifStrategy: .smallGIFs)
