@@ -475,7 +475,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         }
 
         // If the first line is formatted as a heading, use it as the title
-        var lines = md.components(separatedBy: .newlines)
+        let lines = md.components(separatedBy: .newlines)
         if lines.count > 1, lines[0].first == "#" {
             let mdTitle = lines[0].replacingOccurrences(of: "^#{1,6} ?", with: "", options: .regularExpression)
             let titleConverter = Down(markdownString: mdTitle)
