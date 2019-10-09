@@ -1,7 +1,7 @@
 {
   "project_name": "WordPress-iOS",
   "branch": "master",
-  "pinned_hash": "2d96e08bb925edb8b6f1dbed6c8c2da7192ae692",
+  "pinned_hash": "a12d06ac723ad3a8148d4b284c72c19fcfa69402",
   "files_to_copy": [
     {
       "file": "iOS/WPiOS/wpcom_app_credentials",
@@ -21,6 +21,11 @@
     {
       "file": "shared/google_cloud_keys.json",
       "destination": "Scripts/fastlane/google_cloud_keys.json",
+      "encrypt": true
+    },
+    {
+      "file": "iOS/WPiOS/project.env",
+      "destination": "Scripts/fastlane/env/project.env",
       "encrypt": true
     }
   ],
