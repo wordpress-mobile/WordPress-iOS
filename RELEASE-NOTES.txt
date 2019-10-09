@@ -1,3 +1,6 @@
+13.5
+-----
+ 
 13.4
 -----
 * Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account.
@@ -17,6 +20,7 @@
 * Block editor: Tapping on empty editor area now always inserts new block at end of post
 * Block editor: Fixed a performance issue that caused a freeze in the editor with long text content.
 * Dark Mode: Fixed colors in rich notifications
+* Reader: Fixed issue with links opening while scrolling in reader posts and comments. 
 
 13.2
 -----
