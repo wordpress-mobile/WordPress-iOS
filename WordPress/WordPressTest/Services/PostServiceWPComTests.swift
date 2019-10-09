@@ -5,7 +5,7 @@ import Nimble
 
 class PostServiceWPComTests: XCTestCase {
 
-    private var remoteMock: PostServiceRemoteMock!
+    private var remoteMock: PostServiceRESTMock!
     private var service: PostService!
     private var context: NSManagedObjectContext!
 
@@ -18,7 +18,7 @@ class PostServiceWPComTests: XCTestCase {
 
         context = TestContextManager().mainContext
 
-        remoteMock = PostServiceRemoteMock()
+        remoteMock = PostServiceRESTMock()
 
         let remoteFactory = PostServiceRemoteFactoryMock()
         remoteFactory.remoteToReturn = remoteMock
@@ -226,7 +226,7 @@ private class PostServiceRemoteFactoryMock: PostServiceRemoteFactory {
     }
 }
 
-private class PostServiceRemoteMock: PostServiceRemoteREST {
+private class PostServiceRESTMock: PostServiceRemoteREST {
     enum StubbedBehavior {
         case success(RemotePost?)
         case fail
