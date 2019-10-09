@@ -15,6 +15,19 @@ enum InsightType: Int {
     case postingActivity
     case publicize
 
+    // TODO: remove when Manage Insights is enabled.
+    static let allValues = [InsightType.latestPostSummary,
+                            .todaysStats,
+                            .annualSiteStats,
+                            .allTimeStats,
+                            .mostPopularTime,
+                            .postingActivity,
+                            .comments,
+                            .tagsAndCategories,
+                            .followersTotals,
+                            .followers,
+                            .publicize]
+
     // These Insights will be displayed in this order if a site's Insights have not been customized.
     static let defaultInsights = [InsightType.postingActivity,
                                   .todaysStats,
@@ -270,6 +283,16 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: User Defaults
 
     func loadInsightsFromUserDefaults() {
+
+        // TODO: remove when Manage Insights is enabled.
+        guard FeatureFlag.statsInsightsManagement.enabled else {
+            // Show all Insights in the default order.
+            let allTypesValues = InsightType.allValues.map { $0.rawValue }
+            let insightTypesValues = UserDefaults.standard.array(forKey: userDefaultsInsightTypesKey) as? [Int] ?? allTypesValues
+            insightsToShow = InsightType.typesForValues(insightTypesValues)
+            return
+        }
+
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
             insightsToShow = InsightType.defaultInsights
             loadCustomizeCardSetting()
@@ -289,6 +312,16 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func writeInsightsToUserDefaults() {
+
+        // TODO: remove when Manage Insights is enabled.
+        guard FeatureFlag.statsInsightsManagement.enabled else {
+            removeCustomizeCard()
+            let insightTypesValues = InsightType.valuesForTypes(insightsToShow)
+            UserDefaults.standard.set(insightTypesValues, forKey: userDefaultsInsightTypesKey)
+            writeCustomizeCardSetting()
+            return
+        }
+
         writeCustomizeCardSetting()
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
@@ -611,6 +644,10 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
     }
 
     private func displayEmptyViewIfNecessary() {
+        guard FeatureFlag.statsInsightsManagement.enabled else {
+            return
+        }
+
         guard insightsToShow.isEmpty else {
             displayingEmptyView = false
             hideNoResults()
