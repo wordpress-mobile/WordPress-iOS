@@ -3,7 +3,7 @@ import Foundation
 import Nimble
 @testable import WordPress
 
-class PostServiceTests: XCTestCase {
+class PostServiceWPComTests: XCTestCase {
 
     private var remoteMock: PostServiceRemoteMock!
     private var service: PostService!
