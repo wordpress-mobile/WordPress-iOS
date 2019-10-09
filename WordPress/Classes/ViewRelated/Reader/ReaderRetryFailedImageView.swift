@@ -28,13 +28,15 @@ class ReaderRetryFailedImageView: UIView {
     @IBOutlet weak private var imageView: UIImageView! {
         didSet {
             let iconImage = Gridicon.iconOfType(.imageRemove)
-            let imageView = UIImageView(image: iconImage.withRenderingMode(.alwaysTemplate))
+            imageView.image = iconImage.withRenderingMode(.alwaysTemplate)
             imageView.tintColor = UIColor.textSubtle
+            imageView.contentMode = .scaleAspectFit
         }
     }
 
     @IBOutlet weak private var textView: LinkTextView! {
         didSet {
+            textView.delegate = self
             textView.textDragInteraction?.isEnabled = false
             textView.adjustsFontForContentSizeCategory = true
         }
@@ -59,6 +61,7 @@ class ReaderRetryFailedImageView: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .retryBackground
         textView.attributedText = attributedString
     }
