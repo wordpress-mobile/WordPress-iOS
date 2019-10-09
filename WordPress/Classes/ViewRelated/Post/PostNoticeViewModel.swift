@@ -122,10 +122,6 @@ struct PostNoticeViewModel {
             return defaultTitle
         }
 
-        if post.hasRemote() {
-            return PostAutoUploadMessages.changesWillBeUploaded
-        }
-
         switch postStatus {
         case .draft:
             return PostAutoUploadMessages.draftWillBeUploaded

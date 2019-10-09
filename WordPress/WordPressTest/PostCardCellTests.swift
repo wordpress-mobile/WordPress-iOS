@@ -265,7 +265,7 @@ class PostCardCellTests: XCTestCase {
         XCTAssertFalse(postCell.separatorLabel.isHidden)
     }
 
-    func testShowsChangesWillBeUploadedWarningForFailedPublishedPostsWithRemote() {
+    func testShowsPostWillBePublishedWarningForFailedPublishedPostsWithRemote() {
         // Given
         let post = PostBuilder(context).published().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
@@ -273,7 +273,7 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, PostAutoUploadMessages.changesWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.text, i18n("We'll publish the post when your device is back online."))
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
@@ -340,7 +340,7 @@ class PostCardCellTests: XCTestCase {
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
-    func testShowsChangesWillBeUploadedMessageForDraftsWithRemote() {
+    func testShowsDraftWillBeUploadedMessageForDraftsWithRemote() {
         // Given
         let post = PostBuilder(context).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
@@ -348,7 +348,7 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, PostAutoUploadMessages.changesWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.text, i18n("We'll save your draft when your device is back online."))
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
@@ -369,7 +369,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Post couldn't be submitted. We'll try again later")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't complete this action, but we'll try again later.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -378,7 +378,16 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Couldn't perform operation. Post not submitted")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't complete this action.")))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
+    }
+
+    func testFailedMessageWhenMaxNumberOfAttemptsToAutoDraftIsReachedAndPostHasFailedMedia() {
+        let post = PostBuilder(context).with(image: "", status: .failed).with(remoteStatus: .failed).with(autoUploadAttemptsCount: 3).build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't upload this media, and didn't publish the post.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
@@ -387,7 +396,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Private post couldn't be published. We'll try again later")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't publish this private post, but we'll try again later.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -396,16 +405,16 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Couldn't perform operation. Private post not published")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't complete this action, and didn't publish this private post.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
-    func testShowsChangesWillBeUploadedMessageForPrivate() {
+    func testShowsPrivatePostWillBeUploadedMessageForPrivatePosts() {
         let post = PostBuilder(context).private().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Private post will be published when your device is back online")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We'll publish your private post when your device is back online.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -414,7 +423,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Post couldn't be scheduled. We'll try again later")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't schedule this post, but we'll try again later.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -423,25 +432,25 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Couldn't perform operation. Post not scheduled")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't complete this action, and didn't schedule this post.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
-    func testShowsChangesWillBeUploadedMessageForScheduled() {
+    func testShowsScheduledPostWillBeUploadedMessageForScheduledPosts() {
         let post = PostBuilder(context).scheduled().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Post will be scheduled when your device is back online")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We'll schedule your post when your device is back online.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
-    func testShowsChangesWillBeUploadedMessageForPendingPost() {
+    func testShowsPostWillBeSubmittedMessageForPendingPost() {
         let post = PostBuilder(context).pending().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Post will be submitted for review when your device is back online")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We'll submit your post for review when your device is back online.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -450,7 +459,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Post couldn't be submitted. We'll try again later")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't submit this post for review, but we'll try again later.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
@@ -459,7 +468,7 @@ class PostCardCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        expect(self.postCell.statusLabel.text).to(equal(i18n("Couldn't perform operation. Post not submitted")))
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't complete this action, and didn't submit this post for review.")))
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
