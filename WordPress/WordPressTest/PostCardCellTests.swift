@@ -265,7 +265,7 @@ class PostCardCellTests: XCTestCase {
         XCTAssertFalse(postCell.separatorLabel.isHidden)
     }
 
-    func testShowsChangesWillBeUploadedWarningForFailedPublishedPostsWithRemote() {
+    func testShowsPostWillBePublishedWarningForFailedPublishedPostsWithRemote() {
         // Given
         let post = PostBuilder(context).published().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
@@ -273,7 +273,7 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, PostAutoUploadMessages.postWillBePublished)
+        XCTAssertEqual(postCell.statusLabel.text, i18n("We'll publish the post when your device is back online."))
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
@@ -340,7 +340,7 @@ class PostCardCellTests: XCTestCase {
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
-    func testShowsChangesWillBeUploadedMessageForDraftsWithRemote() {
+    func testShowsDraftWillBeUploadedMessageForDraftsWithRemote() {
         // Given
         let post = PostBuilder(context).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
@@ -348,7 +348,7 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, PostAutoUploadMessages.draftWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.text, i18n("We'll save your draft when your device is back online."))
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
@@ -409,7 +409,7 @@ class PostCardCellTests: XCTestCase {
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
-    func testShowsChangesWillBeUploadedMessageForPrivate() {
+    func testShowsPrivatePostWillBeUploadedMessageForPrivatePosts() {
         let post = PostBuilder(context).private().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         postCell.configure(with: post)
@@ -436,7 +436,7 @@ class PostCardCellTests: XCTestCase {
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
-    func testShowsChangesWillBeUploadedMessageForScheduled() {
+    func testShowsScheduledPostWillBeUploadedMessageForScheduledPosts() {
         let post = PostBuilder(context).scheduled().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         postCell.configure(with: post)
@@ -445,7 +445,7 @@ class PostCardCellTests: XCTestCase {
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
-    func testShowsChangesWillBeUploadedMessageForPendingPost() {
+    func testShowsPostWillBeSubmittedMessageForPendingPost() {
         let post = PostBuilder(context).pending().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
         postCell.configure(with: post)
