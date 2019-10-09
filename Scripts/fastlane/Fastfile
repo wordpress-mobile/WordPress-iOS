@@ -1,11 +1,18 @@
 default_platform(:ios)
 fastlane_require 'dotenv'
 
+before_all do
+  # Check that the env files exist
+  UI.user_error!("env/user.env not found: Please copy env/user.env-example to env/user.env and fill in the values") unless File.file?('env/user.env')
+  UI.user_error!("env/project.env not found: Make sure your configuration is up to date with `bundle exec fastlane run configure_apply`") unless File.file?('env/project.env')
+end
+
 platform :ios do
 ########################################################################
 # Environment
 ########################################################################
-Dotenv.load('~/.wpios-env.default')
+Dotenv.load('env/user.env')
+Dotenv.load('env/project.env')
 ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
 ENV["PROJECT_NAME"]="WordPress"
 ENV["PUBLIC_CONFIG_FILE"]="../config/Version.Public.xcconfig"
