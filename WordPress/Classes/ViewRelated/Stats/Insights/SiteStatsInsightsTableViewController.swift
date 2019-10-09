@@ -102,6 +102,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     private var allSitesInsights = [SiteInsights]()
     private typealias SiteInsights = [String: [Int]]
 
+    private var displayingEmptyView = false
     private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoading)
 
     private lazy var mainContext: NSManagedObjectContext = {
@@ -137,7 +138,9 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         initViewModel()
         tableView.estimatedRowHeight = 500
 
-        if !asyncLoadingActivated {
+        displayEmptyViewIfNecessary()
+
+        if !displayingEmptyView && !asyncLoadingActivated {
             displayLoadingViewIfNecessary()
         }
     }
@@ -261,6 +264,7 @@ private extension SiteStatsInsightsTableViewController {
     func updateView() {
         viewModel?.updateInsightsToShow(insights: insightsToShow)
         refreshTableView()
+        displayEmptyViewIfNecessary()
     }
 
     // MARK: User Defaults
@@ -542,10 +546,16 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
 extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
+
+        guard !displayingEmptyView else {
+            showAddInsightView()
+            return
+        }
+
         if asyncLoadingActivated {
             hideNoResults()
         } else {
-            updateNoResults(title: NoResultConstants.successTitle,
+            updateNoResults(title: NoResultConstants.loadingTitle,
                             accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
                                 noResults.hideImageView(false)
             }
@@ -562,7 +572,7 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
         }
 
         configureAndDisplayNoResults(on: tableView,
-                                     title: NoResultConstants.successTitle,
+                                     title: NoResultConstants.loadingTitle,
                                      accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
                                         noResults.delegate = self
                                         noResults.hideImageView(false)
@@ -594,10 +604,29 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
         }
     }
 
+    private func displayEmptyViewIfNecessary() {
+        guard insightsToShow.isEmpty else {
+            displayingEmptyView = false
+            hideNoResults()
+            return
+        }
+
+        displayingEmptyView = true
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.noInsightsTitle,
+                                     subtitle: NoResultConstants.noInsightsSubtitle,
+                                     buttonTitle: NoResultConstants.manageInsightsButtonTitle) { [weak self] noResults in
+                                        noResults.delegate = self
+        }
+    }
+
     private enum NoResultConstants {
-        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+        static let loadingTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
         static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
         static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
         static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
+        static let noInsightsTitle = NSLocalizedString("No insights added yet", comment: "Title displayed when the user has removed all Insights from display.")
+        static let noInsightsSubtitle = NSLocalizedString("Only see the most relevant stats. Manage your insights to fit your needs.", comment: "Subtitle displayed when the user has removed all Insights from display.")
+        static let manageInsightsButtonTitle = NSLocalizedString("Manage Insights", comment: "Button title displayed when the user has removed all Insights from display.")
     }
 }
