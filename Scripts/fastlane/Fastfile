@@ -188,6 +188,8 @@ import "./ScreenshotFastfile"
     ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless (options[:skip_prechecks])
     ios_build_preflight() unless (options[:skip_prechecks])
 
+    internal_code_signing
+
     gym(
       scheme: "WordPress Internal",
       workspace: "../WordPress.xcworkspace",
@@ -196,16 +198,7 @@ import "./ScreenshotFastfile"
       output_directory: "../build/",
       derived_data_path: "../derived-data/internal/",
       export_team_id: ENV["INT_EXPORT_TEAM_ID"],
-      export_options: {
-        method: "enterprise",
-        provisioningProfiles: { 
-          "org.wordpress.internal" => "WordPress Internal Distribution",
-          "org.wordpress.internal.WordPressShare" => "WordPress Internal Share Distribution",
-          "org.wordpress.internal.WordPressDraftAction" => "WordPress Internal Draft Action Distribution",
-          "org.wordpress.internal.WordPressTodayWidget" => "WordPress Internal Today Widget Distribution",
-          "org.wordpress.internal.WordPressNotificationServiceExtension" => "WordPress Internal Notification Service Distrib",
-          "org.wordpress.internal.WordPressNotificationContentExtension" => "WordPress Internal Notification Content Distrib"
-      }})
+      export_options: { method: "enterprise" })
 
     sh("mv ../../build/WordPress.ipa \"../../build/WordPress Internal.ipa\"")
 
@@ -247,21 +240,13 @@ import "./ScreenshotFastfile"
     ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless (options[:skip_prechecks])
     ios_build_preflight() unless (options[:skip_prechecks])
 
+    appstore_code_signing
+
     gym(scheme: "WordPress", workspace: "../WordPress.xcworkspace",
       clean: true,
       export_team_id: ENV["EXT_EXPORT_TEAM_ID"], 
       derived_data_path: "../derived-data/itc/",
-      export_options: {
-        method: "app-store",
-        provisioningProfiles: { 
-          "org.wordpress" => "WordPress App Store",
-          "org.wordpress.WordPressShare" => "WordPress Share App Store Distribution",
-          "org.wordpress.WordPressDraftAction" => "WordPress Draft Action App Store Distribution",
-          "org.wordpress.WordPressTodayWidget" => "WordPress Today Widget App Store Distribution",
-          "org.wordpress.WordPressNotificationServiceExtension" => "WordPress Notification Service Extension",
-          "org.wordpress.WordPressNotificationContentExtension" => "WordPress Notification Content Extension"
-        }
-      }
+      export_options: { method: "app-store" }
     )
 
     testflight(
@@ -280,6 +265,35 @@ import "./ScreenshotFastfile"
     )
 
     sh("cd .. && rm WordPress.app.dSYM.zip")
+  end
+
+  ########################################################################
+  # Fastlane match code signing
+  ########################################################################  
+  private_lane :internal_code_signing do |options|
+    match(
+      type: "enterprise",
+      team_id: ENV["INT_EXPORT_TEAM_ID"],
+      readonly: options[:readonly] || is_ci,
+      app_identifier: ["org.wordpress.internal",
+                       "org.wordpress.internal.WordPressShare",
+                       "org.wordpress.internal.WordPressDraftAction",
+                       "org.wordpress.internal.WordPressTodayWidget",
+                       "org.wordpress.internal.WordPressNotificationServiceExtension",
+                       "org.wordpress.internal.WordPressNotificationContentExtension"])
+  end
+
+  private_lane :appstore_code_signing do |options|
+    match(
+      type: "appstore",
+      team_id: ENV["EXT_EXPORT_TEAM_ID"],
+      readonly: options[:readonly] || is_ci,
+      app_identifier: ["org.wordpress",
+                       "org.wordpress.WordPressShare",
+                       "org.wordpress.WordPressDraftAction",
+                       "org.wordpress.WordPressTodayWidget",
+                       "org.wordpress.WordPressNotificationServiceExtension",
+                       "org.wordpress.WordPressNotificationContentExtension"])
   end
 
 ########################################################################

@@ -190,7 +190,7 @@ final class ReaderTopicSwiftTest: XCTestCase {
             XCTFail("Context is nil")
             return
         }
-        var remoteTopics = remoteTopicsForTests()
+        let remoteTopics = remoteTopicsForTests()
         let foo = remoteTopics.first
 
         let startingTopics: [RemoteReaderTopic] = [remoteTopics[1], remoteTopics[2]]

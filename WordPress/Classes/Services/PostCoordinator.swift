@@ -120,7 +120,7 @@ class PostCoordinator: NSObject {
 
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 
-        guard uploadMedia(for: post, automatedRetry: automatedRetry) else {
+        guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
             change(post: post, status: .failed)
             return
         }
@@ -314,9 +314,13 @@ class PostCoordinator: NSObject {
     }
 
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
-        post.managedObjectContext?.perform {
+        guard let context = post.managedObjectContext else {
+            return
+        }
+        context.perform {
             post.remoteStatus = status
-            try? post.managedObjectContext?.save()
+
+            ContextManager.sharedInstance().saveContextAndWait(context)
         }
     }
 

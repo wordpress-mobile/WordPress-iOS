@@ -34,9 +34,9 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableSignInWithApple: FeatureFlag.signInWithApple.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
-                                                primaryNormalBorderColor: .primaryButtonBorder,
+                                                primaryNormalBorderColor: nil,
                                                 primaryHighlightBackgroundColor: .primaryButtonDownBackground,
-                                                primaryHighlightBorderColor: .primaryButtonDownBorder,
+                                                primaryHighlightBorderColor: nil,
                                                 secondaryNormalBackgroundColor: .secondaryButtonBackground,
                                                 secondaryNormalBorderColor: .secondaryButtonBorder,
                                                 secondaryHighlightBackgroundColor: .secondaryButtonDownBackground,
@@ -247,6 +247,20 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let account = service.createOrUpdateAccount(withUsername: username, authToken: authToken)
         if service.defaultWordPressComAccount() == nil {
             service.setDefaultWordPressComAccount(account)
+        }
+    }
+
+    /// When an Apple account is used during the Auth flow, save the Apple user id to the keychain.
+    /// It will be used on app launch to check the user id state.
+    ///
+    func userAuthenticatedWithAppleUserID(_ appleUserID: String) {
+        do {
+            try SFHFKeychainUtils.storeUsername(WPAppleIDKeychainUsernameKey,
+                                                andPassword: appleUserID,
+                                                forServiceName: WPAppleIDKeychainServiceName,
+                                                updateExisting: true)
+        } catch {
+            DDLogInfo("Error while saving Apple User ID: \(error)")
         }
     }
 

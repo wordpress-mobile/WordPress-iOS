@@ -1572,7 +1572,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"signup_social_button_failure";
             break;
         case WPAnalyticsStatSignupSocialButtonTapped:
-            eventName = @"signup_google_button_tapped";
+            eventName = @"signup_social_button_tapped";
             break;
         case WPAnalyticsStatSignupSocialToLogin:
             eventName = @"signup_social_to_login";

@@ -1,0 +1,3 @@
+* After a recent round of improvements, the block editor is faster and performs more smoothly on the app.
+* Some of you were having trouble with Dark Mode on iPads; we sorted it out (adios, uninvited glare!).
+* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.

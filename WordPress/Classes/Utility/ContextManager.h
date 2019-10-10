@@ -60,22 +60,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSManagedObjectContext *const)newMainContextChildContext;
 
 /**
- Save a derived context created with `newDerivedContext` via this convenience method
- 
- @param a derived NSManagedObjectContext constructed with `newDerivedContext` above
-*/
-- (void)saveDerivedContext:(NSManagedObjectContext *)context;
-
-/**
- Save a derived context created with `newDerivedContext` and optionally execute a completion block.
- Useful for if the guarantee is needed that the data has made it into the main context.
- 
- @param a derived NSManagedObjectContext constructed with `newDerivedContext` above
- @param a completion block that will be executed on the main queue
- */
-- (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
-
-/**
  Save a given context synchronously.
  
  @param a NSManagedObject context instance

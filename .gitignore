@@ -75,7 +75,13 @@ Scripts/fastlane/report.xml
 Scripts/fastlane/README.md
 Scripts/Preview.html
 Scripts/fastlane/test_output/
+Scripts/fastlane/google_cloud_keys.json
 
 # Generated Internal Icons
 /WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
 /WordPress/Resources/Icons-Internal
+
+# Credentials
+WordPress/Credentials/wpcom_app_credentials
+WordPress/Credentials/wpcom_alpha_app_credentials
+WordPress/Credentials/wpcom_internal_app_credentials

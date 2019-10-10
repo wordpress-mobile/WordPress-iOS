@@ -281,9 +281,7 @@ extension UIColor {
 
 // MARK: - WP Fancy Buttons
     static var primaryButtonBackground = accent
-    static var primaryButtonBorder = accentDark
     static var primaryButtonDownBackground = muriel(color: .accent, .shade80)
-    static var primaryButtonDownBorder = muriel(color: .accent, .shade90)
 
     static var secondaryButtonBackground: UIColor {
         if #available(iOS 13, *) {
@@ -340,5 +338,14 @@ extension UIColor {
 
         color.getRed(&r, green: &g, blue: &b, alpha: &a)
         self.init(red: r, green: g, blue: b, alpha: a)
+    }
+}
+
+extension UIColor {
+    func color(for trait: UITraitCollection?) -> UIColor {
+        if #available(iOS 13, *), let trait = trait {
+            return resolvedColor(with: trait)
+        }
+        return self
     }
 }
