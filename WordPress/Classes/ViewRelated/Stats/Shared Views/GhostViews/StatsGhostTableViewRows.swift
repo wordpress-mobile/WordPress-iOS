@@ -42,7 +42,5 @@ struct StatsGhostChartImmutableRow: StatsRowGhostable {
 }
 
 private enum GhostCellStyle {
-    static let muriel = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                           beatStartColor: .placeholderElement,
-                           beatEndColor: .placeholderElementFaded)
+    static let muriel = GhostStyle(beatStartColor: .placeholderElement, beatEndColor: .placeholderElementFaded)
 }
