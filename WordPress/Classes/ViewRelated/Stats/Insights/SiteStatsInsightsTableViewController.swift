@@ -669,7 +669,7 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
         static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
         static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
         static let noInsightsTitle = NSLocalizedString("No insights added yet", comment: "Title displayed when the user has removed all Insights from display.")
-        static let noInsightsSubtitle = NSLocalizedString("Only see the most relevant stats. Manage your insights to fit your needs.", comment: "Subtitle displayed when the user has removed all Insights from display.")
-        static let manageInsightsButtonTitle = NSLocalizedString("Manage Insights", comment: "Button title displayed when the user has removed all Insights from display.")
+        static let noInsightsSubtitle = NSLocalizedString("Only see the most relevant stats. Add insights to fit your needs.", comment: "Subtitle displayed when the user has removed all Insights from display.")
+        static let manageInsightsButtonTitle = NSLocalizedString("Add stats card", comment: "Button title displayed when the user has removed all Insights from display.")
     }
 }
