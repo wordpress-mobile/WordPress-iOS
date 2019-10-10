@@ -5,6 +5,7 @@
 @class KeyringConnection;
 @class PublicizeConnection;
 @class Blog;
+@class ValidationError;
 
 /**
  A helper class for managing aspects of a publicize service.  Supports creating,
@@ -62,5 +63,9 @@
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionFailedForService:(PublicizeService *)service;
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionCancelledForService:(PublicizeService *)service;
+
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper
+      requestToShowValidationError:(ValidationError *)validationError
+                fromViewController:(UIViewController *)viewController;
 
 @end

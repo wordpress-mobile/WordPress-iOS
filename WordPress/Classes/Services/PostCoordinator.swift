@@ -6,13 +6,9 @@ class PostCoordinator: NSObject {
 
     @objc static let shared = PostCoordinator()
 
-    private(set) var backgroundContext: NSManagedObjectContext = {
-        let context = ContextManager.sharedInstance().newDerivedContext()
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
+    private let backgroundContext: NSManagedObjectContext
 
-    private let mainContext = ContextManager.sharedInstance().mainContext
+    private let mainContext: NSManagedObjectContext
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
@@ -22,21 +18,50 @@ class PostCoordinator: NSObject {
         return MediaCoordinator.shared
     }()
 
+    private let backgroundService: PostService
+
+    private let mainService: PostService
+
+    // MARK: - Initializers
+
+    init(mainService: PostService? = nil, backgroundService: PostService? = nil) {
+        let contextManager = ContextManager.sharedInstance()
+
+        let mainContext = contextManager.mainContext
+        let backgroundContext = contextManager.newDerivedContext()
+        backgroundContext.automaticallyMergesChangesFromParent = true
+
+        self.mainContext = mainContext
+        self.backgroundContext = backgroundContext
+
+        self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
+        self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
+    }
+
+    // MARK: - Misc
+
     /// Saves the post to both the local database and the server if available.
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
     ///
     /// - Parameter post: the post to save
-    func save(post postToSave: AbstractPost) {
+    ///
+    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
         var post = postToSave
+
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
             post = originalPost
             post.applyRevision()
             post.deleteRevision()
         }
 
+        guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
+            change(post: post, status: .failed)
+            return
+        }
+
         change(post: post, status: .pushing)
 
-        if mediaCoordinator.isUploadingMedia(for: post) {
+        if mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia {
             change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
@@ -142,31 +167,15 @@ class PostCoordinator: NSObject {
         return post.titleForDisplay()
     }
 
-    /// Retries the upload and save of the post and any associated media with it.
-    ///
-    /// - Parameter post: the post to retry the upload
-    ///
-    @objc func retrySave(of post: AbstractPost) {
-        for media in post.media {
-            guard media.remoteStatus == .failed else {
-                continue
-            }
-            mediaCoordinator.retryMedia(media)
-        }
-        save(post: post)
-    }
-
     /// This method checks the status of all post objects and updates them to the correct status if needed.
     /// The main cause of wrong status is the app being killed while uploads of posts are happening.
     ///
     @objc func refreshPostStatus() {
-        let service = PostService(managedObjectContext: backgroundContext)
-        service.refreshPostStatus()
+        backgroundService.refreshPostStatus()
     }
 
     private func upload(post: AbstractPost) {
-        let postService = PostService(managedObjectContext: mainContext)
-        postService.uploadPost(post, success: { uploadedPost in
+        mainService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             SearchManager.shared.indexItem(uploadedPost)
@@ -240,7 +249,12 @@ class PostCoordinator: NSObject {
 
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
         post.managedObjectContext?.perform {
-            post.remoteStatus = status
+            if status == .failed {
+                self.mainService.markAsFailedAndDraftIfNeeded(post: post)
+            } else {
+                post.remoteStatus = status
+            }
+
             try? post.managedObjectContext?.save()
         }
     }
@@ -248,9 +262,7 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        let service = PostService(managedObjectContext: mainContext)
-
-        service.getFailedPosts { [weak self] posts in
+        mainService.getFailedPosts { [weak self] posts in
             guard let self = self else {
                 return
             }
@@ -259,7 +271,7 @@ extension PostCoordinator: Uploader {
                 let shouldRetry = post.status == .draft && !post.hasRemote()
 
                 if shouldRetry {
-                    self.retrySave(of: post)
+                    self.save(post, automatedRetry: true)
                 }
             }
         }

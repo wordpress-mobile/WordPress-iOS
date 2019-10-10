@@ -509,6 +509,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
+    func editorDidAutosave() {
+        // Currently using native side `autoSaveTimer` for autosave purposes.
+    }
+
     func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
         switch logLevel {
         case .trace:

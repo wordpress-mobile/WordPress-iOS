@@ -1,6 +1,3 @@
-* Inattività significa inattività: quando non usi l'app, eseguirà meno azioni e migliorerà le prestazioni del tuo dispositivo.
-* Il tuo elenco dei siti a volte ha mostrato più volte lo stesso sito? Abbiamo risolto questo problema.
-* Gestisci le impostazioni delle notifiche dalla schermata Notifiche (ha senso, no?).
-* La data visualizzata e il fuso orario del sito ora sono perfettamente sincronizzati.
-* Goditi un caricamento più fluido e stabile delle anteprime degli articoli.
-
+* Dopo un recente ciclo di miglioramenti, l'editor dei blocchi è più veloce e funziona in modo più fluido sull'app.
+* Alcuni utenti stavano riscontrando problemi con la Dark Mode su iPad; abbiamo risolto il problema.
+* I visitatori del sito adorano gli articoli con elementi multimediali, quindi abbiano reso più stabile la loro creazione.
