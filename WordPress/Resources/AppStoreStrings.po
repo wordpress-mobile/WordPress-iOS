@@ -38,11 +38,13 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v13.3-whats-new"
+msgctxt "v13.4-whats-new"
 msgid ""
-"* After a recent round of improvements, the Block Editor is faster and performs more smoothly on the app.\n"
-"* Some of you were having trouble with Dark Mode on iPads; we sorted it out (adios, uninvited glare!).\n"
-"* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.\n"
+"Our mobile devs were bug-squashing juggernauts this month:\n"
+"- You should’ve been able to sign into the app with your Apple credentials, but a bug meant that sometimes you couldn’t. That’s fixed now.\n"
+"- Tweaks make the block editor better and better: links open in-app instead of opening Safari, and a pesky link editing issue that sometimes deleting existing links is no more.\n"
+"- “Dark Mode” is dark as in “hue” and not as in “grim,” especially now that its got better visuals and fewer bugs.\n"
+"- Scrolling vertically sometimes didn’t work in the Share extension, and now it does.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
