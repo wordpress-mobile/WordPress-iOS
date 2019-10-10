@@ -24,7 +24,7 @@
                                 <constraint firstAttribute="width" secondItem="aMc-gR-Dg2" secondAttribute="height" multiplier="1:1" id="rmF-iz-995"/>
                             </constraints>
                         </imageView>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="KQO-mp-jQ9" customClass="LinkTextView" customModule="WordPress" customModuleProvider="target">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KQO-mp-jQ9">
                             <rect key="frame" x="15" y="61" width="354" height="37"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -60,7 +60,7 @@
                 <outlet property="imageView" destination="aMc-gR-Dg2" id="yAZ-Tk-52j"/>
                 <outlet property="textView" destination="KQO-mp-jQ9" id="jt0-hb-h5i"/>
             </connections>
-            <point key="canvasLocation" x="-28.985507246376812" y="30.803571428571427"/>
+            <point key="canvasLocation" x="-28.985507246376812" y="30.46875"/>
         </view>
     </objects>
 </document>

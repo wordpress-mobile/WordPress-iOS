@@ -276,8 +276,8 @@ extension UIColor {
         return .neutral(.shade30)
     }
 
-    /// For now, just for the retry view background
-    static var retryBackground: UIColor {
+    /// For the failed image retry view background
+    static var imageViewRetryBackground: UIColor {
         if #available(iOS 13, *) {
             return .systemGray6
         }

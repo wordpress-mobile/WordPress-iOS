@@ -9,12 +9,7 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     var linkURL: URL?
 
     @objc fileprivate(set) var imageView: CachedAnimatedImageView
-    private lazy var retryImageView: ReaderRetryFailedImageView = {
-        guard let retryView = Bundle.main.loadNibNamed("ReaderRetryFailedImageView", owner: nil, options: nil)?.first as? ReaderRetryFailedImageView else {
-            fatalError("ReaderRetryFailedImageView xib must exist. This is an error.")
-        }
-        return retryView
-    }()
+    private lazy var retryImageView = ReaderRetryFailedImageView.loadFromNib()
 
     fileprivate lazy var imageLoader: ImageLoader = {
         let imageLoader = ImageLoader(imageView: imageView, gifStrategy: .smallGIFs)
@@ -100,17 +95,16 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
             self.retryImageView.delegate = self
             self.addSubview(self.retryImageView)
-            self.retryImageView.leftAnchor.constraint(equalTo: self.layoutMarginsGuide.leftAnchor).isActive = true
-            self.retryImageView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor).isActive = true
-            self.retryImageView.rightAnchor.constraint(equalTo: self.layoutMarginsGuide.rightAnchor).isActive = true
-            self.retryImageView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor).isActive = true
+            self.retryImageView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+            self.retryImageView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+            self.retryImageView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+            self.retryImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
 
             onError?(indexPath, error)
         }
 
         reloadImage = { [weak self] in
             guard let self = self else { return }
-            self.retryImageView.removeFromSuperview()
             self.imageLoader.startLoadingAnimation()
             self.imageLoader.loadImage(with: contentURL, from: contentInformation, preferredSize: size, placeholder: nil, success: successHandler, error: errorHandler)
         }
@@ -140,6 +134,7 @@ private extension WPRichTextImage {
 
 extension WPRichTextImage: ReaderRetryFailedImageDelegate {
     func didTapRetry() {
+        retryImageView.removeFromSuperview()
         reloadImage?()
     }
 }

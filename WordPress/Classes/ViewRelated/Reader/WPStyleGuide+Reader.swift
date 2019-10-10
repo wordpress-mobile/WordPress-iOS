@@ -154,7 +154,6 @@ extension WPStyleGuide {
             .foregroundColor: UIColor.primary,
             .paragraphStyle: centeredParagraph,
             .underlineStyle: NSUnderlineStyle.single.rawValue,
-            .link: "tap://tap",
         ]
     }
 

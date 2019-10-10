@@ -1,11 +1,3 @@
-//
-//  ReaderRetryFailedImageView.swift
-//  WordPress
-//
-//  Created by Paul Von Schrottky on 10/5/19.
-//  Copyright © 2019 WordPress. All rights reserved.
-//
-
 import UIKit
 import Gridicons
 
@@ -13,17 +5,9 @@ protocol ReaderRetryFailedImageDelegate: AnyObject {
     func didTapRetry()
 }
 
-fileprivate class LinkTextView: UITextView {
-    override func selectionRects(for range: UITextRange) -> [UITextSelectionRect] {
-        return []
-    }
-
-    override func caretRect(for position: UITextPosition) -> CGRect {
-        return CGRect.zero.offsetBy(dx: .greatestFiniteMagnitude, dy: .greatestFiniteMagnitude)
-    }
-}
-
 class ReaderRetryFailedImageView: UIView {
+
+    // MARK: - Properties
 
     @IBOutlet weak private var imageView: UIImageView! {
         didSet {
@@ -34,15 +18,37 @@ class ReaderRetryFailedImageView: UIView {
         }
     }
 
-    @IBOutlet weak private var textView: LinkTextView! {
+    @IBOutlet weak private var textView: UITextView! {
         didSet {
-            textView.delegate = self
             textView.textDragInteraction?.isEnabled = false
             textView.adjustsFontForContentSizeCategory = true
         }
     }
 
-    private let attributedString: NSAttributedString = {
+    weak var delegate: ReaderRetryFailedImageDelegate?
+
+    // MARK: - Initialization
+
+    static func loadFromNib() -> Self {
+        guard let retryView = Bundle.main.loadNibNamed("ReaderRetryFailedImageView", owner: nil, options: nil)?.first as? Self else {
+            fatalError("ReaderRetryFailedImageView xib must exist. This is an error.")
+        }
+        return retryView
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = .imageViewRetryBackground
+        textView.attributedText = contentForDisplay()
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    // MARK: - Private Helper Functions
+
+    private func contentForDisplay() -> NSAttributedString {
         let mutableAttributedString = NSMutableAttributedString()
 
         let textLocalizedString = NSLocalizedString("Image not loaded.", comment: "Message displayed in image area when a site image fails to load.")
@@ -55,24 +61,11 @@ class ReaderRetryFailedImageView: UIView {
         mutableAttributedString.append(NSAttributedString(string: buttonLocalizedString, attributes: WPStyleGuide.readerDetailAttributesForRetryButton()))
 
         return mutableAttributedString
-    }()
-
-    weak var delegate: ReaderRetryFailedImageDelegate?
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .retryBackground
-        textView.attributedText = attributedString
     }
-}
 
-extension ReaderRetryFailedImageView: UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        guard interaction == .invokeDefaultAction, URL.scheme == "tap" else {
-            return false
-        }
+    // MARK: - Action Handlers
+
+    @objc func tapAction() {
         delegate?.didTapRetry()
-        return false
     }
 }
