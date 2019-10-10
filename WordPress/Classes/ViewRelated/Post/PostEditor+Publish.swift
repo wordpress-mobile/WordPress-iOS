@@ -303,7 +303,7 @@ extension PostEditor where Self: UIViewController {
     }
 
     private func editorAction() -> PostEditorAction {
-        guard post.status != .pending else {
+        guard post.status != .pending && post.status != .scheduled else {
             return .save
         }
 
