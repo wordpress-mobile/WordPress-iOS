@@ -81,7 +81,12 @@ Scripts/fastlane/google_cloud_keys.json
 /WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
 /WordPress/Resources/Icons-Internal
 
-# Credentials
+# All secrets should be stored under .configure-files
+# Everything without a .enc extension is ignored
+.configure-files/*
+!.configure-files/*.enc
+
+# Ignoring old locations to be sure they aren't commited accidentally
 WordPress/Credentials/wpcom_app_credentials
 WordPress/Credentials/wpcom_alpha_app_credentials
 WordPress/Credentials/wpcom_internal_app_credentials

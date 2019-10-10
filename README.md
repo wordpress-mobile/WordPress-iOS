@@ -20,8 +20,8 @@ In order to login to WordPress.com using the app:
 1. Create an application at https://developer.wordpress.com/apps/.
 1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information. 
-1. `cp WordPress/Credentials/wpcom_app_credentials-example WordPress/Credentials/wpcom_app_credentials` to copy the sample credentials file to your home folder.
-1. Paste `Client ID` and `Client Secret` from the app you created into `WPCOM_APP_ID` and `WPCOM_APP_SECRET` in `WordPress/Credentials/wpcom_app_credentials`.
+1. `cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/wpcom_app_credentials` to copy the sample credentials file to your home folder.
+1. Paste `Client ID` and `Client Secret` from the app you created into `WPCOM_APP_ID` and `WPCOM_APP_SECRET` in `.configure-files/wpcom_app_credentials`.
 1. Recompile and run the app on a device or an simulator.
 
 You can only log in with the WordPress.com account that you used to create the WordPress application.
@@ -79,7 +79,7 @@ After you created an application you will have an associated a client ID and a c
 
 In order to use these details, you'll need to create a credential file in your build machine. Start by copying the sample credentials file in your local repo by doing this:
 
-`cp WordPress/Credentials/wpcom_app_credentials-example WordPress/Credentials/wpcom_app_credentials`
+`cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/wpcom_app_credentials`
 
 Then edit the `WordPress/Credentials/wpcom_app_credentials-example` file and change the `WPCOM_APP_ID` and `WPCOM_APP_SECRET` fields to the values you got for your app.
 
