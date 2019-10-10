@@ -152,10 +152,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         tableView.estimatedRowHeight = 500
 
         displayEmptyViewIfNecessary()
-
-        if !displayingEmptyView && !asyncLoadingActivated {
-            displayLoadingViewIfNecessary()
-        }
+        displayLoadingViewIfNecessary()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -606,8 +603,11 @@ extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate 
 
 extension SiteStatsInsightsTableViewController: NoResultsViewHost {
     private func displayLoadingViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
-            return
+
+        guard !displayingEmptyView,
+            !asyncLoadingActivated,
+            tableHandler.viewModel.sections.isEmpty else {
+                return
         }
 
         configureAndDisplayNoResults(on: tableView,
