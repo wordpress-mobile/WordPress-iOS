@@ -27,27 +27,27 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'b8c53761b89a092ac690a90f1d33bd800a9025a6'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'b8c53761b89a092ac690a90f1d33bd800a9025a6'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '366c07b1fac843d265390aef9c08e225e78d630d'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '366c07b1fac843d265390aef9c08e225e78d630d'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    ## pod 'WordPress-Aztec-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.9.0'
+    ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
+    pod 'WordPress-Editor-iOS', '~> 1.10.1'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.3.5'
+    pod 'WordPressUI', '~> 1.4-beta.1'
 
     ## for development:
-    ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
+    # pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'fix/fancy-alert-dark-mode'
+    # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'update-fancy-button-style'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.0'
+    pod 'WordPressKit', '~> 4.5.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'a06182b86d3c8542c16ce38c765769e1d50b0d5f'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -176,9 +176,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.0-beta.3'
+    pod 'WordPressAuthenticator', '~> 1.10.1-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fancy-button-border-style'
 
     aztec
     wordpress_ui

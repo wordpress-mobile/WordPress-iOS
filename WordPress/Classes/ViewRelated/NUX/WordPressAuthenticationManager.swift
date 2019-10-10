@@ -34,9 +34,9 @@ class WordPressAuthenticationManager: NSObject {
                                                                 enableSignInWithApple: FeatureFlag.signInWithApple.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
-                                                primaryNormalBorderColor: .primaryButtonBorder,
+                                                primaryNormalBorderColor: nil,
                                                 primaryHighlightBackgroundColor: .primaryButtonDownBackground,
-                                                primaryHighlightBorderColor: .primaryButtonDownBorder,
+                                                primaryHighlightBorderColor: nil,
                                                 secondaryNormalBackgroundColor: .secondaryButtonBackground,
                                                 secondaryNormalBorderColor: .secondaryButtonBorder,
                                                 secondaryHighlightBackgroundColor: .secondaryButtonDownBackground,

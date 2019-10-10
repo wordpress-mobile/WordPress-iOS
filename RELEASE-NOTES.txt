@@ -1,3 +1,6 @@
+13.5
+-----
+ 
 13.4
 -----
 * Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account.
@@ -6,6 +9,9 @@
 * Share Extension: Fixed the text view content inset
 
 * Universal links: Pass back to Safari if we can't handle a URL.
+* Sign In With Apple: fixed issue with re-logging in on an existing WP account.
+* Block editor: Fix a bug on iOS 13.0 were tapping on a link opens Safari
+* Block editor: Fix a link editing issue, where trying to add a empty link at the start of another link would remove the existing link.
  
 13.3
 -----
@@ -14,6 +20,7 @@
 * Block editor: Tapping on empty editor area now always inserts new block at end of post
 * Block editor: Fixed a performance issue that caused a freeze in the editor with long text content.
 * Dark Mode: Fixed colors in rich notifications
+* Reader: Fixed issue with links opening while scrolling in reader posts and comments. 
 
 13.2
 -----
