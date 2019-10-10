@@ -658,7 +658,8 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
         configureAndDisplayNoResults(on: tableView,
                                      title: NoResultConstants.noInsightsTitle,
                                      subtitle: NoResultConstants.noInsightsSubtitle,
-                                     buttonTitle: NoResultConstants.manageInsightsButtonTitle) { [weak self] noResults in
+                                     buttonTitle: NoResultConstants.manageInsightsButtonTitle,
+                                     image: "wp-illustration-stats-outline") { [weak self] noResults in
                                         noResults.delegate = self
         }
     }
