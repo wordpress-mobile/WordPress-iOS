@@ -193,13 +193,8 @@ class SiteStatsInsightsViewModel: Observable {
         }
 
         if FeatureFlag.statsInsightsManagement.enabled {
-            // If only the 'customize' card is being displayed, there is no need to display the 'add stat' card.
-            let onlyCustomizeDisplayed = insightsToShow.contains(.customize) && insightsToShow.count == 1
-
-            if !onlyCustomizeDisplayed {
-                tableRows.append(TableFooterRow())
-                tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
-            }
+            tableRows.append(TableFooterRow())
+            tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
         }
 
         tableRows.append(TableFooterRow())
