@@ -102,6 +102,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     private let bottomMarginAttachment = ReaderPlaceholderAttachment()
 
+    private var lightTextViewAttributedString: NSAttributedString?
+    private var darkTextViewAttributedString: NSAttributedString?
+
     @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
@@ -299,6 +302,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // This is something we do to help with the resizing that can occur with
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
+
+        if #available(iOS 13.0, *) {
+            if previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) == true {
+                reloadGradientColors()
+                updateRichText()
+            }
+        }
     }
 
 
@@ -519,21 +529,29 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
 
         view.backgroundColor = .listBackground
+
+        titleLabel.backgroundColor = .basicBackground
+        titleBottomPaddingView.backgroundColor = .basicBackground
+        bylineView.backgroundColor = .basicBackground
+        bylineBottomPaddingView.backgroundColor = .basicBackground
+
         headerView.backgroundColor = .listForeground
         footerView.backgroundColor = .listForeground
         footerDivider.backgroundColor = .divider
 
-        #if XCODE11
         if #available(iOS 13.0, *) {
             if traitCollection.userInterfaceStyle == .dark {
                 attributionView.backgroundColor = .listBackground
             }
         }
-        #endif
 
+        reloadGradientColors()
+    }
+
+    fileprivate func reloadGradientColors() {
         bylineGradientViews.forEach({ view in
-            view.fromColor = .listBackground
-            view.toColor = UIColor.listBackground.withAlphaComponent(0.0)
+            view.fromColor = .basicBackground
+            view.toColor = UIColor.basicBackground.withAlphaComponent(0.0)
         })
     }
 
@@ -546,6 +564,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         configureFeaturedImage()
         configureTitle()
         configureByLine()
+        configureAttributedString()
         configureRichText()
         configureDiscoverAttribution()
         configureTag()
@@ -750,22 +769,45 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         guard let post = post else {
             return
         }
+
         textView.isPrivate = post.isPrivate()
         textView.content = post.contentForDisplay()
 
-        // TODO: Get attributed string
-        // Modify the attributed string. Add top and bottom embeds
-        // Ensure formatting for embeds.
-        // Assign attributed string to textView.
-        // Besure that embed bounds are updated.
-        let attrStr = WPRichContentView.formattedAttributedStringForString(post.contentForDisplay())
-        let mAttrStr = NSMutableAttributedString(attributedString: attrStr)
+        updateRichText()
+        updateTextViewMargins()
+    }
+
+    private func updateRichText() {
+        guard let post = post else {
+            return
+        }
+
+        if #available(iOS 13, *) {
+            let isDark = traitCollection.userInterfaceStyle == .dark
+            textView.attributedText = isDark ? darkTextViewAttributedString : lightTextViewAttributedString
+        } else {
+            let attrStr = WPRichContentView.formattedAttributedStringForString(post.contentForDisplay())
+            textView.attributedText = attributedString(with: attrStr)
+        }
+    }
+
+    private func configureAttributedString() {
+        if #available(iOS 13, *), let post = post {
+            let light = WPRichContentView.formattedAttributedString(for: post.contentForDisplay(), style: .light)
+            let dark = WPRichContentView.formattedAttributedString(for: post.contentForDisplay(), style: .dark)
+            lightTextViewAttributedString = attributedString(with: light)
+            darkTextViewAttributedString = attributedString(with: dark)
+        }
+    }
+
+    private func attributedString(with attributedString: NSAttributedString) -> NSAttributedString {
+        let mAttrStr = NSMutableAttributedString(attributedString: attributedString)
 
         // Ensure the starting paragraph style is applied to the topMarginAttachment else the
         // first paragraph might not have the correct line height.
         var paraStyle = NSParagraphStyle.default
-        if attrStr.length > 0 {
-            if let pstyle = attrStr.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
+        if attributedString.length > 0 {
+            if let pstyle = attributedString.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
                 paraStyle = pstyle
             }
         }
@@ -774,11 +816,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         mAttrStr.addAttributes([.paragraphStyle: paraStyle], range: NSRange(location: 0, length: 1))
         mAttrStr.append(NSAttributedString(attachment: bottomMarginAttachment))
 
-        textView.attributedText = mAttrStr
-
-        updateTextViewMargins()
+        return mAttrStr
     }
-
 
     fileprivate func configureDiscoverAttribution() {
         if post?.sourceAttributionStyle() == SourceAttributionStyle.none {
@@ -890,7 +929,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         if likeButton.isSelected {
             // Prep a mask to hide the likeButton's image, since changes to visiblility and alpha are ignored
             let mask = UIView(frame: frame)
-            mask.backgroundColor = view.backgroundColor
+            mask.backgroundColor = footerView.backgroundColor
             likeButton.addSubview(mask)
             likeButton.bringSubviewToFront(imageView)
 
@@ -1355,12 +1394,6 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             let frame = textView.frameForTextInRange(characterRange)
             let shareController = PostSharingController()
             shareController.shareURL(url: URL as NSURL, fromRect: frame, inView: textView, inViewController: self)
-        } else if readerLinkRouter.canHandle(url: URL) {
-            readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
-        } else if URL.isWordPressDotComPost {
-            presentReaderDetailViewControllerWithURL(URL)
-        } else {
-            presentWebViewControllerWithURL(URL)
         }
         return false
     }
@@ -1379,6 +1412,16 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             presentWebViewControllerWithURL(linkURL as URL)
         } else if let staticImage = image.imageView.image {
             presentFullScreenImage(with: staticImage)
+        }
+    }
+
+    func interactWith(URL: URL) {
+        if readerLinkRouter.canHandle(url: URL) {
+            readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
+        } else if URL.isWordPressDotComPost {
+            presentReaderDetailViewControllerWithURL(URL)
+        } else {
+            presentWebViewControllerWithURL(URL)
         }
     }
 }

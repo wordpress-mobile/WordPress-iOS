@@ -20,9 +20,8 @@ In order to login to WordPress.com using the app:
 1. Create an application at https://developer.wordpress.com/apps/.
 1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information. 
-1. `mkdir -p ~/.mobile-secrets/iOS/WPiOS/` to create a place to store app credentials.
-1. `cp ./WordPress/Credentials/wpcom_app_credentials.txt ~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials` to copy the sample credentials file to your home folder.
-1. Paste `Client ID` and `Client Secret` from the app you created into `WPCOM_APP_ID` and `WPCOM_APP_SECRET` in `~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials`.
+1. `cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/wpcom_app_credentials` to copy the sample credentials file to your home folder.
+1. Paste `Client ID` and `Client Secret` from the app you created into `WPCOM_APP_ID` and `WPCOM_APP_SECRET` in `.configure-files/wpcom_app_credentials`.
 1. Recompile and run the app on a device or an simulator.
 
 You can only log in with the WordPress.com account that you used to create the WordPress application.
@@ -78,13 +77,11 @@ When creating your application, you should select "Native client" for the applic
 
 After you created an application you will have an associated a client ID and a client secret key. These details will be used to authenticate your application and verify that the API calls being made are valid. 
 
-In order to use these details, you'll need to create a credential file in your build machine. Start by copying the sample credentials file to your home folder by doing this:
+In order to use these details, you'll need to create a credential file in your build machine. Start by copying the sample credentials file in your local repo by doing this:
 
-` mkdir -p ~/.mobile-secrets/iOS/WPiOS/ `
+`cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/wpcom_app_credentials`
 
-` cp ./WordPress/Credentials/wpcom_app_credentials.txt ~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials `
-
-Then edit the `~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials` file and change the `WPCOM_APP_ID` and `WPCOM_APP_SECRET` fields to the values you got for your app.
+Then edit the `WordPress/Credentials/wpcom_app_credentials-example` file and change the `WPCOM_APP_ID` and `WPCOM_APP_SECRET` fields to the values you got for your app.
 
 Then you can compile and run the app on a simulator and log in with a WordPress.com account.  Note that authenticating to WordPress.com via Google is not supported in development builds of the app, only in the official release.
 

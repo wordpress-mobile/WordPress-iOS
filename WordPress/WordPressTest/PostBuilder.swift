@@ -6,12 +6,25 @@ class PostBuilder {
 
     var post: Post!
 
+    private static func buildPost(context: NSManagedObjectContext) -> Post {
+        let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
+        blog.xmlrpc = "http://example.com/xmlrpc.php"
+        blog.url = "http://example.com"
+        blog.username = "test"
+        blog.password = "test"
+
+        let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
+        post.blog = blog
+
+        return post
+    }
+
     init() {
-        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: setUpInMemoryManagedObjectContext()) as? Post
+        post = PostBuilder.buildPost(context: setUpInMemoryManagedObjectContext())
     }
 
     init(_ context: NSManagedObjectContext) {
-        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as? Post
+        post = PostBuilder.buildPost(context: context)
     }
 
     func published() -> PostBuilder {
@@ -79,19 +92,33 @@ class PostBuilder {
         return self
     }
 
-    func with(image: String) -> PostBuilder {
+    func with(image: String, status: MediaRemoteStatus? = nil) -> PostBuilder {
         guard let context = post.managedObjectContext else {
             return self
         }
 
         guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as? Media else {
-             return self
+            return self
         }
         media.localURL = image
         media.localThumbnailURL = "thumb-\(image)"
+        media.blog = post.blog
+
+        if let status = status {
+            media.remoteStatus = status
+        }
 
         media.addPostsObject(post)
         post.addMediaObject(media)
+
+        return self
+    }
+
+    func with(media: [Media]) -> PostBuilder {
+        for item in media {
+             item.blog = post.blog
+        }
+        post.media = Set(media)
 
         return self
     }

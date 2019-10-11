@@ -22,6 +22,7 @@ class PostingActivityDay: UIView, NibLoadable {
         visible = dayData != nil
         active = delegate != nil
         self.delegate = delegate
+        backgroundColor = .clear
         configureButton()
     }
 

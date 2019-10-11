@@ -139,18 +139,20 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                              forBlog:blog
                        purgeExisting:YES
                    completionHandler:^{
-                       [[self class] stopSyncingCommentsForBlog:blogID];
-                       
-                       blogInContext.lastCommentsSync = [NSDate date];
-                       [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                       
-                       if (success) {
-                           // Note:
-                           // We'll assume that if the requested page size couldn't be filled, there are no
-                           // more comments left to retrieve.
-                           BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
-                           success(hasMore);
-                       }
+                     [[self class] stopSyncingCommentsForBlog:blogID];
+
+                     [self.managedObjectContext performBlock:^{
+                         blogInContext.lastCommentsSync = [NSDate date];
+                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                             if (success) {
+                                 // Note:
+                                 // We'll assume that if the requested page size couldn't be filled, there are no
+                                 // more comments left to retrieve.
+                                 BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
+                                 success(hasMore);
+                             }
+                         }];
+                     }];
                    }];
              }
          }];
@@ -319,50 +321,59 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                 failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
-    CommentServiceRemoteREST *service = [self restRemoteForSite:post.siteID];
-    [service syncHierarchicalCommentsForPost:post.postID
-                                        page:page
-                                      number:WPTopLevelHierarchicalCommentsPerPage
-                                     success:^(NSArray *comments) {
-                                         [self.managedObjectContext performBlock:^{
-                                             NSError *error;
-                                             ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-                                             if (!aPost) {
+    NSNumber *siteID = post.siteID;
+    NSNumber *postID = post.postID;
+    [self.managedObjectContext performBlock:^{
+        CommentServiceRemoteREST *service = [self restRemoteForSite:siteID];
+        [service syncHierarchicalCommentsForPost:postID
+                                            page:page
+                                          number:WPTopLevelHierarchicalCommentsPerPage
+                                         success:^(NSArray *comments) {
+                                             [self.managedObjectContext performBlock:^{
+                                                 NSError *error;
+                                                 ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+                                                 if (!aPost) {
+                                                     if (failure) {
+                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                             failure(error);
+                                                         });
+                                                     }
+                                                     return;
+                                                 }
+
+                                                 [self mergeHierarchicalComments:comments forPage:page forPost:aPost onComplete:^(BOOL includesNewComments) {
+                                                     if (!success) {
+                                                         return;
+                                                     }
+
+                                                     [self.managedObjectContext performBlock:^{
+                                                         // There are no more comments when:
+                                                         // - There are fewer top level comments in the results than requested
+                                                         // - Page > 1, the number of top level comments matches those requested, but there are no new comments
+                                                         // We check this way because the API can return the last page of results instead
+                                                         // of returning zero results when the requested page is the last + 1.
+                                                         NSArray *parents = [self topLevelCommentsForPage:page forPost:aPost];
+                                                         BOOL hasMore = YES;
+                                                         if (([parents count] < WPTopLevelHierarchicalCommentsPerPage) || (page > 1 && !includesNewComments)) {
+                                                             hasMore = NO;
+                                                         }
+
+                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                             success([comments count], hasMore);
+                                                         });
+                                                     }];
+                                                 }];
+                                             }];
+                                         } failure:^(NSError *error) {
+                                             [self.managedObjectContext performBlock:^{
                                                  if (failure) {
-                                                     failure(error);
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         failure(error);
+                                                     });
                                                  }
-                                                 return;
-                                             }
-
-                                             BOOL includesNewComments = [self mergeHierarchicalComments:comments forPage:page forPost:aPost];
-
-                                             if (success) {
-                                                 // There are no more comments when:
-                                                 // - There are fewer top level comments in the results than requested
-                                                 // - Page > 1, the number of top level comments matches those requested, but there are no new comments
-                                                 // We check this way because the API can return the last page of results instead
-                                                 // of returning zero results when the requested page is the last + 1.
-                                                 NSArray *parents = [self topLevelCommentsForPage:page forPost:aPost];
-                                                 BOOL hasMore = YES;
-                                                 if (([parents count] < WPTopLevelHierarchicalCommentsPerPage) || (page > 1 && !includesNewComments)) {
-                                                     hasMore = NO;
-                                                 }
-
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     success([comments count], hasMore);
-                                                 });
-
-                                             }
+                                             }];
                                          }];
-                                     } failure:^(NSError *error) {
-                                         [self.managedObjectContext performBlock:^{
-                                             if (failure) {
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     failure(error);
-                                                 });
-                                             }
-                                         }];
-                                     }];
+    }];
 }
 
 - (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post
@@ -718,7 +729,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
 
     [self deleteUnownedComments];
-    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext withCompletionBlock:^{
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
         if (completion) {
             dispatch_async(dispatch_get_main_queue(), completion);
         }
@@ -864,10 +875,11 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-- (BOOL)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
+- (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post onComplete:(void (^)(BOOL includesNewComments))onComplete
 {
     if (![comments count]) {
-        return NO;
+        onComplete(NO);
+        return;
     }
 
     NSMutableArray *ancestors = [NSMutableArray array];
@@ -907,9 +919,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         post.commentCount = @([commentsToKeep count]);
     }
 
-    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
-
-    return newCommentCount > 0;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        onComplete(newCommentCount > 0);
+    }];
 }
 
 // Does not save context

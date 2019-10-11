@@ -35,6 +35,7 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var headerStackView: UIStackView!
     @IBOutlet private var rewindStackView: UIStackView!
     @IBOutlet private var contentStackView: UIStackView!
+    @IBOutlet private var containerView: UIView!
 
     @IBOutlet private var bottomConstaint: NSLayoutConstraint!
 
@@ -63,6 +64,10 @@ class ActivityDetailViewController: UIViewController {
         textLabel.textColor = .text
         summaryLabel.textColor = .textSubtle
 
+        roleLabel.textColor = .textSubtle
+        dateLabel.textColor = .textSubtle
+        timeLabel.textColor = .textSubtle
+
         rewindButton.setTitleColor(.primary, for: .normal)
         rewindButton.setTitleColor(.primaryDark, for: .highlighted)
     }
@@ -73,6 +78,7 @@ class ActivityDetailViewController: UIViewController {
         }
 
         view.backgroundColor = .listBackground
+        containerView.backgroundColor = .listForeground
 
         textLabel.isHidden = true
         textView.textContainerInset = .zero

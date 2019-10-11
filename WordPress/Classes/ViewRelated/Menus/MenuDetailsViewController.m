@@ -52,7 +52,8 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 {
     UITextField *textField = self.textField;
     textField.placeholder = NSLocalizedString(@"Menu Name", @"Menus placeholder text for the name field of a menu with no name.");
-    textField.textColor = [UIColor murielNeutral70];
+    textField.textColor = [UIColor murielText];
+    textField.tintColor = [UIColor murielListIcon];
     textField.adjustsFontForContentSizeCategory = YES;
     [self updateTextFieldFont];
     [textField addTarget:self action:@selector(hideTextFieldKeyboard) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -73,7 +74,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 {
     UIButton *trashButton = self.trashButton;
     [trashButton setTitle:nil forState:UIControlStateNormal];
-    trashButton.tintColor = [UIColor murielNeutral30];
+    trashButton.tintColor = [UIColor murielListIcon];
     [trashButton setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
     [trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     trashButton.backgroundColor = [UIColor clearColor];
@@ -88,7 +89,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     UIImage *image = [Gridicon iconOfType:GridiconTypePencil];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    imageView.tintColor = [UIColor murielNeutral30];
+    imageView.tintColor = [UIColor murielListIcon];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     _textFieldDesignIcon = imageView;
 
@@ -156,7 +157,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 
         self.doneButton.alpha = 1.0;
         self.textFieldDesignIcon.hidden = YES;
-        self.textFieldDesignView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+        self.textFieldDesignView.backgroundColor = [UIColor murielTertiaryBackground];
 
     } completion:nil];
 }

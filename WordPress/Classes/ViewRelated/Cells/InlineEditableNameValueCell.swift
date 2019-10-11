@@ -12,8 +12,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     enum Const {
         enum Color {
-            static let nameText = UIColor.neutral(.shade70)
-            static let valueText = UIColor.neutral(.shade40)
+            static let nameText = UIColor.text
+            static let valueText = UIColor.textSubtle
         }
     }
 
@@ -39,6 +39,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setValueTextFieldAsFirstResponder(_:))))
 
         valueTextField.textColor = Const.Color.valueText
+        valueTextField.tintColor = .textPlaceholder
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
         valueTextField.addTarget(self,
@@ -59,10 +60,12 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
+        textField.text = textField.text?.replacingOccurrences(of: " ", with: "\u{00a0}")
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: textField)
     }
 
     @objc func textEditingDidEnd(textField: UITextField) {
+        textField.text = textField.text?.replacingOccurrences(of: "\u{00a0}", with: " ")
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: textField)
     }
 

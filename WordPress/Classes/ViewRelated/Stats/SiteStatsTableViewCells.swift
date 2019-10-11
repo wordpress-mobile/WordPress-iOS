@@ -36,7 +36,7 @@ struct CellHeaderRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let title: String
+    let statSection: StatSection
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -45,7 +45,7 @@ struct CellHeaderRow: ImmuTableRow {
             return
         }
 
-        cell.configure(withTitle: title)
+        cell.configure(statSection: statSection)
     }
 }
 
@@ -66,6 +66,28 @@ struct TableFooterRow: ImmuTableRow {
 }
 
 // MARK: - Insights Rows
+
+struct InsightCellHeaderRow: ImmuTableRow {
+
+    typealias CellType = StatsCellHeader
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let statSection: StatSection
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
 
 struct CustomizeInsightsRow: ImmuTableRow {
 
@@ -256,6 +278,26 @@ struct AddInsightStatRow: ImmuTableRow {
 
 // MARK: - Period Rows
 
+struct PeriodEmptyCellHeaderRow: ImmuTableRow {
+
+    typealias CellType = StatsCellHeader
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure()
+    }
+}
+
 struct TopTotalsPeriodStatsRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell
@@ -420,7 +462,7 @@ struct PostStatsEmptyCellHeaderRow: ImmuTableRow {
             return
         }
 
-        cell.configure(withTitle: "", adjustHeightForPostStats: true)
+        cell.configure(statSection: .postStatsGraph)
     }
 }
 

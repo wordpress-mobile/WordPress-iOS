@@ -154,6 +154,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureSearchBar(searchController.searchBar)
         tableView.tableHeaderView = searchController.searchBar
+        tableView.backgroundView = UIView()
 
         let store = StoreContainer.shared.timezone
         storeReceipt = store.onChange { [weak self] in

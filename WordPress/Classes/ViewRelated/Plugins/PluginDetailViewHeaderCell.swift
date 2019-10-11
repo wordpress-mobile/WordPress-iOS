@@ -10,7 +10,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
     }
 
     open func configureCell(_ directoryEntry: PluginDirectoryEntry) {
-        contentView.backgroundColor = .neutral(.shade0)
+        contentView.backgroundColor = .listForeground
 
         if let banner = directoryEntry.banner {
             headerImageView?.isHidden = false
@@ -21,7 +21,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
         let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 40, height: 40))
         iconImageView?.downloadImage(from: directoryEntry.icon, placeholderImage: iconPlaceholder)
-        iconImageView?.backgroundColor = .neutral(.shade0)
+        iconImageView?.backgroundColor = .listForeground
         iconImageView?.tintColor = .neutral
 
         nameLabel?.text = directoryEntry.name

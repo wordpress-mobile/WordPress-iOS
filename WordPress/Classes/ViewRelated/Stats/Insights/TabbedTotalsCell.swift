@@ -40,6 +40,8 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
 
+    @IBOutlet private var labelsContainer: UIView!
+
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
     @IBOutlet weak var noResultsView: UIView!
@@ -155,6 +157,8 @@ private extension TabbedTotalsCell {
 private extension TabbedTotalsCell {
 
     func applyStyles() {
+        totalCountView.backgroundColor = .listForeground
+        labelsContainer.backgroundColor = .listForeground
         Style.configureCell(self)
         Style.configureLabelAsTotalCount(totalCountLabel)
         Style.configureViewAsSeparator(topSeparatorLine)

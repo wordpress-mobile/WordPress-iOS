@@ -1,10 +1,30 @@
 {
+  "project_name": "WordPress-iOS",
   "branch": "master",
-  "pinned_hash": "4f89780c8d2e3cfc5f0d4c7f0f5dc4abc4e786b3",
+  "pinned_hash": "2d96e08bb925edb8b6f1dbed6c8c2da7192ae692",
   "files_to_copy": [
-
+    {
+      "file": "iOS/WPiOS/wpcom_app_credentials",
+      "destination": ".configure-files/wpcom_app_credentials",
+      "encrypt": true
+    },
+    {
+      "file": "iOS/WPiOS/wpcom_alpha_app_credentials",
+      "destination": ".configure-files/wpcom_alpha_app_credentials",
+      "encrypt": true
+    },
+    {
+      "file": "iOS/WPiOS/wpcom_internal_app_credentials",
+      "destination": ".configure-files/wpcom_internal_app_credentials",
+      "encrypt": true
+    },
+    {
+      "file": "shared/google_cloud_keys.json",
+      "destination": ".configure-files/google_cloud_keys.json",
+      "encrypt": true
+    }
   ],
   "file_dependencies": [
-    "iOS/WPiOS/"
+
   ]
 }

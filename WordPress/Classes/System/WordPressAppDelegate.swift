@@ -6,10 +6,9 @@ import WordPressAuthenticator
 import WordPressComStatsiOS
 import WordPressShared
 import AlamofireNetworkActivityIndicator
+import AutomatticTracks
 
-#if !XCODE11
 import ZendeskCoreSDK
-#endif
 
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -40,7 +39,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         //
         // We're leaving as-is for now to avoid digressing.
         let uploaders: [Uploader] = [
-            MediaCoordinator.shared,
+            // Ideally we should be able to retry uploads of standalone media to the media library, but the truth is
+            // that uploads started from the MediaCoordinator are currently not updating their parent post references
+            // very well.  For this reason I'm disabling automated upload retries that don't start from PostCoordinator.
+            //
+            // MediaCoordinator.shared,
             PostCoordinator.shared
         ]
 
@@ -79,6 +82,17 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
+        let queue = DispatchQueue(label: "asd", qos: .background)
+        let deviceInformation = TracksDeviceInformation()
+
+        queue.async {
+            let height = deviceInformation.statusBarHeight
+            let orientation = deviceInformation.orientation!
+
+            print("Height: \(height); orientation: \(orientation)")
+        }
+
+
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         showWelcomeScreenIfNeeded(animated: false)
         setupPingHub()
@@ -87,6 +101,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         disableAnimationsForUITests(application)
 
         PushNotificationsManager.shared.deletePendingLocalNotifications()
+
+        if #available(iOS 13, *) {
+            startObservingAppleIDCredentialRevoked()
+        }
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         return true
@@ -131,6 +149,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
+
+        // This is done here so the check is done on app launch and app switching.
+        if #available(iOS 13, *) {
+            checkAppleIDCredentialState()
+        }
     }
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -206,13 +229,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
 
-#if DEBUG
+        #if DEBUG
         KeychainTools.processKeychainDebugArguments()
-        #if !XCODE11
-            CoreLogger.enabled = true
-            CoreLogger.logLevel = .debug
+        CoreLogger.enabled = true
+        CoreLogger.logLevel = .debug
         #endif
-#endif
 
         ZendeskUtils.setup()
 
@@ -234,6 +255,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Deferred tasks to speed up app launch
         DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.mergeDuplicateAccountsIfNeeded()
             MediaCoordinator.shared.refreshMediaStatus()
             PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
@@ -247,6 +269,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = WPTabBarController.sharedInstance()
 
         setupNoticePresenter()
+    }
+
+    private func mergeDuplicateAccountsIfNeeded() {
+        let context = ContextManager.shared.mainContext
+        context.perform {
+            AccountService(managedObjectContext: ContextManager.shared.mainContext).mergeDuplicatesIfNecessary()
+        }
     }
 
     private func setupPingHub() {
@@ -453,6 +482,7 @@ extension WordPressAppDelegate {
 
         appearance.bodyTextColor = .neutral(.shade70)
         appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
+        appearance.bodyBackgroundColor = .neutral(.shade0)
 
         appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
@@ -461,6 +491,8 @@ extension WordPressAppDelegate {
         appearance.topDividerColor = .neutral(.shade5)
         appearance.bottomDividerColor = .neutral(.shade0)
         appearance.headerBackgroundColor = .neutral(.shade0)
+
+        appearance.bottomBackgroundColor = .neutral(.shade0)
     }
 
     /// Setup: FancyButton's Appearance
@@ -470,9 +502,7 @@ extension WordPressAppDelegate {
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.primaryTitleColor = .white
         appearance.primaryNormalBackgroundColor = .primaryButtonBackground
-        appearance.primaryNormalBorderColor = .primaryButtonBorder
         appearance.primaryHighlightBackgroundColor = .primaryButtonDownBackground
-        appearance.primaryHighlightBorderColor = .primaryButtonDownBorder
 
         appearance.secondaryTitleColor = .text
         appearance.secondaryNormalBackgroundColor = .secondaryButtonBackground
@@ -563,11 +593,6 @@ extension WordPressAppDelegate {
         let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        let blogs = blogService.blogsForAllAccounts()
-
-        let accountService = AccountService(managedObjectContext: context)
-        let account = accountService.defaultWordPressComAccount()
 
         let detailedVersionNumber = Bundle(for: type(of: self)).detailedVersionNumber() ?? unknown
 
@@ -596,19 +621,7 @@ extension WordPressAppDelegate {
         DDLogInfo("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
         DDLogInfo("Launch options: \(String(describing: launchOptions ?? [:]))")
 
-        if let account = account,
-            let username = account.username,
-            let userID = account.userID {
-            DDLogInfo("wp.com account: \(username) (ID: \(userID)) (\(account.verificationStatus.rawValue))")
-        }
-
-        if let blogs = blogs as? [Blog], blogs.count > 0 {
-            DDLogInfo("All blogs on device:")
-            blogs.forEach({ DDLogInfo("\($0.logDescription())") })
-        } else {
-            DDLogInfo("No blogs configured on device.")
-        }
-
+        AccountHelper.logBlogsAndAccounts(context: context)
         DDLogInfo("===========================================================================")
     }
 
@@ -685,12 +698,20 @@ extension WordPressAppDelegate {
         if notification.object != nil {
             setupShareExtensionToken()
             configureNotificationExtension()
+
+            if #available(iOS 13, *) {
+                startObservingAppleIDCredentialRevoked()
+            }
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             showWelcomeScreenIfNeeded(animated: false)
+
+            if #available(iOS 13, *) {
+                stopObservingAppleIDCredentialRevoked()
+            }
         }
 
         toggleExtraDebuggingIfNeeded()
@@ -829,4 +850,84 @@ extension WordPressAppDelegate {
 
         SVProgressHUD.setFont(WPStyleGuide.fontForTextStyle(UIFont.TextStyle.headline, maximumPointSize: maximumPointSize))
     }
+}
+
+// MARK: - Apple Account Handling
+
+@available(iOS 13.0, *)
+extension WordPressAppDelegate {
+
+    func checkAppleIDCredentialState() {
+
+        // If not logged in, remove the Apple User ID from the keychain, if it exists.
+        guard AccountHelper.isLoggedIn else {
+            removeAppleIDFromKeychain()
+            return
+        }
+
+        // Get the Apple User ID from the keychain
+        let appleUserID: String
+        do {
+            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
+                                                                  andServiceName: WPAppleIDKeychainServiceName)
+        } catch {
+            DDLogInfo("checkAppleIDCredentialState: No Apple ID found.")
+            return
+        }
+
+        // Get the Apple User ID state. If not authorized, log out the account.
+        WordPressAuthenticator.shared.getAppleIDCredentialState(for: appleUserID) { [weak self] (state, error) in
+
+            DDLogDebug("checkAppleIDCredentialState: Apple ID state: \(state.rawValue)")
+
+            switch state {
+            case .revoked:
+                DDLogInfo("checkAppleIDCredentialState: Revoked Apple ID. User signed out.")
+                self?.logOutRevokedAppleAccount()
+            default:
+                // An error exists only for the notFound state.
+                // notFound is a valid state when logging in with an Apple account for the first time.
+                if let error = error {
+                    DDLogDebug("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
+                }
+                break
+            }
+        }
+    }
+
+    func startObservingAppleIDCredentialRevoked() {
+        WordPressAuthenticator.shared.startObservingAppleIDCredentialRevoked { [weak self] in
+            if AccountHelper.isLoggedIn {
+                DDLogInfo("Apple credentialRevokedNotification received. User signed out.")
+                self?.logOutRevokedAppleAccount()
+            }
+        }
+    }
+
+    func stopObservingAppleIDCredentialRevoked() {
+        WordPressAuthenticator.shared.stopObservingAppleIDCredentialRevoked()
+    }
+
+    func logOutRevokedAppleAccount() {
+        removeAppleIDFromKeychain()
+        logOutDefaultWordPressComAccount()
+    }
+
+    func logOutDefaultWordPressComAccount() {
+        DispatchQueue.main.async {
+            AccountHelper.logOutDefaultWordPressComAccount()
+        }
+    }
+
+    func removeAppleIDFromKeychain() {
+        do {
+            try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
+                                             andServiceName: WPAppleIDKeychainUsernameKey)
+        } catch let error as NSError {
+            if error.code != errSecItemNotFound {
+                DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
+            }
+        }
+    }
+
 }

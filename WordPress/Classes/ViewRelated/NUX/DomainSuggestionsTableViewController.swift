@@ -96,6 +96,16 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
         SVProgressHUD.dismiss()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 13, *) {
+            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                tableView.reloadData()
+            }
+        }
+    }
+
     /// Fetches new domain suggestions based on the provided string
     ///
     /// - Parameters:
@@ -253,10 +263,10 @@ extension DomainSuggestionsTableViewController {
         }
 
         cell.placeholder = searchFieldPlaceholder
+        cell.reloadTextfieldStyle()
         cell.delegate = self
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
-
         return cell
     }
 
@@ -376,5 +386,12 @@ extension DomainSuggestionsTableViewController: SearchTableViewCellDelegate {
             self?.searchSuggestions = suggestions
             self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
+    }
+}
+
+extension SearchTableViewCell {
+    fileprivate func reloadTextfieldStyle() {
+        textField.textColor = .text
+        textField.leftViewImage = UIImage(named: "icon-post-search")
     }
 }

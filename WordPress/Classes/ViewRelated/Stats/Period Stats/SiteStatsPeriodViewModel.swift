@@ -89,10 +89,7 @@ class SiteStatsPeriodViewModel: Observable {
         tableRows.append(contentsOf: searchTermsTableRows())
         tableRows.append(contentsOf: publishedTableRows())
         tableRows.append(contentsOf: videosTableRows())
-
-        if FeatureFlag.statsFileDownloads.enabled {
-            tableRows.append(contentsOf: fileDownloadsTableRows())
-        }
+        tableRows.append(contentsOf: fileDownloadsTableRows())
 
         tableRows.append(TableFooterRow())
 
@@ -147,7 +144,7 @@ private extension SiteStatsPeriodViewModel {
 
     func overviewTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: ""))
+        tableRows.append(PeriodEmptyCellHeaderRow())
 
         let periodSummary = store.getSummary()
         let summaryData = periodSummary?.summaryData ?? []
@@ -265,7 +262,7 @@ private extension SiteStatsPeriodViewModel {
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: StatSection.periodPostsAndPages.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.periodPostsAndPages))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                  dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
                                                  dataRows: postsAndPagesDataRows(),
@@ -304,7 +301,7 @@ private extension SiteStatsPeriodViewModel {
 
     func referrersTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: StatSection.periodReferrers.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.periodReferrers))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                  dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                  dataRows: referrersDataRows(),
@@ -344,7 +341,7 @@ private extension SiteStatsPeriodViewModel {
 
     func clicksTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: StatSection.periodClicks.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.periodClicks))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
                                                  dataSubtitle: StatSection.periodClicks.dataSubtitle,
                                                  dataRows: clicksDataRows(),
@@ -369,7 +366,7 @@ private extension SiteStatsPeriodViewModel {
 
     func authorsTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: StatSection.periodAuthors.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.periodAuthors))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
                                                  dataSubtitle: StatSection.periodAuthors.dataSubtitle,
                                                  dataRows: authorsDataRows(),
@@ -393,7 +390,7 @@ private extension SiteStatsPeriodViewModel {
 
     func countriesTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: StatSection.periodCountries.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.periodCountries))
         let map = countriesMap()
         if !map.data.isEmpty {
             tableRows.append(CountriesMapRow(countriesMap: map))
@@ -426,7 +423,7 @@ private extension SiteStatsPeriodViewModel {
 
     func searchTermsTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: StatSection.periodSearchTerms.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.periodSearchTerms))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
                                                  dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
                                                  dataRows: searchTermsDataRows(),
@@ -461,7 +458,7 @@ private extension SiteStatsPeriodViewModel {
 
     func publishedTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: StatSection.periodPublished.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.periodPublished))
         tableRows.append(TopTotalsNoSubtitlesPeriodStatsRow(dataRows: publishedDataRows(),
                                                             siteStatsPeriodDelegate: periodDelegate))
 
@@ -479,7 +476,7 @@ private extension SiteStatsPeriodViewModel {
 
     func videosTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: StatSection.periodVideos.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.periodVideos))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
                                                  dataSubtitle: StatSection.periodVideos.dataSubtitle,
                                                  dataRows: videosDataRows(),
@@ -500,7 +497,7 @@ private extension SiteStatsPeriodViewModel {
 
     func fileDownloadsTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: StatSection.periodFileDownloads.title))
+        tableRows.append(CellHeaderRow(statSection: StatSection.periodFileDownloads))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
                                                  dataSubtitle: StatSection.periodFileDownloads.dataSubtitle,
                                                  dataRows: fileDownloadsDataRows(),

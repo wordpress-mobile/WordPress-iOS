@@ -792,7 +792,10 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        tableView.displayGhostContent(options: ghostOptions)
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        tableView.displayGhostContent(options: ghostOptions, style: style)
         tableView.isScrollEnabled = false
         noResultsViewController.view.isHidden = true
     }
@@ -921,7 +924,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     fileprivate func uploadPost(_ apost: AbstractPost) {
-        PostCoordinator.shared.save(post: apost)
+        PostCoordinator.shared.save(apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {

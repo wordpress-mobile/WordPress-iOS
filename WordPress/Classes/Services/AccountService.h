@@ -101,6 +101,13 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (NSUInteger)numberOfAccounts;
 
 /**
+ Returns all accounts currently existing in core data.
+
+ @return An array of WPAccounts.
+ */
+- (NSArray<WPAccount *> *)allAccounts;
+
+/**
  Returns a WordPress.com account with the specified username, if it exists
 
  @param username the account's username

@@ -1,9 +1,3 @@
-13.0
------
-Je telefoon heeft een instelling voor de tijdzone. Je website gebruikt een andere. Waar zijn je sitestatistieken op gebaseerd? Is dat grote bezoekersaantal vanochtend geweest of vanmiddag? Antwoord: Je statistieken zijn nu gebaseerd op de tijdzone van je website.
-
-Consistente kleurenschema's met goed contrast zorgen voor een toegankelijke, intuïtieve app, die op zijn beurt zorgt voor blije gebruikers. Versie 13.0 is consistenter. Geniet van de blijheid!
-
-De blokeditor blijft steeds beter worden. Is dat volgens jou niet mogelijk? Laat ons dan eens de manieren opnoemen: Het wordt de eerste keer dat je een blokbericht* wilt beginnen automatisch ingeschakeld. Je kunt het per site in- en uitschakelen, waardoor iedere gebruiker de ervaring krijgt die ze willen. Blokken toevoegen vanuit de berichttitel laat een indicator 'blok hier toevoegen' zien om het aanmaken van inhoud te vereenvoudigen. Het toevoegen van nieuwe blokken deselecteert de berichttitel zodat de aandacht op het nieuwe blok gericht is.
-
-* tenzij je je hebt uitgeschreven in versie 12.9! We zijn geen monsters.
+* Na een recente ronde met verbeteringen, is de Blok-editor sneller en voelt vloeiender in de app.
+* Sommige van jullie hadden problemen met Donkere Mode op iPad's; we hebben het opgelost (gegroet, onuitgenodigde schittering!).
+* Je site bezoekers houden van berichten met media, dus hebben we de ervaring van het maken van ze stabieler gemaakt.

@@ -116,6 +116,7 @@ class SiteIconPickerPresenter: NSObject {
                         }
                         var uploadProgress: Progress?
                         mediaService.uploadMedia(media,
+                                                 automatedRetry: false,
                                                  progress: &uploadProgress,
                                                  success: {
                             WPAnalytics.track(.siteSettingsSiteIconUploaded)

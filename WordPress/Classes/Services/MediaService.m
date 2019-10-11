@@ -73,8 +73,9 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         }
         media.mediaType = exportable.assetMediaType;
         media.remoteStatus = MediaRemoteStatusProcessing;
+
         [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
-        [self.managedObjectContext save: nil];
+        [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     }];
     NSManagedObjectID *mediaObjectID = media.objectID;
     [self.managedObjectContext performBlock:^{
@@ -153,7 +154,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 - (BOOL)isValidFileInMedia:(Media *)media error:(NSError **)error {
     Blog *blog = media.blog;
-    if (media.absoluteLocalURL == nil) {
+    if (media.absoluteLocalURL == nil || ![media.absoluteLocalURL checkResourceIsReachableAndReturnError:nil]) {
         if (error){
             *error = [NSError errorWithDomain:MediaServiceErrorDomain
                                          code:MediaServiceErrorFileDoesNotExist
@@ -196,6 +197,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 }
 
 - (void)uploadMedia:(Media *)media
+     automatedRetry:(BOOL)automatedRetry
            progress:(NSProgress **)progress
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
@@ -220,6 +222,11 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
                 mediaInContext.error = customError;
+                
+                if (automatedRetry) {
+                    [mediaInContext incrementAutoUploadFailureCount];
+                }
+                
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                     if (failure) {
                         failure(customError);
@@ -247,6 +254,11 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
             mediaInContext.error = nil;
+            
+            if (!automatedRetry) {
+                [mediaInContext resetAutoUploadFailureCount];
+            }
+            
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
     }];
@@ -258,7 +270,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             if (!mediaInContext){
                 DDLogError(@"Error retrieving media object: %@", error);
                 if (failure){
-                    failure(error);
+                    failureBlock(error);
                 }
                 return;
             }
@@ -509,24 +521,6 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 #pragma mark - Getting media
 
-- (void)getFailedMedia:(void (^)( NSArray<Media *>* media))result {
-    [self.managedObjectContext performBlock:^{
-        NSString *entityName = NSStringFromClass([Media class]);
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        
-        request.predicate = [NSPredicate predicateWithFormat:@"remoteStatusNumber == %d", MediaRemoteStatusFailed];
-        
-        NSError *error = nil;
-        NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-        
-        if (!results) {
-            result(@[]);
-        } else {
-            result(results);
-        }
-    }];
-}
-
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
                 success:(void (^)(Media *media))success
                 failure:(void (^)(NSError *error))failure
@@ -548,7 +542,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
            if (success){
                success(media);
            }
-           [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
        }];
     } failure:^(NSError *error) {
         if (failure) {
@@ -581,11 +575,11 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                         success:(void (^)(void))success
                         failure:(void (^)(NSError *error))failure
 {
-    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogObjectID = [blog objectID];
     [self.managedObjectContext performBlock:^{
         Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
         NSSet *originalLocalMedia = blogInContext.media;
+        id<MediaServiceRemote> remote = [self remoteForBlog:blogInContext];
         [remote getMediaLibraryWithSuccess:^(NSArray *media) {
                                    [self.managedObjectContext performBlock:^{
                                        [self mergeMedia:media forBlog:blogInContext baseMedia:originalLocalMedia completionHandler:success];
@@ -604,12 +598,16 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 - (NSInteger)getMediaLibraryCountForBlog:(Blog *)blog
                            forMediaTypes:(NSSet *)mediaTypes
 {
-    NSString *entityName = NSStringFromClass([Media class]);
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [self predicateForMediaTypes:mediaTypes blog:blog];
-    NSError *error;
-    NSArray *mediaAssets = [self.managedObjectContext executeFetchRequest:request error:&error];
-    return mediaAssets.count;
+    __block NSInteger assetsCount;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSString *entityName = NSStringFromClass([Media class]);
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+        request.predicate = [self predicateForMediaTypes:mediaTypes blog:blog];
+        NSError *error;
+        NSArray *mediaAssets = [self.managedObjectContext executeFetchRequest:request error:&error];
+        assetsCount = mediaAssets.count;
+    }];
+    return assetsCount;
 }
 
 - (void)getMediaLibraryServerCountForBlog:(Blog *)blog
@@ -780,7 +778,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             [self.managedObjectContext deleteObject:deleteMedia];
         }
     }
-    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     if (completion) {
         completion();
     }

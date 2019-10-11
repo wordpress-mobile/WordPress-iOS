@@ -13,7 +13,7 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.7-beta.1'
+    pod 'WordPressShared', '~> 1.8.7'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -27,27 +27,27 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'b8c53761b89a092ac690a90f1d33bd800a9025a6'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'b8c53761b89a092ac690a90f1d33bd800a9025a6'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '366c07b1fac843d265390aef9c08e225e78d630d'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '366c07b1fac843d265390aef9c08e225e78d630d'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    ## pod 'WordPress-Aztec-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.8.1'
+    ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
+    pod 'WordPress-Editor-iOS', '~> 1.10.1'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.3.4'
+    pod 'WordPressUI', '~> 1.4-beta.1'
 
     ## for development:
-    ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
+    # pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'change_layout_margins_uiview_helper'
+    # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'update-fancy-button-style'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.0-beta.2'
+    pod 'WordPressKit', '~> 4.5.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'a06182b86d3c8542c16ce38c765769e1d50b0d5f'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -142,7 +142,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.11.0'
+    gutenberg :commit => '9c1cfb830bdb3411fe8964539bec812b099589f1'
 
     ## Third party libraries
     ## =====================
@@ -155,18 +155,18 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSDK', '3.0.1'
+    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.1-swift5.1-GM'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
-    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.1.1'
+    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
 
     ## Automattic libraries
     ## ====================
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4'
+    pod 'Automattic-Tracks-iOS', '~> 0.4.2'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'a15db91a24499913affae84243d45be0e353472a'
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => '0cc8960098791cfe1b02914b15a662af20b60389'
 
     pod 'NSURL+IDN', '0.3'
 
@@ -176,9 +176,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.8.0-beta.12'
+    pod 'WordPressAuthenticator', '~> 1.10.1-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'nux-dark-mode'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fancy-button-border-style'
 
     aztec
     wordpress_ui
@@ -191,23 +191,7 @@ target 'WordPress' do
     end
 
     
-    post_install do
-      
-        ## Append SDKVersions.xcconfig contents to WordPressAuthenticator config files
-        Dir.glob("Pods/Target Support Files/WordPressAuthenticator/*.xcconfig") do |xc_config_filename|
-          
-          ## Get WPAuth config file
-          xcconfig_path = "#{Dir.pwd}/#{xc_config_filename}"
-          xc_config = File.read(xcconfig_path)
-
-          ## Get WPiOS config file
-          custom_xcconfig_path = "#{Dir.pwd}/config/SDKVersions.xcconfig"
-          custom_xc_config = File.read(custom_xcconfig_path)
-
-          ## Write back to WPAuth config file, appending both configs.
-          File.open(xcconfig_path, 'w') { |file| file << xc_config << custom_xc_config }
-        end
-      
+    post_install do      
       
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
@@ -225,6 +209,12 @@ target 'WordPress' do
                              color: #1a1a1a;
                              margin: 20px;
                            }
+                          @media (prefers-color-scheme: dark) {
+                           body {
+                            background: #1a1a1a;
+                            color: white;
+                           }
+                          }
                            pre {
                             white-space: pre-wrap;
                            }
@@ -238,7 +228,7 @@ target 'WordPress' do
                        </body>"
           
           ## Remove the <h1>, since we've promoted it to <title>
-          styled_html = styled_html.sub("<h1>#{acknowledgements}</h1>", '')
+          styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
           
           ## The glog library's license contains a URL that does not wrap in the web view,
           ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
@@ -351,7 +341,7 @@ target 'WordPressComStatsiOSTests' do
 end
 
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.5'
+  pod 'WordPressMocks', '~> 0.0.6'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
@@ -400,9 +390,7 @@ pre_install do |installer|
           next
         end
         static << pod
-        def pod.static_framework?;
-          true
-        end
+		pod.instance_variable_set(:@build_type, Pod::Target::BuildType.static_framework)
     end
     puts "Installing #{static.count} pods as static frameworks"
     puts "Installing #{dynamic.count} pods as dynamic frameworks"

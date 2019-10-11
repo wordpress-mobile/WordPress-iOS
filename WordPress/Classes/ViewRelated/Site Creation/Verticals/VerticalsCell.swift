@@ -23,7 +23,7 @@ final class VerticalsCell: UITableViewCell, SiteVerticalPresenter {
 
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        title.textColor = .neutral(.shade70)
+        title.textColor = .text
         title.adjustsFontForContentSizeCategory = true
     }
 }
