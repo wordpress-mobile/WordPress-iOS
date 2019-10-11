@@ -301,7 +301,7 @@
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
         static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
-        static let addCard = NSLocalizedString("Add new stats card", comment: "Label for action to add a new Insight.")
+        static let addCard = NSLocalizedString("Add stats card", comment: "Label for action to add a new Insight.")
     }
 
     struct DetailsTitles {
