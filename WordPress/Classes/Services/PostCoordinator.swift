@@ -72,14 +72,24 @@ class PostCoordinator: NSObject {
     }
 
     func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
-        prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
-            self.upload(post: post)
+        prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
+            switch result {
+            case .success(let post):
+                self.upload(post: post)
+            case .error(_):
+                break
+            }
         }
     }
 
     func autoSave(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
-        prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
-            self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
+        prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
+            switch result {
+            case .success(let post):
+                self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
+            case .error(_):
+                break
+            }
         }
     }
 
@@ -109,7 +119,7 @@ class PostCoordinator: NSObject {
     /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
-    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (AbstractPost) -> ()) {
+    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (Result<AbstractPost>) -> ()) {
         var post = postToSave
 
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
@@ -145,7 +155,7 @@ class PostCoordinator: NSObject {
                         // Let's check if media uploading is still going, if all finished with success then we can upload the post
                         if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
                             self.removeObserver(for: post)
-                            completion(post)
+                            completion(.success(post))
                         }
                     }
                     switch media.mediaType {
@@ -172,7 +182,7 @@ class PostCoordinator: NSObject {
             return
         }
 
-        completion(post)
+        completion(.success(post))
     }
 
     func cancelAnyPendingSaveOf(post: AbstractPost) {
