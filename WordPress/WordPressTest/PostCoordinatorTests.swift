@@ -79,6 +79,66 @@ class PostCoordinatorTests: XCTestCase {
         expect(post.autoUploadAttemptsCount).to(equal(0))
     }
 
+    func testReturnPostWhenServiceSucceed() {
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let post = PostBuilder(context).build()
+        postServiceMock.returnPost = post
+        var returnedPost: AbstractPost?
+
+        postCoordinator.save(post) { result in
+            switch result {
+            case .success(let post):
+                returnedPost = post
+            default:
+                break
+            }
+        }
+
+        expect(returnedPost).toEventuallyNot(beNil())
+    }
+
+    func testReturnErrorWhenServiceFails() {
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let post = PostBuilder(context).build()
+        postServiceMock.returnError = NSError(domain: "", code: 1, userInfo: nil)
+        var returnedError: Error?
+
+        postCoordinator.save(post) { result in
+            switch result {
+            case .error(let error):
+                returnedError = error
+            default:
+                break
+            }
+        }
+
+        expect(returnedError).toEventuallyNot(beNil())
+    }
+
+    func testReturnErrorWhenMediaFails() {
+        let postServiceMock = PostServiceMock()
+        let post = PostBuilder(context)
+            .with(image: "test.jpeg", status: .failed)
+            .with(remoteStatus: .local)
+            .build()
+        let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: NSError()))
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
+        var returnedError: Error?
+
+        postCoordinator.save(post) { result in
+            switch result {
+            case .error(let error):
+                returnedError = error
+            default:
+                break
+           }
+        }
+
+        expect(returnedError).toEventuallyNot(beNil())
+    }
+
     func testResumeWillAutoSaveUnconfirmedExistingPosts() {
         let postServiceMock = PostServiceMock(managedObjectContext: context)
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
@@ -201,8 +261,19 @@ private class PostServiceMock: PostService {
     private(set) var didCallUploadPost = false
     private(set) var didCallAutoSave = false
 
+    var returnPost: AbstractPost?
+    var returnError: Error?
+
     override func uploadPost(_ post: AbstractPost, success: ((AbstractPost) -> Void)?, failure: @escaping (Error?) -> Void) {
         didCallUploadPost = true
+
+        if let post = returnPost {
+            success?(post)
+        }
+
+        if let error = returnError {
+            failure(error)
+        }
     }
 
     override func autoSave(_ post: AbstractPost, success: ((AbstractPost, String) -> Void)?, failure: @escaping (Error?) -> Void) {

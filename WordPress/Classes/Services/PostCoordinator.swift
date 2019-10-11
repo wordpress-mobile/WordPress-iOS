@@ -71,13 +71,13 @@ class PostCoordinator: NSObject {
         return isPushingAllPendingMedia
     }
 
-    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
+    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false, completion: ((Result<AbstractPost>) -> ())? = nil) {
         prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
             switch result {
             case .success(let post):
-                self.upload(post: post)
-            case .error(_):
-                break
+                self.upload(post: post, completion: completion)
+            case .error(let error):
+                completion?(.error(error))
             }
         }
     }
@@ -253,7 +253,7 @@ class PostCoordinator: NSObject {
         backgroundService.refreshPostStatus()
     }
 
-    private func upload(post: AbstractPost) {
+    private func upload(post: AbstractPost, completion: ((Result<AbstractPost>) -> ())? = nil) {
         mainService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
@@ -261,9 +261,13 @@ class PostCoordinator: NSObject {
 
             let model = PostNoticeViewModel(post: uploadedPost)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+
+            completion?(.success(uploadedPost))
         }, failure: { error in
             let model = PostNoticeViewModel(post: post)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+
+            completion?(.error(error ?? SavingError.unknown))
 
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })
@@ -419,5 +423,6 @@ extension PostCoordinator {
 extension PostCoordinator {
     enum SavingError: Error {
         case mediaFailure
+        case unknown
     }
 }
