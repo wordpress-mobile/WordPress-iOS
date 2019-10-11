@@ -350,6 +350,13 @@ private extension SiteStatsInsightsTableViewController {
         UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
 
+    // MARK: - Customize Card Management
+
+    func dismissCustomizeCard() {
+        hideCustomizeCard = true
+        removeCustomizeCard()
+    }
+
     func removeCustomizeCard() {
         insightsToShow = insightsToShow.filter { $0 != .customize }
     }
@@ -364,6 +371,8 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Insights Management
 
     func showAddInsightView() {
+        dismissCustomizeCard()
+
         let controller = AddInsightTableViewController(insightsDelegate: self,
                                                        insightsShown: insightsToShow.compactMap { $0.statSection })
         navigationController?.pushViewController(controller, animated: true)
@@ -520,8 +529,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func customizeDismissButtonTapped() {
-        hideCustomizeCard = true
-        removeCustomizeCard()
+        dismissCustomizeCard()
         updateView()
     }
 
