@@ -289,8 +289,7 @@ extension PostEditor where Self: UIViewController {
 
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
-                let action: PostEditorAction = (self.post.status == .draft) ? .saveAsDraft : .publish
-                self.publishPost(action: action, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+                self.publishPost(action: self.editorAction(), dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
         }
 
@@ -302,6 +301,14 @@ extension PostEditor where Self: UIViewController {
 
         alertController.popoverPresentationController?.barButtonItem = navigationBarManager.closeBarButtonItem
         present(alertController, animated: true, completion: nil)
+    }
+
+    private func editorAction() -> PostEditorAction {
+        guard post.status != .pending && post.status != .scheduled else {
+            return .save
+        }
+
+        return post.status == .draft ? .saveAsDraft : .publish
     }
 }
 
