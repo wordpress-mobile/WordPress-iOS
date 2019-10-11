@@ -109,7 +109,7 @@ class GutenbergViewController: UIViewController, PostEditor {
                                                         }
                                                         self.mediaInserterHelper.insertFromDevice(assets: phAsset, callback: { media in
                                                             guard let media = media,
-                                                                let (id, url) = media.first,
+                                                                let (id, url, _) = media.first,
                                                                 let mediaID = id,
                                                                 let mediaURLString = url,
                                                                 let mediaURL = URL(string: mediaURLString) else {
