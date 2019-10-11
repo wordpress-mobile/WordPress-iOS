@@ -6,6 +6,7 @@ class AddInsightTableViewController: UITableViewController {
 
     private weak var insightsDelegate: SiteStatsInsightsDelegate?
     private var insightsShown = [StatSection]()
+    private var selectedStat: StatSection?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -38,6 +39,15 @@ class AddInsightTableViewController: UITableViewController {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         tableView.accessibilityIdentifier = "Add Insight Table"
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if selectedStat == nil {
+            insightsDelegate?.addInsightDismissed?()
+        }
+
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -80,6 +90,7 @@ private extension AddInsightTableViewController {
 
     func rowActionFor(_ statSection: StatSection) -> ImmuTableAction {
         return { [unowned self] row in
+            self.selectedStat = statSection
             self.insightsDelegate?.addInsightSelected?(statSection)
             self.navigationController?.popViewController(animated: true)
         }
