@@ -1,5 +1,7 @@
 13.5
 -----
+
+* Block Editor: New "Media & Text" block available
  
 13.4
 -----
