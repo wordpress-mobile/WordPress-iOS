@@ -132,6 +132,7 @@ class PostCoordinator: NSObject {
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
             change(post: post, status: .failed)
+            completion(.error(SavingError.mediaFailure))
             return
         }
 
@@ -164,6 +165,7 @@ class PostCoordinator: NSObject {
                             switch result {
                             case .error:
                                 self?.change(post: post, status: .failed)
+                                completion(.error(SavingError.mediaFailure))
                             case .success(let value):
                                 media.remoteURL = value.videoURL.absoluteString
                                 successHandler()
@@ -174,6 +176,7 @@ class PostCoordinator: NSObject {
                     }
                 case .failed:
                     self.change(post: post, status: .failed)
+                    completion(.error(SavingError.mediaFailure))
                 default:
                     DDLogInfo("Post Coordinator -> Media state: \(state)")
                 }
@@ -410,5 +413,11 @@ extension PostCoordinator {
                 result(postsAndActions)
             }
         }
+    }
+}
+
+extension PostCoordinator {
+    enum SavingError: Error {
+        case mediaFailure
     }
 }
