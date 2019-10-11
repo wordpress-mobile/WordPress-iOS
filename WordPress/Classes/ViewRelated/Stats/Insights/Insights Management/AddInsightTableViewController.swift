@@ -4,7 +4,8 @@ class AddInsightTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    weak var insightsDelegate: SiteStatsInsightsDelegate?
+    private weak var insightsDelegate: SiteStatsInsightsDelegate?
+    private var insightsShown = [StatSection]()
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -21,8 +22,10 @@ class AddInsightTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    required convenience init() {
+    convenience init(insightsDelegate: SiteStatsInsightsDelegate, insightsShown: [StatSection]) {
         self.init(style: .grouped)
+        self.insightsDelegate = insightsDelegate
+        self.insightsShown = insightsShown
     }
 
     // MARK: - View
@@ -65,14 +68,13 @@ private extension AddInsightTableViewController {
     // MARK: - Table Sections
 
     func sectionForCategory(_ category: InsightsCategories) -> ImmuTableSection {
-        // TODO: set 'enabled' indicating whether the row can be selected or not
-        // depending on if it's already displayed in Insights.
-        let enabled = true
-
         return ImmuTableSection(headerText: category.title,
-                                rows: category.insights.map { AddInsightStatRow(title: $0.insightManagementTitle,
-                                                                                enabled: enabled,
-                                                                                action: enabled ? rowActionFor($0) : nil) }
+                                rows: category.insights.map {
+                                    let enabled = !insightsShown.contains($0)
+
+                                    return AddInsightStatRow(title: $0.insightManagementTitle,
+                                                             enabled: enabled,
+                                                             action: enabled ? rowActionFor($0) : nil) }
         )
     }
 

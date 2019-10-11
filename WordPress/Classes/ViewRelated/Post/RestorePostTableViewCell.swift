@@ -2,7 +2,11 @@ import UIKit
 import Gridicons
 
 class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, InteractivePostView {
-    @IBOutlet var postContentView: UIView!
+    @IBOutlet var postContentView: UIView! {
+        didSet {
+            postContentView.backgroundColor = .listForeground
+        }
+    }
     @IBOutlet var restoreLabel: UILabel!
     @IBOutlet var restoreButton: UIButton!
     @IBOutlet var topMargin: NSLayoutConstraint!

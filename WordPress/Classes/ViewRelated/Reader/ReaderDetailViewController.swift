@@ -929,7 +929,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         if likeButton.isSelected {
             // Prep a mask to hide the likeButton's image, since changes to visiblility and alpha are ignored
             let mask = UIView(frame: frame)
-            mask.backgroundColor = view.backgroundColor
+            mask.backgroundColor = footerView.backgroundColor
             likeButton.addSubview(mask)
             likeButton.bringSubviewToFront(imageView)
 
