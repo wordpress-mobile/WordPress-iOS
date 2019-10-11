@@ -5,22 +5,22 @@
   "files_to_copy": [
     {
       "file": "iOS/WPiOS/wpcom_app_credentials",
-      "destination": "WordPress/Credentials/wpcom_app_credentials",
+      "destination": ".configure-files/wpcom_app_credentials",
       "encrypt": true
     },
     {
       "file": "iOS/WPiOS/wpcom_alpha_app_credentials",
-      "destination": "WordPress/Credentials/wpcom_alpha_app_credentials",
+      "destination": ".configure-files/wpcom_alpha_app_credentials",
       "encrypt": true
     },
     {
       "file": "iOS/WPiOS/wpcom_internal_app_credentials",
-      "destination": "WordPress/Credentials/wpcom_internal_app_credentials",
+      "destination": ".configure-files/wpcom_internal_app_credentials",
       "encrypt": true
     },
     {
       "file": "shared/google_cloud_keys.json",
-      "destination": "Scripts/fastlane/google_cloud_keys.json",
+      "destination": ".configure-files/google_cloud_keys.json",
       "encrypt": true
     }
   ],
