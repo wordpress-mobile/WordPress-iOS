@@ -333,6 +333,7 @@
 		31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */; };
 		32542C0923495D5100C2139C /* ReaderRetryFailedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32542C0823495D5100C2139C /* ReaderRetryFailedImageView.swift */; };
 		32D05C9B234D63E500C2B05C /* ReaderRetryFailedImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32D05C9A234D63E500C2B05C /* ReaderRetryFailedImageView.xib */; };
+		32F0A8692352582E006868D9 /* ReaderRetryFailedImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F0A8682352582E006868D9 /* ReaderRetryFailedImageViewTests.swift */; };
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
 		37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EAAF4C1A11799A006D6306 /* CircularImageView.swift */; };
@@ -2428,6 +2429,7 @@
 		31FA16CC1A49B3C0003E1887 /* WordPress 25.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 25.xcdatamodel"; sourceTree = "<group>"; };
 		32542C0823495D5100C2139C /* ReaderRetryFailedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderRetryFailedImageView.swift; sourceTree = "<group>"; };
 		32D05C9A234D63E500C2B05C /* ReaderRetryFailedImageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRetryFailedImageView.xib; sourceTree = "<group>"; };
+		32F0A8682352582E006868D9 /* ReaderRetryFailedImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderRetryFailedImageViewTests.swift; sourceTree = "<group>"; };
 		33D5016BDA00B45DFCAF3818 /* Pods-WordPressNotificationServiceExtension.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationServiceExtension.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationServiceExtension/Pods-WordPressNotificationServiceExtension.release-internal.xcconfig"; sourceTree = "<group>"; };
 		368127CE6F1CA15EC198147D /* Pods-WordPressTodayWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticallyStackedButton.h; sourceTree = "<group>"; };
@@ -9097,6 +9099,7 @@
 				D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */,
 				748437ED1F1D4A7300E8DDAF /* RichContentFormatterTests.swift */,
 				E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */,
+				32F0A8682352582E006868D9 /* ReaderRetryFailedImageViewTests.swift */,
 			);
 			name = Reader;
 			sourceTree = "<group>";
@@ -11979,6 +11982,7 @@
 				D88A6492208D7A0A008AE9BC /* MockStockPhotosService.swift in Sources */,
 				B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
+				32F0A8692352582E006868D9 /* ReaderRetryFailedImageViewTests.swift in Sources */,
 				E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */,
 				7EC9FE0B22C627DB00C5A888 /* PostEditorAnalyticsSessionTests.swift in Sources */,
 				D88A64A0208D8B7D008AE9BC /* StockPhotosMediaGroupTests.swift in Sources */,
