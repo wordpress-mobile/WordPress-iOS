@@ -282,7 +282,7 @@ extension UIColor {
             return .systemGray6
         }
 
-        return .gray(.shade10)
+        return .gray(.shade0)
     }
 
     /// Note: these values are intended to match the iOS defaults
