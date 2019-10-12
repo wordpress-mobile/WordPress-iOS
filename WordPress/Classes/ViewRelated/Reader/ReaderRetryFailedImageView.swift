@@ -1,10 +1,12 @@
 import UIKit
 import Gridicons
 
+/// Responding to retry actions.
 protocol ReaderRetryFailedImageDelegate: AnyObject {
     func didTapRetry()
 }
 
+/// A view that represents a failed image download and includes a retry action.
 class ReaderRetryFailedImageView: UIView {
 
     // MARK: - Properties
@@ -29,7 +31,8 @@ class ReaderRetryFailedImageView: UIView {
 
     // MARK: - Initialization
 
-    static func loadFromNib() -> Self {
+    /// Override this method to use an alternative xib.
+    class func loadFromNib() -> Self {
         guard let retryView = Bundle.main.loadNibNamed("ReaderRetryFailedImageView", owner: nil, options: nil)?.first as? Self else {
             fatalError("ReaderRetryFailedImageView xib must exist. This is an error.")
         }
@@ -40,15 +43,16 @@ class ReaderRetryFailedImageView: UIView {
         super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .imageViewRetryBackground
-        textView.attributedText = contentForDisplay()
+        textView.attributedText = Self.contentForDisplay()
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapAction))
         addGestureRecognizer(tapGestureRecognizer)
     }
 
-    // MARK: - Private Helper Functions
+    // MARK: - Helper Functions
 
-    private func contentForDisplay() -> NSAttributedString {
+    /// Override this method to customize text view content.
+    class func contentForDisplay() -> NSAttributedString {
         let mutableAttributedString = NSMutableAttributedString()
 
         let textLocalizedString = NSLocalizedString("Image not loaded.", comment: "Message displayed in image area when a site image fails to load.")
@@ -65,7 +69,7 @@ class ReaderRetryFailedImageView: UIView {
 
     // MARK: - Action Handlers
 
-    @objc func tapAction() {
+    @objc private func tapAction() {
         delegate?.didTapRetry()
     }
 }
