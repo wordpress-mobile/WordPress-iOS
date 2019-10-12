@@ -7,7 +7,7 @@ protocol ReaderRetryFailedImageDelegate: AnyObject {
 }
 
 /// A view that represents a failed image download and includes a retry action.
-class ReaderRetryFailedImageView: UIView {
+class ReaderRetryFailedImageView: UIControl {
 
     // MARK: - Properties
 
@@ -45,8 +45,7 @@ class ReaderRetryFailedImageView: UIView {
         backgroundColor = .imageViewRetryBackground
         textView.attributedText = Self.contentForDisplay()
 
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapAction))
-        addGestureRecognizer(tapGestureRecognizer)
+        addTarget(self, action: #selector(tapAction), for: .touchUpInside)
     }
 
     // MARK: - Helper Functions
