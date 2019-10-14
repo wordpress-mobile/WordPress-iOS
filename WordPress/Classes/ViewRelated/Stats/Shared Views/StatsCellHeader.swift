@@ -36,10 +36,17 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
     }
 
     func prepareForVoiceOver() {
-        isAccessibilityElement = !(headerLabel.text?.isEmpty ?? true)
-        accessibilityElementsHidden = (headerLabel.text?.isEmpty ?? true)
-        accessibilityLabel = headerLabel.text
-        accessibilityTraits = .staticText
+        headerLabel.isAccessibilityElement = !(headerLabel.text?.isEmpty ?? true)
+        headerLabel.accessibilityElementsHidden = (headerLabel.text?.isEmpty ?? true)
+        headerLabel.accessibilityLabel = headerLabel.text
+        headerLabel.accessibilityTraits = .staticText
+
+        manageInsightImageView.isAccessibilityElement = false
+        manageInsightButton.isAccessibilityElement = !manageInsightButton.isHidden
+        manageInsightButton.accessibilityElementsHidden = manageInsightButton.isHidden
+        manageInsightButton.accessibilityTraits = .button
+        manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Accessibility label for button that displays Manage Insight options.")
+        manageInsightButton.accessibilityHint = NSLocalizedString("Select to manage this Insight.", comment: "Accessibility hint for Manage Insight button.")
     }
 }
 
