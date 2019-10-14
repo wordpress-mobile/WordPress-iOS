@@ -614,7 +614,7 @@ private extension StatsInsightsStore {
     }
 
     func shouldFetchFollowers() -> Bool {
-        return !isFetchingFollowers
+        return !isFetchingAllFollowers
     }
 
     func receivedAllCommentsInsight(_ allCommentsInsight: StatsCommentsInsight?, _ error: Error?) {
@@ -896,13 +896,21 @@ extension StatsInsightsStore {
         return mirror.children.compactMap { $0.value as? StoreFetchingStatus }.first { $0 == .loading } != nil
     }
 
-    var isFetchingFollowers: Bool {
+    var isFetchingAllFollowers: Bool {
         return state.allDotComFollowersStatus == .loading ||
                 state.allEmailFollowersStatus == .loading
     }
 
+    var allDotComFollowersStatus: StoreFetchingStatus {
+        return state.allDotComFollowersStatus
+    }
+
+    var allEmailFollowersStatus: StoreFetchingStatus {
+        return state.allEmailFollowersStatus
+    }
+
     var fetchingFollowersStatus: StoreFetchingStatus {
-        switch (state.allDotComFollowersStatus, state.allDotComFollowersStatus) {
+        switch (state.allDotComFollowersStatus, state.allEmailFollowersStatus) {
         case (let a, let b) where a == .loading || b == .loading:
             return .loading
         case (.error, .error):
