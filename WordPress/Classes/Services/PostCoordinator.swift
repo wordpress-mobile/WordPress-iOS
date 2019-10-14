@@ -87,7 +87,7 @@ class PostCoordinator: NSObject {
             switch result {
             case .success(let post):
                 self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
-            case .error(_):
+            case .error:
                 break
             }
         }
