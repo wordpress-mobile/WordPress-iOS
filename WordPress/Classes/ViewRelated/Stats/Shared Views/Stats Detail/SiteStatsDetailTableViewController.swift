@@ -178,11 +178,8 @@ private extension SiteStatsDetailTableViewController {
                                          CountriesMapRow.self]
         if asyncLoadingActivated {
             rows.append(contentsOf: [StatsErrorRow.self,
-                                     StatsGhostChartImmutableRow.self,
-                                     StatsGhostTwoColumnImmutableRow.self,
                                      StatsGhostTopImmutableRow.self,
-                                     StatsGhostTabbedImmutableRow.self,
-                                     StatsGhostPostingActivitiesImmutableRow.self])
+                                     StatsGhostDetailRow.self])
         }
         return rows
     }
@@ -285,7 +282,7 @@ private extension SiteStatsDetailTableViewController {
 extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
     func tabbedTotalsCellUpdated() {
-        applyTableUpdates()
+        updateStatSectionForFilterChange()
     }
 
     func displayWebViewWithURL(_ url: URL) {

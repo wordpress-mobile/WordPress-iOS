@@ -106,7 +106,7 @@ class SiteStatsDetailsViewModel: Observable {
     func storeIsFetching(statSection: StatSection) -> Bool {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
-            return insightsStore.isFetchingFollowers
+            return insightsStore.isFetchingAllFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             return insightsStore.isFetchingComments
         case .insightsTagsAndCategories:
@@ -158,20 +158,20 @@ class SiteStatsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
-
-            //fetchingFollowersStatus
-
-            let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
-            let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
-            let emailTabData = tabDataForFollowerType(.insightsFollowersEmail)
-
-            tableRows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [wpTabData, emailTabData],
-                                                            siteStatsDetailsDelegate: detailsDelegate,
-                                                            showTotalCount: true,
-                                                            selectedIndex: selectedIndex))
-
-            let dataRows = statSection == .insightsFollowersWordPress ? wpTabData.dataRows : emailTabData.dataRows
-            tableRows.append(contentsOf: tabbedRowsFrom(dataRows))
+            let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
+            return immuTable(for: status) {
+                var rows = [ImmuTableRow]()
+                let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
+                let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
+                let emailTabData = tabDataForFollowerType(.insightsFollowersEmail)
+                rows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [wpTabData, emailTabData],
+                                                           siteStatsDetailsDelegate: detailsDelegate,
+                                                           showTotalCount: true,
+                                                           selectedIndex: selectedIndex))
+                let dataRows = statSection == .insightsFollowersWordPress ? wpTabData.dataRows : emailTabData.dataRows
+                rows.append(contentsOf: tabbedRowsFrom(dataRows))
+                return rows
+            }
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
             let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
@@ -922,18 +922,29 @@ private extension SiteStatsDetailsViewModel {
         return StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
     }
 
-    func rows(for rowStatus: StoreFetchingStatus, rowsBlock: () -> [ImmuTableRow]) -> [ImmuTableRow] {
+    func immuTable(for rowStatus: StoreFetchingStatus, rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
         if !Feature.enabled(.statsAsyncLoading) {
-            return rowsBlock()
+            return ImmuTable(sections: [
+                ImmuTableSection(
+                    rows: rowsBlock())
+            ])
         }
+
+        var rows = [ImmuTableRow]()
 
         switch rowStatus {
         case .loading, .idle:
-            return []
+            rows.append(StatsGhostTopImmutableRow())
+            rows.append(contentsOf: (0...9).map { _ in StatsGhostDetailRow() })
         case .success:
-            return rowsBlock()
+            rows.append(contentsOf: rowsBlock())
         case .error:
-            return []
+            break
         }
+
+        return ImmuTable(sections: [
+            ImmuTableSection(
+                rows: rows)
+        ])
     }
 }
