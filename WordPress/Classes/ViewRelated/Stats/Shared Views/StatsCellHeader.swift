@@ -7,6 +7,7 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
 
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var manageInsightButton: UIButton!
+    @IBOutlet weak var manageInsightImageView: UIImageView!
     @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var stackViewHeightConstraint: NSLayoutConstraint!
 
@@ -66,14 +67,12 @@ private extension StatsCellHeader {
         guard FeatureFlag.statsInsightsManagement.enabled,
             let statSection = statSection,
             StatSection.allInsights.contains(statSection) else {
-                manageInsightButton.isHidden = true
+                showManageInsightButton(false)
                 return
         }
 
-        manageInsightButton.isHidden = false
-        manageInsightButton.tintColor = Style.manageInsightsButtonTintColor
-        manageInsightButton.setImage(Style.imageForGridiconType(.ellipsis, withTint: .darkGrey), for: .normal)
-        manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Action button to display manage insight options.")
+        showManageInsightButton()
+        manageInsightImageView.image = Style.imageForGridiconType(.ellipsis, withTint: .darkGrey)
     }
 
     // MARK: - Button Action
@@ -85,6 +84,11 @@ private extension StatsCellHeader {
         }
 
         siteStatsInsightsDelegate?.manageInsightSelected?(statSection, fromButton: sender)
+    }
+
+    func showManageInsightButton(_ show: Bool = true) {
+        manageInsightImageView.isHidden = !show
+        manageInsightButton.isHidden = !show
     }
 
 }
