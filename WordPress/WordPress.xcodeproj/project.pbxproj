@@ -1216,6 +1216,7 @@
 		9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */; };
 		9A5C854822B3E42800BEE7A3 /* CountriesMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */; };
 		9A5C854922B3E42800BEE7A3 /* CountriesMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */; };
+		9A73CB082350DE4C002EF20C /* StatsGhostSingleRowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A73CB072350DE4C002EF20C /* StatsGhostSingleRowCell.xib */; };
 		9A76C32F22AFDA2100F5D819 /* world-map.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9A76C32E22AFDA2100F5D819 /* world-map.svg */; };
 		9A8ECE0C2254A3260043C8DA /* JetpackLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE012254A3250043C8DA /* JetpackLoginViewController.swift */; };
 		9A8ECE0D2254A3260043C8DA /* JetpackLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A8ECE022254A3250043C8DA /* JetpackLoginViewController.xib */; };
@@ -3402,6 +3403,7 @@
 		9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUsernameViewController.swift; sourceTree = "<group>"; };
 		9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesMapCell.swift; sourceTree = "<group>"; };
 		9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CountriesMapCell.xib; sourceTree = "<group>"; };
+		9A73CB072350DE4C002EF20C /* StatsGhostSingleRowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostSingleRowCell.xib; sourceTree = "<group>"; };
 		9A76C32E22AFDA2100F5D819 /* world-map.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "world-map.svg"; sourceTree = "<group>"; };
 		9A8ECE012254A3250043C8DA /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
 		9A8ECE022254A3250043C8DA /* JetpackLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackLoginViewController.xib; sourceTree = "<group>"; };
@@ -4356,7 +4358,7 @@
 		FFB3132E204D59F400C177E7 /* WordPress 73.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 73.xcdatamodel"; sourceTree = "<group>"; };
 		FFB7B81D1A0012E80032E723 /* ApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiCredentials.m; sourceTree = "<group>"; };
 		FFC02B82222687BF00E64FDE /* GutenbergImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergImageLoader.swift; sourceTree = "<group>"; };
-		FFC245D91D8C2033007F7518 /* wpcom_app_credentials-example */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wpcom_app_credentials-example; sourceTree = "<group>"; };
+		FFC245D91D8C2033007F7518 /* wpcom_app_credentials-example */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "wpcom_app_credentials-example"; sourceTree = "<group>"; };
 		FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataService.m; sourceTree = "<group>"; };
@@ -7230,6 +7232,7 @@
 				9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */,
 				9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */,
 				9AC3C69A231543C2007933CD /* StatsGhostChartCell.xib */,
+				9A73CB072350DE4C002EF20C /* StatsGhostSingleRowCell.xib */,
 			);
 			path = GhostViews;
 			sourceTree = "<group>";
@@ -9875,6 +9878,7 @@
 				17E362EF22C41275000E0C79 /* wordpress_icon_40pt@2x.png in Resources */,
 				436D562D2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
+				9A73CB082350DE4C002EF20C /* StatsGhostSingleRowCell.xib in Resources */,
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
 				9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */,
 				17E3639F22C41DBA000E0C79 /* hot_pink_icon_20pt.png in Resources */,
