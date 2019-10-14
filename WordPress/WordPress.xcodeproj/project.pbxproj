@@ -3726,6 +3726,7 @@
 		CC7CB98622B28F4600642EE9 /* WelcomeScreenSignupComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreenSignupComponent.swift; sourceTree = "<group>"; };
 		CC8498D22241477F00DB490A /* TagsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsComponent.swift; sourceTree = "<group>"; };
 		CC84AB772354BB4E0061452F /* WordPressUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = WordPressUITests.xctestplan; sourceTree = "<group>"; };
+		CC84AB782354BC160061452F /* WordPress.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = WordPress.xctestplan; sourceTree = "<group>"; };
 		CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPUITestCredentials.swift; sourceTree = "<group>"; };
 		CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorNoticeComponent.swift; sourceTree = "<group>"; };
 		CC94FC692214532D002E5825 /* FancyAlertComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyAlertComponent.swift; sourceTree = "<group>"; };
@@ -8949,6 +8950,7 @@
 		E16AB92F14D978240047A2E5 /* WordPressTest */ = {
 			isa = PBXGroup;
 			children = (
+				CC84AB782354BC160061452F /* WordPress.xctestplan */,
 				E16AB93014D978240047A2E5 /* Supporting Files */,
 				B532ACD41DC3AE1F00FFFA57 /* Extensions */,
 				E16AB94414D9A13A0047A2E5 /* Mock Data */,
