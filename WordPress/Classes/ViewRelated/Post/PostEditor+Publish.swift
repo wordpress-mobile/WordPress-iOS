@@ -337,11 +337,13 @@ extension PostEditor where Self: UIViewController {
 
                 generator.notificationOccurred(.success)
             case .error(let error):
-                if !self.post.shouldAttemptAutoUpload {
-                    DDLogError("Error publishing post: \(error.localizedDescription)")
-                    ActionDispatcher.dispatch(NoticeAction.post(self.uploadFailureNotice(action: action)))
-                    generator.notificationOccurred(.error)
+                guard !self.post.shouldAttemptAutoUpload else {
+                    break
                 }
+
+                DDLogError("Error publishing post: \(error.localizedDescription)")
+                ActionDispatcher.dispatch(NoticeAction.post(self.uploadFailureNotice(action: action)))
+                generator.notificationOccurred(.error)
             }
 
             if dismissWhenDone {
