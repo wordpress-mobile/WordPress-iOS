@@ -90,8 +90,8 @@ enum InsightType: Int {
     @objc optional func customizeTryButtonTapped()
     @objc optional func showAddInsight()
     @objc optional func addInsightSelected(_ insight: StatSection)
+    @objc optional func addInsightDismissed()
     @objc optional func manageInsightSelected(_ insight: StatSection, fromButton: UIButton)
-
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
@@ -115,6 +115,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
     private var allSitesInsights = [SiteInsights]()
     private typealias SiteInsights = [String: [Int]]
 
+    private var viewNeedsUpdating = false
     private var displayingEmptyView = false
     private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoading)
 
@@ -164,6 +165,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         addViewModelListeners()
         viewModel?.refreshInsights()
     }
+
 }
 
 // MARK: - Private Extension
@@ -350,6 +352,13 @@ private extension SiteStatsInsightsTableViewController {
         UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
 
+    // MARK: - Customize Card Management
+
+    func dismissCustomizeCard() {
+        hideCustomizeCard = true
+        removeCustomizeCard()
+    }
+
     func removeCustomizeCard() {
         insightsToShow = insightsToShow.filter { $0 != .customize }
     }
@@ -364,6 +373,15 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Insights Management
 
     func showAddInsightView() {
+
+        if insightsToShow.contains(.customize) {
+            // The view needs to be updated to remove the Customize card.
+            // However, if it's done here, there is a weird animation before AddInsight is presented.
+            // Instead, set 'viewNeedsUpdating' so the view is updated when 'addInsightDismissed' is called.
+            viewNeedsUpdating = true
+            dismissCustomizeCard()
+        }
+
         let controller = AddInsightTableViewController(insightsDelegate: self,
                                                        insightsShown: insightsToShow.compactMap { $0.statSection })
         navigationController?.pushViewController(controller, animated: true)
@@ -520,8 +538,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func customizeDismissButtonTapped() {
-        hideCustomizeCard = true
-        removeCustomizeCard()
+        dismissCustomizeCard()
         updateView()
     }
 
@@ -541,6 +558,15 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         insightsToShow.append(insightType)
         updateView()
+    }
+
+    func addInsightDismissed() {
+        guard viewNeedsUpdating else {
+            return
+        }
+
+        updateView()
+        viewNeedsUpdating = false
     }
 
     func manageInsightSelected(_ insight: StatSection, fromButton: UIButton) {
