@@ -312,7 +312,7 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/specs.git:
+  https://github.com/cocoapods/specs.git:
     - 1PasswordExtension
     - Alamofire
     - AlamofireNetworkActivityIndicator
