@@ -186,10 +186,10 @@ extension PostEditor where Self: UIViewController {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(uploadFailureNoticeTag))
         stopEditing()
 
-        /// If a post is marked to be auto uploaded, it means that the changes had been already
-        /// confirmed by the user. In this case, we just close the editor.
+        /// If a post is marked to be auto uploaded and can be saved, it means that the changes
+        /// had been already confirmed by the user. In this case, we just close the editor.
         /// Otherwise, we'll show an Action Sheet with options.
-        if post.shouldAttemptAutoUpload {
+        if post.shouldAttemptAutoUpload && post.canSave() {
             editorSession.end(outcome: .cancel)
             dismissOrPopView(didSave: false)
         } else if post.canSave() {
