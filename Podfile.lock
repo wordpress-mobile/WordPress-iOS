@@ -304,7 +304,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.10.1-beta.1)
   - WordPressKit (~> 4.5.1)
   - WordPressMocks (~> 0.0.6)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared`, branch `feature/12641-insight_management_tracks`)
+  - WordPressShared (~> 1.8.8-beta.2)
   - WordPressUI (~> 1.4-beta.1)
   - WPMediaPicker (~> 1.4.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/9c1cfb830bdb3411fe8964539bec812b099589f1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -348,6 +348,7 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
+    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -411,9 +412,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 9c1cfb830bdb3411fe8964539bec812b099589f1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressShared:
-    :branch: feature/12641-insight_management_tracks
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/9c1cfb830bdb3411fe8964539bec812b099589f1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -430,9 +428,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 9c1cfb830bdb3411fe8964539bec812b099589f1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressShared:
-    :commit: ab4eb78fd295e74fed854fc51837dd4056d90e2d
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 3.0.1-swift5.1-GM
@@ -500,7 +495,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: f88358bd25edacfff23d78bb2aef5c3d5d176cbd
   WordPressKit: c35230114bbd380d63250b6d9a43337c29266c9b
   WordPressMocks: 5913bd04586a360212e07a8ccbcb36068d4425a3
-  WordPressShared: 0e2dfcb3ab993492d970f9650049d72eb053102a
+  WordPressShared: 257c40790d3c7cb2ab979bc891fa8b1f8127facb
   WordPressUI: 35b144885c8e5817ba6874b68accc200bda61ee1
   WPMediaPicker: 1897f312c7b41114ffd239fb782431ae602134a1
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
@@ -508,6 +503,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 787414f9240ee6ef8cfe4ea0f00e8b4d01d2d264
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: a3170a15efcd1dc0bf8923d6985d5c63b12a2bd2
+PODFILE CHECKSUM: 34660e5dd0f4200c413b82c523991223d8dcee0a
 
 COCOAPODS: 1.7.5
