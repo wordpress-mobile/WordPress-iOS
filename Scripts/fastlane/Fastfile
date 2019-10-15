@@ -289,6 +289,19 @@ import "./ScreenshotFastfile"
   ########################################################################
   # Fastlane match code signing
   ########################################################################  
+  private_lane :alpha_code_signing do |options|
+    match(
+      type: "enterprise",
+      team_id: get_required_env("INT_EXPORT_TEAM_ID"),
+      readonly: options[:readonly] || is_ci,
+      app_identifier: ["org.wordpress.alpha",
+                       "org.wordpress.alpha.WordPressShare",
+                       "org.wordpress.alpha.WordPressDraftAction",
+                       "org.wordpress.alpha.WordPressTodayWidget",
+                       "org.wordpress.alpha.WordPressNotificationServiceExtension",
+                       "org.wordpress.alpha.WordPressNotificationContentExtension"])
+  end
+
   private_lane :internal_code_signing do |options|
     match(
       type: "enterprise",
