@@ -47,7 +47,6 @@ class AddInsightTableViewController: UITableViewController {
         if selectedStat == nil {
             insightsDelegate?.addInsightDismissed?()
         }
-
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
