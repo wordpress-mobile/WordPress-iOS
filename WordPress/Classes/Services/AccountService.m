@@ -406,6 +406,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.displayName = userDetails.displayName;
     account.dateCreated = userDetails.dateCreated;
     account.emailVerified = @(userDetails.emailVerified);
+    account.primaryBlogID = userDetails.primaryBlogID;
     if (userDetails.primaryBlogID) {
         [self configurePrimaryBlogWithID:userDetails.primaryBlogID account:account];
     }
