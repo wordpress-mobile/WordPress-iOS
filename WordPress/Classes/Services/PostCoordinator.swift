@@ -46,36 +46,6 @@ class PostCoordinator: NSObject {
         self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
     }
 
-    // MARK: - Uploading Media
-
-    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
-    /// of the existing media for the post.
-    ///
-    /// - Parameters:
-    ///     - post: the post to get the media to upload from.
-    ///     - automatedRetry: true if this call is the result of an automated upload-retry attempt.
-    ///
-    /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
-    ///
-    private func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
-        let mediaService = MediaService(managedObjectContext: backgroundContext)
-        let failedMedia: [Media] = post.media.filter({ $0.remoteStatus == .failed })
-        let mediasToUpload: [Media]
-
-        if automatedRetry {
-            mediasToUpload = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
-        } else {
-            mediasToUpload = failedMedia
-        }
-
-        mediasToUpload.forEach { mediaObject in
-            mediaCoordinator.retryMedia(mediaObject, automatedRetry: automatedRetry)
-        }
-
-        let isPushingAllPendingMedia = mediasToUpload.count == failedMedia.count
-        return isPushingAllPendingMedia
-    }
-
     func save(_ postToSave: AbstractPost,
               automatedRetry: Bool = false,
               defaultFailureNotice: Notice? = nil,
