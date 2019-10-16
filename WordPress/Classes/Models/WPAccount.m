@@ -29,38 +29,6 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 
 #pragma mark - NSManagedObject subclass methods
 
-- (void)willSave
-{
-    [super willSave];
-
-    [self assignDefaultBlogIfNecessary];
-}
-
-- (void)assignDefaultBlogIfNecessary
-{
-    // If there is already a default blog, do not change it.
-    if (self.defaultBlog) {
-        return;
-    }
-
-    // This account doesn't have a default blog (yet).
-    if (!self.primaryBlogID || self.primaryBlogID == 0) {
-        return;
-    }
-
-    // No blogs synced yet.
-    if ([self.blogs count] == 0) {
-        return;
-    }
-
-    for (Blog *blog in self.blogs) {
-        if (blog.dotComID == self.primaryBlogID) {
-            self.defaultBlog = blog;
-            break;
-        }
-    }
-}
-
 - (void)prepareForDeletion
 {
     // Only do these deletions in the primary context (no parent)
