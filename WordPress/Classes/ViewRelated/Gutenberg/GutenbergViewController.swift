@@ -535,6 +535,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
+    var extraHTTPHeaders: [String: Any]? {
+        return post.blog.wordPressComRestApi()?.headers as? [String: Any]
+    }
+
+    var siteSlug: String? {
+        return post.blog.dotComID?.stringValue
+    }
 
     func gutenbergLocale() -> String? {
         return WordPressComLanguageDatabase().deviceLanguage.slug
