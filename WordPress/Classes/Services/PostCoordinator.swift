@@ -4,6 +4,11 @@ import WordPressFlux
 
 class PostCoordinator: NSObject {
 
+    enum SavingError: Error {
+        case mediaFailure
+        case unknown
+    }
+
     @objc static let shared = PostCoordinator()
 
     private let backgroundContext: NSManagedObjectContext
@@ -417,12 +422,5 @@ extension PostCoordinator {
                 result(postsAndActions)
             }
         }
-    }
-}
-
-extension PostCoordinator {
-    enum SavingError: Error {
-        case mediaFailure
-        case unknown
     }
 }
