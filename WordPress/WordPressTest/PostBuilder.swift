@@ -6,7 +6,7 @@ class PostBuilder {
     private let post: Post
 
     init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext()) {
-        post = Post(context: context)
+        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
 
         // Non-null Core Data properties
         post.blog = BlogBuilder(context).build()
@@ -125,7 +125,7 @@ class PostBuilder {
             return self
         }
 
-        guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as? Media else {
+        guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.entityName(), into: context) as? Media else {
             return self
         }
         media.localURL = image
