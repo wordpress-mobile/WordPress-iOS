@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@0.0.33
-  git: wordpress-mobile/git@0.0.33
+  ios: wordpress-mobile/ios@0.0.37
+  git: wordpress-mobile/git@0.0.37
 
 commands:
   load-chruby:
