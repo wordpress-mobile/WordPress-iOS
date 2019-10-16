@@ -1,6 +1,7 @@
 13.5
 -----
 * Dark Mode: General improvements
+* Stats: each Insight stat now loads independently.
  
 13.4
 -----
