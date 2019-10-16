@@ -321,6 +321,8 @@ extension PostEditor where Self: UIViewController {
         SVProgressHUD.show(withStatus: action.publishingActionLabel)
         postEditorStateContext.updated(isBeingPublished: true)
 
+        mapUIContentToPostAndSave(immediate: true)
+
         PostCoordinator.shared.save(post) { [weak self] result in
             guard let self = self else {
                 return
