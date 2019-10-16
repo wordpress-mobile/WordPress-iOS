@@ -4,6 +4,11 @@ import WordPressFlux
 
 class PostCoordinator: NSObject {
 
+    enum SavingError: Error {
+        case mediaFailure
+        case unknown
+    }
+
     @objc static let shared = PostCoordinator()
 
     private let backgroundContext: NSManagedObjectContext
@@ -71,15 +76,32 @@ class PostCoordinator: NSObject {
         return isPushingAllPendingMedia
     }
 
-    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
-        prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
-            self.upload(post: post)
+    func save(_ postToSave: AbstractPost,
+              automatedRetry: Bool = false,
+              defaultFailureNotice: Notice? = nil,
+              completion: ((Result<AbstractPost>) -> ())? = nil) {
+
+        prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
+            switch result {
+            case .success(let post):
+                self.upload(post: post, completion: completion)
+            case .error(let error):
+                if let notice = defaultFailureNotice {
+                    ActionDispatcher.dispatch(NoticeAction.post(notice))
+                }
+                completion?(.error(error))
+            }
         }
     }
 
     func autoSave(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
-        prepareToSave(postToSave, automatedRetry: automatedRetry) { post in
-            self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
+        prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
+            switch result {
+            case .success(let post):
+                self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
+            case .error:
+                break
+            }
         }
     }
 
@@ -109,7 +131,7 @@ class PostCoordinator: NSObject {
     /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
-    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (AbstractPost) -> ()) {
+    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (Result<AbstractPost>) -> ()) {
         var post = postToSave
 
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
@@ -122,6 +144,7 @@ class PostCoordinator: NSObject {
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
             change(post: post, status: .failed)
+            completion(.error(SavingError.mediaFailure))
             return
         }
 
@@ -145,7 +168,7 @@ class PostCoordinator: NSObject {
                         // Let's check if media uploading is still going, if all finished with success then we can upload the post
                         if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
                             self.removeObserver(for: post)
-                            completion(post)
+                            completion(.success(post))
                         }
                     }
                     switch media.mediaType {
@@ -154,6 +177,7 @@ class PostCoordinator: NSObject {
                             switch result {
                             case .error:
                                 self?.change(post: post, status: .failed)
+                                completion(.error(SavingError.mediaFailure))
                             case .success(let value):
                                 media.remoteURL = value.videoURL.absoluteString
                                 successHandler()
@@ -164,6 +188,7 @@ class PostCoordinator: NSObject {
                     }
                 case .failed:
                     self.change(post: post, status: .failed)
+                    completion(.error(SavingError.mediaFailure))
                 default:
                     DDLogInfo("Post Coordinator -> Media state: \(state)")
                 }
@@ -172,7 +197,7 @@ class PostCoordinator: NSObject {
             return
         }
 
-        completion(post)
+        completion(.success(post))
     }
 
     func cancelAnyPendingSaveOf(post: AbstractPost) {
@@ -240,7 +265,7 @@ class PostCoordinator: NSObject {
         backgroundService.refreshPostStatus()
     }
 
-    private func upload(post: AbstractPost) {
+    private func upload(post: AbstractPost, completion: ((Result<AbstractPost>) -> ())? = nil) {
         mainService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
@@ -248,9 +273,13 @@ class PostCoordinator: NSObject {
 
             let model = PostNoticeViewModel(post: uploadedPost)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+
+            completion?(.success(uploadedPost))
         }, failure: { error in
             let model = PostNoticeViewModel(post: post)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+
+            completion?(.error(error ?? SavingError.unknown))
 
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })

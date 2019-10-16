@@ -34,21 +34,10 @@ extension PostEditor where Self: UIViewController {
         analyticsStat: WPAnalyticsStat?) {
 
         mapUIContentToPostAndSave(immediate: true)
-        MediaCoordinator.shared.uploadMedia(for: post)
 
         // Cancel publishing if media is currently being uploaded
         if !action.isAsync && !dismissWhenDone && isUploadingMedia {
             displayMediaIsUploadingAlert()
-            return
-        }
-
-        // If there is any failed media allow it to be removed or cancel publishing
-        if hasFailedMedia {
-            displayHasFailedMediaAlert(then: {
-                // Failed media is removed, try again.
-                // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
-                self.publishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
-            })
             return
         }
 
@@ -197,7 +186,13 @@ extension PostEditor where Self: UIViewController {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(uploadFailureNoticeTag))
         stopEditing()
 
-        if post.canSave() {
+        /// If a post is marked to be auto uploaded and can be saved, it means that the changes
+        /// had been already confirmed by the user. In this case, we just close the editor.
+        /// Otherwise, we'll show an Action Sheet with options.
+        if post.shouldAttemptAutoUpload && post.canSave() {
+            editorSession.end(outcome: .cancel)
+            dismissOrPopView(didSave: false)
+        } else if post.canSave() {
             showPostHasChangesAlert()
         } else {
             editorSession.end(outcome: .cancel)
@@ -333,7 +328,10 @@ extension PostEditor where Self: UIViewController {
         SVProgressHUD.show(withStatus: action.publishingActionLabel)
         postEditorStateContext.updated(isBeingPublished: true)
 
-        uploadPost() { [weak self] uploadedPost, error in
+        mapUIContentToPostAndSave(immediate: true)
+
+        PostCoordinator.shared.save(post,
+                                    defaultFailureNotice: uploadFailureNotice(action: action)) { [weak self] result in
             guard let self = self else {
                 return
             }
@@ -343,14 +341,14 @@ extension PostEditor where Self: UIViewController {
             let generator = UINotificationFeedbackGenerator()
             generator.prepare()
 
-            if let error = error {
-                DDLogError("Error publishing post: \(error.localizedDescription)")
-                ActionDispatcher.dispatch(NoticeAction.post(self.uploadFailureNotice(action: action)))
-                generator.notificationOccurred(.error)
-            } else if let uploadedPost = uploadedPost {
+            switch result {
+            case .success(let uploadedPost):
                 self.post = uploadedPost
 
                 generator.notificationOccurred(.success)
+            case .error(let error):
+                DDLogError("Error publishing post: \(error.localizedDescription)")
+                generator.notificationOccurred(.error)
             }
 
             if dismissWhenDone {
@@ -375,23 +373,6 @@ extension PostEditor where Self: UIViewController {
         dismissOrPopView()
 
         self.postEditorStateContext.updated(isBeingPublished: false)
-    }
-
-    /// Uploads the post
-    ///
-    /// - Parameters:
-    ///     - completion: the closure to execute when the publish operation completes.
-    ///
-    private func uploadPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)?) {
-        mapUIContentToPostAndSave(immediate: true)
-
-        let managedObjectContext = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: managedObjectContext)
-        postService.uploadPost(post, success: { uploadedPost in
-            completion?(uploadedPost, nil)
-        }) { error in
-            completion?(nil, error)
-        }
     }
 
     func dismissOrPopView(didSave: Bool = true) {

@@ -48,25 +48,23 @@ class MediaCoordinator: NSObject {
     ///
     /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
     ///
-    @discardableResult
     func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
         let mediaService = MediaService(managedObjectContext: backgroundContext)
-        let media: [Media]
-        let isPushingAllMedia: Bool
+        let failedMedia: [Media] = post.media.filter({ $0.remoteStatus == .failed })
+        let mediasToUpload: [Media]
 
         if automatedRetry {
-            media = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
-            isPushingAllMedia = media.count == post.media.count
+            mediasToUpload = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
         } else {
-            media = post.media.filter({ $0.remoteStatus == .failed })
-            isPushingAllMedia = true
+            mediasToUpload = failedMedia
         }
 
-        media.forEach { mediaObject in
+        mediasToUpload.forEach { mediaObject in
             retryMedia(mediaObject, automatedRetry: automatedRetry)
         }
 
-        return isPushingAllMedia
+        let isPushingAllPendingMedia = mediasToUpload.count == failedMedia.count
+        return isPushingAllPendingMedia
     }
 
     /// - returns: The progress coordinator for the specified post. If a coordinator
