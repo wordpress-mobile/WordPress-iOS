@@ -76,12 +76,19 @@ class PostCoordinator: NSObject {
         return isPushingAllPendingMedia
     }
 
-    func save(_ postToSave: AbstractPost, automatedRetry: Bool = false, completion: ((Result<AbstractPost>) -> ())? = nil) {
+    func save(_ postToSave: AbstractPost,
+              automatedRetry: Bool = false,
+              defaultFailureNotice: Notice? = nil,
+              completion: ((Result<AbstractPost>) -> ())? = nil) {
+
         prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
             switch result {
             case .success(let post):
                 self.upload(post: post, completion: completion)
             case .error(let error):
+                if let notice = defaultFailureNotice {
+                    ActionDispatcher.dispatch(NoticeAction.post(notice))
+                }
                 completion?(.error(error))
             }
         }
