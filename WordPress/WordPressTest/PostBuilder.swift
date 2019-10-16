@@ -120,7 +120,7 @@ class PostBuilder {
         return self
     }
 
-    func with(image: String, status: MediaRemoteStatus? = nil) -> PostBuilder {
+    func with(image: String, status: MediaRemoteStatus? = nil, autoUploadFailureCount: Int = 0) -> PostBuilder {
         guard let context = post.managedObjectContext else {
             return self
         }
@@ -131,6 +131,7 @@ class PostBuilder {
         media.localURL = image
         media.localThumbnailURL = "thumb-\(image)"
         media.blog = post.blog
+        media.autoUploadFailureCount = NSNumber(value: autoUploadFailureCount)
 
         if let status = status {
             media.remoteStatus = status
