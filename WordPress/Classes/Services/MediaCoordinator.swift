@@ -44,8 +44,8 @@ class MediaCoordinator: NSObject {
         addObserverForDeletedFiles()
     }
 
-    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
-    /// of the existing media for the post.
+    /// Uploads all failed media for the post, and returns `true` if it was possible to start
+    /// uploads for all of the existing media for the post.
     ///
     /// - Parameters:
     ///     - post: the post to get the media to upload from.
