@@ -1685,7 +1685,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsItemTappedInsightMoveUp:
             eventName = @"stats_insight_move_up_tapped";
             break;
-            // here
         case WPAnalyticsStatStatsItemTappedInsightRemove:
             eventName = @"stats_insight_remove_tapped";
             break;
