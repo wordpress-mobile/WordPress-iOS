@@ -2655,6 +2655,7 @@
 		57B71D4D230DB5F200789A68 /* BlogBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogBuilder.swift; sourceTree = "<group>"; };
 		57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+Swift.swift"; sourceTree = "<group>"; };
 		57C2331722FE0EC900A3863B /* PostAutoUploadInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAutoUploadInteractor.swift; sourceTree = "<group>"; };
+		57CCB37E2358E5DC003ECD0C /* WordPress 92.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 92.xcdatamodel"; sourceTree = "<group>"; };
 		57D5812C2228526C002BAAD7 /* WPError+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPError+Swift.swift"; sourceTree = "<group>"; };
 		57D66B99234BB206005A2D74 /* PostServiceRemoteFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostServiceRemoteFactory.swift; sourceTree = "<group>"; };
 		57D66B9C234BB78B005A2D74 /* PostServiceWPComTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostServiceWPComTests.swift; path = Services/PostServiceWPComTests.swift; sourceTree = "<group>"; };
@@ -14688,6 +14689,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				57CCB37E2358E5DC003ECD0C /* WordPress 92.xcdatamodel */,
 				E63EC3632356633B008CEB16 /* WordPress 91.xcdatamodel */,
 				F14E844C2317252200D0C63E /* WordPress 90.xcdatamodel */,
 				9813512F22F1050B00F7425D /* WordPress 89.xcdatamodel */,
