@@ -189,6 +189,8 @@ class SiteStatsInsightsViewModel: Observable {
                 }, loadingRow: {
                     return StatsGhostTopImmutableRow()
                 }))
+            default:
+                break
             }
         }
 

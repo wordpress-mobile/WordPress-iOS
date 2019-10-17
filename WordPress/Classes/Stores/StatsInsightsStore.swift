@@ -806,38 +806,6 @@ extension StatsInsightsStore {
         return state.allAnnual
     }
 
-    func containsCachedData(for type: InsightType) -> Bool {
-        switch type {
-        case .latestPostSummary:
-            return state.lastPostInsight != nil
-        case .allTimeStats:
-            return state.allTimeStats != nil
-        case .followersTotals:
-            return false
-        case .mostPopularTime, .annualSiteStats:
-            return state.annualAndMostPopularTime != nil
-        case .tagsAndCategories:
-            return state.topTagsAndCategories != nil
-        case .comments:
-            return state.topCommentsInsight != nil
-        case .followers:
-            return state.dotComFollowers != nil &&
-                state.emailFollowers != nil
-        case .todaysStats:
-            return state.todaysStats != nil
-        case .postingActivity:
-            return state.postingActivity != nil
-        case .publicize:
-            return state.publicizeFollowers != nil
-        default:
-            return false
-        }
-    }
-
-    func containsCachedData(for types: [InsightType]) -> Bool {
-        return types.first { containsCachedData(for: $0) } != nil
-    }
-
     var lastPostSummaryStatus: StoreFetchingStatus {
         return state.lastPostSummaryStatus
     }

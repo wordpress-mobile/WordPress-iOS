@@ -159,7 +159,8 @@ class SiteStatsDetailsViewModel: Observable {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
-            return immuTable(for: status) {
+            let type: InsightType = statSection == .insightsFollowersWordPress ? .allDotComFollowers : .allEmailFollowers
+            return immuTable(for: (type, status)) {
                 var rows = [ImmuTableRow]()
                 let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
                 let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
@@ -922,8 +923,8 @@ private extension SiteStatsDetailsViewModel {
         return StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
     }
 
-    func immuTable(for rowStatus: StoreFetchingStatus, rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
-        if !Feature.enabled(.statsAsyncLoading) {
+    func immuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
+        if insightsStore.containsCachedData(for: row.type) || !Feature.enabled(.statsAsyncLoading) {
             return ImmuTable(sections: [
                 ImmuTableSection(
                     rows: rowsBlock())
@@ -932,7 +933,7 @@ private extension SiteStatsDetailsViewModel {
 
         var rows = [ImmuTableRow]()
 
-        switch rowStatus {
+        switch row.status {
         case .loading, .idle:
             rows.append(StatsGhostTopImmutableRow())
             rows.append(contentsOf: (0...9).map { _ in StatsGhostDetailRow() })

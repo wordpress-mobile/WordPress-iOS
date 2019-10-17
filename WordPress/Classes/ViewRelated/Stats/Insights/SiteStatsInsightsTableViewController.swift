@@ -14,6 +14,8 @@ enum InsightType: Int {
     case todaysStats
     case postingActivity
     case publicize
+    case allDotComFollowers
+    case allEmailFollowers
 
     // TODO: remove when Manage Insights is enabled.
     static let allValues = [InsightType.latestPostSummary,
@@ -196,9 +198,6 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func removeViewModelListeners() {
-        if asyncLoadingActivated {
-            return
-        }
         insightsChangeReceipt = nil
     }
 
