@@ -559,6 +559,7 @@
 		577C2AAB22936DCB00AD1F03 /* PostCardCellGhostableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577C2AAA22936DCB00AD1F03 /* PostCardCellGhostableTests.swift */; };
 		577C2AB422943FEC00AD1F03 /* PostCompactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577C2AB322943FEC00AD1F03 /* PostCompactCell.swift */; };
 		577C2AB62294401800AD1F03 /* PostCompactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 577C2AB52294401800AD1F03 /* PostCompactCell.xib */; };
+		57889AB823589DF100DAE56D /* PageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57889AB723589DF100DAE56D /* PageBuilder.swift */; };
 		5789E5C822D7D40800333698 /* AztecPostViewControllerAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789E5C722D7D40800333698 /* AztecPostViewControllerAttachmentTests.swift */; };
 		57AA848F228715DA00D3C2A2 /* PostCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AA848E228715DA00D3C2A2 /* PostCardCell.swift */; };
 		57AA8491228715E700D3C2A2 /* PostCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57AA8490228715E700D3C2A2 /* PostCardCell.xib */; };
@@ -2652,6 +2653,7 @@
 		577C2AAA22936DCB00AD1F03 /* PostCardCellGhostableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardCellGhostableTests.swift; sourceTree = "<group>"; };
 		577C2AB322943FEC00AD1F03 /* PostCompactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCompactCell.swift; sourceTree = "<group>"; };
 		577C2AB52294401800AD1F03 /* PostCompactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostCompactCell.xib; sourceTree = "<group>"; };
+		57889AB723589DF100DAE56D /* PageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PageBuilder.swift; path = TestUtilities/PageBuilder.swift; sourceTree = "<group>"; };
 		5789E5C722D7D40800333698 /* AztecPostViewControllerAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AztecPostViewControllerAttachmentTests.swift; path = Aztec/AztecPostViewControllerAttachmentTests.swift; sourceTree = "<group>"; };
 		57AA848E228715DA00D3C2A2 /* PostCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCardCell.swift; sourceTree = "<group>"; };
 		57AA8490228715E700D3C2A2 /* PostCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostCardCell.xib; sourceTree = "<group>"; };
@@ -5652,6 +5654,7 @@
 				570BFD8F2282418A007859A8 /* PostBuilder.swift */,
 				57B71D4D230DB5F200789A68 /* BlogBuilder.swift */,
 				F11023A223186BCA00C4E84A /* MediaBuilder.swift */,
+				57889AB723589DF100DAE56D /* PageBuilder.swift */,
 			);
 			name = TestUtilities;
 			sourceTree = "<group>";
@@ -11932,6 +11935,7 @@
 				82301B8F1E787420009C9C4E /* AppRatingUtilityTests.swift in Sources */,
 				D81C2F5420F85DB1002AE1F1 /* ApproveCommentActionTests.swift in Sources */,
 				8BC12F7723201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift in Sources */,
+				57889AB823589DF100DAE56D /* PageBuilder.swift in Sources */,
 				74B335EC1F06F9520053A184 /* MockWordPressComRestApi.swift in Sources */,
 				D848CBFF20FF010F00A9038F /* FormattableCommentContentTests.swift in Sources */,
 				9123471B221449E200BD9F97 /* GutenbergInformativeDialogTests.swift in Sources */,
