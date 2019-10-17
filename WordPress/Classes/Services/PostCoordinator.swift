@@ -345,8 +345,10 @@ class PostCoordinator: NSObject {
     }
 
     private func dispatchNotice(for post: AbstractPost) {
-        let model = PostNoticeViewModel(post: post)
-        ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+        DispatchQueue.main.async {
+            let model = PostNoticeViewModel(post: post)
+            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+        }
     }
 }
 
