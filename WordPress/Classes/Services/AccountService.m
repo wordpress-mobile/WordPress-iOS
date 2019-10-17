@@ -365,7 +365,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         // account.objectID can be temporary, so fetch via username/xmlrpc instead.
         WPAccount *fetchedAccount = [self findAccountWithUsername:username];
         [self updateAccount:fetchedAccount withUserDetails:remoteUser];
-        [self setupAppExtensionsWithDefaultAccount];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
             if (success) {
@@ -406,29 +405,35 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.displayName = userDetails.displayName;
     account.dateCreated = userDetails.dateCreated;
     account.emailVerified = @(userDetails.emailVerified);
-    if (userDetails.primaryBlogID) {
-        [self configurePrimaryBlogWithID:userDetails.primaryBlogID account:account];
-    }
+    account.primaryBlogID = userDetails.primaryBlogID;
+
+    [self updateDefaultBlogIfNeeded: account];
 
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 }
 
-- (void)configurePrimaryBlogWithID:(NSNumber *)primaryBlogID account:(WPAccount *)account
+- (void)updateDefaultBlogIfNeeded:(WPAccount *)account
 {
-    NSParameterAssert(primaryBlogID);
-    NSParameterAssert(account);
-    
+    if (!account.primaryBlogID || [account.primaryBlogID intValue] == 0) {
+        return;
+    }
+
     // Load the Default Blog
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID = %@", primaryBlogID];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID = %@", account.primaryBlogID];
     Blog *defaultBlog = [[account.blogs filteredSetUsingPredicate:predicate] anyObject];
-    
+
     if (!defaultBlog) {
         DDLogError(@"Error: The Default Blog could not be loaded");
         return;
     }
-    
+
     // Setup the Account
     account.defaultBlog = defaultBlog;
+
+    // Update app extensions if needed.
+    if (account == [self defaultWordPressComAccount]) {
+        [self setupAppExtensionsWithDefaultAccount];
+    }
 }
 
 - (void)setupAppExtensionsWithDefaultAccount

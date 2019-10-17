@@ -5,6 +5,7 @@
 * Block editor: DarkMode improvements.
 * Block editor: New block "Media & Text".
 * Dark Mode: General improvements
+* Stats: each Insight stat now loads independently.
  
 13.4
 -----

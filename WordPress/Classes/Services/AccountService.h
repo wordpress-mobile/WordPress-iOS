@@ -132,6 +132,11 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
                             success:(nullable void (^)(void))success
                             failure:(nullable void (^)(NSError *error))failure;
 
+/**
+ Updates the default blog for the specified account.  The default blog will be the one whose siteID matches
+ the accounts primaryBlogID.
+ */
+- (void)updateDefaultBlogIfNeeded:(WPAccount *)account;
 
 /**
  Syncs the details for the account associated with the provided auth token, then

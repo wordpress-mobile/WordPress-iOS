@@ -1,12 +1,10 @@
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 
 inhibit_all_warnings!
 use_frameworks!
 
 platform :ios, '11.0'
 workspace 'WordPress.xcworkspace'
-
-plugin 'cocoapods-repo-update'
 
 ## Pods shared between all the targets
 ## ===================================
