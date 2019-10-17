@@ -35,6 +35,7 @@ class ReaderCommentCell: UITableViewCell {
         newTextView.isScrollEnabled = false
         newTextView.isEditable = false
         newTextView.translatesAutoresizingMaskIntoConstraints = false
+        newTextView.backgroundColor = .clear
 
         return newTextView
     }()
@@ -97,7 +98,7 @@ class ReaderCommentCell: UITableViewCell {
         textView.textContainerInset = Constants.textViewInsets
 
         let backgroundView = UIView()
-        backgroundView.backgroundColor = .primary(.shade0)
+        backgroundView.backgroundColor = .listForegroundUnread
         selectedBackgroundView = backgroundView
     }
 

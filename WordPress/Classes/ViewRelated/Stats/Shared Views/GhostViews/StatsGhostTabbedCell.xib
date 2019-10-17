@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="471" height="243"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7af-GX-k7V" id="n4F-of-kmC">
-                <rect key="frame" x="0.0" y="0.0" width="471" height="242.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="471" height="243"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="80" translatesAutoresizingMaskIntoConstraints="NO" id="DYP-pZ-QEw">
@@ -24,19 +21,20 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YLr-zu-ulz">
                                 <rect key="frame" x="40" y="13" width="155.5" height="18"/>
-                                <color key="backgroundColor" name="Gray0"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="PHj-jf-Z4C"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CVE-Pi-WFV">
                                 <rect key="frame" x="275.5" y="13" width="155.5" height="18"/>
-                                <color key="backgroundColor" name="Gray0"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="lZe-Cd-gQ2"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="44" id="Cxw-GA-ifc"/>
                         </constraints>
@@ -44,14 +42,14 @@
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="71l-fT-BHP">
                         <rect key="frame" x="0.0" y="44" width="235.5" height="2"/>
-                        <color key="backgroundColor" name="Gray0"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="2" id="FDi-oo-Pvr"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="foQ-eG-3TO">
                         <rect key="frame" x="405" y="53" width="50" height="16"/>
-                        <color key="backgroundColor" name="Gray0"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="6Os-19-kuy"/>
                             <constraint firstAttribute="width" constant="50" id="cN9-a7-P6f"/>
@@ -59,7 +57,7 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m5L-pq-qz6">
                         <rect key="frame" x="16" y="53" width="50" height="16"/>
-                        <color key="backgroundColor" name="Gray0"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="0GP-L4-jyC"/>
                             <constraint firstAttribute="height" constant="16" id="gRe-cR-VSR"/>
@@ -67,7 +65,7 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rRL-o4-Lsv">
                         <rect key="frame" x="16" y="85" width="28" height="28"/>
-                        <color key="backgroundColor" name="Gray0"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="28" id="J5T-Gw-eBT"/>
                             <constraint firstAttribute="width" constant="28" id="opR-HG-clN"/>
@@ -75,12 +73,13 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rZ8-tB-uMd">
                         <rect key="frame" x="60" y="91" width="395" height="16"/>
-                        <color key="backgroundColor" name="Gray0"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="bgk-9f-KIx"/>
                         </constraints>
                     </view>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="DYP-pZ-QEw" firstAttribute="top" secondItem="n4F-of-kmC" secondAttribute="top" id="2r7-pi-m3Q"/>
                     <constraint firstItem="rRL-o4-Lsv" firstAttribute="top" secondItem="m5L-pq-qz6" secondAttribute="bottom" constant="16" id="7kM-MS-6LJ"/>
@@ -100,12 +99,8 @@
                     <constraint firstAttribute="trailing" secondItem="foQ-eG-3TO" secondAttribute="trailing" constant="16" id="zTj-Co-Koz"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <point key="canvasLocation" x="36.956521739130437" y="169.75446428571428"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <namedColor name="Gray0">
-            <color red="0.96862745098039216" green="0.95686274509803926" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-    </resources>
 </document>

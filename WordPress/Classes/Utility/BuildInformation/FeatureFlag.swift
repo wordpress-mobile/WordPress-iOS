@@ -31,7 +31,7 @@ enum FeatureFlag: Int {
             }
             return true
         case .statsAsyncLoading:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]
         }
     }
 }
