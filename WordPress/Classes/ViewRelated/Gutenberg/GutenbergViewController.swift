@@ -341,6 +341,20 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+
+    func gutenbergDidRequestFetch(path: String, response: @escaping (Swift.Result<Any, NSError>) -> Void) {
+        if let dotComID = post.blog.dotComID {
+            let finalPath = path.replacingOccurrences(of: "/wp/v2/", with: "/wp/v2/sites/\(dotComID)/")
+            post.blog.wordPressComRestApi()?.GET(finalPath, parameters: nil, success: { (responseObject, httpResponse) in
+                response(.success(responseObject))
+            }, failure: { (error, HTTPResponse) in
+                response(.failure(error))
+            })
+        } else {
+            // SelfHosed call
+        }
+    }
+
     func editorDidAutosave() {
         autosaver.contentDidChange()
     }
@@ -537,14 +551,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
-    var extraHTTPHeaders: [String: Any]? {
-        return post.blog.wordPressComRestApi()?.headers as? [String: Any]
-    }
-
-    var siteSlug: String? {
-        return post.blog.dotComID?.stringValue
-    }
-
     func gutenbergLocale() -> String? {
         return WordPressComLanguageDatabase().deviceLanguage.slug
     }
