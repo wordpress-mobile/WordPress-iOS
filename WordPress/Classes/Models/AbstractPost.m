@@ -576,12 +576,6 @@
             || self.remoteStatus == AbstractPostRemoteStatusFailed);
 }
 
-- (void)markRemoteStatusFailed
-{
-    self.remoteStatus = AbstractPostRemoteStatusFailed;
-    [self save];
-}
-
 - (BOOL)shouldAttemptAutoUpload {
     if (!self.confirmedChangesTimestamp || !self.confirmedChangesHash) {
         return NO;

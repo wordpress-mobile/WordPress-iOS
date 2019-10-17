@@ -317,7 +317,11 @@ class PostCoordinator: NSObject {
             return
         }
         context.perform {
-            post.remoteStatus = status
+            if status == .failed {
+                self.mainService.markAsFailedAndDraftIfNeeded(post: post)
+            } else {
+                post.remoteStatus = status
+            }
 
             ContextManager.sharedInstance().saveContextAndWait(context)
         }
