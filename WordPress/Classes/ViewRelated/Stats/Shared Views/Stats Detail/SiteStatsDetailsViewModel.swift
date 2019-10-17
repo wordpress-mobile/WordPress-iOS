@@ -174,17 +174,19 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsCommentsAuthors, .insightsCommentsPosts:
-            let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
-            let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
-            let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
-
-            tableRows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [authorsTabData, postsTabData],
-                                                            siteStatsDetailsDelegate: detailsDelegate,
-                                                            showTotalCount: false,
-                                                            selectedIndex: selectedIndex))
-
-            let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
-            tableRows.append(contentsOf: tabbedRowsFrom(dataRows))
+           return immuTable(for: (.allComments, insightsStore.allCommentsInsightStatus)) {
+                var rows = [ImmuTableRow]()
+                let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
+                let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
+                let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
+                rows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [authorsTabData, postsTabData],
+                                                           siteStatsDetailsDelegate: detailsDelegate,
+                                                           showTotalCount: false,
+                                                           selectedIndex: selectedIndex))
+                let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
+                rows.append(contentsOf: tabbedRowsFrom(dataRows))
+                return rows
+            }
         case .insightsTagsAndCategories:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                       dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
@@ -936,7 +938,7 @@ private extension SiteStatsDetailsViewModel {
         switch row.status {
         case .loading, .idle:
             rows.append(StatsGhostTopImmutableRow())
-            rows.append(contentsOf: (0...9).map { _ in StatsGhostDetailRow() })
+            rows.append(contentsOf: (0...5).map { _ in StatsGhostDetailRow() })
         case .success:
             rows.append(contentsOf: rowsBlock())
         case .error:

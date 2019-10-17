@@ -88,8 +88,7 @@ struct InsightStoreState {
     var allEmailFollowersStatus: StoreFetchingStatus = .idle
 
     var allCommentsInsight: StatsCommentsInsight?
-    var fetchingAllCommentsInsight = false
-    var fetchingAllCommentsInsightHasFailed = false
+    var fetchingAllCommentsInsightStatus: StoreFetchingStatus = .idle
 
     var allTagsAndCategories: StatsTagsAndCategoriesInsight?
     var fetchingAllTagsAndCategories = false
@@ -542,7 +541,7 @@ private extension StatsInsightsStore {
             return
         }
 
-        state.fetchingAllCommentsInsight = true
+        state.fetchingAllCommentsInsightStatus = .loading
 
         // The API doesn't work when we specify `0` here, like most of the other endpoints do, unfortunately...
         // 1000 was chosen as an arbitrarily large number that should be "big enough" for all of our users.
@@ -622,8 +621,7 @@ private extension StatsInsightsStore {
             if allCommentsInsight != nil {
                 state.allCommentsInsight = allCommentsInsight
             }
-            state.fetchingAllCommentsInsight = false
-            state.fetchingAllCommentsInsightHasFailed = error != nil
+            state.fetchingAllCommentsInsightStatus = error != nil ? .error : .success
         }
     }
 
@@ -890,8 +888,12 @@ extension StatsInsightsStore {
         }
     }
 
+    var allCommentsInsightStatus: StoreFetchingStatus {
+        return state.fetchingAllCommentsInsightStatus
+    }
+
     var isFetchingComments: Bool {
-        return state.fetchingAllCommentsInsight
+        return state.fetchingAllCommentsInsightStatus == .loading
     }
 
     var isFetchingTagsAndCategories: Bool {
@@ -919,7 +921,7 @@ extension StatsInsightsStore {
         case .allFollowers:
             return fetchingFollowersStatus == .error
         case .allComments:
-            return state.fetchingAllCommentsInsightHasFailed
+            return state.fetchingAllCommentsInsightStatus == .error
         case .allTagsAndCategories:
             return state.fetchingAllTagsAndCategoriesHasFailed
         case .allAnnual:
