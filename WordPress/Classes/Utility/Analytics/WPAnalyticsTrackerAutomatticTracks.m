@@ -1670,23 +1670,11 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsInsightsAccessed:
             eventName = @"stats_insights_accessed";
             break;
-        case WPAnalyticsStatStatsItemSelectedAddInsight:
-            eventName = @"stats_add_insight_item_selected";
-            break;
         case WPAnalyticsStatStatsItemTappedAuthors:
             eventName = @"stats_authors_view_post_tapped";
             break;
         case WPAnalyticsStatStatsItemTappedClicks:
             eventName = @"stats_clicks_item_tapped";
-            break;
-        case WPAnalyticsStatStatsItemTappedInsightMoveDown:
-            eventName = @"stats_insight_move_down_tapped";
-            break;
-        case WPAnalyticsStatStatsItemTappedInsightMoveUp:
-            eventName = @"stats_insight_move_up_tapped";
-            break;
-        case WPAnalyticsStatStatsItemTappedInsightRemove:
-            eventName = @"stats_insight_remove_tapped";
             break;
         case WPAnalyticsStatStatsItemTappedInsightsAddStat:
             eventName = @"stats_add_insight_item_tapped";
@@ -1708,9 +1696,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatStatsItemTappedLatestPostSummaryViewPostDetails:
             eventName = @"stats_latest_post_summary_view_post_details_tapped";
-            break;
-        case WPAnalyticsStatStatsItemTappedManageInsight:
-            eventName = @"stats_manage_insight_tapped";
             break;
         case WPAnalyticsStatStatsItemTappedPostsAndPages:
             eventName = @"stats_posts_and_pages_item_tapped";

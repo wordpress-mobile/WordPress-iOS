@@ -1,5 +1,7 @@
 default_platform(:ios)
+fastlane_require 'xcodeproj'
 fastlane_require 'dotenv'
+fastlane_require 'open-uri'
 
 USER_ENV_FILE_PATH = File.join(Dir.home, '.wpios-env.default')
 PROJECT_ENV_FILE_PATH = File.expand_path(File.join(Dir.pwd, '../../.configure-files/project.env'))
@@ -15,8 +17,17 @@ end
 
 before_all do
   # Check that the env files exist
-  UI.user_error!("~/.wpios-env.default not found: Please copy env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values") unless File.file?(USER_ENV_FILE_PATH)
-  UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`") unless File.file?(PROJECT_ENV_FILE_PATH)
+  unless is_ci || File.file?(USER_ENV_FILE_PATH)
+    UI.user_error!("~/.wpios-env.default not found: Please copy env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
+  end
+  unless File.file?(PROJECT_ENV_FILE_PATH)
+    UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
+  end
+
+  # This allows code signing to work on CircleCI
+  # It is skipped if this isn't running on CI
+  # See https://circleci.com/docs/2.0/ios-codesigning/
+  setup_circle_ci
 end
 
 platform :ios do
@@ -191,6 +202,72 @@ import "./ScreenshotFastfile"
   end
 
   #####################################################################################
+  # build_and_upload_installable_build
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for adhoc testing 
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_installable_build [version_long:<version_long>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_installable_build 
+  # bundle exec fastlane build_and_upload_installable_build build_number:123 
+  #####################################################################################
+  desc "Builds and uploads an installable build"
+  lane :build_and_upload_installable_build do | options |
+    alpha_code_signing
+
+    # Get the current build version, and update it if needed
+    version_config_path = "../../config/Version.internal.xcconfig"
+    versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
+    build_number = versions["VERSION_LONG"]
+
+    if options.key?(:build_number)
+      build_number = options[:build_number]
+
+      UI.message("Updating build version to #{build_number}")
+
+      versions["VERSION_LONG"] = build_number
+      new_config = Xcodeproj::Config.new(versions)
+      new_config.save_as(Pathname.new(version_config_path))
+    end
+
+    gym(
+      scheme: "WordPress Alpha",
+      workspace: "../WordPress.xcworkspace",
+      export_method: "enterprise",
+      clean: true,
+      output_directory: "../build/",
+      derived_data_path: "../derived-data/alpha/",
+      export_team_id: ENV["INT_EXPORT_TEAM_ID"],
+      export_options: { method: "enterprise" })
+
+    sh("mv ../../build/WordPress.ipa \"../../build/WordPress Alpha.ipa\"")
+      
+    hockey(
+      api_token: get_required_env("HOCKEY_API_TOKEN"),        
+      public_identifier: get_required_env("HOCKEY_INSTALLABLE_BUILDS_PUBLIC_ID"),
+      notify: "0",
+      status: "2",
+      ipa: "../build/WordPress Alpha.ipa",
+      dsym: "../build/WordPress.app.dSYM.zip",
+    )
+
+    # Getting the download link from the HockeyApp Api, since `hockey(..)` only gives us the app link
+    # See documentation here: https://support.hockeyapp.net/kb/api/api-versions
+    url = "https://rink.hockeyapp.net/api/2/apps/#{get_required_env("HOCKEY_INSTALLABLE_BUILDS_PUBLIC_ID")}/app_versions"
+    result = open(url, {"X-HockeyAppToken" => get_required_env("HOCKEY_API_TOKEN")}).read
+    versions = JSON.parse(result)
+
+    download_url = versions["app_versions"].find {|v| v["version"] == build_number}["download_url"]
+    UI.message("Successfully built and uploaded installable build here: #{download_url}")
+
+    # Create a comment.json file so that Peril to comment with the build details, if this is running on CI
+    comment_body = "You can test the changes on this Pull Request by downloading it from HockeyApp [here](#{download_url}). If you need access to this, you can ask a maintainer to add you."
+    File.write("comment.json", { body: comment_body }.to_json)
+  end
+
+  #####################################################################################
   # build_and_upload_internal
   # -----------------------------------------------------------------------------------
   # This lane builds the app and upload it for internal testing  
@@ -289,6 +366,19 @@ import "./ScreenshotFastfile"
   ########################################################################
   # Fastlane match code signing
   ########################################################################  
+  private_lane :alpha_code_signing do |options|
+    match(
+      type: "enterprise",
+      team_id: get_required_env("INT_EXPORT_TEAM_ID"),
+      readonly: options[:readonly] || is_ci,
+      app_identifier: ["org.wordpress.alpha",
+                       "org.wordpress.alpha.WordPressShare",
+                       "org.wordpress.alpha.WordPressDraftAction",
+                       "org.wordpress.alpha.WordPressTodayWidget",
+                       "org.wordpress.alpha.WordPressNotificationServiceExtension",
+                       "org.wordpress.alpha.WordPressNotificationContentExtension"])
+  end
+
   private_lane :internal_code_signing do |options|
     match(
       type: "enterprise",
