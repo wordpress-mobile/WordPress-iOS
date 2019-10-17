@@ -94,8 +94,7 @@ struct InsightStoreState {
     var allTagsAndCategoriesStatus: StoreFetchingStatus = .idle
 
     var allAnnual: StatsAllAnnualInsight?
-    var fetchingAllAnnual = false
-    var fetchingAllAnnualHasFailed = false
+    var allAnnualStatus: StoreFetchingStatus = .idle
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -574,7 +573,7 @@ private extension StatsInsightsStore {
             return
         }
 
-        state.fetchingAllAnnual = true
+        state.allAnnualStatus = .loading
 
         api.getInsight { (allAnnual: StatsAllAnnualInsight?, error) in
             if error != nil {
@@ -664,8 +663,7 @@ private extension StatsInsightsStore {
             if allAnnual != nil {
                 state.allAnnual = allAnnual
             }
-            state.fetchingAllAnnual = false
-            state.fetchingAllAnnualHasFailed = error != nil
+            state.allAnnualStatus = error != nil ? .error : .success
         }
     }
 
@@ -902,8 +900,12 @@ extension StatsInsightsStore {
         return allTagsAndCategoriesStatus == .loading
     }
 
+    var allAnnualStatus: StoreFetchingStatus {
+        return state.allAnnualStatus
+    }
+
     var isFetchingAnnual: Bool {
-        return state.fetchingAllAnnual
+        return allAnnualStatus == .loading
     }
 
     var fetchingOverviewHasFailed: Bool {
@@ -927,7 +929,7 @@ extension StatsInsightsStore {
         case .allTagsAndCategories:
             return state.allTagsAndCategoriesStatus == .error
         case .allAnnual:
-            return state.fetchingAllAnnualHasFailed
+            return state.allAnnualStatus == .error
         }
     }
 }

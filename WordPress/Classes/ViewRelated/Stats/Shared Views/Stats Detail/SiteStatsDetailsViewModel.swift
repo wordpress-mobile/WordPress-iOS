@@ -196,7 +196,9 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsAnnualSiteStats:
-            tableRows.append(contentsOf: annualRows())
+            return immuTable(for: (.allAnnual, insightsStore.allAnnualStatus)) {
+                return Array(annualRows())
+            }
         case .periodPostsAndPages:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                       dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
