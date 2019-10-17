@@ -16,7 +16,7 @@ extension PostService {
             do {
                 let postsPushing = try self.managedObjectContext.fetch(fetch)
                 for post in postsPushing {
-                    post.remoteStatus = .failed
+                    self.markAsFailedAndDraftIfNeeded(post: post)
                 }
 
                 ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {

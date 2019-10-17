@@ -301,7 +301,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
         [self.managedObjectContext performBlock:^{
             Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
+                [self markAsFailedAndDraftIfNeededWithPost:postInContext];
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {

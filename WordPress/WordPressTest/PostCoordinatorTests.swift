@@ -32,7 +32,7 @@ class PostCoordinatorTests: XCTestCase {
 
         postCoordinator.save(post)
 
-        expect(post.remoteStatus).toEventually(equal(.failed))
+        expect(postServiceMock.didCallMarkAsFailedAndDraftIfNeeded).toEventually(beTrue())
         expect(postServiceMock.didCallUploadPost).to(beFalse())
     }
 
@@ -260,6 +260,7 @@ class PostCoordinatorTests: XCTestCase {
 
 private class PostServiceMock: PostService {
     private(set) var didCallUploadPost = false
+    private(set) var didCallMarkAsFailedAndDraftIfNeeded = false
     private(set) var didCallAutoSave = false
 
     var returnPost: AbstractPost?
@@ -279,6 +280,10 @@ private class PostServiceMock: PostService {
 
     override func autoSave(_ post: AbstractPost, success: ((AbstractPost, String) -> Void)?, failure: @escaping (Error?) -> Void) {
         didCallAutoSave = true
+    }
+
+    override func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
+        didCallMarkAsFailedAndDraftIfNeeded = true
     }
 }
 
