@@ -41,7 +41,7 @@ class ReaderRetryFailedImageViewTests: XCTestCase {
         retryView.delegate = delegate
 
         // When
-        retryView.sendActions(for: .touchUpInside)
+        retryView.tapAction()
 
         // Then
         XCTAssertTrue(delegate.didTap)

@@ -69,7 +69,7 @@ class ReaderRetryFailedImageView: UIView {
 
     // MARK: - Action Handlers
 
-    @objc private func tapAction() {
+    @objc internal func tapAction() {
         delegate?.didTapRetry()
     }
 }
