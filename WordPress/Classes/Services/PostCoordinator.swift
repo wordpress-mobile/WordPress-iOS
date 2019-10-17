@@ -245,9 +245,8 @@ class PostCoordinator: NSObject {
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
 
             completion?(.success(uploadedPost))
-        }, failure: { error in
-            let model = PostNoticeViewModel(post: post)
-            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+        }, failure: { [weak self] error in
+            self?.dispatchNotice(for: post)
 
             completion?(.error(error ?? SavingError.unknown))
 
@@ -316,9 +315,11 @@ class PostCoordinator: NSObject {
         guard let context = post.managedObjectContext else {
             return
         }
+
         context.perform {
             if status == .failed {
                 self.mainService.markAsFailedAndDraftIfNeeded(post: post)
+                self.dispatchNotice(for: post)
             } else {
                 post.remoteStatus = status
             }
@@ -341,6 +342,11 @@ class PostCoordinator: NSObject {
 
         let notice = Notice(title: PostAutoUploadMessages.cancelMessage(for: post.status), message: "")
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    private func dispatchNotice(for post: AbstractPost) {
+        let model = PostNoticeViewModel(post: post)
+        ActionDispatcher.dispatch(NoticeAction.post(model.notice))
     }
 }
 
