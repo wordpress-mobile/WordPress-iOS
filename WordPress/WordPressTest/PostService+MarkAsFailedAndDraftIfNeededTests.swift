@@ -8,7 +8,7 @@ import Nimble
 class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
 
     private var context: NSManagedObjectContext!
-    
+
     override func setUp() {
         super.setUp()
         context = TestContextManager().mainContext
