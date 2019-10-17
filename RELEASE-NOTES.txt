@@ -2,6 +2,7 @@
 -----
 * Dark Mode: General improvements
 * Stats: each Insight stat now loads independently.
+* Stats: added ability to customize Insights.
  
 13.4
 -----
