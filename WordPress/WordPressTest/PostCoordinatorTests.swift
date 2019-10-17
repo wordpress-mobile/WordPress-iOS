@@ -18,6 +18,7 @@ class PostCoordinatorTests: XCTestCase {
         super.tearDown()
         TestAnalyticsTracker.tearDown()
         context = nil
+        ContextManager.overrideSharedInstance(nil)
     }
 
     func testDoNotUploadAPostWithFailedMedia() {

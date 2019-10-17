@@ -34,13 +34,18 @@ class MediaCoordinator: NSObject {
     /// Tracks uploads of media for specific posts
     private var postMediaProgressCoordinators = [AbstractPost: MediaProgressCoordinator]()
 
-    override init() {
+    private let mediaServiceFactory: MediaService.Factory
+
+    init(_ mediaServiceFactory: MediaService.Factory = MediaService.Factory()) {
+        self.mediaServiceFactory = mediaServiceFactory
+
         super.init()
+
         addObserverForDeletedFiles()
     }
 
-    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
-    /// of the existing media for the post.
+    /// Uploads all failed media for the post, and returns `true` if it was possible to start
+    /// uploads for all of the existing media for the post.
     ///
     /// - Parameters:
     ///     - post: the post to get the media to upload from.
@@ -49,7 +54,7 @@ class MediaCoordinator: NSObject {
     /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
     ///
     func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
-        let mediaService = MediaService(managedObjectContext: backgroundContext)
+        let mediaService = mediaServiceFactory.create(backgroundContext)
         let failedMedia: [Media] = post.media.filter({ $0.remoteStatus == .failed })
         let mediasToUpload: [Media]
 
@@ -149,7 +154,7 @@ class MediaCoordinator: NSObject {
     @discardableResult
     private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media {
         coordinator.track(numberOfItems: 1)
-        let service = MediaService(managedObjectContext: mainContext)
+        let service = mediaServiceFactory.create(mainContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         var creationProgress: Progress? = nil
         let media = service.createMedia(with: asset,
@@ -277,7 +282,7 @@ class MediaCoordinator: NSObject {
     func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
         media.forEach({ self.cancelUpload(of: $0) })
 
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
         service.deleteMedia(media,
                             progress: { onProgress?($0) },
                             success: success,
@@ -286,7 +291,7 @@ class MediaCoordinator: NSObject {
 
     @discardableResult
     private func uploadMedia(_ media: Media, automatedRetry: Bool = false) -> Progress {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
 
         var progress: Progress? = nil
 
@@ -596,7 +601,7 @@ class MediaCoordinator: NSObject {
     /// - parameter blog: The blog from where to sync the media library from.
     ///
     @objc func syncMedia(for blog: Blog, success: (() -> Void)? = nil, failure: ((Error) ->Void)? = nil) {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
         service.syncMediaLibrary(for: blog, success: success, failure: failure)
     }
 
@@ -604,7 +609,7 @@ class MediaCoordinator: NSObject {
     /// The main cause of wrong status is the app being killed while uploads of media are happening.
     ///
     @objc func refreshMediaStatus() {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
         service.refreshMediaStatus()
     }
 }
@@ -653,7 +658,7 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
 extension MediaCoordinator: Uploader {
     func resume() {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
 
         service.failedMediaForUpload(automatedRetry: true).forEach() {
             retryMedia($0, automatedRetry: true)

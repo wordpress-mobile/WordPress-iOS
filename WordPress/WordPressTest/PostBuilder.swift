@@ -6,7 +6,7 @@ class PostBuilder {
     private let post: Post
 
     init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext()) {
-        post = Post(context: context)
+        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
 
         // Non-null Core Data properties
         post.blog = BlogBuilder(context).build()
@@ -120,17 +120,18 @@ class PostBuilder {
         return self
     }
 
-    func with(image: String, status: MediaRemoteStatus? = nil) -> PostBuilder {
+    func with(image: String, status: MediaRemoteStatus? = nil, autoUploadFailureCount: Int = 0) -> PostBuilder {
         guard let context = post.managedObjectContext else {
             return self
         }
 
-        guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as? Media else {
+        guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.entityName(), into: context) as? Media else {
             return self
         }
         media.localURL = image
         media.localThumbnailURL = "thumb-\(image)"
         media.blog = post.blog
+        media.autoUploadFailureCount = NSNumber(value: autoUploadFailureCount)
 
         if let status = status {
             media.remoteStatus = status
