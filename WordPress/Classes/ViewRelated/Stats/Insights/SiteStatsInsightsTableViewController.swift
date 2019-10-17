@@ -17,6 +17,7 @@ enum InsightType: Int {
     case allDotComFollowers
     case allEmailFollowers
     case allComments
+    case allTagsAndCategories
 
     // TODO: remove when Manage Insights is enabled.
     static let allValues = [InsightType.latestPostSummary,

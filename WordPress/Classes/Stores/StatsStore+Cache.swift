@@ -41,6 +41,8 @@ extension StatsInsightsStore: StatsStoreCacheable {
             return state.allEmailFollowers != nil
         case .allComments:
             return state.allCommentsInsight != nil
+        case .allTagsAndCategories:
+            return state.allTagsAndCategories != nil
         default:
             return false
         }

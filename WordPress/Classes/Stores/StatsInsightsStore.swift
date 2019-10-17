@@ -88,11 +88,10 @@ struct InsightStoreState {
     var allEmailFollowersStatus: StoreFetchingStatus = .idle
 
     var allCommentsInsight: StatsCommentsInsight?
-    var fetchingAllCommentsInsightStatus: StoreFetchingStatus = .idle
+    var allCommentsInsightStatus: StoreFetchingStatus = .idle
 
     var allTagsAndCategories: StatsTagsAndCategoriesInsight?
-    var fetchingAllTagsAndCategories = false
-    var fetchingAllTagsAndCategoriesHasFailed = false
+    var allTagsAndCategoriesStatus: StoreFetchingStatus = .idle
 
     var allAnnual: StatsAllAnnualInsight?
     var fetchingAllAnnual = false
@@ -541,7 +540,7 @@ private extension StatsInsightsStore {
             return
         }
 
-        state.fetchingAllCommentsInsightStatus = .loading
+        state.allCommentsInsightStatus = .loading
 
         // The API doesn't work when we specify `0` here, like most of the other endpoints do, unfortunately...
         // 1000 was chosen as an arbitrarily large number that should be "big enough" for all of our users.
@@ -559,7 +558,7 @@ private extension StatsInsightsStore {
             return
         }
 
-        state.fetchingAllTagsAndCategories = true
+        state.allTagsAndCategoriesStatus = .loading
 
         // See the comment about the limit in the method above.
         api.getInsight(limit: 1000) { (allTagsAndCategories: StatsTagsAndCategoriesInsight?, error) in
@@ -621,7 +620,7 @@ private extension StatsInsightsStore {
             if allCommentsInsight != nil {
                 state.allCommentsInsight = allCommentsInsight
             }
-            state.fetchingAllCommentsInsightStatus = error != nil ? .error : .success
+            state.allCommentsInsightStatus = error != nil ? .error : .success
         }
     }
 
@@ -643,8 +642,7 @@ private extension StatsInsightsStore {
             if allTagsAndCategories != nil {
                 state.allTagsAndCategories = allTagsAndCategories
             }
-            state.fetchingAllTagsAndCategories = false
-            state.fetchingAllTagsAndCategoriesHasFailed = error != nil
+            state.allTagsAndCategoriesStatus = error != nil ? .error : .success
         }
     }
 
@@ -889,15 +887,19 @@ extension StatsInsightsStore {
     }
 
     var allCommentsInsightStatus: StoreFetchingStatus {
-        return state.fetchingAllCommentsInsightStatus
+        return state.allCommentsInsightStatus
     }
 
     var isFetchingComments: Bool {
-        return state.fetchingAllCommentsInsightStatus == .loading
+        return allCommentsInsightStatus == .loading
+    }
+
+    var allTagsAndCategoriesStatus: StoreFetchingStatus {
+        return state.allTagsAndCategoriesStatus
     }
 
     var isFetchingTagsAndCategories: Bool {
-        return state.fetchingAllTagsAndCategories
+        return allTagsAndCategoriesStatus == .loading
     }
 
     var isFetchingAnnual: Bool {
@@ -921,9 +923,9 @@ extension StatsInsightsStore {
         case .allFollowers:
             return fetchingFollowersStatus == .error
         case .allComments:
-            return state.fetchingAllCommentsInsightStatus == .error
+            return state.allCommentsInsightStatus == .error
         case .allTagsAndCategories:
-            return state.fetchingAllTagsAndCategoriesHasFailed
+            return state.allTagsAndCategoriesStatus == .error
         case .allAnnual:
             return state.fetchingAllAnnualHasFailed
         }

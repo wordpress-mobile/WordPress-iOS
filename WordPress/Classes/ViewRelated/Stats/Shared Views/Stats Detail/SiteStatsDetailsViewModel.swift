@@ -188,9 +188,13 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsTagsAndCategories:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
-                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
-            tableRows.append(contentsOf: tagsAndCategoriesRows())
+            return immuTable(for: (.allTagsAndCategories, insightsStore.allTagsAndCategoriesStatus)) {
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                     dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
+                rows.append(contentsOf: tagsAndCategoriesRows())
+                return rows
+            }
         case .insightsAnnualSiteStats:
             tableRows.append(contentsOf: annualRows())
         case .periodPostsAndPages:
