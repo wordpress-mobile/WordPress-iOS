@@ -113,7 +113,7 @@ class PostCoordinator: NSObject {
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
-            change(post: post, status: .failed)
+            change(post: post, status: .failed, then: dispatchNotice)
             completion(.error(SavingError.mediaFailure))
             return
         }
@@ -146,7 +146,7 @@ class PostCoordinator: NSObject {
                         EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
                             switch result {
                             case .error:
-                                self?.change(post: post, status: .failed)
+                                self?.change(post: post, status: .failed, then: self?.dispatchNotice)
                                 completion(.error(SavingError.mediaFailure))
                             case .success(let value):
                                 media.remoteURL = value.videoURL.absoluteString
@@ -157,7 +157,7 @@ class PostCoordinator: NSObject {
                         successHandler()
                     }
                 case .failed:
-                    self.change(post: post, status: .failed)
+                    self.change(post: post, status: .failed, then: self.dispatchNotice)
                     completion(.error(SavingError.mediaFailure))
                 default:
                     DDLogInfo("Post Coordinator -> Media state: \(state)")
@@ -246,7 +246,7 @@ class PostCoordinator: NSObject {
 
             completion?(.success(uploadedPost))
         }, failure: { [weak self] error in
-            self?.dispatchNotice(for: post)
+            self?.dispatchNotice(post)
 
             completion?(.error(error ?? SavingError.unknown))
 
@@ -311,7 +311,7 @@ class PostCoordinator: NSObject {
         return result
     }
 
-    private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
+    private func change(post: AbstractPost, status: AbstractPostRemoteStatus, then completion: ((AbstractPost) -> ())? = nil) {
         guard let context = post.managedObjectContext else {
             return
         }
@@ -319,12 +319,13 @@ class PostCoordinator: NSObject {
         context.perform {
             if status == .failed {
                 self.mainService.markAsFailedAndDraftIfNeeded(post: post)
-                self.dispatchNotice(for: post)
             } else {
                 post.remoteStatus = status
             }
 
             ContextManager.sharedInstance().saveContextAndWait(context)
+
+            completion?(post)
         }
     }
 
@@ -344,7 +345,7 @@ class PostCoordinator: NSObject {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    private func dispatchNotice(for post: AbstractPost) {
+    private func dispatchNotice(_ post: AbstractPost) {
         DispatchQueue.main.async {
             let model = PostNoticeViewModel(post: post)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
