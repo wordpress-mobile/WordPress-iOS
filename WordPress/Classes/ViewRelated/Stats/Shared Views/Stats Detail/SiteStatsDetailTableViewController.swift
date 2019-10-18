@@ -119,9 +119,12 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // Only show the date bar for Insights Annual details
         guard let statSection = statSection,
-            statSection == .insightsAnnualSiteStats else {
-                return 0
+            statSection == .insightsAnnualSiteStats,
+            let allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights,
+            allAnnualInsights.last?.year != nil else {
+            return 0
         }
 
         return SiteStatsTableHeaderView.headerHeight()
