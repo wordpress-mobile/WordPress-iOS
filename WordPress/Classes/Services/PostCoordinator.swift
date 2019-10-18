@@ -5,7 +5,7 @@ import WordPressFlux
 class PostCoordinator: NSObject {
 
     enum SavingError: Error {
-        case mediaFailure
+        case mediaFailure(AbstractPost)
         case unknown
     }
 
@@ -56,9 +56,15 @@ class PostCoordinator: NSObject {
             case .success(let post):
                 self.upload(post: post, completion: completion)
             case .error(let error):
-                if let notice = defaultFailureNotice {
-                    ActionDispatcher.dispatch(NoticeAction.post(notice))
+                switch error {
+                case SavingError.mediaFailure(let savedPost):
+                    self.dispatchNotice(savedPost)
+                default:
+                    if let notice = defaultFailureNotice {
+                        ActionDispatcher.dispatch(NoticeAction.post(notice))
+                    }
                 }
+
                 completion?(.error(error))
             }
         }
@@ -113,8 +119,9 @@ class PostCoordinator: NSObject {
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
-            change(post: post, status: .failed, then: dispatchNotice)
-            completion(.error(SavingError.mediaFailure))
+            change(post: post, status: .failed) { savedPost in
+                completion(.error(SavingError.mediaFailure(savedPost)))
+            }
             return
         }
 
@@ -146,8 +153,9 @@ class PostCoordinator: NSObject {
                         EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
                             switch result {
                             case .error:
-                                self?.change(post: post, status: .failed, then: self?.dispatchNotice)
-                                completion(.error(SavingError.mediaFailure))
+                                self?.change(post: post, status: .failed) { savedPost in
+                                    completion(.error(SavingError.mediaFailure(savedPost)))
+                                }
                             case .success(let value):
                                 media.remoteURL = value.videoURL.absoluteString
                                 successHandler()
@@ -157,8 +165,9 @@ class PostCoordinator: NSObject {
                         successHandler()
                     }
                 case .failed:
-                    self.change(post: post, status: .failed, then: self.dispatchNotice)
-                    completion(.error(SavingError.mediaFailure))
+                    self.change(post: post, status: .failed) { savedPost in
+                        completion(.error(SavingError.mediaFailure(savedPost)))
+                    }
                 default:
                     DDLogInfo("Post Coordinator -> Media state: \(state)")
                 }
