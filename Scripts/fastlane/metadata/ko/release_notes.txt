@@ -1,3 +1,5 @@
-* After a recent round of improvements, the Block Editor is faster and performs more smoothly on the app.
-* Some of you were having trouble with Dark Mode on iPads; we sorted it out (adios, uninvited glare!).
-* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.
+이달에 새롭게 도입된 모바일 기능은 버그 수정 기능이었습니다.
+- Apple 자격 증명을 사용하여 앱에 로그인할 수 있어야 하지만, 버그로 인해 로그인하지 못하는 경우가 종종 있었습니다. 현재 해당 문제가 수정되었습니다.
+- 조정을 통해 블록 편집기를 훨씬 더 개선할 수 있습니다. 링크는 Safari를 여는 대신 앱에서 열리며, 때때로 기존 링크를 삭제하는 난감한 링크 편집 문제가 더 이상 발생하지 않습니다.
+- 특히 시각적 효과가 개선되고 버그가 줄었기 때문에 “어둡게 모드”는 “색상”으로는 어둡지만 “음침한” 느낌은 아닙니다.
+- 공유 확장에서 세로 스크롤이 작동하지 않는 경우가 있었지만 이제는 그렇지 않습니다.

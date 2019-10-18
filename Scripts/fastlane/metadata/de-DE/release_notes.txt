@@ -1,3 +1,5 @@
-* Nach einer Reihe von Verbesserungen ist der Block-Editor schneller und arbeitet reibungsloser in der App.
-* Einige von euch hatten Probleme mit dem dunklen Modus auf dem iPad; wir haben das Problem gelöst (Adios, ungebetene Blendung!).
-* Deine Website-Besucher lieben Beiträge mit Medien, deshalb haben wir die Möglichkeit geschaffen, sie stabiler zu gestalten.
+Unsere App-Entwickler haben diesen Monat so einige Fehler behoben:
+- Normalerweise konntest du dich mit deinen Apple-Anmeldedaten bei der App anmelden, aber ein Fehler hat es verhindert. Das wurde jetzt behoben.
+- Einige Änderungen machen den Block-Editor jetzt noch besser: Links werden direkt in der App statt in Safari geöffnet. Das lästige Problem, dass beim Bearbeiten von Links manchmal bestehende Links gelöscht wurden, ist behoben.
+- Der „dunkle Modus“ ist nun wirklich dunkel und nicht mehr grauenvoll düster, vor allem dank der verbesserten visuellen Elemente und Fehlerbehebungen.
+- Das vertikale Scrollen funktionierte in der Teilen-Erweiterung nicht immer. Das ist jetzt kein Problem mehr.
