@@ -114,7 +114,7 @@ open class WP3DTouchShortcutCreator: NSObject {
             guard let strongSelf = self else {
                 return
             }
-            var entireShortcutArray = strongSelf.loggedInShortcutArray()
+            let entireShortcutArray = strongSelf.loggedInShortcutArray()
             var visibleShortcutArray = [UIApplicationShortcutItem]()
 
             if strongSelf.hasWordPressComAccount() {
