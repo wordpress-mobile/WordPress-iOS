@@ -20,7 +20,7 @@ enum FeatureFlag: Int {
         case .statsRefresh:
             return true
         case .statsInsightsManagement:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .domainCredit:
             return true
         case .signInWithApple:
