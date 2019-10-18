@@ -392,7 +392,6 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
-        WPAnalytics.track(.statsItemTappedInsightMoveUp)
         moveInsight(insight, by: -1)
     }
 
@@ -401,12 +400,10 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
-        WPAnalytics.track(.statsItemTappedInsightMoveDown)
         moveInsight(insight, by: 1)
     }
 
     func removeInsight(_ insight: InsightType) {
-        WPAnalytics.track(.statsItemTappedInsightRemove)
         insightsToShow = insightsToShow.filter { $0 != insight }
         updateView()
     }
@@ -559,7 +556,6 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
                 return
         }
 
-        WPAnalytics.track(.statsItemSelectedAddInsight, withProperties: ["insight": insight.title])
         insightsToShow.append(insightType)
         updateView()
     }
@@ -579,8 +575,6 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             DDLogDebug("manageInsightSelected: unknown insightType for statSection: \(insight.title).")
             return
         }
-
-        WPAnalytics.track(.statsItemTappedManageInsight)
 
         let alert = UIAlertController(title: insight.title,
                                       message: nil,
@@ -616,7 +610,6 @@ extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate 
     func actionButtonPressed() {
 
         guard !displayingEmptyView else {
-            WPAnalytics.track(.statsItemTappedInsightsAddStat)
             showAddInsightView()
             return
         }

@@ -5,6 +5,7 @@ Fixed a bug that was not submiting posts for review
 13.5
 -----
 * Dark Mode: General improvements
+* Stats: each Insight stat now loads independently.
  
 13.4
 -----
