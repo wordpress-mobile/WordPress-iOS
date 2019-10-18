@@ -18,17 +18,15 @@ extension StatsInsightsStore: StatsStoreCacheable {
             return state.lastPostInsight != nil
         case .allTimeStats:
             return state.allTimeStats != nil
-        case .followersTotals:
-            return false
+        case .followersTotals, .followers:
+            return state.dotComFollowers != nil &&
+                state.emailFollowers != nil
         case .mostPopularTime, .annualSiteStats:
             return state.annualAndMostPopularTime != nil
         case .tagsAndCategories:
             return state.topTagsAndCategories != nil
         case .comments:
             return state.topCommentsInsight != nil
-        case .followers:
-            return state.dotComFollowers != nil &&
-                state.emailFollowers != nil
         case .todaysStats:
             return state.todaysStats != nil
         case .postingActivity:
