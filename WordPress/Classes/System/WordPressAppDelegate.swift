@@ -69,6 +69,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         window?.makeKeyAndVisible()
 
+        // Restore a disassociated account prior to fixing tokens.
+        AccountService(managedObjectContext: ContextManager.shared.mainContext).restoreDisassociatedAccountIfNecessary()
+
         let solver = WPAuthTokenIssueSolver()
         let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
             self?.runStartupSequence(with: launchOptions ?? [:])
