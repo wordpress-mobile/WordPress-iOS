@@ -41,16 +41,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         }
     }
 
-    // Attempt to restore a default account that has somehow been disassociated.
-    WPAccount *account = [self findDefaultAccountCandidate];
-    if (account) {
-        // Assume we have a good candidate account and make it the default account in the app.
-        // Note that this should be the account with the most blogs.
-        // Update user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
-        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
-        return account;
-    }
-
     // No account, or no default account set. Clear the defaults key.
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
     return nil;
@@ -300,6 +290,22 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         return defaultAccount;
     }
     return nil;
+}
+
+- (void)restoreDisassociatedAccountIfNecessary
+{
+    if ([self defaultWordPressComAccount]) {
+        return;
+    }
+
+    // Attempt to restore a default account that has somehow been disassociated.
+    WPAccount *account = [self findDefaultAccountCandidate];
+    if (account) {
+        // Assume we have a good candidate account and make it the default account in the app.
+        // Note that this should be the account with the most blogs.
+        // Updates user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
+        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+    }
 }
 
 - (WPAccount *)findDefaultAccountCandidate

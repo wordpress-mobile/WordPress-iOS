@@ -113,6 +113,7 @@ class AccountServiceTests: XCTestCase {
 
         UserDefaults.standard.removeObject(forKey: "AccountDefaultDotcomUUID")
 
+        accountService.restoreDisassociatedAccountIfNecessary()
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
     }
 
@@ -133,6 +134,7 @@ class AccountServiceTests: XCTestCase {
         contextManager.save(context)
 
         UserDefaults.standard.removeObject(forKey: "AccountDefaultDotcomUUID")
+        accountService.restoreDisassociatedAccountIfNecessary()
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
 
         accountService.removeDefaultWordPressComAccount()
