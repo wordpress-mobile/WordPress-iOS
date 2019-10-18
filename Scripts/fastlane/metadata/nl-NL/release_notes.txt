@@ -1,3 +1,5 @@
-* Na een recente ronde met verbeteringen, is de Blok-editor sneller en voelt vloeiender in de app.
-* Sommige van jullie hadden problemen met Donkere Mode op iPad's; we hebben het opgelost (gegroet, onuitgenodigde schittering!).
-* Je site bezoekers houden van berichten met media, dus hebben we de ervaring van het maken van ze stabieler gemaakt.
+Onze applicatie-ontwikkelaars hebben veel bugs geplet deze maand:
+- Je moet kunnen inloggen met je Apple inloggegevens, maar een bug zorgde ervoor dat dit soms niet lukte. Dat is nu opgelost.
+- Kleine aanpassingen om de blokeditor te verbeteren: links openen in de applicatie in plaats van Safari, en een vervelend probleem met linkbewerking, waarbij bestaande links soms werden verwijderd, is opgelost.
+- 'Donkere modus' is nu donker van kleur, maar niet grimmig, vooral nu er visuele verbeteringen zijn aangebracht en er minder bugs zijn.
+- Verticaal scrollen werkte soms niet in de extensie 'Delen' en dat is opgelost.

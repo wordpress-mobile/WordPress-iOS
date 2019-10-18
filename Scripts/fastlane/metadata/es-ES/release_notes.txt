@@ -1,3 +1,5 @@
-* Después de una reciente serie de mejoras, el editor de bloques es más rápido y funciona mejor en la aplicación.
-* Algunos estaban teniendo problemas con el modo oscuro en los iPads; lo hemos solucionado (¡adiós, al resplandor no deseado!).
-* a los visitantes de tu sitio les encantan las entradas con medios, por lo que hemos hecho el experimento de crearlos más estables.
+Este mes, nuestros desarrolladores para móvil han sido unos gigantes aplastando fallos:
+- Deberías haber podido acceder a la aplicación con tus credenciales de Apple, pero un fallo hacía que, a veces, no pudieras. Ahora, ya está corregido.
+- Los retoques hacen que el editor de bloques sea cada vez mejor: los enlaces se abren en la aplicación, en lugar de abrir Safari, y un molesto problema de edición de enlaces que, a veces, borraba enlaces existentes, ya no existe.
+- El «modo oscuro» es oscuro como «tono» y no como «sombra», especialmente ahora que tiene mejor visualización y menos fallos.
+- El scroll vertical, algunas veces no funcionaba en la extensión para compartir y, ahora, ya lo hace.
