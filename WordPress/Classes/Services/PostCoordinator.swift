@@ -107,7 +107,8 @@ class PostCoordinator: NSObject {
     /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
-    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (Result<AbstractPost>) -> ()) {
+    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false,
+                               then completion: @escaping (Result<AbstractPost>) -> ()) {
         var post = postToSave
 
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
@@ -134,6 +135,23 @@ class PostCoordinator: NSObject {
                 return
             }
 
+            let handleSingleMediaFailure = { [weak self] in
+                guard let `self` = self,
+                    self.isObserving(post: post) else {
+                    return
+                }
+
+                // One of the media attached to the post has already failed. We're changing the
+                // status of the post to .failed so we don't need to observe for other failed media
+                // anymore. If we do, we'll receive more notifications and we'll be calling
+                // completion() multiple times.
+                self.removeObserver(for: post)
+
+                self.change(post: post, status: .failed) { savedPost in
+                    completion(.error(SavingError.mediaFailure(savedPost)))
+                }
+            }
+
             let uuid = mediaCoordinator.addObserver({ [weak self](media, state) in
                 guard let `self` = self else {
                     return
@@ -150,12 +168,10 @@ class PostCoordinator: NSObject {
                     }
                     switch media.mediaType {
                     case .video:
-                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
+                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { (result) in
                             switch result {
                             case .error:
-                                self?.change(post: post, status: .failed) { savedPost in
-                                    completion(.error(SavingError.mediaFailure(savedPost)))
-                                }
+                                handleSingleMediaFailure()
                             case .success(let value):
                                 media.remoteURL = value.videoURL.absoluteString
                                 successHandler()
@@ -165,14 +181,14 @@ class PostCoordinator: NSObject {
                         successHandler()
                     }
                 case .failed:
-                    self.change(post: post, status: .failed) { savedPost in
-                        completion(.error(SavingError.mediaFailure(savedPost)))
-                    }
+                    handleSingleMediaFailure()
                 default:
                     DDLogInfo("Post Coordinator -> Media state: \(state)")
                 }
             }, forMediaFor: post)
+
             trackObserver(receipt: uuid, for: post)
+
             return
         }
 
