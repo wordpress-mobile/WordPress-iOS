@@ -85,6 +85,34 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
+        // **Workaround**
+        //
+        // We found that this method is always called whenever we try to _save_ in the editor while
+        // offline or when the editor is opened. This can cause a media to be uploaded multiple
+        // times. It is also causing issues with auto-uploading because a new media is always
+        // added every time.
+        //
+        // To reproduce this scenario:
+        //
+        // 1. git checkout dae0b10e77. Run the app.
+        // 2. Edit an existing post (Gutenberg).
+        // 3. Go offline.
+        // 4. Add an image.
+        // 5. Tap X -> Update Post
+        // 6. Edit the same post again.
+        // 7. Tap X -> Update Post
+        // 8. Repeat steps 6 to 7 multiple times. You'll notice that the Snackbar will say
+        //    “1 post, n+1 files not uploaded”.
+        // 9. Go online.
+        // 10. Tap Retry on the post's card.
+        //
+        // When the post is uploaded successfully, go to the Media library. Notice that the image
+        // you added has been uploaded multiple times.
+        if post.content?.contains(url.absoluteString) ?? false {
+            callback(nil)
+            return
+        }
+
         let media = insert(exportableAsset: url as NSURL, source: .otherApps)
         let mediaUploadID = media.gutenbergUploadID
         callback([(mediaUploadID, url.absoluteString, media.mediaTypeString)])
