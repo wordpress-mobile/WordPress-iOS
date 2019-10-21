@@ -16,7 +16,7 @@ desc "Install required dependencies"
 task :dependencies => %w[dependencies:check]
 
 namespace :dependencies do
-  task :check => %w[bundler:check bundle:check pod:check lint:check]
+  task :check => %w[bundler:check bundle:check credentials:apply pod:check lint:check]
 
   namespace :bundler do
     task :check do
@@ -51,6 +51,13 @@ namespace :dependencies do
     end
     CLOBBER << "vendor/bundle"
     CLOBBER << ".bundle"
+  end
+
+  namespace :credentials do
+    task :apply do
+      next unless Dir.exist?(File.join(Dir.home, '.mobile-secrets/.git')) || ENV.key?('CONFIGURE_ENCRYPTION_KEY')
+      sh('FASTLANE_SKIP_UPDATE_CHECK=1 FASTLANE_ENV_PRINTER=1 bundle exec fastlane run configure_apply')
+    end
   end
 
   namespace :pod do

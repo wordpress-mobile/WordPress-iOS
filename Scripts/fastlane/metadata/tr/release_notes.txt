@@ -1,3 +1,5 @@
-* Son gelişmelerden sonra, blok düzenleyici daha hızlıdır ve uygulamada daha sorunsuz çalışır.
-* Bazılarınız iPad’lerde dark mode ile sorun yaşıyordu; halletik (adios, davetsiz parlama!).
-* Site ziyaretçileriniz medya içeren yayınları sever, bu nedenle onları daha istikrarlı bir hale getirme deneyimini yaptık.
+Mobil geliştiricilerimiz bu ay pek çok hatayı düzeltti:
+- Bazen uygulamaya Apple kimlik bilgileriyle giriş yapmanıza engel olan bir hata vardı. Artık bu sorun düzeltildi.
+- Düzenlemeler sayesinden blok düzenleyici gittikçe daha iyi oluyor: Bağlantıların Safari yerine uygulamada açılması ve bazen mevcut bağlantıları silen, sinir bozucu bağlantı düzenleme sorunu giderildi.
+- Daha iyi görseller ve daha az hata sayesinde “Gece Modu” artık “iç karartıcı” değil, “renk tonu” bakımından koyu.
+- Paylaşma genişletmesinde dikey kaydırma bazen çalışmıyordu, artık çalışıyor.

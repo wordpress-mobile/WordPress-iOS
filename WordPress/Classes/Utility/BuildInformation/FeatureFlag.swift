@@ -5,7 +5,6 @@ enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
     case statsRefresh
-    case statsFileDownloads
     case statsInsightsManagement
     case domainCredit
     case signInWithApple
@@ -20,8 +19,6 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .statsRefresh:
             return true
-        case .statsFileDownloads:
-            return true
         case .statsInsightsManagement:
             return BuildConfiguration.current == .localDeveloper
         case .domainCredit:
@@ -34,7 +31,7 @@ enum FeatureFlag: Int {
             }
             return true
         case .statsAsyncLoading:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]
         }
     }
 }

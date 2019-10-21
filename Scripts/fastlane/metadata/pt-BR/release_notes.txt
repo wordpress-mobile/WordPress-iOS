@@ -1,3 +1,5 @@
-* Após melhorias recentes, o editor de blocos está mais rápido e com melhor desempenho no aplicativo.
-* Alguns usuários tiveram problema com o modo escuro em iPads. Já corrigimos!
-* Seus visitantes adoram posts com arquivos de mídia. Então melhoramos a experiência de criação desse tipo de conteúdo.
+Nossos desenvolvedores para dispositivos móveis estavam destruindo juggernauts este mês:
+- Você deveria conseguir entrar no aplicativo com suas credenciais da Apple, mas um erro dizia que às vezes não era possível. Isso está corrigido agora.
+- Os ajustes tornam o editor de blocos cada vez melhor: os links são abertos no aplicativo, ao invés de abrir o Safari, e um incômodo problema de edição de links que às vezes exclui links existentes não existe mais.
+- "Modo Escuro" é escuro como em "matiz" e não como em "sombrio", especialmente agora que ele tem visuais melhores e menos erros.
+- A rolagem vertical às vezes não funcionava na extensão Compartilhar, e agora funciona.

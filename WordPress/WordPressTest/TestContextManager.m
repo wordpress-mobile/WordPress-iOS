@@ -96,9 +96,22 @@
     if (self.testExpectation) {
         [self.testExpectation fulfill];
         self.testExpectation = nil;
-        } else if (self.requiresTestExpectation) {
+    } else if (self.requiresTestExpectation) {
         NSLog(@"No test expectation present for context save");
     }
+}
+
+- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
+{
+    [super saveContext:context withCompletionBlock:^{
+        if (self.testExpectation) {
+            [self.testExpectation fulfill];
+            self.testExpectation = nil;
+        } else if (self.requiresTestExpectation) {
+            NSLog(@"No test expectation present for context save");
+        }
+        completionBlock();
+    }];
 }
 
 - (NSURL *)storeURL

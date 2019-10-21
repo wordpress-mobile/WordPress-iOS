@@ -55,8 +55,12 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
     self.title = NSLocalizedString(@"Edit Comment", @"");
     
+    self.view.backgroundColor = [UIColor murielBasicBackground];
+
     self.textView.font = [WPStyleGuide regularTextFont];
     self.textView.textContainerInset = [UIDevice isPad] ? EditCommentInsetsPad : EditCommentInsetsPhone;
+    self.textView.backgroundColor = [UIColor murielBasicBackground];
+    self.textView.textColor = [UIColor murielText];
     
     [self showCancelBarButton];
     [self showSaveBarButton];
