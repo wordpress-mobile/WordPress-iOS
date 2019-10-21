@@ -317,9 +317,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatAppSettingsGutenbergDisabled:
             eventName = @"gutenberg_setting_disabled";
             break;
-            case WPAnalyticsStatAutoUploadPostInvoked:
-            eventName = @"auto_upload_post_invoked";
-            break;
         case WPAnalyticsStatAutomatedTransferCustomDomainDialogShown:
             eventName = @"automated_transfer_custom_domain_dialog_shown";
             break;
