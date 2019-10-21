@@ -274,10 +274,12 @@ private class PostServiceMock: PostService {
         didCallUploadPost = true
 
         if let post = returnPost {
+            post.remoteStatus = .sync
             success?(post)
         }
 
         if let error = returnError {
+            post.remoteStatus = .failed
             failure(error)
         }
     }
