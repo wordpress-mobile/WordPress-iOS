@@ -52,28 +52,28 @@ class SiteStatsDetailsViewModel: Observable {
                 return
             }
 
-            insightsReceipt = insightsStore.query(storeQuery)
             insightsChangeReceipt = insightsStore.onChange { [weak self] in
                 self?.emitChange()
             }
+            insightsReceipt = insightsStore.query(storeQuery)
         case let statSection where StatSection.allPeriods.contains(statSection):
             guard let storeQuery = queryForPeriodStatSection(statSection) else {
                 return
             }
 
-            periodReceipt = periodStore.query(storeQuery)
             periodChangeReceipt = periodStore.onChange { [weak self] in
                 self?.emitChange()
             }
+            periodReceipt = periodStore.query(storeQuery)
         case let statSection where StatSection.allPostStats.contains(statSection):
             guard let postID = postID else {
                 return
             }
 
-            periodReceipt = periodStore.query(.postStats(postID: postID))
             periodChangeReceipt = periodStore.onChange { [weak self] in
                 self?.emitChange()
             }
+            periodReceipt = periodStore.query(.postStats(postID: postID))
         default:
             break
         }
@@ -103,6 +103,41 @@ class SiteStatsDetailsViewModel: Observable {
         }
     }
 
+    func storeIsFetching(statSection: StatSection) -> Bool {
+        switch statSection {
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            return insightsStore.isFetchingAllFollowers
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            return insightsStore.isFetchingComments
+        case .insightsTagsAndCategories:
+            return insightsStore.isFetchingTagsAndCategories
+        case .insightsAnnualSiteStats:
+            return insightsStore.isFetchingAnnual
+        case .periodPostsAndPages:
+            return periodStore.isFetchingPostsAndPages
+        case .periodSearchTerms:
+            return periodStore.isFetchingSearchTerms
+        case .periodVideos:
+            return periodStore.isFetchingVideos
+        case .periodClicks:
+            return periodStore.isFetchingClicks
+        case .periodAuthors:
+            return periodStore.isFetchingAuthors
+        case .periodReferrers:
+            return periodStore.isFetchingReferrers
+        case .periodCountries:
+            return periodStore.isFetchingCountries
+        case .periodPublished:
+            return periodStore.isFetchingPublished
+        case .periodFileDownloads:
+            return periodStore.isFetchingFileDownloads
+        case .postStatsMonthsYears, .postStatsAverageViews:
+            return periodStore.isFetchingPostStats(for: postID)
+        default:
+            return false
+        }
+    }
+
     func updateSelectedDate(_ selectedDate: Date) {
         self.selectedDate = selectedDate
     }
@@ -123,35 +158,55 @@ class SiteStatsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
-            let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
-            let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
-            let emailTabData = tabDataForFollowerType(.insightsFollowersEmail)
-
-            tableRows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [wpTabData, emailTabData],
-                                                            siteStatsDetailsDelegate: detailsDelegate,
-                                                            showTotalCount: true,
-                                                            selectedIndex: selectedIndex))
-
-            let dataRows = statSection == .insightsFollowersWordPress ? wpTabData.dataRows : emailTabData.dataRows
-            tableRows.append(contentsOf: tabbedRowsFrom(dataRows))
+            let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
+            let type: InsightType = statSection == .insightsFollowersWordPress ? .allDotComFollowers : .allEmailFollowers
+            return immuTable(for: (type, status)) {
+                var rows = [ImmuTableRow]()
+                let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
+                let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
+                let emailTabData = tabDataForFollowerType(.insightsFollowersEmail)
+                rows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [wpTabData, emailTabData],
+                                                           siteStatsDetailsDelegate: detailsDelegate,
+                                                           showTotalCount: true,
+                                                           selectedIndex: selectedIndex))
+                let dataRows = statSection == .insightsFollowersWordPress ? wpTabData.dataRows : emailTabData.dataRows
+                if dataRows.isEmpty {
+                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights))
+                } else {
+                    rows.append(contentsOf: tabbedRowsFrom(dataRows))
+                }
+                return rows
+            }
         case .insightsCommentsAuthors, .insightsCommentsPosts:
-            let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
-            let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
-            let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
-
-            tableRows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [authorsTabData, postsTabData],
-                                                            siteStatsDetailsDelegate: detailsDelegate,
-                                                            showTotalCount: false,
-                                                            selectedIndex: selectedIndex))
-
-            let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
-            tableRows.append(contentsOf: tabbedRowsFrom(dataRows))
+           return immuTable(for: (.allComments, insightsStore.allCommentsInsightStatus)) {
+                var rows = [ImmuTableRow]()
+                let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
+                let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
+                let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
+                rows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [authorsTabData, postsTabData],
+                                                           siteStatsDetailsDelegate: detailsDelegate,
+                                                           showTotalCount: false,
+                                                           selectedIndex: selectedIndex))
+                let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
+                if dataRows.isEmpty {
+                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights))
+                } else {
+                    rows.append(contentsOf: tabbedRowsFrom(dataRows))
+                }
+                return rows
+            }
         case .insightsTagsAndCategories:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
-                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
-            tableRows.append(contentsOf: tagsAndCategoriesRows())
+            return immuTable(for: (.allTagsAndCategories, insightsStore.allTagsAndCategoriesStatus)) {
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                     dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
+                rows.append(contentsOf: tagsAndCategoriesRows())
+                return rows
+            }
         case .insightsAnnualSiteStats:
-            tableRows.append(contentsOf: annualRows())
+            return immuTable(for: (.allAnnual, insightsStore.allAnnualStatus)) {
+                return Array(annualRows())
+            }
         case .periodPostsAndPages:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                       dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
@@ -884,4 +939,29 @@ private extension SiteStatsDetailsViewModel {
         return StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
     }
 
+    func immuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
+        if insightsStore.containsCachedData(for: row.type) || !Feature.enabled(.statsAsyncLoading) {
+            return ImmuTable(sections: [
+                ImmuTableSection(
+                    rows: rowsBlock())
+            ])
+        }
+
+        var rows = [ImmuTableRow]()
+
+        switch row.status {
+        case .loading, .idle:
+            rows.append(StatsGhostTopImmutableRow())
+            rows.append(contentsOf: (0...5).map { _ in StatsGhostDetailRow() })
+        case .success:
+            rows.append(contentsOf: rowsBlock())
+        case .error:
+            break
+        }
+
+        return ImmuTable(sections: [
+            ImmuTableSection(
+                rows: rows)
+        ])
+    }
 }
