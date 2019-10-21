@@ -262,7 +262,7 @@ class PostCoordinatorTests: XCTestCase {
         expect(propertyStatus).toEventually(equal(status.rawValue))
     }
 
-    func testSavingSuccessfullyWillDispatchANotice() {
+    func testSavingSuccessfullyWillDispatchASuccessNotice() {
         // Arrange
         let post = PostBuilder(context)
             .with(title: "Sint dolorem quo")
@@ -290,15 +290,94 @@ class PostCoordinatorTests: XCTestCase {
 
         // Assert
         expect(result).notTo(beNil())
-        expect(actionDispatcherFacadeMock.dispatchedActions).notTo(beEmpty())
+        expect(actionDispatcherFacadeMock.dispatchedActions).toEventuallyNot(beEmpty())
 
         guard case let NoticeAction.post(notice)? = actionDispatcherFacadeMock.dispatchedActions.first else {
             assertionFailure("The action should be a NoticeAction")
             return
         }
 
-        expect(notice.message).to(contain("Sint dolorem quo"))
         expect(notice.feedbackType).to(equal(.success))
+        expect(notice.message).to(contain("Sint dolorem quo"))
+    }
+
+    func testFailingToSaveWillDispatchAFailedNotice() {
+        // Arrange
+        let post = PostBuilder(context)
+            .with(title: "Sit neque qui")
+            .with(status: .publish)
+            .with(remoteStatus: .local)
+            .build()
+
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        postServiceMock.returnError = NSError(domain: "", code: 1, userInfo: nil)
+
+        let actionDispatcherFacadeMock = ActionDispatcherFacadeMock()
+
+        let postCoordinator = PostCoordinator(mainService: postServiceMock,
+                                              backgroundService: postServiceMock,
+                                              actionDispatcherFacade: actionDispatcherFacadeMock)
+
+        // Act
+        var result: Result<AbstractPost>? = nil
+        waitUntil(timeout: 2) { done in
+            postCoordinator.save(post) { aResult in
+                result = aResult
+                done()
+            }
+        }
+
+        // Assert
+        expect(result).notTo(beNil())
+        expect(actionDispatcherFacadeMock.dispatchedActions).toEventuallyNot(beEmpty())
+
+        guard case let NoticeAction.post(notice)? = actionDispatcherFacadeMock.dispatchedActions.first else {
+            assertionFailure("The action should be a NoticeAction")
+            return
+        }
+
+        expect(notice.feedbackType).to(equal(.error))
+        expect(notice.message).to(contain("Sit neque qui"))
+    }
+
+    func testFailingToSaveBecauseOfMediaErrorsWillDispatchAFailedNotice() {
+        // Arrange
+        let post = PostBuilder(context)
+            .with(title: "Ipsa aliquam")
+            .with(image: "test.jpeg", status: .failed)
+            .with(status: .publish)
+            .with(remoteStatus: .local)
+            .build()
+
+        let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: NSError()))
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let actionDispatcherFacadeMock = ActionDispatcherFacadeMock()
+
+        let postCoordinator = PostCoordinator(mainService: postServiceMock,
+                                              backgroundService: postServiceMock,
+                                              mediaCoordinator: mediaCoordinatorMock,
+                                              actionDispatcherFacade: actionDispatcherFacadeMock)
+
+        // Act
+        var result: Result<AbstractPost>? = nil
+        waitUntil(timeout: 2) { done in
+            postCoordinator.save(post) { aResult in
+                result = aResult
+                done()
+            }
+        }
+
+        // Assert
+        expect(result).notTo(beNil())
+        expect(actionDispatcherFacadeMock.dispatchedActions).toEventuallyNot(beEmpty())
+
+        guard case let NoticeAction.post(notice)? = actionDispatcherFacadeMock.dispatchedActions.first else {
+            assertionFailure("The action should be a NoticeAction")
+            return
+        }
+
+        expect(notice.feedbackType).to(equal(.error))
+        expect(notice.message).to(contain("Ipsa aliquam"))
     }
 }
 
@@ -334,8 +413,8 @@ private class PostServiceMock: PostService {
 }
 
 private class MediaCoordinatorMock: MediaCoordinator {
-    var media: Media
-    var mediaState: MediaState
+    private var media: Media
+    private var mediaState: MediaState
 
     init(media: Media, mediaState: MediaState) {
         self.media = media
