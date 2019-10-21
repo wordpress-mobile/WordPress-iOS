@@ -10,7 +10,7 @@ class PostCoordinatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().newDerivedContext()
+        context = TestContextManager().mainContext
         TestAnalyticsTracker.setup()
     }
 
@@ -230,6 +230,7 @@ class PostCoordinatorTests: XCTestCase {
     }
 
     func testTracksAutoUploadPostInvoked() {
+        // Arrange
         let postServiceMock = PostServiceMock(managedObjectContext: context)
         let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
         let interactor = PostAutoUploadInteractor()
@@ -240,18 +241,21 @@ class PostCoordinatorTests: XCTestCase {
             .build()
         try! context.save()
 
+        let expectedAction = interactor.autoUploadAction(for: post)
+
+        // Act
         postCoordinator.resume()
         guard let status = post.status else {
             return
         }
 
+        // Assert
         expect(TestAnalyticsTracker.tracked.count).toEventually(equal(1))
         let trackEvent = TestAnalyticsTracker.tracked.first
         expect(trackEvent?.stat).toEventually(equal(WPAnalyticsStat.autoUploadPostInvoked))
 
         let propertyAction = trackEvent?.properties["upload_action"] as? String
-        let action = interactor.autoUploadAction(for: post)
-        expect(propertyAction).toEventually(equal(action.rawValue))
+        expect(propertyAction).toEventually(equal(expectedAction.rawValue))
 
         let propertyStatus = trackEvent?.properties["post_status"] as? String
         expect(propertyStatus).toEventually(equal(status.rawValue))
