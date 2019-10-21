@@ -301,7 +301,9 @@ private class MediaCoordinatorMock: MediaCoordinator {
     }
 
     override func addObserver(_ onUpdate: @escaping MediaCoordinator.ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
-        onUpdate(self.media, mediaState)
+        DispatchQueue.main.async {
+            onUpdate(self.media, self.mediaState)
+        }
         return UUID()
     }
 
