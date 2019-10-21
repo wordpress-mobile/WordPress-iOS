@@ -1,6 +1,7 @@
 import UIKit
 import XCTest
 import Nimble
+import WordPressFlux
 
 @testable import WordPress
 
@@ -260,6 +261,45 @@ class PostCoordinatorTests: XCTestCase {
         let propertyStatus = trackEvent?.properties["post_status"] as? String
         expect(propertyStatus).toEventually(equal(status.rawValue))
     }
+
+    func testSavingSuccessfullyWillDispatchANotice() {
+        // Arrange
+        let post = PostBuilder(context)
+            .with(title: "Sint dolorem quo")
+            .with(status: .publish)
+            .with(remoteStatus: .local)
+            .build()
+
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        postServiceMock.returnPost = post
+
+        let actionDispatcherFacadeMock = ActionDispatcherFacadeMock()
+
+        let postCoordinator = PostCoordinator(mainService: postServiceMock,
+                                              backgroundService: postServiceMock,
+                                              actionDispatcherFacade: actionDispatcherFacadeMock)
+
+        // Act
+        var result: Result<AbstractPost>? = nil
+        waitUntil(timeout: 2) { done in
+            postCoordinator.save(post) { aResult in
+                result = aResult
+                done()
+            }
+        }
+
+        // Assert
+        expect(result).notTo(beNil())
+        expect(actionDispatcherFacadeMock.dispatchedActions).notTo(beEmpty())
+
+        guard case let NoticeAction.post(notice)? = actionDispatcherFacadeMock.dispatchedActions.first else {
+            assertionFailure("The action should be a NoticeAction")
+            return
+        }
+
+        expect(notice.message).to(contain("Sint dolorem quo"))
+        expect(notice.feedbackType).to(equal(.success))
+    }
 }
 
 private class PostServiceMock: PostService {
@@ -315,5 +355,13 @@ private class MediaCoordinatorMock: MediaCoordinator {
 
     override func retryMedia(_ media: Media, automatedRetry: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) {
         // noop
+    }
+}
+
+private class ActionDispatcherFacadeMock: ActionDispatcherFacade {
+    private(set) var dispatchedActions = [Action]()
+
+    override func dispatch(_ action: Action) {
+        dispatchedActions.append(action)
     }
 }

@@ -22,15 +22,18 @@ class PostCoordinator: NSObject {
     private let mediaCoordinator: MediaCoordinator
 
     private let backgroundService: PostService
-
     private let mainService: PostService
-
     private let failedPostsFetcher: FailedPostsFetcher
+
+    private let actionDispatcherFacade: ActionDispatcherFacade
 
     // MARK: - Initializers
 
-    init(mainService: PostService? = nil, backgroundService: PostService? = nil,
-         mediaCoordinator: MediaCoordinator? = nil, failedPostsFetcher: FailedPostsFetcher? = nil) {
+    init(mainService: PostService? = nil,
+         backgroundService: PostService? = nil,
+         mediaCoordinator: MediaCoordinator? = nil,
+         failedPostsFetcher: FailedPostsFetcher? = nil,
+         actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade()) {
         let contextManager = ContextManager.sharedInstance()
 
         let mainContext = contextManager.mainContext
@@ -44,6 +47,8 @@ class PostCoordinator: NSObject {
         self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
         self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
+
+        self.actionDispatcherFacade = actionDispatcherFacade
     }
 
     func save(_ postToSave: AbstractPost,
@@ -61,7 +66,7 @@ class PostCoordinator: NSObject {
                     self.dispatchNotice(savedPost)
                 default:
                     if let notice = defaultFailureNotice {
-                        ActionDispatcher.dispatch(NoticeAction.post(notice))
+                        self.actionDispatcherFacade.dispatch(NoticeAction.post(notice))
                     }
                 }
 
@@ -261,13 +266,13 @@ class PostCoordinator: NSObject {
     }
 
     private func upload(post: AbstractPost, completion: ((Result<AbstractPost>) -> ())? = nil) {
-        mainService.uploadPost(post, success: { uploadedPost in
+        mainService.uploadPost(post, success: { [weak self] uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             SearchManager.shared.indexItem(uploadedPost)
 
             let model = PostNoticeViewModel(post: uploadedPost)
-            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+            self?.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
 
             completion?(.success(uploadedPost))
         }, failure: { [weak self] error in
@@ -367,13 +372,13 @@ class PostCoordinator: NSObject {
         }
 
         let notice = Notice(title: PostAutoUploadMessages.cancelMessage(for: post.status), message: "")
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
+        actionDispatcherFacade.dispatch(NoticeAction.post(notice))
     }
 
     private func dispatchNotice(_ post: AbstractPost) {
         DispatchQueue.main.async {
             let model = PostNoticeViewModel(post: post)
-            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+            self.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
         }
     }
 }
