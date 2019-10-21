@@ -1,8 +1,9 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@0.0.33
-  git: wordpress-mobile/git@0.0.33
+  # Using 1.0 of the Orbs means it will use the latest 1.0.x version from https://github.com/wordpress-mobile/circleci-orbs
+  ios: wordpress-mobile/ios@1.0
+  git: wordpress-mobile/git@1.0
 
 commands:
   load-chruby:
@@ -72,6 +73,31 @@ jobs:
           command: test-without-building
           arguments: -xctestrun DerivedData/Build/Products/WordPressUITests_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
       - ios/save-xcodebuild-artifacts
+  Installable Build:
+    executor:
+      name: ios/default
+      xcode-version: "11.0.0"
+    steps:
+      - git/shallow-checkout
+      - load-chruby
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+      - run:
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run:
+          name: Build
+          working_directory: Scripts
+          command: "bundle exec fastlane build_and_upload_installable_build build_number:$CIRCLE_BUILD_NUM"
+      - run:
+          name: Prepare Artifacts
+          command: |
+            mkdir -p Artifacts
+            mv "Scripts/fastlane/comment.json" "Artifacts/comment.json"
+      - store_artifacts:
+          path: Artifacts
+          destination: Artifacts
 
 workflows:
   wordpress_ios:
@@ -87,3 +113,15 @@ workflows:
           name: UI Tests (iPad Air 3rd generation)
           device: iPad Air \\(3rd generation\\)
           requires: [ "Build Tests" ]
+  Installable Build:
+    jobs:
+      - Hold:
+          type: approval
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/
+      - Installable Build:
+          requires: [Hold]  
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/

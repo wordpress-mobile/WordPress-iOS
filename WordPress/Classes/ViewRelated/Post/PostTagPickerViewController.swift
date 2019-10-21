@@ -35,7 +35,9 @@ class PostTagPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
+        WPStyleGuide.configureTableViewColors(tableView: tableView)
+
+        view.backgroundColor = .listBackground
 
         textView.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
@@ -46,12 +48,13 @@ class PostTagPickerViewController: UIViewController {
         tableView.dataSource = dataSource
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         tableView.cellLayoutMarginsFollowReadableWidth = true
+        tableView.separatorColor = .divider
         reloadTableData()
 
         textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
-        textView.textColor = .neutral(.shade70)
+        textView.textColor = .text
         textView.isScrollEnabled = false
         // Padding already provided by readable margins
         // Don't add extra padding so text aligns with suggestions
@@ -84,9 +87,9 @@ class PostTagPickerViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
 
-        textViewContainer.backgroundColor = UIColor.white
-        textViewContainer.layer.borderColor = UIColor.neutral(.shade10).cgColor
-        textViewContainer.layer.borderWidth = 0.5
+        textViewContainer.backgroundColor = .basicBackground
+        textViewContainer.layer.borderColor = UIColor.divider.cgColor
+        textViewContainer.layer.borderWidth = .hairlineBorderWidth
         textViewContainer.layer.masksToBounds = false
 
         keyboardObserver.tableView = tableView
@@ -108,6 +111,13 @@ class PostTagPickerViewController: UIViewController {
             onValueChanged?(tags.joined(separator: ", "))
         }
         WPError.dismissNetworkingNotice()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13, *) {
+            textViewContainer.layer.borderColor = UIColor.divider.cgColor
+        }
     }
 
     fileprivate func reloadTableData() {
@@ -406,7 +416,7 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
 extension WPStyleGuide {
     @objc static func configureTableViewSuggestionCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewCell(cell)
-        cell.textLabel?.textColor = .neutral(.shade60)
-        cell.backgroundColor = .neutral(.shade5)
+        cell.textLabel?.textColor = .text
+        cell.backgroundColor = .listForeground
     }
 }

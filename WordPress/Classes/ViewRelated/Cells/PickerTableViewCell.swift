@@ -69,7 +69,7 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
         // Setup Picker
         picker.dataSource = self
         picker.delegate = self
-        picker.backgroundColor = UIColor.white
+        picker.backgroundColor = .listForeground
         contentView.addSubview(picker)
 
         // ContentView: Pin to Left + Right + Top + Bottom edges

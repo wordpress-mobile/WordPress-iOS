@@ -50,8 +50,8 @@ class SiteStatsInsightsViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        if insightsStore.fetchingFailed(for: .insights) &&
-            !containsCachedData() {
+        if insightsToShow.isEmpty ||
+            (insightsStore.fetchingFailed(for: .insights) && !containsCachedData()) {
             return ImmuTable.Empty
         }
 
@@ -62,7 +62,8 @@ class SiteStatsInsightsViewModel: Observable {
                     tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 }
             case .latestPostSummary:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsLatestPostSummary,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .latestPostSummary,
                                      rowStatus: insightsStore.lastPostSummaryStatus,
                                      rowBlock: {
@@ -73,7 +74,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostChartImmutableRow()
                 }))
             case .allTimeStats:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsAllTime,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .allTimeStats,
                                      rowStatus: insightsStore.allTimeStatus,
                                      rowBlock: {
@@ -84,7 +86,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostTwoColumnImmutableRow()
                 }))
             case .followersTotals:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsFollowerTotals,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .followersTotals,
                                      rowStatus: insightsStore.followersTotalsStatus,
                                      rowBlock: {
@@ -95,7 +98,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostTwoColumnImmutableRow()
                 }))
             case .mostPopularTime:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsMostPopularTime,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .mostPopularTime,
                                      rowStatus: insightsStore.annualAndMostPopularTimeStatus,
                                      rowBlock: {
@@ -106,7 +110,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostTwoColumnImmutableRow()
                 }))
             case .tagsAndCategories:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsTagsAndCategories.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsTagsAndCategories,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .tagsAndCategories,
                                      rowStatus: insightsStore.tagsAndCategoriesStatus,
                                      rowBlock: {
@@ -118,7 +123,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostTopImmutableRow()
                 }))
             case .annualSiteStats:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsAnnualSiteStats.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsAnnualSiteStats,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .annualSiteStats,
                                      rowStatus: insightsStore.annualAndMostPopularTimeStatus,
                                      rowBlock: {
@@ -129,7 +135,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostTwoColumnImmutableRow()
                 }))
             case .comments:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsCommentsPosts.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsCommentsPosts,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .comments,
                                      rowStatus: insightsStore.commentsInsightStatus,
                                      rowBlock: {
@@ -138,7 +145,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostTabbedImmutableRow()
                 }))
             case .followers:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsFollowersWordPress.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsFollowersWordPress,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .followers,
                                      rowStatus: insightsStore.followersTotalsStatus,
                                      rowBlock: {
@@ -147,7 +155,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostTabbedImmutableRow()
                 }))
             case .todaysStats:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsTodaysStats.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsTodaysStats,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .todaysStats,
                                      rowStatus: insightsStore.todaysStatsStatus,
                                      rowBlock: {
@@ -158,7 +167,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostTwoColumnImmutableRow()
                 }))
             case .postingActivity:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsPostingActivity.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsPostingActivity,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .postingActivity,
                                      rowStatus: insightsStore.postingActivityStatus,
                                      rowBlock: {
@@ -167,7 +177,8 @@ class SiteStatsInsightsViewModel: Observable {
                     return StatsGhostPostingActivitiesImmutableRow()
                 }))
             case .publicize:
-                tableRows.append(CellHeaderRow(title: StatSection.insightsPublicize.title))
+                tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsPublicize,
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(row(for: .publicize,
                                      rowStatus: insightsStore.publicizeFollowersStatus,
                                      rowBlock: {
@@ -178,6 +189,8 @@ class SiteStatsInsightsViewModel: Observable {
                 }, loadingRow: {
                     return StatsGhostTopImmutableRow()
                 }))
+            default:
+                break
             }
         }
 

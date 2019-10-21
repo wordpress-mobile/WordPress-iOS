@@ -149,8 +149,11 @@ struct PluginDirectoryAccessoryItem {
 
         let container = UIView(frame: .zero)
         container.translatesAutoresizingMaskIntoConstraints = false
-        container.heightAnchor.constraint(equalToConstant: size.height)
-        container.widthAnchor.constraint(equalToConstant: size.width)
+
+        NSLayoutConstraint.activate([
+            container.heightAnchor.constraint(equalToConstant: size.height),
+            container.widthAnchor.constraint(equalToConstant: size.width)
+        ])
 
         let leftHalf = UIImageView(image: Gridicon.iconOfType(.star, withSize: size))
         leftHalf.tintColor = color

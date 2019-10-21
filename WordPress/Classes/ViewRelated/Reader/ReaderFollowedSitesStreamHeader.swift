@@ -63,14 +63,14 @@ import WordPressShared.WPStyleGuide
 
 
     @IBAction func didTouchUpInside(_ sender: UIButton) {
-        borderedView.backgroundColor = UIColor.white
+        borderedView.backgroundColor = .listForeground
 
         delegate?.handleFollowActionForHeader(self)
     }
 
 
     @IBAction func didTouchUpOutside(_ sender: UIButton) {
-        borderedView.backgroundColor = UIColor.white
+        borderedView.backgroundColor = .listForeground
     }
 }
 

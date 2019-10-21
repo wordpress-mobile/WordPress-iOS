@@ -8,8 +8,11 @@ class RegisterDomainDetailsErrorSectionFooter: UITableViewHeaderFooterView, NibR
     func addErrorMessage(_ message: String?) {
         let label = errorLabel(message: message)
         stackView.addArrangedSubview(label)
-        label.leadingAnchor.constraint(equalTo: stackView.leadingAnchor)
-        label.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
+
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
+        ])
     }
 
     func setErrorMessages(_ messages: [String]) {

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,38 +13,45 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3fP-pA-Ovw" id="fMA-Y8-HGb">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="55.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="B45-HF-Mto">
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="B45-HF-Mto">
                         <rect key="frame" x="16" y="20" width="343" height="36"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CELL HEADER LABEL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZv-YC-hoV">
-                                <rect key="frame" x="0.0" y="10" width="343" height="16"/>
+                                <rect key="frame" x="0.0" y="10" width="309" height="16"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pmt-5q-3Mg">
-                                <rect key="frame" x="343" y="6" width="24" height="24"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yfh-mh-D56" userLabel="Manage Insight Image View">
+                                <rect key="frame" x="319" y="6" width="24" height="24"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="71g-sj-afi"/>
-                                    <constraint firstAttribute="width" constant="24" id="kMN-0Q-A6x"/>
+                                    <constraint firstAttribute="width" constant="24" id="j0R-In-UqG"/>
+                                    <constraint firstAttribute="width" secondItem="Yfh-mh-D56" secondAttribute="height" multiplier="1:1" id="sjL-h5-j5a"/>
                                 </constraints>
-                                <connections>
-                                    <action selector="manageInsightButtonPressed:" destination="3fP-pA-Ovw" eventType="touchUpInside" id="3ln-6E-gCK"/>
-                                </connections>
-                            </button>
+                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="height" constant="36" id="zcu-iF-hUF"/>
                         </constraints>
                     </stackView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pmt-5q-3Mg">
+                        <rect key="frame" x="325" y="20" width="45" height="36"/>
+                        <connections>
+                            <action selector="manageInsightButtonPressed:" destination="3fP-pA-Ovw" eventType="touchUpInside" id="3ln-6E-gCK"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="Pmt-5q-3Mg" firstAttribute="leading" secondItem="fZv-YC-hoV" secondAttribute="trailing" id="1Tv-eQ-5Xv"/>
+                    <constraint firstItem="Pmt-5q-3Mg" firstAttribute="bottom" secondItem="B45-HF-Mto" secondAttribute="bottom" id="6RO-dJ-QwM"/>
                     <constraint firstItem="B45-HF-Mto" firstAttribute="leading" secondItem="fMA-Y8-HGb" secondAttribute="leading" constant="16" id="Bum-ye-yWk"/>
+                    <constraint firstItem="Pmt-5q-3Mg" firstAttribute="top" secondItem="B45-HF-Mto" secondAttribute="top" id="FC3-HX-6aQ"/>
                     <constraint firstAttribute="trailing" secondItem="B45-HF-Mto" secondAttribute="trailing" constant="16" id="OPB-sC-KWU"/>
                     <constraint firstItem="B45-HF-Mto" firstAttribute="top" secondItem="fMA-Y8-HGb" secondAttribute="top" constant="20" id="RWL-Fv-z9B"/>
+                    <constraint firstAttribute="trailing" secondItem="Pmt-5q-3Mg" secondAttribute="trailing" constant="5" id="eLs-eI-MGH"/>
                     <constraint firstAttribute="bottom" secondItem="B45-HF-Mto" secondAttribute="bottom" priority="999" id="zBu-as-SLm"/>
                 </constraints>
             </tableViewCellContentView>
@@ -54,6 +59,7 @@
             <connections>
                 <outlet property="headerLabel" destination="fZv-YC-hoV" id="iNM-se-RIs"/>
                 <outlet property="manageInsightButton" destination="Pmt-5q-3Mg" id="y2o-B3-h7B"/>
+                <outlet property="manageInsightImageView" destination="Yfh-mh-D56" id="Ddx-31-pPT"/>
                 <outlet property="stackViewHeightConstraint" destination="zcu-iF-hUF" id="Dj4-IG-tje"/>
                 <outlet property="stackViewTopConstraint" destination="RWL-Fv-z9B" id="ywF-XN-ZM2"/>
             </connections>

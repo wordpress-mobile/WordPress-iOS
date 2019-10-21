@@ -41,16 +41,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         }
     }
 
-    // Attempt to restore a default account that has somehow been disassociated.
-    WPAccount *account = [self findDefaultAccountCandidate];
-    if (account) {
-        // Assume we have a good candidate account and make it the default account in the app.
-        // Note that this should be the account with the most blogs.
-        // Update user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
-        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
-        return account;
-    }
-
     // No account, or no default account set. Clear the defaults key.
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
     return nil;
@@ -302,6 +292,22 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return nil;
 }
 
+- (void)restoreDisassociatedAccountIfNecessary
+{
+    if ([self defaultWordPressComAccount]) {
+        return;
+    }
+
+    // Attempt to restore a default account that has somehow been disassociated.
+    WPAccount *account = [self findDefaultAccountCandidate];
+    if (account) {
+        // Assume we have a good candidate account and make it the default account in the app.
+        // Note that this should be the account with the most blogs.
+        // Updates user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
+        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+    }
+}
+
 - (WPAccount *)findDefaultAccountCandidate
 {
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO];
@@ -365,7 +371,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         // account.objectID can be temporary, so fetch via username/xmlrpc instead.
         WPAccount *fetchedAccount = [self findAccountWithUsername:username];
         [self updateAccount:fetchedAccount withUserDetails:remoteUser];
-        [self setupAppExtensionsWithDefaultAccount];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
             if (success) {
@@ -406,29 +411,35 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.displayName = userDetails.displayName;
     account.dateCreated = userDetails.dateCreated;
     account.emailVerified = @(userDetails.emailVerified);
-    if (userDetails.primaryBlogID) {
-        [self configurePrimaryBlogWithID:userDetails.primaryBlogID account:account];
-    }
+    account.primaryBlogID = userDetails.primaryBlogID;
+
+    [self updateDefaultBlogIfNeeded: account];
 
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 }
 
-- (void)configurePrimaryBlogWithID:(NSNumber *)primaryBlogID account:(WPAccount *)account
+- (void)updateDefaultBlogIfNeeded:(WPAccount *)account
 {
-    NSParameterAssert(primaryBlogID);
-    NSParameterAssert(account);
-    
+    if (!account.primaryBlogID || [account.primaryBlogID intValue] == 0) {
+        return;
+    }
+
     // Load the Default Blog
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID = %@", primaryBlogID];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID = %@", account.primaryBlogID];
     Blog *defaultBlog = [[account.blogs filteredSetUsingPredicate:predicate] anyObject];
-    
+
     if (!defaultBlog) {
         DDLogError(@"Error: The Default Blog could not be loaded");
         return;
     }
-    
+
     // Setup the Account
     account.defaultBlog = defaultBlog;
+
+    // Update app extensions if needed.
+    if (account == [self defaultWordPressComAccount]) {
+        [self setupAppExtensionsWithDefaultAccount];
+    }
 }
 
 - (void)setupAppExtensionsWithDefaultAccount

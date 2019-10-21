@@ -132,6 +132,11 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
                             success:(nullable void (^)(void))success
                             failure:(nullable void (^)(NSError *error))failure;
 
+/**
+ Updates the default blog for the specified account.  The default blog will be the one whose siteID matches
+ the accounts primaryBlogID.
+ */
+- (void)updateDefaultBlogIfNeeded:(WPAccount *)account;
 
 /**
  Syncs the details for the account associated with the provided auth token, then
@@ -155,6 +160,13 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  Removes an account if it's not the default account and there are no associated blogs
  */
 - (void)purgeAccountIfUnused:(WPAccount *)account;
+
+/**
+ Restores a disassociated default WordPress.com account if the current defaultWordPressCom account is nil
+ and another candidate account is found.  This method bypasses the normal setter to avoid triggering unintended
+ side-effects from dispatching account changed notifications.
+ */
+- (void)restoreDisassociatedAccountIfNecessary;
 
 ///--------------------
 /// @name Visible blogs
