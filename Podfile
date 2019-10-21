@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.8-beta.2'
+    pod 'WordPressShared', '~> 1.8.8'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -34,7 +34,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.4-beta.1'
+    pod 'WordPressUI', '~> 1.4'
 
     ## for development:
     # pod 'WordPressUI', :path => '../WordPressUI-iOS'
@@ -174,7 +174,7 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.1-beta.1'
+    pod 'WordPressAuthenticator', '~> 1.10.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fancy-button-border-style'
 
