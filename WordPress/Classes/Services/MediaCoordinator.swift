@@ -634,12 +634,15 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         // We only want to show an upload notice for uploads initiated within
-        // the media library, or if there's been a failure.
+        // the media library.
         // If the errors are causes by a missing file, we want to ignore that too.
 
         let mediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
 
+        let allMediaHaveAssociatedPost = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasAssociatedPost() }
+
         if !mediaErrorsAreMissingFilesErrors,
+            !allMediaHaveAssociatedPost,
             mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
 
             let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
