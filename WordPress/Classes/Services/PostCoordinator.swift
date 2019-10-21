@@ -5,7 +5,7 @@ import WordPressFlux
 class PostCoordinator: NSObject {
 
     enum SavingError: Error {
-        case mediaFailure
+        case mediaFailure(AbstractPost)
         case unknown
     }
 
@@ -22,15 +22,18 @@ class PostCoordinator: NSObject {
     private let mediaCoordinator: MediaCoordinator
 
     private let backgroundService: PostService
-
     private let mainService: PostService
-
     private let failedPostsFetcher: FailedPostsFetcher
+
+    private let actionDispatcherFacade: ActionDispatcherFacade
 
     // MARK: - Initializers
 
-    init(mainService: PostService? = nil, backgroundService: PostService? = nil,
-         mediaCoordinator: MediaCoordinator? = nil, failedPostsFetcher: FailedPostsFetcher? = nil) {
+    init(mainService: PostService? = nil,
+         backgroundService: PostService? = nil,
+         mediaCoordinator: MediaCoordinator? = nil,
+         failedPostsFetcher: FailedPostsFetcher? = nil,
+         actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade()) {
         let contextManager = ContextManager.sharedInstance()
 
         let mainContext = contextManager.mainContext
@@ -44,6 +47,8 @@ class PostCoordinator: NSObject {
         self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
         self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
+
+        self.actionDispatcherFacade = actionDispatcherFacade
     }
 
     func save(_ postToSave: AbstractPost,
@@ -56,9 +61,15 @@ class PostCoordinator: NSObject {
             case .success(let post):
                 self.upload(post: post, completion: completion)
             case .error(let error):
-                if let notice = defaultFailureNotice {
-                    ActionDispatcher.dispatch(NoticeAction.post(notice))
+                switch error {
+                case SavingError.mediaFailure(let savedPost):
+                    self.dispatchNotice(savedPost)
+                default:
+                    if let notice = defaultFailureNotice {
+                        self.actionDispatcherFacade.dispatch(NoticeAction.post(notice))
+                    }
                 }
+
                 completion?(.error(error))
             }
         }
@@ -101,7 +112,8 @@ class PostCoordinator: NSObject {
     /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
-    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false, then completion: @escaping (Result<AbstractPost>) -> ()) {
+    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false,
+                               then completion: @escaping (Result<AbstractPost>) -> ()) {
         var post = postToSave
 
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
@@ -113,8 +125,9 @@ class PostCoordinator: NSObject {
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
-            change(post: post, status: .failed, then: dispatchNotice)
-            completion(.error(SavingError.mediaFailure))
+            change(post: post, status: .failed) { savedPost in
+                completion(.error(SavingError.mediaFailure(savedPost)))
+            }
             return
         }
 
@@ -125,6 +138,23 @@ class PostCoordinator: NSObject {
             // Only observe if we're not already
             guard !isObserving(post: post) else {
                 return
+            }
+
+            let handleSingleMediaFailure = { [weak self] in
+                guard let `self` = self,
+                    self.isObserving(post: post) else {
+                    return
+                }
+
+                // One of the media attached to the post has already failed. We're changing the
+                // status of the post to .failed so we don't need to observe for other failed media
+                // anymore. If we do, we'll receive more notifications and we'll be calling
+                // completion() multiple times.
+                self.removeObserver(for: post)
+
+                self.change(post: post, status: .failed) { savedPost in
+                    completion(.error(SavingError.mediaFailure(savedPost)))
+                }
             }
 
             let uuid = mediaCoordinator.addObserver({ [weak self](media, state) in
@@ -143,11 +173,10 @@ class PostCoordinator: NSObject {
                     }
                     switch media.mediaType {
                     case .video:
-                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
+                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { (result) in
                             switch result {
                             case .error:
-                                self?.change(post: post, status: .failed, then: self?.dispatchNotice)
-                                completion(.error(SavingError.mediaFailure))
+                                handleSingleMediaFailure()
                             case .success(let value):
                                 media.remoteURL = value.videoURL.absoluteString
                                 successHandler()
@@ -157,13 +186,14 @@ class PostCoordinator: NSObject {
                         successHandler()
                     }
                 case .failed:
-                    self.change(post: post, status: .failed, then: self.dispatchNotice)
-                    completion(.error(SavingError.mediaFailure))
+                    handleSingleMediaFailure()
                 default:
                     DDLogInfo("Post Coordinator -> Media state: \(state)")
                 }
             }, forMediaFor: post)
+
             trackObserver(receipt: uuid, for: post)
+
             return
         }
 
@@ -236,13 +266,13 @@ class PostCoordinator: NSObject {
     }
 
     private func upload(post: AbstractPost, completion: ((Result<AbstractPost>) -> ())? = nil) {
-        mainService.uploadPost(post, success: { uploadedPost in
+        mainService.uploadPost(post, success: { [weak self] uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             SearchManager.shared.indexItem(uploadedPost)
 
             let model = PostNoticeViewModel(post: uploadedPost)
-            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+            self?.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
 
             completion?(.success(uploadedPost))
         }, failure: { [weak self] error in
@@ -342,13 +372,13 @@ class PostCoordinator: NSObject {
         }
 
         let notice = Notice(title: PostAutoUploadMessages.cancelMessage(for: post.status), message: "")
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
+        actionDispatcherFacade.dispatch(NoticeAction.post(notice))
     }
 
     private func dispatchNotice(_ post: AbstractPost) {
         DispatchQueue.main.async {
             let model = PostNoticeViewModel(post: post)
-            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+            self.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
         }
     }
 }
