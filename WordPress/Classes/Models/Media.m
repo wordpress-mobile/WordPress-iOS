@@ -160,7 +160,7 @@
 
 - (void)setRemoteStatus:(MediaRemoteStatus)aStatus
 {
-    [self setRemoteStatusNumber:[NSNumber numberWithInt:aStatus]];
+    [self setRemoteStatusNumber:@(aStatus)];
 }
 
 - (NSString *)remoteStatusText

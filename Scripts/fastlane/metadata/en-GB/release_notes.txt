@@ -1,3 +1,5 @@
-* After a recent round of improvements, the block editor is faster and performs more smoothly on the app.
-* Some of you were having trouble with Dark Mode on iPads; we sorted it out (goodbye, uninvited glare!).
-* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.
+Our mobile devs were bug squashing juggernauts this month:
+- You should’ve been able to sign into the app with your Apple credentials, but a bug meant that sometimes you couldn’t. That’s fixed now.
+- Tweaks make the block editor better and better: links open in-app instead of opening Safari, and a pesky link editing issue, that sometimes deleted existing links, is no more.
+- “Dark mode” is dark as in “hue” and not as in “grim,” especially now that it’s got better visuals and fewer bugs.
+- Scrolling vertically sometimes didn’t work in the share extension, and now it does.

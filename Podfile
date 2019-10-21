@@ -1,12 +1,10 @@
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 
 inhibit_all_warnings!
 use_frameworks!
 
 platform :ios, '11.0'
 workspace 'WordPress.xcworkspace'
-
-plugin 'cocoapods-repo-update'
 
 ## Pods shared between all the targets
 ## ===================================
@@ -19,7 +17,7 @@ def wordpress_shared
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => ''
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => 'feature/change-username-events'
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -27,11 +25,11 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '366c07b1fac843d265390aef9c08e225e78d630d'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '366c07b1fac843d265390aef9c08e225e78d630d'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '81e1e1bb1cb209004d66bba75338595cc9aab147'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '81e1e1bb1cb209004d66bba75338595cc9aab147'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.10.1'
+    pod 'WordPress-Editor-iOS', '~> 1.11.0'
 end
 
 def wordpress_ui
@@ -142,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '9c1cfb830bdb3411fe8964539bec812b099589f1'
+    gutenberg :tag => 'v1.15.0'
 
     ## Third party libraries
     ## =====================

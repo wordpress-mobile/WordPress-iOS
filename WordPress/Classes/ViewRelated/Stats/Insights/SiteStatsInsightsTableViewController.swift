@@ -408,7 +408,8 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func removeInsight(_ insight: InsightType) {
-        WPAnalytics.track(.statsItemTappedInsightRemove)
+        WPAnalytics.track(.statsItemTappedInsightRemove, withProperties: ["insight": insight.statSection?.title ?? ""])
+
         insightsToShow = insightsToShow.filter { $0 != insight }
         updateView()
     }

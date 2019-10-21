@@ -1,3 +1,5 @@
-* Efter en ny omgång förbättringar är blockredigeraren nu snabbare och fungerar smidigare i appen.
-* En del användare hade problem med det mörka läget på iPad. Vi har löst det. (Hejdå, oväntade blänk!)
-* Eftersom dina besökare älskar inlägg med media har vi gjort användarupplevelsen stabilare för dig när du skapar dessa inlägg.
+Den här månaden har våra mobilutvecklare fixat mängder av buggar:
+- Du borde ha kunnat logga in med ditt Apple-konto, men på grund av ett fel fungerade det inte alltid. Avklarat.
+- Små ändringar har gjort blockredigeraren allt bättre: nu öppnas länkar direkt i appen i stället för att starta Safari, och ett irriterande problem med redigering av länkar som emellanåt råkade radera en befintlig länk är nu ett minne blott.
+- ”Mörkt läge” är mörkt i betydelsen ”färgnyans” och inte ”hemskt”, vilket stämmer ännu bättre nu med snyggare utseende och färre programfel.
+- Ibland gick det inte att rulla vertikalt i delningsfunktionen, men nu går det alldeles utmärkt.

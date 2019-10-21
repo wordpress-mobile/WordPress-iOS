@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 91
+@aerych 2019-10-15
+- `WPAccount` added `primaryBlogID` property. 
+
 ## WordPress 90
 
 @diegoreymendez 2019-08-28

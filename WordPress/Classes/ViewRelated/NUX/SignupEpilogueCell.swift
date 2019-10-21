@@ -57,7 +57,7 @@ class SignupEpilogueCell: UITableViewCell {
             return value
         }
         set {
-            super.accessibilityLabel = accessibilityLabel
+            super.accessibilityLabel = newValue
         }
     }
 

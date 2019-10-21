@@ -1,3 +1,0 @@
-* Dopo un recente ciclo di miglioramenti, l'editor dei blocchi è più veloce e funziona in modo più fluido sull'app.
-* Alcuni utenti stavano riscontrando problemi con la Dark Mode su iPad; abbiamo risolto il problema.
-* I visitatori del sito adorano gli articoli con elementi multimediali, quindi abbiano reso più stabile la loro creazione.
