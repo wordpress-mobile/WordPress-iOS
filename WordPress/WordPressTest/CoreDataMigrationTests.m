@@ -1067,18 +1067,18 @@
     XCTAssertNotNil(ps);
 }
 
-/// Test that when migrating from 90 to 91, the values of Posts/Pages' `status` property will
+/// Test that when migrating from 91 to 92, the values of Posts/Pages' `status` property will
 /// be copied over to their `statusAfterSync` property.
-- (void)testMigrationFrom90To91WillCopyStatusValuesToStatusAfterSync
+- (void)testMigrationFrom91To92WillCopyStatusValuesToStatusAfterSync
 {
     // Arrange
-    NSURL *model90Url = [self urlForModelName:@"WordPress 90" inDirectory:nil];
     NSURL *model91Url = [self urlForModelName:@"WordPress 91" inDirectory:nil];
-    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress90.sqlite"];
+    NSURL *model92Url = [self urlForModelName:@"WordPress 92" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress91.sqlite"];
 
-    // Load a Model 90 Stack
-    NSManagedObjectModel *model90 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model90Url];
-    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model90];
+    // Load a Model 91 Stack
+    NSManagedObjectModel *model91 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model91Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model91];
 
     NSDictionary *options = @{
         NSInferMappingModelAutomaticallyOption       : @(YES),
@@ -1091,7 +1091,7 @@
                                                         URL:storeUrl
                                                     options:options
                                                       error:&error];
-    XCTAssertNil(error, @"Error while loading the PSC for Model 90");
+    XCTAssertNil(error, @"Error while loading the PSC for Model 91");
     XCTAssertNotNil(ps);
 
     NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
@@ -1132,12 +1132,12 @@
     psc = nil;
 
     // Act
-    // Migrate to Model 91
-    NSManagedObjectModel *model91 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model91Url];
+    // Migrate to Model 92
+    NSManagedObjectModel *model92 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model92Url];
     BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
                                                            ofType:NSSQLiteStoreType
-                                                          toModel:model91
-                                                orderedModelNames:@[@"WordPress 90", @"WordPress 91"]
+                                                          toModel:model92
+                                                orderedModelNames:@[@"WordPress 91", @"WordPress 92"]
                                                             error:&error];
     if (!migrateResult) {
         NSLog(@"Error while migrating: %@", error);
@@ -1145,8 +1145,8 @@
     XCTAssertNil(error);
     XCTAssertTrue(migrateResult);
 
-    // Load a Model 91 Stack
-    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model91];
+    // Load a Model 92 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model92];
     ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
                            configuration:nil
                                      URL:storeUrl
