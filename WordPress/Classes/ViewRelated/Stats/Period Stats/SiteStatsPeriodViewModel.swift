@@ -89,10 +89,7 @@ class SiteStatsPeriodViewModel: Observable {
         tableRows.append(contentsOf: searchTermsTableRows())
         tableRows.append(contentsOf: publishedTableRows())
         tableRows.append(contentsOf: videosTableRows())
-
-        if FeatureFlag.statsFileDownloads.enabled {
-            tableRows.append(contentsOf: fileDownloadsTableRows())
-        }
+        tableRows.append(contentsOf: fileDownloadsTableRows())
 
         tableRows.append(TableFooterRow())
 

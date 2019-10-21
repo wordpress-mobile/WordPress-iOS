@@ -1,3 +1,5 @@
-- Après un tour récent d’améliorations, l’éditeur de blocs est plus rapide et fonctionne plus  rapidement dans l’app.
-- Quelques uns d’entre vous ont eu des problèmes avec le mode sombre sur iPads. Nous nous avons réglé le tout (adios, éblouisseur non invité !).
-- Vos visiteurs aiment les articles avec des médias, donc nous avons rendu l’experience pour les créer plus stable.
+Nos développeurs mobiles ont été à la chasse au bug ce mois-ci :
+- vous auriez dû pouvoir vous connecter avec vos identifiants Apple mais un bug faisait que parfois ça ne marchait pas. C’est corrigé à présent.
+- Des ajustements rende l’éditeur de bloc meilleur : les liens s’ouvrent dans l’app au lieu d’ouvrir Safari et un problème embêtant lors de l’édition de lien qui supprimait le lien existant n’est plus.
+- le mode sombre est sombre comme la teinte et non pas comme obscur, surtout depuis que ses visuels ont été améliorés et qu'il y a moins de bugs.
+- le défilement vertical ne fonctionnait pas parfois dans l’extension Partage. Plus maintenant.

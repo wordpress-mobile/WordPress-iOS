@@ -73,6 +73,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
     }()
 
+    lazy var autosaver = Autosaver { [weak self] in
+        self?.mapUIContentToPostAndSave(immediate: true)
+    }
+
     // MARK: - Styling Options
 
     private lazy var optionsTablePresenter = OptionsTablePresenter(presentingViewController: self, presentingTextView: editorView.richTextView)
@@ -436,6 +440,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
+        registerMediaObserver()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -1306,7 +1311,7 @@ extension AztecPostViewController: UITextViewDelegate {
     }
 
     func textViewDidChange(_ textView: UITextView) {
-        mapUIContentToPostAndSave()
+        autosaver.contentDidChange()
         refreshPlaceholderVisibility()
 
         switch textView {
