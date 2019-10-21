@@ -14,6 +14,11 @@ enum InsightType: Int {
     case todaysStats
     case postingActivity
     case publicize
+    case allDotComFollowers
+    case allEmailFollowers
+    case allComments
+    case allTagsAndCategories
+    case allAnnual
 
     // TODO: remove when Manage Insights is enabled.
     static let allValues = [InsightType.latestPostSummary,
@@ -196,9 +201,6 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func removeViewModelListeners() {
-        if asyncLoadingActivated {
-            return
-        }
         insightsChangeReceipt = nil
     }
 
@@ -392,6 +394,7 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
+        WPAnalytics.track(.statsItemTappedInsightMoveUp)
         moveInsight(insight, by: -1)
     }
 
@@ -400,10 +403,13 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
+        WPAnalytics.track(.statsItemTappedInsightMoveDown)
         moveInsight(insight, by: 1)
     }
 
     func removeInsight(_ insight: InsightType) {
+        WPAnalytics.track(.statsItemTappedInsightRemove, withProperties: ["insight": insight.statSection?.title ?? ""])
+
         insightsToShow = insightsToShow.filter { $0 != insight }
         updateView()
     }
@@ -556,6 +562,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
                 return
         }
 
+        WPAnalytics.track(.statsItemSelectedAddInsight, withProperties: ["insight": insight.title])
         insightsToShow.append(insightType)
         updateView()
     }
@@ -575,6 +582,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             DDLogDebug("manageInsightSelected: unknown insightType for statSection: \(insight.title).")
             return
         }
+
+        WPAnalytics.track(.statsItemTappedManageInsight)
 
         let alert = UIAlertController(title: insight.title,
                                       message: nil,
@@ -608,28 +617,31 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
 extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-
         guard !displayingEmptyView else {
+            WPAnalytics.track(.statsItemTappedInsightsAddStat)
             showAddInsightView()
             return
         }
 
+        defer {
+            addViewModelListeners()
+            refreshInsights()
+        }
+
         if asyncLoadingActivated {
             hideNoResults()
-        } else {
-            updateNoResults(title: NoResultConstants.loadingTitle,
-                            accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
-                                noResults.hideImageView(false)
-            }
+            return
         }
-        addViewModelListeners()
-        refreshInsights()
+
+        updateNoResults(title: NoResultConstants.loadingTitle,
+                        accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
+                            noResults.hideImageView(false)
+        }
     }
 }
 
 extension SiteStatsInsightsTableViewController: NoResultsViewHost {
     private func displayLoadingViewIfNecessary() {
-
         guard !displayingEmptyView,
             !asyncLoadingActivated,
             tableHandler.viewModel.sections.isEmpty else {

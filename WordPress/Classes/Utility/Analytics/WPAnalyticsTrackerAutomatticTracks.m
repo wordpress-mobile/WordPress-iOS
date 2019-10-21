@@ -272,6 +272,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatApplicationOpened:
             eventName = @"application_opened";
             break;
+        case WPAnalyticsStatAutoUploadPostInvoked:
+            eventName = @"auto_upload_post_invoked";
+            break;
         case WPAnalyticsStatApplicationClosed:
             eventName = @"application_closed";
             break;

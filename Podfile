@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.8-beta.2'
+    pod 'WordPressShared', '~> 1.8.8'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -25,16 +25,16 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '366c07b1fac843d265390aef9c08e225e78d630d'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '366c07b1fac843d265390aef9c08e225e78d630d'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '81e1e1bb1cb209004d66bba75338595cc9aab147'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '81e1e1bb1cb209004d66bba75338595cc9aab147'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.10.1'
+    pod 'WordPress-Editor-iOS', '~> 1.11.0'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.4-beta.1'
+    pod 'WordPressUI', '~> 1.4'
 
     ## for development:
     # pod 'WordPressUI', :path => '../WordPressUI-iOS'
@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.1'
+    pod 'WordPressKit', '~> 4.5.2-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
@@ -140,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '9c1cfb830bdb3411fe8964539bec812b099589f1'
+    gutenberg :tag => 'v1.15.0'
 
     ## Third party libraries
     ## =====================
@@ -174,7 +174,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.1-beta.1'
+    pod 'WordPressAuthenticator', '~> 1.10.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fancy-button-border-style'
 

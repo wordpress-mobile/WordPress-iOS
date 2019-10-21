@@ -1220,6 +1220,7 @@
 		9A3BDA0E22944F3500FBF510 /* CountriesMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3BDA0D22944F3500FBF510 /* CountriesMapView.swift */; };
 		9A3BDA1022944F4D00FBF510 /* CountriesMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A3BDA0F22944F4D00FBF510 /* CountriesMapView.xib */; };
 		9A4697B221B002AD00468B64 /* RevisionDiffsPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */; };
+		9A4A8F4B235758EF00088CE4 /* StatsStore+Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4A8F4A235758EF00088CE4 /* StatsStore+Cache.swift */; };
 		9A4E215A21F7565A00EFF212 /* QuickStartChecklistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E215921F7565A00EFF212 /* QuickStartChecklistCell.xib */; };
 		9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */; };
 		9A4E216021F87AE200EFF212 /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */; };
@@ -1232,6 +1233,7 @@
 		9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */; };
 		9A5C854822B3E42800BEE7A3 /* CountriesMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */; };
 		9A5C854922B3E42800BEE7A3 /* CountriesMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */; };
+		9A73CB082350DE4C002EF20C /* StatsGhostSingleRowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A73CB072350DE4C002EF20C /* StatsGhostSingleRowCell.xib */; };
 		9A76C32F22AFDA2100F5D819 /* world-map.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9A76C32E22AFDA2100F5D819 /* world-map.svg */; };
 		9A8ECE0C2254A3260043C8DA /* JetpackLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE012254A3250043C8DA /* JetpackLoginViewController.swift */; };
 		9A8ECE0D2254A3260043C8DA /* JetpackLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A8ECE022254A3250043C8DA /* JetpackLoginViewController.xib */; };
@@ -3424,6 +3426,7 @@
 		9A3BDA0D22944F3500FBF510 /* CountriesMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesMapView.swift; sourceTree = "<group>"; };
 		9A3BDA0F22944F4D00FBF510 /* CountriesMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CountriesMapView.xib; sourceTree = "<group>"; };
 		9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionDiffsPageManager.swift; sourceTree = "<group>"; };
+		9A4A8F4A235758EF00088CE4 /* StatsStore+Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsStore+Cache.swift"; sourceTree = "<group>"; };
 		9A4E215921F7565A00EFF212 /* QuickStartChecklistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuickStartChecklistCell.xib; sourceTree = "<group>"; };
 		9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistManager.swift; sourceTree = "<group>"; };
 		9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
@@ -3436,6 +3439,7 @@
 		9A51DA1322E9E8C7005CC335 /* ChangeUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUsernameViewController.swift; sourceTree = "<group>"; };
 		9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesMapCell.swift; sourceTree = "<group>"; };
 		9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CountriesMapCell.xib; sourceTree = "<group>"; };
+		9A73CB072350DE4C002EF20C /* StatsGhostSingleRowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostSingleRowCell.xib; sourceTree = "<group>"; };
 		9A76C32E22AFDA2100F5D819 /* world-map.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "world-map.svg"; sourceTree = "<group>"; };
 		9A8ECE012254A3250043C8DA /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
 		9A8ECE022254A3250043C8DA /* JetpackLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackLoginViewController.xib; sourceTree = "<group>"; };
@@ -7293,6 +7297,7 @@
 				9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */,
 				9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */,
 				9AC3C69A231543C2007933CD /* StatsGhostChartCell.xib */,
+				9A73CB072350DE4C002EF20C /* StatsGhostSingleRowCell.xib */,
 			);
 			path = GhostViews;
 			sourceTree = "<group>";
@@ -9042,6 +9047,7 @@
 				40ADB15420686870009A9161 /* PluginStore+Persistence.swift */,
 				98AE3DF4219A1788003C0E24 /* StatsInsightsStore.swift */,
 				984B139321F66B2D0004B6A2 /* StatsPeriodStore.swift */,
+				9A4A8F4A235758EF00088CE4 /* StatsStore+Cache.swift */,
 				E1CB6DA2200F376400945457 /* TimeZoneStore.swift */,
 				9A2D0B24225CB97F009E585F /* JetpackInstallStore.swift */,
 				9A4E271C22EF33F5001F6A6B /* AccountSettingsStore.swift */,
@@ -9945,6 +9951,7 @@
 				17E362EF22C41275000E0C79 /* wordpress_icon_40pt@2x.png in Resources */,
 				436D562D2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
+				9A73CB082350DE4C002EF20C /* StatsGhostSingleRowCell.xib in Resources */,
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
 				9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */,
 				17E3639F22C41DBA000E0C79 /* hot_pink_icon_20pt.png in Resources */,
@@ -11107,6 +11114,7 @@
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
 				986C90882231AD6200FC31E1 /* PostStatsViewModel.swift in Sources */,
+				9A4A8F4B235758EF00088CE4 /* StatsStore+Cache.swift in Sources */,
 				BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */,
 				7E3E7A5D20E44DB00075D159 /* BadgeContentStyles.swift in Sources */,
 				5D4E30D11AA4B41A000D9904 /* WPStyleGuide+Pages.m in Sources */,

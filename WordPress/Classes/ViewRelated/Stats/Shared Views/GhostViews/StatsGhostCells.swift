@@ -16,6 +16,7 @@ class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostChartCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTabbedCell: StatsGhostBaseCell, NibLoadable { }
+class StatsGhostSingleRowCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostPostingActivityCell: StatsGhostBaseCell, NibLoadable {
     private var monthData: [PostingStreakEvent] = {
         return Date().getAllDays().map { PostingStreakEvent(date: $0, postCount: 0) }
