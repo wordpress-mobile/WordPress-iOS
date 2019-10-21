@@ -46,7 +46,9 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
                 refreshData()
             }
 
-            displayLoadingViewIfNecessary()
+            if !asyncLoadingActivated {
+                displayLoadingViewIfNecessary()
+            }
         }
     }
 
@@ -61,6 +63,8 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
+
+    private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoadingDWMY)
 
     // MARK: - View
 
@@ -131,6 +135,10 @@ private extension SiteStatsPeriodTableViewController {
         }
 
         viewModel?.overviewStoreStatusOnChange = { [weak self] status in
+            if self?.asyncLoadingActivated == true {
+                return
+            }
+
             guard let self = self,
                 let viewModel = self.viewModel,
                 self.changeReceipt != nil else {
@@ -184,6 +192,10 @@ private extension SiteStatsPeriodTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
+
+        if asyncLoadingActivated {
+            refreshControl?.endRefreshing()
+        }
     }
 
     @objc func userInitiatedRefresh() {
@@ -245,11 +257,23 @@ extension SiteStatsPeriodTableViewController: NoResultsViewHost {
             return
         }
 
-        updateNoResults(title: NoResultConstants.errorTitle,
-                        subtitle: NoResultConstants.errorSubtitle,
-                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
-                            noResults.delegate = self
-                            noResults.hideImageView()
+        if asyncLoadingActivated {
+            configureAndDisplayNoResults(on: tableView,
+                                         title: NoResultConstants.errorTitle,
+                                         subtitle: NoResultConstants.errorSubtitle,
+                                         buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                                            noResults.delegate = self
+                                            if !noResults.isReachable {
+                                                noResults.resetButtonText()
+                                            }
+            }
+        } else {
+            updateNoResults(title: NoResultConstants.errorTitle,
+                            subtitle: NoResultConstants.errorSubtitle,
+                            buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                                noResults.delegate = self
+                                noResults.hideImageView()
+            }
         }
     }
 
@@ -265,11 +289,19 @@ extension SiteStatsPeriodTableViewController: NoResultsViewHost {
 
 extension SiteStatsPeriodTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
+        defer {
+            refreshData()
+        }
+
+        if asyncLoadingActivated {
+            hideNoResults()
+            return
+        }
+
         updateNoResults(title: NoResultConstants.successTitle,
                         accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
                             noResults.hideImageView(false)
         }
-        refreshData()
     }
 }
 
