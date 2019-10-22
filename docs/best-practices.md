@@ -2,7 +2,7 @@
 
 ## Coding Style Guide
 
-We like to have a consistent coding style in the WordPress for iOS app, and to help us achieve this we’ve drafted a [[style guide | Coding Style Guide]] outlining preferred code formatting, some preferred language idioms.
+We like to have a consistent coding style in the WordPress for iOS app, and to help us achieve this we’ve drafted a [style guide](coding-style-guide.md) outlining preferred code formatting, some preferred language idioms.
 
 It’s a good idea to check the style guide from time to time as we update it to account for new improvements in the Objective-C language or in the iOS SDK.
 
