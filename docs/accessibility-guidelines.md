@@ -2,10 +2,10 @@
 
 This is a short recap of the most important points for a successful implementation of the accessibility features provided by iOS. For a more in depth guideline, you can go to:
 
-- [Dynamic type guideline](https://github.com/wordpress-mobile/WordPress-iOS/wiki/Dynamic-type-guideline)
-- [VoiceOver guideline](https://github.com/wordpress-mobile/WordPress-iOS/wiki/VoiceOver-guideline)
+- [Dynamic type guideline](dynamic-type-guidelines.md)
+- [VoiceOver guideline](voiceover-guidelines.md)
 
-We also have a fast guide on [how to use VoiceOver](https://github.com/wordpress-mobile/WordPress-iOS/wiki/Using-VoiceOver)
+We also have a fast guide on [how to use VoiceOver](using-voiceover.md)
 
 ## Dynamic type
 -   Avoid constraining the height of a  `UILabel`,  `UIButton`, or any view that has a  `UILabel`  or a  `UIButton`  as a child view.
@@ -23,7 +23,7 @@ We also have a fast guide on [how to use VoiceOver](https://github.com/wordpress
 3.  Set  `adjustsFontForContentSizeCategory = true`  in labels and buttons.
 4.  Everything should be working already!
 
-Be careful with [static tables.](https://github.com/wordpress-mobile/WordPress-iOS/wiki/Dynamic-type-guideline#the-static-tableview-case)
+Be careful with [static tables.](dynamic-type-guidelines.md#the-static-tableview-case)
 
 ## VoiceOver
 
