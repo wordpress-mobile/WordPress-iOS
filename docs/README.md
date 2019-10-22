@@ -6,12 +6,10 @@ Welcome to the WordPress for iOS docs!
 - [Pull Request Guidelines](pull-request-guidelines.md)
 - [Best Practices](best-practices.md)
 
-## Others 
+## Accessibility
 
 - [Accessibility Guidelines](accessibility-guidelines.md)
 - [Dynamic Type Guidelines](dynamic-type-guidelines.md)
-- [Feature Flags](feature-flags.md)
-- [Formattable Content](formattable-content.md)
 - [Right To Left Layout Support Guidelines](right-to-left-layout-support-guidelines.md)
 - [Using VoiceOver](using-voiceover.md)
 - [VoiceOver Guidelines](voiceover-guidelines.md)
@@ -19,6 +17,11 @@ Welcome to the WordPress for iOS docs!
 ## Testing 
 
 - [UI Tests](../WordPress/WordPressUITests)
+
+## Others 
+
+- [Feature Flags](feature-flags.md)
+- [Formattable Content](formattable-content.md)
 
 ## Further Reading
 
