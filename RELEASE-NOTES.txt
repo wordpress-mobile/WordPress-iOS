@@ -1,3 +1,6 @@
+13.6
+-----
+ 
 13.5
 -----
 * Block editor: Fix issue when "New Photo Post" shortcut won't add the selected photo to the post.
