@@ -103,7 +103,7 @@ If you have questions about getting setup or just want to say hi, join the [Word
 
 ## Resources
 
-- The [Wiki](https://github.com/wordpress-mobile/WordPress-iOS/wiki) contains information about our development practices.
+- The [docs](docs/) contains information about our development practices.
 - [WordPress Mobile Blog](http://make.wordpress.org/mobile)
 - [WordPress Mobile Handbook](http://make.wordpress.org/mobile/handbook/)
 
