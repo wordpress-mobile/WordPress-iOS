@@ -10,16 +10,27 @@ class AccountServiceTests: XCTestCase {
         super.setUp()
 
         contextManager = TestContextManager()
+        contextManager.requiresTestExpectation = false
         accountService = AccountService(managedObjectContext: contextManager.mainContext)
     }
 
     override func tearDown() {
         super.tearDown()
 
+        deleteTestAccounts()
+
         ContextManager.overrideSharedInstance(nil)
         contextManager.mainContext.reset()
         contextManager = nil
         accountService = nil
+    }
+
+    func deleteTestAccounts() {
+        let context = contextManager.mainContext
+        for account in accountService.allAccounts() {
+            context.delete(account)
+        }
+        contextManager.save(context)
     }
 
     func testCreateWordPressComAccountUUID() {
@@ -113,6 +124,7 @@ class AccountServiceTests: XCTestCase {
 
         UserDefaults.standard.removeObject(forKey: "AccountDefaultDotcomUUID")
 
+        accountService.restoreDisassociatedAccountIfNecessary()
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
     }
 
@@ -133,6 +145,7 @@ class AccountServiceTests: XCTestCase {
         contextManager.save(context)
 
         UserDefaults.standard.removeObject(forKey: "AccountDefaultDotcomUUID")
+        accountService.restoreDisassociatedAccountIfNecessary()
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
 
         accountService.removeDefaultWordPressComAccount()
@@ -140,29 +153,32 @@ class AccountServiceTests: XCTestCase {
     }
 
     func testMergeMultipleDuplicateAccounts() {
-        let account1 = WPAccount(context: contextManager.mainContext)
+        let context = contextManager.mainContext
+        let account1 = WPAccount(context: context)
         account1.userID = 1
         account1.username = "username"
         account1.authToken = "authToken"
         account1.uuid = UUID().uuidString
 
-        let account2 = WPAccount(context: contextManager.mainContext)
+        let account2 = WPAccount(context: context)
         account2.userID = 1
         account2.username = "username"
         account2.authToken = "authToken"
         account2.uuid = UUID().uuidString
 
-        let account3 = WPAccount(context: contextManager.mainContext)
+        let account3 = WPAccount(context: context)
         account3.userID = 1
         account3.username = "username"
         account3.authToken = "authToken"
         account3.uuid = UUID().uuidString
 
-        let context = contextManager.mainContext
+
         account1.addBlogs(createMockBlogs(withIDs: [1, 2, 3, 4, 5, 6], in: context))
         account2.addBlogs(createMockBlogs(withIDs: [1, 2, 3], in: context))
         account3.addBlogs(createMockBlogs(withIDs: [4, 5, 6], in: context))
         contextManager.save(context)
+
+        accountService.setDefaultWordPressComAccount(account1)
 
         accountService.mergeDuplicatesIfNecessary()
         contextManager.save(context)
@@ -178,29 +194,30 @@ class AccountServiceTests: XCTestCase {
     }
 
     func testMergeDuplicateAccountsKeepingNonDups() {
-        let account1 = WPAccount(context: contextManager.mainContext)
+        let context = contextManager.mainContext
+        let account1 = WPAccount(context: context)
         account1.userID = 1
         account1.username = "username"
         account1.authToken = "authToken"
         account1.uuid = UUID().uuidString
 
-        let account2 = WPAccount(context: contextManager.mainContext)
+        let account2 = WPAccount(context: context)
         account2.userID = 1
         account2.username = "username"
         account2.authToken = "authToken"
         account2.uuid = UUID().uuidString
 
-        let account3 = WPAccount(context: contextManager.mainContext)
+        let account3 = WPAccount(context: context)
         account3.userID = 3
         account3.username = "username3"
         account3.authToken = "authToken3"
         account3.uuid = UUID().uuidString
 
-        let context = contextManager.mainContext
         account1.addBlogs(createMockBlogs(withIDs: [1, 2, 3, 4, 5, 6], in: context))
         account2.addBlogs(createMockBlogs(withIDs: [1, 2, 3], in: context))
         account3.addBlogs(createMockBlogs(withIDs: [4, 5, 6], in: context))
         contextManager.save(context)
+        accountService.setDefaultWordPressComAccount(account1)
 
         accountService.mergeDuplicatesIfNecessary()
         contextManager.save(context)
