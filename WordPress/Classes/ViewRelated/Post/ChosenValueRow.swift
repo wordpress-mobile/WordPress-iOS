@@ -11,7 +11,13 @@ class ChosenValueRow: UIView {
         titleLabel.font = UIFont.preferredFont(forTextStyle: .callout)
 
         let detailLabel = UILabel()
-        detailLabel.textAlignment = .right
+        if effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next inverse_text_alignment
+            detailLabel.textAlignment = .right
+        } else {
+            // swiftlint:disable:next natural_text_alignment
+            detailLabel.textAlignment = .left
+        }
         detailLabel.textColor = .textSubtle
 
         let stackView = UIStackView(arrangedSubviews: [
