@@ -1,4 +1,4 @@
-Welcome to the WordPress for iOS docs! 
+# WordPress for iOS Docs
 
 ## Getting Started
 
