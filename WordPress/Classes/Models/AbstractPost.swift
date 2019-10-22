@@ -95,9 +95,5 @@ extension AbstractPost {
             return nil
         }
     }
-
-    @objc override open func featuredImageURLForDisplay() -> URL? {
-        return featuredImageURL
-    }
-
+    
 }

@@ -110,4 +110,11 @@
     return  self.content ? self.content.isEmpty : YES;
 }
 
+- (NSURL *)featuredImageURLForDisplay
+{
+    if (self.pathForDisplayImage) {
+        return [NSURL URLWithString:self.pathForDisplayImage];
+    }
+}
+
 @end
