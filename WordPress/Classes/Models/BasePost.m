@@ -115,6 +115,8 @@
     if (self.pathForDisplayImage) {
         return [NSURL URLWithString:self.pathForDisplayImage];
     }
+    
+    return nil;
 }
 
 @end
