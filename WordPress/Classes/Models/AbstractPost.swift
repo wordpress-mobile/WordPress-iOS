@@ -95,5 +95,4 @@ extension AbstractPost {
             return nil
         }
     }
-    
 }
