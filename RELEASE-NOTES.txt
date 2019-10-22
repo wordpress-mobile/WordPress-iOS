@@ -1,5 +1,9 @@
 13.5
 -----
+
+13.4.1
+-----
+Post Settings: Fixed a crash with featured image.
  
 13.4
 -----
