@@ -6,7 +6,7 @@ class LightNavigationController: UINavigationController {
         super.viewDidLoad()
         setupBarAppearance()
     }
-    
+
     private func setupBarAppearance() {
         let navigationBarAppearanceProxy = UINavigationBar.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
         navigationBarAppearanceProxy.backgroundColor = .white // Only used on iOS 13 so doesn't need dark mode support
@@ -16,9 +16,9 @@ class LightNavigationController: UINavigationController {
             appearance.backgroundColor = .systemBackground
             navigationBarAppearanceProxy.standardAppearance = appearance
         }
-        
+
         let tintColor = UIColor(light: .brand, dark: .white)
-        
+
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [LightNavigationController.self]).tintColor = tintColor
         UIButton.appearance(whenContainedInInstancesOf: [LightNavigationController.self]).tintColor = tintColor
     }
