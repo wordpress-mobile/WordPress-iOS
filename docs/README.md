@@ -18,7 +18,7 @@ Welcome to the WordPress for iOS docs!
 
 ## Testing 
 
-- [UI Tests](../WordPress/WordPressUITests/README.md)
+- [UI Tests](../WordPress/WordPressUITests)
 
 ## Further Reading
 
