@@ -112,6 +112,27 @@ class PostServiceWPComTests: XCTestCase {
         expect(postFromDB.status).to(equal(.draft))
     }
 
+    func testTrashingAPostWillUpdateItsRevisionStatusAfterSyncProperty() {
+        // Arrange
+        let post = PostBuilder(context).with(statusAfterSync: .publish).withRemote().build()
+        let revision = post.createRevision()
+        try! context.save()
+
+        let remotePost = createRemotePost(.trash)
+        remoteMock.remotePostToReturnOnTrashPost = remotePost
+
+        // Act
+        waitUntil(timeout: 3) { done in
+         self.service.trashPost(post, success: {
+             done()
+         }, failure: self.impossibleFailureBlock)
+        }
+
+        // Assert
+        expect(revision.statusAfterSync).to(equal(.trash))
+        expect(revision.status).to(equal(.trash))
+     }
+
     func testAutoSavingALocalDraftWillCallTheCreateEndpointInstead() {
         // Arrange
         let post = PostBuilder(context).drafted().with(remoteStatus: .local).build()
@@ -240,6 +261,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     var remotePostsToReturnOnSyncPostsOfType = [RemotePost]()
     var remotePostToReturnOnUpdatePost: RemotePost?
     var remotePostToReturnOnCreatePost: RemotePost?
+    var remotePostToReturnOnTrashPost: RemotePost?
 
     var autoSaveStubbedBehavior = StubbedBehavior.success(nil)
 
@@ -268,6 +290,12 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         DispatchQueue.global().async {
             self.invocationsCountOfCreatePost += 1
             success(self.remotePostToReturnOnCreatePost)
+        }
+    }
+
+    override func trashPost(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
+        DispatchQueue.global().async {
+            success(self.remotePostToReturnOnTrashPost)
         }
     }
 
