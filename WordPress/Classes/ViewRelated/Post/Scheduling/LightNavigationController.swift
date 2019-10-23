@@ -18,7 +18,6 @@ class LightNavigationController: UINavigationController {
         }
         let navigationBarAppearanceProxy = UINavigationBar.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
         navigationBarAppearanceProxy.backgroundColor = .white // Only used on iOS 12 so doesn't need dark mode support
-        navigationBarAppearanceProxy.shadowColor = separatorColor
 
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
