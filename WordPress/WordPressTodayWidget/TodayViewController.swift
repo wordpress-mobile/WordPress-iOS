@@ -4,6 +4,9 @@ import CocoaLumberjack
 import WordPressKit
 
 class TodayViewController: UIViewController {
+
+    // MARK: - Properties
+
     @IBOutlet var unconfiguredView: UIStackView!
     @IBOutlet var configureMeLabel: UILabel!
     @IBOutlet var siteNameLabel: UILabel!
@@ -15,14 +18,16 @@ class TodayViewController: UIViewController {
     @IBOutlet var viewsLabel: UILabel!
     @IBOutlet var configureMeButton: UIButton!
 
-    var siteID: NSNumber?
-    var timeZone: TimeZone?
-    var oauthToken: String?
-    var siteName: String = ""
-    var visitorCount: Int = 0
-    var viewCount: Int = 0
-    var isConfigured = false
-    var tracks = Tracks(appGroupName: WPAppGroupName)
+    private var siteID: NSNumber?
+    private var timeZone: TimeZone?
+    private var oauthToken: String?
+    private var siteName: String = ""
+    private var visitorCount: Int = 0
+    private var viewCount: Int = 0
+    private var isConfigured = false
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
+
+    // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,66 +65,9 @@ class TodayViewController: UIViewController {
         TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount)
     }
 
-    func loadSavedData() {
-        let data = TodayWidgetStats.loadSavedData()
-        visitorCount = data.visitors
-        viewCount = data.views
-    }
-
-    func updateLabels() {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        visitorsCountLabel.text = numberFormatter.string(from: NSNumber(value: visitorCount)) ?? "0"
-        viewsCountLabel.text = numberFormatter.string(from: NSNumber(value: viewCount)) ?? "0"
-
-        siteNameLabel.text = siteName
-    }
-
-    func changeTextColor() {
-        configureMeLabel.textColor = .text
-        siteNameLabel.textColor = .text
-        visitorsCountLabel.textColor = .text
-        viewsCountLabel.textColor = .text
-        visitorsLabel.textColor = .textSubtle
-        viewsLabel.textColor = .textSubtle
-    }
-
-    @IBAction func launchContainingApp() {
-        if let unwrappedSiteID = siteID {
-            tracks.trackExtensionStatsLaunched(unwrappedSiteID.intValue)
-            extensionContext!.open(URL(string: "\(WPComScheme)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
-        } else {
-            tracks.trackExtensionConfigureLaunched()
-            extensionContext!.open(URL(string: "\(WPComScheme)://")!, completionHandler: nil)
-        }
-    }
-
-    func updateUIBasedOnWidgetConfiguration() {
-        unconfiguredView.isHidden = isConfigured
-        configuredView.isHidden = !isConfigured
-
-        view.setNeedsUpdateConstraints()
-    }
-
-    func retrieveSiteConfiguration() {
-        let sharedDefaults = UserDefaults(suiteName: WPAppGroupName)!
-        siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
-        siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
-        oauthToken = fetchOAuthBearerToken()
-
-        if let timeZoneName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
-            timeZone = TimeZone(identifier: timeZoneName)
-        }
-
-        isConfigured = siteID != nil && timeZone != nil && oauthToken != nil
-    }
-
-    func fetchOAuthBearerToken() -> String? {
-        let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetKeychainTokenKey, andServiceName: WPStatsTodayWidgetKeychainServiceName, accessGroup: WPAppKeychainAccessGroup)
-
-        return oauth2Token as String?
-    }
 }
+
+// MARK: - Widget Updating
 
 extension TodayViewController: NCWidgetProviding {
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
@@ -159,7 +107,69 @@ extension TodayViewController: NCWidgetProviding {
 
 }
 
+// MARK: - Private Extension
+
 private extension TodayViewController {
+
+    @IBAction func launchContainingApp() {
+        if let unwrappedSiteID = siteID {
+            tracks.trackExtensionStatsLaunched(unwrappedSiteID.intValue)
+            extensionContext!.open(URL(string: "\(WPComScheme)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
+        } else {
+            tracks.trackExtensionConfigureLaunched()
+            extensionContext!.open(URL(string: "\(WPComScheme)://")!, completionHandler: nil)
+        }
+    }
+
+    func updateUIBasedOnWidgetConfiguration() {
+        unconfiguredView.isHidden = isConfigured
+        configuredView.isHidden = !isConfigured
+
+        view.setNeedsUpdateConstraints()
+    }
+
+    func retrieveSiteConfiguration() {
+        let sharedDefaults = UserDefaults(suiteName: WPAppGroupName)!
+        siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
+        siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
+        oauthToken = fetchOAuthBearerToken()
+
+        if let timeZoneName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
+            timeZone = TimeZone(identifier: timeZoneName)
+        }
+
+        isConfigured = siteID != nil && timeZone != nil && oauthToken != nil
+    }
+
+    func fetchOAuthBearerToken() -> String? {
+        let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetKeychainTokenKey, andServiceName: WPStatsTodayWidgetKeychainServiceName, accessGroup: WPAppKeychainAccessGroup)
+
+        return oauth2Token as String?
+    }
+
+    func loadSavedData() {
+        let data = TodayWidgetStats.loadSavedData()
+        visitorCount = data.visitors
+        viewCount = data.views
+    }
+
+    func updateLabels() {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        visitorsCountLabel.text = numberFormatter.string(from: NSNumber(value: visitorCount)) ?? "0"
+        viewsCountLabel.text = numberFormatter.string(from: NSNumber(value: viewCount)) ?? "0"
+
+        siteNameLabel.text = siteName
+    }
+
+    func changeTextColor() {
+        configureMeLabel.textColor = .text
+        siteNameLabel.textColor = .text
+        visitorsCountLabel.textColor = .text
+        viewsCountLabel.textColor = .text
+        visitorsLabel.textColor = .textSubtle
+        viewsLabel.textColor = .textSubtle
+    }
 
     func statsRemote() -> StatsServiceRemoteV2? {
         guard
