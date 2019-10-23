@@ -313,7 +313,7 @@ class MediaImageExporter: MediaExporter {
                 throw ImageExportError.imageSourceThumbnailGenerationFailed
             }
 
-            if nullifyGPSData == true {
+            if nullifyGPSData {
                 // When removing GPS data for a thumbnail, we have to remove the dictionary
                 // itself for the CGImageDestinationAddImage method.
                 imageProperties.removeValue(forKey: kCGImagePropertyGPSDictionary)
