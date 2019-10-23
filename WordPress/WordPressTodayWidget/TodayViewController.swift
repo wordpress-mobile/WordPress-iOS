@@ -123,13 +123,8 @@ private extension TodayViewController {
     }
 
     func updateUIBasedOnWidgetConfiguration() {
-        
-        unconfiguredView.isHidden = false
-        configuredView.isHidden = true
-        
-        
-//        unconfiguredView.isHidden = isConfigured
-//        configuredView.isHidden = !isConfigured
+        unconfiguredView.isHidden = isConfigured
+        configuredView.isHidden = !isConfigured
 
         view.setNeedsUpdateConstraints()
     }
