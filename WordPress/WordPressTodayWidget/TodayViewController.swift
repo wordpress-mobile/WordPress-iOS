@@ -2,6 +2,7 @@ import UIKit
 import NotificationCenter
 import CocoaLumberjack
 import WordPressKit
+import WordPressComStatsiOS
 
 class TodayViewController: UIViewController {
 
@@ -122,8 +123,13 @@ private extension TodayViewController {
     }
 
     func updateUIBasedOnWidgetConfiguration() {
-        unconfiguredView.isHidden = isConfigured
-        configuredView.isHidden = !isConfigured
+        
+        unconfiguredView.isHidden = false
+        configuredView.isHidden = true
+        
+        
+//        unconfiguredView.isHidden = isConfigured
+//        configuredView.isHidden = !isConfigured
 
         view.setNeedsUpdateConstraints()
     }
