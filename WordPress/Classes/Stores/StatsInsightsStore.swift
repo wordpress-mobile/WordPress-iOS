@@ -70,7 +70,12 @@ struct InsightStoreState {
     var topCommentsInsight: StatsCommentsInsight?
     var commentsInsightStatus: StoreFetchingStatus = .idle
 
-    var todaysStats: StatsTodayInsight?
+    var todaysStats: StatsTodayInsight? {
+        didSet {
+            TodayWidgetStats.saveData(views: todaysStats?.viewsCount ?? 0,
+                                      visitors: todaysStats?.visitorsCount ?? 0)
+        }
+    }
     var todaysStatsStatus: StoreFetchingStatus = .idle
 
     var postingActivity: StatsPostingStreakInsight?
