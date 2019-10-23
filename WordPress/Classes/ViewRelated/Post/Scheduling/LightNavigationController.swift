@@ -8,9 +8,9 @@ class LightNavigationController: UINavigationController {
     }
 
     private func setupBarAppearance() {
-        
+
         let separatorColor: UIColor
-        
+
         if #available(iOS 13.0, *) {
             separatorColor = .systemGray4
         } else {
