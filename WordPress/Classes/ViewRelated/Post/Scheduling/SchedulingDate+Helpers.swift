@@ -19,7 +19,7 @@ extension Date {
     public func longStringWithTime() -> String {
         return longStringWithTimeFormatter.string(from: self)
     }
-    
+
     public func longString() -> String {
         return longStringFormatter.string(from: self)
     }
