@@ -529,8 +529,3 @@ private extension SiteStatsPeriodViewModel {
     }
 
 }
-
-enum PeriodType {
-    case summary
-    case topPostsAndPages
-}
