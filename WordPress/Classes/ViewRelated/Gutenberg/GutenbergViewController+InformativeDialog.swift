@@ -5,7 +5,7 @@ extension GutenbergViewController {
 
     enum InfoDialog {
         static let message = NSLocalizedString(
-            "You're currently using the block editor to create new posts. Want to use the classic editor by default? Head to Site Settings.",
+            "You're currently using the block editor to create new posts. If you want a different default, you can change it in the Site Settings.",
             comment: "Popup content about why this post is being opened in block editor"
         )
         static let title = NSLocalizedString(
