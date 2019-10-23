@@ -20,8 +20,8 @@ class TodayViewController: UIViewController {
     var timeZone: TimeZone?
     var oauthToken: String?
     var siteName: String = ""
-    var visitorCount: String = ""
-    var viewCount: String = ""
+    var visitorCount: Int = 0
+    var viewCount: Int = 0
     var isConfigured = false
     var tracks = Tracks(appGroupName: WPAppGroupName)
 
@@ -49,28 +49,35 @@ class TodayViewController: UIViewController {
         viewsCountLabel.text = "-"
 
         changeTextColor()
-
-        retrieveSiteConfiguration()
-        updateUIBasedOnWidgetConfiguration()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Manual state restoration
-        let sharedDefaults = UserDefaults(suiteName: WPAppGroupName)!
-        siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
-
-        let userDefaults = UserDefaults.standard
-        visitorCount = userDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? "0"
-        viewCount = userDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsViewCountKey) ?? "0"
-
-        siteNameLabel.text = siteName
-        visitorsCountLabel.text = visitorCount
-        viewsCountLabel.text = viewCount
-
+        loadSavedData()
+        updateLabels()
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount)
+    }
+
+    func loadSavedData() {
+        let data = TodayWidgetStats.loadSavedData()
+        visitorCount = data.visitors
+        viewCount = data.views
+    }
+
+    func updateLabels() {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        visitorsCountLabel.text = numberFormatter.string(from: NSNumber(value: visitorCount)) ?? "0"
+        viewsCountLabel.text = numberFormatter.string(from: NSNumber(value: viewCount)) ?? "0"
+
+        siteNameLabel.text = siteName
     }
 
     func changeTextColor() {
@@ -80,15 +87,6 @@ class TodayViewController: UIViewController {
         viewsCountLabel.textColor = .text
         visitorsLabel.textColor = .textSubtle
         viewsLabel.textColor = .textSubtle
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        // Manual state restoration
-        let userDefaults = UserDefaults.standard
-        userDefaults.set(visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
-        userDefaults.set(viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
     }
 
     @IBAction func launchContainingApp() {
