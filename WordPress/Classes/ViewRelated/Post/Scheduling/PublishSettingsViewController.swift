@@ -93,12 +93,6 @@ struct PublishSettingsViewModel {
 
     init(post: AbstractPost) {
         viewModel = PublishSettingsViewModel(post: post)
-
-        let siteTimezoneOffset = viewModel.timeZone?.gmtOffset ?? 0
-        let deviceTimezoneOffset = TimeZone.current.secondsFromGMT()/60/60
-        if siteTimezoneOffset != Float(deviceTimezoneOffset) {
-            noticeMessage = NSLocalizedString("Site time zone differs from device time zone", comment: "Notice that time zones are different when scheduling")
-        }
     }
 
     func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable {
@@ -128,8 +122,8 @@ struct PublishSettingsViewModel {
 
         if let date = viewModel.date {
             let publishedOnString = date.longStringWithTime()
-            let offsetLabel = viewModel.timeZone?.label ?? "Unknown Offset"
-            footerText = String.localizedStringWithFormat("Post will be published on %@ in your site time zone (%@)", publishedOnString, offsetLabel)
+            let offsetLabel = viewModel.timeZone?.label ?? NSLocalizedString("Unknown UTC Offset", comment: "Unknown UTC offset label")
+            footerText = String.localizedStringWithFormat("Post will be published on %@ in your site timezone (%@)", publishedOnString, offsetLabel)
         } else {
             footerText = nil
         }
