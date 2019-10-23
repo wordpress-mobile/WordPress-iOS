@@ -148,7 +148,7 @@ target 'WordPress' do
     pod '1PasswordExtension', '1.8.5'
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'GiphyCoreSDK', '~> 1.4.0'
+    pod 'Giphy', '1.1.3'
     pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
