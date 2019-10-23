@@ -129,45 +129,55 @@ class TodayViewController: UIViewController {
 extension TodayViewController: NCWidgetProviding {
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         retrieveSiteConfiguration()
+
         DispatchQueue.main.async {
             self.updateUIBasedOnWidgetConfiguration()
         }
 
-        if isConfigured == false {
-            DDLogError("Missing site ID, timeZone or oauth2Token")
-
+        if !isConfigured {
+            DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
             completionHandler(NCUpdateResult.failed)
             return
         }
 
         tracks.trackExtensionAccessed()
 
-        let statsService: WPStatsService = WPStatsService(siteId: siteID,
-                                                          siteTimeZone: timeZone,
-                                                          oauth2Token: oauthToken,
-                                                          andCacheExpirationInterval: 0,
-                                                          apiBaseUrlString: WordPressComRestApi.apiBaseURLString)
-        statsService.retrieveTodayStats(completionHandler: { wpStatsSummary, error in
-            DDLogInfo("Downloaded data in the Today widget")
+        guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
+            if error != nil {
+                DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
+                return
+            }
+
+            DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
 
             DispatchQueue.main.async {
-                self.visitorCount = (wpStatsSummary?.visitors)!
-                self.viewCount = (wpStatsSummary?.views)!
-
-                self.siteNameLabel?.text = self.siteName
-                self.visitorsCountLabel?.text = self.visitorCount
-                self.viewsCountLabel?.text = self.viewCount
+                self.visitorCount = todayInsight?.visitorsCount ?? 0
+                self.viewCount = todayInsight?.viewsCount ?? 0
+                self.updateLabels()
             }
-            completionHandler(NCUpdateResult.newData)
-            }, failureHandler: { error in
-                DDLogError("\(String(describing: error))")
-
-                if let error = error as? URLError, error.code == URLError.badServerResponse {
-                    self.isConfigured = false
-                    self.updateUIBasedOnWidgetConfiguration()
-                }
-
-                completionHandler(NCUpdateResult.failed)
-        })
+        }
     }
+
+}
+
+private extension TodayViewController {
+
+    func statsRemote() -> StatsServiceRemoteV2? {
+        guard
+            let siteID = siteID,
+            let timeZone = timeZone,
+            let oauthToken = oauthToken
+            else {
+                DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+                return nil
+        }
+
+        let wpApi = WordPressComRestApi.init(oAuthToken: oauthToken)
+        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
+    }
+
 }
