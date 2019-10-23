@@ -86,7 +86,9 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         }
 
         cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
-        cell.animateGhostLayers(viewModel?.isFetchingChart() == true)
+        if asyncLoadingActivated {
+            cell.animateGhostLayers(viewModel?.isFetchingChart() == true)
+        }
         tableHeaderView = cell
         return cell
     }
