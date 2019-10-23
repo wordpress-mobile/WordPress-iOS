@@ -171,7 +171,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '~> 1.4.2'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '7c3cb8f00400b9316a803640b42bb88a66bbc648'
-    
+
     pod 'Gridicons', '~> 0.16'
 
     pod 'WordPressAuthenticator', '~> 1.10.1'
@@ -188,12 +188,12 @@ target 'WordPress' do
         pod 'Nimble', '~> 7.3.1'
     end
 
-    
-    post_install do      
-      
+
+    post_install do
+
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
-        
+
         project_root = File.dirname(__FILE__)
         acknowledgements = 'Acknowledgments'
         markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
@@ -224,16 +224,16 @@ target 'WordPress' do
                        <body>
                          #{rendered_html}
                        </body>"
-          
+
           ## Remove the <h1>, since we've promoted it to <title>
           styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
-          
+
           ## The glog library's license contains a URL that does not wrap in the web view,
           ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
           ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
-                        
-        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)    
+
+        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
     end
 end
 
@@ -374,7 +374,7 @@ pre_install do |installer|
     static = []
     dynamic = []
     installer.pod_targets.each do |pod|
-        
+
         # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
         # linking it resolves this.
         if pod.name == "Sentry"

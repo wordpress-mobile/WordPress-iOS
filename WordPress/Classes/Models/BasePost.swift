@@ -1,6 +1,9 @@
 import CoreData
 
 extension BasePost {
+    /// The default value of `BasePost.postID` as defined in the Core Data model.
+    static let defaultPostIDValue: Int = -1
+
     // We can't use #keyPath on a non-@objc property, and we can't expose
     // status to Objc-C since it returns an optional enum.
     // I'd prefer #keyPath over a string constant, but the enum brings way more value.

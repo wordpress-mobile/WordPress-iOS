@@ -109,6 +109,18 @@ class PostCompactCellTests: XCTestCase {
         XCTAssertTrue(postCell.progressView.isHidden)
     }
 
+    func testShowsWarningMessageForFailedPublishedPosts() {
+        // Given
+        let post = PostBuilder().published().with(remoteStatus: .failed).confirmedAutoUpload().build()
+
+        // When
+        postCell.configure(with: post)
+
+        // Then
+        XCTAssertEqual(postCell.badgesLabel.text, PostAutoUploadMessages.postWillBePublished)
+        XCTAssertEqual(postCell.badgesLabel.textColor, UIColor.warning)
+    }
+
     private func postCellFromNib() -> PostCompactCell {
         let bundle = Bundle(for: PostCompactCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {
