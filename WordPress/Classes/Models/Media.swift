@@ -19,4 +19,14 @@ extension Media {
     func resetAutoUploadFailureCount() {
         autoUploadFailureCount = 0
     }
+
+    /// Returns true if media has any associated post
+    ///
+    func hasAssociatedPost() -> Bool {
+        guard let posts = posts else {
+            return false
+        }
+
+        return !posts.isEmpty
+    }
 }

@@ -64,6 +64,19 @@ class AztecPostViewControllerAttachmentTests: XCTestCase {
         expect(attachment.progress).to(equal(0))
     }
 
+    func testUpdatePostContentAfterAMediaThumbnailUpdate() {
+        // Arrange
+        let media = Media(context: context)
+        let post = Fixtures.createPost(context: context, with: media)
+        let vc = Fixtures.createAztecPostViewController(with: post)
+
+        // Act
+        vc.mediaObserver(media: media, state: .thumbnailReady(url: URL(string: "file://path/to/image.png")!))
+
+        // Assert
+        expect(post.content).toEventually(contain("src=\"file://path/to/image.png\""))
+    }
+
     private struct Fixtures {
         static func createPost(context: NSManagedObjectContext, with media: Media) -> Post {
             let post = Post(context: context)

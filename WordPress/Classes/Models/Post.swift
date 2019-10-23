@@ -284,7 +284,7 @@ class Post: AbstractPost {
         }
 
         if isRevision() {
-            let localOnly = NSLocalizedString("Local", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
+            let localOnly = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
 
             if let tempStatusString = statusString, !tempStatusString.isEmpty {
                 statusString = String(format: "%@, %@", tempStatusString, localOnly)
@@ -305,5 +305,21 @@ class Post: AbstractPost {
         }
 
         return title
+    }
+
+    override func additionalContentHashes() -> [Data] {
+        // Since the relationship between the categories and a Post is a `Set` and not a `OrderedSet`, we
+        // need to sort it manually here, so it won't magically change between runs.
+        let stringifiedCategories = categories?.compactMap { $0.categoryName }.sorted().reduce("") { acc, obj in
+            return acc + obj
+        } ?? ""
+
+        return [hash(for: publicID ?? ""),
+                hash(for: tags ?? ""),
+                hash(for: postFormat ?? ""),
+                hash(for: stringifiedCategories),
+                hash(for: geolocation?.latitude ?? 0),
+                hash(for: geolocation?.longitude ?? 0),
+                hash(for: isStickyPost ? 1 : 0)]
     }
 }
