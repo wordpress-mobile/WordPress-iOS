@@ -285,7 +285,7 @@ class PostTests: XCTestCase {
     func testThatStatusForDisplayWorksForRevisionPost() {
         let original = newTestPost()
         let revision = original.createRevision()
-        let local = NSLocalizedString("Local", comment: "Local")
+        let local = NSLocalizedString("Local changes", comment: "Local")
         revision.status = .draft
         XCTAssertEqual(revision.statusForDisplay(), local)
 
@@ -298,7 +298,7 @@ class PostTests: XCTestCase {
         XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), publishPrivateStatusDisplay, local))
 
         revision.status = .publish
-        XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local", comment: "Local"))
+        XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local changes", comment: "Local"))
 
         revision.status = .scheduled
         let scheduledStatusDisplay = "\(Post.title(for: .scheduled))"
@@ -402,5 +402,93 @@ class PostTests: XCTestCase {
 
         post.status = .draft
         XCTAssertTrue(post.canEditPublicizeSettings())
+    }
+
+    func testHashing() {
+        let post = newTestPost()
+
+        post.postTitle = "Lorem Ipsum"
+        post.content = "Dolor Sit Amet"
+        post.password = "sikrit"
+        post.author = "jk"
+        post.authorID = 9001
+        post.wp_slug = "lorem-ipsum"
+        post.publicID = "90210"
+        post.tags = "lorem,ipsum,test"
+        post.geolocation = Coordinate(coordinate: CLLocationCoordinate2D(latitude: 52.520833, longitude: 13.409444))
+        post.isStickyPost = true
+
+        let correctHash = "36d7cd8138748d779453d30e8f758592b40b61af464921133c9db12cd71cf0ca"
+
+        XCTAssertEqual(post.calculateConfirmedChangesContentHash(), correctHash)
+
+        post.isStickyPost = false
+
+        XCTAssertNotEqual(post.calculateConfirmedChangesContentHash(), correctHash)
+    }
+
+    func testAutoUploadExpiration() {
+        let post = newTestPost()
+
+        post.shouldAttemptAutoUpload = false
+        XCTAssertEqual(post.shouldAttemptAutoUpload, false)
+
+        post.shouldAttemptAutoUpload = true
+        XCTAssertEqual(post.shouldAttemptAutoUpload, true)
+
+        let threeDaysAgo = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -3, to: Date())!
+
+        post.setValue(threeDaysAgo, forKey: "confirmedChangesTimestamp")
+        // It's not great that we're setting a private property, but it's deliberately one that's private.
+        // We still want to test it though!
+        XCTAssertEqual(post.shouldAttemptAutoUpload, false)
+
+        let aDayAgo = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -1, to: Date())!
+        post.setValue(aDayAgo, forKey: "confirmedChangesTimestamp")
+
+        XCTAssertEqual(post.shouldAttemptAutoUpload, true)
+    }
+
+    func testAutoUploadCancellationProperty() {
+        let post = newTestPost()
+
+        XCTAssertEqual(post.wasAutoUploadCancelled, false)
+
+        post.shouldAttemptAutoUpload = true
+
+        XCTAssertEqual(post.wasAutoUploadCancelled, false)
+
+        post.shouldAttemptAutoUpload = false
+
+        XCTAssertEqual(post.wasAutoUploadCancelled, true)
+    }
+
+    /// Confidence check for the string setter of `Post.statusAfterSync`
+    func testStatusAfterSyncStringTranslatesToEnumValues() {
+        // Arrange
+        let post = newTestPost()
+        XCTAssertNil(post.statusAfterSync)
+        XCTAssertNil(post.statusAfterSyncString)
+
+        // Act
+        post.statusAfterSyncString = "draft"
+
+        // Assert
+        XCTAssertEqual(post.statusAfterSync, BasePost.Status.draft)
+        XCTAssertEqual(post.statusAfterSyncString, "draft")
+    }
+
+    /// Confidence check for the string setter of `Post.statusAfterSync`
+    func testStatusAfterSyncStringSetterGraciouslyHandlesInvalidValues() {
+        // Arrange
+        let post = newTestPost()
+        XCTAssertNil(post.statusAfterSync)
+
+        // Act
+        post.statusAfterSyncString = "invalid value"
+
+        // Assert
+        XCTAssertNil(post.statusAfterSync)
+        XCTAssertNil(post.statusAfterSyncString)
     }
 }
