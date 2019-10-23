@@ -1,6 +1,11 @@
 import Foundation
 import WordPressFlux
 
+enum PeriodType {
+    case summary
+    case topPostsAndPages
+}
+
 enum PeriodAction: Action {
 
     // Period overview
