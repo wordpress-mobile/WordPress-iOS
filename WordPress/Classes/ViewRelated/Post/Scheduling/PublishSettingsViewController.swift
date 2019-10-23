@@ -4,13 +4,6 @@ import WordPressShared
 
 private enum PublishSettingsCell: CaseIterable {
     case dateTime
-
-    var title: String {
-        switch self {
-        case .dateTime:
-            return "Date and time"
-        }
-    }
 }
 
 struct PublishSettingsViewModel {
@@ -96,13 +89,6 @@ struct PublishSettingsViewModel {
         ]
     }
 
-    static var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        dateFormatter.timeStyle = .short
-        return dateFormatter
-    }()
-
     private var viewModel: PublishSettingsViewModel
 
     init(post: AbstractPost) {
@@ -120,7 +106,8 @@ struct PublishSettingsViewModel {
     }
 
     func refreshModel() {
-        // Don't need to refresh the model
+        // Don't need to refresh the model here
+        // This method is required by SettingsController but we don't need to respond to external updates on this screen
     }
 
     func mapViewModel(_ viewModel: PublishSettingsViewModel, presenter: ImmuTablePresenter) -> ImmuTable {
@@ -128,9 +115,10 @@ struct PublishSettingsViewModel {
         let rows: [ImmuTableRow] = viewModel.cells.map { cell in
             switch cell {
             case .dateTime:
-                return EditableTextRow(
+                return NavigationItemRow(
                     title: NSLocalizedString("Date and Time", comment: "Date and Time"),
-                    value: viewModel.date?.shortStringWithTime() ?? NSLocalizedString("Immediately", comment: "Undated post time label"),
+                    detail: viewModel.date?.longStringWithTime() ?? NSLocalizedString("Immediately", comment: "Undated post time label"),
+                    accessoryType: .none,
                     action: presenter.present(dateTimeCalendar(model: viewModel))
                 )
             }
@@ -139,9 +127,9 @@ struct PublishSettingsViewModel {
         let footerText: String?
 
         if let date = viewModel.date {
-            let publishedOnString = PublishSettingsController.dateFormatter.string(from: date)
+            let publishedOnString = date.longStringWithTime()
             let offsetLabel = viewModel.timeZone?.label ?? "Unknown Offset"
-            footerText = "Post will be published on \(publishedOnString) in your site time zone (\(offsetLabel))"
+            footerText = String.localizedStringWithFormat("Post will be published on %@ in your site time zone (%@)", publishedOnString, offsetLabel)
         } else {
             footerText = nil
         }
@@ -157,7 +145,7 @@ struct PublishSettingsViewModel {
 
             //TODO: Show in popover
 
-            let navigationController = LightNavigationController(rootViewController: CalendarViewController())
+            let navigationController = LightNavigationController(rootViewController: SchedulingCalendarViewController())
 
             (navigationController.topViewController as? DateCoordinatorHandler)?.coordinator = DateCoordinator(date: model.date) { [weak self] date in
                 self?.viewModel.setDate(date)

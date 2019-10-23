@@ -82,11 +82,11 @@ extension CalendarDataSource: JTACMonthViewDelegate {
     }
 
     private func handleCellTextColor(cell: DateCell, cellState: CellState) {
-       if cellState.dateBelongsTo == .thisMonth {
-        cell.dateLabel?.textColor = .text
-       } else {
+        if cellState.dateBelongsTo == .thisMonth {
+          cell.dateLabel?.textColor = .text
+        } else {
           cell.dateLabel?.textColor = .textSubtle
-       }
+        }
 
         if cellState.isSelected {
             cell.dateLabel?.textColor = .textInverted
@@ -106,6 +106,7 @@ class DateCell: JTACDayCell {
         let dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.textAlignment = .center
+        dateLabel.font = UIFont.preferredFont(forTextStyle: .callout)
 
         // Show circle behind text for selected day
         dateLabel.clipsToBounds = true

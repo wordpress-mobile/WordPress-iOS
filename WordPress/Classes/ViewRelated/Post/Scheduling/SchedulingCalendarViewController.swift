@@ -13,15 +13,9 @@ struct DateCoordinator {
     }
 }
 
-class CalendarViewController: DatePickerSheet, DateCoordinatorHandler {
+class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler {
 
     @IBOutlet weak var calendarMonthView: CalendarMonthView!
-
-    private static var dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateStyle = .long
-        return df
-    }()
 
     override func configureView() -> UIView {
         let calendarMonthView = CalendarMonthView(frame: .zero)
@@ -38,7 +32,7 @@ class CalendarViewController: DatePickerSheet, DateCoordinatorHandler {
                 newDate = Calendar.current.date(byAdding: components, to: newDate, wrappingComponents: false) ?? newDate
             }
             self?.coordinator?.setDate(newDate)
-            self?.chosenValueRow.detailLabel?.text = CalendarViewController.dateFormatter.string(from: date)
+            self?.chosenValueRow.detailLabel?.text = date.longString()
         }
 
         return calendarMonthView
@@ -74,13 +68,6 @@ class CalendarViewController: DatePickerSheet, DateCoordinatorHandler {
 
 class TimePickerViewController: DatePickerSheet, DateCoordinatorHandler {
 
-    static var dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateStyle = .long
-        df.timeStyle = .short
-        return df
-    }()
-
     @IBOutlet weak var datePicker: UIDatePicker!
 
     override func configureView() -> UIView {
@@ -97,13 +84,13 @@ class TimePickerViewController: DatePickerSheet, DateCoordinatorHandler {
     override func viewDidLoad() {
         super.viewDidLoad()
         chosenValueRow.titleLabel?.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
-        chosenValueRow.detailLabel?.text = TimePickerViewController.dateFormatter.string(from: datePicker.date)
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(done))
+        chosenValueRow.detailLabel?.text = datePicker.date.longString()
+        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
         navigationItem.setRightBarButton(doneButton, animated: false)
     }
 
     @IBAction func timePickerChanged(_ sender: Any) {
-        chosenValueRow.detailLabel?.text = TimePickerViewController.dateFormatter.string(from: datePicker.date)
+        chosenValueRow.detailLabel?.text = datePicker.date.longString()
         coordinator?.setDate(datePicker.date)
     }
 
