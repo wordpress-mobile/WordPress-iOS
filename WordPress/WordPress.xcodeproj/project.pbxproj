@@ -1234,6 +1234,8 @@
 		9A9E3FB0230EA7A300909BC4 /* StatsGhostTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */; };
 		9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */; };
 		9A9E3FB4230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FB3230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib */; };
+		9AA0ADB1235F11700027AB5D /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA0ADB0235F116F0027AB5D /* AsyncOperation.swift */; };
+		9AA0ADB3235F11DC0027AB5D /* StatsPeriodAsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA0ADB2235F11DC0027AB5D /* StatsPeriodAsyncOperation.swift */; };
 		9AC3C69B231543C2007933CD /* StatsGhostChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC3C69A231543C2007933CD /* StatsGhostChartCell.xib */; };
 		9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */; };
 		9AF9551821A1D7970057827C /* DiffAbstractValue+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9551721A1D7970057827C /* DiffAbstractValue+Attributes.swift */; };
@@ -3422,6 +3424,8 @@
 		9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostTopCell.xib; sourceTree = "<group>"; };
 		9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostTabbedCell.xib; sourceTree = "<group>"; };
 		9A9E3FB3230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostPostingActivityCell.xib; sourceTree = "<group>"; };
+		9AA0ADB0235F116F0027AB5D /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		9AA0ADB2235F11DC0027AB5D /* StatsPeriodAsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodAsyncOperation.swift; sourceTree = "<group>"; };
 		9AC3C69A231543C2007933CD /* StatsGhostChartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostChartCell.xib; sourceTree = "<group>"; };
 		9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 82.xcdatamodel"; sourceTree = "<group>"; };
 		9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPageSettingsViewController.swift; sourceTree = "<group>"; };
@@ -5291,6 +5295,7 @@
 		3792259E12F6DBCC00F2176A /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				9AA0ADAF235F11500027AB5D /* Operation */,
 				73FF702D221F43BB00541798 /* Charts */,
 				98747670219638990080967F /* Extensions */,
 				98747674219644E40080967F /* Helpers */,
@@ -7444,6 +7449,15 @@
 				9A8ECE0B2254A3260043C8DA /* JetpackInstallError+Blocking.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		9AA0ADAF235F11500027AB5D /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				9AA0ADB0235F116F0027AB5D /* AsyncOperation.swift */,
+				9AA0ADB2235F11DC0027AB5D /* StatsPeriodAsyncOperation.swift */,
+			);
+			path = Operation;
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
@@ -10778,6 +10792,7 @@
 				17BD4A192101D31B00975AC3 /* NavigationActionHelpers.swift in Sources */,
 				B55FFCFA1F034F1A0070812C /* String+Ranges.swift in Sources */,
 				7E846FF320FD37BD00881F5A /* ActivityCommentRange.swift in Sources */,
+				9AA0ADB1235F11700027AB5D /* AsyncOperation.swift in Sources */,
 				FF8791BB1FBAF4B500AD86E6 /* MediaService+Swift.swift in Sources */,
 				D8212CB920AA77AD008E8AE8 /* ReaderActionHelpers.swift in Sources */,
 				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,
@@ -11271,6 +11286,7 @@
 				FF0D8146205809C8000EE505 /* PostCoordinator.swift in Sources */,
 				7EA30DB621ADA20F0092F894 /* AztecAttachmentDelegate.swift in Sources */,
 				82B67B361FC726CD006FB593 /* Memoize.swift in Sources */,
+				9AA0ADB3235F11DC0027AB5D /* StatsPeriodAsyncOperation.swift in Sources */,
 				B5DBE4FE1D21A700002E81D3 /* NotificationsViewController.swift in Sources */,
 				E1B84F001E02E94D00BF6434 /* PingHubManager.swift in Sources */,
 				E1CECE051E6F01CE009C6695 /* PostPreviewGenerator.swift in Sources */,
