@@ -86,6 +86,7 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         }
 
         cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
+        cell.animateGhostLayers(viewModel?.isFetchingChart() == true)
         tableHeaderView = cell
         return cell
     }
@@ -191,10 +192,16 @@ private extension SiteStatsPeriodTableViewController {
             return
         }
 
+        DDLogInfo("--- Refresh Table View")
+
         tableHandler.viewModel = viewModel.tableViewModel()
 
         if asyncLoadingActivated {
             refreshControl?.endRefreshing()
+
+            if viewModel.fetchingFailed() {
+                displayFailureViewIfNecessary()
+            }
         }
     }
 
@@ -205,7 +212,6 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func refreshData() {
-
         guard let selectedDate = selectedDate,
             let selectedPeriod = selectedPeriod,
             viewIsVisible() else {
