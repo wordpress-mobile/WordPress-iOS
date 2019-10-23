@@ -387,7 +387,7 @@ static NSInteger HideSearchMinSites = 3;
         return;
     }
 
-    if (blog.dotComID && blog.dotComID > 0) {
+    if (blog.dotComID && [blog.dotComID intValue] > 0) {
         [SearchManager.shared deleteAllSearchableItemsFromDomain: blog.dotComID.stringValue];
     } else if (blog.xmlrpc && !blog.xmlrpc.isEmpty) {
         [SearchManager.shared deleteAllSearchableItemsFromDomain: blog.xmlrpc];
