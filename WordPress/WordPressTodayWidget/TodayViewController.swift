@@ -1,8 +1,7 @@
 import UIKit
 import NotificationCenter
 import CocoaLumberjack
-import WordPressComStatsiOS
-import WordPressShared
+import WordPressKit
 
 class TodayViewController: UIViewController {
     @IBOutlet var unconfiguredView: UIStackView!
