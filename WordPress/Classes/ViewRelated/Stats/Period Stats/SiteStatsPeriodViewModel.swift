@@ -69,15 +69,30 @@ class SiteStatsPeriodViewModel: Observable {
                                                                                forceRefresh: true))
     }
 
+    func isFetchingChart() -> Bool {
+        return store.isFetchingSummary &&
+            !store.containsCachedData(for: .summary)
+    }
+
+    func fetchingFailed() -> Bool {
+        return store.fetchingOverviewHasFailed
+    }
+
     // MARK: - Table Model
 
     func tableViewModel() -> ImmuTable {
 
         var tableRows = [ImmuTableRow]()
 
-        if !store.containsCachedData &&
-            (store.fetchingOverviewHasFailed || store.isFetchingOverview) {
-            return ImmuTable.Empty
+        if Feature.enabled(.statsAsyncLoadingDWMY) {
+            if !store.containsCachedData && store.fetchingOverviewHasFailed {
+                return ImmuTable.Empty
+            }
+        } else {
+            if !store.containsCachedData &&
+                (store.fetchingOverviewHasFailed || store.isFetchingOverview) {
+                return ImmuTable.Empty
+            }
         }
 
         tableRows.append(contentsOf: overviewTableRows())
@@ -513,4 +528,9 @@ private extension SiteStatsPeriodViewModel {
             ?? []
     }
 
+}
+
+enum PeriodType {
+    case summary
+    case topPostsAndPages
 }
