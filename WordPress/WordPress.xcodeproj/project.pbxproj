@@ -1169,6 +1169,8 @@
 		98CAD296221B4ED2003E8F45 /* StatSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CAD295221B4ED1003E8F45 /* StatSection.swift */; };
 		98D52C3222B1CFEC00831529 /* StatsTwoColumnRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */; };
 		98D52C3322B1CFEC00831529 /* StatsTwoColumnRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D52C3122B1CFEC00831529 /* StatsTwoColumnRow.xib */; };
+		98E58A2F2360D23400E5534B /* TodayWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */; };
+		98E58A302360D23400E5534B /* TodayWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */; };
 		98EB126A20D2DC2500D2D5B5 /* NoResultsViewController+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */; };
 		98F1B12A2111017A00139493 /* NoResultsStockPhotosConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F1B1292111017900139493 /* NoResultsStockPhotosConfiguration.swift */; };
 		98F537A722496CF300B334F9 /* SiteStatsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F537A622496CF300B334F9 /* SiteStatsTableHeaderView.swift */; };
@@ -3353,6 +3355,7 @@
 		98CAD295221B4ED1003E8F45 /* StatSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatSection.swift; sourceTree = "<group>"; };
 		98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTwoColumnRow.swift; sourceTree = "<group>"; };
 		98D52C3122B1CFEC00831529 /* StatsTwoColumnRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTwoColumnRow.xib; sourceTree = "<group>"; };
+		98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayWidgetStats.swift; sourceTree = "<group>"; };
 		98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+Model.swift"; sourceTree = "<group>"; };
 		98F1B1292111017900139493 /* NoResultsStockPhotosConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsStockPhotosConfiguration.swift; sourceTree = "<group>"; };
 		98F537A622496CF300B334F9 /* SiteStatsTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsTableHeaderView.swift; sourceTree = "<group>"; };
@@ -5297,6 +5300,7 @@
 				98747671219638BF0080967F /* Insights */,
 				984B138C21F65F680004B6A2 /* Period Stats */,
 				98F89D47219E008600190EE6 /* Shared Views */,
+				98E58A2D2360D1FD00E5534B /* Today Widgets */,
 				981C348F2183871100FC2683 /* SiteStatsDashboard.storyboard */,
 				981C3493218388CA00FC2683 /* SiteStatsDashboardViewController.swift */,
 				9874766E219630240080967F /* SiteStatsTableViewCells.swift */,
@@ -7187,6 +7191,14 @@
 				43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */,
 			);
 			name = "Social Signup";
+			sourceTree = "<group>";
+		};
+		98E58A2D2360D1FD00E5534B /* Today Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */,
+			);
+			path = "Today Widgets";
 			sourceTree = "<group>";
 		};
 		98F537A522496C7300B334F9 /* Date Chooser */ = {
@@ -11427,6 +11439,7 @@
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
 				9A3BDA0E22944F3500FBF510 /* CountriesMapView.swift in Sources */,
 				17BB26AE1E6D8321008CD031 /* MediaLibraryViewController.swift in Sources */,
+				98E58A2F2360D23400E5534B /* TodayWidgetStats.swift in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
 				436D562C2117312700CEAA33 /* RegisterDomainDetailsFooterView.swift in Sources */,
 				73F76E1E222851E300FDDAD2 /* Charts+AxisFormatters.swift in Sources */,
@@ -11816,6 +11829,7 @@
 				436110DA22C3ED44000773AD /* FeatureFlag.swift in Sources */,
 				436110DB22C3ED4C000773AD /* BuildConfiguration.swift in Sources */,
 				93C2075D1CC7FFC800C94D04 /* Tracks+TodayWidget.swift in Sources */,
+				98E58A302360D23400E5534B /* TodayWidgetStats.swift in Sources */,
 				4326191722FCB9F9003C7642 /* MurielColor.swift in Sources */,
 				436110D922C3ED18000773AD /* UIColor+MurielColors.swift in Sources */,
 				93E3D3C819ACE8E300B1C509 /* SFHFKeychainUtils.m in Sources */,
