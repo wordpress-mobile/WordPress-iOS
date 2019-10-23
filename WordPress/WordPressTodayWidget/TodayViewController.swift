@@ -34,11 +34,7 @@ class TodayViewController: UIViewController {
 
         let buttonText = NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app")
         configureMeButton.setTitle(buttonText, for: .normal)
-
-        let backgroundImage = UIImage(color: .primary)
-        let resizableBackgroundImage = backgroundImage?.resizableImage(withCapInsets: UIEdgeInsets.zero)
-        configureMeButton.setBackgroundImage(resizableBackgroundImage, for: .normal)
-
+        configureMeButton.backgroundColor = .primary
         configureMeButton.clipsToBounds = true
         configureMeButton.layer.cornerRadius = 5.0
 
