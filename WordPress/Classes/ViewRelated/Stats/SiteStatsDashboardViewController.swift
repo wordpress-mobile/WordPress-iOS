@@ -1,5 +1,38 @@
 import UIKit
 
+enum StatsPeriodType: Int, FilterTabBarItem {
+    case insights = 0
+    case days
+    case weeks
+    case months
+    case years
+
+    // This is public as it is needed by FilterTabBarItem.
+    var title: String {
+        switch self {
+        case .insights: return NSLocalizedString("Insights", comment: "Title of Insights stats filter.")
+        case .days: return NSLocalizedString("Days", comment: "Title of Days stats filter.")
+        case .weeks: return NSLocalizedString("Weeks", comment: "Title of Weeks stats filter.")
+        case .months: return NSLocalizedString("Months", comment: "Title of Months stats filter.")
+        case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
+        }
+    }
+}
+
+fileprivate extension StatsPeriodType {
+    static let allPeriods = [StatsPeriodType.insights, .days, .weeks, .months, .years]
+
+    var analyticsAccessEvent: WPAnalyticsStat {
+        switch self {
+        case .insights: return .statsInsightsAccessed
+        case .days:     return .statsPeriodDaysAccessed
+        case .weeks:    return .statsPeriodWeeksAccessed
+        case .months:   return .statsPeriodMonthsAccessed
+        case .years:    return .statsPeriodYearsAccessed
+        }
+    }
+}
+
 class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - Properties
@@ -43,36 +76,6 @@ private extension SiteStatsDashboardViewController {
         static let progressViewInitialProgress = Float(0.03)
         static let progressViewHideDelay = 1
         static let progressViewHideDuration = 0.15
-    }
-
-    enum StatsPeriodType: Int, FilterTabBarItem {
-        case insights = 0
-        case days
-        case weeks
-        case months
-        case years
-
-        static let allPeriods = [StatsPeriodType.insights, .days, .weeks, .months, .years]
-
-        var title: String {
-            switch self {
-            case .insights: return NSLocalizedString("Insights", comment: "Title of Insights stats filter.")
-            case .days: return NSLocalizedString("Days", comment: "Title of Days stats filter.")
-            case .weeks: return NSLocalizedString("Weeks", comment: "Title of Weeks stats filter.")
-            case .months: return NSLocalizedString("Months", comment: "Title of Months stats filter.")
-            case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
-            }
-        }
-
-        var analyticsAccessEvent: WPAnalyticsStat {
-            switch self {
-            case .insights: return .statsInsightsAccessed
-            case .days:     return .statsPeriodDaysAccessed
-            case .weeks:    return .statsPeriodWeeksAccessed
-            case .months:   return .statsPeriodMonthsAccessed
-            case .years:    return .statsPeriodYearsAccessed
-            }
-        }
     }
 
     var currentSelectedPeriod: StatsPeriodType {
