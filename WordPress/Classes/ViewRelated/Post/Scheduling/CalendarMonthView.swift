@@ -45,7 +45,6 @@ class CalendarMonthView: UIView {
         let headerLabel = UILabel()
         headerLabel.text = "February, 2019"
         headerLabel.textAlignment = .center
-//        headerLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
         headerLabel.textColor = .neutral(.shade60)
 
         headerTitle = headerLabel
