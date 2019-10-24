@@ -4,8 +4,12 @@ import Foundation
 extension GutenbergViewController {
 
     enum InfoDialog {
-        static let message = NSLocalizedString(
+        static let postMessage = NSLocalizedString(
             "You’re now using the block editor for new posts — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’.",
+            comment: "Popup content about why this post is being opened in block editor"
+        )
+        static let pageMessage = NSLocalizedString(
+            "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’.",
             comment: "Popup content about why this post is being opened in block editor"
         )
         static let title = NSLocalizedString(
@@ -17,12 +21,14 @@ extension GutenbergViewController {
 
     func showInformativeDialogIfNecessary() {
         if shouldPresentInformativeDialog {
-            GutenbergViewController.showInformativeDialog(on: self)
+            let message = post is Page ? InfoDialog.pageMessage : InfoDialog.postMessage
+            GutenbergViewController.showInformativeDialog(on: self, message: message)
         }
     }
 
     static func showInformativeDialog(
         on viewController: UIViewControllerTransitioningDelegate & UIViewController,
+        message: String,
         animated: Bool = true
     ) {
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
@@ -35,7 +41,7 @@ extension GutenbergViewController {
 
         let config = FancyAlertViewController.Config(
             titleText: InfoDialog.title,
-            bodyText: InfoDialog.message,
+            bodyText: message,
             headerImage: nil,
             dividerPosition: .top,
             defaultButton: okButton,
