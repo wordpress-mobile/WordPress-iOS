@@ -154,8 +154,18 @@ struct PublishSettingsViewModel {
 }
 
 // The calendar sheet is shown towards the bottom half of the screen so a custom transitioning delegate is needed.
-extension PublishSettingsController: UIViewControllerTransitioningDelegate {
+extension PublishSettingsController: UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return HalfScreenPresentationController(presentedViewController: presented, presenting: presenting)
+        let presentationController = HalfScreenPresentationController(presentedViewController: presented, presenting: presenting)
+        presentationController.delegate = self
+        return presentationController
+    }
+
+    func adaptivePresentationStyle(for: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        if traitCollection.verticalSizeClass == .compact {
+            return .overFullScreen
+        } else {
+            return .none
+        }
     }
 }

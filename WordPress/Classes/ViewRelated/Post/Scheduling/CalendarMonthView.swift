@@ -76,6 +76,14 @@ class CalendarMonthView: UIView {
         pinSubviewToAllEdges(stackView)
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        calendarCollectionView?.reloadData()
+        if let date = selectedDate {
+            calendarCollectionView?.scrollToDate(date)
+        }
+    }
+
     var selectedDate: Date? {
         didSet {
             if let date = selectedDate {

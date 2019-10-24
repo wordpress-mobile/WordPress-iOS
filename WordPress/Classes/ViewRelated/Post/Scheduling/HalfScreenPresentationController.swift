@@ -8,7 +8,16 @@ class HalfScreenPresentationController: FancyAlertPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
         let height = containerView?.bounds.height ?? 0
         let width = containerView?.bounds.width ?? 0
-        return CGRect(x: 0, y: height/2, width: width, height: height/2)
+        if traitCollection.verticalSizeClass != .compact {
+            return CGRect(x: 0, y: height/2, width: width, height: height/2)
+        } else {
+            return CGRect(x: 0, y: 0, width: width, height: height)
+        }
+    }
+
+    override func containerViewWillLayoutSubviews() {
+        super.containerViewWillLayoutSubviews()
+        presentedView?.frame = frameOfPresentedViewInContainerView
     }
 
     override open func dismissalTransitionWillBegin() {
@@ -23,24 +32,13 @@ class HalfScreenPresentationController: FancyAlertPresentationController {
     }
 
     override func containerViewDidLayoutSubviews() {
+        super.containerViewDidLayoutSubviews()
         if tapGestureRecognizer == nil {
             let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismiss))
             gestureRecognizer.cancelsTouchesInView = false
             gestureRecognizer.delegate = self
             containerView?.addGestureRecognizer(gestureRecognizer)
             tapGestureRecognizer = gestureRecognizer
-        }
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        if size.width > size.height {
-            let height = containerView?.bounds.height ?? 0
-            let width = containerView?.bounds.width ?? 0
-            presentedView?.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        } else {
-            let height = containerView?.bounds.height ?? 0
-            let width = containerView?.bounds.width ?? 0
-            presentedView?.frame = CGRect(x: 0, y: height/2, width: width, height: height/2)
         }
     }
 

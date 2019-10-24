@@ -21,6 +21,8 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
         let calendarMonthView = CalendarMonthView(frame: .zero)
         calendarMonthView.translatesAutoresizingMaskIntoConstraints = false
 
+        calendarMonthView.addConstraint(calendarMonthView.widthAnchor.constraint(lessThanOrEqualToConstant: 434))
+
         let selectedDate = coordinator?.date ?? Date()
         calendarMonthView.selectedDate = selectedDate
         calendarMonthView.updated = { [weak self] date in
@@ -127,7 +129,7 @@ class DatePickerSheet: UIViewController {
         self.pickerView = pickerView
 
         view.addSubview(stackView)
-        view.pinSubviewToAllEdges(stackView)
+        view.pinSubviewToSafeArea(stackView)
     }
 
     // Does nothing, should be overriden by the subclass
