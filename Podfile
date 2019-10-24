@@ -276,6 +276,8 @@ target 'WordPressTodayWidget' do
 
     shared_with_all_pods
     shared_with_networking_pods
+    
+    wordpress_ui
 end
 
 
