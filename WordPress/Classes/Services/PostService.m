@@ -487,6 +487,8 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                 [self.managedObjectContext deleteObject:post];
             } else {
                 [self updatePost:postInContext withRemotePost:remotePost];
+                postInContext.latest.statusAfterSync = postInContext.statusAfterSync;
+                postInContext.latest.status = postInContext.status;
             }
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
