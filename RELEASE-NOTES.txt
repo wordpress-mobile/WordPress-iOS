@@ -10,6 +10,10 @@
 * Dark Mode: General improvements
 * Stats: each Insight stat now loads independently.
 * Stats: added ability to customize Insights.
+
+13.4.1
+-----
+Post Settings: Fixed a crash with featured image.
  
 13.4
 -----
