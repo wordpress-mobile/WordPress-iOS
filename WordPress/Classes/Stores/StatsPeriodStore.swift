@@ -351,9 +351,13 @@ private extension StatsPeriodStore {
             return
         }
 
+        // Legacy overview fetching method
+        //
         fetchSyncData(date: date, period: period)
     }
 
+    // Fetch Chart data first using the async operation
+    //
     func fetchChartData(date: Date, period: StatsPeriodUnit) {
         guard let service = statsRemote() else {
             return
@@ -379,6 +383,8 @@ private extension StatsPeriodStore {
         operationQueue.addOperation(chartOperation)
     }
 
+    // Fetch the rest of the overview data using the async operations
+    //
     func fetchAsyncData(date: Date, period: StatsPeriodUnit) {
         guard let service = statsRemote() else {
             return
