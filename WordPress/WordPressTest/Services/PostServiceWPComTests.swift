@@ -129,6 +129,8 @@ class PostServiceWPComTests: XCTestCase {
         }
 
         // Assert
+        expect(post.statusAfterSync).to(equal(.trash))
+        expect(post.status).to(equal(.trash))
         expect(revision.statusAfterSync).to(equal(.trash))
         expect(revision.status).to(equal(.trash))
      }
