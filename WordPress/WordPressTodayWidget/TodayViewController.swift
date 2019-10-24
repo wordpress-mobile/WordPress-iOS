@@ -2,7 +2,7 @@ import UIKit
 import NotificationCenter
 import CocoaLumberjack
 import WordPressKit
-import WordPressComStatsiOS
+import WordPressUI
 
 class TodayViewController: UIViewController {
 
