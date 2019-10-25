@@ -182,7 +182,7 @@ private extension TodayViewController {
                 return nil
         }
 
-        let wpApi = WordPressComRestApi.init(oAuthToken: oauthToken)
+        let wpApi = WordPressComRestApi(oAuthToken: oauthToken)
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
     }
 
