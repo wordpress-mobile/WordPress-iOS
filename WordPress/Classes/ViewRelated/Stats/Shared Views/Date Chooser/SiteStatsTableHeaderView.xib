@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -129,6 +129,7 @@
                 <outlet property="backArrow" destination="Ssg-6U-5Ac" id="vC4-Hc-zMu"/>
                 <outlet property="backButton" destination="b3M-QS-Aux" id="d3f-cX-bL9"/>
                 <outlet property="bottomSeparatorLine" destination="82h-So-kdz" id="EKp-FJ-DKe"/>
+                <outlet property="containerView" destination="tc3-qS-cyd" id="x64-zO-RHZ"/>
                 <outlet property="dateLabel" destination="hDF-ds-FAU" id="DkU-jG-M41"/>
                 <outlet property="forwardArrow" destination="2dA-xk-MWI" id="Kz1-HD-bfG"/>
                 <outlet property="forwardButton" destination="U1z-fb-p7G" id="7OL-e9-0vu"/>
