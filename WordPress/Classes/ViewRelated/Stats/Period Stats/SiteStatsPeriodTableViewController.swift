@@ -175,26 +175,34 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [PeriodEmptyCellHeaderRow.self,
-                CellHeaderRow.self,
-                TopTotalsPeriodStatsRow.self,
-                TopTotalsNoSubtitlesPeriodStatsRow.self,
-                CountriesStatsRow.self,
-                CountriesMapRow.self,
-                OverviewRow.self,
-                TableFooterRow.self]
+        var rows: [ImmuTableRow.Type] = [PeriodEmptyCellHeaderRow.self,
+                                         CellHeaderRow.self,
+                                         TopTotalsPeriodStatsRow.self,
+                                         TopTotalsNoSubtitlesPeriodStatsRow.self,
+                                         CountriesStatsRow.self,
+                                         CountriesMapRow.self,
+                                         OverviewRow.self,
+                                         TableFooterRow.self]
+        if asyncLoadingActivated {
+            rows.append(contentsOf: [StatsErrorRow.self,
+                                     StatsGhostChartImmutableRow.self,
+                                     StatsGhostTopImmutableRow.self])
+        }
+        return rows
     }
 
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel,
-            viewIsVisible(),
-            !store.isFetchingOverview else {
+        guard let viewModel = viewModel else {
             return
         }
 
-        DDLogInfo("--- Refresh Table View")
+        if !viewIsVisible(),
+            store.isFetchingOverview,
+            !asyncLoadingActivated {
+            return
+        }
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
