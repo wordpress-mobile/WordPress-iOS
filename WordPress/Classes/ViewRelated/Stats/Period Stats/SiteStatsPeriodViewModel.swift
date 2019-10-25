@@ -95,8 +95,13 @@ class SiteStatsPeriodViewModel: Observable {
             }
         }
 
-        let errorBlock: AsyncBlock<[ImmuTableRow]> = {
-            return [StatsErrorRow(rowStatus: .error, statType: .period)]
+        let errorBlock: (StatSection) -> [ImmuTableRow] = { section in
+            return [CellHeaderRow(statSection: section),
+                    StatsErrorRow(rowStatus: .error, statType: .period)]
+        }
+        let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
+            return [PeriodEmptyCellHeaderRow(),
+                    StatsErrorRow(rowStatus: .error, statType: .period)]
         }
         let loadingBlock: AsyncBlock<[ImmuTableRow]> = {
             return [PeriodEmptyCellHeaderRow(),
@@ -110,23 +115,50 @@ class SiteStatsPeriodViewModel: Observable {
                                                 return self?.mostRecentChartData != nil
                                             },
                                             block: { [weak self] in
-                                                return self?.overviewTableRows() ?? errorBlock()
+                                                return self?.overviewTableRows() ?? summaryErrorBlock()
             }, loading: {
                 return [PeriodEmptyCellHeaderRow(),
                         StatsGhostChartImmutableRow()]
-        }, error: errorBlock))
+        }, error: summaryErrorBlock))
         tableRows.append(contentsOf: blocks(for: .topPostsAndPages,
                                             type: .period,
                                             status: store.topPostsAndPagesStatus,
                                             block: { [weak self] in
-                                                return self?.postsAndPagesTableRows() ?? errorBlock()
-            }, loading: loadingBlock, error: errorBlock))
-        tableRows.append(contentsOf: referrersTableRows())
-        tableRows.append(contentsOf: clicksTableRows())
+                                                return self?.postsAndPagesTableRows() ?? errorBlock(.periodPostsAndPages)
+            }, loading: loadingBlock,
+               error: {
+                return errorBlock(.periodPostsAndPages)
+        }))
+        tableRows.append(contentsOf: blocks(for: .topReferrers,
+                                        type: .period,
+                                        status: store.topReferrersStatus,
+                                        block: { [weak self] in
+                                            return self?.referrersTableRows() ?? errorBlock(.periodReferrers)
+        }, loading: loadingBlock,
+           error: {
+            return errorBlock(.periodReferrers)
+        }))
+        tableRows.append(contentsOf: blocks(for: .topClicks,
+                                        type: .period,
+                                        status: store.topClicksStatus,
+                                        block: { [weak self] in
+                                            return self?.clicksTableRows() ?? errorBlock(.periodClicks)
+        }, loading: loadingBlock,
+           error: {
+            return errorBlock(.periodClicks)
+        }))
         tableRows.append(contentsOf: authorsTableRows())
         tableRows.append(contentsOf: countriesTableRows())
         tableRows.append(contentsOf: searchTermsTableRows())
-        tableRows.append(contentsOf: publishedTableRows())
+        tableRows.append(contentsOf: blocks(for: .topPublished,
+                                        type: .period,
+                                        status: store.topPublishedStatus,
+                                        block: { [weak self] in
+                                            return self?.publishedTableRows() ?? errorBlock(.periodPublished)
+        }, loading: loadingBlock,
+           error: {
+            return errorBlock(.periodPublished)
+        }))
         tableRows.append(contentsOf: videosTableRows())
         tableRows.append(contentsOf: fileDownloadsTableRows())
 
