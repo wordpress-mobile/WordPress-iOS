@@ -194,8 +194,6 @@ private extension SiteStatsPeriodTableViewController {
             return
         }
 
-        DDLogInfo("--- Refresh Table View")
-
         tableHandler.viewModel = viewModel.tableViewModel()
 
         if asyncLoadingActivated {
