@@ -56,6 +56,12 @@ extension StatsPeriodStore: StatsStoreCacheable {
             return state.summary != nil
         case .topPostsAndPages:
             return state.topPostsAndPages != nil
+        case .topReferrers:
+            return state.topReferrers != nil
+        case .topPublished:
+            return state.topPublished != nil
+        case .topClicks:
+            return state.topClicks != nil
         }
     }
 }
