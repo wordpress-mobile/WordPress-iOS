@@ -307,44 +307,15 @@ target 'WordPressNotificationServiceExtension' do
 end
 
 
-
-## WordPress.com Stats
+## Mocks
 ## ===================
 ##
-target 'WordPressComStatsiOS' do
-    project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
-
-    shared_with_all_pods
-    shared_with_networking_pods
-
-    ## Automattic libraries
-    ## ====================
-    ##
-    wordpress_ui
-end
-
-## WordPress.com Stats Tests
-## =========================
-##
-target 'WordPressComStatsiOSTests' do
-  project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  ## Automattic libraries
-  ## ====================
-  ##
-  wordpress_ui
-
-  shared_test_pods
-end
-
 def wordpress_mocks
   pod 'WordPressMocks', '~> 0.0.6'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
+
 
 ## Screenshot Generation
 ## ===================
@@ -371,7 +342,7 @@ end
 # Make all pods that are not shared across multiple targets into static frameworks by overriding the static_framework? function to return true
 # Linking the shared frameworks statically would lead to duplicate symbols
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
-shared_targets = ['WordPressFlux', 'WordPressComStatsiOS']
+shared_targets = ['WordPressFlux']
 pre_install do |installer|
     static = []
     dynamic = []
