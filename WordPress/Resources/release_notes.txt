@@ -1,5 +1,3 @@
-Our mobile devs were bug-squashing juggernauts this month:
-- You should’ve been able to sign into the app with your Apple credentials, but a bug meant that sometimes you couldn’t. That’s fixed now.
-- Tweaks make the block editor better and better: links open in-app instead of opening Safari, and a pesky link editing issue that sometimes deleting existing links is no more.
-- “Dark Mode” is dark as in “hue” and not as in “grim,” especially now that its got better visuals and fewer bugs.
-- Scrolling vertically sometimes didn’t work in the Share extension, and now it does.
+- Block editor: We’ve added a “Media & Text” block! The Link Target (Open in new tab) option has been added to Image Block settings. We fixed a bug where the “New Photo Post” shortcut didn’t add the selected photo.
+- Stats: You can now customize Insights. Insight loading on slow networks is faster.
+- Dark Mode: Improvements and small bug fixes all over the app.

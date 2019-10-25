@@ -32,7 +32,7 @@ class BasePostTests: XCTestCase {
             .with(pathForDisplayImage: "file:///Users/\(localUser)/Library/Developer/CoreSimulator/Devices/E690FA1D-AE36-4267-905D-8F6E71F4FA31/data/Containers/Data/Application/79D64D5C-6A83-4290-897E-794B7CC78B9F/Documents/Media/p16-1792x1792.jpeg")
             .build()
 
-        expect(post.featuredImageURL?.absoluteString)
+        expect(post.featuredImageURLForDisplay()?.absoluteString)
             .to(equal(documentDirectory.appendingPathComponent("Media/p16-1792x1792.jpeg").absoluteString))
     }
 
