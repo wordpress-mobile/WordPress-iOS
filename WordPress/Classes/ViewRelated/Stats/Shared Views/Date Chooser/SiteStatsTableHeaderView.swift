@@ -18,8 +18,21 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     @IBOutlet weak var forwardArrow: UIImageView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var forwardButton: UIButton!
+    @IBOutlet weak var backButton: UIButton! {
+        didSet {
+            backButton.isGhostableDisabled = true
+        }
+    }
+    @IBOutlet weak var forwardButton: UIButton! {
+        didSet {
+            forwardButton.isGhostableDisabled = true
+        }
+    }
+    @IBOutlet private var containerView: UIView! {
+        didSet {
+            containerView.isGhostableDisabled = true
+        }
+    }
 
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: SiteStatsTableHeaderDelegate?
@@ -98,6 +111,17 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 
         delegate?.dateChangedTo(self.date)
         reloadView()
+    }
+
+    func animateGhostLayers(_ animate: Bool) {
+        forwardButton.isEnabled = !animate
+        backButton.isEnabled = !animate
+
+        if animate {
+            startGhostAnimation()
+            return
+        }
+        stopGhostAnimation()
     }
 }
 
