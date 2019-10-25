@@ -95,8 +95,26 @@ class SiteStatsPeriodViewModel: Observable {
             }
         }
 
-        tableRows.append(contentsOf: overviewTableRows())
-        tableRows.append(contentsOf: postsAndPagesTableRows())
+        let errorBlock = {
+            return [StatsErrorRow(rowStatus: .error, statType: .period)]
+        }
+
+        tableRows.append(contentsOf: blocks(for: .summary,
+                                            type: .period,
+                                            status: store.summaryStatus,
+                                            block: { [weak self] in
+                                                return self?.overviewTableRows() ?? []
+            }, loading: {
+                return [StatsGhostChartImmutableRow()]
+        }, error: errorBlock))
+        tableRows.append(contentsOf: blocks(for: .topPostsAndPages,
+                                            type: .period,
+                                            status: store.topPostsAndPagesStatus,
+                                            block: { [weak self] in
+                                                return self?.postsAndPagesTableRows() ?? []
+            }, loading: {
+                return [StatsGhostChartImmutableRow()]
+        }, error: errorBlock))
         tableRows.append(contentsOf: referrersTableRows())
         tableRows.append(contentsOf: clicksTableRows())
         tableRows.append(contentsOf: authorsTableRows())
@@ -528,4 +546,12 @@ private extension SiteStatsPeriodViewModel {
             ?? []
     }
 
+}
+
+extension SiteStatsPeriodViewModel: AsyncBlocksLoadable {
+    typealias RowType = PeriodType
+
+    var currentStore: StatsPeriodStore {
+        return store
+    }
 }
