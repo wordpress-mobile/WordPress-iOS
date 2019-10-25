@@ -72,8 +72,7 @@ struct InsightStoreState {
 
     var todaysStats: StatsTodayInsight? {
         didSet {
-            TodayWidgetStats.saveData(views: todaysStats?.viewsCount ?? 0,
-                                      visitors: todaysStats?.visitorsCount ?? 0)
+            storeTodayWidgetData()
         }
     }
     var todaysStatsStatus: StoreFetchingStatus = .idle
@@ -936,5 +935,19 @@ extension StatsInsightsStore {
         case .allAnnual:
             return state.allAnnualStatus == .error
         }
+    }
+}
+
+private extension InsightStoreState {
+    func storeTodayWidgetData() {
+        // Only store data if the widget is using the current site
+        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
+        let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
+            widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
+            return
+        }
+
+        TodayWidgetStats.saveData(views: todaysStats?.viewsCount ?? 0,
+                                  visitors: todaysStats?.visitorsCount ?? 0)
     }
 }
