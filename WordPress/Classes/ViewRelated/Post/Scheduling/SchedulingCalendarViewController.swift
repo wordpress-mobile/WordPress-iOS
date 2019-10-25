@@ -84,13 +84,13 @@ class TimePickerViewController: DatePickerSheet, DateCoordinatorHandler {
     override func viewDidLoad() {
         super.viewDidLoad()
         chosenValueRow.titleLabel?.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
-        chosenValueRow.detailLabel?.text = datePicker.date.longString()
+        chosenValueRow.detailLabel?.text = datePicker.date.longStringWithTime()
         let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
         navigationItem.setRightBarButton(doneButton, animated: false)
     }
 
     @IBAction func timePickerChanged(_ sender: Any) {
-        chosenValueRow.detailLabel?.text = datePicker.date.longString()
+        chosenValueRow.detailLabel?.text = datePicker.date.longStringWithTime()
         coordinator?.setDate(datePicker.date)
     }
 
