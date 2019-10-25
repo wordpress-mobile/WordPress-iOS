@@ -215,9 +215,9 @@ PODS:
   - RNTAztecView (1.15.1):
     - React-Core
     - WordPress-Aztec-iOS
-  - Sentry (4.4.0):
-    - Sentry/Core (= 4.4.0)
-  - Sentry/Core (4.4.0)
+  - Sentry (4.4.1):
+    - Sentry/Core (= 4.4.1)
+  - Sentry/Core (4.4.1)
   - SimulatorStatusMagic (2.4.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -267,7 +267,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - Alamofire (= 4.7.3)
   - AlamofireNetworkActivityIndicator (~> 2.3)
-  - Automattic-Tracks-iOS (~> 0.4.2)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, branch `disable/automatic-breadcrumb-tracking-by-default`)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.5.2)
   - Down (~> 0.6.6)
@@ -330,7 +330,6 @@ SPEC REPOS:
     - 1PasswordExtension
     - Alamofire
     - AlamofireNetworkActivityIndicator
-    - Automattic-Tracks-iOS
     - boost-for-react-native
     - Charts
     - CocoaLumberjack
@@ -372,6 +371,9 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
+  Automattic-Tracks-iOS:
+    :branch: disable/automatic-breadcrumb-tracking-by-default
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.15.1/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   FSInteractiveMap:
@@ -436,6 +438,9 @@ EXTERNAL SOURCES:
     :tag: 3.0.1-swift5.1-GM
 
 CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :commit: 40c80b2966b2bf9d47b2c629d44cd63dc500bdf6
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -505,7 +510,7 @@ SPEC CHECKSUMS:
   ReactNativeDarkMode: f61376360c5d983907e5c316e8e1c853a8c2f348
   RNSVG: c820516df826221ce4969594bf3e822a464abd51
   RNTAztecView: 2c33887480552634a57872a5cc8fe3dee51e3852
-  Sentry: 26650184fe71eb7476dfd2737acb5ea6cc64b4b1
+  Sentry: 5d312a04e369154aeac616214f4dfc3cbcc8b296
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -523,6 +528,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 07977c9aa708ea64461a1b18b7b3cfec3f496785
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: e7b1f87e9e94c78425d34fe902cf11ce4aecd7b5
+PODFILE CHECKSUM: 4e0fa7a05dd8378d729e056fe3953f0b24f033b5
 
 COCOAPODS: 1.8.4
