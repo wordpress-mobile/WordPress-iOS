@@ -71,7 +71,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     func isFetchingChart() -> Bool {
         return store.isFetchingSummary &&
-            !store.containsCachedData(for: .summary)
+            mostRecentChartData == nil
     }
 
     func fetchingFailed() -> Bool {
