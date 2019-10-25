@@ -95,26 +95,32 @@ class SiteStatsPeriodViewModel: Observable {
             }
         }
 
-        let errorBlock = {
+        let errorBlock: AsyncBlock<[ImmuTableRow]> = {
             return [StatsErrorRow(rowStatus: .error, statType: .period)]
+        }
+        let loadingBlock: AsyncBlock<[ImmuTableRow]> = {
+            return [PeriodEmptyCellHeaderRow(),
+                    StatsGhostTopImmutableRow()]
         }
 
         tableRows.append(contentsOf: blocks(for: .summary,
                                             type: .period,
                                             status: store.summaryStatus,
+                                            checkingCache: { [weak self] in
+                                                return self?.mostRecentChartData != nil
+                                            },
                                             block: { [weak self] in
-                                                return self?.overviewTableRows() ?? []
+                                                return self?.overviewTableRows() ?? errorBlock()
             }, loading: {
-                return [StatsGhostChartImmutableRow()]
+                return [PeriodEmptyCellHeaderRow(),
+                        StatsGhostChartImmutableRow()]
         }, error: errorBlock))
         tableRows.append(contentsOf: blocks(for: .topPostsAndPages,
                                             type: .period,
                                             status: store.topPostsAndPagesStatus,
                                             block: { [weak self] in
-                                                return self?.postsAndPagesTableRows() ?? []
-            }, loading: {
-                return [StatsGhostChartImmutableRow()]
-        }, error: errorBlock))
+                                                return self?.postsAndPagesTableRows() ?? errorBlock()
+            }, loading: loadingBlock, error: errorBlock))
         tableRows.append(contentsOf: referrersTableRows())
         tableRows.append(contentsOf: clicksTableRows())
         tableRows.append(contentsOf: authorsTableRows())
