@@ -38,13 +38,11 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v13.4-whats-new"
+msgctxt "v13.5-whats-new"
 msgid ""
-"Our mobile devs were bug-squashing juggernauts this month:\n"
-"- You should’ve been able to sign into the app with your Apple credentials, but a bug meant that sometimes you couldn’t. That’s fixed now.\n"
-"- Tweaks make the block editor better and better: links open in-app instead of opening Safari, and a pesky link editing issue that sometimes deleting existing links is no more.\n"
-"- “Dark Mode” is dark as in “hue” and not as in “grim,” especially now that its got better visuals and fewer bugs.\n"
-"- Scrolling vertically sometimes didn’t work in the Share extension, and now it does.\n"
+"- Block editor: We’ve added a “Media & Text” block! The Link Target (Open in new tab) option has been added to Image Block settings. We fixed a bug where the “New Photo Post” shortcut didn’t add the selected photo.\n"
+"- Stats: You can now customize Insights. Insight loading on slow networks is faster.\n"
+"- Dark Mode: Improvements and small bug fixes all over the app.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
