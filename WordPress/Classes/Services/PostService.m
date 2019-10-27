@@ -674,6 +674,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         postPost.commentCount = remotePost.commentCount;
         postPost.likeCount = remotePost.likeCount;
         postPost.postFormat = remotePost.format;
+        postPost.autosaveTitle = remotePost.autosaveTitle;
+        postPost.autosaveExcerpt = remotePost.autosaveExcerpt;
+        postPost.autosaveContent = remotePost.autosaveContent;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         postPost.postType = remotePost.type;
         postPost.isStickyPost = (remotePost.isStickyPost != nil) ? remotePost.isStickyPost.boolValue : NO;
@@ -744,6 +747,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     remotePost.authorAvatarURL = post.authorAvatarURL;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
+    remotePost.autosaveTitle = post.autosaveTitle;
+    remotePost.autosaveExcerpt = post.autosaveExcerpt;
+    remotePost.autosaveContent = post.autosaveContent;
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;

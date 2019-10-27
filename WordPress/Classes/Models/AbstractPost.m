@@ -478,6 +478,11 @@
     return self.remoteStatus == AbstractPostRemoteStatusPushing;
 }
 
+- (BOOL)hasAutosave
+{
+    return self.autosaveTitle || self.autosaveExcerpt || self.autosaveContent;
+}
+
 
 #pragma mark - Post
 

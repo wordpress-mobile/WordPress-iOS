@@ -85,6 +85,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)isMultiAuthorBlog;
 - (BOOL)isPrivate;
 - (BOOL)supportsStats;
+- (BOOL)hasAutosave;
 
 
 #pragma mark - Unsaved Changes
