@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSNumber * authorID;
 @property (nonatomic, strong, nullable) NSString * author;
 @property (nonatomic, strong, nullable) NSString * authorAvatarURL;
+@property (nonatomic, copy, nullable) NSString * autosaveContent;
+@property (nonatomic, copy, nullable) NSString * autosaveExcerpt;
+@property (nonatomic, copy, nullable) NSString * autosaveTitle;
 @property (nonatomic, strong, nullable) NSDate * date_created_gmt;
 @property (nonatomic, strong, nullable) NSString * postTitle;
 @property (nonatomic, strong, nullable) NSString * content;

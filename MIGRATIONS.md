@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 92
+@guarani 2019-10-27
+- `BasePost` added `autosaveTitle`, `autosaveExcerpt`, `autosaveContent` properties.
+
 ## WordPress 91
 @aerych 2019-10-15
 - `WPAccount` added `primaryBlogID` property. 

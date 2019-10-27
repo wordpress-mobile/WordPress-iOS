@@ -9,6 +9,9 @@
 @dynamic authorID;
 @dynamic author;
 @dynamic authorAvatarURL;
+@dynamic autosaveContent;
+@dynamic autosaveExcerpt;
+@dynamic autosaveTitle;
 @dynamic content;
 @dynamic date_created_gmt;
 @dynamic postID;
