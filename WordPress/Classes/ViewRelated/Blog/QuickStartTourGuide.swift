@@ -8,6 +8,7 @@ open class QuickStartTourGuide: NSObject {
     private var suggestionWorkItem: DispatchWorkItem?
     private weak var recentlyTouredBlog: Blog?
     static let notificationElementKey = "QuickStartElementKey"
+    private let identifier = UUID().uuidString
 
     @objc static func find() -> QuickStartTourGuide? {
         guard let tabBarController = WPTabBarController.sharedInstance(),
@@ -97,7 +98,8 @@ open class QuickStartTourGuide: NSObject {
                             message: tour.description,
                             style: noticeStyle,
                             actionTitle: tour.suggestionYesText,
-                            cancelTitle: tour.suggestionNoText) { [weak self] accepted in
+                            cancelTitle: tour.suggestionNoText,
+                            tag: identifier) { [weak self] accepted in
                                 self?.currentSuggestion = nil
 
                                 if accepted {
@@ -371,7 +373,7 @@ private extension QuickStartTourGuide {
         }
 
         currentSuggestion = nil
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(self.identifier))
     }
 
     func getNextStep() -> TourState? {
@@ -389,8 +391,7 @@ private extension QuickStartTourGuide {
     }
 
     func dismissCurrentNotice() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
-        ActionDispatcher.dispatch(NoticeAction.empty)
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(self.identifier))
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
     }
 
