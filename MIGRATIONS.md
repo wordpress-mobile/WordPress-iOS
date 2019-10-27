@@ -5,7 +5,7 @@ data model as well as any custom migrations.
 
 ## WordPress 92
 @guarani 2019-10-27
-- `BasePost` added `autosaveTitle`, `autosaveExcerpt`, `autosaveContent` properties.
+- `BasePost` added `autosaveTitle`, `autosaveExcerpt`, `autosaveContent`, and `autosaveModifiedDate` properties.
 
 ## WordPress 91
 @aerych 2019-10-15

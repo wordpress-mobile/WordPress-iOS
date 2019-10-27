@@ -677,6 +677,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         postPost.autosaveTitle = remotePost.autosaveTitle;
         postPost.autosaveExcerpt = remotePost.autosaveExcerpt;
         postPost.autosaveContent = remotePost.autosaveContent;
+        postPost.autosaveModifiedDate = remotePost.autosaveModifiedDate;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         postPost.postType = remotePost.type;
         postPost.isStickyPost = (remotePost.isStickyPost != nil) ? remotePost.isStickyPost.boolValue : NO;
@@ -750,6 +751,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     remotePost.autosaveTitle = post.autosaveTitle;
     remotePost.autosaveExcerpt = post.autosaveExcerpt;
     remotePost.autosaveContent = post.autosaveContent;
+    remotePost.autosaveModifiedDate = post.autosaveModifiedDate;
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;

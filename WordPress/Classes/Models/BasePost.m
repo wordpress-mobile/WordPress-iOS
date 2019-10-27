@@ -12,6 +12,7 @@
 @dynamic autosaveContent;
 @dynamic autosaveExcerpt;
 @dynamic autosaveTitle;
+@dynamic autosaveModifiedDate;
 @dynamic content;
 @dynamic date_created_gmt;
 @dynamic postID;

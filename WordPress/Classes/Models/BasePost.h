@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString * autosaveContent;
 @property (nonatomic, copy, nullable) NSString * autosaveExcerpt;
 @property (nonatomic, copy, nullable) NSString * autosaveTitle;
+@property (nonatomic, copy, nullable) NSDate * autosaveModifiedDate;
 @property (nonatomic, strong, nullable) NSDate * date_created_gmt;
 @property (nonatomic, strong, nullable) NSString * postTitle;
 @property (nonatomic, strong, nullable) NSString * content;
