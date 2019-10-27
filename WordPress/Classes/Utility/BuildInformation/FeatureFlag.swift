@@ -9,6 +9,7 @@ enum FeatureFlag: Int {
     case domainCredit
     case signInWithApple
     case statsAsyncLoading
+    case statsAsyncLoadingDWMY
     case postScheduling
 
     /// Returns a boolean indicating if the feature is enabled
@@ -33,6 +34,8 @@ enum FeatureFlag: Int {
             return true
         case .statsAsyncLoading:
             return true
+        case .statsAsyncLoadingDWMY:
+            return BuildConfiguration.current == .localDeveloper
         case .postScheduling:
             return BuildConfiguration.current == .localDeveloper
         }

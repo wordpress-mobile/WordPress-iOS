@@ -1,10 +1,13 @@
 import UIKit
 import NotificationCenter
 import CocoaLumberjack
-import WordPressComStatsiOS
-import WordPressShared
+import WordPressKit
+import WordPressUI
 
 class TodayViewController: UIViewController {
+
+    // MARK: - Properties
+
     @IBOutlet var unconfiguredView: UIStackView!
     @IBOutlet var configureMeLabel: UILabel!
     @IBOutlet var siteNameLabel: UILabel!
@@ -16,14 +19,16 @@ class TodayViewController: UIViewController {
     @IBOutlet var viewsLabel: UILabel!
     @IBOutlet var configureMeButton: UIButton!
 
-    var siteID: NSNumber?
-    var timeZone: TimeZone?
-    var oauthToken: String?
-    var siteName: String = ""
-    var visitorCount: String = ""
-    var viewCount: String = ""
-    var isConfigured = false
-    var tracks = Tracks(appGroupName: WPAppGroupName)
+    private var siteID: NSNumber?
+    private var timeZone: TimeZone?
+    private var oauthToken: String?
+    private var siteName: String = ""
+    private var visitorCount: Int = 0
+    private var viewCount: Int = 0
+    private var isConfigured = false
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
+
+    // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,11 +39,7 @@ class TodayViewController: UIViewController {
 
         let buttonText = NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app")
         configureMeButton.setTitle(buttonText, for: .normal)
-
-        let backgroundImage = UIImage(color: .primary)
-        let resizableBackgroundImage = backgroundImage?.resizableImage(withCapInsets: UIEdgeInsets.zero)
-        configureMeButton.setBackgroundImage(resizableBackgroundImage, for: .normal)
-
+        configureMeButton.backgroundColor = .primary
         configureMeButton.clipsToBounds = true
         configureMeButton.layer.cornerRadius = 5.0
 
@@ -49,47 +50,67 @@ class TodayViewController: UIViewController {
         viewsCountLabel.text = "-"
 
         changeTextColor()
-
-        retrieveSiteConfiguration()
-        updateUIBasedOnWidgetConfiguration()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Manual state restoration
-        let sharedDefaults = UserDefaults(suiteName: WPAppGroupName)!
-        siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
-
-        let userDefaults = UserDefaults.standard
-        visitorCount = userDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? "0"
-        viewCount = userDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsViewCountKey) ?? "0"
-
-        siteNameLabel.text = siteName
-        visitorsCountLabel.text = visitorCount
-        viewsCountLabel.text = viewCount
-
+        loadSavedData()
+        updateLabels()
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
     }
 
-    func changeTextColor() {
-        configureMeLabel.textColor = .text
-        siteNameLabel.textColor = .text
-        visitorsCountLabel.textColor = .text
-        viewsCountLabel.textColor = .text
-        visitorsLabel.textColor = .textSubtle
-        viewsLabel.textColor = .textSubtle
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        // Manual state restoration
-        let userDefaults = UserDefaults.standard
-        userDefaults.set(visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
-        userDefaults.set(viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
+        TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount)
     }
+
+}
+
+// MARK: - Widget Updating
+
+extension TodayViewController: NCWidgetProviding {
+    func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
+        retrieveSiteConfiguration()
+
+        DispatchQueue.main.async {
+            self.updateUIBasedOnWidgetConfiguration()
+        }
+
+        if !isConfigured {
+            DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+            completionHandler(NCUpdateResult.failed)
+            return
+        }
+
+        tracks.trackExtensionAccessed()
+
+        guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
+            if error != nil {
+                DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
+                return
+            }
+
+            DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
+
+            DispatchQueue.main.async {
+                self.visitorCount = todayInsight?.visitorsCount ?? 0
+                self.viewCount = todayInsight?.viewsCount ?? 0
+                self.updateLabels()
+            }
+        }
+    }
+
+}
+
+// MARK: - Private Extension
+
+private extension TodayViewController {
 
     @IBAction func launchContainingApp() {
         if let unwrappedSiteID = siteID {
@@ -126,50 +147,43 @@ class TodayViewController: UIViewController {
 
         return oauth2Token as String?
     }
-}
 
-extension TodayViewController: NCWidgetProviding {
-    func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
-        retrieveSiteConfiguration()
-        DispatchQueue.main.async {
-            self.updateUIBasedOnWidgetConfiguration()
-        }
-
-        if isConfigured == false {
-            DDLogError("Missing site ID, timeZone or oauth2Token")
-
-            completionHandler(NCUpdateResult.failed)
-            return
-        }
-
-        tracks.trackExtensionAccessed()
-
-        let statsService: WPStatsService = WPStatsService(siteId: siteID,
-                                                          siteTimeZone: timeZone,
-                                                          oauth2Token: oauthToken,
-                                                          andCacheExpirationInterval: 0,
-                                                          apiBaseUrlString: WordPressComRestApi.apiBaseURLString)
-        statsService.retrieveTodayStats(completionHandler: { wpStatsSummary, error in
-            DDLogInfo("Downloaded data in the Today widget")
-
-            DispatchQueue.main.async {
-                self.visitorCount = (wpStatsSummary?.visitors)!
-                self.viewCount = (wpStatsSummary?.views)!
-
-                self.siteNameLabel?.text = self.siteName
-                self.visitorsCountLabel?.text = self.visitorCount
-                self.viewsCountLabel?.text = self.viewCount
-            }
-            completionHandler(NCUpdateResult.newData)
-            }, failureHandler: { error in
-                DDLogError("\(String(describing: error))")
-
-                if let error = error as? URLError, error.code == URLError.badServerResponse {
-                    self.isConfigured = false
-                    self.updateUIBasedOnWidgetConfiguration()
-                }
-
-                completionHandler(NCUpdateResult.failed)
-        })
+    func loadSavedData() {
+        let data = TodayWidgetStats.loadSavedData()
+        visitorCount = data.visitors
+        viewCount = data.views
     }
+
+    func updateLabels() {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        visitorsCountLabel.text = numberFormatter.string(from: NSNumber(value: visitorCount)) ?? "0"
+        viewsCountLabel.text = numberFormatter.string(from: NSNumber(value: viewCount)) ?? "0"
+
+        siteNameLabel.text = siteName
+    }
+
+    func changeTextColor() {
+        configureMeLabel.textColor = .text
+        siteNameLabel.textColor = .text
+        visitorsCountLabel.textColor = .text
+        viewsCountLabel.textColor = .text
+        visitorsLabel.textColor = .textSubtle
+        viewsLabel.textColor = .textSubtle
+    }
+
+    func statsRemote() -> StatsServiceRemoteV2? {
+        guard
+            let siteID = siteID,
+            let timeZone = timeZone,
+            let oauthToken = oauthToken
+            else {
+                DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+                return nil
+        }
+
+        let wpApi = WordPressComRestApi(oAuthToken: oauthToken)
+        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
+    }
+
 }

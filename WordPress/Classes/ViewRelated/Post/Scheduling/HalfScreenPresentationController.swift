@@ -20,17 +20,6 @@ class HalfScreenPresentationController: FancyAlertPresentationController {
         presentedView?.frame = frameOfPresentedViewInContainerView
     }
 
-    override open func dismissalTransitionWillBegin() {
-
-        // This deselects the selected row if the top VC is a TableViewController
-        // I don't love this solution and think it should probably be rolled into the transition of the presentation controller or something.
-        // The typical appearance methods (`viewWillAppear` + `viewDidAppear`) do not get called when the presentation context is not fullscreen so we need to handle this case specially.
-        // Another option might be to tie this in with a custom navigation controller or delegate instead of relying on those appearance methods.
-        ((presentingViewController as? UINavigationController)?.topViewController as? UITableViewController)?.tableView.deselectSelectedRowWithAnimation(true)
-
-        super.dismissalTransitionWillBegin()
-    }
-
     override func containerViewDidLayoutSubviews() {
         super.containerViewDidLayoutSubviews()
         if tapGestureRecognizer == nil {

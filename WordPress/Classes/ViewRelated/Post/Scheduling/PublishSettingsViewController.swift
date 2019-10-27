@@ -71,6 +71,32 @@ struct PublishSettingsViewModel {
     }
 }
 
+private struct DateAndTimeRow: ImmuTableRow {
+   static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
+
+   let title: String
+   let detail: String
+   let action: ImmuTableAction?
+   let accessibilityIdentifer: String
+
+   init(title: String, detail: String, accessibilityIdentifier: String, action: @escaping ImmuTableAction) {
+       self.title = title
+       self.detail = detail
+       self.accessibilityIdentifer = accessibilityIdentifier
+       self.action = action
+   }
+
+   func configureCell(_ cell: UITableViewCell) {
+       cell.textLabel?.text = title
+       cell.detailTextLabel?.text = detail
+       cell.selectionStyle = .none
+       cell.accessoryType = .none
+       cell.accessibilityIdentifier = accessibilityIdentifer
+
+       WPStyleGuide.configureTableViewCell(cell)
+   }
+}
+
 @objc class PublishSettingsController: NSObject, SettingsController {
 
     @objc class func viewController(post: AbstractPost) -> ImmuTableViewController {
@@ -109,10 +135,10 @@ struct PublishSettingsViewModel {
         let rows: [ImmuTableRow] = viewModel.cells.map { cell in
             switch cell {
             case .dateTime:
-                return NavigationItemRow(
+                return DateAndTimeRow(
                     title: NSLocalizedString("Date and Time", comment: "Date and Time"),
                     detail: viewModel.date?.longStringWithTime() ?? NSLocalizedString("Immediately", comment: "Undated post time label"),
-                    accessoryType: .none,
+                    accessibilityIdentifier: "Date and Time Row",
                     action: presenter.present(dateTimeCalendar(model: viewModel))
                 )
             }
