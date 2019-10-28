@@ -27,9 +27,6 @@ jobs:
             pod-install: true
       - ios/xcodebuild:
           command: build-for-testing
-          arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPressUITests' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
-      - ios/xcodebuild:
-          command: build-for-testing
           arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPress' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
       - persist_to_workspace:
           root: ./
@@ -71,7 +68,7 @@ jobs:
       - ios/wait-for-simulator
       - ios/xcodebuild:
           command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPressUITests_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
+          arguments: -xctestrun DerivedData/Build/Products/WordPress_iphonesimulator13.0-x86_64.xctestrun -testPlan 'WordPressUITests' -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
       - ios/save-xcodebuild-artifacts
   Installable Build:
     executor:
