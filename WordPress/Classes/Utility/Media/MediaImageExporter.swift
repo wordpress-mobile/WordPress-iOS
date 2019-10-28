@@ -284,57 +284,47 @@ class MediaImageExporter: MediaExporter {
             var width: CGFloat?
             var height: CGFloat?
 
-            if let maximumSize = maximumSize {
-                // Configure orientation properties to default .up or 1
-                imageProperties[kCGImagePropertyOrientation] = Int(CGImagePropertyOrientation.up.rawValue) as CFNumber
-                if var tiffProperties = imageProperties[kCGImagePropertyTIFFDictionary] as? [NSString: Any] {
-                    // Remove TIFF orientation value
-                    tiffProperties.removeValue(forKey: kCGImagePropertyTIFFOrientation)
-                    imageProperties[kCGImagePropertyTIFFDictionary] = tiffProperties
-                }
-                if var iptcProperties = imageProperties[kCGImagePropertyIPTCImageOrientation] as? [NSString: Any] {
-                    // Remove IPTC orientation value
-                    iptcProperties.removeValue(forKey: kCGImagePropertyIPTCImageOrientation)
-                    imageProperties[kCGImagePropertyIPTCImageOrientation] = iptcProperties
-                }
-
-                // Configure options for generating the thumbnail, such as the maximum size.
-                let thumbnailOptions: [NSString: Any] = [kCGImageSourceThumbnailMaxPixelSize: maximumSize,
-                                                       kCGImageSourceCreateThumbnailFromImageAlways: true,
-                                                       kCGImageSourceShouldCache: false,
-                                                       kCGImageSourceTypeIdentifierHint: sourceUTType,
-                                                       kCGImageSourceCreateThumbnailWithTransform: true]
-                // Create a thumbnail of the image source.
-                guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions as CFDictionary) else {
-                    throw ImageExportError.imageSourceThumbnailGenerationFailed
-                }
-
-                if nullifyGPSData == true {
-                    // When removing GPS data for a thumbnail, we have to remove the dictionary
-                    // itself for the CGImageDestinationAddImage method.
-                    imageProperties.removeValue(forKey: kCGImagePropertyGPSDictionary)
-                }
-
-                // Add the thumbnail image as the destination's image.
-                CGImageDestinationAddImage(destination, image, imageProperties as CFDictionary?)
-
-                // Get the dimensions from the CGImage itself
-                width = CGFloat(image.width)
-                height = CGFloat(image.height)
-            } else {
-
-                if nullifyGPSData == true {
-                    // When removing GPS data for a full-sized image, we have to nullify the GPS dictionary
-                    // for the CGImageDestinationAddImageFromSource method.
-                    imageProperties[kCGImagePropertyGPSDictionary] = kCFNull
-                }
-                // No resizing needed, add the full sized image from the source
-                CGImageDestinationAddImageFromSource(destination, source, 0, imageProperties as CFDictionary?)
-
-                // Get the dimensions of the full size image from the source's properties
-                width = imageProperties[kCGImagePropertyPixelWidth] as? CGFloat
-                height = imageProperties[kCGImagePropertyPixelHeight] as? CGFloat
+            // Configure orientation properties to default .up or 1
+            imageProperties[kCGImagePropertyOrientation] = Int(CGImagePropertyOrientation.up.rawValue) as CFNumber
+            if var tiffProperties = imageProperties[kCGImagePropertyTIFFDictionary] as? [NSString: Any] {
+                // Remove TIFF orientation value
+                tiffProperties.removeValue(forKey: kCGImagePropertyTIFFOrientation)
+                imageProperties[kCGImagePropertyTIFFDictionary] = tiffProperties
             }
+            if var iptcProperties = imageProperties[kCGImagePropertyIPTCDictionary] as? [NSString: Any] {
+                // Remove IPTC orientation value
+                iptcProperties.removeValue(forKey: kCGImagePropertyIPTCImageOrientation)
+                imageProperties[kCGImagePropertyIPTCDictionary] = iptcProperties
+            }
+
+            // Configure options for generating the thumbnail, such as the maximum size.
+            var thumbnailOptions: [NSString: Any] = [
+                kCGImageSourceCreateThumbnailFromImageAlways: true,
+                kCGImageSourceShouldCache: false,
+                kCGImageSourceTypeIdentifierHint: sourceUTType,
+                kCGImageSourceCreateThumbnailWithTransform: true ]
+
+            if let maximumSize = maximumSize {
+                thumbnailOptions[kCGImageSourceThumbnailMaxPixelSize] = maximumSize
+            }
+
+            // Create a thumbnail of the image source.
+            guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions as CFDictionary) else {
+                throw ImageExportError.imageSourceThumbnailGenerationFailed
+            }
+
+            if nullifyGPSData == true {
+                // When removing GPS data for a thumbnail, we have to remove the dictionary
+                // itself for the CGImageDestinationAddImage method.
+                imageProperties.removeValue(forKey: kCGImagePropertyGPSDictionary)
+            }
+
+            // Add the thumbnail image as the destination's image.
+            CGImageDestinationAddImage(destination, image, imageProperties as CFDictionary?)
+
+            // Get the dimensions from the CGImage itself
+            width = CGFloat(image.width)
+            height = CGFloat(image.height)
 
             // Write the image to the file URL
             let written = CGImageDestinationFinalize(destination)

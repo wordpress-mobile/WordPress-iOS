@@ -17,7 +17,26 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 const NSUInteger PostServiceDefaultNumberToSync = 40;
 
+@interface PostService ()
+
+@property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
+
+@end
+
 @implementation PostService
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+    return [self initWithManagedObjectContext:context
+                     postServiceRemoteFactory:[PostServiceRemoteFactory.alloc init]];
+}
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+                    postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory {
+    if (self = [super initWithManagedObjectContext:context]) {
+        self.postServiceRemoteFactory = postServiceRemoteFactory;
+    }
+    return self;
+}
 
 - (Post *)createPostForBlog:(Blog *)blog {
     NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
@@ -90,7 +109,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
               success:(void (^)(AbstractPost *post))success
               failure:(void (^)(NSError *))failure
 {
-    id<PostServiceRemote> remote = [self remoteForBlog:blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
     [remote getPostWithID:postID
                   success:^(RemotePost *remotePost){
@@ -162,7 +181,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 failure:(PostServiceSyncFailure)failure
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
-    id<PostServiceRemote> remote = [self remoteForBlog:blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:blog];
     
     if (loadedPosts.count > 0) {
         options.offset = @(loadedPosts.count);
@@ -216,7 +235,31 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
            success:(void (^)(AbstractPost *post))success
            failure:(void (^)(NSError *error))failure
 {
-    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    [self uploadPost:post
+forceDraftIfCreating:NO
+             success:success
+             failure:failure];
+}
+
+/**
+ * Creates or updates a post to the server.
+ *
+ * If the post only exists on the device, it will be created.
+ *
+ * Setting `forceDraftIfCreating` to `YES` is useful if we want to create a post in the server
+ * with the intention of making it available for preview. If we create the post as is, and the user
+ * has set its `status` to `.published`, then we would publishing the post even if we just
+ * wanted to preview it!
+ *
+ * Another use case of `forceDraftIfCreating` is to create the post in the background so we can
+ * periodically auto-save it. Again, we'd still want to create it as a `.draft` status.
+ */
+- (void)uploadPost:(AbstractPost *)post
+forceDraftIfCreating:(BOOL)forceDraftIfCreating
+           success:(void (^)(AbstractPost *post))success
+           failure:(void (^)(NSError *error))failure
+{
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     RemotePost *remotePost = [self remotePostWithPost:post];
 
     post.remoteStatus = AbstractPostRemoteStatusPushing;
@@ -258,7 +301,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [self.managedObjectContext performBlock:^{
             Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                [self markAsFailedAndDraftIfNeededWithPost:post];
+                [self markAsFailedAndDraftIfNeededWithPost:postInContext];
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
@@ -272,6 +315,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                    success:successBlock
                    failure:failureBlock];
     } else {
+        if (forceDraftIfCreating) {
+            remotePost.status = PostStatusDraft;
+        }
+
         [remote createPost:remotePost
                    success:successBlock
                    failure:failureBlock];
@@ -282,13 +329,29 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
          success:(void (^)(AbstractPost *post, NSString *previewURL))success
          failure:(void (^)(NSError * _Nullable error))failure
 {
-    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
-    
+    NSManagedObjectID *postObjectID = post.objectID;
+
+    NSError *defaultError =
+        [NSError errorWithDomain:PostServiceErrorDomain
+                            code:0
+                        userInfo:@{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." }];
+
+    void (^setPostAsFailedAndCallFailureBlock)(NSError *error) = ^(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            if (postInContext) {
+                postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
+            }
+
+            failure(error);
+        }];
+    };
+
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
         PostServiceRemoteREST *restRemote = (PostServiceRemoteREST*) remote;
         RemotePost *remotePost = [self remotePostWithPost:post];
-        NSManagedObjectID *postObjectID = post.objectID;
-        
+
         void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
             [self.managedObjectContext performBlock:^{
                 AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
@@ -314,14 +377,20 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             }];
         };
         
-        void (^failureBlock)(NSError *error) = ^(NSError *error) {
-            failure(error);
-        };
-        
-        BOOL needsUploading = [post isDraft] && [post.postID longLongValue] <= 0;
-        
-        if (needsUploading) {
+        // The autoSave endpoint returns an exception on posts that do not exist on the server
+        // so we'll create the post instead if necessary.
+        BOOL mustBeCreated = ![post hasRemote];
+
+        if (mustBeCreated) {
+            // Abort if the status is trashed/deleted. We'd rather not automatically create a
+            // locally trashed post as drafts in the server.
+            if ([post.status isEqualToString:PostStatusTrash] || [post.status isEqualToString:PostStatusDeleted]) {
+                setPostAsFailedAndCallFailureBlock(defaultError);
+                return;
+            }
+
             [self uploadPost:post
+        forceDraftIfCreating:YES
                      success:^(AbstractPost * _Nonnull post) {
                          success(post, nil);
                      }
@@ -329,7 +398,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         } else {
             [restRemote autoSave:remotePost
                          success:successBlock
-                         failure:failureBlock];
+                         failure:setPostAsFailedAndCallFailureBlock];
         }
     } else if ([post originalIsDraft] && [post isDraft]) {
         [self uploadPost:post
@@ -337,8 +406,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                      success(post, nil);
                  } failure:failure];
     } else {
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." };
-        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
+        setPostAsFailedAndCallFailureBlock(defaultError);
     }
 }
 
@@ -350,7 +418,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         NSNumber *postID = post.postID;
         if ([postID longLongValue] > 0) {
             RemotePost *remotePost = [self remotePostWithPost:post];
-            id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+            id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
             [remote deletePost:remotePost success:success failure:failure];
         }
         [self.managedObjectContext deleteObject:post];
@@ -419,6 +487,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 [self.managedObjectContext deleteObject:post];
             } else {
                 [self updatePost:postInContext withRemotePost:remotePost];
+                postInContext.latest.statusAfterSync = postInContext.statusAfterSync;
+                postInContext.latest.status = postInContext.status;
             }
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
@@ -442,7 +512,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     };
     
     RemotePost *remotePost = [self remotePostWithPost:post];
-    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     [remote trashPost:remotePost success:successBlock failure:failureBlock];
 }
 
@@ -523,7 +593,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         remotePost.status = PostStatusDraft;
     }
     
-    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     [remote restorePost:remotePost success:successBlock failure:failureBlock];
 }
 
@@ -729,6 +799,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         postPost.publicizeMessageID = publicizeMessageID;
         postPost.disabledPublicizeConnections = disabledPublicizeConnections;
     }
+
+    post.statusAfterSync = post.status;
 }
 
 - (RemotePost *)remotePostWithPost:(AbstractPost *)post
@@ -897,18 +969,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 - (NSArray *)entriesWithKeyLike:(NSString *)key inMetadata:(NSArray *)metadata
 {
     return [metadata filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key like %@", key]];
-}
-
-- (id<PostServiceRemote>)remoteForBlog:(Blog *)blog {
-    id<PostServiceRemote> remote;
-    if ([blog supports:BlogFeatureWPComRESTAPI]) {
-        if (blog.wordPressComRestApi) {
-            remote = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
-        }
-    } else if (blog.xmlrpcApi) {
-        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
-    }
-    return remote;
 }
 
 @end

@@ -1,6 +1,11 @@
 import Foundation
 import WordPressFlux
 
+enum PeriodType {
+    case summary
+    case topPostsAndPages
+}
+
 enum PeriodAction: Action {
 
     // Period overview
@@ -115,11 +120,13 @@ struct PeriodStoreState {
     // Period overview
 
     var summary: StatsSummaryTimeIntervalData?
+    var summaryStatus: StoreFetchingStatus = .idle
     var fetchingSummary = false
     var fetchingSummaryHasFailed = false
     var fetchingSummaryLikes = false
 
     var topPostsAndPages: StatsTopPostsTimeIntervalData?
+    var topPostsAndPagesStatus: StoreFetchingStatus = .idle
     var fetchingPostsAndPages = false
     var fetchingPostsAndPagesHasFailed = false
 
@@ -163,10 +170,14 @@ struct PeriodStoreState {
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
+    private typealias PeriodOperation = StatsPeriodAsyncOperation
+
     var fetchingOverviewListener: ((_ fetching: Bool, _ success: Bool) -> Void)?
     var cachedDataListener: ((_ hasCachedData: Bool) -> Void)?
 
     private var statsServiceRemote: StatsServiceRemoteV2?
+    private var operationQueue = OperationQueue()
+    private let scheduler = Scheduler(seconds: 0.3)
 
     init() {
         super.init(initialState: PeriodStoreState())
@@ -322,18 +333,92 @@ private extension StatsPeriodStore {
     }
 
     func fetchPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
-
         loadFromCache(date: date, period: period)
 
-        // This check is done here and not in a layer above because even if we don't want to
-        // make a network call for whatever reason, we still want to load the data we have cached.
-
         guard shouldFetchOverview() else {
-            fetchingOverviewListener?(true, false)
+            if !Feature.enabled(.statsAsyncLoadingDWMY) {
+                fetchingOverviewListener?(true, false)
+            }
             DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
             return
         }
 
+        if Feature.enabled(.statsAsyncLoadingDWMY) {
+            setAllFetchingStatus(.loading)
+            scheduler.debounce { [weak self] in
+                self?.fetchChartData(date: date, period: period)
+            }
+            return
+        }
+
+        // Legacy overview fetching method
+        //
+        fetchSyncData(date: date, period: period)
+    }
+
+    // Fetch Chart data first using the async operation
+    //
+    func fetchChartData(date: Date, period: StatsPeriodUnit) {
+        guard let service = statsRemote() else {
+            return
+        }
+
+        DDLogInfo("Stats Period: Cancel all operations")
+
+        operationQueue.cancelAllOperations()
+
+        let chartOperation = PeriodOperation(service: service, for: period, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching summary.")
+
+            DispatchQueue.main.async {
+                self?.receivedSummary(summary, error)
+                self?.fetchAsyncData(date: date, period: period)
+            }
+        }
+
+        operationQueue.addOperation(chartOperation)
+    }
+
+    // Fetch the rest of the overview data using the async operations
+    //
+    func fetchAsyncData(date: Date, period: StatsPeriodUnit) {
+        guard let service = statsRemote() else {
+            return
+        }
+
+        let likesOperation = PeriodOperation(service: service, for: period, date: date, limit: 14) { [weak self] (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching likes summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period:  Finished fetching likes summary.")
+            DispatchQueue.main.async {
+                self?.receivedLikesSummary(likes, error)
+            }
+        }
+
+        let topPostsOperation = PeriodOperation(service: service, for: period, date: date) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching posts: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching posts.")
+
+            DispatchQueue.main.async {
+                self?.receivedPostsAndPages(posts, error)
+            }
+        }
+
+        operationQueue.addOperations([likesOperation,
+                                      topPostsOperation],
+                                     waitUntilFinished: false)
+    }
+
+    func fetchSyncData(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
             return
         }
@@ -508,7 +593,7 @@ private extension StatsPeriodStore {
         // when user has left the screen/app, we would possibly lose on storing A LOT of data.
         persistToCoreData()
 
-        if forceRefresh {
+        if forceRefresh && !Feature.enabled(.statsAsyncLoadingDWMY) {
             setAllAsFetchingOverview(fetching: false)
             cancelQueries()
         }
@@ -798,6 +883,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingSummary = false
             state.fetchingSummaryHasFailed = error != nil
+            state.summaryStatus = error != nil ? .error : .success
 
             if summaryData != nil {
                 state.summary = summaryData
@@ -842,6 +928,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingPostsAndPages = false
             state.fetchingPostsAndPagesHasFailed = error != nil
+            state.topPostsAndPagesStatus = error != nil ? .error : .success
 
             if postsAndPages != nil {
                 state.topPostsAndPages = postsAndPages
@@ -993,6 +1080,11 @@ private extension StatsPeriodStore {
         state.fetchingCountries = fetching
     }
 
+    func setAllFetchingStatus(_ status: StoreFetchingStatus) {
+        state.summaryStatus = status
+        state.topPostsAndPagesStatus = status
+    }
+
     func shouldFetchPostsAndPages() -> Bool {
         return !isFetchingPostsAndPages
     }
@@ -1108,11 +1200,26 @@ extension StatsPeriodStore {
             state.fetchingFileDownloads
     }
 
+    var summaryStatus: StoreFetchingStatus {
+        return state.summaryStatus
+    }
+
+    var isFetchingSummary: Bool {
+        return summaryStatus == .loading
+    }
+
+    var topPostsAndPagesStatus: StoreFetchingStatus {
+        return state.topPostsAndPagesStatus
+    }
+
     var isFetchingSummaryLikes: Bool {
         return state.fetchingSummaryLikes
     }
 
     var isFetchingPostsAndPages: Bool {
+        if Feature.enabled(.statsAsyncLoadingDWMY) {
+            return topPostsAndPagesStatus == .loading
+        }
         return state.fetchingPostsAndPages
     }
 
@@ -1149,6 +1256,11 @@ extension StatsPeriodStore {
     }
 
     var fetchingOverviewHasFailed: Bool {
+        if Feature.enabled(.statsAsyncLoadingDWMY) {
+            return state.summaryStatus == .error &&
+                state.topPostsAndPagesStatus == .error
+        }
+
         return state.fetchingSummaryHasFailed &&
             state.fetchingPostsAndPagesHasFailed &&
             state.fetchingReferrersHasFailed &&
@@ -1189,6 +1301,11 @@ extension StatsPeriodStore {
     }
 
     var containsCachedData: Bool {
+        if Feature.enabled(.statsAsyncLoadingDWMY) {
+            return containsCachedData(for: [.summary,
+                                            .topPostsAndPages])
+        }
+
         if state.summary != nil ||
             state.topPostsAndPages != nil ||
             state.topReferrers != nil ||
