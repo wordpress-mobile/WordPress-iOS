@@ -24,9 +24,6 @@
 @property (nonatomic, assign) PostServiceResultsOrdering orderBy;
 @property (nonatomic, strong) NSNumber *authorID;
 @property (nonatomic, copy) NSString *search;
-
-// Undocumented as of 2019/10/26 - exclusive to REST API.
-// Use cases include fetching autosaved post attributes.
 @property (nonatomic, copy) NSString *meta;
 
 @end
