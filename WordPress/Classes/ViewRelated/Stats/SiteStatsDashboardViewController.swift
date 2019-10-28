@@ -1,6 +1,6 @@
 import UIKit
 
-enum StatsPeriodType: Int, FilterTabBarItem {
+enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0
     case days
     case weeks
@@ -20,7 +20,7 @@ enum StatsPeriodType: Int, FilterTabBarItem {
 }
 
 fileprivate extension StatsPeriodType {
-    static let allPeriods = [StatsPeriodType.insights, .days, .weeks, .months, .years]
+    static let allPeriods = StatsPeriodType.allCases
 
     var analyticsAccessEvent: WPAnalyticsStat {
         switch self {
