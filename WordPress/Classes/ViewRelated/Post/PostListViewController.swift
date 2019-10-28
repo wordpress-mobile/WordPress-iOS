@@ -483,21 +483,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
-        let filterIndex = filterSettings.currentFilterIndex()
         let editor = EditPostViewController(blog: blog)
-        editor.onClose = { [weak self] changesSaved in
-            if changesSaved {
-                if let postStatus = editor.post?.status {
-                    self?.updateFilterWithPostStatus(postStatus)
-                }
-            } else {
-                self?.updateFilter(index: filterIndex)
-            }
-        }
         editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false, completion: { [weak self] in
-            self?.updateFilterWithPostStatus(.draft)
-        })
+        present(editor, animated: false, completion: nil)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 
@@ -510,13 +498,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
         let editor = EditPostViewController(post: post)
-        editor.onClose = { [weak self] changesSaved in
-            if changesSaved {
-                if let postStatus = editor.post?.status {
-                    self?.updateFilterWithPostStatus(postStatus)
-                }
-            }
-        }
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false)
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
@@ -624,9 +605,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func publish(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            publishPost(post)
-        }
+        publishPost(post)
     }
 
     func trash(_ post: AbstractPost) {
@@ -675,9 +654,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func retry(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            PostCoordinator.shared.save(post)
-        }
+        PostCoordinator.shared.save(post)
+    }
+
+    func cancelAutoUpload(_ post: AbstractPost) {
+        PostCoordinator.shared.cancelAutoUploadOf(post)
     }
 
     // MARK: - Searching
@@ -829,12 +810,8 @@ private extension PostListViewController {
 }
 
 extension PostListViewController: PostActionSheetDelegate {
-    func showActionSheet(_ post: AbstractPost, from view: UIView) {
-        guard let post = post as? Post else {
-            return
-        }
-
+    func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
         let isCompactOrSearching = isCompact || searchController.isActive
-        postActionSheet.show(for: post, from: view, showViewOption: isCompactOrSearching)
+        postActionSheet.show(for: postCardStatusViewModel, from: view, isCompactOrSearching: isCompactOrSearching)
     }
 }

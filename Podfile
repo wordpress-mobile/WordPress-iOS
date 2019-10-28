@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.8-beta.2'
+    pod 'WordPressShared', '~> 1.8.8'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -34,7 +34,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.4-beta.1'
+    pod 'WordPressUI', '~> 1.4'
 
     ## for development:
     # pod 'WordPressUI', :path => '../WordPressUI-iOS'
@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.1'
+    pod 'WordPressKit', '~> 4.5.2-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
@@ -140,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.15.0'
+    gutenberg :tag => 'v1.15.1'
 
     ## Third party libraries
     ## =====================
@@ -148,7 +148,7 @@ target 'WordPress' do
     pod '1PasswordExtension', '1.8.5'
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'GiphyCoreSDK', '~> 1.4.0'
+    pod 'Giphy', '1.1.3'
     pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
@@ -168,13 +168,13 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '0.3'
 
-    pod 'WPMediaPicker', '~> 1.4.2'
+    pod 'WPMediaPicker', '~> 1.6.0'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '7c3cb8f00400b9316a803640b42bb88a66bbc648'
-    
+
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.1-beta.1'
+    pod 'WordPressAuthenticator', '~> 1.10.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fancy-button-border-style'
 
@@ -188,12 +188,12 @@ target 'WordPress' do
         pod 'Nimble', '~> 7.3.1'
     end
 
-    
-    post_install do      
-      
+
+    post_install do
+
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
-        
+
         project_root = File.dirname(__FILE__)
         acknowledgements = 'Acknowledgments'
         markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
@@ -224,16 +224,16 @@ target 'WordPress' do
                        <body>
                          #{rendered_html}
                        </body>"
-          
+
           ## Remove the <h1>, since we've promoted it to <title>
           styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
-          
+
           ## The glog library's license contains a URL that does not wrap in the web view,
           ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
           ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
-                        
-        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)    
+
+        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
     end
 end
 
@@ -276,6 +276,8 @@ target 'WordPressTodayWidget' do
 
     shared_with_all_pods
     shared_with_networking_pods
+    
+    wordpress_ui
 end
 
 
@@ -374,7 +376,7 @@ pre_install do |installer|
     static = []
     dynamic = []
     installer.pod_targets.each do |pod|
-        
+
         # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
         # linking it resolves this.
         if pod.name == "Sentry"
