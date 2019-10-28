@@ -9,22 +9,25 @@ extension PostService {
     ///
     func refreshPostStatus(onCompletion: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) {
         self.managedObjectContext.perform {
-            let fetch = NSFetchRequest<Post>(entityName: Post.classNameWithoutNamespaces())
+            let request = NSBatchUpdateRequest(entityName: Post.classNameWithoutNamespaces())
             let pushingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.pushing.rawValue))
             let processingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.pushingMedia.rawValue))
-            fetch.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pushingPredicate, processingPredicate])
+            let pushingOrProcessingPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pushingPredicate, processingPredicate])
+            let notFailedPredicate = NSPredicate(format: "remoteStatusNumber != %@ AND NOT (postID != nil AND postID > 0)", NSNumber(value: AbstractPostRemoteStatus.failed.rawValue))
+        
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [pushingOrProcessingPredicate, notFailedPredicate])
+            request.propertiesToUpdate = ["remoteStatusNumber": NSNumber(value: AbstractPostRemoteStatus.failed.rawValue),
+                "status": NSString(string: BasePost.Status.draft.rawValue),
+                "dateModified": NSDate()]
+
             do {
-                let postsPushing = try self.managedObjectContext.fetch(fetch)
-                for post in postsPushing {
-                    self.markAsFailedAndDraftIfNeeded(post: post)
-                }
+                try self.managedObjectContext.execute(request)
 
                 ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                     DispatchQueue.main.async {
                         onCompletion?()
                     }
                 })
-
             } catch {
                 DDLogError("Error while attempting to update posts status: \(error.localizedDescription)")
                 DispatchQueue.main.async {
