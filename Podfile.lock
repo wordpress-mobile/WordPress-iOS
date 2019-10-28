@@ -15,7 +15,6 @@ PODS:
   - CocoaLumberjack (3.5.2):
     - CocoaLumberjack/Core (= 3.5.2)
   - CocoaLumberjack/Core (3.5.2)
-  - DeepDiff (2.2.0)
   - DoubleConversion (1.1.5)
   - Down (0.6.6)
   - Folly (2018.10.22.00):
@@ -32,10 +31,6 @@ PODS:
     - FormatterKit/Resources
   - FSInteractiveMap (0.1.0)
   - Gifu (3.2.0)
-  - Giphy (1.1.3):
-    - DeepDiff (~> 2.2.0)
-    - libwebp
-    - PINCache
   - glog (0.3.5)
   - GoogleSignIn (4.4.0):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
@@ -59,15 +54,6 @@ PODS:
   - HockeySDK (5.1.4):
     - HockeySDK/DefaultLib (= 5.1.4)
   - HockeySDK/DefaultLib (5.1.4)
-  - libwebp (1.0.3):
-    - libwebp/demux (= 1.0.3)
-    - libwebp/mux (= 1.0.3)
-    - libwebp/webp (= 1.0.3)
-  - libwebp/demux (1.0.3):
-    - libwebp/webp
-  - libwebp/mux (1.0.3):
-    - libwebp/demux
-  - libwebp/webp (1.0.3)
   - lottie-ios (2.5.2)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
@@ -116,7 +102,6 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (6.1.0)
   - OHHTTPStubs/Swift (6.1.0):
     - OHHTTPStubs/Default
-  - PINCache (2.3)
   - Reachability (3.2)
   - React (0.60.0-patched):
     - React-Core (= 0.60.0-patched)
@@ -275,7 +260,6 @@ DEPENDENCIES:
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
-  - Giphy (= 1.1.3)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.15.0/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
   - Gridicons (~> 0.16)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.15.0`)
@@ -334,18 +318,15 @@ SPEC REPOS:
     - boost-for-react-native
     - Charts
     - CocoaLumberjack
-    - DeepDiff
     - DoubleConversion
     - Down
     - FormatterKit
     - Gifu
-    - Giphy
     - GoogleSignIn
     - GoogleToolboxForMac
     - Gridicons
     - GTMSessionFetcher
     - HockeySDK
-    - libwebp
     - lottie-ios
     - MRProgress
     - Nimble
@@ -353,7 +334,6 @@ SPEC REPOS:
     - "NSURL+IDN"
     - OCMock
     - OHHTTPStubs
-    - PINCache
     - Reachability
     - Sentry
     - SimulatorStatusMagic
@@ -457,14 +437,12 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
-  DeepDiff: e329bc46dd14ca788d8ec08d34420799ba1d77f2
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
-  Giphy: 7a99ace30d32d7d3bcc4eb93225f30e4a1b940d7
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
@@ -472,7 +450,6 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   Gutenberg: 4dc6b203a26e3f3005536cb2e5b4c8eb72399ce6
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
-  libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
@@ -480,7 +457,6 @@ SPEC CHECKSUMS:
   "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
-  PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   React: f208cb37831d73d3feafe90ff5c353ef67516cfb
   React-Core: c84e22ad089efdf344669e09c0036a8e68c87c54
@@ -523,6 +499,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 07977c9aa708ea64461a1b18b7b3cfec3f496785
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: e5fd22e531f12a6d6e075b137bbda6d2f26441fd
+PODFILE CHECKSUM: 5ff8517e2bf9951e7c842ee653dffe49bfd1666b
 
 COCOAPODS: 1.8.4
