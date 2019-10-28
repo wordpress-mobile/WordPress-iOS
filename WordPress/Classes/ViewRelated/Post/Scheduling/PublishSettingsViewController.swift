@@ -13,7 +13,7 @@ struct PublishSettingsViewModel {
         case immediately
     }
 
-    private var state: State
+    private(set) var state: State
     let timeZone: OffsetTimeZone?
 
     let title: String?
@@ -102,6 +102,7 @@ private struct DateAndTimeRow: ImmuTableRow {
     @objc class func viewController(post: AbstractPost) -> ImmuTableViewController {
         let controller = PublishSettingsController(post: post)
         let viewController = ImmuTableViewController(controller: controller)
+        controller.viewController = viewController
         return viewController
     }
 
@@ -114,6 +115,8 @@ private struct DateAndTimeRow: ImmuTableRow {
             EditableTextRow.self
         ]
     }
+    
+    weak var viewController: ImmuTableViewController!
 
     private var viewModel: PublishSettingsViewModel
 
@@ -161,9 +164,7 @@ private struct DateAndTimeRow: ImmuTableRow {
     }
 
     func dateTimeCalendar(model: PublishSettingsViewModel) -> (ImmuTableRow) -> UIViewController {
-        return { [weak self] _ in
-
-            //TODO: Show in popover
+        return { [weak self] row in
 
             let navigationController = LightNavigationController(rootViewController: SchedulingCalendarViewController())
 
@@ -172,8 +173,21 @@ private struct DateAndTimeRow: ImmuTableRow {
                 NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
             }
 
-            navigationController.modalPresentationStyle = .custom
-            navigationController.transitioningDelegate = self
+            if navigationController.traitCollection.userInterfaceIdiom == .pad {
+                navigationController.modalPresentationStyle = .formSheet
+//                navigationController.modalPresentationStyle = .popover
+            } else {
+                navigationController.modalPresentationStyle = .custom
+                navigationController.transitioningDelegate = self
+            }
+            
+            if let popoverController = navigationController.popoverPresentationController {
+                if let selectedIndexPath = self?.viewController.tableView.indexPathForSelectedRow {
+                    popoverController.sourceView = self!.viewController.tableView
+                    popoverController.sourceRect = self?.viewController.tableView.rectForRow(at: selectedIndexPath) ?? .zero
+                }
+            }
+            
             return navigationController
         }
     }

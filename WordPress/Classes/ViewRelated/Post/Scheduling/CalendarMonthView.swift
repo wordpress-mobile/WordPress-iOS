@@ -9,7 +9,6 @@ class CalendarMonthView: UIView {
         super.init(frame: frame)
 
         let collectionView = CalendarCollectionView()
-        collectionView.clipsToBounds = false
 
         calendarCollectionView = collectionView
 
@@ -73,6 +72,12 @@ class CalendarMonthView: UIView {
         ])
 
         addSubview(stackView)
+        
+        stackView.addConstraints([
+            collectionView.heightAnchor.constraint(equalToConstant: 240),
+            collectionView.widthAnchor.constraint(equalToConstant: 375)
+        ])
+        
         pinSubviewToAllEdges(stackView)
     }
 

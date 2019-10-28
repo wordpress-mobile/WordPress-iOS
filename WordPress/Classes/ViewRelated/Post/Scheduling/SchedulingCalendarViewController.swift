@@ -15,13 +15,11 @@ struct DateCoordinator {
 
 class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler {
 
-    @IBOutlet weak var calendarMonthView: CalendarMonthView!
+    weak var calendarMonthView: CalendarMonthView!
 
     override func configureView() -> UIView {
         let calendarMonthView = CalendarMonthView(frame: .zero)
         calendarMonthView.translatesAutoresizingMaskIntoConstraints = false
-
-        calendarMonthView.addConstraint(calendarMonthView.widthAnchor.constraint(lessThanOrEqualToConstant: 434))
 
         let selectedDate = coordinator?.date ?? Date()
         calendarMonthView.selectedDate = selectedDate
@@ -36,6 +34,8 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
             self?.coordinator?.setDate(newDate)
             self?.chosenValueRow.detailLabel?.text = date.longString()
         }
+        
+        self.calendarMonthView = calendarMonthView
 
         return calendarMonthView
     }
@@ -50,6 +50,21 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
 
         let nextButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: "Next screen button title"), style: .plain, target: self, action: #selector(nextButtonPressed))
         navigationItem.setRightBarButton(nextButton, animated: false)
+
+        calendarMonthView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        calculatePreferredSize()
+    }
+    
+    private func calculatePreferredSize() {
+        let targetSize = CGSize(width: view.bounds.width,
+          height: UIView.layoutFittingCompressedSize.height)
+        preferredContentSize = view.systemLayoutSizeFitting(targetSize)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -117,10 +132,32 @@ class DatePickerSheet: UIViewController {
 
         let chosenValueRow = configureValueRow()
         let pickerView = configureView()
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let pickerWrapperView = UIView()
+        pickerWrapperView.addSubview(pickerView)
+        
+        
+        let sideConstraints: [NSLayoutConstraint] = [             pickerView.leftAnchor.constraint(equalTo: pickerWrapperView.leftAnchor),
+            pickerView.rightAnchor.constraint(equalTo: pickerWrapperView.rightAnchor)
+        ]
+
+        // Allow these to break on larger screen sizes and just center the content
+        sideConstraints.forEach() { constraint in
+            constraint.priority = .defaultHigh
+        }
+        
+        pickerWrapperView.addConstraints([
+            pickerView.centerXAnchor.constraint(equalTo: pickerWrapperView.safeCenterXAnchor),
+            pickerView.topAnchor.constraint(equalTo: pickerWrapperView.topAnchor),
+            pickerView.bottomAnchor.constraint(equalTo: pickerWrapperView.bottomAnchor)
+        ])
+        
+        pickerWrapperView.addConstraints(sideConstraints)
 
         let stackView = UIStackView(arrangedSubviews: [
             chosenValueRow,
-            pickerView
+            pickerWrapperView
         ])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
