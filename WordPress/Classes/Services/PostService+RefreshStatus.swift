@@ -14,12 +14,14 @@ extension PostService {
             let processingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.pushingMedia.rawValue))
             let pushingOrProcessingPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pushingPredicate, processingPredicate])
             let notFailedPredicate = NSPredicate(format: "remoteStatusNumber != %@ AND NOT (postID != nil AND postID > 0)", NSNumber(value: AbstractPostRemoteStatus.failed.rawValue))
-        
+            
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [pushingOrProcessingPredicate, notFailedPredicate])
-            request.propertiesToUpdate = ["remoteStatusNumber": NSNumber(value: AbstractPostRemoteStatus.failed.rawValue),
+            request.propertiesToUpdate = [
+                "remoteStatusNumber": NSNumber(value: AbstractPostRemoteStatus.failed.rawValue),
                 "status": NSString(string: BasePost.Status.draft.rawValue),
-                "dateModified": NSDate()]
-
+                "dateModified": NSDate()
+            ]
+            
             do {
                 try self.managedObjectContext.execute(request)
 
