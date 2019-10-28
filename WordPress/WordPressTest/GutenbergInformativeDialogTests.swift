@@ -34,6 +34,7 @@ class GutenbergInformativeDialogTests: XCTestCase {
     private func showInformativeDialog() {
         GutenbergViewController.showInformativeDialog(
             on: viewController,
+            message: GutenbergViewController.InfoDialog.postMessage,
             animated: false
         )
     }
