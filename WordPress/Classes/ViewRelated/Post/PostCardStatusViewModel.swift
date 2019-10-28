@@ -36,6 +36,8 @@ class PostCardStatusViewModel: NSObject {
             return NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
+        } else if post.hasAutosave() {
+            return NSLocalizedString("You've made unsaved changes to this post", comment: "Message displayed on a post's card when the post has unsaved changes")
         } else {
             return post.statusForDisplay()
         }
@@ -105,6 +107,10 @@ class PostCardStatusViewModel: NSObject {
 
         if post.isFailed {
             return .error
+        }
+
+        if post.hasAutosave() {
+            return .warning(.shade40)
         }
 
         switch status {
