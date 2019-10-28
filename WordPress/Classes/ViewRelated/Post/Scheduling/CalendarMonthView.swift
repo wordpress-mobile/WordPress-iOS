@@ -72,12 +72,12 @@ class CalendarMonthView: UIView {
         ])
 
         addSubview(stackView)
-        
+
         stackView.addConstraints([
             collectionView.heightAnchor.constraint(equalToConstant: 240),
             collectionView.widthAnchor.constraint(equalToConstant: 375)
         ])
-        
+
         pinSubviewToAllEdges(stackView)
     }
 

@@ -115,7 +115,7 @@ private struct DateAndTimeRow: ImmuTableRow {
             EditableTextRow.self
         ]
     }
-    
+
     weak var viewController: ImmuTableViewController!
 
     private var viewModel: PublishSettingsViewModel
@@ -180,14 +180,14 @@ private struct DateAndTimeRow: ImmuTableRow {
                 navigationController.modalPresentationStyle = .custom
                 navigationController.transitioningDelegate = self
             }
-            
+
             if let popoverController = navigationController.popoverPresentationController {
                 if let selectedIndexPath = self?.viewController.tableView.indexPathForSelectedRow {
                     popoverController.sourceView = self!.viewController.tableView
                     popoverController.sourceRect = self?.viewController.tableView.rectForRow(at: selectedIndexPath) ?? .zero
                 }
             }
-            
+
             return navigationController
         }
     }

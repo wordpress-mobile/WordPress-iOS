@@ -34,7 +34,7 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
             self?.coordinator?.setDate(newDate)
             self?.chosenValueRow.detailLabel?.text = date.longString()
         }
-        
+
         self.calendarMonthView = calendarMonthView
 
         return calendarMonthView
@@ -55,12 +55,12 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
         calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculatePreferredSize()
     }
-    
+
     private func calculatePreferredSize() {
         let targetSize = CGSize(width: view.bounds.width,
           height: UIView.layoutFittingCompressedSize.height)
@@ -133,11 +133,11 @@ class DatePickerSheet: UIViewController {
         let chosenValueRow = configureValueRow()
         let pickerView = configureView()
         pickerView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let pickerWrapperView = UIView()
         pickerWrapperView.addSubview(pickerView)
-        
-        
+
+
         let sideConstraints: [NSLayoutConstraint] = [             pickerView.leftAnchor.constraint(equalTo: pickerWrapperView.leftAnchor),
             pickerView.rightAnchor.constraint(equalTo: pickerWrapperView.rightAnchor)
         ]
@@ -146,13 +146,13 @@ class DatePickerSheet: UIViewController {
         sideConstraints.forEach() { constraint in
             constraint.priority = .defaultHigh
         }
-        
+
         pickerWrapperView.addConstraints([
             pickerView.centerXAnchor.constraint(equalTo: pickerWrapperView.safeCenterXAnchor),
             pickerView.topAnchor.constraint(equalTo: pickerWrapperView.topAnchor),
             pickerView.bottomAnchor.constraint(equalTo: pickerWrapperView.bottomAnchor)
         ])
-        
+
         pickerWrapperView.addConstraints(sideConstraints)
 
         let stackView = UIStackView(arrangedSubviews: [
