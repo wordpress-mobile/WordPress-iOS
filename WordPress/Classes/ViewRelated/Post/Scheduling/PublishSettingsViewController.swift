@@ -173,9 +173,9 @@ private struct DateAndTimeRow: ImmuTableRow {
                 NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
             }
 
-            if navigationController.traitCollection.userInterfaceIdiom == .pad {
-                navigationController.modalPresentationStyle = .formSheet
-//                navigationController.modalPresentationStyle = .popover
+            if self?.viewController.traitCollection.userInterfaceIdiom == .pad {
+//                navigationController.modalPresentationStyle = .formSheet
+                navigationController.modalPresentationStyle = .popover
             } else {
                 navigationController.modalPresentationStyle = .custom
                 navigationController.transitioningDelegate = self

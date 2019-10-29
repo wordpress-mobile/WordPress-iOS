@@ -66,10 +66,18 @@ class CalendarMonthView: UIView {
         stackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
 
+        let heightConstraint = headerStackView.heightAnchor.constraint(equalToConstant: 44)
+        let widthConstraint = weekdayHeaders.heightAnchor.constraint(equalToConstant: 44)
+        heightConstraint.priority = .defaultHigh
+        widthConstraint.priority = .defaultHigh
+
         stackView.addConstraints([
-            headerStackView.heightAnchor.constraint(equalToConstant: 44),
-            weekdayHeaders.heightAnchor.constraint(equalToConstant: 44)
+            heightConstraint,
+            widthConstraint
         ])
+
+        headerStackView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        weekdayHeaders.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
         addSubview(stackView)
 
