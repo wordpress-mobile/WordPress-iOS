@@ -1,4 +1,3 @@
-@import WordPressComStatsiOS;
 @import WordPressShared;
 @import Reachability;
 
@@ -12,18 +11,11 @@
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 
-@import WordPressComStatsiOS;
-
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
-@interface StatsViewController () <WPStatsViewControllerDelegate, UIViewControllerRestoration>
+@interface StatsViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
-// Stores if we tried to initStats and failed because we are offline.
-// If true, initStats will be retried as soon as we are online again.
-@property (nonatomic, assign) BOOL offline;
-@property (nonatomic, strong) UINavigationController *statsNavVC;
-@property (nonatomic, strong) WPStatsViewController *statsVC;
 @property (nonatomic, strong) SiteStatsDashboardViewController *siteStatsDashboardVC;
 @property (nonatomic, weak) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
@@ -49,15 +41,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
     
-    if ([Feature enabled:FeatureFlagStatsRefresh]) {
-        self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:nil] instantiateInitialViewController];
-        self.siteStatsDashboardVC = self.statsNavVC.viewControllers.firstObject;
-    } else {
-        NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
-        self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:statsBundle] instantiateInitialViewController];
-        self.statsVC = self.statsNavVC.viewControllers.firstObject;
-        self.statsVC.statsDelegate = self;
-    }
+    UINavigationController *statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:nil] instantiateInitialViewController];
+    self.siteStatsDashboardVC = statsNavVC.viewControllers.firstObject;
 
     self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
@@ -66,8 +51,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                               [self.loadingIndicator.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
                                               [self.loadingIndicator.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
                                               ]];
-    
-    
+
     // Being shown in a modal window
     if (self.presentingViewController != nil) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
@@ -94,52 +78,25 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.navigationItem.rightBarButtonItem = settingsButton;
     }
 
-    if ([Feature enabled:FeatureFlagStatsRefresh]) {
-        [self addChildViewController:self.siteStatsDashboardVC];
-        [self.view addSubview:self.siteStatsDashboardVC.view];
-        [self.siteStatsDashboardVC didMoveToParentViewController:self];
-    } else {
-        [self addChildViewController:self.statsVC];
-        [self.view addSubview:self.statsVC.view];
-        self.statsVC.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view pinSubviewToAllEdges:self.statsVC.view];
-        [self.statsVC didMoveToParentViewController:self];
-    }
+    [self addChildViewController:self.siteStatsDashboardVC];
+    [self.view addSubview:self.siteStatsDashboardVC.view];
+    [self.siteStatsDashboardVC didMoveToParentViewController:self];
 }
 
 
 - (void)initStats
 {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
-    if (!appDelegate.connectionAvailable && ![Feature enabled:FeatureFlagStatsRefresh]) {
-        [self showNoResults];
-        self.offline = YES;
-        return;
-    }
-    self.offline = NO;
-
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    
-    if ([Feature enabled:FeatureFlagStatsRefresh]) {
-        SiteStatsInformation.sharedInstance.siteTimeZone = [blogService timeZoneForBlog:self.blog];
-    } else {
-        self.statsVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
-    }
+    SiteStatsInformation.sharedInstance.siteTimeZone = [blogService timeZoneForBlog:self.blog];
     
     // WordPress.com + Jetpack REST
     if (self.blog.account) {
-        
-        if ([Feature enabled:FeatureFlagStatsRefresh]) {
-            SiteStatsInformation.sharedInstance.oauth2Token = self.blog.account.authToken;
-            SiteStatsInformation.sharedInstance.siteID = self.blog.dotComID;
-        } else {
-            self.statsVC.oauth2Token = self.blog.account.authToken;
-            self.statsVC.siteID = self.blog.dotComID;
-        }
+        SiteStatsInformation.sharedInstance.oauth2Token = self.blog.account.authToken;
+        SiteStatsInformation.sharedInstance.siteID = self.blog.dotComID;
         
         [self addStatsViewControllerToView];
-
+        
         return;
     }
 
@@ -166,18 +123,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)saveSiteDetailsForTodayWidget
 {
     TodayExtensionService *service = [TodayExtensionService new];
-    
-    if ([Feature enabled:FeatureFlagStatsRefresh]) {
-        [service configureTodayWidgetWithSiteID:SiteStatsInformation.sharedInstance.siteID
-                                       blogName:self.blog.settings.name
-                                   siteTimeZone:SiteStatsInformation.sharedInstance.siteTimeZone
-                                 andOAuth2Token:SiteStatsInformation.sharedInstance.oauth2Token];
-    } else {
-        [service configureTodayWidgetWithSiteID:self.statsVC.siteID
-                                       blogName:self.blog.settings.name
-                                   siteTimeZone:self.statsVC.siteTimeZone
-                                 andOAuth2Token:self.statsVC.oauth2Token];
-    }
+
+    [service configureTodayWidgetWithSiteID:SiteStatsInformation.sharedInstance.siteID
+                                   blogName:self.blog.settings.name
+                               siteTimeZone:SiteStatsInformation.sharedInstance.siteTimeZone
+                             andOAuth2Token:SiteStatsInformation.sharedInstance.oauth2Token];
 }
 
 
@@ -200,20 +150,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [self.view addSubview:controller.view];
     controller.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view pinSubviewToAllEdges:controller.view];
-}
-
-
-- (void)statsViewController:(WPStatsViewController *)controller openURL:(NSURL *)url
-{
-    NSParameterAssert(url != nil);
-    NSParameterAssert([url isKindOfClass:[NSURL class]]);
-    // Make sure the passed url is a real NSURL, or Swift will crash on it
-    if (![url isKindOfClass:[NSURL class]]) {
-        DDLogError(@"Stats tried to open an invalid URL: %@", url);
-        return;
-    }
-    UIViewController *webViewController = [WebViewControllerFactory controllerAuthenticatedWithDefaultAccountWithUrl:url];
-    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 

@@ -3,7 +3,6 @@ import CocoaLumberjack
 import Reachability
 import AutomatticTracks
 import WordPressAuthenticator
-import WordPressComStatsiOS
 import WordPressShared
 import AlamofireNetworkActivityIndicator
 import AutomatticTracks
@@ -663,7 +662,6 @@ extension WordPressAppDelegate {
 
         WPSharedSetLoggingLevel(rawLevel)
         TracksSetLoggingLevel(rawLevel)
-        WPStatsSetLoggingLevel(rawLevel)
         WPAuthenticatorSetLoggingLevel(rawLevel)
     }
 }
