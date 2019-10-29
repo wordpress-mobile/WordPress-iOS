@@ -4,6 +4,7 @@ class StatsGhostBaseCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         Style.configureCell(self)
+        addTopBorder(withColor: .divider)
         addBottomBorder(withColor: .divider)
     }
 
