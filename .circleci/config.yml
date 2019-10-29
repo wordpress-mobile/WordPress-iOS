@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   # Using 1.0 of the Orbs means it will use the latest 1.0.x version from https://github.com/wordpress-mobile/circleci-orbs
-  ios: wordpress-mobile/ios@1.0
+  ios: wordpress-mobile/ios@dev:save-ios-xcresult
   git: wordpress-mobile/git@1.0
 
 commands:
@@ -46,7 +46,7 @@ jobs:
       - ios/wait-for-simulator
       - ios/xcodebuild:
           command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPress_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath build/reports/WordPressUITests.xcresult
+          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPress_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
       - ios/save-xcodebuild-artifacts
   UI Tests:
     parameters:
