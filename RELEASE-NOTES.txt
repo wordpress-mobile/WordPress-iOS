@@ -15,6 +15,7 @@
 13.4.1
 -----
 Post Settings: Fixed a crash with featured image.
+Removed Giphy as a media source due to changes in their SDK.
  
 13.4
 -----
