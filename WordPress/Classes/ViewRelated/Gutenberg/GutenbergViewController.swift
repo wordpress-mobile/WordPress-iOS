@@ -109,9 +109,9 @@ class GutenbergViewController: UIViewController, PostEditor {
                                                         }
                                                         self.mediaInserterHelper.insertFromDevice(assets: phAsset, callback: { media in
                                                             guard let media = media,
-                                                                let (id, url, _) = media.first,
-                                                                let mediaID = id,
-                                                                let mediaURLString = url,
+                                                                let mediaInfo = media.first,
+                                                                let mediaID = mediaInfo.id,
+                                                                let mediaURLString = mediaInfo.url,
                                                                 let mediaURL = URL(string: mediaURLString) else {
                                                                 return
                                                             }
@@ -421,8 +421,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
-    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaInserterHelper.insertFromDevice(url: url, callback: callback)
+    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {
+        mediaInserterHelper.insertFromDevice(url: url, callback: { media in
+            callback(media?.first)
+        })
     }
 
     func gutenbergDidRequestMediaUploadSync() {

@@ -50,7 +50,8 @@ class GutenbergImgUploadProcessor: Processor {
 
     func process(_ text: String) -> String {
         var result = imgPostMediaUploadProcessor.process(text)
-        result = result.replacingOccurrences(of: "wp:image {\"id\":\(String(mediaUploadID))}", with: "wp:image {\"id\":\(String(serverMediaID))}")
+        result = result.replacingOccurrences(of: "wp:image {\"id\":\(String(mediaUploadID))", with: "wp:image {\"id\":\(String(serverMediaID))")
+        result = result.replacingOccurrences(of: "wp:media-text {\"mediaId\":\(String(mediaUploadID))", with: "wp:media-text {\"mediaId\":\(String(serverMediaID))")
         return result
     }
 }
