@@ -46,7 +46,7 @@ jobs:
       - ios/wait-for-simulator
       - ios/xcodebuild:
           command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPress_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
+          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPress_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath build/reports/WordPressUITests.xcresult
       - ios/save-xcodebuild-artifacts
   UI Tests:
     parameters:
