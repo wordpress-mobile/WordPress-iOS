@@ -103,8 +103,8 @@ class SiteStatsPeriodViewModel: Observable {
             return [PeriodEmptyCellHeaderRow(),
                     StatsErrorRow(rowStatus: .error, statType: .period)]
         }
-        let loadingBlock: AsyncBlock<[ImmuTableRow]> = {
-            return [PeriodEmptyCellHeaderRow(),
+        let loadingBlock: (StatSection) -> [ImmuTableRow] = { section in
+            return [CellHeaderRow(statSection: section),
                     StatsGhostTopImmutableRow()]
         }
 
@@ -125,7 +125,9 @@ class SiteStatsPeriodViewModel: Observable {
                                             status: store.topPostsAndPagesStatus,
                                             block: { [weak self] in
                                                 return self?.postsAndPagesTableRows() ?? errorBlock(.periodPostsAndPages)
-            }, loading: loadingBlock,
+            }, loading: {
+                return loadingBlock(.periodPostsAndPages)
+            },
                error: {
                 return errorBlock(.periodPostsAndPages)
         }))
@@ -134,7 +136,9 @@ class SiteStatsPeriodViewModel: Observable {
                                             status: store.topReferrersStatus,
                                             block: { [weak self] in
                                                 return self?.referrersTableRows() ?? errorBlock(.periodReferrers)
-            }, loading: loadingBlock,
+            }, loading: {
+                return loadingBlock(.periodReferrers)
+            },
                error: {
                 return errorBlock(.periodReferrers)
         }))
@@ -143,7 +147,9 @@ class SiteStatsPeriodViewModel: Observable {
                                             status: store.topClicksStatus,
                                             block: { [weak self] in
                                                 return self?.clicksTableRows() ?? errorBlock(.periodClicks)
-            }, loading: loadingBlock,
+            }, loading: {
+                return loadingBlock(.periodClicks)
+            },
                error: {
                 return errorBlock(.periodClicks)
         }))
@@ -155,7 +161,9 @@ class SiteStatsPeriodViewModel: Observable {
                                             status: store.topPublishedStatus,
                                             block: { [weak self] in
                                                 return self?.publishedTableRows() ?? errorBlock(.periodPublished)
-            }, loading: loadingBlock,
+            }, loading: {
+                return loadingBlock(.periodPublished)
+            },
                error: {
                 return errorBlock(.periodPublished)
         }))
