@@ -640,8 +640,10 @@ private extension StatsPeriodStore {
         // when user has left the screen/app, we would possibly lose on storing A LOT of data.
         persistToCoreData()
 
-        if forceRefresh && !asyncLoadingActivated {
-            setAllAsFetchingOverview(fetching: false)
+        if forceRefresh {
+            if !asyncLoadingActivated {
+                setAllAsFetchingOverview(fetching: false)
+            }
             cancelQueries()
         }
 
