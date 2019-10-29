@@ -33,8 +33,7 @@ extension AsyncBlocksLoadable where CurrentStore: StatsStoreCacheable, RowType =
                        block: AsyncBlock<Value>,
                        loading: AsyncBlock<Value>,
                        error: AsyncBlock<Value>) -> Value {
-        let featureFlag: FeatureFlag = type == .insights ? .statsAsyncLoading : .statsAsyncLoadingDWMY
-        let isFeatureEnabled = Feature.enabled(featureFlag)
+        let isFeatureEnabled = (type == .insights) ? true : Feature.enabled(.statsAsyncLoadingDWMY)
         let containsCachedData = checkingCache?() ?? currentStore.containsCachedData(for: blockType)
 
         if containsCachedData || !isFeatureEnabled {
