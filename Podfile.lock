@@ -316,10 +316,10 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.11.0)
   - WordPressAuthenticator (~> 1.10.1)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `issue/make_extensions_public`)
+  - WordPressKit (~> 4.5.2-beta.2)
   - WordPressMocks (~> 0.0.6)
   - WordPressShared (~> 1.8.8)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, branch `issue/rename_method`)
+  - WordPressUI (~> 1.5-beta.1)
   - WPMediaPicker (~> 1.6.0)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.15.1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (from `https://github.com/zendesk/zendesk_sdk_ios`, tag `3.0.1-swift5.1-GM`)
@@ -363,8 +363,10 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZIPFoundation
@@ -427,12 +429,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.15.1
-  WordPressKit:
-    :branch: issue/make_extensions_public
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressUI:
-    :branch: issue/rename_method
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.15.1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -449,12 +445,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.15.1
-  WordPressKit:
-    :commit: 9c3a55e3ce5a55809a7ba7ce5c39b1da1a170a45
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressUI:
-    :commit: a68c07238c6092108b34a80d92a0854645abeea5
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 3.0.1-swift5.1-GM
@@ -533,6 +523,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 07977c9aa708ea64461a1b18b7b3cfec3f496785
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 58ead93b9dcf68a9a5406029dd3a64d722c79ef9
+PODFILE CHECKSUM: 01f187bf7c9ad303f2d0d00649eff465bf8f10f0
 
 COCOAPODS: 1.8.4

@@ -34,17 +34,17 @@ end
 
 def wordpress_ui
     ## for production:
-    #pod 'WordPressUI', '~> 1.5-beta.1'
+    pod 'WordPressUI', '~> 1.5-beta.1'
 
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'issue/rename_method'
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
 end
 
 def wordpress_kit
-    #pod 'WordPressKit', '~> 4.5.2-beta.2'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/make_extensions_public'
+    pod 'WordPressKit', '~> 4.5.2-beta.2'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
