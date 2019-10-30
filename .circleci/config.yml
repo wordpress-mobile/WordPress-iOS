@@ -51,8 +51,8 @@ jobs:
       - run:
           name: Zip xcresult
           command: |
-          mkdir testresults
-          zip -r testresults/xcresult.zip test-without-building.xcresult
+            mkdir testresults
+            zip -r testresults/xcresult.zip test-without-building.xcresult
       - store_artifacts:
           name: Save xcresult
           path: testresults
@@ -82,8 +82,8 @@ jobs:
       - run:
           name: Zip xcresult
           command: |
-          mkdir testresults
-          zip -r testresults/xcresult.zip test-without-building.xcresult
+            mkdir testresults
+            zip -r testresults/xcresult.zip test-without-building.xcresult
       - store_artifacts:
           name: Save xcresult
           path: testresults
