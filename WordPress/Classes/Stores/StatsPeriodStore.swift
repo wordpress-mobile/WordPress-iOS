@@ -1191,6 +1191,9 @@ private extension StatsPeriodStore {
     }
 
     func cancelQueries() {
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+        }
         statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
         // `invalidateAndCancelTasks` invalidates the SessionManager,
         // so we need to recreate it to run queries.
