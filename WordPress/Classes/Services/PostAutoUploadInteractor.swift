@@ -43,7 +43,7 @@ final class PostAutoUploadInteractor {
         if post.isLocalDraft || post.shouldAttemptAutoUpload {
             return .upload
         } else {
-            // because autosave call will end up uplaoding a post on self hosted we return nothing
+            // because autosave call will end up uplaoding a post on self hosted we don't autosave in this case
             return post.isHostedAtWPcom ? .autoSave : .nothing
         }
     }
