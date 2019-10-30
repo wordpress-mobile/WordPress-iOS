@@ -42,16 +42,22 @@
                 <constraints>
                     <constraint firstItem="vJL-bf-4du" firstAttribute="leading" secondItem="pRM-78-2Uy" secondAttribute="leading" id="3rG-6t-htM"/>
                     <constraint firstItem="gnH-hW-2Fl" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" constant="8" id="787-lu-CFf"/>
+                    <constraint firstItem="pRM-78-2Uy" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" id="7Yk-Eo-k23"/>
                     <constraint firstItem="vJL-bf-4du" firstAttribute="top" secondItem="pRM-78-2Uy" secondAttribute="bottom" constant="5" id="AMl-I3-Lzf"/>
                     <constraint firstItem="pRM-78-2Uy" firstAttribute="leading" secondItem="gnH-hW-2Fl" secondAttribute="trailing" constant="16" id="BYO-fD-8jp"/>
-                    <constraint firstItem="pRM-78-2Uy" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" id="DhM-cY-2vj"/>
+                    <constraint firstItem="pRM-78-2Uy" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" priority="999" constant="16" id="DhM-cY-2vj"/>
                     <constraint firstAttribute="trailing" secondItem="pRM-78-2Uy" secondAttribute="trailing" constant="16" id="IiQ-ym-6Zv"/>
                     <constraint firstAttribute="bottom" secondItem="vJL-bf-4du" secondAttribute="bottom" constant="16" id="P4x-i5-h5n"/>
                     <constraint firstItem="gnH-hW-2Fl" firstAttribute="leading" secondItem="Tm8-8k-Eya" secondAttribute="leading" constant="16" id="hpi-h9-AcD"/>
+                    <constraint firstItem="gnH-hW-2Fl" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" priority="999" constant="24" id="mNY-IP-lQN"/>
                     <constraint firstItem="vJL-bf-4du" firstAttribute="trailing" secondItem="pRM-78-2Uy" secondAttribute="trailing" id="zKf-1h-zGq"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="imageTopConstraint" destination="787-lu-CFf" id="hvQ-cB-gfc"/>
+                <outlet property="labelTopConstraint" destination="7Yk-Eo-k23" id="CvQ-56-gqt"/>
+            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="161.38392857142856"/>
         </tableViewCell>
     </objects>
