@@ -78,7 +78,7 @@ private extension PostCoordinatorFailedPostsFetcherTests {
         return post
     }
 
-    func createBlog(/*id: Int, url: String, account: WPAccount*/ isHostedAtWPcom: Bool) -> Blog {
+    func createBlog(isHostedAtWPcom: Bool) -> Blog {
         let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
         blog.isHostedAtWPcom = isHostedAtWPcom
         return blog
