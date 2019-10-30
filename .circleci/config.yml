@@ -50,7 +50,9 @@ jobs:
       - ios/save-xcodebuild-artifacts
       - run:
           name: Zip xcresult
-          command: zip -r testresults/xcresult.zip test-without-building.xcresult
+          command: |
+          mkdir testresults
+          zip -r testresults/xcresult.zip test-without-building.xcresult
       - store_artifacts:
           name: Save xcresult
           path: testresults
@@ -79,7 +81,9 @@ jobs:
       - ios/save-xcodebuild-artifacts
       - run:
           name: Zip xcresult
-          command: zip -r testresults/xcresult.zip test-without-building.xcresult
+          command: |
+          mkdir testresults
+          zip -r testresults/xcresult.zip test-without-building.xcresult
       - store_artifacts:
           name: Save xcresult
           path: testresults
