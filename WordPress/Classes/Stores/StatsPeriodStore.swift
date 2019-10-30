@@ -1020,6 +1020,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topCountriesStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching countries: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching countries.")
+
+                DispatchQueue.main.async {
+                    self?.receivedCountries(countries, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingCountries = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in

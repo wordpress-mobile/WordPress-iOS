@@ -256,13 +256,17 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .periodCountries:
-            let map = countriesMap()
-            if !map.data.isEmpty {
-                tableRows.append(CountriesMapRow(countriesMap: map))
+            return periodImmuTable(for: periodStore.topCountriesStatus) { status in
+                var rows = [ImmuTableRow]()
+                let map = countriesMap()
+                if !map.data.isEmpty {
+                    rows.append(CountriesMapRow(countriesMap: map))
+                }
+                rows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
+                                                              dataSubtitle: StatSection.periodCountries.dataSubtitle))
+                rows.append(contentsOf: countriesRows(for: status))
+                return rows
             }
-            tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodCountries.dataSubtitle))
-            tableRows.append(contentsOf: countriesRows())
         case .periodPublished:
             return periodImmuTable(for: periodStore.topPublishedStatus) { status in
                 var rows = [ImmuTableRow]()
@@ -738,8 +742,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Countries
 
-    func countriesRows() -> [DetailDataRow] {
-        return dataRowsFor(countriesRowData(), status: .idle)
+    func countriesRows(for status: StoreFetchingStatus) -> [DetailDataRow] {
+        return dataRowsFor(countriesRowData(), status: status)
     }
 
     func countriesRowData() -> [StatsTotalRowData] {
