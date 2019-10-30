@@ -160,7 +160,7 @@ class SiteStatsDetailsViewModel: Observable {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
             let type: InsightType = statSection == .insightsFollowersWordPress ? .allDotComFollowers : .allEmailFollowers
-            return immuTable(for: (type, status)) {
+            return insightsImmuTable(for: (type, status)) {
                 var rows = [ImmuTableRow]()
                 let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
                 let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
@@ -178,7 +178,7 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsCommentsAuthors, .insightsCommentsPosts:
-           return immuTable(for: (.allComments, insightsStore.allCommentsInsightStatus)) {
+           return insightsImmuTable(for: (.allComments, insightsStore.allCommentsInsightStatus)) {
                 var rows = [ImmuTableRow]()
                 let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
                 let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
@@ -196,7 +196,7 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsTagsAndCategories:
-            return immuTable(for: (.allTagsAndCategories, insightsStore.allTagsAndCategoriesStatus)) {
+            return insightsImmuTable(for: (.allTagsAndCategories, insightsStore.allTagsAndCategoriesStatus)) {
                 var rows = [ImmuTableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
@@ -204,14 +204,17 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsAnnualSiteStats:
-            return immuTable(for: (.allAnnual, insightsStore.allAnnualStatus)) {
+            return insightsImmuTable(for: (.allAnnual, insightsStore.allAnnualStatus)) {
                 return Array(annualRows())
             }
         case .periodPostsAndPages:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
-                                                      dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
-            tableRows.append(contentsOf: postsAndPagesRows())
-
+            return periodImmuTable(for: periodStore.topPostsAndPagesStatus) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                                                          dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
+                rows.append(contentsOf: postsAndPagesRows(for: .loading))
+                return rows
+            }
         case .periodSearchTerms:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
                                                      dataSubtitle: StatSection.periodSearchTerms.dataSubtitle))
@@ -553,8 +556,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Posts and Pages
 
-    func postsAndPagesRows() -> [DetailDataRow] {
-        return dataRowsFor(postsAndPagesRowData())
+    func postsAndPagesRows(for status: StoreFetchingStatus) -> [DetailDataRow] {
+        return dataRowsFor(postsAndPagesRowData(), status: status)
     }
 
     func postsAndPagesRowData() -> [StatsTotalRowData] {
@@ -588,7 +591,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Search Terms
 
     func searchTermsRows() -> [DetailDataRow] {
-        return dataRowsFor(searchTermsRowData())
+        return dataRowsFor(searchTermsRowData(), status: .idle)
     }
 
     func searchTermsRowData() -> [StatsTotalRowData] {
@@ -619,7 +622,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Videos
 
     func videosRows() -> [DetailDataRow] {
-        return dataRowsFor(videosRowData())
+        return dataRowsFor(videosRowData(), status: .idle)
     }
 
     func videosRowData() -> [StatsTotalRowData] {
@@ -712,7 +715,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Countries
 
     func countriesRows() -> [DetailDataRow] {
-        return dataRowsFor(countriesRowData())
+        return dataRowsFor(countriesRowData(), status: .idle)
     }
 
     func countriesRowData() -> [StatsTotalRowData] {
@@ -737,7 +740,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Published
 
     func publishedRows() -> [DetailDataRow] {
-        return dataRowsFor(publishedRowData())
+        return dataRowsFor(publishedRowData(), status: .idle)
     }
 
     func publishedRowData() -> [StatsTotalRowData] {
@@ -752,7 +755,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - File Downloads
 
     func fileDownloadsRows() -> [DetailDataRow] {
-        return dataRowsFor(fileDownloadsRowData())
+        return dataRowsFor(fileDownloadsRowData(), status: .idle)
     }
 
     func fileDownloadsRowData() -> [StatsTotalRowData] {
@@ -805,11 +808,11 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Helpers
 
-    func dataRowsFor(_ rowsData: [StatsTotalRowData]) -> [DetailDataRow] {
+    func dataRowsFor(_ rowsData: [StatsTotalRowData], status: StoreFetchingStatus = .idle) -> [DetailDataRow] {
         var detailDataRows = [DetailDataRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
-            let isLastRow = idx == rowsData.endIndex-1
+            let isLastRow = idx == rowsData.endIndex-1 && status != .loading
             detailDataRows.append(DetailDataRow(rowData: rowData,
                                                 detailsDelegate: detailsDelegate,
                                                 hideIndentedSeparator: isLastRow,
@@ -939,7 +942,7 @@ private extension SiteStatsDetailsViewModel {
         return StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
     }
 
-    func immuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
+    func insightsImmuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
         if insightsStore.containsCachedData(for: row.type) || !Feature.enabled(.statsAsyncLoading) {
             return ImmuTable(sections: [
                 ImmuTableSection(
@@ -951,10 +954,38 @@ private extension SiteStatsDetailsViewModel {
 
         switch row.status {
         case .loading, .idle:
-            rows.append(StatsGhostTopImmutableRow())
-            rows.append(contentsOf: (0...5).map { _ in StatsGhostDetailRow() })
+            rows.append(StatsGhostTopImmutableRow(hideBottomBorder: true))
+            rows.append(contentsOf: (0...5).map { index in
+                StatsGhostDetailRow(hideTopBorder: true, hideBottomBorder: index != 5)
+            })
         case .success:
             rows.append(contentsOf: rowsBlock())
+        case .error:
+            break
+        }
+
+        return ImmuTable(sections: [
+            ImmuTableSection(
+                rows: rows)
+        ])
+    }
+
+    func periodImmuTable(for status: StoreFetchingStatus, rowsBlock: (StoreFetchingStatus) -> [ImmuTableRow]) -> ImmuTable {
+        if !Feature.enabled(.statsAsyncLoadingDWMY) {
+            return ImmuTable(sections: [
+                ImmuTableSection(
+                    rows: rowsBlock(.idle))
+            ])
+        }
+
+        var rows = [ImmuTableRow]()
+
+        switch status {
+        case .loading, .idle:
+            rows.append(contentsOf: rowsBlock(status))
+            rows.append(StatsGhostDetailRow(hideTopBorder: true, enableTopPadding: true))
+        case .success:
+            rows.append(contentsOf: rowsBlock(status))
         case .error:
             break
         }
