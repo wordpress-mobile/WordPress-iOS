@@ -41,8 +41,8 @@ class CalendarDataSource: JTACMonthViewDataSource {
     var didSelect: ((Date) -> Void)?
 
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
-        let startDate = Date(timeIntervalSinceReferenceDate: (-24*60*60)*365*50)
-        let endDate = Date(timeIntervalSinceReferenceDate: (24*60*60)*365*50)
+        let startDate = Date.farPastDate
+        let endDate = Date.farFutureDate
         return ConfigurationParameters(startDate: startDate, endDate: endDate)
     }
 }

@@ -174,7 +174,6 @@ private struct DateAndTimeRow: ImmuTableRow {
             }
 
             if self?.viewController.traitCollection.userInterfaceIdiom == .pad {
-//                navigationController.modalPresentationStyle = .formSheet
                 navigationController.modalPresentationStyle = .popover
             } else {
                 navigationController.modalPresentationStyle = .custom

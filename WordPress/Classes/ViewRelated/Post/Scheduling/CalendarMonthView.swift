@@ -137,15 +137,17 @@ class CalendarMonthView: UIView {
 
     @IBAction func previousMonth(_ sender: Any) {
         if let lastVisibleDate = calendarCollectionView?.visibleDates().monthDates.first?.date {
-            let nextVisibleDate = lastVisibleDate.addingTimeInterval(-(24 * 60 * 60)) // A far past date
-            calendarCollectionView?.scrollToDate(nextVisibleDate)
+            if let nextVisibleDate = Calendar.current.date(byAdding: .day, value: -1, to: lastVisibleDate, wrappingComponents: false) {
+                calendarCollectionView?.scrollToDate(nextVisibleDate)
+            }
         }
     }
 
     @IBAction func nextMonth(_ sender: Any) {
         if let lastVisibleDate = calendarCollectionView?.visibleDates().monthDates.last?.date {
-            let nextVisibleDate = lastVisibleDate.addingTimeInterval(24 * 60 * 60) // A far future date
-            calendarCollectionView?.scrollToDate(nextVisibleDate)
+            if let nextVisibleDate = Calendar.current.date(byAdding: .day, value: 1, to: lastVisibleDate, wrappingComponents: false) {
+                calendarCollectionView?.scrollToDate(nextVisibleDate)
+            }
         }
     }
 }
