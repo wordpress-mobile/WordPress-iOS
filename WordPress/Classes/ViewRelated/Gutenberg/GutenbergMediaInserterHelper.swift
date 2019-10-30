@@ -32,13 +32,13 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func insertFromSiteMediaLibrary(media: [Media], callback: @escaping MediaPickerDidPickMediaCallback) {
         let formattedMedia = media.map { item in
-            return (item.mediaID?.int32Value, item.remoteURL, item.mediaTypeString)
+            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString)
         }
         callback(formattedMedia)
     }
 
     func insertFromDevice(assets: [PHAsset], callback: @escaping MediaPickerDidPickMediaCallback) {
-        var mediaCollection: [(Int32?, String?, String?)] = []
+        var mediaCollection: [MediaInfo] = []
         let group = DispatchGroup()
         assets.forEach { asset in
             group.enter()
@@ -68,16 +68,16 @@ class GutenbergMediaInserterHelper: NSObject {
         // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
         PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
             guard let thumbImage = image, let resizedImage = thumbImage.resizedImage(asset.pixelSize(), interpolationQuality: CGInterpolationQuality.low) else {
-                callback([(mediaUploadID, nil, media.mediaTypeString)])
+                callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
                 return
             }
             let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
             let url = URL(fileURLWithPath: filePath)
             do {
                 try resizedImage.writeJPEGToURL(url)
-                callback([(mediaUploadID, url.absoluteString, media.mediaTypeString)])
+                callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
             } catch {
-                callback([(mediaUploadID, nil, media.mediaTypeString)])
+                callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
                 return
             }
         }
@@ -87,7 +87,7 @@ class GutenbergMediaInserterHelper: NSObject {
     func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
         let media = insert(exportableAsset: url as NSURL, source: .otherApps)
         let mediaUploadID = media.gutenbergUploadID
-        callback([(mediaUploadID, url.absoluteString, media.mediaTypeString)])
+        callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
     }
 
     func syncUploads() {
