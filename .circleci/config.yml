@@ -46,8 +46,15 @@ jobs:
       - ios/wait-for-simulator
       - ios/xcodebuild:
           command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPress_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
+          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPress_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath test-without-building.xcresult
       - ios/save-xcodebuild-artifacts
+      - run:
+          name: Zip xcresult
+          command: zip -r testresults/xcresult.zip test-without-building.xcresult
+      - store_artifacts:
+          name: Save xcresult
+          path: testresults
+          destination: logs
   UI Tests:
     parameters:
       device:
@@ -68,11 +75,11 @@ jobs:
       - ios/wait-for-simulator
       - ios/xcodebuild:
           command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath testresults/test-without-building.xcresult
+          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath test-without-building.xcresult
       - ios/save-xcodebuild-artifacts
       - run:
           name: Zip xcresult
-          command: zip -r testresults/xcresult.zip testresults/test-without-building.xcresult
+          command: zip -r testresults/xcresult.zip test-without-building.xcresult
       - store_artifacts:
           name: Save xcresult
           path: testresults
