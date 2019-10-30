@@ -224,9 +224,13 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .periodVideos:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
+            return periodImmuTable(for: periodStore.topVideosStatus) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
                                                      dataSubtitle: StatSection.periodVideos.dataSubtitle))
-            tableRows.append(contentsOf: videosRows())
+                rows.append(contentsOf: videosRows(for: status))
+                return rows
+            }
         case .periodClicks:
             return periodImmuTable(for: periodStore.topClicksStatus) { status in
                 var rows = [ImmuTableRow]()
@@ -641,8 +645,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Videos
 
-    func videosRows() -> [DetailDataRow] {
-        return dataRowsFor(videosRowData(), status: .idle)
+    func videosRows(for status: StoreFetchingStatus) -> [DetailDataRow] {
+        return dataRowsFor(videosRowData(), status: status)
     }
 
     func videosRowData() -> [StatsTotalRowData] {
