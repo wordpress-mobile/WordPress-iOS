@@ -68,7 +68,7 @@ private extension PostCoordinatorFailedPostsFetcherTests {
         if hasRemote {
             post.postID = NSNumber(value: Int.random(in: 1...Int.max))
         }
-        
+
         if let blog = blog {
             post.blog = blog
         } else {
@@ -77,7 +77,7 @@ private extension PostCoordinatorFailedPostsFetcherTests {
 
         return post
     }
-    
+
     func createBlog(/*id: Int, url: String, account: WPAccount*/ isHostedAtWPcom: Bool) -> Blog {
         let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
         blog.isHostedAtWPcom = isHostedAtWPcom

@@ -148,7 +148,7 @@ private extension PostCoordinatorUploadActionUseCaseTests {
         post.status = status
         post.remoteStatus = remoteStatus
         post.autoUploadAttemptsCount = NSNumber(value: attemptsCount)
-        
+
         if hasRemote {
             post.postID = NSNumber(value: Int.random(in: 1...Int.max))
         }
@@ -156,7 +156,7 @@ private extension PostCoordinatorUploadActionUseCaseTests {
         if confirmedAutoUpload {
             post.shouldAttemptAutoUpload = true
         }
-        
+
         if let blog = blog {
             post.blog = blog
         } else {
