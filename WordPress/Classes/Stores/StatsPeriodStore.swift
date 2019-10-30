@@ -747,6 +747,7 @@ private extension StatsPeriodStore {
                 DispatchQueue.main.async {
                     self?.receivedPostsAndPages(posts, error)
                 }
+                self?.persistToCoreData()
             })
             return
         }
@@ -850,6 +851,7 @@ private extension StatsPeriodStore {
                 DispatchQueue.main.async {
                     self?.receivedClicks(clicks, error)
                 }
+                self?.persistToCoreData()
             })
             return
         }
@@ -879,6 +881,26 @@ private extension StatsPeriodStore {
 
     func fetchAllAuthors(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topAuthorsStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching authors: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching authors.")
+
+                DispatchQueue.main.async {
+                    self?.receivedAuthors(authors, error)
+                }
+                self?.persistToCoreData()
+            })
             return
         }
 
@@ -925,6 +947,7 @@ private extension StatsPeriodStore {
                 DispatchQueue.main.async {
                     self?.receivedReferrers(referrers, error)
                 }
+                self?.persistToCoreData()
             })
             return
         }
@@ -1000,6 +1023,7 @@ private extension StatsPeriodStore {
                 DispatchQueue.main.async {
                     self?.receivedPublished(published, error)
                 }
+                self?.persistToCoreData()
             })
             return
         }

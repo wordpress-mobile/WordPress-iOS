@@ -232,9 +232,13 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .periodAuthors:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
-                                                      dataSubtitle: StatSection.periodAuthors.dataSubtitle))
-            tableRows.append(contentsOf: authorsRows())
+            return periodImmuTable(for: periodStore.topAuthorsStatus) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodAuthors.dataSubtitle))
+                rows.append(contentsOf: authorsRows(for: status))
+                return rows
+            }
         case .periodReferrers:
             return periodImmuTable(for: periodStore.topReferrersStatus) { status in
                 var rows = [ImmuTableRow]()
@@ -669,8 +673,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Authors
 
-    func authorsRows() -> [ImmuTableRow] {
-        return expandableDataRowsFor(authorsRowData())
+    func authorsRows(for status: StoreFetchingStatus) -> [ImmuTableRow] {
+        return expandableDataRowsFor(authorsRowData(), status: status)
     }
 
     func authorsRowData() -> [StatsTotalRowData] {
