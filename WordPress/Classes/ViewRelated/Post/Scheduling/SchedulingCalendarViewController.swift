@@ -1,4 +1,5 @@
 import Foundation
+import Gridicons
 
 protocol DateCoordinatorHandler: class {
     var coordinator: DateCoordinator? { get set }
@@ -45,9 +46,6 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
 
         chosenValueRow.titleLabel?.text = NSLocalizedString("Choose a date", comment: "Label for Publish date picker")
 
-        let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(publishImmediately))
-        navigationItem.setLeftBarButton(publishButton, animated: false)
-
         let nextButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: "Next screen button title"), style: .plain, target: self, action: #selector(nextButtonPressed))
         navigationItem.setRightBarButton(nextButton, animated: false)
 
@@ -71,7 +69,26 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
         (segue.destination as? DateCoordinatorHandler)?.coordinator = coordinator
     }
 
-    @IBAction func publishImmediately() {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(closeButtonPressed))
+
+        let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(publishImmediately))
+        navigationItem.setLeftBarButton(publishButton, animated: false)
+
+        if traitCollection.verticalSizeClass == .compact {
+            navigationItem.leftBarButtonItems = [closeButton, publishButton]
+        } else {
+            navigationItem.leftBarButtonItems = [publishButton]
+        }
+    }
+
+    @objc func closeButtonPressed() {
+        dismiss(animated: true, completion: nil)
+    }
+
+    @objc func publishImmediately() {
         coordinator?.updated(nil)
         navigationController?.dismiss(animated: true, completion: nil)
     }
