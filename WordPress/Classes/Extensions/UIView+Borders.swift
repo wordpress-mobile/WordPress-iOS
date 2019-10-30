@@ -1,5 +1,6 @@
 extension UIView {
-    func addTopBorder(withColor bgColor: UIColor) {
+    @discardableResult
+    func addTopBorder(withColor bgColor: UIColor) -> UIView {
         let borderView = makeBorderView(withColor: bgColor)
 
         NSLayoutConstraint.activate([
@@ -8,9 +9,11 @@ extension UIView {
             borderView.centerXAnchor.constraint(equalTo: centerXAnchor),
             borderView.widthAnchor.constraint(equalTo: widthAnchor)
             ])
+        return borderView
     }
 
-    func addBottomBorder(withColor bgColor: UIColor) {
+    @discardableResult
+    func addBottomBorder(withColor bgColor: UIColor) -> UIView {
         let borderView = makeBorderView(withColor: bgColor)
 
         NSLayoutConstraint.activate([
@@ -19,6 +22,7 @@ extension UIView {
             borderView.centerXAnchor.constraint(equalTo: centerXAnchor),
             borderView.widthAnchor.constraint(equalTo: widthAnchor)
             ])
+        return borderView
     }
 
     private func makeBorderView(withColor: UIColor) -> UIView {
