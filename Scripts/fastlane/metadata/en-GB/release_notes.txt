@@ -3,3 +3,4 @@ Our mobile devs were bug squashing juggernauts this month:
 - Tweaks make the block editor better and better: links open in-app instead of opening Safari, and a pesky link editing issue, that sometimes deleted existing links, is no more.
 - “Dark mode” is dark as in “hue” and not as in “grim,” especially now that it’s got better visuals and fewer bugs.
 - Scrolling vertically sometimes didn’t work in the share extension, and now it does.
+- We fixed a crash with featured images in Post Settings.
