@@ -15,9 +15,11 @@ class HalfScreenPresentationController: FancyAlertPresentationController {
         }
     }
 
-    override func containerViewWillLayoutSubviews() {
-        super.containerViewWillLayoutSubviews()
-        presentedView?.frame = frameOfPresentedViewInContainerView
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { _ in
+            self.presentedView?.frame = self.frameOfPresentedViewInContainerView
+        }, completion: nil)
+        super.viewWillTransition(to: size, with: coordinator)
     }
 
     override func containerViewDidLayoutSubviews() {

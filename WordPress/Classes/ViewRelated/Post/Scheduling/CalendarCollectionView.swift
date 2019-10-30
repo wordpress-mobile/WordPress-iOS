@@ -114,7 +114,7 @@ class DateCell: JTACDayCell {
 
         addSubview(dateLabel)
 
-        addConstraints([
+        NSLayoutConstraint.activate([
             dateLabel.widthAnchor.constraint(equalToConstant: 28),
             dateLabel.heightAnchor.constraint(equalTo: dateLabel.widthAnchor),
             dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor),

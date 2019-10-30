@@ -24,12 +24,16 @@ class ChosenValueRow: UIView {
             titleLabel,
             detailLabel
         ])
+        stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(stackView)
         pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
-        addConstraints([
-            stackView.heightAnchor.constraint(equalToConstant: 44)
+
+        let heightConstraint = stackView.heightAnchor.constraint(equalToConstant: 44)
+        heightConstraint.priority = .defaultHigh
+        NSLayoutConstraint.activate([
+            heightConstraint
         ])
 
         self.titleLabel = titleLabel

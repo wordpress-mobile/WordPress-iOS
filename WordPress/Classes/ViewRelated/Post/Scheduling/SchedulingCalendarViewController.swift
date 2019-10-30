@@ -137,8 +137,8 @@ class DatePickerSheet: UIViewController {
         let pickerWrapperView = UIView()
         pickerWrapperView.addSubview(pickerView)
 
-
-        let sideConstraints: [NSLayoutConstraint] = [             pickerView.leftAnchor.constraint(equalTo: pickerWrapperView.leftAnchor),
+        let sideConstraints: [NSLayoutConstraint] = [
+            pickerView.leftAnchor.constraint(equalTo: pickerWrapperView.leftAnchor),
             pickerView.rightAnchor.constraint(equalTo: pickerWrapperView.rightAnchor)
         ]
 
@@ -147,13 +147,13 @@ class DatePickerSheet: UIViewController {
             constraint.priority = .defaultHigh
         }
 
-        pickerWrapperView.addConstraints([
+        NSLayoutConstraint.activate([
             pickerView.centerXAnchor.constraint(equalTo: pickerWrapperView.safeCenterXAnchor),
             pickerView.topAnchor.constraint(equalTo: pickerWrapperView.topAnchor),
             pickerView.bottomAnchor.constraint(equalTo: pickerWrapperView.bottomAnchor)
         ])
 
-        pickerWrapperView.addConstraints(sideConstraints)
+        NSLayoutConstraint.activate(sideConstraints)
 
         let stackView = UIStackView(arrangedSubviews: [
             chosenValueRow,

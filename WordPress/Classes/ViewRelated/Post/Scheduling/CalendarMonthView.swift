@@ -71,20 +71,26 @@ class CalendarMonthView: UIView {
         heightConstraint.priority = .defaultHigh
         widthConstraint.priority = .defaultHigh
 
-        stackView.addConstraints([
+        NSLayoutConstraint.activate([
             heightConstraint,
             widthConstraint
         ])
 
-        headerStackView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-        weekdayHeaders.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        headerStackView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        weekdayHeaders.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
         addSubview(stackView)
 
-        stackView.addConstraints([
+        let collectionViewSizeConstraints = [
             collectionView.heightAnchor.constraint(equalToConstant: 240),
             collectionView.widthAnchor.constraint(equalToConstant: 375)
-        ])
+        ]
+
+        collectionViewSizeConstraints.forEach() { constraint in
+            constraint.priority = .defaultHigh
+        }
+
+        NSLayoutConstraint.activate(collectionViewSizeConstraints)
 
         pinSubviewToAllEdges(stackView)
     }
