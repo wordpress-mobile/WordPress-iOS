@@ -98,6 +98,10 @@ extension CalendarDataSource: JTACMonthViewDelegate {
 
 class DateCell: JTACDayCell {
 
+    fileprivate struct Constants {
+        static let labelSize: CGFloat = 28
+    }
+
     weak var dateLabel: UILabel?
 
     override init(frame: CGRect) {
@@ -110,12 +114,12 @@ class DateCell: JTACDayCell {
 
         // Show circle behind text for selected day
         dateLabel.clipsToBounds = true
-        dateLabel.layer.cornerRadius = 28/2
+        dateLabel.layer.cornerRadius = Constants.labelSize/2
 
         addSubview(dateLabel)
 
         NSLayoutConstraint.activate([
-            dateLabel.widthAnchor.constraint(equalToConstant: 28),
+            dateLabel.widthAnchor.constraint(equalToConstant: Constants.labelSize),
             dateLabel.heightAnchor.constraint(equalTo: dateLabel.widthAnchor),
             dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor)

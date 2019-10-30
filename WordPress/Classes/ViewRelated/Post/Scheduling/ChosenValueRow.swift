@@ -1,6 +1,12 @@
 import Foundation
 
 class ChosenValueRow: UIView {
+
+    private struct Constants {
+        static let rowHeight: CGFloat = 44
+        static let rowInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    }
+
     weak var titleLabel: UILabel?
     weak var detailLabel: UILabel?
 
@@ -28,9 +34,9 @@ class ChosenValueRow: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(stackView)
-        pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+        pinSubviewToAllEdges(stackView, insets: Constants.rowInsets)
 
-        let heightConstraint = stackView.heightAnchor.constraint(equalToConstant: 44)
+        let heightConstraint = stackView.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
         heightConstraint.priority = .defaultHigh
         NSLayoutConstraint.activate([
             heightConstraint
