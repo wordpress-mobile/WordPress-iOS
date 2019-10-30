@@ -216,9 +216,13 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .periodSearchTerms:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
+            return periodImmuTable(for: periodStore.topSearchTermsStatus) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
                                                      dataSubtitle: StatSection.periodSearchTerms.dataSubtitle))
-            tableRows.append(contentsOf: searchTermsRows())
+                rows.append(contentsOf: searchTermsRows(for: status))
+                return rows
+            }
         case .periodVideos:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
                                                      dataSubtitle: StatSection.periodVideos.dataSubtitle))
@@ -606,8 +610,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Search Terms
 
-    func searchTermsRows() -> [DetailDataRow] {
-        return dataRowsFor(searchTermsRowData(), status: .idle)
+    func searchTermsRows(for status: StoreFetchingStatus) -> [DetailDataRow] {
+        return dataRowsFor(searchTermsRowData(), status: status)
     }
 
     func searchTermsRowData() -> [StatsTotalRowData] {

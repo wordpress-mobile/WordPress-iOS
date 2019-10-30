@@ -780,6 +780,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topSearchTermsStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching search terms: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching search terms.")
+
+                DispatchQueue.main.async {
+                    self?.receivedSearchTerms(searchTerms, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingSearchTerms = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
