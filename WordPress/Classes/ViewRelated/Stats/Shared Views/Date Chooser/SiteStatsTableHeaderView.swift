@@ -16,7 +16,11 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     @IBOutlet weak var timezoneLabel: UILabel!
     @IBOutlet weak var backArrow: UIImageView!
     @IBOutlet weak var forwardArrow: UIImageView!
-    @IBOutlet weak var bottomSeparatorLine: UIView!
+    @IBOutlet weak var bottomSeparatorLine: UIView! {
+        didSet {
+            bottomSeparatorLine.isGhostableDisabled = true
+        }
+    }
 
     @IBOutlet weak var backButton: UIButton! {
         didSet {

@@ -1,9 +1,12 @@
 import Foundation
 import WordPressFlux
 
-enum PeriodType {
+enum PeriodType: CaseIterable {
     case summary
     case topPostsAndPages
+    case topReferrers
+    case topPublished
+    case topClicks
 }
 
 enum PeriodAction: Action {
@@ -131,14 +134,17 @@ struct PeriodStoreState {
     var fetchingPostsAndPagesHasFailed = false
 
     var topReferrers: StatsTopReferrersTimeIntervalData?
+    var topReferrersStatus: StoreFetchingStatus = .idle
     var fetchingReferrers = false
     var fetchingReferrersHasFailed = false
 
     var topClicks: StatsTopClicksTimeIntervalData?
+    var topClicksStatus: StoreFetchingStatus = .idle
     var fetchingClicks = false
     var fetchingClicksHasFailed = false
 
     var topPublished: StatsPublishedPostsTimeIntervalData?
+    var topPublishedStatus: StoreFetchingStatus = .idle
     var fetchingPublished = false
     var fetchingPublishedHasFailed = false
 
@@ -171,6 +177,7 @@ struct PeriodStoreState {
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     private typealias PeriodOperation = StatsPeriodAsyncOperation
+    private typealias PublishedPostOperation = StatsPublishedPostsAsyncOperation
 
     var fetchingOverviewListener: ((_ fetching: Bool, _ success: Bool) -> Void)?
     var cachedDataListener: ((_ hasCachedData: Bool) -> Void)?
@@ -178,6 +185,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     private var statsServiceRemote: StatsServiceRemoteV2?
     private var operationQueue = OperationQueue()
     private let scheduler = Scheduler(seconds: 0.3)
+    private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoadingDWMY)
 
     init() {
         super.init(initialState: PeriodStoreState())
@@ -336,14 +344,14 @@ private extension StatsPeriodStore {
         loadFromCache(date: date, period: period)
 
         guard shouldFetchOverview() else {
-            if !Feature.enabled(.statsAsyncLoadingDWMY) {
+            if !asyncLoadingActivated {
                 fetchingOverviewListener?(true, false)
             }
             DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
             return
         }
 
-        if Feature.enabled(.statsAsyncLoadingDWMY) {
+        if asyncLoadingActivated {
             setAllFetchingStatus(.loading)
             scheduler.debounce { [weak self] in
                 self?.fetchChartData(date: date, period: period)
@@ -395,7 +403,7 @@ private extension StatsPeriodStore {
                 DDLogError("Stats Period: Error fetching likes summary: \(String(describing: error?.localizedDescription))")
             }
 
-            DDLogInfo("Stats Period:  Finished fetching likes summary.")
+            DDLogInfo("Stats Period: Finished fetching likes summary.")
             DispatchQueue.main.async {
                 self?.receivedLikesSummary(likes, error)
             }
@@ -413,8 +421,47 @@ private extension StatsPeriodStore {
             }
         }
 
+        let topReferrers = PeriodOperation(service: service, for: period, date: date) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching referrers: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching referrers.")
+
+            DispatchQueue.main.async {
+                self?.receivedReferrers(referrers, error)
+            }
+        }
+
+        let topPublished = PublishedPostOperation(service: service, for: period, date: date) { [weak self] (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching published: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching published.")
+
+            DispatchQueue.main.async {
+                self?.receivedPublished(published, error)
+            }
+        }
+
+        let topClicks = PeriodOperation(service: service, for: period, date: date) { [weak self] (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching clicks: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching clicks.")
+
+            DispatchQueue.main.async {
+                self?.receivedClicks(clicks, error)
+            }
+        }
+
         operationQueue.addOperations([likesOperation,
-                                      topPostsOperation],
+                                      topPostsOperation,
+                                      topReferrers,
+                                      topPublished,
+                                      topClicks],
                                      waitUntilFinished: false)
     }
 
@@ -593,8 +640,10 @@ private extension StatsPeriodStore {
         // when user has left the screen/app, we would possibly lose on storing A LOT of data.
         persistToCoreData()
 
-        if forceRefresh && !Feature.enabled(.statsAsyncLoadingDWMY) {
-            setAllAsFetchingOverview(fetching: false)
+        if forceRefresh {
+            if !asyncLoadingActivated {
+                setAllAsFetchingOverview(fetching: false)
+            }
             cancelQueries()
         }
 
@@ -940,6 +989,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingReferrers = false
             state.fetchingReferrersHasFailed = error != nil
+            state.topReferrersStatus = error != nil ? .error : .success
 
             if referrers != nil {
                 state.topReferrers = referrers
@@ -951,6 +1001,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingClicks = false
             state.fetchingClicksHasFailed = error != nil
+            state.topClicksStatus = error != nil ? .error : .success
 
             if clicks != nil {
                 state.topClicks = clicks
@@ -973,6 +1024,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingPublished = false
             state.fetchingPublishedHasFailed = error != nil
+            state.topPublishedStatus = error != nil ? .error : .success
 
             if published != nil {
                 state.topPublished = published
@@ -1083,6 +1135,9 @@ private extension StatsPeriodStore {
     func setAllFetchingStatus(_ status: StoreFetchingStatus) {
         state.summaryStatus = status
         state.topPostsAndPagesStatus = status
+        state.topReferrersStatus = status
+        state.topPublishedStatus = status
+        state.topClicksStatus = status
     }
 
     func shouldFetchPostsAndPages() -> Bool {
@@ -1212,12 +1267,24 @@ extension StatsPeriodStore {
         return state.topPostsAndPagesStatus
     }
 
+    var topReferrersStatus: StoreFetchingStatus {
+        return state.topReferrersStatus
+    }
+
+    var topPublishedStatus: StoreFetchingStatus {
+        return state.topPublishedStatus
+    }
+
+    var topClicksStatus: StoreFetchingStatus {
+        return state.topClicksStatus
+    }
+
     var isFetchingSummaryLikes: Bool {
         return state.fetchingSummaryLikes
     }
 
     var isFetchingPostsAndPages: Bool {
-        if Feature.enabled(.statsAsyncLoadingDWMY) {
+        if asyncLoadingActivated {
             return topPostsAndPagesStatus == .loading
         }
         return state.fetchingPostsAndPages
@@ -1232,6 +1299,9 @@ extension StatsPeriodStore {
     }
 
     var isFetchingClicks: Bool {
+        if asyncLoadingActivated {
+            return topClicksStatus == .loading
+        }
         return state.fetchingClicks
     }
 
@@ -1240,6 +1310,9 @@ extension StatsPeriodStore {
     }
 
     var isFetchingReferrers: Bool {
+        if asyncLoadingActivated {
+            return topReferrersStatus == .loading
+        }
         return state.fetchingReferrers
     }
 
@@ -1248,6 +1321,9 @@ extension StatsPeriodStore {
     }
 
     var isFetchingPublished: Bool {
+        if asyncLoadingActivated {
+            return topPublishedStatus == .loading
+        }
         return state.fetchingPublished
     }
 
@@ -1256,9 +1332,11 @@ extension StatsPeriodStore {
     }
 
     var fetchingOverviewHasFailed: Bool {
-        if Feature.enabled(.statsAsyncLoadingDWMY) {
-            return state.summaryStatus == .error &&
-                state.topPostsAndPagesStatus == .error
+        if asyncLoadingActivated {
+            return [state.summaryStatus,
+                    state.topPostsAndPagesStatus,
+                    state.topReferrersStatus,
+                    state.topPublishedStatus].first { $0 != .error } == nil
         }
 
         return state.fetchingSummaryHasFailed &&
@@ -1301,9 +1379,8 @@ extension StatsPeriodStore {
     }
 
     var containsCachedData: Bool {
-        if Feature.enabled(.statsAsyncLoadingDWMY) {
-            return containsCachedData(for: [.summary,
-                                            .topPostsAndPages])
+        if asyncLoadingActivated {
+            return containsCachedData(for: PeriodType.allCases)
         }
 
         if state.summary != nil ||
