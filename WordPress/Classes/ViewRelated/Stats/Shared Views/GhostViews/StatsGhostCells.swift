@@ -4,8 +4,8 @@ class StatsGhostBaseCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         Style.configureCell(self)
-        addTopBorder(withColor: .divider)
-        addBottomBorder(withColor: .divider)
+        addTopBorder(withColor: .divider).isGhostableDisabled = true
+        addBottomBorder(withColor: .divider).isGhostableDisabled = true
     }
 
     override func prepareForReuse() {
