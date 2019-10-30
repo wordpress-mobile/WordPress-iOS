@@ -835,6 +835,25 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topClicksStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching clicks: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching clicks.")
+
+                DispatchQueue.main.async {
+                    self?.receivedClicks(clicks, error)
+                }
+            })
+            return
+        }
+
         state.fetchingClicks = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in

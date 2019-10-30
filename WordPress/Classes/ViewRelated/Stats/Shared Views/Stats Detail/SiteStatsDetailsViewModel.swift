@@ -224,9 +224,13 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodVideos.dataSubtitle))
             tableRows.append(contentsOf: videosRows())
         case .periodClicks:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
-                                                      dataSubtitle: StatSection.periodClicks.dataSubtitle))
-            tableRows.append(contentsOf: clicksRows())
+            return periodImmuTable(for: periodStore.topClicksStatus) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodClicks.dataSubtitle))
+                rows.append(contentsOf: clicksRows(for: status))
+                return rows
+            }
         case .periodAuthors:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
                                                       dataSubtitle: StatSection.periodAuthors.dataSubtitle))
@@ -645,8 +649,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Clicks
 
-    func clicksRows() -> [ImmuTableRow] {
-        return expandableDataRowsFor(clicksRowData())
+    func clicksRows(for status: StoreFetchingStatus) -> [ImmuTableRow] {
+        return expandableDataRowsFor(clicksRowData(), status: status)
     }
 
     func clicksRowData() -> [StatsTotalRowData] {
