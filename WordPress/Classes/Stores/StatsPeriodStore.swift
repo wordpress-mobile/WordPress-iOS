@@ -947,6 +947,25 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topPublishedStatus = .loading
+
+            operationQueue.addOperation(PublishedPostOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching published: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching published.")
+
+                DispatchQueue.main.async {
+                    self?.receivedPublished(published, error)
+                }
+            })
+            return
+        }
+
         state.fetchingPublished = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in

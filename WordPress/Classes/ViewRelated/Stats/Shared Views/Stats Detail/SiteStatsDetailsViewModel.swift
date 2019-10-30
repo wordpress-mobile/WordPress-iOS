@@ -212,7 +212,7 @@ class SiteStatsDetailsViewModel: Observable {
                 var rows = [ImmuTableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                           dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
-                rows.append(contentsOf: postsAndPagesRows(for: .loading))
+                rows.append(contentsOf: postsAndPagesRows(for: status))
                 return rows
             }
         case .periodSearchTerms:
@@ -244,8 +244,12 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle))
             tableRows.append(contentsOf: countriesRows())
         case .periodPublished:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
-            tableRows.append(contentsOf: publishedRows())
+            return periodImmuTable(for: periodStore.topPostsAndPagesStatus) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
+                rows.append(contentsOf: publishedRows(for: status))
+                return rows
+            }
         case .periodFileDownloads:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
                                                       dataSubtitle: StatSection.periodFileDownloads.dataSubtitle))
@@ -739,8 +743,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Published
 
-    func publishedRows() -> [DetailDataRow] {
-        return dataRowsFor(publishedRowData(), status: .idle)
+    func publishedRows(for status: StoreFetchingStatus) -> [DetailDataRow] {
+        return dataRowsFor(publishedRowData(), status: status)
     }
 
     func publishedRowData() -> [StatsTotalRowData] {
