@@ -1114,6 +1114,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topFileDownloadsStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 1) { [weak self] (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error file downloads: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished file downloads.")
+
+                DispatchQueue.main.async {
+                    self?.receivedFileDownloads(downloads, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingFileDownloads = true
 
         // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.

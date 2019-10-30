@@ -275,9 +275,13 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .periodFileDownloads:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
-                                                      dataSubtitle: StatSection.periodFileDownloads.dataSubtitle))
-            tableRows.append(contentsOf: fileDownloadsRows())
+            return periodImmuTable(for: periodStore.topFileDownloadsStatus) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodFileDownloads.dataSubtitle))
+                rows.append(contentsOf: fileDownloadsRows(for: status))
+                return rows
+            }
         case .postStatsMonthsYears:
             tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
                                                                dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle))
@@ -782,8 +786,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - File Downloads
 
-    func fileDownloadsRows() -> [DetailDataRow] {
-        return dataRowsFor(fileDownloadsRowData(), status: .idle)
+    func fileDownloadsRows(for status: StoreFetchingStatus) -> [DetailDataRow] {
+        return dataRowsFor(fileDownloadsRowData(), status: status)
     }
 
     func fileDownloadsRowData() -> [StatsTotalRowData] {
