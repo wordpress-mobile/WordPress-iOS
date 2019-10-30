@@ -232,9 +232,13 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.periodAuthors.dataSubtitle))
             tableRows.append(contentsOf: authorsRows())
         case .periodReferrers:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                                                      dataSubtitle: StatSection.periodReferrers.dataSubtitle))
-            tableRows.append(contentsOf: referrersRows())
+            return periodImmuTable(for: periodStore.topReferrersStatus) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodReferrers.dataSubtitle))
+                rows.append(contentsOf: referrersRows(for: status))
+                return rows
+            }
         case .periodCountries:
             let map = countriesMap()
             if !map.data.isEmpty {
@@ -244,7 +248,7 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle))
             tableRows.append(contentsOf: countriesRows())
         case .periodPublished:
-            return periodImmuTable(for: periodStore.topPostsAndPagesStatus) { status in
+            return periodImmuTable(for: periodStore.topPublishedStatus) { status in
                 var rows = [ImmuTableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
                 rows.append(contentsOf: publishedRows(for: status))
@@ -683,8 +687,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Referrers
 
-    func referrersRows() -> [ImmuTableRow] {
-        return expandableDataRowsFor(referrersRowData())
+    func referrersRows(for status: StoreFetchingStatus) -> [ImmuTableRow] {
+        return expandableDataRowsFor(referrersRowData(), status: status)
     }
 
     func referrersRowData() -> [StatsTotalRowData] {
@@ -826,7 +830,7 @@ private extension SiteStatsDetailsViewModel {
         return detailDataRows
     }
 
-    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData]) -> [ImmuTableRow] {
+    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], status: StoreFetchingStatus = .idle) -> [ImmuTableRow] {
         var detailDataRows = [ImmuTableRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
@@ -843,7 +847,7 @@ private extension SiteStatsDetailsViewModel {
                 return false
             }()
 
-            let isLastRow = idx == rowsData.endIndex-1
+            let isLastRow = idx == rowsData.endIndex-1 && status != .loading
 
             // Toggle the indented separator line based on expanded states.
             // If the current row is expanded, hide the separator.

@@ -891,6 +891,25 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topReferrersStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching referrers: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching referrers.")
+
+                DispatchQueue.main.async {
+                    self?.receivedReferrers(referrers, error)
+                }
+            })
+            return
+        }
+
         state.fetchingReferrers = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
