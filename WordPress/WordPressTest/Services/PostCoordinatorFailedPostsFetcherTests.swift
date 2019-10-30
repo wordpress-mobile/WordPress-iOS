@@ -59,7 +59,8 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
 private extension PostCoordinatorFailedPostsFetcherTests {
     func createPost(status: BasePost.Status,
                     remoteStatus: AbstractPostRemoteStatus = .failed,
-                    hasRemote: Bool = false) -> Post {
+                    hasRemote: Bool = false,
+                    blog: Blog? = nil) -> Post {
         let post = Post(context: context)
         post.status = status
         post.remoteStatus = remoteStatus
@@ -67,8 +68,20 @@ private extension PostCoordinatorFailedPostsFetcherTests {
         if hasRemote {
             post.postID = NSNumber(value: Int.random(in: 1...Int.max))
         }
+        
+        if let blog = blog {
+            post.blog = blog
+        } else {
+            post.blog = createBlog(isHostedAtWPcom: true)
+        }
 
         return post
+    }
+    
+    func createBlog(/*id: Int, url: String, account: WPAccount*/ isHostedAtWPcom: Bool) -> Blog {
+        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
+        blog.isHostedAtWPcom = isHostedAtWPcom
+        return blog
     }
 }
 

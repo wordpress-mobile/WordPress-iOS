@@ -162,6 +162,11 @@ class PostBuilder {
         post.isStickyPost = sticked
         return self
     }
+    
+    func `is`(hostedAtWPcom: Bool) -> PostBuilder {
+        post.blog.isHostedAtWPcom = hostedAtWPcom
+        return self
+    }
 
     func confirmedAutoUpload() -> PostBuilder {
         post.shouldAttemptAutoUpload = true
