@@ -10,6 +10,7 @@
 * Block editor: Add Link Target (Open in new tab) to Image Block settings.
 * Block editor: DarkMode improvements.
 * Block editor: New block "Media & Text".
+* Block Editor: Fix issue where the block inserter layout wasn't correct after device rotation.
 * Dark Mode: General improvements
 * Stats: each Insight stat now loads independently.
 * Stats: added ability to customize Insights.
@@ -17,6 +18,7 @@
 13.4.1
 -----
 Post Settings: Fixed a crash with featured image.
+Removed Giphy as a media source due to changes in their SDK.
  
 13.4
 -----
