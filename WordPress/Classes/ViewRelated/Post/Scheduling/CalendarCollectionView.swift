@@ -41,8 +41,8 @@ class CalendarDataSource: JTACMonthViewDataSource {
     var didSelect: ((Date) -> Void)?
 
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
-        let startDate = Date(timeIntervalSinceReferenceDate: (-24*60*60)*365*50)
-        let endDate = Date(timeIntervalSinceReferenceDate: (24*60*60)*365*50)
+        let startDate = Date.farPastDate
+        let endDate = Date.farFutureDate
         return ConfigurationParameters(startDate: startDate, endDate: endDate)
     }
 }
@@ -98,6 +98,10 @@ extension CalendarDataSource: JTACMonthViewDelegate {
 
 class DateCell: JTACDayCell {
 
+    fileprivate struct Constants {
+        static let labelSize: CGFloat = 28
+    }
+
     weak var dateLabel: UILabel?
 
     override init(frame: CGRect) {
@@ -110,12 +114,12 @@ class DateCell: JTACDayCell {
 
         // Show circle behind text for selected day
         dateLabel.clipsToBounds = true
-        dateLabel.layer.cornerRadius = 28/2
+        dateLabel.layer.cornerRadius = Constants.labelSize/2
 
         addSubview(dateLabel)
 
-        addConstraints([
-            dateLabel.widthAnchor.constraint(equalToConstant: 28),
+        NSLayoutConstraint.activate([
+            dateLabel.widthAnchor.constraint(equalToConstant: Constants.labelSize),
             dateLabel.heightAnchor.constraint(equalTo: dateLabel.widthAnchor),
             dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor)

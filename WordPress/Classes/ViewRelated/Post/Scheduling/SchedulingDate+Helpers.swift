@@ -16,6 +16,15 @@ private let longStringFormatter: DateFormatter = {
 }()
 
 extension Date {
+
+    public static var farFutureDate: Date {
+        return Date(timeIntervalSinceReferenceDate: (24*60*60)*365*50) // 50 Years out
+    }
+
+    public static var farPastDate: Date {
+        return Date(timeIntervalSinceReferenceDate: (-24*60*60)*365*50) // 50 Years back
+    }
+
     public func longStringWithTime() -> String {
         return longStringWithTimeFormatter.string(from: self)
     }

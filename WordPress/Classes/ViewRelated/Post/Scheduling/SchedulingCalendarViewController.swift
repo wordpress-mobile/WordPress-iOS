@@ -1,4 +1,5 @@
 import Foundation
+import Gridicons
 
 protocol DateCoordinatorHandler: class {
     var coordinator: DateCoordinator? { get set }
@@ -15,7 +16,7 @@ struct DateCoordinator {
 
 class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler {
 
-    @IBOutlet weak var calendarMonthView: CalendarMonthView!
+    weak var calendarMonthView: CalendarMonthView!
 
     override func configureView() -> UIView {
         let calendarMonthView = CalendarMonthView(frame: .zero)
@@ -26,14 +27,16 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
         calendarMonthView.updated = { [weak self] date in
             var newDate = date
 
-            // If we have an existing time value, we want to add it to the calendar's selected date (which starts at midnight)
+            // If we have an existing time value, we want to set it to the calendar's selected date (which starts at midnight)
             if let existingDate = self?.coordinator?.date {
                 let components = Calendar.current.dateComponents([.hour, .minute], from: existingDate)
-                newDate = Calendar.current.date(byAdding: components, to: newDate, wrappingComponents: false) ?? newDate
+                newDate = Calendar.current.date(bySettingHour: components.hour ?? 0, minute: components.minute ?? 0, second: components.second ?? 0, of: newDate) ?? newDate
             }
             self?.coordinator?.setDate(newDate)
             self?.chosenValueRow.detailLabel?.text = date.longString()
         }
+
+        self.calendarMonthView = calendarMonthView
 
         return calendarMonthView
     }
@@ -43,18 +46,49 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
 
         chosenValueRow.titleLabel?.text = NSLocalizedString("Choose a date", comment: "Label for Publish date picker")
 
-        let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(publishImmediately))
-        navigationItem.setLeftBarButton(publishButton, animated: false)
-
         let nextButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: "Next screen button title"), style: .plain, target: self, action: #selector(nextButtonPressed))
         navigationItem.setRightBarButton(nextButton, animated: false)
+
+        calendarMonthView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        calculatePreferredSize()
+    }
+
+    private func calculatePreferredSize() {
+        let targetSize = CGSize(width: view.bounds.width,
+          height: UIView.layoutFittingCompressedSize.height)
+        preferredContentSize = view.systemLayoutSizeFitting(targetSize)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         (segue.destination as? DateCoordinatorHandler)?.coordinator = coordinator
     }
 
-    @IBAction func publishImmediately() {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(closeButtonPressed))
+
+        let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(publishImmediately))
+        navigationItem.setLeftBarButton(publishButton, animated: false)
+
+        if traitCollection.verticalSizeClass == .compact {
+            navigationItem.leftBarButtonItems = [closeButton, publishButton]
+        } else {
+            navigationItem.leftBarButtonItems = [publishButton]
+        }
+    }
+
+    @objc func closeButtonPressed() {
+        dismiss(animated: true, completion: nil)
+    }
+
+    @objc func publishImmediately() {
         coordinator?.updated(nil)
         navigationController?.dismiss(animated: true, completion: nil)
     }
@@ -115,10 +149,32 @@ class DatePickerSheet: UIViewController {
 
         let chosenValueRow = configureValueRow()
         let pickerView = configureView()
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+
+        let pickerWrapperView = UIView()
+        pickerWrapperView.addSubview(pickerView)
+
+        let sideConstraints: [NSLayoutConstraint] = [
+            pickerView.leftAnchor.constraint(equalTo: pickerWrapperView.leftAnchor),
+            pickerView.rightAnchor.constraint(equalTo: pickerWrapperView.rightAnchor)
+        ]
+
+        // Allow these to break on larger screen sizes and just center the content
+        sideConstraints.forEach() { constraint in
+            constraint.priority = .defaultHigh
+        }
+
+        NSLayoutConstraint.activate([
+            pickerView.centerXAnchor.constraint(equalTo: pickerWrapperView.safeCenterXAnchor),
+            pickerView.topAnchor.constraint(equalTo: pickerWrapperView.topAnchor),
+            pickerView.bottomAnchor.constraint(equalTo: pickerWrapperView.bottomAnchor)
+        ])
+
+        NSLayoutConstraint.activate(sideConstraints)
 
         let stackView = UIStackView(arrangedSubviews: [
             chosenValueRow,
-            pickerView
+            pickerWrapperView
         ])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -127,7 +183,7 @@ class DatePickerSheet: UIViewController {
         self.pickerView = pickerView
 
         view.addSubview(stackView)
-        view.pinSubviewToAllEdges(stackView)
+        view.pinSubviewToSafeArea(stackView)
     }
 
     // Does nothing, should be overriden by the subclass

@@ -3,13 +3,19 @@ import Gridicons
 
 class CalendarMonthView: UIView {
 
+    private struct Constants {
+        static let rowHeight: CGFloat = 44
+        static let rowInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let calendarHeight: CGFloat = 240
+        static let calendarWidth: CGFloat = 375
+    }
+
     var updated: ((Date) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         let collectionView = CalendarCollectionView()
-        collectionView.clipsToBounds = false
 
         calendarCollectionView = collectionView
 
@@ -64,16 +70,44 @@ class CalendarMonthView: UIView {
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        stackView.layoutMargins = Constants.rowInsets
         stackView.isLayoutMarginsRelativeArrangement = true
 
-        stackView.addConstraints([
-            headerStackView.heightAnchor.constraint(equalToConstant: 44),
-            weekdayHeaders.heightAnchor.constraint(equalToConstant: 44)
+        let heightConstraint = headerStackView.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
+        let widthConstraint = weekdayHeaders.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
+        heightConstraint.priority = .defaultHigh
+        widthConstraint.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            heightConstraint,
+            widthConstraint
         ])
 
+        headerStackView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        weekdayHeaders.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+
         addSubview(stackView)
+
+        let collectionViewSizeConstraints = [
+            collectionView.heightAnchor.constraint(equalToConstant: Constants.calendarHeight),
+            collectionView.widthAnchor.constraint(equalToConstant: Constants.calendarWidth)
+        ]
+
+        collectionViewSizeConstraints.forEach() { constraint in
+            constraint.priority = .defaultHigh
+        }
+
+        NSLayoutConstraint.activate(collectionViewSizeConstraints)
+
         pinSubviewToAllEdges(stackView)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        calendarCollectionView?.reloadData()
+        if let date = selectedDate {
+            calendarCollectionView?.scrollToDate(date)
+        }
     }
 
     var selectedDate: Date? {
@@ -103,15 +137,17 @@ class CalendarMonthView: UIView {
 
     @IBAction func previousMonth(_ sender: Any) {
         if let lastVisibleDate = calendarCollectionView?.visibleDates().monthDates.first?.date {
-            let nextVisibleDate = lastVisibleDate.addingTimeInterval(-(24 * 60 * 60))
-            calendarCollectionView?.scrollToDate(nextVisibleDate)
+            if let nextVisibleDate = Calendar.current.date(byAdding: .day, value: -1, to: lastVisibleDate, wrappingComponents: false) {
+                calendarCollectionView?.scrollToDate(nextVisibleDate)
+            }
         }
     }
 
     @IBAction func nextMonth(_ sender: Any) {
         if let lastVisibleDate = calendarCollectionView?.visibleDates().monthDates.last?.date {
-            let nextVisibleDate = lastVisibleDate.addingTimeInterval(24 * 60 * 60)
-            calendarCollectionView?.scrollToDate(nextVisibleDate)
+            if let nextVisibleDate = Calendar.current.date(byAdding: .day, value: 1, to: lastVisibleDate, wrappingComponents: false) {
+                calendarCollectionView?.scrollToDate(nextVisibleDate)
+            }
         }
     }
 }

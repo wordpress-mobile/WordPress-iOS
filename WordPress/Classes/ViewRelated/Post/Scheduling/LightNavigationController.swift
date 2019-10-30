@@ -2,6 +2,7 @@ import Foundation
 
 // A Navigation Controller with a light navigation bar style
 class LightNavigationController: UINavigationController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBarAppearance()
@@ -16,8 +17,11 @@ class LightNavigationController: UINavigationController {
         } else {
             separatorColor = .lightGray
         }
+
         let navigationBarAppearanceProxy = UINavigationBar.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
         navigationBarAppearanceProxy.backgroundColor = .white // Only used on iOS 12 so doesn't need dark mode support
+        navigationBarAppearanceProxy.barStyle = .default
+        navigationBarAppearanceProxy.barTintColor = .white
 
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
@@ -28,7 +32,13 @@ class LightNavigationController: UINavigationController {
 
         let tintColor = UIColor(light: .brand, dark: .white)
 
-        UIBarButtonItem.appearance(whenContainedInInstancesOf: [LightNavigationController.self]).tintColor = tintColor
-        UIButton.appearance(whenContainedInInstancesOf: [LightNavigationController.self]).tintColor = tintColor
+        let buttonBarAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [LightNavigationController.self])
+        buttonBarAppearance.tintColor = tintColor
+        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
+                                                    NSAttributedString.Key.foregroundColor: tintColor],
+                                                   for: .normal)
+        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
+                                                    NSAttributedString.Key.foregroundColor: tintColor.withAlphaComponent(0.25)],
+                                                   for: .disabled)
     }
 }

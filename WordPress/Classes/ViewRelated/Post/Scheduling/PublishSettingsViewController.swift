@@ -13,7 +13,7 @@ struct PublishSettingsViewModel {
         case immediately
     }
 
-    private var state: State
+    private(set) var state: State
     let timeZone: OffsetTimeZone?
 
     let title: String?
@@ -102,6 +102,7 @@ private struct DateAndTimeRow: ImmuTableRow {
     @objc class func viewController(post: AbstractPost) -> ImmuTableViewController {
         let controller = PublishSettingsController(post: post)
         let viewController = ImmuTableViewController(controller: controller)
+        controller.viewController = viewController
         return viewController
     }
 
@@ -114,6 +115,8 @@ private struct DateAndTimeRow: ImmuTableRow {
             EditableTextRow.self
         ]
     }
+
+    weak var viewController: ImmuTableViewController!
 
     private var viewModel: PublishSettingsViewModel
 
@@ -161,9 +164,7 @@ private struct DateAndTimeRow: ImmuTableRow {
     }
 
     func dateTimeCalendar(model: PublishSettingsViewModel) -> (ImmuTableRow) -> UIViewController {
-        return { [weak self] _ in
-
-            //TODO: Show in popover
+        return { [weak self] row in
 
             let navigationController = LightNavigationController(rootViewController: SchedulingCalendarViewController())
 
@@ -172,16 +173,38 @@ private struct DateAndTimeRow: ImmuTableRow {
                 NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
             }
 
-            navigationController.modalPresentationStyle = .custom
-            navigationController.transitioningDelegate = self
+            if self?.viewController.traitCollection.userInterfaceIdiom == .pad {
+                navigationController.modalPresentationStyle = .popover
+            } else {
+                navigationController.modalPresentationStyle = .custom
+                navigationController.transitioningDelegate = self
+            }
+
+            if let popoverController = navigationController.popoverPresentationController {
+                if let selectedIndexPath = self?.viewController.tableView.indexPathForSelectedRow {
+                    popoverController.sourceView = self!.viewController.tableView
+                    popoverController.sourceRect = self?.viewController.tableView.rectForRow(at: selectedIndexPath) ?? .zero
+                }
+            }
+
             return navigationController
         }
     }
 }
 
 // The calendar sheet is shown towards the bottom half of the screen so a custom transitioning delegate is needed.
-extension PublishSettingsController: UIViewControllerTransitioningDelegate {
+extension PublishSettingsController: UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return HalfScreenPresentationController(presentedViewController: presented, presenting: presenting)
+        let presentationController = HalfScreenPresentationController(presentedViewController: presented, presenting: presenting)
+        presentationController.delegate = self
+        return presentationController
+    }
+
+    func adaptivePresentationStyle(for: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        if traitCollection.verticalSizeClass == .compact {
+            return .overFullScreen
+        } else {
+            return .none
+        }
     }
 }
