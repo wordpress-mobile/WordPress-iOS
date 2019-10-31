@@ -209,7 +209,7 @@ class SiteStatsInsightsViewModel: Observable {
 
         tableRows.append(TableFooterRow())
         tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
-        
+
         tableRows.append(TableFooterRow())
 
         return ImmuTable(sections: [
