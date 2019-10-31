@@ -71,8 +71,7 @@ private extension StatsCellHeader {
 
     func configureManageInsightButton() {
 
-        guard FeatureFlag.statsInsightsManagement.enabled,
-            let statSection = statSection,
+        guard let statSection = statSection,
             StatSection.allInsights.contains(statSection) else {
                 showManageInsightButton(false)
                 return
