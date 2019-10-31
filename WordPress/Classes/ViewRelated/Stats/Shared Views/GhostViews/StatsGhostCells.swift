@@ -27,6 +27,12 @@ class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostChartCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTabbedCell: StatsGhostBaseCell, NibLoadable { }
+class StatsGhostTitleCell: StatsGhostBaseCell, NibLoadable {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        topBorder?.isHidden = true
+    }
+}
 class StatsGhostSingleRowCell: StatsGhostBaseCell, NibLoadable {
     @IBOutlet private var imageTopConstraint: NSLayoutConstraint!
     @IBOutlet private var labelTopConstraint: NSLayoutConstraint!
