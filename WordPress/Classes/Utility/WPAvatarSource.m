@@ -240,7 +240,7 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 - (NSString *)hashForEmailAddressOrSiteURL:(NSString *)stringToHash
 {
     NSString *sanitizedString = [[stringToHash lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    return [sanitizedString md5];
+    return [sanitizedString md5Hash];
 }
 
 #pragma mark - WPAvatarSourceTesting
