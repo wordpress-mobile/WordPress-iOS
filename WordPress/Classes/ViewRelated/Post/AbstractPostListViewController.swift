@@ -638,7 +638,6 @@ class AbstractPostListViewController: UIViewController,
         options.authorID = author
         options.number = numberOfLoadedElement
         options.purgesLocalSync = true
-        options.meta = "autosave"
 
         postService.syncPosts(
             ofType: postType,
@@ -696,7 +695,6 @@ class AbstractPostListViewController: UIViewController,
         options.authorID = author
         options.number = numberOfLoadedElement
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber?
-        options.meta = "autosave"
 
         postService.syncPosts(
             ofType: postType,
@@ -880,7 +878,6 @@ class AbstractPostListViewController: UIViewController,
         options.number = 20
         options.purgesLocalSync = false
         options.search = searchText
-        options.meta = "autosave"
 
         postService.syncPosts(
             ofType: postTypeToSync(),

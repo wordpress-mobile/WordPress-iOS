@@ -736,6 +736,11 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
         [self updateCommentsForPost:post];
     }
 
+    post.autosaveTitle = remotePost.autosaveTitle;
+    post.autosaveExcerpt = remotePost.autosaveExcerpt;
+    post.autosaveContent = remotePost.autosaveContent;
+    post.autosaveModifiedDate = remotePost.autosaveModifiedDate;
+
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
@@ -744,10 +749,6 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
         postPost.commentCount = remotePost.commentCount;
         postPost.likeCount = remotePost.likeCount;
         postPost.postFormat = remotePost.format;
-        postPost.autosaveTitle = remotePost.autosaveTitle;
-        postPost.autosaveExcerpt = remotePost.autosaveExcerpt;
-        postPost.autosaveContent = remotePost.autosaveContent;
-        postPost.autosaveModifiedDate = remotePost.autosaveModifiedDate;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         postPost.postType = remotePost.type;
         postPost.isStickyPost = (remotePost.isStickyPost != nil) ? remotePost.isStickyPost.boolValue : NO;
@@ -820,10 +821,6 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
     remotePost.authorAvatarURL = post.authorAvatarURL;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
-    remotePost.autosaveTitle = post.autosaveTitle;
-    remotePost.autosaveExcerpt = post.autosaveExcerpt;
-    remotePost.autosaveContent = post.autosaveContent;
-    remotePost.autosaveModifiedDate = post.autosaveModifiedDate;
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;

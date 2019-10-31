@@ -16,4 +16,8 @@ extension AbstractPost: ImageSourceInformation {
     var isLocalDraft: Bool {
         return self.isDraft() && !self.hasRemote()
     }
+
+    var isAutosaveRevisionAvailable: Bool {
+        return [autosaveTitle, autosaveExcerpt, autosaveContent].compactMap { $0 }.joined().trim().isEmpty == false
+    }
 }
