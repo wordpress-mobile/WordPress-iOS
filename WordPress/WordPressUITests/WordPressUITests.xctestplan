@@ -19,6 +19,7 @@
   },
   "testTargets" : [
     {
+      "parallelizable" : true,
       "selectedTests" : [
         "EditorAztecTests\/testBasicPostPublish()",
         "EditorAztecTests\/testLongTitle()",
