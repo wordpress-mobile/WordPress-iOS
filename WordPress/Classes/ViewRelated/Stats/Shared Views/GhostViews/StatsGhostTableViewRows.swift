@@ -21,6 +21,20 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostTopCell.defaultNib, StatsGhostTopCell.self)
     }()
+
+    var hideTopBorder = false
+    var hideBottomBorder = false
+
+    func configureCell(_ cell: UITableViewCell) {
+        DispatchQueue.main.async {
+            cell.startGhostAnimation(style: GhostCellStyle.muriel)
+        }
+
+        if let detailCell = cell as? StatsGhostTopCell {
+            detailCell.topBorder?.isHidden = hideTopBorder
+            detailCell.bottomBorder?.isHidden = hideBottomBorder
+        }
+    }
 }
 
 struct StatsGhostTabbedImmutableRow: StatsRowGhostable {
@@ -45,6 +59,22 @@ struct StatsGhostDetailRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostSingleRowCell.defaultNib, StatsGhostSingleRowCell.self)
     }()
+
+    var hideTopBorder = false
+    var hideBottomBorder = false
+    var enableTopPadding = false
+
+    func configureCell(_ cell: UITableViewCell) {
+        DispatchQueue.main.async {
+            cell.startGhostAnimation(style: GhostCellStyle.muriel)
+        }
+
+        if let detailCell = cell as? StatsGhostSingleRowCell {
+            detailCell.topBorder?.isHidden = hideTopBorder
+            detailCell.bottomBorder?.isHidden = hideBottomBorder
+            detailCell.enableTopPadding = enableTopPadding
+        }
+    }
 }
 
 private enum GhostCellStyle {
