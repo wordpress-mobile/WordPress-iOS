@@ -44,7 +44,7 @@ final class PostAutoUploadInteractor {
             return .upload
         } else {
             // because autosave call will end up uplaoding a post on self hosted we don't autosave in this case
-            return post.isHostedAtWPcom ? .autoSave : .nothing
+            return post.supportsWPComAPI ? .autoSave : .nothing
         }
     }
 
