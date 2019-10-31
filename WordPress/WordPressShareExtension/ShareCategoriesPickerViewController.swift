@@ -158,7 +158,10 @@ class ShareCategoriesPickerViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength)
+        tableView.flashRowAtIndexPath(indexPath,
+                                      scrollPosition: .none,
+                                      flashLength: Constants.flashAnimationLength,
+                                      completion: nil)
         selectedCategoryTableRowAt(indexPath)
     }
 }
