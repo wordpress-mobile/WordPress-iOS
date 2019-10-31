@@ -20,6 +20,7 @@ commands:
           command: |
             mkdir testresults
             zip -r testresults/xcresult.zip test-without-building.xcresult
+          when: on_fail # Zips the .xcresult file when tests fail, so it can be saved
       - store_artifacts:
           name: Save xcresult
           path: testresults
