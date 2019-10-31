@@ -350,16 +350,19 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     fileprivate func refreshAccountDetails() {
-        guard let account = defaultAccount() else { return }
+        guard let account = defaultAccount() else {
+            reloadViewModel()
+            return
+        }
+
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.updateUserDetails(for: account, success: { [weak self] in
             self?.reloadViewModel()
-        }, failure: { error in
-            DDLogError(error.localizedDescription)
+            }, failure: { error in
+                DDLogError(error.localizedDescription)
         })
     }
-
 
     // MARK: - LogOut
 
