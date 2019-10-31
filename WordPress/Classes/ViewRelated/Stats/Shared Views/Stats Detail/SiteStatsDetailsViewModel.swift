@@ -154,8 +154,6 @@ class SiteStatsDetailsViewModel: Observable {
             return ImmuTable.Empty
         }
 
-        var tableRows = [ImmuTableRow]()
-
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
@@ -299,13 +297,8 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         default:
-            break
+            return ImmuTable.Empty
         }
-
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: tableRows)
-            ])
     }
 
     // MARK: - Refresh Data
