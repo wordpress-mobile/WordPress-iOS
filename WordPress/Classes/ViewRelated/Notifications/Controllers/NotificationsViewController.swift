@@ -910,6 +910,7 @@ private extension NotificationsViewController {
         selectedNotification = notification
 
         if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
+            DDLogInfo("\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")")
             tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
         }
     }
