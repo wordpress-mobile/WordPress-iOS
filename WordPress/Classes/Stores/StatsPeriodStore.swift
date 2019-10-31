@@ -1748,9 +1748,10 @@ extension StatsPeriodStore {
     }
 
     func postStatsFetchingStatuses(for postId: Int?) -> StoreFetchingStatus {
-        guard let postId = postId else {
+        guard let postId = postId,
+            let status = state.postStatsFetchingStatuses[postId] else {
             return .idle
         }
-        return state.postStatsFetchingStatuses[postId] ?? .idle
+        return status
     }
 }
