@@ -1014,8 +1014,18 @@ private extension SiteStatsDetailsViewModel {
 
         switch status {
         case .loading, .idle:
-            rows.append(contentsOf: rowsBlock(status))
-            rows.append(StatsGhostDetailRow(hideTopBorder: true, enableTopPadding: true))
+            let content = rowsBlock(status)
+
+            // Check if the content has more than 1 row
+            if content.count <= 1 {
+                rows.append(StatsGhostTopImmutableRow(hideBottomBorder: true))
+                rows.append(contentsOf: (0...5).map { index in
+                    StatsGhostDetailRow(hideTopBorder: true, hideBottomBorder: index != 5)
+                })
+            } else {
+                rows.append(contentsOf: content)
+                rows.append(StatsGhostDetailRow(hideTopBorder: true, enableTopPadding: true))
+            }
         case .success:
             rows.append(contentsOf: rowsBlock(status))
         case .error:
