@@ -114,7 +114,9 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
                        delegate: self,
                        expectedPeriodCount: allAnnualInsights.count,
                        mostRecentDate: mostRecentDate)
-
+        if asyncLoadingActivated {
+            cell.animateGhostLayers(viewModel?.storeIsFetching(statSection: statSection) == true)
+        }
         return cell
     }
 
