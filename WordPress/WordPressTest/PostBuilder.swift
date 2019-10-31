@@ -60,6 +60,14 @@ class PostBuilder {
         return self
     }
 
+    func autosaved() -> PostBuilder {
+        post.autosaveTitle = "a"
+        post.autosaveExcerpt = "b"
+        post.autosaveContent = "c"
+        post.autosaveModifiedDate = Date()
+        return self
+     }
+
     func withImage() -> PostBuilder {
         post.pathForDisplayImage = "https://localhost/image.png"
         return self
