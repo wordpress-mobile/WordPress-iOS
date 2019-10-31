@@ -77,6 +77,12 @@ struct StatsGhostDetailRow: StatsRowGhostable {
     }
 }
 
+struct StatsGhostTitleRow: StatsRowGhostable {
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(StatsGhostTitleCell.defaultNib, StatsGhostTitleCell.self)
+    }()
+}
+
 private enum GhostCellStyle {
     static let muriel = GhostStyle(beatStartColor: .placeholderElement, beatEndColor: .placeholderElementFaded)
 }
