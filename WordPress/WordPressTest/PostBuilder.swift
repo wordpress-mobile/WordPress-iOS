@@ -163,6 +163,11 @@ class PostBuilder {
         return self
     }
 
+    func supportsWPComAPI() -> PostBuilder {
+        post.blog.supportsWPComAPI()
+        return self
+    }
+
     func confirmedAutoUpload() -> PostBuilder {
         post.shouldAttemptAutoUpload = true
         return self

@@ -34,16 +34,16 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.4'
+    pod 'WordPressUI', '~> 1.5-beta.1'
 
     ## for development:
-    # pod 'WordPressUI', :path => '../WordPressUI-iOS'
+    #pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'update-fancy-button-style'
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.2-beta.1'
+    pod 'WordPressKit', '~> 4.5.2-beta.2'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
@@ -140,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.15.1'
+    gutenberg :tag => 'v1.16.0'
 
     ## Third party libraries
     ## =====================
@@ -148,7 +148,6 @@ target 'WordPress' do
     pod '1PasswordExtension', '1.8.5'
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'Giphy', '1.1.3'
     pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
@@ -174,9 +173,9 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.1'
+    pod 'WordPressAuthenticator', '~> 1.10.2-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fancy-button-border-style'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
     aztec
     wordpress_ui
@@ -307,44 +306,15 @@ target 'WordPressNotificationServiceExtension' do
 end
 
 
-
-## WordPress.com Stats
+## Mocks
 ## ===================
 ##
-target 'WordPressComStatsiOS' do
-    project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
-
-    shared_with_all_pods
-    shared_with_networking_pods
-
-    ## Automattic libraries
-    ## ====================
-    ##
-    wordpress_ui
-end
-
-## WordPress.com Stats Tests
-## =========================
-##
-target 'WordPressComStatsiOSTests' do
-  project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  ## Automattic libraries
-  ## ====================
-  ##
-  wordpress_ui
-
-  shared_test_pods
-end
-
 def wordpress_mocks
   pod 'WordPressMocks', '~> 0.0.6'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
+
 
 ## Screenshot Generation
 ## ===================
@@ -371,7 +341,7 @@ end
 # Make all pods that are not shared across multiple targets into static frameworks by overriding the static_framework? function to return true
 # Linking the shared frameworks statically would lead to duplicate symbols
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
-shared_targets = ['WordPressFlux', 'WordPressComStatsiOS']
+shared_targets = ['WordPressFlux']
 pre_install do |installer|
     static = []
     dynamic = []

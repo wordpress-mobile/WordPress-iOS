@@ -468,12 +468,18 @@ fileprivate extension ShareModularViewController {
         switch ModulesSection(rawValue: indexPath.section)! {
         case .categories:
             if shareData.categoryCountForSelectedSite > 1 {
-                modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength)
+                modulesTableView.flashRowAtIndexPath(indexPath,
+                                                     scrollPosition: .none,
+                                                     flashLength: Constants.flashAnimationLength,
+                                                     completion: nil)
                 showCategoriesPicker()
             }
             return
         case .tags:
-            modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength)
+            modulesTableView.flashRowAtIndexPath(indexPath,
+                                                 scrollPosition: .none,
+                                                 flashLength: Constants.flashAnimationLength,
+                                                 completion: nil)
             showTagsPicker()
             return
         case .summary:
@@ -552,7 +558,10 @@ fileprivate extension ShareModularViewController {
     }
 
     func selectedSitesTableRowAt(_ indexPath: IndexPath) {
-        sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength)
+        sitesTableView.flashRowAtIndexPath(indexPath,
+                                           scrollPosition: .none,
+                                           flashLength: Constants.flashAnimationLength,
+                                           completion: nil)
 
         guard let cell = sitesTableView.cellForRow(at: indexPath),
             let site = siteForRowAtIndexPath(indexPath),

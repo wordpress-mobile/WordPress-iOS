@@ -201,7 +201,7 @@ class WPSplitViewController: UISplitViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if isViewHorizontallyCompact() && preferredDisplayMode == .primaryHidden {
+        if hasHorizontallyCompactView() && preferredDisplayMode == .primaryHidden {
             setPrimaryViewControllerHidden(false, animated: false)
         }
     }
@@ -560,7 +560,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
             let performTransition = { (animated: Bool) in
                 self.setPrimaryViewControllerHidden(false, animated: animated)
 
-                if animated && !self.isViewHorizontallyCompact() {
+                if animated && !self.hasHorizontallyCompactView() {
                     navigationController.navigationBar.fadeOutNavigationItems(animated: true)
                 }
             }
@@ -580,7 +580,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         // we can implement the delegate ourselves (see: http://stackoverflow.com/a/38859457/570547)
         navigationController.interactivePopGestureRecognizer?.delegate = self
 
-        if !isViewHorizontallyCompact() {
+        if !hasHorizontallyCompactView() {
             // Restore navigation items after a push or pop if they were previously hidden
             navigationController.navigationBar.fadeInNavigationItemsIfNecessary()
 
@@ -603,7 +603,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         let transitionInvolvesFullscreenViewController = toVC is PrefersFullscreenDisplay || fromVC is PrefersFullscreenDisplay
         let movingFromOrToFullscreen = !hasFullscreenViewControllersInStack && transitionInvolvesFullscreenViewController
 
-        if !isViewHorizontallyCompact() && movingFromOrToFullscreen {
+        if !hasHorizontallyCompactView() && movingFromOrToFullscreen {
             return WPFullscreenNavigationTransition(operation: operation)
         }
 
@@ -673,7 +673,7 @@ extension WPSplitViewController: UIGestureRecognizerDelegate {
 
 extension UIViewController {
     @objc var splitViewControllerIsHorizontallyCompact: Bool {
-        return splitViewController?.isViewHorizontallyCompact() ?? isViewHorizontallyCompact()
+        return splitViewController?.hasHorizontallyCompactView() ?? hasHorizontallyCompactView()
     }
 }
 

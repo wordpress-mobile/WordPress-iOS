@@ -37,7 +37,8 @@ class GutenbergVideoUploadProcessor: Processor {
 
     func process(_ text: String) -> String {
         var result = videoHtmlProcessor.process(text)
-        result = result.replacingOccurrences(of: "wp:video {\"id\":\(String(mediaUploadID))}", with: "wp:video {\"id\":\(String(serverMediaID))}")
+        result = result.replacingOccurrences(of: "wp:video {\"id\":\(String(mediaUploadID))", with: "wp:video {\"id\":\(String(serverMediaID))")
+        result = result.replacingOccurrences(of: "wp:media-text {\"mediaId\":\(String(mediaUploadID))", with: "wp:media-text {\"mediaId\":\(String(serverMediaID))")
         return result
     }
 

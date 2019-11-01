@@ -4,11 +4,8 @@
 enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
-    case statsRefresh
-    case statsInsightsManagement
     case domainCredit
     case signInWithApple
-    case statsAsyncLoading
     case statsAsyncLoadingDWMY
 
     /// Returns a boolean indicating if the feature is enabled
@@ -18,10 +15,6 @@ enum FeatureFlag: Int {
             return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .statsRefresh:
-            return true
-        case .statsInsightsManagement:
-            return true
         case .domainCredit:
             return true
         case .signInWithApple:
@@ -30,8 +23,6 @@ enum FeatureFlag: Int {
             if BuildConfiguration.current == .a8cBranchTest || BuildConfiguration.current == .a8cPrereleaseTesting {
                 return false
             }
-            return true
-        case .statsAsyncLoading:
             return true
         case .statsAsyncLoadingDWMY:
             return BuildConfiguration.current == .localDeveloper
