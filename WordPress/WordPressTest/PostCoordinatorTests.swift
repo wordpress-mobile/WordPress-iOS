@@ -148,6 +148,7 @@ class PostCoordinatorTests: XCTestCase {
             .withRemote()
             .with(status: .draft)
             .with(remoteStatus: .failed)
+            .supportsWPComAPI()
             .build()
         try! context.save()
 
@@ -239,6 +240,7 @@ class PostCoordinatorTests: XCTestCase {
             .withRemote()
             .with(status: .draft)
             .with(remoteStatus: .failed)
+            .supportsWPComAPI()
             .build()
         try! context.save()
 

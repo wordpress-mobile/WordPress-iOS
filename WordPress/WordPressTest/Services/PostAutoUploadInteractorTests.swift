@@ -120,6 +120,14 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
         expect(action).to(equal(.upload))
     }
 
+    func testReturnNothingPostActionWhenSelfHostedShouldNotBeAutoUploaded() {
+        let blog = createBlog(supportsWPComAPI: false)
+        let post = createPost(.draft, hasRemote: true, confirmedAutoUpload: false, blog: blog)
+        let action = interactor.autoUploadAction(for: post)
+
+        expect(action).to(equal(.nothing))
+    }
+
     func testPageNotAutoUploaded() {
         let page = createPage(.draft)
 
@@ -134,7 +142,8 @@ private extension PostCoordinatorUploadActionUseCaseTests {
                     remoteStatus: AbstractPostRemoteStatus = .failed,
                     hasRemote: Bool = false,
                     confirmedAutoUpload: Bool = false,
-                    attemptsCount: Int = 1) -> Post {
+                    attemptsCount: Int = 1,
+                    blog: Blog? = nil) -> Post {
         let post = Post(context: context)
         post.status = status
         post.remoteStatus = remoteStatus
@@ -146,6 +155,12 @@ private extension PostCoordinatorUploadActionUseCaseTests {
 
         if confirmedAutoUpload {
             post.shouldAttemptAutoUpload = true
+        }
+
+        if let blog = blog {
+            post.blog = blog
+        } else {
+            post.blog = createBlog(supportsWPComAPI: true)
         }
 
         return post
@@ -162,5 +177,15 @@ private extension PostCoordinatorUploadActionUseCaseTests {
         }
 
         return page
+    }
+
+    func createBlog(supportsWPComAPI: Bool) -> Blog {
+        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
+
+        if supportsWPComAPI {
+            blog.supportsWPComAPI()
+        }
+
+        return blog
     }
 }

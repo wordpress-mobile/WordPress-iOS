@@ -975,7 +975,7 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func insightsImmuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
-        if insightsStore.containsCachedData(for: row.type) || !Feature.enabled(.statsAsyncLoading) {
+        if insightsStore.containsCachedData(for: row.type) {
             return ImmuTable(sections: [
                 ImmuTableSection(
                     rows: rowsBlock())
