@@ -38,20 +38,40 @@
                             <constraint firstAttribute="height" constant="15" id="UQI-BL-OnV"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HJa-HH-5pD">
+                        <rect key="frame" x="0.0" y="55" width="320" height="1"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="bml-9u-GCz"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="vJL-bf-4du" firstAttribute="leading" secondItem="pRM-78-2Uy" secondAttribute="leading" id="3rG-6t-htM"/>
                     <constraint firstItem="gnH-hW-2Fl" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" constant="8" id="787-lu-CFf"/>
+                    <constraint firstItem="pRM-78-2Uy" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" id="7Yk-Eo-k23"/>
                     <constraint firstItem="vJL-bf-4du" firstAttribute="top" secondItem="pRM-78-2Uy" secondAttribute="bottom" constant="5" id="AMl-I3-Lzf"/>
                     <constraint firstItem="pRM-78-2Uy" firstAttribute="leading" secondItem="gnH-hW-2Fl" secondAttribute="trailing" constant="16" id="BYO-fD-8jp"/>
-                    <constraint firstItem="pRM-78-2Uy" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" id="DhM-cY-2vj"/>
+                    <constraint firstItem="pRM-78-2Uy" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" priority="999" constant="16" id="DhM-cY-2vj"/>
                     <constraint firstAttribute="trailing" secondItem="pRM-78-2Uy" secondAttribute="trailing" constant="16" id="IiQ-ym-6Zv"/>
+                    <constraint firstItem="HJa-HH-5pD" firstAttribute="leading" secondItem="Tm8-8k-Eya" secondAttribute="leading" id="Ld6-OS-DxY"/>
                     <constraint firstAttribute="bottom" secondItem="vJL-bf-4du" secondAttribute="bottom" constant="16" id="P4x-i5-h5n"/>
+                    <constraint firstAttribute="bottom" secondItem="HJa-HH-5pD" secondAttribute="bottom" id="UGf-V6-3XK"/>
                     <constraint firstItem="gnH-hW-2Fl" firstAttribute="leading" secondItem="Tm8-8k-Eya" secondAttribute="leading" constant="16" id="hpi-h9-AcD"/>
+                    <constraint firstItem="HJa-HH-5pD" firstAttribute="leading" secondItem="Tm8-8k-Eya" secondAttribute="leading" priority="999" constant="60" id="k0g-7X-o66"/>
+                    <constraint firstAttribute="trailing" secondItem="HJa-HH-5pD" secondAttribute="trailing" id="kmz-br-mC9"/>
+                    <constraint firstItem="gnH-hW-2Fl" firstAttribute="top" secondItem="Tm8-8k-Eya" secondAttribute="top" priority="999" constant="24" id="mNY-IP-lQN"/>
                     <constraint firstItem="vJL-bf-4du" firstAttribute="trailing" secondItem="pRM-78-2Uy" secondAttribute="trailing" id="zKf-1h-zGq"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="border" destination="HJa-HH-5pD" id="v1x-g8-8Bn"/>
+                <outlet property="borderHeightConstraint" destination="bml-9u-GCz" id="db2-uf-jTG"/>
+                <outlet property="borderLeadingConstraint" destination="Ld6-OS-DxY" id="WeO-za-Psa"/>
+                <outlet property="imageTopConstraint" destination="787-lu-CFf" id="hvQ-cB-gfc"/>
+                <outlet property="labelTopConstraint" destination="7Yk-Eo-k23" id="CvQ-56-gqt"/>
+            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="161.38392857142856"/>
         </tableViewCell>
     </objects>

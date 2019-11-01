@@ -109,7 +109,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
                        delegate: self,
                        expectedPeriodCount: allAnnualInsights.count,
                        mostRecentDate: mostRecentDate)
-
+        cell.animateGhostLayers(viewModel?.storeIsFetching(statSection: statSection) == true)
         return cell
     }
 
@@ -157,7 +157,7 @@ private extension SiteStatsDetailTableViewController {
                 DetailSubtitlesCountriesHeaderRow.self,
                 CountriesMapRow.self,
                 StatsErrorRow.self,
-                StatsGhostTopImmutableRow.self,
+                StatsGhostTopHeaderImmutableRow.self,
                 StatsGhostDetailRow.self]
     }
 
@@ -328,11 +328,8 @@ extension SiteStatsDetailTableViewController: NoResultsViewHost {
 
 extension SiteStatsDetailTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-        defer {
-            refreshData()
-        }
-
         hideNoResults()
+        refreshData()
     }
 }
 

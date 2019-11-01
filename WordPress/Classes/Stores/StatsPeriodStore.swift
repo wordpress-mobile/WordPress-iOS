@@ -732,6 +732,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topPostsAndPagesStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching posts: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching posts.")
+
+                DispatchQueue.main.async {
+                    self?.receivedPostsAndPages(posts, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingPostsAndPages = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
@@ -757,6 +777,26 @@ private extension StatsPeriodStore {
 
     func fetchAllSearchTerms(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topSearchTermsStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching search terms: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching search terms.")
+
+                DispatchQueue.main.async {
+                    self?.receivedSearchTerms(searchTerms, error)
+                }
+                self?.persistToCoreData()
+            })
             return
         }
 
@@ -788,6 +828,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topVideosStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching videos: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching videos.")
+
+                DispatchQueue.main.async {
+                    self?.receivedVideos(videos, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingVideos = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
@@ -813,6 +873,26 @@ private extension StatsPeriodStore {
 
     func fetchAllClicks(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topClicksStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching clicks: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching clicks.")
+
+                DispatchQueue.main.async {
+                    self?.receivedClicks(clicks, error)
+                }
+                self?.persistToCoreData()
+            })
             return
         }
 
@@ -844,6 +924,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topAuthorsStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching authors: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching authors.")
+
+                DispatchQueue.main.async {
+                    self?.receivedAuthors(authors, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingAuthors = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
@@ -869,6 +969,26 @@ private extension StatsPeriodStore {
 
     func fetchAllReferrers(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topReferrersStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching referrers: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching referrers.")
+
+                DispatchQueue.main.async {
+                    self?.receivedReferrers(referrers, error)
+                }
+                self?.persistToCoreData()
+            })
             return
         }
 
@@ -900,6 +1020,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topCountriesStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching countries: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching countries.")
+
+                DispatchQueue.main.async {
+                    self?.receivedCountries(countries, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingCountries = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
@@ -928,6 +1068,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topPublishedStatus = .loading
+
+            operationQueue.addOperation(PublishedPostOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching published: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching published.")
+
+                DispatchQueue.main.async {
+                    self?.receivedPublished(published, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingPublished = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
@@ -951,6 +1111,26 @@ private extension StatsPeriodStore {
 
     func fetchAllFileDownloads(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topFileDownloadsStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 1) { [weak self] (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error file downloads: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished file downloads.")
+
+                DispatchQueue.main.async {
+                    self?.receivedFileDownloads(downloads, error)
+                }
+                self?.persistToCoreData()
+            })
             return
         }
 

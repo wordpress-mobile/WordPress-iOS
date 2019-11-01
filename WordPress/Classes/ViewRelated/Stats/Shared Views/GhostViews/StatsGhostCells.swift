@@ -1,24 +1,74 @@
 class StatsGhostBaseCell: UITableViewCell {
     private typealias Style = WPStyleGuide.Stats
+    private(set) var topBorder: UIView?
+    private(set) var bottomBorder: UIView?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         Style.configureCell(self)
-        addTopBorder(withColor: .divider).isGhostableDisabled = true
-        addBottomBorder(withColor: .divider).isGhostableDisabled = true
+        setupBorders()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         stopGhostAnimation()
     }
+
+    private func setupBorders() {
+        topBorder = addTopBorder(withColor: .divider)
+        topBorder?.isGhostableDisabled = true
+
+        bottomBorder = addBottomBorder(withColor: .divider)
+        bottomBorder?.isGhostableDisabled = true
+    }
 }
 
 class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable { }
+class StatsGhostTopHeaderCell: StatsGhostBaseCell, NibLoadable {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        topBorder?.removeFromSuperview()
+        bottomBorder?.removeFromSuperview()
+    }
+}
 class StatsGhostChartCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTabbedCell: StatsGhostBaseCell, NibLoadable { }
-class StatsGhostSingleRowCell: StatsGhostBaseCell, NibLoadable { }
+class StatsGhostSingleRowCell: StatsGhostBaseCell, NibLoadable {
+    @IBOutlet private var border: UIView! {
+        didSet {
+            border.backgroundColor = .divider
+            border.isGhostableDisabled = true
+        }
+    }
+    @IBOutlet private var imageTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var labelTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var borderLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private var borderHeightConstraint: NSLayoutConstraint! {
+        didSet {
+            borderHeightConstraint.constant = .hairlineBorderWidth
+        }
+    }
+
+    var enableTopPadding: Bool = false {
+        didSet {
+            imageTopConstraint.isActive = !enableTopPadding
+            labelTopConstraint.isActive = !enableTopPadding
+        }
+    }
+
+    var isLastRow: Bool = false {
+        didSet {
+            borderLeadingConstraint.isActive = isLastRow
+        }
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        bottomBorder?.removeFromSuperview()
+    }
+}
 class StatsGhostPostingActivityCell: StatsGhostBaseCell, NibLoadable {
     private var monthData: [PostingStreakEvent] = {
         return Date().getAllDays().map { PostingStreakEvent(date: $0, postCount: 0) }
