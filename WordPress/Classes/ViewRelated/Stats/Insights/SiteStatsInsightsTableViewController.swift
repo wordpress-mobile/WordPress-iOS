@@ -211,9 +211,6 @@ private extension SiteStatsInsightsTableViewController {
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
         }
-        else {
-            hideNoResults()
-        }
 
         refreshControl?.endRefreshing()
     }
