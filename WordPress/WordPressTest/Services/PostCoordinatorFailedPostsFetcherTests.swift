@@ -72,15 +72,19 @@ private extension PostCoordinatorFailedPostsFetcherTests {
         if let blog = blog {
             post.blog = blog
         } else {
-            post.blog = createBlog(isHostedAtWPcom: true)
+            post.blog = createBlog(supportsWPComAPI: true)
         }
 
         return post
     }
 
-    func createBlog(isHostedAtWPcom: Bool) -> Blog {
+    func createBlog(supportsWPComAPI: Bool) -> Blog {
         let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
-        blog.isHostedAtWPcom = isHostedAtWPcom
+
+        if supportsWPComAPI {
+            blog.supportsWPComAPI()
+        }
+
         return blog
     }
 }

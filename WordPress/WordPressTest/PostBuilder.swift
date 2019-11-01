@@ -163,8 +163,8 @@ class PostBuilder {
         return self
     }
 
-    func `is`(hostedAtWPcom: Bool) -> PostBuilder {
-        post.blog.isHostedAtWPcom = hostedAtWPcom
+    func supportsWPComAPI() -> PostBuilder {
+        post.blog.supportsWPComAPI()
         return self
     }
 
