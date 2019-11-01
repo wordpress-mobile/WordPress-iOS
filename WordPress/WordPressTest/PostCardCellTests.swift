@@ -472,6 +472,15 @@ class PostCardCellTests: XCTestCase {
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
     }
 
+    func testFailedMessageForCanceledPostWithFailedMedias() {
+        let post = PostBuilder(context).drafted().with(remoteStatus: .failed).with(image: "test.png", status: .failed, autoUploadFailureCount: 3).cancelledAutoUpload().revision().build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal(i18n("We couldn't upload this media.")))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.error))
+    }
+
     func testMessageWhenPostIsArevision() {
         let post = PostBuilder(context).revision().with(remoteStatus: .failed).with(remoteStatus: .local).build()
 
