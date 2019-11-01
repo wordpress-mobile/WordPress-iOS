@@ -127,8 +127,7 @@ class SiteStatsPeriodViewModel: Observable {
                                                 return self?.postsAndPagesTableRows() ?? errorBlock(.periodPostsAndPages)
             }, loading: {
                 return loadingBlock(.periodPostsAndPages)
-            },
-               error: {
+            }, error: {
                 return errorBlock(.periodPostsAndPages)
         }))
         tableRows.append(contentsOf: blocks(for: .topReferrers,
@@ -138,8 +137,7 @@ class SiteStatsPeriodViewModel: Observable {
                                                 return self?.referrersTableRows() ?? errorBlock(.periodReferrers)
             }, loading: {
                 return loadingBlock(.periodReferrers)
-            },
-               error: {
+            }, error: {
                 return errorBlock(.periodReferrers)
         }))
         tableRows.append(contentsOf: blocks(for: .topClicks,
@@ -149,13 +147,39 @@ class SiteStatsPeriodViewModel: Observable {
                                                 return self?.clicksTableRows() ?? errorBlock(.periodClicks)
             }, loading: {
                 return loadingBlock(.periodClicks)
-            },
-               error: {
+            }, error: {
                 return errorBlock(.periodClicks)
         }))
-        tableRows.append(contentsOf: authorsTableRows())
-        tableRows.append(contentsOf: countriesTableRows())
-        tableRows.append(contentsOf: searchTermsTableRows())
+        tableRows.append(contentsOf: blocks(for: .topAuthors,
+                                            type: .period,
+                                            status: store.topAuthorsStatus,
+                                            block: { [weak self] in
+                                                return self?.authorsTableRows() ?? errorBlock(.periodAuthors)
+            }, loading: {
+                return loadingBlock(.periodAuthors)
+            }, error: {
+                return errorBlock(.periodAuthors)
+        }))
+        tableRows.append(contentsOf: blocks(for: .topCountries,
+                                            type: .period,
+                                            status: store.topCountriesStatus,
+                                            block: { [weak self] in
+                                                return self?.countriesTableRows() ?? errorBlock(.periodCountries)
+            }, loading: {
+                return loadingBlock(.periodCountries)
+            }, error: {
+                return errorBlock(.periodCountries)
+        }))
+        tableRows.append(contentsOf: blocks(for: .topSearchTerms,
+                                            type: .period,
+                                            status: store.topSearchTermsStatus,
+                                            block: { [weak self] in
+                                                return self?.searchTermsTableRows() ?? errorBlock(.periodSearchTerms)
+            }, loading: {
+                return loadingBlock(.periodSearchTerms)
+            }, error: {
+                return errorBlock(.periodSearchTerms)
+        }))
         tableRows.append(contentsOf: blocks(for: .topPublished,
                                             type: .period,
                                             status: store.topPublishedStatus,
@@ -163,12 +187,29 @@ class SiteStatsPeriodViewModel: Observable {
                                                 return self?.publishedTableRows() ?? errorBlock(.periodPublished)
             }, loading: {
                 return loadingBlock(.periodPublished)
-            },
-               error: {
+            }, error: {
                 return errorBlock(.periodPublished)
         }))
-        tableRows.append(contentsOf: videosTableRows())
-        tableRows.append(contentsOf: fileDownloadsTableRows())
+        tableRows.append(contentsOf: blocks(for: .topVideos,
+                                            type: .period,
+                                            status: store.topVideosStatus,
+                                            block: { [weak self] in
+                                                return self?.videosTableRows() ?? errorBlock(.periodVideos)
+            }, loading: {
+                return loadingBlock(.periodVideos)
+            }, error: {
+                return errorBlock(.periodVideos)
+        }))
+        tableRows.append(contentsOf: blocks(for: .topFileDownloads,
+                                            type: .period,
+                                            status: store.topFileDownloadsStatus,
+                                            block: { [weak self] in
+                                                return self?.fileDownloadsTableRows() ?? errorBlock(.periodFileDownloads)
+            }, loading: {
+                return loadingBlock(.periodFileDownloads)
+            }, error: {
+                return errorBlock(.periodFileDownloads)
+        }))
 
         tableRows.append(TableFooterRow())
 

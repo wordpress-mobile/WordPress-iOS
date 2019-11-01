@@ -8,9 +8,6 @@
       location = "group:WordPressFlux/WordPressFlux.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
