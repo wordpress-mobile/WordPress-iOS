@@ -43,7 +43,8 @@ final class PostAutoUploadInteractor {
         if post.isLocalDraft || post.shouldAttemptAutoUpload {
             return .upload
         } else {
-            return .autoSave
+            // because autosave call will end up uplaoding a post on self hosted we don't autosave in this case
+            return post.supportsWPComAPI ? .autoSave : .nothing
         }
     }
 
