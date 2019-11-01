@@ -183,7 +183,7 @@ private extension SiteStatsDetailTableViewController {
                                          CountriesMapRow.self]
         if asyncLoadingActivated {
             rows.append(contentsOf: [StatsErrorRow.self,
-                                     StatsGhostTopImmutableRow.self,
+                                     StatsGhostTopHeaderImmutableRow.self,
                                      StatsGhostDetailRow.self])
         }
         return rows

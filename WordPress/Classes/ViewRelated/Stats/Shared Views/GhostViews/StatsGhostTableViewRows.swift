@@ -37,6 +37,12 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
     }
 }
 
+struct StatsGhostTopHeaderImmutableRow: StatsRowGhostable {
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(StatsGhostTopHeaderCell.defaultNib, StatsGhostTopHeaderCell.self)
+    }()
+}
+
 struct StatsGhostTabbedImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostTabbedCell.defaultNib, StatsGhostTabbedCell.self)
@@ -61,7 +67,7 @@ struct StatsGhostDetailRow: StatsRowGhostable {
     }()
 
     var hideTopBorder = false
-    var hideBottomBorder = false
+    var isLastRow = false
     var enableTopPadding = false
 
     func configureCell(_ cell: UITableViewCell) {
@@ -71,7 +77,7 @@ struct StatsGhostDetailRow: StatsRowGhostable {
 
         if let detailCell = cell as? StatsGhostSingleRowCell {
             detailCell.topBorder?.isHidden = hideTopBorder
-            detailCell.bottomBorder?.isHidden = hideBottomBorder
+            detailCell.isLastRow = isLastRow
             detailCell.enableTopPadding = enableTopPadding
         }
     }

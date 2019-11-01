@@ -1194,6 +1194,7 @@
 		9A162F2521C26F5F00FDC035 /* UIViewController+ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */; };
 		9A162F2921C271D300FDC035 /* RevisionBrowserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2821C271D300FDC035 /* RevisionBrowserState.swift */; };
 		9A162F2B21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2A21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift */; };
+		9A19D441236C7C7500D393E5 /* StatsGhostTopHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A19D440236C7C7500D393E5 /* StatsGhostTopHeaderCell.xib */; };
 		9A1A67A622B2AD4E00FF8422 /* CountriesMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1A67A522B2AD4E00FF8422 /* CountriesMap.swift */; };
 		9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */; };
 		9A2B28E8219046ED00458F2A /* ShowRevisionsListManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */; };
@@ -3397,6 +3398,7 @@
 		9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ChildViewController.swift"; sourceTree = "<group>"; };
 		9A162F2821C271D300FDC035 /* RevisionBrowserState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionBrowserState.swift; sourceTree = "<group>"; };
 		9A162F2A21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionPreviewTextViewManager.swift; sourceTree = "<group>"; };
+		9A19D440236C7C7500D393E5 /* StatsGhostTopHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostTopHeaderCell.xib; sourceTree = "<group>"; };
 		9A1A67A522B2AD4E00FF8422 /* CountriesMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CountriesMap.swift; path = "Classes/ViewRelated/Stats/Period Stats/Countries/CountriesMap.swift"; sourceTree = SOURCE_ROOT; };
 		9A1DA2FB21370DD00082569B /* WordPress 80.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 80.xcdatamodel"; sourceTree = "<group>"; };
 		9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListTableViewHandler.swift; sourceTree = "<group>"; };
@@ -7294,6 +7296,7 @@
 				9A9E3FB3230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib */,
 				9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */,
 				9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */,
+				9A19D440236C7C7500D393E5 /* StatsGhostTopHeaderCell.xib */,
 				9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */,
 				9AC3C69A231543C2007933CD /* StatsGhostChartCell.xib */,
 				9A73CB072350DE4C002EF20C /* StatsGhostSingleRowCell.xib */,
@@ -9767,6 +9770,7 @@
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
 				17E363A222C41DBA000E0C79 /* hot_pink_icon_29pt.png in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
+				9A19D441236C7C7500D393E5 /* StatsGhostTopHeaderCell.xib in Resources */,
 				17DC4C4D22C5E6D60059CA11 /* open_source_icon_76pt@2x.png in Resources */,
 				436D562A2117312700CEAA33 /* RegisterDomainDetailsFooterView.xib in Resources */,
 				98579BC8203DD86F004086E4 /* EpilogueSectionHeaderFooter.xib in Resources */,
