@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import MediaEditor
 
 class MediaEditorTests: XCTestCase {

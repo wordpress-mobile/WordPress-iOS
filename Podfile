@@ -275,7 +275,7 @@ target 'WordPressTodayWidget' do
 
     shared_with_all_pods
     shared_with_networking_pods
-    
+
     wordpress_ui
 end
 
@@ -303,6 +303,21 @@ target 'WordPressNotificationServiceExtension' do
     wordpress_kit
     wordpress_shared
     wordpress_ui
+end
+
+## Media Editor Component
+## ==============================
+##
+target 'MediaEditor' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    pod 'TOCropViewController', '~> 2.5.2'
+
+    target 'MediaEditorTests' do
+        inherit! :search_paths
+
+        pod 'Nimble', '~> 7.3.1'
+    end
 end
 
 
