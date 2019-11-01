@@ -1,5 +1,3 @@
-Onze applicatie-ontwikkelaars hebben veel bugs geplet deze maand:
-- Je moet kunnen inloggen met je Apple inloggegevens, maar een bug zorgde ervoor dat dit soms niet lukte. Dat is nu opgelost.
-- Kleine aanpassingen om de blokeditor te verbeteren: links openen in de applicatie in plaats van Safari, en een vervelend probleem met linkbewerking, waarbij bestaande links soms werden verwijderd, is opgelost.
-- 'Donkere modus' is nu donker van kleur, maar niet grimmig, vooral nu er visuele verbeteringen zijn aangebracht en er minder bugs zijn.
-- Verticaal scrollen werkte soms niet in de extensie 'Delen' en dat is opgelost.
+- Blokeditor: We hebben een blok 'Media en tekst' toegevoegd! De optie voor linkverwijzing (Openen in nieuw tabblad) is toegevoegd aan de Afbeeldingsblok-instellingen. We hebben een bug gefixt waarbij de snelkoppeling 'Nieuw fotobericht' niet de geselecteerde foto toevoegde.
+- Statistieken: Je kunt Insights nu aan je voorkeuren aanpassen. Het laden van inzichten op een traag netwerk gaat nu sneller.
+- Nachtmodus: Verbeteringen en kleine bugfixes in de hele app.
