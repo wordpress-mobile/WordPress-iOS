@@ -136,4 +136,10 @@ extension AbstractPost {
     @objc override open func featuredImageURLForDisplay() -> URL? {
         return featuredImageURL
     }
+
+    /// Returns true if the post has any media that needs manual intervention to be uploaded
+    ///
+    func hasPermanentFailedMedia() -> Bool {
+        return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
+    }
 }
