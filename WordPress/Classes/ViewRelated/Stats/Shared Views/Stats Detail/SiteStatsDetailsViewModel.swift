@@ -1020,6 +1020,7 @@ private extension SiteStatsDetailsViewModel {
             } else {
                 rows.append(contentsOf: content)
                 rows.append(StatsGhostDetailRow(hideTopBorder: true,
+                                                isLastRow: true,
                                                 enableTopPadding: true))
             }
         case .success:
