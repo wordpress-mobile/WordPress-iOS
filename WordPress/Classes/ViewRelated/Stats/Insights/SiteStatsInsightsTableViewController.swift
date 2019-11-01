@@ -565,12 +565,9 @@ extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate 
             return
         }
 
-        defer {
-            addViewModelListeners()
-            refreshInsights()
-        }
-
         hideNoResults()
+        addViewModelListeners()
+        refreshInsights()
     }
 }
 
