@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="QDW-Xg-Lfq" customClass="StatsGhostTopHeaderCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QDW-Xg-Lfq" id="FZl-8a-aiR">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yac-EB-3AV">
+                        <rect key="frame" x="16" y="7" width="50" height="16"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="684-SL-ZOp"/>
+                            <constraint firstAttribute="width" constant="50" id="KH4-qX-YTe"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="LAj-Sq-EJB"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="VfS-7r-IRl"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yth-8k-r1U">
+                        <rect key="frame" x="348" y="7" width="50" height="16"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Att-Cj-W1H"/>
+                            <constraint firstAttribute="height" constant="16" id="K6W-s4-Kj8"/>
+                            <constraint firstAttribute="width" constant="50" id="a9K-Xb-0ol"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="spt-uz-09m"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Yth-8k-r1U" secondAttribute="trailing" constant="16" id="5Rp-bq-Zmm"/>
+                    <constraint firstAttribute="bottom" secondItem="Yac-EB-3AV" secondAttribute="bottom" constant="16" id="GOF-Di-lzB"/>
+                    <constraint firstItem="Yac-EB-3AV" firstAttribute="leading" secondItem="FZl-8a-aiR" secondAttribute="leading" constant="16" id="PDx-aa-JSZ"/>
+                    <constraint firstAttribute="bottom" secondItem="Yth-8k-r1U" secondAttribute="bottom" constant="16" id="VvT-WE-S82"/>
+                    <constraint firstItem="Yac-EB-3AV" firstAttribute="top" secondItem="FZl-8a-aiR" secondAttribute="top" constant="7" id="aQN-Zr-UMD"/>
+                    <constraint firstItem="Yth-8k-r1U" firstAttribute="top" secondItem="FZl-8a-aiR" secondAttribute="top" constant="7" id="zEa-ST-uKv"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <point key="canvasLocation" x="139" y="153"/>
+        </tableViewCell>
+    </objects>
+</document>

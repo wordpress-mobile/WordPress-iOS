@@ -18,3 +18,15 @@ final class BlogBuilder {
         return blog
     }
 }
+
+extension Blog {
+    func supportsWPComAPI() {
+        guard let context = managedObjectContext else {
+            return
+        }
+
+        let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
+        account.username = "foo"
+        account.addBlogsObject(self)
+    }
+}

@@ -25,6 +25,13 @@ class StatsGhostBaseCell: UITableViewCell {
 
 class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable { }
+class StatsGhostTopHeaderCell: StatsGhostBaseCell, NibLoadable {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        topBorder?.removeFromSuperview()
+        bottomBorder?.removeFromSuperview()
+    }
+}
 class StatsGhostChartCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTabbedCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTitleCell: StatsGhostBaseCell, NibLoadable {
@@ -34,14 +41,38 @@ class StatsGhostTitleCell: StatsGhostBaseCell, NibLoadable {
     }
 }
 class StatsGhostSingleRowCell: StatsGhostBaseCell, NibLoadable {
+    @IBOutlet private var border: UIView! {
+        didSet {
+            border.backgroundColor = .divider
+            border.isGhostableDisabled = true
+        }
+    }
     @IBOutlet private var imageTopConstraint: NSLayoutConstraint!
     @IBOutlet private var labelTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var borderLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private var borderHeightConstraint: NSLayoutConstraint! {
+        didSet {
+            borderHeightConstraint.constant = .hairlineBorderWidth
+        }
+    }
 
     var enableTopPadding: Bool = false {
         didSet {
             imageTopConstraint.isActive = !enableTopPadding
             labelTopConstraint.isActive = !enableTopPadding
         }
+    }
+
+    var isLastRow: Bool = false {
+        didSet {
+            borderLeadingConstraint.isActive = isLastRow
+        }
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        bottomBorder?.removeFromSuperview()
     }
 }
 class StatsGhostPostingActivityCell: StatsGhostBaseCell, NibLoadable {

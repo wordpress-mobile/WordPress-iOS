@@ -976,7 +976,7 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func insightsImmuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
-        if insightsStore.containsCachedData(for: row.type) || !Feature.enabled(.statsAsyncLoading) {
+        if insightsStore.containsCachedData(for: row.type) {
             return ImmuTable(sections: [
                 ImmuTableSection(
                     rows: rowsBlock())
@@ -987,10 +987,7 @@ private extension SiteStatsDetailsViewModel {
 
         switch row.status {
         case .loading, .idle:
-            rows.append(StatsGhostTopImmutableRow(hideBottomBorder: true))
-            rows.append(contentsOf: (0...5).map { index in
-                StatsGhostDetailRow(hideTopBorder: true, hideBottomBorder: index != 5)
-            })
+            rows.append(contentsOf: getGhostSequence())
         case .success:
             rows.append(contentsOf: rowsBlock())
         case .error:
@@ -1015,8 +1012,16 @@ private extension SiteStatsDetailsViewModel {
 
         switch status {
         case .loading, .idle:
-            rows.append(contentsOf: rowsBlock(status))
-            rows.append(StatsGhostDetailRow(hideTopBorder: true, enableTopPadding: true))
+            let content = rowsBlock(status)
+
+            // Check if the content has more than 1 row
+            if content.count <= Constants.Sequence.minRowCount {
+                rows.append(contentsOf: getGhostSequence())
+            } else {
+                rows.append(contentsOf: content)
+                rows.append(StatsGhostDetailRow(hideTopBorder: true,
+                                                enableTopPadding: true))
+            }
         case .success:
             rows.append(contentsOf: rowsBlock(status))
         case .error:
@@ -1027,5 +1032,25 @@ private extension SiteStatsDetailsViewModel {
             ImmuTableSection(
                 rows: rows)
         ])
+    }
+
+    func getGhostSequence() -> [ImmuTableRow] {
+        var rows = [ImmuTableRow]()
+        rows.append(StatsGhostTopHeaderImmutableRow())
+        rows.append(contentsOf: (Constants.Sequence.rows).map { index in
+            let isLastRow = index == Constants.Sequence.maxRowCount
+            return StatsGhostDetailRow(hideTopBorder: true,
+                                       isLastRow: isLastRow,
+                                       enableTopPadding: true)
+        })
+        return rows
+    }
+
+    enum Constants {
+        enum Sequence {
+            static let minRowCount = 1
+            static let maxRowCount = 5
+            static let rows = 0...maxRowCount
+        }
     }
 }
