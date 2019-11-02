@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import WordPressShared
+import WordPressFlux
 
 private enum PublishSettingsCell: CaseIterable {
     case dateTime
@@ -22,11 +23,7 @@ struct PublishSettingsViewModel {
 
     init(post: AbstractPost) {
         if let dateCreated = post.dateCreated {
-            if post.hasFuturePublishDate() {
-                state = .scheduled(dateCreated)
-            } else {
-                state = .published(dateCreated)
-            }
+            state = post.hasFuturePublishDate() ? .scheduled(dateCreated) : .published(dateCreated)
         } else {
             state = .immediately
         }
@@ -116,9 +113,11 @@ private struct DateAndTimeRow: ImmuTableRow {
         ]
     }
 
-    weak var viewController: ImmuTableViewController!
+    weak var viewController: ImmuTableViewController?
 
     private var viewModel: PublishSettingsViewModel
+
+    private var changeReceipt: Receipt?
 
     init(post: AbstractPost) {
         viewModel = PublishSettingsViewModel(post: post)
@@ -142,7 +141,7 @@ private struct DateAndTimeRow: ImmuTableRow {
                     title: NSLocalizedString("Date and Time", comment: "Date and Time"),
                     detail: viewModel.date?.longStringWithTime() ?? NSLocalizedString("Immediately", comment: "Undated post time label"),
                     accessibilityIdentifier: "Date and Time Row",
-                    action: presenter.present(dateTimeCalendar(model: viewModel))
+                    action: presenter.present(dateTimeCalendarViewController(with: viewModel))
                 )
             }
         }
@@ -163,32 +162,36 @@ private struct DateAndTimeRow: ImmuTableRow {
         ])
     }
 
-    func dateTimeCalendar(model: PublishSettingsViewModel) -> (ImmuTableRow) -> UIViewController {
+    func dateTimeCalendarViewController(with model: PublishSettingsViewModel) -> (ImmuTableRow) -> UIViewController {
         return { [weak self] row in
 
-            let navigationController = LightNavigationController(rootViewController: SchedulingCalendarViewController())
-
-            (navigationController.topViewController as? DateCoordinatorHandler)?.coordinator = DateCoordinator(date: model.date) { [weak self] date in
+            let schedulingCalendarViewController = SchedulingCalendarViewController()
+            schedulingCalendarViewController.coordinator = DateCoordinator(date: model.date) { [weak self] date in
                 self?.viewModel.setDate(date)
                 NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
             }
 
-            if self?.viewController.traitCollection.userInterfaceIdiom == .pad {
-                navigationController.modalPresentationStyle = .popover
-            } else {
-                navigationController.modalPresentationStyle = .custom
-                navigationController.transitioningDelegate = self
-            }
-
-            if let popoverController = navigationController.popoverPresentationController {
-                if let selectedIndexPath = self?.viewController.tableView.indexPathForSelectedRow {
-                    popoverController.sourceView = self!.viewController.tableView
-                    popoverController.sourceRect = self?.viewController.tableView.rectForRow(at: selectedIndexPath) ?? .zero
-                }
-            }
-
-            return navigationController
+            return self?.calendarNavigationController(rootViewController: schedulingCalendarViewController) ?? UINavigationController()
         }
+    }
+
+    private func calendarNavigationController(rootViewController: UIViewController) -> UINavigationController {
+        let navigationController = LightNavigationController(rootViewController: rootViewController)
+
+        if viewController?.traitCollection.userInterfaceIdiom == .pad {
+            navigationController.modalPresentationStyle = .popover
+        } else {
+            navigationController.modalPresentationStyle = .custom
+            navigationController.transitioningDelegate = self
+        }
+
+        if let popoverController = navigationController.popoverPresentationController,
+            let selectedIndexPath = viewController?.tableView.indexPathForSelectedRow {
+            popoverController.sourceView = viewController?.tableView
+            popoverController.sourceRect = viewController?.tableView.rectForRow(at: selectedIndexPath) ?? .zero
+        }
+
+        return navigationController
     }
 }
 

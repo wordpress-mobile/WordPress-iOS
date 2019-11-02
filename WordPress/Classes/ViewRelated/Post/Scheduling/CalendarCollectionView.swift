@@ -8,7 +8,19 @@ class CalendarCollectionView: JTACMonthView {
     override init() {
         super.init()
 
-        register(DateCell.self, forCellWithReuseIdentifier: "dateCell")
+        register(DateCell.self, forCellWithReuseIdentifier: DateCell.Constants.reuseIdentifier)
+
+        setup()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+
+        setup()
+    }
+
+    private func setup() {
+        register(DateCell.self, forCellWithReuseIdentifier: DateCell.Constants.reuseIdentifier)
 
         backgroundColor = .clear
 
@@ -16,21 +28,8 @@ class CalendarCollectionView: JTACMonthView {
         scrollingMode = .stopAtEachCalendarFrame
         showsHorizontalScrollIndicator = false
 
-        ibCalendarDataSource = calDataSource
-        ibCalendarDelegate = calDataSource
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-
-        register(DateCell.self, forCellWithReuseIdentifier: "dateCell")
-
-        scrollDirection = .horizontal
-        scrollingMode = .stopAtEachCalendarFrame
-        showsHorizontalScrollIndicator = false
-
-        ibCalendarDataSource = calDataSource
-        ibCalendarDelegate = calDataSource
+        calendarDataSource = calDataSource
+        calendarDelegate = calDataSource
     }
 }
 
@@ -49,13 +48,15 @@ class CalendarDataSource: JTACMonthViewDataSource {
 
 extension CalendarDataSource: JTACMonthViewDelegate {
     func calendar(_ calendar: JTACMonthView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTACDayCell {
-        let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "dateCell", for: indexPath) as! DateCell
-        configureCell(view: cell, cellState: cellState)
+        let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: DateCell.Constants.reuseIdentifier, for: indexPath)
+        if let dateCell = cell as? DateCell {
+            configure(cell: dateCell, with: cellState)
+        }
         return cell
     }
 
     func calendar(_ calendar: JTACMonthView, willDisplay cell: JTACDayCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
-        configureCell(view: cell, cellState: cellState)
+        configure(cell: cell, with: cellState)
     }
 
     func calendar(_ calendar: JTACMonthView, willScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
@@ -67,47 +68,57 @@ extension CalendarDataSource: JTACMonthViewDelegate {
     }
 
     func calendar(_ calendar: JTACMonthView, didSelectDate date: Date, cell: JTACDayCell?, cellState: CellState, indexPath: IndexPath) {
-        configureCell(view: cell, cellState: cellState)
+        configure(cell: cell, with: cellState)
         didSelect?(date)
     }
 
     func calendar(_ calendar: JTACMonthView, didDeselectDate date: Date, cell: JTACDayCell?, cellState: CellState, indexPath: IndexPath) {
-        configureCell(view: cell, cellState: cellState)
+        configure(cell: cell, with: cellState)
     }
 
-    private func configureCell(view: JTACDayCell?, cellState: CellState) {
-       guard let cell = view as? DateCell else { return }
-       cell.dateLabel?.text = cellState.text
-       handleCellTextColor(cell: cell, cellState: cellState)
+    private func configure(cell: JTACDayCell?, with state: CellState) {
+        let cell = cell as? DateCell
+        cell?.configure(with: state)
     }
 
     private func handleCellTextColor(cell: DateCell, cellState: CellState) {
-        if cellState.dateBelongsTo == .thisMonth {
-          cell.dateLabel?.textColor = .text
-        } else {
-          cell.dateLabel?.textColor = .textSubtle
-        }
+
+        let textColor: UIColor
 
         if cellState.isSelected {
-            cell.dateLabel?.textColor = .textInverted
+          textColor = .textInverted
+        } else if cellState.dateBelongsTo == .thisMonth {
+          textColor = .text
+        } else {
+          textColor = .textSubtle
         }
 
-        cell.dateLabel?.backgroundColor = cellState.isSelected ? WPStyleGuide.wordPressBlue() : .clear
+        cell.dateLabel.textColor = textColor
+
+        cell.dateLabel.backgroundColor = cellState.isSelected ? WPStyleGuide.wordPressBlue() : .clear
     }
 }
 
 class DateCell: JTACDayCell {
 
-    fileprivate struct Constants {
+    struct Constants {
         static let labelSize: CGFloat = 28
+        static let reuseIdentifier = "dateCell"
     }
 
-    weak var dateLabel: UILabel?
+    let dateLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        let dateLabel = UILabel()
+        setup()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    fileprivate func setup() {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.textAlignment = .center
         dateLabel.font = UIFont.preferredFont(forTextStyle: .callout)
@@ -124,11 +135,26 @@ class DateCell: JTACDayCell {
             dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
-
-        self.dateLabel = dateLabel
     }
+}
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+extension DateCell {
+    fileprivate func configure(with state: CellState) {
+
+        dateLabel.text = state.text
+
+        let textColor: UIColor
+
+        if state.isSelected {
+          textColor = .textInverted
+        } else if state.dateBelongsTo == .thisMonth {
+          textColor = .text
+        } else {
+          textColor = .textSubtle
+        }
+
+        dateLabel.textColor = textColor
+
+        dateLabel.backgroundColor = state.isSelected ? WPStyleGuide.wordPressBlue() : .clear
     }
 }

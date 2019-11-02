@@ -16,10 +16,12 @@ struct DateCoordinator {
 
 class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler {
 
-    weak var calendarMonthView: CalendarMonthView!
+    private let calendarMonthView = CalendarMonthView(frame: .zero)
 
-    override func configureView() -> UIView {
-        let calendarMonthView = CalendarMonthView(frame: .zero)
+    private let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(closeButtonPressed))
+    private let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(publishImmediately))
+
+    override func makePickerView() -> UIView {
         calendarMonthView.translatesAutoresizingMaskIntoConstraints = false
 
         let selectedDate = coordinator?.date ?? Date()
@@ -33,10 +35,8 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
                 newDate = Calendar.current.date(bySettingHour: components.hour ?? 0, minute: components.minute ?? 0, second: components.second ?? 0, of: newDate) ?? newDate
             }
             self?.coordinator?.setDate(newDate)
-            self?.chosenValueRow.detailLabel?.text = date.longString()
+            self?.chosenValueRow.detailLabel.text = date.longString()
         }
-
-        self.calendarMonthView = calendarMonthView
 
         return calendarMonthView
     }
@@ -44,7 +44,7 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        chosenValueRow.titleLabel?.text = NSLocalizedString("Choose a date", comment: "Label for Publish date picker")
+        chosenValueRow.titleLabel.text = NSLocalizedString("Choose a date", comment: "Label for Publish date picker")
 
         let nextButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: "Next screen button title"), style: .plain, target: self, action: #selector(nextButtonPressed))
         navigationItem.setRightBarButton(nextButton, animated: false)
@@ -72,9 +72,6 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(closeButtonPressed))
-
-        let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(publishImmediately))
         navigationItem.setLeftBarButton(publishButton, animated: false)
 
         if traitCollection.verticalSizeClass == .compact {
@@ -102,9 +99,9 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
 
 class TimePickerViewController: DatePickerSheet, DateCoordinatorHandler {
 
-    @IBOutlet weak var datePicker: UIDatePicker!
+    weak var datePicker: UIDatePicker!
 
-    override func configureView() -> UIView {
+    override func makePickerView() -> UIView {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .time
         datePicker.addTarget(self, action: #selector(timePickerChanged(_:)), for: .valueChanged)
@@ -117,18 +114,19 @@ class TimePickerViewController: DatePickerSheet, DateCoordinatorHandler {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        chosenValueRow.titleLabel?.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
-        chosenValueRow.detailLabel?.text = datePicker.date.longStringWithTime()
+        chosenValueRow.titleLabel.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
+        chosenValueRow.detailLabel.text = datePicker.date.longStringWithTime()
         let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
         navigationItem.setRightBarButton(doneButton, animated: false)
     }
 
-    @IBAction func timePickerChanged(_ sender: Any) {
-        chosenValueRow.detailLabel?.text = datePicker.date.longStringWithTime()
+    // MARK: Change Selectors
+    @objc func timePickerChanged(_ sender: Any) {
+        chosenValueRow.detailLabel.text = datePicker.date.longStringWithTime()
         coordinator?.setDate(datePicker.date)
     }
 
-    @IBAction func done() {
+    @objc func done() {
         coordinator?.updated(coordinator?.date)
         navigationController?.dismiss(animated: true, completion: nil)
     }
@@ -139,16 +137,19 @@ class TimePickerViewController: DatePickerSheet, DateCoordinatorHandler {
 class DatePickerSheet: UIViewController {
     var coordinator: DateCoordinator? = nil
 
-    weak var chosenValueRow: ChosenValueRow!
+    let chosenValueRow = ChosenValueRow(frame: .zero)
     weak var pickerView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setup()
+    }
+
+    private func setup() {
         WPStyleGuide.configureColors(view: view, tableView: nil)
 
-        let chosenValueRow = configureValueRow()
-        let pickerView = configureView()
+        let pickerView = makePickerView()
         pickerView.translatesAutoresizingMaskIntoConstraints = false
 
         let pickerWrapperView = UIView()
@@ -179,21 +180,16 @@ class DatePickerSheet: UIViewController {
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        self.chosenValueRow = chosenValueRow
         self.pickerView = pickerView
 
         view.addSubview(stackView)
         view.pinSubviewToSafeArea(stackView)
+
     }
 
     // Does nothing, should be overriden by the subclass
-    func configureView() -> UIView {
+    func makePickerView() -> UIView {
         return UIView()
-    }
-
-    private func configureValueRow() -> ChosenValueRow {
-        let chosenRow = ChosenValueRow(frame: .zero)
-        return chosenRow
     }
 
 }
