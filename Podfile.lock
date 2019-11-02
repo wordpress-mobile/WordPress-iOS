@@ -222,7 +222,7 @@ PODS:
     - WordPressKit (~> 4.5.1)
     - WordPressShared (~> 1.8)
     - WordPressUI (~> 1.4-beta.1)
-  - WordPressKit (4.5.2-beta.2):
+  - WordPressKit (4.5.2-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -300,7 +300,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.11.0)
   - WordPressAuthenticator (~> 1.10.2-beta.1)
-  - WordPressKit (~> 4.5.2-beta.2)
+  - WordPressKit (from `https://github.com/guarani/WordPressKit-iOS.git`, branch `issue/12141-restore-revision-dialog`)
   - WordPressMocks (~> 0.0.6)
   - WordPressShared (~> 1.8.8)
   - WordPressUI (~> 1.5-beta.1)
@@ -343,7 +343,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -409,6 +408,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.16.0
+  WordPressKit:
+    :branch: issue/12141-restore-revision-dialog
+    :git: https://github.com/guarani/WordPressKit-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.16.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -425,6 +427,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.16.0
+  WordPressKit:
+    :commit: f8aaff88217f1d246916681406f3f60517901f46
+    :git: https://github.com/guarani/WordPressKit-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 3.0.1-swift5.1-GM
@@ -489,7 +494,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 050b34d4c3adfb7c60363849049b13d60683b348
   WordPress-Editor-iOS: 304098424f1051cb271546c99f906aac296b1b81
   WordPressAuthenticator: 51102958ea3b0b33a5476c508a458361dc5ef2e4
-  WordPressKit: b5b9e1f2018116d3ad5c060e519150f7f0442f78
+  WordPressKit: 096fb17b8bd4a97d25f2fd7417ec52eab0b7d4ac
   WordPressMocks: 5913bd04586a360212e07a8ccbcb36068d4425a3
   WordPressShared: 64332b24b8a70b7796ee137847cd0d66bdb6b4c1
   WordPressUI: 0675808d243bbbda003d4604b0ae161508b6e49f
@@ -499,6 +504,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 07977c9aa708ea64461a1b18b7b3cfec3f496785
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 148c1b30a6d2dd339a197295ca5de3594d48f729
+PODFILE CHECKSUM: fc897721f5b731711f03aef26388325aee35056e
 
 COCOAPODS: 1.8.4
