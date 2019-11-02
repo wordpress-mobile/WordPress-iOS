@@ -62,9 +62,7 @@ class SiteStatsInsightsViewModel: Observable {
 
             switch insightType {
             case .customize:
-                if FeatureFlag.statsInsightsManagement.enabled {
-                    tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
-                }
+                tableRows.append(CustomizeInsightsRow(siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .latestPostSummary:
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsLatestPostSummary,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
@@ -209,10 +207,8 @@ class SiteStatsInsightsViewModel: Observable {
             }
         }
 
-        if FeatureFlag.statsInsightsManagement.enabled {
-            tableRows.append(TableFooterRow())
-            tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
-        }
+        tableRows.append(TableFooterRow())
+        tableRows.append(AddInsightRow(dataRow: createAddInsightRow(), siteStatsInsightsDelegate: siteStatsInsightsDelegate))
 
         tableRows.append(TableFooterRow())
 

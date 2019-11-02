@@ -60,8 +60,8 @@ extension Tracks {
     }
 
     /// Tracks the unsuccessful unwrapping of push notification payload data.
-    func trackNotificationMalformed() {
-        trackEvent(ServiceExtensionEvents.malformed)
+    func trackNotificationMalformed(properties: [String: AnyObject]? = nil) {
+        trackEvent(ServiceExtensionEvents.malformed, properties: properties)
     }
 
     /// Tracks the timeout of service extension processing.

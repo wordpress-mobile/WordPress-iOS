@@ -7,6 +7,11 @@ enum PeriodType: CaseIterable {
     case topReferrers
     case topPublished
     case topClicks
+    case topAuthors
+    case topSearchTerms
+    case topCountries
+    case topVideos
+    case topFileDownloads
 }
 
 enum PeriodAction: Action {
@@ -149,22 +154,27 @@ struct PeriodStoreState {
     var fetchingPublishedHasFailed = false
 
     var topAuthors: StatsTopAuthorsTimeIntervalData?
+    var topAuthorsStatus: StoreFetchingStatus = .idle
     var fetchingAuthors = false
     var fetchingAuthorsHasFailed = false
 
     var topSearchTerms: StatsSearchTermTimeIntervalData?
+    var topSearchTermsStatus: StoreFetchingStatus = .idle
     var fetchingSearchTerms = false
     var fetchingSearchTermsHasFailed = false
 
     var topCountries: StatsTopCountryTimeIntervalData?
+    var topCountriesStatus: StoreFetchingStatus = .idle
     var fetchingCountries = false
     var fetchingCountriesHasFailed = false
 
     var topVideos: StatsTopVideosTimeIntervalData?
+    var topVideosStatus: StoreFetchingStatus = .idle
     var fetchingVideos = false
     var fetchingVideosHasFailed = false
 
     var topFileDownloads: StatsFileDownloadsTimeIntervalData?
+    var topFileDownloadsStatus: StoreFetchingStatus = .idle
     var fetchingFileDownloads = false
     var fetchingFileDownloadsHasFailed = false
 
@@ -457,11 +467,78 @@ private extension StatsPeriodStore {
             }
         }
 
+        let topAuthors = PeriodOperation(service: service, for: period, date: date) { [weak self] (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching authors: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching authors.")
+
+            DispatchQueue.main.async {
+                self?.receivedAuthors(authors, error)
+            }
+        }
+
+        let topSearchTerms = PeriodOperation(service: service, for: period, date: date) { [weak self] (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching search terms: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching search terms.")
+
+            DispatchQueue.main.async {
+                self?.receivedSearchTerms(searchTerms, error)
+            }
+        }
+
+        let topCountries = PeriodOperation(service: service, for: period, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching countries: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching countries.")
+
+            DispatchQueue.main.async {
+                self?.receivedCountries(countries, error)
+            }
+        }
+
+        let topVideos = PeriodOperation(service: service, for: period, date: date) { [weak self] (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching videos: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching videos.")
+
+            DispatchQueue.main.async {
+                self?.receivedVideos(videos, error)
+            }
+        }
+
+        // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
+        // 'num' relates to the "number of periods to include in the query".
+        let topFileDownloads = PeriodOperation(service: service, for: period, date: date, limit: 1) { [weak self] (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error file downloads: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished file downloads.")
+
+            DispatchQueue.main.async {
+                self?.receivedFileDownloads(downloads, error)
+            }
+        }
+
         operationQueue.addOperations([likesOperation,
                                       topPostsOperation,
                                       topReferrers,
                                       topPublished,
-                                      topClicks],
+                                      topClicks,
+                                      topAuthors,
+                                      topSearchTerms,
+                                      topCountries,
+                                      topVideos,
+                                      topFileDownloads],
                                      waitUntilFinished: false)
     }
 
@@ -655,6 +732,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topPostsAndPagesStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching posts: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching posts.")
+
+                DispatchQueue.main.async {
+                    self?.receivedPostsAndPages(posts, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingPostsAndPages = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
@@ -680,6 +777,26 @@ private extension StatsPeriodStore {
 
     func fetchAllSearchTerms(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topSearchTermsStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching search terms: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching search terms.")
+
+                DispatchQueue.main.async {
+                    self?.receivedSearchTerms(searchTerms, error)
+                }
+                self?.persistToCoreData()
+            })
             return
         }
 
@@ -711,6 +828,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topVideosStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching videos: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching videos.")
+
+                DispatchQueue.main.async {
+                    self?.receivedVideos(videos, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingVideos = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
@@ -736,6 +873,26 @@ private extension StatsPeriodStore {
 
     func fetchAllClicks(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topClicksStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching clicks: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching clicks.")
+
+                DispatchQueue.main.async {
+                    self?.receivedClicks(clicks, error)
+                }
+                self?.persistToCoreData()
+            })
             return
         }
 
@@ -767,6 +924,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topAuthorsStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching authors: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching authors.")
+
+                DispatchQueue.main.async {
+                    self?.receivedAuthors(authors, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingAuthors = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
@@ -792,6 +969,26 @@ private extension StatsPeriodStore {
 
     func fetchAllReferrers(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topReferrersStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching referrers: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching referrers.")
+
+                DispatchQueue.main.async {
+                    self?.receivedReferrers(referrers, error)
+                }
+                self?.persistToCoreData()
+            })
             return
         }
 
@@ -823,6 +1020,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topCountriesStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching countries: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching countries.")
+
+                DispatchQueue.main.async {
+                    self?.receivedCountries(countries, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingCountries = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
@@ -851,6 +1068,26 @@ private extension StatsPeriodStore {
             return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topPublishedStatus = .loading
+
+            operationQueue.addOperation(PublishedPostOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching published: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching published.")
+
+                DispatchQueue.main.async {
+                    self?.receivedPublished(published, error)
+                }
+                self?.persistToCoreData()
+            })
+            return
+        }
+
         state.fetchingPublished = true
 
         statsRemote.getData(for: period, endingOn: date, limit: 0) { (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
@@ -874,6 +1111,26 @@ private extension StatsPeriodStore {
 
     func fetchAllFileDownloads(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.topFileDownloadsStatus = .loading
+
+            operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 1) { [weak self] (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error file downloads: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished file downloads.")
+
+                DispatchQueue.main.async {
+                    self?.receivedFileDownloads(downloads, error)
+                }
+                self?.persistToCoreData()
+            })
             return
         }
 
@@ -1013,6 +1270,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingAuthors = false
             state.fetchingAuthorsHasFailed = error != nil
+            state.topAuthorsStatus = error != nil ? .error : .success
 
             if authors != nil {
                 state.topAuthors = authors
@@ -1036,6 +1294,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingSearchTerms = false
             state.fetchingSearchTermsHasFailed = error != nil
+            state.topSearchTermsStatus = error != nil ? .error : .success
 
             if searchTerms != nil {
                 state.topSearchTerms = searchTerms
@@ -1047,6 +1306,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingVideos = false
             state.fetchingVideosHasFailed = error != nil
+            state.topVideosStatus = error != nil ? .error : .success
 
             if videos != nil {
                 state.topVideos = videos
@@ -1058,6 +1318,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingCountries = false
             state.fetchingCountriesHasFailed = error != nil
+            state.topCountriesStatus = error != nil ? .error : .success
 
             if countries != nil {
                 state.topCountries = countries
@@ -1069,6 +1330,7 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingFileDownloads = false
             state.fetchingFileDownloadsHasFailed = error != nil
+            state.topFileDownloadsStatus = error != nil ? .error : .success
 
             if downloads != nil {
                 state.topFileDownloads = downloads
@@ -1109,6 +1371,9 @@ private extension StatsPeriodStore {
     }
 
     func cancelQueries() {
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+        }
         statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
         // `invalidateAndCancelTasks` invalidates the SessionManager,
         // so we need to recreate it to run queries.
@@ -1138,6 +1403,11 @@ private extension StatsPeriodStore {
         state.topReferrersStatus = status
         state.topPublishedStatus = status
         state.topClicksStatus = status
+        state.topAuthorsStatus = status
+        state.topSearchTermsStatus = status
+        state.topCountriesStatus = status
+        state.topVideosStatus = status
+        state.topFileDownloadsStatus = status
     }
 
     func shouldFetchPostsAndPages() -> Bool {
@@ -1279,6 +1549,26 @@ extension StatsPeriodStore {
         return state.topClicksStatus
     }
 
+    var topAuthorsStatus: StoreFetchingStatus {
+        return state.topAuthorsStatus
+    }
+
+    var topSearchTermsStatus: StoreFetchingStatus {
+        return state.topSearchTermsStatus
+    }
+
+    var topCountriesStatus: StoreFetchingStatus {
+        return state.topCountriesStatus
+    }
+
+    var topVideosStatus: StoreFetchingStatus {
+        return state.topVideosStatus
+    }
+
+    var topFileDownloadsStatus: StoreFetchingStatus {
+        return state.topFileDownloadsStatus
+    }
+
     var isFetchingSummaryLikes: Bool {
         return state.fetchingSummaryLikes
     }
@@ -1291,10 +1581,16 @@ extension StatsPeriodStore {
     }
 
     var isFetchingSearchTerms: Bool {
+        if asyncLoadingActivated {
+            return topSearchTermsStatus == .loading
+        }
         return state.fetchingSearchTerms
     }
 
     var isFetchingVideos: Bool {
+        if asyncLoadingActivated {
+            return topVideosStatus == .loading
+        }
         return state.fetchingVideos
     }
 
@@ -1306,6 +1602,9 @@ extension StatsPeriodStore {
     }
 
     var isFetchingAuthors: Bool {
+        if asyncLoadingActivated {
+            return topAuthorsStatus == .loading
+        }
         return state.fetchingAuthors
     }
 
@@ -1317,6 +1616,9 @@ extension StatsPeriodStore {
     }
 
     var isFetchingCountries: Bool {
+        if asyncLoadingActivated {
+            return topCountriesStatus == .loading
+        }
         return state.fetchingCountries
     }
 
@@ -1328,6 +1630,9 @@ extension StatsPeriodStore {
     }
 
     var isFetchingFileDownloads: Bool {
+        if asyncLoadingActivated {
+            return topFileDownloadsStatus == .loading
+        }
         return state.fetchingFileDownloads
     }
 
@@ -1336,7 +1641,13 @@ extension StatsPeriodStore {
             return [state.summaryStatus,
                     state.topPostsAndPagesStatus,
                     state.topReferrersStatus,
-                    state.topPublishedStatus].first { $0 != .error } == nil
+                    state.topPublishedStatus,
+                    state.topClicksStatus,
+                    state.topAuthorsStatus,
+                    state.topSearchTermsStatus,
+                    state.topCountriesStatus,
+                    state.topVideosStatus,
+                    state.topFileDownloadsStatus].first { $0 != .error } == nil
         }
 
         return state.fetchingSummaryHasFailed &&
