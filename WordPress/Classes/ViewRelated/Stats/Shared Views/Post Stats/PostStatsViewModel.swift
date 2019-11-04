@@ -56,35 +56,41 @@ class PostStatsViewModel: Observable {
         self.postURL = postURL
         self.postStatsDelegate = postStatsDelegate
 
-        receipt = store.query(.postStats(postID: postID))
+        if Feature.enabled(.statsAsyncLoadingDWMY) {
+            self.postStats = store.getPostStats(for: postID)
+        }
 
-        changeReceipt = store.onChange { [weak self] in
+        self.changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
         }
+
+        self.receipt = store.query(.postStats(postID: postID))
     }
 
     // MARK: - Table View
 
     func tableViewModel() -> ImmuTable {
-        if let postID = postID,
-            (store.fetchingFailed(for: .postStats(postID: postID)) || store.isFetchingPostStats(for: postID)) {
+        if let postId = postID, store.fetchingFailed(for: .postStats(postID: postId)) ||
+            (store.isFetchingPostStats(for: postId) && !Feature.enabled(.statsAsyncLoadingDWMY)) {
             return ImmuTable.Empty
         }
 
         postStats = store.getPostStats(for: postID)
-        var tableRows = [ImmuTableRow]()
 
-        tableRows.append(titleTableRow())
-        tableRows.append(contentsOf: overviewTableRows())
-        tableRows.append(contentsOf: yearsTableRows())
-        tableRows.append(contentsOf: yearsTableRows(forAverages: true))
-        tableRows.append(contentsOf: recentWeeksTableRows())
-        tableRows.append(TableFooterRow())
+        return blocks(for: store.postStatsFetchingStatuses(for: postID)) {
+            var tableRows = [ImmuTableRow]()
+            tableRows.append(titleTableRow())
+            tableRows.append(contentsOf: overviewTableRows())
+            tableRows.append(contentsOf: yearsTableRows())
+            tableRows.append(contentsOf: yearsTableRows(forAverages: true))
+            tableRows.append(contentsOf: recentWeeksTableRows())
+            tableRows.append(TableFooterRow())
+            return tableRows
+        }
+    }
 
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: tableRows)
-            ])
+    func isFetchingPostDetails() -> Bool {
+        return postStats == nil && store.isFetchingPostStats(for: postID)
     }
 
     // MARK: - Refresh Data
@@ -283,4 +289,37 @@ private extension PostStatsViewModel {
         return (currentCount, difference, roundedPercentage)
     }
 
+    func blocks(for state: StoreFetchingStatus, block: () -> [ImmuTableRow]) -> ImmuTable {
+        if !Feature.enabled(.statsAsyncLoadingDWMY) || postStats != nil {
+            return ImmuTable(sections: [
+            ImmuTableSection(
+                rows: block())
+            ])
+        }
+
+        var rows = [ImmuTableRow]()
+        let sections: [StatSection] = [.postStatsMonthsYears,
+                                       .postStatsAverageViews,
+                                       .postStatsRecentWeeks]
+
+        switch state {
+        case .idle, .success:
+            rows.append(contentsOf: block())
+        case .loading:
+            rows.append(StatsGhostTitleRow())
+            rows.append(PostStatsEmptyCellHeaderRow())
+            rows.append(StatsGhostChartImmutableRow())
+            sections.forEach {
+                rows.append(CellHeaderRow(statSection: $0))
+                rows.append(StatsGhostTopImmutableRow())
+            }
+        case .error:
+            return ImmuTable.Empty
+        }
+
+        return ImmuTable(sections: [
+            ImmuTableSection(
+                rows: rows)
+            ])
+    }
 }

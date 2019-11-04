@@ -55,3 +55,28 @@ final class StatsPublishedPostsAsyncOperation: AsyncOperation {
         }
     }
 }
+
+final class StatsPostDetailAsyncOperation: AsyncOperation {
+    typealias StatsPeriodCompletion = (StatsPostDetails?, Error?) -> Void
+
+    private weak var service: StatsServiceRemoteV2?
+    private let postId: Int
+    private var completion: StatsPeriodCompletion
+
+    init(service: StatsServiceRemoteV2, for postId: Int, completion: @escaping StatsPeriodCompletion) {
+        self.service = service
+        self.postId = postId
+        self.completion = completion
+    }
+
+    override func main() {
+        service?.getDetails(forPostID: postId) { [unowned self] (details: StatsPostDetails?, error: Error?) in
+            if self.isCancelled {
+                self.state = .isFinished
+                return
+            }
+
+            self.completion(details, error)
+        }
+    }
+}
