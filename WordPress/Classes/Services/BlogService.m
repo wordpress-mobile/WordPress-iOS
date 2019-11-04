@@ -684,6 +684,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
+    // Ensure that the account has a default blog defined (if there is one).
+    AccountService *service = [[AccountService alloc]initWithManagedObjectContext:self.managedObjectContext];
+    [service updateDefaultBlogIfNeeded:account];
+
     if (completion != nil) {
         dispatch_async(dispatch_get_main_queue(), completion);
     }

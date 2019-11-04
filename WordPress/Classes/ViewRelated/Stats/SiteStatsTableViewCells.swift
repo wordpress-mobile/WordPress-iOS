@@ -36,7 +36,7 @@ struct CellHeaderRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let title: String
+    let statSection: StatSection
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -45,7 +45,7 @@ struct CellHeaderRow: ImmuTableRow {
             return
         }
 
-        cell.configure(withTitle: title)
+        cell.configure(statSection: statSection)
     }
 }
 
@@ -66,6 +66,28 @@ struct TableFooterRow: ImmuTableRow {
 }
 
 // MARK: - Insights Rows
+
+struct InsightCellHeaderRow: ImmuTableRow {
+
+    typealias CellType = StatsCellHeader
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let statSection: StatSection
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
 
 struct CustomizeInsightsRow: ImmuTableRow {
 
@@ -243,6 +265,9 @@ struct AddInsightStatRow: ImmuTableRow {
     let enabled: Bool
     let action: ImmuTableAction?
 
+    let enabledHint = NSLocalizedString("Select to add this stat to Insights.", comment: "Accessibility hint for stat available to add to Insights.")
+    let disabledHint = NSLocalizedString("Stat is already displayed in Insights.", comment: "Accessibility hint for stat not available to add to Insights.")
+
     func configureCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewCell(cell)
 
@@ -251,10 +276,35 @@ struct AddInsightStatRow: ImmuTableRow {
         cell.textLabel?.adjustsFontForContentSizeCategory = true
         cell.textLabel?.textColor = enabled ? .text : .textPlaceholder
         cell.selectionStyle = .none
+
+        cell.accessibilityLabel = title
+        cell.isAccessibilityElement = true
+        cell.accessibilityTraits = enabled ? .button : .notEnabled
+        cell.accessibilityHint = enabled ? enabledHint : disabledHint
     }
 }
 
 // MARK: - Period Rows
+
+struct PeriodEmptyCellHeaderRow: ImmuTableRow {
+
+    typealias CellType = StatsCellHeader
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure()
+    }
+}
 
 struct TopTotalsPeriodStatsRow: ImmuTableRow {
 
@@ -420,7 +470,7 @@ struct PostStatsEmptyCellHeaderRow: ImmuTableRow {
             return
         }
 
-        cell.configure(withTitle: "", adjustHeightForPostStats: true)
+        cell.configure(statSection: .postStatsGraph)
     }
 }
 

@@ -102,13 +102,16 @@ class GutenbergViewController: UIViewController, PostEditor {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        filter: .image,
                                                        dataSourceType: .device,
+                                                       allowMultipleSelection: false,
                                                        callback: {(asset) in
-                                                        guard let phAsset = asset as? PHAsset else {
+                                                        guard let phAsset = asset as? [PHAsset] else {
                                                             return
                                                         }
-                                                        self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: { (mediaID, mediaURL) in
-                                                            guard let mediaID = mediaID,
-                                                                let mediaURLString = mediaURL,
+                                                        self.mediaInserterHelper.insertFromDevice(assets: phAsset, callback: { media in
+                                                            guard let media = media,
+                                                                let mediaInfo = media.first,
+                                                                let mediaID = mediaInfo.id,
+                                                                let mediaURLString = mediaInfo.url,
                                                                 let mediaURL = URL(string: mediaURLString) else {
                                                                 return
                                                             }
@@ -142,6 +145,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var post: AbstractPost {
         didSet {
+            removeObservers(fromPost: oldValue)
+            addObservers(toPost: post)
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
             attachmentDelegate = AztecAttachmentDelegate(post: post)
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
@@ -217,6 +222,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         super.init(nibName: nil, bundle: nil)
 
+        addObservers(toPost: post)
+
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         navigationBarManager.delegate = self
     }
@@ -226,6 +233,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     deinit {
+        removeObservers(fromPost: post)
         gutenberg.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
     }
@@ -337,13 +345,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         autosaver.contentDidChange()
     }
 
-    func gutenbergDidRequestMedia(from source: MediaPickerSource, filter: [MediaFilter]?, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMedia(from source: MediaPickerSource, filter: [MediaFilter]?, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         let flags = mediaFilterFlags(using: filter)
         switch source {
         case .mediaLibrary:
-            gutenbergDidRequestMediaFromSiteMediaLibrary(filter: flags, with: callback)
+            gutenbergDidRequestMediaFromSiteMediaLibrary(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
         case .deviceLibrary:
-            gutenbergDidRequestMediaFromDevicePicker(filter: flags, with: callback)
+            gutenbergDidRequestMediaFromDevicePicker(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
         }
@@ -373,46 +381,50 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         return WPMediaType.all
     }
 
-    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        filter: filter,
                                                        dataSourceType: .mediaLibrary,
-                                                       callback: {(asset) in
-                                                        guard let media = asset as? Media else {
-                                                            callback(nil, nil)
+                                                       allowMultipleSelection: allowMultipleSelection,
+                                                       callback: {(assets) in
+                                                        guard let media = assets as? [Media] else {
+                                                            callback(nil)
                                                             return
                                                         }
                                                         self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
         })
     }
 
-    func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        filter: filter,
                                                        dataSourceType: .device,
-                                                       callback: {(asset) in
-                                                        guard let phAsset = asset as? PHAsset else {
-                                                            callback(nil, nil)
+                                                       allowMultipleSelection: allowMultipleSelection,
+                                                       callback: {(assets) in
+                                                        guard let phAssets = assets as? [PHAsset] else {
+                                                            callback(nil)
                                                             return
                                                         }
-                                                        self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
+                                                        self.mediaInserterHelper.insertFromDevice(assets: phAssets, callback: callback)
         })
     }
 
     func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
                                                          filter: filter,
-                                                         callback: {(asset) in
-                                                            guard let phAsset = asset as? PHAsset else {
-                                                                callback(nil, nil)
+                                                         callback: {(assets) in
+                                                            guard let phAsset = assets?.first as? PHAsset else {
+                                                                callback(nil)
                                                                 return
                                                             }
                                                             self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
         })
     }
 
-    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaInserterHelper.insertFromDevice(url: url, callback: callback)
+    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {
+        mediaInserterHelper.insertFromDevice(url: url, callback: { media in
+            callback(media?.first)
+        })
     }
 
     func gutenbergDidRequestMediaUploadSync() {
@@ -550,6 +562,23 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 // MARK: - PostEditorStateContextDelegate
 
 extension GutenbergViewController: PostEditorStateContextDelegate {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        guard let keyPath = keyPath else {
+            return
+        }
+
+        switch keyPath {
+        case BasePost.statusKeyPath:
+            if let status = post.status {
+                postEditorStateContext.updated(postStatus: status)
+            }
+        case #keyPath(AbstractPost.date_created_gmt):
+            let dateCreated = post.dateCreated ?? Date()
+            postEditorStateContext.updated(publishDate: dateCreated)
+        default:
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+    }
 
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
         reloadPublishButton()
@@ -563,6 +592,15 @@ extension GutenbergViewController: PostEditorStateContextDelegate {
         navigationBarManager.reloadPublishButton()
     }
 
+    internal func addObservers(toPost: AbstractPost) {
+        toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt), options: [], context: nil)
+    }
+
+    internal func removeObservers(fromPost: AbstractPost) {
+        fromPost.removeObserver(self, forKeyPath: AbstractPost.statusKeyPath)
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt))
+    }
 }
 
 // MARK: - PostEditorNavigationBarManagerDelegate

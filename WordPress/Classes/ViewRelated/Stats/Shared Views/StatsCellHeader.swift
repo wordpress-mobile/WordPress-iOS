@@ -7,10 +7,13 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
 
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var manageInsightButton: UIButton!
+    @IBOutlet weak var manageInsightImageView: UIImageView!
     @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var stackViewHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
+    private var statSection: StatSection?
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var defaultStackViewTopConstraint: CGFloat = 0
     private var defaultStackViewHeightConstraint: CGFloat = 0
     private var adjustHeightForPostStats = false
@@ -23,18 +26,27 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
         defaultStackViewHeightConstraint = stackViewHeightConstraint.constant
     }
 
-    func configure(withTitle title: String, adjustHeightForPostStats: Bool = false) {
-        headerLabel.text = title
-        self.adjustHeightForPostStats = adjustHeightForPostStats
+    func configure(statSection: StatSection? = nil, siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil) {
+        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.statSection = statSection
+        headerLabel.text = statSection?.title ?? ""
+        self.adjustHeightForPostStats = (statSection == .postStatsGraph)
         prepareForVoiceOver()
         applyStyles()
     }
 
     func prepareForVoiceOver() {
-        isAccessibilityElement = !(headerLabel.text?.isEmpty ?? true)
-        accessibilityElementsHidden = (headerLabel.text?.isEmpty ?? true)
-        accessibilityLabel = headerLabel.text
-        accessibilityTraits = .staticText
+        headerLabel.isAccessibilityElement = (headerLabel.text?.isEmpty == false)
+        headerLabel.accessibilityElementsHidden = (headerLabel.text?.isEmpty == true)
+        headerLabel.accessibilityLabel = headerLabel.text
+        headerLabel.accessibilityTraits = .staticText
+
+        manageInsightImageView.isAccessibilityElement = false
+        manageInsightButton.isAccessibilityElement = !manageInsightButton.isHidden
+        manageInsightButton.accessibilityElementsHidden = manageInsightButton.isHidden
+        manageInsightButton.accessibilityTraits = .button
+        manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Accessibility label for button that displays Manage Insight options.")
+        manageInsightButton.accessibilityHint = NSLocalizedString("Select to manage this Insight.", comment: "Accessibility hint for Manage Insight button.")
     }
 }
 
@@ -58,23 +70,32 @@ private extension StatsCellHeader {
     }
 
     func configureManageInsightButton() {
-        // TODO: remove this when Manage Insights implemented
-        manageInsightButton.isHidden = true
 
-        manageInsightButton.tintColor = Style.ImageTintColor.grey.styleGuideColor
-        manageInsightButton.setImage(Style.imageForGridiconType(.ellipsis), for: .normal)
-        manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Action button to display manage insight options.")
+        guard FeatureFlag.statsInsightsManagement.enabled,
+            let statSection = statSection,
+            StatSection.allInsights.contains(statSection) else {
+                showManageInsightButton(false)
+                return
+        }
+
+        showManageInsightButton()
+        manageInsightImageView.image = Style.imageForGridiconType(.ellipsis, withTint: .darkGrey)
     }
 
     // MARK: - Button Action
 
     @IBAction func manageInsightButtonPressed(_ sender: UIButton) {
-        // TODO: remove alert when Manage Insights is added
-        let alertController =  UIAlertController(title: "Manage Insight options will be shown here",
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
+        guard let statSection = statSection else {
+            DDLogDebug("manageInsightButtonPressed: unknown statSection.")
+            return
+        }
+
+        siteStatsInsightsDelegate?.manageInsightSelected?(statSection, fromButton: sender)
+    }
+
+    func showManageInsightButton(_ show: Bool = true) {
+        manageInsightImageView.isHidden = !show
+        manageInsightButton.isHidden = !show
     }
 
 }

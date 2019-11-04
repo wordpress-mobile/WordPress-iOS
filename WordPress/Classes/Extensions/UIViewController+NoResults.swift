@@ -111,7 +111,6 @@ extension NoResultsViewHost where Self: UIViewController {
         noResultsViewController.view.frame = view.frame
         noResultsViewController.view.frame.origin.y = 0
         customizationBlock?(noResultsViewController)
-        print(noResultsViewController)
         addChild(noResultsViewController)
 
         if animated {

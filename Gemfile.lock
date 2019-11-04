@@ -1,9 +1,11 @@
 GIT
   remote: https://github.com/wordpress-mobile/release-toolkit
-  revision: 21400012da8c2ceafa8ea2ce23d8a88233a97838
-  tag: 0.7.2
+  revision: c8007b8c11c282ea3e9f97f722d1971271959770
+  tag: 0.8.0
   specs:
-    fastlane-plugin-wpmreleasetoolkit (0.7.2)
+    fastlane-plugin-wpmreleasetoolkit (0.8.0)
+      activesupport (~> 4)
+      chroma (= 0.2.0)
       diffy (~> 3.3)
       git (~> 1.3)
       jsonlint
@@ -23,21 +25,25 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    addressable (2.6.0)
-      public_suffix (>= 2.0.2, < 4.0)
+    addressable (2.7.0)
+      public_suffix (>= 2.0.2, < 5.0)
+    algoliasearch (1.27.1)
+      httpclient (~> 2.8, >= 2.8.3)
+      json (>= 1.5.1)
     atomos (0.1.3)
-    babosa (1.0.2)
+    babosa (1.0.3)
+    chroma (0.2.0)
     claide (1.0.3)
-    cocoapods (1.7.5)
+    cocoapods (1.8.4)
       activesupport (>= 4.0.2, < 5)
       claide (>= 1.0.2, < 2.0)
-      cocoapods-core (= 1.7.5)
+      cocoapods-core (= 1.8.4)
       cocoapods-deintegrate (>= 1.0.3, < 2.0)
       cocoapods-downloader (>= 1.2.2, < 2.0)
       cocoapods-plugins (>= 1.0.0, < 2.0)
       cocoapods-search (>= 1.0.0, < 2.0)
       cocoapods-stats (>= 1.0.0, < 2.0)
-      cocoapods-trunk (>= 1.3.1, < 2.0)
+      cocoapods-trunk (>= 1.4.0, < 2.0)
       cocoapods-try (>= 1.1.0, < 2.0)
       colored2 (~> 3.1)
       escape (~> 0.0.4)
@@ -46,20 +52,20 @@ GEM
       molinillo (~> 0.6.6)
       nap (~> 1.0)
       ruby-macho (~> 1.4)
-      xcodeproj (>= 1.10.0, < 2.0)
-    cocoapods-core (1.7.5)
+      xcodeproj (>= 1.11.1, < 2.0)
+    cocoapods-core (1.8.4)
       activesupport (>= 4.0.2, < 6)
+      algoliasearch (~> 1.0)
+      concurrent-ruby (~> 1.1)
       fuzzy_match (~> 2.0.4)
       nap (~> 1.0)
     cocoapods-deintegrate (1.0.4)
     cocoapods-downloader (1.2.2)
     cocoapods-plugins (1.0.0)
       nap
-    cocoapods-repo-update (0.0.4)
-      cocoapods (~> 1.0, >= 1.3.0)
     cocoapods-search (1.0.0)
     cocoapods-stats (1.1.0)
-    cocoapods-trunk (1.4.0)
+    cocoapods-trunk (1.4.1)
       nap (>= 0.8, < 2.0)
       netrc (~> 0.11)
     cocoapods-try (1.1.0)
@@ -79,7 +85,7 @@ GEM
     dotenv (2.7.5)
     emoji_regex (1.0.1)
     escape (0.0.4)
-    excon (0.66.0)
+    excon (0.67.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     faraday-cookie_jar (0.0.6)
@@ -87,8 +93,8 @@ GEM
       http-cookie (~> 1.0.0)
     faraday_middleware (0.13.1)
       faraday (>= 0.7.4, < 1.0)
-    fastimage (2.1.5)
-    fastlane (2.127.2)
+    fastimage (2.1.7)
+    fastlane (2.133.0)
       CFPropertyList (>= 2.3, < 4.0.0)
       addressable (>= 2.3, < 3.0.0)
       babosa (>= 1.0.2, < 2.0.0)
@@ -98,9 +104,9 @@ GEM
       dotenv (>= 2.1.1, < 3.0.0)
       emoji_regex (>= 0.1, < 2.0)
       excon (>= 0.45.0, < 1.0.0)
-      faraday (~> 0.9)
+      faraday (< 0.16.0)
       faraday-cookie_jar (~> 0.0.6)
-      faraday_middleware (~> 0.9)
+      faraday_middleware (< 0.16.0)
       fastimage (>= 2.1.0, < 3.0.0)
       gh_inspector (>= 1.1.2, < 2.0.0)
       google-api-client (>= 0.21.2, < 0.24.0)
@@ -113,7 +119,7 @@ GEM
       multipart-post (~> 2.0.0)
       plist (>= 3.1.0, < 4.0.0)
       public_suffix (~> 2.0.0)
-      rubyzip (>= 1.2.2, < 2.0.0)
+      rubyzip (>= 1.3.0, < 2.0.0)
       security (= 0.1.3)
       simctl (~> 1.6.3)
       slack-notifier (>= 2.0.0, < 3.0.0)
@@ -125,7 +131,7 @@ GEM
       xcodeproj (>= 1.8.1, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
-    fastlane-plugin-sentry (1.5.0)
+    fastlane-plugin-sentry (1.6.0)
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
     gh_inspector (1.1.3)
@@ -138,7 +144,7 @@ GEM
       representable (~> 3.0)
       retriable (>= 2.0, < 4.0)
       signet (~> 0.9)
-    google-cloud-core (1.3.1)
+    google-cloud-core (1.3.2)
       google-cloud-env (~> 1.0)
     google-cloud-env (1.2.1)
       faraday (~> 0.11)
@@ -166,14 +172,14 @@ GEM
       optimist (~> 3)
     jwt (2.1.0)
     memoist (0.16.0)
-    mime-types (3.2.2)
+    mime-types (3.3)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2019.0331)
+    mime-types-data (3.2019.1009)
     mini_magick (4.9.5)
     mini_portile2 (2.4.0)
-    minitest (5.11.3)
+    minitest (5.12.2)
     molinillo (0.6.6)
-    multi_json (1.13.1)
+    multi_json (1.14.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     nanaimo (0.2.6)
@@ -188,7 +194,7 @@ GEM
     optimist (3.0.0)
     options (2.3.2)
     os (1.0.1)
-    parallel (1.17.0)
+    parallel (1.18.0)
     plist (3.5.0)
     progress_bar (1.3.0)
       highline (>= 1.6, < 3)
@@ -207,17 +213,17 @@ GEM
     ruby-enum (0.7.2)
       i18n
     ruby-macho (1.4.0)
-    rubyzip (1.2.3)
+    rubyzip (1.3.0)
     sawyer (0.8.2)
       addressable (>= 2.3.5)
       faraday (> 0.8, < 2.0)
     security (0.1.3)
-    signet (0.11.0)
+    signet (0.12.0)
       addressable (~> 2.3)
       faraday (~> 0.9)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
-    simctl (1.6.5)
+    simctl (1.6.6)
       CFPropertyList
       naturally
     slack-notifier (2.3.2)
@@ -237,7 +243,7 @@ GEM
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
     word_wrap (1.0.0)
-    xcodeproj (1.12.0)
+    xcodeproj (1.13.0)
       CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.3)
       claide (>= 1.0.2, < 2.0)
@@ -252,17 +258,16 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods (~> 1.7.0)!
-  cocoapods-repo-update (~> 0.0.3)!
+  cocoapods (~> 1.8.0)!
   commonmarker!
   dotenv!
-  fastlane (= 2.127.2)!
+  fastlane (= 2.133.0)!
   fastlane-plugin-sentry
   fastlane-plugin-wpmreleasetoolkit!
   octokit (~> 4.0)!
   rake!
   rmagick (~> 3.2.0)
-  rubyzip (~> 1.2.2)!
+  rubyzip (~> 1.3)!
   xcpretty-travis-formatter!
 
 BUNDLED WITH

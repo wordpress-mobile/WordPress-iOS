@@ -20,7 +20,7 @@ enum FeatureFlag: Int {
         case .statsRefresh:
             return true
         case .statsInsightsManagement:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .domainCredit:
             return true
         case .signInWithApple:
@@ -31,7 +31,7 @@ enum FeatureFlag: Int {
             }
             return true
         case .statsAsyncLoading:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]
+            return true
         }
     }
 }

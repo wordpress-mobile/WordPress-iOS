@@ -238,6 +238,37 @@
         }
     }
 
+    // MARK: - Insight Type
+
+    var insightType: InsightType? {
+        switch self {
+        case .insightsLatestPostSummary:
+            return .latestPostSummary
+        case .insightsAllTime:
+            return .allTimeStats
+        case .insightsFollowerTotals:
+            return .followersTotals
+        case .insightsMostPopularTime:
+            return .mostPopularTime
+        case .insightsTagsAndCategories:
+            return .tagsAndCategories
+        case .insightsAnnualSiteStats:
+            return .annualSiteStats
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            return .comments
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            return .followers
+        case .insightsTodaysStats:
+            return .todaysStats
+        case .insightsPostingActivity:
+            return .postingActivity
+        case .insightsPublicize:
+            return .publicize
+        default:
+            return nil
+        }
+    }
+
     // MARK: - Image Size Accessor
 
     static let defaultImageSize = CGFloat(24)
@@ -270,7 +301,7 @@
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
         static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
-        static let addCard = NSLocalizedString("Add new stats card", comment: "Label for action to add a new Insight.")
+        static let addCard = NSLocalizedString("Add stats card", comment: "Label for action to add a new Insight.")
     }
 
     struct DetailsTitles {

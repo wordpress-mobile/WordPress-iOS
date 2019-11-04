@@ -107,6 +107,7 @@ private extension TopTotalsCell {
     /// - Hide the stack view.
     ///
     func setSubtitleVisibility() {
+        subtitleStackView.layoutIfNeeded()
         let subtitleHeight = subtitlesStackViewTopConstraint.constant * 2 + subtitleStackView.frame.height
 
         if forDetails {
