@@ -1,5 +1,6 @@
 import Foundation
 
+/// A view with a title and detail label similar to the detail table view cell
 class ChosenValueRow: UIView {
 
     private struct Constants {
