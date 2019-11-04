@@ -6,13 +6,15 @@ public class MediaEditor: NSObject {
     let cropViewControllerFactory: (UIImage) -> TOCropViewController
 
     private(set) var cropViewController: TOCropViewController?
+    private var callback: ((UIImage) -> ())?
 
     init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init) {
         self.cropViewControllerFactory = cropViewControllerFactory
         super.init()
     }
 
-    public func edit(_ image: UIImage) {
+    public func edit(_ image: UIImage, callback: @escaping (UIImage) -> ()) {
+        self.callback = callback
         cropViewController = self.cropViewControllerFactory(image)
         cropViewController?.delegate = self
     }
@@ -20,7 +22,7 @@ public class MediaEditor: NSObject {
 }
 
 extension MediaEditor: TOCropViewControllerDelegate {
-    public func cropViewController(_ cropViewController: TOCropViewController, didCropImageTo cropRect: CGRect, angle: Int) {
-
+    public func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
+        callback?(image)
     }
 }
