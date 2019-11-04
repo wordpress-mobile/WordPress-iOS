@@ -4683,7 +4683,6 @@
 			children = (
 				C59D3D480E6410BC00AA591D /* Categories */,
 				B587796C19B799D800E57C5A /* Extensions */,
-				8BF43071236CB9F500F992DF /* MediaEditor */,
 				2F706A870DFB229B00B43086 /* Models */,
 				850BD4531922F95C0032F3AD /* Networking */,
 				93FA59DA18D88BDB001446BC /* Services */,
@@ -5117,6 +5116,7 @@
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
+				8BF43071236CB9F500F992DF /* MediaEditor */,
 				E12F55F714A1F2640060A510 /* Vendor */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -6957,17 +6957,18 @@
 				8BF43072236CB9F500F992DF /* MediaEditor.h */,
 				8BF43073236CB9F500F992DF /* Info.plist */,
 				8B586DA32370609000F05331 /* MediaEditor.swift */,
+				8BF4307E236CB9F600F992DF /* Tests */,
 			);
 			path = MediaEditor;
 			sourceTree = "<group>";
 		};
-		8BF4307E236CB9F600F992DF /* MediaEditor */ = {
+		8BF4307E236CB9F600F992DF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				8BF4307F236CB9F600F992DF /* MediaEditorTests.swift */,
 				8BF43081236CB9F600F992DF /* Info.plist */,
 			);
-			path = MediaEditor;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		931D26FB19EDA0D000114F17 /* ALIterativeMigrator */ = {
@@ -8851,7 +8852,6 @@
 				B5AEEC731ACACF3B008BF2A4 /* Core Data */,
 				E1C9AA541C1041E600732665 /* Extensions */,
 				FF7C89A11E3A1029000472A8 /* MediaPicker */,
-				8BF4307E236CB9F600F992DF /* MediaEditor */,
 				5D7A577D1AFBFD7C0097C028 /* Models */,
 				85F8E1991B017A8E000859BB /* Networking */,
 				B5416CF81C17542900006DD8 /* Notifications */,
@@ -13923,7 +13923,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = Classes/MediaEditor/Info.plist;
+				INFOPLIST_FILE = MediaEditor/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -14103,7 +14103,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = WordPressTest/MediaEditor/Info.plist;
+				INFOPLIST_FILE = MediaEditor/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
