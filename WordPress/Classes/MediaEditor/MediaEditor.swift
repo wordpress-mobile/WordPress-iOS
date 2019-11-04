@@ -8,7 +8,7 @@ public class MediaEditor: NSObject {
     private(set) var cropViewController: TOCropViewController?
     private var callback: ((UIImage?) -> ())?
 
-    init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init) {
+    public init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init) {
         self.cropViewControllerFactory = cropViewControllerFactory
         super.init()
     }
