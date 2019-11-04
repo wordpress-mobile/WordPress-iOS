@@ -5056,7 +5056,7 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -9759,7 +9759,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -10223,10 +10223,10 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.1.0/ZendeskCoreSDK.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.1.0/ZendeskProviderSDK.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.1.0/ZendeskSDK.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.1.0/CommonUISDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.1/ZendeskCoreSDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.1/ZendeskProviderSDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.1/ZendeskSDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.1/CommonUISDK.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
