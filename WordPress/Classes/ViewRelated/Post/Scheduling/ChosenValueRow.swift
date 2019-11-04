@@ -1,5 +1,6 @@
 import Foundation
 
+/// A view with a title and detail label similar to the detail table view cell
 class ChosenValueRow: UIView {
 
     private struct Constants {
@@ -7,16 +8,22 @@ class ChosenValueRow: UIView {
         static let rowInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 
-    weak var titleLabel: UILabel?
-    weak var detailLabel: UILabel?
+    let titleLabel = UILabel()
+    let detailLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        let titleLabel = UILabel()
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setup() {
         titleLabel.font = UIFont.preferredFont(forTextStyle: .callout)
 
-        let detailLabel = UILabel()
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next inverse_text_alignment
             detailLabel.textAlignment = .right
@@ -41,12 +48,5 @@ class ChosenValueRow: UIView {
         NSLayoutConstraint.activate([
             heightConstraint
         ])
-
-        self.titleLabel = titleLabel
-        self.detailLabel = detailLabel
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

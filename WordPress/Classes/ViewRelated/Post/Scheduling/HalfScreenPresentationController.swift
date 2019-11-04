@@ -1,9 +1,8 @@
 import Foundation
 
-// Should be added to WordpressUI?
 class HalfScreenPresentationController: FancyAlertPresentationController {
 
-    fileprivate weak var tapGestureRecognizer: UITapGestureRecognizer?
+    private weak var tapGestureRecognizer: UITapGestureRecognizer?
 
     override var frameOfPresentedViewInContainerView: CGRect {
         let height = containerView?.bounds.height ?? 0

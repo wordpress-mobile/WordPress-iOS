@@ -10,34 +10,105 @@ class CalendarMonthView: UIView {
         static let calendarWidth: CGFloat = 375
     }
 
+    weak var headerTitle: UILabel?
+    weak var forwardButton: UIButton?
+    weak var previousButton: UIButton?
+
     var updated: ((Date) -> Void)?
+
+    private static var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM, YYYY"
+        return formatter
+    }()
+
+    var selectedDate: Date? {
+        didSet {
+            if let date = selectedDate {
+                calendarCollectionView.selectDates([date])
+                calendarCollectionView.scrollToDate(date, animateScroll: false)
+            }
+        }
+    }
+
+    private let calendarCollectionView = CalendarCollectionView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setup()
+    }
 
-        let collectionView = CalendarCollectionView()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-        calendarCollectionView = collectionView
-
-        collectionView.calDataSource.didScroll = { [weak self] dateSegment in
+    private func setup() {
+        calendarCollectionView.calDataSource.didScroll = { [weak self] dateSegment in
             if let visibleDate = dateSegment.monthDates.first?.date {
                 self?.headerTitle?.text = CalendarMonthView.dateFormatter.string(from: visibleDate)
             }
         }
-        collectionView.calDataSource.didSelect = { [weak self] dateSegment in
+        calendarCollectionView.calDataSource.didSelect = { [weak self] dateSegment in
             self?.updated?(dateSegment)
         }
 
-        let weekdayHeaders = UIStackView(arrangedSubviews: Calendar.current.veryShortWeekdaySymbols.map({ symbol in
-            let label = UILabel()
-            label.text = symbol
-            label.textAlignment = .center
-            label.font = UIFont.preferredFont(forTextStyle: .caption1)
-            label.textColor = .neutral(.shade30)
-            return label
-        }))
-        weekdayHeaders.distribution = .fillEqually
+        let weekdaysHeaderView = makeWeekdayHeaderView()
+        let calendarHeaderView = makeCalendarHeaderView()
 
+        let stackView = UIStackView(arrangedSubviews: [
+            calendarHeaderView,
+            weekdaysHeaderView,
+            calendarCollectionView
+        ])
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        stackView.layoutMargins = Constants.rowInsets
+        stackView.isLayoutMarginsRelativeArrangement = true
+
+        setupConstraints(calendarHeaderView: calendarHeaderView, weekdaysHeaderView: weekdaysHeaderView, calendarCollectionView: calendarCollectionView)
+
+        addSubview(stackView)
+
+        pinSubviewToAllEdges(stackView)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        calendarCollectionView.reloadData()
+        if let date = selectedDate {
+            calendarCollectionView.scrollToDate(date)
+        }
+    }
+
+    private func setupConstraints(calendarHeaderView: UIView, weekdaysHeaderView: UIView, calendarCollectionView: UIView) {
+        let heightConstraint = calendarHeaderView.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
+        let widthConstraint = weekdaysHeaderView.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
+        heightConstraint.priority = .defaultHigh
+        widthConstraint.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            heightConstraint,
+            widthConstraint
+        ])
+
+        calendarHeaderView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        weekdaysHeaderView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+
+        let collectionViewSizeConstraints = [
+            calendarCollectionView.heightAnchor.constraint(equalToConstant: Constants.calendarHeight),
+            calendarCollectionView.widthAnchor.constraint(equalToConstant: Constants.calendarWidth)
+        ]
+
+        collectionViewSizeConstraints.forEach() { constraint in
+            constraint.priority = .defaultHigh
+        }
+
+        NSLayoutConstraint.activate(collectionViewSizeConstraints)
+    }
+
+    // MARK: View Factories
+    private func makeCalendarHeaderView() -> UIView {
         let prevButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         prevButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         prevButton.setImage(Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
@@ -49,7 +120,6 @@ class CalendarMonthView: UIView {
         nextButton.addTarget(self, action: #selector(CalendarMonthView.nextMonth), for: .touchUpInside)
 
         let headerLabel = UILabel()
-        headerLabel.text = "February, 2019"
         headerLabel.textAlignment = .center
         headerLabel.textColor = .neutral(.shade60)
 
@@ -62,92 +132,34 @@ class CalendarMonthView: UIView {
         ])
         headerStackView.alignment = .center
 
-        let stackView = UIStackView(arrangedSubviews: [
-            headerStackView,
-            weekdayHeaders,
-            collectionView
-        ])
-        stackView.axis = .vertical
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        stackView.layoutMargins = Constants.rowInsets
-        stackView.isLayoutMarginsRelativeArrangement = true
-
-        let heightConstraint = headerStackView.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
-        let widthConstraint = weekdayHeaders.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
-        heightConstraint.priority = .defaultHigh
-        widthConstraint.priority = .defaultHigh
-
-        NSLayoutConstraint.activate([
-            heightConstraint,
-            widthConstraint
-        ])
-
-        headerStackView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        weekdayHeaders.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-
-        addSubview(stackView)
-
-        let collectionViewSizeConstraints = [
-            collectionView.heightAnchor.constraint(equalToConstant: Constants.calendarHeight),
-            collectionView.widthAnchor.constraint(equalToConstant: Constants.calendarWidth)
-        ]
-
-        collectionViewSizeConstraints.forEach() { constraint in
-            constraint.priority = .defaultHigh
-        }
-
-        NSLayoutConstraint.activate(collectionViewSizeConstraints)
-
-        pinSubviewToAllEdges(stackView)
+        return headerStackView
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        calendarCollectionView?.reloadData()
-        if let date = selectedDate {
-            calendarCollectionView?.scrollToDate(date)
+    private func makeWeekdayHeaderView() -> UIView {
+        let weekdaysHeader = UIStackView(arrangedSubviews: Calendar.current.veryShortWeekdaySymbols.map({ symbol in
+            let label = UILabel()
+            label.text = symbol
+            label.textAlignment = .center
+            label.font = UIFont.preferredFont(forTextStyle: .caption1)
+            label.textColor = .neutral(.shade30)
+            return label
+        }))
+        weekdaysHeader.distribution = .fillEqually
+        return weekdaysHeader
+    }
+
+    // MARK: Navigation button selectors
+    @objc func previousMonth(_ sender: Any) {
+        if let lastVisibleDate = calendarCollectionView.visibleDates().monthDates.first?.date,
+           let nextVisibleDate = Calendar.current.date(byAdding: .day, value: -1, to: lastVisibleDate, wrappingComponents: false) {
+            calendarCollectionView.scrollToDate(nextVisibleDate)
         }
     }
 
-    var selectedDate: Date? {
-        didSet {
-            if let date = selectedDate {
-                calendarCollectionView?.selectDates([date])
-                calendarCollectionView?.scrollToDate(date)
-            }
-        }
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
-    private static var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM, YYYY"
-        return formatter
-    }()
-
-    @IBOutlet weak var headerTitle: UILabel?
-    @IBOutlet weak var forwardButton: UIButton?
-    @IBOutlet weak var previousButton: UIButton?
-
-    @IBOutlet private weak var calendarCollectionView: CalendarCollectionView?
-
-    @IBAction func previousMonth(_ sender: Any) {
-        if let lastVisibleDate = calendarCollectionView?.visibleDates().monthDates.first?.date {
-            if let nextVisibleDate = Calendar.current.date(byAdding: .day, value: -1, to: lastVisibleDate, wrappingComponents: false) {
-                calendarCollectionView?.scrollToDate(nextVisibleDate)
-            }
-        }
-    }
-
-    @IBAction func nextMonth(_ sender: Any) {
-        if let lastVisibleDate = calendarCollectionView?.visibleDates().monthDates.last?.date {
-            if let nextVisibleDate = Calendar.current.date(byAdding: .day, value: 1, to: lastVisibleDate, wrappingComponents: false) {
-                calendarCollectionView?.scrollToDate(nextVisibleDate)
-            }
+    @objc func nextMonth(_ sender: Any) {
+        if let lastVisibleDate = calendarCollectionView.visibleDates().monthDates.last?.date,
+           let nextVisibleDate = Calendar.current.date(byAdding: .day, value: 1, to: lastVisibleDate, wrappingComponents: false) {
+            calendarCollectionView.scrollToDate(nextVisibleDate)
         }
     }
 }

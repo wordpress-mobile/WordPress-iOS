@@ -14,11 +14,13 @@ struct DateCoordinator {
     }
 }
 
-class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler {
+class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
 
-    weak var calendarMonthView: CalendarMonthView!
+    var coordinator: DateCoordinator? = nil
 
-    override func configureView() -> UIView {
+    let chosenValueRow = ChosenValueRow(frame: .zero)
+
+    private lazy var calendarMonthView: CalendarMonthView = {
         let calendarMonthView = CalendarMonthView(frame: .zero)
         calendarMonthView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -33,21 +35,24 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
                 newDate = Calendar.current.date(bySettingHour: components.hour ?? 0, minute: components.minute ?? 0, second: components.second ?? 0, of: newDate) ?? newDate
             }
             self?.coordinator?.setDate(newDate)
-            self?.chosenValueRow.detailLabel?.text = date.longString()
+            self?.chosenValueRow.detailLabel.text = date.longString()
         }
 
-        self.calendarMonthView = calendarMonthView
-
         return calendarMonthView
-    }
+    }()
+
+    private let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(closeButtonPressed))
+    private let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(publishImmediately))
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        chosenValueRow.titleLabel?.text = NSLocalizedString("Choose a date", comment: "Label for Publish date picker")
+        chosenValueRow.titleLabel.text = NSLocalizedString("Choose a date", comment: "Label for Publish date picker")
 
         let nextButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: "Next screen button title"), style: .plain, target: self, action: #selector(nextButtonPressed))
         navigationItem.setRightBarButton(nextButton, animated: false)
+
+        setup(topView: chosenValueRow, pickerView: calendarMonthView)
 
         calendarMonthView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -72,9 +77,6 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(closeButtonPressed))
-
-        let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(publishImmediately))
         navigationItem.setLeftBarButton(publishButton, animated: false)
 
         if traitCollection.verticalSizeClass == .compact {
@@ -100,55 +102,56 @@ class SchedulingCalendarViewController: DatePickerSheet, DateCoordinatorHandler 
     }
 }
 
-class TimePickerViewController: DatePickerSheet, DateCoordinatorHandler {
+class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
 
-    @IBOutlet weak var datePicker: UIDatePicker!
+    var coordinator: DateCoordinator? = nil
 
-    override func configureView() -> UIView {
+    let chosenValueRow = ChosenValueRow(frame: .zero)
+
+    private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .time
         datePicker.addTarget(self, action: #selector(timePickerChanged(_:)), for: .valueChanged)
         if let date = coordinator?.date {
             datePicker.date = date
         }
-        self.datePicker = datePicker
         return datePicker
-    }
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        chosenValueRow.titleLabel?.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
-        chosenValueRow.detailLabel?.text = datePicker.date.longStringWithTime()
+        chosenValueRow.titleLabel.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
+        chosenValueRow.detailLabel.text = datePicker.date.longStringWithTime()
         let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
+
+        setup(topView: chosenValueRow, pickerView: datePicker)
+
         navigationItem.setRightBarButton(doneButton, animated: false)
     }
 
-    @IBAction func timePickerChanged(_ sender: Any) {
-        chosenValueRow.detailLabel?.text = datePicker.date.longStringWithTime()
+    // MARK: Change Selectors
+    @objc func timePickerChanged(_ sender: Any) {
+        chosenValueRow.detailLabel.text = datePicker.date.longStringWithTime()
         coordinator?.setDate(datePicker.date)
     }
 
-    @IBAction func done() {
+    @objc func done() {
         coordinator?.updated(coordinator?.date)
         navigationController?.dismiss(animated: true, completion: nil)
     }
 }
 
-/// A base class used by the date picker classes
-/// Could be genericized further
-class DatePickerSheet: UIViewController {
-    var coordinator: DateCoordinator? = nil
+// MARK: DatePickerSheet Protocol
+protocol DatePickerSheet {
+    func configureStackView(topView: UIView, pickerView: UIView) -> UIView
+}
 
-    weak var chosenValueRow: ChosenValueRow!
-    weak var pickerView: UIView!
+extension DatePickerSheet {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        WPStyleGuide.configureColors(view: view, tableView: nil)
-
-        let chosenValueRow = configureValueRow()
-        let pickerView = configureView()
+    /// Constructs a view with `topView` on top and `pickerView` on bottom
+    /// - Parameter topView: A view to be shown above `pickerView`
+    /// - Parameter pickerView: A view to be shown on the bottom
+    func configureStackView(topView: UIView, pickerView: UIView) -> UIView {
         pickerView.translatesAutoresizingMaskIntoConstraints = false
 
         let pickerWrapperView = UIView()
@@ -173,27 +176,27 @@ class DatePickerSheet: UIViewController {
         NSLayoutConstraint.activate(sideConstraints)
 
         let stackView = UIStackView(arrangedSubviews: [
-            chosenValueRow,
+            topView,
             pickerWrapperView
         ])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        self.chosenValueRow = chosenValueRow
-        self.pickerView = pickerView
+        return stackView
+    }
+}
+
+extension DatePickerSheet where Self: UIViewController {
+
+    /// Adds `topView` and `pickerView` to view hierarchy + standard styling for the view controller's view
+    /// - Parameter topView: A view to show above `pickerView` (see `ChosenValueRow`)
+    /// - Parameter pickerView: A view to show below the top view
+    func setup(topView: UIView, pickerView: UIView) {
+        WPStyleGuide.configureColors(view: view, tableView: nil)
+
+        let stackView = configureStackView(topView: topView, pickerView: pickerView)
 
         view.addSubview(stackView)
         view.pinSubviewToSafeArea(stackView)
     }
-
-    // Does nothing, should be overriden by the subclass
-    func configureView() -> UIView {
-        return UIView()
-    }
-
-    private func configureValueRow() -> ChosenValueRow {
-        let chosenRow = ChosenValueRow(frame: .zero)
-        return chosenRow
-    }
-
 }
