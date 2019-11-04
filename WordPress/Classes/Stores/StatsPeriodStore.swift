@@ -181,6 +181,7 @@ struct PeriodStoreState {
     // Post Stats
 
     var postStats = [Int: StatsPostDetails?]()
+    var postStatsFetchingStatuses = [Int: StoreFetchingStatus]()
     var fetchingPostStats = [Int: Bool]()
     var fetchingPostStatsHasFailed = [Int: Bool]()
 }
@@ -188,6 +189,7 @@ struct PeriodStoreState {
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     private typealias PeriodOperation = StatsPeriodAsyncOperation
     private typealias PublishedPostOperation = StatsPublishedPostsAsyncOperation
+    private typealias PostDetailOperation = StatsPostDetailAsyncOperation
 
     var fetchingOverviewListener: ((_ fetching: Bool, _ success: Bool) -> Void)?
     var cachedDataListener: ((_ hasCachedData: Bool) -> Void)?
@@ -1166,6 +1168,25 @@ private extension StatsPeriodStore {
                 return
         }
 
+        if asyncLoadingActivated {
+            operationQueue.cancelAllOperations()
+
+            state.postStatsFetchingStatuses[postID] = .loading
+
+            operationQueue.addOperation(PostDetailOperation(service: statsRemote, for: postID) { [weak self] (postStats: StatsPostDetails?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching Post Stats: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching post stats.")
+
+                DispatchQueue.main.async {
+                    self?.receivedPostStats(postStats, postID, error)
+                }
+            })
+            return
+        }
+
         state.fetchingPostStats[postID] = true
 
         statsRemote.getDetails(forPostID: postID) { (postStats: StatsPostDetails?, error: Error?) in
@@ -1178,6 +1199,7 @@ private extension StatsPeriodStore {
     }
 
     func refreshPostStats(postID: Int) {
+        state.postStatsFetchingStatuses[postID] = .idle
         state.fetchingPostStats[postID] = false
         cancelQueries()
         fetchPostStats(postID: postID)
@@ -1342,6 +1364,8 @@ private extension StatsPeriodStore {
         transaction { state in
             state.fetchingPostStats[postId] = false
             state.fetchingPostStatsHasFailed[postId] = error != nil
+
+            state.postStatsFetchingStatuses[postId] = error != nil ? .error : .success
             state.postStats[postId] = postStats
         }
     }
@@ -1685,6 +1709,9 @@ extension StatsPeriodStore {
         case .allFileDownloads:
             return state.fetchingFileDownloadsHasFailed
         case .postStats(let postId):
+            if asyncLoadingActivated {
+                return state.postStatsFetchingStatuses[postId] == .error
+            }
             return state.fetchingPostStatsHasFailed[postId] ?? true
         }
     }
@@ -1714,6 +1741,17 @@ extension StatsPeriodStore {
         guard let postId = postId else {
             return false
         }
+        if asyncLoadingActivated {
+            return state.postStatsFetchingStatuses[postId] == .loading
+        }
         return state.fetchingPostStats[postId] ?? false
+    }
+
+    func postStatsFetchingStatuses(for postId: Int?) -> StoreFetchingStatus {
+        guard let postId = postId,
+            let status = state.postStatsFetchingStatuses[postId] else {
+            return .idle
+        }
+        return status
     }
 }

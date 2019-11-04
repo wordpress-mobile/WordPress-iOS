@@ -154,8 +154,6 @@ class SiteStatsDetailsViewModel: Observable {
             return ImmuTable.Empty
         }
 
-        var tableRows = [ImmuTableRow]()
-
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
@@ -283,21 +281,24 @@ class SiteStatsDetailsViewModel: Observable {
                 return rows
             }
         case .postStatsMonthsYears:
-            tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
-                                                               dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle))
-            tableRows.append(contentsOf: postStatsRows())
+            return periodImmuTable(for: periodStore.postStatsFetchingStatuses(for: postID)) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
+                                                              dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle))
+                rows.append(contentsOf: postStatsRows(status: status))
+                return rows
+            }
         case .postStatsAverageViews:
-            tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsAverageViews.itemSubtitle,
-                                                               dataSubtitle: StatSection.postStatsAverageViews.dataSubtitle))
-            tableRows.append(contentsOf: postStatsRows(forAverages: true))
+            return periodImmuTable(for: periodStore.postStatsFetchingStatuses(for: postID)) { status in
+                var rows = [ImmuTableRow]()
+                rows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsAverageViews.itemSubtitle,
+                                                              dataSubtitle: StatSection.postStatsAverageViews.dataSubtitle))
+                rows.append(contentsOf: postStatsRows(forAverages: true, status: status))
+                return rows
+            }
         default:
-            break
+            return ImmuTable.Empty
         }
-
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: tableRows)
-            ])
     }
 
     // MARK: - Refresh Data
@@ -799,8 +800,8 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Post Stats
 
-    func postStatsRows(forAverages: Bool = false) -> [ImmuTableRow] {
-        return expandableDataRowsFor(postStatsRowData(forAverages: forAverages))
+    func postStatsRows(forAverages: Bool = false, status: StoreFetchingStatus) -> [ImmuTableRow] {
+        return expandableDataRowsFor(postStatsRowData(forAverages: forAverages), status: status)
     }
 
     func postStatsRowData(forAverages: Bool) -> [StatsTotalRowData] {
@@ -1019,6 +1020,7 @@ private extension SiteStatsDetailsViewModel {
             } else {
                 rows.append(contentsOf: content)
                 rows.append(StatsGhostDetailRow(hideTopBorder: true,
+                                                isLastRow: true,
                                                 enableTopPadding: true))
             }
         case .success:
