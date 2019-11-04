@@ -1,5 +1,3 @@
-Mobil geliştiricilerimiz bu ay pek çok hatayı düzeltti:
-- Bazen uygulamaya Apple kimlik bilgileriyle giriş yapmanıza engel olan bir hata vardı. Artık bu sorun düzeltildi.
-- Düzenlemeler sayesinden blok düzenleyici gittikçe daha iyi oluyor: Bağlantıların Safari yerine uygulamada açılması ve bazen mevcut bağlantıları silen, sinir bozucu bağlantı düzenleme sorunu giderildi.
-- Daha iyi görseller ve daha az hata sayesinde “Gece Modu” artık “iç karartıcı” değil, “renk tonu” bakımından koyu.
-- Paylaşma genişletmesinde dikey kaydırma bazen çalışmıyordu, artık çalışıyor.
+- Blok düzenleyicisi: Bir "Medya ve Metin" bloğu ekledik! Görüntü Bloğu ayarlarına Bağlantı Hedefi (Yeni sekmede aç) seçeneği eklendi. “Yeni Fotoğraf Gönderisi” kısayolunun seçilen fotoğrafı eklemediği bir hata durumunu düzelttik.
+- İstatistikler: Artık Insights'ı özelleştirebilirsiniz. Insights yavaş ağlarda artık daha hızlı yükleniyor.
+- Karanlık Mod: Tüm uygulamada iyileştirmeler ve küçük hata düzeltmeleri yapıldı.
