@@ -53,6 +53,16 @@ class MediaEditorTests: XCTestCase {
         expect(cropViewControllerMock?.didCallDismiss).to(beTrue())
     }
 
+    func testPresentCropViewControllerFromAGivenUIViewController() {
+        let image = UIImage()
+        let viewControllerMock = UIViewControllerMock()
+        let mediaEditor = MediaEditor()
+
+        mediaEditor.edit(image, from: viewControllerMock) { _ in }
+
+        expect(viewControllerMock.didCallPresent).to(beTrue())
+    }
+
 }
 
 class TOCropViewControllerMock: TOCropViewController {
@@ -70,5 +80,13 @@ class TOCropViewControllerMock: TOCropViewController {
 
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         didCallDismiss = true
+    }
+}
+
+class UIViewControllerMock: UIViewController {
+    var didCallPresent = false
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        didCallPresent = true
     }
 }
