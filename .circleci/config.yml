@@ -13,6 +13,18 @@ commands:
           command: |
             # Force chruby to load to work around CircleCI Xcode 11 image issue
             echo 'source /usr/local/opt/chruby/share/chruby/chruby.sh && chruby 2.5.5' >> $BASH_ENV
+  save-xcresult:
+    steps:
+      - run:
+          name: Zip xcresult
+          command: |
+            mkdir testresults
+            zip -r testresults/xcresult.zip test-without-building.xcresult
+          when: on_fail # Zips the .xcresult file when tests fail, so it can be saved
+      - store_artifacts:
+          name: Save xcresult
+          path: testresults
+          destination: logs
 
 jobs:
   Build Tests:
@@ -49,8 +61,9 @@ jobs:
       - ios/wait-for-simulator
       - ios/xcodebuild:
           command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPress_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
+          arguments: -xctestrun DerivedData/Build/Products/WordPress_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath test-without-building.xcresult
       - ios/save-xcodebuild-artifacts
+      - save-xcresult
   UI Tests:
     parameters:
       device:
@@ -71,8 +84,9 @@ jobs:
       - ios/wait-for-simulator
       - ios/xcodebuild:
           command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPressUITests_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
+          arguments: -xctestrun DerivedData/Build/Products/WordPressUITests_iphonesimulator13.0-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath test-without-building.xcresult
       - ios/save-xcodebuild-artifacts
+      - save-xcresult
   Installable Build:
     executor:
       name: ios/default
