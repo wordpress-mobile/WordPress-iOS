@@ -31,9 +31,6 @@ class AbstractPostFixLocalMediaURLsTests: XCTestCase {
 
         expect(post.content)
             .to(equal("<img src=\"\(cacheDirectory.appendingPathComponent("Media/thumb-test.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\">"))
-
-        // Force test failure
-        XCTAssert(false)
     }
 
     func testUpdateLocalMediaPathsInDocumentDirectory() {

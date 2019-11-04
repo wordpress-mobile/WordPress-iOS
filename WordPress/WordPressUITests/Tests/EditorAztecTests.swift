@@ -31,9 +31,6 @@ class EditorAztecTests: XCTestCase {
             .viewPublishedPost(withTitle: title)
             .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)
             .done()
-
-        // Force test failure
-        XCTAssert(false)
     }
 
     func testBasicPostPublish() {
