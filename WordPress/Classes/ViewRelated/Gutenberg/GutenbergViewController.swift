@@ -570,10 +570,6 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 }
 
-extension Gutenberg.MediaSource {
-    static let freeMediaLibrary = Gutenberg.MediaSource(id: "free-photo-library", label: .freePhotosLibrary, type: .image)
-}
-
 // MARK: - PostEditorStateContextDelegate
 
 extension GutenbergViewController: PostEditorStateContextDelegate {
@@ -667,8 +663,11 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
 // MARK: - Constants
 
-private extension GutenbergViewController {
+extension Gutenberg.MediaSource {
+    static let freeMediaLibrary = Gutenberg.MediaSource(id: "free-photo-library", label: .freePhotosLibrary, type: .image)
+}
 
+private extension GutenbergViewController {
     enum Analytics {
         static let editorSource = "gutenberg"
     }
