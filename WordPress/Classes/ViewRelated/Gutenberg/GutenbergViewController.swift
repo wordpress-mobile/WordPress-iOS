@@ -349,7 +349,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         autosaver.contentDidChange()
     }
 
-    func gutenbergDidRequestMedia(from source: Gutenberg.MediaSource, filter: [MediaFilter]?, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMedia(from source: Gutenberg.MediaSource, filter: [Gutenberg.MediaType], allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         let flags = mediaFilterFlags(using: filter)
         switch source {
         case .mediaLibrary:
@@ -364,28 +364,25 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func mediaFilterFlags(using filterArray: [MediaFilter]?) -> WPMediaType {
-        if let filterArray = filterArray {
-            var mediaType: Int = 0
-            for filter in filterArray {
-                switch filter {
-                case .image:
-                    mediaType = mediaType | WPMediaType.image.rawValue
-                case .video:
-                    mediaType = mediaType | WPMediaType.video.rawValue
-                case .audio:
-                    mediaType = mediaType | WPMediaType.audio.rawValue
-                case .other:
-                    mediaType = mediaType | WPMediaType.other.rawValue
-                }
-            }
-            if mediaType == 0 {
-                return WPMediaType.all
-            } else {
-                return WPMediaType(rawValue: mediaType)
+    func mediaFilterFlags(using filterArray: [Gutenberg.MediaType]) -> WPMediaType {
+        var mediaType: Int = 0
+        for filter in filterArray {
+            switch filter {
+            case .image:
+                mediaType = mediaType | WPMediaType.image.rawValue
+            case .video:
+                mediaType = mediaType | WPMediaType.video.rawValue
+            case .audio:
+                mediaType = mediaType | WPMediaType.audio.rawValue
+            case .other:
+                mediaType = mediaType | WPMediaType.other.rawValue
             }
         }
-        return WPMediaType.all
+        if mediaType == 0 {
+            return WPMediaType.all
+        } else {
+            return WPMediaType(rawValue: mediaType)
+        }
     }
 
     func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -664,7 +661,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 // MARK: - Constants
 
 extension Gutenberg.MediaSource {
-    static let freeMediaLibrary = Gutenberg.MediaSource(id: "free-photo-library", label: .freePhotosLibrary, type: .image)
+    static let freeMediaLibrary = Gutenberg.MediaSource(id: "free-photo-library", label: .freePhotosLibrary, types: [.image])
 }
 
 private extension GutenbergViewController {
