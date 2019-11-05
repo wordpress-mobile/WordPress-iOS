@@ -133,19 +133,9 @@ class GutenbergMediaInserterHelper: NSObject {
         return mediaCoordinator.hasFailedMedia(for: post)
     }
 
-    private func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
-        switch exportableAsset.assetMediaType {
-        case .image:
-            break
-        case .video:
-            break
-        default:
-            break
-        }
-
+    func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
-        let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
-        return media
+        return mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
     }
 
     private func registerMediaObserver() {

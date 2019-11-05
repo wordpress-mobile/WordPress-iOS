@@ -17,7 +17,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     private lazy var stockPhotos: GutenbergStockPhotos = {
-        return GutenbergStockPhotos(mediaInserter: mediaInserterHelper)
+        return GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
     }()
 
     // MARK: - Aztec
@@ -359,7 +359,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
         case .freeMediaLibrary:
-            stockPhotos.presentPicker(origin: self, post: post, callback: callback)
+            stockPhotos.presentPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
         default: break;
         }
     }
