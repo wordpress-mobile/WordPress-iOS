@@ -249,6 +249,8 @@ class NoticePresenter: NSObject {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
         })
 
+        UIAccessibility.post(notification: .layoutChanged, argument: noticeContainerView)
+
         return NoticePresentation(notice: notice, containerView: noticeContainerView)
     }
 
