@@ -9,25 +9,27 @@ class TodayViewController: UIViewController {
     // MARK: - Properties
 
     @IBOutlet var unconfiguredView: UIStackView!
-    @IBOutlet var configureMeLabel: UILabel!
-    @IBOutlet var siteNameLabel: UILabel!
+    @IBOutlet var configureLabel: UILabel!
+    @IBOutlet var configureButton: UIButton!
+
     @IBOutlet var configuredView: UIStackView!
-    @IBOutlet var countContainerView: UIView!
     @IBOutlet var visitorsCountLabel: UILabel!
     @IBOutlet var visitorsLabel: UILabel!
     @IBOutlet var viewsCountLabel: UILabel!
     @IBOutlet var viewsLabel: UILabel!
-    @IBOutlet var configureMeButton: UIButton!
+    @IBOutlet var siteNameLabel: UILabel!
 
-    private var siteID: NSNumber?
-    private var timeZone: TimeZone?
-    private var oauthToken: String?
     private var siteName: String = ""
     private var visitorCount: Int = 0
     private var viewCount: Int = 0
     private var likeCount: Int = 0
     private var commentCount: Int = 0
+
+    private var siteID: NSNumber?
+    private var timeZone: TimeZone?
+    private var oauthToken: String?
     private var isConfigured = false
+
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
     // MARK: - View
@@ -35,21 +37,18 @@ class TodayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let labelText = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app " +
-            "under your site > Stats > Today.", comment: "Unconfigured stats today widget helper text")
-        configureMeLabel.text = labelText
+        configureLabel.text = LocalizedText.configure
+        configureButton.setTitle(LocalizedText.openWordPress, for: .normal)
+        configureButton.backgroundColor = .primary
+        configureButton.clipsToBounds = true
+        configureButton.layer.cornerRadius = Constants.buttonCornerRadius
 
-        let buttonText = NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app")
-        configureMeButton.setTitle(buttonText, for: .normal)
-        configureMeButton.backgroundColor = .primary
-        configureMeButton.clipsToBounds = true
-        configureMeButton.layer.cornerRadius = 5.0
+        siteNameLabel.text = Constants.noDataLabel
+        visitorsLabel.text = LocalizedText.visitors
+        visitorsCountLabel.text = Constants.noDataLabel
 
-        siteNameLabel.text = "-"
-        visitorsLabel.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
-        visitorsCountLabel.text = "-"
-        viewsLabel.text = NSLocalizedString("Views", comment: "Stats Views Label")
-        viewsCountLabel.text = "-"
+        viewsLabel.text = LocalizedText.views
+        viewsCountLabel.text = Constants.noDataLabel
 
         changeTextColor()
     }
@@ -117,13 +116,28 @@ extension TodayViewController: NCWidgetProviding {
 private extension TodayViewController {
 
     @IBAction func launchContainingApp() {
-        if let unwrappedSiteID = siteID {
-            tracks.trackExtensionStatsLaunched(unwrappedSiteID.intValue)
-            extensionContext!.open(URL(string: "\(WPComScheme)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
-        } else {
-            tracks.trackExtensionConfigureLaunched()
-            extensionContext!.open(URL(string: "\(WPComScheme)://")!, completionHandler: nil)
+        guard let extensionContext = extensionContext,
+            let containingAppURL = appURL() else {
+                DDLogError("Today Widget: Unable to get extensionContext or appURL.")
+                return
         }
+
+        trackAppLaunch()
+        extensionContext.open(containingAppURL, completionHandler: nil)
+    }
+
+    func appURL() -> URL? {
+        let urlString = (siteID != nil) ? (Constants.statsUrl + siteID!.stringValue) : Constants.baseUrl
+        return URL(string: urlString)
+    }
+
+    func trackAppLaunch() {
+        guard let siteID = siteID else {
+            tracks.trackExtensionConfigureLaunched()
+            return
+        }
+
+        tracks.trackExtensionStatsLaunched(siteID.intValue)
     }
 
     func updateUIBasedOnWidgetConfiguration() {
@@ -134,7 +148,12 @@ private extension TodayViewController {
     }
 
     func retrieveSiteConfiguration() {
-        let sharedDefaults = UserDefaults(suiteName: WPAppGroupName)!
+        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName) else {
+            DDLogError("Today Widget: Unable to get sharedDefaults.")
+            isConfigured = false
+            return
+        }
+
         siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
         siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
         oauthToken = fetchOAuthBearerToken()
@@ -170,7 +189,7 @@ private extension TodayViewController {
     }
 
     func changeTextColor() {
-        configureMeLabel.textColor = .text
+        configureLabel.textColor = .text
         siteNameLabel.textColor = .text
         visitorsCountLabel.textColor = .text
         viewsCountLabel.textColor = .text
@@ -192,4 +211,17 @@ private extension TodayViewController {
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
     }
 
+    struct LocalizedText {
+        static let configure = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
+        static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app")
+        static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
+        static let views = NSLocalizedString("Views", comment: "Stats Views Label")
+    }
+
+    struct Constants {
+        static let noDataLabel = "-"
+        static let buttonCornerRadius: CGFloat = 5.0
+        static let baseUrl: String = "\(WPComScheme)://"
+        static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
+    }
 }
