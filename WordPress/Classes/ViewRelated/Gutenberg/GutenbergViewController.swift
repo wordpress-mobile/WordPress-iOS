@@ -16,8 +16,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         case autoSave
     }
 
-    private let stockPhotos = StockPhotosPicker()
-    private var stockPhotosCallback: MediaPickerDidPickMediaCallback?
+    private lazy var stockPhotos: GutenbergStockPhotos = {
+        return GutenbergStockPhotos(mediaInserter: mediaInserterHelper)
+    }()
+
     // MARK: - Aztec
 
     internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -228,7 +230,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         navigationBarManager.delegate = self
-        stockPhotos.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -358,8 +359,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
         case .freeMediaLibrary:
-            stockPhotosCallback = callback
-            stockPhotos.presentPicker(origin: self, blog: post.blog)
+            stockPhotos.presentPicker(origin: self, post: post, callback: callback)
         default: break;
         }
     }
@@ -682,19 +682,5 @@ private extension GutenbergViewController {
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
-    }
-}
-
-extension GutenbergViewController: StockPhotosPickerDelegate {
-    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
-        defer {
-            stockPhotosCallback = nil
-        }
-        guard let callback = stockPhotosCallback else {
-            return assertionFailure("Image picked without callback")
-        }
-        assets.forEach {
-            mediaInserterHelper.insertFromExternalSource(asset: $0, provisionalUrl:$0.URL, source: .stockPhotos, callback: callback)
-        }
     }
 }

@@ -4,13 +4,9 @@ import WPMediaPicker
 import Gutenberg
 
 class GutenbergMediaInserterHelper: NSObject {
-
     fileprivate let post: AbstractPost
-
     fileprivate let gutenberg: Gutenberg
-
     fileprivate let mediaCoordinator = MediaCoordinator.shared
-
     fileprivate var mediaObserverReceipt: UUID?
 
     /// Method of selecting media for upload, used for analytics
