@@ -16,6 +16,8 @@ class GutenbergMediaPickerHelper: NSObject {
 
     fileprivate let post: AbstractPost
     fileprivate unowned let context: UIViewController
+    fileprivate let picker: () -> WPNavigationMediaPickerViewController
+    fileprivate var dismissAfterPicking = true
 
     /// Media Library Data Source
     ///
@@ -40,21 +42,25 @@ class GutenbergMediaPickerHelper: NSObject {
     }()
 
     var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
+    weak var pickerViewController: WPNavigationMediaPickerViewController?
 
-    init(context: UIViewController, post: AbstractPost) {
+    init(context: UIViewController, post: AbstractPost, picker: @escaping () -> WPNavigationMediaPickerViewController = WPNavigationMediaPickerViewController.init) {
         self.context = context
         self.post = post
+        self.picker = picker
     }
 
     func presentMediaPickerFullScreen(animated: Bool,
                                       filter: WPMediaType,
                                       dataSourceType: MediaPickerDataSourceType = .device,
                                       allowMultipleSelection: Bool,
+                                      dismissAfterPicking: Bool = true,
                                       callback: @escaping GutenbergMediaPickerHelperCallback) {
 
         didPickMediaCallback = callback
+        self.dismissAfterPicking = dismissAfterPicking
 
-        let picker = WPNavigationMediaPickerViewController()
+        let picker = self.picker()
 
         switch dataSourceType {
         case .device:
@@ -71,6 +77,7 @@ class GutenbergMediaPickerHelper: NSObject {
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
+        self.pickerViewController = picker
         context.present(picker, animated: true)
     }
 
@@ -105,7 +112,9 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         invokeMediaPickerCallback(asset: assets)
-        picker.dismiss(animated: true, completion: nil)
+        if dismissAfterPicking {
+            picker.dismiss(animated: true, completion: nil)
+        }
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
