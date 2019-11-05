@@ -25,6 +25,8 @@ class TodayViewController: UIViewController {
     private var siteName: String = ""
     private var visitorCount: Int = 0
     private var viewCount: Int = 0
+    private var likeCount: Int = 0
+    private var commentCount: Int = 0
     private var isConfigured = false
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
@@ -63,7 +65,7 @@ class TodayViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount)
+        TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount, likes: likeCount, comments: commentCount)
     }
 
 }
@@ -101,6 +103,8 @@ extension TodayViewController: NCWidgetProviding {
             DispatchQueue.main.async {
                 self.visitorCount = todayInsight?.visitorsCount ?? 0
                 self.viewCount = todayInsight?.viewsCount ?? 0
+                self.likeCount = todayInsight?.likesCount ?? 0
+                self.commentCount = todayInsight?.commentsCount ?? 0
                 self.updateLabels()
             }
         }
@@ -152,6 +156,8 @@ private extension TodayViewController {
         let data = TodayWidgetStats.loadSavedData()
         visitorCount = data.visitors
         viewCount = data.views
+        likeCount = data.likes
+        commentCount = data.comments
     }
 
     func updateLabels() {

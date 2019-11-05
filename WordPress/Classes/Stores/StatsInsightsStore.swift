@@ -948,6 +948,8 @@ private extension InsightStoreState {
         }
 
         TodayWidgetStats.saveData(views: todaysStats?.viewsCount ?? 0,
-                                  visitors: todaysStats?.visitorsCount ?? 0)
+                                  visitors: todaysStats?.visitorsCount ?? 0,
+                                  likes: todaysStats?.likesCount ?? 0,
+                                  comments: todaysStats?.commentsCount ?? 0)
     }
 }
