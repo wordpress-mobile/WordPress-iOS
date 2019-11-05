@@ -8,8 +8,6 @@ class CalendarCollectionView: JTACMonthView {
     override init() {
         super.init()
 
-        register(DateCell.self, forCellWithReuseIdentifier: DateCell.Constants.reuseIdentifier)
-
         setup()
     }
 
@@ -101,7 +99,7 @@ extension CalendarDataSource: JTACMonthViewDelegate {
 
 class DateCell: JTACDayCell {
 
-    fileprivate struct Constants {
+    struct Constants {
         static let labelSize: CGFloat = 28
         static let reuseIdentifier = "dateCell"
     }

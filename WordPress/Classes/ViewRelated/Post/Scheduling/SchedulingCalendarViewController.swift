@@ -5,12 +5,14 @@ protocol DateCoordinatorHandler: class {
     var coordinator: DateCoordinator? { get set }
 }
 
-struct DateCoordinator {
-    var date: Date?
-    var updated: (Date?) -> Void
+class DateCoordinator {
 
-    mutating func setDate(_ newDate: Date) {
-        date = newDate
+    var date: Date?
+    let updated: (Date?) -> Void
+
+    init(date: Date?, updated: @escaping (Date?) -> Void) {
+        self.date = date
+        self.updated = updated
     }
 }
 
@@ -34,7 +36,7 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
                 let components = Calendar.current.dateComponents([.hour, .minute], from: existingDate)
                 newDate = Calendar.current.date(bySettingHour: components.hour ?? 0, minute: components.minute ?? 0, second: components.second ?? 0, of: newDate) ?? newDate
             }
-            self?.coordinator?.setDate(newDate)
+            self?.coordinator?.date = newDate
             self?.chosenValueRow.detailLabel.text = date.longString()
         }
 
@@ -130,7 +132,7 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
     // MARK: Change Selectors
     @objc func timePickerChanged(_ sender: Any) {
         chosenValueRow.detailLabel.text = datePicker.date.longStringWithTime()
-        coordinator?.setDate(datePicker.date)
+        coordinator?.date = datePicker.date
     }
 
     @objc func done() {
