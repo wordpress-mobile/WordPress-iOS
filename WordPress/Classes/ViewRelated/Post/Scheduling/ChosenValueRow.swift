@@ -14,14 +14,14 @@ class ChosenValueRow: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setup()
+        setupViews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setup() {
+    private func setupViews() {
         titleLabel.font = UIFont.preferredFont(forTextStyle: .callout)
 
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
@@ -41,6 +41,10 @@ class ChosenValueRow: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(stackView)
+        setupConstraints(stackView: stackView)
+    }
+
+    private func setupConstraints(stackView: UIView) {
         pinSubviewToAllEdges(stackView, insets: Constants.rowInsets)
 
         let heightConstraint = stackView.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
