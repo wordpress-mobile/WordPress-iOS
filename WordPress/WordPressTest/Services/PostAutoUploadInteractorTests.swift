@@ -120,9 +120,12 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
         expect(action).to(equal(.upload))
     }
 
-    func testReturnNothingPostActionWhenSelfHostedShouldNotBeAutoUploaded() {
+    func testUnconfirmedExistingPostsOfSelfHostedSitesAreNotAutoSaved() {
+        // For WPCom, unconfirmed posts are auto-saved. However, self-hosted sites do not support
+        // auto-save. We just do nothing in this case.
         let blog = createBlog(supportsWPComAPI: false)
         let post = createPost(.draft, hasRemote: true, confirmedAutoUpload: false, blog: blog)
+
         let action = interactor.autoUploadAction(for: post)
 
         expect(action).to(equal(.nothing))
