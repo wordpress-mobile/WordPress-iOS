@@ -2,23 +2,21 @@
 @testable import WordPress
 import Nimble
 
-class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
-    private var contextManager: TestContextManager!
+class PostAutoUploadInteractorTests: XCTestCase {
     private var context: NSManagedObjectContext!
 
     private var interactor: PostAutoUploadInteractor!
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
-        context = contextManager.newDerivedContext()
+        context = TestContextManager().mainContext
         interactor = PostAutoUploadInteractor()
     }
 
     override func tearDown() {
         interactor = nil
         context = nil
-        contextManager = nil
+        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 
@@ -149,7 +147,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
     }
 }
 
-private extension PostCoordinatorUploadActionUseCaseTests {
+private extension PostAutoUploadInteractorTests {
     func createPost(_ status: BasePost.Status,
                     remoteStatus: AbstractPostRemoteStatus = .failed,
                     hasRemote: Bool = false,
