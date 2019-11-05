@@ -131,6 +131,15 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
         expect(action).to(equal(.nothing))
     }
 
+    func testUnconfirmedLocallyPublishedPostsOfSelfHostedSitesAreUploadedAsDrafts() {
+        let blog = createBlog(supportsWPComAPI: false)
+        let post = createPost(.publish, confirmedAutoUpload: false, blog: blog)
+
+        let action = interactor.autoUploadAction(for: post)
+
+        expect(action).to(equal(.uploadAsDraft))
+    }
+
     func testPageNotAutoUploaded() {
         let page = createPage(.draft)
 
