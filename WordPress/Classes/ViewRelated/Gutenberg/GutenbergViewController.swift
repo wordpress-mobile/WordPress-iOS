@@ -360,7 +360,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
         case .freeMediaLibrary:
             stockPhotos.presentPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
-        default: break;
+        default: break
         }
     }
 
