@@ -3,7 +3,7 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressFlux
 
-private enum PublishSettingsCell: CaseIterable {
+enum PublishSettingsCell: CaseIterable {
     case dateTime
 }
 
@@ -16,7 +16,6 @@ struct PublishSettingsViewModel {
 
     private(set) var state: State
     let timeZone: OffsetTimeZone?
-
     let title: String?
 
     private let post: AbstractPost
@@ -39,7 +38,7 @@ struct PublishSettingsViewModel {
         }
     }
 
-    fileprivate var cells: [PublishSettingsCell] {
+    var cells: [PublishSettingsCell] {
         switch state {
         case .published, .immediately:
             return [PublishSettingsCell.dateTime]
@@ -113,11 +112,9 @@ private struct DateAndTimeRow: ImmuTableRow {
         ]
     }
 
-    weak var viewController: ImmuTableViewController?
+    private weak var viewController: ImmuTableViewController?
 
     private var viewModel: PublishSettingsViewModel
-
-    private var changeReceipt: Receipt?
 
     init(post: AbstractPost) {
         viewModel = PublishSettingsViewModel(post: post)
@@ -204,10 +201,6 @@ extension PublishSettingsController: UIViewControllerTransitioningDelegate, UIAd
     }
 
     func adaptivePresentationStyle(for: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        if traitCollection.verticalSizeClass == .compact {
-            return .overFullScreen
-        } else {
-            return .none
-        }
+        return traitCollection.verticalSizeClass == .compact ? .overFullScreen : .none
     }
 }

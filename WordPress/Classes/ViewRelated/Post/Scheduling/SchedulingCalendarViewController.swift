@@ -41,8 +41,8 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         return calendarMonthView
     }()
 
-    private let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(closeButtonPressed))
-    private let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(publishImmediately))
+    private lazy var closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.closeButtonPressed))
+    private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,8 +76,6 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        navigationItem.setLeftBarButton(publishButton, animated: false)
 
         if traitCollection.verticalSizeClass == .compact {
             navigationItem.leftBarButtonItems = [closeButton, publishButton]

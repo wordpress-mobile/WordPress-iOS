@@ -1,6 +1,7 @@
 import Foundation
 import Gridicons
 
+/// A view containing a `CalendarHeaderView`, `WeekdaysHeaderView` and `CalendarCollectionView`
 class CalendarMonthView: UIView {
 
     private struct Constants {
@@ -10,17 +11,7 @@ class CalendarMonthView: UIView {
         static let calendarWidth: CGFloat = 375
     }
 
-    weak var headerTitle: UILabel?
-    weak var forwardButton: UIButton?
-    weak var previousButton: UIButton?
-
     var updated: ((Date) -> Void)?
-
-    private static var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM, YYYY"
-        return formatter
-    }()
 
     var selectedDate: Date? {
         didSet {
@@ -43,17 +34,8 @@ class CalendarMonthView: UIView {
     }
 
     private func setup() {
-        calendarCollectionView.calDataSource.didScroll = { [weak self] dateSegment in
-            if let visibleDate = dateSegment.monthDates.first?.date {
-                self?.headerTitle?.text = CalendarMonthView.dateFormatter.string(from: visibleDate)
-            }
-        }
-        calendarCollectionView.calDataSource.didSelect = { [weak self] dateSegment in
-            self?.updated?(dateSegment)
-        }
-
-        let weekdaysHeaderView = makeWeekdayHeaderView()
-        let calendarHeaderView = makeCalendarHeaderView()
+        let weekdaysHeaderView = WeekdaysHeaderView(calendar: Calendar.current)
+        let calendarHeaderView = CalendarHeaderView(next: (self, #selector(CalendarMonthView.nextMonth)), previous: (self, #selector(CalendarMonthView.previousMonth)))
 
         let stackView = UIStackView(arrangedSubviews: [
             calendarHeaderView,
@@ -61,16 +43,23 @@ class CalendarMonthView: UIView {
             calendarCollectionView
         ])
         stackView.axis = .vertical
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        stackView.layoutMargins = Constants.rowInsets
         stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = Constants.rowInsets
 
-        setupConstraints(calendarHeaderView: calendarHeaderView, weekdaysHeaderView: weekdaysHeaderView, calendarCollectionView: calendarCollectionView)
+        setupConstraints(calendarHeaderView: calendarHeaderView, weekdaysHeaderView: weekdaysHeaderView, calendarCollectionView: calendarCollectionView, stackView: stackView)
 
         addSubview(stackView)
 
         pinSubviewToAllEdges(stackView)
+
+        calendarCollectionView.calDataSource.didScroll = { [weak calendarHeaderView] dateSegment in
+            if let visibleDate = dateSegment.monthDates.first?.date {
+                calendarHeaderView?.set(date: visibleDate)
+            }
+        }
+        calendarCollectionView.calDataSource.didSelect = { [weak self] dateSegment in
+            self?.updated?(dateSegment)
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -81,7 +70,8 @@ class CalendarMonthView: UIView {
         }
     }
 
-    private func setupConstraints(calendarHeaderView: UIView, weekdaysHeaderView: UIView, calendarCollectionView: UIView) {
+    private func setupConstraints(calendarHeaderView: UIView, weekdaysHeaderView: UIView, calendarCollectionView: UIView, stackView: UIView) {
+
         let heightConstraint = calendarHeaderView.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
         let widthConstraint = weekdaysHeaderView.heightAnchor.constraint(equalToConstant: Constants.rowHeight)
         heightConstraint.priority = .defaultHigh
@@ -105,47 +95,8 @@ class CalendarMonthView: UIView {
         }
 
         NSLayoutConstraint.activate(collectionViewSizeConstraints)
-    }
 
-    // MARK: View Factories
-    private func makeCalendarHeaderView() -> UIView {
-        let prevButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-        prevButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        prevButton.setImage(Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
-        prevButton.addTarget(self, action: #selector(CalendarMonthView.previousMonth), for: .touchUpInside)
-
-        let nextButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-        nextButton.setImage(Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
-        nextButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        nextButton.addTarget(self, action: #selector(CalendarMonthView.nextMonth), for: .touchUpInside)
-
-        let headerLabel = UILabel()
-        headerLabel.textAlignment = .center
-        headerLabel.textColor = .neutral(.shade60)
-
-        headerTitle = headerLabel
-
-        let headerStackView = UIStackView(arrangedSubviews: [
-            prevButton,
-            headerLabel,
-            nextButton
-        ])
-        headerStackView.alignment = .center
-
-        return headerStackView
-    }
-
-    private func makeWeekdayHeaderView() -> UIView {
-        let weekdaysHeader = UIStackView(arrangedSubviews: Calendar.current.veryShortWeekdaySymbols.map({ symbol in
-            let label = UILabel()
-            label.text = symbol
-            label.textAlignment = .center
-            label.font = UIFont.preferredFont(forTextStyle: .caption1)
-            label.textColor = .neutral(.shade30)
-            return label
-        }))
-        weekdaysHeader.distribution = .fillEqually
-        return weekdaysHeader
+        stackView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     // MARK: Navigation button selectors
@@ -161,5 +112,67 @@ class CalendarMonthView: UIView {
            let nextVisibleDate = Calendar.current.date(byAdding: .day, value: 1, to: lastVisibleDate, wrappingComponents: false) {
             calendarCollectionView.scrollToDate(nextVisibleDate)
         }
+    }
+}
+
+/// A view containing two buttons to navigate forward and backward and a
+class CalendarHeaderView: UIStackView {
+
+    typealias TargetSelector = (target: Any?, selector: Selector)
+
+    /// A function to set the string of the title label to a given date
+    /// - Parameter date: The date to set the `titleLabel`'s text to
+    func set(date: Date) {
+        titleLabel.text = CalendarHeaderView.dateFormatter.string(from: date)
+    }
+
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .neutral(.shade60)
+        return label
+    }()
+
+    private static var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM, YYYY"
+        return formatter
+    }()
+
+    convenience init(next: TargetSelector, previous: TargetSelector) {
+        let previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+        previousButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        previousButton.setImage(Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
+
+        let forwardButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+        forwardButton.setImage(Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
+        forwardButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+
+        self.init()
+        addArrangedSubviews([
+            previousButton,
+            titleLabel,
+            forwardButton
+        ])
+
+        alignment = .center
+
+        previousButton.addTarget(previous.target, action: previous.selector, for: .touchUpInside)
+        forwardButton.addTarget(next.target, action: next.selector, for: .touchUpInside)
+    }
+}
+
+/// A view containing weekday symbols horizontally aligned for use in a calendar header
+class WeekdaysHeaderView: UIStackView {
+    convenience init(calendar: Calendar) {
+        self.init(arrangedSubviews: calendar.veryShortWeekdaySymbols.map({ symbol in
+            let label = UILabel()
+            label.text = symbol
+            label.textAlignment = .center
+            label.font = UIFont.preferredFont(forTextStyle: .caption1)
+            label.textColor = .neutral(.shade30)
+            return label
+        }))
+        self.distribution = .fillEqually
     }
 }

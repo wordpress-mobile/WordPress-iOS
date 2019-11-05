@@ -101,7 +101,7 @@ extension CalendarDataSource: JTACMonthViewDelegate {
 
 class DateCell: JTACDayCell {
 
-    struct Constants {
+    fileprivate struct Constants {
         static let labelSize: CGFloat = 28
         static let reuseIdentifier = "dateCell"
     }
@@ -118,7 +118,7 @@ class DateCell: JTACDayCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    fileprivate func setup() {
+    private func setup() {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.textAlignment = .center
         dateLabel.font = UIFont.preferredFont(forTextStyle: .callout)
@@ -139,7 +139,7 @@ class DateCell: JTACDayCell {
 }
 
 extension DateCell {
-    fileprivate func configure(with state: CellState) {
+    func configure(with state: CellState) {
 
         dateLabel.text = state.text
 
