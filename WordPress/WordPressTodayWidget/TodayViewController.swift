@@ -50,7 +50,7 @@ class TodayViewController: UIViewController {
         viewsLabel.text = LocalizedText.views
         viewsCountLabel.text = Constants.noDataLabel
 
-        changeTextColor()
+        configureColors()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -188,8 +188,13 @@ private extension TodayViewController {
         siteNameLabel.text = siteName
     }
 
-    func changeTextColor() {
+    func configureColors() {
+        view.backgroundColor = .neutral(.shade30)
+
         configureLabel.textColor = .text
+        configureButton.backgroundColor = .neutral(.shade10)
+        configureButton.setTitleColor(.text, for: .normal)
+
         siteNameLabel.textColor = .text
         visitorsCountLabel.textColor = .text
         viewsCountLabel.textColor = .text
@@ -220,7 +225,7 @@ private extension TodayViewController {
 
     struct Constants {
         static let noDataLabel = "-"
-        static let buttonCornerRadius: CGFloat = 5.0
+        static let buttonCornerRadius: CGFloat = 8.0
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
     }
