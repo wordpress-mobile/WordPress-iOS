@@ -279,7 +279,7 @@ class NoticePresenter: NSObject {
             // being shown. Hiding the window would cause that new Notice to be invisible.
             if self?.currentNoticePresentation == nil {
                 UIAccessibility.post(notification: .layoutChanged, argument: nil)
-                
+
                 self?.window.isHidden = true
             }
         })
