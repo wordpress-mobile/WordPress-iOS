@@ -18,6 +18,7 @@ class TodayViewController: UIViewController {
     @IBOutlet private weak var siteNameLabel: UILabel!
 
     private var siteName: String = ""
+    private var siteUrl: String = ""
     private var visitorCount: Int = 0
     private var viewCount: Int = 0
     private var likeCount: Int = 0
@@ -150,6 +151,7 @@ private extension TodayViewController {
 
         siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
         siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
+        siteUrl = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey) ?? ""
         oauthToken = fetchOAuthBearerToken()
 
         if let timeZoneName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
