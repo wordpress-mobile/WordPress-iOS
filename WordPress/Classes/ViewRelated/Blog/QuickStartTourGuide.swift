@@ -8,7 +8,7 @@ open class QuickStartTourGuide: NSObject {
     private var suggestionWorkItem: DispatchWorkItem?
     private weak var recentlyTouredBlog: Blog?
     static let notificationElementKey = "QuickStartElementKey"
-    private let identifier = UUID().uuidString
+private let noticeTag: Notice.Tag = "QuickStartTourGuide"
 
     @objc static func find() -> QuickStartTourGuide? {
         guard let tabBarController = WPTabBarController.sharedInstance(),
