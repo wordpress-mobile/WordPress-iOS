@@ -16,6 +16,7 @@ class TodayViewController: UIViewController {
     @IBOutlet private weak var rowsStackView: UIStackView!
     @IBOutlet private weak var separatorLine: UIView!
     @IBOutlet private weak var siteNameLabel: UILabel!
+    @IBOutlet private weak var siteUrlLabel: UILabel!
 
     private var siteName: String = ""
     private var siteUrl: String = ""
@@ -43,6 +44,7 @@ class TodayViewController: UIViewController {
         configureButton.layer.cornerRadius = Constants.buttonCornerRadius
 
         siteNameLabel.text = Constants.noDataLabel
+        siteUrlLabel.text = Constants.noDataLabel
 
         initRows()
         configureColors()
@@ -197,11 +199,13 @@ private extension TodayViewController {
 
         separatorLine.backgroundColor = .neutral(.shade30)
         siteNameLabel.textColor = .textSubtle
+        siteUrlLabel.textColor = .textSubtle
     }
 
     func updateLabels() {
 
         siteNameLabel.text = siteName
+        siteUrlLabel.text = siteUrl
 
         guard let row = rowsStackView.arrangedSubviews.first as? TwoColumnRow else {
             return

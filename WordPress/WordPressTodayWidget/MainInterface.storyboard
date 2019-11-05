@@ -72,13 +72,22 @@
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogUrl" text="my.wordpress.com" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vSF-Wk-ECh" userLabel="Site Url Label">
+                                                        <rect key="frame" x="175" y="8.5" width="113" height="41.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="vSF-Wk-ECh" secondAttribute="bottom" id="7Qu-ll-X6O"/>
                                                     <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="COU-z5-NLI" secondAttribute="leading" id="ELK-42-te7"/>
                                                     <constraint firstItem="esO-gC-YkD" firstAttribute="top" secondItem="COU-z5-NLI" secondAttribute="top" id="WFm-Uu-s16"/>
                                                     <constraint firstAttribute="bottom" secondItem="Wcm-ss-zFo" secondAttribute="bottom" id="ZJE-Jp-bTG"/>
+                                                    <constraint firstItem="vSF-Wk-ECh" firstAttribute="top" secondItem="esO-gC-YkD" secondAttribute="bottom" constant="8" id="bnI-fS-zda"/>
                                                     <constraint firstItem="Wcm-ss-zFo" firstAttribute="top" secondItem="esO-gC-YkD" secondAttribute="bottom" constant="8" id="mBd-OP-oon"/>
+                                                    <constraint firstAttribute="trailing" secondItem="vSF-Wk-ECh" secondAttribute="trailing" id="wbI-D1-4dL"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -128,6 +137,7 @@
                         <outlet property="rowsStackView" destination="vd1-ys-xI8" id="b0V-uC-LDv"/>
                         <outlet property="separatorLine" destination="esO-gC-YkD" id="Jq6-50-SxY"/>
                         <outlet property="siteNameLabel" destination="Wcm-ss-zFo" id="WsJ-6K-WZ5"/>
+                        <outlet property="siteUrlLabel" destination="vSF-Wk-ECh" id="mtV-bm-n4M"/>
                         <outlet property="unconfiguredView" destination="SgL-dy-2cu" id="0i2-YG-MCZ"/>
                     </connections>
                 </viewController>
