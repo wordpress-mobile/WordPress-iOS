@@ -8,16 +8,14 @@ class TodayViewController: UIViewController {
 
     // MARK: - Properties
 
-    @IBOutlet var unconfiguredView: UIStackView!
-    @IBOutlet var configureLabel: UILabel!
-    @IBOutlet var configureButton: UIButton!
+    @IBOutlet private weak var unconfiguredView: UIStackView!
+    @IBOutlet private weak var configureLabel: UILabel!
+    @IBOutlet private weak var configureButton: UIButton!
 
-    @IBOutlet var configuredView: UIStackView!
-    @IBOutlet var visitorsCountLabel: UILabel!
-    @IBOutlet var visitorsLabel: UILabel!
-    @IBOutlet var viewsCountLabel: UILabel!
-    @IBOutlet var viewsLabel: UILabel!
-    @IBOutlet var siteNameLabel: UILabel!
+    @IBOutlet private weak var configuredView: UIStackView!
+    @IBOutlet private weak var rowsStackView: UIStackView!
+    @IBOutlet private weak var separatorLine: UIView!
+    @IBOutlet private weak var siteNameLabel: UILabel!
 
     private var siteName: String = ""
     private var visitorCount: Int = 0
@@ -44,12 +42,8 @@ class TodayViewController: UIViewController {
         configureButton.layer.cornerRadius = Constants.buttonCornerRadius
 
         siteNameLabel.text = Constants.noDataLabel
-        visitorsLabel.text = LocalizedText.visitors
-        visitorsCountLabel.text = Constants.noDataLabel
 
-        viewsLabel.text = LocalizedText.views
-        viewsCountLabel.text = Constants.noDataLabel
-
+        initRows()
         configureColors()
     }
 
@@ -179,27 +173,46 @@ private extension TodayViewController {
         commentCount = data.comments
     }
 
-    func updateLabels() {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        visitorsCountLabel.text = numberFormatter.string(from: NSNumber(value: visitorCount)) ?? "0"
-        viewsCountLabel.text = numberFormatter.string(from: NSNumber(value: viewCount)) ?? "0"
+    func initRows() {
+        guard let row = Bundle.main.loadNibNamed(Constants.rowNibName, owner: nil, options: nil)?.first as? TwoColumnRow else {
+            return
+        }
 
-        siteNameLabel.text = siteName
+        row.configure(leftColumnName: LocalizedText.views,
+                      leftColumnData: Constants.noDataLabel,
+                      rightColumnName: LocalizedText.visitors,
+                      rightColumnData: Constants.noDataLabel)
+
+        rowsStackView.addArrangedSubview(row)
     }
 
     func configureColors() {
-        view.backgroundColor = .neutral(.shade30)
+        view.backgroundColor = .neutral(.shade20)
 
         configureLabel.textColor = .text
         configureButton.backgroundColor = .neutral(.shade10)
         configureButton.setTitleColor(.text, for: .normal)
 
-        siteNameLabel.textColor = .text
-        visitorsCountLabel.textColor = .text
-        viewsCountLabel.textColor = .text
-        visitorsLabel.textColor = .textSubtle
-        viewsLabel.textColor = .textSubtle
+        separatorLine.backgroundColor = .neutral(.shade30)
+        siteNameLabel.textColor = .textSubtle
+    }
+
+    func updateLabels() {
+
+        siteNameLabel.text = siteName
+
+        guard let row = rowsStackView.arrangedSubviews.first as? TwoColumnRow else {
+            return
+        }
+
+        row.updateData(leftColumnData: displayString(for: viewCount),
+                       rightColumnData: displayString(for: visitorCount))
+    }
+
+    func displayString(for value: Int) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
     }
 
     func statsRemote() -> StatsServiceRemoteV2? {
@@ -228,5 +241,6 @@ private extension TodayViewController {
         static let buttonCornerRadius: CGFloat = 8.0
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
+        static let rowNibName: String = "TwoColumnRow"
     }
 }
