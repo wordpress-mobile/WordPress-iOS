@@ -6,6 +6,9 @@ import WordPressAuthenticator
                                                     valueTextFieldDidChange value: String)
     @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
                                                     valueTextFieldEditingDidEnd text: String)
+    @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
+                                                    valueTextFieldShouldReturn textField: UITextField) -> Bool
+
 }
 
 class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
@@ -42,6 +45,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         valueTextField.tintColor = .textPlaceholder
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
+        valueTextField.delegate = self
         valueTextField.addTarget(self,
                                  action: #selector(textFieldDidChange(textField:)),
                                  for: UIControl.Event.editingChanged)
@@ -79,6 +83,12 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     @objc func setValueTextFieldAsFirstResponder(_ gesture: UITapGestureRecognizer) {
         valueTextField.becomeFirstResponder()
+    }
+}
+
+extension InlineEditableNameValueCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return delegate?.inlineEditableNameValueCell?(self, valueTextFieldShouldReturn: textField) ?? true
     }
 }
 

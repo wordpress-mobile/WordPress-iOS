@@ -228,6 +228,30 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
                 viewModel.enableAddAddressRow()
         }
     }
+
+    func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell, valueTextFieldShouldReturn textField: UITextField) -> Bool {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+                return false
+        }
+        
+        let nextSection = indexPath.section + 1
+        let nextRow = indexPath.row + 1
+
+        // If there's an enabled editable row next in this section then select it, otherwise check the next section
+        if tableView.numberOfRows(inSection: indexPath.section) > nextRow,
+            let nextCell = tableView.cellForRow(at: IndexPath(row: nextRow, section: indexPath.section)) as? InlineEditableNameValueCell,
+            nextCell.valueTextField.isEnabled {
+            nextCell.valueTextField.becomeFirstResponder()
+        } else if tableView.numberOfSections > nextSection,
+            let nextCell = tableView.cellForRow(at: IndexPath(row: indexPath.row, section: nextSection)) as? InlineEditableNameValueCell,
+            nextCell.valueTextField.isEnabled {
+            nextCell.valueTextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+
+        return true
+    }
 }
 
 // MARK: - UITableViewDelegate
