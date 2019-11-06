@@ -66,28 +66,31 @@
                                                             <constraint firstAttribute="height" constant="0.5" id="JyR-gV-MO0"/>
                                                         </constraints>
                                                     </view>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
-                                                        <rect key="frame" x="0.0" y="8.5" width="100" height="41.5"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogUrl" text="my.wordpress.com" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vSF-Wk-ECh" userLabel="Site Url Label">
-                                                        <rect key="frame" x="175" y="8.5" width="113" height="41.5"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="hoI-Db-9tL">
+                                                        <rect key="frame" x="0.0" y="8.5" width="288" height="41.5"/>
+                                                        <subviews>
+                                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
+                                                                <rect key="frame" x="0.0" y="0.0" width="141.5" height="41.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogUrl" text="my.wordpress.com" textAlignment="right" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vSF-Wk-ECh" userLabel="Site Url Label">
+                                                                <rect key="frame" x="146.5" y="0.0" width="141.5" height="41.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="vSF-Wk-ECh" secondAttribute="bottom" id="7Qu-ll-X6O"/>
-                                                    <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="COU-z5-NLI" secondAttribute="leading" id="ELK-42-te7"/>
+                                                    <constraint firstItem="hoI-Db-9tL" firstAttribute="leading" secondItem="COU-z5-NLI" secondAttribute="leading" id="3F3-zf-Kcg"/>
+                                                    <constraint firstItem="hoI-Db-9tL" firstAttribute="top" secondItem="esO-gC-YkD" secondAttribute="bottom" constant="8" id="JHg-uP-I0e"/>
                                                     <constraint firstItem="esO-gC-YkD" firstAttribute="top" secondItem="COU-z5-NLI" secondAttribute="top" id="WFm-Uu-s16"/>
-                                                    <constraint firstAttribute="bottom" secondItem="Wcm-ss-zFo" secondAttribute="bottom" id="ZJE-Jp-bTG"/>
-                                                    <constraint firstItem="vSF-Wk-ECh" firstAttribute="top" secondItem="esO-gC-YkD" secondAttribute="bottom" constant="8" id="bnI-fS-zda"/>
-                                                    <constraint firstItem="Wcm-ss-zFo" firstAttribute="top" secondItem="esO-gC-YkD" secondAttribute="bottom" constant="8" id="mBd-OP-oon"/>
-                                                    <constraint firstAttribute="trailing" secondItem="vSF-Wk-ECh" secondAttribute="trailing" id="wbI-D1-4dL"/>
+                                                    <constraint firstAttribute="trailing" secondItem="hoI-Db-9tL" secondAttribute="trailing" id="lRf-GS-lQ4"/>
+                                                    <constraint firstAttribute="bottom" secondItem="hoI-Db-9tL" secondAttribute="bottom" id="mWO-sq-k4K"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
