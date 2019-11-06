@@ -67,14 +67,13 @@ struct PublishSettingsViewModel {
         switch state {
         case .scheduled:
             post.status = .scheduled
+            post.dateCreated = date
         case .immediately:
             post.publishImmediately()
         case .published:
             /// Don't need to do anything for published states (based on previous logic in PostSettingsViewController)
             break
         }
-
-        post.dateCreated = date
     }
 }
 
