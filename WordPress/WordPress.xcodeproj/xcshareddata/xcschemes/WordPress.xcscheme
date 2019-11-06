@@ -121,6 +121,16 @@
                ReferencedContainer = "container:../WordPressAuthenticator/WordPressAuthenticator.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8BF43077236CB9F500F992DF"
+               BuildableName = "MediaEditorTests.xctest"
+               BlueprintName = "MediaEditorTests"
+               ReferencedContainer = "container:WordPress.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
