@@ -95,10 +95,10 @@ private class PHImageManagerMock: PHImageManager {
 
     var options: PHImageRequestOptions?
 
-    override func requestImage(for asset: PHAsset, targetSize: CGSize, contentMode: PHImageContentMode, options: PHImageRequestOptions?, resultHandler: @escaping (UIImage?, [AnyHashable : Any]?) -> Void) -> PHImageRequestID {
+    override func requestImage(for asset: PHAsset, targetSize: CGSize, contentMode: PHImageContentMode, options: PHImageRequestOptions?, resultHandler: @escaping (UIImage?, [AnyHashable: Any]?) -> Void) -> PHImageRequestID {
         self.options = options
         didCallRequestImage = true
-        resultHandler(imageToReturn ,nil)
+        resultHandler(imageToReturn, nil)
         return PHImageRequestID()
     }
 }
