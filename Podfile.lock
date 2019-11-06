@@ -428,7 +428,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.16.0
   WordPressKit:
-    :commit: bfb8412e36db12da2e4b7f87a9662a90f49fc104
+    :commit: 851cc8debeb4150c8fa35442434029f89d5e19de
     :git: https://github.com/guarani/WordPressKit-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
