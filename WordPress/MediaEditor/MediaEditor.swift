@@ -1,7 +1,7 @@
 import UIKit
 import TOCropViewController
 
-public class MediaEditor: NSObject {
+open class MediaEditor: NSObject {
 
     let cropViewControllerFactory: (UIImage) -> TOCropViewController
 
@@ -18,7 +18,7 @@ public class MediaEditor: NSObject {
         let cropViewController = self.cropViewControllerFactory(image)
         cropViewController.delegate = self
         cropViewController.toolbar.rotateCounterclockwiseButtonHidden = true
-        viewController?.present(cropViewController, animated: true)
+        viewController?.navigationController?.pushViewController(cropViewController, animated: true)
         self.cropViewController = cropViewController
     }
 
@@ -27,10 +27,11 @@ public class MediaEditor: NSObject {
 extension MediaEditor: TOCropViewControllerDelegate {
     public func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
         callback?(image)
+        self.cropViewController?.dismiss(animated: true)
     }
 
     public func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
-        self.cropViewController?.dismiss(animated: true)
         callback?(nil)
+        self.cropViewController?.dismiss(animated: true)
     }
 }

@@ -60,7 +60,7 @@ class MediaEditorTests: XCTestCase {
 
         mediaEditor.edit(image, from: viewControllerMock) { _ in }
 
-        expect(viewControllerMock.didCallPresent).to(beTrue())
+        expect(viewControllerMock.navigationController?.didCallPushViewController).to(beTrue())
     }
 
     func testHideCounterClockwiseButton() {
@@ -96,7 +96,21 @@ class TOCropViewControllerMock: TOCropViewController {
 class UIViewControllerMock: UIViewController {
     var didCallPresent = false
 
+    override var navigationController: UINavigationControllerMock? {
+        return navigationControllerMock
+    }
+
+    private var navigationControllerMock = UINavigationControllerMock()
+
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         didCallPresent = true
+    }
+}
+
+class UINavigationControllerMock: UINavigationController {
+    var didCallPushViewController = false
+
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        didCallPushViewController = true
     }
 }
