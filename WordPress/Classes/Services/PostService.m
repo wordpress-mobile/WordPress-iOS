@@ -241,19 +241,6 @@ forceDraftIfCreating:NO
              failure:failure];
 }
 
-/**
- * Creates or updates a post to the server.
- *
- * If the post only exists on the device, it will be created.
- *
- * Setting `forceDraftIfCreating` to `YES` is useful if we want to create a post in the server
- * with the intention of making it available for preview. If we create the post as is, and the user
- * has set its `status` to `.published`, then we would publishing the post even if we just
- * wanted to preview it!
- *
- * Another use case of `forceDraftIfCreating` is to create the post in the background so we can
- * periodically auto-save it. Again, we'd still want to create it as a `.draft` status.
- */
 - (void)uploadPost:(AbstractPost *)post
 forceDraftIfCreating:(BOOL)forceDraftIfCreating
            success:(void (^)(AbstractPost *post))success
