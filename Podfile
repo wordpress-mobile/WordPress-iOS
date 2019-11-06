@@ -127,6 +127,10 @@ def gutenberg_dependencies(options)
     end
 end
 
+def media_editor
+  pod 'TOCropViewController', '~> 2.5.2'
+end
+
 ## WordPress iOS
 ## =============
 ##
@@ -155,6 +159,11 @@ target 'WordPress' do
     pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.2'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
+
+    ## Media Editor Third party libraries
+    ## =====================
+    ##
+    media_editor
 
     ## Automattic libraries
     ## ====================
@@ -311,7 +320,7 @@ end
 target 'MediaEditor' do
     project 'WordPress/WordPress.xcodeproj'
 
-    pod 'TOCropViewController', '~> 2.5.2'
+    media_editor
 
     target 'MediaEditorTests' do
         inherit! :search_paths
