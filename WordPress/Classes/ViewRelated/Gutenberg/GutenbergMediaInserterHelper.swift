@@ -58,28 +58,20 @@ class GutenbergMediaInserterHelper: NSObject {
         }
     }
 
+    func insertFromDevice(image: UIImage, callback: @escaping MediaPickerDidPickMediaCallback) {
+        let media = insert(exportableAsset: image, source: .deviceLibrary)
+        process(image: image, media: media, callback: callback)
+    }
+
     func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaCallback) {
         let media = insert(exportableAsset: asset, source: .deviceLibrary)
         let options = PHImageRequestOptions()
         options.deliveryMode = .fastFormat
         options.version = .current
         options.resizeMode = .fast
-        let mediaUploadID = media.gutenbergUploadID
         // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
         PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
-            guard let thumbImage = image, let resizedImage = thumbImage.resizedImage(asset.pixelSize(), interpolationQuality: CGInterpolationQuality.low) else {
-                callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
-                return
-            }
-            let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
-            let url = URL(fileURLWithPath: filePath)
-            do {
-                try resizedImage.writeJPEGToURL(url)
-                callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
-            } catch {
-                callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
-                return
-            }
+            self.process(image: image, media: media, callback: callback)
         }
 
     }
@@ -130,6 +122,24 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func hasFailedMedia() -> Bool {
         return mediaCoordinator.hasFailedMedia(for: post)
+    }
+
+    private func process(image: UIImage?, media: Media, callback: @escaping MediaPickerDidPickMediaCallback) {
+        let mediaUploadID = media.gutenbergUploadID
+
+        guard let image = image, let resizedImage = image.resizedImage(image.size, interpolationQuality: CGInterpolationQuality.low) else {
+            callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
+            return
+        }
+        let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
+        let url = URL(fileURLWithPath: filePath)
+        do {
+            try resizedImage.writeJPEGToURL(url)
+            callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
+        } catch {
+            callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
+            return
+        }
     }
 
     private func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
