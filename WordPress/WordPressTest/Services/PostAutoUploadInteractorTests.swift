@@ -2,23 +2,21 @@
 @testable import WordPress
 import Nimble
 
-class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
-    private var contextManager: TestContextManager!
+class PostAutoUploadInteractorTests: XCTestCase {
     private var context: NSManagedObjectContext!
 
     private var interactor: PostAutoUploadInteractor!
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
-        context = contextManager.newDerivedContext()
+        context = TestContextManager().mainContext
         interactor = PostAutoUploadInteractor()
     }
 
     override func tearDown() {
         interactor = nil
         context = nil
-        contextManager = nil
+        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 
@@ -120,12 +118,24 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
         expect(action).to(equal(.upload))
     }
 
-    func testReturnNothingPostActionWhenSelfHostedShouldNotBeAutoUploaded() {
+    func testUnconfirmedExistingPostsOfSelfHostedSitesAreNotAutoSaved() {
+        // For WPCom, unconfirmed posts are auto-saved. However, self-hosted sites do not support
+        // auto-save. We just do nothing in this case.
         let blog = createBlog(supportsWPComAPI: false)
         let post = createPost(.draft, hasRemote: true, confirmedAutoUpload: false, blog: blog)
+
         let action = interactor.autoUploadAction(for: post)
 
         expect(action).to(equal(.nothing))
+    }
+
+    func testUnconfirmedLocallyPublishedPostsOfSelfHostedSitesAreUploadedAsDrafts() {
+        let blog = createBlog(supportsWPComAPI: false)
+        let post = createPost(.publish, confirmedAutoUpload: false, blog: blog)
+
+        let action = interactor.autoUploadAction(for: post)
+
+        expect(action).to(equal(.uploadAsDraft))
     }
 
     func testPageNotAutoUploaded() {
@@ -137,7 +147,7 @@ class PostCoordinatorUploadActionUseCaseTests: XCTestCase {
     }
 }
 
-private extension PostCoordinatorUploadActionUseCaseTests {
+private extension PostAutoUploadInteractorTests {
     func createPost(_ status: BasePost.Status,
                     remoteStatus: AbstractPostRemoteStatus = .failed,
                     hasRemote: Bool = false,

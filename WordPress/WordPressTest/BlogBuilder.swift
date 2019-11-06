@@ -2,6 +2,9 @@ import Foundation
 
 @testable import WordPress
 
+/// Creates a Blog
+///
+/// Defaults to creating a self-hosted blog
 final class BlogBuilder {
     private let blog: Blog
 
