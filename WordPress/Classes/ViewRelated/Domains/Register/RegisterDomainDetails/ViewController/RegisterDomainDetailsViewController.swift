@@ -213,18 +213,18 @@ extension RegisterDomainDetailsViewController {
 extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelegate {
 
     func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                     valueTextFieldDidChange valueTextField: UITextField) {
+                                     valueTextFieldDidChange text: String) {
         guard let indexPath = tableView.indexPath(for: cell),
             let sectionType = SectionIndex(rawValue: indexPath.section) else {
                 return
         }
 
-        viewModel.updateValue(valueTextField.text, at: indexPath)
+        viewModel.updateValue(text, at: indexPath)
 
         if sectionType == .address,
             viewModel.addressSectionIndexHelper.addressField(for: indexPath.row) == .addressLine,
             indexPath.row == viewModel.addressSectionIndexHelper.extraAddressLineCount,
-            valueTextField.text?.isEmpty == false {
+            text.isEmpty == false {
                 viewModel.enableAddAddressRow()
         }
     }

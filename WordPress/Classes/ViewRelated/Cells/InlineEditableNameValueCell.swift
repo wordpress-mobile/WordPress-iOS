@@ -3,9 +3,9 @@ import WordPressAuthenticator
 
 @objc protocol InlineEditableNameValueCellDelegate: class {
     @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                                    valueTextFieldDidChange valueTextField: UITextField)
+                                                    valueTextFieldDidChange value: String)
     @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                                    valueTextFieldEditingDidEnd valueTextField: UITextField)
+                                                    valueTextFieldEditingDidEnd text: String)
 }
 
 class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
@@ -61,12 +61,20 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     @objc func textFieldDidChange(textField: UITextField) {
         textField.text = textField.text?.replacingOccurrences(of: " ", with: "\u{00a0}")
-        delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: textField)
+
+        let text = sanitizedText(for: textField)
+        delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: text)
     }
 
     @objc func textEditingDidEnd(textField: UITextField) {
-        textField.text = textField.text?.replacingOccurrences(of: "\u{00a0}", with: " ")
-        delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: textField)
+        let text = sanitizedText(for: textField)
+
+        textField.text = text
+        delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: text)
+    }
+
+    private func sanitizedText(for textField: UITextField) -> String {
+        return textField.text?.replacingOccurrences(of: "\u{00a0}", with: " ") ?? ""
     }
 
     @objc func setValueTextFieldAsFirstResponder(_ gesture: UITapGestureRecognizer) {
