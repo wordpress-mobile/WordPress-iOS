@@ -554,4 +554,13 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.imageView.accessibilityTraits = UIAccessibilityTraitImage;
 }
 
+- (BOOL)accessibilityPerformEscape
+{
+    // Dismiss when self receives the VoiceOver escape gesture (Z). This does not seem to happen
+    // automatically if self is presented modally by itself (i.e. not inside a
+    // UINavigationController).
+    [self dismissViewControllerAnimated:YES completion:nil];
+    return YES;
+}
+
 @end
