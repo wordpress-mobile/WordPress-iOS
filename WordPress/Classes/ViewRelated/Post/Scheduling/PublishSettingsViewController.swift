@@ -59,6 +59,7 @@ struct PublishSettingsViewModel {
     mutating func setDate(_ date: Date?) {
         if let date = date {
             state = .scheduled(date)
+            post.dateCreated = date
         } else {
             state = .immediately
         }
@@ -67,7 +68,6 @@ struct PublishSettingsViewModel {
         switch state {
         case .scheduled:
             post.status = .scheduled
-            post.dateCreated = date
         case .immediately:
             post.publishImmediately()
         case .published:
