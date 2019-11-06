@@ -210,7 +210,7 @@ PODS:
   - WordPress-Aztec-iOS (1.11.0)
   - WordPress-Editor-iOS (1.11.0):
     - WordPress-Aztec-iOS (= 1.11.0)
-  - WordPressAuthenticator (1.10.2-beta.1):
+  - WordPressAuthenticator (1.10.2):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.5)
@@ -222,7 +222,7 @@ PODS:
     - WordPressKit (~> 4.5.1)
     - WordPressShared (~> 1.8)
     - WordPressUI (~> 1.4-beta.1)
-  - WordPressKit (4.5.2-beta.2):
+  - WordPressKit (4.5.3-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -233,17 +233,17 @@ PODS:
   - WordPressShared (1.8.8):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.5-beta.1)
+  - WordPressUI (1.5.0)
   - WPMediaPicker (1.6.0)
   - wpxmlrpc (0.8.4)
   - yoga (0.60.0-patched.React)
-  - ZendeskSDK (3.0.1):
-    - ZendeskSDK/Providers (= 3.0.1)
-    - ZendeskSDK/UI (= 3.0.1)
-  - ZendeskSDK/Core (3.0.1)
-  - ZendeskSDK/Providers (3.0.1):
+  - ZendeskSDK (3.0.2):
+    - ZendeskSDK/Providers (= 3.0.2)
+    - ZendeskSDK/UI (= 3.0.2)
+  - ZendeskSDK/Core (3.0.2)
+  - ZendeskSDK/Providers (3.0.2):
     - ZendeskSDK/Core
-  - ZendeskSDK/UI (3.0.1):
+  - ZendeskSDK/UI (3.0.2):
     - ZendeskSDK/Core
     - ZendeskSDK/Providers
   - ZIPFoundation (0.9.9)
@@ -299,14 +299,14 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.11.0)
-  - WordPressAuthenticator (~> 1.10.2-beta.1)
+  - WordPressAuthenticator (~> 1.10.2)
   - WordPressKit (from `https://github.com/guarani/WordPressKit-iOS.git`, branch `issue/12141-restore-revision-dialog`)
   - WordPressMocks (~> 0.0.6)
   - WordPressShared (~> 1.8.8)
-  - WordPressUI (~> 1.5-beta.1)
+  - WordPressUI (~> 1.5.0)
   - WPMediaPicker (~> 1.6.0)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.16.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
-  - ZendeskSDK (from `https://github.com/zendesk/zendesk_sdk_ios`, tag `3.0.1-swift5.1-GM`)
+  - ZendeskSDK (from `https://github.com/zendesk/zendesk_sdk_ios`, tag `3.0.2`)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
@@ -415,7 +415,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.16.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
-    :tag: 3.0.1-swift5.1-GM
+    :tag: 3.0.2
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -432,7 +432,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/guarani/WordPressKit-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
-    :tag: 3.0.1-swift5.1-GM
+    :tag: 3.0.2
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -493,17 +493,17 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: 050b34d4c3adfb7c60363849049b13d60683b348
   WordPress-Editor-iOS: 304098424f1051cb271546c99f906aac296b1b81
-  WordPressAuthenticator: 51102958ea3b0b33a5476c508a458361dc5ef2e4
-  WordPressKit: b5b9e1f2018116d3ad5c060e519150f7f0442f78
+  WordPressAuthenticator: af8a2b733b8a33d2ad04cdd30f5410bfe772f439
+  WordPressKit: 6e02d166cbc6c6482987f5107f53d6cc1e8cbc87
   WordPressMocks: 5913bd04586a360212e07a8ccbcb36068d4425a3
   WordPressShared: 64332b24b8a70b7796ee137847cd0d66bdb6b4c1
-  WordPressUI: 0675808d243bbbda003d4604b0ae161508b6e49f
+  WordPressUI: 4a4adafd2b052e94e4846c0a0203761773dc4fd5
   WPMediaPicker: e5d28197da6b467d4e5975d64a49255977e39455
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 4e71c9a33abf45ba55af55ae9cbc86f4234bb2a9
-  ZendeskSDK: 07977c9aa708ea64461a1b18b7b3cfec3f496785
+  ZendeskSDK: 35b16898fae049f6ebffba96793f209b03a41495
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: fc897721f5b731711f03aef26388325aee35056e
+PODFILE CHECKSUM: f0c0f973e03d32d504ef8ec8d6532b61f97761a8
 
 COCOAPODS: 1.8.4

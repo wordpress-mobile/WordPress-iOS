@@ -1,5 +1,3 @@
-Perangkat seluler kami melakukan upaya pembasmian bug bulan ini:
-- Seharusnya Anda bisa masuk ke aplikasi dengan kredensial Apple, namun karena adanya bug terkadang Anda tidak bisa melakukannya. Sekarang sudah diperbaiki.
-- Penyesuaian membuat penyunting blok menjadi lebih baik dan semakin baik lagi: Tautan terbuka di aplikasi dan bukannya membuka Safari, serta masalah penyuntingan tautan menjengkelkan yang terkadang menghapus tautan yang ada tidak akan lagi Anda temukan.
-- “Mode Gelap” menjadi gelap seperti “hue”, dan tidak seperti “grim”, terutama kini visualnya menjadi lebih baik dan bug juga lebih sedikit.
-- Gulir vertikal terkadang tidak berfungsi di ekstensi Berbagi, namun kini sudah bisa.
+- Penyunting blok: Kami telah menambahkan blok “Media & Teks”! Pilihan Target Tautan (Buka di tab baru) telah ditambahkan ke pengaturan Blok Gambar. Kami memperbaiki bug yang menyebabkan pintasan “Pos Foto Baru” tidak menambahkan foto yang dipilih.
+- Statistik: Sekarang Anda dapat menyesuaikan Wawasan. Wawasan dimuat lebih cepat pada jaringan yang lambat.
+- Mode Gelap: Sejumlah peningkatan dan perbaikan bug kecil di seluruh aplikasi.
