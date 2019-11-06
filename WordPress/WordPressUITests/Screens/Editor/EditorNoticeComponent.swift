@@ -4,9 +4,14 @@ import XCTest
 class EditorNoticeComponent: BaseScreen {
     let noticeAction: XCUIElement
 
-    init(withNotice noticeText: String, andAction buttonText: String) {
-        let notice = XCUIApplication().staticTexts[noticeText]
+    private let expectedNoticeTitle: String
+
+    init(withNotice noticeTitle: String, andAction buttonText: String) {
+        let notice = XCUIApplication().otherElements["notice_title_and_message"]
+
         noticeAction = XCUIApplication().buttons[buttonText]
+
+        expectedNoticeTitle = noticeTitle
 
         super.init(element: notice)
     }
