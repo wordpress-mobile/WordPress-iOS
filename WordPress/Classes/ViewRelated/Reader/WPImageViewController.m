@@ -152,6 +152,8 @@ static CGFloat const MinimumZoomScale = 0.1;
     [self setupActivityIndicator];
     [self layoutActivityIndicator];
 
+    [self setupAccessibility];
+
     [self loadImage];
 }
 
@@ -542,6 +544,14 @@ static CGFloat const MinimumZoomScale = 0.1;
 - (void)flingableViewHandlerWasCancelled:(FlingableViewHandler *)handler
 {
     self.scrollView.multipleTouchEnabled = YES;
+}
+
+#pragma mark - Accessibility
+
+- (void)setupAccessibility
+{
+    self.imageView.isAccessibilityElement = YES;
+    self.imageView.accessibilityTraits = UIAccessibilityTraitImage;
 }
 
 @end
