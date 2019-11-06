@@ -233,7 +233,7 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
         guard let indexPath = tableView.indexPath(for: cell) else {
                 return false
         }
-        
+
         let nextSection = indexPath.section + 1
         let nextRow = indexPath.row + 1
 
