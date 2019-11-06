@@ -191,13 +191,12 @@ private extension TodayViewController {
     }
 
     func configureColors() {
-        view.backgroundColor = .neutral(.shade20)
-
         configureLabel.textColor = .text
         configureButton.backgroundColor = .neutral(.shade10)
         configureButton.setTitleColor(.text, for: .normal)
 
-        separatorLine.backgroundColor = .neutral(.shade30)
+        // In dark mode, let the separator line be the same color as the label text.
+        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
         siteNameLabel.textColor = .textSubtle
         siteUrlLabel.textColor = .textSubtle
     }
