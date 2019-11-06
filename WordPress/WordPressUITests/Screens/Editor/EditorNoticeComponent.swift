@@ -17,7 +17,12 @@ class EditorNoticeComponent: BaseScreen {
     }
 
     func viewPublishedPost(withTitle postTitle: String) -> EditorPublishEpilogueScreen {
-        XCTAssert(XCUIApplication().staticTexts[postTitle].exists, "Post title not visible on published post notice")
+        // The publish notice has a joined accessibility label equal to: title + message
+        // (the postTitle). It does not seem possible to target the specific postTitle label
+        // only because of this.
+        let expectedLabel = String(format: "%@. %@", expectedNoticeTitle, postTitle)
+        XCTAssertEqual(expectedElement.label, expectedLabel, "Post title not visible on published post notice")
+
         noticeAction.tap()
 
         return EditorPublishEpilogueScreen()
