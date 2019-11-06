@@ -1022,6 +1022,8 @@
 		8BC12F7523201917004DDA72 /* PostService+MarkAsFailedAndDraftIfNeeded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC12F732320181E004DDA72 /* PostService+MarkAsFailedAndDraftIfNeeded.swift */; };
 		8BC12F7723201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC12F7623201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift */; };
 		8BE7C84123466927006EDE70 /* I18n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7C84023466927006EDE70 /* I18n.swift */; };
+		8BED5A7123733183005DA28E /* GutenbergMediaEditorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BED5A7023733183005DA28E /* GutenbergMediaEditorHelper.swift */; };
+		8BED5A73237331A7005DA28E /* GutenbergMediaEditorHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BED5A72237331A7005DA28E /* GutenbergMediaEditorHelperTests.swift */; };
 		8BF43079236CB9F600F992DF /* MediaEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF43070236CB9F500F992DF /* MediaEditor.framework */; };
 		8BF43080236CB9F600F992DF /* MediaEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4307F236CB9F600F992DF /* MediaEditorTests.swift */; };
 		8BF43082236CB9F600F992DF /* MediaEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF43072236CB9F500F992DF /* MediaEditor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3226,6 +3228,8 @@
 		8BC12F732320181E004DDA72 /* PostService+MarkAsFailedAndDraftIfNeeded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+MarkAsFailedAndDraftIfNeeded.swift"; sourceTree = "<group>"; };
 		8BC12F7623201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+MarkAsFailedAndDraftIfNeededTests.swift"; sourceTree = "<group>"; };
 		8BE7C84023466927006EDE70 /* I18n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = I18n.swift; sourceTree = "<group>"; };
+		8BED5A7023733183005DA28E /* GutenbergMediaEditorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergMediaEditorHelper.swift; sourceTree = "<group>"; };
+		8BED5A72237331A7005DA28E /* GutenbergMediaEditorHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergMediaEditorHelperTests.swift; sourceTree = "<group>"; };
 		8BF43070236CB9F500F992DF /* MediaEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MediaEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BF43072236CB9F500F992DF /* MediaEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaEditor.h; sourceTree = "<group>"; };
 		8BF43073236CB9F500F992DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -9431,6 +9435,7 @@
 			children = (
 				FF2EC3BF2209A144006176E1 /* GutenbergImgUploadProcessor.swift */,
 				91138454228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift */,
+				8BED5A7023733183005DA28E /* GutenbergMediaEditorHelper.swift */,
 			);
 			path = Processors;
 			sourceTree = "<group>";
@@ -9469,6 +9474,7 @@
 				FF2EC3C12209AC19006176E1 /* GutenbergImgUploadProcessorTests.swift */,
 				9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */,
 				8B1FDE1F2372062400718826 /* GutenbergMediaPickerHelperTests.swift */,
+				8BED5A72237331A7005DA28E /* GutenbergMediaEditorHelperTests.swift */,
 			);
 			name = Gutenberg;
 			sourceTree = "<group>";
@@ -11908,6 +11914,7 @@
 				9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
 				9A4E271D22EF33F5001F6A6B /* AccountSettingsStore.swift in Sources */,
+				8BED5A7123733183005DA28E /* GutenbergMediaEditorHelper.swift in Sources */,
 				4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
 				73FF7032221F469100541798 /* Charts+Support.swift in Sources */,
 				171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */,
@@ -12391,6 +12398,7 @@
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				D800D87820999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift in Sources */,
 				D816B8CA2112D2FD0052CE4D /* LocalNewsServiceTests.swift in Sources */,
+				8BED5A73237331A7005DA28E /* GutenbergMediaEditorHelperTests.swift in Sources */,
 				D800D87A20999C0500E7C7E5 /* OtherMenuItemCreatorTests.swift in Sources */,
 				9A9D34FD23607CCC00BC95A3 /* AsyncOperationTests.swift in Sources */,
 				B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */,

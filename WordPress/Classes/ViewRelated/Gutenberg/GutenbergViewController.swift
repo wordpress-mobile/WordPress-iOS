@@ -2,6 +2,7 @@ import UIKit
 import WPMediaPicker
 import Gutenberg
 import Aztec
+import MediaEditor
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -168,6 +169,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
     }()
 
+    lazy var mediaEditorHelper: GutenbergMediaEditorHelper = {
+        return GutenbergMediaEditorHelper()
+    }()
+
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
     /// In this case every 0.5 second
     ///
@@ -320,6 +325,8 @@ class GutenbergViewController: UIViewController, PostEditor {
     func savePostEditsAndSwitchToAztec() {
         requestHTML(for: .switchToAztec)
     }
+
+    var mediaEditor = MediaEditor()
 }
 
 // MARK: - Views setup
@@ -400,12 +407,26 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        filter: filter,
                                                        dataSourceType: .device,
                                                        allowMultipleSelection: allowMultipleSelection,
+                                                       dismissAfterPicking: false,
                                                        callback: {(assets) in
                                                         guard let phAssets = assets as? [PHAsset] else {
                                                             callback(nil)
                                                             return
                                                         }
-                                                        self.mediaInserterHelper.insertFromDevice(assets: phAssets, callback: callback)
+
+                                                        guard phAssets.count == 1, let asset = phAssets.first else {
+                                                            self.mediaInserterHelper.insertFromDevice(assets: phAssets, callback: callback)
+                                                            return
+                                                        }
+
+                                                        self.mediaEditorHelper.edit(asset: asset, from: self.mediaPickerHelper.pickerViewController?.mediaPicker, onFinishEditing: { image in
+                                                            guard let image = image else {
+                                                                self.mediaPickerHelper.pickerViewController?.dismiss(animated: true)
+                                                                return
+                                                            }
+
+                                                            self.mediaInserterHelper.insertFromDevice(image: image, callback: callback)
+                                                        })
         })
     }
 
