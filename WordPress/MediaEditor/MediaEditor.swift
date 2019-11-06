@@ -17,6 +17,7 @@ public class MediaEditor: NSObject {
         self.callback = callback
         let cropViewController = self.cropViewControllerFactory(image)
         cropViewController.delegate = self
+        cropViewController.toolbar.rotateCounterclockwiseButtonHidden = true
         viewController?.present(cropViewController, animated: true)
         self.cropViewController = cropViewController
     }

@@ -63,6 +63,16 @@ class MediaEditorTests: XCTestCase {
         expect(viewControllerMock.didCallPresent).to(beTrue())
     }
 
+    func testHideCounterClockwiseButton() {
+        let image = UIImage()
+        let viewControllerMock = UIViewControllerMock()
+        let mediaEditor = MediaEditor()
+
+        mediaEditor.edit(image, from: viewControllerMock) { _ in }
+
+        expect(mediaEditor.cropViewController?.toolbar.rotateCounterclockwiseButtonHidden).to(beTrue())
+    }
+
 }
 
 class TOCropViewControllerMock: TOCropViewController {
