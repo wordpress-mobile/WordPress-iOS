@@ -563,7 +563,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
-        return [.freeMediaLibrary]
+        if post.blog.supports(.stockPhotos) {
+            return [.stockPhotos]
+        }
+        return []
     }
 }
 
@@ -661,7 +664,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 // MARK: - Constants
 
 extension Gutenberg.MediaSource {
-    static let freeMediaLibrary = Gutenberg.MediaSource(id: "free-photo-library", label: .freePhotosLibrary, types: [.image])
+    static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
 }
 
 private extension GutenbergViewController {
