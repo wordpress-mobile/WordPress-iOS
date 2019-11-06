@@ -44,7 +44,7 @@ end
 
 def wordpress_kit
     #pod 'WordPressKit', '~> 4.5.3-beta.1'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/12141-restore-revision-dialog'
+    pod 'WordPressKit', :git => 'https://github.com/guarani/WordPressKit-iOS.git', :branch => 'issue/12141-restore-revision-dialog'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
