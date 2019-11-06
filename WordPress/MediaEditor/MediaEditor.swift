@@ -15,9 +15,10 @@ public class MediaEditor: NSObject {
 
     public func edit(_ image: UIImage, from viewController: UIViewController? = nil, callback: @escaping (UIImage?) -> ()) {
         self.callback = callback
-        cropViewController = self.cropViewControllerFactory(image)
-        cropViewController?.delegate = self
-        viewController?.present(cropViewController!, animated: true)
+        let cropViewController = self.cropViewControllerFactory(image)
+        cropViewController.delegate = self
+        viewController?.present(cropViewController, animated: true)
+        self.cropViewController = cropViewController
     }
 
 }
