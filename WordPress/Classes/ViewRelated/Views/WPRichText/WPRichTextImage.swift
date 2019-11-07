@@ -36,6 +36,8 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
         imageView = CachedAnimatedImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         imageView.contentMode = .scaleAspectFit
+        imageView.isAccessibilityElement = true
+
         super.init(frame: frame)
 
         addSubview(imageView)
