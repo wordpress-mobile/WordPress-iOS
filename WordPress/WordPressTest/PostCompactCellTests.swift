@@ -67,28 +67,6 @@ class PostCompactCellTests: XCTestCase {
         XCTAssertEqual(postCell.badgesLabel.text, "Sticky")
     }
 
-    func testHideTimestampWhenUploading() {
-        let post = PostBuilder().build()
-
-        postCell.configure(with: post)
-
-        XCTAssertEqual(postCell.badgesLabel.text, "Uploading post...")
-        XCTAssertTrue(postCell.timestampLabel.isHidden)
-        XCTAssertEqual(postCell.timestampLabel.text, "")
-        XCTAssertEqual(postCell.timestampTrailing.constant, 0)
-    }
-
-    func testShowTimestampWhenNotUploading() {
-        let post = PostBuilder().with(remoteStatus: .sync)
-            .with(dateCreated: Date()).build()
-
-        postCell.configure(with: post)
-
-        XCTAssertEqual(postCell.badgesLabel.text, "")
-        XCTAssertFalse(postCell.timestampLabel.isHidden)
-        XCTAssertEqual(postCell.timestampTrailing.constant, 8)
-    }
-
     func testShowProgressView() {
         let post = PostBuilder()
             .with(remoteStatus: .pushing)

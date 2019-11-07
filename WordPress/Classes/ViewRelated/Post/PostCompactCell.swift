@@ -115,11 +115,10 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureDate() {
-        guard let post = post, let viewModel = viewModel else {
+        guard let post = post else {
             return
         }
 
-        let isUploadingOrFailed = viewModel.isUploadingOrFailed
         timestampLabel.text = post.latest().dateStringForDisplay()
         timestampLabel.isHidden = false
     }
