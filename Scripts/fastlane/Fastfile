@@ -376,7 +376,9 @@ import "./ScreenshotFastfile"
                        "org.wordpress.alpha.WordPressDraftAction",
                        "org.wordpress.alpha.WordPressTodayWidget",
                        "org.wordpress.alpha.WordPressNotificationServiceExtension",
-                       "org.wordpress.alpha.WordPressNotificationContentExtension"])
+                       "org.wordpress.alpha.WordPressNotificationContentExtension",
+                       "org.wordpress.alpha.MediaEditor",
+    ])
   end
 
   private_lane :internal_code_signing do |options|
@@ -389,7 +391,9 @@ import "./ScreenshotFastfile"
                        "org.wordpress.internal.WordPressDraftAction",
                        "org.wordpress.internal.WordPressTodayWidget",
                        "org.wordpress.internal.WordPressNotificationServiceExtension",
-                       "org.wordpress.internal.WordPressNotificationContentExtension"])
+                       "org.wordpress.internal.WordPressNotificationContentExtension",
+                       "org.wordpress.internal.MediaEditor",
+    ])
   end
 
   private_lane :appstore_code_signing do |options|
@@ -402,7 +406,9 @@ import "./ScreenshotFastfile"
                        "org.wordpress.WordPressDraftAction",
                        "org.wordpress.WordPressTodayWidget",
                        "org.wordpress.WordPressNotificationServiceExtension",
-                       "org.wordpress.WordPressNotificationContentExtension"])
+                       "org.wordpress.WordPressNotificationContentExtension",
+                       "org.wordpress.MediaEditor",
+    ])
   end
 
 ########################################################################
