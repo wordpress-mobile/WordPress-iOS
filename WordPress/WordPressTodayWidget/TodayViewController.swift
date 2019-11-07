@@ -29,7 +29,7 @@ class TodayViewController: UIViewController {
     private var timeZone: TimeZone?
     private var oauthToken: String?
     private var isConfigured = false
-    
+
     private let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -242,7 +242,7 @@ private extension TodayViewController {
         static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         static let views = NSLocalizedString("Views", comment: "Stats Views Label")
     }
-    
+
     enum Constants {
         static let noDataLabel = "-"
         static let buttonCornerRadius: CGFloat = 8.0
