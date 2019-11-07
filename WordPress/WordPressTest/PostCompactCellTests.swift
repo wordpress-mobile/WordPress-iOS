@@ -17,7 +17,6 @@ class PostCompactCellTests: XCTestCase {
         postCell.configure(with: post)
 
         XCTAssertFalse(postCell.featuredImageView.isHidden)
-        XCTAssertTrue(postCell.labelsContainerTrailing.isActive)
     }
 
     func testHideImageWhenNotAvailable() {
@@ -26,7 +25,6 @@ class PostCompactCellTests: XCTestCase {
         postCell.configure(with: post)
 
         XCTAssertTrue(postCell.featuredImageView.isHidden)
-        XCTAssertFalse(postCell.labelsContainerTrailing.isActive)
     }
 
     func testShowPostTitle() {

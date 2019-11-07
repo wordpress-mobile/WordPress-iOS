@@ -7,12 +7,10 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var badgesLabel: UILabel!
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var featuredImageView: CachedAnimatedImageView!
+    @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet weak var innerView: UIView!
     @IBOutlet weak var ghostView: UIView!
     @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var timestampTrailing: NSLayoutConstraint!
-    @IBOutlet var labelsContainerTrailing: NSLayoutConstraint!
     @IBOutlet weak var separator: UIView!
 
     private weak var actionSheetDelegate: PostActionSheetDelegate?
@@ -95,18 +93,14 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         innerView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor).isActive = true
         innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
-
-        labelsLeadingConstraint.constant = -Constants.contentSpacing
     }
 
     private func configureFeaturedImage() {
         if let post = post, let url = post.featuredImageURL {
             featuredImageView.isHidden = false
-            labelsContainerTrailing.isActive = true
             imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: featuredImageView.frame.width, height: featuredImageView.frame.height))
         } else {
             featuredImageView.isHidden = true
-            labelsContainerTrailing.isActive = false
         }
     }
 
@@ -130,7 +124,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         badgesLabel.textColor = viewModel.statusColor
         badgesLabel.text = viewModel.statusAndBadges(separatedBy: Constants.separator)
-        badgesLabel.numberOfLines = viewModel.isUploadingOrFailed ? 0 : 1
     }
 
     private func configureProgressView() {
