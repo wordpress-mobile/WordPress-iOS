@@ -52,7 +52,7 @@ class NoticeView: UIView {
             configureDismissRecognizer()
         }
 
-        configureForVoiceOver()
+        configureForAccessibility()
     }
 
     private func configureBackgroundViews() {
@@ -353,11 +353,12 @@ fileprivate extension UIView {
 // MARK: - VoiceOver
 
 private extension NoticeView {
-    func configureForVoiceOver() {
+    func configureForAccessibility() {
         labelStackView.accessibilityLabel = [titleLabel, messageLabel].compactMap {
             return $0.isHidden ? "" : $0.text
         }.joined(separator: ". ")
 
         labelStackView.isAccessibilityElement = true
+        labelStackView.accessibilityIdentifier = "notice_title_and_message"
     }
 }
