@@ -2,14 +2,18 @@ import UIKit
 
 class NoticeView: UIView {
     internal let contentStackView = UIStackView()
+
     internal let backgroundContainerView = UIView()
     internal let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
     internal let actionBackgroundView = UIView()
     private let shadowLayer = CAShapeLayer()
     private let shadowMaskLayer = CAShapeLayer()
 
+    /// Container for the title and content labels
+    private let labelStackView = UIStackView()
     internal let titleLabel = UILabel()
     internal let messageLabel = UILabel()
+
     private let actionButton = UIButton(type: .system)
     private let cancelButton = UIButton(type: .system)
 
@@ -47,6 +51,8 @@ class NoticeView: UIView {
         if notice.style.isDismissable {
             configureDismissRecognizer()
         }
+
+        configureForAccessibility()
     }
 
     private func configureBackgroundViews() {
@@ -109,7 +115,6 @@ class NoticeView: UIView {
     }
 
     private func configureLabels() {
-        let labelStackView = UIStackView()
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
         labelStackView.alignment = .leading
         labelStackView.axis = .vertical
@@ -342,5 +347,18 @@ fileprivate extension UIView {
 
     struct Constants {
         static let borderColor = UIColor.white.withAlphaComponent(0.25)
+    }
+}
+
+// MARK: - VoiceOver
+
+private extension NoticeView {
+    func configureForAccessibility() {
+        labelStackView.accessibilityLabel = [titleLabel, messageLabel].compactMap {
+            return $0.isHidden ? "" : $0.text
+        }.joined(separator: ". ")
+
+        labelStackView.isAccessibilityElement = true
+        labelStackView.accessibilityIdentifier = "notice_title_and_message"
     }
 }

@@ -4,13 +4,9 @@ import WPMediaPicker
 import Gutenberg
 
 class GutenbergMediaInserterHelper: NSObject {
-
     fileprivate let post: AbstractPost
-
     fileprivate let gutenberg: Gutenberg
-
     fileprivate let mediaCoordinator = MediaCoordinator.shared
-
     fileprivate var mediaObserverReceipt: UUID?
 
     /// Method of selecting media for upload, used for analytics
@@ -81,7 +77,6 @@ class GutenbergMediaInserterHelper: NSObject {
                 return
             }
         }
-
     }
 
     func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -132,19 +127,9 @@ class GutenbergMediaInserterHelper: NSObject {
         return mediaCoordinator.hasFailedMedia(for: post)
     }
 
-    private func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
-        switch exportableAsset.assetMediaType {
-        case .image:
-            break
-        case .video:
-            break
-        default:
-            break
-        }
-
+    func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
-        let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
-        return media
+        return mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
     }
 
     private func registerMediaObserver() {

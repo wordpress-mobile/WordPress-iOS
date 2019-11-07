@@ -33,6 +33,10 @@
 @dynamic confirmedChangesHash;
 @dynamic confirmedChangesTimestamp;
 @dynamic autoUploadAttemptsCount;
+@dynamic autosaveContent;
+@dynamic autosaveExcerpt;
+@dynamic autosaveTitle;
+@dynamic autosaveModifiedDate;
 
 @synthesize restorableStatus;
 

@@ -6,6 +6,8 @@ protocol StockPhotosPickerDelegate: AnyObject {
 
 /// Presents the Stock Photos main interface
 final class StockPhotosPicker: NSObject {
+    var allowMultipleSelection = true
+
     private lazy var dataSource: StockPhotosDataSource = {
         return StockPhotosDataSource(service: stockPhotosService)
     }()
@@ -26,13 +28,14 @@ final class StockPhotosPicker: NSObject {
 
     private let searchHint = NoResultsViewController.controller()
 
-    private var pickerOptions: WPMediaPickerOptions = {
+    private lazy var pickerOptions: WPMediaPickerOptions = {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
         options.preferredStatusBarStyle = .lightContent
+        options.allowMultipleSelection = allowMultipleSelection
         return options
     }()
 
