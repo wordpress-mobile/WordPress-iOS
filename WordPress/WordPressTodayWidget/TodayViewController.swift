@@ -39,8 +39,6 @@ class TodayViewController: UIViewController {
 
         configureLabel.text = LocalizedText.configure
         configureButton.setTitle(LocalizedText.openWordPress, for: .normal)
-        configureButton.backgroundColor = .primary
-        configureButton.clipsToBounds = true
         configureButton.layer.cornerRadius = Constants.buttonCornerRadius
 
         siteNameLabel.text = Constants.noDataLabel
