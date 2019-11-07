@@ -2,6 +2,7 @@ import UIKit
 import WPMediaPicker
 import Gutenberg
 import Aztec
+import Alamofire
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -343,15 +344,28 @@ extension GutenbergViewController {
 extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestFetch(path: String, response: @escaping (Swift.Result<Any, NSError>) -> Void) {
-        if let dotComID = post.blog.dotComID {
+        if let dotComID = post.blog.dotComID { // dotCom / Jetpack request
             let finalPath = path.replacingOccurrences(of: "/wp/v2/", with: "/wp/v2/sites/\(dotComID)/")
             post.blog.wordPressComRestApi()?.GET(finalPath, parameters: nil, success: { (responseObject, httpResponse) in
                 response(.success(responseObject))
             }, failure: { (error, HTTPResponse) in
                 response(.failure(error))
             })
-        } else {
-            // SelfHosed call
+        } else { // Self-Hosted request.
+            let cleanPath = path.replacingOccurrences(of: "context=edit", with: "context=view")
+            do {
+                let url = try post.blog.url(withPath: "wp-json\(cleanPath)").asURL()
+                SessionManager.default.request(url).validate().responseJSON { (responseObject) in
+                      switch responseObject.result {
+                      case .success(let responseObject):
+                          response(.success(responseObject))
+                      case .failure(let error):
+                          response(.failure(error as NSError))
+                      }
+                  }
+            } catch {
+                response(.failure(error as NSError))
+            }
         }
     }
 
