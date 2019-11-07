@@ -66,31 +66,20 @@
                                                             <constraint firstAttribute="height" constant="0.5" id="JyR-gV-MO0"/>
                                                         </constraints>
                                                     </view>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="hoI-Db-9tL">
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogUrl" text="my.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vSF-Wk-ECh" userLabel="Site Url Label">
                                                         <rect key="frame" x="0.0" y="8.5" width="288" height="41.5"/>
-                                                        <subviews>
-                                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
-                                                                <rect key="frame" x="0.0" y="0.0" width="141.5" height="41.5"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogUrl" text="my.wordpress.com" textAlignment="right" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vSF-Wk-ECh" userLabel="Site Url Label">
-                                                                <rect key="frame" x="146.5" y="0.0" width="141.5" height="41.5"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="hoI-Db-9tL" firstAttribute="leading" secondItem="COU-z5-NLI" secondAttribute="leading" id="3F3-zf-Kcg"/>
-                                                    <constraint firstItem="hoI-Db-9tL" firstAttribute="top" secondItem="esO-gC-YkD" secondAttribute="bottom" constant="8" id="JHg-uP-I0e"/>
+                                                    <constraint firstAttribute="bottom" secondItem="vSF-Wk-ECh" secondAttribute="bottom" id="0TQ-TB-Vxr"/>
                                                     <constraint firstItem="esO-gC-YkD" firstAttribute="top" secondItem="COU-z5-NLI" secondAttribute="top" id="WFm-Uu-s16"/>
-                                                    <constraint firstAttribute="trailing" secondItem="hoI-Db-9tL" secondAttribute="trailing" id="lRf-GS-lQ4"/>
-                                                    <constraint firstAttribute="bottom" secondItem="hoI-Db-9tL" secondAttribute="bottom" id="mWO-sq-k4K"/>
+                                                    <constraint firstAttribute="trailing" secondItem="vSF-Wk-ECh" secondAttribute="trailing" id="YeP-N8-x8a"/>
+                                                    <constraint firstItem="vSF-Wk-ECh" firstAttribute="leading" secondItem="COU-z5-NLI" secondAttribute="leading" id="aEq-NO-oHO"/>
+                                                    <constraint firstItem="vSF-Wk-ECh" firstAttribute="top" secondItem="esO-gC-YkD" secondAttribute="bottom" constant="8" id="nL5-0Y-5vX"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -139,7 +128,6 @@
                         <outlet property="configuredView" destination="TbZ-Oq-ahc" id="d0S-UN-LQ3"/>
                         <outlet property="rowsStackView" destination="vd1-ys-xI8" id="b0V-uC-LDv"/>
                         <outlet property="separatorLine" destination="esO-gC-YkD" id="Jq6-50-SxY"/>
-                        <outlet property="siteNameLabel" destination="Wcm-ss-zFo" id="WsJ-6K-WZ5"/>
                         <outlet property="siteUrlLabel" destination="vSF-Wk-ECh" id="mtV-bm-n4M"/>
                         <outlet property="unconfiguredView" destination="SgL-dy-2cu" id="0i2-YG-MCZ"/>
                     </connections>

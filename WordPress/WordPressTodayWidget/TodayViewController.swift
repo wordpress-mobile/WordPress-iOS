@@ -15,10 +15,8 @@ class TodayViewController: UIViewController {
     @IBOutlet private var configuredView: UIStackView!
     @IBOutlet private var rowsStackView: UIStackView!
     @IBOutlet private var separatorLine: UIView!
-    @IBOutlet private var siteNameLabel: UILabel!
     @IBOutlet private var siteUrlLabel: UILabel!
 
-    private var siteName: String = ""
     private var siteUrl: String = ""
     private var visitorCount: Int = 0
     private var viewCount: Int = 0
@@ -47,7 +45,6 @@ class TodayViewController: UIViewController {
         configureButton.setTitle(LocalizedText.openWordPress, for: .normal)
         configureButton.layer.cornerRadius = Constants.buttonCornerRadius
 
-        siteNameLabel.text = Constants.noDataLabel
         siteUrlLabel.text = Constants.noDataLabel
 
         initRows()
@@ -156,7 +153,6 @@ private extension TodayViewController {
         }
 
         siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
-        siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
         siteUrl = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey) ?? ""
         oauthToken = fetchOAuthBearerToken()
 
@@ -201,13 +197,11 @@ private extension TodayViewController {
 
         // In dark mode, let the separator line be the same color as the label text.
         separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
-        siteNameLabel.textColor = .textSubtle
         siteUrlLabel.textColor = .textSubtle
     }
 
     func updateLabels() {
 
-        siteNameLabel.text = siteName
         siteUrlLabel.text = siteUrl
 
         guard let row = rowsStackView.arrangedSubviews.first as? TwoColumnRow else {
