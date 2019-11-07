@@ -4,10 +4,10 @@ class TwoColumnRow: UIView {
 
     // MARK: - Properties
 
-    @IBOutlet private weak var leftItemLabel: UILabel!
-    @IBOutlet private weak var leftDataLabel: UILabel!
-    @IBOutlet private weak var rightItemLabel: UILabel!
-    @IBOutlet private weak var rightDataLabel: UILabel!
+    @IBOutlet private var leftItemLabel: UILabel!
+    @IBOutlet private var leftDataLabel: UILabel!
+    @IBOutlet private var rightItemLabel: UILabel!
+    @IBOutlet private var rightDataLabel: UILabel!
 
     // MARK: - Configure
 

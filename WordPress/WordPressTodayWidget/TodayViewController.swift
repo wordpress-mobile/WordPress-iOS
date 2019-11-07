@@ -8,15 +8,15 @@ class TodayViewController: UIViewController {
 
     // MARK: - Properties
 
-    @IBOutlet private weak var unconfiguredView: UIStackView!
-    @IBOutlet private weak var configureLabel: UILabel!
-    @IBOutlet private weak var configureButton: UIButton!
+    @IBOutlet private var unconfiguredView: UIStackView!
+    @IBOutlet private var configureLabel: UILabel!
+    @IBOutlet private var configureButton: UIButton!
 
-    @IBOutlet private weak var configuredView: UIStackView!
-    @IBOutlet private weak var rowsStackView: UIStackView!
-    @IBOutlet private weak var separatorLine: UIView!
-    @IBOutlet private weak var siteNameLabel: UILabel!
-    @IBOutlet private weak var siteUrlLabel: UILabel!
+    @IBOutlet private var configuredView: UIStackView!
+    @IBOutlet private var rowsStackView: UIStackView!
+    @IBOutlet private var separatorLine: UIView!
+    @IBOutlet private var siteNameLabel: UILabel!
+    @IBOutlet private var siteUrlLabel: UILabel!
 
     private var siteName: String = ""
     private var siteUrl: String = ""
