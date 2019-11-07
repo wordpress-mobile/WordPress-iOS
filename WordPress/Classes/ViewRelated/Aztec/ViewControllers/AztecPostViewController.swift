@@ -169,7 +169,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             textView.autocorrectionType = .no
         }
 
-        removeTapGestureRecognizer(from: textView)
+        disableLinkTapRecognizer(from: textView)
     }
 
     /**
