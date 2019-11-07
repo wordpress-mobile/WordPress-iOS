@@ -1,5 +1,6 @@
 13.7
 -----
+* Block editor: Added option to insert images from "Free Photo Library".
  
 13.6
 -----
