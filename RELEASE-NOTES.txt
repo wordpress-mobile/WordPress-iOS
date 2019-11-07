@@ -1,6 +1,7 @@
 13.7
 -----
- 
+* Updated the mobile apps blog address to a non-retired blog. 
+
 13.6
 -----
 * Fixed a bug that was not submiting posts for review
