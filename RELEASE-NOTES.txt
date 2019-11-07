@@ -1,6 +1,7 @@
 13.7
 -----
 * Updated the mobile apps blog address to a non-retired blog. 
+* Block editor: Added option to insert images from "Free Photo Library".
 
 13.6
 -----

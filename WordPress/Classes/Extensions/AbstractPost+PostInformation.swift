@@ -16,8 +16,4 @@ extension AbstractPost: ImageSourceInformation {
     var isLocalDraft: Bool {
         return self.isDraft() && !self.hasRemote()
     }
-
-    var supportsWPComAPI: Bool {
-        return self.blog.supports(.wpComRESTAPI)
-    }
 }
