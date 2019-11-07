@@ -29,6 +29,12 @@ class TodayViewController: UIViewController {
     private var timeZone: TimeZone?
     private var oauthToken: String?
     private var isConfigured = false
+    
+    private let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
 
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
@@ -213,8 +219,6 @@ private extension TodayViewController {
     }
 
     func displayString(for value: Int) -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
         return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
     }
 
