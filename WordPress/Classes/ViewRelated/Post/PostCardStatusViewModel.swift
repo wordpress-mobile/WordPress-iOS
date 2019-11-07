@@ -90,7 +90,7 @@ class PostCardStatusViewModel: NSObject {
         }
 
         if post.isRevision() {
-            return .warning
+            return post.hasPermanentFailedMedia() ? .error : .warning
         }
 
         if post.isFailed {
@@ -228,7 +228,7 @@ class PostCardStatusViewModel: NSObject {
         }
 
         if post.wasAutoUploadCancelled {
-            return StatusMessages.localChanges
+            return post.hasPermanentFailedMedia() ? PostAutoUploadMessages.failedMedia : StatusMessages.localChanges
         }
 
         if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {

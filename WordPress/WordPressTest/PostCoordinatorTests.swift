@@ -148,12 +148,36 @@ class PostCoordinatorTests: XCTestCase {
             .withRemote()
             .with(status: .draft)
             .with(remoteStatus: .failed)
+            .supportsWPComAPI()
             .build()
         try! context.save()
 
         postCoordinator.resume()
 
         expect(postServiceMock.didCallAutoSave).toEventually(beTrue())
+    }
+
+    func testResumeWillUploadUnconfirmedPublishedPostsAsDraftsOnSelfHostedSites() {
+        // Arrange
+        let postServiceMock = PostServiceMock(managedObjectContext: context)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        _ = PostBuilder(context)
+            .with(status: .publish)
+            .with(remoteStatus: .failed)
+            .with(title: "Ipsam nihil")
+            .build()
+        try! context.save()
+
+        // Act
+        postCoordinator.resume()
+
+        // Assert
+        expect(postServiceMock.didCallUploadPost).toEventually(beTrue())
+        expect(postServiceMock.lastUploadPostInvocation).toEventuallyNot(beNil())
+
+        let invocation = postServiceMock.lastUploadPostInvocation!
+        expect(invocation.post.postTitle).to(equal("Ipsam nihil"))
+        expect(invocation.forceDraftIfCreating).to(beTrue())
     }
 
     func testCancelAutoUploadOfAPost() {
@@ -239,6 +263,7 @@ class PostCoordinatorTests: XCTestCase {
             .withRemote()
             .with(status: .draft)
             .with(remoteStatus: .failed)
+            .supportsWPComAPI()
             .build()
         try! context.save()
 
@@ -413,21 +438,29 @@ class PostCoordinatorTests: XCTestCase {
 }
 
 private class PostServiceMock: PostService {
-    private(set) var didCallUploadPost = false
+    struct UploadPostInvocation {
+        let post: AbstractPost
+        let forceDraftIfCreating: Bool
+    }
+
     private(set) var didCallMarkAsFailedAndDraftIfNeeded = false
     private(set) var didCallAutoSave = false
+
+    private(set) var lastUploadPostInvocation: UploadPostInvocation?
+    var didCallUploadPost: Bool {
+        return lastUploadPostInvocation != nil
+    }
 
     var returnPost: AbstractPost?
     var returnError: Error?
 
-    override func uploadPost(_ post: AbstractPost, success: ((AbstractPost) -> Void)?, failure: @escaping (Error?) -> Void) {
-        didCallUploadPost = true
+    override func uploadPost(_ post: AbstractPost, forceDraftIfCreating: Bool, success: ((AbstractPost) -> Void)?, failure: @escaping (Error?) -> Void) {
+        lastUploadPostInvocation = UploadPostInvocation(post: post, forceDraftIfCreating: forceDraftIfCreating)
 
         if let post = returnPost {
             post.remoteStatus = .sync
             success?(post)
         }
-
         if let error = returnError {
             post.remoteStatus = .failed
             failure(error)

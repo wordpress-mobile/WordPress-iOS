@@ -49,6 +49,14 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 */
 @property (nonatomic, strong, nonnull) NSNumber *autoUploadAttemptsCount;
 
+/**
+ Autosave attributes hold a snapshot of the post's content.
+ */
+@property (nonatomic, copy, nullable) NSString *autosaveContent;
+@property (nonatomic, copy, nullable) NSString *autosaveExcerpt;
+@property (nonatomic, copy, nullable) NSString *autosaveTitle;
+@property (nonatomic, copy, nullable) NSDate *autosaveModifiedDate;
+
 // Revision management
 - (AbstractPost *)createRevision;
 - (void)deleteRevision;

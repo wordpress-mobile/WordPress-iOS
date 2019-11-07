@@ -73,7 +73,7 @@ class DomainsServiceTests: XCTestCase {
             expect.fulfill()
         })
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testDomainServiceHandlesTwoNewDomains() {

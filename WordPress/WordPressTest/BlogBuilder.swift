@@ -2,6 +2,9 @@ import Foundation
 
 @testable import WordPress
 
+/// Creates a Blog
+///
+/// Defaults to creating a self-hosted blog
 final class BlogBuilder {
     private let blog: Blog
 
@@ -16,5 +19,17 @@ final class BlogBuilder {
 
     func build() -> Blog {
         return blog
+    }
+}
+
+extension Blog {
+    func supportsWPComAPI() {
+        guard let context = managedObjectContext else {
+            return
+        }
+
+        let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
+        account.username = "foo"
+        account.addBlogsObject(self)
     }
 }
