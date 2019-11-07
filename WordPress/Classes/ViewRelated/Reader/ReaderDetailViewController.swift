@@ -1509,7 +1509,8 @@ extension ReaderDetailViewController: Accessible {
             return
         }
         blogNameButton.isAccessibilityElement = true
-        blogNameButton.accessibilityTraits = UIAccessibilityTraits.staticText
+        blogNameButton.accessibilityTraits = [.staticText, .button]
+        blogNameButton.accessibilityHint = NSLocalizedString("Shows the site's posts.", comment: "Accessibility hint for the site name and URL button on Reader's Post Details.")
         if let label = blogNameLabel(post) {
             blogNameButton.accessibilityLabel = label
         }
