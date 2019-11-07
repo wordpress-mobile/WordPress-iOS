@@ -2,6 +2,9 @@ import Foundation
 
 @testable import WordPress
 
+/// Builds a Post
+///
+/// Defaults to creating a post in a self-hosted site.
 class PostBuilder {
     private let post: Post
 

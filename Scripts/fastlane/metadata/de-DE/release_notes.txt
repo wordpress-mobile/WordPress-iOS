@@ -1,5 +1,3 @@
-Unsere App-Entwickler haben diesen Monat so einige Fehler behoben:
-- Normalerweise konntest du dich mit deinen Apple-Anmeldedaten bei der App anmelden, aber ein Fehler hat es verhindert. Das wurde jetzt behoben.
-- Einige Änderungen machen den Block-Editor jetzt noch besser: Links werden direkt in der App statt in Safari geöffnet. Das lästige Problem, dass beim Bearbeiten von Links manchmal bestehende Links gelöscht wurden, ist behoben.
-- Der „dunkle Modus“ ist nun wirklich dunkel und nicht mehr grauenvoll düster, vor allem dank der verbesserten visuellen Elemente und Fehlerbehebungen.
-- Das vertikale Scrollen funktionierte in der Teilen-Erweiterung nicht immer. Das ist jetzt kein Problem mehr.
+- Block-Editor: Wir haben einen Block „Medien und Text“ hinzugefügt! Die Option „Ziel verlinken (In neuem Tab öffnen)“ wurde zu den Bildblock-Einstellungen hinzugefügt. Wir haben einen Fehler behoben, bei dem der Shortcut „Neuer Fotobeitrag“ nicht das ausgewählte Foto hinzugefügt hat.
+- Statistiken: Du kannst die Einsichten jetzt individuell anpassen. Die Einsichten werden jetzt auch in langsamen Netzwerken schneller geladen.
+- Dunkler Modus: Verbesserungen und kleinere Fehlerbehebungen in der gesamten App.
