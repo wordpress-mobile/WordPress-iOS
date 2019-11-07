@@ -16,6 +16,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         case autoSave
     }
 
+    private lazy var stockPhotos: GutenbergStockPhotos = {
+        return GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+    }()
+
     // MARK: - Aztec
 
     internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -345,7 +349,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         autosaver.contentDidChange()
     }
 
-    func gutenbergDidRequestMedia(from source: MediaPickerSource, filter: [MediaFilter]?, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMedia(from source: Gutenberg.MediaSource, filter: [Gutenberg.MediaType], allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         let flags = mediaFilterFlags(using: filter)
         switch source {
         case .mediaLibrary:
@@ -354,31 +358,31 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             gutenbergDidRequestMediaFromDevicePicker(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
+        case .stockPhotos:
+            stockPhotos.presentPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
+        default: break
         }
     }
 
-    func mediaFilterFlags(using filterArray: [MediaFilter]?) -> WPMediaType {
-        if let filterArray = filterArray {
-            var mediaType: Int = 0
-            for filter in filterArray {
-                switch filter {
-                case .image:
-                    mediaType = mediaType | WPMediaType.image.rawValue
-                case .video:
-                    mediaType = mediaType | WPMediaType.video.rawValue
-                case .audio:
-                    mediaType = mediaType | WPMediaType.audio.rawValue
-                case .other:
-                    mediaType = mediaType | WPMediaType.other.rawValue
-                }
-            }
-            if mediaType == 0 {
-                return WPMediaType.all
-            } else {
-                return WPMediaType(rawValue: mediaType)
+    func mediaFilterFlags(using filterArray: [Gutenberg.MediaType]) -> WPMediaType {
+        var mediaType: Int = 0
+        for filter in filterArray {
+            switch filter {
+            case .image:
+                mediaType = mediaType | WPMediaType.image.rawValue
+            case .video:
+                mediaType = mediaType | WPMediaType.video.rawValue
+            case .audio:
+                mediaType = mediaType | WPMediaType.audio.rawValue
+            case .other:
+                mediaType = mediaType | WPMediaType.other.rawValue
             }
         }
-        return WPMediaType.all
+        if mediaType == 0 {
+            return WPMediaType.all
+        } else {
+            return WPMediaType(rawValue: mediaType)
+        }
     }
 
     func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -557,6 +561,13 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
         return attachmentDelegate
     }
+
+    func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
+        if post.blog.supports(.stockPhotos) {
+            return [.stockPhotos]
+        }
+        return []
+    }
 }
 
 // MARK: - PostEditorStateContextDelegate
@@ -652,8 +663,11 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
 // MARK: - Constants
 
-private extension GutenbergViewController {
+extension Gutenberg.MediaSource {
+    static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
+}
 
+private extension GutenbergViewController {
     enum Analytics {
         static let editorSource = "gutenberg"
     }

@@ -1509,7 +1509,8 @@ extension ReaderDetailViewController: Accessible {
             return
         }
         blogNameButton.isAccessibilityElement = true
-        blogNameButton.accessibilityTraits = UIAccessibilityTraits.staticText
+        blogNameButton.accessibilityTraits = [.staticText, .button]
+        blogNameButton.accessibilityHint = NSLocalizedString("Shows the site's posts.", comment: "Accessibility hint for the site name and URL button on Reader's Post Details.")
         if let label = blogNameLabel(post) {
             blogNameButton.accessibilityLabel = label
         }
@@ -1517,17 +1518,18 @@ extension ReaderDetailViewController: Accessible {
 
     private func blogNameLabel(_ post: ReaderPost) -> String? {
         guard let postedIn = post.blogNameForDisplay(),
-            let postedBy = post.authorDisplayName else {
+            let postedBy = post.authorDisplayName,
+            let postedAtURL = post.siteURLForDisplay()?.components(separatedBy: "//").last else {
                 return nil
         }
 
         guard let postedOn = post.dateCreated?.mediumString() else {
-            let format = NSLocalizedString("Posted in %@, by %@.", comment: "Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, author name")
-            return String(format: format, postedIn, postedBy)
+            let format = NSLocalizedString("Posted in %@, at %@, by %@.", comment: "Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name")
+            return String(format: format, postedIn, postedAtURL, postedBy)
         }
 
-        let format = NSLocalizedString("Posted in %@, by %@, %@", comment: "Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, author name, published date")
-        return String(format: format, postedIn, postedBy, postedOn)
+        let format = NSLocalizedString("Posted in %@, at %@, by %@, %@", comment: "Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, blog URL, author name, published date")
+        return String(format: format, postedIn, postedAtURL, postedBy, postedOn)
     }
 
     private func prepareContentForVoiceOver() {
