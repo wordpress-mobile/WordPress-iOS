@@ -15,6 +15,18 @@ class ReaderPlaceholderAttachment: NSTextAttachment {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+
+    override var accessibilityLabel: String? {
+        get {
+            // Setting isAccessibilityElement to false does not seem to work for this
+            // `NSTextAttachment`. VoiceOver will still dictate “Attachment. PNG. File” which is
+            // really weird. Returning an empty label here so nothing will just be dictated at all.
+            return ""
+        }
+        set {
+            super.accessibilityLabel = newValue
+        }
+    }
 }
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
