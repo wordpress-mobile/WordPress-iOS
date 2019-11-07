@@ -13,10 +13,15 @@ import WordPressAuthenticator
 
 class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
-    enum Const {
+    fileprivate enum Const {
         enum Color {
             static let nameText = UIColor.text
             static let valueText = UIColor.textSubtle
+        }
+
+        enum Text {
+            static let nonBreakingSpace = "\u{00a0}"
+            static let space = " "
         }
     }
 
@@ -64,7 +69,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
-        textField.text = textField.text?.replacingOccurrences(of: " ", with: "\u{00a0}")
+        textField.text = textField.text?.replacingOccurrences(of: Const.Text.space, with: Const.Text.nonBreakingSpace)
 
         let text = sanitizedText(for: textField)
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: text)
@@ -78,7 +83,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     }
 
     private func sanitizedText(for textField: UITextField) -> String {
-        return textField.text?.replacingOccurrences(of: "\u{00a0}", with: " ") ?? ""
+        return textField.text?.replacingOccurrences(of: Const.Text.nonBreakingSpace, with: Const.Text.space) ?? ""
     }
 
     @objc func setValueTextFieldAsFirstResponder(_ gesture: UITapGestureRecognizer) {
