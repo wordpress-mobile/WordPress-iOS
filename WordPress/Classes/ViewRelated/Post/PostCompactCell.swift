@@ -120,9 +120,9 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         }
 
         let isUploadingOrFailed = viewModel.isUploadingOrFailed
-        timestampLabel.text = isUploadingOrFailed ? "" : post.latest().dateStringForDisplay()
+        timestampLabel.text = post.latest().dateStringForDisplay()
+        timestampLabel.isHidden = false
         timestampTrailing.constant = isUploadingOrFailed ? 0 : Constants.contentSpacing
-        timestampLabel.isHidden = isUploadingOrFailed
     }
 
     private func configureStatus() {
