@@ -232,14 +232,14 @@ private extension TodayViewController {
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
     }
 
-    struct LocalizedText {
+    enum LocalizedText {
         static let configure = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
         static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app")
         static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         static let views = NSLocalizedString("Views", comment: "Stats Views Label")
     }
-
-    struct Constants {
+    
+    enum Constants {
         static let noDataLabel = "-"
         static let buttonCornerRadius: CGFloat = 8.0
         static let baseUrl: String = "\(WPComScheme)://"
