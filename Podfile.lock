@@ -54,6 +54,7 @@ PODS:
   - HockeySDK (5.1.4):
     - HockeySDK/DefaultLib (= 5.1.4)
   - HockeySDK/DefaultLib (5.1.4)
+  - JTAppleCalendar (8.0.2)
   - lottie-ios (2.5.2)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
@@ -264,6 +265,7 @@ DEPENDENCIES:
   - Gridicons (~> 0.16)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `e675c61f96b0c9e9ae96fa102e61f29c84bdd4f3`)
   - HockeySDK (= 5.1.4)
+  - JTAppleCalendar (~> 8.0.2)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
   - NSObject-SafeExpectations (= 0.0.3)
@@ -300,7 +302,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.11.0)
   - WordPressAuthenticator (~> 1.10.2)
-  - WordPressKit (~> 4.5.3-beta.1)
+  - WordPressKit (~> 4.5.3-beta.2)
   - WordPressMocks (~> 0.0.6)
   - WordPressShared (~> 1.8.8)
   - WordPressUI (~> 1.5.0)
@@ -327,6 +329,7 @@ SPEC REPOS:
     - Gridicons
     - GTMSessionFetcher
     - HockeySDK
+    - JTAppleCalendar
     - lottie-ios
     - MRProgress
     - Nimble
@@ -450,6 +453,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 43b8b64263023d4f32caa0b40f4c8bfa3c5f36d8
   Gutenberg: b4648d8e71389a171b54b8594e15cd960b937a17
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
+  JTAppleCalendar: bb3dd3752e2bcc85cb798ab763fbdd6e142715fc
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
@@ -499,6 +503,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 35b16898fae049f6ebffba96793f209b03a41495
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 14bbfa37f76b6eb4bc5c35b394615ef6975197a6
+PODFILE CHECKSUM: 95df24fdf96c5bddea8e78e81b43b32714c7e867
 
 COCOAPODS: 1.8.4

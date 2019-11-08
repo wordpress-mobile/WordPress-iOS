@@ -122,7 +122,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         backButton.isEnabled = !animate
 
         if animate {
-            startGhostAnimation()
+            startGhostAnimation(style: GhostCellStyle.muriel)
             return
         }
         stopGhostAnimation()
@@ -132,7 +132,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
-        contentView.backgroundColor = .basicBackground
+        contentView.backgroundColor = .listForeground
         Style.configureLabelAsCellRowTitle(dateLabel)
         Style.configureLabelAsChildRowTitle(timezoneLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)

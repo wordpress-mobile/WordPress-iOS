@@ -723,6 +723,11 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
         [self updateCommentsForPost:post];
     }
 
+    post.autosaveTitle = remotePost.autosave.title;
+    post.autosaveExcerpt = remotePost.autosave.excerpt;
+    post.autosaveContent = remotePost.autosave.content;
+    post.autosaveModifiedDate = remotePost.autosave.modifiedDate;
+
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;

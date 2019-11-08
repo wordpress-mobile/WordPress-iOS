@@ -38,11 +38,12 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v13.5-whats-new"
+msgctxt "v13.6-whats-new"
 msgid ""
-"- Block editor: We’ve added a “Media & Text” block! The Link Target (Open in new tab) option has been added to Image Block settings. We fixed a bug where the “New Photo Post” shortcut didn’t add the selected photo.\n"
-"- Stats: You can now customize Insights. Insight loading on slow networks is faster.\n"
-"- Dark Mode: Improvements and small bug fixes all over the app.\n"
+"- With this update, you can internet without the actual internet. Edit and save posts while you’re offline, we’ll automatically upload (or publish) them when your device is back online.\n"
+"- Sometimes, the “Me” view would be blank if you logged in with a self-hosted site, which is both (1) a bug and (2) not great for anyone’s self-esteem. That’s fixed, so Me is you again.\n"
+"- Sometimes updating a pending post caused the post to be published. All actions starting with P have been straightened out, and that won’t happen anymore – pending posts will remaining pending until you say otherwise.\n"
+"- And finally, more Block editor, improvements — it supports image alignment options now.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
