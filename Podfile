@@ -140,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '3c927602ad5d05d5d7189527418840f726e7d1de'
+    gutenberg :commit => 'bdbe882b1071cbfdd67fc3a5314e5d1de37cb04b'
 
     ## Third party libraries
     ## =====================
@@ -155,6 +155,7 @@ target 'WordPress' do
     pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.2'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
+    pod 'JTAppleCalendar', '~> 8.0.2'
 
     ## Automattic libraries
     ## ====================
