@@ -9,6 +9,7 @@
 * Block Editor: Added support for image alignment options.
 * Fix bug for tapping links in Aztec or Gutenberg editor opening Safari.
 * Fix Gutenberg editor layout issues when writing on multiline blocks.
+* Fixed validation issues in the domain registration screen.
  
 13.5
 -----

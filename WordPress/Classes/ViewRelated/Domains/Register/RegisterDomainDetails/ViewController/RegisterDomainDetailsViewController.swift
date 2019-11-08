@@ -63,26 +63,11 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
 
         viewModel.prefill()
 
-        changeBottomSafeAreaInset()
         setupEditingEndingTapGestureRecognizer()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         configureTableFooterView(width: size.width)
-
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        changeBottomSafeAreaInset()
-    }
-
-    private func changeBottomSafeAreaInset() {
-        // Footer in this case is the submit button. We want the background to extend under the home indicator.
-        let safeAreaInsets = tableView.safeAreaInsets.bottom
-
-        var newInsets = tableView.contentInset
-        newInsets.bottom = -safeAreaInsets
-        tableView.contentInset = newInsets
     }
 
     private func configureTableView() {
@@ -213,20 +198,44 @@ extension RegisterDomainDetailsViewController {
 extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelegate {
 
     func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                     valueTextFieldDidChange valueTextField: UITextField) {
+                                     valueTextFieldDidChange text: String) {
         guard let indexPath = tableView.indexPath(for: cell),
             let sectionType = SectionIndex(rawValue: indexPath.section) else {
                 return
         }
 
-        viewModel.updateValue(valueTextField.text, at: indexPath)
+        viewModel.updateValue(text, at: indexPath)
 
         if sectionType == .address,
             viewModel.addressSectionIndexHelper.addressField(for: indexPath.row) == .addressLine,
             indexPath.row == viewModel.addressSectionIndexHelper.extraAddressLineCount,
-            valueTextField.text?.isEmpty == false {
+            text.isEmpty == false {
                 viewModel.enableAddAddressRow()
         }
+    }
+
+    func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell, valueTextFieldShouldReturn textField: UITextField) -> Bool {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+                return false
+        }
+
+        let nextSection = indexPath.section + 1
+        let nextRow = indexPath.row + 1
+
+        // If there's an enabled editable row next in this section then select it, otherwise check the next section
+        if tableView.numberOfRows(inSection: indexPath.section) > nextRow,
+            let nextCell = tableView.cellForRow(at: IndexPath(row: nextRow, section: indexPath.section)) as? InlineEditableNameValueCell,
+            nextCell.valueTextField.isEnabled {
+            nextCell.valueTextField.becomeFirstResponder()
+        } else if tableView.numberOfSections > nextSection,
+            let nextCell = tableView.cellForRow(at: IndexPath(row: indexPath.row, section: nextSection)) as? InlineEditableNameValueCell,
+            nextCell.valueTextField.isEnabled {
+            nextCell.valueTextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+
+        return true
     }
 }
 
