@@ -2,7 +2,6 @@ import UIKit
 import WPMediaPicker
 import Gutenberg
 import Aztec
-import Alamofire
 
 class GutenbergViewController: UIViewController, PostEditor {
 
