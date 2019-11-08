@@ -14,8 +14,7 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
     }
 
     func canLoadImageURL(_ requestURL: URL!) -> Bool {
-        //We need a better solution here.
-        return requestURL.absoluteString.contains("files.wordpress.com")
+        return requestURL.isImage
     }
 
     func loadImage(for imageURL: URL!, size: CGSize, scale: CGFloat, resizeMode: RCTResizeMode, progressHandler: RCTImageLoaderProgressBlock!, partialLoadHandler: RCTImageLoaderPartialLoadBlock!, completionHandler: RCTImageLoaderCompletionBlock!) -> RCTImageLoaderCancellationBlock! {
