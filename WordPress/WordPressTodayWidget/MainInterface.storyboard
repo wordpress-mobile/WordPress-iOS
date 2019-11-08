@@ -23,41 +23,50 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="57z-E7-fbN">
                                 <rect key="frame" x="16" y="0.0" width="288" height="192"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-dy-2cu">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="90"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-dy-2cu">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="104"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display your site stats for today here. Configure in the WordPress app in your site stats." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="52"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
-                                                <rect key="frame" x="0.0" y="57" width="288" height="33"/>
-                                                <color key="backgroundColor" name="Gray10"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Kc-kV-Twu">
+                                                <rect key="frame" x="0.0" y="52" width="288" height="52"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="brs-WZ-RUz" userLabel="Separator Line">
+                                                        <rect key="frame" x="-16" y="8" width="320" height="0.5"/>
+                                                        <color key="backgroundColor" name="Gray40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="0.5" id="7Li-2D-XeE"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open WordPress" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysP-Hn-kcR" userLabel="Open WordPress Label">
+                                                        <rect key="frame" x="0.0" y="16.5" width="288" height="35.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="33" id="pCe-io-PU5"/>
+                                                    <constraint firstItem="brs-WZ-RUz" firstAttribute="top" secondItem="8Kc-kV-Twu" secondAttribute="top" constant="8" id="ODk-vn-fh2"/>
+                                                    <constraint firstAttribute="trailing" secondItem="ysP-Hn-kcR" secondAttribute="trailing" id="WS3-US-U5i"/>
+                                                    <constraint firstAttribute="bottom" secondItem="ysP-Hn-kcR" secondAttribute="bottom" id="YKV-cX-0Ck"/>
+                                                    <constraint firstItem="ysP-Hn-kcR" firstAttribute="leading" secondItem="8Kc-kV-Twu" secondAttribute="leading" id="ndg-ik-Tnx"/>
+                                                    <constraint firstItem="ysP-Hn-kcR" firstAttribute="top" secondItem="brs-WZ-RUz" secondAttribute="bottom" constant="8" id="z58-zg-gnj"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
-                                                <state key="normal" title="Open WordPress">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
-                                                </connections>
-                                            </button>
+                                            </view>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TbZ-Oq-ahc">
-                                        <rect key="frame" x="0.0" y="92" width="288" height="100"/>
+                                        <rect key="frame" x="0.0" y="104" width="288" height="88"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="vd1-ys-xI8" userLabel="Rows Stack View">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="50"/>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="COU-z5-NLI" userLabel="Site Info View">
-                                                <rect key="frame" x="0.0" y="50" width="288" height="50"/>
+                                                <rect key="frame" x="0.0" y="50" width="288" height="38"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="esO-gC-YkD" userLabel="Separator Line">
                                                         <rect key="frame" x="-16" y="0.0" width="320" height="0.5"/>
@@ -66,8 +75,8 @@
                                                             <constraint firstAttribute="height" constant="0.5" id="JyR-gV-MO0"/>
                                                         </constraints>
                                                     </view>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogUrl" text="my.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vSF-Wk-ECh" userLabel="Site Url Label">
-                                                        <rect key="frame" x="0.0" y="8.5" width="288" height="41.5"/>
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="my.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vSF-Wk-ECh" userLabel="Site Url Label">
+                                                        <rect key="frame" x="0.0" y="8.5" width="288" height="29.5"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -107,10 +116,12 @@
                         <constraints>
                             <constraint firstItem="57z-E7-fbN" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" constant="16" id="2Pu-jv-s9Z"/>
                             <constraint firstAttribute="trailing" secondItem="esO-gC-YkD" secondAttribute="trailing" id="2hp-Hc-i3b"/>
+                            <constraint firstItem="brs-WZ-RUz" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" id="F8G-En-brF"/>
                             <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="bottom" constant="8" id="QLc-MC-2RQ"/>
                             <constraint firstAttribute="trailing" secondItem="57z-E7-fbN" secondAttribute="trailing" constant="16" id="UPv-3H-nCM"/>
                             <constraint firstItem="57z-E7-fbN" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" id="cYc-fE-VY6"/>
                             <constraint firstItem="esO-gC-YkD" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" id="m84-IC-phN"/>
+                            <constraint firstAttribute="trailing" secondItem="brs-WZ-RUz" secondAttribute="trailing" id="qAW-SA-yMH"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="StW-vH-RTH" appends="YES" id="Uac-Xl-YJb"/>
@@ -123,12 +134,13 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="200"/>
                     <connections>
-                        <outlet property="configureButton" destination="sB2-YC-Udf" id="LzU-MH-mlY"/>
                         <outlet property="configureLabel" destination="p3Z-lC-Jtw" id="5al-UQ-lOq"/>
                         <outlet property="configuredView" destination="TbZ-Oq-ahc" id="d0S-UN-LQ3"/>
+                        <outlet property="openWordPressLabel" destination="ysP-Hn-kcR" id="DTJ-pP-Tvx"/>
                         <outlet property="rowsStackView" destination="vd1-ys-xI8" id="b0V-uC-LDv"/>
                         <outlet property="separatorLine" destination="esO-gC-YkD" id="Jq6-50-SxY"/>
                         <outlet property="siteUrlLabel" destination="vSF-Wk-ECh" id="mtV-bm-n4M"/>
+                        <outlet property="unconfiguredSeparatorLine" destination="brs-WZ-RUz" id="pPc-q4-W4q"/>
                         <outlet property="unconfiguredView" destination="SgL-dy-2cu" id="0i2-YG-MCZ"/>
                     </connections>
                 </viewController>
@@ -143,9 +155,6 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="Gray10">
-            <color red="0.80392156862745101" green="0.78823529411764703" blue="0.80392156862745101" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="Gray40">
             <color red="0.49803921568627452" green="0.50196078431372548" blue="0.54117647058823526" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

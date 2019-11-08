@@ -10,7 +10,8 @@ class TodayViewController: UIViewController {
 
     @IBOutlet private var unconfiguredView: UIStackView!
     @IBOutlet private var configureLabel: UILabel!
-    @IBOutlet private var configureButton: UIButton!
+    @IBOutlet private var unconfiguredSeparatorLine: UIView!
+    @IBOutlet private var openWordPressLabel: UILabel!
 
     @IBOutlet private var configuredView: UIStackView!
     @IBOutlet private var rowsStackView: UIStackView!
@@ -42,9 +43,7 @@ class TodayViewController: UIViewController {
         super.viewDidLoad()
 
         configureLabel.text = LocalizedText.configure
-        configureButton.setTitle(LocalizedText.openWordPress, for: .normal)
-        configureButton.layer.cornerRadius = Constants.buttonCornerRadius
-
+        openWordPressLabel.text = LocalizedText.openWordPress
         siteUrlLabel.text = Constants.noDataLabel
 
         initRows()
@@ -192,12 +191,12 @@ private extension TodayViewController {
 
     func configureColors() {
         configureLabel.textColor = .text
-        configureButton.backgroundColor = .neutral(.shade10)
-        configureButton.setTitleColor(.text, for: .normal)
-
-        // In dark mode, let the separator line be the same color as the label text.
-        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
+        openWordPressLabel.textColor = .text
         siteUrlLabel.textColor = .textSubtle
+
+        // In dark mode, let the separator lines be the same color as the label text.
+        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
+        unconfiguredSeparatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
     }
 
     func updateLabels() {
@@ -232,14 +231,13 @@ private extension TodayViewController {
 
     enum LocalizedText {
         static let configure = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
-        static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app")
+        static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget label to launch WP app")
         static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         static let views = NSLocalizedString("Views", comment: "Stats Views Label")
     }
 
     enum Constants {
         static let noDataLabel = "-"
-        static let buttonCornerRadius: CGFloat = 8.0
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
         static let rowNibName: String = "TwoColumnRow"
