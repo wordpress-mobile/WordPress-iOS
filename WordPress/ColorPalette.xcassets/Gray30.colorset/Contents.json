@@ -15,6 +15,24 @@
           "green" : "152"
         }
       }
+    },
+    {
+      "idiom" : "universal",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "red" : "81",
+          "alpha" : "1.000",
+          "blue" : "95",
+          "green" : "86"
+        }
+      }
     }
   ]
 }
