@@ -515,6 +515,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 showMediaSelectionOnStart()
             }
             focusTitleIfNeeded()
+            mediaInserterHelper.refreshMediaStatus()
         }
     }
 

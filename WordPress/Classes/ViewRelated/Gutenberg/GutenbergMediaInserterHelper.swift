@@ -132,6 +132,29 @@ class GutenbergMediaInserterHelper: NSObject {
         return mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
     }
 
+    /// Method to be used to refresh the status of all media associated with the post.
+    /// this method should be called when opening a post to make sure every media block has the correct visual status.
+    func refreshMediaStatus() {
+        for media in post.media {
+            switch media.remoteStatus {
+            case .processing:
+                mediaObserver(media: media, state: .processing)
+            case .pushing:
+                var progressValue = 0.5
+                if let progress = mediaCoordinator.progress(for: media) {
+                    progressValue = progress.fractionCompleted
+                }
+                mediaObserver(media: media, state: .progress(value: progressValue))
+            case .failed:
+                if let error = media.error as NSError? {
+                    mediaObserver(media: media, state: .failed(error: error))
+                }
+            default:
+                break
+            }
+        }
+    }
+
     private func registerMediaObserver() {
         mediaObserverReceipt =  mediaCoordinator.addObserver({ [weak self](media, state) in
             self?.mediaObserver(media: media, state: state)
