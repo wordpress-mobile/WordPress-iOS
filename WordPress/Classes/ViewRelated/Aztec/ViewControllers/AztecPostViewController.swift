@@ -2806,7 +2806,7 @@ extension AztecPostViewController {
 
         if showDefaultActions {
             if let imageAttachment = attachment as? ImageAttachment {
-                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
+                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.settingsActionTitle,
                                                                                      style: .default,
                                                                                      handler: { (action) in
                                                                                         self.displayDetails(forAttachment: imageAttachment)
@@ -3317,6 +3317,7 @@ extension AztecPostViewController {
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
+        static let settingsActionTitle = NSLocalizedString("Settings", comment: "User action to edit media settings.")
         static let editActionTitle = NSLocalizedString("Edit", comment: "User action to edit media details.")
         static let playVideoActionTitle = NSLocalizedString("Play video", comment: "User action to play a video on the editor.")
         static let removeImageActionTitle = NSLocalizedString("Remove image", comment: "User action to remove image.")
