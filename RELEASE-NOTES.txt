@@ -1,7 +1,9 @@
 13.7
 -----
+* Updated the mobile apps blog address to a non-retired blog. 
 * Block editor: Added option to insert images from "Free Photo Library".
- 
+* Fixed a bug that made comment moderation fail on the first attempt for self-hosted sites.
+
 13.6
 -----
 * Fixed a bug that was not submiting posts for review
