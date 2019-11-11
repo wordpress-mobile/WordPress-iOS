@@ -2,6 +2,9 @@ import Foundation
 
 @testable import WordPress
 
+/// Builds a Post
+///
+/// Defaults to creating a post in a self-hosted site.
 class PostBuilder {
     private let post: Post
 
@@ -160,6 +163,11 @@ class PostBuilder {
 
     func `is`(sticked: Bool) -> PostBuilder {
         post.isStickyPost = sticked
+        return self
+    }
+
+    func supportsWPComAPI() -> PostBuilder {
+        post.blog.supportsWPComAPI()
         return self
     }
 

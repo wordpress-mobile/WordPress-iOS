@@ -16,7 +16,11 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     @IBOutlet weak var timezoneLabel: UILabel!
     @IBOutlet weak var backArrow: UIImageView!
     @IBOutlet weak var forwardArrow: UIImageView!
-    @IBOutlet weak var bottomSeparatorLine: UIView!
+    @IBOutlet weak var bottomSeparatorLine: UIView! {
+        didSet {
+            bottomSeparatorLine.isGhostableDisabled = true
+        }
+    }
 
     @IBOutlet weak var backButton: UIButton! {
         didSet {
@@ -118,7 +122,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         backButton.isEnabled = !animate
 
         if animate {
-            startGhostAnimation()
+            startGhostAnimation(style: GhostCellStyle.muriel)
             return
         }
         stopGhostAnimation()
@@ -128,7 +132,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
-        contentView.backgroundColor = .basicBackground
+        contentView.backgroundColor = .listForeground
         Style.configureLabelAsCellRowTitle(dateLabel)
         Style.configureLabelAsChildRowTitle(timezoneLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)

@@ -51,15 +51,19 @@ class PostCoordinator: NSObject {
         self.actionDispatcherFacade = actionDispatcherFacade
     }
 
+    /// Upload or update a post in the server.
+    ///
+    /// - Parameter forceDraftIfCreating Please see `PostService.uploadPost:forceDraftIfCreating`.
     func save(_ postToSave: AbstractPost,
               automatedRetry: Bool = false,
+              forceDraftIfCreating: Bool = false,
               defaultFailureNotice: Notice? = nil,
               completion: ((Result<AbstractPost>) -> ())? = nil) {
 
         prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
             switch result {
             case .success(let post):
-                self.upload(post: post, completion: completion)
+                self.upload(post: post, forceDraftIfCreating: forceDraftIfCreating, completion: completion)
             case .error(let error):
                 switch error {
                 case SavingError.mediaFailure(let savedPost):
@@ -265,8 +269,8 @@ class PostCoordinator: NSObject {
         backgroundService.refreshPostStatus()
     }
 
-    private func upload(post: AbstractPost, completion: ((Result<AbstractPost>) -> ())? = nil) {
-        mainService.uploadPost(post, success: { [weak self] uploadedPost in
+    private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost>) -> ())? = nil) {
+        mainService.uploadPost(post, forceDraftIfCreating: forceDraftIfCreating, success: { [weak self] uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             SearchManager.shared.indexItem(uploadedPost)
@@ -400,7 +404,8 @@ extension PostCoordinator: Uploader {
                     self.save(post, automatedRetry: true)
                 case .autoSave:
                     self.autoSave(post, automatedRetry: true)
-                    return
+                case .uploadAsDraft:
+                    self.save(post, automatedRetry: true, forceDraftIfCreating: true)
                 case .nothing:
                     return
                 }

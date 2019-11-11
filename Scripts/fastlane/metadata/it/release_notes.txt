@@ -1,0 +1,3 @@
+- Editor dei blocchi: abbiamo aggiunto un blocco "Media e testo". È stata aggiunta l'opzione Destinazione link (Apri in una nuova scheda) alle impostazioni del blocco Immagine. Abbiamo corretto un bug per cui il comando di scelta rapida "Nuovo articolo fotografico" non aggiungeva la foto selezionata.
+- Statistiche: adesso puoi personalizzare la panoramica. Il caricamento della panoramica nelle reti lenti avviene più velocemente.
+- Dark Mode: sono stati apportati miglioramenti e correzioni di piccoli bug in tutta l'app.

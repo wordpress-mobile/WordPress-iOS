@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="155" id="vmb-SM-afh" customClass="StatsGhostTitleCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="155"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vmb-SM-afh" id="s7k-0Y-8VT">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="155"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="29S-3Y-rIz">
+                        <rect key="frame" x="16" y="16" width="382" height="16"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="euF-LU-6Yk"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Kq-vY-zNJ">
+                        <rect key="frame" x="16" y="40" width="382" height="24"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="aZe-Fl-LD0"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="4Kq-vY-zNJ" firstAttribute="top" secondItem="29S-3Y-rIz" secondAttribute="bottom" constant="8" id="041-cg-rhJ"/>
+                    <constraint firstAttribute="trailing" secondItem="4Kq-vY-zNJ" secondAttribute="trailing" constant="16" id="068-Vt-V17"/>
+                    <constraint firstAttribute="trailing" secondItem="29S-3Y-rIz" secondAttribute="trailing" constant="16" id="3iw-Dd-KNG"/>
+                    <constraint firstItem="4Kq-vY-zNJ" firstAttribute="leading" secondItem="s7k-0Y-8VT" secondAttribute="leading" constant="16" id="Q3e-Ov-HnK"/>
+                    <constraint firstItem="29S-3Y-rIz" firstAttribute="top" secondItem="s7k-0Y-8VT" secondAttribute="top" constant="16" id="Y6J-U9-eEn"/>
+                    <constraint firstItem="29S-3Y-rIz" firstAttribute="leading" secondItem="s7k-0Y-8VT" secondAttribute="leading" constant="16" id="fgA-9n-1Ec"/>
+                    <constraint firstAttribute="bottom" secondItem="4Kq-vY-zNJ" secondAttribute="bottom" constant="16" id="zzw-ts-NF2"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <point key="canvasLocation" x="92.753623188405811" y="125.55803571428571"/>
+        </tableViewCell>
+    </objects>
+</document>
