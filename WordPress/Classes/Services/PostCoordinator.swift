@@ -308,7 +308,7 @@ class PostCoordinator: NSObject {
         } else if media.mediaType == .video {
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             postContent = videoPostUploadProcessor.process(postContent)
-            let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr, localURLString: media.absoluteThumbnailLocalURL?.absoluteString)
+            let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             postContent = gutenbergVideoPostUploadProcessor.process(postContent)
         } else if let remoteURL = URL(string: remoteURLStr) {
             let documentTitle = remoteURL.lastPathComponent
