@@ -90,7 +90,7 @@ private extension GutenbergBlockProcessor {
     private func readAttributes(from match: NSTextCheckingResult, in text: String) -> [String: Any] {
         guard let attributesText = match.captureGroup(in: CaptureGroups.attributes.rawValue, text: text),
             let data = attributesText.data(using: .utf8 ),
-            let json = try? JSONSerialization.jsonObject(with: data , options: .allowFragments),
+            let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
             let jsonDictionary = json as? [String: Any] else {
                 return [:]
         }

@@ -14,7 +14,7 @@ class GutenbergVideoUploadProcessor: Processor {
     }
 
     lazy var videoHtmlProcessor = HTMLProcessor(for: "video", replacer: { (video) in
-        var attributes = video.attributes        
+        var attributes = video.attributes
 
         attributes.set(.string(self.remoteURLString), forKey: "src")
 
@@ -73,7 +73,7 @@ class GutenbergVideoUploadProcessor: Processor {
 
 
     func process(_ text: String) -> String {
-        var result = videoBlockProcessor.process(text)    
+        var result = videoBlockProcessor.process(text)
         result = mediaTextVideoBlockProcessor.process(result)
         return result
     }
