@@ -2,7 +2,7 @@ import XCTest
 import TOCropViewController
 import Nimble
 
-@testable import MediaEditor
+@testable import WordPress
 
 class MediaEditorTests: XCTestCase {
 
