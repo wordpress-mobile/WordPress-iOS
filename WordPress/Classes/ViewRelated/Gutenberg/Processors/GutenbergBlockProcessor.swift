@@ -9,11 +9,11 @@ public struct GutenbergBlock {
     public let content: String
 }
 
-/// A class that processes a string and replace the designated shortcode for the replacement provided strings
+/// A class that processes a gutenberg post content and replaces the designated gutenberg block for the replacement provided strings.
 ///
 public class GutenbergBlockProcessor: Processor {
 
-    /// Whenever an HTML is found by the processor, this closure will be executed so that elements can be customized.
+    /// Whenever an Guntenberg block  is found by the processor, this closure will be executed so that elements can be customized.
     ///
     public typealias Replacer = (GutenbergBlock) -> String?
 
@@ -37,6 +37,7 @@ public class GutenbergBlockProcessor: Processor {
     ///
     /// 1. The block id
     /// 2. The block attributes
+    /// 3. Block content
     ///
     private lazy var gutenbergBlockRegexProcessor: RegexProcessor = { [weak self]() in
         let pattern = "\\<!--[ ]?(\(name))([\\s\\S]*?)-->([\\s\\S]*?)<!-- \\/\(name) -->"
@@ -67,7 +68,7 @@ public class GutenbergBlockProcessor: Processor {
 // MARK: - Regex Match Processing Logic
 
 private extension GutenbergBlockProcessor {
-    /// Processes an HTML Element regex match.
+    /// Processes an Gutenberg block  regex match.
     ///
     func process(match: NSTextCheckingResult, text: String) -> String? {
 
@@ -97,7 +98,7 @@ private extension GutenbergBlockProcessor {
         return jsonDictionary
     }
 
-    /// Obtains the attributes from an block match.
+    /// Obtains the block content from an block match.
     ///
     private func readContent(from match: NSTextCheckingResult, in text: String) -> String {
         guard let content = match.captureGroup(in: CaptureGroups.content.rawValue, text: text) else {
