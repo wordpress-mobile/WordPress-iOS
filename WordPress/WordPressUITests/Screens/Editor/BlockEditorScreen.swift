@@ -28,7 +28,7 @@ class BlockEditorScreen: BaseScreen {
     let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"] // Uses a localized string
 
     init() {
-        super.init(element: editorNavBar)
+        super.init(element: addBlockButton)
     }
 
     /**
