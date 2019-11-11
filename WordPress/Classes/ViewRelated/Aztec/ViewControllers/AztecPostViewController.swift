@@ -2811,6 +2811,14 @@ extension AztecPostViewController {
                                                                                      handler: { (action) in
                                                                                         self.displayDetails(forAttachment: imageAttachment)
                 })
+
+                if isImageAvailableAndUploaded(in: imageAttachment) {
+                    alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
+                                                                                         style: .default,
+                                                                                         handler: { (action) in
+                                                                                            // Edit image
+                    })
+                }
             } else if let videoAttachment = attachment as? VideoAttachment {
                 alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.playVideoActionTitle,
                                                                                      style: .default,
@@ -2828,6 +2836,14 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: { () in
             UIMenuController.shared.setMenuVisible(false, animated: false)
         })
+    }
+
+    private func isImageAvailableAndUploaded(in imageAttachment: ImageAttachment) -> Bool {
+        guard let url = imageAttachment.url, !url.isFileURL, imageAttachment.image != nil else {
+            return false
+        }
+
+        return true
     }
 
     func displayDetails(forAttachment attachment: ImageAttachment) {
