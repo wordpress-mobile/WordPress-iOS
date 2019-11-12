@@ -77,6 +77,9 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
         [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     }];
+    if (media == nil) {
+        return nil;
+    }
     NSManagedObjectID *mediaObjectID = media.objectID;
     [self.managedObjectContext performBlock:^{
         // Setup completion handlers

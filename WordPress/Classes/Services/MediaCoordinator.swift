@@ -133,9 +133,9 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media {
+    func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         let coordinator = mediaLibraryProgressCoordinator
-        return self.addMedia(from: asset, to: blog.objectID, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        return addMedia(from: asset, to: blog.objectID, coordinator: coordinator, analyticsInfo: analyticsInfo)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -146,18 +146,18 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media {
+    func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         let coordinator = self.coordinator(for: post)
-        return self.addMedia(from: asset, to: post.objectID, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        return addMedia(from: asset, to: post.objectID, coordinator: coordinator, analyticsInfo: analyticsInfo)
     }
 
     @discardableResult
-    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media {
+    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         coordinator.track(numberOfItems: 1)
         let service = mediaServiceFactory.create(mainContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         var creationProgress: Progress? = nil
-        let media = service.createMedia(with: asset,
+        let mediaOptional = service.createMedia(with: asset,
                             objectID: objectID,
                             progress: &creationProgress,
                             thumbnailCallback: { [weak self] media, url in
@@ -186,6 +186,9 @@ class MediaCoordinator: NSObject {
                                 let uploadProgress = strongSelf.uploadMedia(media)
                                 totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
         })
+        guard let media = mediaOptional else {
+            return nil
+        }
         processing(media)
         if let creationProgress = creationProgress {
             totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
