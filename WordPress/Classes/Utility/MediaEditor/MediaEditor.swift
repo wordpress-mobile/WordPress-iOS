@@ -24,15 +24,22 @@ public class MediaEditor: NSObject {
         self.cropViewController = cropViewController
     }
 
+    private func releaseCallbacks() {
+        onFinishEditing = nil
+        onFinishEditing = nil
+    }
+
 }
 
 extension MediaEditor: TOCropViewControllerDelegate {
     public func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
         onFinishEditing?(image)
+        releaseCallbacks()
     }
 
     public func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
         self.cropViewController?.dismiss(animated: true)
         onCancel?()
+        releaseCallbacks()
     }
 }
