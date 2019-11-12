@@ -2816,7 +2816,7 @@ extension AztecPostViewController {
                                                                                         self.displayDetails(forAttachment: imageAttachment)
                 })
 
-                if isImageAvailableAndUploaded(in: imageAttachment) {
+                if imageAttachment.isLoaded {
                     alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
                                                                                          style: .default,
                                                                                          handler: { (action) in
@@ -3442,13 +3442,5 @@ extension AztecPostViewController {
         let info = MediaAnalyticsInfo(origin: .editor(.deviceLibrary), selectionMethod: mediaSelectionMethod)
         let media = mediaCoordinator.addMedia(from: image, to: post, analyticsInfo: info)
         attachment.uploadID = media.uploadID
-    }
-
-    private func isImageAvailableAndUploaded(in imageAttachment: ImageAttachment) -> Bool {
-        guard let url = imageAttachment.url, !url.isFileURL, imageAttachment.image != nil else {
-            return false
-        }
-
-        return true
     }
 }

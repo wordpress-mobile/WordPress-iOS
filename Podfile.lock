@@ -302,7 +302,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - TOCropViewController (~> 2.5.2)
-  - WordPress-Editor-iOS (~> 1.11.0)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `issue/12920_create_is_loaded_property`)
   - WordPressAuthenticator (~> 1.10.2)
   - WordPressKit (~> 4.5.3-beta.3)
   - WordPressMocks (~> 0.0.6)
@@ -347,7 +347,6 @@ SPEC REPOS:
     - TOCropViewController
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
@@ -415,6 +414,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: bdbe882b1071cbfdd67fc3a5314e5d1de37cb04b
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPress-Editor-iOS:
+    :branch: issue/12920_create_is_loaded_property
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bdbe882b1071cbfdd67fc3a5314e5d1de37cb04b/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -431,6 +433,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: bdbe882b1071cbfdd67fc3a5314e5d1de37cb04b
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPress-Editor-iOS:
+    :commit: 776294b8f5561f762a97740757d8ec5b5481f254
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 3.0.2
@@ -507,6 +512,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 35b16898fae049f6ebffba96793f209b03a41495
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 919cb10942f58c296e20105da62bff8aaf7beffb
+PODFILE CHECKSUM: b6989082f763134a9c6cea57ad9603e7ebfdf877
 
 COCOAPODS: 1.8.4
