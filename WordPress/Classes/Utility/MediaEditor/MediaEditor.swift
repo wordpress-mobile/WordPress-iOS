@@ -5,7 +5,7 @@ public class MediaEditor: NSObject {
 
     let cropViewControllerFactory: (UIImage) -> TOCropViewController
 
-    private(set) var cropViewController: TOCropViewController?
+    private var cropViewController: TOCropViewController?
     private var onFinishEditing: ((UIImage?) -> ())?
     private var onCancel: (() -> ())?
 
