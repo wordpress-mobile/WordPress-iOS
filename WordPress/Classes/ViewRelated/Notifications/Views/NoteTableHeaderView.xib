@@ -33,6 +33,7 @@
                         </label>
                     </subviews>
                     <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" header="YES"/>
                         <bool key="isElement" value="YES"/>
                     </accessibility>
                     <constraints>
