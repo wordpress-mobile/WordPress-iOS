@@ -135,7 +135,7 @@ class MediaCoordinator: NSObject {
     @discardableResult
     func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         let coordinator = mediaLibraryProgressCoordinator
-        return addMedia(from: asset, to: blog.objectID, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        return addMedia(from: asset, blog: blog, post: nil, coordinator: coordinator, analyticsInfo: analyticsInfo)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -148,17 +148,18 @@ class MediaCoordinator: NSObject {
     @discardableResult
     func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         let coordinator = self.coordinator(for: post)
-        return addMedia(from: asset, to: post.objectID, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        return addMedia(from: asset, blog: post.blog, post: post, coordinator: coordinator, analyticsInfo: analyticsInfo)
     }
 
     @discardableResult
-    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
+    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         coordinator.track(numberOfItems: 1)
         let service = mediaServiceFactory.create(mainContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         var creationProgress: Progress? = nil
         let mediaOptional = service.createMedia(with: asset,
-                            objectID: objectID,
+                            blog: blog,
+                            post: post,
                             progress: &creationProgress,
                             thumbnailCallback: { [weak self] media, url in
                                 self?.thumbnailReady(url: url, for: media)
