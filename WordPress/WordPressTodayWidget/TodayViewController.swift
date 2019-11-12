@@ -8,24 +8,33 @@ class TodayViewController: UIViewController {
 
     // MARK: - Properties
 
-    @IBOutlet var unconfiguredView: UIStackView!
-    @IBOutlet var configureMeLabel: UILabel!
-    @IBOutlet var siteNameLabel: UILabel!
-    @IBOutlet var configuredView: UIStackView!
-    @IBOutlet var countContainerView: UIView!
-    @IBOutlet var visitorsCountLabel: UILabel!
-    @IBOutlet var visitorsLabel: UILabel!
-    @IBOutlet var viewsCountLabel: UILabel!
-    @IBOutlet var viewsLabel: UILabel!
-    @IBOutlet var configureMeButton: UIButton!
+    @IBOutlet private var unconfiguredView: UIStackView!
+    @IBOutlet private var configureLabel: UILabel!
+    @IBOutlet private var unconfiguredSeparatorLine: UIView!
+    @IBOutlet private var openWordPressLabel: UILabel!
+
+    @IBOutlet private var configuredView: UIStackView!
+    @IBOutlet private var rowsStackView: UIStackView!
+    @IBOutlet private var separatorLine: UIView!
+    @IBOutlet private var siteUrlLabel: UILabel!
+
+    private var siteUrl: String = ""
+    private var visitorCount: Int = 0
+    private var viewCount: Int = 0
+    private var likeCount: Int = 0
+    private var commentCount: Int = 0
 
     private var siteID: NSNumber?
     private var timeZone: TimeZone?
     private var oauthToken: String?
-    private var siteName: String = ""
-    private var visitorCount: Int = 0
-    private var viewCount: Int = 0
     private var isConfigured = false
+
+    private let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
     // MARK: - View
@@ -33,23 +42,12 @@ class TodayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let labelText = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app " +
-            "under your site > Stats > Today.", comment: "Unconfigured stats today widget helper text")
-        configureMeLabel.text = labelText
+        configureLabel.text = LocalizedText.configure
+        openWordPressLabel.text = LocalizedText.openWordPress
+        siteUrlLabel.text = Constants.noDataLabel
 
-        let buttonText = NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app")
-        configureMeButton.setTitle(buttonText, for: .normal)
-        configureMeButton.backgroundColor = .primary
-        configureMeButton.clipsToBounds = true
-        configureMeButton.layer.cornerRadius = 5.0
-
-        siteNameLabel.text = "-"
-        visitorsLabel.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
-        visitorsCountLabel.text = "-"
-        viewsLabel.text = NSLocalizedString("Views", comment: "Stats Views Label")
-        viewsCountLabel.text = "-"
-
-        changeTextColor()
+        initRows()
+        configureColors()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -63,7 +61,7 @@ class TodayViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount)
+        TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount, likes: likeCount, comments: commentCount)
     }
 
 }
@@ -101,6 +99,8 @@ extension TodayViewController: NCWidgetProviding {
             DispatchQueue.main.async {
                 self.visitorCount = todayInsight?.visitorsCount ?? 0
                 self.viewCount = todayInsight?.viewsCount ?? 0
+                self.likeCount = todayInsight?.likesCount ?? 0
+                self.commentCount = todayInsight?.commentsCount ?? 0
                 self.updateLabels()
             }
         }
@@ -113,13 +113,28 @@ extension TodayViewController: NCWidgetProviding {
 private extension TodayViewController {
 
     @IBAction func launchContainingApp() {
-        if let unwrappedSiteID = siteID {
-            tracks.trackExtensionStatsLaunched(unwrappedSiteID.intValue)
-            extensionContext!.open(URL(string: "\(WPComScheme)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
-        } else {
-            tracks.trackExtensionConfigureLaunched()
-            extensionContext!.open(URL(string: "\(WPComScheme)://")!, completionHandler: nil)
+        guard let extensionContext = extensionContext,
+            let containingAppURL = appURL() else {
+                DDLogError("Today Widget: Unable to get extensionContext or appURL.")
+                return
         }
+
+        trackAppLaunch()
+        extensionContext.open(containingAppURL, completionHandler: nil)
+    }
+
+    func appURL() -> URL? {
+        let urlString = (siteID != nil) ? (Constants.statsUrl + siteID!.stringValue) : Constants.baseUrl
+        return URL(string: urlString)
+    }
+
+    func trackAppLaunch() {
+        guard let siteID = siteID else {
+            tracks.trackExtensionConfigureLaunched()
+            return
+        }
+
+        tracks.trackExtensionStatsLaunched(siteID.intValue)
     }
 
     func updateUIBasedOnWidgetConfiguration() {
@@ -130,9 +145,14 @@ private extension TodayViewController {
     }
 
     func retrieveSiteConfiguration() {
-        let sharedDefaults = UserDefaults(suiteName: WPAppGroupName)!
+        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName) else {
+            DDLogError("Today Widget: Unable to get sharedDefaults.")
+            isConfigured = false
+            return
+        }
+
         siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
-        siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
+        siteUrl = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey) ?? ""
         oauthToken = fetchOAuthBearerToken()
 
         if let timeZoneName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
@@ -152,24 +172,47 @@ private extension TodayViewController {
         let data = TodayWidgetStats.loadSavedData()
         visitorCount = data.visitors
         viewCount = data.views
+        likeCount = data.likes
+        commentCount = data.comments
+    }
+
+    func initRows() {
+        guard let row = Bundle.main.loadNibNamed(Constants.rowNibName, owner: nil, options: nil)?.first as? TwoColumnRow else {
+            return
+        }
+
+        row.configure(leftColumnName: LocalizedText.views,
+                      leftColumnData: Constants.noDataLabel,
+                      rightColumnName: LocalizedText.visitors,
+                      rightColumnData: Constants.noDataLabel)
+
+        rowsStackView.addArrangedSubview(row)
+    }
+
+    func configureColors() {
+        configureLabel.textColor = .text
+        openWordPressLabel.textColor = .text
+        siteUrlLabel.textColor = .textSubtle
+
+        // In dark mode, let the separator lines be the same color as the label text.
+        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
+        unconfiguredSeparatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
     }
 
     func updateLabels() {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        visitorsCountLabel.text = numberFormatter.string(from: NSNumber(value: visitorCount)) ?? "0"
-        viewsCountLabel.text = numberFormatter.string(from: NSNumber(value: viewCount)) ?? "0"
 
-        siteNameLabel.text = siteName
+        siteUrlLabel.text = siteUrl
+
+        guard let row = rowsStackView.arrangedSubviews.first as? TwoColumnRow else {
+            return
+        }
+
+        row.updateData(leftColumnData: displayString(for: viewCount),
+                       rightColumnData: displayString(for: visitorCount))
     }
 
-    func changeTextColor() {
-        configureMeLabel.textColor = .text
-        siteNameLabel.textColor = .text
-        visitorsCountLabel.textColor = .text
-        viewsCountLabel.textColor = .text
-        visitorsLabel.textColor = .textSubtle
-        viewsLabel.textColor = .textSubtle
+    func displayString(for value: Int) -> String {
+        return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
     }
 
     func statsRemote() -> StatsServiceRemoteV2? {
@@ -186,4 +229,17 @@ private extension TodayViewController {
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
     }
 
+    enum LocalizedText {
+        static let configure = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
+        static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget label to launch WP app")
+        static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
+        static let views = NSLocalizedString("Views", comment: "Stats Views Label")
+    }
+
+    enum Constants {
+        static let noDataLabel = "-"
+        static let baseUrl: String = "\(WPComScheme)://"
+        static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
+        static let rowNibName: String = "TwoColumnRow"
+    }
 }
