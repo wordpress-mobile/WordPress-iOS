@@ -306,7 +306,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.10.2)
   - WordPressKit (~> 4.5.3-beta.3)
   - WordPressMocks (~> 0.0.6)
-  - WordPressShared (~> 1.8.8)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared`, branch `issue/12920_adds_added_photo_via_media_editor_analytics`)
   - WordPressUI (~> 1.5.0)
   - WPMediaPicker (~> 1.6.0)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bdbe882b1071cbfdd67fc3a5314e5d1de37cb04b/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -350,7 +350,6 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
-    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -417,6 +416,9 @@ EXTERNAL SOURCES:
   WordPress-Editor-iOS:
     :branch: issue/12920_create_is_loaded_property
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressShared:
+    :branch: issue/12920_adds_added_photo_via_media_editor_analytics
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/bdbe882b1071cbfdd67fc3a5314e5d1de37cb04b/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -436,6 +438,9 @@ CHECKOUT OPTIONS:
   WordPress-Editor-iOS:
     :commit: 776294b8f5561f762a97740757d8ec5b5481f254
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressShared:
+    :commit: 3fb043483c83ee6b81badbdc5eb3e462ab8ff70c
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 3.0.2
@@ -512,6 +517,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 35b16898fae049f6ebffba96793f209b03a41495
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: b6989082f763134a9c6cea57ad9603e7ebfdf877
+PODFILE CHECKSUM: 316146267bbb35a39390d10bd680cbc23bc7ac0a
 
 COCOAPODS: 1.8.4
