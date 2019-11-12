@@ -28,7 +28,8 @@ class BlockEditorScreen: BaseScreen {
     let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"] // Uses a localized string
 
     init() {
-        super.init(element: editorNavBar)
+        // Check addBlockButton element to ensure block editor is fully loaded
+        super.init(element: addBlockButton)
     }
 
     /**
@@ -65,14 +66,6 @@ class BlockEditorScreen: BaseScreen {
 
     // returns void since return screen depends on from which screen it loaded
     func closeEditor() {
-        // Wait for editor to fully load before trying to close it
-        // See https://github.com/wordpress-mobile/gutenberg-mobile/issues/1567
-        XCTContext.runActivity(named: "Confirm editor is fully loaded") { (activity) in
-            let editorTitleLoaded = titleView.waitForExistence(timeout: 2)
-            let blockButtonLoaded = addBlockButton.waitForExistence(timeout: 2)
-            XCTAssertTrue(editorTitleLoaded && blockButtonLoaded, "Editor is not fully loaded")
-        }
-
         XCTContext.runActivity(named: "Close the block editor") { (activity) in
             XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
                 if actionSheet.exists {
