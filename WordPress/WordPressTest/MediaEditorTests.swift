@@ -10,7 +10,7 @@ class MediaEditorTests: XCTestCase {
         let image = UIImage()
         let mediaEditor = MediaEditor()
 
-        mediaEditor.edit(image) { _ in }
+        mediaEditor.edit(image, onFinishEditing: { _ in })
 
         expect(mediaEditor.cropViewController?.image).to(equal(image))
     }
@@ -21,31 +21,32 @@ class MediaEditorTests: XCTestCase {
         var returnedImage: UIImage?
         let mediaEditor = MediaEditor.init(cropViewControllerFactory: TOCropViewControllerMock.init)
 
-        mediaEditor.edit(originalImage) { croppedImage in
-            returnedImage = croppedImage
-        }
+        mediaEditor.edit(originalImage, onFinishEditing: { croppedImage in
+        returnedImage = croppedImage
+
+        })
         (mediaEditor.cropViewController as? TOCropViewControllerMock)?.croppedImage = croppedImage
 
         expect(returnedImage).to(equal(croppedImage))
     }
 
-    func testReturnsNothingWhenUserCancel() {
+    func testCallsOnCancelWhenUserCancel() {
         let image = UIImage()
-        var returnedImage: UIImage?
         let mediaEditor = MediaEditor.init(cropViewControllerFactory: TOCropViewControllerMock.init)
+        var onCancelCalled = false
 
-        mediaEditor.edit(image) { croppedImage in
-            returnedImage = croppedImage
-        }
+        mediaEditor.edit(image, onFinishEditing: { _ in }, onCancel: {
+            onCancelCalled = true
+        })
         (mediaEditor.cropViewController as? TOCropViewControllerMock)?.userCanceled()
 
-        expect(returnedImage).to(beNil())
+        expect(onCancelCalled).to(beTrue())
     }
 
     func testDismissCropViewControllerWhenUserCancel() {
         let image = UIImage()
         let mediaEditor = MediaEditor.init(cropViewControllerFactory: TOCropViewControllerMock.init)
-        mediaEditor.edit(image) { _ in }
+        mediaEditor.edit(image, onFinishEditing: { _ in })
         let cropViewControllerMock = (mediaEditor.cropViewController as? TOCropViewControllerMock)
 
         cropViewControllerMock?.userCanceled()
@@ -58,7 +59,7 @@ class MediaEditorTests: XCTestCase {
         let viewControllerMock = UIViewControllerMock()
         let mediaEditor = MediaEditor()
 
-        mediaEditor.edit(image, from: viewControllerMock) { _ in }
+        mediaEditor.edit(image, from: viewControllerMock, onFinishEditing: { _ in })
 
         expect(viewControllerMock.didCallPresent).to(beTrue())
     }
@@ -68,7 +69,7 @@ class MediaEditorTests: XCTestCase {
         let viewControllerMock = UIViewControllerMock()
         let mediaEditor = MediaEditor()
 
-        mediaEditor.edit(image, from: viewControllerMock) { _ in }
+        mediaEditor.edit(image, from: viewControllerMock, onFinishEditing: { _ in })
 
         expect(mediaEditor.cropViewController?.toolbar.rotateCounterclockwiseButtonHidden).to(beTrue())
     }

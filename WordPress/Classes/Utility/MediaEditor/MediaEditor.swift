@@ -6,15 +6,17 @@ public class MediaEditor: NSObject {
     let cropViewControllerFactory: (UIImage) -> TOCropViewController
 
     private(set) var cropViewController: TOCropViewController?
-    private var callback: ((UIImage?) -> ())?
+    private var onFinishEditing: ((UIImage?) -> ())?
+    private var onCancel: (() -> ())?
 
     public init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init) {
         self.cropViewControllerFactory = cropViewControllerFactory
         super.init()
     }
 
-    public func edit(_ image: UIImage, from viewController: UIViewController? = nil, callback: @escaping (UIImage?) -> ()) {
-        self.callback = callback
+    public func edit(_ image: UIImage, from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage?) -> (), onCancel: (() -> ())? = nil) {
+        self.onFinishEditing = onFinishEditing
+        self.onCancel = onCancel
         let cropViewController = self.cropViewControllerFactory(image)
         cropViewController.delegate = self
         cropViewController.toolbar.rotateCounterclockwiseButtonHidden = true
@@ -26,11 +28,11 @@ public class MediaEditor: NSObject {
 
 extension MediaEditor: TOCropViewControllerDelegate {
     public func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
-        callback?(image)
+        onFinishEditing?(image)
     }
 
     public func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
         self.cropViewController?.dismiss(animated: true)
-        callback?(nil)
+        onCancel?()
     }
 }

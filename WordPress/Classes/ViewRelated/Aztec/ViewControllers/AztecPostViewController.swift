@@ -3429,12 +3429,13 @@ extension AztecPostViewController {
             return
         }
         
-        self.mediaEditor.edit(image, from: self) { image in
-            if let image = image {
-                self.replace(attachment: imageAttachment, with: image)
-                self.mediaEditor.cropViewController?.dismiss(animated: true, completion: nil)
-            }
-        }
+        self.mediaEditor.edit(image, from: self,
+                  onFinishEditing: { image in
+                                if let image = image {
+                                    self.replace(attachment: imageAttachment, with: image)
+                                    self.mediaEditor.cropViewController?.dismiss(animated: true, completion: nil)
+                                }
+        })
     }
 
     private func replace(attachment: ImageAttachment, with image: UIImage) {
