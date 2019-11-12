@@ -58,7 +58,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.backgroundColor = ShareColors.aztecBackground
         textView.textColor = .text
         textView.tintColor = ShareColors.aztecCursorColor
-        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor, dark: .neutral(.shade5))
+        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor ?? ShareColors.aztecBackground, dark: .neutral(.shade5))
         textView.blockquoteBorderColor = .listIcon
         textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
