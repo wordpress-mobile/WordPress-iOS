@@ -3433,7 +3433,7 @@ extension AztecPostViewController {
                   onFinishEditing: { image in
                                 if let image = image {
                                     self.replace(attachment: imageAttachment, with: image)
-//                                    self.mediaEditor.cropViewController?.dismiss(animated: true, completion: nil)
+                                    self.mediaEditor.dismiss(animated: true)
                                 }
         })
     }

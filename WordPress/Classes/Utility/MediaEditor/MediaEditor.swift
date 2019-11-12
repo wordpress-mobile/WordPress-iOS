@@ -24,6 +24,10 @@ public class MediaEditor: NSObject {
         self.cropViewController = cropViewController
     }
 
+    public func dismiss(animated: Bool, completion: (() -> ())? = nil) {
+        cropViewController?.dismiss(animated: animated, completion: completion)
+    }
+
     private func releaseCallbacks() {
         onFinishEditing = nil
         onFinishEditing = nil

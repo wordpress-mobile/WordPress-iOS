@@ -87,6 +87,15 @@ class MediaEditorTests: XCTestCase {
         expect(self.cropViewControllerMock.toolbar.rotateCounterclockwiseButtonHidden).to(beTrue())
     }
 
+    func testDismiss() {
+        let image = UIImage()
+        mediaEditor.edit(image, onFinishEditing: { _ in })
+
+        mediaEditor.dismiss(animated: true)
+
+        expect(self.cropViewControllerMock.didCallDismiss).to(beTrue())
+    }
+
     private func cropViewControllerMockFactory(_: UIImage) -> TOCropViewController {
         return cropViewControllerMock
     }
