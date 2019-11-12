@@ -3,7 +3,7 @@ version: 2.1
 orbs:
   # Using 1.0 of the Orbs means it will use the latest 1.0.x version from https://github.com/wordpress-mobile/circleci-orbs
   ios: wordpress-mobile/ios@1.0
-  git: wordpress-mobile/git@1.0
+  git: wordpress-mobile/git@dev:fix/lfs-issues
 
 commands:
   load-chruby:
