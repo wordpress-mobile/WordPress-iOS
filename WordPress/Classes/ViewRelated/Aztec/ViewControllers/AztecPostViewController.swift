@@ -3429,9 +3429,18 @@ extension AztecPostViewController {
             return
         }
         
-        self.mediaEditor.edit(image, from: self) { _ in
-            print("aeeeee")
+        self.mediaEditor.edit(image, from: self) { image in
+            if let image = image {
+                self.replace(attachment: imageAttachment, with: image)
+                self.mediaEditor.cropViewController?.dismiss(animated: true, completion: nil)
+            }
         }
+    }
+
+    private func replace(attachment: ImageAttachment, with image: UIImage) {
+        let info = MediaAnalyticsInfo(origin: .editor(.deviceLibrary), selectionMethod: mediaSelectionMethod)
+        let media = mediaCoordinator.addMedia(from: image, to: post, analyticsInfo: info)
+        attachment.uploadID = media.uploadID
     }
 
     private func isImageAvailableAndUploaded(in imageAttachment: ImageAttachment) -> Bool {
