@@ -3428,7 +3428,7 @@ extension AztecPostViewController {
         guard let image = imageAttachment.image else {
             return
         }
-        
+
         self.mediaEditor.edit(image, from: self,
                   onFinishEditing: { image in
                                 if let image = image {
