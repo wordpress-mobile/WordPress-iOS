@@ -99,6 +99,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         case expectedSecondaryAction = 1
     }
 
+    private lazy var mediaEditor: MediaEditor = {
+        return MediaEditor()
+    }()
+
     /// The editor view.
     ///
     fileprivate(set) lazy var editorView: Aztec.EditorView = {
@@ -2816,7 +2820,7 @@ extension AztecPostViewController {
                     alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
                                                                                          style: .default,
                                                                                          handler: { (action) in
-                                                                                            // Edit image
+                                                                                            self.edit(imageAttachment)
                     })
                 }
             } else if let videoAttachment = attachment as? VideoAttachment {
@@ -2836,14 +2840,6 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: { () in
             UIMenuController.shared.setMenuVisible(false, animated: false)
         })
-    }
-
-    private func isImageAvailableAndUploaded(in imageAttachment: ImageAttachment) -> Bool {
-        guard let url = imageAttachment.url, !url.isFileURL, imageAttachment.image != nil else {
-            return false
-        }
-
-        return true
     }
 
     func displayDetails(forAttachment attachment: ImageAttachment) {
@@ -3422,5 +3418,27 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
         navigationItem.leftBarButtonItems = items
+    }
+}
+
+// MARK: - Media Editing
+//
+extension AztecPostViewController {
+    func edit(_ imageAttachment: ImageAttachment) {
+        guard let image = imageAttachment.image else {
+            return
+        }
+        
+        self.mediaEditor.edit(image, from: self) { _ in
+            print("aeeeee")
+        }
+    }
+
+    private func isImageAvailableAndUploaded(in imageAttachment: ImageAttachment) -> Bool {
+        guard let url = imageAttachment.url, !url.isFileURL, imageAttachment.image != nil else {
+            return false
+        }
+
+        return true
     }
 }
