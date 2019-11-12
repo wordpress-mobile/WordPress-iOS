@@ -496,10 +496,33 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             presentAlertForPostBeingUploaded()
             return
         }
+
+        if post.isAutosaveRevisionAvailable, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
+            let autosaveViewController = UIAlertController.autosaveOptionsViewController(forSaveDate: saveDate, autosaveDate: autosaveDate, didTapSaveOption: { [weak self] in
+                self?.openEditor(with: post, loadingAutosave: false)
+            }, didTapAutosaveOption: { [weak self] in
+                self?.openEditor(with: post, loadingAutosave: true)
+            })
+            present(autosaveViewController, animated: true)
+        } else {
+            openEditor(with: post, loadingAutosave: false)
+        }
+    }
+
+    private func openEditor(with post: Post, loadingAutosave: Bool) {
+
+        if loadingAutosave {
+            let autosavePost = post.createRevision()
+            autosavePost.postTitle = post.autosaveTitle
+            autosavePost.mt_excerpt = post.autosaveExcerpt
+            autosavePost.content = post.autosaveContent
+            post.setValue(autosavePost, forKey: "revision")
+        }
+
         let editor = EditPostViewController(post: post)
         editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false)
-        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
+        self.present(editor, animated: false)
+        WPAppAnalytics.track(.postListEditAction, withProperties: self.propertiesForAnalytics(), with: post)
     }
 
     func presentAlertForPostBeingUploaded() {
