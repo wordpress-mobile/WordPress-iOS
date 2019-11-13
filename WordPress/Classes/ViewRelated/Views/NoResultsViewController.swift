@@ -514,12 +514,22 @@ private extension NoResultsViewController {
 
 private extension NoResultsViewController {
     func configureForAccessibility() {
-        view.accessibilityElements = [noResultsView, actionButton]
+        // Reset
+        view.isAccessibilityElement = false
+        view.accessibilityLabel = nil
+        view.accessibilityElements = nil
 
-        noResultsView.isAccessibilityElement = true
-        noResultsView.accessibilityLabel = [
-            titleLabel.text,
-            subtitleTextView.isHidden ? nil : subtitleTextView.attributedText.string
-        ].compactMap { $0 }.joined(separator: ". ")
+        if displayTitleViewOnly {
+            view.isAccessibilityElement = true
+            view.accessibilityLabel = titleLabel.text
+        } else {
+            view.accessibilityElements = [noResultsView, actionButton]
+
+            noResultsView.isAccessibilityElement = true
+            noResultsView.accessibilityLabel = [
+                titleLabel.text,
+                subtitleTextView.isHidden ? nil : subtitleTextView.attributedText.string
+            ].compactMap { $0 }.joined(separator: ". ")
+        }
     }
 }
