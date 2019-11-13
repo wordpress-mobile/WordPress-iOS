@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,6 +13,7 @@
                 <outlet property="bezierContainerView" destination="t6q-rh-Bzh" id="eED-vb-5Ix"/>
                 <outlet property="bezierTopConstraint" destination="7Fj-lO-ua1" id="oJu-iL-iS9"/>
                 <outlet property="contentView" destination="iN0-l3-epB" id="4IS-I7-JV9"/>
+                <outlet property="expandCollapseButton" destination="JhS-87-bF3" id="Pxn-J6-jxH"/>
                 <outlet property="placeholderLabel" destination="6Lf-XI-exE" id="vNK-7w-Wk1"/>
                 <outlet property="replyButton" destination="8sg-79-AsR" id="z4S-0x-kJt"/>
                 <outlet property="separatorsView" destination="IdZ-UI-Nwf" id="Nuf-kh-FbD"/>
@@ -28,17 +29,28 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JhS-87-bF3">
+                    <rect key="frame" x="15" y="27.5" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="Bkb-35-XdF"/>
+                        <constraint firstAttribute="width" constant="20" id="aSY-eN-7Jz"/>
+                    </constraints>
+                    <state key="normal" image="chevron.up" catalog="system"/>
+                    <connections>
+                        <action selector="expandCollapseTextView:" destination="-1" eventType="touchUpInside" id="avq-gH-W3c"/>
+                    </connections>
+                </button>
                 <view multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="t6q-rh-Bzh" customClass="ReplyBezierView" customModule="WordPress">
-                    <rect key="frame" x="15" y="1" width="215" height="73"/>
+                    <rect key="frame" x="43" y="1" width="187" height="73"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gfH-NN-dph">
-                            <rect key="frame" x="8" y="14" width="203" height="45"/>
+                            <rect key="frame" x="8" y="14" width="175" height="45"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Lf-XI-exE" userLabel="Placeholder">
-                            <rect key="frame" x="8" y="14" width="203" height="45"/>
+                            <rect key="frame" x="8" y="14" width="175" height="45"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -85,12 +97,14 @@
                 <constraint firstItem="t6q-rh-Bzh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="750" constant="1" id="7Fj-lO-ua1"/>
                 <constraint firstItem="VGi-tL-gUc" firstAttribute="top" secondItem="t6q-rh-Bzh" secondAttribute="top" id="Dmg-aG-rgT"/>
                 <constraint firstItem="VGi-tL-gUc" firstAttribute="bottom" secondItem="t6q-rh-Bzh" secondAttribute="bottom" id="FXH-pq-kmV"/>
+                <constraint firstItem="JhS-87-bF3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="-1" id="Fxi-zy-5gx"/>
                 <constraint firstAttribute="bottom" secondItem="t6q-rh-Bzh" secondAttribute="bottom" priority="750" constant="1" id="Ocu-Gu-5Xw"/>
                 <constraint firstAttribute="trailing" secondItem="IdZ-UI-Nwf" secondAttribute="trailing" id="Vdg-Rq-CX8"/>
                 <constraint firstAttribute="bottom" secondItem="IdZ-UI-Nwf" secondAttribute="bottom" id="bXl-m5-l4L"/>
                 <constraint firstItem="IdZ-UI-Nwf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eHd-2o-Jp5"/>
                 <constraint firstItem="VGi-tL-gUc" firstAttribute="leading" secondItem="t6q-rh-Bzh" secondAttribute="trailing" id="ePB-na-u5a"/>
-                <constraint firstItem="t6q-rh-Bzh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="-1" id="lsU-Q5-o2N"/>
+                <constraint firstItem="t6q-rh-Bzh" firstAttribute="leading" secondItem="JhS-87-bF3" secondAttribute="trailing" constant="8" id="swb-ol-PbZ"/>
+                <constraint firstItem="JhS-87-bF3" firstAttribute="centerY" secondItem="t6q-rh-Bzh" secondAttribute="centerY" id="u3v-Tx-tbi"/>
                 <constraint firstAttribute="trailingMargin" secondItem="VGi-tL-gUc" secondAttribute="trailing" id="w8C-10-xAd"/>
                 <constraint firstItem="IdZ-UI-Nwf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xW3-yX-z7r"/>
             </constraints>
@@ -99,4 +113,7 @@
             <point key="canvasLocation" x="-47" y="734.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="chevron.up" catalog="system" width="64" height="36"/>
+    </resources>
 </document>

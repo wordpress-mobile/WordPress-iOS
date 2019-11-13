@@ -177,6 +177,9 @@ import WordPressShared.WPStyleGuide
         handler(newText!)
     }
 
+    @IBAction func expandCollapseTextView(_ sender: UIButton) {
+        print("Expand/Collapse TextView")
+    }
 
     // MARK: - Gestures Recognizers
     @objc open func backgroundWasTapped() {
@@ -268,6 +271,10 @@ import WordPressShared.WPStyleGuide
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(ReplyTextView.backgroundWasTapped))
         gestureRecognizers = [recognizer]
 
+        // Expand Collapse Button
+        expandCollapseButton.tintColor = UIColor.listIcon
+        expandCollapseButton.imageView?.contentMode = .scaleAspectFit
+
         /// Initial Sizing: Final step, since this depends on other control(s) initialization
         ///
         frame.size.height = minimumHeight
@@ -322,6 +329,7 @@ import WordPressShared.WPStyleGuide
     @IBOutlet private var contentView: UIView!
     @IBOutlet private var bezierTopConstraint: NSLayoutConstraint!
     @IBOutlet private var bezierBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var expandCollapseButton: UIButton!
 }
 
 
