@@ -338,6 +338,8 @@ private extension NoResultsViewController {
         setAccessoryViewsVisibility()
         configureForTitleViewOnly()
 
+        configureForAccessibility()
+
         view.layoutIfNeeded()
     }
 
@@ -505,5 +507,17 @@ private extension NoResultsViewController {
         static let title: String = NSLocalizedString("Unable to load this page right now.", comment: "Title for No results full page screen displayed when there is no connection")
         static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Subtitle for No results full page screen displayed when there is no connection")
         static let imageName = "cloud"
+    }
+}
+
+// MARK: - Accessibility
+
+private extension NoResultsViewController {
+    func configureForAccessibility() {
+        noResultsView.isAccessibilityElement = true
+        noResultsView.accessibilityLabel = [
+            titleLabel.text,
+            subtitleTextView.isHidden ? nil : subtitleTextView.attributedText.string
+        ].compactMap { $0 }.joined(separator: ". ")
     }
 }
