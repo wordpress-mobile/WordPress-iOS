@@ -42,11 +42,6 @@ final class ReaderSavedPostsViewController: UITableViewController {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         updateAndPerformFetchRequest()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
         refreshNoResultsView()
     }
 
