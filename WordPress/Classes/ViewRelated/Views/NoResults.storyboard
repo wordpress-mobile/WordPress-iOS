@@ -20,7 +20,7 @@
                                 <rect key="frame" x="30" y="0.0" width="315" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-mm-wtH">
-                                        <rect key="frame" x="0.0" y="0.0" width="315" height="667"/>
+                                        <rect key="frame" x="0.0" y="106.5" width="315" height="454"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3Mp-LB-oOz" userLabel="Accessory Stack View">
                                                 <rect key="frame" x="38" y="0.0" width="239" height="234"/>
@@ -39,10 +39,10 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w" userLabel="Label Button Stack View">
-                                                <rect key="frame" x="37.5" y="254" width="240.5" height="413"/>
+                                                <rect key="frame" x="37.5" y="254" width="240.5" height="200"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
-                                                        <rect key="frame" x="26.5" y="0.0" width="187.5" height="285"/>
+                                                        <rect key="frame" x="26.5" y="0.0" width="187.5" height="72"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the title text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BN-gx-7TL">
                                                                 <rect key="frame" x="9.5" y="0.0" width="168" height="24"/>
@@ -51,7 +51,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="This is the subtitle text." textAlignment="center" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pAg-XC-9IM" userLabel="Subtitle Text View">
-                                                                <rect key="frame" x="0.0" y="34" width="187.5" height="251"/>
+                                                                <rect key="frame" x="0.0" y="34" width="187.5" height="38"/>
                                                                 <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -59,13 +59,13 @@
                                                         </subviews>
                                                     </stackView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3N8-XV-xJk" userLabel="Subtitle Image View">
-                                                        <rect key="frame" x="0.0" y="305" width="240.5" height="44"/>
+                                                        <rect key="frame" x="0.0" y="92" width="240.5" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="GdA-7V-dg9"/>
                                                         </constraints>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b" customClass="FancyButton" customModule="WordPressUI">
-                                                        <rect key="frame" x="78" y="369" width="84" height="44"/>
+                                                        <rect key="frame" x="78" y="156" width="84" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="ALu-HJ-Bk4"/>
                                                         </constraints>
@@ -87,9 +87,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="Mkl-mm-wtH" secondAttribute="bottom" id="33e-F1-6vD"/>
                                     <constraint firstItem="Mkl-mm-wtH" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="Gn9-QB-PCu"/>
-                                    <constraint firstItem="Mkl-mm-wtH" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" id="Jts-ss-Poh"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="Pgx-Fg-qo8"/>
                                     <constraint firstAttribute="trailing" secondItem="Mkl-mm-wtH" secondAttribute="trailing" id="gZv-Ze-rOt"/>
                                     <constraint firstItem="Mkl-mm-wtH" firstAttribute="centerY" secondItem="0Ae-eX-ae9" secondAttribute="centerY" id="kju-zT-gzN"/>
