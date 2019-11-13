@@ -244,26 +244,24 @@ import "./ScreenshotFastfile"
 
     sh("mv ../../build/WordPress.ipa \"../../build/WordPress Alpha.ipa\"")
       
-    hockey(
-      api_token: get_required_env("HOCKEY_API_TOKEN"),        
-      public_identifier: get_required_env("HOCKEY_INSTALLABLE_BUILDS_PUBLIC_ID"),
-      notify: "0",
-      status: "2",
+    # NOTE: "ipa" parameter is deprecated in appcenter_upload 1.6.0, but there's a bug in the action that
+    # makes the default gym output override the "file" parameter. 
+    appcenter_upload(
+      api_token: get_required_env("APPCENTER_API_TOKEN"),
+      owner_name: "Hogwarts-Organization",
+      owner_type: "organization", 
+      app_name: "WPiOS-One-Offs",
       ipa: "../build/WordPress Alpha.ipa",
-      dsym: "../build/WordPress.app.dSYM.zip",
+      destinations: "All-users-of-WPiOS-One-Offs",
+      notify_testers: false 
     )
 
-    # Getting the download link from the HockeyApp Api, since `hockey(..)` only gives us the app link
-    # See documentation here: https://support.hockeyapp.net/kb/api/api-versions
-    url = "https://rink.hockeyapp.net/api/2/apps/#{get_required_env("HOCKEY_INSTALLABLE_BUILDS_PUBLIC_ID")}/app_versions"
-    result = open(url, {"X-HockeyAppToken" => get_required_env("HOCKEY_API_TOKEN")}).read
-    versions = JSON.parse(result)
-
-    download_url = versions["app_versions"].find {|v| v["version"] == build_number}["download_url"]
+    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
     UI.message("Successfully built and uploaded installable build here: #{download_url}")
+    install_url = "https://install.appcenter.ms/orgs/Hogwarts-Organization/apps/WPiOS-One-Offs/"
 
     # Create a comment.json file so that Peril to comment with the build details, if this is running on CI
-    comment_body = "You can test the changes on this Pull Request by downloading it from HockeyApp [here](#{download_url}). If you need access to this, you can ask a maintainer to add you."
+    comment_body = "You can test the changes on this Pull Request by downloading it from AppCenter [here](#{install_url}) with build number: #{build_number}. IPA is available [here](#{download_url}). If you need access to this, you can ask a maintainer to add you."
     File.write("comment.json", { body: comment_body }.to_json)
   end
 
