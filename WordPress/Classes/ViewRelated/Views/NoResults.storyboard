@@ -101,7 +101,6 @@
                             <constraint firstItem="x31-wL-G0k" firstAttribute="trailing" secondItem="0Ae-eX-ae9" secondAttribute="trailing" priority="999" id="8y0-se-MDj"/>
                             <constraint firstItem="0Ae-eX-ae9" firstAttribute="top" secondItem="x31-wL-G0k" secondAttribute="top" id="DRS-cd-4At"/>
                             <constraint firstItem="x31-wL-G0k" firstAttribute="bottom" secondItem="0Ae-eX-ae9" secondAttribute="bottom" id="H2g-99-0jI"/>
-                            <constraint firstItem="0Ae-eX-ae9" firstAttribute="centerX" secondItem="x31-wL-G0k" secondAttribute="centerX" id="Qie-JB-M8x"/>
                             <constraint firstItem="0Ae-eX-ae9" firstAttribute="leading" secondItem="x31-wL-G0k" secondAttribute="leading" priority="999" id="Yvc-NG-l0P"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="x31-wL-G0k"/>
