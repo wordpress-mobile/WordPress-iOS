@@ -8,26 +8,24 @@ class TodayViewController: UIViewController {
 
     // MARK: - Properties
 
-    @IBOutlet private var unconfiguredView: UIStackView!
-    @IBOutlet private var configureLabel: UILabel!
-    @IBOutlet private var unconfiguredSeparatorLine: UIView!
-    @IBOutlet private var openWordPressLabel: UILabel!
+    @IBOutlet private var tableView: UITableView!
 
-    @IBOutlet private var configuredView: UIStackView!
-    @IBOutlet private var rowsStackView: UIStackView!
-    @IBOutlet private var separatorLine: UIView!
-    @IBOutlet private var siteUrlLabel: UILabel!
-
-    private var siteUrl: String = ""
     private var visitorCount: Int = 0
     private var viewCount: Int = 0
     private var likeCount: Int = 0
     private var commentCount: Int = 0
+    private var siteUrl: String = ""
+    private var footerHeight: CGFloat = 35
 
     private var siteID: NSNumber?
     private var timeZone: TimeZone?
     private var oauthToken: String?
-    private var isConfigured = false
+    private var isConfigured = false {
+        didSet {
+            // If unconfigured, don't allow the widget to be expanded/compacted.
+            extensionContext?.widgetLargestAvailableDisplayMode = isConfigured ? .expanded : .compact
+        }
+    }
 
     private let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -41,27 +39,39 @@ class TodayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        configureLabel.text = LocalizedText.configure
-        openWordPressLabel.text = LocalizedText.openWordPress
-        siteUrlLabel.text = Constants.noDataLabel
-
-        initRows()
-        configureColors()
+        retrieveSiteConfiguration()
+        registerTableCells()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         loadSavedData()
-        updateLabels()
-        retrieveSiteConfiguration()
-        updateUIBasedOnWidgetConfiguration()
+        resizeView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount, likes: likeCount, comments: commentCount)
+        saveData()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        let updatedRowCount = numberOfRowsToDisplay()
+
+        // If the number of rows has not changed, do nothing.
+        guard updatedRowCount != tableView.visibleCells.count else {
+            return
+        }
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.performBatchUpdates({
+                let lastRowIndexPath = [IndexPath(row: Constants.maxRows - 1, section: 0)]
+                updatedRowCount > Constants.minRows ?
+                    self.tableView.insertRows(at: lastRowIndexPath, with: .fade) :
+                    self.tableView.deleteRows(at: lastRowIndexPath, with: .fade)
+            })
+        })
     }
 
 }
@@ -69,41 +79,71 @@ class TodayViewController: UIViewController {
 // MARK: - Widget Updating
 
 extension TodayViewController: NCWidgetProviding {
+
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         retrieveSiteConfiguration()
 
-        DispatchQueue.main.async {
-            self.updateUIBasedOnWidgetConfiguration()
-        }
-
         if !isConfigured {
             DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+
             completionHandler(NCUpdateResult.failed)
             return
         }
 
         tracks.trackExtensionAccessed()
+        fetchData()
+    }
 
-        guard let statsRemote = statsRemote() else {
-            return
+    func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+        resizeView(withMaximumSize: maxSize)
+    }
+
+}
+
+// MARK: - Table View Methods
+
+extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return numberOfRowsToDisplay()
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard isConfigured else {
+            return unconfiguredCellFor(indexPath: indexPath)
         }
 
-        statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
-            if error != nil {
-                DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
-                return
-            }
+        return statCellFor(indexPath: indexPath)
+    }
 
-            DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
-
-            DispatchQueue.main.async {
-                self.visitorCount = todayInsight?.visitorsCount ?? 0
-                self.viewCount = todayInsight?.viewsCount ?? 0
-                self.likeCount = todayInsight?.likesCount ?? 0
-                self.commentCount = todayInsight?.commentsCount ?? 0
-                self.updateLabels()
-            }
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard isConfigured,
+            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
+                return nil
         }
+
+        footer.configure(siteUrl: siteUrl)
+        footerHeight = footer.frame.height
+
+        return footer
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return isConfigured ? footerHeight : 0
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard !isConfigured,
+            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
+            return UITableView.automaticDimension
+        }
+
+        // Use the max compact height for unconfigured view.
+        return maxCompactSize.height
     }
 
 }
@@ -111,6 +151,8 @@ extension TodayViewController: NCWidgetProviding {
 // MARK: - Private Extension
 
 private extension TodayViewController {
+
+    // MARK: - Launch Containing App
 
     @IBAction func launchContainingApp() {
         guard let extensionContext = extensionContext,
@@ -137,12 +179,7 @@ private extension TodayViewController {
         tracks.trackExtensionStatsLaunched(siteID.intValue)
     }
 
-    func updateUIBasedOnWidgetConfiguration() {
-        unconfiguredView.isHidden = isConfigured
-        configuredView.isHidden = !isConfigured
-
-        view.setNeedsUpdateConstraints()
-    }
+    // MARK: - Site Configuration
 
     func retrieveSiteConfiguration() {
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName) else {
@@ -168,6 +205,8 @@ private extension TodayViewController {
         return oauth2Token as String?
     }
 
+    // MARK: - Data Management
+
     func loadSavedData() {
         let data = TodayWidgetStats.loadSavedData()
         visitorCount = data.visitors
@@ -176,43 +215,31 @@ private extension TodayViewController {
         commentCount = data.comments
     }
 
-    func initRows() {
-        guard let row = Bundle.main.loadNibNamed(Constants.rowNibName, owner: nil, options: nil)?.first as? TwoColumnRow else {
+    func saveData() {
+        TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount, likes: likeCount, comments: commentCount)
+    }
+
+    func fetchData() {
+        guard let statsRemote = statsRemote() else {
             return
         }
 
-        row.configure(leftColumnName: LocalizedText.views,
-                      leftColumnData: Constants.noDataLabel,
-                      rightColumnName: LocalizedText.visitors,
-                      rightColumnData: Constants.noDataLabel)
+        statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
+            if error != nil {
+                DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
+                return
+            }
 
-        rowsStackView.addArrangedSubview(row)
-    }
+            DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
 
-    func configureColors() {
-        configureLabel.textColor = .text
-        openWordPressLabel.textColor = .text
-        siteUrlLabel.textColor = .textSubtle
-
-        // In dark mode, let the separator lines be the same color as the label text.
-        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
-        unconfiguredSeparatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
-    }
-
-    func updateLabels() {
-
-        siteUrlLabel.text = siteUrl
-
-        guard let row = rowsStackView.arrangedSubviews.first as? TwoColumnRow else {
-            return
+            DispatchQueue.main.async {
+                self.visitorCount = todayInsight?.visitorsCount ?? 0
+                self.viewCount = todayInsight?.viewsCount ?? 0
+                self.likeCount = todayInsight?.likesCount ?? 0
+                self.commentCount = todayInsight?.commentsCount ?? 0
+                self.tableView.reloadData()
+            }
         }
-
-        row.updateData(leftColumnData: displayString(for: viewCount),
-                       rightColumnData: displayString(for: visitorCount))
-    }
-
-    func displayString(for value: Int) -> String {
-        return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
     }
 
     func statsRemote() -> StatsServiceRemoteV2? {
@@ -229,17 +256,93 @@ private extension TodayViewController {
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
     }
 
+    // MARK: - Table Helpers
+
+    func registerTableCells() {
+        let twoColumnCellNib = UINib(nibName: String(describing: WidgetTwoColumnCell.self), bundle: Bundle(for: WidgetTwoColumnCell.self))
+        tableView.register(twoColumnCellNib, forCellReuseIdentifier: WidgetTwoColumnCell.reuseIdentifier)
+
+        let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
+        tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
+
+        let footerNib = UINib(nibName: String(describing: WidgetFooterView.self), bundle: Bundle(for: WidgetFooterView.self))
+        tableView.register(footerNib, forHeaderFooterViewReuseIdentifier: WidgetFooterView.reuseIdentifier)
+    }
+
+    func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetUnconfiguredCell.reuseIdentifier, for: indexPath) as? WidgetUnconfiguredCell else {
+            return UITableViewCell()
+        }
+
+        return cell
+    }
+
+    func statCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetTwoColumnCell.reuseIdentifier, for: indexPath) as? WidgetTwoColumnCell else {
+            return UITableViewCell()
+        }
+
+        if indexPath.row == 0 {
+            cell.configure(leftItemName: LocalizedText.views,
+                           leftItemData: displayString(for: viewCount),
+                           rightItemName: LocalizedText.visitors,
+                           rightItemData: displayString(for: visitorCount))
+        } else {
+            cell.configure(leftItemName: LocalizedText.likes,
+                           leftItemData: displayString(for: likeCount),
+                           rightItemName: LocalizedText.comments,
+                           rightItemData: displayString(for: commentCount))
+        }
+
+        return cell
+    }
+
+    // MARK: - Expand / Compact View Helpers
+
+    func numberOfRowsToDisplay() -> Int {
+        if !isConfigured || extensionContext?.widgetActiveDisplayMode == .compact {
+            return Constants.minRows
+        }
+
+        return Constants.maxRows
+    }
+
+    func resizeView(withMaximumSize size: CGSize? = nil) {
+        guard let maxSize = size ?? extensionContext?.widgetMaximumSize(for: .compact) else {
+            return
+        }
+
+        let expanded = extensionContext?.widgetActiveDisplayMode == .expanded
+        preferredContentSize = expanded ? CGSize(width: maxSize.width, height: expandedHeight()) : maxSize
+    }
+
+    func expandedHeight() -> CGFloat {
+        var height: CGFloat = tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
+        let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
+        return height
+    }
+
+    // MARK: - Helpers
+
+    func displayString(for value: Int) -> String {
+        return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
+    }
+
+    // MARK: - Constants
+
     enum LocalizedText {
-        static let configure = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
-        static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget label to launch WP app")
         static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         static let views = NSLocalizedString("Views", comment: "Stats Views Label")
+        static let likes = NSLocalizedString("Likes", comment: "Stats Likes Label")
+        static let comments = NSLocalizedString("Comments", comment: "Stats Comments Label")
     }
 
     enum Constants {
-        static let noDataLabel = "-"
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
-        static let rowNibName: String = "TwoColumnRow"
+        static let minRows: Int = 1
+        static let maxRows: Int = 2
     }
+
 }
