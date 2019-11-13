@@ -323,7 +323,6 @@ private extension ReaderSavedPostsViewController {
         messageText.replace("[bookmark-outline]", with: icon)
 
         noResultsViewController.configure(title: NoResultsText.noResultsTitle, attributedSubtitle: messageText)
-        noResultsViewController.view.accessibilityLabel = NoResultsText.accessibilityLabel
     }
 
     struct NoResultsText {
