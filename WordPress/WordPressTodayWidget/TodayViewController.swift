@@ -99,6 +99,7 @@ extension TodayViewController: NCWidgetProviding {
     }
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+        tracks.trackDisplayModeChanged(properties: ["expanded": activeDisplayMode == .expanded])
         resizeView(withMaximumSize: maxSize)
     }
 
