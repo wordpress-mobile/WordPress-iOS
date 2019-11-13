@@ -92,6 +92,7 @@
                                     <constraint firstItem="Mkl-mm-wtH" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" id="Jts-ss-Poh"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="Pgx-Fg-qo8"/>
                                     <constraint firstAttribute="trailing" secondItem="Mkl-mm-wtH" secondAttribute="trailing" id="gZv-Ze-rOt"/>
+                                    <constraint firstItem="Mkl-mm-wtH" firstAttribute="centerY" secondItem="0Ae-eX-ae9" secondAttribute="centerY" id="kju-zT-gzN"/>
                                 </constraints>
                             </view>
                         </subviews>
