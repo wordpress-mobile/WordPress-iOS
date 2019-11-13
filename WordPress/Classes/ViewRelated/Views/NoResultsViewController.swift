@@ -514,6 +514,8 @@ private extension NoResultsViewController {
 
 private extension NoResultsViewController {
     func configureForAccessibility() {
+        view.accessibilityElements = [noResultsView, actionButton]
+
         noResultsView.isAccessibilityElement = true
         noResultsView.accessibilityLabel = [
             titleLabel.text,
