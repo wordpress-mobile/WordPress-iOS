@@ -302,7 +302,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - TOCropViewController (~> 2.5.2)
-  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `issue/12920_create_is_loaded_property`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `issue/12920_adds_is_loaded_property`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `issue/12920_adds_is_loaded_property`)
   - WordPressAuthenticator (~> 1.10.2)
   - WordPressKit (~> 4.5.3-beta.3)
   - WordPressMocks (~> 0.0.6)
@@ -346,7 +347,6 @@ SPEC REPOS:
     - SVProgressHUD
     - TOCropViewController
     - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
@@ -413,8 +413,11 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: bdbe882b1071cbfdd67fc3a5314e5d1de37cb04b
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPress-Aztec-iOS:
+    :branch: issue/12920_adds_is_loaded_property
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :branch: issue/12920_create_is_loaded_property
+    :branch: issue/12920_adds_is_loaded_property
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :branch: issue/12920_adds_added_photo_via_media_editor_analytics
@@ -435,8 +438,11 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: bdbe882b1071cbfdd67fc3a5314e5d1de37cb04b
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPress-Aztec-iOS:
+    :commit: 988da4808c6031df7daee1a49492b2707378a97b
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: 776294b8f5561f762a97740757d8ec5b5481f254
+    :commit: 988da4808c6031df7daee1a49492b2707378a97b
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :commit: 3fb043483c83ee6b81badbdc5eb3e462ab8ff70c
@@ -517,6 +523,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 35b16898fae049f6ebffba96793f209b03a41495
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 316146267bbb35a39390d10bd680cbc23bc7ac0a
+PODFILE CHECKSUM: a73f61f7ae0909c32a97b1a323b1c4095420ff5b
 
 COCOAPODS: 1.8.4
