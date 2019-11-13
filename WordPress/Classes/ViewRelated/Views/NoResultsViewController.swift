@@ -518,14 +518,17 @@ private extension NoResultsViewController {
         view.isAccessibilityElement = false
         view.accessibilityLabel = nil
         view.accessibilityElements = nil
+        view.accessibilityTraits = .none
 
         if displayTitleViewOnly {
             view.isAccessibilityElement = true
             view.accessibilityLabel = titleLabel.text
+            view.accessibilityTraits = .staticText
         } else {
             view.accessibilityElements = [noResultsView, actionButton]
 
             noResultsView.isAccessibilityElement = true
+            noResultsView.accessibilityTraits = .staticText
             noResultsView.accessibilityLabel = [
                 titleLabel.text,
                 subtitleTextView.isHidden ? nil : subtitleTextView.attributedText.string
