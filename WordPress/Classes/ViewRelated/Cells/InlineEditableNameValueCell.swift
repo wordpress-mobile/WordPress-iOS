@@ -3,17 +3,25 @@ import WordPressAuthenticator
 
 @objc protocol InlineEditableNameValueCellDelegate: class {
     @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                                    valueTextFieldDidChange valueTextField: UITextField)
+                                                    valueTextFieldDidChange value: String)
     @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                                    valueTextFieldEditingDidEnd valueTextField: UITextField)
+                                                    valueTextFieldEditingDidEnd text: String)
+    @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
+                                                    valueTextFieldShouldReturn textField: UITextField) -> Bool
+
 }
 
 class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
-    enum Const {
+    fileprivate enum Const {
         enum Color {
             static let nameText = UIColor.text
             static let valueText = UIColor.textSubtle
+        }
+
+        enum Text {
+            static let nonBreakingSpace = "\u{00a0}"
+            static let space = " "
         }
     }
 
@@ -42,6 +50,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         valueTextField.tintColor = .textPlaceholder
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
+        valueTextField.delegate = self
         valueTextField.addTarget(self,
                                  action: #selector(textFieldDidChange(textField:)),
                                  for: UIControl.Event.editingChanged)
@@ -60,17 +69,31 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
-        textField.text = textField.text?.replacingOccurrences(of: " ", with: "\u{00a0}")
-        delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: textField)
+        textField.text = textField.text?.replacingOccurrences(of: Const.Text.space, with: Const.Text.nonBreakingSpace)
+
+        let text = sanitizedText(for: textField)
+        delegate?.inlineEditableNameValueCell?(self, valueTextFieldDidChange: text)
     }
 
     @objc func textEditingDidEnd(textField: UITextField) {
-        textField.text = textField.text?.replacingOccurrences(of: "\u{00a0}", with: " ")
-        delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: textField)
+        let text = sanitizedText(for: textField)
+
+        textField.text = text
+        delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: text)
+    }
+
+    private func sanitizedText(for textField: UITextField) -> String {
+        return textField.text?.replacingOccurrences(of: Const.Text.nonBreakingSpace, with: Const.Text.space) ?? ""
     }
 
     @objc func setValueTextFieldAsFirstResponder(_ gesture: UITapGestureRecognizer) {
         valueTextField.becomeFirstResponder()
+    }
+}
+
+extension InlineEditableNameValueCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return delegate?.inlineEditableNameValueCell?(self, valueTextFieldShouldReturn: textField) ?? true
     }
 }
 
