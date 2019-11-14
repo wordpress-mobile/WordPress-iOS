@@ -1,11 +1,3 @@
-//
-//  AlertViewController+Autosave.swift
-//  WordPress
-//
-//  Created by Paul Von Schrottky on 10/27/19.
-//  Copyright © 2019 WordPress. All rights reserved.
-//
-
 import UIKit
 
 extension UIAlertController {
