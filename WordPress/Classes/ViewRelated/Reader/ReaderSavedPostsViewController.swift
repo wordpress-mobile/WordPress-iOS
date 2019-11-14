@@ -328,7 +328,6 @@ private extension ReaderSavedPostsViewController {
     struct NoResultsText {
         static let noResultsTitle = NSLocalizedString("No Saved Posts", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts.")
         static let subtitleFormat = NSLocalizedString("Tap [bookmark-outline] to save a post to your list.", comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact.")
-        static let accessibilityLabel = NSLocalizedString("No posts saved – yet! Tap the Save Post button to save a post to your list.", comment: "Alternative accessibility text displayed to Voiceover users on the Reader Saved Posts screen.")
     }
 }
 
