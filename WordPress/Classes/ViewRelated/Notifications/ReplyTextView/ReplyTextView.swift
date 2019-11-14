@@ -53,14 +53,6 @@ import WordPressShared.WPStyleGuide
             return placeholderLabel.text
         }
     }
-    @objc open var replyText: String! {
-        set {
-            replyButton.setTitle(newValue, for: UIControl.State())
-        }
-        get {
-            return replyButton.title(for: UIControl.State())
-        }
-    }
 
     open var maximumNumberOfVisibleLines = Settings.maximumNumberOfVisibleLines {
         didSet {
@@ -104,6 +96,9 @@ import WordPressShared.WPStyleGuide
         textView.replace(newRange, withText: replacementText)
     }
 
+    @objc open func collapseReplyTextView() {
+        print("Collapse text view")
+    }
 
     // MARK: - UITextViewDelegate Methods
     open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
@@ -177,8 +172,8 @@ import WordPressShared.WPStyleGuide
         handler(newText!)
     }
 
-    @IBAction func expandCollapseTextView(_ sender: UIButton) {
-        print("Expand/Collapse TextView")
+    @IBAction func expandTextView(_ sender: UIButton) {
+        print("Expand TextView")
     }
 
     // MARK: - Gestures Recognizers
@@ -231,8 +226,8 @@ import WordPressShared.WPStyleGuide
         // Setup the TextView
         textView.delegate = self
         textView.scrollsToTop = false
-        textView.contentInset = .zero
-        textView.textContainerInset = .zero
+//        textView.contentInset = .zero
+//        textView.textContainerInset = .zero
         textView.backgroundColor = WPStyleGuide.Reply.textViewBackground
         textView.font = WPStyleGuide.Reply.textFont
         textView.textColor = WPStyleGuide.Reply.textColor
@@ -249,19 +244,11 @@ import WordPressShared.WPStyleGuide
 
         // Reply
         replyButton.isEnabled = false
-        replyButton.titleLabel?.font = WPStyleGuide.Reply.buttonFont
-        replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, for: .disabled)
-        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor, for: UIControl.State())
-        replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
+        replyButton.tintColor = .listSmallIcon
+        replyButton.imageView?.contentMode = .scaleAspectFit
 
         // Background
-        contentView.backgroundColor = WPStyleGuide.Reply.backgroundColor
-        bezierContainerView.outerColor = WPStyleGuide.Reply.backgroundColor
-
-        // Bezier
-        bezierContainerView.bezierColor = WPStyleGuide.Reply.separatorColor
-        bezierContainerView.bezierFillColor = WPStyleGuide.Reply.textViewBackground
-        bezierContainerView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.backgroundColor = .white
 
         // Separators
         separatorsView.topColor = WPStyleGuide.Reply.separatorColor
@@ -307,6 +294,7 @@ import WordPressShared.WPStyleGuide
     fileprivate func refreshReplyButton() {
         let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
         replyButton.isEnabled = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
+        replyButton.tintColor = .primary
     }
 
     fileprivate func refreshScrollPosition() {
@@ -324,11 +312,10 @@ import WordPressShared.WPStyleGuide
     @IBOutlet private var textView: UITextView!
     @IBOutlet private var placeholderLabel: UILabel!
     @IBOutlet private var replyButton: UIButton!
-    @IBOutlet private var bezierContainerView: ReplyBezierView!
     @IBOutlet private var separatorsView: SeparatorsView!
     @IBOutlet private var contentView: UIView!
-    @IBOutlet private var bezierTopConstraint: NSLayoutConstraint!
-    @IBOutlet private var bezierBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var textViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var textViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var expandCollapseButton: UIButton!
 }
 
@@ -337,11 +324,11 @@ import WordPressShared.WPStyleGuide
 //
 private extension ReplyTextView {
 
-    /// Padding: Bezier Margins (Top / Bottom) + Bezier Constraints (Top / Bottom)
+    /// Padding: TextView Margins (Top / Bottom) + TextView Constraints (Top / Bottom)
     ///
     var contentPadding: CGFloat {
-        return bezierContainerView.layoutMargins.top + bezierContainerView.layoutMargins.bottom
-                + bezierTopConstraint.constant + bezierBottomConstraint.constant
+        return textView.layoutMargins.top + textView.layoutMargins.bottom
+                + textViewTopConstraint.constant + textViewBottomConstraint.constant
     }
 
     /// Returns the Content Height (non capped).
