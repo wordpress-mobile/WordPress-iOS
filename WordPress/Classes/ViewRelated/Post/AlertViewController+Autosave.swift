@@ -48,7 +48,7 @@ extension UIAlertController {
         alertController.addAction(UIAlertAction(title: fromAutosaveButtonTitle, style: .default) { _ in
             didTapAutosaveOption()
         })
-        
+
         return alertController
     }
 }
