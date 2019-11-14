@@ -6,9 +6,9 @@ class WidgetFooterView: UITableViewHeaderFooterView {
 
     static let reuseIdentifier = "WidgetFooterView"
 
-    @IBOutlet private weak var separatorLine: UIView!
-    @IBOutlet private weak var siteUrlLabel: UILabel!
-    @IBOutlet private weak var backgroundColorView: UIView!
+    @IBOutlet private var separatorLine: UIView!
+    @IBOutlet private var siteUrlLabel: UILabel!
+    @IBOutlet private var backgroundColorView: UIView!
 
     // MARK: - View
 

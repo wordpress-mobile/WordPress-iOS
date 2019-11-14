@@ -6,9 +6,9 @@ class WidgetUnconfiguredCell: UITableViewCell {
 
     static let reuseIdentifier = "WidgetUnconfiguredCell"
 
-    @IBOutlet private weak var configureLabel: UILabel!
-    @IBOutlet private weak var separatorLine: UIView!
-    @IBOutlet private weak var openWordPressLabel: UILabel!
+    @IBOutlet private var configureLabel: UILabel!
+    @IBOutlet private var separatorLine: UIView!
+    @IBOutlet private var openWordPressLabel: UILabel!
 
     // MARK: - View
 
