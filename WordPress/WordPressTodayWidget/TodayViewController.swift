@@ -23,6 +23,10 @@ class TodayViewController: UIViewController {
     private var siteUrl: String = Constants.noDataLabel
     private var footerHeight: CGFloat = 35
 
+    private var haveSiteUrl: Bool {
+        siteUrl != Constants.noDataLabel
+    }
+
     private var siteID: NSNumber?
     private var timeZone: TimeZone?
     private var oauthToken: String?
@@ -128,7 +132,8 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard isConfigured,
+        guard haveSiteUrl,
+            isConfigured,
             let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
                 return nil
         }
@@ -140,7 +145,11 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return isConfigured ? footerHeight : 0
+        if !isConfigured || !haveSiteUrl {
+            return 0
+        }
+
+        return footerHeight
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -196,7 +205,7 @@ private extension TodayViewController {
         }
 
         siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
-        siteUrl = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey) ?? ""
+        siteUrl = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey) ?? Constants.noDataLabel
         oauthToken = fetchOAuthBearerToken()
 
         if let timeZoneName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
@@ -320,7 +329,12 @@ private extension TodayViewController {
     }
 
     func expandedHeight() -> CGFloat {
-        var height: CGFloat = tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
+        var height: CGFloat = 0
+
+        if haveSiteUrl {
+            height += tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
+        }
+
         let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
         height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
         return height
