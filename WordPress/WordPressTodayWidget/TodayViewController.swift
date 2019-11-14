@@ -10,11 +10,17 @@ class TodayViewController: UIViewController {
 
     @IBOutlet private var tableView: UITableView!
 
-    private var visitorCount: Int = 0
-    private var viewCount: Int = 0
-    private var likeCount: Int = 0
-    private var commentCount: Int = 0
-    private var siteUrl: String = ""
+    private var statsValues: TodayWidgetStats? {
+        didSet {
+            updateStatsLabels()
+        }
+    }
+
+    private var visitorCount: String = Constants.noDataLabel
+    private var viewCount: String = Constants.noDataLabel
+    private var likeCount: String = Constants.noDataLabel
+    private var commentCount: String = Constants.noDataLabel
+    private var siteUrl: String = Constants.noDataLabel
     private var footerHeight: CGFloat = 35
 
     private var siteID: NSNumber?
@@ -209,15 +215,11 @@ private extension TodayViewController {
     // MARK: - Data Management
 
     func loadSavedData() {
-        let data = TodayWidgetStats.loadSavedData()
-        visitorCount = data.visitors
-        viewCount = data.views
-        likeCount = data.likes
-        commentCount = data.comments
+        statsValues = TodayWidgetStats.loadSavedData()
     }
 
     func saveData() {
-        TodayWidgetStats.saveData(views: viewCount, visitors: visitorCount, likes: likeCount, comments: commentCount)
+        statsValues?.saveData()
     }
 
     func fetchData() {
@@ -234,10 +236,10 @@ private extension TodayViewController {
             DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
 
             DispatchQueue.main.async {
-                self.visitorCount = todayInsight?.visitorsCount ?? 0
-                self.viewCount = todayInsight?.viewsCount ?? 0
-                self.likeCount = todayInsight?.likesCount ?? 0
-                self.commentCount = todayInsight?.commentsCount ?? 0
+                self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount ?? 0,
+                                                    visitors: todayInsight?.viewsCount ?? 0,
+                                                    likes: todayInsight?.likesCount ?? 0,
+                                                    comments: todayInsight?.commentsCount ?? 0)
                 self.tableView.reloadData()
             }
         }
@@ -285,14 +287,14 @@ private extension TodayViewController {
 
         if indexPath.row == 0 {
             cell.configure(leftItemName: LocalizedText.views,
-                           leftItemData: displayString(for: viewCount),
+                           leftItemData: viewCount,
                            rightItemName: LocalizedText.visitors,
-                           rightItemData: displayString(for: visitorCount))
+                           rightItemData: visitorCount)
         } else {
             cell.configure(leftItemName: LocalizedText.likes,
-                           leftItemData: displayString(for: likeCount),
+                           leftItemData: likeCount,
                            rightItemName: LocalizedText.comments,
-                           rightItemData: displayString(for: commentCount))
+                           rightItemData: commentCount)
         }
 
         return cell
@@ -330,6 +332,13 @@ private extension TodayViewController {
         return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
     }
 
+    func updateStatsLabels() {
+        viewCount = displayString(for: statsValues?.views ?? 0)
+        visitorCount = displayString(for: statsValues?.visitors ?? 0)
+        likeCount = displayString(for: statsValues?.likes ?? 0)
+        commentCount = displayString(for: statsValues?.comments ?? 0)
+    }
+
     // MARK: - Constants
 
     enum LocalizedText {
@@ -340,6 +349,7 @@ private extension TodayViewController {
     }
 
     enum Constants {
+        static let noDataLabel = "-"
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
         static let minRows: Int = 1
