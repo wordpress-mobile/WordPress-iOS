@@ -49,12 +49,12 @@ class SiteStatsDashboardViewController: UIViewController {
         super.viewDidLoad()
         setupFilterBar()
         restoreSelectedPeriodFromUserDefaults()
-        addObserver()
+        addWillEnterForegroundObserver()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        removeObserver()
+        removeWillEnterForegroundObserver()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -70,6 +70,12 @@ class SiteStatsDashboardViewController: UIViewController {
         if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
             updatePeriodView(oldSelectedPeriod: currentSelectedPeriod, withDate: periodTableViewController.selectedDate)
         }
+    }
+}
+
+extension SiteStatsDashboardViewController: StatsForegroundObservable {
+    func reloadStatsData() {
+        updatePeriodView(oldSelectedPeriod: currentSelectedPeriod)
     }
 }
 
@@ -96,23 +102,6 @@ private extension SiteStatsDashboardViewController {
             saveSelectedPeriodToUserDefaults()
             trackAccessEvent()
         }
-    }
-
-    func addObserver() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(reloadData),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
-    }
-
-    func removeObserver() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIApplication.willEnterForegroundNotification,
-                                                  object: nil)
-    }
-
-    @objc func reloadData() {
-        updatePeriodView(oldSelectedPeriod: currentSelectedPeriod)
     }
 }
 
