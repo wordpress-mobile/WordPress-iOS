@@ -12,6 +12,8 @@ class NoteTableHeaderView: UIView {
             let unwrappedTitle = newValue?.localizedUppercase ?? String()
             let attributes = Style.sectionHeaderRegularStyle
             titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: attributes)
+
+            contentView.accessibilityLabel = unwrappedTitle
         }
         get {
             return titleLabel.text

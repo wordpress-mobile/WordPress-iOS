@@ -13,7 +13,9 @@ class MediaPickerAlbumScreen: BaseScreen {
     }
 
     func selectImage(atIndex index: Int) {
-        mediaCollection.cells.element(boundBy: index).tap()
+        let selectedImage = mediaCollection.cells.element(boundBy: index)
+        XCTAssertTrue(selectedImage.waitForExistence(timeout: 5), "Selected image did not load")
+        selectedImage.tap()
     }
 
     func insertSelectedImage() {
