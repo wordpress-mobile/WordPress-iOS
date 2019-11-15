@@ -1,7 +1,7 @@
 import Alamofire
 
 struct GutenbergNetworkRequest {
-    typealias Response = (Swift.Result<Any, NSError>) -> Void
+    typealias CompletionHandler = (Swift.Result<Any, NSError>) -> Void
 
     private let path: String
     private unowned let blog: Blog
@@ -11,21 +11,21 @@ struct GutenbergNetworkRequest {
         self.blog = blog
     }
 
-    func request(response: @escaping Response) {
+    func request(completion: @escaping CompletionHandler) {
         if let dotComID = blog.dotComID {
-            dotComRequest(with: dotComID, response: response)
+            dotComRequest(with: dotComID, completion: completion)
         } else {
-            selfHostedRequest(response: response)
+            selfHostedRequest(completion: completion)
         }
     }
 
     // MARK: - dotCom
 
-    private func dotComRequest(with dotComID: NSNumber, response: @escaping Response) {
-        blog.wordPressComRestApi()?.GET(dotComPath(with: dotComID), parameters: nil, success: { (responseObject, httpResponse) in
-            response(.success(responseObject))
+    private func dotComRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
+        blog.wordPressComRestApi()?.GET(dotComPath(with: dotComID), parameters: nil, success: { (response, httpResponse) in
+            completion(.success(response))
         }, failure: { (error, HTTPResponse) in
-            response(.failure(error))
+            completion(.failure(error))
         })
     }
 
@@ -35,22 +35,22 @@ struct GutenbergNetworkRequest {
 
     // MARK: - Self-Hosed
 
-    private func selfHostedRequest(response: @escaping Response) {
+    private func selfHostedRequest(completion: @escaping CompletionHandler) {
         do {
             let url = try blog.url(withPath: selfHostedPath).asURL()
-            performSelfHostedRequest(with: url, response: response)
+            performSelfHostedRequest(with: url, completion: completion)
         } catch {
-            response(.failure(error as NSError))
+            completion(.failure(error as NSError))
         }
     }
 
-    private func performSelfHostedRequest(with url: URL, response: @escaping Response) {
-        SessionManager.default.request(url).validate().responseJSON { (responseObject) in
-            switch responseObject.result {
-            case .success(let responseObject):
-                response(.success(responseObject))
+    private func performSelfHostedRequest(with url: URL, completion: @escaping CompletionHandler) {
+        SessionManager.default.request(url).validate().responseJSON { (response) in
+            switch response.result {
+            case .success(let response):
+                completion(.success(response))
             case .failure(let error):
-                response(.failure(error as NSError))
+                completion(.failure(error as NSError))
             }
         }
     }
