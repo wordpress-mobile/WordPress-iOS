@@ -42,6 +42,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
          thumbnailCallback:(void (^)(Media *media, NSURL *thumbnailURL))thumbnailCallback
                 completion:(void (^)(Media *media, NSError *error))completion
 {
+    NSParameterAssert(post == nil || blog == post.blog);
     NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
     __block Media *media;
     __block NSSet<NSString *> *allowedFileTypes = [NSSet set];
