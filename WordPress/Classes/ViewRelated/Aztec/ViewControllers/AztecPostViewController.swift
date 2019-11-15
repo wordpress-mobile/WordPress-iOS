@@ -153,8 +153,9 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.textAttachmentDelegate = self
 
         textView.backgroundColor = Colors.aztecBackground
-        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor, dark: .neutral(.shade5))
+        textView.blockquoteBackgroundColor = .neutral(.shade5)
         textView.blockquoteBorderColor = .listIcon
+        textView.preBackgroundColor = .neutral(.shade5)
 
         textView.linkTextAttributes = linkAttributes
 
