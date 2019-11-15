@@ -1186,4 +1186,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tapOffKeyboardGesture.enabled = !showsSuggestions;
 }
 
+#pragma mark - ReplyTextViewDelegate
+
+- (void)updateNavigationBarForExpandedReply
+{
+    [[self view] bringSubviewToFront:[self replyTextView]];
+    [[[self navigationController] navigationBar] setBackgroundColor:[UIColor whiteColor]];
+}
+
 @end

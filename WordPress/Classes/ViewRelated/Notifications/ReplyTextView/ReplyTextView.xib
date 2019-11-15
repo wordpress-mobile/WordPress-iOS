@@ -44,7 +44,7 @@
                         </button>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gfH-NN-dph">
                             <rect key="frame" x="28" y="0.0" width="218" height="59"/>
-                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
@@ -67,8 +67,11 @@
                     </constraints>
                 </stackView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Lf-XI-exE" userLabel="Placeholder">
-                    <rect key="frame" x="36" y="8" width="218" height="59"/>
+                    <rect key="frame" x="36" y="8" width="218" height="37"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="37" id="5nz-aS-ylJ"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -78,6 +81,7 @@
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="pHY-PL-7Lx" firstAttribute="top" secondItem="IdZ-UI-Nwf" secondAttribute="top" constant="8" id="0K6-gC-fot"/>
+                <constraint firstItem="6Lf-XI-exE" firstAttribute="top" secondItem="gfH-NN-dph" secondAttribute="top" id="5e6-vG-J0b"/>
                 <constraint firstItem="pHY-PL-7Lx" firstAttribute="trailing" secondItem="IdZ-UI-Nwf" secondAttribute="trailing" constant="-8" id="FPG-Ub-Tt7"/>
                 <constraint firstAttribute="trailing" secondItem="IdZ-UI-Nwf" secondAttribute="trailing" id="Vdg-Rq-CX8"/>
                 <constraint firstItem="6Lf-XI-exE" firstAttribute="centerX" secondItem="gfH-NN-dph" secondAttribute="centerX" id="X3i-yb-6Mt"/>
@@ -85,14 +89,12 @@
                 <constraint firstItem="IdZ-UI-Nwf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eHd-2o-Jp5"/>
                 <constraint firstItem="6Lf-XI-exE" firstAttribute="width" secondItem="gfH-NN-dph" secondAttribute="width" id="p98-b1-W4h"/>
                 <constraint firstItem="pHY-PL-7Lx" firstAttribute="bottom" secondItem="IdZ-UI-Nwf" secondAttribute="bottom" constant="-8" id="vdH-dU-E9o"/>
-                <constraint firstItem="6Lf-XI-exE" firstAttribute="centerY" secondItem="gfH-NN-dph" secondAttribute="centerY" id="vzc-6o-HRA"/>
                 <constraint firstItem="IdZ-UI-Nwf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xW3-yX-z7r"/>
                 <constraint firstItem="pHY-PL-7Lx" firstAttribute="leading" secondItem="IdZ-UI-Nwf" secondAttribute="leading" constant="8" id="ycy-Ua-aVz"/>
-                <constraint firstItem="6Lf-XI-exE" firstAttribute="height" secondItem="gfH-NN-dph" secondAttribute="height" id="yoB-tD-vLK"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-47" y="734.5"/>
+            <point key="canvasLocation" x="-48" y="734.48275862068976"/>
         </view>
     </objects>
     <resources>

@@ -659,6 +659,11 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [self.suggestionsTableView showSuggestionsForWord:word];
 }
 
+- (void)updateNavigationBarForExpandedReply
+{
+    [[self view] bringSubviewToFront:[self replyTextView]];
+    [[[self navigationController] navigationBar] setBarTintColor:[UIColor whiteColor]];
+}
 
 #pragma mark - SuggestionsTableViewDelegate
 

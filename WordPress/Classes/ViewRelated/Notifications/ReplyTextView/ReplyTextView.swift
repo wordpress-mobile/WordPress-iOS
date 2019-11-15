@@ -7,6 +7,7 @@ import WordPressShared.WPStyleGuide
 //
 @objc public protocol ReplyTextViewDelegate: UITextViewDelegate {
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
+    @objc func updateNavigationBarForExpandedReply()
 }
 
 
@@ -97,7 +98,13 @@ import WordPressShared.WPStyleGuide
     }
 
     @objc open func collapseReplyTextView() {
-        print("Collapse text view")
+        isExpanded = false
+        UIView.animate(withDuration: 0.5, animations: {
+            self.expandCollapseButton.isHidden = false
+            self.replyButton.isHidden = false
+        }) { _ in
+            self.refreshInterface()
+        }
     }
 
     // MARK: - UITextViewDelegate Methods
@@ -173,7 +180,15 @@ import WordPressShared.WPStyleGuide
     }
 
     @IBAction func expandTextView(_ sender: UIButton) {
-        print("Expand TextView")
+        isExpanded = true
+        self.delegate?.updateNavigationBarForExpandedReply()
+        UIView.animate(withDuration: 0.5, animations: {
+            self.expandCollapseButton.isHidden = true
+            self.replyButton.isHidden = true
+            self.setNeedsLayout()
+        }) { _ in
+            // complete any remaining changes here
+        }
     }
 
     // MARK: - Gestures Recognizers
@@ -201,6 +216,10 @@ import WordPressShared.WPStyleGuide
 
     // MARK: - Autolayout Helpers
     open override var intrinsicContentSize: CGSize {
+        if isExpanded {
+            let newHeight = frame.height + frame.minY
+            return CGSize(width: frame.width, height: newHeight)
+        }
         // Make sure contentSize returns... the real content size
         textView.layoutIfNeeded()
 
@@ -226,8 +245,6 @@ import WordPressShared.WPStyleGuide
         // Setup the TextView
         textView.delegate = self
         textView.scrollsToTop = false
-//        textView.contentInset = .zero
-//        textView.textContainerInset = .zero
         textView.backgroundColor = WPStyleGuide.Reply.textViewBackground
         textView.font = WPStyleGuide.Reply.textFont
         textView.textColor = WPStyleGuide.Reply.textColor
@@ -294,7 +311,7 @@ import WordPressShared.WPStyleGuide
     fileprivate func refreshReplyButton() {
         let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
         replyButton.isEnabled = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
-        replyButton.tintColor = .primary
+        replyButton.tintColor = replyButton.isEnabled ? .primary : .listSmallIcon
     }
 
     fileprivate func refreshScrollPosition() {
@@ -307,6 +324,7 @@ import WordPressShared.WPStyleGuide
 
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
+    fileprivate var isExpanded: Bool = false
 
     // MARK: - IBOutlets
     @IBOutlet private var textView: UITextView!
