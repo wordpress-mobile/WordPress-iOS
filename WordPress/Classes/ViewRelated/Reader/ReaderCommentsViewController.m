@@ -1191,7 +1191,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)updateUIForExpandedReply
 {
     [[self view] bringSubviewToFront:[self replyTextView]];
-//    self.navigationController.navigationBarHidden = TRUE;
+    [[self postHeaderWrapper] removeFromSuperview];
 }
 
 @end
