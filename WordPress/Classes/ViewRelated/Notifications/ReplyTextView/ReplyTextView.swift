@@ -1,13 +1,13 @@
 import Foundation
 import WordPressShared.WPStyleGuide
-
+import Gridicons
 
 
 // MARK: - ReplyTextViewDelegate
 //
 @objc public protocol ReplyTextViewDelegate: UITextViewDelegate {
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
-    @objc func updateNavigationBarForExpandedReply()
+    @objc func updateUIForExpandedReply()
 }
 
 
@@ -181,7 +181,7 @@ import WordPressShared.WPStyleGuide
 
     @IBAction func expandTextView(_ sender: UIButton) {
         isExpanded = true
-        self.delegate?.updateNavigationBarForExpandedReply()
+        self.delegate?.updateUIForExpandedReply()
         UIView.animate(withDuration: 0.5, animations: {
             self.expandCollapseButton.isHidden = true
             self.replyButton.isHidden = true
@@ -217,7 +217,7 @@ import WordPressShared.WPStyleGuide
     // MARK: - Autolayout Helpers
     open override var intrinsicContentSize: CGSize {
         if isExpanded {
-            let newHeight = frame.height + frame.minY
+            let newHeight = frame.maxY
             return CGSize(width: frame.width, height: newHeight)
         }
         // Make sure contentSize returns... the real content size
@@ -259,13 +259,17 @@ import WordPressShared.WPStyleGuide
         placeholderLabel.font = WPStyleGuide.Reply.textFont
         placeholderLabel.textColor = WPStyleGuide.Reply.placeholderColor
 
-        // Reply
+        // Reply Button
         replyButton.isEnabled = false
         replyButton.tintColor = .listSmallIcon
         replyButton.imageView?.contentMode = .scaleAspectFit
 
+        // Expand Button
+        expandCollapseButton.setImage(Gridicon.iconOfType(.chevronUp),
+                                      for: .normal)
+
         // Background
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = .basicBackground
 
         // Separators
         separatorsView.topColor = WPStyleGuide.Reply.separatorColor

@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -37,7 +37,7 @@
                                 <constraint firstAttribute="height" constant="30" id="7Gy-Ey-igu"/>
                                 <constraint firstAttribute="width" constant="20" id="aSY-eN-7Jz"/>
                             </constraints>
-                            <state key="normal" image="chevron.up" catalog="system"/>
+                            <state key="normal" image="theme-type-chevron"/>
                             <connections>
                                 <action selector="expandTextView:" destination="-1" eventType="touchUpInside" id="oCl-xT-tDP"/>
                             </connections>
@@ -98,7 +98,7 @@
         </view>
     </objects>
     <resources>
-        <image name="chevron.up" catalog="system" width="64" height="36"/>
         <image name="ic_send" width="44" height="38"/>
+        <image name="theme-type-chevron" width="20" height="8"/>
     </resources>
 </document>

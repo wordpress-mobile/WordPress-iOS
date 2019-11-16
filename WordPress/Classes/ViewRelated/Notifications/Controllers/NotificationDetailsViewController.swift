@@ -1148,9 +1148,13 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
         suggestionsTableView.showSuggestions(forWord: word)
     }
 
-    func updateNavigationBarForExpandedReply() {
+    func updateUIForExpandedReply() {
         view.bringSubviewToFront(replyTextView)
-        navigationController?.navigationBar.backgroundColor = .basicBackground
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tableView.isHidden = true
+        }) { _ in
+            // wrap up ui changes here
+        }
     }
 }
 

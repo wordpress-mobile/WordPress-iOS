@@ -1188,10 +1188,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 #pragma mark - ReplyTextViewDelegate
 
-- (void)updateNavigationBarForExpandedReply
+- (void)updateUIForExpandedReply
 {
     [[self view] bringSubviewToFront:[self replyTextView]];
-    [[[self navigationController] navigationBar] setBackgroundColor:[UIColor whiteColor]];
+//    self.navigationController.navigationBarHidden = TRUE;
 }
 
 @end
