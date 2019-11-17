@@ -1191,7 +1191,36 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)updateUIForExpandedReply
 {
     [[self view] bringSubviewToFront:[self replyTextView]];
-    [[self postHeaderWrapper] removeFromSuperview];
+    [UIView animateWithDuration:0.5 animations:^{
+        [[self postHeaderWrapper] removeFromSuperview];
+        self.navigationController.navigationBarHidden = TRUE;
+    } completion:^(BOOL finished) {
+        // complete ui updates here
+    }];
+}
+
+- (void)updateUIForCollapsedReply
+{
+    [self configurePostHeader];
+    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
+    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
+    NSDictionary *views         = @{
+        @"tableView"        : self.tableView,
+        @"postHeader"       : self.postHeaderWrapper,
+        @"replyTextView"    : self.replyTextView
+    };
+    // TableView Contraints
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    [self refreshPostHeaderView];
+    [UIView animateWithDuration:0.5 animations:^{
+        [[self view] layoutIfNeeded];
+        self.navigationController.navigationBarHidden = FALSE;
+    } completion:^(BOOL finished) {
+        // complete ui updates here
+    }];
 }
 
 @end

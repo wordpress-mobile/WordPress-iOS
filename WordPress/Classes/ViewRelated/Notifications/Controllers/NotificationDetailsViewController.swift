@@ -1150,8 +1150,18 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
 
     func updateUIForExpandedReply() {
         view.bringSubviewToFront(replyTextView)
+        navigationController?.setNavigationBarHidden(true, animated: true)
         UIView.animate(withDuration: 0.5, animations: {
             self.tableView.isHidden = true
+        }) { _ in
+            // wrap up ui changes here
+        }
+    }
+
+    func updateUIForCollapsedReply() {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tableView.isHidden = false
         }) { _ in
             // wrap up ui changes here
         }

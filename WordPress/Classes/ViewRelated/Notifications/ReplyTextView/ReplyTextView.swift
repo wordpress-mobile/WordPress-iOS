@@ -8,6 +8,7 @@ import Gridicons
 @objc public protocol ReplyTextViewDelegate: UITextViewDelegate {
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
     @objc func updateUIForExpandedReply()
+    @objc func updateUIForCollapsedReply()
 }
 
 
@@ -99,11 +100,12 @@ import Gridicons
 
     @objc open func collapseReplyTextView() {
         isExpanded = false
+        self.headerView.isHidden = true
         UIView.animate(withDuration: 0.5, animations: {
-            self.expandCollapseButton.isHidden = false
+            self.expandButton.isHidden = false
             self.replyButton.isHidden = false
-        }) { _ in
             self.refreshInterface()
+        }) { _ in
         }
     }
 
@@ -181,14 +183,20 @@ import Gridicons
 
     @IBAction func expandTextView(_ sender: UIButton) {
         isExpanded = true
-        self.delegate?.updateUIForExpandedReply()
+        delegate?.updateUIForExpandedReply()
         UIView.animate(withDuration: 0.5, animations: {
-            self.expandCollapseButton.isHidden = true
+            self.expandButton.isHidden = true
             self.replyButton.isHidden = true
-            self.setNeedsLayout()
+            self.headerView.isHidden = false
         }) { _ in
             // complete any remaining changes here
         }
+    }
+
+    @IBAction func collapseTextView(_ sender: UIButton) {
+        isExpanded = false
+        delegate?.updateUIForCollapsedReply()
+        collapseReplyTextView()
     }
 
     // MARK: - Gestures Recognizers
@@ -263,10 +271,18 @@ import Gridicons
         replyButton.isEnabled = false
         replyButton.tintColor = .listSmallIcon
         replyButton.imageView?.contentMode = .scaleAspectFit
+        headerReplyButton.isEnabled = false
+        headerReplyButton.tintColor = .listSmallIcon
+        headerReplyButton.imageView?.contentMode = .scaleAspectFit
 
         // Expand Button
-        expandCollapseButton.setImage(Gridicon.iconOfType(.chevronUp),
-                                      for: .normal)
+        expandButton.setImage(Gridicon.iconOfType(.chevronUp), for: .normal)
+
+        // Collapse Button
+        collapseButton.setImage(Gridicon.iconOfType(.chevronDown), for: .normal)
+
+        // Header View
+        headerView.isHidden = true
 
         // Background
         contentView.backgroundColor = .basicBackground
@@ -275,13 +291,11 @@ import Gridicons
         separatorsView.topColor = WPStyleGuide.Reply.separatorColor
         separatorsView.topVisible = true
 
-        // Recognizers
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(ReplyTextView.backgroundWasTapped))
-        gestureRecognizers = [recognizer]
-
         // Expand Collapse Button
-        expandCollapseButton.tintColor = UIColor.listIcon
-        expandCollapseButton.imageView?.contentMode = .scaleAspectFit
+        expandButton.tintColor = UIColor.listIcon
+        expandButton.imageView?.contentMode = .scaleAspectFit
+        collapseButton.tintColor = UIColor.listIcon
+        collapseButton.imageView?.contentMode = .scaleAspectFit
 
         /// Initial Sizing: Final step, since this depends on other control(s) initialization
         ///
@@ -316,6 +330,8 @@ import Gridicons
         let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
         replyButton.isEnabled = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
         replyButton.tintColor = replyButton.isEnabled ? .primary : .listSmallIcon
+        headerReplyButton.isEnabled = replyButton.isEnabled
+        headerReplyButton.tintColor = replyButton.tintColor
     }
 
     fileprivate func refreshScrollPosition() {
@@ -334,11 +350,14 @@ import Gridicons
     @IBOutlet private var textView: UITextView!
     @IBOutlet private var placeholderLabel: UILabel!
     @IBOutlet private var replyButton: UIButton!
+    @IBOutlet private var headerReplyButton: UIButton!
     @IBOutlet private var separatorsView: SeparatorsView!
     @IBOutlet private var contentView: UIView!
     @IBOutlet private var textViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private var textViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private var expandCollapseButton: UIButton!
+    @IBOutlet private var expandButton: UIButton!
+    @IBOutlet private var collapseButton: UIButton!
+    @IBOutlet weak var headerView: UIView!
 }
 
 

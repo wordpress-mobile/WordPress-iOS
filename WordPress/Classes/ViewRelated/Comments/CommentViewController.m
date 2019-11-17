@@ -662,7 +662,20 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)updateUIForExpandedReply
 {
     [[self view] bringSubviewToFront:[self replyTextView]];
-    [[[self navigationController] navigationBar] setBarTintColor:[UIColor whiteColor]];
+    [UIView animateWithDuration:0.5 animations:^{
+        [[self navigationController] setNavigationBarHidden:TRUE];
+    } completion:^(BOOL finished) {
+        // complete UI change here
+    }];
+}
+
+- (void)updateUIForCollapsedReply
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        [[self navigationController] setNavigationBarHidden:FALSE];
+    } completion:^(BOOL finished) {
+        // complete UI change here
+    }];
 }
 
 #pragma mark - SuggestionsTableViewDelegate
