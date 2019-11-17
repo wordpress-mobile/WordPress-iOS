@@ -2,8 +2,14 @@
 -----
 * Updated the mobile apps blog address to a non-retired blog. 
 * Block editor: Added option to insert images from "Free Photo Library".
+* Block editor: Fix issue where the keyboard would not capitalize sentences correctly on some cases
+* Block editor: Add alignment to paragraph blocks
 * Fixed a bug that made comment moderation fail on the first attempt for self-hosted sites.
+* Block editor: Added support for the preformatted block.
+* Stats Today widget: updated design and enabled expanding.
 
+* Block editor: Added option to insert images from "Free Photo Library" and "Other Apps".
+ 
 13.6
 -----
 * Fixed a bug that was not submiting posts for review
