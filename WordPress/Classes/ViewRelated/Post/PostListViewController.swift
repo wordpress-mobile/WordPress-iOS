@@ -205,7 +205,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func configureGhost() {
-        ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        placeholderTableView.displayGhostContent(options: ghostOptions, style: style)
     }
 
     private func configureCompactOrDefault() {
@@ -235,6 +239,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+    }
+
+    override func configureGhostableTableView() {
+        super.configureGhostableTableView()
+
+        // Register the cells
+        let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: Bundle.main)
+        placeholderTableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
+
+        let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: Bundle.main)
+        placeholderTableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
     }
 
     override func configureAuthorFilter() {

@@ -60,6 +60,8 @@ class AbstractPostListViewController: UIViewController,
         return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesNumberOfLoadedElement) : NSNumber(value: numberOfPostsPerSync())
     }
 
+    private(set) var placeholderTableView = UITableView()
+
     @objc var blog: Blog!
 
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
@@ -158,6 +160,7 @@ class AbstractPostListViewController: UIViewController,
         configureSearchHelper()
         configureAuthorFilter()
         configureSearchBackingView()
+        configureGhostableTableView()
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.reloadData()
@@ -340,6 +343,19 @@ class AbstractPostListViewController: UIViewController,
             backingView.topAnchor.constraint(equalTo: view.topAnchor),
             backingView.bottomAnchor.constraint(equalTo: topAnchor)
             ])
+    }
+
+    func configureGhostableTableView() {
+        view.addSubview(placeholderTableView)
+        placeholderTableView.isHidden = true
+        placeholderTableView.translatesAutoresizingMaskIntoConstraints = false
+        placeholderTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1).isActive = true
+        placeholderTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1).isActive = true
+        placeholderTableView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor).isActive = true
+
+        placeholderTableView.topAnchor.constraint(equalTo: searchController.searchBar.bottomAnchor).isActive = true
+        placeholderTableView.backgroundColor = .white
+        placeholderTableView.isScrollEnabled = false
     }
 
     @objc func configureSearchHelper() {
@@ -788,21 +804,16 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Ghost cells
 
     func startGhost() {
-        guard let ghostOptions = ghostOptions, emptyResults else {
+        guard emptyResults else {
             return
         }
 
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
-        tableView.displayGhostContent(options: ghostOptions, style: style)
-        tableView.isScrollEnabled = false
+        placeholderTableView.isHidden = false
         noResultsViewController.view.isHidden = true
     }
 
     func stopGhost() {
-        tableView.removeGhostContent()
-        tableView.isScrollEnabled = true
+        placeholderTableView.isHidden = true
         noResultsViewController.view.isHidden = false
     }
 
