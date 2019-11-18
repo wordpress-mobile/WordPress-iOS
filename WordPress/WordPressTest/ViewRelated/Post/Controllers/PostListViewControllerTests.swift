@@ -39,7 +39,7 @@ class PostListViewControllerTests: XCTestCase {
         expect(postListViewController.placeholderTableView.isHidden).to(beTrue())
     }
 
-    func showTenMockedItemsInGhostableTableView() {
+    func testShowTenMockedItemsInGhostableTableView() {
         let blog = BlogBuilder(context).build()
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
