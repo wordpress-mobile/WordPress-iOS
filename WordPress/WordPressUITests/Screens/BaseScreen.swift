@@ -54,8 +54,7 @@ class BaseScreen {
 
             // Select the URL bar when Safari opens
             let urlBar = safari.textFields["URL"]
-            waitFor(element: urlBar, predicate: "exists == true")
-            if !urlBar.exists {
+            if !urlBar.waitForExistence(timeout: 5) {
                 safari.buttons["URL"].tap()
             }
 

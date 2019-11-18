@@ -44,17 +44,16 @@ extension TodayWidgetStats {
         }
     }
 
-    static func saveData(views: Int, visitors: Int, likes: Int, comments: Int) {
-        guard let dataFileURL = dataFileURL else {
+    func saveData() {
+        guard let dataFileURL = TodayWidgetStats.dataFileURL else {
                 return
         }
 
-        let data = TodayWidgetStats(views: views, visitors: visitors, likes: likes, comments: comments)
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .xml
 
         do {
-            let data = try encoder.encode(data)
+            let data = try encoder.encode(self)
             try data.write(to: dataFileURL)
         } catch {
             DDLogError("Failed saving TodayWidgetStats data: \(error.localizedDescription)")

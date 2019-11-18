@@ -1,3 +1,0 @@
-- Block-Editor: Wir haben einen Block „Medien und Text“ hinzugefügt! Die Option „Ziel verlinken (In neuem Tab öffnen)“ wurde zu den Bildblock-Einstellungen hinzugefügt. Wir haben einen Fehler behoben, bei dem der Shortcut „Neuer Fotobeitrag“ nicht das ausgewählte Foto hinzugefügt hat.
-- Statistiken: Du kannst die Einsichten jetzt individuell anpassen. Die Einsichten werden jetzt auch in langsamen Netzwerken schneller geladen.
-- Dunkler Modus: Verbesserungen und kleinere Fehlerbehebungen in der gesamten App.

@@ -296,13 +296,15 @@ import "./ScreenshotFastfile"
 
     sh("mv ../../build/WordPress.ipa \"../../build/WordPress Internal.ipa\"")
 
-    hockey(
-        api_token: get_required_env("HOCKEY_API_TOKEN"),        
-        public_identifier: get_required_env("HOCKEY_PUBLIC_ID"),
-        notify: "0",
-        status: "1",
-        ipa: "../build/WordPress Internal.ipa",
-        dsym: "../build/WordPress.app.dSYM.zip",
+    # NOTE: "ipa" parameter is deprecated in appcenter_upload 1.6.0, but there's a bug in the action that
+    # makes the default gym output override the "file" parameter. 
+    appcenter_upload(
+      api_token: ENV["APPCENTER_API_TOKEN"],
+      owner_name: "Hogwarts-Organization",
+      owner_type: "organization", 
+      app_name: "WP-Internal",
+      ipa: "../build/WordPress Internal.ipa",
+      notify_testers: false 
     )
     
 

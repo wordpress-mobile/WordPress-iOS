@@ -1,3 +1,5 @@
-- Editor de bloques: ¡hemos añadido un bloque de «Medios y texto»! La opción de enlace de destino (se abre en una nueva pestaña) se ha añadido a la configuración del bloque de imagen. Hemos corregido un fallo por el que el acceso directo «Nueva entrada de fotos» no añadía la foto seleccionada.
-- Estadísticas: ahora puedes personalizar las perspectivas. La carga de las perspectivas en redes lentas es más rápida.
-- Modo oscuro: mejoras y pequeñas correcciones de fallos en toda la aplicación.
+- Con esta actualización, puedes conectar a Internet sin Internet real. Edita y guarda las entradas mientras estás offline, las cargaremos (o publicaremos) automáticamente cuando tu dispositivo vuelva a estar online.
+- A veces, la vista de «Yo» estaría en blanco si te conectaras con una web autoalojada, lo cual es (1) un fallo y (2) no es bueno para la autoestima de nadie. Eso está arreglado, así que «Yo» eres tú otra vez.
+- A veces, la actualización de una entrada pendiente hace que se publique la entrada. Todas las acciones que empiezan con «P» han sido corregidas y eso no sucederá más - las entradas pendientes permanecerán pendientes hasta que digas lo contrario.
+- Y, finalmente, más mejoras en el editor de bloques - ahora es compatible con opciones de alineación de imágenes.
+
