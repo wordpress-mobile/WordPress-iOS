@@ -136,8 +136,6 @@ class AbstractPostListViewController: UIViewController,
 
     fileprivate var searchesSyncing = 0
 
-    var ghostOptions: GhostOptions?
-
     private var emptyResults: Bool {
         return tableViewHandler.resultsController.fetchedObjects?.count == 0
     }

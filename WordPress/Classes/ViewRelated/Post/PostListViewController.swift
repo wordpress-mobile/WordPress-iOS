@@ -209,6 +209,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
                                beatEndColor: .placeholderElementFaded)
+        placeholderTableView.removeGhostContent()
         placeholderTableView.displayGhostContent(options: ghostOptions, style: style)
     }
 
@@ -289,6 +290,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     func showCompactOrDefault() {
         configureGhost()
         tableView.reloadSections([0], with: .automatic)
+        placeholderTableView.reloadSections([0], with: .automatic)
         postsViewButtonItem.image = postViewIcon
     }
 
