@@ -1,3 +1,4 @@
-- Editor dei blocchi: abbiamo aggiunto un blocco "Media e testo". È stata aggiunta l'opzione Destinazione link (Apri in una nuova scheda) alle impostazioni del blocco Immagine. Abbiamo corretto un bug per cui il comando di scelta rapida "Nuovo articolo fotografico" non aggiungeva la foto selezionata.
-- Statistiche: adesso puoi personalizzare la panoramica. Il caricamento della panoramica nelle reti lenti avviene più velocemente.
-- Dark Mode: sono stati apportati miglioramenti e correzioni di piccoli bug in tutta l'app.
+- Con questo aggiornamento, l'assenza di Internet non sarà un problema. Modifica e salva gli articoli mentre sei offline, noi li caricheremo (o pubblicheremo) automaticamente una volta che il tuo dispositivo sarà di nuovo online.
+- A volte, la vista "Io" era vuota se avevi effettuato l'accesso con un sito ospitato personalmente: si trattava di un bug (1) e (2) non andava bene per la propria autostima. Lo abbiamo risolto.
+- A volte, l'aggiornamento di un articolo in sospeso ne causava la pubblicazione. Le funzionalità di sospensione e pubblicazione degli articoli sono state sistemate, quindi non accadrà più: gli articoli in sospeso rimarranno tali finché non deciderai diversamente.
+- Infine, altri miglioramenti all'editor dei blocchi: ora supporta opzioni per l'allineamento delle immagini.

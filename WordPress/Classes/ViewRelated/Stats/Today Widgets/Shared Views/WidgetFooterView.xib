@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="WidgetFooterView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="32"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cyd-Yd-Bok" userLabel="Background Color View">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="32"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJM-IQ-N5L" userLabel="Separator Line">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
+                    <color key="backgroundColor" name="Gray40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="0.5" id="Evl-gp-tVN"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="my.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4f-Rk-ldQ" userLabel="Site Url Label">
+                    <rect key="frame" x="16" y="8.5" width="382" height="15.5"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Y4f-Rk-ldQ" secondAttribute="trailing" constant="16" id="B9L-ae-Mdm"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="hJM-IQ-N5L" secondAttribute="trailing" id="BWI-6f-aDI"/>
+                <constraint firstItem="Y4f-Rk-ldQ" firstAttribute="top" secondItem="hJM-IQ-N5L" secondAttribute="bottom" constant="8" id="ENj-Q1-acW"/>
+                <constraint firstItem="Cyd-Yd-Bok" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="KHr-S5-XNh"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Y4f-Rk-ldQ" secondAttribute="bottom" constant="8" id="N5s-BL-zhf"/>
+                <constraint firstItem="hJM-IQ-N5L" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="OaW-qD-dHy"/>
+                <constraint firstAttribute="bottom" secondItem="Cyd-Yd-Bok" secondAttribute="bottom" id="ROB-hO-Wcy"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Cyd-Yd-Bok" secondAttribute="trailing" id="lvZ-xs-fle"/>
+                <constraint firstItem="Y4f-Rk-ldQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="pec-ED-2Pc"/>
+                <constraint firstItem="Cyd-Yd-Bok" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ucm-9C-ZaM"/>
+                <constraint firstItem="hJM-IQ-N5L" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="vzI-Fm-gis"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="backgroundColorView" destination="Cyd-Yd-Bok" id="tnD-Kc-G7Q"/>
+                <outlet property="separatorLine" destination="hJM-IQ-N5L" id="lf3-gt-J9w"/>
+                <outlet property="siteUrlLabel" destination="Y4f-Rk-ldQ" id="8Tu-IB-bkB"/>
+            </connections>
+            <point key="canvasLocation" x="-317.39130434782612" y="188.50446428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="Gray40">
+            <color red="0.47058823529411764" green="0.48627450980392156" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

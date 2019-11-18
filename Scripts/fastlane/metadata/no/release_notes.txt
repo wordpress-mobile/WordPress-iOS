@@ -1,3 +1,0 @@
-- Blokkredigeringsverktøyet: Vi har lagt til en "Medie og tekst"-blokk! Lenkemål-instillingen (åpne i ny fane) har blitt lagt til i instillingene til bildeblokken. Vi fikset en feil hvor snarveien for nytt bildeinnlegg ikke la til det valgte bildet.
-- Statistikk: Du kan nå tilpasse Innsikt. Innsikt-lasting på trege nettverk er nå raskere.
-- Mørk modus: Forbedringer og små feilfikser rundt om i hele appen.

@@ -1,162 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="aC5-E5-DQ6">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Today View Controller-->
-        <scene sceneID="cwh-vc-ff4">
+        <scene sceneID="BcN-05-8QR">
             <objects>
-                <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="WordPressTodayWidget" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ft6-oW-KC0"/>
-                        <viewControllerLayoutGuide type="bottom" id="FKl-LY-JtV"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
+                <tableViewController id="aC5-E5-DQ6" customClass="TodayViewController" customModule="WordPressTodayWidget" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ysi-jO-WrT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="57z-E7-fbN">
-                                <rect key="frame" x="16" y="0.0" width="288" height="192"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-dy-2cu">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="104"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display your site stats for today here. Configure in the WordPress app in your site stats." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="52"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Kc-kV-Twu">
-                                                <rect key="frame" x="0.0" y="52" width="288" height="52"/>
-                                                <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="brs-WZ-RUz" userLabel="Separator Line">
-                                                        <rect key="frame" x="-16" y="8" width="320" height="0.5"/>
-                                                        <color key="backgroundColor" name="Gray40"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="0.5" id="7Li-2D-XeE"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open WordPress" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysP-Hn-kcR" userLabel="Open WordPress Label">
-                                                        <rect key="frame" x="0.0" y="16.5" width="288" height="35.5"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="brs-WZ-RUz" firstAttribute="top" secondItem="8Kc-kV-Twu" secondAttribute="top" constant="8" id="ODk-vn-fh2"/>
-                                                    <constraint firstAttribute="trailing" secondItem="ysP-Hn-kcR" secondAttribute="trailing" id="WS3-US-U5i"/>
-                                                    <constraint firstAttribute="bottom" secondItem="ysP-Hn-kcR" secondAttribute="bottom" id="YKV-cX-0Ck"/>
-                                                    <constraint firstItem="ysP-Hn-kcR" firstAttribute="leading" secondItem="8Kc-kV-Twu" secondAttribute="leading" id="ndg-ik-Tnx"/>
-                                                    <constraint firstItem="ysP-Hn-kcR" firstAttribute="top" secondItem="brs-WZ-RUz" secondAttribute="bottom" constant="8" id="z58-zg-gnj"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TbZ-Oq-ahc">
-                                        <rect key="frame" x="0.0" y="104" width="288" height="88"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="vd1-ys-xI8" userLabel="Rows Stack View">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="50"/>
-                                            </stackView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="COU-z5-NLI" userLabel="Site Info View">
-                                                <rect key="frame" x="0.0" y="50" width="288" height="38"/>
-                                                <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="esO-gC-YkD" userLabel="Separator Line">
-                                                        <rect key="frame" x="-16" y="0.0" width="320" height="0.5"/>
-                                                        <color key="backgroundColor" name="Gray40"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="0.5" id="JyR-gV-MO0"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="my.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vSF-Wk-ECh" userLabel="Site Url Label">
-                                                        <rect key="frame" x="0.0" y="8.5" width="288" height="29.5"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="vSF-Wk-ECh" secondAttribute="bottom" id="0TQ-TB-Vxr"/>
-                                                    <constraint firstItem="esO-gC-YkD" firstAttribute="top" secondItem="COU-z5-NLI" secondAttribute="top" id="WFm-Uu-s16"/>
-                                                    <constraint firstAttribute="trailing" secondItem="vSF-Wk-ECh" secondAttribute="trailing" id="YeP-N8-x8a"/>
-                                                    <constraint firstItem="vSF-Wk-ECh" firstAttribute="leading" secondItem="COU-z5-NLI" secondAttribute="leading" id="aEq-NO-oHO"/>
-                                                    <constraint firstItem="vSF-Wk-ECh" firstAttribute="top" secondItem="esO-gC-YkD" secondAttribute="bottom" constant="8" id="nL5-0Y-5vX"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="vd1-ys-xI8" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="HFP-yB-zuC"/>
-                                            <constraint firstAttribute="trailing" secondItem="COU-z5-NLI" secondAttribute="trailing" id="P94-jz-jGo"/>
-                                            <constraint firstAttribute="trailing" secondItem="vd1-ys-xI8" secondAttribute="trailing" id="f0S-4g-7Wm"/>
-                                            <constraint firstItem="COU-z5-NLI" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="khJ-s7-fip"/>
-                                        </constraints>
-                                    </stackView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="SgL-dy-2cu" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="top" id="0Ze-Rg-4jY"/>
-                                    <constraint firstAttribute="trailing" secondItem="TbZ-Oq-ahc" secondAttribute="trailing" id="1YW-lt-C2t"/>
-                                    <constraint firstAttribute="bottom" secondItem="TbZ-Oq-ahc" secondAttribute="bottom" id="L9x-tD-ssX"/>
-                                    <constraint firstItem="TbZ-Oq-ahc" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="j9j-hx-ycm"/>
-                                    <constraint firstItem="SgL-dy-2cu" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="pUZ-qW-3lK"/>
-                                    <constraint firstAttribute="trailing" secondItem="SgL-dy-2cu" secondAttribute="trailing" id="qjg-dJ-QwA"/>
-                                </constraints>
-                            </stackView>
-                        </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <gestureRecognizers/>
-                        <constraints>
-                            <constraint firstItem="57z-E7-fbN" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" constant="16" id="2Pu-jv-s9Z"/>
-                            <constraint firstAttribute="trailing" secondItem="esO-gC-YkD" secondAttribute="trailing" id="2hp-Hc-i3b"/>
-                            <constraint firstItem="brs-WZ-RUz" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" id="F8G-En-brF"/>
-                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="bottom" constant="8" id="QLc-MC-2RQ"/>
-                            <constraint firstAttribute="trailing" secondItem="57z-E7-fbN" secondAttribute="trailing" constant="16" id="UPv-3H-nCM"/>
-                            <constraint firstItem="57z-E7-fbN" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" id="cYc-fE-VY6"/>
-                            <constraint firstItem="esO-gC-YkD" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" id="m84-IC-phN"/>
-                            <constraint firstAttribute="trailing" secondItem="brs-WZ-RUz" secondAttribute="trailing" id="qAW-SA-yMH"/>
-                        </constraints>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="StW-vH-RTH" appends="YES" id="Uac-Xl-YJb"/>
+                            <outlet property="dataSource" destination="aC5-E5-DQ6" id="90b-uJ-sTV"/>
+                            <outlet property="delegate" destination="aC5-E5-DQ6" id="5mx-Mm-j3q"/>
+                            <outletCollection property="gestureRecognizers" destination="g0c-fj-JDq" appends="YES" id="N9n-YP-ef8"/>
                         </connections>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <nil key="simulatedStatusBarMetrics"/>
+                    </tableView>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="200"/>
                     <connections>
-                        <outlet property="configureLabel" destination="p3Z-lC-Jtw" id="5al-UQ-lOq"/>
-                        <outlet property="configuredView" destination="TbZ-Oq-ahc" id="d0S-UN-LQ3"/>
-                        <outlet property="openWordPressLabel" destination="ysP-Hn-kcR" id="DTJ-pP-Tvx"/>
-                        <outlet property="rowsStackView" destination="vd1-ys-xI8" id="b0V-uC-LDv"/>
-                        <outlet property="separatorLine" destination="esO-gC-YkD" id="Jq6-50-SxY"/>
-                        <outlet property="siteUrlLabel" destination="vSF-Wk-ECh" id="mtV-bm-n4M"/>
-                        <outlet property="unconfiguredSeparatorLine" destination="brs-WZ-RUz" id="pPc-q4-W4q"/>
-                        <outlet property="unconfiguredView" destination="SgL-dy-2cu" id="0i2-YG-MCZ"/>
+                        <outlet property="tableView" destination="Ysi-jO-WrT" id="4qG-sx-vMP"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="StW-vH-RTH">
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KvB-u2-42u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="g0c-fj-JDq">
                     <connections>
-                        <action selector="launchContainingApp" destination="M4Y-Lb-cyx" id="tGu-Xt-qJ3"/>
+                        <action selector="launchContainingApp" destination="aC5-E5-DQ6" id="NhF-46-NzT"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="99.200000000000003" y="22.938530734632685"/>
+            <point key="canvasLocation" x="605" y="-150"/>
         </scene>
     </scenes>
-    <resources>
-        <namedColor name="Gray40">
-            <color red="0.49803921568627452" green="0.50196078431372548" blue="0.54117647058823526" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-    </resources>
 </document>

@@ -1,3 +1,4 @@
-- Block editor: we’ve added a “media & text” block! The link target (open in new tab) option has been added to image block settings. We fixed a bug where the “new photo post” shortcut didn’t add the selected photo.
-- Stats: you can now customise insights. Insight loading on slow networks is faster.
-- Dark mode: improvements and small bug fixes all over the app.
+- With this update, you can internet without the actual internet. Edit and save posts while you’re offline, we’ll automatically upload (or publish) them when your device is back online.
+- Sometimes, the “Me” view would be blank if you logged in with a self-hosted site, which is both (1) a bug and (2) not great for anyone’s self-esteem. That’s fixed, so Me is you again.
+- Sometimes updating a pending post caused the post to be published. All actions starting with P have been straightened out, and that won’t happen anymore – pending posts will remaining pending until you say otherwise.
+- And finally, more block editor improvements — it supports image alignment options now.
