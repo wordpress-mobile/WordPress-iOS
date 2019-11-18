@@ -54,4 +54,31 @@ class GutenbergVideoUploadProcessorTests: XCTestCase {
         XCTAssertEqual(resultContent, postMediaBlockResultContent, "Post content should be updated correctly")
     }
 
+    let postMediaBlockReversedAttributesContent = """
+    <!-- wp:media-text {"mediaType":"video", "mediaId":-181231834} -->
+    <div class="wp-block-media-text alignwide"><figure class="wp-block-media-text__media"><video controls src="file://tmp.mp4"></video></figure><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Content…","fontSize":"large"} -->
+    <p class="has-large-font-size"></p>
+    <!-- /wp:paragraph --></div></div>
+    <!-- /wp:media-text -->
+    """
+
+    let postMediaBlockReversedAttributesResultContent = """
+    <!-- wp:media-text {"mediaId":100,"mediaType":"video"} -->
+    <div class="wp-block-media-text alignwide"><figure class="wp-block-media-text__media"><video controls src="http://www.wordpress.com/video.mp4"></video></figure><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Content…","fontSize":"large"} -->
+    <p class="has-large-font-size"></p>
+    <!-- /wp:paragraph --></div></div>
+    <!-- /wp:media-text -->
+    """
+
+    func testMediaTextBlockReversedAttributesProcessor() {
+        let gutenbergMediaUploadID = Int32(-181231834)
+        let mediaID = 100
+        let remoteURLStr = "http://www.wordpress.com/video.mp4"
+
+        let gutenbergVideoUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        let resultContent = gutenbergVideoUploadProcessor.process(postMediaBlockReversedAttributesContent)
+
+        XCTAssertEqual(resultContent, postMediaBlockReversedAttributesResultContent, "Post content should be updated correctly")
+    }
+
 }
