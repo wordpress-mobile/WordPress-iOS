@@ -5684,6 +5684,15 @@
 			path = ViewRelated/Post/Views;
 			sourceTree = "<group>";
 		};
+		57E3C98223835A57004741DB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */,
+			);
+			name = Controllers;
+			path = ViewRelated/Controllers;
+			sourceTree = "<group>";
+		};
 		59B48B601B99E0B0008EBB84 /* TestUtilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -5715,7 +5724,6 @@
 			children = (
 				59ECF87A1CB7061D00E68F25 /* PostSharingControllerTests.swift */,
 				F18B43771F849F580089B817 /* PostAttachmentTests.swift */,
-				8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -8341,6 +8349,7 @@
 		BE20F5E11B2F738E0020694C /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				57E3C98223835A57004741DB /* Controllers */,
 				BEC8A3FD1B4BAA08001CB8C3 /* Blog */,
 				E1B921BA1C0ED481003EA3CB /* Cells */,
 				937E3AB41E3EBDC900CDA01A /* Post */,
