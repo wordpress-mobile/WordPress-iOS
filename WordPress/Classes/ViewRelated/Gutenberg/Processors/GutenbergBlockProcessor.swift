@@ -1,7 +1,7 @@
 import Foundation
 import Aztec
 
-/// Struct to represent a Gutenberg element
+/// Struct to represent a Gutenberg block element
 ///
 public struct GutenbergBlock {
     public let name: String
@@ -9,11 +9,11 @@ public struct GutenbergBlock {
     public let content: String
 }
 
-/// A class that processes a gutenberg post content and replaces the designated gutenberg block for the replacement provided strings.
+/// A class that processes a Gutenberg post content and replaces the designated Gutenberg block for the replacement provided strings.
 ///
 public class GutenbergBlockProcessor: Processor {
 
-    /// Whenever an Guntenberg block  is found by the processor, this closure will be executed so that elements can be customized.
+    /// Whenever a Guntenberg block  is found by the processor, this closure will be executed so that elements can be customized.
     ///
     public typealias Replacer = (GutenbergBlock) -> String?
 
@@ -85,7 +85,7 @@ private extension GutenbergBlockProcessor {
 
     // MARK: - Regex Match Processing Logic
 
-    /// Obtains the attributes from an block match.
+    /// Obtains the attributes from a block match.
     ///
     private func readAttributes(from match: NSTextCheckingResult, in text: String) -> [String: Any] {
         guard let attributesText = match.captureGroup(in: CaptureGroups.attributes.rawValue, text: text),
@@ -98,7 +98,7 @@ private extension GutenbergBlockProcessor {
         return jsonDictionary
     }
 
-    /// Obtains the block content from an block match.
+    /// Obtains the block content from a block match.
     ///
     private func readContent(from match: NSTextCheckingResult, in text: String) -> String {
         guard let content = match.captureGroup(in: CaptureGroups.content.rawValue, text: text) else {
