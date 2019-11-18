@@ -43,6 +43,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 completion:(void (^)(Media *media, NSError *error))completion
 {
     NSParameterAssert(post == nil || blog == post.blog);
+    NSParameterAssert(blog.managedObjectContext == self.managedObjectContext);
     NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
     __block Media *media;
     __block NSSet<NSString *> *allowedFileTypes = [NSSet set];
