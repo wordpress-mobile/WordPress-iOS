@@ -6,8 +6,20 @@ import Nimble
 
 class PostListViewControllerTests: XCTestCase {
 
+    private var context: NSManagedObjectContext!
+
+    override func setUp() {
+        context = TestContextManager().mainContext
+        super.setUp()
+    }
+
+    override func tearDown() {
+        context = nil
+        TestContextManager.overrideSharedInstance(nil)
+        super.tearDown()
+    }
+
     func testShowsGhostableTableView() {
-        let context = TestContextManager().newDerivedContext()
         let blog = BlogBuilder(context).build()
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
@@ -18,7 +30,6 @@ class PostListViewControllerTests: XCTestCase {
     }
 
     func testHidesGhostableTableView() {
-        let context = TestContextManager().newDerivedContext()
         let blog = BlogBuilder(context).build()
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
@@ -29,7 +40,6 @@ class PostListViewControllerTests: XCTestCase {
     }
 
     func showTenMockedItemsInGhostableTableView() {
-        let context = TestContextManager().newDerivedContext()
         let blog = BlogBuilder(context).build()
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
@@ -38,5 +48,4 @@ class PostListViewControllerTests: XCTestCase {
 
         expect(postListViewController.placeholderTableView.numberOfRows(inSection: 0)).to(equal(10))
     }
-
 }
