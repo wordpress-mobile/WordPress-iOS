@@ -124,6 +124,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         badgesLabel.textColor = viewModel.statusColor
         badgesLabel.text = viewModel.statusAndBadges(separatedBy: Constants.separator)
+        if badgesLabel.text?.isEmpty ?? true {
+            badgesLabel.isHidden = true
+        } else {
+            badgesLabel.isHidden = false
+        }
     }
 
     private func configureProgressView() {

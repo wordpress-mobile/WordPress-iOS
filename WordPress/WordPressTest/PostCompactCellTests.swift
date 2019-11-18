@@ -65,6 +65,26 @@ class PostCompactCellTests: XCTestCase {
         XCTAssertEqual(postCell.badgesLabel.text, "Sticky")
     }
 
+    func testHideBadgesWhenEmpty() {
+        let post = PostBuilder().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.badgesLabel.text, "Uploading post...")
+        XCTAssertFalse(postCell.badgesLabel.isHidden)
+    }
+
+    func testShowBadgesWhenNotEmpty() {
+        let post = PostBuilder()
+            .with(remoteStatus: .sync)
+            .build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.badgesLabel.text, "")
+        XCTAssertTrue(postCell.badgesLabel.isHidden)
+    }
+
     func testShowProgressView() {
         let post = PostBuilder()
             .with(remoteStatus: .pushing)
