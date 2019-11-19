@@ -779,6 +779,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return NSLocalizedString("No internet connection. Some pages may be unavailable while offline.",
                                  comment: "Error message shown when the user is browsing Site Pages without an internet connection.")
     }
+
+    // MARK: - Ghostable Placeholder
+
+    override func startGhost() {
+        // Does nothing
+    }
 }
 
 // MARK: - No Results Handling
