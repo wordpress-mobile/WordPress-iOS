@@ -26,7 +26,7 @@ class PostListViewControllerTests: XCTestCase {
 
         postListViewController.startGhost()
 
-        expect(postListViewController.placeholderTableView.isHidden).to(beFalse())
+        expect(postListViewController.ghostableTableView.isHidden).to(beFalse())
     }
 
     func testHidesGhostableTableView() {
@@ -36,7 +36,7 @@ class PostListViewControllerTests: XCTestCase {
 
         postListViewController.stopGhost()
 
-        expect(postListViewController.placeholderTableView.isHidden).to(beTrue())
+        expect(postListViewController.ghostableTableView.isHidden).to(beTrue())
     }
 
     func testShowTenMockedItemsInGhostableTableView() {
@@ -46,7 +46,7 @@ class PostListViewControllerTests: XCTestCase {
 
         postListViewController.startGhost()
 
-        expect(postListViewController.placeholderTableView.numberOfRows(inSection: 0)).to(equal(10))
+        expect(postListViewController.ghostableTableView.numberOfRows(inSection: 0)).to(equal(10))
     }
 
     func testItCanHandleNewPostUpdatesEvenIfTheGhostViewIsStillVisible() {

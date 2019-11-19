@@ -60,7 +60,7 @@ class AbstractPostListViewController: UIViewController,
         return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesNumberOfLoadedElement) : NSNumber(value: numberOfPostsPerSync())
     }
 
-    private(set) var placeholderTableView = UITableView()
+    private(set) var ghostableTableView = UITableView()
 
     @objc var blog: Blog!
 
@@ -344,16 +344,17 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func configureGhostableTableView() {
-        view.addSubview(placeholderTableView)
-        placeholderTableView.isHidden = true
-        placeholderTableView.translatesAutoresizingMaskIntoConstraints = false
-        placeholderTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1).isActive = true
-        placeholderTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1).isActive = true
-        placeholderTableView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor).isActive = true
+        view.addSubview(ghostableTableView)
+        ghostableTableView.isHidden = true
 
-        placeholderTableView.topAnchor.constraint(equalTo: searchController.searchBar.bottomAnchor).isActive = true
-        placeholderTableView.backgroundColor = .white
-        placeholderTableView.isScrollEnabled = false
+        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
+        ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1).isActive = true
+        ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1).isActive = true
+        ghostableTableView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor).isActive = true
+        ghostableTableView.topAnchor.constraint(equalTo: searchController.searchBar.bottomAnchor).isActive = true
+
+        ghostableTableView.backgroundColor = .white
+        ghostableTableView.isScrollEnabled = false
     }
 
     @objc func configureSearchHelper() {
@@ -806,12 +807,12 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        placeholderTableView.isHidden = false
+        ghostableTableView.isHidden = false
         noResultsViewController.view.isHidden = true
     }
 
     func stopGhost() {
-        placeholderTableView.isHidden = true
+        ghostableTableView.isHidden = true
         noResultsViewController.view.isHidden = false
     }
 

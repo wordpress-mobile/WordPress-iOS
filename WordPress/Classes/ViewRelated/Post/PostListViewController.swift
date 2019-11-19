@@ -209,8 +209,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
                                beatEndColor: .placeholderElementFaded)
-        placeholderTableView.removeGhostContent()
-        placeholderTableView.displayGhostContent(options: ghostOptions, style: style)
+        ghostableTableView.removeGhostContent()
+        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
     }
 
     private func configureCompactOrDefault() {
@@ -247,10 +247,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         // Register the cells
         let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: Bundle.main)
-        placeholderTableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
+        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
 
         let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: Bundle.main)
-        placeholderTableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
+        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
     }
 
     override func configureAuthorFilter() {
@@ -290,7 +290,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     func showCompactOrDefault() {
         configureGhost()
         tableView.reloadSections([0], with: .automatic)
-        placeholderTableView.reloadSections([0], with: .automatic)
+        ghostableTableView.reloadSections([0], with: .automatic)
         postsViewButtonItem.image = postViewIcon
     }
 
