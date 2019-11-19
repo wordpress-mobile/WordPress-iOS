@@ -6,6 +6,7 @@
 * Block editor: Add alignment to paragraph blocks
 * Fixed a bug that made comment moderation fail on the first attempt for self-hosted sites.
 * Block editor: Added support for the preformatted block.
+* Stats Today widget: updated design and enabled expanding.
 
 * Block editor: Added option to insert images from "Free Photo Library" and "Other Apps".
  

@@ -1,3 +1,4 @@
-- Blokeditor: We hebben een blok 'Media en tekst' toegevoegd! De optie voor linkverwijzing (Openen in nieuw tabblad) is toegevoegd aan de Afbeeldingsblok-instellingen. We hebben een bug gefixt waarbij de snelkoppeling 'Nieuw fotobericht' niet de geselecteerde foto toevoegde.
-- Statistieken: Je kunt Insights nu aan je voorkeuren aanpassen. Het laden van inzichten op een traag netwerk gaat nu sneller.
-- Nachtmodus: Verbeteringen en kleine bugfixes in de hele app.
+- Met deze update kun je internet gebruiken zonder online te gaan. Bewerk en sla berichten op terwijl je offline bent en dan uploaden (of publiceren) wij ze wanneer je apparaat weer online is.
+- Soms was de weergave 'Ik' leeg als je was ingelogd via een zelfgehoste site. Dit was niet alleen een bug, maar ook slecht voor je eigenwaarde. Dit probleem is nu opgelost zodat jij weer Ik bent.
+- Soms werd een bericht gepubliceerd nadat een bericht in behandeling werd bijgewerkt. Alle statussen die in het Engels met een P beginnen (zoals Pending en Published) zijn nu verbeterd, zodat dit probleem zich niet meer voordoet. Berichten in behandeling blijven in behandeling tot je er zelf voor kiest om ze te publiceren.
+- En tot slot: meer verbeteringen voor de blokeditor. Hij ondersteunt nu opties voor het uitlijnen van afbeeldingen.

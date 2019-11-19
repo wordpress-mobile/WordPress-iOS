@@ -1,0 +1,36 @@
+{
+  "configurations" : [
+    {
+      "id" : "12D16962-D808-4F96-AF5E-9E4BCA4896F8",
+      "name" : "Foundation",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:WordPress.xcodeproj",
+      "identifier" : "1D6058900D05DD3D006BFB54",
+      "name" : "WordPress"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "E16AB92914D978240047A2E5",
+        "name" : "WordPressTest"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/WordPressFlux\/WordPressFlux.xcodeproj",
+        "identifier" : "E16A76E41FC4425000A661E3",
+        "name" : "WordPressFluxTests"
+      }
+    }
+  ],
+  "version" : 1
+}

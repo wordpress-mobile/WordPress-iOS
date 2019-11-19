@@ -1,3 +1,0 @@
-- Block editor: We’ve added a “Media & Text” block! The Link Target (Open in new tab) option has been added to Image Block settings. We fixed a bug where the “New Photo Post” shortcut didn’t add the selected photo.
-- Stats: You can now customise Insights. Insight loading on slow networks is faster.
-- Dark Mode: Improvements and small bug fixes all over the app.
