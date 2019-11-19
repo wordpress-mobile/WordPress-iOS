@@ -68,6 +68,9 @@ class PostListViewControllerTests: XCTestCase {
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
 
+        let draftsIndex = postListViewController.filterTabBar.items.firstIndex(where: { $0.title == i18n("Drafts") }) ?? 1
+        postListViewController.updateFilter(index: draftsIndex)
+
         postListViewController.startGhost()
 
         // When: Simulate a post being created
