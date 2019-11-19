@@ -1169,6 +1169,11 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
             // wrap up ui changes here
         }
     }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        replyTextView.updateHeaderHeight()
+    }
 }
 
 

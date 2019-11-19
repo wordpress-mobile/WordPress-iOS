@@ -678,6 +678,12 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }];
 }
 
+- (void)viewSafeAreaInsetsDidChange
+{
+    [super viewSafeAreaInsetsDidChange];
+    [[self replyTextView] updateHeaderHeight];
+}
+
 #pragma mark - SuggestionsTableViewDelegate
 
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text

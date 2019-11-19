@@ -1210,4 +1210,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [[self navigationController] setNavigationBarHidden:NO animated:YES];
 }
 
+- (void)viewSafeAreaInsetsDidChange
+{
+    [super viewSafeAreaInsetsDidChange];
+    [[self replyTextView] updateHeaderHeight];
+}
+
 @end

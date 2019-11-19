@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="4IS-I7-JV9"/>
                 <outlet property="expandButton" destination="JhS-87-bF3" id="njZ-RK-gmR"/>
+                <outlet property="headerHeightConstraint" destination="r7O-vC-Vwb" id="9gs-l7-ghH"/>
                 <outlet property="headerView" destination="OlK-zT-rfv" id="7uj-EF-63t"/>
                 <outlet property="headerViewLabel" destination="RrO-Bf-68b" id="T0L-37-61U"/>
                 <outlet property="placeholderLabel" destination="6Lf-XI-exE" id="vNK-7w-Wk1"/>

@@ -200,6 +200,8 @@ import Gridicons
     fileprivate func expandTextView() {
         isExpanded = true
         delegate?.updateUIForExpandedReply()
+        headerViewLabel.text = NSLocalizedString("Comment", comment: "Title for full screen comment display.")
+        updateHeaderHeight()
         expandButtonExpandedYConstraint.isActive = true
         replyButtonExpandedYConstraint.isActive = true
         textViewLeadingConstraint.constant -= expandButton.frame.width + viewSpacing
@@ -242,6 +244,9 @@ import Gridicons
         super.layoutSubviews()
     }
 
+    @objc open func updateHeaderHeight() {
+        headerHeightConstraint.constant = safeAreaHeight + replyButton.frame.height + viewSpacing
+    }
 
     // MARK: - Autolayout Helpers
     open override var intrinsicContentSize: CGSize {
@@ -367,6 +372,12 @@ import Gridicons
     fileprivate var viewSpacing: CGFloat = 8.0
     fileprivate var expandButtonExpandedYConstraint: NSLayoutConstraint!
     fileprivate var replyButtonExpandedYConstraint: NSLayoutConstraint!
+    fileprivate var safeAreaHeight: CGFloat {
+        if #available(iOS 11.0, *), let window = UIApplication.shared.keyWindow {
+            return window.safeAreaInsets.top
+        }
+        return 0
+    }
 
     // MARK: - IBOutlets
     @IBOutlet private var textView: UITextView!
@@ -375,13 +386,14 @@ import Gridicons
     @IBOutlet private var separatorsView: SeparatorsView!
     @IBOutlet private var contentView: UIView!
     @IBOutlet private var expandButton: UIButton!
-    @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var headerViewLabel: UILabel!
+    @IBOutlet private var headerView: UIView!
+    @IBOutlet private var headerViewLabel: UILabel!
     // Constraints
     @IBOutlet private var textViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private var textViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var textViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet private var textViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private var textViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
 }
 
 
