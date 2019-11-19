@@ -1,3 +1,7 @@
+1.18.0
+------
+* Block editor: New Spacer block available
+
 13.7
 -----
 * Updated the mobile apps blog address to a non-retired blog. 
