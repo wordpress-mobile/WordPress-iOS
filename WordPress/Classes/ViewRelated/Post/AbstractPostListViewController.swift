@@ -61,6 +61,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     private(set) var ghostableTableView = UITableView()
+    var ghostingEnabled = false
 
     @objc var blog: Blog!
 
@@ -803,7 +804,7 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Ghost cells
 
     func startGhost() {
-        guard emptyResults else {
+        guard ghostingEnabled, emptyResults else {
             return
         }
 

@@ -245,6 +245,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func configureGhostableTableView() {
         super.configureGhostableTableView()
 
+        ghostingEnabled = true
+
         // Register the cells
         let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: Bundle.main)
         ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
