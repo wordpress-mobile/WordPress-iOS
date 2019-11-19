@@ -157,7 +157,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         configureCompactOrDefault()
         configureFilterBarTopConstraint()
-        configureGhost()
+        updateGhostableTableViewOptions()
 
         configureNavigationButtons()
     }
@@ -204,7 +204,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         filterTabBariOS10TopConstraint.isActive = false
     }
 
-    private func configureGhost() {
+    /// Update the `GhostOptions` to correctly show compact or default cells
+    private func updateGhostableTableViewOptions() {
         let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
         let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
                                beatStartColor: .placeholderElement,
@@ -290,9 +291,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func showCompactOrDefault() {
-        configureGhost()
         tableView.reloadSections([0], with: .automatic)
+
+        updateGhostableTableViewOptions()
         ghostableTableView.reloadSections([0], with: .automatic)
+
         postsViewButtonItem.image = postViewIcon
     }
 
