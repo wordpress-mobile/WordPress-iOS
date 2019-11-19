@@ -803,7 +803,7 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Ghost cells
 
-    func startGhost() {
+    final func startGhost() {
         guard ghostingEnabled, emptyResults else {
             return
         }
@@ -812,12 +812,12 @@ class AbstractPostListViewController: UIViewController,
         noResultsViewController.view.isHidden = true
     }
 
-    func stopGhost() {
+    final func stopGhost() {
         ghostableTableView.isHidden = true
         noResultsViewController.view.isHidden = false
     }
 
-    func stopGhostIfConnectionIsNotAvailable() {
+    private func stopGhostIfConnectionIsNotAvailable() {
         guard WordPressAppDelegate.shared?.connectionAvailable == false else {
             return
         }
