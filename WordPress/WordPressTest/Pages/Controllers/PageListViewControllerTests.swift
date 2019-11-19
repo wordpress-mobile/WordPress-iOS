@@ -19,7 +19,7 @@ class PageListViewControllerTests: XCTestCase {
         super.tearDown()
     }
 
-    func testShowsGhostableTableView() {
+    func testDoesNotShowGhostableTableView() {
         let blog = BlogBuilder(context).build()
         let pageListViewController = PageListViewController.controllerWithBlog(blog)
         let _ = pageListViewController.view
