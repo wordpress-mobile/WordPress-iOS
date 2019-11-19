@@ -2368,7 +2368,9 @@ extension AztecPostViewController {
         }
 
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
-        let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
+        guard let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info) else {
+            return
+        }
         attachment?.uploadID = media.uploadID
     }
 

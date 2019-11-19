@@ -36,27 +36,21 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 #pragma mark - Creating media
 
 - (Media *)createMediaWith:(id<ExportableAsset>)exportable
-                  objectID:(NSManagedObjectID *)objectID
+                      blog:(Blog *)blog
+                      post:(AbstractPost *)post
                   progress:(NSProgress **)progress
          thumbnailCallback:(void (^)(Media *media, NSURL *thumbnailURL))thumbnailCallback
                 completion:(void (^)(Media *media, NSError *error))completion
 {
+    NSParameterAssert(post == nil || blog == post.blog);
+    NSParameterAssert(blog.managedObjectContext == self.managedObjectContext);
     NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
     __block Media *media;
     __block NSSet<NSString *> *allowedFileTypes = [NSSet set];
     [self.managedObjectContext performBlockAndWait:^{
-        AbstractPost *post = nil;
-        Blog *blog = nil;
-        NSError *error = nil;
-        NSManagedObject *existingObject = [self.managedObjectContext existingObjectWithID:objectID error:&error];
-        if ([existingObject isKindOfClass:[AbstractPost class]]) {
-            post = (AbstractPost *)existingObject;
-            blog = post.blog;
-        } else if ([existingObject isKindOfClass:[Blog class]]) {
-            blog = (Blog *)existingObject;
-        }
-        if (!post && !blog) {
+        if ( blog == nil ) {
             if (completion) {
+                NSError *error = [NSError errorWithDomain: MediaServiceErrorDomain code: MediaServiceErrorUnableToCreateMedia userInfo: nil];
                 completion(nil, error);
             }
             return;
@@ -77,6 +71,9 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
         [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     }];
+    if (media == nil) {
+        return nil;
+    }
     NSManagedObjectID *mediaObjectID = media.objectID;
     [self.managedObjectContext performBlock:^{
         // Setup completion handlers
