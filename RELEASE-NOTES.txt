@@ -5,6 +5,7 @@
 * Block editor: Fix issue where the keyboard would not capitalize sentences correctly on some cases
 * Block editor: Add alignment to paragraph blocks
 * Fixed a bug that made comment moderation fail on the first attempt for self-hosted sites.
+* Stats Refresh: Stats will reload when the application will move to foreground state.
 * Block editor: Added support for the preformatted block.
 * Stats Today widget: updated design and enabled expanding.
 

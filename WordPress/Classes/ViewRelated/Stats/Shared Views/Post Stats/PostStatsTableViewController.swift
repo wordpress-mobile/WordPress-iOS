@@ -45,6 +45,12 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
             displayLoadingViewIfNecessary()
         }
         trackAccessEvent()
+        addWillEnterForegroundObserver()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeWillEnterForegroundObserver()
     }
 
     func configure(postID: Int, postTitle: String?, postURL: URL?) {
@@ -76,6 +82,16 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         return SiteStatsTableHeaderView.headerHeight()
     }
 
+}
+
+extension PostStatsTableViewController: StatsForegroundObservable {
+    func reloadStatsData() {
+        if let mostRecentDate = store.getMostRecentDate(forPost: postID),
+            mostRecentDate < selectedDate {
+            selectedDate = mostRecentDate
+        }
+        refreshData()
+    }
 }
 
 // MARK: - Table Methods

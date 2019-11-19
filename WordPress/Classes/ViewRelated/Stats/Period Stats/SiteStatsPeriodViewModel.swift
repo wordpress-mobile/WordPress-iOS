@@ -221,9 +221,13 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Refresh Data
 
-    func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        self.lastRequestedDate = date
-        self.lastRequestedPeriod = period
+    func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit, resetOverviewCache: Bool = false) {
+        if resetOverviewCache {
+            mostRecentChartData = nil
+        }
+
+        lastRequestedDate = date
+        lastRequestedPeriod = period
         ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: false))
     }
 
