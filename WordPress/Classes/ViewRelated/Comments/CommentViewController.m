@@ -662,8 +662,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)updateUIForExpandedReply
 {
     [[self view] bringSubviewToFront:[self replyTextView]];
-    [UIView animateWithDuration:0.5 animations:^{
-        [[self navigationController] setNavigationBarHidden:TRUE];
+    [UIView animateWithDuration:self.replyTextView.animationDuration animations:^{
+        [[self navigationController] setNavigationBarHidden:YES];
     } completion:^(BOOL finished) {
         // complete UI change here
     }];
@@ -671,8 +671,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)updateUIForCollapsedReply
 {
-    [UIView animateWithDuration:0.5 animations:^{
-        [[self navigationController] setNavigationBarHidden:FALSE];
+    [UIView animateWithDuration:self.replyTextView.animationDuration animations:^{
+        [[self navigationController] setNavigationBarHidden:NO];
     } completion:^(BOOL finished) {
         // complete UI change here
     }];

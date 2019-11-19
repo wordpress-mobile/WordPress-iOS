@@ -114,6 +114,9 @@ class NotificationDetailsViewController: UIViewController {
     ///
     var onSelectedNoteChange: ((Notification) -> Void)?
 
+    override var prefersStatusBarHidden: Bool {
+        return navigationController?.navigationBar.isHidden ?? false
+    }
 
     deinit {
         // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
@@ -1151,16 +1154,16 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
     func updateUIForExpandedReply() {
         view.bringSubviewToFront(replyTextView)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        UIView.animate(withDuration: 0.5, animations: {
+        self.setNeedsStatusBarAppearanceUpdate()
+        UIView.animate(withDuration: replyTextView.animationDuration, animations: {
             self.tableView.isHidden = true
         }) { _ in
-            // wrap up ui changes here
         }
     }
 
     func updateUIForCollapsedReply() {
         navigationController?.setNavigationBarHidden(false, animated: true)
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: replyTextView.animationDuration, animations: {
             self.tableView.isHidden = false
         }) { _ in
             // wrap up ui changes here

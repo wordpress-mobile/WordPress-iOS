@@ -84,6 +84,8 @@ import Gridicons
         return textView.isFirstResponder
     }
 
+    @objc open var animationDuration: Double = 0.5
+
 
     // MARK: - Public Methods
     @objc open func replaceTextAtCaret(_ text: NSString?, withText replacement: String?) {
@@ -101,12 +103,18 @@ import Gridicons
     @objc open func collapseReplyTextView() {
         isExpanded = false
         self.headerView.isHidden = true
-        UIView.animate(withDuration: 0.5, animations: {
-            self.expandButton.isHidden = false
-            self.replyButton.isHidden = false
-            self.refreshInterface()
-        }) { _ in
-        }
+        expandButtonExpandedYConstraint.isActive = false
+        replyButtonExpandedYConstraint.isActive = false
+        textViewLeadingConstraint.constant += expandButton.frame.width + viewSpacing
+        textViewTrailingConstraint.constant += replyButton.frame.width + viewSpacing
+        UIView.animate(withDuration: animationDuration,
+                         animations: {
+                            self.refreshInterface()
+                         },
+                         completion: { _ in
+                            self.expandButton.setImage(Gridicon.iconOfType(.chevronUp),
+                                                       for: .normal)
+                         })
     }
 
     // MARK: - UITextViewDelegate Methods
@@ -181,19 +189,32 @@ import Gridicons
         handler(newText!)
     }
 
-    @IBAction func expandTextView(_ sender: UIButton) {
-        isExpanded = true
-        delegate?.updateUIForExpandedReply()
-        UIView.animate(withDuration: 0.5, animations: {
-            self.expandButton.isHidden = true
-            self.replyButton.isHidden = true
-            self.headerView.isHidden = false
-        }) { _ in
-            // complete any remaining changes here
+    @IBAction func toggleTextViewDisplay(_ sender: UIButton) {
+        if isExpanded {
+            collapseTextView()
+        } else {
+            expandTextView()
         }
     }
 
-    @IBAction func collapseTextView(_ sender: UIButton) {
+    fileprivate func expandTextView() {
+        isExpanded = true
+        delegate?.updateUIForExpandedReply()
+        expandButtonExpandedYConstraint.isActive = true
+        replyButtonExpandedYConstraint.isActive = true
+        textViewLeadingConstraint.constant -= expandButton.frame.width + viewSpacing
+        textViewTrailingConstraint.constant -= replyButton.frame.width + viewSpacing
+        UIView.animate(withDuration: animationDuration,
+                         animations: {
+                            self.headerView.isHidden = false
+                            self.layoutIfNeeded()
+                         },
+                         completion: { _ in
+                            self.expandButton.setImage(Gridicon.iconOfType(.chevronDown), for: .normal)
+                         })
+    }
+
+    fileprivate func collapseTextView() {
         isExpanded = false
         delegate?.updateUIForCollapsedReply()
         collapseReplyTextView()
@@ -260,6 +281,10 @@ import Gridicons
         textView.layoutManager.allowsNonContiguousLayout = false
         textView.accessibilityIdentifier = "ReplyText"
 
+        // TextView Initial Constraint Settings
+        textViewLeadingConstraint.constant += expandButton.frame.width + viewSpacing
+        textViewTrailingConstraint.constant += replyButton.frame.width + viewSpacing
+
         // Enable QuickType
         textView.autocorrectionType = .yes
 
@@ -271,15 +296,9 @@ import Gridicons
         replyButton.isEnabled = false
         replyButton.tintColor = .listSmallIcon
         replyButton.imageView?.contentMode = .scaleAspectFit
-        headerReplyButton.isEnabled = false
-        headerReplyButton.tintColor = .listSmallIcon
-        headerReplyButton.imageView?.contentMode = .scaleAspectFit
 
         // Expand Button
         expandButton.setImage(Gridicon.iconOfType(.chevronUp), for: .normal)
-
-        // Collapse Button
-        collapseButton.setImage(Gridicon.iconOfType(.chevronDown), for: .normal)
 
         // Header View
         headerView.isHidden = true
@@ -294,8 +313,10 @@ import Gridicons
         // Expand Collapse Button
         expandButton.tintColor = UIColor.listIcon
         expandButton.imageView?.contentMode = .scaleAspectFit
-        collapseButton.tintColor = UIColor.listIcon
-        collapseButton.imageView?.contentMode = .scaleAspectFit
+
+        // Constraints
+        expandButtonExpandedYConstraint = expandButton.centerYAnchor.constraint(equalTo: headerViewLabel.centerYAnchor, constant: 0.0)
+        replyButtonExpandedYConstraint = replyButton.centerYAnchor.constraint(equalTo: headerViewLabel.centerYAnchor, constant: 0.0)
 
         /// Initial Sizing: Final step, since this depends on other control(s) initialization
         ///
@@ -329,9 +350,7 @@ import Gridicons
     fileprivate func refreshReplyButton() {
         let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
         replyButton.isEnabled = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
-        replyButton.tintColor = replyButton.isEnabled ? .primary : .listSmallIcon
-        headerReplyButton.isEnabled = replyButton.isEnabled
-        headerReplyButton.tintColor = replyButton.tintColor
+        replyButton.tintColor = replyButton.isEnabled ? .accent : .listSmallIcon
     }
 
     fileprivate func refreshScrollPosition() {
@@ -345,19 +364,24 @@ import Gridicons
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
     fileprivate var isExpanded: Bool = false
+    fileprivate var viewSpacing: CGFloat = 8.0
+    fileprivate var expandButtonExpandedYConstraint: NSLayoutConstraint!
+    fileprivate var replyButtonExpandedYConstraint: NSLayoutConstraint!
 
     // MARK: - IBOutlets
     @IBOutlet private var textView: UITextView!
     @IBOutlet private var placeholderLabel: UILabel!
     @IBOutlet private var replyButton: UIButton!
-    @IBOutlet private var headerReplyButton: UIButton!
     @IBOutlet private var separatorsView: SeparatorsView!
     @IBOutlet private var contentView: UIView!
+    @IBOutlet private var expandButton: UIButton!
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerViewLabel: UILabel!
+    // Constraints
     @IBOutlet private var textViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private var textViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private var expandButton: UIButton!
-    @IBOutlet private var collapseButton: UIButton!
-    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var textViewTrailingConstraint: NSLayoutConstraint!
 }
 
 
@@ -369,7 +393,6 @@ private extension ReplyTextView {
     ///
     var contentPadding: CGFloat {
         return textView.layoutMargins.top + textView.layoutMargins.bottom
-                + textViewTopConstraint.constant + textViewBottomConstraint.constant
     }
 
     /// Returns the Content Height (non capped).

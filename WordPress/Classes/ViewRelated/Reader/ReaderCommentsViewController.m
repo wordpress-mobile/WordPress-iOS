@@ -57,6 +57,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
+@property (nonatomic, strong) NSArray<NSLayoutConstraint *> *verticalConstraint;
 
 @end
 
@@ -138,6 +139,17 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self configureReplyTextView];
     [self configureSuggestionsTableView];
     [self configureKeyboardGestureRecognizer];
+
+    NSDictionary *views         = @{
+        @"tableView"        : self.tableView,
+        @"postHeader"       : self.postHeaderWrapper,
+        @"replyTextView"    : self.replyTextView
+    };
+    self.verticalConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
+                          options:0
+                          metrics:nil
+                            views:views];
+
     [self configureViewConstraints];
     [self configureKeyboardManager];
 
@@ -414,10 +426,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
 
     // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:views]];
+    [self.view addConstraints:self.verticalConstraint];
 
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
                                                                       options:0
@@ -1190,37 +1199,15 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)updateUIForExpandedReply
 {
+    [[self view] removeConstraints:self.verticalConstraint];
     [[self view] bringSubviewToFront:[self replyTextView]];
-    [UIView animateWithDuration:0.5 animations:^{
-        [[self postHeaderWrapper] removeFromSuperview];
-        self.navigationController.navigationBarHidden = TRUE;
-    } completion:^(BOOL finished) {
-        // complete ui updates here
-    }];
+    [[self navigationController] setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)updateUIForCollapsedReply
 {
-    [self configurePostHeader];
-    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
-    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
-    NSDictionary *views         = @{
-        @"tableView"        : self.tableView,
-        @"postHeader"       : self.postHeaderWrapper,
-        @"replyTextView"    : self.replyTextView
-    };
-    // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:views]];
-    [self refreshPostHeaderView];
-    [UIView animateWithDuration:0.5 animations:^{
-        [[self view] layoutIfNeeded];
-        self.navigationController.navigationBarHidden = FALSE;
-    } completion:^(BOOL finished) {
-        // complete ui updates here
-    }];
+    [self.view addConstraints:self.verticalConstraint];
+    [[self navigationController] setNavigationBarHidden:NO animated:YES];
 }
 
 @end
