@@ -44,14 +44,49 @@ class GutenbergImgUploadProcessor: Processor {
         var html = "<img "
         let attributeSerializer = ShortcodeAttributeSerializer()
         html += attributeSerializer.serialize(attributes)
-        html += ">"
+        html += "/>"
         return html
     })
 
+    lazy var imgBlockProcessor = GutenbergBlockProcessor(for: "wp:image", replacer: { imgBlock in
+        guard let mediaID = imgBlock.attributes["id"] as? Int,
+            mediaID == self.mediaUploadID else {
+                return nil
+        }
+        var block = "<!-- wp:image "
+        var attributes = imgBlock.attributes
+        attributes["id"] = self.serverMediaID
+        if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            block += jsonString
+        }
+        block += " -->"
+        block += self.imgPostMediaUploadProcessor.process(imgBlock.content)
+        block += "<!-- /wp:image -->"
+        return block
+    })
+
+    lazy var mediaTextBlockProcessor = GutenbergBlockProcessor(for: "wp:media-text", replacer: { imgBlock in
+        guard let mediaID = imgBlock.attributes["mediaId"] as? Int,
+            mediaID == self.mediaUploadID else {
+                return nil
+        }
+        var block = "<!-- wp:media-text "
+        var attributes = imgBlock.attributes
+        attributes["mediaId"] = self.serverMediaID
+        if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            block += jsonString
+        }
+        block += " -->"
+        block += self.imgPostMediaUploadProcessor.process(imgBlock.content)
+        block += "<!-- /wp:media-text -->"
+        return block
+    })
+
     func process(_ text: String) -> String {
-        var result = imgPostMediaUploadProcessor.process(text)
-        result = result.replacingOccurrences(of: "wp:image {\"id\":\(String(mediaUploadID))", with: "wp:image {\"id\":\(String(serverMediaID))")
-        result = result.replacingOccurrences(of: "wp:media-text {\"mediaId\":\(String(mediaUploadID))", with: "wp:media-text {\"mediaId\":\(String(serverMediaID))")
+        var result = imgBlockProcessor.process(text)
+        result = mediaTextBlockProcessor.process(result)
         return result
     }
 }
