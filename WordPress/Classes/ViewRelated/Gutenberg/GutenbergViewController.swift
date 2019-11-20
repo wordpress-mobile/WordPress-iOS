@@ -542,7 +542,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogError(message)
         }
     }
-    
+
     func gutenbergDidRequestFullscreenImage(with mediaUrl: URL) {
         let controller = WPImageViewController(url: mediaUrl)
         controller.modalTransitionStyle = .crossDissolve
