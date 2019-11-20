@@ -51,7 +51,7 @@ class EditorMediaUtility {
         return downloadImage(from: url, size: size, scale: scale, post: post, success: success, onFailure: failure)
     }
 
-    func downloadImage(from url: URL, size requestSize: CGSize, scale: CGFloat, post: AbstractPost, success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Error) -> Void) -> ImageDownloader.Task {
+    func downloadImage(from url: URL, size requestSize: CGSize, scale: CGFloat, post: AbstractPost, allowPhotonAPI: Bool = true, success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Error) -> Void) -> ImageDownloader.Task {
         var requestURL = url
         let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
@@ -70,9 +70,15 @@ class EditorMediaUtility {
             size.width = size.width * scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
             request = URLRequest(url: requestURL)
-        } else {
+        } else if allowPhotonAPI {
             // the size that PhotonImageURLHelper expects is points size
             requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
+            request = URLRequest(url: requestURL)
+        } else {
+            if size != CGSize.zero {
+                size.width = size.width * scale
+                requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
+            }
             request = URLRequest(url: requestURL)
         }
 
