@@ -1,3 +1,6 @@
+13.8
+-----
+ 
 13.7
 -----
 * Updated the mobile apps blog address to a non-retired blog. 
@@ -6,6 +9,7 @@
 * Block editor: Add alignment to paragraph blocks
 * Fixed a bug that made comment moderation fail on the first attempt for self-hosted sites.
 * Stats Refresh: Stats will reload when the application will move to foreground state.
+* Stats: each Period and Post stat now loads independently.
 * Block editor: Added support for the preformatted block.
 * Stats Today widget: updated design and enabled expanding.
 
