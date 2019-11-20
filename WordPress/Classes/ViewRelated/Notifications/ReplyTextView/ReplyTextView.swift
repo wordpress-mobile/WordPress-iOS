@@ -114,7 +114,7 @@ import Gridicons
                          completion: { _ in
                             self.expandButton.setImage(Gridicon.iconOfType(.chevronUp),
                                                        for: .normal)
-                            expandButton.accessibilityLabel = NSLocalizedString("Expand text area", comment: "Describing button to expand the reply text editable area.")
+                            self.expandButton.accessibilityLabel = NSLocalizedString("Expand text area", comment: "Describing button to expand the reply text editable area.")
                          })
     }
 
@@ -214,7 +214,7 @@ import Gridicons
                          },
                          completion: { _ in
                             self.expandButton.setImage(Gridicon.iconOfType(.chevronDown), for: .normal)
-                            expandButton.accessibilityLabel = NSLocalizedString("Reduce text area", comment: "Describing button to reduce the reply text editable area.")
+                            self.expandButton.accessibilityLabel = NSLocalizedString("Reduce text area", comment: "Describing button to reduce the reply text editable area.")
                          })
     }
 
