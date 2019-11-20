@@ -348,6 +348,11 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+
+    func gutenbergDidRequestFetch(path: String, completion: @escaping (Swift.Result<Any, NSError>) -> Void) {
+        GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)
+    }
+
     func editorDidAutosave() {
         autosaver.contentDidChange()
     }
@@ -547,7 +552,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
-
     func gutenbergLocale() -> String? {
         return WordPressComLanguageDatabase().deviceLanguage.slug
     }
