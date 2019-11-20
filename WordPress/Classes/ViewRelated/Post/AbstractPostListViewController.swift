@@ -349,10 +349,12 @@ class AbstractPostListViewController: UIViewController,
         ghostableTableView.isHidden = true
 
         ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
-        ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1).isActive = true
-        ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1).isActive = true
-        ghostableTableView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor).isActive = true
-        ghostableTableView.topAnchor.constraint(equalTo: searchController.searchBar.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor),
+            ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor),
+            ghostableTableView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            ghostableTableView.topAnchor.constraint(equalTo: searchController.searchBar.bottomAnchor)
+        ])
 
         ghostableTableView.backgroundColor = .white
         ghostableTableView.isScrollEnabled = false
