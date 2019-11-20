@@ -18,9 +18,14 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
     }
 
     func loadImage(for imageURL: URL!, size: CGSize, scale: CGFloat, resizeMode: RCTResizeMode, progressHandler: RCTImageLoaderProgressBlock!, partialLoadHandler: RCTImageLoaderPartialLoadBlock!, completionHandler: RCTImageLoaderCompletionBlock!) -> RCTImageLoaderCancellationBlock! {
+        if let image = AnimatedImageCache.shared.cachedStaticImage(url: imageURL) {
+            completionHandler(nil, image)
+            return {}
+        }
+
         let size = sizeWidthFromURLQueryItem(from: imageURL) ?? size
-        let scaledSize = CGSize(width: size.width / scale, height: size.height / scale)
-        let task = mediaUtility.downloadImage(from: imageURL, size: scaledSize, scale: scale, post: post, allowPhotonAPI: false, success: { (image) in
+        let task = mediaUtility.downloadImage(from: imageURL, size: size, scale: scale, post: post, allowPhotonAPI: false, success: { (image) in
+            AnimatedImageCache.shared.cacheStaticImage(url: imageURL, image: image)
             completionHandler(nil, image)
         }, onFailure: { (error) in
             completionHandler(error, nil)
