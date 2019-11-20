@@ -810,12 +810,14 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
+        ghostableTableView.startGhostAnimation()
         ghostableTableView.isHidden = false
         noResultsViewController.view.isHidden = true
     }
 
     final func stopGhost() {
         ghostableTableView.isHidden = true
+        ghostableTableView.stopGhostAnimation()
         noResultsViewController.view.isHidden = false
     }
 
