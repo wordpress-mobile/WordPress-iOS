@@ -303,6 +303,7 @@ import Gridicons
         replyButton.isEnabled = false
         replyButton.tintColor = .listSmallIcon
         replyButton.imageView?.contentMode = .scaleAspectFit
+        replyButton.accessibilityLabel = NSLocalizedString("Send Reply", comment: "Describing the action of the send button for comments.")
 
         // Expand Button
         expandButton.setImage(Gridicon.iconOfType(.chevronUp), for: .normal)
