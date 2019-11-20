@@ -544,10 +544,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestFullscreenImage(with mediaUrl: URL) {
+        navigationController?.definesPresentationContext = true
         let controller = WPImageViewController(externalMediaURL: mediaUrl)
         controller.post = self.post
         controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .fullScreen
+        controller.modalPresentationStyle = .overCurrentContext
         self.present(controller, animated: true)
     }
 }
