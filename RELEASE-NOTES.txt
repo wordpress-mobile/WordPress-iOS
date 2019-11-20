@@ -1,6 +1,8 @@
 13.8
 -----
  
+* Support: Fix issue that caused 'Message failed to send' error.
+
 13.7
 -----
 * Updated the mobile apps blog address to a non-retired blog. 
