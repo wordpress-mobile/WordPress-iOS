@@ -1,3 +1,7 @@
+13.8
+-----
+* Block editor: Images clickable for fullscreen preview
+
 13.7
 -----
 * Updated the mobile apps blog address to a non-retired blog. 
