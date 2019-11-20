@@ -22,9 +22,8 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
             completionHandler(nil, image)
             return {}
         }
-
         let size = sizeWidthFromURLQueryItem(from: imageURL) ?? size
-        let task = mediaUtility.downloadImage(from: imageURL, size: size, scale: scale, post: post, allowPhotonAPI: false, success: { (image) in
+        let task = mediaUtility.downloadImage(from: imageURL, size: size, scale: 1, post: post, allowPhotonAPI: false, success: { (image) in
             AnimatedImageCache.shared.cacheStaticImage(url: imageURL, image: image)
             completionHandler(nil, image)
         }, onFailure: { (error) in
