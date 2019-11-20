@@ -886,9 +886,9 @@
 		7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */; };
 		7E3E7A6620E44F200075D159 /* HeaderContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */; };
 		7E3E9B702177C9DC00FD5797 /* GutenbergViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */; };
-		7E40716223741376003627FA /* GutenbergNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E40716123741375003627FA /* GutenbergNetworking.swift */; };
 		7E407121237163B8003627FA /* GutenbergStockPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E407120237163B8003627FA /* GutenbergStockPhotos.swift */; };
 		7E40713A2372AD54003627FA /* GutenbergFilesAppMediaSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4071392372AD54003627FA /* GutenbergFilesAppMediaSource.swift */; };
+		7E40716223741376003627FA /* GutenbergNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E40716123741375003627FA /* GutenbergNetworking.swift */; };
 		7E4123B920F4097B00DF8486 /* FormattableContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */; };
 		7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */; };
 		7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */; };
@@ -1717,7 +1717,6 @@
 		E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		E16FB7E11F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */; };
 		E16FB7E31F8B61040004DD9F /* WebKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16FB7E21F8B61030004DD9F /* WebKitViewController.swift */; };
-		E1718EA01CAD0800006F9E2D /* HockeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E1718E9F1CAD0800006F9E2D /* HockeyManager.m */; };
 		E174F6E6172A73960004F23A /* WPAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E105E9CE1726955600C0D9E7 /* WPAccount.m */; };
 		E17780801C97FA9500FA7E14 /* StoreKit+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */; };
 		E17E67031FA22C93009BDC9A /* PluginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17E67021FA22C93009BDC9A /* PluginViewModel.swift */; };
@@ -3045,9 +3044,9 @@
 		7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectContentGroup.swift; sourceTree = "<group>"; };
 		7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderContentGroup.swift; sourceTree = "<group>"; };
 		7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergViewController.swift; sourceTree = "<group>"; };
-		7E40716123741375003627FA /* GutenbergNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergNetworking.swift; sourceTree = "<group>"; };
 		7E407120237163B8003627FA /* GutenbergStockPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergStockPhotos.swift; sourceTree = "<group>"; };
 		7E4071392372AD54003627FA /* GutenbergFilesAppMediaSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFilesAppMediaSource.swift; sourceTree = "<group>"; };
+		7E40716123741375003627FA /* GutenbergNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergNetworking.swift; sourceTree = "<group>"; };
 		7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentFactory.swift; sourceTree = "<group>"; };
 		7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentGroup.swift; sourceTree = "<group>"; };
 		7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultFormattableContentAction.swift; sourceTree = "<group>"; };
@@ -4060,8 +4059,6 @@
 		E16AB93814D978240047A2E5 /* WordPressTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressTest-Prefix.pch"; sourceTree = "<group>"; };
 		E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerConfiguration.swift; sourceTree = "<group>"; };
 		E16FB7E21F8B61030004DD9F /* WebKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitViewController.swift; sourceTree = "<group>"; };
-		E1718E9E1CAD0800006F9E2D /* HockeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HockeyManager.h; sourceTree = "<group>"; };
-		E1718E9F1CAD0800006F9E2D /* HockeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HockeyManager.m; sourceTree = "<group>"; };
 		E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StoreKit+Debug.swift"; sourceTree = "<group>"; };
 		E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 11.xcdatamodel"; sourceTree = "<group>"; };
 		E17BE7A9134DEC12007285FD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -6815,7 +6812,6 @@
 				85A1B6721742E7DB00BA5E35 /* Analytics */,
 				F1D690131F828FF000200E30 /* BuildInformation */,
 				B5ECA6CB1DBAA0110062D7E0 /* CoreData */,
-				B5C9401F1DB902220079D4FF /* HockeyApp */,
 				B5DB8AF51C949DC70059196A /* ImmuTable */,
 				59DD94311AC479DC0032DD6B /* Logging */,
 				08F8CD281EBD22EF0049D0C0 /* Media */,
@@ -8208,15 +8204,6 @@
 				822876F01E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift */,
 			);
 			name = Reachability;
-			sourceTree = "<group>";
-		};
-		B5C9401F1DB902220079D4FF /* HockeyApp */ = {
-			isa = PBXGroup;
-			children = (
-				E1718E9E1CAD0800006F9E2D /* HockeyManager.h */,
-				E1718E9F1CAD0800006F9E2D /* HockeyManager.m */,
-			);
-			name = HockeyApp;
 			sourceTree = "<group>";
 		};
 		B5DB8AF51C949DC70059196A /* ImmuTable */ = {
@@ -10491,7 +10478,7 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressAuthenticator/WordPressAuthenticatorResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/HockeySDK/HockeySDKResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/AppCenter/AppCenterDistributeResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -10507,7 +10494,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPressAuthenticatorResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPressShared.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPressUIResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HockeySDKResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppCenterDistributeResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -11741,7 +11728,6 @@
 				73713583208EA4B900CCDFC8 /* Blog+Files.swift in Sources */,
 				439F4F3C219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
-				E1718EA01CAD0800006F9E2D /* HockeyManager.m in Sources */,
 				FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */,
 				98467A3F221CD48500DF51AE /* SiteStatsDetailTableViewController.swift in Sources */,
 				E11450DF1C4E47E600A6BD0F /* NoticeAnimator.swift in Sources */,
@@ -14065,7 +14051,7 @@
 					"$(inherited)",
 					INTERNAL_BUILD,
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-					HOCKEYAPP_ENABLED,
+					APPCENTER_ENABLED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;

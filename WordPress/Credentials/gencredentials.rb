@@ -57,11 +57,11 @@ print <<-EOF
 EOF
 end
 
-def print_hockeyapp(hockeyapp)
+def print_appcenter(appcenter)
 print <<-EOF
-+ (NSString *)hockeyappAppId {
-    #ifdef HOCKEYAPP_ENABLED
-    return @"#{hockeyapp}";
++ (NSString *)appcenterAppId {
+    #ifdef APPCENTER_ENABLED
+    return @"#{appcenter}";
     #else
     return @"";
     #endif
@@ -133,7 +133,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, sentry, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+def print_class(client, secret, sentry, appcenter, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -141,7 +141,7 @@ EOF
   print_client(client)
   print_secret(secret)
   print_sentry(sentry)
-  print_hockeyapp(hockeyapp)
+  print_appcenter(appcenter)
   print_giphy(giphy)
   print_google_login_client(google_client)
   print_google_login_scheme(google_scheme)
@@ -168,7 +168,7 @@ end
 client = nil
 secret = nil
 sentry = nil
-hockeyapp = nil
+appcenter = nil
 giphy = nil
 google_client = nil
 google_scheme = nil
@@ -188,8 +188,8 @@ File.open(path) do |f|
       secret = value
     elsif k == "SENTRY_DSN"
       sentry = value
-    elsif k == "HOCKEYAPP_APP_ID"
-      hockeyapp = value
+    elsif k == "APPCENTER_APP_ID"
+      appcenter = value
     elsif k == "GIPHY_APP_ID"
       giphy = value
     elsif k == "GOOGLE_LOGIN_CLIENT_ID"
@@ -232,8 +232,8 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 
   if configuration == "Release-Internal"
-    if hockeyapp.nil?
-      $stderr.puts "warning: HockeyApp App Id not found"
+    if appcenter.nil?
+      $stderr.puts "warning: AppCenter App Id not found"
     end 
   end
   
@@ -242,4 +242,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, sentry, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+print_class(client, secret, sentry, appcenter, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
