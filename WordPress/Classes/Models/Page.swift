@@ -55,4 +55,10 @@ class Page: AbstractPost {
             preconditionFailure("Invalid key path for a section identifier")
         }
     }
+
+    override func additionalContentHashes() -> [Data] {
+        return [
+            hash(for: parentID?.intValue ?? 0)
+        ]
+    }
 }

@@ -1,5 +1,4 @@
 import UIKit
-import WordPressComStatsiOS
 
 @objc
 class MySitesCoordinator: NSObject {

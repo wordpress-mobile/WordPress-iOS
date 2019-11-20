@@ -67,6 +67,20 @@ class MediaTests: XCTestCase {
         }
     }
 
+    func testMediaHasAssociatedPost() {
+        let post = PostBuilder(context).build()
+        let media = newTestMedia()
+        media.addPostsObject(post)
+
+        XCTAssertTrue(media.hasAssociatedPost())
+    }
+
+    func testMediaHasntAssociatedPost() {
+        let media = newTestMedia()
+
+        XCTAssertFalse(media.hasAssociatedPost())
+    }
+
     // MARK: - AutoUpload Failure Count
 
     func testThatIncrementAutoUploadFailureCountWorks() {

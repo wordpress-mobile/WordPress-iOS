@@ -168,8 +168,22 @@ class AztecPostViewController: UIViewController, PostEditor {
         if UIApplication.shared.isCreatingScreenshots() {
             textView.autocorrectionType = .no
         }
+
+        disableLinkTapRecognizer(from: textView)
     }
 
+    /**
+    This handles a bug introduced by iOS 13.0 (tested up to 13.2) where link interactions don't respect what the documentation says.
+    The documenatation for textView(_:shouldInteractWith:in:interaction:) says:
+    > Links in text views are interactive only if the text view is selectable but noneditable.
+    Our Aztec Text views are selectable and editable, and yet iOS was opening links on Safari when tapped.
+    */
+    fileprivate func disableLinkTapRecognizer(from textView: UITextView) {
+        guard let recognizer = textView.gestureRecognizers?.first(where: { $0.name == "UITextInteractionNameLinkTap" }) else {
+            return
+        }
+        recognizer.isEnabled = false
+    }
 
     /// Aztec's Text Placeholder
     ///
@@ -1349,22 +1363,6 @@ extension AztecPostViewController: UITextViewDelegate {
         return true
     }
 
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-
-        if #available(iOS 13.1, *) {
-            return false
-        } else if #available(iOS 13.0.0, *) {
-            // Sergio Estevao: This shouldn't happen in an editable textView, but it looks we have a system bug in iOS13 so we need this workaround
-            let position = characterRange.location
-            textView.selectedRange = NSRange(location: position, length: 0)
-            textView.typingAttributes = textView.attributedText.attributes(at: position, effectiveRange: nil)
-            textView.delegate?.textViewDidChangeSelection?(textView)
-            updateFormatBar()
-        }
-
-        return false
-    }
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         refreshTitlePosition()
     }
@@ -2314,7 +2312,7 @@ extension AztecPostViewController {
         case .processing:
             DDLogInfo("Creating media")
         case .thumbnailReady(let url):
-            handleThumbnailURL(url, attachment: attachment)
+            handleThumbnailURL(url, attachment: attachment, savePostContent: true)
         case .uploading:
             handleUploadStarted(attachment: attachment)
         case .ended:
@@ -2472,7 +2470,8 @@ extension AztecPostViewController {
         return videoAttachment
     }
 
-    private func handleThumbnailURL(_ thumbnailURL: URL, attachment: MediaAttachment) {
+    private func handleThumbnailURL(_ thumbnailURL: URL, attachment: MediaAttachment,
+                                    savePostContent: Bool = false) {
         DispatchQueue.main.async {
             if let attachment = attachment as? ImageAttachment {
                 attachment.updateURL(thumbnailURL)
@@ -2481,6 +2480,10 @@ extension AztecPostViewController {
             else if let attachment = attachment as? VideoAttachment {
                 attachment.posterURL = thumbnailURL
                 self.richTextView.refresh(attachment)
+            }
+
+            if savePostContent {
+                self.mapUIContentToPostAndSave(immediate: true)
             }
         }
     }

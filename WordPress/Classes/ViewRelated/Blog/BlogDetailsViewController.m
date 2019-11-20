@@ -17,7 +17,6 @@
 #import <Reachability/Reachability.h>
 #import <WordPressShared/WPTableViewCell.h>
 
-@import WordPressComStatsiOS;
 @import Gridicons;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
@@ -167,7 +166,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
-@property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
 @property (nonatomic, strong) ImageCropViewController *imageCropViewController;
@@ -344,6 +342,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [self stopAlertTimer];
 }
 
@@ -1212,22 +1211,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // only preload on wifi
     if (isOnWifi) {
-        [self preloadStats];
         [self preloadPosts];
         [self preloadPages];
         [self preloadComments];
         [self preloadMetadata];
-    }
-}
-
-- (void)preloadStats
-{
-    NSString *oauthToken = self.blog.authToken;
-    
-    if (oauthToken && ![Feature enabled:FeatureFlagStatsRefresh]) {
-        NSLog(@"BlogDetails: preloading stats.");
-        self.statsService = [self statsServiceWithSiteId:self.blog.dotComID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken cacheExpirationInterval:5 * 60];
-        [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
     }
 }
 
@@ -1424,7 +1411,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatStatsAccessed withBlog:self.blog];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
-    statsView.statsService = self.statsService;
 
     // Calling `showDetailViewController:sender:` should do this automatically for us,
     // but when showing stats from our 3D Touch shortcut iOS sometimes incorrectly
@@ -1594,7 +1580,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
-    statsView.statsService = self.statsService;
 
     return statsView;
 }

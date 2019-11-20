@@ -48,3 +48,30 @@ extension StatsInsightsStore: StatsStoreCacheable {
         }
     }
 }
+
+extension StatsPeriodStore: StatsStoreCacheable {
+    func containsCachedData(for type: PeriodType) -> Bool {
+        switch type {
+        case .summary:
+            return state.summary != nil
+        case .topPostsAndPages:
+            return state.topPostsAndPages != nil
+        case .topReferrers:
+            return state.topReferrers != nil
+        case .topPublished:
+            return state.topPublished != nil
+        case .topClicks:
+            return state.topClicks != nil
+        case .topAuthors:
+            return state.topAuthors != nil
+        case .topSearchTerms:
+            return state.topSearchTerms != nil
+        case .topCountries:
+            return state.topCountries != nil
+        case .topVideos:
+            return state.topVideos != nil
+        case .topFileDownloads:
+            return state.topFileDownloads != nil
+        }
+    }
+}

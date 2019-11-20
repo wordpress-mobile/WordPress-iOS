@@ -44,11 +44,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     @IBAction func more(_ sender: Any) {
-        guard let post = post, let button = sender as? UIButton else {
+        guard let viewModel = viewModel, let button = sender as? UIButton else {
             return
         }
 
-        actionSheetDelegate?.showActionSheet(post, from: button)
+        actionSheetDelegate?.showActionSheet(viewModel, from: button)
     }
 
     override func awakeFromNib() {
@@ -132,6 +132,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         badgesLabel.textColor = viewModel.statusColor
         badgesLabel.text = viewModel.statusAndBadges(separatedBy: Constants.separator)
+        badgesLabel.numberOfLines = viewModel.isUploadingOrFailed ? 0 : 1
     }
 
     private func configureProgressView() {

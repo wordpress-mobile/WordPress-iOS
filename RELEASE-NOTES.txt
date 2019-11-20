@@ -1,5 +1,15 @@
+13.7
+-----
+ 
 13.6
 -----
+* Fixed a bug that was not submiting posts for review
+* Better support for creating or editing posts while offline. Posts can be saved while offline and they will be automatically uploaded (or published) when the device is back online.
+* Me view: fix issue where view was blank when logging in with a self-hosted site.
+* Block Editor: Added support for image alignment options.
+* Fix bug for tapping links in Aztec or Gutenberg editor opening Safari.
+* Fix Gutenberg editor layout issues when writing on multiline blocks.
+* Fixed validation issues in the domain registration screen.
  
 13.5
 -----
