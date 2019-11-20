@@ -19,6 +19,9 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var stockPhotos: GutenbergStockPhotos = {
         return GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
     }()
+    private lazy var filesAppMediaPicker: GutenbergFilesAppMediaSource = {
+        return GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+    }()
 
     // MARK: - Aztec
 
@@ -360,6 +363,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
         case .stockPhotos:
             stockPhotos.presentPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
+        case .filesApp:
+            filesAppMediaPicker.presentPicker(origin: self, filters: filter, multipleSelection: allowMultipleSelection, callback: callback)
         default: break
         }
     }
@@ -515,6 +520,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 showMediaSelectionOnStart()
             }
             focusTitleIfNeeded()
+            mediaInserterHelper.refreshMediaStatus()
         }
     }
 
@@ -563,10 +569,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
-        if post.blog.supports(.stockPhotos) {
-            return [.stockPhotos]
-        }
-        return []
+        return [
+            post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
+            .filesApp,
+        ].compactMap { $0 }
     }
 }
 
@@ -665,6 +671,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
 extension Gutenberg.MediaSource {
     static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
+    static let filesApp = Gutenberg.MediaSource(id: "wpios-files-app", label: .files, types: [.image, .video, .audio, .other])
 }
 
 private extension GutenbergViewController {

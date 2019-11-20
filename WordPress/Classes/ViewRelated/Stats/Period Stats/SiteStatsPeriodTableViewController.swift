@@ -43,7 +43,10 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
             if oldValue == nil {
                 initViewModel()
             } else {
-                refreshData()
+                // If the oldValue is equal to the new value the overview cache is cleaned
+                // This might happen only when a new date has been injected from the dashboard,
+                // and the app will enter the foreground state.
+                refreshData(resetOverviewCache: oldValue == selectedPeriod)
             }
 
             if !asyncLoadingActivated {
@@ -221,7 +224,7 @@ private extension SiteStatsPeriodTableViewController {
         refreshData()
     }
 
-    func refreshData() {
+    func refreshData(resetOverviewCache: Bool = false) {
         guard let selectedDate = selectedDate,
             let selectedPeriod = selectedPeriod,
             viewIsVisible() else {
@@ -229,7 +232,7 @@ private extension SiteStatsPeriodTableViewController {
                 return
         }
         addViewModelListeners()
-        viewModel?.refreshPeriodOverviewData(withDate: selectedDate, forPeriod: selectedPeriod)
+        viewModel?.refreshPeriodOverviewData(withDate: selectedDate, forPeriod: selectedPeriod, resetOverviewCache: resetOverviewCache)
     }
 
     func applyTableUpdates() {

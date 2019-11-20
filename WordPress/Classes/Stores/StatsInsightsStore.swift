@@ -942,12 +942,15 @@ private extension InsightStoreState {
     func storeTodayWidgetData() {
         // Only store data if the widget is using the current site
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
-        let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
+            let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
             widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
-            return
+                return
         }
 
-        TodayWidgetStats.saveData(views: todaysStats?.viewsCount ?? 0,
-                                  visitors: todaysStats?.visitorsCount ?? 0)
+        let data = TodayWidgetStats(views: todaysStats?.viewsCount ?? 0,
+                                    visitors: todaysStats?.visitorsCount ?? 0,
+                                    likes: todaysStats?.likesCount ?? 0,
+                                    comments: todaysStats?.commentsCount ?? 0)
+        data.saveData()
     }
 }

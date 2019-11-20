@@ -55,7 +55,10 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let media = insert(exportableAsset: asset, source: .deviceLibrary)
+        guard let media = insert(exportableAsset: asset, source: .deviceLibrary) else {
+            callback([])
+            return
+        }
         let options = PHImageRequestOptions()
         options.deliveryMode = .fastFormat
         options.version = .current
@@ -80,7 +83,10 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let media = insert(exportableAsset: url as NSURL, source: .otherApps)
+        guard let media = insert(exportableAsset: url as NSURL, source: .otherApps) else {
+            callback([])
+            return
+        }
         let mediaUploadID = media.gutenbergUploadID
         callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
     }
@@ -127,9 +133,32 @@ class GutenbergMediaInserterHelper: NSObject {
         return mediaCoordinator.hasFailedMedia(for: post)
     }
 
-    func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
+    func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media? {
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
         return mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
+    }
+
+    /// Method to be used to refresh the status of all media associated with the post.
+    /// this method should be called when opening a post to make sure every media block has the correct visual status.
+    func refreshMediaStatus() {
+        for media in post.media {
+            switch media.remoteStatus {
+            case .processing:
+                mediaObserver(media: media, state: .processing)
+            case .pushing:
+                var progressValue = 0.5
+                if let progress = mediaCoordinator.progress(for: media) {
+                    progressValue = progress.fractionCompleted
+                }
+                mediaObserver(media: media, state: .progress(value: progressValue))
+            case .failed:
+                if let error = media.error as NSError? {
+                    mediaObserver(media: media, state: .failed(error: error))
+                }
+            default:
+                break
+            }
+        }
     }
 
     private func registerMediaObserver() {
