@@ -84,7 +84,7 @@ import Gridicons
         return textView.isFirstResponder
     }
 
-    @objc open let animationDuration: Double = 0.5
+    @objc public let animationDuration: Double = 0.5
 
     @objc open var isExpanded: Bool = false
 

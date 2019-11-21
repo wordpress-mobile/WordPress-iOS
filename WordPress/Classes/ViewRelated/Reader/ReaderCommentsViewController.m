@@ -51,6 +51,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *tableViewBottomConstraintToView;
+@property (nonatomic, strong) NSLayoutConstraint *tableViewBottomConstraintToReplyText;
 @property (nonatomic, strong) NSCache *estimatedRowHeights;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
@@ -58,7 +60,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
-@property (nonatomic, strong) NSArray<NSLayoutConstraint *> *verticalConstraint;
 
 @end
 
@@ -423,11 +424,31 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
 
     // TableView Contraints
-    self.verticalConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView]"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:views];
-    [self.view addConstraints:self.verticalConstraint];
+                                                                        views:views]];
+
+    self.tableViewBottomConstraintToView = [NSLayoutConstraint constraintWithItem:self.view
+                                                                                 attribute:NSLayoutAttributeBottom
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:self.tableView
+                                                                                 attribute:NSLayoutAttributeBottom
+                                                                                multiplier:1.0
+                                                                                  constant:0];
+    self.tableViewBottomConstraintToView.priority = UILayoutPriorityDefaultLow;
+    [self.view addConstraint:self.tableViewBottomConstraintToView];
+
+    self.tableViewBottomConstraintToReplyText = [NSLayoutConstraint constraintWithItem:self.tableView
+                                                                                 attribute:NSLayoutAttributeBottom
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:self.replyTextView
+                                                                                 attribute:NSLayoutAttributeTop
+                                                                                multiplier:1.0
+                                                                                  constant:0];
+    self.tableViewBottomConstraintToReplyText.priority = UILayoutPriorityDefaultHigh;
+    [self.view addConstraint:self.tableViewBottomConstraintToReplyText];
+
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
                                                                       options:0
                                                                       metrics:nil
@@ -445,7 +466,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                                      multiplier:1.0
                                                                        constant:0.0];
     self.replyTextViewBottomConstraint.priority = UILayoutPriorityDefaultHigh;
-
     [self.view addConstraint:self.replyTextViewBottomConstraint];
 
     // Suggestions Constraints
@@ -470,17 +490,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-    
-    // TODO:
-    // This LayoutConstraint is just a helper, meant to hide / display the ReplyTextView, as needed.
-    // Whenever iOS 8 is set as the deployment target, let's always attach this one, and enable / disable it as needed!
-    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.replyTextView
-                                                                      attribute:NSLayoutAttributeHeight
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:nil
-                                                                      attribute:0
-                                                                     multiplier:1
-                                                                       constant:0];
 }
 
 
@@ -612,12 +621,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     BOOL showsReplyTextView = self.shouldDisplayReplyTextView;
     self.replyTextView.hidden = !showsReplyTextView;
-    
-    if (showsReplyTextView) {
-        [self.view removeConstraint:self.replyTextViewHeightConstraint];
-    } else {
-        [self.view addConstraint:self.replyTextViewHeightConstraint];
-    }
 }
 
 - (void)refreshSuggestionsTableView
@@ -1199,14 +1202,16 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)updateUIForExpandedReply
 {
-    [self.view removeConstraints:self.verticalConstraint];
     [self.view bringSubviewToFront:self.replyTextView];
+    self.tableViewBottomConstraintToReplyText.priority = UILayoutPriorityDefaultLow;
+    self.tableViewBottomConstraintToView.priority = UILayoutPriorityDefaultHigh;
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)updateUIForCollapsedReply
 {
-    [self.view addConstraints:self.verticalConstraint];
+    self.tableViewBottomConstraintToReplyText.priority = UILayoutPriorityDefaultHigh;
+    self.tableViewBottomConstraintToView.priority = UILayoutPriorityDefaultLow;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
