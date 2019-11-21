@@ -201,7 +201,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    if ([self replyTextView] != nil && [[self replyTextView] isExpanded]) {
+    if (self.replyTextView != nil && self.replyTextView.isExpanded) {
         return UIStatusBarStyleDefault;
     }
     return UIStatusBarStyleLightContent;
@@ -669,27 +669,19 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)updateUIForExpandedReply
 {
-    [[self view] bringSubviewToFront:[self replyTextView]];
-    [UIView animateWithDuration:self.replyTextView.animationDuration animations:^{
-        [[self navigationController] setNavigationBarHidden:YES];
-    } completion:^(BOOL finished) {
-        // complete UI change here
-    }];
+    [self.view bringSubviewToFront:self.replyTextView];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)updateUIForCollapsedReply
 {
-    [UIView animateWithDuration:self.replyTextView.animationDuration animations:^{
-        [[self navigationController] setNavigationBarHidden:NO];
-    } completion:^(BOOL finished) {
-        // complete UI change here
-    }];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
     [super viewSafeAreaInsetsDidChange];
-    [[self replyTextView] updateHeaderHeight];
+    [self.replyTextView updateHeaderHeight];
 }
 
 #pragma mark - SuggestionsTableViewDelegate

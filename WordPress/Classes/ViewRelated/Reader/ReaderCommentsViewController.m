@@ -140,17 +140,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self configureReplyTextView];
     [self configureSuggestionsTableView];
     [self configureKeyboardGestureRecognizer];
-
-    NSDictionary *views         = @{
-        @"tableView"        : self.tableView,
-        @"postHeader"       : self.postHeaderWrapper,
-        @"replyTextView"    : self.replyTextView
-    };
-    self.verticalConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
-                          options:0
-                          metrics:nil
-                            views:views];
-
     [self configureViewConstraints];
     [self configureKeyboardManager];
 
@@ -209,7 +198,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    if ([self replyTextView] != nil && [[self replyTextView] isExpanded]) {
+    if (self.replyTextView != nil && self.replyTextView.isExpanded) {
         return UIStatusBarStyleDefault;
     }
     return UIStatusBarStyleLightContent;
@@ -434,8 +423,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
 
     // TableView Contraints
+    self.verticalConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views];
     [self.view addConstraints:self.verticalConstraint];
-
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
                                                                       options:0
                                                                       metrics:nil
@@ -1207,21 +1199,21 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)updateUIForExpandedReply
 {
-    [[self view] removeConstraints:self.verticalConstraint];
-    [[self view] bringSubviewToFront:[self replyTextView]];
-    [[self navigationController] setNavigationBarHidden:YES animated:YES];
+    [self.view removeConstraints:self.verticalConstraint];
+    [self.view bringSubviewToFront:self.replyTextView];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)updateUIForCollapsedReply
 {
     [self.view addConstraints:self.verticalConstraint];
-    [[self navigationController] setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
     [super viewSafeAreaInsetsDidChange];
-    [[self replyTextView] updateHeaderHeight];
+    [self.replyTextView updateHeaderHeight];
 }
 
 @end

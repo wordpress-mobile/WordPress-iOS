@@ -84,7 +84,8 @@ import Gridicons
         return textView.isFirstResponder
     }
 
-    @objc open var animationDuration: Double = 0.5
+    @objc open let animationDuration: Double = 0.5
+
     @objc open var isExpanded: Bool = false
 
     // MARK: - Public Methods
@@ -114,7 +115,7 @@ import Gridicons
                          completion: { _ in
                             self.expandButton.setImage(Gridicon.iconOfType(.chevronUp),
                                                        for: .normal)
-                            self.expandButton.accessibilityLabel = NSLocalizedString("Expand text area", comment: "Describing button to expand the reply text editable area.")
+                            self.expandButton.accessibilityLabel = NSLocalizedString("Expand text area", comment: "Accessibility label for button that expands the reply text editable area.")
                          })
     }
 
@@ -200,13 +201,18 @@ import Gridicons
 
     fileprivate func expandTextView() {
         isExpanded = true
+
         delegate?.updateUIForExpandedReply()
-        headerViewLabel.text = NSLocalizedString("Comment", comment: "Title for full screen comment display.")
+
+        headerViewLabel.text = NSLocalizedString("Comment", comment: "Title for full screen reply text editable area.")
         updateHeaderHeight()
+
         expandButtonExpandedYConstraint.isActive = true
         replyButtonExpandedYConstraint.isActive = true
+
         textViewLeadingConstraint.constant -= expandButton.frame.width + viewSpacing
         textViewTrailingConstraint.constant -= replyButton.frame.width + viewSpacing
+
         UIView.animate(withDuration: animationDuration,
                          animations: {
                             self.headerView.isHidden = false
@@ -214,7 +220,7 @@ import Gridicons
                          },
                          completion: { _ in
                             self.expandButton.setImage(Gridicon.iconOfType(.chevronDown), for: .normal)
-                            self.expandButton.accessibilityLabel = NSLocalizedString("Reduce text area", comment: "Describing button to reduce the reply text editable area.")
+                            self.expandButton.accessibilityLabel = NSLocalizedString("Reduce text area", comment: "Accessibility label for button that collapses the reply text editable area.")
                          })
     }
 
@@ -303,11 +309,11 @@ import Gridicons
         replyButton.isEnabled = false
         replyButton.tintColor = .listSmallIcon
         replyButton.imageView?.contentMode = .scaleAspectFit
-        replyButton.accessibilityLabel = NSLocalizedString("Send Reply", comment: "Describing the action of the send button for comments.")
+        replyButton.accessibilityLabel = NSLocalizedString("Send Reply", comment: "Accessibility label for button that sends the reply text.")
 
         // Expand Button
         expandButton.setImage(Gridicon.iconOfType(.chevronUp), for: .normal)
-        expandButton.accessibilityLabel = NSLocalizedString("Expand text area", comment: "Describing button to expand the reply text editable area.")
+        expandButton.accessibilityLabel = NSLocalizedString("Expand text area", comment: "Accessibility label for button that expands the reply text editable area.")
 
         // Header View
         headerView.isHidden = true
@@ -376,7 +382,7 @@ import Gridicons
     fileprivate var expandButtonExpandedYConstraint: NSLayoutConstraint!
     fileprivate var replyButtonExpandedYConstraint: NSLayoutConstraint!
     fileprivate var safeAreaHeight: CGFloat {
-        if #available(iOS 11.0, *), let window = UIApplication.shared.keyWindow {
+        if let window = UIApplication.shared.keyWindow {
             return window.safeAreaInsets.top
         }
         return 0
