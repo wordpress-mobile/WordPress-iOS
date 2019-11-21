@@ -16,14 +16,14 @@ final class LocalNewsService: NewsService {
 
     func load(then completion: @escaping (Result<NewsItem, Error>) -> Void) {
         guard let content = content else {
-            let result: Result<NewsItem, Error> = .error(NewsError.fileNotFound)
+            let result: Result<NewsItem, Error> = .failure(NewsError.fileNotFound)
             completion(result)
 
             return
         }
 
         guard let newsItem = NewsItem(fileContent: content) else {
-            let result: Result<NewsItem, Error> = .error(NewsError.invalidContent)
+            let result: Result<NewsItem, Error> = .failure(NewsError.invalidContent)
             completion(result)
 
             return

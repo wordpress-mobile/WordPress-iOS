@@ -64,7 +64,7 @@ class PostCoordinator: NSObject {
             switch result {
             case .success(let post):
                 self.upload(post: post, forceDraftIfCreating: forceDraftIfCreating, completion: completion)
-            case .error(let error):
+            case .failure(let error):
                 switch error {
                 case SavingError.mediaFailure(let savedPost):
                     self.dispatchNotice(savedPost)
@@ -74,7 +74,7 @@ class PostCoordinator: NSObject {
                     }
                 }
 
-                completion?(.error(error))
+                completion?(.failure(error))
             }
         }
     }
@@ -84,7 +84,7 @@ class PostCoordinator: NSObject {
             switch result {
             case .success(let post):
                 self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
-            case .error:
+            case .failure:
                 break
             }
         }
@@ -130,7 +130,7 @@ class PostCoordinator: NSObject {
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
             change(post: post, status: .failed) { savedPost in
-                completion(.error(SavingError.mediaFailure(savedPost)))
+                completion(.failure(SavingError.mediaFailure(savedPost)))
             }
             return
         }
@@ -157,7 +157,7 @@ class PostCoordinator: NSObject {
                 self.removeObserver(for: post)
 
                 self.change(post: post, status: .failed) { savedPost in
-                    completion(.error(SavingError.mediaFailure(savedPost)))
+                    completion(.failure(SavingError.mediaFailure(savedPost)))
                 }
             }
 
@@ -179,7 +179,7 @@ class PostCoordinator: NSObject {
                     case .video:
                         EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { (result) in
                             switch result {
-                            case .error:
+                            case .failure:
                                 handleSingleMediaFailure()
                             case .success(let value):
                                 media.remoteURL = value.videoURL.absoluteString
@@ -282,7 +282,7 @@ class PostCoordinator: NSObject {
         }, failure: { [weak self] error in
             self?.dispatchNotice(post)
 
-            completion?(.error(error ?? SavingError.unknown))
+            completion?(.failure(error ?? SavingError.unknown))
 
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })

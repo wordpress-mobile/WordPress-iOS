@@ -46,7 +46,7 @@ final class DefaultNewsManager: NewsManager {
         case .success(let value):
             trackRequestedExtendedInfo()
             delegate?.didSelectReadMore(value.extendedInfoURL)
-        case .error:
+        case .failure:
             return
         }
     }
@@ -110,7 +110,7 @@ final class DefaultNewsManager: NewsManager {
         switch actualResult {
         case .success(let value):
             return currentBuildVersion() >= value.version
-        case .error:
+        case .failure:
             return false
         }
     }
@@ -130,7 +130,7 @@ final class DefaultNewsManager: NewsManager {
         }
 
         switch actualResult {
-        case .error:
+        case .failure:
             return Decimal(floatLiteral: 0.0)
         case .success(let newsItem):
             return newsItem.version
@@ -151,7 +151,7 @@ final class DefaultNewsManager: NewsManager {
         }
 
         switch actualResult {
-        case .error:
+        case .failure:
             return
         case .success(let newsItem):
             database.set(newsItem.version, forKey: DatabaseKeys.lastDismissedCardVersion)

@@ -13,7 +13,7 @@ final class ResultTypeTests: XCTestCase {
         switch result {
         case .success(let data):
             XCTAssertEqual(data, Constants.value)
-        case .error:
+        case .failure:
             XCTFail()
         }
     }
@@ -24,7 +24,7 @@ final class ResultTypeTests: XCTestCase {
         switch result {
         case .success:
             XCTFail()
-        case .error(let value):
+        case .failure(let value):
             XCTAssertEqual(value.localizedDescription, Constants.error.localizedDescription)
         }
     }
@@ -34,6 +34,6 @@ final class ResultTypeTests: XCTestCase {
     }
 
     private func failure() -> Result<String, Error> {
-        return .error(Constants.error)
+        return .failure(Constants.error)
     }
 }

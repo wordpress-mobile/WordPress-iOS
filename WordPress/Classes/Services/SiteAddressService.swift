@@ -78,7 +78,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
                                                     return
                                                 }
 
-                                                completion(Result.error(error))
+                                                completion(Result.failure(error))
         })
     }
 }

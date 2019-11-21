@@ -98,7 +98,7 @@ final class DefaultNewsManagerTests: XCTestCase {
     func testManagerReturnsExpectedContent() {
         manager?.load(then: { result in
             switch result {
-            case .error:
+            case .failure:
                 XCTFail()
             case .success(let newsItem):
                 XCTAssertEqual(newsItem.title, Constants.title)

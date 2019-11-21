@@ -41,7 +41,7 @@ final class TracksNewsStats: NewsStats {
         }
 
         switch actualNews {
-        case .error:
+        case .failure:
             return
         case .success(let newsItem):
             WPAppAnalytics.track(event, withProperties: eventProperties(version: newsItem.version))

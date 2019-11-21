@@ -105,14 +105,14 @@ class EditorMediaUtility {
                 completion(Result.success((videoURL: videoURL, posterURL: nil)))
             } else {
                 DDLogError("Unable to find remote video URL for video with upload ID = \(media.uploadID).")
-                completion(Result.error(NSError()))
+                completion(Result.failure(NSError()))
             }
             return
         }
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         mediaService.getMediaURL(fromVideoPressID: videoPressID, in: post.blog, success: { (videoURLString, posterURLString) in
             guard let videoURL = URL(string: videoURLString) else {
-                completion(Result.error(NSError()))
+                completion(Result.failure(NSError()))
                 return
             }
             var posterURL: URL?
@@ -122,7 +122,7 @@ class EditorMediaUtility {
             completion(Result.success((videoURL: videoURL, posterURL: posterURL)))
         }, failure: { (error) in
             DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
-            completion(Result.error(error))
+            completion(Result.failure(error))
         })
     }
 }

@@ -109,7 +109,7 @@ class PostCoordinatorTests: XCTestCase {
 
         postCoordinator.save(post) { result in
             switch result {
-            case .error(let error):
+            case .failure(let error):
                 returnedError = error
             default:
                 break
@@ -131,7 +131,7 @@ class PostCoordinatorTests: XCTestCase {
 
         postCoordinator.save(post) { result in
             switch result {
-            case .error(let error):
+            case .failure(let error):
                 returnedError = error
             default:
                 break

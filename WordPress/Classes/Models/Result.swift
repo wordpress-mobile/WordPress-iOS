@@ -5,5 +5,5 @@
 /// - error: the error returned by the operation
 enum Result<Value, Error> {
     case success(Value)
-    case error(Error)
+    case failure(Error)
 }
