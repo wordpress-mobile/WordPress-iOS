@@ -157,7 +157,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         configureCompactOrDefault()
         configureFilterBarTopConstraint()
-        configureGhost()
+        updateGhostableTableViewOptions()
 
         configureNavigationButtons()
     }
@@ -204,8 +204,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         filterTabBariOS10TopConstraint.isActive = false
     }
 
-    private func configureGhost() {
-        ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+    /// Update the `GhostOptions` to correctly show compact or default cells
+    private func updateGhostableTableViewOptions() {
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        ghostableTableView.removeGhostContent()
+        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
     }
 
     private func configureCompactOrDefault() {
@@ -235,6 +241,19 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+    }
+
+    override func configureGhostableTableView() {
+        super.configureGhostableTableView()
+
+        ghostingEnabled = true
+
+        // Register the cells
+        let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: Bundle.main)
+        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
+
+        let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: Bundle.main)
+        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
     }
 
     override func configureAuthorFilter() {
@@ -272,8 +291,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func showCompactOrDefault() {
-        configureGhost()
         tableView.reloadSections([0], with: .automatic)
+
+        updateGhostableTableViewOptions()
+        ghostableTableView.reloadSections([0], with: .automatic)
+
         postsViewButtonItem.image = postViewIcon
     }
 
