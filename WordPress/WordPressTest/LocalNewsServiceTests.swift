@@ -25,7 +25,7 @@ final class LocalNewsServiceTests: XCTestCase {
     func testServiceReturnsExpectedContent() {
         service?.load(then: { result in
             switch result {
-            case .error (let error):
+            case .failure(let error):
                 print(error)
                 XCTFail()
             case .success(let newsItem):
@@ -41,7 +41,7 @@ final class LocalNewsServiceTests: XCTestCase {
 
         badFormedService.load(then: { result in
             switch result {
-            case .error (let error):
+            case .failure(let error):
                 XCTAssertNotNil(error)
             case .success:
                 XCTFail("Bad formed news file")
