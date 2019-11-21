@@ -23,7 +23,9 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
             return {}
         }
         let size = sizeWidthFromURLQueryItem(from: imageURL) ?? size
-        let task = mediaUtility.downloadImage(from: imageURL, size: size, scale: 1, post: post, allowPhotonAPI: false, success: { (image) in
+        let screenScale = UIScreen.main.scale // The provided scale does not always correspond to the UIScreen scale.
+        let scaledSize = CGSize(width: size.width / screenScale, height: size.height / screenScale)
+        let task = mediaUtility.downloadImage(from: imageURL, size: scaledSize, scale: 1, post: post, success: { (image) in
             AnimatedImageCache.shared.cacheStaticImage(url: imageURL, image: image)
             completionHandler(nil, image)
         }, onFailure: { (error) in
