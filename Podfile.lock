@@ -300,7 +300,8 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (~> 1.12.0)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `ba8524aba1332550efb05cad583a85ed3511beb5`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `ba8524aba1332550efb05cad583a85ed3511beb5`)
   - WordPressAuthenticator (~> 1.10.2)
   - WordPressKit (~> 4.5.3)
   - WordPressMocks (~> 0.0.6)
@@ -343,8 +344,6 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
@@ -412,6 +411,12 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.17.0
+  WordPress-Aztec-iOS:
+    :commit: ba8524aba1332550efb05cad583a85ed3511beb5
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: ba8524aba1332550efb05cad583a85ed3511beb5
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.17.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -428,6 +433,12 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.17.0
+  WordPress-Aztec-iOS:
+    :commit: ba8524aba1332550efb05cad583a85ed3511beb5
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: ba8524aba1332550efb05cad583a85ed3511beb5
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 3.0.2
@@ -503,6 +514,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 35b16898fae049f6ebffba96793f209b03a41495
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: d275f12ae528d2374c73e683366d91ae8a9c4d7d
+PODFILE CHECKSUM: f47e229f788ebdd474369c4f99f9a5eb30ca8f79
 
 COCOAPODS: 1.8.4
