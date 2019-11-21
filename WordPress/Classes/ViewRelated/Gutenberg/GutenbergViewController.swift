@@ -163,6 +163,8 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
+    var shouldLoadAutosave: Bool
+
     let navigationBarManager = PostEditorNavigationBarManager()
 
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
@@ -218,10 +220,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Initializers
     required init(
         post: AbstractPost,
+        shouldLoadAutosave: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         self.post = post
+        self.shouldLoadAutosave = shouldLoadAutosave
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)

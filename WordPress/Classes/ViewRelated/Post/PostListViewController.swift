@@ -510,16 +510,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func openEditor(with post: Post, loadingAutosave: Bool) {
-
-        if loadingAutosave {
-            let autosavePost = post.createRevision()
-            autosavePost.postTitle = post.autosaveTitle
-            autosavePost.mt_excerpt = post.autosaveExcerpt
-            autosavePost.content = post.autosaveContent
-            post.setValue(autosavePost, forKey: "revision")
-        }
-
-        let editor = EditPostViewController(post: post)
+        let editor = EditPostViewController(post: post, shouldLoadAutosave: loadingAutosave)
         editor.modalPresentationStyle = .fullScreen
         self.present(editor, animated: false)
         WPAppAnalytics.track(.postListEditAction, withProperties: self.propertiesForAnalytics(), with: post)
