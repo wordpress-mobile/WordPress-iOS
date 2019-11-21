@@ -9,7 +9,6 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Properties
 
     let changeDispatcher = Dispatcher<Void>()
-    var overviewStoreStatusOnChange: ((Status) -> Void)?
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private let store: StatsPeriodStore
@@ -51,15 +50,6 @@ class SiteStatsPeriodViewModel: Observable {
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
         }
-
-        store.cachedDataListener = { [weak self] hasCacheData in
-            self?.overviewStoreStatusOnChange?(.fetchingCacheData(hasCacheData))
-        }
-
-        store.fetchingOverviewListener = { [weak self] fetching, success in
-            let status: Status = fetching ? .fetchingData : .fetchingDataCompleted(success)
-            self?.overviewStoreStatusOnChange?(status)
-        }
     }
 
     func startFetchingOverview() {
@@ -84,15 +74,8 @@ class SiteStatsPeriodViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        if Feature.enabled(.statsAsyncLoadingDWMY) {
-            if !store.containsCachedData && store.fetchingOverviewHasFailed {
-                return ImmuTable.Empty
-            }
-        } else {
-            if !store.containsCachedData &&
-                (store.fetchingOverviewHasFailed || store.isFetchingOverview) {
-                return ImmuTable.Empty
-            }
+        if !store.containsCachedData && store.fetchingOverviewHasFailed {
+            return ImmuTable.Empty
         }
 
         let errorBlock: (StatSection) -> [ImmuTableRow] = { section in
