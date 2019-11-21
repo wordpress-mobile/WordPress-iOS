@@ -69,10 +69,10 @@ print <<-EOF
 EOF
 end
 
-def print_giphy(giphy)
+def print_tenor(tenor)
 print <<-EOF
-+ (NSString *)giphyAppId {
-    return @"#{giphy}";
++ (NSString *)tenorAppId {
+    return @"#{tenor}";
 }
 EOF
 end
@@ -133,7 +133,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, sentry, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+def print_class(client, secret, sentry, hockeyapp, tenor, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -142,7 +142,7 @@ EOF
   print_secret(secret)
   print_sentry(sentry)
   print_hockeyapp(hockeyapp)
-  print_giphy(giphy)
+  print_tenor(tenor)
   print_google_login_client(google_client)
   print_google_login_scheme(google_scheme)
   print_google_login_server(google_login_server)
@@ -169,7 +169,7 @@ client = nil
 secret = nil
 sentry = nil
 hockeyapp = nil
-giphy = nil
+tenor = nil
 google_client = nil
 google_scheme = nil
 google_login_server = nil
@@ -190,8 +190,8 @@ File.open(path) do |f|
       sentry = value
     elsif k == "HOCKEYAPP_APP_ID"
       hockeyapp = value
-    elsif k == "GIPHY_APP_ID"
-      giphy = value
+    elsif k == "TENOR_APP_ID"
+      tenor = value
     elsif k == "GOOGLE_LOGIN_CLIENT_ID"
       google_client = value
     elsif k == "GOOGLE_LOGIN_SCHEME_ID"
@@ -242,4 +242,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, sentry, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+print_class(client, secret, sentry, hockeyapp, tenor, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)

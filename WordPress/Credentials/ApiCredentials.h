@@ -5,7 +5,7 @@
 + (NSString *)secret;
 + (NSString *)sentryDSN;
 + (NSString *)hockeyappAppId;
-+ (NSString *)giphyAppId;
++ (NSString *)tenorAppId;
 + (NSString *)googleLoginClientId;
 + (NSString *)googleLoginSchemeId;
 + (NSString *)googleLoginServerClientId;
