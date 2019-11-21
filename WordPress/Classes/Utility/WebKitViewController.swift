@@ -111,6 +111,7 @@ class WebKitViewController: UIViewController {
 
         configureNavigation()
         configureToolbar()
+        addTapGesture()
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.navigationDelegate = self
         webView.uiDelegate = self
@@ -352,7 +353,8 @@ class WebKitViewController: UIViewController {
         }
         UIApplication.shared.open(url)
     }
-    
+
+    ///location is used to present a document menu in tap location on iOS 13
     @objc func webViewTapped(_ sender: UITapGestureRecognizer) {
       self.tapLocation = sender.location(in: view)
     }
