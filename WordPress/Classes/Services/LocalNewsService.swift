@@ -29,7 +29,6 @@ final class LocalNewsService: NewsService {
             return
         }
 
-        let result: Result = .success(newsItem)
-        completion(result)
+        completion(.success(newsItem))
     }
 }

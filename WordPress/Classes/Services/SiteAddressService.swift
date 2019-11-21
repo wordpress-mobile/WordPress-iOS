@@ -12,8 +12,7 @@ protocol SiteAddressService {
 
 final class MockSiteAddressService: SiteAddressService {
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
-        let result = Result.success(mockAddresses())
-        completion(result)
+        completion(.success(mockAddresses()))
     }
 
     private func mockAddresses() -> [DomainSuggestion] {
