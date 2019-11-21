@@ -33,4 +33,17 @@ extension UINavigationController {
             }
         }
     }
+    
+    /// Fixes a crash in iOS 13 where presenting a UIDocumentMenuViewController in a webView
+    /// doesn't rautomattically ecognize the location for presenting the menu hence the crash.
+    /// The warning is probably a bug on iOS or on WebKit since replacing with UIDocumentPickerViewController doesn't prevent the crash.
+    ///
+    @objc override open func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        if #available(iOS 13, *), UIDevice.current.userInterfaceIdiom == .phone,
+            let webKitVC = topViewController as? WebKitViewController,
+            viewControllerToPresent is UIDocumentMenuViewController {
+            viewControllerToPresent.popoverPresentationController?.delegate = webKitVC
+        }
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
 }

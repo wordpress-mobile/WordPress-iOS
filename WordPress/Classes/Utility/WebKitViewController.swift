@@ -43,6 +43,7 @@ class WebKitViewController: UIViewController {
     @objc var customTitle: String?
 
     private var reachabilityObserver: Any?
+    private var tapLocation = CGPoint(x: 0.0, y: 0.0)
 
     private struct WebViewErrors {
         static let frameLoadInterrupted = 102
@@ -302,6 +303,12 @@ class WebKitViewController: UIViewController {
         NotificationCenter.default.removeObserver(reachabilityObserver)
         self.reachabilityObserver = nil
     }
+    
+    private func addTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(webViewTapped(_:)))
+        tapGesture.delegate = self
+        webView.addGestureRecognizer(tapGesture)
+    }
 
     // MARK: User Actions
 
@@ -345,6 +352,10 @@ class WebKitViewController: UIViewController {
         }
         UIApplication.shared.open(url)
     }
+    
+    @objc func webViewTapped(_ sender: UITapGestureRecognizer) {
+      self.tapLocation = sender.location(in: view)
+    }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard let object = object as? WKWebView,
@@ -376,7 +387,6 @@ class WebKitViewController: UIViewController {
             assertionFailure("Observed change to web view that we are not handling")
         }
     }
-
 }
 
 extension WebKitViewController: WKNavigationDelegate {
@@ -429,5 +439,22 @@ extension WebKitViewController: WKUIDelegate {
         } else {
             WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Generic error alert title"), message: error.localizedDescription)
         }
+    }
+}
+
+extension WebKitViewController: UIPopoverPresentationControllerDelegate {
+     func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+       handleDocumentMenuPresentation(presented: popoverPresentationController)
+     }
+    
+    private func handleDocumentMenuPresentation(presented: UIPopoverPresentationController) {
+          presented.sourceView = webView
+          presented.sourceRect = CGRect(origin: tapLocation, size: CGSize(width: 0, height: 0))
+      }
+}
+
+extension WebKitViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+      return true
     }
 }
