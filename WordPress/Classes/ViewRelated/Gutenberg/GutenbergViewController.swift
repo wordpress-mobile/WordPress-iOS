@@ -349,7 +349,7 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
 
-    func gutenbergDidRequestFetch(path: String, completion: @escaping (Swift.Result<Any, NSError>) -> Void) {
+    func gutenbergDidRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
         GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)
     }
 
