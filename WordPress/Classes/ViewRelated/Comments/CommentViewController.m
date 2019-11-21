@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 #pragma mark CommentViewController
 #pragma mark ==========================================================================================
 
-@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, ReplyTextViewDelegate, SuggestionsTableViewDelegate>
+@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, ReplyTextViewDelegate, SuggestionsTableViewDelegate, DefinesVariableStatusBarStyle>
 
 @property (nonatomic, strong) UITableView               *tableView;
 @property (nonatomic, strong) ReplyTextView             *replyTextView;
@@ -197,6 +197,14 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
     [self.keyboardManager stopListeningToKeyboardNotifications];
     [self dismissNotice];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    if ([self replyTextView] != nil && [[self replyTextView] isExpanded]) {
+        return UIStatusBarStyleDefault;
+    }
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Fetching Post

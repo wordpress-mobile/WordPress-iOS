@@ -15,7 +15,7 @@ protocol NotificationsNavigationDataSource: class {
 
 // MARK: - Renders a given Notification entity, onscreen
 //
-class NotificationDetailsViewController: UIViewController {
+class NotificationDetailsViewController: UIViewController, DefinesVariableStatusBarStyle {
     // MARK: - Properties
 
     let formatter = FormattableContentFormatter()
@@ -114,10 +114,6 @@ class NotificationDetailsViewController: UIViewController {
     ///
     var onSelectedNoteChange: ((Notification) -> Void)?
 
-    override var prefersStatusBarHidden: Bool {
-        return navigationController?.navigationBar.isHidden ?? false
-    }
-
     deinit {
         // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
         guard isViewLoaded else {
@@ -177,6 +173,16 @@ class NotificationDetailsViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         refreshNavigationBar()
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        guard let reply = replyTextView else {
+            return .lightContent
+        }
+        if reply.isExpanded {
+            return .default
+        }
+        return .lightContent
     }
 
     private func makeRouter() -> NotificationContentRouter {
@@ -1154,8 +1160,8 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
     func updateUIForExpandedReply() {
         view.bringSubviewToFront(replyTextView)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        self.setNeedsStatusBarAppearanceUpdate()
         UIView.animate(withDuration: replyTextView.animationDuration, animations: {
+            self.navigationController?.setNeedsStatusBarAppearanceUpdate()
             self.tableView.isHidden = true
         }) { _ in
         }
@@ -1164,6 +1170,7 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
     func updateUIForCollapsedReply() {
         navigationController?.setNavigationBarHidden(false, animated: true)
         UIView.animate(withDuration: replyTextView.animationDuration, animations: {
+            self.navigationController?.setNeedsStatusBarAppearanceUpdate()
             self.tableView.isHidden = false
         }) { _ in
             // wrap up ui changes here

@@ -85,7 +85,7 @@ import Gridicons
     }
 
     @objc open var animationDuration: Double = 0.5
-
+    @objc open var isExpanded: Bool = false
 
     // MARK: - Public Methods
     @objc open func replaceTextAtCaret(_ text: NSString?, withText replacement: String?) {
@@ -372,7 +372,6 @@ import Gridicons
 
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
-    fileprivate var isExpanded: Bool = false
     fileprivate var viewSpacing: CGFloat = 8.0
     fileprivate var expandButtonExpandedYConstraint: NSLayoutConstraint!
     fileprivate var replyButtonExpandedYConstraint: NSLayoutConstraint!

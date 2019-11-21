@@ -32,7 +32,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                             UIViewControllerRestoration,
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
-                                            SuggestionsTableViewDelegate>
+                                            SuggestionsTableViewDelegate,
+                                            DefinesVariableStatusBarStyle>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
@@ -206,6 +207,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    if ([self replyTextView] != nil && [[self replyTextView] isExpanded]) {
+        return UIStatusBarStyleDefault;
+    }
+    return UIStatusBarStyleLightContent;
+}
 
 #pragma mark - Split View Support
 
