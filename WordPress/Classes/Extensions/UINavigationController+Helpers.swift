@@ -33,7 +33,7 @@ extension UINavigationController {
             }
         }
     }
-    
+
     /// Fixes a crash in iOS 13 (#12882) where presenting a UIDocumentMenuViewController in a webView
     /// doesn't rautomattically ecognize the location for presenting the menu hence the crash.
     /// The warning is probably a bug on iOS or on WebKit since replacing with UIDocumentPickerViewController doesn't prevent the crash.

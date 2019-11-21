@@ -304,7 +304,7 @@ class WebKitViewController: UIViewController {
         NotificationCenter.default.removeObserver(reachabilityObserver)
         self.reachabilityObserver = nil
     }
-    
+
     private func addTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(webViewTapped(_:)))
         tapGesture.delegate = self
@@ -448,7 +448,7 @@ extension WebKitViewController: UIPopoverPresentationControllerDelegate {
      func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
        handleDocumentMenuPresentation(presented: popoverPresentationController)
      }
-    
+
     private func handleDocumentMenuPresentation(presented: UIPopoverPresentationController) {
           presented.sourceView = webView
           presented.sourceRect = CGRect(origin: tapLocation, size: CGSize(width: 0, height: 0))
