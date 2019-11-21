@@ -20,7 +20,7 @@ final class DefaultNewsManager: NewsManager {
     weak var delegate: NewsManagerDelegate?
     private let stats: NewsStats
 
-    private var result: Result<NewsItem>?
+    private var result: Result<NewsItem, Error>?
 
     init(service: NewsService, database: KeyValueDatabase, stats: NewsStats, delegate: NewsManagerDelegate? = nil) {
         self.service = service
@@ -75,7 +75,7 @@ final class DefaultNewsManager: NewsManager {
         }
     }
 
-    func load(then completion: @escaping (Result<NewsItem>) -> Void) {
+    func load(then completion: @escaping (Result<NewsItem, Error>) -> Void) {
         if let loadedResult = result {
             completion(loadedResult)
             return

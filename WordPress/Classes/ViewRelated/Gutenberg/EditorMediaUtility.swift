@@ -97,7 +97,7 @@ class EditorMediaUtility {
         }
     }
 
-    static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?)> ) -> Void) {
+    static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?), Error> ) -> Void) {
         guard let videoPressID = media.videopressGUID else {
             //the site can be a self-hosted site if there's no videopressGUID
             if let videoURLString = media.remoteURL,

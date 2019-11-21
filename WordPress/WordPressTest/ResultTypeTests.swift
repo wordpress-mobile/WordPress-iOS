@@ -29,11 +29,11 @@ final class ResultTypeTests: XCTestCase {
         }
     }
 
-    private func success() -> Result<String> {
+    private func success() -> Result<String, Error> {
         return .success(Constants.value)
     }
 
-    private func failure() -> Result<String> {
+    private func failure() -> Result<String, Error> {
         return .error(Constants.error)
     }
 }

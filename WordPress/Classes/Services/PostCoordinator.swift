@@ -58,7 +58,7 @@ class PostCoordinator: NSObject {
               automatedRetry: Bool = false,
               forceDraftIfCreating: Bool = false,
               defaultFailureNotice: Notice? = nil,
-              completion: ((Result<AbstractPost>) -> ())? = nil) {
+              completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
 
         prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
             switch result {
@@ -117,7 +117,7 @@ class PostCoordinator: NSObject {
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
     private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false,
-                               then completion: @escaping (Result<AbstractPost>) -> ()) {
+                               then completion: @escaping (Result<AbstractPost, Error>) -> ()) {
         var post = postToSave
 
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
@@ -269,7 +269,7 @@ class PostCoordinator: NSObject {
         backgroundService.refreshPostStatus()
     }
 
-    private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost>) -> ())? = nil) {
+    private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
         mainService.uploadPost(post, forceDraftIfCreating: forceDraftIfCreating, success: { [weak self] uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 

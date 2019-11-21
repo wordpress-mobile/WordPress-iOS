@@ -14,16 +14,16 @@ final class LocalNewsService: NewsService {
         content = NSDictionary.init(contentsOfFile: path) as? [String: String]
     }
 
-    func load(then completion: @escaping (Result<NewsItem>) -> Void) {
+    func load(then completion: @escaping (Result<NewsItem, Error>) -> Void) {
         guard let content = content else {
-            let result: Result<NewsItem> = .error(NewsError.fileNotFound)
+            let result: Result<NewsItem, Error> = .error(NewsError.fileNotFound)
             completion(result)
 
             return
         }
 
         guard let newsItem = NewsItem(fileContent: content) else {
-            let result: Result<NewsItem> = .error(NewsError.invalidContent)
+            let result: Result<NewsItem, Error> = .error(NewsError.invalidContent)
             completion(result)
 
             return

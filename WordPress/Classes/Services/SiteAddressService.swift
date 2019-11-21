@@ -2,7 +2,7 @@ import WordPressKit
 
 // MARK: - SiteAddressService
 
-typealias SiteAddressServiceCompletion = (Result<[DomainSuggestion]>) -> Void
+typealias SiteAddressServiceCompletion = (Result<[DomainSuggestion], Error>) -> Void
 
 protocol SiteAddressService {
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion)
