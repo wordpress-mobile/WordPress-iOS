@@ -253,7 +253,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        createRevisionOfPost()
+        createRevisionOfPost(shouldLoadAutosave: shouldLoadAutosave)
         setupGutenbergView()
         configureNavigationBar()
         refreshInterface()
