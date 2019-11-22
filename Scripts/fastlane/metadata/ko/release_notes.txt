@@ -1,3 +1,4 @@
-* After a recent round of improvements, the Block Editor is faster and performs more smoothly on the app.
-* Some of you were having trouble with Dark Mode on iPads; we sorted it out (adios, uninvited glare!).
-* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.
+- 이 업데이트를 사용하면 실제 인터넷 없이도 인터넷을 사용할 수 있습니다. 오프라인 상태에서 글을 편집하고 저장하면 기기가 다시 온라인 상태가 될 때 글이 자동으로 업로드(또는 게시)됩니다.
+- 독립 호스트 사이트에 로그인하면 "내 계정" 보기가 비어 있는 경우가 가끔 있는데, 이는 (1) 버그이며 (2) 자부심도 떨어뜨립니다. 이 문제가 해결되었으며 내 계정 보기가 제대로 표시됩니다.
+- 대기 중인 글을 업데이트하면 글이 게시되는 경우가 있습니다. P로 시작하는 작업이 모두 수정되어 이 문제는 더 이상 발생하지 않을 것입니다. 달리 지정하지 않는 한 대기 중인 글은 대기 중 상태가 유지됩니다.
+- 마지막으로 블록 편집기 관련 개선 사항이 많았으며 이제 이미지 정렬 옵션도 지원됩니다.

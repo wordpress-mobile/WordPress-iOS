@@ -16,6 +16,13 @@ class GutenbergViewController: UIViewController, PostEditor {
         case autoSave
     }
 
+    private lazy var stockPhotos: GutenbergStockPhotos = {
+        return GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+    }()
+    private lazy var filesAppMediaPicker: GutenbergFilesAppMediaSource = {
+        return GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+    }()
+
     // MARK: - Aztec
 
     internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -109,9 +116,9 @@ class GutenbergViewController: UIViewController, PostEditor {
                                                         }
                                                         self.mediaInserterHelper.insertFromDevice(assets: phAsset, callback: { media in
                                                             guard let media = media,
-                                                                let (id, url, _) = media.first,
-                                                                let mediaID = id,
-                                                                let mediaURLString = url,
+                                                                let mediaInfo = media.first,
+                                                                let mediaID = mediaInfo.id,
+                                                                let mediaURLString = mediaInfo.url,
                                                                 let mediaURL = URL(string: mediaURLString) else {
                                                                 return
                                                             }
@@ -341,11 +348,16 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+
+    func gutenbergDidRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
+        GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)
+    }
+
     func editorDidAutosave() {
         autosaver.contentDidChange()
     }
 
-    func gutenbergDidRequestMedia(from source: MediaPickerSource, filter: [MediaFilter]?, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMedia(from source: Gutenberg.MediaSource, filter: [Gutenberg.MediaType], allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         let flags = mediaFilterFlags(using: filter)
         switch source {
         case .mediaLibrary:
@@ -354,31 +366,33 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             gutenbergDidRequestMediaFromDevicePicker(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
+        case .stockPhotos:
+            stockPhotos.presentPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
+        case .filesApp:
+            filesAppMediaPicker.presentPicker(origin: self, filters: filter, multipleSelection: allowMultipleSelection, callback: callback)
+        default: break
         }
     }
 
-    func mediaFilterFlags(using filterArray: [MediaFilter]?) -> WPMediaType {
-        if let filterArray = filterArray {
-            var mediaType: Int = 0
-            for filter in filterArray {
-                switch filter {
-                case .image:
-                    mediaType = mediaType | WPMediaType.image.rawValue
-                case .video:
-                    mediaType = mediaType | WPMediaType.video.rawValue
-                case .audio:
-                    mediaType = mediaType | WPMediaType.audio.rawValue
-                case .other:
-                    mediaType = mediaType | WPMediaType.other.rawValue
-                }
-            }
-            if mediaType == 0 {
-                return WPMediaType.all
-            } else {
-                return WPMediaType(rawValue: mediaType)
+    func mediaFilterFlags(using filterArray: [Gutenberg.MediaType]) -> WPMediaType {
+        var mediaType: Int = 0
+        for filter in filterArray {
+            switch filter {
+            case .image:
+                mediaType = mediaType | WPMediaType.image.rawValue
+            case .video:
+                mediaType = mediaType | WPMediaType.video.rawValue
+            case .audio:
+                mediaType = mediaType | WPMediaType.audio.rawValue
+            case .other:
+                mediaType = mediaType | WPMediaType.other.rawValue
             }
         }
-        return WPMediaType.all
+        if mediaType == 0 {
+            return WPMediaType.all
+        } else {
+            return WPMediaType(rawValue: mediaType)
+        }
     }
 
     func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -421,8 +435,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
-    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaInserterHelper.insertFromDevice(url: url, callback: callback)
+    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {
+        mediaInserterHelper.insertFromDevice(url: url, callback: { media in
+            callback(media?.first)
+        })
     }
 
     func gutenbergDidRequestMediaUploadSync() {
@@ -509,6 +525,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 showMediaSelectionOnStart()
             }
             focusTitleIfNeeded()
+            mediaInserterHelper.refreshMediaStatus()
         }
     }
 
@@ -530,12 +547,20 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogError(message)
         }
     }
+
+    func gutenbergDidRequestFullscreenImage(with mediaUrl: URL) {
+        navigationController?.definesPresentationContext = true
+        let controller = WPImageViewController(externalMediaURL: mediaUrl)
+        controller.post = self.post
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .overCurrentContext
+        self.present(controller, animated: true)
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
-
     func gutenbergLocale() -> String? {
         return WordPressComLanguageDatabase().deviceLanguage.slug
     }
@@ -554,6 +579,13 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
         return attachmentDelegate
+    }
+
+    func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
+        return [
+            post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
+            .filesApp,
+        ].compactMap { $0 }
     }
 }
 
@@ -650,8 +682,12 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
 // MARK: - Constants
 
-private extension GutenbergViewController {
+extension Gutenberg.MediaSource {
+    static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
+    static let filesApp = Gutenberg.MediaSource(id: "wpios-files-app", label: .files, types: [.image, .video, .audio, .other])
+}
 
+private extension GutenbergViewController {
     enum Analytics {
         static let editorSource = "gutenberg"
     }

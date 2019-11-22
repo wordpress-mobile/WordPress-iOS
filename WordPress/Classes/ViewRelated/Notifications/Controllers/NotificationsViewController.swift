@@ -910,6 +910,7 @@ private extension NotificationsViewController {
         selectedNotification = notification
 
         if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
+            DDLogInfo("\(self) \(#function) Selecting row at \(indexPath) for Notification: \(notification.notificationId) (\(notification.type ?? "Unknown type")) - \(notification.title ?? "No title")")
             tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
         }
     }
@@ -1074,6 +1075,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
             self?.cancelDeletionRequestForNoteWithID(note.objectID)
         }
 
+        cell.accessibilityHint = Self.accessibilityHint(for: note)
+
         cell.downloadIconWithURL(note.iconURL)
     }
 
@@ -1109,8 +1112,26 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
             selectFirstNotificationIfAppropriate()
         }
     }
-}
 
+    private static func accessibilityHint(for note: Notification) -> String? {
+        switch note.kind {
+        case .comment:
+            return NSLocalizedString("Shows details and moderation actions.",
+                                     comment: "Accessibility hint for a comment notification.")
+        case .commentLike, .like:
+            return NSLocalizedString("Shows all likes.",
+                                     comment: "Accessibility hint for a post or comment “like” notification.")
+        case .follow:
+            return NSLocalizedString("Shows all followers",
+                                     comment: "Accessibility hint for a follow notification.")
+        case .matcher, .newPost:
+            return NSLocalizedString("Shows the post",
+                                     comment: "Accessibility hint for a match/mention on a post notification.")
+        default:
+            return nil
+        }
+    }
+}
 
 // MARK: - Filter Helpers
 //

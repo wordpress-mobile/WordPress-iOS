@@ -50,6 +50,7 @@ private extension PostingActivityDay {
     }
 
     @IBAction func dayButtonPressed(_ sender: UIButton) {
+        WPAppAnalytics.track(.statsItemTappedPostingActivityDay)
         dayButton.backgroundColor = WPStyleGuide.Stats.PostingActivityColors.selectedDay
         delegate?.daySelected(self)
     }

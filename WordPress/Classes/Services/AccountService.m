@@ -41,16 +41,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         }
     }
 
-    // Attempt to restore a default account that has somehow been disassociated.
-    WPAccount *account = [self findDefaultAccountCandidate];
-    if (account) {
-        // Assume we have a good candidate account and make it the default account in the app.
-        // Note that this should be the account with the most blogs.
-        // Update user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
-        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
-        return account;
-    }
-
     // No account, or no default account set. Clear the defaults key.
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
     return nil;
@@ -302,6 +292,22 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return nil;
 }
 
+- (void)restoreDisassociatedAccountIfNecessary
+{
+    if ([self defaultWordPressComAccount]) {
+        return;
+    }
+
+    // Attempt to restore a default account that has somehow been disassociated.
+    WPAccount *account = [self findDefaultAccountCandidate];
+    if (account) {
+        // Assume we have a good candidate account and make it the default account in the app.
+        // Note that this should be the account with the most blogs.
+        // Updates user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
+        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+    }
+}
+
 - (WPAccount *)findDefaultAccountCandidate
 {
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO];
@@ -439,9 +445,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (void)setupAppExtensionsWithDefaultAccount
 {
     WPAccount *defaultAccount = [self defaultWordPressComAccount];
-    Blog *defaultBlog = [defaultAccount defaultBlog];
+    Blog *defaultBlog   = [defaultAccount defaultBlog];
     NSNumber *siteId    = defaultBlog.dotComID;
     NSString *blogName  = defaultBlog.settings.name;
+    NSString *blogUrl   = defaultBlog.displayURL;
     
     if (defaultBlog == nil || defaultBlog.isDeleted) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -464,16 +471,19 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
         NSNumber *todayExtensionSiteID = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
         NSString *todayExtensionBlogName = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+        NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
         
         if (todayExtensionSiteID == NULL) {
             todayExtensionSiteID = siteId;
             todayExtensionBlogName = blogName;
+            todayExtensionBlogUrl = blogUrl;
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
             TodayExtensionService *service = [TodayExtensionService new];
             [service configureTodayWidgetWithSiteID:todayExtensionSiteID
                                            blogName:todayExtensionBlogName
+                                            blogUrl:todayExtensionBlogUrl
                                        siteTimeZone:timeZone
                                      andOAuth2Token:oauth2Token];
 

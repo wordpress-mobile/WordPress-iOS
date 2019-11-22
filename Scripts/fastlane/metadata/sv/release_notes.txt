@@ -1,3 +1,4 @@
-* Efter en ny omgång förbättringar är blockredigeraren nu snabbare och fungerar smidigare i appen.
-* En del användare hade problem med det mörka läget på iPad. Vi har löst det. (Hejdå, oväntade blänk!)
-* Eftersom dina besökare älskar inlägg med media har vi gjort användarupplevelsen stabilare för dig när du skapar dessa inlägg.
+- Denna uppdatering låter dig använda nätet även när du inte är uppkopplad. Redigera och spara inlägg utan uppkoppling, så kommer vi automatiskt att ladda upp (eller publicera) dem när din enhet åter får kontakt med nätet.
+- I vissa fall var vyn ”Jag” tom om du var inloggad med en webbplats som du driftar på egen hand, något som både är (1) ett fel och (2) kan vara mindre lyckat för självbilden. Det är rättat nu. Nu är du åter ditt gamla jag.
+- Ibland kunde ett väntande inlägg publiceras om man uppdaterade det. Hanteringen av väntande inlägg och publicering har korrigerats för att detta inte ska hända igen – nu kommer väntande inlägg att fortsätta vara väntande ända tills du uppger något annat.
+- Slutligen har vi några förbättringar av blockredigeraren – nu har den stöd för justering av bilder.

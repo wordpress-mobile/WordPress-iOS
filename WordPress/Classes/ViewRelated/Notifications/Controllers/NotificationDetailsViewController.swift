@@ -3,7 +3,6 @@ import CoreData
 import Gridicons
 import SVProgressHUD
 import WordPressShared
-import WordPressComStatsiOS
 
 
 ///
@@ -518,8 +517,7 @@ private extension NotificationDetailsViewController {
             return false
         }
 
-        let suggestionsService = SuggestionService()
-        return shouldAttachReplyView && suggestionsService.shouldShowSuggestions(forSiteID: siteID)
+        return shouldAttachReplyView && SuggestionService.sharedInstance().shouldShowSuggestions(forSiteID: siteID)
     }
 }
 

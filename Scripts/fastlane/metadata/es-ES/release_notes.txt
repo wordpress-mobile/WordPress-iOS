@@ -1,3 +1,5 @@
-* Después de una reciente serie de mejoras, el editor de bloques es más rápido y funciona mejor en la aplicación.
-* Algunos estaban teniendo problemas con el modo oscuro en los iPads; lo hemos solucionado (¡adiós, al resplandor no deseado!).
-* a los visitantes de tu sitio les encantan las entradas con medios, por lo que hemos hecho el experimento de crearlos más estables.
+- Con esta actualización, puedes conectar a Internet sin Internet real. Edita y guarda las entradas mientras estás offline, las cargaremos (o publicaremos) automáticamente cuando tu dispositivo vuelva a estar online.
+- A veces, la vista de «Yo» estaría en blanco si te conectaras con una web autoalojada, lo cual es (1) un fallo y (2) no es bueno para la autoestima de nadie. Eso está arreglado, así que «Yo» eres tú otra vez.
+- A veces, la actualización de una entrada pendiente hace que se publique la entrada. Todas las acciones que empiezan con «P» han sido corregidas y eso no sucederá más - las entradas pendientes permanecerán pendientes hasta que digas lo contrario.
+- Y, finalmente, más mejoras en el editor de bloques - ahora es compatible con opciones de alineación de imágenes.
+

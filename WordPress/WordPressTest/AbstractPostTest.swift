@@ -30,4 +30,10 @@ class AbstractPostTest: XCTestCase {
         XCTAssertTrue(title == NSLocalizedString("Scheduled", comment: "Scheduled"), "Title did not match status")
     }
 
+    func testFeaturedImageURLForDisplay() {
+        let post = PostBuilder().with(pathForDisplayImage: "https://wp.me/awesome.png").build()
+
+        XCTAssertEqual(post.featuredImageURLForDisplay()?.absoluteString, "https://wp.me/awesome.png")
+    }
+
 }

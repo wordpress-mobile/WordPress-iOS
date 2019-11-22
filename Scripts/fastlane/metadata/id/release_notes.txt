@@ -1,3 +1,4 @@
-* Setelah proses penyempurnaan terbaru, Penyunting Blok kini lebih cepat dan lancar di aplikasi.
-* Beberapa dari Anda bermasalah dengan Mode Gelap di iPad; kami sudah membereskannya (selamat tinggal, silau!).
-* Pengunjung situs Anda suka pos dengan media, jadi kami membuat pengalaman pembuatannya lebih stabil.
+- Dengan pembaruan ini, Anda bisa beraktivitas di internet tanpa internet yang sebenarnya. Sunting dan simpan pos saat Anda offline, kami akan secara otomatis mengunggah (atau memublikasikan) pos tersebut ketika perangkat Anda kembali online.
+- Terkadang, tampilan “Saya” kosong jika Anda login dengan situs yang di-hosting sendiri, dan ini merupakan (1) bug sekaligus (2) tidak baik untuk harga diri siapa pun. Sudah diperbaiki, jadi Saya kembali menjadi Anda.
+- Terkadang memperbarui pos tertunda akan menyebabkan pos dipublikasikan. Semua tindakan yang diawali dengan P telah diperbaiki, dan tidak akan terjadi lagi – pos tertunda akan tetap tertunda sampai Anda menginginkan yang lainnya.
+- Dan pada akhirnya, lebih banyak Penyunting blok, perbaikan — kini mendukung pilihan penyelarasan gambar.

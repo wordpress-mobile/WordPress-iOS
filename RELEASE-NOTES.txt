@@ -1,11 +1,46 @@
+13.8
+-----
+* Block editor: Images from Image Block can now be previewed full screen by tapping on them.
+* Support: Fix issue that caused 'Message failed to send' error.
+
+13.7
+-----
+* Updated the mobile apps blog address to a non-retired blog. 
+* Block editor: Added option to insert images from "Free Photo Library".
+* Block editor: Fix issue where the keyboard would not capitalize sentences correctly on some cases
+* Block editor: Add alignment to paragraph blocks
+* Fixed a bug that made comment moderation fail on the first attempt for self-hosted sites.
+* Stats Refresh: Stats will reload when the application will move to foreground state.
+* Stats: each Period and Post stat now loads independently.
+* Block editor: Added support for the preformatted block.
+* Stats Today widget: updated design and enabled expanding.
+
+* Block editor: Added option to insert images from "Free Photo Library" and "Other Apps".
+ 
+13.6
+-----
+* Fixed a bug that was not submiting posts for review
+* Better support for creating or editing posts while offline. Posts can be saved while offline and they will be automatically uploaded (or published) when the device is back online.
+* Support: fix issue where issues could be created via Help Center search without setting a contact email.
+
+* Me view: fix issue where view was blank when logging in with a self-hosted site.
+* Block Editor: Added support for image alignment options.
+ 
 13.5
 -----
 * Block editor: Fix issue when "New Photo Post" shortcut won't add the selected photo to the post.
 * Block editor: Add Link Target (Open in new tab) to Image Block settings.
 * Block editor: DarkMode improvements.
 * Block editor: New block "Media & Text".
+* Block Editor: Fix issue where the block inserter layout wasn't correct after device rotation.
 * Dark Mode: General improvements
 * Stats: each Insight stat now loads independently.
+* Stats: added ability to customize Insights.
+
+13.4.1
+-----
+Post Settings: Fixed a crash with featured image.
+Removed Giphy as a media source due to changes in their SDK.
  
 13.4
 -----

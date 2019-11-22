@@ -11,13 +11,13 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.7'
+    pod 'WordPressShared', '~> 1.8.9-beta.1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => 'feature/change-username-events'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => ''
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -29,21 +29,21 @@ def aztec
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '81e1e1bb1cb209004d66bba75338595cc9aab147'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.11.0'
+    pod 'WordPress-Editor-iOS', '~> 1.12.0'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.4-beta.1'
+    pod 'WordPressUI', '~> 1.5.0'
 
     ## for development:
-    # pod 'WordPressUI', :path => '../WordPressUI-iOS'
+    #pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => 'update-fancy-button-style'
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.1'
+    pod 'WordPressKit', '~> 4.5.3'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
@@ -144,7 +144,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '6c82c548d3bf3288db8c0cd15aab090e2ec353a0'
+    gutenberg :commit => '3687f856e169b9d514f59d473de57533fb93be34'
 
     ## Third party libraries
     ## =====================
@@ -152,14 +152,14 @@ target 'WordPress' do
     pod '1PasswordExtension', '1.8.5'
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.1-swift5.1-GM'
+    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.2'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
+    pod 'JTAppleCalendar', '~> 8.0.2'
 
     ## Automattic libraries
     ## ====================
@@ -172,15 +172,15 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '0.3'
 
-    pod 'WPMediaPicker', '~> 1.4.2'
+    pod 'WPMediaPicker', '~> 1.6.0'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '7c3cb8f00400b9316a803640b42bb88a66bbc648'
-    
+
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.1-beta.1'
+    pod 'WordPressAuthenticator', '~> 1.10.2'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fancy-button-border-style'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
     aztec
     wordpress_ui
@@ -192,12 +192,12 @@ target 'WordPress' do
         pod 'Nimble', '~> 7.3.1'
     end
 
-    
-    post_install do      
-      
+
+    post_install do
+
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
-        
+
         project_root = File.dirname(__FILE__)
         acknowledgements = 'Acknowledgments'
         markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
@@ -228,16 +228,16 @@ target 'WordPress' do
                        <body>
                          #{rendered_html}
                        </body>"
-          
+
           ## Remove the <h1>, since we've promoted it to <title>
           styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
-          
+
           ## The glog library's license contains a URL that does not wrap in the web view,
           ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
           ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
-                        
-        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)    
+
+        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)
     end
 end
 
@@ -280,6 +280,8 @@ target 'WordPressTodayWidget' do
 
     shared_with_all_pods
     shared_with_networking_pods
+    
+    wordpress_ui
 end
 
 
@@ -309,44 +311,15 @@ target 'WordPressNotificationServiceExtension' do
 end
 
 
-
-## WordPress.com Stats
+## Mocks
 ## ===================
 ##
-target 'WordPressComStatsiOS' do
-    project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
-
-    shared_with_all_pods
-    shared_with_networking_pods
-
-    ## Automattic libraries
-    ## ====================
-    ##
-    wordpress_ui
-end
-
-## WordPress.com Stats Tests
-## =========================
-##
-target 'WordPressComStatsiOSTests' do
-  project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  ## Automattic libraries
-  ## ====================
-  ##
-  wordpress_ui
-
-  shared_test_pods
-end
-
 def wordpress_mocks
   pod 'WordPressMocks', '~> 0.0.6'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
+
 
 ## Screenshot Generation
 ## ===================
@@ -373,12 +346,12 @@ end
 # Make all pods that are not shared across multiple targets into static frameworks by overriding the static_framework? function to return true
 # Linking the shared frameworks statically would lead to duplicate symbols
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
-shared_targets = ['WordPressFlux', 'WordPressComStatsiOS']
+shared_targets = ['WordPressFlux']
 pre_install do |installer|
     static = []
     dynamic = []
     installer.pod_targets.each do |pod|
-        
+
         # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
         # linking it resolves this.
         if pod.name == "Sentry"

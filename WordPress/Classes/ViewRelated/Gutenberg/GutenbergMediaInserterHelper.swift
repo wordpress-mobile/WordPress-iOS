@@ -4,13 +4,9 @@ import WPMediaPicker
 import Gutenberg
 
 class GutenbergMediaInserterHelper: NSObject {
-
     fileprivate let post: AbstractPost
-
     fileprivate let gutenberg: Gutenberg
-
     fileprivate let mediaCoordinator = MediaCoordinator.shared
-
     fileprivate var mediaObserverReceipt: UUID?
 
     /// Method of selecting media for upload, used for analytics
@@ -32,13 +28,13 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func insertFromSiteMediaLibrary(media: [Media], callback: @escaping MediaPickerDidPickMediaCallback) {
         let formattedMedia = media.map { item in
-            return (item.mediaID?.int32Value, item.remoteURL, item.mediaTypeString)
+            return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString)
         }
         callback(formattedMedia)
     }
 
     func insertFromDevice(assets: [PHAsset], callback: @escaping MediaPickerDidPickMediaCallback) {
-        var mediaCollection: [(Int32?, String?, String?)] = []
+        var mediaCollection: [MediaInfo] = []
         let group = DispatchGroup()
         assets.forEach { asset in
             group.enter()
@@ -59,7 +55,10 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let media = insert(exportableAsset: asset, source: .deviceLibrary)
+        guard let media = insert(exportableAsset: asset, source: .deviceLibrary) else {
+            callback([])
+            return
+        }
         let options = PHImageRequestOptions()
         options.deliveryMode = .fastFormat
         options.version = .current
@@ -68,26 +67,28 @@ class GutenbergMediaInserterHelper: NSObject {
         // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
         PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
             guard let thumbImage = image, let resizedImage = thumbImage.resizedImage(asset.pixelSize(), interpolationQuality: CGInterpolationQuality.low) else {
-                callback([(mediaUploadID, nil, media.mediaTypeString)])
+                callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
                 return
             }
             let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
             let url = URL(fileURLWithPath: filePath)
             do {
                 try resizedImage.writeJPEGToURL(url)
-                callback([(mediaUploadID, url.absoluteString, media.mediaTypeString)])
+                callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
             } catch {
-                callback([(mediaUploadID, nil, media.mediaTypeString)])
+                callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
                 return
             }
         }
-
     }
 
     func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let media = insert(exportableAsset: url as NSURL, source: .otherApps)
+        guard let media = insert(exportableAsset: url as NSURL, source: .otherApps) else {
+            callback([])
+            return
+        }
         let mediaUploadID = media.gutenbergUploadID
-        callback([(mediaUploadID, url.absoluteString, media.mediaTypeString)])
+        callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
     }
 
     func syncUploads() {
@@ -132,19 +133,32 @@ class GutenbergMediaInserterHelper: NSObject {
         return mediaCoordinator.hasFailedMedia(for: post)
     }
 
-    private func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
-        switch exportableAsset.assetMediaType {
-        case .image:
-            break
-        case .video:
-            break
-        default:
-            break
-        }
-
+    func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media? {
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
-        let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
-        return media
+        return mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
+    }
+
+    /// Method to be used to refresh the status of all media associated with the post.
+    /// this method should be called when opening a post to make sure every media block has the correct visual status.
+    func refreshMediaStatus() {
+        for media in post.media {
+            switch media.remoteStatus {
+            case .processing:
+                mediaObserver(media: media, state: .processing)
+            case .pushing:
+                var progressValue = 0.5
+                if let progress = mediaCoordinator.progress(for: media) {
+                    progressValue = progress.fractionCompleted
+                }
+                mediaObserver(media: media, state: .progress(value: progressValue))
+            case .failed:
+                if let error = media.error as NSError? {
+                    mediaObserver(media: media, state: .failed(error: error))
+                }
+            default:
+                break
+            }
+        }
     }
 
     private func registerMediaObserver() {
@@ -186,7 +200,7 @@ class GutenbergMediaInserterHelper: NSObject {
                         return
                     }
                     switch result {
-                    case .error:
+                    case .failure:
                         strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
                     case .success(let value):
                         strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: value.videoURL, serverID: mediaServerID)

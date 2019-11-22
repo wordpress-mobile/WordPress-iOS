@@ -1,5 +1,4 @@
 import Foundation
-import WordPressComStatsiOS
 
 enum MySitesRoute {
     case pages

@@ -1,3 +1,4 @@
-* After a recent round of improvements, the block editor is faster and performs more smoothly on the app.
-* Some of you were having trouble with Dark Mode on iPads; we sorted it out (goodbye, uninvited glare!).
-* Your site visitors love posts with media, so we’ve made the experience of creating them more stable.
+- With this update, you can internet without the actual internet. Edit and save posts while you’re offline, we’ll automatically upload (or publish) them when your device is back online.
+- Sometimes, the “Me” view would be blank if you logged in with a self-hosted site, which is both (1) a bug and (2) not great for anyone’s self-esteem. That’s fixed, so Me is you again.
+- Sometimes updating a pending post caused the post to be published. All actions starting with P have been straightened out, and that won’t happen anymore – pending posts will remaining pending until you say otherwise.
+- And finally, more block editor improvements — it supports image alignment options now.

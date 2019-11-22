@@ -15,7 +15,10 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var retryButton: UIButton!
+    @IBOutlet weak var cancelAutoUploadButton: UIButton!
+    @IBOutlet weak var publishButton: UIButton!
     @IBOutlet weak var viewButton: UIButton!
+    @IBOutlet weak var trashButton: UIButton!
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var actionBarView: UIStackView!
     @IBOutlet weak var containerView: UIView!
@@ -106,11 +109,11 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     @IBAction func more(_ sender: Any) {
-        guard let button = sender as? UIButton, let post = post else {
+        guard let button = sender as? UIButton, let viewModel = viewModel else {
             return
         }
 
-        actionSheetDelegate?.showActionSheet(post, from: button)
+        actionSheetDelegate?.showActionSheet(viewModel, from: button)
     }
 
     @IBAction func retry() {
@@ -119,6 +122,24 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         }
 
         interactivePostViewDelegate?.retry(post)
+    }
+
+    @IBAction func cancelAutoUpload() {
+        if let post = post {
+            interactivePostViewDelegate?.cancelAutoUpload(post)
+        }
+    }
+
+    @IBAction func publish() {
+        if let post = post {
+            interactivePostViewDelegate?.publish(post)
+        }
+    }
+
+    @IBAction func trash() {
+        if let post = post {
+            interactivePostViewDelegate?.trash(post)
+        }
     }
 
     private func applyStyles() {
@@ -134,6 +155,9 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostButtonStyle(retryButton)
         WPStyleGuide.applyPostButtonStyle(viewButton)
         WPStyleGuide.applyPostButtonStyle(moreButton)
+        WPStyleGuide.applyPostButtonStyle(cancelAutoUploadButton)
+        WPStyleGuide.applyPostButtonStyle(publishButton)
+        WPStyleGuide.applyPostButtonStyle(trashButton)
 
         setupActionBar()
         setupFeaturedImage()
@@ -255,12 +279,20 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureActionBar() {
-        guard let post = post else {
+        guard let viewModel = viewModel else {
             return
         }
 
-        retryButton.isHidden = !post.isFailed
-        viewButton.isHidden = post.isFailed
+        // Convert to Set for O(1) complexity of contains()
+        let primaryButtons = Set(viewModel.buttonGroups.primary)
+
+        editButton.isHidden = !primaryButtons.contains(.edit)
+        retryButton.isHidden = !primaryButtons.contains(.retry)
+        cancelAutoUploadButton.isHidden = !primaryButtons.contains(.cancelAutoUpload)
+        publishButton.isHidden = !primaryButtons.contains(.publish)
+        viewButton.isHidden = !primaryButtons.contains(.view)
+        moreButton.isHidden = !primaryButtons.contains(.more)
+        trashButton.isHidden = !primaryButtons.contains(.trash)
     }
 
     private func setupBorders() {
@@ -288,7 +320,9 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     private func setupLabels() {
         retryButton.setTitle(NSLocalizedString("Retry", comment: "Label for the retry post upload button. Tapping attempts to upload the post again."), for: .normal)
         retryButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
-        retryButton.isHidden = true
+
+        cancelAutoUploadButton.setTitle(NSLocalizedString("Cancel", comment: "Label for the auto-upload cancelation button in the post list. Tapping will prevent the app from auto-uploading the post."),
+                                        for: .normal)
 
         editButton.setTitle(NSLocalizedString("Edit", comment: "Label for the edit post button. Tapping displays the editor."), for: .normal)
 

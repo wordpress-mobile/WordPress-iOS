@@ -1,3 +1,4 @@
-* Son gelişmelerden sonra, blok düzenleyici daha hızlıdır ve uygulamada daha sorunsuz çalışır.
-* Bazılarınız iPad’lerde dark mode ile sorun yaşıyordu; halletik (adios, davetsiz parlama!).
-* Site ziyaretçileriniz medya içeren yayınları sever, bu nedenle onları daha istikrarlı bir hale getirme deneyimini yaptık.
+- Bu güncelleme ile, gerçek internet olmadan internet yapabilirsiniz. Çevrimdışıyken yayınları düzenle ve kaydet, cihazınız tekrar çevrimiçi olduğunda otomatik olarak yükler (veya yayınlar).
+- Bazen, kendi başına barındırılan bir siteye giriş yaptıysanız “Ben” sayfası boş olabilir, bu hem (1) hata hem de (2) kimsenin kendine saygısı için harika bir şey değil. Bu düzeltildi, yani ben yine sensin.
+- Bazen bekleyen bir yazıyı güncellemek yazının yayınlanmasına neden oldu. P ile başlayan tüm eylemler düzeltildi ve bu artık gerçekleşmeyecek; aksi takdirde siz söyleyene kadar bekleyen yazılar beklemede kalacaktır.
+- Ve son olarak, daha fazla blok düzenleyici iyileştirmeleri - şimdi görüntü hizalama seçeneklerini destekliyor.

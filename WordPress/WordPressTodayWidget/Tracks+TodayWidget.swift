@@ -18,6 +18,9 @@ extension Tracks {
         trackExtensionEvent(.ConfigureLaunched)
     }
 
+    public func trackDisplayModeChanged(properties: [String: Bool]) {
+        trackExtensionEvent(.DisplayModeChanged, properties: properties as [String: AnyObject])
+    }
 
     // MARK: - Private Helpers
     fileprivate func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
@@ -27,8 +30,9 @@ extension Tracks {
 
     // MARK: - Private Enums
     fileprivate enum ExtensionEvents: String {
-        case Accessed          = "wpios_today_extension_accessed"
-        case StatsLaunched     = "wpios_today_extension_stats_launched"
-        case ConfigureLaunched = "wpios_today_extension_configure_launched"
+        case Accessed           = "wpios_today_extension_accessed"
+        case StatsLaunched      = "wpios_today_extension_stats_launched"
+        case ConfigureLaunched  = "wpios_today_extension_configure_launched"
+        case DisplayModeChanged = "wpios_today_extension_display_mode_changed"
     }
 }

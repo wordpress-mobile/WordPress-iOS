@@ -61,9 +61,8 @@ extern NSString *const WPStatsTodayWidgetKeychainTokenKey;
 extern NSString *const WPStatsTodayWidgetKeychainServiceName;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
+extern NSString *const WPStatsTodayWidgetUserDefaultsSiteUrlKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;
-extern NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey;
-extern NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey;
 
 /// Apple ID Constants
 ///

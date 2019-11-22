@@ -1,6 +1,5 @@
 import Foundation
 import CocoaLumberjack
-import WordPressComStatsiOS
 import WordPressShared
 import Gridicons
 
@@ -158,7 +157,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         configureCompactOrDefault()
         configureFilterBarTopConstraint()
-        configureGhost()
+        updateGhostableTableViewOptions()
 
         configureNavigationButtons()
     }
@@ -205,8 +204,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         filterTabBariOS10TopConstraint.isActive = false
     }
 
-    private func configureGhost() {
-        ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+    /// Update the `GhostOptions` to correctly show compact or default cells
+    private func updateGhostableTableViewOptions() {
+        let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        ghostableTableView.removeGhostContent()
+        ghostableTableView.displayGhostContent(options: ghostOptions, style: style)
     }
 
     private func configureCompactOrDefault() {
@@ -236,6 +241,19 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
+    }
+
+    override func configureGhostableTableView() {
+        super.configureGhostableTableView()
+
+        ghostingEnabled = true
+
+        // Register the cells
+        let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: Bundle.main)
+        ghostableTableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
+
+        let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: Bundle.main)
+        ghostableTableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
     }
 
     override func configureAuthorFilter() {
@@ -273,8 +291,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func showCompactOrDefault() {
-        configureGhost()
         tableView.reloadSections([0], with: .automatic)
+
+        updateGhostableTableViewOptions()
+        ghostableTableView.reloadSections([0], with: .automatic)
+
         postsViewButtonItem.image = postViewIcon
     }
 
@@ -483,21 +504,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
-        let filterIndex = filterSettings.currentFilterIndex()
         let editor = EditPostViewController(blog: blog)
-        editor.onClose = { [weak self] changesSaved in
-            if changesSaved {
-                if let postStatus = editor.post?.status {
-                    self?.updateFilterWithPostStatus(postStatus)
-                }
-            } else {
-                self?.updateFilter(index: filterIndex)
-            }
-        }
         editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false, completion: { [weak self] in
-            self?.updateFilterWithPostStatus(.draft)
-        })
+        present(editor, animated: false, completion: nil)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 
@@ -510,13 +519,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
         let editor = EditPostViewController(post: post)
-        editor.onClose = { [weak self] changesSaved in
-            if changesSaved {
-                if let postStatus = editor.post?.status {
-                    self?.updateFilterWithPostStatus(postStatus)
-                }
-            }
-        }
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false)
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
@@ -564,47 +566,20 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
 
-        // Push the Stats Post Details ViewController
-
-        if FeatureFlag.statsRefresh.enabled {
-            guard let postID = apost.postID as? Int else {
-                return
-            }
-
-            let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            SiteStatsInformation.sharedInstance.siteTimeZone = service.timeZone(for: blog)
-            SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
-            SiteStatsInformation.sharedInstance.siteID = blog.dotComID
-
-            let postURL = URL(string: apost.permaLink! as String)
-            let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-            postStatsTableViewController.configure(postID: postID, postTitle: apost.titleForDisplay(), postURL: postURL)
-            navigationController?.pushViewController(postStatsTableViewController, animated: true)
-
+        // Push the Post Stats ViewController
+        guard let postID = apost.postID as? Int else {
             return
         }
 
-        let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let statsBundle = Bundle(for: WPStatsViewController.self)
-        let statsStoryboard = UIStoryboard(name: statsStoryboardName, bundle: statsBundle)
-        let viewControllerObject = statsStoryboard.instantiateViewController(withIdentifier: identifier)
+        SiteStatsInformation.sharedInstance.siteTimeZone = service.timeZone(for: blog)
+        SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
+        SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
-        assert(viewControllerObject is StatsPostDetailsTableViewController)
-        guard let viewController = viewControllerObject as? StatsPostDetailsTableViewController else {
-            DDLogError("\(#file): \(#function) [\(#line)] - The stat details view controller is not of the expected class.")
-            return
-        }
-
-        viewController.postID = apost.postID
-        viewController.postTitle = apost.titleForDisplay()
-        viewController.statsService = WPStatsService(siteId: blog.dotComID,
-                                                     siteTimeZone: service.timeZone(for: blog),
-                                                     oauth2Token: blog.authToken,
-                                                     andCacheExpirationInterval: statsCacheInterval,
-                                                     apiBaseUrlString: Environment.current.wordPressComApiBase)
-
-        navigationController?.pushViewController(viewController, animated: true)
+        let postURL = URL(string: apost.permaLink! as String)
+        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+        postStatsTableViewController.configure(postID: postID, postTitle: apost.titleForDisplay(), postURL: postURL)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
     // MARK: - InteractivePostViewDelegate
@@ -624,9 +599,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func publish(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            publishPost(post)
-        }
+        publishPost(post)
     }
 
     func trash(_ post: AbstractPost) {
@@ -675,9 +648,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func retry(_ post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            PostCoordinator.shared.save(post)
-        }
+        PostCoordinator.shared.save(post)
+    }
+
+    func cancelAutoUpload(_ post: AbstractPost) {
+        PostCoordinator.shared.cancelAutoUploadOf(post)
     }
 
     // MARK: - Searching
@@ -829,12 +804,8 @@ private extension PostListViewController {
 }
 
 extension PostListViewController: PostActionSheetDelegate {
-    func showActionSheet(_ post: AbstractPost, from view: UIView) {
-        guard let post = post as? Post else {
-            return
-        }
-
+    func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView) {
         let isCompactOrSearching = isCompact || searchController.isActive
-        postActionSheet.show(for: post, from: view, showViewOption: isCompactOrSearching)
+        postActionSheet.show(for: postCardStatusViewModel, from: view, isCompactOrSearching: isCompactOrSearching)
     }
 }

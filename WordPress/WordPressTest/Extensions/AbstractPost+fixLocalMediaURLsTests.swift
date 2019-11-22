@@ -6,7 +6,19 @@ import Nimble
 class AbstractPostFixLocalMediaURLsTests: XCTestCase {
     private let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!
     private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
-    private let context = TestContextManager().newDerivedContext()
+
+    private var context: NSManagedObjectContext!
+
+    override func setUp() {
+        super.setUp()
+        context = TestContextManager().mainContext
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        context = nil
+        ContextManager.overrideSharedInstance(nil)
+    }
 
     func testUpdateLocalMediaPathsInCachesDirectory() {
         let post = PostBuilder(context)

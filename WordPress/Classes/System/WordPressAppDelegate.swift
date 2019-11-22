@@ -3,7 +3,6 @@ import CocoaLumberjack
 import Reachability
 import AutomatticTracks
 import WordPressAuthenticator
-import WordPressComStatsiOS
 import WordPressShared
 import AlamofireNetworkActivityIndicator
 import AutomatticTracks
@@ -68,6 +67,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         configureSelfHostedChallengeHandler()
 
         window?.makeKeyAndVisible()
+
+        // Restore a disassociated account prior to fixing tokens.
+        AccountService(managedObjectContext: ContextManager.shared.mainContext).restoreDisassociatedAccountIfNecessary()
 
         let solver = WPAuthTokenIssueSolver()
         let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
@@ -231,6 +233,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         #if DEBUG
         KeychainTools.processKeychainDebugArguments()
+
+        // Zendesk Logging
         CoreLogger.enabled = true
         CoreLogger.logLevel = .debug
         #endif
@@ -660,7 +664,6 @@ extension WordPressAppDelegate {
 
         WPSharedSetLoggingLevel(rawLevel)
         TracksSetLoggingLevel(rawLevel)
-        WPStatsSetLoggingLevel(rawLevel)
         WPAuthenticatorSetLoggingLevel(rawLevel)
     }
 }
@@ -804,6 +807,7 @@ extension WordPressAppDelegate {
         WPStyleGuide.configureTabBarAppearance()
         WPStyleGuide.configureNavigationAppearance()
         WPStyleGuide.configureDefaultTint()
+        WPStyleGuide.configureLightNavigationBarAppearance()
 
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UIToolbar.appearance().barTintColor = .primary

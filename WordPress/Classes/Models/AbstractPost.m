@@ -5,6 +5,21 @@
 #import "BasePost.h"
 @import WordPressKit;
 
+@interface AbstractPost ()
+
+/**
+ The following pair of properties is used to confirm that the post we'll be trying to automatically retry uploading,
+ hasn't changed since user has tapped on "confirm", and that we're not suddenly trying to auto-upload a post that the user
+ might have already forgotten about.
+
+ The public-facing counterparts of those is the `shouldAttemptAutoUpload` property.
+ */
+
+@property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
+@property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
+
+@end
+
 @implementation AbstractPost
 
 @dynamic blog;
@@ -15,6 +30,13 @@
 @dynamic comments;
 @dynamic featuredImage;
 @dynamic revisions;
+@dynamic confirmedChangesHash;
+@dynamic confirmedChangesTimestamp;
+@dynamic autoUploadAttemptsCount;
+@dynamic autosaveContent;
+@dynamic autosaveExcerpt;
+@dynamic autosaveTitle;
+@dynamic autosaveModifiedDate;
 
 @synthesize restorableStatus;
 
@@ -32,17 +54,6 @@
 }
 
 #pragma mark - Life Cycle Methods
-
-- (void)awakeFromFetch
-{
-    [super awakeFromFetch];
-
-    if (!self.isDeleted && self.remoteStatus == AbstractPostRemoteStatusPushing) {
-        // If we've just been fetched and our status is AbstractPostRemoteStatusPushing then something
-        // when wrong saving -- the app crashed for instance. So change our remote status to failed.
-        [self setPrimitiveValue:@(AbstractPostRemoteStatusFailed) forKey:@"remoteStatusNumber"];
-    }
-}
 
 - (void)remove
 {
@@ -569,10 +580,41 @@
             || self.remoteStatus == AbstractPostRemoteStatusFailed);
 }
 
-- (void)markRemoteStatusFailed
-{
-    self.remoteStatus = AbstractPostRemoteStatusFailed;
-    [self save];
+- (BOOL)shouldAttemptAutoUpload {
+    if (!self.confirmedChangesTimestamp || !self.confirmedChangesHash) {
+        return NO;
+    }
+
+    NSTimeInterval timeDifference = [[NSDate date] timeIntervalSinceDate:self.confirmedChangesTimestamp];
+
+    BOOL timeDifferenceWithinRange = timeDifference <= (60 * 60 * 24 * 2);
+    // We want the user's confirmation to upload a thing to expire after 48h.
+    // This probably should be calculated using NSCalendar APIs — but those
+    // can get really expensive. This method can potentially be called a lot during
+    // scrolling of a Post List — and for our specific use-case, being slightly innacurate here in terms of
+    // leap seconds or other calendrical oddities doesn't actually matter.
+
+    BOOL hashesEqual = [self.confirmedChangesHash isEqualToString:[self calculateConfirmedChangesContentHash]];
+
+    return hashesEqual && timeDifferenceWithinRange;
+}
+
+- (void)setShouldAttemptAutoUpload:(BOOL)shouldAttemptAutoUpload {
+    if (shouldAttemptAutoUpload) {
+        NSString *currentHash = [self calculateConfirmedChangesContentHash];
+        NSDate *now = [NSDate date];
+
+        self.confirmedChangesHash = currentHash;
+        self.confirmedChangesTimestamp = now;
+    } else {
+        self.confirmedChangesHash = @"";
+        self.confirmedChangesTimestamp = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
+    }
+}
+
+- (BOOL)wasAutoUploadCancelled {
+    return [self.confirmedChangesHash isEqualToString:@""]
+    && [self.confirmedChangesTimestamp isEqualToDate:[NSDate dateWithTimeIntervalSinceReferenceDate:0]];
 }
 
 - (void)updatePathForDisplayImageBasedOnContent

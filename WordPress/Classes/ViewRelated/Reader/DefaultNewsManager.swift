@@ -20,7 +20,7 @@ final class DefaultNewsManager: NewsManager {
     weak var delegate: NewsManagerDelegate?
     private let stats: NewsStats
 
-    private var result: Result<NewsItem>?
+    private var result: Result<NewsItem, Error>?
 
     init(service: NewsService, database: KeyValueDatabase, stats: NewsStats, delegate: NewsManagerDelegate? = nil) {
         self.service = service
@@ -46,7 +46,7 @@ final class DefaultNewsManager: NewsManager {
         case .success(let value):
             trackRequestedExtendedInfo()
             delegate?.didSelectReadMore(value.extendedInfoURL)
-        case .error:
+        case .failure:
             return
         }
     }
@@ -75,7 +75,7 @@ final class DefaultNewsManager: NewsManager {
         }
     }
 
-    func load(then completion: @escaping (Result<NewsItem>) -> Void) {
+    func load(then completion: @escaping (Result<NewsItem, Error>) -> Void) {
         if let loadedResult = result {
             completion(loadedResult)
             return
@@ -110,7 +110,7 @@ final class DefaultNewsManager: NewsManager {
         switch actualResult {
         case .success(let value):
             return currentBuildVersion() >= value.version
-        case .error:
+        case .failure:
             return false
         }
     }
@@ -130,7 +130,7 @@ final class DefaultNewsManager: NewsManager {
         }
 
         switch actualResult {
-        case .error:
+        case .failure:
             return Decimal(floatLiteral: 0.0)
         case .success(let newsItem):
             return newsItem.version
@@ -151,7 +151,7 @@ final class DefaultNewsManager: NewsManager {
         }
 
         switch actualResult {
-        case .error:
+        case .failure:
             return
         case .success(let newsItem):
             database.set(newsItem.version, forKey: DatabaseKeys.lastDismissedCardVersion)

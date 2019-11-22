@@ -5,6 +5,7 @@
 // WordPress Module
 
 #import "ActivityLogViewController.h"
+#import "AbstractPost+HashHelpers.h"
 #import "AccountService.h"
 #import "ApiCredentials.h"
 

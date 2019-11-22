@@ -7,7 +7,7 @@
 @class Post;
 @class Page;
 @class RemotePost;
-
+@class PostServiceRemoteFactory;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,6 +22,9 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 
 
 @interface PostService : LocalCoreDataService
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+                    postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory NS_DESIGNATED_INITIALIZER;
 
 - (Post *)createDraftPostForBlog:(Blog *)blog;
 - (Page *)createDraftPageForBlog:(Blog *)blog;
@@ -87,6 +90,8 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 /**
  Syncs local changes on a post back to the server.
 
+ If the post only exists on the device, it will be created.
+
  @param post The post or page to upload
  @param success A success block.  If the post object exists locally (in CoreData) when the upload
         succeeds, then this block will also return a pointer to the updated local AbstractPost
@@ -96,6 +101,22 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  @param failure A failure block
  */
 - (void)uploadPost:(AbstractPost *)post
+           success:(nullable void (^)(AbstractPost *post))success
+           failure:(void (^)(NSError * _Nullable error))failure;
+
+/**
+ The same as `uploadPost:success:failure`
+
+ Setting `forceDraftIfCreating` to `YES` is useful if we want to create a post in the server
+ with the intention of making it available for preview. If we create the post as is, and the user
+ has set its `status` to `.published`, then we would publishing the post even if we just
+ wanted to preview it!
+
+ Another use case of `forceDraftIfCreating` is to create the post in the background so we can
+ periodically auto-save it. Again, we'd still want to create it as a `.draft` status.
+ */
+- (void)uploadPost:(AbstractPost *)post
+forceDraftIfCreating:(BOOL)forceDraftIfCreating
            success:(nullable void (^)(AbstractPost *post))success
            failure:(void (^)(NSError * _Nullable error))failure;
 

@@ -19,4 +19,20 @@ extension Media {
     func resetAutoUploadFailureCount() {
         autoUploadFailureCount = 0
     }
+    /// Returns true if a new attempt to upload the media will be done later.
+    /// Otherwise, false.
+    ///
+    func willAttemptToUploadLater() -> Bool {
+        return autoUploadFailureCount.intValue < Media.maxAutoUploadFailureCount
+    }
+
+    /// Returns true if media has any associated post
+    ///
+    func hasAssociatedPost() -> Bool {
+        guard let posts = posts else {
+            return false
+        }
+
+        return !posts.isEmpty
+    }
 }

@@ -29,6 +29,43 @@ extension AbstractPost {
         }
     }
 
+    /// The status of self when we last received its data from the API.
+    ///
+    /// This is mainly used to identify which Post List tab should the post be shown in. For
+    /// example, if a published post is transitioned to a draft but the app has not finished
+    /// updating the server yet, we will continue to show the post in the Published list instead of
+    /// the Drafts list. We believe this behavior is less confusing for the user.
+    ///
+    /// This is not meant to be up to date with the remote API. Eventually, this information will
+    /// be outdated. For example, the user could have changed the status in the web while the device
+    /// was offline. So we wouldn't recommend using this value aside from its original intention.
+    ///
+    /// - SeeAlso: PostService
+    /// - SeeAlso: PostListFilter
+    var statusAfterSync: Status? {
+        get {
+            return rawValue(forKey: "statusAfterSync")
+        }
+        set {
+            setRawValue(newValue, forKey: "statusAfterSync")
+        }
+    }
+
+    /// The string value of `statusAfterSync` based on `BasePost.Status`.
+    ///
+    /// This should only be used in Objective-C. For Swift, use `statusAfterSync`.
+    ///
+    /// - SeeAlso: statusAfterSync
+    @objc(statusAfterSync)
+    var statusAfterSyncString: String? {
+        get {
+            return statusAfterSync?.rawValue
+        }
+        set {
+            statusAfterSync = newValue.flatMap { Status(rawValue: $0) }
+        }
+    }
+
     static func title(for status: Status) -> String {
         return title(forStatus: status.rawValue)
     }
@@ -94,5 +131,15 @@ extension AbstractPost {
         default:
             return nil
         }
+    }
+
+    @objc override open func featuredImageURLForDisplay() -> URL? {
+        return featuredImageURL
+    }
+
+    /// Returns true if the post has any media that needs manual intervention to be uploaded
+    ///
+    func hasPermanentFailedMedia() -> Bool {
+        return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
     }
 }

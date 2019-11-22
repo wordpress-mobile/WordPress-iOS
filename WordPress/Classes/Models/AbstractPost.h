@@ -44,6 +44,18 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  This array will contain a list of revision IDs.
  */
 @property (nonatomic, strong, nullable) NSArray *revisions;
+/**
+ The default value of autoUploadAttemptsCount is 0.
+*/
+@property (nonatomic, strong, nonnull) NSNumber *autoUploadAttemptsCount;
+
+/**
+ Autosave attributes hold a snapshot of the post's content.
+ */
+@property (nonatomic, copy, nullable) NSString *autosaveContent;
+@property (nonatomic, copy, nullable) NSString *autosaveExcerpt;
+@property (nonatomic, copy, nullable) NSString *autosaveTitle;
+@property (nonatomic, copy, nullable) NSDate *autosaveModifiedDate;
 
 // Revision management
 - (AbstractPost *)createRevision;
@@ -178,6 +190,14 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (void)remove;
 // Save changes to disk
 - (void)save;
+
+// This property is used to indicate whether an app should attempt to automatically retry upload this post
+// the next time a internet connection is available.
+@property (nonatomic, assign) BOOL shouldAttemptAutoUpload;
+
+// This property tracks whether a file's attempt to auto-upload was manually cancelled by the user.
+@property (nonatomic, assign, readonly) BOOL wasAutoUploadCancelled;
+
 
 /**
  * Updates the path for the display image by looking at the post content and trying to find an good image to use.

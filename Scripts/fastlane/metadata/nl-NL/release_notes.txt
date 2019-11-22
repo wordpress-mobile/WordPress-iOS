@@ -1,3 +1,4 @@
-* Na een recente ronde met verbeteringen, is de Blok-editor sneller en voelt vloeiender in de app.
-* Sommige van jullie hadden problemen met Donkere Mode op iPad's; we hebben het opgelost (gegroet, onuitgenodigde schittering!).
-* Je site bezoekers houden van berichten met media, dus hebben we de ervaring van het maken van ze stabieler gemaakt.
+- Met deze update kun je internet gebruiken zonder online te gaan. Bewerk en sla berichten op terwijl je offline bent en dan uploaden (of publiceren) wij ze wanneer je apparaat weer online is.
+- Soms was de weergave 'Ik' leeg als je was ingelogd via een zelfgehoste site. Dit was niet alleen een bug, maar ook slecht voor je eigenwaarde. Dit probleem is nu opgelost zodat jij weer Ik bent.
+- Soms werd een bericht gepubliceerd nadat een bericht in behandeling werd bijgewerkt. Alle statussen die in het Engels met een P beginnen (zoals Pending en Published) zijn nu verbeterd, zodat dit probleem zich niet meer voordoet. Berichten in behandeling blijven in behandeling tot je er zelf voor kiest om ze te publiceren.
+- En tot slot: meer verbeteringen voor de blokeditor. Hij ondersteunt nu opties voor het uitlijnen van afbeeldingen.

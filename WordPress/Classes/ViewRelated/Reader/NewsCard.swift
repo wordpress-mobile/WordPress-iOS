@@ -75,7 +75,7 @@ final class NewsCard: UIViewController {
     private func loadContent() {
         manager.load { [weak self] newsItem in
             switch newsItem {
-            case .error(let error):
+            case .failure(let error):
                 self?.errorLoading(error)
             case .success(let item):
                 self?.populate(item)

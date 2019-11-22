@@ -14,19 +14,11 @@ enum InsightType: Int {
     case todaysStats
     case postingActivity
     case publicize
-
-    // TODO: remove when Manage Insights is enabled.
-    static let allValues = [InsightType.latestPostSummary,
-                            .todaysStats,
-                            .annualSiteStats,
-                            .allTimeStats,
-                            .mostPopularTime,
-                            .postingActivity,
-                            .comments,
-                            .tagsAndCategories,
-                            .followersTotals,
-                            .followers,
-                            .publicize]
+    case allDotComFollowers
+    case allEmailFollowers
+    case allComments
+    case allTagsAndCategories
+    case allAnnual
 
     // These Insights will be displayed in this order if a site's Insights have not been customized.
     static let defaultInsights = [InsightType.postingActivity,
@@ -117,7 +109,6 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 
     private var viewNeedsUpdating = false
     private var displayingEmptyView = false
-    private let asyncLoadingActivated = Feature.enabled(.statsAsyncLoading)
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -153,7 +144,6 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         tableView.estimatedRowHeight = 500
 
         displayEmptyViewIfNecessary()
-        displayLoadingViewIfNecessary()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -184,42 +174,29 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
-            let asyncLoadingActivated = self?.asyncLoadingActivated ?? false
-            if !asyncLoadingActivated {
-                if let viewModel = self?.viewModel,
-                    viewModel.isFetchingOverview() {
-                        return
-                }
-            }
             self?.refreshTableView()
         }
     }
 
     func removeViewModelListeners() {
-        if asyncLoadingActivated {
-            return
-        }
         insightsChangeReceipt = nil
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        var rows: [ImmuTableRow.Type] = [InsightCellHeaderRow.self,
-                                         CustomizeInsightsRow.self,
-                                         LatestPostSummaryRow.self,
-                                         TwoColumnStatsRow.self,
-                                         PostingActivityRow.self,
-                                         TabbedTotalsStatsRow.self,
-                                         TopTotalsInsightStatsRow.self,
-                                         TableFooterRow.self]
-        if asyncLoadingActivated {
-            rows.append(contentsOf: [StatsErrorRow.self,
-                                     StatsGhostChartImmutableRow.self,
-                                     StatsGhostTwoColumnImmutableRow.self,
-                                     StatsGhostTopImmutableRow.self,
-                                     StatsGhostTabbedImmutableRow.self,
-                                     StatsGhostPostingActivitiesImmutableRow.self])
-        }
-        return rows
+        return [InsightCellHeaderRow.self,
+                CustomizeInsightsRow.self,
+                LatestPostSummaryRow.self,
+                TwoColumnStatsRow.self,
+                PostingActivityRow.self,
+                TabbedTotalsStatsRow.self,
+                TopTotalsInsightStatsRow.self,
+                TableFooterRow.self,
+                StatsErrorRow.self,
+                StatsGhostChartImmutableRow.self,
+                StatsGhostTwoColumnImmutableRow.self,
+                StatsGhostTopImmutableRow.self,
+                StatsGhostTabbedImmutableRow.self,
+                StatsGhostPostingActivitiesImmutableRow.self]
     }
 
     // MARK: - Table Refreshing
@@ -229,25 +206,10 @@ private extension SiteStatsInsightsTableViewController {
                 return
         }
 
-        if !asyncLoadingActivated {
-            guard viewIsVisible() else {
-                    return
-            }
-        }
-
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        if asyncLoadingActivated {
-            if viewModel.fetchingFailed() {
-                displayFailureViewIfNecessary()
-            }
-        } else {
-            if viewModel.fetchingFailed() &&
-                !viewModel.containsCachedData() {
-                displayFailureViewIfNecessary()
-            } else {
-                hideNoResults()
-            }
+        if viewModel.fetchingFailed() {
+            displayFailureViewIfNecessary()
         }
 
         refreshControl?.endRefreshing()
@@ -283,15 +245,6 @@ private extension SiteStatsInsightsTableViewController {
 
     func loadInsightsFromUserDefaults() {
 
-        // TODO: remove when Manage Insights is enabled.
-        guard FeatureFlag.statsInsightsManagement.enabled else {
-            // Show all Insights in the default order.
-            let allTypesValues = InsightType.allValues.map { $0.rawValue }
-            let insightTypesValues = UserDefaults.standard.array(forKey: userDefaultsInsightTypesKey) as? [Int] ?? allTypesValues
-            insightsToShow = InsightType.typesForValues(insightTypesValues)
-            return
-        }
-
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
             insightsToShow = InsightType.defaultInsights
             loadCustomizeCardSetting()
@@ -311,15 +264,6 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func writeInsightsToUserDefaults() {
-
-        // TODO: remove when Manage Insights is enabled.
-        guard FeatureFlag.statsInsightsManagement.enabled else {
-            removeCustomizeCard()
-            let insightTypesValues = InsightType.valuesForTypes(insightsToShow)
-            UserDefaults.standard.set(insightTypesValues, forKey: userDefaultsInsightTypesKey)
-            writeCustomizeCardSetting()
-            return
-        }
 
         writeCustomizeCardSetting()
 
@@ -392,6 +336,7 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
+        WPAnalytics.track(.statsItemTappedInsightMoveUp)
         moveInsight(insight, by: -1)
     }
 
@@ -400,10 +345,13 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
+        WPAnalytics.track(.statsItemTappedInsightMoveDown)
         moveInsight(insight, by: 1)
     }
 
     func removeInsight(_ insight: InsightType) {
+        WPAnalytics.track(.statsItemTappedInsightRemove, withProperties: ["insight": insight.statSection?.title ?? ""])
+
         insightsToShow = insightsToShow.filter { $0 != insight }
         updateView()
     }
@@ -556,6 +504,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
                 return
         }
 
+        WPAnalytics.track(.statsItemSelectedAddInsight, withProperties: ["insight": insight.title])
         insightsToShow.append(insightType)
         updateView()
     }
@@ -575,6 +524,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             DDLogDebug("manageInsightSelected: unknown insightType for statSection: \(insight.title).")
             return
         }
+
+        WPAnalytics.track(.statsItemTappedManageInsight)
 
         let alert = UIAlertController(title: insight.title,
                                       message: nil,
@@ -608,72 +559,37 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
 extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-
         guard !displayingEmptyView else {
+            WPAnalytics.track(.statsItemTappedInsightsAddStat)
             showAddInsightView()
             return
         }
 
-        if asyncLoadingActivated {
-            hideNoResults()
-        } else {
-            updateNoResults(title: NoResultConstants.loadingTitle,
-                            accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
-                                noResults.hideImageView(false)
-            }
-        }
+        hideNoResults()
         addViewModelListeners()
         refreshInsights()
     }
 }
 
 extension SiteStatsInsightsTableViewController: NoResultsViewHost {
-    private func displayLoadingViewIfNecessary() {
-
-        guard !displayingEmptyView,
-            !asyncLoadingActivated,
-            tableHandler.viewModel.sections.isEmpty else {
-                return
-        }
-
-        configureAndDisplayNoResults(on: tableView,
-                                     title: NoResultConstants.loadingTitle,
-                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
-                                        noResults.delegate = self
-                                        noResults.hideImageView(false)
-        }
-    }
 
     private func displayFailureViewIfNecessary() {
         guard tableHandler.viewModel.sections.isEmpty else {
             return
         }
 
-        if asyncLoadingActivated {
-            configureAndDisplayNoResults(on: tableView,
-                                         title: NoResultConstants.errorTitle,
-                                         subtitle: NoResultConstants.errorSubtitle,
-                                         buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
-                                            noResults.delegate = self
-                                            if !noResults.isReachable {
-                                                noResults.resetButtonText()
-                                            }
-            }
-        } else {
-            updateNoResults(title: NoResultConstants.errorTitle,
-                            subtitle: NoResultConstants.errorSubtitle,
-                            buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
-                                noResults.delegate = self
-                                noResults.hideImageView()
-            }
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.errorTitle,
+                                     subtitle: NoResultConstants.errorSubtitle,
+                                     buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        if !noResults.isReachable {
+                                            noResults.resetButtonText()
+                                        }
         }
     }
 
     private func displayEmptyViewIfNecessary() {
-        guard FeatureFlag.statsInsightsManagement.enabled else {
-            return
-        }
-
         guard insightsToShow.isEmpty else {
             displayingEmptyView = false
             hideNoResults()
@@ -691,7 +607,6 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
     }
 
     private enum NoResultConstants {
-        static let loadingTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
         static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
         static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
         static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")

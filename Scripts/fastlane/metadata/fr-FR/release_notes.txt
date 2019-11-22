@@ -1,3 +1,4 @@
-- Après un tour récent d’améliorations, l’éditeur de blocs est plus rapide et fonctionne plus  rapidement dans l’app.
-- Quelques uns d’entre vous ont eu des problèmes avec le mode sombre sur iPads. Nous nous avons réglé le tout (adios, éblouisseur non invité !).
-- Vos visiteurs aiment les articles avec des médias, donc nous avons rendu l’experience pour les créer plus stable.
+– Avec cette mise à jour, vous pouvez être connecté sans être vraiment connecté. Modifiez et enregistrez des articles lorsque vous n’avez pas de connexion, nous les téléverserons (ou publierons) automatiquement quand l’appareil sera de nouveau connecté.
+– Parfois, la vue « Moi » pouvait être vide si vous étiez connecté sur un site auto-hébergé qui est d’une, un bug et de de deux pas top pour qui a un peu d’estime en soit. C’est corrigé, donc Moi est vous à nouveau.
+– D’autre fois, mettre à jour un article en attente le publiait quand même. Les articles en attente resteront en attente jusqu’à ce que vous en décidiez autrement.
+– Finalement, des améliorations de l’éditeur de bloc. Des options d’alignement des images ont été ajoutées.

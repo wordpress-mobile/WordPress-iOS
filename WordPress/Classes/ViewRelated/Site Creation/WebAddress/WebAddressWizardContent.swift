@@ -202,7 +202,7 @@ final class WebAddressWizardContent: UIViewController {
 
         service.addresses(for: searchTerm, segmentID: segmentID) { [weak self] results in
             switch results {
-            case .error(let error):
+            case .failure(let error):
                 self?.handleError(error)
             case .success(let data):
                 self?.handleData(data)

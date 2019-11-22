@@ -34,13 +34,18 @@ class MediaCoordinator: NSObject {
     /// Tracks uploads of media for specific posts
     private var postMediaProgressCoordinators = [AbstractPost: MediaProgressCoordinator]()
 
-    override init() {
+    private let mediaServiceFactory: MediaService.Factory
+
+    init(_ mediaServiceFactory: MediaService.Factory = MediaService.Factory()) {
+        self.mediaServiceFactory = mediaServiceFactory
+
         super.init()
+
         addObserverForDeletedFiles()
     }
 
-    /// Uploads all local media for the post, and returns `true` if it was possible to start uploads for all
-    /// of the existing media for the post.
+    /// Uploads all failed media for the post, and returns `true` if it was possible to start
+    /// uploads for all of the existing media for the post.
     ///
     /// - Parameters:
     ///     - post: the post to get the media to upload from.
@@ -48,25 +53,23 @@ class MediaCoordinator: NSObject {
     ///
     /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
     ///
-    @discardableResult
     func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
-        let mediaService = MediaService(managedObjectContext: backgroundContext)
-        let media: [Media]
-        let isPushingAllMedia: Bool
+        let mediaService = mediaServiceFactory.create(backgroundContext)
+        let failedMedia: [Media] = post.media.filter({ $0.remoteStatus == .failed })
+        let mediasToUpload: [Media]
 
         if automatedRetry {
-            media = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
-            isPushingAllMedia = media.count == post.media.count
+            mediasToUpload = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
         } else {
-            media = post.media.filter({ $0.remoteStatus == .failed })
-            isPushingAllMedia = true
+            mediasToUpload = failedMedia
         }
 
-        media.forEach { mediaObject in
+        mediasToUpload.forEach { mediaObject in
             retryMedia(mediaObject, automatedRetry: automatedRetry)
         }
 
-        return isPushingAllMedia
+        let isPushingAllPendingMedia = mediasToUpload.count == failedMedia.count
+        return isPushingAllPendingMedia
     }
 
     /// - returns: The progress coordinator for the specified post. If a coordinator
@@ -130,9 +133,9 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media {
+    func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         let coordinator = mediaLibraryProgressCoordinator
-        return self.addMedia(from: asset, to: blog.objectID, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        return addMedia(from: asset, blog: blog, post: nil, coordinator: coordinator, analyticsInfo: analyticsInfo)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -143,19 +146,20 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media {
+    func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         let coordinator = self.coordinator(for: post)
-        return self.addMedia(from: asset, to: post.objectID, coordinator: coordinator, analyticsInfo: analyticsInfo)
+        return addMedia(from: asset, blog: post.blog, post: post, coordinator: coordinator, analyticsInfo: analyticsInfo)
     }
 
     @discardableResult
-    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media {
+    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         coordinator.track(numberOfItems: 1)
-        let service = MediaService(managedObjectContext: mainContext)
+        let service = mediaServiceFactory.create(mainContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         var creationProgress: Progress? = nil
-        let media = service.createMedia(with: asset,
-                            objectID: objectID,
+        let mediaOptional = service.createMedia(with: asset,
+                            blog: blog,
+                            post: post,
                             progress: &creationProgress,
                             thumbnailCallback: { [weak self] media, url in
                                 self?.thumbnailReady(url: url, for: media)
@@ -183,6 +187,9 @@ class MediaCoordinator: NSObject {
                                 let uploadProgress = strongSelf.uploadMedia(media)
                                 totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
         })
+        guard let media = mediaOptional else {
+            return nil
+        }
         processing(media)
         if let creationProgress = creationProgress {
             totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
@@ -279,7 +286,7 @@ class MediaCoordinator: NSObject {
     func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
         media.forEach({ self.cancelUpload(of: $0) })
 
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
         service.deleteMedia(media,
                             progress: { onProgress?($0) },
                             success: success,
@@ -288,7 +295,7 @@ class MediaCoordinator: NSObject {
 
     @discardableResult
     private func uploadMedia(_ media: Media, automatedRetry: Bool = false) -> Progress {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
 
         var progress: Progress? = nil
 
@@ -598,7 +605,7 @@ class MediaCoordinator: NSObject {
     /// - parameter blog: The blog from where to sync the media library from.
     ///
     @objc func syncMedia(for blog: Blog, success: (() -> Void)? = nil, failure: ((Error) ->Void)? = nil) {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
         service.syncMediaLibrary(for: blog, success: success, failure: failure)
     }
 
@@ -606,7 +613,7 @@ class MediaCoordinator: NSObject {
     /// The main cause of wrong status is the app being killed while uploads of media are happening.
     ///
     @objc func refreshMediaStatus() {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
         service.refreshMediaStatus()
     }
 }
@@ -631,12 +638,15 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         // We only want to show an upload notice for uploads initiated within
-        // the media library, or if there's been a failure.
+        // the media library.
         // If the errors are causes by a missing file, we want to ignore that too.
 
         let mediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
 
+        let allMediaHaveAssociatedPost = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasAssociatedPost() }
+
         if !mediaErrorsAreMissingFilesErrors,
+            !allMediaHaveAssociatedPost,
             mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
 
             let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
@@ -655,7 +665,7 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
 extension MediaCoordinator: Uploader {
     func resume() {
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = mediaServiceFactory.create(backgroundContext)
 
         service.failedMediaForUpload(automatedRetry: true).forEach() {
             retryMedia($0, automatedRetry: true)
