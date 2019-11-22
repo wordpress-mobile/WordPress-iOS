@@ -15,7 +15,7 @@ class EditPostViewController: UIViewController {
     @objc var openWithPostPost: Bool = false
     /// appear with media pre-inserted into the post
     var insertedMedia: [Media]? = nil
-    let shouldLoadAutosave: Bool
+    private let shouldLoadAutosave: Bool
 
     @objc fileprivate(set) var post: Post?
     fileprivate var hasShownEditor = false
