@@ -1,8 +1,10 @@
 import Foundation
 import Sentry
 
-// - WARNING: This class was created to track events of failures during
-// startup time. This will block the thread. Do not use unless you're sure.
+/**
+WARNING: This class was created to track events of failures during
+startup time. This will block the thread. Do not use unless you're sure.
+*/
 @objc class SentryStartupEvent: NSObject {
     static let shared = SentryStartupEvent()
 
@@ -20,6 +22,7 @@ import Sentry
         var errors = errors
         let lastError = errors.removeLast()
 
+        // Turn each error into a breadcrumb, except the last one
         for error in errors {
             let breadcrumb = Breadcrumb(level: .debug, category: error.domain)
             breadcrumb.message = "\(error.localizedDescription) | userInfo: \(lastError.userInfo)"
