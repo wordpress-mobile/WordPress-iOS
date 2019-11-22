@@ -299,7 +299,9 @@
 		1AED723A229D2E2C0036C5B8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA11FD6654A007AE3E4 /* Logger.swift */; };
 		1D36FCB53C05724865D41F7A /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		1F13224A238711C900CFA0D8 /* TenorClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F132249238711C900CFA0D8 /* TenorClient.swift */; };
+		1F13225023872EB500CFA0D8 /* TenorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F13224F23872EB500CFA0D8 /* TenorResponse.swift */; };
+		1F132252238863D300CFA0D8 /* tenor.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F132251238863D300CFA0D8 /* tenor.json */; };
+		1F1322552388641D00CFA0D8 /* TenorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1322542388641D00CFA0D8 /* TenorTests.swift */; };
 		2611CC62A62F9E6BC25350FE /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
@@ -2416,7 +2418,9 @@
 		1B77149F6C65D343E7E3AD09 /* Pods-WordPressUITests.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUITests.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUITests/Pods-WordPressUITests.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F132249238711C900CFA0D8 /* TenorClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorClient.swift; sourceTree = "<group>"; };
+		1F13224F23872EB500CFA0D8 /* TenorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorResponse.swift; sourceTree = "<group>"; };
+		1F132251238863D300CFA0D8 /* tenor.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tenor.json; sourceTree = "<group>"; };
+		1F1322542388641D00CFA0D8 /* TenorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorTests.swift; sourceTree = "<group>"; };
 		2262D835FA89938EBF63EADF /* Pods-WordPressShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		27AE66536E0C5378203F9312 /* Pods-WordPressUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUITests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUITests/Pods-WordPressUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
@@ -5088,7 +5092,15 @@
 		1F1322482387119E00CFA0D8 /* Tenor */ = {
 			isa = PBXGroup;
 			children = (
-				1F132249238711C900CFA0D8 /* TenorClient.swift */,
+				1F13224F23872EB500CFA0D8 /* TenorResponse.swift */,
+			);
+			path = Tenor;
+			sourceTree = "<group>";
+		};
+		1F1322532388640200CFA0D8 /* Tenor */ = {
+			isa = PBXGroup;
+			children = (
+				1F1322542388641D00CFA0D8 /* TenorTests.swift */,
 			);
 			path = Tenor;
 			sourceTree = "<group>";
@@ -8855,6 +8867,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				1F1322532388640200CFA0D8 /* Tenor */,
 				7EC9FE0822C6275900C5A888 /* Analytics */,
 				572FB3FE223A800500933C76 /* Classes */,
 				FF9A6E6F21F9359200D36D14 /* Gutenberg */,
@@ -9086,6 +9099,7 @@
 				D88A64AD208D9CF5008AE9BC /* stock-photos-pageable.json */,
 				D82247FA2113F50600918CEB /* News.strings */,
 				D871F98B214235C9002849B0 /* NewsBadFormed.strings */,
+				1F132251238863D300CFA0D8 /* tenor.json */,
 			);
 			name = "Mock Data";
 			path = "Test Data";
@@ -10198,6 +10212,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F132252238863D300CFA0D8 /* tenor.json in Resources */,
 				E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */,
 				E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */,
 				93C882A21EEB18D700227A59 /* html_page_with_link_to_rsd.html in Resources */,
@@ -10862,7 +10877,6 @@
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
-				1F13224A238711C900CFA0D8 /* TenorClient.swift in Sources */,
 				9A8ECE112254A3260043C8DA /* JetpackRemoteInstallViewModel.swift in Sources */,
 				5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
@@ -11429,6 +11443,7 @@
 				D8212CB520AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift in Sources */,
 				FF8C54AD21F677260003ABCF /* GutenbergMediaInserterHelper.swift in Sources */,
 				40C403F32215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift in Sources */,
+				1F13225023872EB500CFA0D8 /* TenorResponse.swift in Sources */,
 				E11C4B72201096EF00A6619C /* JetpackState.swift in Sources */,
 				437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */,
 				595CB3761D2317D50082C7E9 /* PostListFilter.swift in Sources */,
@@ -12154,6 +12169,7 @@
 				08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */,
 				D88A64A8208D9733008AE9BC /* ThumbnailCollectionTests.swift in Sources */,
 				572FB401223A806000933C76 /* NoticeStoreTests.swift in Sources */,
+				1F1322552388641D00CFA0D8 /* TenorTests.swift in Sources */,
 				D816B8D12112D5960052CE4D /* DefaultNewsManagerTests.swift in Sources */,
 				748437EE1F1D4A7300E8DDAF /* RichContentFormatterTests.swift in Sources */,
 				8BE7C84123466927006EDE70 /* I18n.swift in Sources */,
