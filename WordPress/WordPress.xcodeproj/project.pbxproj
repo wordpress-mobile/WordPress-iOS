@@ -886,9 +886,9 @@
 		7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */; };
 		7E3E7A6620E44F200075D159 /* HeaderContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */; };
 		7E3E9B702177C9DC00FD5797 /* GutenbergViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */; };
-		7E40716223741376003627FA /* GutenbergNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E40716123741375003627FA /* GutenbergNetworking.swift */; };
 		7E407121237163B8003627FA /* GutenbergStockPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E407120237163B8003627FA /* GutenbergStockPhotos.swift */; };
 		7E40713A2372AD54003627FA /* GutenbergFilesAppMediaSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4071392372AD54003627FA /* GutenbergFilesAppMediaSource.swift */; };
+		7E40716223741376003627FA /* GutenbergNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E40716123741375003627FA /* GutenbergNetworking.swift */; };
 		7E4123B920F4097B00DF8486 /* FormattableContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */; };
 		7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */; };
 		7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */; };
@@ -3047,9 +3047,9 @@
 		7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectContentGroup.swift; sourceTree = "<group>"; };
 		7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderContentGroup.swift; sourceTree = "<group>"; };
 		7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergViewController.swift; sourceTree = "<group>"; };
-		7E40716123741375003627FA /* GutenbergNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergNetworking.swift; sourceTree = "<group>"; };
 		7E407120237163B8003627FA /* GutenbergStockPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergStockPhotos.swift; sourceTree = "<group>"; };
 		7E4071392372AD54003627FA /* GutenbergFilesAppMediaSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFilesAppMediaSource.swift; sourceTree = "<group>"; };
+		7E40716123741375003627FA /* GutenbergNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergNetworking.swift; sourceTree = "<group>"; };
 		7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentFactory.swift; sourceTree = "<group>"; };
 		7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentGroup.swift; sourceTree = "<group>"; };
 		7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultFormattableContentAction.swift; sourceTree = "<group>"; };
@@ -12736,7 +12736,7 @@
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -12797,7 +12797,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
 			};
@@ -12843,7 +12843,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -12887,7 +12887,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressNotificationContentExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
 			};
@@ -12931,7 +12931,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressNotificationContentExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -12975,7 +12975,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressNotificationContentExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
 			};
@@ -13021,7 +13021,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -13065,7 +13065,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressNotificationServiceExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
 			};
@@ -13109,7 +13109,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressNotificationServiceExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -13153,7 +13153,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressNotificationServiceExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
 			};
@@ -13206,7 +13206,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -13256,7 +13256,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressDraftAction";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
 			};
@@ -13307,7 +13307,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressDraftAction";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -13358,7 +13358,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressDraftAction";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
 			};
@@ -13405,7 +13405,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 				WIREMOCK_HOST = localhost;
@@ -13448,7 +13448,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 				WIREMOCK_HOST = localhost;
@@ -13491,7 +13491,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 				WIREMOCK_HOST = localhost;
@@ -13535,7 +13535,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 				WIREMOCK_HOST = localhost;
@@ -13590,7 +13590,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 				WPCOM_CONFIG = "$(SRCROOT)/../.configure-files/wpcom_alpha_app_credentials";
 			};
@@ -13653,7 +13653,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
 			};
@@ -13686,7 +13686,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = "Release-Alpha";
@@ -13752,7 +13752,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressTodayWidget";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
 			};
@@ -13827,7 +13827,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -13890,7 +13890,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressShare";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -13954,7 +13954,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressShare";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
@@ -14018,7 +14018,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressShare";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -14070,7 +14070,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 				WPCOM_CONFIG = "$(SRCROOT)/../.configure-files/wpcom_internal_app_credentials";
 			};
@@ -14133,7 +14133,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -14166,7 +14166,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = "Release-Internal";
@@ -14223,7 +14223,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -14279,7 +14279,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressTodayWidget";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
 			};
@@ -14336,7 +14336,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressTodayWidget";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -14423,7 +14423,7 @@
 				);
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				WPCOM_CONFIG = "$(SRCROOT)/../.configure-files/wpcom_app_credentials";
 			};
 			name = Debug;
@@ -14475,7 +14475,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 				WPCOM_CONFIG = "$(SRCROOT)/../.configure-files/wpcom_app_credentials";
 			};
@@ -14516,7 +14516,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -14548,7 +14548,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -14595,7 +14595,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				WIREMOCK_HOST = localhost;
 				WIREMOCK_PORT = 8282;
@@ -14638,7 +14638,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				WIREMOCK_HOST = localhost;
 				WIREMOCK_PORT = 8282;
@@ -14681,7 +14681,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				WIREMOCK_HOST = localhost;
 				WIREMOCK_PORT = 8282;
@@ -14724,7 +14724,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = WordPress;
 				WIREMOCK_HOST = localhost;
 				WIREMOCK_PORT = 8282;
