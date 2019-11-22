@@ -207,6 +207,7 @@ PODS:
   - SimulatorStatusMagic (2.4.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
+  - TOCropViewController (2.5.2)
   - UIDeviceIdentifier (1.1.4)
   - WordPress-Aztec-iOS (1.11.0)
   - WordPress-Editor-iOS (1.11.0):
@@ -300,6 +301,7 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
+  - TOCropViewController (~> 2.5.2)
   - WordPress-Editor-iOS (~> 1.11.0)
   - WordPressAuthenticator (~> 1.10.2)
   - WordPressKit (~> 4.5.3-beta.3)
@@ -342,6 +344,7 @@ SPEC REPOS:
     - SimulatorStatusMagic
     - Starscream
     - SVProgressHUD
+    - TOCropViewController
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
@@ -489,6 +492,7 @@ SPEC CHECKSUMS:
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  TOCropViewController: e9da34f484aedd4e5d5a8ab230ba217cfe16c729
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: 050b34d4c3adfb7c60363849049b13d60683b348
   WordPress-Editor-iOS: 304098424f1051cb271546c99f906aac296b1b81
@@ -503,6 +507,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 35b16898fae049f6ebffba96793f209b03a41495
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 23d28718b172f521491bcdfe18430b7d9be6ee4c
+PODFILE CHECKSUM: 919cb10942f58c296e20105da62bff8aaf7beffb
 
 COCOAPODS: 1.8.4
