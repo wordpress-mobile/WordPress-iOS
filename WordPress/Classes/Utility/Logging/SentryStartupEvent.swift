@@ -17,7 +17,7 @@ import Sentry
     }
 
     @objc func send(title: String, errors: [NSError]) {
-        var errors = errors;
+        var errors = errors
         let lastError = errors.removeLast()
 
         for error in errors {
