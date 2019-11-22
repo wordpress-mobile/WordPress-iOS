@@ -2,7 +2,7 @@ import WordPressKit
 
 // MARK: - SiteAddressService
 
-typealias SiteAddressServiceCompletion = (Result<[DomainSuggestion]>) -> Void
+typealias SiteAddressServiceCompletion = (Result<[DomainSuggestion], Error>) -> Void
 
 protocol SiteAddressService {
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion)
@@ -12,8 +12,7 @@ protocol SiteAddressService {
 
 final class MockSiteAddressService: SiteAddressService {
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
-        let result = Result.success(mockAddresses())
-        completion(result)
+        completion(.success(mockAddresses()))
     }
 
     private func mockAddresses() -> [DomainSuggestion] {
@@ -78,7 +77,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
                                                     return
                                                 }
 
-                                                completion(Result.error(error))
+                                                completion(Result.failure(error))
         })
     }
 }
