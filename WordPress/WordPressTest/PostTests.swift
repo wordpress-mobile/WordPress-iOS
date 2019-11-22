@@ -301,11 +301,11 @@ class PostTests: XCTestCase {
         XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local changes", comment: "Local"))
 
         revision.status = .scheduled
-        let scheduledStatusDisplay = "\(Post.title(for: .scheduled))"
+        _ = "\(Post.title(for: .scheduled))"
         XCTAssertEqual(revision.statusForDisplay(), local)
 
         revision.status = .trash
-        let trashStatusDisplay = "\(Post.title(for: .trash))"
+        _ = "\(Post.title(for: .trash))"
         XCTAssertEqual(revision.statusForDisplay(), local)
 
         revision.status = .deleted

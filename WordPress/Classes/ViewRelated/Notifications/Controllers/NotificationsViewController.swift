@@ -1374,7 +1374,7 @@ private extension NotificationsViewController {
             return nil
         }
 
-        guard let noteIndex = notifications.index(of: note) else {
+        guard let noteIndex = notifications.firstIndex(of: note) else {
             return nil
         }
 
@@ -1452,7 +1452,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         fetchRequest.fetchLimit = 1
 
         if let results = try? context.fetch(fetchRequest) as? [Notification] {
-            return results?.first
+            return results.first
         }
 
         return nil
