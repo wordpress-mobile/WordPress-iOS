@@ -249,6 +249,10 @@ static ContextManager *_override;
                                                            error:&error]) {
         DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 
+        if (error != nil) {
+            [SentryStartupEvent.sharedInstance sendWithTitle:@"Error opening the database." error:error];
+        }
+
         _migrationFailed = YES;
         
         // make a backup of the old database
@@ -256,13 +260,25 @@ static ContextManager *_override;
                                                 toPath:[storeURL.path stringByAppendingString:@"~"]
                                                  error:&error];
 
+        if (error != nil) {
+            [SentryStartupEvent.sharedInstance sendWithTitle:@"Error backing up the database" error:error];
+        }
+
         // delete the sqlite file and try again
-        [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
+
+        if (error != nil) {
+            [SentryStartupEvent.sharedInstance sendWithTitle:@"Error removing failed migrated database" error:error];
+        }
+
         if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                        configuration:nil
                                                                  URL:storeURL
                                                              options:nil
                                                                error:&error]) {
+
+            [SentryStartupEvent.sharedInstance sendWithTitle:@"Can't initialize Core Data stack" error:error];
+
             @throw [NSException exceptionWithName:@"Can't initialize Core Data stack"
                                            reason:[error localizedDescription]
                                          userInfo:[error userInfo]];
