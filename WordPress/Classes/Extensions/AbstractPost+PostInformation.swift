@@ -17,6 +17,7 @@ extension AbstractPost: ImageSourceInformation {
         return self.isDraft() && !self.hasRemote()
     }
 
+    /// An autosave revision may include post title, content and/or excerpt.
     var isAutosaveRevisionAvailable: Bool {
         return autosaveModifiedDate != nil
     }

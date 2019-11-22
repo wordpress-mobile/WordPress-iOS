@@ -23,12 +23,12 @@ extension UIAlertController {
     /// A dialog giving the user the choice between loading the current version a post or its autosaved version.
     static func autosaveOptionsViewController(forSaveDate saveDate: Date, autosaveDate: Date, didTapSaveOption: @escaping () -> Void, didTapAutosaveOption: @escaping () -> Void) -> UIAlertController {
 
-        let title = NSLocalizedString("Which version would you like to edit?", comment: "Title displayed in popup when use has the option to load unsaved changes")
+        let title = NSLocalizedString("Which version would you like to edit?", comment: "Title displayed in popup when user has the option to load unsaved changes")
         let body = NSLocalizedString("You recently made changes to this post but didn't save them. Choose a version to load:", comment: "Message displayed in popup when user has the option to load unsaved changes")
         let saveLabel = NSLocalizedString("From this device", comment: "Message displayed in popup indicating date of change on device")
         let autosaveLabel = NSLocalizedString("From another device", comment: "Message displayed in popup indicating date of change on another device")
 
-        let savedOnLabel = NSLocalizedString("Saved on", comment: "Label shown on save dates")
+        let savedOnLabel = NSLocalizedString("Saved on", comment: "Label shown on post save dates when user has the option to load unsaved changes")
         let saveDateFormatted = savedOnLabel + " " + dateAndTime(for: saveDate)
         let autosaveDateFormatted = savedOnLabel + " " + dateAndTime(for: autosaveDate)
         let loadSaveButtonTitle = NSLocalizedString("From this device", comment: "Button title displayed in popup indicating date of change on device")
