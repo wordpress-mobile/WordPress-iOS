@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -79,7 +77,7 @@
         <!--Notification Details-->
         <scene sceneID="0B7-mU-JSs">
             <objects>
-                <viewController storyboardIdentifier="NotificationDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="veA-Pg-QAw" userLabel="Notification Details" customClass="NotificationDetailsViewController" customModule="WordPress" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NotificationDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="veA-Pg-QAw" userLabel="Notification Details" customClass="NotificationDetailsViewController" customModule="WordPress" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8gl-SX-x5I"/>
                         <viewControllerLayoutGuide type="bottom" id="6LW-NS-qSh"/>
@@ -89,10 +87,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-NP-ili">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN" customClass="IntrinsicTableView" customModule="WordPress">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <gestureRecognizers/>
                                         <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -106,7 +104,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6LW-NS-qSh" firstAttribute="top" secondItem="t2r-NP-ili" secondAttribute="bottom" id="Em4-Ll-jHx" userLabel="Bottom"/>
+                            <constraint firstItem="6LW-NS-qSh" firstAttribute="top" secondItem="t2r-NP-ili" secondAttribute="bottom" priority="250" id="Em4-Ll-jHx" userLabel="Bottom"/>
                             <constraint firstItem="t2r-NP-ili" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8gl-SX-x5I" secondAttribute="bottom" id="KIB-vx-IuC"/>
                             <constraint firstItem="t2r-NP-ili" firstAttribute="leading" secondItem="lvM-1n-Dgf" secondAttribute="leading" id="V4D-fq-INq" userLabel="Leading"/>
                             <constraint firstItem="6LW-NS-qSh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="t2r-NP-ili" secondAttribute="bottom" id="VTh-xG-bNj"/>

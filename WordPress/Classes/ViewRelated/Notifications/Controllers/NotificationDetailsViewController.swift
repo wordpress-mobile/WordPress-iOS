@@ -114,6 +114,8 @@ class NotificationDetailsViewController: UIViewController, DefinesVariableStatus
     ///
     var onSelectedNoteChange: ((Notification) -> Void)?
 
+    var stackViewToReplyTextViewConstraint: NSLayoutConstraint?
+
     deinit {
         // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
         guard isViewLoaded else {
@@ -477,8 +479,16 @@ extension NotificationDetailsViewController {
             replyTextView.removeFromSuperview()
             return
         }
+        view.addSubview(replyTextView)
+        view.bringSubviewToFront(replyTextView)
 
-        stackView.addArrangedSubview(replyTextView)
+        replyTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        replyTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+
+        // Attach stackview to replyTextView to prevent covering content
+        stackViewToReplyTextViewConstraint = stackView.bottomAnchor.constraint(equalTo: replyTextView.topAnchor)
+        stackViewToReplyTextViewConstraint?.priority = .defaultHigh
+        stackViewToReplyTextViewConstraint?.isActive = true
     }
 
     var shouldAttachReplyView: Bool {
@@ -1158,23 +1168,15 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
     }
 
     func updateUIForExpandedReply() {
-        view.bringSubviewToFront(replyTextView)
+        stackViewToReplyTextViewConstraint?.priority = .defaultLow
+        bottomLayoutConstraint.priority = .defaultHigh
         navigationController?.setNavigationBarHidden(true, animated: true)
-        UIView.animate(withDuration: replyTextView.animationDuration, animations: {
-            self.navigationController?.setNeedsStatusBarAppearanceUpdate()
-            self.tableView.isHidden = true
-        }) { _ in
-        }
     }
 
     func updateUIForCollapsedReply() {
+        stackViewToReplyTextViewConstraint?.priority = .defaultHigh
+        bottomLayoutConstraint.priority = .defaultLow
         navigationController?.setNavigationBarHidden(false, animated: true)
-        UIView.animate(withDuration: replyTextView.animationDuration, animations: {
-            self.navigationController?.setNeedsStatusBarAppearanceUpdate()
-            self.tableView.isHidden = false
-        }) { _ in
-            // wrap up ui changes here
-        }
     }
 
     override func viewSafeAreaInsetsDidChange() {
