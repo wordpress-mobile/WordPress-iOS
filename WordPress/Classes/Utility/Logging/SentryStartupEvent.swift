@@ -16,8 +16,17 @@ import Sentry
         return shared
     }
 
-    @objc func send(title: String, error: NSError) {
-        send(message: "\(title): error: \(error.localizedDescription) | domain: \(error.domain) | userInfo: \(error.userInfo)")
+    @objc func send(title: String, errors: [NSError]) {
+        var errors = errors;
+        let lastError = errors.removeLast()
+
+        for error in errors {
+            let breadcrumb = Breadcrumb(level: .debug, category: error.domain)
+            breadcrumb.message = "\(error.localizedDescription) | userInfo: \(lastError.userInfo)"
+            client?.breadcrumbs.add(breadcrumb)
+        }
+
+        send(message: "\(title): error: \(lastError.localizedDescription) | domain: \(lastError.domain) | userInfo: \(lastError.userInfo)")
     }
 
     // Send the event and block the thread until it was actually sent

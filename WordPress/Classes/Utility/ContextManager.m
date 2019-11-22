@@ -239,6 +239,7 @@ static ContextManager *_override;
     };
 
     NSError *error = nil;
+    NSMutableArray *errors = [NSMutableArray array];
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
                                    initWithManagedObjectModel:[self managedObjectModel]];
 
@@ -249,9 +250,8 @@ static ContextManager *_override;
                                                            error:&error]) {
         DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 
-        if (error != nil) {
-            [SentryStartupEvent.sharedInstance sendWithTitle:@"Error opening the database." error:error];
-        }
+        [errors addObject:error];
+        error = nil;
 
         _migrationFailed = YES;
         
@@ -261,14 +261,16 @@ static ContextManager *_override;
                                                  error:&error];
 
         if (error != nil) {
-            [SentryStartupEvent.sharedInstance sendWithTitle:@"Error backing up the database" error:error];
+            [errors addObject:error];
+            error = nil;
         }
 
         // delete the sqlite file and try again
         [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
 
         if (error != nil) {
-            [SentryStartupEvent.sharedInstance sendWithTitle:@"Error removing failed migrated database" error:error];
+            [errors addObject:error];
+            error = nil;
         }
 
         if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
@@ -277,7 +279,8 @@ static ContextManager *_override;
                                                              options:nil
                                                                error:&error]) {
 
-            [SentryStartupEvent.sharedInstance sendWithTitle:@"Can't initialize Core Data stack" error:error];
+            [errors addObject:error];
+            [SentryStartupEvent.sharedInstance sendWithTitle:@"Can't initialize Core Data stack" errors:errors];
 
             @throw [NSException exceptionWithName:@"Can't initialize Core Data stack"
                                            reason:[error localizedDescription]
