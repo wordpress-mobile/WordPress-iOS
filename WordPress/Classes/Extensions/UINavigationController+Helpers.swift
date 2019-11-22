@@ -40,8 +40,7 @@ extension UINavigationController {
     ///
     @objc override open func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         if #available(iOS 13, *), UIDevice.current.userInterfaceIdiom == .phone,
-            let webKitVC = topViewController as? WebKitViewController,
-            viewControllerToPresent is UIDocumentMenuViewController {
+            let webKitVC = topViewController as? WebKitViewController {
             viewControllerToPresent.popoverPresentationController?.delegate = webKitVC
         }
         super.present(viewControllerToPresent, animated: flag, completion: completion)
