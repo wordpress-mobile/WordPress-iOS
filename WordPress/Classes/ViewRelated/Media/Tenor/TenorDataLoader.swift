@@ -1,21 +1,21 @@
-/// Implementations of this protocol will be notified when data is loaded from the TenorService
+// Implementations of this protocol will be notified when data is loaded from the TenorService
 protocol TenorDataLoaderDelegate: class {
     func didLoad(media: [TenorMedia], reset: Bool)
 }
 
-/// Uses the TenorService to load GIFs, handling pagination
-final class TenorDataLoader {
+// Uses the TenorService to load GIFs, handling pagination
+class TenorDataLoader {
     private let service: TenorService
     private var searchParamsToUseNext: TenorSearchParams?
 
     private weak var delegate: TenorDataLoaderDelegate?
 
-    fileprivate enum State {
+    private enum State {
         case loading
         case idle
     }
 
-    fileprivate var state: State = .idle
+    private var state: State = .idle
 
     init(service: TenorService, delegate: TenorDataLoaderDelegate) {
         self.service = service

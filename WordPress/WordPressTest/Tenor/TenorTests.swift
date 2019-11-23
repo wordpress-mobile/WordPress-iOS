@@ -3,10 +3,6 @@ import XCTest
 
 class TenorTests: XCTestCase {
 
-    override func setUp() {
-
-    }
-
     func testTonerResponseParsing() {
         let json = Bundle(for: TenorTests.self).url(forResource: "tenor", withExtension: "json")!
         let data = try! Data(contentsOf: json)
@@ -32,8 +28,11 @@ class TenorTests: XCTestCase {
         XCTAssertNotNil(gif.preview, "Gifs should have a preview url")
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testTonerResponsePaging() {
+        let firstPage = TenorPageable.first()
+        XCTAssertEqual(firstPage.pageIndex, 0, "First page should have 0 offset")
+    
+        let lastPage = TenorPageable(nextOffset: 0)
+        XCTAssertNil(lastPage?.next, "Should not go beyond the last page")
     }
-
 }

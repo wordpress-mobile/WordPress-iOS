@@ -5,7 +5,7 @@ protocol TenorPickerDelegate: AnyObject {
     func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia])
 }
 
-/// Presents the Tenor main interface
+// Presents the Tenor main interface
 final class TenorPicker: NSObject {
     private lazy var dataSource: TenorDataSource = {
         return TenorDataSource(service: tenorService)
@@ -15,8 +15,7 @@ final class TenorPicker: NSObject {
         return TenorService()
     }()
 
-    /// Helps choosing the correct view controller for previewing a media asset
-    ///
+    // Helps choosing the correct view controller for previewing a media asset
     private var mediaPreviewHelper: MediaPreviewHelper!
 
     weak var delegate: TenorPickerDelegate?

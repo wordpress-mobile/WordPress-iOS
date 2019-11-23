@@ -29,7 +29,8 @@ class TenorMedia: NSObject, Decodable {
     let itemurl: String
     let title: String
 
-    var gifs: [TenorGifFormat: TenorGif] // Data format in the response has unnecessary depth. We'll convert it to a more optimal format
+    // Data format in the response has unnecessary depth. We'll convert it to a more optimal format
+    var gifs: [TenorGifFormat: TenorGif]
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -61,6 +62,8 @@ class TenorGif: NSObject, Codable {
     let preview: String
 }
 
+// MARK - Helpers needed by WPMediaAsset conformance
+
 extension TenorMedia {
     var previewGif: TenorGif {
         return gifs[.tinygif]!
@@ -79,6 +82,8 @@ extension TenorMedia {
     }
 }
 
+// MARK - WPMediaAsset conformance
+
 extension TenorMedia: WPMediaAsset {
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
         let url = imageURL(with: size)
@@ -93,8 +98,7 @@ extension TenorMedia: WPMediaAsset {
             }
         }
 
-        // Giphy API doesn't return a numerical ID value
-        return 0
+        return Int32(id) ?? 0
     }
 
     private func imageURL(with size: CGSize) -> URL {
@@ -146,8 +150,7 @@ extension TenorMedia: ExportableAsset {
     }
 }
 
-//// MARK: - MediaExternalAsset conformance
-//
+// MARK: - MediaExternalAsset conformance
 extension TenorMedia: MediaExternalAsset {
     var name: String {
         return title

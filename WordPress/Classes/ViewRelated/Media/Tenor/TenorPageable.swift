@@ -1,10 +1,10 @@
 import Foundation
 
 struct TenorPageable: Pageable {
-    static let defaultPageSize = 20
+    static let defaultPageSize = 10
     static let defaultPageIndex = 0
 
-    let pageOffset: Int
+    private let pageOffset: Int
 
     // MARK: - Pageable conformance
 
@@ -26,7 +26,7 @@ struct TenorPageable: Pageable {
 }
 
 extension TenorPageable {
-        // Having zero nextOffset means that there are no more pages to display
+    // Having zero nextOffset means that there are no more pages to display
     init?(nextOffset: Int) {
         guard nextOffset > 0 else {
             return nil
@@ -34,13 +34,11 @@ extension TenorPageable {
 
         self.init(pageOffset: nextOffset)
     }
-}
-
-extension TenorPageable {
-    /// Builds the Pageable corresponding to the first page, with the default page size.
-    static func first() -> TenorPageable {
-        return TenorPageable(pageOffset: defaultPageIndex)
-    }
+    
+    // Builds the Pageable corresponding to the first page, with the default page size.
+     static func first() -> TenorPageable {
+         return TenorPageable(pageOffset: defaultPageIndex)
+     }
 }
 
 extension TenorPageable: CustomStringConvertible {

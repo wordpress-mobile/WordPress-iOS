@@ -1,18 +1,17 @@
 import WPMediaPicker
 
+// Data Source for Tenor
+class TenorDataSource: NSObject, WPMediaCollectionDataSource {
+    private static let paginationThreshold = 10
 
-/// Data Source for Tenor
-final class TenorDataSource: NSObject, WPMediaCollectionDataSource {
-    fileprivate static let paginationThreshold = 10
-
-    fileprivate var gifMedia = [TenorMedia]()
-    var observers = [String: WPMediaChangesBlock]()
+    private var gifMedia = [TenorMedia]()
     private var dataLoader: TenorDataLoader?
-
+    private let scheduler = Scheduler(seconds: 0.5)
+    
+    var observers = [String: WPMediaChangesBlock]()
     var onStartLoading: (() -> Void)?
     var onStopLoading: (() -> Void)?
 
-    private let scheduler = Scheduler(seconds: 0.5)
 
     private(set) var searchQuery: String = ""
 
