@@ -1,13 +1,13 @@
 import WPMediaPicker
 
 
-/// Data Source for Giphy
-final class GiphyDataSource: NSObject, WPMediaCollectionDataSource {
+/// Data Source for Tenor
+final class TenorDataSource: NSObject, WPMediaCollectionDataSource {
     fileprivate static let paginationThreshold = 10
 
-    fileprivate var gifMedia = [GiphyMedia]()
+    fileprivate var gifMedia = [TenorMedia]()
     var observers = [String: WPMediaChangesBlock]()
-    private var dataLoader: GiphyDataLoader?
+    private var dataLoader: TenorDataLoader?
 
     var onStartLoading: (() -> Void)?
     var onStopLoading: (() -> Void)?
@@ -16,9 +16,9 @@ final class GiphyDataSource: NSObject, WPMediaCollectionDataSource {
 
     private(set) var searchQuery: String = ""
 
-    init(service: GiphyService) {
+    init(service: TenorService) {
         super.init()
-        self.dataLoader = GiphyDataLoader(service: service, delegate: self)
+        self.dataLoader = TenorDataLoader(service: service, delegate: self)
     }
 
     func clearSearch(notifyObservers shouldNotify: Bool) {
@@ -38,13 +38,13 @@ final class GiphyDataSource: NSObject, WPMediaCollectionDataSource {
         }
 
         scheduler.debounce { [weak self] in
-            let params = GiphySearchParams(text: searchText, pageable: GiphyPageable.first())
+            let params = TenorSearchParams(text: searchText, pageable: TenorPageable.first())
             self?.search(params)
             self?.onStartLoading?()
         }
     }
 
-    private func search(_ params: GiphySearchParams) {
+    private func search(_ params: TenorSearchParams) {
         dataLoader?.search(params)
     }
 
@@ -53,11 +53,11 @@ final class GiphyDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func group(at index: Int) -> WPMediaGroup {
-        return GiphyMediaGroup()
+        return TenorMediaGroup()
     }
 
     func selectedGroup() -> WPMediaGroup? {
-        return GiphyMediaGroup()
+        return TenorMediaGroup()
     }
 
     func numberOfAssets() -> Int {
@@ -139,7 +139,7 @@ final class GiphyDataSource: NSObject, WPMediaCollectionDataSource {
 
 // MARK: - Helpers
 
-extension GiphyDataSource {
+extension TenorDataSource {
     private func notifyObservers(incremental: Bool = false, inserted: IndexSet = IndexSet()) {
         DispatchQueue.main.async {
             self.observers.forEach {
@@ -151,7 +151,7 @@ extension GiphyDataSource {
 
 // MARK: - Pagination
 
-extension GiphyDataSource {
+extension TenorDataSource {
     fileprivate func fetchMoreContentIfNecessary(_ index: Int) {
         if shouldLoadMore(index) {
             dataLoader?.loadNextPage()
@@ -163,30 +163,30 @@ extension GiphyDataSource {
     }
 }
 
-extension GiphyDataSource: GiphyDataLoaderDelegate {
-    func didLoad(media: [GiphyMedia], reset: Bool) {
+extension TenorDataSource: TenorDataLoaderDelegate {
+    func didLoad(media: [TenorMedia], reset: Bool) {
         defer {
             onStopLoading?()
         }
 
-        guard media.count > 0 && searchQuery.count > 0 else {
+        guard searchQuery.count > 0 else {
             clearSearch(notifyObservers: true)
             return
         }
 
         if reset {
             overwriteMedia(with: media)
-        } else {
+        } else if media.count > 0 {
             appendMedia(with: media)
         }
     }
 
-    private func overwriteMedia(with media: [GiphyMedia]) {
+    private func overwriteMedia(with media: [TenorMedia]) {
         gifMedia = media
         notifyObservers(incremental: false)
     }
 
-    private func appendMedia(with media: [GiphyMedia]) {
+    private func appendMedia(with media: [TenorMedia]) {
         let currentMaxIndex = gifMedia.count
         let newMaxIndex = currentMaxIndex + media.count - 1
 

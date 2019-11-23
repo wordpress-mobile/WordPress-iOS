@@ -1,46 +1,50 @@
 import Foundation
 
 struct TenorPageable: Pageable {
-    let itemsPerPage: Int
-    let pageHandle: Int
-
     static let defaultPageSize = 20
     static let defaultPageIndex = 0
-    
+
+    let pageOffset: Int
+
+    // MARK: - Pageable conformance
+
     func next() -> Pageable? {
-        if pageHandle == 0 {
+        if pageOffset == 0 {
             return nil
         }
 
-        return TenorPageable(itemsPerPage: itemsPerPage, pageHandle: pageHandle)
+        return TenorPageable(pageOffset: pageOffset)
     }
 
     var pageSize: Int {
-        return itemsPerPage
+        return TenorPageable.defaultPageSize
     }
 
     var pageIndex: Int {
-        return pageHandle
+        return pageOffset
     }
 }
 
 extension TenorPageable {
-    init (nextOffset: Int) {
-        self.init(itemsPerPage: TenorPageable.defaultPageSize, pageHandle: nextOffset)
+        // Having zero nextOffset means that there are no more pages to display
+    init?(nextOffset: Int) {
+        guard nextOffset > 0 else {
+            return nil
+        }
+
+        self.init(pageOffset: nextOffset)
     }
 }
 
 extension TenorPageable {
     /// Builds the Pageable corresponding to the first page, with the default page size.
-    ///
-    /// - Returns: A TenorPageable configured with the default page size and the initial page handle
     static func first() -> TenorPageable {
-        return TenorPageable(itemsPerPage: defaultPageSize, pageHandle: defaultPageIndex)
+        return TenorPageable(pageOffset: defaultPageIndex)
     }
 }
 
 extension TenorPageable: CustomStringConvertible {
     var description: String {
-        return "Tenor Pageable: count \(itemsPerPage) next: \(pageHandle)"
+        return "Tenor Pageable: count \(pageSize) next: \(pageOffset)"
     }
 }

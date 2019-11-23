@@ -111,7 +111,7 @@ enum MediaUploadOrigin {
         switch (self, mediaType) {
         case (.mediaLibrary(let source), .image) where source == .deviceLibrary:
             return .mediaLibraryAddedPhotoViaDeviceLibrary
-        case (.mediaLibrary(let source), .image) where source == .giphy:
+        case (.mediaLibrary(let source), .image) where source == .tenor:
             return .mediaLibraryAddedPhotoViaGiphy
         case (.mediaLibrary(let source), .image) where source == .otherApps:
             return .mediaLibraryAddedPhotoViaOtherApps
@@ -125,7 +125,7 @@ enum MediaUploadOrigin {
             return .mediaLibraryAddedVideoViaOtherApps
         case (.mediaLibrary(let source), .video) where source == .camera:
             return .mediaLibraryAddedVideoViaCamera
-        case (.editor(let source), .image) where source == .giphy :
+        case (.editor(let source), .image) where source == .tenor:
             return .editorAddedPhotoViaGiphy
         case (.editor(let source), .image) where source == .deviceLibrary:
             return .editorAddedPhotoViaLocalLibrary
@@ -155,5 +155,5 @@ enum MediaSource {
     case wpMediaLibrary
     case stockPhotos
     case camera
-    case giphy
+    case tenor
 }

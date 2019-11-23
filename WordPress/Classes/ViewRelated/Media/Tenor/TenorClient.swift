@@ -10,11 +10,11 @@ enum TenorError: Error {
 
 class TenorClient {
     private let endPoint = "https://api.tenor.com/v1/search"
-    private let session = URLSession()
-    
+    private let session = URLSession(configuration: .default)
+
     // https://api.tenor.com/v1/search?q=excited&key=EP1HSHBGHKKK&limit=5
     func search(_ query: String, pos: Int, limit: Int, completion: @escaping TenorResponseBlock) {
- 
+
         var components = URLComponents(string: endPoint)
 
         components?.queryItems = [
@@ -23,12 +23,12 @@ class TenorClient {
             URLQueryItem(name: "limit", value: "\(limit)"),
             URLQueryItem(name: "pos", value: "\(pos)")
         ]
-        
+
         guard let url = components?.url else {
             completion(.failure(TenorError.wrongUrl))
             return
         }
-        
+
         session.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 if let response = try? JSONDecoder().decode(TenorResponse.self, from: data) {
@@ -39,6 +39,6 @@ class TenorClient {
             } else if let error = error {
                 completion(.failure(error))
             }
-        }
+        }.resume()
     }
 }

@@ -1,8 +1,8 @@
-import WPMediaPicker
+import Foundation
 
-final class GiphyMediaGroup: NSObject, WPMediaGroup {
+class TenorMediaGroup: NSObject, WPMediaGroup {
     func name() -> String {
-        return String.giphy
+        return String.tenor
     }
 
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {

@@ -2377,7 +2377,7 @@ extension AztecPostViewController {
     /// Sets the badge title of `attachment` to "GIF" if either the media is being imported from Giphy,
     /// or if it's a PHAsset with an animated playback style.
     private func setGifBadgeIfNecessary(for attachment: MediaAttachment, asset: ExportableAsset, source: MediaSource) {
-        var isGif = (source == .giphy)
+        var isGif = (source == .tenor)
 
         if let asset = asset as? PHAsset,
             asset.playbackStyle == .imageAnimated {
@@ -3252,11 +3252,11 @@ extension AztecPostViewController: StockPhotosPickerDelegate {
     }
 }
 
-extension AztecPostViewController: GiphyPickerDelegate {
-    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia]) {
-        assets.forEach {
-            insert(exportableAsset: $0, source: .giphy)
-        }
+extension AztecPostViewController: TenorPickerDelegate {
+    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia]) {
+              assets.forEach {
+              insert(exportableAsset: $0, source: .tenor)
+          }
     }
 }
 

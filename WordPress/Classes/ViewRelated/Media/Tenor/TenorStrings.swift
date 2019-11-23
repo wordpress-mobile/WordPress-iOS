@@ -1,8 +1,10 @@
 /// Extension on String containing the literals for the Giphy feature
+
+ #warning("TODO: These strings need to be changed ")
 extension String {
     // MARK: - Entry point: alert controller
-    static var giphy: String {
-        return NSLocalizedString("Giphy", comment: "One of the options when selecting More in the Post Editor's format bar")
+    static var tenor: String {
+        return NSLocalizedString("Tenor", comment: "One of the options when selecting More in the Post Editor's format bar")
     }
 
     // MARK: - Placeholder

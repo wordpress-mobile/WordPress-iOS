@@ -16,36 +16,36 @@ class TenorMedia: NSObject, Decodable {
         case title
         case media
     }
-    
+
     enum MediaCodingKeys: String, CodingKey, CaseIterable {
         case nanogif
         case tinygif
         case mediumgif
         case gif
     }
-    
+
     let id: String
     let created: Date
     let itemurl: String
     let title: String
-    
+
     var gifs: [TenorGifFormat: TenorGif] // Data format in the response has unnecessary depth. We'll convert it to a more optimal format
-    
+
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         id = try container.decode(String.self, forKey: CodingKeys.id)
-        
+
         let createdDate = try container.decode(Float.self, forKey: CodingKeys.created)
         created = Date(timeIntervalSince1970: Double(createdDate))
-        
+
         itemurl = try container.decode(String.self, forKey: CodingKeys.itemurl)
         title = try container.decode(String.self, forKey: CodingKeys.title)
-        
+
         var mediaContainer = try container.nestedUnkeyedContainer(forKey: CodingKeys.media)
-        
+
         gifs = [TenorGifFormat: TenorGif]()
-        
+
         while !mediaContainer.isAtEnd {
             let gifsContainer = try mediaContainer.nestedContainer(keyedBy: MediaCodingKeys.self)
             for key in MediaCodingKeys.allCases {
@@ -65,15 +65,15 @@ extension TenorMedia {
     var previewGif: TenorGif {
         return gifs[.tinygif]!
     }
-    
+
     var largeGif: TenorGif {
         return gifs[.gif]!
     }
-    
+
     var previewURL: URL {
         return NSURL(string: previewGif.url)! as URL
     }
-    
+
     var staticThumbnailURL: URL {
         return NSURL(string: previewGif.preview)! as URL
     }
@@ -152,11 +152,11 @@ extension TenorMedia: MediaExternalAsset {
     var name: String {
         return title
     }
-    
+
     var caption: String {
         return title
     }
-    
+
     var URL: URL {
         return previewURL
     }

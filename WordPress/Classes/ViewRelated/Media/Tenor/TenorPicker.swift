@@ -1,25 +1,25 @@
 import WPMediaPicker
 import MobileCoreServices
 
-protocol GiphyPickerDelegate: AnyObject {
-    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia])
+protocol TenorPickerDelegate: AnyObject {
+    func tenorPicker(_ picker: TenorPicker, didFinishPicking assets: [TenorMedia])
 }
 
-/// Presents the Giphy main interface
-final class GiphyPicker: NSObject {
-    private lazy var dataSource: GiphyDataSource = {
-        return GiphyDataSource(service: giphyService)
+/// Presents the Tenor main interface
+final class TenorPicker: NSObject {
+    private lazy var dataSource: TenorDataSource = {
+        return TenorDataSource(service: tenorService)
     }()
 
-    private lazy var giphyService: GiphyService = {
-        return GiphyService()
+    private lazy var tenorService: TenorService = {
+        return TenorService()
     }()
 
     /// Helps choosing the correct view controller for previewing a media asset
     ///
     private var mediaPreviewHelper: MediaPreviewHelper!
 
-    weak var delegate: GiphyPickerDelegate?
+    weak var delegate: TenorPickerDelegate?
     private var blog: Blog?
     private var observerToken: NSObjectProtocol?
 
@@ -47,7 +47,7 @@ final class GiphyPicker: NSObject {
     }()
 
     func presentPicker(origin: UIViewController, blog: Blog) {
-        NoResultsGiphyConfiguration.configureAsIntro(searchHint)
+        NoResultsTenorConfiguration.configureAsIntro(searchHint)
         self.blog = blog
 
         origin.present(picker, animated: true) {
@@ -63,7 +63,7 @@ final class GiphyPicker: NSObject {
             self?.updateHintView()
         }
         dataSource.onStartLoading = { [weak self] in
-            NoResultsGiphyConfiguration.configureAsLoading(self!.searchHint)
+            NoResultsTenorConfiguration.configureAsLoading(self!.searchHint)
         }
         dataSource.onStopLoading = { [weak self] in
             self?.updateHintView()
@@ -77,9 +77,9 @@ final class GiphyPicker: NSObject {
     private func updateHintView() {
         searchHint.removeFromView()
         if shouldShowNoResults() {
-            NoResultsGiphyConfiguration.configure(searchHint)
+            NoResultsTenorConfiguration.configure(searchHint)
         } else {
-            NoResultsGiphyConfiguration.configureAsIntro(searchHint)
+            NoResultsTenorConfiguration.configureAsIntro(searchHint)
         }
     }
 
@@ -90,13 +90,13 @@ final class GiphyPicker: NSObject {
     }
 }
 
-extension GiphyPicker: WPMediaPickerViewControllerDelegate {
+extension TenorPicker: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        guard let assets = assets as? [GiphyMedia] else {
-            assertionFailure("assets should be of type `[GiphyMedia]`")
+        guard let assets = assets as? [TenorMedia] else {
+            assertionFailure("assets should be of type `[TenorMedia]`")
             return
         }
-        delegate?.giphyPicker(self, didFinishPicking: assets)
+        delegate?.tenorPicker(self, didFinishPicking: assets)
         picker.dismiss(animated: true)
         dataSource.clearSearch(notifyObservers: false)
         hideKeyboard(from: picker.searchBar)
@@ -142,8 +142,9 @@ extension GiphyPicker: WPMediaPickerViewControllerDelegate {
 }
 
 // MARK: - Tracks
-extension GiphyPicker {
+extension TenorPicker {
     fileprivate func trackAccess() {
+        #warning("TODO: Needs to be changed in WordpressShared")
         WPAnalytics.track(.giphyAccessed)
     }
 }

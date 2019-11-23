@@ -4,14 +4,14 @@ import WPMediaPicker
 /// Prepares the alert controller that will be presented when tapping the "+" button in Media Library
 final class MediaLibraryMediaPickingCoordinator {
     private let stockPhotos = StockPhotosPicker()
-    private var giphy = GiphyPicker()
+    private var tenor = TenorPicker()
     private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
-    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & GiphyPickerDelegate) {
+    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & TenorPickerDelegate) {
         stockPhotos.delegate = delegate
         mediaLibrary.delegate = delegate
-        giphy.delegate = delegate
+        tenor.delegate = delegate
     }
 
     func present(context: MediaPickingContext) {
@@ -35,8 +35,8 @@ final class MediaLibraryMediaPickingCoordinator {
         if blog.supports(.stockPhotos) {
             menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
         }
-        
-        menuAlert.addAction(giphyAction(origin: origin, blog: blog))
+
+        menuAlert.addAction(tenorAction(origin: origin, blog: blog))
         menuAlert.addAction(otherAppsAction(origin: origin, blog: blog))
         menuAlert.addAction(cancelAction())
 
@@ -66,8 +66,8 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
 
-    private func giphyAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
-        return UIAlertAction(title: .giphy, style: .default, handler: { [weak self] action in
+    private func tenorAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
+        return UIAlertAction(title: .tenor, style: .default, handler: { [weak self] action in
             self?.showGiphy(origin: origin, blog: blog)
         })
     }
@@ -91,13 +91,13 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func showGiphy(origin: UIViewController, blog: Blog) {
-        let delegate = giphy.delegate
+        let delegate = tenor.delegate
 
-        // Create a new GiphyPicker each time so we don't save state
-        giphy = GiphyPicker()
-        giphy.delegate = delegate
+        // Create a new TenorPicker each time so we don't save state
+        tenor = TenorPicker()
+        tenor.delegate = delegate
 
-        giphy.presentPicker(origin: origin, blog: blog)
+        tenor.presentPicker(origin: origin, blog: blog)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {

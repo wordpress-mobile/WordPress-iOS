@@ -1,6 +1,6 @@
-// Empty state for Giphy
+// Empty state for Tenor
 
-struct NoResultsGiphyConfiguration {
+struct NoResultsTenorConfiguration {
 
     static func configureAsIntro(_ viewController: NoResultsViewController) {
         viewController.configure(title: .giphyPlaceholderTitle,
