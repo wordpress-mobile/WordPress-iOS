@@ -27,4 +27,12 @@ class TenorTests: XCTestCase {
         XCTAssertNotNil(gif.url, "Gifs should have a url")
         XCTAssertNotNil(gif.preview, "Gifs should have a preview url")
     }
+
+    func testTonerResponsePaging() {
+        let firstPage = TenorPageable.first()
+        XCTAssertEqual(firstPage.pageIndex, 0, "First page should have 0 offset")
+
+        let lastPage = TenorPageable(nextOffset: 0)
+        XCTAssertNil(lastPage?.next, "Should not go beyond the last page")
+    }
 }
