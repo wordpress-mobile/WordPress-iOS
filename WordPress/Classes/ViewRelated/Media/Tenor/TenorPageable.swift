@@ -34,7 +34,7 @@ extension TenorPageable {
 
         self.init(pageOffset: nextOffset)
     }
-    
+
     // Builds the Pageable corresponding to the first page, with the default page size.
      static func first() -> TenorPageable {
          return TenorPageable(pageOffset: defaultPageIndex)

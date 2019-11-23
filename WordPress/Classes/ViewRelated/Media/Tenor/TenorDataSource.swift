@@ -7,7 +7,7 @@ class TenorDataSource: NSObject, WPMediaCollectionDataSource {
     private var gifMedia = [TenorMedia]()
     private var dataLoader: TenorDataLoader?
     private let scheduler = Scheduler(seconds: 0.5)
-    
+
     var observers = [String: WPMediaChangesBlock]()
     var onStartLoading: (() -> Void)?
     var onStopLoading: (() -> Void)?

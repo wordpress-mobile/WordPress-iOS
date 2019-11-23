@@ -62,7 +62,7 @@ class TenorGif: NSObject, Codable {
     let preview: String
 }
 
-// MARK - Helpers needed by WPMediaAsset conformance
+// MARK: - Helpers needed by WPMediaAsset conformance
 
 extension TenorMedia {
     var previewGif: TenorGif {
@@ -82,7 +82,7 @@ extension TenorMedia {
     }
 }
 
-// MARK - WPMediaAsset conformance
+// MARK: - WPMediaAsset conformance
 
 extension TenorMedia: WPMediaAsset {
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
