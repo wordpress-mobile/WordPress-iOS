@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
@@ -17,9 +18,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="Bfq-Ne-g8g" id="9ZV-7I-syI">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HJK-1N-bmY">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ca1-WK-dzn">
                                 <rect key="frame" x="16" y="8" width="304" height="83"/>
@@ -90,7 +93,7 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zh4-Mc-AK7">
-                                                <rect key="frame" x="248" y="0.3333333333333357" width="56" height="47"/>
+                                                <rect key="frame" x="248" y="0.5" width="56" height="47"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="47" id="SNG-8G-08p"/>
                                                     <constraint firstAttribute="width" constant="56" id="ciz-Vj-1BT"/>
@@ -103,13 +106,10 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="tne-qn-oAS" firstAttribute="centerY" secondItem="XTi-We-ou2" secondAttribute="centerY" id="GFk-cc-soI"/>
-                                        </constraints>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" text="Private • Local changes | More text to test wrapping" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZNQ-Pm-fi0">
-                                        <rect key="frame" x="0.0" y="51.666666666666664" width="304" height="31.333333333333336"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <rect key="frame" x="0.0" y="50" width="304" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -125,9 +125,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="06O-B0-y3k" secondAttribute="trailing" id="8ib-ER-7zy"/>
-                            <constraint firstAttribute="bottom" secondItem="ca1-WK-dzn" secondAttribute="bottom" constant="8" id="CaL-ph-mNW"/>
+                            <constraint firstAttribute="bottom" secondItem="ca1-WK-dzn" secondAttribute="bottom" constant="7" id="CaL-ph-mNW"/>
                             <constraint firstItem="ca1-WK-dzn" firstAttribute="leading" secondItem="HJK-1N-bmY" secondAttribute="leading" constant="16" id="Dj8-MK-kGj"/>
-                            <constraint firstItem="ca1-WK-dzn" firstAttribute="top" secondItem="HJK-1N-bmY" secondAttribute="top" constant="8" id="XOO-Xi-dht"/>
+                            <constraint firstItem="ca1-WK-dzn" firstAttribute="top" secondItem="HJK-1N-bmY" secondAttribute="top" constant="6" id="XOO-Xi-dht"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="60" id="XwZ-7a-9Cd"/>
                             <constraint firstItem="06O-B0-y3k" firstAttribute="leading" secondItem="HJK-1N-bmY" secondAttribute="leading" id="g6x-y3-fZX"/>
                             <constraint firstAttribute="bottom" secondItem="06O-B0-y3k" secondAttribute="bottom" id="wZI-eS-fxp"/>
