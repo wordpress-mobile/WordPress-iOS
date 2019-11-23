@@ -5,7 +5,7 @@ struct NoResultsTenorConfiguration {
     static func configureAsIntro(_ viewController: NoResultsViewController) {
         viewController.configure(title: .giphyPlaceholderTitle,
                                  image: Constants.imageName,
-                                 subtitleImage: "giphy-attribution")
+                                 subtitleImage: "tenor-attribution")
 
         viewController.view.layoutIfNeeded()
     }
