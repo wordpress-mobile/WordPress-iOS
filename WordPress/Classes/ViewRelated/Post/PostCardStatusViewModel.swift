@@ -60,7 +60,7 @@ class PostCardStatusViewModel: NSObject {
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
         } else if post.isAutosaveRevisionAvailable {
-            return StatusMessages.autosave
+            return StatusMessages.hasUnsavedChanges
         } else {
             return post.statusForDisplay()
         }
@@ -268,7 +268,7 @@ class PostCardStatusViewModel: NSObject {
                                                             comment: "Message displayed on a post's card when the post has failed to upload")
         static let localChanges = NSLocalizedString("Local changes",
                                                             comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
-        static let autosave = NSLocalizedString("You've made unsaved changes to this post",
+        static let hasUnsavedChanges = NSLocalizedString("You've made unsaved changes to this post",
                                                             comment: "Message displayed on a post's card when the post has unsaved changes")
     }
 }
