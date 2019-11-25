@@ -163,7 +163,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
-    var shouldLoadAutosave: Bool
+    var loadAutosaveRevision: Bool
 
     let navigationBarManager = PostEditorNavigationBarManager()
 
@@ -220,12 +220,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Initializers
     required init(
         post: AbstractPost,
-        shouldLoadAutosave: Bool = false,
+        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         self.post = post
-        self.shouldLoadAutosave = shouldLoadAutosave
+        self.loadAutosaveRevision = loadAutosaveRevision
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
@@ -253,7 +253,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        createRevisionOfPost(shouldLoadAutosave: shouldLoadAutosave)
+        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
         setupGutenbergView()
         configureNavigationBar()
         refreshInterface()

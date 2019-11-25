@@ -342,7 +342,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
-    var shouldLoadAutosave: Bool
+    var loadAutosaveRevision: Bool
 
     /// Active Downloads
     ///
@@ -444,14 +444,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     required init(
         post: AbstractPost,
-        shouldLoadAutosave: Bool = false,
+        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
-        self.shouldLoadAutosave = shouldLoadAutosave
+        self.loadAutosaveRevision = loadAutosaveRevision
         self.replaceEditor = replaceEditor
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
@@ -489,7 +489,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        createRevisionOfPost(shouldLoadAutosave: shouldLoadAutosave)
+        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
 
         // Setup
         configureNavigationBar()

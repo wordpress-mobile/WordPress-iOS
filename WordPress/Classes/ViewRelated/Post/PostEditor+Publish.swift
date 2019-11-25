@@ -400,7 +400,7 @@ extension PostEditor where Self: UIViewController {
     }
 
     // TODO: Rip this out and put it into the PostService
-    func createRevisionOfPost(shouldLoadAutosave: Bool = false) {
+    func createRevisionOfPost(loadAutosaveRevision: Bool = false) {
 
         if post.isLocalRevision, post.original?.postTitle == nil, post.original?.content == nil {
             // Editing a locally made revision has bit of weirdness in how autosave and
@@ -441,7 +441,7 @@ extension PostEditor where Self: UIViewController {
         managedObjectContext.performAndWait {
             post = self.post.createRevision()
 
-            if shouldLoadAutosave {
+            if loadAutosaveRevision {
                 post.postTitle = post.autosaveTitle
                 post.mt_excerpt = post.autosaveExcerpt
                 post.content = post.autosaveContent

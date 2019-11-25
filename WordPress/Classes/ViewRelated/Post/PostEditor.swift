@@ -27,7 +27,7 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
 
     /// If true, apply autosave content when the editor creates a revision.
     ///
-    var shouldLoadAutosave: Bool { get set }
+    var loadAutosaveRevision: Bool { get set }
 
     /// Closure to be executed when the editor gets closed.
     ///
