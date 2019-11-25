@@ -257,7 +257,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         _ = state.topFileDownloads.flatMap { StatsRecord.record(from: $0, for: blog) }
 
         try? ContextManager.shared.mainContext.save()
-        DDLogInfo("Stats: finished persisting Period Stats to disk.")
+        DDLogInfo("Stats Period: finished persisting Period Stats to disk.")
     }
 }
 
@@ -510,10 +510,10 @@ private extension StatsPeriodStore {
 
         statsRemote.getData(for: period, endingOn: date, limit: 14) { (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogInfo("Error fetching likes summary: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Stats Period: Error fetching likes summary: \(String(describing: error?.localizedDescription))")
             }
 
-            DDLogInfo("Stats: Finished fetching likes summary.")
+            DDLogInfo("Stats Period: Finished fetching likes summary.")
             DispatchQueue.main.async {
                 self.actionDispatcher.dispatch(PeriodAction.receivedLikesSummary(likes, error))
             }
@@ -538,7 +538,7 @@ private extension StatsPeriodStore {
         let videos = StatsRecord.timeIntervalData(for: blog, type: .videos, period: StatsRecordPeriodType(remoteStatus: period), date: date)
         let fileDownloads = StatsRecord.timeIntervalData(for: blog, type: .fileDownloads, period: StatsRecordPeriodType(remoteStatus: period), date: date)
 
-        DDLogInfo("Stats: Finished loading Period data from Core Data.")
+        DDLogInfo("Stats Period: Finished loading Period data from Core Data.")
 
         transaction { state in
             state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
@@ -552,7 +552,7 @@ private extension StatsPeriodStore {
             state.topVideos = videos.flatMap { StatsTopVideosTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topFileDownloads = fileDownloads.flatMap { StatsFileDownloadsTimeIntervalData(statsRecordValues: $0.recordValues) }
 
-            DDLogInfo("Stats: Finished setting data to Period store from Core Data.")
+            DDLogInfo("Stats Period: Finished setting data to Period store from Core Data.")
         }
     }
 
@@ -905,11 +905,9 @@ private extension StatsPeriodStore {
         // can take extreme amounts of time to finish (and semi-frequenty fail). In order to not block the UI
         // here, we split out the views/visitors/comments and likes requests.
         // This method splices the results of the two back together so we can persist it to Core Data.
-        guard
-            let summary = likesSummary,
+        guard let summary = likesSummary,
             let currentSummary = state.summary,
-            summary.summaryData.count == currentSummary.summaryData.count
-            else {
+            summary.summaryData.count == currentSummary.summaryData.count else {
                 transaction { state in
                     state.summaryLikesStatus = error != nil ? .error : .success
                 }
