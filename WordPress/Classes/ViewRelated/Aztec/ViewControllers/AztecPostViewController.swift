@@ -1591,7 +1591,7 @@ extension AztecPostViewController {
 
         var index: Int? = nil
         if let listType = listTypeForSelectedText() {
-            index = Constants.lists.index(of: listType)
+            index = Constants.lists.firstIndex(of: listType)
         }
 
         let optionsTableViewController = OptionsTableViewController(options: listOptions)
@@ -1838,6 +1838,8 @@ extension AztecPostViewController {
             picker.showGroupSelector = false
             picker.dataSource = mediaLibraryDataSource
             registerChangeObserver(forPicker: picker.mediaPicker)
+        @unknown default:
+            fatalError()
         }
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
@@ -1931,7 +1933,7 @@ extension AztecPostViewController {
                                           accessibilityLabel: headerType.accessibilityLabel)
         }
 
-        let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
+        let selectedIndex = Constants.headers.firstIndex(of: self.headerLevelForSelectedText())
 
         let optionsTableViewController = OptionsTableViewController(options: headerOptions)
 
