@@ -4,6 +4,8 @@
 #import "WordPress-Swift.h"
 @import WordPressShared.WPAnalytics;
 
+#define SentryStartupEventAddError(event, error) [event addError:error file:__FILE__ function:__FUNCTION__ line:__LINE__]
+
 // MARK: - Static Variables
 //
 static ContextManager *_instance;
@@ -239,7 +241,7 @@ static ContextManager *_override;
     };
 
     NSError *error = nil;
-    NSMutableArray *errors = [NSMutableArray array];
+    SentryStartupEvent *startupEvent = [SentryStartupEvent new];
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
                                    initWithManagedObjectModel:[self managedObjectModel]];
 
@@ -250,7 +252,7 @@ static ContextManager *_override;
                                                            error:&error]) {
         DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 
-        [errors addObject:error];
+        SentryStartupEventAddError(startupEvent, error);
         error = nil;
 
         _migrationFailed = YES;
@@ -261,7 +263,7 @@ static ContextManager *_override;
                                                  error:&error];
 
         if (error != nil) {
-            [errors addObject:error];
+            SentryStartupEventAddError(startupEvent, error);
             error = nil;
         }
 
@@ -269,7 +271,7 @@ static ContextManager *_override;
         [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
 
         if (error != nil) {
-            [errors addObject:error];
+            SentryStartupEventAddError(startupEvent, error);
             error = nil;
         }
 
@@ -279,8 +281,8 @@ static ContextManager *_override;
                                                              options:nil
                                                                error:&error]) {
 
-            [errors addObject:error];
-            [SentryStartupEvent.sharedInstance sendWithTitle:@"Can't initialize Core Data stack" errors:errors];
+            SentryStartupEventAddError(startupEvent, error);
+            [startupEvent sendWithTitle:@"Can't initialize Core Data stack"];
 
             @throw [NSException exceptionWithName:@"Can't initialize Core Data stack"
                                            reason:[error localizedDescription]
