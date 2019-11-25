@@ -680,7 +680,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // Now that we have the image, create an aspect ratio constraint for
         // the featuredImageView
         let ratio = size.height / size.width
-        let constraint = NSLayoutConstraint(item: featuredImageView!,
+        let constraint = NSLayoutConstraint(item: featuredImageView as Any,
                                             attribute: .height,
                                             relatedBy: .equal,
                                             toItem: featuredImageView!,
