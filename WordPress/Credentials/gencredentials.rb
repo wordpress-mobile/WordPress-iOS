@@ -59,7 +59,7 @@ end
 
 def print_appcenter(appcenter)
 print <<-EOF
-+ (NSString *)appcenterAppId {
++ (NSString *)appCenterAppId {
     #ifdef APPCENTER_ENABLED
     return @"#{appcenter}";
     #else
