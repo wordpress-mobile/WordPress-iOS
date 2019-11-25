@@ -57,6 +57,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.accessibilityIdentifier = "Me Table"
+
+        reloadViewModel()
     }
 
     override func viewDidLayoutSubviews() {
