@@ -16,12 +16,12 @@ class TenorTests: XCTestCase {
 
         let media = response.results.first!
 
-        XCTAssertNotNil(media.gifs[.nanogif], "Nano gif should exist")
-        XCTAssertNotNil(media.gifs[.tinygif], "Tiny gif should exist")
-        XCTAssertNotNil(media.gifs[.mediumgif], "Medium gif should exist")
-        XCTAssertNotNil(media.gifs[.gif], "Normal gif should exist")
+        XCTAssertNotNil(media.variants[.nanogif], "Nano gif should exist")
+        XCTAssertNotNil(media.variants[.tinygif], "Tiny gif should exist")
+        XCTAssertNotNil(media.variants[.mediumgif], "Medium gif should exist")
+        XCTAssertNotNil(media.variants[.gif], "Normal gif should exist")
 
-        let gif = media.gifs[.gif]!
+        let gif = media.variants[.gif]!
 
         XCTAssertTrue(gif.dims[0] > 0 && gif.dims[1] > 0, "Gifs should have non-zero dimensions")
         XCTAssertNotNil(gif.url, "Gifs should have a url")

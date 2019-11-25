@@ -12,7 +12,6 @@ class TenorClient {
     private let endPoint = "https://api.tenor.com/v1/search"
     private let session = URLSession(configuration: .default)
 
-    // https://api.tenor.com/v1/search?q=excited&key=KEY&limit=5&pos=0
     func search(_ query: String, pos: Int, limit: Int, completion: @escaping TenorResponseBlock) {
 
         var components = URLComponents(string: endPoint)

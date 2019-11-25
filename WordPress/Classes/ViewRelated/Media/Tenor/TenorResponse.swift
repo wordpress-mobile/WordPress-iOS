@@ -26,11 +26,10 @@ class TenorMedia: NSObject, Decodable {
 
     let id: String
     let created: Date
-    let itemurl: String
     let title: String
 
     // Data format in the response has unnecessary depth. We'll convert it to a more optimal format
-    var gifs: [TenorGifFormat: TenorGif]
+    var variants: [TenorGifFormat: TenorGif]
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -40,18 +39,21 @@ class TenorMedia: NSObject, Decodable {
         let createdDate = try container.decode(Float.self, forKey: CodingKeys.created)
         created = Date(timeIntervalSince1970: Double(createdDate))
 
-        itemurl = try container.decode(String.self, forKey: CodingKeys.itemurl)
         title = try container.decode(String.self, forKey: CodingKeys.title)
 
-        var mediaContainer = try container.nestedUnkeyedContainer(forKey: CodingKeys.media)
+        // Media field contains the media in several formats (gif, mp4, webm. in different sizes)
+        // Its content is wrapped in an additional single element json array. We need to get that first.
+        var mediaOuterContainer = try container.nestedUnkeyedContainer(forKey: CodingKeys.media)
 
-        gifs = [TenorGifFormat: TenorGif]()
+        // We only need the ones in gif format
+        variants = [TenorGifFormat: TenorGif]()
 
-        while !mediaContainer.isAtEnd {
-            let gifsContainer = try mediaContainer.nestedContainer(keyedBy: MediaCodingKeys.self)
-            for key in MediaCodingKeys.allCases {
-                gifs[key] = try gifsContainer.decode(TenorGif.self, forKey: key)
-            }
+        // Get the inner container that contains the media in all the available formats
+        let mediaContainer = try mediaOuterContainer.nestedContainer(keyedBy: MediaCodingKeys.self)
+
+        // Selectively parse the media in .gif format
+        for key in MediaCodingKeys.allCases {
+            variants[key] = try mediaContainer.decode(TenorGif.self, forKey: key)
         }
     }
 }
@@ -65,20 +67,32 @@ class TenorGif: NSObject, Codable {
 // MARK: - Helpers needed by WPMediaAsset conformance
 
 extension TenorMedia {
-    var previewGif: TenorGif {
-        return gifs[.tinygif]!
+
+    // If the media doesn't contain the required gifs for some reason, we have to ignore them
+    var isValid: Bool {
+        return previewGif != nil && largeGif != nil
     }
 
-    var largeGif: TenorGif {
-        return gifs[.gif]!
+    var previewGif: TenorGif? {
+        return variants[.tinygif]
     }
 
-    var previewURL: URL {
-        return NSURL(string: previewGif.url)! as URL
+    var largeGif: TenorGif? {
+        return variants[.gif]
     }
 
-    var staticThumbnailURL: URL {
-        return NSURL(string: previewGif.preview)! as URL
+    var previewURL: URL? {
+        guard let url = previewGif?.url else {
+            return nil
+        }
+        return Foundation.URL(string: url)
+    }
+
+    var staticThumbnailURL: URL? {
+        guard let url = previewGif?.preview else {
+            return nil
+        }
+        return Foundation.URL(string: url)
     }
 }
 
@@ -86,7 +100,12 @@ extension TenorMedia {
 
 extension TenorMedia: WPMediaAsset {
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
-        let url = imageURL(with: size)
+
+        guard let url = imageURL(with: size) else {
+            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil)
+            completionHandler(nil, error)
+            return 0
+        }
 
         DispatchQueue.global().async {
             do {
@@ -101,7 +120,7 @@ extension TenorMedia: WPMediaAsset {
         return Int32(id) ?? 0
     }
 
-    private func imageURL(with size: CGSize) -> URL {
+    private func imageURL(with size: CGSize) -> URL? {
         return size == .zero ? previewURL : staticThumbnailURL
     }
 
@@ -134,7 +153,7 @@ extension TenorMedia: WPMediaAsset {
     }
 
     func pixelSize() -> CGSize {
-        return CGSize(width: largeGif.dims[0], height: largeGif.dims[1])
+        return CGSize(width: largeGif?.dims[0] ?? 0, height: largeGif?.dims[1] ?? 0)
     }
 
     func utTypeIdentifier() -> String? {
@@ -161,6 +180,8 @@ extension TenorMedia: MediaExternalAsset {
     }
 
     var URL: URL {
-        return previewURL
+        // This unwrap must be done in order to conform to the protocol.
+        // It's %100 safe because we'll filter out the items that doesn't have a preview URL from the result set
+        return previewURL!
     }
 }
