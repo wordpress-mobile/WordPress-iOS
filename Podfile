@@ -140,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'c332a7bfe4a2c7fdb0f73dd4d3982db3cbf9ce5c'
+    gutenberg :commit => '2c53980dceefb8d1c43d286af671b321fb15791f'
 
     ## Third party libraries
     ## =====================
@@ -174,9 +174,9 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.2'
+    pod 'WordPressAuthenticator', '~> 1.10.3-beta.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/social-signed-in-event'
 
     aztec
     wordpress_ui
