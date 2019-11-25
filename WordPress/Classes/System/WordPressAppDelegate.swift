@@ -10,7 +10,7 @@ import AutomatticTracks
 #if APPCENTER_ENABLED
 import AppCenter
 import AppCenterDistribute
-#endif 
+#endif
 
 import ZendeskCoreSDK
 
@@ -394,7 +394,7 @@ extension WordPressAppDelegate {
         #if APPCENTER_ENABLED
         MSAppCenter.start(ApiCredentials.appCenterAppId(), withServices: [MSDistribute.self])
         MSDistribute.setEnabled(true)
-        #endif 
+        #endif
     }
 
     func configureReachability() {
