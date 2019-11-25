@@ -18,7 +18,7 @@ extension AbstractPost: ImageSourceInformation {
     }
 
     /// An autosave revision may include post title, content and/or excerpt.
-    var isAutosaveRevisionAvailable: Bool {
+    var hasAutosaveRevision: Bool {
         return autosaveModifiedDate != nil
     }
 }

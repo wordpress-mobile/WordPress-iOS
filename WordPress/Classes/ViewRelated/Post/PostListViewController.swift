@@ -498,7 +498,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         // Autosaves are ignored for posts with local changes.
-        if !post.hasLocalChanges(), post.isAutosaveRevisionAvailable, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
+        if !post.hasLocalChanges(), post.hasAutosaveRevision, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
             let autosaveViewController = UIAlertController.autosaveOptionsViewController(forSaveDate: saveDate, autosaveDate: autosaveDate, didTapSaveOption: { [weak self] in
                 self?.openEditor(with: post, shouldLoadAutosave: false)
             }, didTapAutosaveOption: { [weak self] in
