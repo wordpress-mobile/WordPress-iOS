@@ -68,7 +68,7 @@ class PostListFilterSettings: NSObject {
     }
 
     func indexForFilterWithType(_ filterType: PostListFilter.Status) -> Int {
-        if let index = availablePostListFilters().index(where: { (filter: PostListFilter) -> Bool in
+        if let index = availablePostListFilters().firstIndex(where: { (filter: PostListFilter) -> Bool in
             return filter.filterType == filterType
         }) {
             return index

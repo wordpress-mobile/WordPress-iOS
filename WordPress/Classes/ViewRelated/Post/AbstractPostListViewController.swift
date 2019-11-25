@@ -60,6 +60,9 @@ class AbstractPostListViewController: UIViewController,
         return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesNumberOfLoadedElement) : NSNumber(value: numberOfPostsPerSync())
     }
 
+    private(set) var ghostableTableView = UITableView()
+    var ghostingEnabled = false
+
     @objc var blog: Blog!
 
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
@@ -134,8 +137,6 @@ class AbstractPostListViewController: UIViewController,
 
     fileprivate var searchesSyncing = 0
 
-    var ghostOptions: GhostOptions?
-
     private var emptyResults: Bool {
         return tableViewHandler.resultsController.fetchedObjects?.count == 0
     }
@@ -158,6 +159,7 @@ class AbstractPostListViewController: UIViewController,
         configureSearchHelper()
         configureAuthorFilter()
         configureSearchBackingView()
+        configureGhostableTableView()
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.reloadData()
@@ -340,6 +342,22 @@ class AbstractPostListViewController: UIViewController,
             backingView.topAnchor.constraint(equalTo: view.topAnchor),
             backingView.bottomAnchor.constraint(equalTo: topAnchor)
             ])
+    }
+
+    func configureGhostableTableView() {
+        view.addSubview(ghostableTableView)
+        ghostableTableView.isHidden = true
+
+        ghostableTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            ghostableTableView.widthAnchor.constraint(equalTo: tableView.widthAnchor),
+            ghostableTableView.heightAnchor.constraint(equalTo: tableView.heightAnchor),
+            ghostableTableView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            ghostableTableView.topAnchor.constraint(equalTo: searchController.searchBar.bottomAnchor)
+        ])
+
+        ghostableTableView.backgroundColor = .white
+        ghostableTableView.isScrollEnabled = false
     }
 
     @objc func configureSearchHelper() {
@@ -787,26 +805,23 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Ghost cells
 
-    func startGhost() {
-        guard let ghostOptions = ghostOptions, emptyResults else {
+    final func startGhost() {
+        guard ghostingEnabled, emptyResults else {
             return
         }
 
-        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
-                               beatStartColor: .placeholderElement,
-                               beatEndColor: .placeholderElementFaded)
-        tableView.displayGhostContent(options: ghostOptions, style: style)
-        tableView.isScrollEnabled = false
+        ghostableTableView.startGhostAnimation()
+        ghostableTableView.isHidden = false
         noResultsViewController.view.isHidden = true
     }
 
-    func stopGhost() {
-        tableView.removeGhostContent()
-        tableView.isScrollEnabled = true
+    final func stopGhost() {
+        ghostableTableView.isHidden = true
+        ghostableTableView.stopGhostAnimation()
         noResultsViewController.view.isHidden = false
     }
 
-    func stopGhostIfConnectionIsNotAvailable() {
+    private func stopGhostIfConnectionIsNotAvailable() {
         guard WordPressAppDelegate.shared?.connectionAvailable == false else {
             return
         }
@@ -972,7 +987,7 @@ class AbstractPostListViewController: UIViewController,
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            if let index = strongSelf.recentlyTrashedPostObjectIDs.index(of: postObjectID) {
+            if let index = strongSelf.recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
                 strongSelf.recentlyTrashedPostObjectIDs.remove(at: index)
                 // We don't really know what happened here, why did the request fail?
                 // Maybe we could not delete the post or maybe the post was already deleted
@@ -990,7 +1005,7 @@ class AbstractPostListViewController: UIViewController,
         // if the post was recently deleted, update the status helper and reload the cell to display a spinner
         let postObjectID = apost.objectID
 
-        if let index = recentlyTrashedPostObjectIDs.index(of: postObjectID) {
+        if let index = recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
             recentlyTrashedPostObjectIDs.remove(at: index)
         }
 

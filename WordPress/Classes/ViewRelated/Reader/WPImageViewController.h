@@ -4,12 +4,14 @@
 @import WPMediaPicker;
 
 @class Media;
+@class AbstractPost;
 
 NS_ASSUME_NONNULL_BEGIN
 @interface WPImageViewController : UIViewController
 
 @property (nonatomic, readonly, nullable) id<WPMediaAsset> mediaAsset;
 @property (nonatomic, assign) BOOL shouldDismissWithGestures;
+@property (nonatomic, weak) AbstractPost* post;
 
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithURL:(NSURL *)url;

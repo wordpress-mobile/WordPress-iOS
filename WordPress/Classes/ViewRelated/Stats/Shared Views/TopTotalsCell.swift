@@ -264,7 +264,7 @@ private extension TopTotalsCell {
     func indexForRow(_ row: StatsTotalRow) -> Int? {
         guard let stackView = stackViewContainingRow(row),
             let rowView = stackView.arrangedSubviews.first(where: ({ $0 == row })),
-            let rowIndex = stackView.arrangedSubviews.index(of: rowView) else {
+            let rowIndex = stackView.arrangedSubviews.firstIndex(of: rowView) else {
                 return nil
         }
 

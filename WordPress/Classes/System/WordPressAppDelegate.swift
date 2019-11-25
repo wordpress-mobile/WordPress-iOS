@@ -237,6 +237,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         #if DEBUG
         KeychainTools.processKeychainDebugArguments()
+
+        // Zendesk Logging
         CoreLogger.enabled = true
         CoreLogger.logLevel = .debug
         #endif

@@ -63,6 +63,8 @@ class GutenbergMediaPickerHelper: NSObject {
             picker.startOnGroupSelector = false
             picker.showGroupSelector = false
             picker.dataSource = mediaLibraryDataSource
+        @unknown default:
+            fatalError()
         }
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText

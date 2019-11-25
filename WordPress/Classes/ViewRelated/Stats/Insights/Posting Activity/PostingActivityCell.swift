@@ -69,6 +69,7 @@ private extension PostingActivityCell {
     }
 
     @IBAction func didTapViewMoreButton(_ sender: UIButton) {
+        WPAppAnalytics.track(.statsViewMoreTappedPostingActivity)
         siteStatsInsightsDelegate?.showPostingActivityDetails?()
     }
 

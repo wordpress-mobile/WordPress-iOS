@@ -329,8 +329,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         let sections = handler.viewModel.sections
 
-        if let section = sections.index(where: { $0.rows.contains(where: matchRow) }),
-            let row = sections[section].rows.index(where: matchRow) {
+        if let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
+            let row = sections[section].rows.firstIndex(where: matchRow) {
             let indexPath = IndexPath(row: row, section: section)
 
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
