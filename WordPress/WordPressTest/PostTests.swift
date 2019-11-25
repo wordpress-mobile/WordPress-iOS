@@ -300,12 +300,10 @@ class PostTests: XCTestCase {
         revision.status = .publish
         XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local changes", comment: "Local"))
 
-        revision.status = .scheduled
-        _ = "\(Post.title(for: .scheduled))"
+        revision.status = .scheduled        
         XCTAssertEqual(revision.statusForDisplay(), local)
 
         revision.status = .trash
-        _ = "\(Post.title(for: .trash))"
         XCTAssertEqual(revision.statusForDisplay(), local)
 
         revision.status = .deleted
