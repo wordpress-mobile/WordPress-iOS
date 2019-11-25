@@ -387,7 +387,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func indexOfInsight(_ insight: InsightType) -> Int? {
-        return insightsToShow.index(of: insight)
+        return insightsToShow.firstIndex(of: insight)
     }
 
     enum ManageInsightConstants {

@@ -111,7 +111,7 @@ struct DomainsService {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K = %@ AND %K = %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainName)
         request.fetchLimit = 1
-        let results = (try? context.fetch(request) as! [ManagedDomain]) ?? []
+        let results = (try? context.fetch(request) as? [ManagedDomain]) ?? []
         return results.first
     }
 
@@ -145,7 +145,7 @@ struct DomainsService {
 
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K = %@ AND %K IN %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainNames)
-        let objects = (try? context.fetch(request) as! [NSManagedObject]) ?? []
+        let objects = (try? context.fetch(request) as? [NSManagedObject]) ?? []
         for object in objects {
             DDLogDebug("Removing domain: \(object)")
             context.delete(object)

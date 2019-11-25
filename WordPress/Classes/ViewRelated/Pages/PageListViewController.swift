@@ -76,7 +76,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let blogID = coder.decodeObject(forKey: Constant.Identifiers.pagesViewControllerRestorationKey) as? String,
             let objectURL = URL(string: blogID),
             let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = try? context.existingObject(with: objectID) as! Blog else {
+            let restoredBlog = try? context.existingObject(with: objectID) as? Blog else {
 
                 return nil
         }

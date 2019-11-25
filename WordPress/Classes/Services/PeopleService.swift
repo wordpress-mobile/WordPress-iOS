@@ -308,7 +308,7 @@ private extension PeopleService {
                                                 NSNumber(value: type(of: person).kind.rawValue as Int))
         request.fetchLimit = 1
 
-        let results = (try? context.fetch(request) as! [ManagedPerson]) ?? []
+        let results = (try? context.fetch(request) as? [ManagedPerson]) ?? []
         return results.first
     }
 
@@ -326,7 +326,7 @@ private extension PeopleService {
                                         NSNumber(value: type.kind.rawValue as Int),
                                         numberIDs)
 
-        let objects = (try? context.fetch(request) as! [NSManagedObject]) ?? []
+        let objects = (try? context.fetch(request) as? [NSManagedObject]) ?? []
         for object in objects {
             DDLogDebug("Removing person: \(object)")
             context.delete(object)
