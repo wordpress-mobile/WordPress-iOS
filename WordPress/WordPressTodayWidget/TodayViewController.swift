@@ -246,7 +246,7 @@ private extension TodayViewController {
 
             DispatchQueue.main.async {
                 self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount ?? 0,
-                                                    visitors: todayInsight?.viewsCount ?? 0,
+                                                    visitors: todayInsight?.visitorsCount ?? 0,
                                                     likes: todayInsight?.likesCount ?? 0,
                                                     comments: todayInsight?.commentsCount ?? 0)
                 self.tableView.reloadData()

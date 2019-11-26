@@ -28,9 +28,7 @@ enum FeatureFlag: Int {
         case .statsAsyncLoadingDWMY:
             return true
         case .postScheduling:
-            return BuildConfiguration.current ~= [.localDeveloper,
-                                                  .a8cBranchTest,
-                                                  .a8cPrereleaseTesting]
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
