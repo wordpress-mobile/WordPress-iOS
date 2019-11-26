@@ -19,7 +19,8 @@ startup time. This will block the thread. Do not use unless you're sure.
 
     // Send the event and block the thread until it was actually sent
     @objc func send(title: String) {
-        guard let client = try? Client(dsn: ApiCredentials.sentryDSN()) else {
+        guard !WPAppAnalytics.userHasOptedOut(),
+            let client = try? Client(dsn: ApiCredentials.sentryDSN()) else {
             return
         }
         let semaphore = DispatchSemaphore(value: 0)
