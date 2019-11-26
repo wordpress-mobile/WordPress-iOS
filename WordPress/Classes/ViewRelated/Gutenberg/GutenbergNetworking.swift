@@ -12,7 +12,7 @@ struct GutenbergNetworkRequest {
     }
 
     func request(completion: @escaping CompletionHandler) {
-        if let dotComID = blog.dotComID {
+        if blog.isAccessibleThroughWPCom(), let dotComID = blog.dotComID {
             dotComRequest(with: dotComID, completion: completion)
         } else {
             selfHostedRequest(completion: completion)

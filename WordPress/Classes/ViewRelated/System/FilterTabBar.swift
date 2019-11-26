@@ -318,7 +318,7 @@ class FilterTabBar: UIControl {
 
     @objc
     private func tabTapped(_ tab: UIButton) {
-        guard let index = tabs.index(of: tab) else {
+        guard let index = tabs.firstIndex(of: tab) else {
             return
         }
 

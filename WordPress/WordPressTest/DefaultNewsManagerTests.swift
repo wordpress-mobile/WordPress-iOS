@@ -12,13 +12,13 @@ final class DefaultNewsManagerTests: XCTestCase {
     }
 
     private final class MockNewsService: NewsService {
-        func load(then completion: @escaping (Result<NewsItem>) -> Void) {
+        func load(then completion: @escaping (Result<NewsItem, Error>) -> Void) {
             let newsItem = NewsItem(title: Constants.title,
                                     content: Constants.contextId,
                                     extendedInfoURL: Constants.cardURL,
                                     version: currentBuildVersion()!)
 
-            let result: Result<NewsItem> = .success(newsItem)
+            let result: Result<NewsItem, Error> = .success(newsItem)
             completion(result)
         }
     }
@@ -58,15 +58,15 @@ final class DefaultNewsManagerTests: XCTestCase {
         var dismissTracked = false
         var requestExtraInfoTracked = false
 
-        func trackPresented(news: Result<NewsItem>?) {
+        func trackPresented(news: Result<NewsItem, Error>?) {
             presentTracked = true
         }
 
-        func trackDismissed(news: Result<NewsItem>?) {
+        func trackDismissed(news: Result<NewsItem, Error>?) {
             dismissTracked = true
         }
 
-        func trackRequestedExtendedInfo(news: Result<NewsItem>?) {
+        func trackRequestedExtendedInfo(news: Result<NewsItem, Error>?) {
             requestExtraInfoTracked = true
         }
     }
@@ -98,7 +98,7 @@ final class DefaultNewsManagerTests: XCTestCase {
     func testManagerReturnsExpectedContent() {
         manager?.load(then: { result in
             switch result {
-            case .error:
+            case .failure:
                 XCTFail()
             case .success(let newsItem):
                 XCTAssertEqual(newsItem.title, Constants.title)

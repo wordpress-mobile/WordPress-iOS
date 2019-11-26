@@ -10,7 +10,7 @@ final class ReaderSaveForLaterRemovedPosts {
     }
 
     func remove(_ post: ReaderPost) {
-        guard let index = removedPosts.index(of: post) else {
+        guard let index = removedPosts.firstIndex(of: post) else {
             return
         }
 

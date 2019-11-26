@@ -987,7 +987,7 @@ class AbstractPostListViewController: UIViewController,
                 WPError.showXMLRPCErrorAlert(error)
             }
 
-            if let index = strongSelf.recentlyTrashedPostObjectIDs.index(of: postObjectID) {
+            if let index = strongSelf.recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
                 strongSelf.recentlyTrashedPostObjectIDs.remove(at: index)
                 // We don't really know what happened here, why did the request fail?
                 // Maybe we could not delete the post or maybe the post was already deleted
@@ -1005,7 +1005,7 @@ class AbstractPostListViewController: UIViewController,
         // if the post was recently deleted, update the status helper and reload the cell to display a spinner
         let postObjectID = apost.objectID
 
-        if let index = recentlyTrashedPostObjectIDs.index(of: postObjectID) {
+        if let index = recentlyTrashedPostObjectIDs.firstIndex(of: postObjectID) {
             recentlyTrashedPostObjectIDs.remove(at: index)
         }
 
