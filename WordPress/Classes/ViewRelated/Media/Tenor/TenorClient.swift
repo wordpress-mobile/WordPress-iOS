@@ -3,22 +3,26 @@ import Foundation
 typealias TenorResponseBlock = (Swift.Result<TenorResponse, Error>) -> ()
 
 enum TenorError: Error {
-    case networkError
     case wrongDataFormat
     case wrongUrl
 }
 
 class TenorClient {
-    private let endPoint = "https://api.tenor.com/v1/search"
+    static let endpoint = "https://api.tenor.com/v1/search"
     private let session = URLSession(configuration: .default)
+    private let tenorAppId: String
+
+    // Parameter is only used during testing
+    init(tenorAppId: String? = nil) {
+        self.tenorAppId = tenorAppId ?? ApiCredentials.tenorAppId()
+    }
 
     func search(_ query: String, pos: Int, limit: Int, completion: @escaping TenorResponseBlock) {
-
-        var components = URLComponents(string: endPoint)
+        var components = URLComponents(string: TenorClient.endpoint)
 
         components?.queryItems = [
             URLQueryItem(name: "q", value: query),
-            URLQueryItem(name: "key", value: ApiCredentials.tenorAppId()),
+            URLQueryItem(name: "key", value: tenorAppId),
             URLQueryItem(name: "limit", value: "\(limit)"),
             URLQueryItem(name: "pos", value: "\(pos)")
         ]
