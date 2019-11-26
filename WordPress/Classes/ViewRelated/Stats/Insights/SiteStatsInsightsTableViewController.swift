@@ -231,10 +231,6 @@ private extension SiteStatsInsightsTableViewController {
         StatsDataHelper.clearExpandedInsights()
     }
 
-    func viewIsVisible() -> Bool {
-        return isViewLoaded && view.window != nil
-    }
-
     func updateView() {
         viewModel?.updateInsightsToShow(insights: insightsToShow)
         refreshTableView()
