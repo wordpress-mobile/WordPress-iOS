@@ -926,7 +926,7 @@ extension WordPressAppDelegate {
     func removeAppleIDFromKeychain() {
         do {
             try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
-                                             andServiceName: WPAppleIDKeychainUsernameKey)
+                                             andServiceName: WPAppleIDKeychainServiceName)
         } catch let error as NSError {
             if error.code != errSecItemNotFound {
                 DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
