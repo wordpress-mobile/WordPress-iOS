@@ -30,6 +30,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 @interface Blog ()
 
 @property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
+@property (nonatomic, strong, readwrite) WordPressOrgRestApi *wordPressOrgRestApi;
 
 @end
 
@@ -87,6 +88,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
 @synthesize xmlrpcApi = _xmlrpcApi;
+@synthesize wordPressOrgRestApi = _wordPressOrgRestApi;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -95,6 +97,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
     [super prepareForDeletion];
 
     [_xmlrpcApi invalidateAndCancelTasks];
+    [_wordPressOrgRestApi invalidateAndCancelTasks];
 }
 
 - (void)didTurnIntoFault
@@ -103,6 +106,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 
     // Clean up instance variables
     self.xmlrpcApi = nil;
+    self.wordPressOrgRestApi = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -708,6 +712,14 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
         }
     }
     return _xmlrpcApi;
+}
+
+- (WordPressOrgRestApi *)wordPressOrgRestApi
+{
+    if (_wordPressOrgRestApi == nil) {
+        _wordPressOrgRestApi = [[WordPressOrgRestApi alloc] initWithBlog:self];
+    }
+    return _wordPressOrgRestApi;
 }
 
 - (WordPressComRestApi *)wordPressComRestApi
