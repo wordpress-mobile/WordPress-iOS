@@ -197,6 +197,11 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func pushDebugMenu() -> ImmuTableAction {
+        return { [weak self] row in
+        }
+    }
+
     func pushAppIconSwitcher() -> ImmuTableAction {
         return { [weak self] row in
             let controller = AppIconViewController()
@@ -391,6 +396,12 @@ private extension AppSettingsViewController {
     func otherTableSection() -> ImmuTableSection {
         let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
 
+        let debugRow = NavigationItemRow(
+            title: NSLocalizedString("Debug", comment: "Navigates to debug menu only available in development builds"),
+            icon: Gridicon.iconOfType(.bug),
+            action: pushDebugMenu()
+        )
+
         let iconRow = NavigationItemRow(
             title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
             action: pushAppIconSwitcher()
@@ -410,6 +421,10 @@ private extension AppSettingsViewController {
         if #available(iOS 10.3, *),
             UIApplication.shared.supportsAlternateIcons {
                 rows.insert(iconRow, at: 0)
+        }
+
+        if FeatureFlag.debugMenu.enabled {
+            rows.append(debugRow)
         }
 
         return ImmuTableSection(

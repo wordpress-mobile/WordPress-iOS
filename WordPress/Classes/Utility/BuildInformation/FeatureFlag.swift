@@ -7,6 +7,7 @@ enum FeatureFlag: Int {
     case domainCredit
     case signInWithApple
     case postScheduling
+    case debugMenu
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -28,6 +29,9 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current ~= [.localDeveloper,
                                                   .a8cBranchTest,
                                                   .a8cPrereleaseTesting]
+        case .debugMenu:
+            return BuildConfiguration.current ~= [.localDeveloper,
+                                                  .a8cBranchTest]
         }
     }
 }
