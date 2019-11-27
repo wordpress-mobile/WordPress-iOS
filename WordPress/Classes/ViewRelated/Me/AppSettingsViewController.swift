@@ -199,6 +199,8 @@ class AppSettingsViewController: UITableViewController {
 
     func pushDebugMenu() -> ImmuTableAction {
         return { [weak self] row in
+            let controller = DebugMenuViewController()
+            self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 

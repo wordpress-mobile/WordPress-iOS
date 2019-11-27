@@ -285,6 +285,7 @@
 		17E363E722C4280A000E0C79 /* pride_icon_20pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D722C42809000E0C79 /* pride_icon_20pt@3x.png */; };
 		17E363E822C4280A000E0C79 /* pride_icon_29pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D822C42809000E0C79 /* pride_icon_29pt.png */; };
 		17E363E922C4280A000E0C79 /* pride_icon_60pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E363D922C4280A000E0C79 /* pride_icon_60pt@3x.png */; };
+		17E4CD0C238C33F300C56916 /* DebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */; };
 		17E60E09220DBD6E00848F89 /* WKWebView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E60E08220DBD6E00848F89 /* WKWebView+Preview.swift */; };
 		17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */; };
 		17F52DB72315233300164966 /* WPStyleGuide+FilterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F52DB62315233300164966 /* WPStyleGuide+FilterTabBar.swift */; };
@@ -2401,6 +2402,7 @@
 		17E363D722C42809000E0C79 /* pride_icon_20pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_20pt@3x.png"; sourceTree = "<group>"; };
 		17E363D822C42809000E0C79 /* pride_icon_29pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pride_icon_29pt.png; sourceTree = "<group>"; };
 		17E363D922C4280A000E0C79 /* pride_icon_60pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pride_icon_60pt@3x.png"; sourceTree = "<group>"; };
+		17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
 		17E553B520910791000D3005 /* WordPress 75.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 75.xcdatamodel"; sourceTree = "<group>"; };
 		17E60E08220DBD6E00848F89 /* WKWebView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Preview.swift"; sourceTree = "<group>"; };
 		17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Me.swift"; sourceTree = "<group>"; };
@@ -5354,6 +5356,7 @@
 				E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */,
 				98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */,
 				9A51DA2422EB23F5005CC335 /* Change Username */,
+				17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */,
 			);
 			path = Me;
 			sourceTree = "<group>";
@@ -11213,6 +11216,7 @@
 				4349B0AF218A477F0034118A /* RevisionsTableViewCell.swift in Sources */,
 				738B9A5921B85CF20005062B /* KeyboardInfo.swift in Sources */,
 				E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */,
+				17E4CD0C238C33F300C56916 /* DebugMenuViewController.swift in Sources */,
 				08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */,
 				08216FCC1CDBF96000304BA7 /* MenuItemLinkViewController.m in Sources */,
 				173F6DFE212352D000A4C8E2 /* GiphyService.swift in Sources */,

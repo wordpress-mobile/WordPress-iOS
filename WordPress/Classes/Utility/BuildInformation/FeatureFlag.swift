@@ -1,7 +1,7 @@
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int {
+enum FeatureFlag: Int, CaseIterable {
     case exampleFeature
     case jetpackDisconnect
     case domainCredit
@@ -43,5 +43,39 @@ class Feature: NSObject {
     /// Returns a boolean indicating if the feature is enabled
     @objc static func enabled(_ feature: FeatureFlag) -> Bool {
         return feature.enabled
+    }
+}
+
+
+extension FeatureFlag: CustomStringConvertible {
+    /// Descriptions used to display the feature flag override menu in debug builds
+    var description: String {
+        switch self {
+        case .exampleFeature:
+            return "Example feature"
+        case .jetpackDisconnect:
+            return "Jetpack disconnect"
+        case .domainCredit:
+            return "Use domain credits"
+        case .signInWithApple:
+            return "Sign in with Apple"
+        case .postScheduling:
+            return "Post scheduling improvements"
+        case .debugMenu:
+            return "Debug menu"
+        }
+    }
+}
+
+// MARK: - Overriding Feature Flags
+
+extension FeatureFlag {
+    var canOverride: Bool {
+        switch self {
+        case .debugMenu, .exampleFeature:
+            return false
+        default:
+            return true
+        }
     }
 }
