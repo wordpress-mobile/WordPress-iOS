@@ -301,7 +301,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.13.0)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `fix/13004-google_2fa_login`)
+  - WordPressAuthenticator (~> 1.10.3-beta.2)
   - WordPressKit (~> 4.5.3)
   - WordPressMocks (~> 0.0.6)
   - WordPressShared (~> 1.8.9-beta.1)
@@ -345,6 +345,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -411,9 +412,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 2c53980dceefb8d1c43d286af671b321fb15791f
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :branch: fix/13004-google_2fa_login
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/2c53980dceefb8d1c43d286af671b321fb15791f/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -430,9 +428,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 2c53980dceefb8d1c43d286af671b321fb15791f
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :commit: 9221d53336e4ec4f5ef051ce27d2c8936d1985f5
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 3.0.3
@@ -508,6 +503,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 12f516028e26e2e47a861cc0f5da968f4db3989a
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 7671adfa515b08c0e496470a91661ab585eaa604
+PODFILE CHECKSUM: 0a2c4abad798360e596ac6efa143c787f20124c0
 
 COCOAPODS: 1.8.4
