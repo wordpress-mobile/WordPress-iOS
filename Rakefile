@@ -13,7 +13,7 @@ PROJECT_DIR = File.expand_path(File.dirname(__FILE__))
 task default: %w[test]
 
 desc "Install required dependencies"
-task :dependencies => %w[dependencies:check assets:check]
+task :dependencies => %w[dependencies:check]
 
 namespace :dependencies do
   task :check => %w[bundler:check bundle:check credentials:apply pod:check lint:check]
@@ -120,16 +120,6 @@ namespace :dependencies do
   end
 
 end
-
-namespace :assets do
-  task :check do
-    next unless Dir['WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset/*.png'].empty?
-    Dir.mktmpdir do |tmpdir|
-      puts "Generate internal icon set"
-      sh "export PROJECT_DIR=#{Dir.pwd}/WordPress && export TEMP_DIR=#{tmpdir} && ./Scripts/BuildPhases/AddVersionToIcons.sh >/dev/null 2>&1" 
-    end 
-  end
-end 
 
 CLOBBER << "vendor"
 
