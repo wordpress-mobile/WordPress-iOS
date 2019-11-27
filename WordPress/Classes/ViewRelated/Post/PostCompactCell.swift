@@ -9,6 +9,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet weak var innerView: UIView!
+    @IBOutlet weak var contentStackView: UIStackView!
     @IBOutlet weak var ghostView: UIView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var separator: UIView!
@@ -183,7 +184,7 @@ extension PostCompactCell: GhostableView {
         separator.isGhostableDisabled = true
         ghostView.isHidden = !visible
         ghostView.backgroundColor = .listForeground
-        featuredImageView.isHidden = true
+        contentStackView.isHidden = visible
     }
 
     private enum GhostConstants {
