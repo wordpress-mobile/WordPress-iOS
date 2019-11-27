@@ -4,6 +4,7 @@
 * Support: Fix issue that caused 'Message failed to send' error.
 * WebView: Fix iOS 13 crash with popover.
 * Fixed an issue where the Me screen would sometimes be blank.
+* Fixed an issue that caused logging in with a 2FA Google account to fail.
 
 13.7
 -----
