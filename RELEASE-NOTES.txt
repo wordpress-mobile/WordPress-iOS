@@ -5,6 +5,7 @@
 * Fixed an issue where the Me screen would sometimes be blank.
 * Block editor: New Spacer block to create white space between two blocks.
 * Block editor: Images from Image Block can now be previewed full screen by tapping on them.
+* Fixed an issue that caused logging in with a 2FA Google account to fail.
 
 13.7
 -----
