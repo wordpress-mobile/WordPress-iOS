@@ -1001,13 +1001,6 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func periodImmuTable(for status: StoreFetchingStatus, rowsBlock: (StoreFetchingStatus) -> [ImmuTableRow]) -> ImmuTable {
-        if !Feature.enabled(.statsAsyncLoadingDWMY) {
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    rows: rowsBlock(.idle))
-            ])
-        }
-
         var rows = [ImmuTableRow]()
 
         switch status {
