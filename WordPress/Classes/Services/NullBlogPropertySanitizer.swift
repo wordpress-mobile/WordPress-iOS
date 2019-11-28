@@ -1,5 +1,14 @@
 import Foundation
 
+/// Delete invalid rows in the database whose required blog properties are NULL
+///
+/// This is born from the investigation of the crash described in #12028 (https://git.io/JePdZ).
+/// Unfortunately, we could not find the cause of it. The findings are described in that issue.
+///
+/// This tries to “fix” the issue by deleting the orphaned entities like `Post` whose `blog` were
+/// set to NULL. They are currently inaccessible because they are not attached to any `Blog`. But
+/// leaving them in the database would cause a crash if Core Data tries to save new entities.
+///
 struct NullBlogPropertySanitizer {
     private let store: UserDefaults
     private let key = "null-property-sanitization"
