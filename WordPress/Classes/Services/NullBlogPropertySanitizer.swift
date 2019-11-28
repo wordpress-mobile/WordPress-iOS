@@ -18,11 +18,15 @@ struct NullBlogPropertySanitizer {
             return
         }
 
+        let entityNamesWithRequiredBlogProperties = [
+            Post.entityName(),
+            Page.entityName(),
+            Media.entityName(),
+            PostCategory.entityName()
+        ]
+
         context.perform {
-            [Post.entityName(),
-             Page.entityName(),
-             Media.entityName(),
-             PostCategory.entityName()].forEach { entityName in
+            entityNamesWithRequiredBlogProperties.forEach { entityName in
                 let request = NSFetchRequest<NSManagedObject>(entityName: entityName)
                 let predicate = NSPredicate(format: "blog == NULL")
                 request.predicate = predicate
