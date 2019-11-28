@@ -126,7 +126,9 @@ namespace :assets do
     next unless Dir['WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset/*.png'].empty?
     Dir.mktmpdir do |tmpdir|
       puts "Generate internal icon set"
-      sh "export PROJECT_DIR=#{Dir.pwd}/WordPress && export TEMP_DIR=#{tmpdir} && ./Scripts/BuildPhases/AddVersionToIcons.sh >/dev/null 2>&1" 
+      if system("export PROJECT_DIR=#{Dir.pwd}/WordPress && export TEMP_DIR=#{tmpdir} && ./Scripts/BuildPhases/AddVersionToIcons.sh >/dev/null 2>&1") != 0 
+        system("cp #{Dir.pwd}/WordPress/Resources/AppImages.xcassets/AppIcon.appiconset/*.png #{Dir.pwd}/WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset/")
+      end
     end 
   end
 end 
