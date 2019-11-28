@@ -51,9 +51,9 @@ struct NullBlogPropertySanitizer {
             }
 
             try? self.context.save()
-        }
 
-        store.set(currentBuildVersion(), forKey: key)
+            self.store.set(self.currentBuildVersion(), forKey: self.key)
+        }
     }
 
     private func appWasUpdated() -> Bool {

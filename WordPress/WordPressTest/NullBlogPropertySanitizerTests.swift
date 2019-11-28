@@ -33,7 +33,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 
         nullBlogPropertySanitizer.sanitize()
 
-        expect(self.keyValueStore.setCalledWith?.description).to(equal(currentBuildVersion))
+        expect(self.keyValueStore.setCalledWith?.description).toEventually(equal(currentBuildVersion))
     }
 
     func testDoesntChangeVersionWhenSanitizationIsNotNeeded() {
