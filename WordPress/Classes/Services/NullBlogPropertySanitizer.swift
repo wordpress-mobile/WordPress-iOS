@@ -4,8 +4,13 @@ struct NullBlogPropertySanitizer {
     private let store: UserDefaults
     private let key = "null-property-sanitization"
 
-    init(store: UserDefaults = UserDefaults.standard) {
+    private let context: NSManagedObjectContext
+
+    init(store: UserDefaults = UserDefaults.standard,
+         context: NSManagedObjectContext = ContextManager.shared.mainContext) {
+
         self.store = store
+        self.context = context
     }
 
     func sanitize() {
@@ -13,7 +18,6 @@ struct NullBlogPropertySanitizer {
             return
         }
 
-        let context = ContextManager.shared.mainContext
         context.perform {
             [Post.entityName(),
              Page.entityName(),
@@ -23,8 +27,8 @@ struct NullBlogPropertySanitizer {
                 let predicate = NSPredicate(format: "blog == NULL")
                 request.predicate = predicate
 
-                if let results = try? context.fetch(request), !results.isEmpty {
-                    results.forEach(context.delete)
+                if let results = try? self.context.fetch(request), !results.isEmpty {
+                    results.forEach(self.context.delete)
 
                     WPAnalytics.track(.debugDeletedOrphanedEntities, withProperties: [
                         "entity_name": entityName,
@@ -32,7 +36,8 @@ struct NullBlogPropertySanitizer {
                     ])
                 }
             }
-            try? context.save()
+
+            try? self.context.save()
         }
 
         store.set(currentBuildVersion(), forKey: key)
