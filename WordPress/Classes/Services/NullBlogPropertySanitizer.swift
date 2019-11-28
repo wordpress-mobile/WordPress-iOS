@@ -19,8 +19,15 @@ struct NullBlogPropertySanitizer {
                     let request = NSFetchRequest<NSManagedObject>(entityName: entityName)
                     let predicate = NSPredicate(format: "blog == NULL")
                     request.predicate = predicate
-                    let results = try? context.fetch(request)
-                    results?.forEach(context.delete)
+
+                    if let results = try? context.fetch(request), !results.isEmpty {
+                        results.forEach(context.delete)
+
+                        WPAnalytics.track(.debugDeletedOrphanedEntities, withProperties: [
+                            "entity_name": entityName,
+                            "deleted_count": results.count
+                        ])
+                    }
                 }
                 try? context.save()
             }
