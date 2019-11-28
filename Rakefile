@@ -13,7 +13,7 @@ PROJECT_DIR = File.expand_path(File.dirname(__FILE__))
 task default: %w[test]
 
 desc "Install required dependencies"
-task :dependencies => %w[dependencies:check]
+task :dependencies => %w[dependencies:check assets:check]
 
 namespace :dependencies do
   task :check => %w[bundler:check bundle:check credentials:apply pod:check lint:check]
