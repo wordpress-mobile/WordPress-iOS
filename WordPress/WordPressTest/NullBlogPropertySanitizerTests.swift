@@ -9,7 +9,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 
     private var context: NSManagedObjectContext!
 
-    var currentBuildVersion: String {
+    private var currentBuildVersion: String {
         return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     }
 
@@ -23,6 +23,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         nullBlogPropertySanitizer = nil
+        keyValueStore = nil
         context = nil
         ContextManager.overrideSharedInstance(nil)
     }
@@ -47,7 +48,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 
 private class KeyValueStore: UserDefaults {
     var lastSanitizationVersionNumber: String?
-    var setCalledWith: String?
+    private(set) var setCalledWith: String?
 
     override func string(forKey defaultName: String) -> String? {
         return lastSanitizationVersionNumber!
