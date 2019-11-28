@@ -75,20 +75,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Restore a disassociated account prior to fixing tokens.
         AccountService(managedObjectContext: ContextManager.shared.mainContext).restoreDisassociatedAccountIfNecessary()
 
-        let context = ContextManager.shared.mainContext
-        context.perform {
-            [Post.entityName(),
-             Page.entityName(),
-             Media.entityName(),
-             PostCategory.entityName()].forEach { entityName in
-                let request = NSFetchRequest<NSManagedObject>(entityName: entityName)
-                let predicate = NSPredicate(format: "blog == NULL")
-                request.predicate = predicate
-                let results = try? context.fetch(request)
-                results?.forEach(context.delete)
-            }
-            try? context.save()
-        }
+        NullBlogPropertySanitizer().sanitize()
 
         let solver = WPAuthTokenIssueSolver()
         let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
