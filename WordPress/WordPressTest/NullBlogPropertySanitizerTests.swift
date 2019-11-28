@@ -24,7 +24,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
     }
 
     func testSetsTheSanitizedVersionEqualToCurrentBuildVersion() {
-        keyValueStore.lastSanitizationVersionNumber = 10.0
+        keyValueStore.lastSanitizationVersionNumber = "10.0"
 
         nullBlogPropertySanitizer.sanitize()
 
@@ -32,7 +32,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
     }
 
     func testDoesntChangeVersionWhenSanitizationIsNotNeeded() {
-        keyValueStore.lastSanitizationVersionNumber = 1000.0
+        keyValueStore.lastSanitizationVersionNumber = currentBuildVersion
 
         nullBlogPropertySanitizer.sanitize()
 
@@ -42,14 +42,14 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 }
 
 private class KeyValueStore: UserDefaults {
-    var lastSanitizationVersionNumber: Double?
-    var setCalledWith: Double?
+    var lastSanitizationVersionNumber: String?
+    var setCalledWith: String?
 
-    override func double(forKey defaultName: String) -> Double {
+    override func string(forKey defaultName: String) -> String? {
         return lastSanitizationVersionNumber!
     }
 
-    override func set(_ value: Double, forKey defaultName: String) {
-        setCalledWith = value
+    override func set(_ value: Any?, forKey defaultName: String) {
+        setCalledWith = value as? String
     }
 }

@@ -30,15 +30,10 @@ struct NullBlogPropertySanitizer {
     }
 
     private func appWasUpdated() -> Bool {
-        return store.double(forKey: key) < currentBuildVersion()
+        return store.string(forKey: key) != currentBuildVersion()
     }
 
-    private func currentBuildVersion() -> Double {
-        guard let shortVersionString = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
-            let version = Double(shortVersionString) else {
-            return 0
-        }
-
-        return version
+    private func currentBuildVersion() -> String? {
+        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
 }
