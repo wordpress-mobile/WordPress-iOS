@@ -1968,7 +1968,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSearchAdsAttribution:
             eventName = @"searchads_attribution_detail_received";
             break;
-            
+        case WPAnalyticsStatDebugDeletedOrphanedEntities:
+            eventName = @"debug_deleted_orphaned_entities";
+            break;
+
         // The following are yet to be implemented.
         //
         // If you get test failures in WPAnalyticsTrackerAutomatticTracksTests, it's most likely
