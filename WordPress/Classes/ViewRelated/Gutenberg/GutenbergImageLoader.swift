@@ -18,13 +18,32 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
     }
 
     func loadImage(for imageURL: URL!, size: CGSize, scale: CGFloat, resizeMode: RCTResizeMode, progressHandler: RCTImageLoaderProgressBlock!, partialLoadHandler: RCTImageLoaderPartialLoadBlock!, completionHandler: RCTImageLoaderCompletionBlock!) -> RCTImageLoaderCancellationBlock! {
-        let task = mediaUtility.downloadImage(from: imageURL, size: size, scale: scale, post: post, success: { (image) in
+        if let image = AnimatedImageCache.shared.cachedStaticImage(url: imageURL) {
+            completionHandler(nil, image)
+            return {}
+        }
+        let size = sizeWidthFromURLQueryItem(from: imageURL) ?? size
+        let screenScale = UIScreen.main.scale // The provided scale does not always correspond to the UIScreen scale.
+        let scaledSize = CGSize(width: size.width / screenScale, height: size.height / screenScale)
+        let task = mediaUtility.downloadImage(from: imageURL, size: scaledSize, scale: 1, post: post, success: { (image) in
+            AnimatedImageCache.shared.cacheStaticImage(url: imageURL, image: image)
             completionHandler(nil, image)
         }, onFailure: { (error) in
             completionHandler(error, nil)
         })
 
         return { task.cancel() }
+    }
+
+    func sizeWidthFromURLQueryItem(from url: URL) -> CGSize? {
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        for item in components?.queryItems ?? [] {
+            if item.name == "w",
+                let width = Int(item.value ?? "") {
+                return CGSize(width: width, height: 0)
+            }
+        }
+        return nil
     }
 
     static func moduleName() -> String! {
