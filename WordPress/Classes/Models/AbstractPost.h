@@ -56,6 +56,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, copy, nullable) NSString *autosaveExcerpt;
 @property (nonatomic, copy, nullable) NSString *autosaveTitle;
 @property (nonatomic, copy, nullable) NSDate *autosaveModifiedDate;
+@property (nonatomic, copy, nullable) NSNumber *autosaveIdentifier;
 
 // Revision management
 - (AbstractPost *)createRevision;

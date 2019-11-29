@@ -68,6 +68,7 @@ class PostBuilder {
         post.autosaveExcerpt = "b"
         post.autosaveContent = "c"
         post.autosaveModifiedDate = Date()
+        post.autosaveIdentifier = 1
         return self
     }
 

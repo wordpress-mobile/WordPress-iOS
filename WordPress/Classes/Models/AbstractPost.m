@@ -37,6 +37,7 @@
 @dynamic autosaveExcerpt;
 @dynamic autosaveTitle;
 @dynamic autosaveModifiedDate;
+@dynamic autosaveIdentifier;
 
 @synthesize restorableStatus;
 
