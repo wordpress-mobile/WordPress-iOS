@@ -140,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '2748621736fa7f38399a5db5b08e0ae69a3f962b'
+    gutenberg :commit => 'e89fe14a2235a302076aaec1142a2322a2ced2e1'
 
     ## Third party libraries
     ## =====================
