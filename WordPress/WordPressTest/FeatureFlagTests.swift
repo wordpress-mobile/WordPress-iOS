@@ -1,11 +1,3 @@
-//
-//  FeatureFlagTests.swift
-//  WordPressTest
-//
-//  Created by James Frost on 27/11/2019.
-//  Copyright © 2019 WordPress. All rights reserved.
-//
-
 import XCTest
 @testable import WordPress
 
