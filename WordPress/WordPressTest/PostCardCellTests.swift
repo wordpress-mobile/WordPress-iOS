@@ -491,7 +491,7 @@ class PostCardCellTests: XCTestCase {
     }
 
     func testShowsUnsavedChangesMessageWhenPostHasAutosave() {
-        let post = PostBuilder(context).with(remoteStatus: .local).autosaved().build()
+        let post = PostBuilder(context).with(remoteStatus: .sync).autosaved().build()
 
         postCell.configure(with: post)
 
