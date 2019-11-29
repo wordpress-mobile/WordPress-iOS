@@ -140,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '2c53980dceefb8d1c43d286af671b321fb15791f'
+    gutenberg :commit => 'v1.18.0'
 
     ## Third party libraries
     ## =====================
@@ -277,7 +277,7 @@ target 'WordPressTodayWidget' do
 
     shared_with_all_pods
     shared_with_networking_pods
-    
+
     wordpress_ui
 end
 
