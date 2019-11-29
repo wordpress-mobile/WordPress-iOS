@@ -58,12 +58,16 @@ extension RegisterDomainDetailsViewController {
         guard let section = SectionIndex(rawValue: indexPath.section) else {
             return
         }
+
+        cell.valueTextField.returnKeyType = .next
+
         switch section {
         case .contactInformation:
             guard let index = RegisterDomainDetailsViewModel.CellIndex.ContactInformation(rawValue: indexPath.row) else {
                 return
             }
             cell.valueTextField.keyboardType = index.keyboardType
+            cell.valueTextField.autocapitalizationType = .words
         case .phone:
             cell.valueTextField.keyboardType = .numberPad
         case .address:
@@ -73,9 +77,11 @@ extension RegisterDomainDetailsViewController {
                 cell.valueTextField.keyboardType = .numbersAndPunctuation
             default:
                 cell.valueTextField.keyboardType = .default
+                cell.valueTextField.autocapitalizationType = .words
             }
         default:
             cell.valueTextField.keyboardType = .default
+            cell.valueTextField.autocapitalizationType = .none
         }
     }
 }

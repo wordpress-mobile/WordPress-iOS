@@ -49,7 +49,10 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
             return assertionFailure("Image picked without callback")
         }
 
-        let media = self.mediaInserter.insert(exportableAsset: asset, source: .giphy)
+        guard let media = self.mediaInserter.insert(exportableAsset: asset, source: .giphy) else {
+            callback([])
+            return
+        }
         let mediaUploadID = media.gutenbergUploadID
         callback([MediaInfo(id: mediaUploadID, url: asset.URL.absoluteString, type: media.mediaTypeString)])
     }
@@ -59,8 +62,9 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
     /// - Parameter assets: Stock Media objects to append.
     func appendOnNewBlocks(assets: ArraySlice<StockPhotosMedia>) {
         assets.forEach {
-            let media = self.mediaInserter.insert(exportableAsset: $0, source: .giphy)
-            self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.URL, type: .image)
+            if let media = self.mediaInserter.insert(exportableAsset: $0, source: .giphy) {
+                self.gutenberg.appendMedia(id: media.gutenbergUploadID, url: $0.URL, type: .image)
+            }
         }
     }
 }

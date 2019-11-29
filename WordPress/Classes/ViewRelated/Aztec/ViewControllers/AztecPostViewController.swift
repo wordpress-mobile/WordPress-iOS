@@ -157,8 +157,9 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.textAttachmentDelegate = self
 
         textView.backgroundColor = Colors.aztecBackground
-        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor, dark: .neutral(.shade5))
+        textView.blockquoteBackgroundColor = .neutral(.shade5)
         textView.blockquoteBorderColor = .listIcon
+        textView.preBackgroundColor = .neutral(.shade5)
 
         textView.linkTextAttributes = linkAttributes
 
@@ -172,8 +173,22 @@ class AztecPostViewController: UIViewController, PostEditor {
         if UIApplication.shared.isCreatingScreenshots() {
             textView.autocorrectionType = .no
         }
+
+        disableLinkTapRecognizer(from: textView)
     }
 
+    /**
+    This handles a bug introduced by iOS 13.0 (tested up to 13.2) where link interactions don't respect what the documentation says.
+    The documenatation for textView(_:shouldInteractWith:in:interaction:) says:
+    > Links in text views are interactive only if the text view is selectable but noneditable.
+    Our Aztec Text views are selectable and editable, and yet iOS was opening links on Safari when tapped.
+    */
+    fileprivate func disableLinkTapRecognizer(from textView: UITextView) {
+        guard let recognizer = textView.gestureRecognizers?.first(where: { $0.name == "UITextInteractionNameLinkTap" }) else {
+            return
+        }
+        recognizer.isEnabled = false
+    }
 
     /// Aztec's Text Placeholder
     ///
@@ -1353,10 +1368,6 @@ extension AztecPostViewController: UITextViewDelegate {
         return true
     }
 
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        return false
-    }
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         refreshTitlePosition()
     }
@@ -1584,7 +1595,7 @@ extension AztecPostViewController {
 
         var index: Int? = nil
         if let listType = listTypeForSelectedText() {
-            index = Constants.lists.index(of: listType)
+            index = Constants.lists.firstIndex(of: listType)
         }
 
         let optionsTableViewController = OptionsTableViewController(options: listOptions)
@@ -1831,6 +1842,8 @@ extension AztecPostViewController {
             picker.showGroupSelector = false
             picker.dataSource = mediaLibraryDataSource
             registerChangeObserver(forPicker: picker.mediaPicker)
+        @unknown default:
+            fatalError()
         }
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
@@ -1924,7 +1937,7 @@ extension AztecPostViewController {
                                           accessibilityLabel: headerType.accessibilityLabel)
         }
 
-        let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
+        let selectedIndex = Constants.headers.firstIndex(of: self.headerLevelForSelectedText())
 
         let optionsTableViewController = OptionsTableViewController(options: headerOptions)
 
@@ -2361,7 +2374,9 @@ extension AztecPostViewController {
         }
 
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
-        let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
+        guard let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info) else {
+            return
+        }
         attachment?.uploadID = media.uploadID
     }
 

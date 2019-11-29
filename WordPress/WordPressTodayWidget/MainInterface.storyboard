@@ -1,172 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="aC5-E5-DQ6">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Today View Controller-->
-        <scene sceneID="cwh-vc-ff4">
+        <scene sceneID="BcN-05-8QR">
             <objects>
-                <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="WordPressTodayWidget" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ft6-oW-KC0"/>
-                        <viewControllerLayoutGuide type="bottom" id="FKl-LY-JtV"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="215"/>
+                <tableViewController id="aC5-E5-DQ6" customClass="TodayViewController" customModule="WordPressTodayWidget" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ysi-jO-WrT">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="57z-E7-fbN">
-                                <rect key="frame" x="16" y="8" width="288" height="199"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-dy-2cu">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="116.5"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="61.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lvJ-bj-DLi">
-                                                <rect key="frame" x="0.0" y="66.5" width="288" height="50"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
-                                                        <rect key="frame" x="71" y="0.0" width="146" height="50"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                        <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
-                                                        <state key="normal" title="Open WordPress">
-                                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstItem="sB2-YC-Udf" firstAttribute="centerX" secondItem="lvJ-bj-DLi" secondAttribute="centerX" id="DG4-kr-f04"/>
-                                                    <constraint firstAttribute="bottom" secondItem="sB2-YC-Udf" secondAttribute="bottom" id="GZj-Mi-Slt"/>
-                                                    <constraint firstItem="sB2-YC-Udf" firstAttribute="top" secondItem="lvJ-bj-DLi" secondAttribute="top" id="VLu-AQ-hpM"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TbZ-Oq-ahc">
-                                        <rect key="frame" x="0.0" y="140.5" width="288" height="58.5"/>
-                                        <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="21"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="21" id="E8n-jC-Xnl"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="vd1-ys-xI8">
-                                                <rect key="frame" x="0.0" y="21" width="288" height="37.5"/>
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pOr-4w-uA8">
-                                                        <rect key="frame" x="0.0" y="0.0" width="144" height="37.5"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="7,025" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-zT-oAD">
-                                                                <rect key="frame" x="0.0" y="0.0" width="65.5" height="31.5"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visitors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ya5-b8-L12">
-                                                                <rect key="frame" x="0.0" y="6" width="65" height="31.5"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zY4-tK-hym">
-                                                        <rect key="frame" x="144" y="0.0" width="144" height="37.5"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10,394" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pyt-KX-qbk">
-                                                                <rect key="frame" x="0.0" y="0.0" width="82.5" height="31.5"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Views" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="d87-vS-4g1">
-                                                                <rect key="frame" x="0.0" y="6" width="52.5" height="31.5"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="3E7-hb-kCQ"/>
-                                            <constraint firstAttribute="trailing" secondItem="Wcm-ss-zFo" secondAttribute="trailing" id="4re-Bb-2eE"/>
-                                            <constraint firstItem="vd1-ys-xI8" firstAttribute="top" secondItem="Wcm-ss-zFo" secondAttribute="bottom" id="6ed-kI-WYZ"/>
-                                            <constraint firstItem="vd1-ys-xI8" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="HFP-yB-zuC"/>
-                                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="top" secondItem="TbZ-Oq-ahc" secondAttribute="top" id="UzP-ia-oTh"/>
-                                            <constraint firstAttribute="trailing" secondItem="vd1-ys-xI8" secondAttribute="trailing" id="f0S-4g-7Wm"/>
-                                        </constraints>
-                                    </stackView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="SgL-dy-2cu" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="top" id="0Ze-Rg-4jY"/>
-                                    <constraint firstAttribute="trailing" secondItem="TbZ-Oq-ahc" secondAttribute="trailing" id="1YW-lt-C2t"/>
-                                    <constraint firstAttribute="bottom" secondItem="TbZ-Oq-ahc" secondAttribute="bottom" id="L9x-tD-ssX"/>
-                                    <constraint firstItem="TbZ-Oq-ahc" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="j9j-hx-ycm"/>
-                                    <constraint firstItem="SgL-dy-2cu" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="pUZ-qW-3lK"/>
-                                    <constraint firstAttribute="trailing" secondItem="SgL-dy-2cu" secondAttribute="trailing" id="qjg-dJ-QwA"/>
-                                </constraints>
-                            </stackView>
-                        </subviews>
-                        <gestureRecognizers/>
-                        <constraints>
-                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="bottom" constant="8" id="GOY-fN-4pW"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="57z-E7-fbN" secondAttribute="trailing" id="H8m-vH-Jtg"/>
-                            <constraint firstItem="57z-E7-fbN" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="WT2-LW-4kK"/>
-                            <constraint firstItem="57z-E7-fbN" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="chN-zF-Uvf"/>
-                        </constraints>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="StW-vH-RTH" appends="YES" id="Uac-Xl-YJb"/>
+                            <outlet property="dataSource" destination="aC5-E5-DQ6" id="90b-uJ-sTV"/>
+                            <outlet property="delegate" destination="aC5-E5-DQ6" id="5mx-Mm-j3q"/>
+                            <outletCollection property="gestureRecognizers" destination="g0c-fj-JDq" appends="YES" id="N9n-YP-ef8"/>
                         </connections>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <nil key="simulatedStatusBarMetrics"/>
+                    </tableView>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="215"/>
+                    <size key="freeformSize" width="320" height="200"/>
                     <connections>
-                        <outlet property="configureMeButton" destination="sB2-YC-Udf" id="mJp-wY-qyy"/>
-                        <outlet property="configureMeLabel" destination="p3Z-lC-Jtw" id="qc5-25-zMa"/>
-                        <outlet property="configuredView" destination="TbZ-Oq-ahc" id="d0S-UN-LQ3"/>
-                        <outlet property="countContainerView" destination="TbZ-Oq-ahc" id="Q9S-Zl-eIG"/>
-                        <outlet property="siteNameLabel" destination="Wcm-ss-zFo" id="WsJ-6K-WZ5"/>
-                        <outlet property="unconfiguredView" destination="SgL-dy-2cu" id="0i2-YG-MCZ"/>
-                        <outlet property="viewsCountLabel" destination="pyt-KX-qbk" id="fkK-Tp-fGM"/>
-                        <outlet property="viewsLabel" destination="d87-vS-4g1" id="Ek2-Pv-AKA"/>
-                        <outlet property="visitorsCountLabel" destination="IOg-zT-oAD" id="8TU-zn-Njk"/>
-                        <outlet property="visitorsLabel" destination="ya5-b8-L12" id="8Xg-g1-Ek2"/>
+                        <outlet property="tableView" destination="Ysi-jO-WrT" id="4qG-sx-vMP"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="StW-vH-RTH">
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KvB-u2-42u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="g0c-fj-JDq">
                     <connections>
-                        <action selector="launchContainingApp" destination="M4Y-Lb-cyx" id="tGu-Xt-qJ3"/>
+                        <action selector="launchContainingApp" destination="aC5-E5-DQ6" id="NhF-46-NzT"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="100.00000000000001" y="23.102678571428569"/>
+            <point key="canvasLocation" x="605" y="-150"/>
         </scene>
     </scenes>
 </document>

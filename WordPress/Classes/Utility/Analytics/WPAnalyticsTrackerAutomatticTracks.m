@@ -1719,6 +1719,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsItemTappedPostsAndPages:
             eventName = @"stats_posts_and_pages_item_tapped";
             break;
+        case WPAnalyticsStatStatsItemTappedPostingActivityDay:
+            eventName = @"stats_posting_activity_day_tapped";
+            break;
         case WPAnalyticsStatStatsItemTappedSearchTerms:
             eventName = @"stats_search_terms_item_tapped";
             break;
@@ -1791,6 +1794,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatStatsViewMoreTappedPostsAndPages:
             eventName = @"stats_posts_and_pages_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedPostingActivity:
+            eventName = @"stats_posting_activity_view_more_tapped";
             break;
         case WPAnalyticsStatStatsViewMoreTappedPublicize:
             eventName = @"stats_publicize_view_more_tapped";

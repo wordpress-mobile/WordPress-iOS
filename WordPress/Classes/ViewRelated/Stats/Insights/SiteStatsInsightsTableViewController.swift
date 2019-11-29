@@ -231,10 +231,6 @@ private extension SiteStatsInsightsTableViewController {
         StatsDataHelper.clearExpandedInsights()
     }
 
-    func viewIsVisible() -> Bool {
-        return isViewLoaded && view.window != nil
-    }
-
     func updateView() {
         viewModel?.updateInsightsToShow(insights: insightsToShow)
         refreshTableView()
@@ -387,7 +383,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func indexOfInsight(_ insight: InsightType) -> Int? {
-        return insightsToShow.index(of: insight)
+        return insightsToShow.firstIndex(of: insight)
     }
 
     enum ManageInsightConstants {

@@ -35,9 +35,9 @@ final class NewsCardTests: XCTestCase {
             return cardIsVisible
         }
 
-        func load(then completion: @escaping (Result<NewsItem>) -> Void) {
+        func load(then completion: @escaping (Result<NewsItem, Error>) -> Void) {
             let newsItem = NewsItem(title: Constants.title, content: Constants.content, extendedInfoURL: Constants.url, version: Constants.version)
-            let result: Result<NewsItem> = .success(newsItem)
+            let result: Result<NewsItem, Error> = .success(newsItem)
 
             completion(result)
         }

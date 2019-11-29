@@ -17,7 +17,7 @@
     return @"";
 }
     
-+ (NSString *)hockeyappAppId {
++ (NSString *)appCenterAppId {
     return @"";
 }
 

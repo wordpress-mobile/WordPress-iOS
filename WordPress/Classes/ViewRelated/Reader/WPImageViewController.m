@@ -314,8 +314,11 @@ static CGFloat const MinimumZoomScale = 0.1;
 {
     self.isLoadingImage = YES;
 
-    __weak __typeof__(self) weakSelf = self;
+    __weak __typeof__(self) weakSelf = self;    
     [self.imageLoader loadImageWithURL:self.url
+                              fromPost:self.post
+                          preferredSize:CGSizeZero
+                           placeholder:nil
                                success:^{
                                    weakSelf.isLoadingImage = NO;
                                    weakSelf.image = weakSelf.imageView.image;

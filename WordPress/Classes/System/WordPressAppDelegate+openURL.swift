@@ -7,10 +7,6 @@ import AutomatticTracks
         let redactedURL = LoggingURLRedactor.redactedURL(url)
         DDLogInfo("Application launched with URL: \(redactedURL)")
 
-        guard !handleHockey(url: url, options: options) else {
-            return true
-        }
-
         guard !handleGoogleAuth(url: url, options: options) else {
             return true
         }
@@ -35,18 +31,6 @@ import AutomatticTracks
         default:
             return false
         }
-    }
-
-    private func handleHockey(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
-        var hockeyOptions: [String: Any] = [:]
-        for (key, value) in options {
-            hockeyOptions[key.rawValue] = value
-        }
-
-        if hockey?.handleOpen(url, options: hockeyOptions) == true {
-            return true
-        }
-        return false
     }
 
     private func handleGoogleAuth(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {

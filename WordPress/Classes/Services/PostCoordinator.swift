@@ -58,13 +58,13 @@ class PostCoordinator: NSObject {
               automatedRetry: Bool = false,
               forceDraftIfCreating: Bool = false,
               defaultFailureNotice: Notice? = nil,
-              completion: ((Result<AbstractPost>) -> ())? = nil) {
+              completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
 
         prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
             switch result {
             case .success(let post):
                 self.upload(post: post, forceDraftIfCreating: forceDraftIfCreating, completion: completion)
-            case .error(let error):
+            case .failure(let error):
                 switch error {
                 case SavingError.mediaFailure(let savedPost):
                     self.dispatchNotice(savedPost)
@@ -74,7 +74,7 @@ class PostCoordinator: NSObject {
                     }
                 }
 
-                completion?(.error(error))
+                completion?(.failure(error))
             }
         }
     }
@@ -84,7 +84,7 @@ class PostCoordinator: NSObject {
             switch result {
             case .success(let post):
                 self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
-            case .error:
+            case .failure:
                 break
             }
         }
@@ -117,7 +117,7 @@ class PostCoordinator: NSObject {
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
     private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false,
-                               then completion: @escaping (Result<AbstractPost>) -> ()) {
+                               then completion: @escaping (Result<AbstractPost, Error>) -> ()) {
         var post = postToSave
 
         if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
@@ -130,7 +130,7 @@ class PostCoordinator: NSObject {
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
             change(post: post, status: .failed) { savedPost in
-                completion(.error(SavingError.mediaFailure(savedPost)))
+                completion(.failure(SavingError.mediaFailure(savedPost)))
             }
             return
         }
@@ -157,7 +157,7 @@ class PostCoordinator: NSObject {
                 self.removeObserver(for: post)
 
                 self.change(post: post, status: .failed) { savedPost in
-                    completion(.error(SavingError.mediaFailure(savedPost)))
+                    completion(.failure(SavingError.mediaFailure(savedPost)))
                 }
             }
 
@@ -179,7 +179,7 @@ class PostCoordinator: NSObject {
                     case .video:
                         EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { (result) in
                             switch result {
-                            case .error:
+                            case .failure:
                                 handleSingleMediaFailure()
                             case .success(let value):
                                 media.remoteURL = value.videoURL.absoluteString
@@ -269,7 +269,7 @@ class PostCoordinator: NSObject {
         backgroundService.refreshPostStatus()
     }
 
-    private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost>) -> ())? = nil) {
+    private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
         mainService.uploadPost(post, forceDraftIfCreating: forceDraftIfCreating, success: { [weak self] uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
@@ -282,7 +282,7 @@ class PostCoordinator: NSObject {
         }, failure: { [weak self] error in
             self?.dispatchNotice(post)
 
-            completion?(.error(error ?? SavingError.unknown))
+            completion?(.failure(error ?? SavingError.unknown))
 
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })
@@ -308,7 +308,7 @@ class PostCoordinator: NSObject {
         } else if media.mediaType == .video {
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             postContent = videoPostUploadProcessor.process(postContent)
-            let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr, localURLString: media.absoluteThumbnailLocalURL?.absoluteString)
+            let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             postContent = gutenbergVideoPostUploadProcessor.process(postContent)
         } else if let remoteURL = URL(string: remoteURLStr) {
             let documentTitle = remoteURL.lastPathComponent

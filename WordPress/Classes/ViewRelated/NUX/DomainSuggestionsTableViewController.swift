@@ -289,7 +289,7 @@ extension DomainSuggestionsTableViewController {
 
     private func styleDomain(_ domain: String) -> NSAttributedString {
         let styledDomain: NSMutableAttributedString = NSMutableAttributedString(string: domain)
-        guard let dotPosition = domain.index(of: ".") else {
+        guard let dotPosition = domain.firstIndex(of: ".") else {
             return styledDomain
         }
         styledDomain.addAttribute(.foregroundColor,

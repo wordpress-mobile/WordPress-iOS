@@ -164,7 +164,7 @@ class MediaAssetExporterTests: XCTestCase {
         exporter.mediaDirectoryType = .temporary
         exporter.export(onCompletion: { (imageExport) in
             // If not resising the image the orientation stays the same has the original
-            MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .leftMirrored)
+            MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .up)
             MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
             expect.fulfill()
         }) { (error) in
