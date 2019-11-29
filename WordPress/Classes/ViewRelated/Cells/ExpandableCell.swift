@@ -80,6 +80,8 @@ extension ExpandableCell: UITextViewDelegate {
             return false
         case .preview, .presentActions:
             return true
+        @unknown default:
+            fatalError()
         }
     }
 }

@@ -346,7 +346,7 @@ extension PostEditor where Self: UIViewController {
                 self.post = uploadedPost
 
                 generator.notificationOccurred(.success)
-            case .error(let error):
+            case .failure(let error):
                 DDLogError("Error publishing post: \(error.localizedDescription)")
                 generator.notificationOccurred(.error)
             }

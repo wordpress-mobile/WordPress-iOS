@@ -124,11 +124,9 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLName</key>
-			<string>net.hockeyapp</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>habc2edad95b7daba01002061304a31cea</string>
+				<string>appcenter-bc2edad9-5b7d-aba0-1002-061304a31cea</string>
 			</array>
 		</dict>
 		<dict>

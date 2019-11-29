@@ -178,7 +178,7 @@ struct PluginStoreState {
 extension PluginStoreState {
     mutating func modifyPlugin(id: String, site: JetpackSiteRef, change: (inout PluginState) -> Void) {
         guard let sitePlugins = plugins[site],
-            let index = sitePlugins.plugins.index(where: { $0.id == id }) else {
+            let index = sitePlugins.plugins.firstIndex(where: { $0.id == id }) else {
                 return
         }
         var plugin = sitePlugins.plugins[index]
@@ -586,7 +586,7 @@ private extension PluginStore {
     func removePlugin(pluginID: String, site: JetpackSiteRef) {
         guard let sitePlugins = state.plugins[site],
             let plugin = getPlugin(id: pluginID, site: site),
-            let index = sitePlugins.plugins.index(where: { $0.id == pluginID }) else {
+            let index = sitePlugins.plugins.firstIndex(where: { $0.id == pluginID }) else {
                 return
         }
         state.plugins[site]?.plugins.remove(at: index)

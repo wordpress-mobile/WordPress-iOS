@@ -352,6 +352,11 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+
+    func gutenbergDidRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
+        GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)
+    }
+
     func editorDidAutosave() {
         autosaver.contentDidChange()
     }
@@ -524,6 +529,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 showMediaSelectionOnStart()
             }
             focusTitleIfNeeded()
+            mediaInserterHelper.refreshMediaStatus()
         }
     }
 
@@ -545,12 +551,20 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogError(message)
         }
     }
+
+    func gutenbergDidRequestFullscreenImage(with mediaUrl: URL) {
+        navigationController?.definesPresentationContext = true
+        let controller = WPImageViewController(externalMediaURL: mediaUrl)
+        controller.post = self.post
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .overCurrentContext
+        self.present(controller, animated: true)
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
-
     func gutenbergLocale() -> String? {
         return WordPressComLanguageDatabase().deviceLanguage.slug
     }

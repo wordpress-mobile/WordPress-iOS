@@ -48,7 +48,10 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
             return assertionFailure("Image picked without callback")
         }
 
-        let media = self.mediaInserter.insert(exportableAsset: url as NSURL, source: .otherApps)
+        guard let media = self.mediaInserter.insert(exportableAsset: url as NSURL, source: .otherApps) else {
+            return callback([])
+        }
+
         let mediaUploadID = media.gutenbergUploadID
         callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
     }

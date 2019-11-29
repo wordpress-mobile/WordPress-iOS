@@ -8,11 +8,11 @@ import Foundation
 class PostBuilder {
     private let post: Post
 
-    init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext()) {
+    init(_ context: NSManagedObjectContext = PostBuilder.setUpInMemoryManagedObjectContext(), blog: Blog? = nil) {
         post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
 
         // Non-null Core Data properties
-        post.blog = BlogBuilder(context).build()
+        post.blog = blog ?? BlogBuilder(context).build()
     }
 
     private static func buildPost(context: NSManagedObjectContext) -> Post {
