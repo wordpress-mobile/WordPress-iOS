@@ -27,6 +27,8 @@ struct NullBlogPropertySanitizer {
             return
         }
 
+        self.store.set(self.currentBuildVersion(), forKey: self.key)
+
         let entityNamesWithRequiredBlogProperties = [
             Post.entityName(),
             Page.entityName(),
@@ -51,8 +53,6 @@ struct NullBlogPropertySanitizer {
             }
 
             try? self.context.save()
-
-            self.store.set(self.currentBuildVersion(), forKey: self.key)
         }
     }
 
