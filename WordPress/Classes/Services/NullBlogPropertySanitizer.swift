@@ -9,20 +9,20 @@ import Foundation
 /// set to NULL. They are currently inaccessible because they are not attached to any `Blog`. But
 /// leaving them in the database would cause a crash if Core Data tries to save new entities.
 ///
-struct NullBlogPropertySanitizer {
+@objc class NullBlogPropertySanitizer: NSObject {
     private let store: UserDefaults
     private let key = "null-property-sanitization"
 
     private let context: NSManagedObjectContext
 
-    init(store: UserDefaults = UserDefaults.standard,
+    @objc init(store: UserDefaults = UserDefaults.standard,
          context: NSManagedObjectContext = ContextManager.shared.mainContext) {
 
         self.store = store
         self.context = context
     }
 
-    func sanitize() {
+    @objc func sanitize() {
         guard appWasUpdated() else {
             return
         }
