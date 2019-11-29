@@ -519,22 +519,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        // Autosaves are ignored for posts with local changes.
-        if !post.hasLocalChanges(), post.hasAutosaveRevision, let saveDate = post.dateModified, let autosaveDate = post.autosaveModifiedDate {
-            let autosaveViewController = UIAlertController.autosaveOptionsViewController(forSaveDate: saveDate, autosaveDate: autosaveDate, didTapOption: { [weak self] loadAutosaveRevision in
-                self?.openEditor(with: post, loadAutosaveRevision: loadAutosaveRevision)
-            })
-            present(autosaveViewController, animated: true)
-        } else {
-            openEditor(with: post, loadAutosaveRevision: false)
-        }
-    }
-
-    private func openEditor(with post: Post, loadAutosaveRevision: Bool) {
-        let editor = EditPostViewController(post: post, loadAutosaveRevision: loadAutosaveRevision)
-        editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false)
-        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
+        PostListEditorPresenter.handle(post: post, in: self)
     }
 
     func presentAlertForPostBeingUploaded() {
