@@ -3455,7 +3455,9 @@ extension AztecPostViewController {
 
     private func replace(attachment: ImageAttachment, with image: UIImage) {
         let info = MediaAnalyticsInfo(origin: .editor(.deviceLibrary), selectionMethod: mediaSelectionMethod)
-        let media = mediaCoordinator.addMedia(from: image, to: post, analyticsInfo: info)
+        guard let media = mediaCoordinator.addMedia(from: image, to: post, analyticsInfo: info) else {
+            return
+        }
         attachment.uploadID = media.uploadID
     }
 }
