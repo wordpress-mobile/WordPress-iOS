@@ -338,6 +338,8 @@ private extension NoResultsViewController {
         setAccessoryViewsVisibility()
         configureForTitleViewOnly()
 
+        configureForAccessibility()
+
         view.layoutIfNeeded()
     }
 
@@ -391,6 +393,9 @@ private extension NoResultsViewController {
     }
 
     func copyTitleLabel() -> UILabel? {
+        guard let titleLabel = titleLabel else {
+            return nil
+        }
         // Copy the `titleLabel` to get the style for Title View Only label
         let data = NSKeyedArchiver.archivedData(withRootObject: titleLabel)
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? UILabel ?? nil
@@ -505,5 +510,32 @@ private extension NoResultsViewController {
         static let title: String = NSLocalizedString("Unable to load this page right now.", comment: "Title for No results full page screen displayed when there is no connection")
         static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Subtitle for No results full page screen displayed when there is no connection")
         static let imageName = "cloud"
+    }
+}
+
+// MARK: - Accessibility
+
+private extension NoResultsViewController {
+    func configureForAccessibility() {
+        // Reset
+        view.isAccessibilityElement = false
+        view.accessibilityLabel = nil
+        view.accessibilityElements = nil
+        view.accessibilityTraits = .none
+
+        if displayTitleViewOnly {
+            view.isAccessibilityElement = true
+            view.accessibilityLabel = titleLabel.text
+            view.accessibilityTraits = .staticText
+        } else {
+            view.accessibilityElements = [noResultsView!, actionButton!]
+
+            noResultsView.isAccessibilityElement = true
+            noResultsView.accessibilityTraits = .staticText
+            noResultsView.accessibilityLabel = [
+                titleLabel.text,
+                subtitleTextView.isHidden ? nil : subtitleTextView.attributedText.string
+            ].compactMap { $0 }.joined(separator: ". ")
+        }
     }
 }

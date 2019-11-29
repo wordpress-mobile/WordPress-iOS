@@ -1,3 +1,4 @@
-- Blockredigeraren: Vi har lagt till en blocktyp för ”Media och Text”! Ett alternativ för länkmål (öppna i nytt fönster) har lagts till i inställningarna för bildblock. Vi har rättat ett fel där genvägen ”Nytt inlägg med foto” inte lade till det valda fotot.
-- Statistik: Nu kan du anpassa insikterna. Nu går laddningen av insikterna snabbare om man har långsam uppkoppling.
-- Mörkt läge: Förbättringar och rättningar av småfel i hela appen.
+- Denna uppdatering låter dig använda nätet även när du inte är uppkopplad. Redigera och spara inlägg utan uppkoppling, så kommer vi automatiskt att ladda upp (eller publicera) dem när din enhet åter får kontakt med nätet.
+- I vissa fall var vyn ”Jag” tom om du var inloggad med en webbplats som du driftar på egen hand, något som både är (1) ett fel och (2) kan vara mindre lyckat för självbilden. Det är rättat nu. Nu är du åter ditt gamla jag.
+- Ibland kunde ett väntande inlägg publiceras om man uppdaterade det. Hanteringen av väntande inlägg och publicering har korrigerats för att detta inte ska hända igen – nu kommer väntande inlägg att fortsätta vara väntande ända tills du uppger något annat.
+- Slutligen har vi några förbättringar av blockredigeraren – nu har den stöd för justering av bilder.

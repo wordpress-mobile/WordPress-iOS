@@ -55,6 +55,8 @@ extension RevisionDiffsPageManager: UIPageViewControllerDataSource {
             if nextIndex < 0 || count < nextIndex {
                 return nil
             }
+        @unknown default:
+            fatalError()
         }
 
         return viewControllers[nextIndex]

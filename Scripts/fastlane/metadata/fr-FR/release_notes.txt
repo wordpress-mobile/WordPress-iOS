@@ -1,3 +1,4 @@
-- Éditeur de blocs : nous avons ajouté un bloc « Texte et média » ! L’option cible du lien (Ouvrir dans un nouvel onglet) a été ajoutée aux réglages du bloc image. Nous avons corrigé un bug où le raccourci « Nouvel article photo » n’ajoutait pas la photo sélectionnée.
-- Statistiques : vous pouvez, à présent, personnaliser les thématiques. Les thématiques se chargent plus rapidement sur les réseaux lents.
-- Mode sombre : Améliorations et corrections de petits bugs dans toute l’application.
+– Avec cette mise à jour, vous pouvez être connecté sans être vraiment connecté. Modifiez et enregistrez des articles lorsque vous n’avez pas de connexion, nous les téléverserons (ou publierons) automatiquement quand l’appareil sera de nouveau connecté.
+– Parfois, la vue « Moi » pouvait être vide si vous étiez connecté sur un site auto-hébergé qui est d’une, un bug et de de deux pas top pour qui a un peu d’estime en soit. C’est corrigé, donc Moi est vous à nouveau.
+– D’autre fois, mettre à jour un article en attente le publiait quand même. Les articles en attente resteront en attente jusqu’à ce que vous en décidiez autrement.
+– Finalement, des améliorations de l’éditeur de bloc. Des options d’alignement des images ont été ajoutées.

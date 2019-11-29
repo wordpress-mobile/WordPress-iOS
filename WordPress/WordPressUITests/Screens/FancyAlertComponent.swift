@@ -21,6 +21,6 @@ class FancyAlertComponent: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["defaultAlertButton"].exists
+        return XCUIApplication().buttons["defaultAlertButton"].waitForExistence(timeout: 3)
     }
 }

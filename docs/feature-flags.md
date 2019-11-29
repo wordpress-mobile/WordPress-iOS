@@ -15,7 +15,7 @@ case localDeveloper // debug
 case a8cBranchTest // alpha
 
 /// Beta released internally for Automattic employees
-case a8cPrereleaseTesting. // internal - hockey / TestFlight
+case a8cPrereleaseTesting. // internal - AppCenter / TestFlight
 
 /// Production build released in the app store
 case appStore // release

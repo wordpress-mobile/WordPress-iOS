@@ -890,7 +890,7 @@ extension SharingButtonsViewController {
         }
         let theButton = movedButton.first!
 
-        let oldIndex = buttons.index(of: theButton)!
+        let oldIndex = buttons.firstIndex(of: theButton)!
         let newIndex = oldIndex + diff
 
         let buttonsArr = NSMutableArray(array: buttons)

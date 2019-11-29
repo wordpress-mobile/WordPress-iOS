@@ -1,3 +1,4 @@
-- Penyunting blok: Kami telah menambahkan blok “Media & Teks”! Pilihan Target Tautan (Buka di tab baru) telah ditambahkan ke pengaturan Blok Gambar. Kami memperbaiki bug yang menyebabkan pintasan “Pos Foto Baru” tidak menambahkan foto yang dipilih.
-- Statistik: Sekarang Anda dapat menyesuaikan Wawasan. Wawasan dimuat lebih cepat pada jaringan yang lambat.
-- Mode Gelap: Sejumlah peningkatan dan perbaikan bug kecil di seluruh aplikasi.
+- Dengan pembaruan ini, Anda bisa beraktivitas di internet tanpa internet yang sebenarnya. Sunting dan simpan pos saat Anda offline, kami akan secara otomatis mengunggah (atau memublikasikan) pos tersebut ketika perangkat Anda kembali online.
+- Terkadang, tampilan “Saya” kosong jika Anda login dengan situs yang di-hosting sendiri, dan ini merupakan (1) bug sekaligus (2) tidak baik untuk harga diri siapa pun. Sudah diperbaiki, jadi Saya kembali menjadi Anda.
+- Terkadang memperbarui pos tertunda akan menyebabkan pos dipublikasikan. Semua tindakan yang diawali dengan P telah diperbaiki, dan tidak akan terjadi lagi – pos tertunda akan tetap tertunda sampai Anda menginginkan yang lainnya.
+- Dan pada akhirnya, lebih banyak Penyunting blok, perbaikan — kini mendukung pilihan penyelarasan gambar.

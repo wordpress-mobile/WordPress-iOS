@@ -314,7 +314,7 @@ extension SiteInformationWizardContent: UITableViewDataSource {
 
 extension SiteInformationWizardContent: InlineEditableNameValueCellDelegate {
     func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                      valueTextFieldDidChange valueTextField: UITextField) {
+                                      valueTextFieldDidChange  text: String) {
         updateButton()
     }
 

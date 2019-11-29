@@ -183,7 +183,7 @@ class PostNoticeViewModelTests: XCTestCase {
             cancelAutoUploadOfInvocations += 1
         }
 
-        override func save(_ postToSave: AbstractPost, automatedRetry: Bool = false, forceDraftIfCreating: Bool = false, defaultFailureNotice: Notice? = nil, completion: ((Result<AbstractPost>) -> ())? = nil) {
+        override func save(_ postToSave: AbstractPost, automatedRetry: Bool = false, forceDraftIfCreating: Bool = false, defaultFailureNotice: Notice? = nil, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
 
         }
     }
