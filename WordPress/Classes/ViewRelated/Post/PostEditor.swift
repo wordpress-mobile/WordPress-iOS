@@ -25,10 +25,6 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     ///
     var post: AbstractPost { get set }
 
-    /// If true, apply autosave content when the editor creates a revision.
-    ///
-    var loadAutosaveRevision: Bool { get set }
-
     /// Closure to be executed when the editor gets closed.
     ///
     var onClose: ((_ changesSaved: Bool, _ shouldShowPostPost: Bool) -> Void)? { get set }
@@ -36,6 +32,20 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     /// Whether the editor should open directly to the media picker.
     ///
     var isOpenedDirectlyForPhotoPost: Bool { get set }
+
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///     - post: the post to edit. Must be already assigned to a `ManagedObjectContext` since
+    ///     that's necessary for the edits to be saved.
+    ///     - loadAutosaveRevision: if true, apply autosave content when the editor creates a revision.
+    ///     - replaceEditor: a closure that handles switching from one editor to another
+    ///     - editorSession: post editor analytics session
+    init(
+        post: AbstractPost,
+        loadAutosaveRevision: Bool,
+        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
+        editorSession: PostEditorAnalyticsSession?)
 
     /// Media items to be inserted on the post after creation
     ///

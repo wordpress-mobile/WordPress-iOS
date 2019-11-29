@@ -163,7 +163,9 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
-    var loadAutosaveRevision: Bool
+    /// If true, apply autosave content when the editor creates a revision.
+    ///
+    private let loadAutosaveRevision: Bool
 
     let navigationBarManager = PostEditorNavigationBarManager()
 
