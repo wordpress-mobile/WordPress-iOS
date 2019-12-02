@@ -259,6 +259,8 @@ extension RevisionDiffsBrowserViewController: RevisionDiffsPageManagerDelegate {
             revisionState?.increaseIndex()
         case .reverse:
             revisionState?.decreaseIndex()
+        @unknown default:
+            fatalError()
         }
     }
 

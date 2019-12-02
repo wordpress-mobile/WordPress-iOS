@@ -19,7 +19,7 @@ class AuthorFilterViewController: UITableViewController {
     var onSelectionChanged: ((PostListFilterSettings.AuthorFilter) -> Void)? = nil
 
     private var selectedIndexPath: IndexPath? {
-        guard let row = rows.index(of: currentSelection) else {
+        guard let row = rows.firstIndex(of: currentSelection) else {
             return nil
         }
 

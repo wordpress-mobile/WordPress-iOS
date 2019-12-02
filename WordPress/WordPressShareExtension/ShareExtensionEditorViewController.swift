@@ -58,8 +58,9 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.backgroundColor = ShareColors.aztecBackground
         textView.textColor = .text
         textView.tintColor = ShareColors.aztecCursorColor
-        textView.blockquoteBackgroundColor = UIColor(light: textView.blockquoteBackgroundColor, dark: .neutral(.shade5))
+        textView.blockquoteBackgroundColor = .neutral(.shade5)
         textView.blockquoteBorderColor = .listIcon
+        textView.preBackgroundColor = .neutral(.shade5)
         textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
 
@@ -627,7 +628,7 @@ extension ShareExtensionEditorViewController {
 
         var index: Int? = nil
         if let listType = listTypeForSelectedText() {
-            index = Constants.lists.index(of: listType)
+            index = Constants.lists.firstIndex(of: listType)
         }
 
         showOptionsTableViewControllerWithOptions(listOptions,
@@ -789,7 +790,7 @@ extension ShareExtensionEditorViewController {
                                           accessibilityLabel: headerType.accessibilityLabel)
         }
 
-        let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
+        let selectedIndex = Constants.headers.firstIndex(of: self.headerLevelForSelectedText())
 
         showOptionsTableViewControllerWithOptions(headerOptions,
                                                   fromBarItem: item,

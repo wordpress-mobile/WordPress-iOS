@@ -1,3 +1,3 @@
-- Penyunting blok: Kami telah menambahkan blok “Media & Teks”! Pilihan Target Tautan (Buka di tab baru) telah ditambahkan ke pengaturan Blok Gambar. Kami memperbaiki bug yang menyebabkan pintasan “Pos Foto Baru” tidak menambahkan foto yang dipilih.
-- Statistik: Sekarang Anda dapat menyesuaikan Wawasan. Wawasan dimuat lebih cepat pada jaringan yang lambat.
-- Mode Gelap: Sejumlah peningkatan dan perbaikan bug kecil di seluruh aplikasi.
+- Berbagai pembaruan untuk penyunting blok seluler di rilis ini akan memberikan banyak alat desain dan tata letak baru. Maksimalkan penggunaan visual di pos Anda dengan pilihan masukkan gambar dari Free Photo Library atau aplikasi lain. Anda kini juga dapat meratakan blok paragraf, dan penyunting mendukung blok yang telah diformat sebelumnya. Dan kami telah menyingkirkan gangguan kecil namun cukup mengganggu pada keyboard yang menyebabkan masalah kapitalisasi di beberapa kalimat.
+- Widget Stats Today hadir dengan desain baru, dan Anda dapat meluaskannya untuk menampilkan suka dan komentar serta statistik pengunjung.
+- Kami menemukan bug yang menyebabkan moderasi komentar pada situs yang dihosting sendiri gagal pada percobaan pertama, dan kami telah memperbaiki bug tersebut. Tidak ada yang bisa dilihat di sini!

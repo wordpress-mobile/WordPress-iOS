@@ -126,6 +126,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
     [service configureTodayWidgetWithSiteID:SiteStatsInformation.sharedInstance.siteID
                                    blogName:self.blog.settings.name
+                                    blogUrl:self.blog.displayURL
                                siteTimeZone:SiteStatsInformation.sharedInstance.siteTimeZone
                              andOAuth2Token:SiteStatsInformation.sharedInstance.oauth2Token];
 }

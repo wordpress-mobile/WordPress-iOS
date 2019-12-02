@@ -5,7 +5,11 @@
 
 @implementation TodayExtensionService
 
-- (void)configureTodayWidgetWithSiteID:(NSNumber *)siteID blogName:(NSString *)blogName siteTimeZone:(NSTimeZone *)timeZone andOAuth2Token:(NSString *)oauth2Token
+- (void)configureTodayWidgetWithSiteID:(NSNumber *)siteID
+                              blogName:(NSString *)blogName
+                               blogUrl:(NSString *)blogUrl
+                          siteTimeZone:(NSTimeZone *)timeZone
+                        andOAuth2Token:(NSString *)oauth2Token
 {
     NSParameterAssert(siteID != nil);
     NSParameterAssert(blogName != nil);
@@ -14,11 +18,12 @@
     
     [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
     
-    // Save the token and site ID to shared user defaults for use in the today widget
+    // Save the site information to shared user defaults for use in the today widget
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     [sharedDefaults setObject:timeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults setObject:siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults setObject:blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+    [sharedDefaults setObject:blogUrl forKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
     
     NSError *error;
     [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetKeychainTokenKey
@@ -39,6 +44,7 @@
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
     
     [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetKeychainTokenKey
                               andServiceName:WPStatsTodayWidgetKeychainServiceName

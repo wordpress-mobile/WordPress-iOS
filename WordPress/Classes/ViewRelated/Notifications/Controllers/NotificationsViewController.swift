@@ -1075,6 +1075,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
             self?.cancelDeletionRequestForNoteWithID(note.objectID)
         }
 
+        cell.accessibilityHint = Self.accessibilityHint(for: note)
+
         cell.downloadIconWithURL(note.iconURL)
     }
 
@@ -1110,8 +1112,26 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
             selectFirstNotificationIfAppropriate()
         }
     }
-}
 
+    private static func accessibilityHint(for note: Notification) -> String? {
+        switch note.kind {
+        case .comment:
+            return NSLocalizedString("Shows details and moderation actions.",
+                                     comment: "Accessibility hint for a comment notification.")
+        case .commentLike, .like:
+            return NSLocalizedString("Shows all likes.",
+                                     comment: "Accessibility hint for a post or comment “like” notification.")
+        case .follow:
+            return NSLocalizedString("Shows all followers",
+                                     comment: "Accessibility hint for a follow notification.")
+        case .matcher, .newPost:
+            return NSLocalizedString("Shows the post",
+                                     comment: "Accessibility hint for a match/mention on a post notification.")
+        default:
+            return nil
+        }
+    }
+}
 
 // MARK: - Filter Helpers
 //
@@ -1354,7 +1374,7 @@ private extension NotificationsViewController {
             return nil
         }
 
-        guard let noteIndex = notifications.index(of: note) else {
+        guard let noteIndex = notifications.firstIndex(of: note) else {
             return nil
         }
 
@@ -1432,7 +1452,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         fetchRequest.fetchLimit = 1
 
         if let results = try? context.fetch(fetchRequest) as? [Notification] {
-            return results?.first
+            return results.first
         }
 
         return nil

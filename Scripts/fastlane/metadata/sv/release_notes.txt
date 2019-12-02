@@ -1,3 +1,3 @@
-- Blockredigeraren: Vi har lagt till en blocktyp för ”Media och Text”! Ett alternativ för länkmål (öppna i nytt fönster) har lagts till i inställningarna för bildblock. Vi har rättat ett fel där genvägen ”Nytt inlägg med foto” inte lade till det valda fotot.
-- Statistik: Nu kan du anpassa insikterna. Nu går laddningen av insikterna snabbare om man har långsam uppkoppling.
-- Mörkt läge: Förbättringar och rättningar av småfel i hela appen.
+- En stor mängt uppdateringar av den mobila versionen av blockredigeraren i denna utgåva ger dig en rad nya verktyg för design och layout. Utöka det visuella innehållet i dina inlägg med möjligheten att lägga in bilder från Free Photo Library eller från andra appar. Nu kan du även ange justering för blockstycken och redigeraren har stöd för förformaterat block. Vi har även löst ett litet men irriterande problem med tangentbordsfunktione, som kunde ge problem med hanteringen av versaler i vissa meningar.
+- Widgeten Statistik Idag har fått ny design, och nu kan du expandera dess visning för att se gilla-markeringar och kommentarer, utöver statistik över visningar.
+- Vi har hittat och åtgärdat ett fel som kunde göra att moderering misslyckades vid första försöket på egeninstallerade webbplatser. Nu finns det inte kvar där!

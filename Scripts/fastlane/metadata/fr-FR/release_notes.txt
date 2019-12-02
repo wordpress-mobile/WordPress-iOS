@@ -1,3 +1,3 @@
-- Éditeur de blocs : nous avons ajouté un bloc « Texte et média » ! L’option cible du lien (Ouvrir dans un nouvel onglet) a été ajoutée aux réglages du bloc image. Nous avons corrigé un bug où le raccourci « Nouvel article photo » n’ajoutait pas la photo sélectionnée.
-- Statistiques : vous pouvez, à présent, personnaliser les thématiques. Les thématiques se chargent plus rapidement sur les réseaux lents.
-- Mode sombre : Améliorations et corrections de petits bugs dans toute l’application.
+- Beaucoup de mises à jour pour l’éditeur de bloc mobile dans cette version vous donnent un bouquets d’outils de design et de mise en page. Développez les visuels dans vos articles avec l’option pour insérer des images depuis la bibliothèque de photos gratuites ou d’autres apps. Vous avez pouvez en plus aligner les blocs paragraphe, et l’éditeur supporte les blocs préformatés. Et nous nous sommes occupés d’un petit mais néanmoins gênant pépin au niveau du clavier qui causait des hoquets avec la capitalisation dans certaines phrases.
+- Le widget Statistiques d’aujourd’hui a reçu une mise à jour de sa conception et vous pouvez le développer pour afficher les « J’aime » et les commentaires à côté des statistiques.
+- Nous avons trouvé un bug qui provoquait une erreur de modération de commentaires à la première tentative.

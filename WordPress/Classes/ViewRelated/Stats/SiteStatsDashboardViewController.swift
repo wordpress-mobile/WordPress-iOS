@@ -49,6 +49,12 @@ class SiteStatsDashboardViewController: UIViewController {
         super.viewDidLoad()
         setupFilterBar()
         restoreSelectedPeriodFromUserDefaults()
+        addWillEnterForegroundObserver()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeWillEnterForegroundObserver()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -64,6 +70,12 @@ class SiteStatsDashboardViewController: UIViewController {
         if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
             updatePeriodView(oldSelectedPeriod: currentSelectedPeriod, withDate: periodTableViewController.selectedDate)
         }
+    }
+}
+
+extension SiteStatsDashboardViewController: StatsForegroundObservable {
+    func reloadStatsData() {
+        updatePeriodView(oldSelectedPeriod: currentSelectedPeriod)
     }
 }
 

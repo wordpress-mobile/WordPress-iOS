@@ -1,3 +1,3 @@
-- Blokeditor: We hebben een blok 'Media en tekst' toegevoegd! De optie voor linkverwijzing (Openen in nieuw tabblad) is toegevoegd aan de Afbeeldingsblok-instellingen. We hebben een bug gefixt waarbij de snelkoppeling 'Nieuw fotobericht' niet de geselecteerde foto toevoegde.
-- Statistieken: Je kunt Insights nu aan je voorkeuren aanpassen. Het laden van inzichten op een traag netwerk gaat nu sneller.
-- Nachtmodus: Verbeteringen en kleine bugfixes in de hele app.
+- Dankzij de vele updates aan de mobiele blok-editor van deze release heb je een ruime keuze uit nieuwe ontwerp- en opmaaktools. Breid de visuele elementen in je berichten uit met de optie om afbeeldingen vanuit de Gratis fotobibliotheek of andere apps in te voegen. Je kunt paragraafblokken nu ook uitlijnen en de editor ondersteunt het vooraf ingesteld-blok. We hebben ook een klein, maar vervelend probleem met het toetsenbord opgelost dat fouten in hoofdlettergebruik veroorzaakte in sommige zinnen.
+- Het ontwerp van de widget voor dagelijkse statistieken is nu bijgewerkt en je kunt deze nu uitbreiden zodat likes en opmerkingen naast de bezoekersstatistieken worden weergegeven.
+- We hebben een bug opgemerkt die ervoor zorgde dat het aanpassen van opmerkingen op zelf-gehoste sites bij de eerste poging mislukte, maar dit probleem is nu opgelost. Hier is niets te zien, mensen!

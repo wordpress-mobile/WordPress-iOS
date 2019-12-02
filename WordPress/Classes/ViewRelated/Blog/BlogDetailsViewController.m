@@ -980,7 +980,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
     NSProgress *mediaCreateProgress;
-    [mediaService createMediaWith:image objectID:self.blog.objectID progress:&mediaCreateProgress thumbnailCallback:nil completion:^(Media *media, NSError *error) {
+    [mediaService createMediaWith:image blog:self.blog post:nil progress:&mediaCreateProgress thumbnailCallback:nil completion:^(Media *media, NSError *error) {
         if (media == nil || error != nil) {
             return;
         }

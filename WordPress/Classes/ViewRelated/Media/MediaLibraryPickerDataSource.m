@@ -282,7 +282,7 @@
     PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
     PHAsset *asset = [result firstObject];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [mediaService createMediaWith:asset objectID:objectID progress:nil thumbnailCallback:nil completion:^(Media *media, NSError *error) {
+    [mediaService createMediaWith:asset blog:self.blog post: self.post progress:nil thumbnailCallback:nil completion:^(Media *media, NSError *error) {
         [self loadDataWithOptions:WPMediaLoadOptionsAssets success:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {
@@ -296,13 +296,10 @@
 -(void)addMediaFromURL:(NSURL *)url
            completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    NSManagedObjectID *objectID = [self.post objectID];
-    if (objectID == nil) {
-        objectID = [self.blog objectID];
-    }
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [mediaService createMediaWith:url
-                     objectID:objectID
+                     blog:self.blog
+                     post:self.post
                          progress:nil
                    thumbnailCallback:nil
                           completion:^(Media *media, NSError *error) {
