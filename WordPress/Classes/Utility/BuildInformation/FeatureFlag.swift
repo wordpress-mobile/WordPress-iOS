@@ -1,15 +1,20 @@
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int {
+enum FeatureFlag: Int, CaseIterable {
     case exampleFeature
     case jetpackDisconnect
     case domainCredit
     case signInWithApple
     case postScheduling
+    case debugMenu
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
+        if let overriddenValue = FeatureFlagOverrideStore().overriddenValue(for: self) {
+            return overriddenValue
+        }
+
         switch self {
         case .exampleFeature:
             return true
@@ -26,6 +31,9 @@ enum FeatureFlag: Int {
             return true
         case .postScheduling:
             return BuildConfiguration.current == .localDeveloper
+        case .debugMenu:
+            return BuildConfiguration.current ~= [.localDeveloper,
+                                                  .a8cBranchTest]
         }
     }
 }
@@ -37,5 +45,34 @@ class Feature: NSObject {
     /// Returns a boolean indicating if the feature is enabled
     @objc static func enabled(_ feature: FeatureFlag) -> Bool {
         return feature.enabled
+    }
+}
+
+extension FeatureFlag: OverrideableFlag {
+    /// Descriptions used to display the feature flag override menu in debug builds
+    var description: String {
+        switch self {
+        case .exampleFeature:
+            return "Example feature"
+        case .jetpackDisconnect:
+            return "Jetpack disconnect"
+        case .domainCredit:
+            return "Use domain credits"
+        case .signInWithApple:
+            return "Sign in with Apple"
+        case .postScheduling:
+            return "Post scheduling improvements"
+        case .debugMenu:
+            return "Debug menu"
+        }
+    }
+
+    var canOverride: Bool {
+        switch self {
+        case .debugMenu, .exampleFeature:
+            return false
+        default:
+            return true
+        }
     }
 }
