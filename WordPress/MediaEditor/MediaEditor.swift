@@ -6,7 +6,7 @@ public class MediaEditor: NSObject {
     let cropViewControllerFactory: (UIImage) -> TOCropViewController
 
     private var cropViewController: TOCropViewController?
-    private var onFinishEditing: ((UIImage?) -> ())?
+    private var onFinishEditing: ((UIImage?, [MediaEditorOperation]) -> ())?
     private var onCancel: (() -> ())?
 
     public init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init) {
@@ -14,7 +14,7 @@ public class MediaEditor: NSObject {
         super.init()
     }
 
-    public func edit(_ image: UIImage, from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage?) -> (), onCancel: (() -> ())? = nil) {
+    public func edit(_ image: UIImage, from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage?, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
         self.onFinishEditing = onFinishEditing
         self.onCancel = onCancel
         let cropViewController = cropViewControllerFactory(image)
@@ -37,7 +37,14 @@ public class MediaEditor: NSObject {
 
 extension MediaEditor: TOCropViewControllerDelegate {
     public func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
-        onFinishEditing?(image)
+        var operations: [MediaEditorOperation] = []
+        if cropViewController.image.size != cropRect.size {
+            operations.append(.crop)
+        }
+        if angle != 0 {
+            operations.append(.rotate)
+        }
+        onFinishEditing?(image, operations)
         releaseCallbacks()
     }
 

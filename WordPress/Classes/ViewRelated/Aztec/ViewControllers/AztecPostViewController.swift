@@ -3445,7 +3445,7 @@ extension AztecPostViewController {
         }
 
         self.mediaEditor.edit(image, from: self,
-                  onFinishEditing: { image in
+                              onFinishEditing: { image, _ in
                                 if let image = image {
                                     self.replace(attachment: imageAttachment, with: image)
                                     self.mediaEditor.dismiss(animated: true)
