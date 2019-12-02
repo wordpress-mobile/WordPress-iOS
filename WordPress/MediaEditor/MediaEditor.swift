@@ -30,7 +30,7 @@ public class MediaEditor: NSObject {
 
     private func releaseCallbacks() {
         onFinishEditing = nil
-        onFinishEditing = nil
+        onCancel = nil
     }
 
 }
