@@ -4,7 +4,7 @@ import Foundation
 /// user the option through a dialog alert to load the autosave (or just load the regular post) into
 /// the editor.
 /// Analytics are also tracked.
-enum PostListEditorPresenter {
+struct PostListEditorPresenter {
 
     static func handle(post: Post, in postListViewController: PostListViewController) {
 
