@@ -3444,10 +3444,13 @@ extension AztecPostViewController {
             return
         }
 
+        WPAnalytics.track(.mediaEditorShown)
+
         self.mediaEditor.edit(image, from: self,
-                              onFinishEditing: { image, _ in
+                              onFinishEditing: { image, actions in
                                 self.replace(attachment: imageAttachment, with: image)
                                 self.mediaEditor.dismiss(animated: true)
+                                WPAnalytics.track(.mediaEditorUsed, withProperties: ["actions": actions.description])
         })
     }
 
@@ -3457,5 +3460,22 @@ extension AztecPostViewController {
             return
         }
         attachment.uploadID = media.uploadID
+    }
+}
+
+extension Array where Element == MediaEditorOperation {
+    var description: String {
+        return self.map { $0.description }.joined(separator: ", ")
+    }
+}
+
+extension MediaEditorOperation {
+    var description: String {
+        switch self {
+        case .crop:
+            return "crop"
+        case .rotate:
+            return "rotate"
+        }
     }
 }
