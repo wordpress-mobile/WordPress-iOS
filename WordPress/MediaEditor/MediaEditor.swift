@@ -6,7 +6,7 @@ public class MediaEditor: NSObject {
     let cropViewControllerFactory: (UIImage) -> TOCropViewController
 
     private var cropViewController: TOCropViewController?
-    private var onFinishEditing: ((UIImage?, [MediaEditorOperation]) -> ())?
+    private var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
     private var onCancel: (() -> ())?
 
     public init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init) {
@@ -14,7 +14,7 @@ public class MediaEditor: NSObject {
         super.init()
     }
 
-    public func edit(_ image: UIImage, from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage?, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
+    public func edit(_ image: UIImage, from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
         self.onFinishEditing = onFinishEditing
         self.onCancel = onCancel
         let cropViewController = cropViewControllerFactory(image)
