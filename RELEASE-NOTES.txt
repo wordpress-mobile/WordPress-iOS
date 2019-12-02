@@ -1,5 +1,6 @@
 13.8
 -----
+* When a post has an autosave, the autosave version can be loaded into the editor.
 * Support: Fix issue that caused 'Message failed to send' error.
 * WebView: Fix iOS 13 crash with popover.
 * Fixed an issue where the Me screen would sometimes be blank.
