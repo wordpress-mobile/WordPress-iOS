@@ -19,9 +19,6 @@
   },
   "testTargets" : [
     {
-      "skippedTests" : [
-        "EditorTests\/testPlayground()"
-      ],
       "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
         "identifier" : "FF27168E1CAAC87A0006E2D4",
