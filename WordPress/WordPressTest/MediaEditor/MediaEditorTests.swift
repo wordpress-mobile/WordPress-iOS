@@ -74,7 +74,7 @@ class MediaEditorTests: XCTestCase {
 
         mediaEditor.edit(image, from: viewControllerMock, onFinishEditing: { _ in })
 
-        expect(viewControllerMock.didCallPresent).to(beTrue())
+        expect(viewControllerMock.didCallPresentWith).to(beAKindOf(TOCropViewController.self))
     }
 
     func testHideCounterClockwiseButton() {
@@ -120,9 +120,9 @@ private class TOCropViewControllerMock: TOCropViewController {
 }
 
 private class UIViewControllerMock: UIViewController {
-    var didCallPresent = false
+    var didCallPresentWith: UIViewController?
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-        didCallPresent = true
+        didCallPresentWith = viewControllerToPresent
     }
 }
