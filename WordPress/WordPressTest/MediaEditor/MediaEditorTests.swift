@@ -140,18 +140,37 @@ class MediaEditorTests: XCTestCase {
 private class TOCropViewControllerMock: TOCropViewController {
     var didCallDismiss: Bool?
 
-    var rect: CGRect = .zero
-    var croppedAngle = 0
+    var _imageCropFrame: CGRect = .zero
+    override var imageCropFrame: CGRect {
+        get {
+            return _imageCropFrame
+        }
+
+        set {
+            _imageCropFrame = newValue
+        }
+    }
+
+    var _angle: Int = 0
+    override var angle: Int {
+        get {
+            return _angle
+        }
+
+        set {
+            _angle = newValue
+        }
+    }
 
     var croppedImage: UIImage? {
         didSet {
-            delegate?.cropViewController?(self, didCropTo: croppedImage!, with: rect, angle: croppedAngle)
+            delegate?.cropViewController?(self, didCropTo: croppedImage!, with: imageCropFrame, angle: angle)
         }
     }
 
     func crop(_ rect: CGRect, angle: Int) {
-        self.rect = rect
-        self.croppedAngle = angle
+        self.imageCropFrame = rect
+        self.angle = angle
         croppedImage = UIImage()
     }
 
