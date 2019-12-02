@@ -20,9 +20,7 @@
   "testTargets" : [
     {
       "skippedTests" : [
-        "EditorTests\/testPlayground()",
-        "LoginTests\/testEmailMagicLinkLogin()",
-        "SignupTests\/testEmailSignup()"
+        "EditorTests\/testPlayground()"
       ],
       "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
