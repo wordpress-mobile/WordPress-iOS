@@ -211,7 +211,7 @@ PODS:
   - WordPress-Aztec-iOS (1.13.0)
   - WordPress-Editor-iOS (1.13.0):
     - WordPress-Aztec-iOS (= 1.13.0)
-  - WordPressAuthenticator (1.10.3-beta.3):
+  - WordPressAuthenticator (1.10.4):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.5)
@@ -220,10 +220,10 @@ PODS:
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 4.5.1)
+    - WordPressKit (~> 4.5.4)
     - WordPressShared (~> 1.8)
     - WordPressUI (~> 1.4-beta.1)
-  - WordPressKit (4.5.4-beta.1):
+  - WordPressKit (4.5.4):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -231,7 +231,7 @@ PODS:
     - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
   - WordPressMocks (0.0.6)
-  - WordPressShared (1.8.9-beta.1):
+  - WordPressShared (1.8.9):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.5.0)
@@ -301,10 +301,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.13.0)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `issue/12477-siwa_2fa_login`)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `issue/apple_2fa_auth`)
+  - WordPressAuthenticator (~> 1.10.4)
+  - WordPressKit (~> 4.5.4)
   - WordPressMocks (~> 0.0.6)
-  - WordPressShared (~> 1.8.9-beta.1)
+  - WordPressShared (~> 1.8.9)
   - WordPressUI (~> 1.5.0)
   - WPMediaPicker (~> 1.6.0)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/2c53980dceefb8d1c43d286af671b321fb15791f/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -345,6 +345,8 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -410,12 +412,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 2c53980dceefb8d1c43d286af671b321fb15791f
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :branch: issue/12477-siwa_2fa_login
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :branch: issue/apple_2fa_auth
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/2c53980dceefb8d1c43d286af671b321fb15791f/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -432,12 +428,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 2c53980dceefb8d1c43d286af671b321fb15791f
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :commit: 02c5110ab3c17a419db7ec6192df2e3a16498ce8
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :commit: 2c332bae66457f2ac9a48d18982729cb0383a7bf
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 3.0.3
@@ -502,10 +492,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: 450cb7095c6852c9c933d2062c318c4d7fa4d9a6
   WordPress-Editor-iOS: c3373b246efe59adf7b6ac476c8e562964724bf9
-  WordPressAuthenticator: dbfed9642beeba2afe2bb5c7b4530e9ae76ae9ff
-  WordPressKit: 75bbd7f43ec6851a2617f847898c5f0f546b86f8
+  WordPressAuthenticator: 0ecb8262ffb6507df3c77459d97d729fcdcbab4f
+  WordPressKit: 1d365775fac17903a76ad5723bc146ab1739ec82
   WordPressMocks: 5913bd04586a360212e07a8ccbcb36068d4425a3
-  WordPressShared: 7eb57db01ccf3d6e250b5d6ad1e4e6f605fdd57a
+  WordPressShared: 914ec1f855d74755e42d76e83c98b2d2d0e66218
   WordPressUI: 4a4adafd2b052e94e4846c0a0203761773dc4fd5
   WPMediaPicker: e5d28197da6b467d4e5975d64a49255977e39455
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
@@ -513,6 +503,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 12f516028e26e2e47a861cc0f5da968f4db3989a
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 12b7d3f1a971ad57e18b7b26b44b78a0ed310c88
+PODFILE CHECKSUM: 581a5fd2ad38453ffb31be99e7d16d368ca41fd9
 
 COCOAPODS: 1.8.4
