@@ -40,8 +40,7 @@ class MediaEditorTests: XCTestCase {
         var returnedImage: UIImage?
 
         mediaEditor.edit(originalImage, onFinishEditing: { croppedImage in
-        returnedImage = croppedImage
-
+            returnedImage = croppedImage
         })
         cropViewControllerMock.croppedImage = croppedImage
 
