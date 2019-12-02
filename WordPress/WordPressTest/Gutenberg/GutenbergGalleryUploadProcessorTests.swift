@@ -49,8 +49,8 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
     <ul class="blocks-gallery-grid">
         <li class="blocks-gallery-item">
             <figure>
-                <a href="file:///usr/temp/image708.jpg">
-                    <img src="https://files.wordpress.com/708.jpg" data-id="708" class="wp-image-708" />
+                <a href="https://files.wordpress.com/708.jpg" >
+                    <img src="https://files.wordpress.com/708.jpg" data-id="708" class="wp-image-708" data-full-url="https://files.wordpress.com/708.jpg" />
                 </a>
                 <figcaption class="blocks-gallery-item__caption">
                     <p>Caption</p>
@@ -59,8 +59,8 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
         </li>
         <li class="blocks-gallery-item">
             <figure>
-                <a href="file:///usr/temp/image415.jpg">
-                    <img src="https://files.wordpress.com/415.jpg" data-id="415" class="wp-image-415" />
+                <a href="https://files.wordpress.com/415.jpg" >
+                    <img src="https://files.wordpress.com/415.jpg" data-id="415" class="wp-image-415" data-full-url="https://files.wordpress.com/415.jpg" />
                 </a>
                 <figcaption class="blocks-gallery-item__caption">Alşksdf şlkas dolaş dfasd şad fsa
                     <br>Asf fasd fas
@@ -70,8 +70,8 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
         </li>
         <li class="blocks-gallery-item">
             <figure>
-                <a href="file:///usr/temp/image701.jpg">
-                    <img src="https://files.wordpress.com/701.jpg" data-id="701" class="wp-image-701" />
+                <a href="https://files.wordpress.com/701.jpg" >
+                    <img src="https://files.wordpress.com/701.jpg" data-id="701" class="wp-image-701" data-full-url="https://files.wordpress.com/701.jpg" />
                 </a>
                 <figcaption class="blocks-gallery-item__caption">Hello
                     <br>World
