@@ -17,7 +17,7 @@ public class MediaEditor: NSObject {
     public func edit(_ image: UIImage, from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage?) -> (), onCancel: (() -> ())? = nil) {
         self.onFinishEditing = onFinishEditing
         self.onCancel = onCancel
-        let cropViewController = self.cropViewControllerFactory(image)
+        let cropViewController = cropViewControllerFactory(image)
         cropViewController.delegate = self
         cropViewController.toolbar.rotateCounterclockwiseButtonHidden = true
         viewController?.present(cropViewController, animated: true)
