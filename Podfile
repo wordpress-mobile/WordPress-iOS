@@ -140,7 +140,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '2c53980dceefb8d1c43d286af671b321fb15791f'
+    gutenberg :commit => 'v1.18.0'
 
     ## Third party libraries
     ## =====================
@@ -148,7 +148,8 @@ target 'WordPress' do
     pod '1PasswordExtension', '1.8.5'
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'AppCenter/Distribute', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
@@ -275,7 +276,7 @@ target 'WordPressTodayWidget' do
 
     shared_with_all_pods
     shared_with_networking_pods
-    
+
     wordpress_ui
 end
 
