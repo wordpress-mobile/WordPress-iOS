@@ -1206,6 +1206,9 @@
 		98D31B952396ED7F009CFF43 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98D31B932396ED7F009CFF43 /* MainInterface.storyboard */; };
 		98D31B992396ED7F009CFF43 /* WordPressAllTimeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 98D31B8E2396ED7E009CFF43 /* WordPressAllTimeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		98D31BA72396F7E2009CFF43 /* AllTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D31BA52396F7BF009CFF43 /* AllTimeViewController.swift */; };
+		98D31BAC23970078009CFF43 /* Tracks+AllTimeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D31BAB23970078009CFF43 /* Tracks+AllTimeWidget.swift */; };
+		98D31BAD2397015C009CFF43 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
+		98D31BAE239708FB009CFF43 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		98D52C3222B1CFEC00831529 /* StatsTwoColumnRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */; };
 		98D52C3322B1CFEC00831529 /* StatsTwoColumnRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98D52C3122B1CFEC00831529 /* StatsTwoColumnRow.xib */; };
 		98E58A2F2360D23400E5534B /* TodayWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */; };
@@ -3455,6 +3458,7 @@
 		98D31BA52396F7BF009CFF43 /* AllTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllTimeViewController.swift; sourceTree = "<group>"; };
 		98D31BA82396FAD2009CFF43 /* WordPressAllTimeWidget-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressAllTimeWidget-Bridging-Header.h"; sourceTree = "<group>"; };
 		98D31BA92396FBDC009CFF43 /* AllTimeWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllTimeWidgetPrefix.pch; sourceTree = "<group>"; };
+		98D31BAB23970078009CFF43 /* Tracks+AllTimeWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+AllTimeWidget.swift"; sourceTree = "<group>"; };
 		98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTwoColumnRow.swift; sourceTree = "<group>"; };
 		98D52C3122B1CFEC00831529 /* StatsTwoColumnRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTwoColumnRow.xib; sourceTree = "<group>"; };
 		98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayWidgetStats.swift; sourceTree = "<group>"; };
@@ -5133,7 +5137,7 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -7402,8 +7406,9 @@
 			children = (
 				98D31BA52396F7BF009CFF43 /* AllTimeViewController.swift */,
 				98D31B932396ED7F009CFF43 /* MainInterface.storyboard */,
-				98D31BA82396FAD2009CFF43 /* WordPressAllTimeWidget-Bridging-Header.h */,
 				98D31B9F2396EFAD009CFF43 /* Supporting Files */,
+				98D31BAA23970060009CFF43 /* Tracks */,
+				98D31BA82396FAD2009CFF43 /* WordPressAllTimeWidget-Bridging-Header.h */,
 			);
 			path = WordPressAllTimeWidget;
 			sourceTree = "<group>";
@@ -7420,6 +7425,14 @@
 				98D31BA22396F5C1009CFF43 /* WordPressAllTimeWidget.entitlements */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		98D31BAA23970060009CFF43 /* Tracks */ = {
+			isa = PBXGroup;
+			children = (
+				98D31BAB23970078009CFF43 /* Tracks+AllTimeWidget.swift */,
+			);
+			name = Tracks;
 			sourceTree = "<group>";
 		};
 		98E58A2D2360D1FD00E5534B /* Today Widgets */ = {
@@ -9940,7 +9953,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -12243,7 +12256,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98D31BAD2397015C009CFF43 /* Tracks.swift in Sources */,
+				98D31BAC23970078009CFF43 /* Tracks+AllTimeWidget.swift in Sources */,
 				98D31BA72396F7E2009CFF43 /* AllTimeViewController.swift in Sources */,
+				98D31BAE239708FB009CFF43 /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14510,6 +14526,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress All Time Widget Development";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressAllTimeWidget/WordPressAllTimeWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -14550,6 +14567,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress All Time Widget App Store Distribution";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressAllTimeWidget/WordPressAllTimeWidget-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -14589,6 +14607,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress All Time Widget Adhoc Distribution";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressAllTimeWidget/WordPressAllTimeWidget-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -14628,6 +14647,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress All Time Widget Adhoc Distribution";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressAllTimeWidget/WordPressAllTimeWidget-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
