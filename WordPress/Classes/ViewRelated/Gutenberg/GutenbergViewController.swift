@@ -583,7 +583,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post.postTitle ?? ""
     }
 
-    func gutenbergPostType() -> String? {
+    func gutenbergPostType() -> String {
         return post is Page ? "page" : "post"
     }
 
