@@ -4,13 +4,14 @@ import TOCropViewController
 public class MediaEditor: NSObject {
 
     let cropViewControllerFactory: (UIImage) -> TOCropViewController
-    let image: UIImage
 
     private lazy var cropViewController: TOCropViewController = {
         return cropViewControllerFactory(image)
     }()
     private var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
     private var onCancel: (() -> ())?
+
+    public let image: UIImage
 
     public var doneTextButton: UIButton {
         return cropViewController.toolbar.doneTextButton
