@@ -106,8 +106,8 @@ class GutenbergGalleryUploadProcessor: Processor {
         if let index = ids.firstIndex(of: String(self.mediaUploadID) ) {
             ids[index] = String(self.serverMediaID)
         }
-        attributes[GalleryBlockKeys.ids] = ids;
-        
+        attributes[GalleryBlockKeys.ids] = ids
+
         if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
             let jsonString = String(data: jsonData, encoding: .utf8) {
             updatedBlock += jsonString
