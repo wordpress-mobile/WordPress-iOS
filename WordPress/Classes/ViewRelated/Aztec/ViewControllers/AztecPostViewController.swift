@@ -3445,6 +3445,15 @@ extension AztecPostViewController {
         WPAnalytics.track(.mediaEditorShown)
 
         mediaEditor = MediaEditor(image: image)
+
+        mediaEditor?.cancelTextButton.tintColor = .white
+        mediaEditor?.resetButton.setImage(Gridicon.iconOfType(.undo), for: .normal)
+        mediaEditor?.doneIconButton.setImage(Gridicon.iconOfType(.checkmark), for: .normal)
+        mediaEditor?.cancelIconButton.setImage(Gridicon.iconOfType(.cross), for: .normal)
+        mediaEditor?.cancelIconButton.tintColor = .white
+        mediaEditor?.rotateClockwiseButton?.setImage(Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(), for: .normal)
+        mediaEditor?.rotateCounterclockwiseButtonHidden = true
+
         self.mediaEditor?.edit(from: self,
                               onFinishEditing: { image, actions in
                                 self.replace(attachment: imageAttachment, with: image)

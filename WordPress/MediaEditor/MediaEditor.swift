@@ -12,6 +12,50 @@ public class MediaEditor: NSObject {
     private var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
     private var onCancel: (() -> ())?
 
+    public var cancelTextButton: UIButton {
+        return cropViewController.toolbar.cancelTextButton
+    }
+
+    public var resetButton: UIButton {
+        return cropViewController.toolbar.resetButton
+    }
+
+    public var doneIconButton: UIButton {
+        return cropViewController.toolbar.doneIconButton
+    }
+
+    public var cancelIconButton: UIButton {
+        return cropViewController.toolbar.cancelIconButton
+    }
+
+    public var rotateClockwiseButton: UIButton? {
+        return cropViewController.toolbar.rotateClockwiseButton
+    }
+
+    public var rotateCounterclockwiseButton: UIButton? {
+        return cropViewController.toolbar.rotateCounterclockwiseButton
+    }
+
+    public var rotateCounterclockwiseButtonHidden: Bool {
+        get {
+            return cropViewController.toolbar.rotateCounterclockwiseButtonHidden
+        }
+
+        set {
+            cropViewController.toolbar.rotateCounterclockwiseButtonHidden = newValue
+        }
+    }
+
+    public var rotateClockwiseButtonHidden: Bool {
+        get {
+            return cropViewController.toolbar.rotateClockwiseButtonHidden
+        }
+
+        set {
+            cropViewController.toolbar.rotateClockwiseButtonHidden = newValue
+        }
+    }
+
     public init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init, image: UIImage) {
         self.cropViewControllerFactory = cropViewControllerFactory
         self.image = image
@@ -22,7 +66,6 @@ public class MediaEditor: NSObject {
         self.onFinishEditing = onFinishEditing
         self.onCancel = onCancel
         cropViewController.delegate = self
-        cropViewController.toolbar.rotateCounterclockwiseButtonHidden = true
         viewController?.present(cropViewController, animated: true)
     }
 
