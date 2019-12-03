@@ -1,4 +1,3 @@
-- Bu güncelleme ile, gerçek internet olmadan internet yapabilirsiniz. Çevrimdışıyken yayınları düzenle ve kaydet, cihazınız tekrar çevrimiçi olduğunda otomatik olarak yükler (veya yayınlar).
-- Bazen, kendi başına barındırılan bir siteye giriş yaptıysanız “Ben” sayfası boş olabilir, bu hem (1) hata hem de (2) kimsenin kendine saygısı için harika bir şey değil. Bu düzeltildi, yani ben yine sensin.
-- Bazen bekleyen bir yazıyı güncellemek yazının yayınlanmasına neden oldu. P ile başlayan tüm eylemler düzeltildi ve bu artık gerçekleşmeyecek; aksi takdirde siz söyleyene kadar bekleyen yazılar beklemede kalacaktır.
-- Ve son olarak, daha fazla blok düzenleyici iyileştirmeleri - şimdi görüntü hizalama seçeneklerini destekliyor.
+- Bu sürümdeki mobil blok düzenleyicide yapılan birçok güncelleme size çeşitli yeni tasarım ve düzen araçları sunuyor. Ücretsiz Fotoğraf Kütüphanesi veya diğer uygulamalardan resim ekleme seçenekleriyle gönderilerinizdeki görselleri geliştirin. Ayrıca artık paragraf bloklarını hizalayabilirsiniz. Düzenleyici önceden biçimlendirilmiş bloğu destekler. Ve bazı cümlelerde büyük harf kullanırken aksaklıklara neden olan küçük ama sinir bozucu bir klavye hatasını da düzelttik.
+- Bugünün İstatistikleri bileşeninin tasarımı güncellendi; artık bunu genişleterek görüntüleyici istatistikleriyle birlikte beğenileri ve yorumları görüntüleyebilirsiniz.
+- Kullanıcı tarafından barındırılan sitelerdeki yorum yönetimini ilk denemede başarısız yapan bir hata bulundu ve düzeltildi. Burada görecek bir şey yok!

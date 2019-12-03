@@ -9,7 +9,18 @@ final class PostAutoUploadInteractor {
         /// For example, if the post was published locally, it will be published when the server receives it.
         case upload = "upload"
         /// Upload a revision to the server.
+        ///
+        /// This is used for non-self-hosted sites. If the post does not exist on the server yet,
+        /// the post will be created as a draft. Please see `PostService.autoSave()` for more info
+        /// on how the decision process works.
         case autoSave = "autoSave"
+        /// Upload a local post as a draft, regardless of the `.status`.
+        ///
+        /// This is used for self-hosted sites only and is primarily used to save locally
+        /// published posts that are not confirmed for auto-uploading. In this scenario, we will
+        /// still upload the post to the server but as a draft.
+        case uploadAsDraft = "uploadAsDraft"
+        /// Ignore the post.
         case nothing = "nothing"
     }
 
@@ -42,9 +53,12 @@ final class PostAutoUploadInteractor {
 
         if post.isLocalDraft || post.shouldAttemptAutoUpload {
             return .upload
+        } else if post.blog.supports(.wpComRESTAPI) {
+            return .autoSave
+        } else if !post.hasRemote() {
+            return .uploadAsDraft
         } else {
-            // because autosave call will end up uplaoding a post on self hosted we don't autosave in this case
-            return post.supportsWPComAPI ? .autoSave : .nothing
+            return .nothing
         }
     }
 

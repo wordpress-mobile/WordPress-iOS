@@ -249,6 +249,8 @@ class NoticePresenter: NSObject {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
         })
 
+        UIAccessibility.post(notification: .layoutChanged, argument: noticeContainerView)
+
         return NoticePresentation(notice: notice, containerView: noticeContainerView)
     }
 
@@ -276,6 +278,8 @@ class NoticePresenter: NSObject {
             // It is possible that when the dismiss animation finished, another Notice was already
             // being shown. Hiding the window would cause that new Notice to be invisible.
             if self?.currentNoticePresentation == nil {
+                UIAccessibility.post(notification: .layoutChanged, argument: nil)
+
                 self?.window.isHidden = true
             }
         })

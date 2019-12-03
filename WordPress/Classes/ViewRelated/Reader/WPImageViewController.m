@@ -152,6 +152,8 @@ static CGFloat const MinimumZoomScale = 0.1;
     [self setupActivityIndicator];
     [self layoutActivityIndicator];
 
+    [self setupAccessibility];
+
     [self loadImage];
 }
 
@@ -542,6 +544,23 @@ static CGFloat const MinimumZoomScale = 0.1;
 - (void)flingableViewHandlerWasCancelled:(FlingableViewHandler *)handler
 {
     self.scrollView.multipleTouchEnabled = YES;
+}
+
+#pragma mark - Accessibility
+
+- (void)setupAccessibility
+{
+    self.imageView.isAccessibilityElement = YES;
+    self.imageView.accessibilityTraits = UIAccessibilityTraitImage;
+}
+
+- (BOOL)accessibilityPerformEscape
+{
+    // Dismiss when self receives the VoiceOver escape gesture (Z). This does not seem to happen
+    // automatically if self is presented modally by itself (i.e. not inside a
+    // UINavigationController).
+    [self dismissViewControllerAnimated:YES completion:nil];
+    return YES;
 }
 
 @end

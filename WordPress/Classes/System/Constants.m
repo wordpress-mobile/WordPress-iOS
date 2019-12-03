@@ -14,7 +14,7 @@ NSString *const WPAutomatticMainURL                                 = @"https://
 NSString *const WPAutomatticTermsOfServiceURL                       = @"https://wordpress.com/tos/";
 NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
 NSString *const WPAutomatticCookiesURL                              = @"https://automattic.com/cookies/";
-NSString *const WPAutomatticAppsBlogURL                             = @"https://apps.wordpress.com/blog/";
+NSString *const WPAutomatticAppsBlogURL                             = @"https://blog.wordpress.com";
 NSString *const WPGithubMainURL                                     = @"https://github.com/wordpress-mobile/WordPress-iOS/";
 NSString *const WPTwitterWordPressHandle                            = @"@WordPressiOS";
 NSString *const WPTwitterWordPressMobileURL                         = @"https://twitter.com/WordPressiOS";
@@ -73,6 +73,7 @@ NSString *const WPStatsTodayWidgetKeychainTokenKey                  = @"OAuth2To
 NSString *const WPStatsTodayWidgetKeychainServiceName               = @"TodayWidget";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey             = @"WordPressTodayWidgetSiteId";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPressTodayWidgetSiteName";
+NSString *const WPStatsTodayWidgetUserDefaultsSiteUrlKey            = @"WordPressTodayWidgetSiteUrl";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
 
 /// Apple ID Constants
