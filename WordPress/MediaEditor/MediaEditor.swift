@@ -4,28 +4,30 @@ import TOCropViewController
 public class MediaEditor: NSObject {
 
     let cropViewControllerFactory: (UIImage) -> TOCropViewController
+    let image: UIImage
 
-    private var cropViewController: TOCropViewController?
+    private lazy var cropViewController: TOCropViewController = {
+        return cropViewControllerFactory(image)
+    }()
     private var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
     private var onCancel: (() -> ())?
 
-    public init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init) {
+    public init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init, image: UIImage) {
         self.cropViewControllerFactory = cropViewControllerFactory
+        self.image = image
         super.init()
     }
 
-    public func edit(_ image: UIImage, from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
+    public func edit(from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
         self.onFinishEditing = onFinishEditing
         self.onCancel = onCancel
-        let cropViewController = cropViewControllerFactory(image)
         cropViewController.delegate = self
         cropViewController.toolbar.rotateCounterclockwiseButtonHidden = true
         viewController?.present(cropViewController, animated: true)
-        self.cropViewController = cropViewController
     }
 
     public func dismiss(animated: Bool, completion: (() -> ())? = nil) {
-        cropViewController?.dismiss(animated: animated, completion: completion)
+        cropViewController.dismiss(animated: animated, completion: completion)
     }
 
     private func releaseCallbacks() {
@@ -46,7 +48,7 @@ extension MediaEditor: TOCropViewControllerDelegate {
     }
 
     public func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
-        self.cropViewController?.dismiss(animated: true)
+        self.cropViewController.dismiss(animated: true)
         onCancel?()
         releaseCallbacks()
     }

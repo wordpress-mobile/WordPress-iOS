@@ -12,7 +12,7 @@ class MediaEditorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         cropViewControllerMock = TOCropViewControllerMock()
-        mediaEditor = MediaEditor(cropViewControllerFactory: cropViewControllerMockFactory)
+        mediaEditor = MediaEditor(cropViewControllerFactory: cropViewControllerMockFactory, image: UIImage())
     }
 
     override func tearDown() {
@@ -27,19 +27,18 @@ class MediaEditorTests: XCTestCase {
         let mediaEditor = MediaEditor(cropViewControllerFactory: { image in
             imageToCrop = image
             return self.cropViewControllerMock
-        })
+        }, image: image)
 
-        mediaEditor.edit(image, onFinishEditing: { _, _ in })
+        mediaEditor.edit(onFinishEditing: { _, _ in })
 
         expect(imageToCrop).to(equal(image))
     }
 
     func testReturnsTheCroppedImage() {
-        let originalImage = UIImage()
         let croppedImage = UIImage()
         var returnedImage: UIImage?
 
-        mediaEditor.edit(originalImage, onFinishEditing: { croppedImage, _ in
+        mediaEditor.edit(onFinishEditing: { croppedImage, _ in
             returnedImage = croppedImage
         })
         cropViewControllerMock.croppedImage = croppedImage
@@ -48,10 +47,9 @@ class MediaEditorTests: XCTestCase {
     }
 
     func testCallsOnCancelWhenUserCancel() {
-        let image = UIImage()
         var onCancelCalled = false
 
-        mediaEditor.edit(image, onFinishEditing: { _, _ in }, onCancel: {
+        mediaEditor.edit(onFinishEditing: { _, _ in }, onCancel: {
             onCancelCalled = true
         })
         cropViewControllerMock.userCanceled()
@@ -60,8 +58,7 @@ class MediaEditorTests: XCTestCase {
     }
 
     func testDismissCropViewControllerWhenUserCancel() {
-        let image = UIImage()
-        mediaEditor.edit(image, onFinishEditing: { _, _ in })
+        mediaEditor.edit(onFinishEditing: { _, _ in })
 
         cropViewControllerMock.userCanceled()
 
@@ -69,28 +66,25 @@ class MediaEditorTests: XCTestCase {
     }
 
     func testPresentCropViewControllerFromAGivenUIViewController() {
-        let image = UIImage()
         let viewControllerMock = UIViewControllerMock()
 
-        mediaEditor.edit(image, from: viewControllerMock, onFinishEditing: { _, _ in })
+        mediaEditor.edit(from: viewControllerMock, onFinishEditing: { _, _ in })
 
         expect(viewControllerMock.didCallPresentWith).to(beAKindOf(TOCropViewController.self))
     }
 
     func testHideCounterClockwiseButton() {
-        let image = UIImage()
         let viewControllerMock = UIViewControllerMock()
 
-        mediaEditor.edit(image, from: viewControllerMock, onFinishEditing: { _, _ in })
+        mediaEditor.edit(from: viewControllerMock, onFinishEditing: { _, _ in })
 
         expect(self.cropViewControllerMock.toolbar.rotateCounterclockwiseButtonHidden).to(beTrue())
     }
 
     func testReturnCropOperationIfImageWasCropped() {
-        let image = UIImage()
         var returnedOperations: [MediaEditorOperation]?
 
-        mediaEditor.edit(image, onFinishEditing: { _, operations in
+        mediaEditor.edit(onFinishEditing: { _, operations in
             returnedOperations = operations
         })
         cropViewControllerMock.crop(CGRect(x: 0, y: 0, width: 100, height: 100), angle: 0)
@@ -99,10 +93,9 @@ class MediaEditorTests: XCTestCase {
     }
 
     func testReturnRotateOperationIfImageWasRotated() {
-        let image = UIImage()
         var returnedOperations: [MediaEditorOperation]?
 
-        mediaEditor.edit(image, onFinishEditing: { _, operations in
+        mediaEditor.edit(onFinishEditing: { _, operations in
             returnedOperations = operations
         })
         cropViewControllerMock.crop(.zero, angle: 90)
@@ -111,10 +104,9 @@ class MediaEditorTests: XCTestCase {
     }
 
     func testReturnRotateAndCropOperationIfImageWasRotatedAndCropped() {
-        let image = UIImage()
         var returnedOperations: [MediaEditorOperation]?
 
-        mediaEditor.edit(image, onFinishEditing: { _, operations in
+        mediaEditor.edit(onFinishEditing: { _, operations in
             returnedOperations = operations
         })
         cropViewControllerMock.crop(CGRect(x: 0, y: 0, width: 100, height: 100), angle: 90)
@@ -123,8 +115,7 @@ class MediaEditorTests: XCTestCase {
     }
 
     func testDismiss() {
-        let image = UIImage()
-        mediaEditor.edit(image, onFinishEditing: { _, _ in })
+        mediaEditor.edit(onFinishEditing: { _, _ in })
 
         mediaEditor.dismiss(animated: true)
 

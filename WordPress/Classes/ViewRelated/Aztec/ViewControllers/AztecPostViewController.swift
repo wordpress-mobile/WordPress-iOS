@@ -99,9 +99,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         case expectedSecondaryAction = 1
     }
 
-    private lazy var mediaEditor: MediaEditor = {
-        return MediaEditor()
-    }()
+    private var mediaEditor: MediaEditor?
 
     /// The editor view.
     ///
@@ -3446,10 +3444,11 @@ extension AztecPostViewController {
 
         WPAnalytics.track(.mediaEditorShown)
 
-        self.mediaEditor.edit(image, from: self,
+        mediaEditor = MediaEditor(image: image)
+        self.mediaEditor?.edit(from: self,
                               onFinishEditing: { image, actions in
                                 self.replace(attachment: imageAttachment, with: image)
-                                self.mediaEditor.dismiss(animated: true)
+                                self.mediaEditor?.dismiss(animated: true)
                                 WPAnalytics.track(.mediaEditorUsed, withProperties: ["actions": actions.description])
         })
     }
