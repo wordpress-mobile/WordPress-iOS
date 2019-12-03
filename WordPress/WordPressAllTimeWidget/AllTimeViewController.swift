@@ -4,11 +4,11 @@ import NotificationCenter
 class AllTimeViewController: UIViewController {
 
     // MARK: - Properties
-    
+
     private let tracks = Tracks(appGroupName: WPAppGroupName)
-    
+
     // MARK: - View
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
