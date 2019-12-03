@@ -12,6 +12,10 @@ public class MediaEditor: NSObject {
     private var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
     private var onCancel: (() -> ())?
 
+    public var doneTextButton: UIButton {
+        return cropViewController.toolbar.doneTextButton
+    }
+
     public var cancelTextButton: UIButton {
         return cropViewController.toolbar.cancelTextButton
     }

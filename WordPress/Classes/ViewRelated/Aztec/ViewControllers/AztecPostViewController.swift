@@ -3446,6 +3446,8 @@ extension AztecPostViewController {
 
         mediaEditor = MediaEditor(image: image)
 
+        mediaEditor?.doneTextButton.setTitle(NSLocalizedString("Done", comment: "Done editing an image"), for: .normal)
+        mediaEditor?.cancelTextButton.setTitle(NSLocalizedString("Cancel", comment: "Cancel editing an image"), for: .normal)
         mediaEditor?.cancelTextButton.tintColor = .white
         mediaEditor?.resetButton.setImage(Gridicon.iconOfType(.undo), for: .normal)
         mediaEditor?.doneIconButton.setImage(Gridicon.iconOfType(.checkmark), for: .normal)
