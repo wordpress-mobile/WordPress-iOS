@@ -93,7 +93,7 @@ final class PageListTableViewHandler: WPTableViewHandler {
     }
 
     func index(for page: Page) -> Int? {
-        return pages.index(of: page)
+        return pages.firstIndex(of: page)
     }
 
     func removePage(from index: Int?) -> [Page] {

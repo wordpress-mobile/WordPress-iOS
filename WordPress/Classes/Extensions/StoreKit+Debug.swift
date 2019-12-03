@@ -19,6 +19,8 @@ extension SKPaymentTransactionState: CustomStringConvertible {
             return "Restored"
         case .deferred:
             return "Deferred"
+        @unknown default:
+            fatalError()
         }
     }
 }

@@ -20,7 +20,7 @@ struct LoggingURLRedactor {
 
         if var queryItem = components.queryItems?.first(where: { $0.name == key }) {
 
-            guard let ix = components.queryItems?.index(of: queryItem) else {
+            guard let ix = components.queryItems?.firstIndex(of: queryItem) else {
                 return url
             }
 

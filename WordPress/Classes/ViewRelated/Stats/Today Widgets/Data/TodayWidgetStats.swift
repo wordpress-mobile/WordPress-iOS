@@ -8,15 +8,21 @@ import Foundation
 struct TodayWidgetStats: Codable {
     let views: Int
     let visitors: Int
+    let likes: Int
+    let comments: Int
 
     private enum CodingKeys: String, CodingKey {
         case views
         case visitors
+        case likes
+        case comments
     }
 
-    init(views: Int, visitors: Int) {
+    init(views: Int, visitors: Int, likes: Int, comments: Int) {
         self.views = views
         self.visitors = visitors
+        self.likes = likes
+        self.comments = comments
     }
 }
 
@@ -25,7 +31,7 @@ extension TodayWidgetStats {
     static func loadSavedData() -> TodayWidgetStats {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
-                return TodayWidgetStats(views: 0, visitors: 0)
+                return TodayWidgetStats(views: 0, visitors: 0, likes: 0, comments: 0)
         }
 
         let decoder = PropertyListDecoder()
@@ -34,21 +40,20 @@ extension TodayWidgetStats {
             return try decoder.decode(TodayWidgetStats.self, from: data)
         } catch {
             DDLogError("Failed loading TodayWidgetStats data: \(error.localizedDescription)")
-            return TodayWidgetStats(views: 0, visitors: 0)
+            return TodayWidgetStats(views: 0, visitors: 0, likes: 0, comments: 0)
         }
     }
 
-    static func saveData(views: Int, visitors: Int) {
-        guard let dataFileURL = dataFileURL else {
+    func saveData() {
+        guard let dataFileURL = TodayWidgetStats.dataFileURL else {
                 return
         }
 
-        let data = TodayWidgetStats(views: views, visitors: visitors)
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .xml
 
         do {
-            let data = try encoder.encode(data)
+            let data = try encoder.encode(self)
             try data.write(to: dataFileURL)
         } catch {
             DDLogError("Failed saving TodayWidgetStats data: \(error.localizedDescription)")

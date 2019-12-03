@@ -1,3 +1,3 @@
-- Blok düzenleyicisi: Bir "Medya ve Metin" bloğu ekledik! Görüntü Bloğu ayarlarına Bağlantı Hedefi (Yeni sekmede aç) seçeneği eklendi. “Yeni Fotoğraf Gönderisi” kısayolunun seçilen fotoğrafı eklemediği bir hata durumunu düzelttik.
-- İstatistikler: Artık Insights'ı özelleştirebilirsiniz. Insights yavaş ağlarda artık daha hızlı yükleniyor.
-- Karanlık Mod: Tüm uygulamada iyileştirmeler ve küçük hata düzeltmeleri yapıldı.
+- Bu sürümdeki mobil blok düzenleyicide yapılan birçok güncelleme size çeşitli yeni tasarım ve düzen araçları sunuyor. Ücretsiz Fotoğraf Kütüphanesi veya diğer uygulamalardan resim ekleme seçenekleriyle gönderilerinizdeki görselleri geliştirin. Ayrıca artık paragraf bloklarını hizalayabilirsiniz. Düzenleyici önceden biçimlendirilmiş bloğu destekler. Ve bazı cümlelerde büyük harf kullanırken aksaklıklara neden olan küçük ama sinir bozucu bir klavye hatasını da düzelttik.
+- Bugünün İstatistikleri bileşeninin tasarımı güncellendi; artık bunu genişleterek görüntüleyici istatistikleriyle birlikte beğenileri ve yorumları görüntüleyebilirsiniz.
+- Kullanıcı tarafından barındırılan sitelerdeki yorum yönetimini ilk denemede başarısız yapan bir hata bulundu ve düzeltildi. Burada görecek bir şey yok!

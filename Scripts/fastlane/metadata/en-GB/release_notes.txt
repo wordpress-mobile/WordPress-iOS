@@ -1,3 +1,3 @@
-- Block editor: we’ve added a “media & text” block! The link target (open in new tab) option has been added to image block settings. We fixed a bug where the “new photo post” shortcut didn’t add the selected photo.
-- Stats: you can now customise insights. Insight loading on slow networks is faster.
-- Dark mode: improvements and small bug fixes all over the app.
+- Lots of updates to the mobile block editor in this release give you a bunch of new design and layout tools. Expand the visuals in your posts with the options to insert images from either the Free Photo Library or from other apps. You can also align Paragraph Blocks now and the editor supports the preformatted block. And we took care of a small but annoying keyboard glitch that caused hiccups with capitalisation in some sentences.
+- The Stats Today widget got an updated design and you can expand it to display likes and comments along with viewer stats.
+- We found a bug that makes comment moderation on self-hosted sites fail on the first attempt and then we fixed that bug. Nothing to see here!

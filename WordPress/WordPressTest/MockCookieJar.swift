@@ -13,7 +13,7 @@ class MockCookieJar: HTTPCookieStorage {
     }
 
     override func deleteCookie(_ cookie: HTTPCookie) {
-        if let index = _cookies.index(of: cookie) {
+        if let index = _cookies.firstIndex(of: cookie) {
             _cookies.remove(at: index)
         }
     }

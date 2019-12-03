@@ -1,8 +1,27 @@
+13.8
+-----
+* When a post has an autosave, the autosave version can be loaded into the editor.
+* Support: Fix issue that caused 'Message failed to send' error.
+* WebView: Fix iOS 13 crash with popover.
+* Fixed an issue where the Me screen would sometimes be blank.
+* Block editor: New Spacer block to create white space between two blocks.
+* Block editor: Images from Image Block can now be previewed full screen by tapping on them.
+* Fixed an issue that caused logging in with a 2FA Google account to fail.
+* Sign in with Apple: now supports logging in with 2FA enabled on linked WordPress accounts.
+
 13.7
 -----
-* Updated the mobile apps blog address to a non-retired blog. 
+* Updated the mobile apps blog address to a non-retired blog.
 * Block editor: Added option to insert images from "Free Photo Library".
+* Block editor: Fix issue where the keyboard would not capitalize sentences correctly on some cases
+* Block editor: Add alignment to paragraph blocks
 * Fixed a bug that made comment moderation fail on the first attempt for self-hosted sites.
+* Stats Refresh: Stats will reload when the application will move to foreground state.
+* Stats: each Period and Post stat now loads independently.
+* Block editor: Added support for the preformatted block.
+* Stats Today widget: updated design and enabled expanding.
+
+* Block editor: Added option to insert images from "Free Photo Library" and "Other Apps".
 
 13.6
 -----
@@ -12,7 +31,7 @@
 
 * Me view: fix issue where view was blank when logging in with a self-hosted site.
 * Block Editor: Added support for image alignment options.
- 
+
 13.5
 -----
 * Block editor: Fix issue when "New Photo Post" shortcut won't add the selected photo to the post.
@@ -28,7 +47,7 @@
 -----
 Post Settings: Fixed a crash with featured image.
 Removed Giphy as a media source due to changes in their SDK.
- 
+
 13.4
 -----
 * Sign In With Apple: if the Apple ID has been disconnected from the WordPress app, log out the account.
@@ -40,7 +59,7 @@ Removed Giphy as a media source due to changes in their SDK.
 * Sign In With Apple: fixed issue with re-logging in on an existing WP account.
 * Block editor: Fix a bug on iOS 13.0 were tapping on a link opens Safari
 * Block editor: Fix a link editing issue, where trying to add a empty link at the start of another link would remove the existing link.
- 
+
 13.3
 -----
 * Block editor: Add rich text styling to video captions
@@ -48,13 +67,13 @@ Removed Giphy as a media source due to changes in their SDK.
 * Block editor: Tapping on empty editor area now always inserts new block at end of post
 * Block editor: Fixed a performance issue that caused a freeze in the editor with long text content.
 * Dark Mode: Fixed colors in rich notifications
-* Reader: Fixed issue with links opening while scrolling in reader posts and comments. 
+* Reader: Fixed issue with links opening while scrolling in reader posts and comments.
 
 13.2
 -----
 * When Log In is selected, all available options are displayed.
 * Shows an alert instead of showing a new screen for facebook publicize error.
- 
+
 13.1
 -----
 * Moved Notification Settings from the Me tab to the Notifications tab.
@@ -64,7 +83,7 @@ Removed Giphy as a media source due to changes in their SDK.
 * Adds a Publish Now action to posts in the posts list.
 * Stats Periods: Fixed a bug that affected the header date when the site and the device timezones were different.
 * My Sites: Fixed a problem where some sites would appear duplicated.
- 
+
 * Stats Periods: Fixed an issue that made the Post stats title button unable.
 * Stats Periods: Fixed a bug that affected the header date when the site and the device timezones were different.
 * Adds a Publish Now action to posts in the posts list.
@@ -83,8 +102,8 @@ Removed Giphy as a media source due to changes in their SDK.
 12.9
 -----
 * Offline support: Create Post is now available from empty results view in offline mode.
-* Post Preview: Displaying preview generation status in navigation bar instead of a  
-                blocking spinner. 
+* Post Preview: Displaying preview generation status in navigation bar instead of a
+                blocking spinner.
 * Block editor: Tapping on an empty editor area will create a new paragraph block
 * Block editor: Fix content loss issue when loading unsupported blocks containing inner blocks.
 * Block editor: Adding a block from the Post Title now inserts the block at the top of the Post.
@@ -135,7 +154,7 @@ Removed Giphy as a media source due to changes in their SDK.
 -----
 * Fixed Notices sometimes showing behind the keyboard
 * Implemented Domain Credit feature
-* Implemented auto saving a post on preview  
+* Implemented auto saving a post on preview
 * The app now launches a bit more quickly.
 * Fixed broken images in posts created by the share extension.
 * Deprecated local previews
@@ -192,7 +211,7 @@ Removed Giphy as a media source due to changes in their SDK.
 * Changed offline error messages to be less disruptive.
 * Resolved a defect in the new Site Creation flow where the site preview address bar could be edited.
 * Made it easier to find a domain for your new site, by moving the best match to the top of the search results.
- 
+
 11.9
 ------
 * Quick Start v2: After creating a new site with WordPress.com there are more tutorials available, now including tips to improve growth.

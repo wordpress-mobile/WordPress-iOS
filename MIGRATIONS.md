@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+
+## WordPress 94
+
+@guarani 2019-11-28
+
+- `AbstractPost` added `autosaveIdentifier` (`nullable` `NSNumber`) property.
+
 ## WordPress 93
 
 @guarani 2019-10-27

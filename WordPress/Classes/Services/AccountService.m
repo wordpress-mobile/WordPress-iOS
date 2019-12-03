@@ -445,9 +445,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (void)setupAppExtensionsWithDefaultAccount
 {
     WPAccount *defaultAccount = [self defaultWordPressComAccount];
-    Blog *defaultBlog = [defaultAccount defaultBlog];
+    Blog *defaultBlog   = [defaultAccount defaultBlog];
     NSNumber *siteId    = defaultBlog.dotComID;
     NSString *blogName  = defaultBlog.settings.name;
+    NSString *blogUrl   = defaultBlog.displayURL;
     
     if (defaultBlog == nil || defaultBlog.isDeleted) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -470,16 +471,19 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
         NSNumber *todayExtensionSiteID = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
         NSString *todayExtensionBlogName = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+        NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
         
         if (todayExtensionSiteID == NULL) {
             todayExtensionSiteID = siteId;
             todayExtensionBlogName = blogName;
+            todayExtensionBlogUrl = blogUrl;
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
             TodayExtensionService *service = [TodayExtensionService new];
             [service configureTodayWidgetWithSiteID:todayExtensionSiteID
                                            blogName:todayExtensionBlogName
+                                            blogUrl:todayExtensionBlogUrl
                                        siteTimeZone:timeZone
                                      andOAuth2Token:oauth2Token];
 

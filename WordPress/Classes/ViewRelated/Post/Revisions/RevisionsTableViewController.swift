@@ -103,7 +103,7 @@ private extension RevisionsTableViewController {
     private func getRevisionState(at indexPath: IndexPath) -> RevisionBrowserState {
         let allRevisions = tableViewHandler.resultsController.fetchedObjects as? [Revision] ?? []
         let selectedRevision = getRevision(at: indexPath)
-        let selectedIndex = allRevisions.index(of: selectedRevision) ?? 0
+        let selectedIndex = allRevisions.firstIndex(of: selectedRevision) ?? 0
         return RevisionBrowserState(revisions: allRevisions, currentIndex: selectedIndex) { [weak self] revision in
             self?.load(revision)
         }

@@ -5,7 +5,9 @@ import WordPressFlux
 extension PostSettingsViewController {
 
     @objc func setFeaturedImage(asset: PHAsset) {
-        let media = MediaCoordinator.shared.addMedia(from: asset, to: self.apost)
+        guard let media = MediaCoordinator.shared.addMedia(from: asset, to: self.apost) else {
+            return
+        }
         apost.featuredImage = media
         setupObservingOf(media: media)
     }

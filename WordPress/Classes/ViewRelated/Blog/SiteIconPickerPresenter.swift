@@ -92,26 +92,26 @@ class SiteIconPickerPresenter: NSObject {
             let imageCropViewController = ImageCropViewController(image: image)
             imageCropViewController.maskShape = .square
             imageCropViewController.onCompletion = { [weak self] image, modified in
-                self?.onIconSelection?()
-                if !modified, let media = self?.originalMedia {
-                    self?.onCompletion?(media, nil)
+                guard let self = self else {
+                    return
+                }
+                self.onIconSelection?()
+                if !modified, let media = self.originalMedia {
+                    self.onCompletion?(media, nil)
                 } else {
                     let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                    guard let blogId = self?.blog.objectID else {
-                        self?.onCompletion?(nil, nil)
-                        return
-                    }
 
                     WPAnalytics.track(.siteSettingsSiteIconCropped)
 
                     mediaService.createMedia(with: image,
-                                             objectID: blogId,
+                                             blog: self.blog,
+                                             post: nil,
                                              progress: nil,
                                              thumbnailCallback: nil,
                                              completion: { (media, error) in
                         guard let media = media, error == nil else {
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
-                            self?.onCompletion?(nil, error)
+                            self.onCompletion?(nil, error)
                             return
                         }
                         var uploadProgress: Progress?
@@ -120,10 +120,10 @@ class SiteIconPickerPresenter: NSObject {
                                                  progress: &uploadProgress,
                                                  success: {
                             WPAnalytics.track(.siteSettingsSiteIconUploaded)
-                            self?.onCompletion?(media, nil)
+                            self.onCompletion?(media, nil)
                         }, failure: { (error) in
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
-                            self?.onCompletion?(nil, error)
+                            self.onCompletion?(nil, error)
                         })
                     })
                 }
