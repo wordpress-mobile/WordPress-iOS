@@ -3454,6 +3454,7 @@
 		98D31BA42396F5C2009CFF43 /* WordPressAllTimeWidget-Internal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "WordPressAllTimeWidget-Internal.entitlements"; sourceTree = "<group>"; };
 		98D31BA52396F7BF009CFF43 /* AllTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllTimeViewController.swift; sourceTree = "<group>"; };
 		98D31BA82396FAD2009CFF43 /* WordPressAllTimeWidget-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressAllTimeWidget-Bridging-Header.h"; sourceTree = "<group>"; };
+		98D31BA92396FBDC009CFF43 /* AllTimeWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllTimeWidgetPrefix.pch; sourceTree = "<group>"; };
 		98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTwoColumnRow.swift; sourceTree = "<group>"; };
 		98D52C3122B1CFEC00831529 /* StatsTwoColumnRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTwoColumnRow.xib; sourceTree = "<group>"; };
 		98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayWidgetStats.swift; sourceTree = "<group>"; };
@@ -7410,6 +7411,7 @@
 		98D31B9F2396EFAD009CFF43 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				98D31BA92396FBDC009CFF43 /* AllTimeWidgetPrefix.pch */,
 				98D31BA02396F417009CFF43 /* Info-Alpha.plist */,
 				98D31BA12396F417009CFF43 /* Info-Internal.plist */,
 				98D31B962396ED7F009CFF43 /* Info.plist */,
@@ -14490,6 +14492,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressAllTimeWidget/AllTimeWidgetPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -14533,6 +14537,8 @@
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressAllTimeWidget/AllTimeWidgetPrefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressAllTimeWidget/Info.plist;
@@ -14570,6 +14576,8 @@
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressAllTimeWidget/AllTimeWidgetPrefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressAllTimeWidget/Info.plist;
@@ -14607,6 +14615,8 @@
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressAllTimeWidget/AllTimeWidgetPrefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = WordPressAllTimeWidget/Info.plist;
