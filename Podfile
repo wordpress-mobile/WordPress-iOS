@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.9'
+    pod 'WordPressShared', '1.8.10-beta-1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
