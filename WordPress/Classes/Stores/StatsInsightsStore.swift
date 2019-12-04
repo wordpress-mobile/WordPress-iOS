@@ -52,7 +52,11 @@ struct InsightStoreState {
 
     // Other Blocks
 
-    var allTimeStats: StatsAllTimesInsight?
+    var allTimeStats: StatsAllTimesInsight? {
+        didSet {
+            storeAllTimeWidgetData()
+        }
+    }
     var allTimeStatus: StoreFetchingStatus = .idle
 
     var annualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?
@@ -938,13 +942,13 @@ extension StatsInsightsStore {
     }
 }
 
+// MARK: - Widget Data
+
 private extension InsightStoreState {
+
     func storeTodayWidgetData() {
-        // Only store data if the widget is using the current site
-        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
-            let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
-            widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
-                return
+        guard widgetUsingCurrentSite() else {
+            return
         }
 
         let data = TodayWidgetStats(views: todaysStats?.viewsCount ?? 0,
@@ -953,4 +957,27 @@ private extension InsightStoreState {
                                     comments: todaysStats?.commentsCount ?? 0)
         data.saveData()
     }
+
+    func storeAllTimeWidgetData() {
+        guard widgetUsingCurrentSite() else {
+            return
+        }
+
+        let data = AllTimeWidgetStats(views: allTimeStats?.viewsCount ?? 0,
+                                    visitors: allTimeStats?.visitorsCount ?? 0,
+                                    posts: allTimeStats?.postsCount ?? 0,
+                                    bestViews: allTimeStats?.bestViewsPerDayCount ?? 0)
+        data.saveData()
+    }
+
+    func widgetUsingCurrentSite() -> Bool {
+        // Only store data if the widget is using the current site
+        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
+            let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
+            widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
+                return false
+        }
+        return true
+    }
+
 }

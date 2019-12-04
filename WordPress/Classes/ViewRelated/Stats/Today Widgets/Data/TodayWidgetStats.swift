@@ -31,6 +31,7 @@ extension TodayWidgetStats {
     static func loadSavedData() -> TodayWidgetStats {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
+                DDLogError("TodayWidgetStats: data file '\(dataFileName)' does not exist.")
                 return TodayWidgetStats(views: 0, visitors: 0, likes: 0, comments: 0)
         }
 
@@ -60,11 +61,13 @@ extension TodayWidgetStats {
         }
     }
 
+    private static var dataFileName = "TodayData.plist"
+
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
             return nil
         }
-        return url.appendingPathComponent("TodayData.plist")
+        return url.appendingPathComponent(dataFileName)
     }
 
 }
