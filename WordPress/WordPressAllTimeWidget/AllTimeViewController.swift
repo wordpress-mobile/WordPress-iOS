@@ -8,9 +8,12 @@ class AllTimeViewController: UIViewController {
 
     private var statsValues: AllTimeWidgetStats?
 
+    private var siteUrl: String = Constants.noDataLabel
+
     private var siteID: NSNumber?
     private var timeZone: TimeZone?
     private var oauthToken: String?
+    private var isConfigured = false
 
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
@@ -18,6 +21,7 @@ class AllTimeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        retrieveSiteConfiguration()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -37,8 +41,21 @@ class AllTimeViewController: UIViewController {
 extension AllTimeViewController: NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
+        retrieveSiteConfiguration()
+
+        if !isConfigured {
+            DDLogError("All Time Widget: Missing site ID, timeZone or oauth2Token")
+
+            DispatchQueue.main.async {
+                // TODO: reload table here
+            }
+
+            completionHandler(NCUpdateResult.failed)
+            return
+        }
+
         tracks.trackExtensionAccessed()
-        completionHandler(NCUpdateResult.newData)
+        fetchData()
     }
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
@@ -50,6 +67,32 @@ extension AllTimeViewController: NCWidgetProviding {
 // MARK: - Private Extension
 
 private extension AllTimeViewController {
+
+    // MARK: - Site Configuration
+
+    func retrieveSiteConfiguration() {
+        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName) else {
+            DDLogError("All Time Widget: Unable to get sharedDefaults.")
+            isConfigured = false
+            return
+        }
+
+        siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
+        siteUrl = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey) ?? Constants.noDataLabel
+        oauthToken = fetchOAuthBearerToken()
+
+        if let timeZoneName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
+            timeZone = TimeZone(identifier: timeZoneName)
+        }
+
+        isConfigured = siteID != nil && timeZone != nil && oauthToken != nil
+    }
+
+    func fetchOAuthBearerToken() -> String? {
+        let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetKeychainTokenKey, andServiceName: WPStatsTodayWidgetKeychainServiceName, accessGroup: WPAppKeychainAccessGroup)
+
+        return oauth2Token as String?
+    }
 
     // MARK: - Data Management
 
@@ -80,7 +123,7 @@ private extension AllTimeViewController {
                                             posts: allTimesStats?.postsCount ?? 0,
                                             bestViews: allTimesStats?.bestViewsPerDayCount ?? 0)
 
-                // TODO: - reload table here
+                // TODO: reload table here
             }
         }
     }
@@ -97,6 +140,12 @@ private extension AllTimeViewController {
 
         let wpApi = WordPressComRestApi(oAuthToken: oauthToken)
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
+    }
+
+    // MARK: - Constants
+
+    enum Constants {
+        static let noDataLabel = "-"
     }
 
 }
