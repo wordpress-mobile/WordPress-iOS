@@ -12,16 +12,16 @@ class EditorFactory {
 
     // MARK: - Editor: Instantiation
 
-    func instantiateEditor(for post: AbstractPost, replaceEditor: @escaping ReplaceEditorBlock) -> EditorViewController {
+    func instantiateEditor(for post: AbstractPost, loadAutosaveRevision: Bool = false, replaceEditor: @escaping ReplaceEditorBlock) -> EditorViewController {
         if gutenbergSettings.mustUseGutenberg(for: post) {
-            return createGutenbergVC(with: post, replaceEditor: replaceEditor)
+            return createGutenbergVC(with: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor)
         } else {
-            return AztecPostViewController(post: post, replaceEditor: replaceEditor)
+            return AztecPostViewController(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor)
         }
     }
 
-    private func createGutenbergVC(with post: AbstractPost, replaceEditor: @escaping ReplaceEditorBlock) -> GutenbergViewController {
-        let gutenbergVC = GutenbergViewController(post: post, replaceEditor: replaceEditor)
+    private func createGutenbergVC(with post: AbstractPost, loadAutosaveRevision: Bool, replaceEditor: @escaping ReplaceEditorBlock) -> GutenbergViewController {
+        let gutenbergVC = GutenbergViewController(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor)
 
         if gutenbergSettings.shouldAutoenableGutenberg(for: post) {
             gutenbergSettings.setGutenbergEnabled(true, for: post.blog, source: .onBlockPostOpening)

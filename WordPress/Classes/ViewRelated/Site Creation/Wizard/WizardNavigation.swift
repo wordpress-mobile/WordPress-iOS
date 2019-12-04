@@ -92,7 +92,7 @@ final class WizardNavigationPointer: NSObject, UINavigationControllerDelegate {
     }
 
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        guard let index = navigationController.viewControllers.index(of: viewController) else {
+        guard let index = navigationController.viewControllers.firstIndex(of: viewController) else {
             return
         }
         currentIndex = index

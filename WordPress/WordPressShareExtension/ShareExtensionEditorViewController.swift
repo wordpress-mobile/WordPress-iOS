@@ -628,7 +628,7 @@ extension ShareExtensionEditorViewController {
 
         var index: Int? = nil
         if let listType = listTypeForSelectedText() {
-            index = Constants.lists.index(of: listType)
+            index = Constants.lists.firstIndex(of: listType)
         }
 
         showOptionsTableViewControllerWithOptions(listOptions,
@@ -790,7 +790,7 @@ extension ShareExtensionEditorViewController {
                                           accessibilityLabel: headerType.accessibilityLabel)
         }
 
-        let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
+        let selectedIndex = Constants.headers.firstIndex(of: self.headerLevelForSelectedText())
 
         showOptionsTableViewControllerWithOptions(headerOptions,
                                                   fromBarItem: item,

@@ -448,7 +448,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         textHeaderStackView.topAnchor.constraint(equalTo: textView.topAnchor).isActive = true
 
-        textFooterTopConstraint = NSLayoutConstraint(item: textFooterStackView,
+        textFooterTopConstraint = NSLayoutConstraint(item: textFooterStackView!,
                                                      attribute: .top,
                                                      relatedBy: .equal,
                                                      toItem: textView,
@@ -680,10 +680,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // Now that we have the image, create an aspect ratio constraint for
         // the featuredImageView
         let ratio = size.height / size.width
-        let constraint = NSLayoutConstraint(item: featuredImageView,
+        let constraint = NSLayoutConstraint(item: featuredImageView as Any,
                                             attribute: .height,
                                             relatedBy: .equal,
-                                            toItem: featuredImageView,
+                                            toItem: featuredImageView!,
                                             attribute: .width,
                                             multiplier: ratio,
                                             constant: 0)

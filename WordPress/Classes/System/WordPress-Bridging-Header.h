@@ -30,8 +30,6 @@
 
 #import "EditCommentViewController.h"
 
-#import "HockeyManager.h"
-
 #import "LocalCoreDataService.h"
 
 #import "Media.h"

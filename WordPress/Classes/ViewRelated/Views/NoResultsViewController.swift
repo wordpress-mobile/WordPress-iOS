@@ -393,6 +393,9 @@ private extension NoResultsViewController {
     }
 
     func copyTitleLabel() -> UILabel? {
+        guard let titleLabel = titleLabel else {
+            return nil
+        }
         // Copy the `titleLabel` to get the style for Title View Only label
         let data = NSKeyedArchiver.archivedData(withRootObject: titleLabel)
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? UILabel ?? nil
@@ -525,7 +528,7 @@ private extension NoResultsViewController {
             view.accessibilityLabel = titleLabel.text
             view.accessibilityTraits = .staticText
         } else {
-            view.accessibilityElements = [noResultsView, actionButton]
+            view.accessibilityElements = [noResultsView!, actionButton!]
 
             noResultsView.isAccessibilityElement = true
             noResultsView.accessibilityTraits = .staticText
