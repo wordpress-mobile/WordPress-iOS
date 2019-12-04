@@ -6,71 +6,132 @@ import Nimble
 
 class MediaEditorTests: XCTestCase {
 
+    private var cropViewControllerMock: TOCropViewControllerMock!
+    private var mediaEditor: MediaEditor!
+
+    override func setUp() {
+        super.setUp()
+        cropViewControllerMock = TOCropViewControllerMock()
+        mediaEditor = MediaEditor(cropViewControllerFactory: cropViewControllerMockFactory)
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        cropViewControllerMock = nil
+        mediaEditor = nil
+    }
+
     func testGiveTheImageToCropViewController() {
         let image = UIImage()
-        let mediaEditor = MediaEditor()
+        var imageToCrop: UIImage?
+        let mediaEditor = MediaEditor(cropViewControllerFactory: { image in
+            imageToCrop = image
+            return self.cropViewControllerMock
+        })
 
-        mediaEditor.edit(image) { _ in }
+        mediaEditor.edit(image, onFinishEditing: { _, _ in })
 
-        expect(mediaEditor.cropViewController?.image).to(equal(image))
+        expect(imageToCrop).to(equal(image))
     }
 
-    func testReturnsTheCroppedImage() {
-        let originalImage = UIImage()
-        let croppedImage = UIImage()
-        var returnedImage: UIImage?
-        let mediaEditor = MediaEditor.init(cropViewControllerFactory: TOCropViewControllerMock.init)
-
-        mediaEditor.edit(originalImage) { croppedImage in
-            returnedImage = croppedImage
-        }
-        (mediaEditor.cropViewController as? TOCropViewControllerMock)?.croppedImage = croppedImage
-
-        expect(returnedImage).to(equal(croppedImage))
-    }
-
-    func testReturnsNothingWhenUserCancel() {
+    func testCallOnFinishEditingWhenUserTapDone() {
         let image = UIImage()
-        var returnedImage: UIImage?
-        let mediaEditor = MediaEditor.init(cropViewControllerFactory: TOCropViewControllerMock.init)
+        var onFinishEditingCalled = false
 
-        mediaEditor.edit(image) { croppedImage in
-            returnedImage = croppedImage
-        }
-        (mediaEditor.cropViewController as? TOCropViewControllerMock)?.userCanceled()
+        mediaEditor.edit(image, onFinishEditing: { _, _ in
+            onFinishEditingCalled = true
+        })
+        cropViewControllerMock.userTapDone()
 
-        expect(returnedImage).to(beNil())
+        expect(onFinishEditingCalled).to(beTrue())
+    }
+
+    func testCallsOnCancelWhenUserCancel() {
+        let image = UIImage()
+        var onCancelCalled = false
+
+        mediaEditor.edit(image, onFinishEditing: { _, _ in }, onCancel: {
+            onCancelCalled = true
+        })
+        cropViewControllerMock.userCanceled()
+
+        expect(onCancelCalled).to(beTrue())
     }
 
     func testDismissCropViewControllerWhenUserCancel() {
         let image = UIImage()
-        let mediaEditor = MediaEditor.init(cropViewControllerFactory: TOCropViewControllerMock.init)
-        mediaEditor.edit(image) { _ in }
-        let cropViewControllerMock = (mediaEditor.cropViewController as? TOCropViewControllerMock)
+        mediaEditor.edit(image, onFinishEditing: { _, _ in })
 
-        cropViewControllerMock?.userCanceled()
+        cropViewControllerMock.userCanceled()
 
-        expect(cropViewControllerMock?.didCallDismiss).to(beTrue())
+        expect(self.cropViewControllerMock.didCallDismiss).to(beTrue())
     }
 
     func testPresentCropViewControllerFromAGivenUIViewController() {
         let image = UIImage()
         let viewControllerMock = UIViewControllerMock()
-        let mediaEditor = MediaEditor()
 
-        mediaEditor.edit(image, from: viewControllerMock) { _ in }
+        mediaEditor.edit(image, from: viewControllerMock, onFinishEditing: { _, _ in })
 
-        expect(viewControllerMock.didCallPresent).to(beTrue())
+        expect(viewControllerMock.didCallPresentWith).to(beAKindOf(TOCropViewController.self))
     }
 
     func testHideCounterClockwiseButton() {
         let image = UIImage()
         let viewControllerMock = UIViewControllerMock()
-        let mediaEditor = MediaEditor()
 
-        mediaEditor.edit(image, from: viewControllerMock) { _ in }
+        mediaEditor.edit(image, from: viewControllerMock, onFinishEditing: { _, _ in })
 
-        expect(mediaEditor.cropViewController?.toolbar.rotateCounterclockwiseButtonHidden).to(beTrue())
+        expect(self.cropViewControllerMock.toolbar.rotateCounterclockwiseButtonHidden).to(beTrue())
+    }
+
+    func testReturnCropOperationIfImageWasCropped() {
+        let image = UIImage()
+        var returnedOperations: [MediaEditorOperation]?
+
+        mediaEditor.edit(image, onFinishEditing: { _, operations in
+            returnedOperations = operations
+        })
+        cropViewControllerMock.crop(CGRect(x: 0, y: 0, width: 100, height: 100), angle: 0)
+
+        expect(returnedOperations).to(equal([.crop]))
+    }
+
+    func testReturnRotateOperationIfImageWasRotated() {
+        let image = UIImage()
+        var returnedOperations: [MediaEditorOperation]?
+
+        mediaEditor.edit(image, onFinishEditing: { _, operations in
+            returnedOperations = operations
+        })
+        cropViewControllerMock.crop(.zero, angle: 90)
+
+        expect(returnedOperations).to(equal([.rotate]))
+    }
+
+    func testReturnRotateAndCropOperationIfImageWasRotatedAndCropped() {
+        let image = UIImage()
+        var returnedOperations: [MediaEditorOperation]?
+
+        mediaEditor.edit(image, onFinishEditing: { _, operations in
+            returnedOperations = operations
+        })
+        cropViewControllerMock.crop(CGRect(x: 0, y: 0, width: 100, height: 100), angle: 90)
+
+        expect(returnedOperations).to(equal([.crop, .rotate]))
+    }
+
+    func testDismiss() {
+        let image = UIImage()
+        mediaEditor.edit(image, onFinishEditing: { _, _ in })
+
+        mediaEditor.dismiss(animated: true)
+
+        expect(self.cropViewControllerMock.didCallDismiss).to(beTrue())
+    }
+
+    private func cropViewControllerMockFactory(_: UIImage) -> TOCropViewController {
+        return cropViewControllerMock
     }
 
 }
@@ -78,14 +139,46 @@ class MediaEditorTests: XCTestCase {
 private class TOCropViewControllerMock: TOCropViewController {
     var didCallDismiss: Bool?
 
+    var _imageCropFrame: CGRect = .zero
+    override var imageCropFrame: CGRect {
+        get {
+            return _imageCropFrame
+        }
+
+        set {
+            _imageCropFrame = newValue
+        }
+    }
+
+    var _angle: Int = 0
+    override var angle: Int {
+        get {
+            return _angle
+        }
+
+        set {
+            _angle = newValue
+        }
+    }
+
     var croppedImage: UIImage? {
         didSet {
-            delegate?.cropViewController?(self, didCropTo: croppedImage!, with: .zero, angle: 0)
+            delegate?.cropViewController?(self, didCropTo: croppedImage!, with: imageCropFrame, angle: angle)
         }
+    }
+
+    func crop(_ rect: CGRect, angle: Int) {
+        self.imageCropFrame = rect
+        self.angle = angle
+        croppedImage = UIImage()
     }
 
     func userCanceled() {
         delegate?.cropViewController?(self, didFinishCancelled: true)
+    }
+
+    func userTapDone() {
+        croppedImage = UIImage()
     }
 
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
@@ -94,9 +187,9 @@ private class TOCropViewControllerMock: TOCropViewController {
 }
 
 private class UIViewControllerMock: UIViewController {
-    var didCallPresent = false
+    var didCallPresentWith: UIViewController?
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-        didCallPresent = true
+        didCallPresentWith = viewControllerToPresent
     }
 }

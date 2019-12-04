@@ -473,6 +473,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"stock_photos" };
             break;
+        case WPAnalyticsStatEditorAddedPhotoViaMediaEditor:
+            eventName = @"editor_photo_added";
+            eventProperties = @{ @"via" : @"media_editor" };
+            break;
         case WPAnalyticsStatEditorAztecBetaLink:
             eventName = @"editor_aztec_beta_link";
             break;

@@ -99,6 +99,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         case expectedSecondaryAction = 1
     }
 
+    private lazy var mediaEditor: MediaEditor = {
+        return MediaEditor()
+    }()
+
     /// The editor view.
     ///
     fileprivate(set) lazy var editorView: Aztec.EditorView = {
@@ -2821,11 +2825,19 @@ extension AztecPostViewController {
 
         if showDefaultActions {
             if let imageAttachment = attachment as? ImageAttachment {
-                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
+                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.settingsActionTitle,
                                                                                      style: .default,
                                                                                      handler: { (action) in
                                                                                         self.displayDetails(forAttachment: imageAttachment)
                 })
+
+                if imageAttachment.isLoaded {
+                    alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
+                                                                                         style: .default,
+                                                                                         handler: { (action) in
+                                                                                            self.edit(imageAttachment)
+                    })
+                }
             } else if let videoAttachment = attachment as? VideoAttachment {
                 alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.playVideoActionTitle,
                                                                                      style: .default,
@@ -3332,6 +3344,7 @@ extension AztecPostViewController {
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
+        static let settingsActionTitle = NSLocalizedString("Media Settings", comment: "User action to edit media settings.")
         static let editActionTitle = NSLocalizedString("Edit", comment: "User action to edit media details.")
         static let playVideoActionTitle = NSLocalizedString("Play video", comment: "User action to play a video on the editor.")
         static let removeImageActionTitle = NSLocalizedString("Remove image", comment: "User action to remove image.")
@@ -3420,5 +3433,29 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
         navigationItem.leftBarButtonItems = items
+    }
+}
+
+// MARK: - Media Editing
+//
+extension AztecPostViewController {
+    func edit(_ imageAttachment: ImageAttachment) {
+        guard let image = imageAttachment.image else {
+            return
+        }
+
+        self.mediaEditor.edit(image, from: self,
+                              onFinishEditing: { image, _ in
+                                self.replace(attachment: imageAttachment, with: image)
+                                self.mediaEditor.dismiss(animated: true)
+        })
+    }
+
+    private func replace(attachment: ImageAttachment, with image: UIImage) {
+        let info = MediaAnalyticsInfo(origin: .editor(.mediaEditor), selectionMethod: mediaSelectionMethod)
+        guard let media = mediaCoordinator.addMedia(from: image, to: post, analyticsInfo: info) else {
+            return
+        }
+        attachment.uploadID = media.uploadID
     }
 }
