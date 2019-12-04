@@ -344,6 +344,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
+    /// If true, apply autosave content when the editor creates a revision.
+    ///
+    private let loadAutosaveRevision: Bool
+
     /// Active Downloads
     ///
     fileprivate var activeMediaRequests = [ImageDownloader.Task]()
@@ -436,20 +440,16 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Initializers
 
-    /// Initializer
-    ///
-    /// - Parameters:
-    ///     - post: the post to edit in this VC.  Must be already assigned to a `ManagedObjectContext`
-    ///             since that's necessary for the edits to be saved.
-    ///
     required init(
         post: AbstractPost,
+        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
+        self.loadAutosaveRevision = loadAutosaveRevision
         self.replaceEditor = replaceEditor
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
@@ -487,7 +487,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        createRevisionOfPost()
+        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
 
         // Setup
         configureNavigationBar()
