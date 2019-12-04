@@ -6,7 +6,19 @@ class AllTimeViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var statsValues: AllTimeWidgetStats?
+    // TODO: For testing only. Remove when table added.
+    @IBOutlet private var visitors: UILabel!
+    @IBOutlet private var views: UILabel!
+    @IBOutlet private var posts: UILabel!
+    @IBOutlet private var best: UILabel!
+    @IBOutlet private var url: UILabel!
+    ////
+
+    private var statsValues: AllTimeWidgetStats? {
+        didSet {
+            updateStatsLabels()
+        }
+    }
 
     private var siteUrl: String = Constants.noDataLabel
 
@@ -14,6 +26,12 @@ class AllTimeViewController: UIViewController {
     private var timeZone: TimeZone?
     private var oauthToken: String?
     private var isConfigured = false
+
+    private let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
 
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
@@ -140,6 +158,20 @@ private extension AllTimeViewController {
 
         let wpApi = WordPressComRestApi(oAuthToken: oauthToken)
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
+    }
+
+    // MARK: - Helpers
+
+    func displayString(for value: Int) -> String {
+        return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
+    }
+
+    func updateStatsLabels() {
+        views.text = displayString(for: statsValues?.views ?? 0)
+        visitors.text = displayString(for: statsValues?.visitors ?? 0)
+        posts.text = displayString(for: statsValues?.posts ?? 0)
+        best.text = displayString(for: statsValues?.bestViews ?? 0)
+        url.text = siteUrl
     }
 
     // MARK: - Constants
