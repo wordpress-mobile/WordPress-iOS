@@ -1,5 +1,3 @@
-- Con esta actualización, puedes conectar a Internet sin Internet real. Edita y guarda las entradas mientras estás offline, las cargaremos (o publicaremos) automáticamente cuando tu dispositivo vuelva a estar online.
-- A veces, la vista de «Yo» estaría en blanco si te conectaras con una web autoalojada, lo cual es (1) un fallo y (2) no es bueno para la autoestima de nadie. Eso está arreglado, así que «Yo» eres tú otra vez.
-- A veces, la actualización de una entrada pendiente hace que se publique la entrada. Todas las acciones que empiezan con «P» han sido corregidas y eso no sucederá más - las entradas pendientes permanecerán pendientes hasta que digas lo contrario.
-- Y, finalmente, más mejoras en el editor de bloques - ahora es compatible con opciones de alineación de imágenes.
-
+- Muchas actualizaciones del editor de bloques móvil en esta versión te ofrecen un montón de nuevas herramientas de diseño y disposición. Amplía el aspecto visual de tus entradas con las opciones para insertar imágenes desde alguna biblioteca gratuita de fotos o desde otras aplicaciones. Ahora, también puedes alinear los bloques de párrafo y el editor es compatible con el bloque preformateado. Y nos hemos encargado de un pequeño pero molesto fallo del teclado que causaba problemas con las mayúsculas en algunas frases.
+- El widget de las estadísticas de hoy tiene un diseño actualizado y puedes ampliarlo para mostrar los «me gusta» y los comentarios, junto con las estadísticas de los visitantes.
+- Hemos encontrado un fallo que hacía que la moderación de comentarios en sitios autoalojados fallase en el primer intento y, luego, hemos arreglado ese fallo. ¡No hay nada que ver aquí!

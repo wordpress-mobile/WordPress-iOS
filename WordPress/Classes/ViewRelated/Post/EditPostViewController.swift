@@ -15,6 +15,7 @@ class EditPostViewController: UIViewController {
     @objc var openWithPostPost: Bool = false
     /// appear with media pre-inserted into the post
     var insertedMedia: [Media]? = nil
+    private let loadAutosaveRevision: Bool
 
     @objc fileprivate(set) var post: Post?
     fileprivate var hasShownEditor = false
@@ -42,8 +43,8 @@ class EditPostViewController: UIViewController {
     /// Initialize as an editor with the provided post
     ///
     /// - Parameter post: post to edit
-    @objc convenience init(post: Post) {
-        self.init(post: post, blog: post.blog)
+    @objc convenience init(post: Post, loadAutosaveRevision: Bool = false) {
+        self.init(post: post, blog: post.blog, loadAutosaveRevision: loadAutosaveRevision)
     }
 
 
@@ -60,8 +61,9 @@ class EditPostViewController: UIViewController {
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
-    fileprivate init(post: Post?, blog: Blog) {
+    fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false) {
         self.post = post
+        self.loadAutosaveRevision = loadAutosaveRevision
         if let post = post {
             if !post.originalIsDraft() {
                 editingExistingPost = true
@@ -125,6 +127,7 @@ class EditPostViewController: UIViewController {
     fileprivate func showEditor() {
         let editor = editorFactory.instantiateEditor(
             for: postToEdit(),
+            loadAutosaveRevision: loadAutosaveRevision,
             replaceEditor: { [weak self] (editor, replacement) in
                 self?.replaceEditor(editor: editor, replacement: replacement)
         })

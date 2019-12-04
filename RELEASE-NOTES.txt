@@ -1,11 +1,16 @@
+13.9
+-----
+ 
 13.8
 -----
+* When a post has an autosave, the autosave version can be loaded into the editor.
 * Support: Fix issue that caused 'Message failed to send' error.
 * WebView: Fix iOS 13 crash with popover.
 * Fixed an issue where the Me screen would sometimes be blank.
 * Block editor: New Spacer block to create white space between two blocks.
 * Block editor: Images from Image Block can now be previewed full screen by tapping on them.
 * Fixed an issue that caused logging in with a 2FA Google account to fail.
+* Sign in with Apple: now supports logging in with 2FA enabled on linked WordPress accounts.
 
 13.7
 -----

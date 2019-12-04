@@ -163,6 +163,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
+    /// If true, apply autosave content when the editor creates a revision.
+    ///
+    private let loadAutosaveRevision: Bool
+
     let navigationBarManager = PostEditorNavigationBarManager()
 
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
@@ -218,10 +222,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Initializers
     required init(
         post: AbstractPost,
+        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         self.post = post
+        self.loadAutosaveRevision = loadAutosaveRevision
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
@@ -249,8 +255,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
         setupGutenbergView()
-        createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
 
