@@ -34,17 +34,16 @@ class MediaEditorTests: XCTestCase {
         expect(imageToCrop).to(equal(image))
     }
 
-    func testReturnsTheCroppedImage() {
-        let originalImage = UIImage()
-        let croppedImage = UIImage()
-        var returnedImage: UIImage?
+    func testCallOnFinishEditingWhenUserTapDone() {
+        let image = UIImage()
+        var onFinishEditingCalled = false
 
-        mediaEditor.edit(originalImage, onFinishEditing: { croppedImage, _ in
-            returnedImage = croppedImage
+        mediaEditor.edit(image, onFinishEditing: { _, _ in
+            onFinishEditingCalled = true
         })
-        cropViewControllerMock.imageWasCropped(to: croppedImage)
+        cropViewControllerMock.userTapDone()
 
-        expect(returnedImage).to(equal(croppedImage))
+        expect(onFinishEditingCalled).to(beTrue())
     }
 
     func testCallsOnCancelWhenUserCancel() {
@@ -178,8 +177,8 @@ private class TOCropViewControllerMock: TOCropViewController {
         delegate?.cropViewController?(self, didFinishCancelled: true)
     }
 
-    func imageWasCropped(to image: UIImage) {
-        croppedImage = image
+    func userTapDone() {
+        croppedImage = UIImage()
     }
 
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
