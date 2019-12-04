@@ -323,8 +323,9 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
+  trunk:
     - 1PasswordExtension
+    - Alamofire
     - AlamofireNetworkActivityIndicator
     - AppCenter
     - Automattic-Tracks-iOS
@@ -337,6 +338,7 @@ SPEC REPOS:
     - Gifu
     - GoogleSignIn
     - GoogleToolboxForMac
+    - Gridicons
     - GTMSessionFetcher
     - JTAppleCalendar
     - lottie-ios
@@ -346,27 +348,22 @@ SPEC REPOS:
     - "NSURL+IDN"
     - OCMock
     - OHHTTPStubs
+    - Reachability
     - Sentry
     - SimulatorStatusMagic
     - Starscream
     - SVProgressHUD
+    - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
+    - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZIPFoundation
-  https://github.com/CocoaPods/Specs.git:
-    - Alamofire
-    - CocoaLumberjack
-    - GoogleToolboxForMac
-    - Gridicons
-    - Reachability
-    - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
-    - WordPressShared
-    - WordPressUI
 
 EXTERNAL SOURCES:
   Folly:
