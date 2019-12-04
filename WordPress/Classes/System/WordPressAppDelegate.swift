@@ -7,6 +7,11 @@ import WordPressShared
 import AlamofireNetworkActivityIndicator
 import AutomatticTracks
 
+#if APPCENTER_ENABLED
+import AppCenter
+import AppCenterDistribute
+#endif
+
 import ZendeskCoreSDK
 
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,7 +19,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     var analytics: WPAppAnalytics?
-    var hockey: HockeyManager?
     private lazy var crashLoggingProvider: WPCrashLoggingProvider = {
         return WPCrashLoggingProvider()
     }()
@@ -224,7 +228,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         CrashLogging.start(withDataProvider: crashLoggingProvider)
 
-        configureHockeySDK()
+        configureAppCenterSDK()
         configureAppRatingUtility()
         configureAnalytics()
 
@@ -386,9 +390,11 @@ extension WordPressAppDelegate {
         })
     }
 
-    @objc func configureHockeySDK() {
-        hockey = HockeyManager()
-        hockey?.configure()
+    @objc func configureAppCenterSDK() {
+        #if APPCENTER_ENABLED
+        MSAppCenter.start(ApiCredentials.appCenterAppId(), withServices: [MSDistribute.self])
+        MSDistribute.setEnabled(true)
+        #endif
     }
 
     func configureReachability() {
@@ -926,7 +932,7 @@ extension WordPressAppDelegate {
     func removeAppleIDFromKeychain() {
         do {
             try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
-                                             andServiceName: WPAppleIDKeychainUsernameKey)
+                                             andServiceName: WPAppleIDKeychainServiceName)
         } catch let error as NSError {
             if error.code != errSecItemNotFound {
                 DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")

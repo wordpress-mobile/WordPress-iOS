@@ -56,9 +56,7 @@ class PostStatsViewModel: Observable {
         self.postURL = postURL
         self.postStatsDelegate = postStatsDelegate
 
-        if Feature.enabled(.statsAsyncLoadingDWMY) {
-            self.postStats = store.getPostStats(for: postID)
-        }
+        self.postStats = store.getPostStats(for: postID)
 
         self.changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -70,8 +68,7 @@ class PostStatsViewModel: Observable {
     // MARK: - Table View
 
     func tableViewModel() -> ImmuTable {
-        if let postId = postID, store.fetchingFailed(for: .postStats(postID: postId)) ||
-            (store.isFetchingPostStats(for: postId) && !Feature.enabled(.statsAsyncLoadingDWMY)) {
+        if let postId = postID, store.fetchingFailed(for: .postStats(postID: postId)) {
             return ImmuTable.Empty
         }
 
@@ -290,7 +287,7 @@ private extension PostStatsViewModel {
     }
 
     func blocks(for state: StoreFetchingStatus, block: () -> [ImmuTableRow]) -> ImmuTable {
-        if !Feature.enabled(.statsAsyncLoadingDWMY) || postStats != nil {
+        if postStats != nil {
             return ImmuTable(sections: [
             ImmuTableSection(
                 rows: block())

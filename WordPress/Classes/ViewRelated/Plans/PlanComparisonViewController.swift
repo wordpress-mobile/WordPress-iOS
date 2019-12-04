@@ -30,7 +30,7 @@ class PlanComparisonViewController: PagedViewController {
         })
         self.detailViewControllers = controllers
 
-        let initialIndex = plans.index { plan in
+        let initialIndex = plans.firstIndex { plan in
             return plan == initialPlan
         }
 

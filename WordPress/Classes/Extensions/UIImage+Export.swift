@@ -69,6 +69,8 @@ extension UIImage {
             case .downMirrored: return CGImagePropertyOrientation.downMirrored
             case .leftMirrored: return CGImagePropertyOrientation.leftMirrored
             case .rightMirrored: return CGImagePropertyOrientation.rightMirrored
+            @unknown default:
+                fatalError()
             }
         }
     }
