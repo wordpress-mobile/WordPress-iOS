@@ -3444,14 +3444,22 @@ extension AztecPostViewController {
             return
         }
 
-        self.mediaEditor.edit(image, from: self,
-                              onFinishEditing: { image, _ in
-                                self.replace(attachment: imageAttachment, with: image)
+        WPAnalytics.track(.mediaEditorShown)
+
+        mediaEditor.edit(image, from: self,
+                              onFinishEditing: { image, actions in
+                                self.replace(attachment: imageAttachment, with: image, actions: actions)
                                 self.mediaEditor.dismiss(animated: true)
         })
     }
 
-    private func replace(attachment: ImageAttachment, with image: UIImage) {
+    private func replace(attachment: ImageAttachment, with image: UIImage, actions: [MediaEditorOperation]) {
+        guard !actions.isEmpty else {
+            return
+        }
+
+        WPAnalytics.track(.mediaEditorUsed, withProperties: ["actions": actions.description])
+
         let info = MediaAnalyticsInfo(origin: .editor(.mediaEditor), selectionMethod: mediaSelectionMethod)
         guard let media = mediaCoordinator.addMedia(from: image, to: post, analyticsInfo: info) else {
             return

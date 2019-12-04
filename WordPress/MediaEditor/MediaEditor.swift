@@ -35,26 +35,13 @@ public class MediaEditor: NSObject {
 
 }
 
+// MARK: - TOCropViewControllerDelegate
+
 extension MediaEditor: TOCropViewControllerDelegate {
-    var isCropped: Bool {
-        guard let cropViewController = cropViewController else {
-            return false
-        }
-
-        return cropViewController.imageCropFrame.size != cropViewController.image.size
-    }
-
-    var isRotated: Bool {
-        guard let cropViewController = cropViewController else {
-            return false
-        }
-
-        return cropViewController.angle != 0
-    }
 
     public func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
-        let operations = self.operations(with: cropRect, angle: angle)
-        onFinishEditing?(image, operations)
+        let actions = cropViewController.actions
+        onFinishEditing?(image, actions)
         releaseCallbacks()
     }
 
@@ -62,19 +49,5 @@ extension MediaEditor: TOCropViewControllerDelegate {
         self.cropViewController?.dismiss(animated: true)
         onCancel?()
         releaseCallbacks()
-    }
-
-    private func operations(with cropRect: CGRect, angle: Int) -> [MediaEditorOperation] {
-        var operations: [MediaEditorOperation] = []
-
-        if isCropped {
-            operations.append(.crop)
-        }
-
-        if isRotated {
-            operations.append(.rotate)
-        }
-
-        return operations
     }
 }
