@@ -3446,7 +3446,7 @@ extension AztecPostViewController {
 
         WPAnalytics.track(.mediaEditorShown)
 
-        self.mediaEditor.edit(image, from: self,
+        mediaEditor.edit(image, from: self,
                               onFinishEditing: { image, actions in
                                 self.replace(attachment: imageAttachment, with: image)
                                 self.mediaEditor.dismiss(animated: true)
