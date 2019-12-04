@@ -114,7 +114,7 @@ def gutenberg_dependencies(options)
         'react-native-video',
         'RNSVG',
         'ReactNativeDarkMode',
-        'react-native-slider',
+        'react-native-slider'
     ]
     if options[:path]
         podspec_prefix = options[:path]

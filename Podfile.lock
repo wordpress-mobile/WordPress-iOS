@@ -94,7 +94,7 @@ PODS:
   - Nimble (7.3.4)
   - NSObject-SafeExpectations (0.0.3)
   - "NSURL+IDN (0.3)"
-  - OCMock (3.5)
+  - OCMock (3.4.3)
   - OHHTTPStubs (6.1.0):
     - OHHTTPStubs/Default (= 6.1.0)
   - OHHTTPStubs/Core (6.1.0)
@@ -210,9 +210,9 @@ PODS:
   - RNTAztecView (1.18.0):
     - React-Core
     - WordPress-Aztec-iOS
-  - Sentry (4.4.2):
-    - Sentry/Core (= 4.4.2)
-  - Sentry/Core (4.4.2)
+  - Sentry (4.4.1):
+    - Sentry/Core (= 4.4.1)
+  - Sentry/Core (4.4.1)
   - SimulatorStatusMagic (2.4.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -256,7 +256,7 @@ PODS:
   - ZendeskSDK/UI (4.0.0):
     - ZendeskSDK/Core
     - ZendeskSDK/Providers
-  - ZIPFoundation (0.9.10)
+  - ZIPFoundation (0.9.9)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
@@ -325,7 +325,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://cdn.cocoapods.org/:
     - 1PasswordExtension
-    - Alamofire
     - AlamofireNetworkActivityIndicator
     - AppCenter
     - Automattic-Tracks-iOS
@@ -338,7 +337,6 @@ SPEC REPOS:
     - Gifu
     - GoogleSignIn
     - GoogleToolboxForMac
-    - Gridicons
     - GTMSessionFetcher
     - JTAppleCalendar
     - lottie-ios
@@ -348,22 +346,27 @@ SPEC REPOS:
     - "NSURL+IDN"
     - OCMock
     - OHHTTPStubs
-    - Reachability
     - Sentry
     - SimulatorStatusMagic
     - Starscream
     - SVProgressHUD
-    - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
-    - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZIPFoundation
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - CocoaLumberjack
+    - GoogleToolboxForMac
+    - Gridicons
+    - Reachability
+    - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
+    - WordPressShared
+    - WordPressUI
 
 EXTERNAL SOURCES:
   Folly:
@@ -472,7 +475,7 @@ SPEC CHECKSUMS:
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
   "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
-  OCMock: 4ab4577fc941af31f4a0398f6e7e230cf21fc72a
+  OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   React: f208cb37831d73d3feafe90ff5c353ef67516cfb
@@ -499,7 +502,7 @@ SPEC CHECKSUMS:
   ReactNativeDarkMode: f61376360c5d983907e5c316e8e1c853a8c2f348
   RNSVG: c820516df826221ce4969594bf3e822a464abd51
   RNTAztecView: 9e477702bdfc456e27f9efbf9d9a27de24becab2
-  Sentry: bba998b0fb157fdd6596aa73290a9d67ae47be79
+  Sentry: 5d312a04e369154aeac616214f4dfc3cbcc8b296
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -515,8 +518,8 @@ SPEC CHECKSUMS:
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 4e71c9a33abf45ba55af55ae9cbc86f4234bb2a9
   ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
-  ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
+  ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: ffaa8fb17d531fb890b08bff5a71dce619380bdd
+PODFILE CHECKSUM: 3f221f36bb4d85f948db5fa330ede24565fe4faf
 
 COCOAPODS: 1.8.4
