@@ -727,6 +727,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
     post.autosaveExcerpt = remotePost.autosave.excerpt;
     post.autosaveContent = remotePost.autosave.content;
     post.autosaveModifiedDate = remotePost.autosave.modifiedDate;
+    post.autosaveIdentifier = remotePost.autosave.identifier;
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;

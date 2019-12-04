@@ -490,6 +490,15 @@ class PostCardCellTests: XCTestCase {
         expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning))
     }
 
+    func testShowsUnsavedChangesMessageWhenPostHasAutosave() {
+        let post = PostBuilder(context).with(remoteStatus: .sync).autosaved().build()
+
+        postCell.configure(with: post)
+
+        expect(self.postCell.statusLabel.text).to(equal(i18n("You've made unsaved changes to this post")))
+        expect(self.postCell.statusLabel.textColor).to(equal(UIColor.warning(.shade40)))
+    }
+
     private func postCellFromNib() -> PostCardCell {
         let bundle = Bundle(for: PostCardCell.self)
         guard let postCell = bundle.loadNibNamed("PostCardCell", owner: nil)?.first as? PostCardCell else {

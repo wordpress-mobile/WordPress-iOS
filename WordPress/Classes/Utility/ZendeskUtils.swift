@@ -449,16 +449,16 @@ private extension ZendeskUtils {
         requestConfig.ticketFormID = TicketFieldIDs.form as NSNumber
 
         // Set form field values
-        var ticketFields = [ZDKCustomField]()
-        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion as NSNumber, andValue: ZendeskUtils.appVersion))
-        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs as NSNumber, andValue: ZendeskUtils.getBlogInformation()))
-        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace as NSNumber, andValue: ZendeskUtils.getDeviceFreeSpace()))
-        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation as NSNumber, andValue: ZendeskUtils.getNetworkInformation()))
-        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs as NSNumber, andValue: ZendeskUtils.getLogFile()))
-        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.currentSite as NSNumber, andValue: ZendeskUtils.getCurrentSiteDescription()))
-        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.sourcePlatform as NSNumber, andValue: Constants.sourcePlatform))
-        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appLanguage as NSNumber, andValue: ZendeskUtils.appLanguage))
-        requestConfig.fields = ticketFields
+        var ticketFields = [CustomField]()
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appVersion, value: ZendeskUtils.appVersion))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.allBlogs, value: ZendeskUtils.getBlogInformation()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.deviceFreeSpace, value: ZendeskUtils.getDeviceFreeSpace()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.networkInformation, value: ZendeskUtils.getNetworkInformation()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.logs, value: ZendeskUtils.getLogFile()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.currentSite, value: ZendeskUtils.getCurrentSiteDescription()))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.sourcePlatform, value: Constants.sourcePlatform))
+        ticketFields.append(CustomField(fieldId: TicketFieldIDs.appLanguage, value: ZendeskUtils.appLanguage))
+        requestConfig.customFields = ticketFields
 
         // Set tags
         requestConfig.tags = ZendeskUtils.getTags()
@@ -942,18 +942,19 @@ private extension ZendeskUtils {
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
     }
 
-    // Zendesk expects these as NSNumber. However, they are defined as UInt64 to satisfy 32-bit devices (ex: iPhone 5).
-    // Which means they then have to be converted to NSNumber when sending to Zendesk.
-    struct TicketFieldIDs {
-        static let form: UInt64 = 360000010286
-        static let appVersion: UInt64 = 360000086866
-        static let allBlogs: UInt64 = 360000087183
-        static let deviceFreeSpace: UInt64 = 360000089123
-        static let networkInformation: UInt64 = 360000086966
-        static let logs: UInt64 = 22871957
-        static let currentSite: UInt64 = 360000103103
-        static let sourcePlatform: UInt64 = 360009311651
-        static let appLanguage: UInt64 = 360008583691
+    enum TicketFieldIDs {
+        // Zendesk expects this as NSNumber. However, it is defined as Int64 to satisfy 32-bit devices (ex: iPhone 5).
+        // Which means it has to be converted to NSNumber when sending to Zendesk.
+        static let form: Int64 = 360000010286
+
+        static let appVersion: Int64 = 360000086866
+        static let allBlogs: Int64 = 360000087183
+        static let deviceFreeSpace: Int64 = 360000089123
+        static let networkInformation: Int64 = 360000086966
+        static let logs: Int64 = 22871957
+        static let currentSite: Int64 = 360000103103
+        static let sourcePlatform: Int64 = 360009311651
+        static let appLanguage: Int64 = 360008583691
     }
 
     struct LocalizedText {
