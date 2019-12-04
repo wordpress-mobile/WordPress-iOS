@@ -6,12 +6,17 @@ class GutenbergGalleryUploadProcessor: Processor {
     let mediaUploadID: Int
     let remoteURLString: String
     let serverMediaID: Int
+    let mediaLink: String
+
+    private var linkToURL: String?
+
     static let imgClassIDPrefixAttribute = "wp-image-"
 
-    init(mediaUploadID: Int, serverMediaID: Int, remoteURLString: String) {
+    init(mediaUploadID: Int, serverMediaID: Int, remoteURLString: String, mediaLink: String) {
         self.mediaUploadID = mediaUploadID
         self.serverMediaID = serverMediaID
         self.remoteURLString = remoteURLString
+        self.mediaLink = mediaLink
     }
 
     private struct ImageKeys {
@@ -52,7 +57,7 @@ class GutenbergGalleryUploadProcessor: Processor {
         attributes.set(.string("\(self.serverMediaID)"), forKey: ImageKeys.dataID)
         attributes.set(.string(self.remoteURLString), forKey: ImageKeys.dataFullURL)
         if attributes.contains(where: { $0.key == ImageKeys.dataLink } ) {
-            attributes.set(.string(self.remoteURLString), forKey: ImageKeys.dataLink)
+            attributes.set(.string(self.mediaLink), forKey: ImageKeys.dataLink)
         }
 
         var html = "<\(ImageKeys.name) "
@@ -79,7 +84,11 @@ class GutenbergGalleryUploadProcessor: Processor {
         }
 
         var attributes = link.attributes
-        attributes.set(.string(self.remoteURLString), forKey: "href")
+        if let linkToURL = self.linkToURL {
+            attributes.set(.string(linkToURL), forKey: "href")
+        } else {
+            attributes.set(.string(self.remoteURLString), forKey: "href")
+        }
 
         var html = "<\(LinkKeys.name) "
         let attributeSerializer = ShortcodeAttributeSerializer()
@@ -113,10 +122,15 @@ class GutenbergGalleryUploadProcessor: Processor {
             updatedBlock += jsonString
         }
         updatedBlock += " -->"
-        if block.attributes[GalleryBlockKeys.linkTo] == nil {
-            updatedBlock += self.imgPostMediaUploadProcessor.process(block.content)
-        } else {
+        if let linkTo = block.attributes[GalleryBlockKeys.linkTo] as? String {
+            if linkTo == "media" {
+                self.linkToURL = self.remoteURLString
+            } else if linkTo == "attachment" {
+                self.linkToURL = self.mediaLink
+            }
             updatedBlock += self.linkPostMediaUploadProcessor.process(block.content)
+        } else {
+            updatedBlock += self.imgPostMediaUploadProcessor.process(block.content)
         }
         updatedBlock += "<!-- /\(GalleryBlockKeys.name) -->"
         return updatedBlock
