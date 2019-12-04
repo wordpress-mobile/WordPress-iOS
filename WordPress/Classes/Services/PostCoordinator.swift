@@ -295,16 +295,21 @@ class PostCoordinator: NSObject {
             return
         }
 
+        let mediaLink = media.link
         let mediaUploadID = media.uploadID
         let gutenbergMediaUploadID = media.gutenbergUploadID
         if media.remoteStatus == .failed {
             return
         }
         if media.mediaType == .image {
-            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
-            postContent = imgPostUploadProcessor.process(postContent)
             let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             postContent = gutenbergImgPostUploadProcessor.process(postContent)
+
+            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: Int(gutenbergMediaUploadID), serverMediaID: mediaID, remoteURLString: remoteURLStr, mediaLink: mediaLink)
+            postContent = gutenbergGalleryPostUploadProcessor.process(postContent)
+
+            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
+            postContent = imgPostUploadProcessor.process(postContent)
         } else if media.mediaType == .video {
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             postContent = videoPostUploadProcessor.process(postContent)
