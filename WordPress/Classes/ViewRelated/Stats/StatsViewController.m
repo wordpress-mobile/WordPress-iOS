@@ -74,7 +74,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)addStatsViewControllerToView
 {
     if (self.presentingViewController == nil) {
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Widgets", @"Nav bar title to set the site used for Stats widgets.") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
         self.navigationItem.rightBarButtonItem = settingsButton;
     }
 
