@@ -270,6 +270,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         titlePlaceholderLabel.translatesAutoresizingMaskIntoConstraints = false
         titlePlaceholderLabel.textAlignment = .natural
 
+        titlePlaceholderLabel.isAccessibilityElement = false
+
         return titlePlaceholderLabel
     }()
 
