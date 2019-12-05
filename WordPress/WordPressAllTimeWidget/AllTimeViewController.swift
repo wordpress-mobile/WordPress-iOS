@@ -80,7 +80,7 @@ extension AllTimeViewController: NCWidgetProviding {
         }
 
         tracks.trackExtensionAccessed()
-        fetchData()
+        fetchData(completionHandler: completionHandler)
     }
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
@@ -178,7 +178,7 @@ private extension AllTimeViewController {
         statsValues?.saveData()
     }
 
-    func fetchData() {
+    func fetchData(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         guard let statsRemote = statsRemote() else {
             return
         }
@@ -186,18 +186,20 @@ private extension AllTimeViewController {
         statsRemote.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
             if error != nil {
                 DDLogError("All Time Widget: Error fetching StatsAllTimesInsight: \(String(describing: error?.localizedDescription))")
+                completionHandler(NCUpdateResult.failed)
                 return
             }
 
             DDLogDebug("All Time Widget: Fetched StatsAllTimesInsight data.")
 
             DispatchQueue.main.async {
-                self.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount ?? 0,
-                                                      visitors: allTimesStats?.visitorsCount ?? 0,
-                                                      posts: allTimesStats?.postsCount ?? 0,
-                                                      bestViews: allTimesStats?.bestViewsPerDayCount ?? 0)
+                self.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
+                                            visitors: allTimesStats?.visitorsCount,
+                                            posts: allTimesStats?.postsCount,
+                                            bestViews: allTimesStats?.bestViewsPerDayCount)
                 self.tableView.reloadData()
             }
+            completionHandler(NCUpdateResult.newData)
         }
     }
 
@@ -269,7 +271,7 @@ private extension AllTimeViewController {
     // MARK: - Helpers
 
     func displayString(for value: Int) -> String {
-        return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
+        return numberFormatter.string(from: NSNumber(value: value)) ?? String(value)
     }
 
     func updateStatsLabels() {
