@@ -345,7 +345,7 @@ private extension TodayViewController {
     // MARK: - Helpers
 
     func displayString(for value: Int) -> String {
-        return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
+        return numberFormatter.string(from: NSNumber(value: value)) ?? String(value)
     }
 
     func updateStatsLabels() {
