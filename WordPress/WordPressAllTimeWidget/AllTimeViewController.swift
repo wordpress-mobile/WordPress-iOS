@@ -1,18 +1,13 @@
 import UIKit
 import NotificationCenter
 import WordPressKit
+import WordPressUI
 
 class AllTimeViewController: UIViewController {
 
     // MARK: - Properties
 
-    // TODO: For testing only. Remove when table added.
-    @IBOutlet private var visitors: UILabel!
-    @IBOutlet private var views: UILabel!
-    @IBOutlet private var posts: UILabel!
-    @IBOutlet private var best: UILabel!
-    @IBOutlet private var url: UILabel!
-    ////
+    @IBOutlet private var tableView: UITableView!
 
     private var statsValues: AllTimeWidgetStats? {
         didSet {
@@ -20,11 +15,22 @@ class AllTimeViewController: UIViewController {
         }
     }
 
+    private var visitorCount: String = Constants.noDataLabel
+    private var viewCount: String = Constants.noDataLabel
+    private var postCount: String = Constants.noDataLabel
+    private var bestCount: String = Constants.noDataLabel
     private var siteUrl: String = Constants.noDataLabel
+    private var footerHeight: CGFloat = 35
+
+    private var haveSiteUrl: Bool {
+        siteUrl != Constants.noDataLabel
+    }
 
     private var siteID: NSNumber?
     private var timeZone: TimeZone?
     private var oauthToken: String?
+
+    // TODO: handle expandy
     private var isConfigured = false
 
     private let numberFormatter: NumberFormatter = {
@@ -40,6 +46,7 @@ class AllTimeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         retrieveSiteConfiguration()
+        registerTableCells()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -65,7 +72,7 @@ extension AllTimeViewController: NCWidgetProviding {
             DDLogError("All Time Widget: Missing site ID, timeZone or oauth2Token")
 
             DispatchQueue.main.async {
-                // TODO: reload table here
+                self.tableView.reloadData()
             }
 
             completionHandler(NCUpdateResult.failed)
@@ -78,6 +85,55 @@ extension AllTimeViewController: NCWidgetProviding {
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
         tracks.trackDisplayModeChanged(properties: ["expanded": activeDisplayMode == .expanded])
+    }
+
+}
+
+// MARK: - Table View Methods
+
+extension AllTimeViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return numberOfRowsToDisplay()
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard isConfigured else {
+            return unconfiguredCellFor(indexPath: indexPath)
+        }
+
+        return statCellFor(indexPath: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard haveSiteUrl,
+            isConfigured,
+            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
+                return nil
+        }
+
+        footer.configure(siteUrl: siteUrl)
+        footerHeight = footer.frame.height
+
+        return footer
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if !isConfigured || !haveSiteUrl {
+            return 0
+        }
+
+        return footerHeight
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard !isConfigured,
+            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
+                return UITableView.automaticDimension
+        }
+
+        // Use the max compact height for unconfigured view.
+        return maxCompactSize.height
     }
 
 }
@@ -137,11 +193,10 @@ private extension AllTimeViewController {
 
             DispatchQueue.main.async {
                 self.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount ?? 0,
-                                            visitors: allTimesStats?.visitorsCount ?? 0,
-                                            posts: allTimesStats?.postsCount ?? 0,
-                                            bestViews: allTimesStats?.bestViewsPerDayCount ?? 0)
-
-                // TODO: reload table here
+                                                      visitors: allTimesStats?.visitorsCount ?? 0,
+                                                      posts: allTimesStats?.postsCount ?? 0,
+                                                      bestViews: allTimesStats?.bestViewsPerDayCount ?? 0)
+                self.tableView.reloadData()
             }
         }
     }
@@ -160,6 +215,57 @@ private extension AllTimeViewController {
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
     }
 
+    // MARK: - Table Helpers
+
+    func registerTableCells() {
+        let twoColumnCellNib = UINib(nibName: String(describing: WidgetTwoColumnCell.self), bundle: Bundle(for: WidgetTwoColumnCell.self))
+        tableView.register(twoColumnCellNib, forCellReuseIdentifier: WidgetTwoColumnCell.reuseIdentifier)
+
+        let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
+        tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
+
+        let footerNib = UINib(nibName: String(describing: WidgetFooterView.self), bundle: Bundle(for: WidgetFooterView.self))
+        tableView.register(footerNib, forHeaderFooterViewReuseIdentifier: WidgetFooterView.reuseIdentifier)
+    }
+
+    func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetUnconfiguredCell.reuseIdentifier, for: indexPath) as? WidgetUnconfiguredCell else {
+            return UITableViewCell()
+        }
+
+        return cell
+    }
+
+    func statCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetTwoColumnCell.reuseIdentifier, for: indexPath) as? WidgetTwoColumnCell else {
+            return UITableViewCell()
+        }
+
+        if indexPath.row == 0 {
+            cell.configure(leftItemName: LocalizedText.views,
+                           leftItemData: viewCount,
+                           rightItemName: LocalizedText.visitors,
+                           rightItemData: visitorCount)
+        } else {
+            cell.configure(leftItemName: LocalizedText.posts,
+                           leftItemData: postCount,
+                           rightItemName: LocalizedText.bestViews,
+                           rightItemData: bestCount)
+        }
+
+        return cell
+    }
+
+    // MARK: - Expand / Compact View Helpers
+
+    func numberOfRowsToDisplay() -> Int {
+        if !isConfigured || extensionContext?.widgetActiveDisplayMode == .compact {
+            return Constants.minRows
+        }
+
+        return Constants.maxRows
+    }
+
     // MARK: - Helpers
 
     func displayString(for value: Int) -> String {
@@ -167,17 +273,25 @@ private extension AllTimeViewController {
     }
 
     func updateStatsLabels() {
-        views.text = displayString(for: statsValues?.views ?? 0)
-        visitors.text = displayString(for: statsValues?.visitors ?? 0)
-        posts.text = displayString(for: statsValues?.posts ?? 0)
-        best.text = displayString(for: statsValues?.bestViews ?? 0)
-        url.text = siteUrl
+        viewCount = displayString(for: statsValues?.views ?? 0)
+        visitorCount = displayString(for: statsValues?.visitors ?? 0)
+        postCount = displayString(for: statsValues?.posts ?? 0)
+        bestCount = displayString(for: statsValues?.bestViews ?? 0)
     }
 
     // MARK: - Constants
 
+    enum LocalizedText {
+        static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
+        static let views = NSLocalizedString("Views", comment: "Stats Views Label")
+        static let posts = NSLocalizedString("Posts", comment: "Stats Posts Label")
+        static let bestViews = NSLocalizedString("Best Views Ever", comment: "Stats 'Best Views Ever' Label")
+    }
+
     enum Constants {
         static let noDataLabel = "-"
+        static let minRows: Int = 1
+        static let maxRows: Int = 2
     }
 
 }
