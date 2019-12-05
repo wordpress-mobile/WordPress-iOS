@@ -30,8 +30,12 @@ class AllTimeViewController: UIViewController {
     private var timeZone: TimeZone?
     private var oauthToken: String?
 
-    // TODO: handle expandy
-    private var isConfigured = false
+    private var isConfigured = false {
+        didSet {
+            // If unconfigured, don't allow the widget to be expanded/compacted.
+            extensionContext?.widgetLargestAvailableDisplayMode = isConfigured ? .expanded : .compact
+        }
+    }
 
     private let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -52,11 +56,32 @@ class AllTimeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadSavedData()
+        resizeView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         saveData()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        let updatedRowCount = numberOfRowsToDisplay()
+
+        // If the number of rows has not changed, do nothing.
+        guard updatedRowCount != tableView.visibleCells.count else {
+            return
+        }
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.performBatchUpdates({
+                let lastRowIndexPath = [IndexPath(row: Constants.maxRows - 1, section: 0)]
+                updatedRowCount > Constants.minRows ?
+                    self.tableView.insertRows(at: lastRowIndexPath, with: .fade) :
+                    self.tableView.deleteRows(at: lastRowIndexPath, with: .fade)
+            })
+        })
     }
 
 }
@@ -85,6 +110,7 @@ extension AllTimeViewController: NCWidgetProviding {
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
         tracks.trackDisplayModeChanged(properties: ["expanded": activeDisplayMode == .expanded])
+        resizeView(withMaximumSize: maxSize)
     }
 
 }
@@ -268,6 +294,27 @@ private extension AllTimeViewController {
         return Constants.maxRows
     }
 
+    func resizeView(withMaximumSize size: CGSize? = nil) {
+        guard let maxSize = size ?? extensionContext?.widgetMaximumSize(for: .compact) else {
+            return
+        }
+
+        let expanded = extensionContext?.widgetActiveDisplayMode == .expanded
+        preferredContentSize = expanded ? CGSize(width: maxSize.width, height: expandedHeight()) : maxSize
+    }
+
+    func expandedHeight() -> CGFloat {
+        var height: CGFloat = 0
+
+        if haveSiteUrl {
+            height += tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
+        }
+
+        let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
+        return height
+    }
+
     // MARK: - Helpers
 
     func displayString(for value: Int) -> String {
@@ -287,7 +334,7 @@ private extension AllTimeViewController {
         static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         static let views = NSLocalizedString("Views", comment: "Stats Views Label")
         static let posts = NSLocalizedString("Posts", comment: "Stats Posts Label")
-        static let bestViews = NSLocalizedString("Best Views Ever", comment: "Stats 'Best Views Ever' Label")
+        static let bestViews = NSLocalizedString("Best views ever", comment: "Stats 'Best views ever' Label")
     }
 
     enum Constants {

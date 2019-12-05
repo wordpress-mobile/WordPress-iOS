@@ -155,7 +155,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard !isConfigured,
             let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
-            return UITableView.automaticDimension
+                return UITableView.automaticDimension
         }
 
         // Use the max compact height for unconfigured view.
