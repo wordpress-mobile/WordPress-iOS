@@ -41,6 +41,7 @@ import Foundation
                 let request = NSFetchRequest<NSManagedObject>(entityName: entityName)
                 let predicate = NSPredicate(format: "blog == NULL")
                 request.predicate = predicate
+                request.includesPropertyValues = false
 
                 if let results = try? self.context.fetch(request), !results.isEmpty {
                     results.forEach(self.context.delete)
