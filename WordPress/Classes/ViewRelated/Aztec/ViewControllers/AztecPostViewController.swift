@@ -99,9 +99,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         case expectedSecondaryAction = 1
     }
 
-    private lazy var mediaEditor: MediaEditor = {
-        return MediaEditor()
-    }()
+    private var mediaEditor: MediaEditor?
 
     /// The editor view.
     ///
@@ -3446,10 +3444,22 @@ extension AztecPostViewController {
 
         WPAnalytics.track(.mediaEditorShown)
 
-        mediaEditor.edit(image, from: self,
+        mediaEditor = MediaEditor(image: image)
+
+        mediaEditor?.doneTextButton.setTitle(NSLocalizedString("Done", comment: "Done editing an image"), for: .normal)
+        mediaEditor?.cancelTextButton.setTitle(NSLocalizedString("Cancel", comment: "Cancel editing an image"), for: .normal)
+        mediaEditor?.cancelTextButton.tintColor = .white
+        mediaEditor?.resetButton.setImage(Gridicon.iconOfType(.undo), for: .normal)
+        mediaEditor?.doneIconButton.setImage(Gridicon.iconOfType(.checkmark), for: .normal)
+        mediaEditor?.cancelIconButton.setImage(Gridicon.iconOfType(.cross), for: .normal)
+        mediaEditor?.cancelIconButton.tintColor = .white
+        mediaEditor?.rotateClockwiseButton?.setImage(Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(), for: .normal)
+        mediaEditor?.rotateCounterclockwiseButtonHidden = true
+
+        self.mediaEditor?.edit(from: self,
                               onFinishEditing: { image, actions in
                                 self.replace(attachment: imageAttachment, with: image, actions: actions)
-                                self.mediaEditor.dismiss(animated: true)
+                                self.mediaEditor?.dismiss(animated: true)
         })
     }
 
