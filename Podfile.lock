@@ -359,6 +359,7 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
+    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -424,9 +425,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: e6ac5711989e9f69d63bf2fd151170330d008323
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressShared:
-    :commit: ad0cfdd545a0b52de7dfeba1b550961fd6226857
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/e6ac5711989e9f69d63bf2fd151170330d008323/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -443,9 +441,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: e6ac5711989e9f69d63bf2fd151170330d008323
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressShared:
-    :commit: ad0cfdd545a0b52de7dfeba1b550961fd6226857
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 4.0.0
