@@ -73,7 +73,7 @@ extension AllTimeViewController: NCWidgetProviding {
         }
 
         tracks.trackExtensionAccessed()
-        fetchData()
+        fetchData(completionHandler: completionHandler)
     }
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
@@ -122,7 +122,7 @@ private extension AllTimeViewController {
         statsValues?.saveData()
     }
 
-    func fetchData() {
+    func fetchData(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         guard let statsRemote = statsRemote() else {
             return
         }
@@ -130,6 +130,7 @@ private extension AllTimeViewController {
         statsRemote.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
             if error != nil {
                 DDLogError("All Time Widget: Error fetching StatsAllTimesInsight: \(String(describing: error?.localizedDescription))")
+                completionHandler(NCUpdateResult.failed)
                 return
             }
 
@@ -143,6 +144,7 @@ private extension AllTimeViewController {
 
                 // TODO: reload table here
             }
+            completionHandler(NCUpdateResult.newData)
         }
     }
 

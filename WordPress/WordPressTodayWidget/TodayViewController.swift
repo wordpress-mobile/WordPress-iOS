@@ -105,7 +105,7 @@ extension TodayViewController: NCWidgetProviding {
         }
 
         tracks.trackExtensionAccessed()
-        fetchData()
+        fetchData(completionHandler: completionHandler)
     }
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
@@ -231,7 +231,7 @@ private extension TodayViewController {
         statsValues?.saveData()
     }
 
-    func fetchData() {
+    func fetchData(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         guard let statsRemote = statsRemote() else {
             return
         }
@@ -239,6 +239,7 @@ private extension TodayViewController {
         statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
             if error != nil {
                 DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
+                completionHandler(NCUpdateResult.failed)
                 return
             }
 
@@ -251,6 +252,7 @@ private extension TodayViewController {
                                                     comments: todayInsight?.commentsCount ?? 0)
                 self.tableView.reloadData()
             }
+            completionHandler(NCUpdateResult.newData)
         }
     }
 
