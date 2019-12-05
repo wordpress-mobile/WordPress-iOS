@@ -9,7 +9,7 @@ extension WPStyleGuide {
         searchBar.autocorrectionType = .no
         searchBar.isTranslucent = false
         searchBar.barTintColor = .neutral(.shade10)
-        searchBar.searchTextField.backgroundColor = .neutral(.shade0)
+        searchBar.searchTextField.backgroundColor = .basicBackground
         searchBar.layer.borderColor = UIColor.neutral(.shade10).cgColor
         searchBar.layer.borderWidth = 1.0
         searchBar.returnKeyType = .done
