@@ -96,7 +96,7 @@ extension MediaEditor: TOCropViewControllerDelegate {
     }
 
     public func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
-        self.cropViewController.dismiss(animated: true)
+        cropViewController.dismiss(animated: true)
         onCancel?()
         releaseCallbacks()
     }
