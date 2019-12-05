@@ -3468,6 +3468,7 @@
 		98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTwoColumnRow.swift; sourceTree = "<group>"; };
 		98D52C3122B1CFEC00831529 /* StatsTwoColumnRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTwoColumnRow.xib; sourceTree = "<group>"; };
 		98E419DD2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+ThisWeekWidget.swift"; sourceTree = "<group>"; };
+		98E419E02399B6C300D8C822 /* ThisWeekWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThisWeekWidgetPrefix.pch; sourceTree = "<group>"; };
 		98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayWidgetStats.swift; sourceTree = "<group>"; };
 		98E58A412361017500E5534B /* Pods_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98E58A432361019300E5534B /* Pods_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7419,6 +7420,7 @@
 				98A3C3082399A57D0048D38D /* Info-Internal.plist */,
 				98A3C2F7239997DA0048D38D /* Info.plist */,
 				983AE84F2399B19200E5B7F6 /* Localizable.strings */,
+				98E419E02399B6C300D8C822 /* ThisWeekWidgetPrefix.pch */,
 				98A3C30C2399A6570048D38D /* WordPressThisWeekWidget-Alpha.entitlements */,
 				98A3C30D2399A6580048D38D /* WordPressThisWeekWidget-Internal.entitlements */,
 				98A3C30B2399A6570048D38D /* WordPressThisWeekWidget.entitlements */,
@@ -14573,6 +14575,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressThisWeekWidget/ThisWeekWidgetPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -14621,6 +14625,8 @@
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressThisWeekWidget/ThisWeekWidgetPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					"$(inherited)",
@@ -14666,6 +14672,8 @@
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressThisWeekWidget/ThisWeekWidgetPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					INTERNAL_BUILD,
@@ -14712,6 +14720,8 @@
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressThisWeekWidget/ThisWeekWidgetPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					INTERNAL_BUILD,
