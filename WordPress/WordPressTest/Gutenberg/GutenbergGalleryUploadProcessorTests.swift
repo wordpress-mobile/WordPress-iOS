@@ -4,7 +4,7 @@ import XCTest
 class GutenbergGalleryUploadProcessorTests: XCTestCase {
 
     let postContent = """
-<!-- wp:gallery {"ids":["-708","-415","-701"],"columns":3,"linkTo":"media"} -->
+<!-- wp:gallery {"ids":[-708,-415,-701],"columns":3,"linkTo":"media"} -->
 <figure class="wp-block-gallery columns-3 is-cropped">
     <ul class="blocks-gallery-grid">
         <li class="blocks-gallery-item">
@@ -44,7 +44,7 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
 """
 
     let postResultContent = """
-<!-- wp:gallery {"columns":3,"ids":["708","415","701"],"linkTo":"media"} -->
+<!-- wp:gallery {"columns":3,"ids":[708,415,701],"linkTo":"media"} -->
 <figure class="wp-block-gallery columns-3 is-cropped">
     <ul class="blocks-gallery-grid">
         <li class="blocks-gallery-item">
@@ -84,7 +84,7 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
 """
 
     struct ImageUploadJob {
-        let uploadID: Int
+        let uploadID: Int32
         let serverID: Int
         let serverURL: String
         let mediaLink: String
@@ -92,9 +92,9 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
 
     func testGutenbergGalleryBlockProcessor() {
         let mediaJobs = [
-            ImageUploadJob(uploadID: -708, serverID: 708, serverURL: "https://files.wordpress.com/708.jpg", mediaLink:"https://files.wordpress.com/?p=708"),
-            ImageUploadJob(uploadID: -415, serverID: 415, serverURL: "https://files.wordpress.com/415.jpg", mediaLink:"https://files.wordpress.com/?p=415"),
-            ImageUploadJob(uploadID: -701, serverID: 701, serverURL: "https://files.wordpress.com/701.jpg", mediaLink:"https://files.wordpress.com/?p=701"),
+            ImageUploadJob(uploadID: -708, serverID: 708, serverURL: "https://files.wordpress.com/708.jpg", mediaLink: "https://files.wordpress.com/?p=708"),
+            ImageUploadJob(uploadID: -415, serverID: 415, serverURL: "https://files.wordpress.com/415.jpg", mediaLink: "https://files.wordpress.com/?p=415"),
+            ImageUploadJob(uploadID: -701, serverID: 701, serverURL: "https://files.wordpress.com/701.jpg", mediaLink: "https://files.wordpress.com/?p=701"),
         ]
 
         var resultContent = postContent

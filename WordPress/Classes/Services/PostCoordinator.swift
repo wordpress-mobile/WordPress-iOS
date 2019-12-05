@@ -305,7 +305,7 @@ class PostCoordinator: NSObject {
             let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             postContent = gutenbergImgPostUploadProcessor.process(postContent)
 
-            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: Int(gutenbergMediaUploadID), serverMediaID: mediaID, remoteURLString: remoteURLStr, mediaLink: mediaLink)
+            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr, mediaLink: mediaLink)
             postContent = gutenbergGalleryPostUploadProcessor.process(postContent)
 
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)

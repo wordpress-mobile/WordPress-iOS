@@ -3,7 +3,7 @@ import Aztec
 
 class GutenbergGalleryUploadProcessor: Processor {
 
-    let mediaUploadID: Int
+    let mediaUploadID: Int32
     let remoteURLString: String
     let serverMediaID: Int
     let mediaLink: String
@@ -12,7 +12,7 @@ class GutenbergGalleryUploadProcessor: Processor {
 
     static let imgClassIDPrefixAttribute = "wp-image-"
 
-    init(mediaUploadID: Int, serverMediaID: Int, remoteURLString: String, mediaLink: String) {
+    init(mediaUploadID: Int32, serverMediaID: Int, remoteURLString: String, mediaLink: String) {
         self.mediaUploadID = mediaUploadID
         self.serverMediaID = serverMediaID
         self.remoteURLString = remoteURLString
@@ -43,7 +43,7 @@ class GutenbergGalleryUploadProcessor: Processor {
         }
 
         let imageIDString = String(imageIDAttribute.dropFirst(ImageKeys.classIDPrefix.count))
-        let imgUploadID = Int(imageIDString)
+        let imgUploadID = Int32(imageIDString)
 
         guard imgUploadID == self.mediaUploadID else {
             return nil
@@ -106,14 +106,14 @@ class GutenbergGalleryUploadProcessor: Processor {
     }
 
     lazy var galleryBlockProcessor = GutenbergBlockProcessor(for: GalleryBlockKeys.name, replacer: { block in
-        guard var ids = block.attributes[GalleryBlockKeys.ids] as? [String],
-            ids.contains(String(self.mediaUploadID)) else {
+        guard var ids = block.attributes[GalleryBlockKeys.ids] as? [Int32],
+            ids.contains(self.mediaUploadID) else {
                 return nil
         }
         var updatedBlock = "<!-- \(GalleryBlockKeys.name) "
         var attributes = block.attributes
-        if let index = ids.firstIndex(of: String(self.mediaUploadID) ) {
-            ids[index] = String(self.serverMediaID)
+        if let index = ids.firstIndex(of: self.mediaUploadID ) {
+            ids[index] = Int32(self.serverMediaID)
         }
         attributes[GalleryBlockKeys.ids] = ids
 
