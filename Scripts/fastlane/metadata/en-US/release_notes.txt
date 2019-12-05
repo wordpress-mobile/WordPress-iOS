@@ -1,4 +1,3 @@
-- With this update, you can internet without the actual internet. Edit and save posts while you’re offline, we’ll automatically upload (or publish) them when your device is back online.
-- Sometimes, the “Me” view would be blank if you logged in with a self-hosted site, which is both (1) a bug and (2) not great for anyone’s self-esteem. That’s fixed, so Me is you again.
-- Sometimes updating a pending post caused the post to be published. All actions starting with P have been straightened out, and that won’t happen anymore – pending posts will remaining pending until you say otherwise.
-- And finally, more Block editor, improvements — it supports image alignment options now.
+- Lots of updates to the mobile block editor in this release give you a bunch of new design and layout tools. Expand the visuals in your posts with the options to insert images from either the Free Photo Library or from other apps. You can also align paragraph blocks now, and the editor supports the preformatted block. And we took care of a small but annoying keyboard glitch that caused hiccups with capitalization in some sentences.
+- The Stats Today widget got an updated design, and you can expand it to display likes and comments along with viewer stats.
+- We found a bug that makes comment moderation on self-hosted sites fail on the first attempt, and then we fixed that bug. Nothing to see here!

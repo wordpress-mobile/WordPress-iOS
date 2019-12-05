@@ -11,14 +11,14 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    #pod 'WordPressShared', '~> 1.8.9-beta.1'
+    pod 'WordPressShared', '~> 1.8.9'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => ''
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> 'ad0cfdd545a0b52de7dfeba1b550961fd6226857'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
 def aztec
@@ -43,8 +43,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.3'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    pod 'WordPressKit', '~> 4.5.4'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/apple_2fa_auth'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -114,6 +114,7 @@ def gutenberg_dependencies(options)
         'react-native-video',
         'RNSVG',
         'ReactNativeDarkMode',
+        'react-native-slider'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -140,7 +141,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'v1.18.0'
+    gutenberg :commit => 'e6ac5711989e9f69d63bf2fd151170330d008323'
 
     ## Third party libraries
     ## =====================
@@ -153,7 +154,7 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.3'
+    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '4.0.0'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
@@ -175,9 +176,8 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.3-beta.2'
+    pod 'WordPressAuthenticator', '~> 1.10.4'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
     aztec
     wordpress_ui

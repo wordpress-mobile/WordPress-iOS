@@ -18,10 +18,7 @@ class PostCompactCellGhostableTests: XCTestCase {
 
     func testShowGhost() {
         XCTAssertFalse(postCell.ghostView.isHidden)
-    }
-
-    func testHideFeaturedImage() {
-        XCTAssertTrue(postCell.featuredImageView.isHidden)
+        XCTAssertTrue(postCell.contentStackView.isHidden)
     }
 
     func testMenuButtonIsNotGhostable() {
@@ -54,6 +51,7 @@ class PostCompactCellGhostableTests: XCTestCase {
         postCell.configure(with: post)
 
         XCTAssertTrue(postCell.ghostView.isHidden)
+        XCTAssertFalse(postCell.contentStackView.isHidden)
     }
 
     func testMenuButtonOpacityAfterConfigure() {
