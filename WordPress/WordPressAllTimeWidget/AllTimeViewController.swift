@@ -137,10 +137,10 @@ private extension AllTimeViewController {
             DDLogDebug("All Time Widget: Fetched StatsAllTimesInsight data.")
 
             DispatchQueue.main.async {
-                self.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount ?? 0,
-                                            visitors: allTimesStats?.visitorsCount ?? 0,
-                                            posts: allTimesStats?.postsCount ?? 0,
-                                            bestViews: allTimesStats?.bestViewsPerDayCount ?? 0)
+                self.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
+                                            visitors: allTimesStats?.visitorsCount,
+                                            posts: allTimesStats?.postsCount,
+                                            bestViews: allTimesStats?.bestViewsPerDayCount)
 
                 // TODO: reload table here
             }

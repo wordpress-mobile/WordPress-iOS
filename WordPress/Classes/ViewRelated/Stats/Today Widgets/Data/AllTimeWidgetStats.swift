@@ -18,11 +18,11 @@ struct AllTimeWidgetStats: Codable {
         case bestViews
     }
 
-    init(views: Int, visitors: Int, posts: Int, bestViews: Int) {
-        self.views = views
-        self.visitors = visitors
-        self.posts = posts
-        self.bestViews = bestViews
+    init(views: Int? = 0, visitors: Int? = 0, posts: Int? = 0, bestViews: Int? = 0) {
+        self.views = views ?? 0
+        self.visitors = visitors ?? 0
+        self.posts = posts ?? 0
+        self.bestViews = bestViews ?? 0
     }
 }
 
@@ -32,7 +32,7 @@ extension AllTimeWidgetStats {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
                 DDLogError("AllTimeWidgetStats: data file '\(dataFileName)' does not exist.")
-                return AllTimeWidgetStats(views: 0, visitors: 0, posts: 0, bestViews: 0)
+                return AllTimeWidgetStats()
         }
 
         let decoder = PropertyListDecoder()
@@ -41,7 +41,7 @@ extension AllTimeWidgetStats {
             return try decoder.decode(AllTimeWidgetStats.self, from: data)
         } catch {
             DDLogError("Failed loading AllTimeWidgetStats data: \(error.localizedDescription)")
-            return AllTimeWidgetStats(views: 0, visitors: 0, posts: 0, bestViews: 0)
+            return AllTimeWidgetStats()
         }
     }
 

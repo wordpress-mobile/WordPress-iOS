@@ -246,10 +246,10 @@ private extension TodayViewController {
             DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
 
             DispatchQueue.main.async {
-                self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount ?? 0,
-                                                    visitors: todayInsight?.visitorsCount ?? 0,
-                                                    likes: todayInsight?.likesCount ?? 0,
-                                                    comments: todayInsight?.commentsCount ?? 0)
+                self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount,
+                                                    visitors: todayInsight?.visitorsCount,
+                                                    likes: todayInsight?.likesCount,
+                                                    comments: todayInsight?.commentsCount)
                 self.tableView.reloadData()
             }
             completionHandler(NCUpdateResult.newData)
