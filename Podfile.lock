@@ -240,7 +240,7 @@ PODS:
     - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
   - WordPressMocks (0.0.6)
-  - WordPressShared (1.8.9):
+  - WordPressShared (1.8.10-beta-1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.5.0)
@@ -315,7 +315,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.10.4)
   - WordPressKit (~> 4.5.4)
   - WordPressMocks (~> 0.0.6)
-  - WordPressShared (~> 1.8.9)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared`, branch `issue/add-deleted-orphan-event`)
   - WordPressUI (~> 1.5.0)
   - WPMediaPicker (~> 1.6.0)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/e6ac5711989e9f69d63bf2fd151170330d008323/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -359,7 +359,6 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
-    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -425,6 +424,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: e6ac5711989e9f69d63bf2fd151170330d008323
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressShared:
+    :branch: issue/add-deleted-orphan-event
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/e6ac5711989e9f69d63bf2fd151170330d008323/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
   ZendeskSDK:
@@ -441,6 +443,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: e6ac5711989e9f69d63bf2fd151170330d008323
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressShared:
+    :commit: ee842d8158365c0914cd6b0e23da25eff970072d
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
     :tag: 4.0.0
@@ -509,7 +514,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: 0ecb8262ffb6507df3c77459d97d729fcdcbab4f
   WordPressKit: 1d365775fac17903a76ad5723bc146ab1739ec82
   WordPressMocks: 5913bd04586a360212e07a8ccbcb36068d4425a3
-  WordPressShared: 914ec1f855d74755e42d76e83c98b2d2d0e66218
+  WordPressShared: d6c81d4285358462de36f743a120bfebf01ce639
   WordPressUI: 4a4adafd2b052e94e4846c0a0203761773dc4fd5
   WPMediaPicker: e5d28197da6b467d4e5975d64a49255977e39455
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
@@ -517,6 +522,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 96bf226bb8c8f7bb78f7314fc6326771117a8d75
+PODFILE CHECKSUM: 1fe2bfdd0bd3c8390e1ab5ad26f6a2a0c7ee9ac7
 
 COCOAPODS: 1.8.4
