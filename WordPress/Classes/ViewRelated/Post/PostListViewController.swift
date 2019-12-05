@@ -163,11 +163,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func configureNavigationButtons() {
+        addButton.accessibilityLabel = "Add new post"
+        postsViewButtonItem.accessibilityLabel = isCompact ? "Switch to expanded list view" : "Switch to compact list view"
+
         navigationItem.rightBarButtonItems = [addButton, postsViewButtonItem]
     }
 
     @objc func togglePostsView() {
         isCompact.toggle()
+        postsViewButtonItem.accessibilityLabel = isCompact ? "Switch to expanded list view" : "Switch to compact list view"
 
         WPAppAnalytics.track(.postListToggleButtonPressed, withProperties: ["mode": isCompact ? Constants.compact: Constants.card])
     }
