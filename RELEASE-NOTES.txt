@@ -1,6 +1,6 @@
 13.9
 -----
-* Stats: added widget to display All-Time stats.
+* Stats: added a Today widget to display All-Time stats.
  
 13.8
 -----
