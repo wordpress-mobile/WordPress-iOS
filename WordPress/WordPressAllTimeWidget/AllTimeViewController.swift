@@ -168,6 +168,33 @@ extension AllTimeViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension AllTimeViewController {
 
+    // MARK: - Launch Containing App
+
+    @IBAction func launchContainingApp() {
+        guard let extensionContext = extensionContext,
+            let containingAppURL = appURL() else {
+                DDLogError("All Time Widget: Unable to get extensionContext or appURL.")
+                return
+        }
+
+        trackAppLaunch()
+        extensionContext.open(containingAppURL, completionHandler: nil)
+    }
+
+    func appURL() -> URL? {
+        let urlString = (siteID != nil) ? (Constants.statsUrl + siteID!.stringValue) : Constants.baseUrl
+        return URL(string: urlString)
+    }
+
+    func trackAppLaunch() {
+        guard let siteID = siteID else {
+            tracks.trackExtensionConfigureLaunched()
+            return
+        }
+
+        tracks.trackExtensionStatsLaunched(siteID.intValue)
+    }
+
     // MARK: - Site Configuration
 
     func retrieveSiteConfiguration() {
@@ -339,6 +366,8 @@ private extension AllTimeViewController {
 
     enum Constants {
         static let noDataLabel = "-"
+        static let baseUrl: String = "\(WPComScheme)://"
+        static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
         static let minRows: Int = 1
         static let maxRows: Int = 2
     }

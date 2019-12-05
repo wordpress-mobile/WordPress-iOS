@@ -19,6 +19,7 @@
                         <connections>
                             <outlet property="dataSource" destination="dmJ-J5-sb0" id="lZ7-Ye-a7Q"/>
                             <outlet property="delegate" destination="dmJ-J5-sb0" id="M6p-fH-Uzu"/>
+                            <outletCollection property="gestureRecognizers" destination="OVJ-q1-B1z" appends="YES" id="57F-T6-8w5"/>
                         </connections>
                     </tableView>
                     <nil key="simulatedTopBarMetrics"/>
@@ -30,6 +31,11 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x26-Qc-pdE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="OVJ-q1-B1z">
+                    <connections>
+                        <action selector="launchContainingApp" destination="dmJ-J5-sb0" id="dmI-ca-JZc"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-226" y="-1014"/>
         </scene>
