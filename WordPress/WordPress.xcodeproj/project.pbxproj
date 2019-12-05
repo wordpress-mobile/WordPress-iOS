@@ -1126,6 +1126,7 @@
 		983002A822FA05D600F03DBB /* AddInsightTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983002A722FA05D600F03DBB /* AddInsightTableViewController.swift */; };
 		983AE84C2399AC5B00E5B7F6 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		983AE84D2399AC6B00E5B7F6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
+		983AE8512399B19200E5B7F6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 983AE84F2399B19200E5B7F6 /* Localizable.strings */; };
 		983DBBAA22125DD500753988 /* StatsTableFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 983DBBA822125DD300753988 /* StatsTableFooter.xib */; };
 		983DBBAB22125DD500753988 /* StatsTableFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983DBBA922125DD300753988 /* StatsTableFooter.swift */; };
 		98458CB821A39D350025D232 /* StatsNoDataRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98458CB721A39D350025D232 /* StatsNoDataRow.swift */; };
@@ -3378,6 +3379,7 @@
 		9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsDetailsViewModel.swift; sourceTree = "<group>"; };
 		982A4C3420227D6700B5518E /* NoResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsViewController.swift; sourceTree = "<group>"; };
 		983002A722FA05D600F03DBB /* AddInsightTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInsightTableViewController.swift; sourceTree = "<group>"; };
+		983AE8502399B19200E5B7F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		983DBBA822125DD300753988 /* StatsTableFooter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTableFooter.xib; sourceTree = "<group>"; };
 		983DBBA922125DD300753988 /* StatsTableFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTableFooter.swift; sourceTree = "<group>"; };
 		98458CB721A39D350025D232 /* StatsNoDataRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsNoDataRow.swift; sourceTree = "<group>"; };
@@ -7404,6 +7406,7 @@
 				98A3C3072399A57D0048D38D /* Info-Alpha.plist */,
 				98A3C3082399A57D0048D38D /* Info-Internal.plist */,
 				98A3C2F7239997DA0048D38D /* Info.plist */,
+				983AE84F2399B19200E5B7F6 /* Localizable.strings */,
 				98A3C30C2399A6570048D38D /* WordPressThisWeekWidget-Alpha.entitlements */,
 				98A3C30D2399A6580048D38D /* WordPressThisWeekWidget-Internal.entitlements */,
 				98A3C30B2399A6570048D38D /* WordPressThisWeekWidget.entitlements */,
@@ -10283,6 +10286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98A3C3022399A19F0048D38D /* MainInterface.storyboard in Resources */,
+				983AE8512399B19200E5B7F6 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12670,6 +12674,14 @@
 			);
 			name = InfoPlist.strings;
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		983AE84F2399B19200E5B7F6 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				983AE8502399B19200E5B7F6 /* Base */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		E1B6A9CE1E54B6B2008FD47E /* Localizable.strings */ = {
