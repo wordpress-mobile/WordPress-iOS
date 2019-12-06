@@ -47,8 +47,8 @@
 
     [NSLayoutConstraint activateConstraints:@[
                                               bottomConstraint,
-                                              [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:margins.left],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-margins.right]
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:margins.left],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.trailingAnchor constant:-margins.right]
                                               ]];
 
     _stackView = stackView;
@@ -89,6 +89,7 @@
     margins.right = MenusDesignDefaultContentSpacing / 4.0;
     margins.bottom = margins.top;
     textFieldContainerView.layoutMargins = margins;
+    textFieldContainerView.insetsLayoutMarginsFromSafeArea = YES;
 
     UILayoutGuide *marginGuide = textFieldContainerView.layoutMarginsGuide;
 
