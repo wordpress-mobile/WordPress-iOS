@@ -410,6 +410,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         insertItem.titleLabel?.font = Fonts.mediaPickerInsert
         insertItem.tintColor = .primary
         insertItem.setTitleColor(.primary, for: .normal)
+        insertItem.accessibilityLabel = Constants.mediaPickerInsertAccessibilityLabel
 
         return insertItem
     }()
@@ -3293,6 +3294,7 @@ extension AztecPostViewController {
         static let toolbarHeight            = CGFloat(44.0)
         static let mediaPickerInsertTextDefault = NSLocalizedString("Insert", comment: "Default button title used in media picker to insert media (photos / videos) into a post.")
         static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
+        static let mediaPickerInsertAccessibilityLabel = NSLocalizedString("Insert selected", comment: "Default accessibility label for the media picker insert button.")
         static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
         static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
