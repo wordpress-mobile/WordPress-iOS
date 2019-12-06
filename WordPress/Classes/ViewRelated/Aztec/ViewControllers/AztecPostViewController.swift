@@ -415,6 +415,13 @@ class AztecPostViewController: UIViewController, PostEditor {
         return insertItem
     }()
 
+    /// Indicates whether the `insertToolbarItem` is always shown in `FormatBarMode.media` mode.
+    ///
+    /// If true, the insertToolbarItem is enabled and disabled instead of shown and hidden.
+    private var alwaysDisplayInsertToolbarItem: Bool {
+        UIAccessibility.isVoiceOverRunning
+    }
+
     fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
 
     fileprivate var originalLeadingBarButtonGroup = [UIBarButtonItemGroup]()
@@ -2048,6 +2055,7 @@ extension AztecPostViewController {
         case .media:
             toolbar.setDefaultItems(mediaItemsForToolbar,
                                     overflowItems: [])
+            setupFormatBarAccessibilityForMediaMode(toolbar)
         }
     }
 
@@ -3206,8 +3214,15 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         }
 
         if assetCount == 0 {
-            formatBar.trailingItem = nil
+            insertToolbarItem.isEnabled = false
+            insertToolbarItem.setTitle(Constants.mediaPickerInsertTextDefault, for: .normal)
+
+            if !alwaysDisplayInsertToolbarItem {
+                formatBar.trailingItem = nil
+            }
         } else {
+            insertToolbarItem.isEnabled = true
+
             insertToolbarItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
             insertToolbarItem.accessibilityIdentifier = "insert_media_button"
 
@@ -3215,6 +3230,15 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
                 formatBar.trailingItem = insertToolbarItem
             }
         }
+    }
+
+    /// Called once whenever the `formatBar` is switched from text to media mode.
+    private func setupFormatBarAccessibilityForMediaMode(_ formatBar: Aztec.FormatBar) {
+        if alwaysDisplayInsertToolbarItem {
+            formatBar.trailingItem = insertToolbarItem
+        }
+        
+        updateFormatBarInsertAssetCount()
     }
 }
 
