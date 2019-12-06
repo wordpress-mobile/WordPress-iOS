@@ -411,6 +411,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         insertItem.tintColor = .primary
         insertItem.setTitleColor(.primary, for: .normal)
         insertItem.accessibilityLabel = Constants.mediaPickerInsertAccessibilityLabel
+        insertItem.accessibilityIdentifier = "insert_media_button"
 
         return insertItem
     }()
@@ -3216,7 +3217,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         if assetCount == 0 {
             insertToolbarItem.isEnabled = false
             insertToolbarItem.accessibilityValue = nil
-            
+
             insertToolbarItem.setTitle(Constants.mediaPickerInsertTextDefault, for: .normal)
 
             if !alwaysDisplayInsertToolbarItem {
@@ -3227,7 +3228,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             insertToolbarItem.accessibilityValue = "\(assetCount)"
 
             insertToolbarItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
-            insertToolbarItem.accessibilityIdentifier = "insert_media_button"
 
             if formatBar.trailingItem != insertToolbarItem {
                 formatBar.trailingItem = insertToolbarItem
