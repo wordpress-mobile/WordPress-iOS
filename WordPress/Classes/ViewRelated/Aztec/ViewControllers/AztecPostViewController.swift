@@ -3291,6 +3291,7 @@ extension AztecPostViewController {
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
         static let toolbarHeight            = CGFloat(44.0)
+        static let mediaPickerInsertTextDefault = NSLocalizedString("Insert", comment: "Default button title used in media picker to insert media (photos / videos) into a post.")
         static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
         static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
         static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
