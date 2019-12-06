@@ -288,6 +288,7 @@ private extension TodayViewController {
             return UITableViewCell()
         }
 
+        cell.configure(for: .today)
         return cell
     }
 

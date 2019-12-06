@@ -288,6 +288,7 @@ private extension AllTimeViewController {
             return UITableViewCell()
         }
 
+        cell.configure(for: .allTime)
         return cell
     }
 
