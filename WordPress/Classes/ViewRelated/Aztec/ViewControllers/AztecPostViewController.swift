@@ -3215,6 +3215,8 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
         if assetCount == 0 {
             insertToolbarItem.isEnabled = false
+            insertToolbarItem.accessibilityValue = nil
+            
             insertToolbarItem.setTitle(Constants.mediaPickerInsertTextDefault, for: .normal)
 
             if !alwaysDisplayInsertToolbarItem {
@@ -3222,6 +3224,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             }
         } else {
             insertToolbarItem.isEnabled = true
+            insertToolbarItem.accessibilityValue = "\(assetCount)"
 
             insertToolbarItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
             insertToolbarItem.accessibilityIdentifier = "insert_media_button"
@@ -3237,7 +3240,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         if alwaysDisplayInsertToolbarItem {
             formatBar.trailingItem = insertToolbarItem
         }
-        
+
         updateFormatBarInsertAssetCount()
     }
 }
