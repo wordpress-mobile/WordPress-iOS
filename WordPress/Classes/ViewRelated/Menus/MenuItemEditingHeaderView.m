@@ -8,7 +8,6 @@
 
 @property (nonatomic, strong, readonly) UIStackView *stackView;
 @property (nonatomic, strong, readonly) NSLayoutConstraint *stackViewTopConstraint;
-@property (nonatomic, strong, readonly) UIView *textFieldContainerView;
 @property (nonatomic, strong, readonly) UIImageView *iconView;
 
 @end
@@ -79,8 +78,6 @@
 
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:textFieldContainerView];
-
-    _textFieldContainerView = textFieldContainerView;
 
     UIEdgeInsets margins = UIEdgeInsetsZero;
     margins.top = [self defaultStackDesignMargin];
