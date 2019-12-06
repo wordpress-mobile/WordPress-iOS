@@ -99,8 +99,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         case expectedSecondaryAction = 1
     }
 
-    private var mediaEditor: MediaEditor?
-
     /// The editor view.
     ///
     fileprivate(set) lazy var editorView: Aztec.EditorView = {
@@ -3444,22 +3442,22 @@ extension AztecPostViewController {
 
         WPAnalytics.track(.mediaEditorShown)
 
-        mediaEditor = MediaEditor(image: image)
+        let mediaEditor = MediaEditor(image)
 
-        mediaEditor?.doneTextButton.setTitle(NSLocalizedString("Done", comment: "Done editing an image"), for: .normal)
-        mediaEditor?.cancelTextButton.setTitle(NSLocalizedString("Cancel", comment: "Cancel editing an image"), for: .normal)
-        mediaEditor?.cancelTextButton.tintColor = .white
-        mediaEditor?.resetButton.setImage(Gridicon.iconOfType(.undo), for: .normal)
-        mediaEditor?.doneIconButton.setImage(Gridicon.iconOfType(.checkmark), for: .normal)
-        mediaEditor?.cancelIconButton.setImage(Gridicon.iconOfType(.cross), for: .normal)
-        mediaEditor?.cancelIconButton.tintColor = .white
-        mediaEditor?.rotateClockwiseButton?.setImage(Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(), for: .normal)
-        mediaEditor?.rotateCounterclockwiseButtonHidden = true
+        mediaEditor.hub.doneTextButton.setTitle(NSLocalizedString("Done", comment: "Done editing an image"), for: .normal)
+        mediaEditor.hub.cancelTextButton.setTitle(NSLocalizedString("Cancel", comment: "Cancel editing an image"), for: .normal)
+        mediaEditor.hub.cancelTextButton.tintColor = .white
+        mediaEditor.hub.resetButton.setImage(Gridicon.iconOfType(.undo), for: .normal)
+        mediaEditor.hub.doneIconButton.setImage(Gridicon.iconOfType(.checkmark), for: .normal)
+        mediaEditor.hub.cancelIconButton.setImage(Gridicon.iconOfType(.cross), for: .normal)
+        mediaEditor.hub.cancelIconButton.tintColor = .white
+        mediaEditor.hub.rotateClockwiseButton?.setImage(Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(), for: .normal)
+        mediaEditor.hub.rotateCounterclockwiseButtonHidden = true
 
-        self.mediaEditor?.edit(from: self,
+        mediaEditor.edit(from: self,
                               onFinishEditing: { image, actions in
                                 self.replace(attachment: imageAttachment, with: image, actions: actions)
-                                self.mediaEditor?.dismiss(animated: true)
+                                mediaEditor.dismiss(animated: true)
         })
     }
 

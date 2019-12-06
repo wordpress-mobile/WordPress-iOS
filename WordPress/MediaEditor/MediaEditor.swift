@@ -1,103 +1,22 @@
 import UIKit
-import TOCropViewController
 
-public class MediaEditor: NSObject {
+public class MediaEditor: UINavigationController {
+    var hub: MediaEditorCrop
 
-    let cropViewControllerFactory: (UIImage) -> TOCropViewController
-
-    private lazy var cropViewController: TOCropViewController = {
-        return cropViewControllerFactory(image)
-    }()
-    private var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
-    private var onCancel: (() -> ())?
-
-    public let image: UIImage
-
-    public var doneTextButton: UIButton {
-        return cropViewController.toolbar.doneTextButton
+    init(_ image: UIImage) {
+        hub = MediaEditorCrop(image: image)
+        super.init(rootViewController: UIViewController())
+        modalTransitionStyle = .crossDissolve
+        modalPresentationStyle = .fullScreen
+        navigationBar.isHidden = true
     }
 
-    public var cancelTextButton: UIButton {
-        return cropViewController.toolbar.cancelTextButton
-    }
-
-    public var resetButton: UIButton {
-        return cropViewController.toolbar.resetButton
-    }
-
-    public var doneIconButton: UIButton {
-        return cropViewController.toolbar.doneIconButton
-    }
-
-    public var cancelIconButton: UIButton {
-        return cropViewController.toolbar.cancelIconButton
-    }
-
-    public var rotateClockwiseButton: UIButton? {
-        return cropViewController.toolbar.rotateClockwiseButton
-    }
-
-    public var rotateCounterclockwiseButton: UIButton? {
-        return cropViewController.toolbar.rotateCounterclockwiseButton
-    }
-
-    public var rotateCounterclockwiseButtonHidden: Bool {
-        get {
-            return cropViewController.toolbar.rotateCounterclockwiseButtonHidden
-        }
-
-        set {
-            cropViewController.toolbar.rotateCounterclockwiseButtonHidden = newValue
-        }
-    }
-
-    public var rotateClockwiseButtonHidden: Bool {
-        get {
-            return cropViewController.toolbar.rotateClockwiseButtonHidden
-        }
-
-        set {
-            cropViewController.toolbar.rotateClockwiseButtonHidden = newValue
-        }
-    }
-
-    public init(cropViewControllerFactory: @escaping (UIImage) -> TOCropViewController = TOCropViewController.init, image: UIImage) {
-        self.cropViewControllerFactory = cropViewControllerFactory
-        self.image = image
-        super.init()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     public func edit(from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
-        self.onFinishEditing = onFinishEditing
-        self.onCancel = onCancel
-        cropViewController.delegate = self
-        viewController?.present(cropViewController, animated: true)
-    }
-
-    public func dismiss(animated: Bool, completion: (() -> ())? = nil) {
-        cropViewController.dismiss(animated: animated, completion: completion)
-    }
-
-    private func releaseCallbacks() {
-        onFinishEditing = nil
-        onCancel = nil
-    }
-
-}
-
-// MARK: - TOCropViewControllerDelegate
-
-extension MediaEditor: TOCropViewControllerDelegate {
-
-    public func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
-        let actions = cropViewController.actions
-        onFinishEditing?(image, actions)
-        releaseCallbacks()
-    }
-
-    public func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
-        cropViewController.dismiss(animated: true)
-        onCancel?()
-        releaseCallbacks()
+        viewController?.present(self, animated: true)
+        hub.edit(from: self, onFinishEditing: onFinishEditing, onCancel: onCancel)
     }
 }
