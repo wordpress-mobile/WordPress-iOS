@@ -43,15 +43,10 @@
 
     [self addSubview:stackView];
 
-    NSLayoutConstraint *topConstraint = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:margins.top];
-    topConstraint.priority = UILayoutPriorityDefaultHigh;
-    _stackViewTopConstraint  = topConstraint;
-
     NSLayoutConstraint *bottomConstraint = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-margins.bottom];
     bottomConstraint.priority = UILayoutPriorityDefaultHigh;
 
     [NSLayoutConstraint activateConstraints:@[
-                                              topConstraint,
                                               bottomConstraint,
                                               [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:margins.left],
                                               [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-margins.right]
