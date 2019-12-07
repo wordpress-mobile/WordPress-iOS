@@ -60,6 +60,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
     @IBOutlet fileprivate weak var commentActionButton: UIButton!
     @IBOutlet fileprivate weak var menuButton: UIButton!
+    @IBOutlet fileprivate weak var reblogButton: UIButton!
 
     // Layout Constraints
     @IBOutlet fileprivate weak var featuredMediaHeightConstraint: NSLayoutConstraint!
@@ -229,6 +230,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     fileprivate func setupSaveForLaterButton() {
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
+    }
+
+    fileprivate func setupReblogButton() {
+
     }
 
     fileprivate func setupMenuButton() {
