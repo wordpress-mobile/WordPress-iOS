@@ -89,6 +89,11 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         dismiss(animated: true, completion: nil)
     }
 
+    override func accessibilityPerformEscape() -> Bool {
+        dismiss(animated: true, completion: nil)
+        return true
+    }
+
     @objc func publishImmediately() {
         coordinator?.updated(nil)
         navigationController?.dismiss(animated: true, completion: nil)
