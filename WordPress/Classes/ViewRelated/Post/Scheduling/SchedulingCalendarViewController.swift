@@ -113,7 +113,9 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
     }
 
     @objc private func resetNavigationButtons() {
-        let includeCloseButton = traitCollection.verticalSizeClass == .compact || isVoiceOverOrSwitchControlRunning
+        let includeCloseButton = traitCollection.verticalSizeClass == .compact ||
+            (isVoiceOverOrSwitchControlRunning && navigationController?.modalPresentationStyle != .popover)
+
         if includeCloseButton {
             navigationItem.leftBarButtonItems = [closeButton, publishButton]
         } else {
