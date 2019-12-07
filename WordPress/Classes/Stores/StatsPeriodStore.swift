@@ -127,7 +127,12 @@ struct PeriodStoreState {
 
     // Period overview
 
-    var summary: StatsSummaryTimeIntervalData?
+    var summary: StatsSummaryTimeIntervalData? {
+        didSet {
+            storeThisWeekWidgetData()
+        }
+    }
+
     var summaryStatus: StoreFetchingStatus = .idle
     var summaryLikesStatus: StoreFetchingStatus = .idle
 
@@ -1333,4 +1338,58 @@ extension StatsPeriodStore {
         }
         return status
     }
+}
+
+// MARK: - Widget Data
+
+private extension PeriodStoreState {
+
+    var maxDaysToDisplay: Int {
+        return 7
+    }
+
+    func storeThisWeekWidgetData() {
+        // Only store data if:
+        // - The widget is using the current site
+        // - The summary period is days
+        // - The summary period end date is the current date
+
+        guard widgetUsingCurrentSite(),
+            summary?.period == .day,
+            summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate() else {
+                return
+        }
+
+        // Include an extra day. It's needed to get the dailyChange for the last day.
+        let summaryData = summary?.summaryData.reversed().prefix(maxDaysToDisplay + 1) ?? []
+        var days = [ThisWeekWidgetDay]()
+
+        for index in 0..<maxDaysToDisplay {
+            guard index + 1 <= summaryData.endIndex else {
+                break
+            }
+
+            let currentDay = summaryData[index]
+            let previousDay = summaryData[index + 1]
+            let dailyChange = currentDay.viewsCount - previousDay.viewsCount
+
+            let widgetData = ThisWeekWidgetDay(date: currentDay.periodStartDate,
+                                               viewsCount: currentDay.viewsCount,
+                                               dailyChange: dailyChange)
+            days.append(widgetData)
+        }
+
+        let widgetData = ThisWeekWidgetStats(days: days)
+        widgetData.saveData()
+    }
+
+    func widgetUsingCurrentSite() -> Bool {
+        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
+            let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
+            widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
+                return false
+        }
+        return true
+    }
+
 }
