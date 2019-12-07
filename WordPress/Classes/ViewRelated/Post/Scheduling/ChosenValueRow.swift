@@ -8,7 +8,12 @@ class ChosenValueRow: UIView {
         static let rowInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 
-    let titleLabel = UILabel()
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.accessibilityTraits = .header
+        return label
+    }()
+    
     let detailLabel = UILabel()
 
     override init(frame: CGRect) {
