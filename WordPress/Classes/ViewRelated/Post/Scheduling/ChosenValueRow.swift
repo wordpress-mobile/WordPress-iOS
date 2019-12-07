@@ -13,7 +13,7 @@ class ChosenValueRow: UIView {
         label.accessibilityTraits = .header
         return label
     }()
-    
+
     let detailLabel = UILabel()
 
     override init(frame: CGRect) {
