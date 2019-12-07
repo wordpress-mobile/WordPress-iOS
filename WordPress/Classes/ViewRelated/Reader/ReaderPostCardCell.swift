@@ -60,7 +60,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
     @IBOutlet fileprivate weak var commentActionButton: UIButton!
     @IBOutlet fileprivate weak var menuButton: UIButton!
-    @IBOutlet fileprivate weak var reblogButton: UIButton!
+    @IBOutlet fileprivate weak var reblogActionButton: UIButton!
 
     // Layout Constraints
     @IBOutlet fileprivate weak var featuredMediaHeightConstraint: NSLayoutConstraint!
@@ -158,7 +158,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         setupSaveForLaterButton()
         setupCommentActionButton()
         setupLikeActionButton()
-
+        setupReblogActionButton()
         // Buttons must be set up before applying styles,
         // as this tints the images used in the buttons
         applyStyles()
@@ -232,8 +232,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
     }
 
-    fileprivate func setupReblogButton() {
-
+    fileprivate func setupReblogActionButton() {
+        WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
     }
 
     fileprivate func setupMenuButton() {
@@ -251,7 +251,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             visitButton,
             likeActionButton,
             commentActionButton,
-            saveForLaterButton]
+            saveForLaterButton,
+            reblogActionButton]
         for button in buttonsToAdjust {
             button.flipInsetsForRightToLeftLayoutDirection()
         }
@@ -412,14 +413,16 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             resetActionButton(commentActionButton)
             resetActionButton(likeActionButton)
             resetActionButton(saveForLaterButton)
+            resetActionButton(reblogActionButton)
             return
         }
 
+        configureSaveForLaterButton()
         configureCommentActionButton()
         configureLikeActionButton()
-        configureActionButtonsInsets()
+        configureReblogActionButton()
 
-        configureSaveForLaterButton()
+        configureActionButtonsInsets()
     }
 
     fileprivate func resetActionButton(_ button: UIButton) {
@@ -506,6 +509,26 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         saveForLaterButton.isSelected = postIsSavedForLater
     }
 
+    fileprivate func configureReblogActionButton() {
+        reblogActionButton.isHidden = !shouldShowReblogActionButton
+    }
+
+    fileprivate var shouldShowReblogActionButton: Bool {
+        guard FeatureFlag.postReblogging.enabled else {
+            return false
+        }
+        // No post content -> nothing to reblog
+        guard contentProvider != nil else {
+            return false
+        }
+        // User not logged in -> User cannot reblog
+        guard loggedInActionVisibility.isEnabled else {
+            return false
+        }
+
+        return true
+    }
+
     fileprivate func configureButtonTitles() {
         guard let provider = contentProvider else {
             return
@@ -521,6 +544,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
             saveForLaterButton.setTitle("", for: .normal)
+            reblogActionButton.setTitle("", for: .normal)
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
@@ -529,6 +553,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             commentActionButton.setTitle(commentTitle, for: .normal)
 
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
         }
     }
 

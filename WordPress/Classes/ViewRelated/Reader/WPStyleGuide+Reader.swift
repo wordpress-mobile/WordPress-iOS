@@ -298,6 +298,26 @@ extension WPStyleGuide {
         button.setTitle(savedTitle, for: [.highlighted, .selected])
     }
 
+    /// Applies the reblog button style to the button passed as an argument
+    /// - Parameter button: the button to apply the style to
+    @objc public class func applyReaderReblogActionButtonStyle(_ button: UIButton) {
+        let size = Gridicon.defaultSize
+        let icon = Gridicon.iconOfType(.reblog, withSize: size)
+
+        button.setImage(icon, for: .normal)
+        
+        WPStyleGuide.applyReaderReblogActionButtonTitle(button)
+        WPStyleGuide.applyReaderActionButtonStyle(button)
+    }
+
+    /// Applies the reblog button title to the button passed as an argument
+    /// - Parameter button: the button to apply the title to
+    @objc public class func applyReaderReblogActionButtonTitle(_ button: UIButton) {
+        let title = NSLocalizedString("Reblog", comment: "Text for the 'Reblog' button.")
+        button.setTitle(title, for: .normal)
+        button.setTitle(title, for: .highlighted)
+    }
+
     @objc public class func likeCountForDisplay(_ count: Int) -> String {
         let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
         let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
