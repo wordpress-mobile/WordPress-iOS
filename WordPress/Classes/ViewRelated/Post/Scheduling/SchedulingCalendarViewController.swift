@@ -45,7 +45,14 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         return calendarMonthView
     }()
 
-    private lazy var closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.closeButtonPressed))
+    private lazy var closeButton: UIBarButtonItem = {
+        let item = UIBarButtonItem(image: Gridicon.iconOfType(.cross),
+                                   style: .plain,
+                                   target: self,
+                                   action: #selector(closeButtonPressed))
+        item.accessibilityLabel = NSLocalizedString("Close", comment: "Accessibility label for the date picker's close button.")
+        return item
+    }()
     private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
 
     override func viewDidLoad() {
