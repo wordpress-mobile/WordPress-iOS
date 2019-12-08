@@ -525,7 +525,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         guard loggedInActionVisibility.isEnabled else {
             return false
         }
-
         return true
     }
 
@@ -673,6 +672,7 @@ extension ReaderPostCardCell: Accessible {
         prepareMenuForVoiceOver()
         prepareVisitForVoiceOver()
         prepareFollowButtonForVoiceOver()
+        prepareReblogForVoiceOver()
     }
 
     private func prepareCardForVoiceOver() {
@@ -816,6 +816,12 @@ extension ReaderPostCardCell: Accessible {
         visitButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
+    private func prepareReblogForVoiceOver() {
+        reblogActionButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
+        reblogActionButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
+        reblogActionButton.accessibilityTraits = UIAccessibilityTraits.button
+    }
+
     func prepareFollowButtonForVoiceOver() {
         if hidesFollowButton {
             return
@@ -901,5 +907,9 @@ extension ReaderPostCardCell {
 
     func getVisitButtonForTesting() -> UIButton {
         return visitButton
+    }
+
+    func getReblogButtonForTesting() -> UIButton {
+        return reblogActionButton
     }
 }
