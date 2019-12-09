@@ -4,7 +4,7 @@ import Nimble
 @testable import WordPress
 
 class NullBlogPropertySanitizerTests: XCTestCase {
-    private var keyValueStore: KeyValueStore!
+    private var keyValueStore: StubKeyValueDatabase!
     private var nullBlogPropertySanitizer: NullBlogPropertySanitizer!
 
     private var context: NSManagedObjectContext!
@@ -16,7 +16,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         context = TestContextManager().mainContext
-        keyValueStore = KeyValueStore()
+        keyValueStore = StubKeyValueDatabase()
         nullBlogPropertySanitizer = NullBlogPropertySanitizer(store: keyValueStore, context: context)
     }
 
@@ -33,7 +33,7 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 
         nullBlogPropertySanitizer.sanitize()
 
-        expect(self.keyValueStore.setCalledWith?.description).toEventually(equal(currentBuildVersion))
+        expect(self.keyValueStore.lastSanitizationVersionNumber).to(equal(currentBuildVersion))
     }
 
     func testDoesntChangeVersionWhenSanitizationIsNotNeeded() {
@@ -43,18 +43,22 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 
         expect(self.keyValueStore.setCalledWith).to(beNil())
     }
-
 }
 
-private class KeyValueStore: UserDefaults {
-    var lastSanitizationVersionNumber: String?
-    private(set) var setCalledWith: String?
+private class StubKeyValueDatabase: EphemeralKeyValueDatabase {
+    private(set) var setCalledWith: Any?
 
-    override func string(forKey defaultName: String) -> String? {
-        return lastSanitizationVersionNumber!
+    var lastSanitizationVersionNumber: String? {
+        get {
+            object(forKey: NullBlogPropertySanitizer.lastSanitizationVersionNumber) as? String
+        }
+        set {
+            set(newValue, forKey: NullBlogPropertySanitizer.lastSanitizationVersionNumber)
+        }
     }
 
-    override func set(_ value: Any?, forKey defaultName: String) {
-        setCalledWith = value as? String
+    override func set(_ value: Any?, forKey aKey: String) {
+        super.set(value, forKey: aKey)
+        setCalledWith = value
     }
 }
