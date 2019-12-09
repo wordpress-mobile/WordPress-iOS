@@ -7451,8 +7451,8 @@
 		989064F9237CC1A300218CD2 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				98F93181239AF64800E4E96E /* ThisWeekWidgetStats.swift */,
 				98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */,
+				98F93181239AF64800E4E96E /* ThisWeekWidgetStats.swift */,
 				98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */,
 			);
 			path = Data;
