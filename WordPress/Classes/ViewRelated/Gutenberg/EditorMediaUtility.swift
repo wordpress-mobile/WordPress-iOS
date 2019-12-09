@@ -7,8 +7,8 @@ class EditorMediaUtility {
         static let placeholderDocumentLink = URL(string: "documentUploading://")!
     }
 
-    func placeholderImage(for attachment: NSTextAttachment, size: CGSize) -> UIImage {
-        let icon: UIImage
+    func placeholderImage(for attachment: NSTextAttachment, size: CGSize, tintColor: UIColor?) -> UIImage {
+        var icon: UIImage
         switch attachment {
         case let imageAttachment as ImageAttachment:
             if imageAttachment.url == Constants.placeholderDocumentLink {
@@ -21,7 +21,9 @@ class EditorMediaUtility {
         default:
             icon = Gridicon.iconOfType(.attachment, withSize: size)
         }
-
+        if #available(iOS 13.0, *), let color = tintColor {
+            icon = icon.withTintColor(color)
+        }
         icon.addAccessibilityForAttachment(attachment)
         return icon
     }
