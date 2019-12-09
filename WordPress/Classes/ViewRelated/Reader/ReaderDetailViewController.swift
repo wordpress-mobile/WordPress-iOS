@@ -1649,3 +1649,12 @@ private extension ReaderDetailViewController {
         WPAnalytics.track(stat, withProperties: properties)
     }
 }
+
+// MARK: - Testing
+
+extension ReaderDetailViewController {
+    // Returns the reblogButton instance for testing
+    func getReblogButtonForTesting() -> UIButton {
+        return reblogButton
+    }
+}
