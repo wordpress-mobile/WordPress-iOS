@@ -924,7 +924,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     fileprivate func configureLikeActionButton(_ animated: Bool = false) {
-        
         likeButton.isEnabled = ReaderHelpers.isLoggedIn()
         // as by design spec, only display like counts
         let likeCount = post?.likeCount()?.intValue ?? 0
