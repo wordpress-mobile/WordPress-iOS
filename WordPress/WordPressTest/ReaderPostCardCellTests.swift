@@ -189,10 +189,16 @@ final class ReaderPostCardCellTests: XCTestCase {
     }
 
     func testReblogActionButonMathchesExpectation() {
+        guard FeatureFlag.postReblogging.enabled else {
+            return
+        }
         XCTAssertEqual(cell?.getReblogButtonForTesting().accessibilityLabel, TestConstants.reblogLabel, "Incorrect accessibility label: Reblog button")
     }
 
     func testReblogButtonIsVisible() {
+        guard FeatureFlag.postReblogging.enabled else {
+            return
+        }
         guard let button = cell?.getReblogButtonForTesting() else {
             XCTFail("Reblog button not found.")
             return
@@ -201,6 +207,9 @@ final class ReaderPostCardCellTests: XCTestCase {
     }
 
     func testReblobButtonNotVisibleWithNoLoggedInUser() {
+        guard FeatureFlag.postReblogging.enabled else {
+            return
+        }
         cell?.loggedInActionVisibility = .visible(enabled: false)
         cell?.configureCell(mock!)
 

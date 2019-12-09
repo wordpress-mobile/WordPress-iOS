@@ -158,7 +158,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         setupSaveForLaterButton()
         setupCommentActionButton()
         setupLikeActionButton()
-        setupReblogActionButton()
+        if FeatureFlag.postReblogging.enabled {
+            setupReblogActionButton()
+        }
+
         // Buttons must be set up before applying styles,
         // as this tints the images used in the buttons
         applyStyles()
@@ -544,10 +547,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             commentActionButton.setTitle(commentTitle, for: .normal)
             if FeatureFlag.postReblogging.enabled {
                 WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
+                WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
             } else {
                 saveForLaterButton.setTitle("", for: .normal)
             }
-            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
@@ -556,7 +559,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             commentActionButton.setTitle(commentTitle, for: .normal)
 
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
-            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
+            if FeatureFlag.postReblogging.enabled {
+                WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
+            }
+
         }
     }
 
@@ -676,7 +682,9 @@ extension ReaderPostCardCell: Accessible {
         prepareMenuForVoiceOver()
         prepareVisitForVoiceOver()
         prepareFollowButtonForVoiceOver()
-        prepareReblogForVoiceOver()
+        if FeatureFlag.postReblogging.enabled {
+            prepareReblogForVoiceOver()
+        }
     }
 
     private func prepareCardForVoiceOver() {

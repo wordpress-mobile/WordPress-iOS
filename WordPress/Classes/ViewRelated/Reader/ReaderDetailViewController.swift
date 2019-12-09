@@ -542,7 +542,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         if !FeatureFlag.postReblogging.enabled {
             // this becomes redundant, as saveForLaterButton does not have a label anymore
             // and applyReaderActionButtonStyle() is called by applyReaderSaveForLaterButtonStyle
-            // which in turn is called by configureSaveForLaterButton
+            // which in turn is called by configureSaveForLaterButton. Same considerations for
+            // reblog button
             WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
         }
 
@@ -885,6 +886,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 configureCommentActionButton()
             }
         }
+        // Show reblog only if logged in
         if ReaderHelpers.isLoggedIn() {
             configureReblogButton()
         }
@@ -942,10 +944,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     /// Uses the configuration in WPStyleGuide for the reblog button
     fileprivate func configureReblogButton() {
-        if FeatureFlag.postReblogging.enabled {
-            reblogButton.isHidden = false
-            WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
+        guard FeatureFlag.postReblogging.enabled else {
+            return
         }
+        reblogButton.isHidden = false
+        WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
     }
 
     fileprivate func playLikeButtonAnimation() {
@@ -1522,6 +1525,9 @@ extension ReaderDetailViewController: Accessible {
         prepareHeaderForVoiceOver()
         prepareContentForVoiceOver()
         prepareActionButtonsForVoiceOver()
+        if FeatureFlag.postReblogging.enabled {
+            prepareReblogForVoiceOver()
+        }
 
         NotificationCenter.default.addObserver(self,
             selector: #selector(setBarsAsVisibleIfVoiceOverIsEnabled),
@@ -1592,6 +1598,12 @@ extension ReaderDetailViewController: Accessible {
         let isSavedForLater = post?.isSavedForLater ?? false
         saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
         saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
+    }
+
+    private func prepareReblogForVoiceOver() {
+        reblogButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
+        reblogButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
+        reblogButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 }
 

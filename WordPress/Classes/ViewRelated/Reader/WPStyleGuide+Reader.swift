@@ -289,6 +289,9 @@ extension WPStyleGuide {
         applyReaderActionButtonStyle(button)
     }
 
+    /// Applies the save for later button style to the button passed as an argument
+    /// - Parameter button: the button to apply the style to
+    /// - Parameter showTitle: if set to true, will show the button label (default: true)
     @objc public class func applyReaderSaveForLaterButtonTitles(_ button: UIButton, showTitle: Bool = true) {
         let saveTitle = showTitle ? WPStyleGuide.savePostStringForDisplay(false) : ""
         let savedTitle = showTitle ? WPStyleGuide.savePostStringForDisplay(true) : ""
