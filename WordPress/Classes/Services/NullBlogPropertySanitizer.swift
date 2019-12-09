@@ -15,9 +15,9 @@ import Foundation
     private let store: KeyValueDatabase
     private let context: NSManagedObjectContext
 
-    @objc override init() {
+    @objc init(context: NSManagedObjectContext) {
         store = UserDefaults.standard
-        context = ContextManager.shared.mainContext
+        self.context = context
     }
 
     init(store: KeyValueDatabase, context: NSManagedObjectContext) {
