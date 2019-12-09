@@ -951,10 +951,10 @@ private extension InsightStoreState {
             return
         }
 
-        let data = TodayWidgetStats(views: todaysStats?.viewsCount ?? 0,
-                                    visitors: todaysStats?.visitorsCount ?? 0,
-                                    likes: todaysStats?.likesCount ?? 0,
-                                    comments: todaysStats?.commentsCount ?? 0)
+        let data = TodayWidgetStats(views: todaysStats?.viewsCount,
+                                    visitors: todaysStats?.visitorsCount,
+                                    likes: todaysStats?.likesCount,
+                                    comments: todaysStats?.commentsCount)
         data.saveData()
     }
 
@@ -963,10 +963,10 @@ private extension InsightStoreState {
             return
         }
 
-        let data = AllTimeWidgetStats(views: allTimeStats?.viewsCount ?? 0,
-                                    visitors: allTimeStats?.visitorsCount ?? 0,
-                                    posts: allTimeStats?.postsCount ?? 0,
-                                    bestViews: allTimeStats?.bestViewsPerDayCount ?? 0)
+        let data = AllTimeWidgetStats(views: allTimeStats?.viewsCount,
+                                    visitors: allTimeStats?.visitorsCount,
+                                    posts: allTimeStats?.postsCount,
+                                    bestViews: allTimeStats?.bestViewsPerDayCount)
         data.saveData()
     }
 
