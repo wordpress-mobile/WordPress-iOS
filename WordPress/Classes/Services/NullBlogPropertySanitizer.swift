@@ -10,9 +10,9 @@ import Foundation
 /// leaving them in the database would cause a crash if Core Data tries to save new entities.
 ///
 @objc class NullBlogPropertySanitizer: NSObject {
-    private let store: KeyValueDatabase
-    private let key = "null-property-sanitization"
+    static let lastSanitizationVersionNumber = "null-property-sanitization"
 
+    private let store: KeyValueDatabase
     private let context: NSManagedObjectContext
 
     @objc override init() {
@@ -30,7 +30,7 @@ import Foundation
             return
         }
 
-        self.store.set(self.currentBuildVersion(), forKey: self.key)
+        self.store.set(self.currentBuildVersion(), forKey: Self.lastSanitizationVersionNumber)
 
         let entityNamesWithRequiredBlogProperties = [
             Post.entityName(),
@@ -61,8 +61,8 @@ import Foundation
     }
 
     private func appWasUpdated() -> Bool {
-        let lastBuildVersionExecution = store.object(forKey: key) as? String
-        return lastBuildVersionExecution != currentBuildVersion()
+        let lastSanitizationVersionNumber = store.object(forKey: Self.lastSanitizationVersionNumber) as? String
+        return lastSanitizationVersionNumber != currentBuildVersion()
     }
 
     private func currentBuildVersion() -> String? {
