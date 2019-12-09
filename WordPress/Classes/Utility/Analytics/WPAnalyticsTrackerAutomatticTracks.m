@@ -1978,6 +1978,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         // because there are new WPAnalyticsStat enum values. This can mean that somebody is
         // currently working on it. In cases like this, add the enum values here, returning
         // as `nil`. The tests should pass.
+        case WPAnalyticsStatEditorAddedPhotoViaMediaEditor:
+        case WPAnalyticsStatMediaEditorShown:
+        case WPAnalyticsStatMediaEditorUsed:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
