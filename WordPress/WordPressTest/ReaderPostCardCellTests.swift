@@ -188,7 +188,7 @@ final class ReaderPostCardCellTests: XCTestCase {
     )
     }
 
-    func testReblogActionButonMathchesExpectation() {
+    func testReblogActionButtonMathchesExpectation() {
         guard FeatureFlag.postReblogging.enabled else {
             return
         }

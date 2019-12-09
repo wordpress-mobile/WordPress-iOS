@@ -316,7 +316,7 @@ extension WPStyleGuide {
 
     /// Applies the reblog button title to the button passed as an argument
     /// - Parameter button: the button to apply the title to
-    /// - Parameter showTitle: if set to true, will show the button label (default: true)
+    /// - Parameter showTitle: if  true, will show the button label (default: true), if false, the label will be empty (button with no label)
     @objc public class func applyReaderReblogActionButtonTitle(_ button: UIButton, showTitle: Bool = true) {
         let title = showTitle ? NSLocalizedString("Reblog", comment: "Text for the 'Reblog' button.") : ""
         button.setTitle(title, for: .normal)

@@ -351,7 +351,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="piB-Zd-RVQ" customClass="PostMetaButton">
                                                 <rect key="frame" x="200" y="13" width="40" height="24"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="Mum-BO-4Xd"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="Mum-BO-4Xd"/>
                                                     <constraint firstAttribute="height" constant="24" id="QBk-ZS-SRK"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>

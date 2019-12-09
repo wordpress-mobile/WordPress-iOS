@@ -155,12 +155,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         setupMenuButton()
         setupVisitButton()
-        setupSaveForLaterButton()
         setupCommentActionButton()
         setupLikeActionButton()
-        if FeatureFlag.postReblogging.enabled {
-            setupReblogActionButton()
-        }
 
         // Buttons must be set up before applying styles,
         // as this tints the images used in the buttons
@@ -231,14 +227,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         visitButton.setImage(highlightIcon, for: .highlighted)
     }
 
-    fileprivate func setupSaveForLaterButton() {
-        WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
-    }
-
-    fileprivate func setupReblogActionButton() {
-        WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
-    }
-
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = Gridicon.iconOfType(.ellipsis, withSize: size)
@@ -270,6 +258,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         borderedView.backgroundColor = .listForeground
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = .hairlineBorderWidth
+
+        WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
+
+        if FeatureFlag.postReblogging.enabled {
+            WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
+        }
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
@@ -517,15 +511,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate var shouldShowReblogActionButton: Bool {
-        guard FeatureFlag.postReblogging.enabled else {
-            return false
-        }
-        // No post content -> nothing to reblog
-        guard contentProvider != nil else {
-            return false
-        }
-        // User not logged in -> User cannot reblog
-        guard loggedInActionVisibility.isEnabled else {
+        // reblog button is hidden if there's no content or no logged in user
+        guard FeatureFlag.postReblogging.enabled,
+            contentProvider != nil,
+            loggedInActionVisibility.isEnabled else {
             return false
         }
         return true
