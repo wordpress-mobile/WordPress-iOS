@@ -34,19 +34,24 @@ class NullBlogPropertySanitizerTests: XCTestCase {
         nullBlogPropertySanitizer.sanitize()
 
         expect(self.keyValueStore.lastSanitizationVersionNumber).to(equal(currentBuildVersion))
+        expect(self.keyValueStore.setValueForKeyInvocationCount).to(equal(2))
     }
 
     func testDoesntChangeVersionWhenSanitizationIsNotNeeded() {
+        // Given
         keyValueStore.lastSanitizationVersionNumber = currentBuildVersion
 
+        // When
         nullBlogPropertySanitizer.sanitize()
 
-        expect(self.keyValueStore.setCalledWith).to(beNil())
+        // Then
+        // The first invocation is in the _Given_ paragraph.
+        expect(self.keyValueStore.setValueForKeyInvocationCount).to(equal(1))
     }
 }
 
 private class StubKeyValueDatabase: EphemeralKeyValueDatabase {
-    private(set) var setCalledWith: Any?
+    private(set) var setValueForKeyInvocationCount = 0
 
     var lastSanitizationVersionNumber: String? {
         get {
@@ -59,6 +64,6 @@ private class StubKeyValueDatabase: EphemeralKeyValueDatabase {
 
     override func set(_ value: Any?, forKey aKey: String) {
         super.set(value, forKey: aKey)
-        setCalledWith = value
+        setValueForKeyInvocationCount += 1
     }
 }
