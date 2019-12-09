@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 /// This struct contains data for 'Views This Week' stats to be displayed in the corresponding widget.
 /// The data is stored in a plist for the widget to access.
@@ -37,6 +38,10 @@ struct ThisWeekWidgetDay: Codable {
 
 extension ThisWeekWidgetStats {
 
+    static var maxDaysToDisplay: Int {
+        return 7
+    }
+
     static func loadSavedData() -> ThisWeekWidgetStats {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
@@ -68,6 +73,28 @@ extension ThisWeekWidgetStats {
         } catch {
             DDLogError("Failed saving ThisWeekWidgetStats data: \(error.localizedDescription)")
         }
+    }
+
+    static func daysFrom(summaryData: [StatsSummaryData]) -> [ThisWeekWidgetDay] {
+
+        var days = [ThisWeekWidgetDay]()
+
+        for index in 0..<maxDaysToDisplay {
+            guard index + 1 <= summaryData.endIndex else {
+                break
+            }
+
+            let currentDay = summaryData[index]
+            let previousDay = summaryData[index + 1]
+            let dailyChange = currentDay.viewsCount - previousDay.viewsCount
+
+            let widgetData = ThisWeekWidgetDay(date: currentDay.periodStartDate,
+                                               viewsCount: currentDay.viewsCount,
+                                               dailyChange: dailyChange)
+            days.append(widgetData)
+        }
+
+        return days
     }
 
     private static var dataFileName = "ThisWeekData.plist"

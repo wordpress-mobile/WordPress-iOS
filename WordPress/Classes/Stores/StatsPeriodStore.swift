@@ -1344,10 +1344,6 @@ extension StatsPeriodStore {
 
 private extension PeriodStoreState {
 
-    var maxDaysToDisplay: Int {
-        return 7
-    }
-
     func storeThisWeekWidgetData() {
         // Only store data if:
         // - The widget is using the current site
@@ -1361,25 +1357,9 @@ private extension PeriodStoreState {
         }
 
         // Include an extra day. It's needed to get the dailyChange for the last day.
-        let summaryData = summary?.summaryData.reversed().prefix(maxDaysToDisplay + 1) ?? []
-        var days = [ThisWeekWidgetDay]()
+        let summaryData = Array(summary?.summaryData.reversed().prefix(ThisWeekWidgetStats.maxDaysToDisplay + 1) ?? [])
 
-        for index in 0..<maxDaysToDisplay {
-            guard index + 1 <= summaryData.endIndex else {
-                break
-            }
-
-            let currentDay = summaryData[index]
-            let previousDay = summaryData[index + 1]
-            let dailyChange = currentDay.viewsCount - previousDay.viewsCount
-
-            let widgetData = ThisWeekWidgetDay(date: currentDay.periodStartDate,
-                                               viewsCount: currentDay.viewsCount,
-                                               dailyChange: dailyChange)
-            days.append(widgetData)
-        }
-
-        let widgetData = ThisWeekWidgetStats(days: days)
+        let widgetData = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
         widgetData.saveData()
     }
 
