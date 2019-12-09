@@ -4,7 +4,7 @@ import Nimble
 @testable import WordPress
 
 class NullBlogPropertySanitizerTests: XCTestCase {
-    private var keyValueStore: StubKeyValueDatabase!
+    private var keyValueDatabase: StubKeyValueDatabase!
     private var nullBlogPropertySanitizer: NullBlogPropertySanitizer!
 
     private var context: NSManagedObjectContext!
@@ -16,37 +16,37 @@ class NullBlogPropertySanitizerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         context = TestContextManager().mainContext
-        keyValueStore = StubKeyValueDatabase()
-        nullBlogPropertySanitizer = NullBlogPropertySanitizer(store: keyValueStore, context: context)
+        keyValueDatabase = StubKeyValueDatabase()
+        nullBlogPropertySanitizer = NullBlogPropertySanitizer(store: keyValueDatabase, context: context)
     }
 
     override func tearDown() {
         super.tearDown()
         nullBlogPropertySanitizer = nil
-        keyValueStore = nil
+        keyValueDatabase = nil
         context = nil
         ContextManager.overrideSharedInstance(nil)
     }
 
     func testSetsTheSanitizedVersionEqualToCurrentBuildVersion() {
-        keyValueStore.lastSanitizationVersionNumber = "10.0"
+        keyValueDatabase.lastSanitizationVersionNumber = "10.0"
 
         nullBlogPropertySanitizer.sanitize()
 
-        expect(self.keyValueStore.lastSanitizationVersionNumber).to(equal(currentBuildVersion))
-        expect(self.keyValueStore.setValueForKeyInvocationCount).to(equal(2))
+        expect(self.keyValueDatabase.lastSanitizationVersionNumber).to(equal(currentBuildVersion))
+        expect(self.keyValueDatabase.setValueForKeyInvocationCount).to(equal(2))
     }
 
     func testDoesntChangeVersionWhenSanitizationIsNotNeeded() {
         // Given
-        keyValueStore.lastSanitizationVersionNumber = currentBuildVersion
+        keyValueDatabase.lastSanitizationVersionNumber = currentBuildVersion
 
         // When
         nullBlogPropertySanitizer.sanitize()
 
         // Then
         // The first invocation is in the _Given_ paragraph.
-        expect(self.keyValueStore.setValueForKeyInvocationCount).to(equal(1))
+        expect(self.keyValueDatabase.setValueForKeyInvocationCount).to(equal(1))
     }
 }
 
