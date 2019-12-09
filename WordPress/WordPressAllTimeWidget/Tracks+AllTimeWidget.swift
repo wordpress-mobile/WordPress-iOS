@@ -30,9 +30,9 @@ extension Tracks {
 
     // MARK: - Private Enums
     fileprivate enum ExtensionEvents: String {
-        case accessed           = "wpios_today_extension_accessed"
-        case statsLaunched      = "wpios_today_extension_stats_launched"
-        case configureLaunched  = "wpios_today_extension_configure_launched"
-        case displayModeChanged = "wpios_today_extension_display_mode_changed"
+        case accessed           = "wpios_all_time_extension_accessed"
+        case statsLaunched      = "wpios_all_time_extension_stats_launched"
+        case configureLaunched  = "wpios_all_time_extension_configure_launched"
+        case displayModeChanged = "wpios_all_time_extension_display_mode_changed"
     }
 }
