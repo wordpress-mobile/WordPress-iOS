@@ -542,8 +542,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            saveForLaterButton.setTitle("", for: .normal)
-            reblogActionButton.setTitle("", for: .normal)
+            if FeatureFlag.postReblogging.enabled {
+                WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
+            } else {
+                saveForLaterButton.setTitle("", for: .normal)
+            }
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)

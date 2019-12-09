@@ -172,7 +172,7 @@
                                                     <action selector="didTapSaveForLaterButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="15b-36-u3n"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="999" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mch-Ja-RJu">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="999" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mch-Ja-RJu">
                                                 <rect key="frame" x="103" y="0.0" width="44" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="xtD-oQ-xDy"/>
@@ -298,7 +298,7 @@
                 <outletCollection property="actionButtons" destination="Z6l-P3-Z3i" collectionClass="NSMutableArray" id="ci6-3H-ccj"/>
                 <outletCollection property="actionButtons" destination="Mch-Ja-RJu" collectionClass="NSMutableArray" id="ff2-tZ-cST"/>
             </connections>
-            <point key="canvasLocation" x="478" y="470"/>
+            <point key="canvasLocation" x="476.80000000000001" y="469.56521739130437"/>
         </tableViewCell>
     </objects>
     <resources>

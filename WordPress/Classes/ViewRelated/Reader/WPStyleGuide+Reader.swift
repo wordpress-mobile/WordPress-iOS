@@ -289,9 +289,9 @@ extension WPStyleGuide {
         applyReaderActionButtonStyle(button)
     }
 
-    @objc public class func applyReaderSaveForLaterButtonTitles(_ button: UIButton) {
-        let saveTitle = WPStyleGuide.savePostStringForDisplay(false)
-        let savedTitle = WPStyleGuide.savePostStringForDisplay(true)
+    @objc public class func applyReaderSaveForLaterButtonTitles(_ button: UIButton, showTitle: Bool = true) {
+        let saveTitle = showTitle ? WPStyleGuide.savePostStringForDisplay(false) : ""
+        let savedTitle = showTitle ? WPStyleGuide.savePostStringForDisplay(true) : ""
 
         button.setTitle(saveTitle, for: .normal)
         button.setTitle(savedTitle, for: .selected)
@@ -300,20 +300,22 @@ extension WPStyleGuide {
 
     /// Applies the reblog button style to the button passed as an argument
     /// - Parameter button: the button to apply the style to
-    @objc public class func applyReaderReblogActionButtonStyle(_ button: UIButton) {
+    /// - Parameter showTitle: if set to true, will show the button label (default: true)
+    @objc public class func applyReaderReblogActionButtonStyle(_ button: UIButton, showTitle: Bool = true) {
         let size = Gridicon.defaultSize
         let icon = Gridicon.iconOfType(.reblog, withSize: size)
 
         button.setImage(icon, for: .normal)
         
-        WPStyleGuide.applyReaderReblogActionButtonTitle(button)
+        WPStyleGuide.applyReaderReblogActionButtonTitle(button, showTitle: showTitle)
         WPStyleGuide.applyReaderActionButtonStyle(button)
     }
 
     /// Applies the reblog button title to the button passed as an argument
     /// - Parameter button: the button to apply the title to
-    @objc public class func applyReaderReblogActionButtonTitle(_ button: UIButton) {
-        let title = NSLocalizedString("Reblog", comment: "Text for the 'Reblog' button.")
+    /// - Parameter showTitle: if set to true, will show the button label (default: true)
+    @objc public class func applyReaderReblogActionButtonTitle(_ button: UIButton, showTitle: Bool = true) {
+        let title = showTitle ? NSLocalizedString("Reblog", comment: "Text for the 'Reblog' button.") : ""
         button.setTitle(title, for: .normal)
         button.setTitle(title, for: .highlighted)
     }

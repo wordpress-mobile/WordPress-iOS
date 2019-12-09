@@ -58,6 +58,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     // Footer views
     @IBOutlet fileprivate weak var footerView: UIView!
     @IBOutlet fileprivate weak var tagButton: UIButton!
+    @IBOutlet fileprivate weak var reblogButton: UIButton!
     @IBOutlet fileprivate weak var commentButton: UIButton!
     @IBOutlet fileprivate weak var likeButton: UIButton!
     @IBOutlet fileprivate weak var footerViewHeightConstraint: NSLayoutConstraint!
@@ -538,7 +539,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
+        if !FeatureFlag.postReblogging.enabled {
+            // this becomes redundant, as saveForLaterButton does not have a label anymore
+            // and applyReaderActionButtonStyle() is called by applyReaderSaveForLaterButtonStyle
+            // which in turn is called by configureSaveForLaterButton
+            WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
+        }
 
         view.backgroundColor = .listBackground
 
@@ -858,6 +864,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         resetActionButton(likeButton)
         resetActionButton(commentButton)
         resetActionButton(saveForLaterButton)
+        resetActionButton(reblogButton)
 
         guard let post = post else {
             assertionFailure()
@@ -878,7 +885,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 configureCommentActionButton()
             }
         }
-
+        if ReaderHelpers.isLoggedIn() {
+            configureReblogButton()
+        }
         configureSaveForLaterButton()
     }
 
@@ -914,8 +923,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate func configureLikeActionButton(_ animated: Bool = false) {
         likeButton.isEnabled = ReaderHelpers.isLoggedIn()
+        // as by design spec, only display like counts
+        let likeCount = post?.likeCount()?.intValue ?? 0
+        let shortTitle = likeCount > 0 ? "\(likeCount)" : ""
 
-        let title = post!.likeCountForDisplay()
+        let title = FeatureFlag.postReblogging.enabled ? shortTitle : post!.likeCountForDisplay()
+
         let selected = post!.isLiked
         let likeImage = UIImage(named: "icon-reader-like")
         let likedImage = UIImage(named: "icon-reader-liked")
@@ -927,6 +940,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
     }
 
+    /// Uses the configuration in WPStyleGuide for the reblog button
+    fileprivate func configureReblogButton() {
+        if FeatureFlag.postReblogging.enabled {
+            reblogButton.isHidden = false
+            WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
+        }
+    }
 
     fileprivate func playLikeButtonAnimation() {
         let likeImageView = likeButton.imageView!
@@ -1000,7 +1020,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate func configureSaveForLaterButton() {
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
-        WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
+        if FeatureFlag.postReblogging.enabled {
+            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
+        } else {
+            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
+        }
+
 
         saveForLaterButton.isHidden = false
         saveForLaterButton.isSelected = post?.isSavedForLater ?? false
@@ -1019,7 +1044,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let buttonsToAdjust: [UIButton] = [
             likeButton,
             commentButton,
-            saveForLaterButton]
+            saveForLaterButton,
+            reblogButton]
         for button in buttonsToAdjust {
             button.flipInsetsForRightToLeftLayoutDirection()
         }
