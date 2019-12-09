@@ -309,7 +309,7 @@ extension WPStyleGuide {
         let icon = Gridicon.iconOfType(.reblog, withSize: size)
 
         button.setImage(icon, for: .normal)
-        
+
         WPStyleGuide.applyReaderReblogActionButtonTitle(button, showTitle: showTitle)
         WPStyleGuide.applyReaderActionButtonStyle(button)
     }
