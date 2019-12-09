@@ -1,16 +1,15 @@
 import UIKit
 import NotificationCenter
-import CocoaLumberjack
 import WordPressKit
 import WordPressUI
 
-class TodayViewController: UIViewController {
+class AllTimeViewController: UIViewController {
 
     // MARK: - Properties
 
     @IBOutlet private var tableView: UITableView!
 
-    private var statsValues: TodayWidgetStats? {
+    private var statsValues: AllTimeWidgetStats? {
         didSet {
             updateStatsLabels()
         }
@@ -18,8 +17,8 @@ class TodayViewController: UIViewController {
 
     private var visitorCount: String = Constants.noDataLabel
     private var viewCount: String = Constants.noDataLabel
-    private var likeCount: String = Constants.noDataLabel
-    private var commentCount: String = Constants.noDataLabel
+    private var postCount: String = Constants.noDataLabel
+    private var bestCount: String = Constants.noDataLabel
     private var siteUrl: String = Constants.noDataLabel
     private var footerHeight: CGFloat = 35
 
@@ -30,6 +29,7 @@ class TodayViewController: UIViewController {
     private var siteID: NSNumber?
     private var timeZone: TimeZone?
     private var oauthToken: String?
+
     private var isConfigured = false {
         didSet {
             // If unconfigured, don't allow the widget to be expanded/compacted.
@@ -88,13 +88,13 @@ class TodayViewController: UIViewController {
 
 // MARK: - Widget Updating
 
-extension TodayViewController: NCWidgetProviding {
+extension AllTimeViewController: NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         retrieveSiteConfiguration()
 
         if !isConfigured {
-            DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+            DDLogError("All Time Widget: Missing site ID, timeZone or oauth2Token")
 
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -117,7 +117,7 @@ extension TodayViewController: NCWidgetProviding {
 
 // MARK: - Table View Methods
 
-extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
+extension AllTimeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return numberOfRowsToDisplay()
@@ -166,14 +166,14 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - Private Extension
 
-private extension TodayViewController {
+private extension AllTimeViewController {
 
     // MARK: - Launch Containing App
 
     @IBAction func launchContainingApp() {
         guard let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
-                DDLogError("Today Widget: Unable to get extensionContext or appURL.")
+                DDLogError("All Time Widget: Unable to get extensionContext or appURL.")
                 return
         }
 
@@ -199,7 +199,7 @@ private extension TodayViewController {
 
     func retrieveSiteConfiguration() {
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName) else {
-            DDLogError("Today Widget: Unable to get sharedDefaults.")
+            DDLogError("All Time Widget: Unable to get sharedDefaults.")
             isConfigured = false
             return
         }
@@ -224,7 +224,7 @@ private extension TodayViewController {
     // MARK: - Data Management
 
     func loadSavedData() {
-        statsValues = TodayWidgetStats.loadSavedData()
+        statsValues = AllTimeWidgetStats.loadSavedData()
     }
 
     func saveData() {
@@ -236,20 +236,20 @@ private extension TodayViewController {
             return
         }
 
-        statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
+        statsRemote.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
             if error != nil {
-                DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
+                DDLogError("All Time Widget: Error fetching StatsAllTimesInsight: \(String(describing: error?.localizedDescription))")
                 completionHandler(NCUpdateResult.failed)
                 return
             }
 
-            DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
+            DDLogDebug("All Time Widget: Fetched StatsAllTimesInsight data.")
 
             DispatchQueue.main.async {
-                self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount,
-                                                    visitors: todayInsight?.visitorsCount,
-                                                    likes: todayInsight?.likesCount,
-                                                    comments: todayInsight?.commentsCount)
+                self.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
+                                            visitors: allTimesStats?.visitorsCount,
+                                            posts: allTimesStats?.postsCount,
+                                            bestViews: allTimesStats?.bestViewsPerDayCount)
                 self.tableView.reloadData()
             }
             completionHandler(NCUpdateResult.newData)
@@ -262,7 +262,7 @@ private extension TodayViewController {
             let timeZone = timeZone,
             let oauthToken = oauthToken
             else {
-                DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+                DDLogError("All Time Widget: Missing site ID, timeZone or oauth2Token")
                 return nil
         }
 
@@ -288,7 +288,7 @@ private extension TodayViewController {
             return UITableViewCell()
         }
 
-        cell.configure(for: .today)
+        cell.configure(for: .allTime)
         return cell
     }
 
@@ -303,10 +303,10 @@ private extension TodayViewController {
                            rightItemName: LocalizedText.visitors,
                            rightItemData: visitorCount)
         } else {
-            cell.configure(leftItemName: LocalizedText.likes,
-                           leftItemData: likeCount,
-                           rightItemName: LocalizedText.comments,
-                           rightItemData: commentCount)
+            cell.configure(leftItemName: LocalizedText.posts,
+                           leftItemData: postCount,
+                           rightItemName: LocalizedText.bestViews,
+                           rightItemData: bestCount)
         }
 
         return cell
@@ -352,8 +352,8 @@ private extension TodayViewController {
     func updateStatsLabels() {
         viewCount = displayString(for: statsValues?.views ?? 0)
         visitorCount = displayString(for: statsValues?.visitors ?? 0)
-        likeCount = displayString(for: statsValues?.likes ?? 0)
-        commentCount = displayString(for: statsValues?.comments ?? 0)
+        postCount = displayString(for: statsValues?.posts ?? 0)
+        bestCount = displayString(for: statsValues?.bestViews ?? 0)
     }
 
     // MARK: - Constants
@@ -361,8 +361,8 @@ private extension TodayViewController {
     enum LocalizedText {
         static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         static let views = NSLocalizedString("Views", comment: "Stats Views Label")
-        static let likes = NSLocalizedString("Likes", comment: "Stats Likes Label")
-        static let comments = NSLocalizedString("Comments", comment: "Stats Comments Label")
+        static let posts = NSLocalizedString("Posts", comment: "Stats Posts Label")
+        static let bestViews = NSLocalizedString("Best views ever", comment: "Stats 'Best views ever' Label")
     }
 
     enum Constants {
