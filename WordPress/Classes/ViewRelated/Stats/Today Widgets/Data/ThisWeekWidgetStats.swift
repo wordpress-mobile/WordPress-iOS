@@ -9,10 +9,6 @@ import WordPressKit
 struct ThisWeekWidgetStats: Codable {
     let days: [ThisWeekWidgetDay]
 
-    private enum CodingKeys: String, CodingKey {
-        case days
-    }
-
     init(days: [ThisWeekWidgetDay]? = []) {
         self.days = days ?? []
     }
@@ -22,12 +18,6 @@ struct ThisWeekWidgetDay: Codable {
     let date: Date
     let viewsCount: Int
     let dailyChange: Int
-
-    private enum CodingKeys: String, CodingKey {
-        case date
-        case viewsCount
-        case dailyChange
-    }
 
     init(date: Date, viewsCount: Int, dailyChange: Int) {
         self.date = date
