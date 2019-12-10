@@ -28,7 +28,12 @@ class ThisWeekViewController: UIViewController {
 
     private var siteUrl: String = Constants.noDataLabel
 
-    private var isConfigured = false
+        private var isConfigured = false {
+        didSet {
+            // If unconfigured, don't allow the widget to be expanded/compacted.
+            extensionContext?.widgetLargestAvailableDisplayMode = isConfigured ? .expanded : .compact
+        }
+    }
 
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
@@ -43,11 +48,35 @@ class ThisWeekViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadSavedData()
+        resizeView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         saveData()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        let updatedRowCount = numberOfRowsToDisplay()
+        let rowDifference = abs(updatedRowCount - tableView.visibleCells.count)
+
+        // If the number of rows has not changed, do nothing.
+        guard rowDifference != 0 else {
+            return
+        }
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.performBatchUpdates({
+                // Create IndexPaths for rows to be inserted / deleted.
+                let indexPaths = (1...rowDifference).map({ return IndexPath(row: $0, section: 0) })
+
+                updatedRowCount > Constants.minRows ?
+                    self.tableView.insertRows(at: indexPaths, with: .fade) :
+                    self.tableView.deleteRows(at: indexPaths, with: .fade)
+            })
+        })
     }
 
 }
@@ -74,6 +103,11 @@ extension ThisWeekViewController: NCWidgetProviding {
         fetchData(completionHandler: completionHandler)
     }
 
+    func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+        tracks.trackDisplayModeChanged(properties: ["expanded": activeDisplayMode == .expanded])
+        resizeView(withMaximumSize: maxSize)
+    }
+
 }
 
 // MARK: - Table View Methods
@@ -81,7 +115,7 @@ extension ThisWeekViewController: NCWidgetProviding {
 extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return numberOfRowsToDisplay()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -240,10 +274,43 @@ private extension ThisWeekViewController {
         return cell
     }
 
+    // MARK: - Expand / Compact View Helpers
+
+    func numberOfRowsToDisplay() -> Int {
+        if !isConfigured || extensionContext?.widgetActiveDisplayMode == .compact {
+            return Constants.minRows
+        }
+
+        return statsValues?.days.count ?? Constants.minRows
+    }
+
+    func resizeView(withMaximumSize size: CGSize? = nil) {
+        guard let maxSize = size ?? extensionContext?.widgetMaximumSize(for: .compact) else {
+            return
+        }
+
+        let expanded = extensionContext?.widgetActiveDisplayMode == .expanded
+        preferredContentSize = expanded ? CGSize(width: maxSize.width, height: expandedHeight()) : maxSize
+    }
+
+    func expandedHeight() -> CGFloat {
+        var height: CGFloat = 0
+
+        if haveSiteUrl {
+            height += tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
+        }
+
+        let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
+
+        return height
+    }
+
     // MARK: - Constants
 
     enum Constants {
         static let noDataLabel = "-"
+        static let minRows: Int = 1
     }
 
 }
