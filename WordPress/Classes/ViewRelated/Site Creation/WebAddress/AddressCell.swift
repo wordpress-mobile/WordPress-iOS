@@ -29,6 +29,8 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
 
     private func commonInit() {
         selectedBackgroundView?.backgroundColor = .clear
+
+        accessibilityTraits = .button
     }
 
     override func awakeFromNib() {
