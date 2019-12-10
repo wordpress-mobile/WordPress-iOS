@@ -1,10 +1,13 @@
 import UIKit
 import NotificationCenter
 import WordPressKit
+import WordPressUI
 
 class ThisWeekViewController: UIViewController {
 
     // MARK: - Properties
+
+    @IBOutlet private var tableView: UITableView!
 
     private var statsValues: ThisWeekWidgetStats? {
         // TODO: for testing only. Remove when UI added.
@@ -29,6 +32,7 @@ class ThisWeekViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         retrieveSiteConfiguration()
+        registerTableCells()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +67,34 @@ extension ThisWeekViewController: NCWidgetProviding {
 
         tracks.trackExtensionAccessed()
         fetchData(completionHandler: completionHandler)
+    }
+
+}
+
+// MARK: - Table View Methods
+
+extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard isConfigured else {
+            return unconfiguredCellFor(indexPath: indexPath)
+        }
+
+        return  UITableViewCell()
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard !isConfigured,
+            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
+                return UITableView.automaticDimension
+        }
+
+        // Use the max compact height for unconfigured view.
+        return maxCompactSize.height
     }
 
 }
@@ -147,6 +179,25 @@ private extension ThisWeekViewController {
 
         let wpApi = WordPressComRestApi(oAuthToken: oauthToken)
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
+    }
+
+    // MARK: - Table Helpers
+
+    func registerTableCells() {
+        let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
+        tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
+
+        let footerNib = UINib(nibName: String(describing: WidgetFooterView.self), bundle: Bundle(for: WidgetFooterView.self))
+        tableView.register(footerNib, forHeaderFooterViewReuseIdentifier: WidgetFooterView.reuseIdentifier)
+    }
+
+    func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetUnconfiguredCell.reuseIdentifier, for: indexPath) as? WidgetUnconfiguredCell else {
+            return UITableViewCell()
+        }
+
+        cell.configure(for: .thisWeek)
+        return cell
     }
 
     // MARK: - Constants
