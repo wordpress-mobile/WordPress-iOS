@@ -106,9 +106,12 @@ private extension ThisWeekViewController {
             return
         }
 
-        // TODO: fix the date
+        // Get the current date in the site's time zone.
+        let siteTimeZone = timeZone ?? .autoupdatingCurrent
+        let weekEndingDate = Date().convert(from: siteTimeZone)
+
         // Include an extra day. It's needed to get the dailyChange for the last day.
-        statsRemote.getData(for: .day, endingOn: Date(), limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [unowned self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+        statsRemote.getData(for: .day, endingOn: weekEndingDate, limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [unowned self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("This Week Widget: Error fetching summary: \(String(describing: error?.localizedDescription))")
                 completionHandler(NCUpdateResult.failed)
@@ -146,4 +149,11 @@ private extension ThisWeekViewController {
         static let noDataLabel = "-"
     }
 
+}
+
+private extension Date {
+    func convert(from timeZone: TimeZone, comparedWith target: TimeZone = TimeZone.current) -> Date {
+        let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - target.secondsFromGMT(for: self))
+        return addingTimeInterval(delta)
+    }
 }
