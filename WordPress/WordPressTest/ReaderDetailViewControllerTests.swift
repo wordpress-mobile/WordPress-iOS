@@ -27,7 +27,7 @@ class ReaderDetailViewControllerTests: XCTestCase {
         super.tearDown()
     }
 
-    func testReblogButtonMathchesExpectation() {
+    func testReblogButtonMatchesExpectation() {
         guard FeatureFlag.postReblogging.enabled else {
             return
         }
