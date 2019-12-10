@@ -15,6 +15,11 @@ class ThisWeekViewController: UIViewController {
             print("🔴 siteUrl: ", siteUrl)
             print("🔴 statsValues: ", statsValues)
         }
+
+    private var footerHeight: CGFloat = 35
+
+    private var haveSiteUrl: Bool {
+        siteUrl != Constants.noDataLabel
     }
 
     private var siteID: NSNumber?
@@ -84,7 +89,28 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
-        return  UITableViewCell()
+        return statCellFor(indexPath: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard haveSiteUrl,
+            isConfigured,
+            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
+                return nil
+        }
+
+        footer.configure(siteUrl: siteUrl)
+        footerHeight = footer.frame.height
+
+        return footer
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if !isConfigured || !haveSiteUrl {
+            return 0
+        }
+
+        return footerHeight
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -184,6 +210,11 @@ private extension ThisWeekViewController {
     // MARK: - Table Helpers
 
     func registerTableCells() {
+
+        // TODO: for testing only. Replace with new cell.
+        let twoColumnCellNib = UINib(nibName: String(describing: WidgetTwoColumnCell.self), bundle: Bundle(for: WidgetTwoColumnCell.self))
+        tableView.register(twoColumnCellNib, forCellReuseIdentifier: WidgetTwoColumnCell.reuseIdentifier)
+
         let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
         tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
 
@@ -197,6 +228,15 @@ private extension ThisWeekViewController {
         }
 
         cell.configure(for: .thisWeek)
+        return cell
+    }
+
+    func statCellFor(indexPath: IndexPath) -> UITableViewCell {
+        // TODO: for testing only. Replace with new cell.
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetTwoColumnCell.reuseIdentifier, for: indexPath) as? WidgetTwoColumnCell else {
+            return UITableViewCell()
+        }
+
         return cell
     }
 
