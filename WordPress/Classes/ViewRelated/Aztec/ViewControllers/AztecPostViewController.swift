@@ -3444,15 +3444,16 @@ extension AztecPostViewController {
 
         let mediaEditor = MediaEditor(image)
 
-        mediaEditor.hub.doneTextButton.setTitle(NSLocalizedString("Done", comment: "Done editing an image"), for: .normal)
-        mediaEditor.hub.cancelTextButton.setTitle(NSLocalizedString("Cancel", comment: "Cancel editing an image"), for: .normal)
-        mediaEditor.hub.cancelTextButton.tintColor = .white
-        mediaEditor.hub.resetButton.setImage(Gridicon.iconOfType(.undo), for: .normal)
-        mediaEditor.hub.doneIconButton.setImage(Gridicon.iconOfType(.checkmark), for: .normal)
-        mediaEditor.hub.cancelIconButton.setImage(Gridicon.iconOfType(.cross), for: .normal)
-        mediaEditor.hub.cancelIconButton.tintColor = .white
-        mediaEditor.hub.rotateClockwiseButton?.setImage(Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(), for: .normal)
-        mediaEditor.hub.rotateCounterclockwiseButtonHidden = true
+        mediaEditor.styles = [
+            .doneLabel: NSLocalizedString("Done", comment: "Done editing an image"),
+            .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
+            .cancelColor: UIColor.white,
+            .resetIcon: Gridicon.iconOfType(.undo),
+            .doneIcon: Gridicon.iconOfType(.checkmark),
+            .cancelIcon: Gridicon.iconOfType(.cross),
+            .rotateClockwiseIcon: Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(),
+            .rotateCounterclockwiseButtonHidden: true
+        ]
 
         mediaEditor.edit(from: self,
                               onFinishEditing: { image, actions in
