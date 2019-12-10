@@ -226,6 +226,11 @@ final class WebAddressWizardContent: UIViewController {
         } else {
             noResultsLabel.isHidden = true
         }
+
+        if !isShowingImplicitSuggestions && !data.isEmpty {
+            UIAccessibility.post(notification: .announcement,
+                                 argument: NSLocalizedString("Suggestions updated", comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation."))
+        }
     }
 
     private func handleError(_ error: Error) {
