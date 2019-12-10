@@ -556,6 +556,7 @@
 		570BFD8D22823DE5007859A8 /* PostActionSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8C22823DE5007859A8 /* PostActionSheetTests.swift */; };
 		570BFD902282418A007859A8 /* PostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8F2282418A007859A8 /* PostBuilder.swift */; };
 		57240224234E5BE200227067 /* PostServiceSelfHostedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57240223234E5BE200227067 /* PostServiceSelfHostedTests.swift */; };
+		57276E71239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57276E70239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift */; };
 		5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */; };
 		572FB401223A806000933C76 /* NoticeStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572FB400223A806000933C76 /* NoticeStoreTests.swift */; };
 		5749984722FA0F2E00CE86ED /* PostNoticeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5749984622FA0F2E00CE86ED /* PostNoticeViewModelTests.swift */; };
@@ -2716,6 +2717,7 @@
 		570BFD8C22823DE5007859A8 /* PostActionSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostActionSheetTests.swift; sourceTree = "<group>"; };
 		570BFD8F2282418A007859A8 /* PostBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBuilder.swift; sourceTree = "<group>"; };
 		57240223234E5BE200227067 /* PostServiceSelfHostedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostServiceSelfHostedTests.swift; path = Services/PostServiceSelfHostedTests.swift; sourceTree = "<group>"; };
+		57276E70239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+ObserveMultiple.swift"; sourceTree = "<group>"; };
 		5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePostViewDelegate.swift; sourceTree = "<group>"; };
 		572FB400223A806000933C76 /* NoticeStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeStoreTests.swift; sourceTree = "<group>"; };
 		5749984622FA0F2E00CE86ED /* PostNoticeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticeViewModelTests.swift; sourceTree = "<group>"; };
@@ -8190,6 +8192,7 @@
 				9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */,
 				0845B8C51E833C56001BA771 /* URL+Helpers.swift */,
 				17E60E08220DBD6E00848F89 /* WKWebView+Preview.swift */,
+				57276E70239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -11724,6 +11727,7 @@
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
 				73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
+				57276E71239BDFD200515BE2 /* NotificationCenter+ObserveMultiple.swift in Sources */,
 				D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */,
 				D88106FC20C0D4A4001D2F00 /* ReaderSavedPostCellActions.swift in Sources */,
 				31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */,
