@@ -15,6 +15,15 @@ extension KeyValueDatabase {
     func bool(forKey key: String) -> Bool {
         return object(forKey: key) as? Bool ?? false
     }
+
+    subscript<T>(key: String) -> T? {
+        get {
+            return object(forKey: key) as? T
+        }
+        set(newValue) {
+            set(newValue, forKey: key)
+        }
+    }
 }
 
 // MARK: - Storage implementations
