@@ -108,7 +108,7 @@ private extension ThisWeekViewController {
 
         // Get the current date in the site's time zone.
         let siteTimeZone = timeZone ?? .autoupdatingCurrent
-        let weekEndingDate = Date().convert(from: siteTimeZone)
+        let weekEndingDate = Date().convert(from: siteTimeZone).normalizedDate()
 
         // Include an extra day. It's needed to get the dailyChange for the last day.
         statsRemote.getData(for: .day, endingOn: weekEndingDate, limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [unowned self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
