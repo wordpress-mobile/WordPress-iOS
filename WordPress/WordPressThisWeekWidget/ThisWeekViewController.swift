@@ -6,7 +6,13 @@ class ThisWeekViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var statsValues: ThisWeekWidgetStats?
+    private var statsValues: ThisWeekWidgetStats? {
+        // TODO: for testing only. Remove when UI added.
+        didSet {
+            print("🔴 siteUrl: ", siteUrl)
+            print("🔴 statsValues: ", statsValues)
+        }
+    }
 
     private var siteID: NSNumber?
     private var timeZone: TimeZone?
