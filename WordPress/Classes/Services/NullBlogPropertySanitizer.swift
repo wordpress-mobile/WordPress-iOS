@@ -30,7 +30,7 @@ import Foundation
             return
         }
 
-        self.store.set(self.currentBuildVersion(), forKey: Self.lastSanitizationVersionNumber)
+        store.set(currentBuildVersion(), forKey: Self.lastSanitizationVersionNumber)
 
         let entityNamesWithRequiredBlogProperties = [
             Post.entityName(),
