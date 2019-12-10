@@ -29,17 +29,16 @@ class NullBlogPropertySanitizerTests: XCTestCase {
     }
 
     func testSetsTheSanitizedVersionEqualToCurrentBuildVersion() {
-        keyValueDatabase.lastSanitizationVersionNumber = "10.0"
+        keyValueDatabase[NullBlogPropertySanitizer.lastSanitizationVersionNumber] = "10.0"
 
         nullBlogPropertySanitizer.sanitize()
 
-        expect(self.keyValueDatabase.lastSanitizationVersionNumber).to(equal(currentBuildVersion))
-        expect(self.keyValueDatabase.setValueForKeyInvocationCount).to(equal(2))
+        expect(self.keyValueDatabase[NullBlogPropertySanitizer.lastSanitizationVersionNumber]).to(equal(currentBuildVersion))
     }
 
     func testDoesntChangeVersionWhenSanitizationIsNotNeeded() {
         // Given
-        keyValueDatabase.lastSanitizationVersionNumber = currentBuildVersion
+        keyValueDatabase[NullBlogPropertySanitizer.lastSanitizationVersionNumber] = currentBuildVersion
 
         // When
         nullBlogPropertySanitizer.sanitize()
@@ -52,15 +51,6 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 
 private class StubKeyValueDatabase: EphemeralKeyValueDatabase {
     private(set) var setValueForKeyInvocationCount = 0
-
-    var lastSanitizationVersionNumber: String? {
-        get {
-            object(forKey: NullBlogPropertySanitizer.lastSanitizationVersionNumber) as? String
-        }
-        set {
-            set(newValue, forKey: NullBlogPropertySanitizer.lastSanitizationVersionNumber)
-        }
-    }
 
     override func set(_ value: Any?, forKey aKey: String) {
         super.set(value, forKey: aKey)
