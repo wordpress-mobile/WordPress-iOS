@@ -227,8 +227,8 @@ final class WebAddressWizardContent: UIViewController {
             noResultsLabel.isHidden = true
         }
 
-        if !isShowingImplicitSuggestions && !data.isEmpty {
-            UIAccessibility.post(notification: .announcement, argument: Strings.suggestionsUpdated)
+        if !isShowingImplicitSuggestions {
+            postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: data.isEmpty)
         }
     }
 
@@ -525,5 +525,10 @@ extension WebAddressWizardContent {
 private extension WebAddressWizardContent {
     func postScreenChangedForVoiceOver() {
         UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
+    }
+
+    func postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: Bool) {
+        let message: String = listIsEmpty ? Strings.noResults : Strings.suggestionsUpdated
+        UIAccessibility.post(notification: .announcement, argument: message)
     }
 }
