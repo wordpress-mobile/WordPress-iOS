@@ -358,6 +358,8 @@ final class WebAddressWizardContent: UIViewController {
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         header.textField.attributedPlaceholder = attributedPlaceholder
 
+        header.textField.accessibilityHint = NSLocalizedString("Searches for available domains to use for your site.", comment: "Accessibility hint for the domains search field in Site Creation.")
+
         table.tableHeaderView = header
 
         view.addSubview(noResultsLabel)
