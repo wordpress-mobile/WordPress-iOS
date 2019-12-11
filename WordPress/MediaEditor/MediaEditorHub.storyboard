@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Media Editor Hub-->
+        <scene sceneID="muT-G1-vZx">
+            <objects>
+                <viewController storyboardIdentifier="hubViewController" id="e8N-xf-0aT" customClass="MediaEditorHub" customModule="WordPress" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8gk-Xl-RJi">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Tz-zw-SB3">
+                                <rect key="frame" x="0.0" y="44" width="414" height="774"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iCM-A8-y8w">
+                                <rect key="frame" x="0.0" y="818" width="414" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cCN-Nm-Ahb">
+                                        <rect key="frame" x="10" y="0.0" width="53" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cancel:" destination="e8N-xf-0aT" eventType="touchUpInside" id="r4U-1e-ql7"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="cCN-Nm-Ahb" secondAttribute="bottom" id="NRa-HV-Ioa"/>
+                                    <constraint firstAttribute="height" constant="44" id="cr2-lf-caP"/>
+                                    <constraint firstItem="cCN-Nm-Ahb" firstAttribute="leading" secondItem="iCM-A8-y8w" secondAttribute="leading" constant="10" id="izJ-CI-p9v"/>
+                                    <constraint firstItem="cCN-Nm-Ahb" firstAttribute="top" secondItem="iCM-A8-y8w" secondAttribute="top" id="rDP-kD-J2h"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.12" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="iCM-A8-y8w" firstAttribute="top" secondItem="5Tz-zw-SB3" secondAttribute="bottom" id="AAI-xh-WYk"/>
+                            <constraint firstItem="5Tz-zw-SB3" firstAttribute="top" secondItem="xJb-mz-iou" secondAttribute="top" id="Eki-uC-BmI"/>
+                            <constraint firstItem="5Tz-zw-SB3" firstAttribute="leading" secondItem="xJb-mz-iou" secondAttribute="leading" id="LVp-Xe-Zw8"/>
+                            <constraint firstItem="xJb-mz-iou" firstAttribute="trailing" secondItem="iCM-A8-y8w" secondAttribute="trailing" id="SNe-zG-aps"/>
+                            <constraint firstItem="iCM-A8-y8w" firstAttribute="bottom" secondItem="xJb-mz-iou" secondAttribute="bottom" id="hRG-Gy-RUt"/>
+                            <constraint firstItem="iCM-A8-y8w" firstAttribute="leading" secondItem="xJb-mz-iou" secondAttribute="leading" id="hi6-8K-g8S"/>
+                            <constraint firstItem="xJb-mz-iou" firstAttribute="trailing" secondItem="5Tz-zw-SB3" secondAttribute="trailing" id="rgw-7G-IsM"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="xJb-mz-iou"/>
+                    </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="cCN-Nm-Ahb" id="2yx-pN-P3d"/>
+                        <outlet property="imageView" destination="5Tz-zw-SB3" id="ix9-cQ-25U"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9b9-f5-eYQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="74" y="-76"/>
+        </scene>
+    </scenes>
+</document>
