@@ -32,7 +32,7 @@ public class MediaEditor: UINavigationController {
         setup()
     }
 
-    init(_ asyncImage: AsyncImage, mediaEditorHub: MediaEditorHub = MediaEditorHub.initialize()) {
+    init(_ asyncImage: AsyncImage) {
         self.asyncImage = asyncImage
         super.init(rootViewController: hub)
         setup()

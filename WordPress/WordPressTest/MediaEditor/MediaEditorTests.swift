@@ -99,7 +99,7 @@ class MediaEditorTests: XCTestCase {
         let asyncImage = AsyncImageMock()
         asyncImage.thumb = UIImage()
 
-        let mediaEditor = MediaEditor(asyncImage, mediaEditorHub: hub)
+        let mediaEditor = MediaEditor(asyncImage)
 
         expect(mediaEditor.hub.imageView.image).to(equal(asyncImage.thumb))
     }
@@ -108,16 +108,25 @@ class MediaEditorTests: XCTestCase {
         let asyncImage = AsyncImageMock()
         asyncImage.thumb = UIImage()
 
-        _ = MediaEditor(asyncImage, mediaEditorHub: hub)
+        _ = MediaEditor(asyncImage)
 
         expect(asyncImage.didCallFull).to(beTrue())
         expect(asyncImage.didCallThumbnail).to(beFalse())
     }
 
+    func testShowActivityIndicatorWhenLoadingImage() {
+        let asyncImage = AsyncImageMock()
+        asyncImage.thumb = UIImage()
+
+        let mediaEditor = MediaEditor(asyncImage)
+
+        expect(mediaEditor.hub.activityIndicatorView.isHidden).to(beFalse())
+    }
+
     func testWhenThumbnailIsAvailableShowItInHub() {
         let asyncImage = AsyncImageMock()
         let thumb = UIImage()
-        let mediaEditor = MediaEditor(asyncImage, mediaEditorHub: hub)
+        let mediaEditor = MediaEditor(asyncImage)
 
         asyncImage.simulate(thumbHasBeenDownloaded: thumb)
 
@@ -127,17 +136,27 @@ class MediaEditorTests: XCTestCase {
     func testWhenFullImageIsAvailableShowItInHub() {
         let asyncImage = AsyncImageMock()
         let fullImage = UIImage()
-        let mediaEditor = MediaEditor(asyncImage, mediaEditorHub: hub)
+        let mediaEditor = MediaEditor(asyncImage)
 
         asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
 
         expect(mediaEditor.hub.imageView.image).toEventually(equal(fullImage))
     }
 
+    func testWhenFullImageIsAvailableHideActivityIndicatorView() {
+        let asyncImage = AsyncImageMock()
+        let fullImage = UIImage()
+        let mediaEditor = MediaEditor(asyncImage)
+
+        asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
+
+        expect(mediaEditor.hub.activityIndicatorView.isHidden).toEventually(beTrue())
+    }
+
     func testPresentCapabilityAfterFullImageIsAvailable() {
         let asyncImage = AsyncImageMock()
         let fullImage = UIImage()
-        let mediaEditor = MediaEditor(asyncImage, mediaEditorHub: hub)
+        let mediaEditor = MediaEditor(asyncImage)
 
         asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
 
@@ -147,7 +166,7 @@ class MediaEditorTests: XCTestCase {
 
     func testCallCancelOnAsyncImageWhenUserCancel() {
         let asyncImage = AsyncImageMock()
-        let mediaEditor = MediaEditor(asyncImage, mediaEditorHub: hub)
+        let mediaEditor = MediaEditor(asyncImage)
 
         mediaEditor.hub.cancelButton.sendActions(for: .touchUpInside)
 
