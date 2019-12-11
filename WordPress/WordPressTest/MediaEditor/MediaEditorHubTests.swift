@@ -50,4 +50,12 @@ class MediaEditorHubTests: XCTestCase {
         expect(hub.activityIndicatorView.isHidden).to(beTrue())
     }
 
+    func testApplyLoadingLabel() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+
+        hub.apply(styles: [.loadingLabel: "foo"])
+
+        expect(hub.activityIndicatorLabel.text).to(equal("foo"))
+    }
+
 }

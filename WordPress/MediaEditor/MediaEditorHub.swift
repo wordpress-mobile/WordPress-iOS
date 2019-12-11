@@ -32,6 +32,10 @@ class MediaEditorHub: UIViewController {
         if let cancelColor = styles[.cancelColor] as? UIColor {
             cancelButton.tintColor = cancelColor
         }
+
+        if let loadingLabel = styles[.loadingLabel] as? String {
+            activityIndicatorLabel.text = loadingLabel
+        }
     }
 
     static func initialize() -> MediaEditorHub {
