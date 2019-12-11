@@ -7,6 +7,8 @@ public class MediaEditor: UINavigationController {
 
     var image: UIImage?
 
+    var asyncImage: AsyncImage?
+
     var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
 
     var onCancel: (() -> ())?
@@ -21,12 +23,29 @@ public class MediaEditor: UINavigationController {
 
     init(_ image: UIImage) {
         self.image = image
-        hub = MediaEditorHub()
+        hub = MediaEditorHub.initialize()
         super.init(rootViewController: hub)
         presentIfSingleImageAndCapability()
         modalTransitionStyle = .crossDissolve
         modalPresentationStyle = .fullScreen
         navigationBar.isHidden = true
+    }
+
+    init(_ asyncImage: AsyncImage, mediaEditorHub: MediaEditorHub = MediaEditorHub.initialize()) {
+        self.asyncImage = asyncImage
+        self.hub = mediaEditorHub
+        super.init(rootViewController: hub)
+        hub.onCancel = self.cancel
+        presentIfSingleImageAndCapability()
+        modalTransitionStyle = .crossDissolve
+        modalPresentationStyle = .fullScreen
+        navigationBar.isHidden = true
+
+        if let thumb = asyncImage.thumb {
+            hub.show(image: thumb)
+        }
+        asyncImage.thumbnail(finishedRetrievingThumbnail: finishedRetrievingThumbnail)
+        asyncImage.full(finishedRetrievingFullImage: finishedRetrievingFullImage)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -47,21 +66,53 @@ public class MediaEditor: UINavigationController {
         present(capability: capabilityEntity)
     }
 
+    private func cancel() {
+        dismiss(animated: true)
+    }
+
     private func present(capability capabilityEntity: MediaEditorCapability.Type) {
         guard let image = image else {
             return
         }
 
+        let transition: CATransition = CATransition()
+        transition.duration = 0.3
+        transition.type = CATransitionType.fade
+        self.view.layer.add(transition, forKey: nil)
+
         let capability = capabilityEntity.init(
             image,
             onFinishEditing: { image, actions in
                 self.onFinishEditing?(image, actions)
-            }, onCancel: {
-                self.dismiss(animated: true)
-            }
+            },
+            onCancel: self.cancel
         )
         capability.apply(styles: styles)
         currentCapability = capability
         pushViewController(capability.viewController, animated: false)
+    }
+
+    private func finishedRetrievingThumbnail(_ image: UIImage?) {
+        guard let image = image else {
+            return
+        }
+
+        DispatchQueue.main.async {
+            self.hub.show(image: image)
+        }
+    }
+
+    private func finishedRetrievingFullImage(_ image: UIImage?) {
+        guard let image = image else {
+            return
+        }
+
+        self.image = image
+
+        DispatchQueue.main.async {
+            self.presentIfSingleImageAndCapability()
+
+            self.hub.show(image: image)
+        }
     }
 }
