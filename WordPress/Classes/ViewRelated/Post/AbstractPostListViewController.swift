@@ -129,7 +129,9 @@ class AbstractPostListViewController: UIViewController,
     @IBOutlet var filterTabBar: FilterTabBar!
 
     @objc lazy var addButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.plus), style: .plain, target: self, action: #selector(handleAddButtonTapped))
+        let addButton = UIBarButtonItem(image: Gridicon.iconOfType(.plus), style: .plain, target: self, action: #selector(handleAddButtonTapped))
+        addButton.accessibilityLabel = NSLocalizedString("Add", comment: "Button to create a new post.")
+        return addButton
     }()
 
     @objc var searchController: UISearchController!
