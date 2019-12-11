@@ -104,6 +104,16 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.hub.imageView.image).to(equal(asyncImage.thumb))
     }
 
+    func testDoNotRequestThumbnailIfOneIsGiven() {
+        let asyncImage = AsyncImageMock()
+        asyncImage.thumb = UIImage()
+
+        _ = MediaEditor(asyncImage, mediaEditorHub: hub)
+
+        expect(asyncImage.didCallFull).to(beTrue())
+        expect(asyncImage.didCallThumbnail).to(beFalse())
+    }
+
     func testWhenThumbnailIsAvailableShowItInHub() {
         let asyncImage = AsyncImageMock()
         let thumb = UIImage()
