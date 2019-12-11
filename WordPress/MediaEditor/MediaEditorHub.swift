@@ -11,7 +11,7 @@ class MediaEditorHub: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        activityIndicatorView.isHidden = true
+        hideActivityIndicator()
     }
 
     @IBAction func cancel(_ sender: Any) {
@@ -36,6 +36,14 @@ class MediaEditorHub: UIViewController {
         if let loadingLabel = styles[.loadingLabel] as? String {
             activityIndicatorLabel.text = loadingLabel
         }
+    }
+
+    func showActivityIndicator() {
+        activityIndicatorView.isHidden = false
+    }
+
+    func hideActivityIndicator() {
+        activityIndicatorView.isHidden = true
     }
 
     static func initialize() -> MediaEditorHub {

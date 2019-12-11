@@ -3,7 +3,11 @@ import UIKit
 public class MediaEditor: UINavigationController {
     static var capabilities: [MediaEditorCapability.Type] = [MediaEditorCrop.self]
 
-    var hub: MediaEditorHub
+    var hub: MediaEditorHub = {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.loadViewIfNeeded()
+        return hub
+    }()
 
     var image: UIImage?
 
@@ -24,14 +28,12 @@ public class MediaEditor: UINavigationController {
 
     init(_ image: UIImage) {
         self.image = image
-        hub = MediaEditorHub.initialize()
         super.init(rootViewController: hub)
         setup()
     }
 
     init(_ asyncImage: AsyncImage, mediaEditorHub: MediaEditorHub = MediaEditorHub.initialize()) {
         self.asyncImage = asyncImage
-        self.hub = mediaEditorHub
         super.init(rootViewController: hub)
         setup()
     }
@@ -69,6 +71,7 @@ public class MediaEditor: UINavigationController {
             asyncImage?.thumbnail(finishedRetrievingThumbnail: thumbnailAvailable)
         }
 
+        showActivityIndicator()
         asyncImage?.full(finishedRetrievingFullImage: fullImageAvailable)
     }
 
@@ -130,9 +133,19 @@ public class MediaEditor: UINavigationController {
         self.image = image
 
         DispatchQueue.main.async {
+            self.hideActivityIndicator()
+
             self.presentIfSingleImageAndCapability()
 
             self.hub.show(image: image)
         }
+    }
+
+    private func showActivityIndicator() {
+        hub.showActivityIndicator()
+    }
+
+    private func hideActivityIndicator() {
+        hub.hideActivityIndicator()
     }
 }
