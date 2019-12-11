@@ -81,6 +81,7 @@ public class MediaEditor: UINavigationController {
     }
 
     private func cancel() {
+        asyncImage?.cancel()
         dismiss(animated: true)
     }
 

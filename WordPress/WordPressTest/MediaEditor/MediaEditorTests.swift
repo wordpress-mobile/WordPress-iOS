@@ -144,6 +144,15 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.currentCapability).toEventuallyNot(beNil())
         expect(mediaEditor.visibleViewController).to(equal(mediaEditor.currentCapability?.viewController))
     }
+
+    func testCallCancelOnAsyncImageWhenUserCancel() {
+        let asyncImage = AsyncImageMock()
+        let mediaEditor = MediaEditor(asyncImage, mediaEditorHub: hub)
+
+        mediaEditor.hub.cancelButton.sendActions(for: .touchUpInside)
+
+        expect(asyncImage.didCallCancel).to(beTrue())
+    }
 }
 
 class MockCapability: MediaEditorCapability {
@@ -173,6 +182,7 @@ class MockCapability: MediaEditorCapability {
 private class AsyncImageMock: AsyncImage {
     var didCallThumbnail = false
     var didCallFull = false
+    var didCallCancel = false
 
     var finishedRetrievingThumbnail: ((UIImage?) -> ())?
     var finishedRetrievingFullImage: ((UIImage?) -> ())?
@@ -187,6 +197,10 @@ private class AsyncImageMock: AsyncImage {
     func full(finishedRetrievingFullImage: @escaping (UIImage?) -> ()) {
         didCallFull = true
         self.finishedRetrievingFullImage = finishedRetrievingFullImage
+    }
+
+    func cancel() {
+        didCallCancel = true
     }
 
     func simulate(thumbHasBeenDownloaded thumb: UIImage) {

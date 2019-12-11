@@ -6,4 +6,6 @@ protocol AsyncImage {
     func thumbnail(finishedRetrievingThumbnail: @escaping (UIImage?) -> ())
 
     func full(finishedRetrievingFullImage: @escaping (UIImage?) -> ())
+
+    func cancel()
 }
