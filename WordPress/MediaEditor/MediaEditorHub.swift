@@ -19,4 +19,16 @@ class MediaEditorHub: UIViewController {
         return UIStoryboard(name: "MediaEditorHub", bundle: nil).instantiateViewController(withIdentifier: "hubViewController") as! MediaEditorHub
     }
 
+    func apply(styles: MediaEditorStyles) {
+        loadViewIfNeeded()
+
+        if let cancelLabel = styles[.cancelLabel] as? String {
+            cancelButton.setTitle(cancelLabel, for: .normal)
+        }
+
+        if let cancelColor = styles[.cancelColor] as? UIColor {
+            cancelButton.tintColor = cancelColor
+        }
+    }
+
 }

@@ -18,6 +18,7 @@ public class MediaEditor: UINavigationController {
     public var styles: MediaEditorStyles = [:] {
         didSet {
             currentCapability?.apply(styles: styles)
+            hub.apply(styles: styles)
         }
     }
 

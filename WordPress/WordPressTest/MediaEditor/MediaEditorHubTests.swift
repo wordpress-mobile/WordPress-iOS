@@ -34,4 +34,12 @@ class MediaEditorHubTests: XCTestCase {
         expect(didCallOnCancel).to(beTrue())
     }
 
+    func testApplyStyles() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+
+        hub.apply(styles: [.cancelLabel: "foo"])
+
+        expect(hub.cancelButton.titleLabel?.text).to(equal("foo"))
+    }
+
 }
