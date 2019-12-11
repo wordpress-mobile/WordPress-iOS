@@ -23,13 +23,13 @@ final class SiteAssemblyContentView: UIView {
 
     /// This advises the user that the site creation request completed successfully.
     private(set) var completionLabel: UILabel
-    
+
     /// This provides the user with some playful words while their site is being assembled
     private let statusTitleLabel: UILabel
-    
+
     /// This provides the user with some expectation while the site is being assembled
     private let statusSubtitleLabel: UILabel
-    
+
     /// This displays an image while the site is being assembled
     private let statusImageView: UIImageView
 
@@ -109,7 +109,7 @@ final class SiteAssemblyContentView: UIView {
 
             return label
         }()
-        
+
         self.statusTitleLabel = {
             let label = UILabel()
 
@@ -127,7 +127,7 @@ final class SiteAssemblyContentView: UIView {
 
             return label
         }()
-        
+
         self.statusSubtitleLabel = {
             let label = UILabel()
 
@@ -145,14 +145,14 @@ final class SiteAssemblyContentView: UIView {
 
             return label
         }()
-        
+
         self.statusImageView = {
             let image = UIImage(named: "site-creation-loading")
-            let imageView = UIImageView(image: image);
-            
-            return imageView;
+            let imageView = UIImageView(image: image)
+
+            return imageView
         }()
-        
+
         self.statusLabel = {
             let label = UILabel()
 
