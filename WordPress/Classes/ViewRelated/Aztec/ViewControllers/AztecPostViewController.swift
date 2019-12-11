@@ -167,6 +167,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.smartDashesType = .no
         textView.smartQuotesType = .no
 
+        textView.accessibilityIdentifier = "aztec-rich-text-view"
+
         // Set up the editor for screenshot generation, if needed
         if UIApplication.shared.isCreatingScreenshots() {
             textView.autocorrectionType = .no
@@ -228,6 +230,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.adjustsFontForContentSizeCategory = true
         textView.smartDashesType = .no
         textView.smartQuotesType = .no
+
+        textView.accessibilityIdentifier = "aztec-html-text-view"
     }
 
 

@@ -14,8 +14,8 @@ class AztecEditorScreen: BaseScreen {
     let mode: Mode
     var textView: XCUIElement
 
-    private var richTextField = "Rich Content"
-    private var htmlTextField = "HTMLContentView"
+    private var richTextField = "aztec-rich-text-view"
+    private var htmlTextField = "aztec-html-text-view"
 
     let editorCloseButton = XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"]
     let publishButton = XCUIApplication().buttons["Publish"]
