@@ -41,11 +41,49 @@
                                     <constraint firstItem="cCN-Nm-Ahb" firstAttribute="top" secondItem="iCM-A8-y8w" secondAttribute="top" id="rDP-kD-J2h"/>
                                 </constraints>
                             </view>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xsd-ER-63U">
+                                <rect key="frame" x="126.5" y="409" width="161" height="44"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ddb-h0-XWe">
+                                    <rect key="frame" x="0.0" y="0.0" width="161" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xSh-vj-Klr">
+                                            <rect key="frame" x="12" y="12" width="137" height="20"/>
+                                            <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="McN-Qk-PSa">
+                                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e4Q-QZ-yuo">
+                                                    <rect key="frame" x="30" y="0.0" width="107" height="20"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                    <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="xSh-vj-Klr" secondAttribute="bottom" constant="12" id="XuB-Yy-g2k"/>
+                                        <constraint firstItem="xSh-vj-Klr" firstAttribute="top" secondItem="ddb-h0-XWe" secondAttribute="top" constant="12" id="YFS-lZ-d7X"/>
+                                        <constraint firstItem="xSh-vj-Klr" firstAttribute="leading" secondItem="ddb-h0-XWe" secondAttribute="leading" constant="12" id="jO7-hd-7v2"/>
+                                        <constraint firstAttribute="trailing" secondItem="xSh-vj-Klr" secondAttribute="trailing" constant="12" id="tGs-JQ-dWv"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="systemMaterialDark"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="0.12" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Xsd-ER-63U" firstAttribute="centerY" secondItem="5Tz-zw-SB3" secondAttribute="centerY" id="490-ov-U5m"/>
                             <constraint firstItem="iCM-A8-y8w" firstAttribute="top" secondItem="5Tz-zw-SB3" secondAttribute="bottom" id="AAI-xh-WYk"/>
                             <constraint firstItem="5Tz-zw-SB3" firstAttribute="top" secondItem="xJb-mz-iou" secondAttribute="top" id="Eki-uC-BmI"/>
+                            <constraint firstItem="Xsd-ER-63U" firstAttribute="centerX" secondItem="5Tz-zw-SB3" secondAttribute="centerX" id="HPT-dN-ceK"/>
                             <constraint firstItem="5Tz-zw-SB3" firstAttribute="leading" secondItem="xJb-mz-iou" secondAttribute="leading" id="LVp-Xe-Zw8"/>
                             <constraint firstItem="xJb-mz-iou" firstAttribute="trailing" secondItem="iCM-A8-y8w" secondAttribute="trailing" id="SNe-zG-aps"/>
                             <constraint firstItem="iCM-A8-y8w" firstAttribute="bottom" secondItem="xJb-mz-iou" secondAttribute="bottom" id="hRG-Gy-RUt"/>
@@ -55,13 +93,15 @@
                         <viewLayoutGuide key="safeArea" id="xJb-mz-iou"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicatorLabel" destination="e4Q-QZ-yuo" id="p1R-24-vGe"/>
+                        <outlet property="activityIndicatorView" destination="Xsd-ER-63U" id="boC-Kk-1td"/>
                         <outlet property="cancelButton" destination="cCN-Nm-Ahb" id="2yx-pN-P3d"/>
                         <outlet property="imageView" destination="5Tz-zw-SB3" id="ix9-cQ-25U"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9b9-f5-eYQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="74" y="-76"/>
+            <point key="canvasLocation" x="73.913043478260875" y="-76.339285714285708"/>
         </scene>
     </scenes>
 </document>

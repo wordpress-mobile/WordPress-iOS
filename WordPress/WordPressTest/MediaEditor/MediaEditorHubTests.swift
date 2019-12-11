@@ -42,4 +42,12 @@ class MediaEditorHubTests: XCTestCase {
         expect(hub.cancelButton.titleLabel?.text).to(equal("foo"))
     }
 
+    func testHideActivityIndicatorView() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+
+        _ = hub.view
+
+        expect(hub.activityIndicatorView.isHidden).to(beTrue())
+    }
+
 }
