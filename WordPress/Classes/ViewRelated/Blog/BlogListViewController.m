@@ -497,7 +497,7 @@ static NSInteger HideSearchMinSites = 3;
     self.tableView.dataSource = self.dataSource;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:[WPBlogTableViewCell reuseIdentifier]];
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
+    self.tableView.accessibilityIdentifier = @"Blogs";
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
 
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];

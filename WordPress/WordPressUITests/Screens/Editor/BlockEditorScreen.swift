@@ -18,7 +18,7 @@ class BlockEditorScreen: BaseScreen {
     let imagePlaceholder = XCUIApplication().buttons["Image block. Empty"] // Uses a localized string
 
     // Toolbar
-    let addBlockButton = XCUIApplication().buttons["Add block"] // Uses a localized string
+    let addBlockButton = XCUIApplication().buttons["add-block-button"] // Uses a testID
 
     // Action sheets
     let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
@@ -139,6 +139,12 @@ class BlockEditorScreen: BaseScreen {
             } else {
                 app.sheets.buttons["Publish"].tap()
             }
+        }
+    }
+
+    func dismissBlockEditorEnabledDialog() {
+        if FancyAlertComponent.isLoaded() {
+            FancyAlertComponent().acceptAlert()
         }
     }
 

@@ -50,6 +50,7 @@ class SiteStatsDashboardViewController: UIViewController {
         setupFilterBar()
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
+        view.accessibilityIdentifier = "stats-dashboard"
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -309,7 +309,6 @@
 		1ABA150822AE5F870039311A /* WordPressUIBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABA150722AE5F870039311A /* WordPressUIBundleTests.swift */; };
 		1AE0F2B12297F7E9000BDD7F /* WireMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE0F2B02297F7E9000BDD7F /* WireMock.swift */; };
 		1AED7239229D2E260036C5B8 /* WireMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE0F2B02297F7E9000BDD7F /* WireMock.swift */; };
-		1AED723A229D2E2C0036C5B8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA11FD6654A007AE3E4 /* Logger.swift */; };
 		1D36FCB53C05724865D41F7A /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1E9D544D23C4C56300F6A9E0 /* GutenbergRollout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9D544C23C4C56300F6A9E0 /* GutenbergRollout.swift */; };
@@ -2041,6 +2040,42 @@
 		F9463A7321C05EE90081F11E /* ScreenshotCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */; };
 		F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
 		F9941D1822A805F600788F33 /* UIImage+XCAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9941D1722A805F600788F33 /* UIImage+XCAssetTests.swift */; };
+		F9C47A6B238C7CFD00AAD9ED /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
+		F9C47A6C238C7D6A00AAD9ED /* MySitesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */; };
+		F9C47A6D238C7D7500AAD9ED /* MySiteScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8707162006B774004FB5A4 /* MySiteScreen.swift */; };
+		F9C47A6E238C7D7D00AAD9ED /* TabNavComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */; };
+		F9C47A6F238C7D8800AAD9ED /* WelcomeScreenLoginComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985F06B42303866200949733 /* WelcomeScreenLoginComponent.swift */; };
+		F9C47A70238C7D8800AAD9ED /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9A1FD66423007AE3E4 /* WelcomeScreen.swift */; };
+		F9C47A71238C7D8800AAD9ED /* LoginEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */; };
+		F9C47A72238C7D8800AAD9ED /* LoginPasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */; };
+		F9C47A73238C7D8800AAD9ED /* LinkOrPasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */; };
+		F9C47A74238C7D8800AAD9ED /* LoginCheckMagicLinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF6ACE6221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift */; };
+		F9C47A75238C7D8800AAD9ED /* LoginSiteAddressScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE911BB221D8497007E1D4E /* LoginSiteAddressScreen.swift */; };
+		F9C47A76238C7D8800AAD9ED /* LoginUsernamePasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE911BD221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift */; };
+		F9C47A77238C7D8800AAD9ED /* LoginEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32B1FD6782A00E55192 /* LoginEpilogueScreen.swift */; };
+		F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
+		F9C47A79238C7DAC00AAD9ED /* MeTabScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3311FD6803700E55192 /* MeTabScreen.swift */; };
+		F9C47A7A238C7DAC00AAD9ED /* ReaderScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8707182006E48E004FB5A4 /* ReaderScreen.swift */; };
+		F9C47A7B238C7DAC00AAD9ED /* SiteSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9F65622F03C9200F79BBF /* SiteSettingsScreen.swift */; };
+		F9C47A7C238C7DAC00AAD9ED /* NotificationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */; };
+		F9C47A7D238C7DAC00AAD9ED /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC692214532D002E5825 /* FancyAlertComponent.swift */; };
+		F9C47A7E238C7DC100AAD9ED /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
+		F9C47A7F238C7DC100AAD9ED /* AztecEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8341FF1208400A11345 /* AztecEditorScreen.swift */; };
+		F9C47A80238C7DC100AAD9ED /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
+		F9C47A81238C7DC100AAD9ED /* EditorNoticeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */; };
+		F9C47A82238C7DC100AAD9ED /* EditorPostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */; };
+		F9C47A83238C7DC500AAD9ED /* WelcomeScreenSignupComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB98622B28F4600642EE9 /* WelcomeScreenSignupComponent.swift */; };
+		F9C47A84238C7DC500AAD9ED /* SignupEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97522B15A2900642EE9 /* SignupEmailScreen.swift */; };
+		F9C47A85238C7DC500AAD9ED /* SignupCheckMagicLinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97722B15B2C00642EE9 /* SignupCheckMagicLinkScreen.swift */; };
+		F9C47A86238C7DC500AAD9ED /* SignupEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97922B15C1000642EE9 /* SignupEpilogueScreen.swift */; };
+		F9C47A87238C7DF100AAD9ED /* MediaPickerAlbumListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5218992279CF3B008998CE /* MediaPickerAlbumListScreen.swift */; };
+		F9C47A88238C7DF100AAD9ED /* MediaPickerAlbumScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC52189B2279D295008998CE /* MediaPickerAlbumScreen.swift */; };
+		F9C47A89238C7E2600AAD9ED /* CategoriesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE55E982242715C002A9634 /* CategoriesComponent.swift */; };
+		F9C47A8A238C7E2600AAD9ED /* TagsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8498D22241477F00DB490A /* TagsComponent.swift */; };
+		F9C47A8C238C801600AAD9ED /* PostsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8B238C801600AAD9ED /* PostsScreen.swift */; };
+		F9C47A8D238C809700AAD9ED /* PostsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8B238C801600AAD9ED /* PostsScreen.swift */; };
+		F9C47A8F238C9D6400AAD9ED /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */; };
+		F9C47A90238C9D6700AAD9ED /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
@@ -4551,6 +4586,8 @@
 		F93735F722D53C3B00A3C312 /* LoggingURLRedactorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggingURLRedactorTests.swift; sourceTree = "<group>"; };
 		F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotCredentials.swift; sourceTree = "<group>"; };
 		F9941D1722A805F600788F33 /* UIImage+XCAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+XCAssetTests.swift"; sourceTree = "<group>"; };
+		F9C47A8B238C801600AAD9ED /* PostsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsScreen.swift; sourceTree = "<group>"; };
+		F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsScreen.swift; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
@@ -8730,6 +8767,8 @@
 				7EF9F65622F03C9200F79BBF /* SiteSettingsScreen.swift */,
 				BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */,
 				CC94FC692214532D002E5825 /* FancyAlertComponent.swift */,
+				F9C47A8B238C801600AAD9ED /* PostsScreen.swift */,
+				F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -12572,13 +12611,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9C47A7D238C7DAC00AAD9ED /* FancyAlertComponent.swift in Sources */,
+				F9C47A71238C7D8800AAD9ED /* LoginEmailScreen.swift in Sources */,
 				1A82EC9F229EBAFB000F141E /* Logger.swift in Sources */,
+				F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */,
+				F9C47A80238C7DC100AAD9ED /* BlockEditorScreen.swift in Sources */,
+				F9C47A82238C7DC100AAD9ED /* EditorPostSettings.swift in Sources */,
 				F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */,
-				1AED723A229D2E2C0036C5B8 /* Logger.swift in Sources */,
+				F9C47A84238C7DC500AAD9ED /* SignupEmailScreen.swift in Sources */,
+				F9C47A87238C7DF100AAD9ED /* MediaPickerAlbumListScreen.swift in Sources */,
+				F9C47A77238C7D8800AAD9ED /* LoginEpilogueScreen.swift in Sources */,
+				F9C47A7C238C7DAC00AAD9ED /* NotificationsScreen.swift in Sources */,
+				F9C47A6B238C7CFD00AAD9ED /* LoginFlow.swift in Sources */,
+				F9C47A8D238C809700AAD9ED /* PostsScreen.swift in Sources */,
+				F9C47A6F238C7D8800AAD9ED /* WelcomeScreenLoginComponent.swift in Sources */,
+				F9C47A70238C7D8800AAD9ED /* WelcomeScreen.swift in Sources */,
+				F9C47A73238C7D8800AAD9ED /* LinkOrPasswordScreen.swift in Sources */,
+				F9C47A90238C9D6700AAD9ED /* StatsScreen.swift in Sources */,
+				F9C47A6E238C7D7D00AAD9ED /* TabNavComponent.swift in Sources */,
+				F9C47A79238C7DAC00AAD9ED /* MeTabScreen.swift in Sources */,
+				F9C47A6D238C7D7500AAD9ED /* MySiteScreen.swift in Sources */,
+				F9C47A72238C7D8800AAD9ED /* LoginPasswordScreen.swift in Sources */,
+				F9C47A7F238C7DC100AAD9ED /* AztecEditorScreen.swift in Sources */,
+				F9C47A75238C7D8800AAD9ED /* LoginSiteAddressScreen.swift in Sources */,
 				1AED7239229D2E260036C5B8 /* WireMock.swift in Sources */,
+				F9C47A8A238C7E2600AAD9ED /* TagsComponent.swift in Sources */,
+				F9C47A81238C7DC100AAD9ED /* EditorNoticeComponent.swift in Sources */,
+				F9C47A74238C7D8800AAD9ED /* LoginCheckMagicLinkScreen.swift in Sources */,
+				F9C47A89238C7E2600AAD9ED /* CategoriesComponent.swift in Sources */,
+				F9C47A7B238C7DAC00AAD9ED /* SiteSettingsScreen.swift in Sources */,
+				F9C47A6C238C7D6A00AAD9ED /* MySitesScreen.swift in Sources */,
+				F9C47A76238C7D8800AAD9ED /* LoginUsernamePasswordScreen.swift in Sources */,
+				F9C47A83238C7DC500AAD9ED /* WelcomeScreenSignupComponent.swift in Sources */,
 				8511CFC71C60894200B7CEED /* WordPressScreenshotGeneration.swift in Sources */,
 				8511CFC51C60884400B7CEED /* SnapshotHelper.swift in Sources */,
+				F9C47A85238C7DC500AAD9ED /* SignupCheckMagicLinkScreen.swift in Sources */,
+				F9C47A86238C7DC500AAD9ED /* SignupEpilogueScreen.swift in Sources */,
+				F9C47A7E238C7DC100AAD9ED /* EditorPublishEpilogueScreen.swift in Sources */,
+				F9C47A7A238C7DAC00AAD9ED /* ReaderScreen.swift in Sources */,
 				F9463A7321C05EE90081F11E /* ScreenshotCredentials.swift in Sources */,
+				F9C47A88238C7DF100AAD9ED /* MediaPickerAlbumScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12980,7 +13052,9 @@
 				CC8A5EAB22159FA6001B7874 /* WPUITestCredentials.swift in Sources */,
 				BE2B4EA41FD6659B007AE3E4 /* LoginEmailScreen.swift in Sources */,
 				BE6DD3281FD6705200E55192 /* LoginPasswordScreen.swift in Sources */,
+				F9C47A8F238C9D6400AAD9ED /* StatsScreen.swift in Sources */,
 				BE6DD3301FD67F3B00E55192 /* TabNavComponent.swift in Sources */,
+				F9C47A8C238C801600AAD9ED /* PostsScreen.swift in Sources */,
 				CC7CB97322B1510900642EE9 /* SignupTests.swift in Sources */,
 				CC7CB97822B15B2C00642EE9 /* SignupCheckMagicLinkScreen.swift in Sources */,
 				CC94FC68221452A4002E5825 /* EditorNoticeComponent.swift in Sources */,
