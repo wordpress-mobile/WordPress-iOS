@@ -10,11 +10,10 @@ class ThisWeekViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
 
     private var statsValues: ThisWeekWidgetStats? {
-        // TODO: for testing only. Remove when UI added.
         didSet {
-            print("🔴 siteUrl: ", siteUrl)
-            print("🔴 statsValues: ", statsValues)
+//            updateStatsLabels()
         }
+    }
 
     private var footerHeight: CGFloat = 35
 
@@ -92,7 +91,7 @@ extension ThisWeekViewController: NCWidgetProviding {
             DDLogError("This Week Widget: Missing site ID, timeZone or oauth2Token")
 
             DispatchQueue.main.async {
-                // TODO: reload table here
+                self.tableView.reloadData()
             }
 
             completionHandler(NCUpdateResult.failed)
@@ -127,8 +126,7 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard haveSiteUrl,
-            isConfigured,
+        guard showFooter(),
             let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
                 return nil
         }
@@ -140,7 +138,7 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if !isConfigured || !haveSiteUrl {
+        if !showFooter() {
             return 0
         }
 
@@ -221,7 +219,7 @@ private extension ThisWeekViewController {
             DispatchQueue.main.async {
                 let summaryData = summary?.summaryData.reversed() ?? []
                 self.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
-                // TODO: reload table here
+                self.tableView.reloadData()
             }
             completionHandler(NCUpdateResult.newData)
         }
@@ -244,10 +242,8 @@ private extension ThisWeekViewController {
     // MARK: - Table Helpers
 
     func registerTableCells() {
-
-        // TODO: for testing only. Replace with new cell.
-        let twoColumnCellNib = UINib(nibName: String(describing: WidgetTwoColumnCell.self), bundle: Bundle(for: WidgetTwoColumnCell.self))
-        tableView.register(twoColumnCellNib, forCellReuseIdentifier: WidgetTwoColumnCell.reuseIdentifier)
+        let differenceCellNib = UINib(nibName: String(describing: WidgetDifferenceCell.self), bundle: Bundle(for: WidgetDifferenceCell.self))
+        tableView.register(differenceCellNib, forCellReuseIdentifier: WidgetDifferenceCell.reuseIdentifier)
 
         let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
         tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
@@ -266,12 +262,16 @@ private extension ThisWeekViewController {
     }
 
     func statCellFor(indexPath: IndexPath) -> UITableViewCell {
-        // TODO: for testing only. Replace with new cell.
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetTwoColumnCell.reuseIdentifier, for: indexPath) as? WidgetTwoColumnCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetDifferenceCell.reuseIdentifier, for: indexPath) as? WidgetDifferenceCell else {
             return UITableViewCell()
         }
 
+        // TODO: configure cell
         return cell
+    }
+
+    func showFooter() -> Bool {
+        return (extensionContext?.widgetActiveDisplayMode == .expanded && isConfigured && haveSiteUrl)
     }
 
     // MARK: - Expand / Compact View Helpers
@@ -310,7 +310,7 @@ private extension ThisWeekViewController {
 
     enum Constants {
         static let noDataLabel = "-"
-        static let minRows: Int = 1
+        static let minRows: Int = 2
     }
 
 }
