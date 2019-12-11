@@ -465,6 +465,8 @@ final class WebAddressWizardContent: UIViewController {
     // MARK: - Toolbar
 
     private func toggleBottomToolbar(enabled: Bool) {
+        createSite.isEnabled = enabled
+
         if enabled {
             tableViewOffsetCoordinator?.showBottomToolbar()
         } else {
