@@ -62,6 +62,8 @@ final class WebAddressWizardContent: UIViewController {
     /// This message advises the user that
     private let noResultsLabel: UILabel
 
+    private let isBottomToolbarAlwaysVisible = UIAccessibility.isVoiceOverRunning
+
     // MARK: WebAddressWizardContent
 
     init(creator: SiteCreator, service: SiteAddressService, selection: @escaping (DomainSuggestion) -> Void) {
@@ -104,7 +106,7 @@ final class WebAddressWizardContent: UIViewController {
 
         self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table, footerControlContainer: view, footerControl: buttonWrapper, toolbarBottomConstraint: bottomConstraint)
 
-        tableViewOffsetCoordinator?.hideBottomToolbar()
+        toggleBottomToolbar(enabled: false)
 
         applyTitle()
         setupBackground()
@@ -180,7 +182,7 @@ final class WebAddressWizardContent: UIViewController {
     private func clearContent() {
         throttle.cancel()
 
-        tableViewOffsetCoordinator?.hideBottomToolbar()
+        toggleBottomToolbar(enabled: false)
 
         guard let validDataProvider = tableViewProvider as? WebAddressTableViewProvider else {
             setupTableDataProvider(isShowingImplicitSuggestions: true)
@@ -410,7 +412,7 @@ final class WebAddressWizardContent: UIViewController {
             let domainSuggestion = provider.data[selectedIndexPath.row]
             self.selectedDomain = domainSuggestion
             self.resignTextFieldResponderIfNeeded()
-            self.tableViewOffsetCoordinator?.showBottomToolbar()
+            self.toggleBottomToolbar(enabled: true)
         }
 
         let provider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
@@ -436,7 +438,7 @@ final class WebAddressWizardContent: UIViewController {
     private func clearSelectionAndCreateSiteButton() {
         selectedDomain = nil
         table.deselectSelectedRowWithAnimation(true)
-        tableViewOffsetCoordinator?.hideBottomToolbar()
+        toggleBottomToolbar(enabled: false)
     }
 
     private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
@@ -458,6 +460,18 @@ final class WebAddressWizardContent: UIViewController {
 
         performSearchIfNeeded(query: query)
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+    }
+
+    // MARK: - Toolbar
+
+    private func toggleBottomToolbar(enabled: Bool) {
+        if enabled {
+            tableViewOffsetCoordinator?.showBottomToolbar()
+        } else {
+            if !isBottomToolbarAlwaysVisible {
+                tableViewOffsetCoordinator?.hideBottomToolbar()
+            }
+        }
     }
 }
 
