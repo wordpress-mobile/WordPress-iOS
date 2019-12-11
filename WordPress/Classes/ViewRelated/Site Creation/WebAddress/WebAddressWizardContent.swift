@@ -81,9 +81,7 @@ final class WebAddressWizardContent: UIViewController {
             label.font = WPStyleGuide.fontForTextStyle(.title2)
             label.textAlignment = .center
             label.textColor = .text
-
-            let noResultsMessage = NSLocalizedString("No available addresses matching your search", comment: "Advises the user that no Domain suggestions could be found for the search query.")
-            label.text = noResultsMessage
+            label.text = Strings.noResults
 
             label.sizeToFit()
 
@@ -230,8 +228,7 @@ final class WebAddressWizardContent: UIViewController {
         }
 
         if !isShowingImplicitSuggestions && !data.isEmpty {
-            UIAccessibility.post(notification: .announcement,
-                                 argument: NSLocalizedString("Suggestions updated", comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation."))
+            UIAccessibility.post(notification: .announcement, argument: Strings.suggestionsUpdated)
         }
     }
 
@@ -476,6 +473,15 @@ final class WebAddressWizardContent: UIViewController {
                 tableViewOffsetCoordinator?.hideBottomToolbar()
             }
         }
+    }
+
+    // MARK: - Others
+
+    private enum Strings {
+        static let suggestionsUpdated = NSLocalizedString("Suggestions updated",
+                                                          comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation.")
+        static let noResults = NSLocalizedString("No available addresses matching your search",
+                                                 comment: "Advises the user that no Domain suggestions could be found for the search query.")
     }
 }
 
