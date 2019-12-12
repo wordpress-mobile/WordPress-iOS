@@ -11,13 +11,13 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.9'
+    #pod 'WordPressShared', '~> 1.8.9'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => ''
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => 'issue/add-deleted-orphan-event'
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -114,6 +114,7 @@ def gutenberg_dependencies(options)
         'react-native-video',
         'RNSVG',
         'ReactNativeDarkMode',
+        'react-native-slider'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -140,7 +141,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '0c8b0f52d6cb3b8b32db07713576c0cfa8b83163'
+    gutenberg :commit => 'e6ac5711989e9f69d63bf2fd151170330d008323'
 
     ## Third party libraries
     ## =====================
@@ -280,7 +281,17 @@ target 'WordPressTodayWidget' do
     wordpress_ui
 end
 
+## All Time Widget
+## ============
+##
+target 'WordPressAllTimeWidget' do
+    project 'WordPress/WordPress.xcodeproj'
 
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
 
 ## Notification Content Extension
 ## ==============================

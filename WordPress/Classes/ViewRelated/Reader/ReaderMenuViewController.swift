@@ -613,7 +613,8 @@ import WordPressShared
 
         cell.selectionStyle = .default
         cell.textLabel?.text = menuItem.title
-        cell.imageView?.image = menuItem.icon
+        cell.imageView?.tintColor = .listIcon
+        cell.imageView?.image = menuItem.icon?.withRenderingMode(.alwaysTemplate)
     }
 
 
