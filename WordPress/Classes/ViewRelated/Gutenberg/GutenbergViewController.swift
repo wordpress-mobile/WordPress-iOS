@@ -555,12 +555,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestFullscreenImage(with mediaUrl: URL) {
-        navigationController?.definesPresentationContext = true
-        let controller = WPImageViewController(externalMediaURL: mediaUrl)
-        controller.post = self.post
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .overCurrentContext
-        self.present(controller, animated: true)
+        // A hack to get the currently selected image in Gutenberg :P
+        let thumb = gutenberg.rootView.subImageViews().first { $0.superview?.superview?.layer.contents != nil }?.image
+
+        // We create the AsyncImage to give it to the Media Editor
+        let gutenbergImage = GutenbergImage(thumb: thumb, url: mediaUrl)
+
+        // Show Media Editor :)
+        let mediaEditor = MediaEditor(gutenbergImage)
+        mediaEditor.edit(from: self, onFinishEditing: { _, _ in }, onCancel: {})
     }
 }
 
@@ -708,4 +711,63 @@ private extension GutenbergViewController {
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
     }
+}
+
+class GutenbergImage: AsyncImage {
+    private var tasks: [URLSessionDataTask] = []
+
+    private var originalURL: URL
+
+    private var fullQualityURL: URL? {
+        guard var urlComponents = URLComponents(url: originalURL, resolvingAgainstBaseURL: false) else {
+            return nil
+        }
+
+        urlComponents.query = nil
+
+        return try? urlComponents.asURL()
+    }
+
+    var thumb: UIImage?
+
+    init(thumb: UIImage?, url: URL) {
+        self.thumb = thumb
+        self.originalURL = url
+    }
+
+    func thumbnail(finishedRetrievingThumbnail: @escaping (UIImage?) -> ()) {
+        let task = ImageDownloader.shared.downloadImage(at: originalURL, completion: { image, error in
+            guard let image = image else {
+                finishedRetrievingThumbnail(nil)
+                return
+            }
+
+            finishedRetrievingThumbnail(image)
+        })
+        tasks.append(task)
+    }
+
+    func full(finishedRetrievingFullImage: @escaping (UIImage?) -> ()) {
+        let task = ImageDownloader.shared.downloadImage(at: self.fullQualityURL!, completion: { image, error in
+            guard let image = image else {
+                finishedRetrievingFullImage(nil)
+                return
+            }
+
+            finishedRetrievingFullImage(image)
+        })
+        self.tasks.append(task)
+    }
+
+    func cancel() {
+        tasks.forEach { $0.cancel() }
+    }
+}
+
+extension UIView {
+
+    func subImageViews() -> [UIImageView] {
+        return subviews.filter { $0 is UIImageView } + subviews.flatMap { $0.subImageViews() } as! [UIImageView]
+    }
+
 }
