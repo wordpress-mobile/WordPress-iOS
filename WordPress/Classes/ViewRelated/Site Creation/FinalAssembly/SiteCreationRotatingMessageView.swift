@@ -1,5 +1,4 @@
 import UIKit
-import Gridicons
 
 class SiteCreationRotatingMessageView: UIView {
     private struct Margins {
@@ -18,10 +17,6 @@ class SiteCreationRotatingMessageView: UIView {
         static var totalStatusDisplayDuration: TimeInterval {
             return statusDisplayDuration + transitionAnimationDuration
         }
-
-        //Checkmark configuration
-        static let checkmarkImageSize = CGSize(width: 18, height: 18)
-        static let checkmarkImageColor = UIColor.muriel(color: .success, .shade20)
     }
 
     /// An array of status messages to rotating through
@@ -86,13 +81,7 @@ class SiteCreationRotatingMessageView: UIView {
     init(messages: [String], iconImage: UIImage) {
         self.statusMessages = messages
 
-        self.statusImageView = {
-            let imageView = UIImageView(image: iconImage)
-
-            imageView.tintColor = Parameters.checkmarkImageColor
-
-            return imageView
-        }()
+        self.statusImageView = UIImageView(image: iconImage)
 
         super.init(frame: .zero)
         configure()
