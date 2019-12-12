@@ -1,5 +1,7 @@
 
 import UIKit
+import Gridicons
+import WordPressShared
 
 // MARK: SiteAssemblyContentView
 
@@ -16,6 +18,8 @@ final class SiteAssemblyContentView: UIView {
         static let horizontalMargin                         = CGFloat(30)
         static let verticalSpacing                          = CGFloat(30)
         static let statusStackViewSpacing                   = CGFloat(16)
+        static let checkmarkImageSize                       = CGSize(width: 18, height: 18)
+        static let checkmarkImageColor                      = UIColor.muriel(color: .success, .shade20)
     }
 
     /// This influences the top of the completion label as it animates into place.
@@ -34,7 +38,7 @@ final class SiteAssemblyContentView: UIView {
     private let statusImageView: UIImageView
 
     /// This advises the user that the site creation request is underway.
-    private let statusLabel: UILabel
+    private let statusMessageRotatingView: SiteCreationRotatingMessageView
 
     /// The loading indicator provides an indeterminate view of progress as the site is being created.
     private let activityIndicator: UIActivityIndicatorView
@@ -83,6 +87,17 @@ final class SiteAssemblyContentView: UIView {
 
     /// The status of site assembly. As the state advances, the view updates in concert.
     var status: SiteAssemblyStatus = .idle {
+        // Start and stop the message rotation
+        willSet {
+            switch newValue {
+            case .inProgress:
+                statusMessageRotatingView.startAnimating()
+
+            default:
+                statusMessageRotatingView.stopAnimating()
+            }
+        }
+
         didSet {
             setNeedsLayout()
         }
@@ -153,22 +168,29 @@ final class SiteAssemblyContentView: UIView {
             return imageView
         }()
 
-        self.statusLabel = {
-            let label = UILabel()
+        self.statusMessageRotatingView = {
+            //The rotating message view will automatically use the localized string based
+            //on the message
+            let statusMessages = [
+                "Grabbing site URL",
+                "Adding site features",
+                "Setting up theme",
+                "Creating dashboard"
+            ]
 
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.numberOfLines = 0
+            let icon: UIImage = {
+                let iconSize = Parameters.checkmarkImageSize
+                let tintColor = Parameters.checkmarkImageColor
+                let icon = Gridicon.iconOfType(.checkmark, withSize: iconSize)
 
-            label.font = WPStyleGuide.fontForTextStyle(.title2)
-            label.textColor = .textSubtle
-            label.textAlignment = .center
+                guard let tintedIcon = icon.imageWithTintColor(tintColor) else {
+                    return icon
+                }
 
-            let statusText = NSLocalizedString("We’re creating your new site.",
-                                               comment: "User-facing string, presented to reflect that site assembly is underway.")
-            label.text = statusText
-            label.accessibilityLabel = statusText
+                return tintedIcon
+            }()
 
-            return label
+            return SiteCreationRotatingMessageView(messages: statusMessages, iconImage: icon)
         }()
 
         self.activityIndicator = {
@@ -239,7 +261,7 @@ final class SiteAssemblyContentView: UIView {
 
         backgroundColor = .listBackground
 
-        statusStackView.addArrangedSubviews([ statusTitleLabel, statusSubtitleLabel, statusImageView, statusLabel, activityIndicator ])
+        statusStackView.addArrangedSubviews([ statusTitleLabel, statusSubtitleLabel, statusImageView, statusMessageRotatingView, activityIndicator ])
         addSubviews([ completionLabel, statusStackView ])
 
         let completionLabelTopInsetInitial = Parameters.verticalSpacing * 2
@@ -351,7 +373,7 @@ final class SiteAssemblyContentView: UIView {
             }
             self.errorStateView?.alpha = 0
             self.statusStackView.alpha = 1
-            self.accessibilityElements = [ self.statusLabel ]
+            self.accessibilityElements = [ self.statusMessageRotatingView.statusLabel ]
         })
     }
 
