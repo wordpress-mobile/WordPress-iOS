@@ -58,4 +58,28 @@ class MediaEditorHubTests: XCTestCase {
         expect(hub.activityIndicatorLabel.text).to(equal("foo"))
     }
 
+    func testWhenInPortraitShowTheCorrectToolbarAndConstraints() {
+        XCUIDevice.shared.orientation = .portrait
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+
+        hub.loadViewIfNeeded()
+
+        expect(hub.horizontalToolbar.isHidden).to(beFalse())
+        expect(hub.verticalToolbar.isHidden).to(beTrue())
+        expect(hub.portraitConstraints.allSatisfy { $0.isActive }).to(beTrue())
+        expect(hub.landscapeConstraints.allSatisfy { !$0.isActive }).to(beTrue())
+    }
+
+    func testWhenInLandscapeShowTheCorrectToolbarAndConstraints() {
+        XCUIDevice.shared.orientation = .landscapeLeft
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+
+        hub.loadViewIfNeeded()
+
+        expect(hub.horizontalToolbar.isHidden).to(beTrue())
+        expect(hub.verticalToolbar.isHidden).to(beFalse())
+        expect(hub.portraitConstraints.allSatisfy { !$0.isActive }).to(beTrue())
+        expect(hub.landscapeConstraints.allSatisfy { $0.isActive }).to(beTrue())
+    }
+
 }
