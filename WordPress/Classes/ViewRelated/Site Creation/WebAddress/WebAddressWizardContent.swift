@@ -271,7 +271,8 @@ final class WebAddressWizardContent: UIViewController {
         let buttonTitle = NSLocalizedString("Create Site", comment: "Button to progress to the next step")
         createSite.setTitle(buttonTitle, for: .normal)
         createSite.accessibilityLabel = buttonTitle
-        createSite.accessibilityHint = NSLocalizedString("Creates a new Site", comment: "Site creation. Navigates to the next step")
+        createSite.accessibilityHint = NSLocalizedString("Creates a new site with the given information.",
+                                                         comment: "Accessibility hint for the Create Site button in Site Creation.")
 
         createSite.isPrimary = true
     }
