@@ -24,17 +24,20 @@ class SiteCreationRotatingMessageView: UIView {
         static let checkmarkImageColor = UIColor.muriel(color: .success, .shade20)
     }
 
-    private let statusMessages = [
-        "Grabbing site URL",
-        "Adding site features",
-        "Setting up theme",
-        "Creating dashboard"
-    ]
+    /// An array of status messages to rotating through
+    private(set) var statusMessages: [String]!
 
     // MARK: - State Management
-    private var animationTimer: Timer!
-    private var visibleIndex = 0
-    private var nextVisibleIndex: Int {
+
+    /// A timer that determines how long to show each message
+    internal var animationTimer: Timer!
+
+    /// The index of the currently visible message
+    internal var visibleIndex = 0
+
+    /// Calculates the index that should be displayed next,
+    /// This will automatically loop back to 0 if we hit the end
+    internal var nextVisibleIndex: Int {
         get {
             var nextIndex = visibleIndex + 1
             if nextIndex >= statusMessages.count {
@@ -46,6 +49,9 @@ class SiteCreationRotatingMessageView: UIView {
     }
 
     // MARK: - View Properties
+    private var statusImageView: UIImageView!
+
+    /// This advises the user that the site creation request is underway.
     private(set) var statusLabel: UILabel = {
         let label = UILabel()
 
@@ -58,7 +64,7 @@ class SiteCreationRotatingMessageView: UIView {
         return label
     }()
 
-    /// The stack view manages the appearance of a status label and a loading indicator.
+    /// The stack view manages the appearance of a icon image, and a status label
     private let statusStackView: UIStackView = {
         let stackView = UIStackView()
 
@@ -72,26 +78,28 @@ class SiteCreationRotatingMessageView: UIView {
         return stackView
     }()
 
-    private let statusImageView: UIImageView = {
-        let icon = Gridicon.iconOfType(.checkmark, withSize: Parameters.checkmarkImageSize)
-        let imageView = UIImageView(image: icon)
-
-        imageView.tintColor = Parameters.checkmarkImageColor
-
-        return imageView
-    }()
-
     // MARK: - UIView
-    override init(frame: CGRect) {
-        super.init(frame: frame)
 
+    /// Creates a new instance of the message view with the provided messages
+    /// - Parameter messages: An array of messages to display
+    /// - Parameter iconImage: The icon image to display before the status message
+    init(messages: [String], iconImage: UIImage) {
+        self.statusMessages = messages
+
+        self.statusImageView = {
+            let imageView = UIImageView(image: iconImage)
+
+            imageView.tintColor = Parameters.checkmarkImageColor
+
+            return imageView
+        }()
+
+        super.init(frame: .zero)
         configure()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-
-        configure()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Public Methods
@@ -118,9 +126,39 @@ class SiteCreationRotatingMessageView: UIView {
         reset()
     }
 
+    // MARK: - Internal
+    /// Resets the visible index to 0, and changes the visible message to the first one
+    internal func reset() {
+        visibleIndex = 0
+
+        //Update the status label with the first status message in the list
+        statusLabel.text = statusMessages[0]
+    }
+
+    /// Updates the status label text with the next message to be displayed
+    /// then updates the current visible index
+    internal func updateStatusLabelWithNextMessage() {
+        let nextIndex = self.nextVisibleIndex
+        let statusMessage = self.statusMessages[nextIndex]
+
+        self.updateStatus(message: statusMessage)
+
+        self.visibleIndex = nextIndex
+    }
+
+    /// Updates the status label/accessiblity label with the provided text
+    /// - Parameter message: The text to be displayed
+    internal func updateStatus(message: String) {
+        let statusMessage = NSLocalizedString(message,
+                                              comment: "User-facing string, presented to reflect that site assembly is underway.")
+
+        self.statusLabel.text = statusMessage
+        self.statusLabel.accessibilityLabel = statusMessage
+    }
+
     // MARK: - Private
 
-    /// Configures the stackview, and sets some contraints
+    /// Configures the stackview, and sets the view constraints
     private func configure() {
         reset()
 
@@ -139,27 +177,10 @@ class SiteCreationRotatingMessageView: UIView {
         ])
     }
 
-    /// Resets the visible index to 0, and changes the visible message to the first one
-    private func reset() {
-        visibleIndex = 0
-
-        //Update the status label with the first status message in the list
-        statusLabel.text = statusMessages[0]
-    }
-
     /// Fades the current message out, updates the status label to the next message
     /// then fades the message view back in
     @objc private func displayNextMessage() {
         let transitionDuration = Parameters.transitionAnimationDuration
-
-        let updateStatusText = {
-            let nextIndex = self.nextVisibleIndex
-            let statusMessage = self.statusMessages[nextIndex]
-
-            self.updateStatus(message: statusMessage);
-
-            self.visibleIndex = nextIndex
-        }
 
         let fadeIn = {
             UIView.animate(withDuration: transitionDuration) {
@@ -171,22 +192,9 @@ class SiteCreationRotatingMessageView: UIView {
         UIView.animate(withDuration: transitionDuration, animations: {
             self.statusStackView.alpha = 0
         }, completion: { _ in
-            updateStatusText()
+            self.updateStatusLabelWithNextMessage()
 
             fadeIn()
         })
     }
-
-    /// Updates the status label/accessiblity label with the provided text
-    /// - Parameter message: The text to be displayed
-    private func updateStatus(message: String) {
-        let statusMessage = NSLocalizedString(message,
-                                              comment: "User-facing string, presented to reflect that site assembly is underway.")
-
-        self.statusLabel.text = statusMessage
-        self.statusLabel.accessibilityLabel = statusMessage
-
-    }
-
-
 }
