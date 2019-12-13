@@ -25,6 +25,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, reblogActionForProvider provider: ReaderPostContentProvider)
     func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String?
 }
 
@@ -507,6 +508,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate func configureReblogActionButton() {
+        reblogActionButton.tag = CardAction.reblog.rawValue
         reblogActionButton.isHidden = !shouldShowReblogActionButton
     }
 
@@ -622,16 +624,18 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
-        if contentProvider == nil {
+        guard let contentProvider = self.contentProvider else {
             return
         }
 
         let tag = CardAction(rawValue: sender.tag)!
         switch tag {
         case .comment :
-            delegate?.readerCell(self, commentActionForProvider: contentProvider!)
+            delegate?.readerCell(self, commentActionForProvider: contentProvider)
         case .like :
-            delegate?.readerCell(self, likeActionForProvider: contentProvider!)
+            delegate?.readerCell(self, likeActionForProvider: contentProvider)
+        case .reblog:
+            delegate?.readerCell(self, reblogActionForProvider: contentProvider)
         }
     }
 
@@ -652,6 +656,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate enum CardAction: Int {
         case comment = 1
         case like
+        case reblog
     }
 }
 

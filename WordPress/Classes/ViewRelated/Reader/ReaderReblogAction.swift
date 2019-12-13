@@ -18,10 +18,7 @@ class ReaderReblogAction {
         self.blogService = blogService ?? makeBlogService()
     }
 
-    /// Executes the reblog action
-    /// - Parameters:
-    ///   - readerPost: source ReaderPost instance
-    ///   - origin: UIViewController that will present the reblog screen(s)
+    /// Executes the reblog action on the origin UIViewController
     func execute(readerPost: ReaderPost, origin: UIViewController) {
         presenter.presentReblog(blogs: blogService.blogsForAllAccounts(),
                                 readerPost: readerPost,
@@ -44,35 +41,27 @@ class ReblogPresenter {
     }
 
     /// Presents the reblog screen(s)
-    /// - Parameters:
-    ///   - blogs: available blog sites
-    ///   - readerPost: source ReaderPost instance
-    ///   - origin: UIViewController that will present the reblog screen(s)
     func presentReblog(blogs: [Blog],
                        readerPost: ReaderPost,
                        origin: UIViewController) {
 
         switch blogs.count {
         case 0:
-            guard let tabBarController = origin.tabBarController as? WPTabBarController else {
-                return
-            }
-            tabBarController.switchMySitesTabToAddNewSite()
+            break
         case 1:
             let post = postService.createDraftPost(for: blogs[0])
             post.prepareForReblog(with: readerPost)
             let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
             editor.modalPresentationStyle = .fullScreen
             origin.present(editor, animated: false)
-
         default:
             break
         }
     }
 }
 
-// Formats the contet for reblogging
 fileprivate extension Post {
+    /// Formats the post content for reblogging
     func prepareForReblog(with readerPost: ReaderPost) {
         // update the post
         update(with: readerPost)
@@ -104,10 +93,7 @@ fileprivate extension Post {
 
 /// Contains methods to format Gutenberg-ready HTML content
 struct ReblogFormatter {
-    /// Gutenberg-ready quote
-    /// - Parameters:
-    ///   - text: text to quote
-    ///   - citation: optional citation to add to the quote
+
     static func wordPressQuote(text: String, citation: String? = nil) -> String {
         var formattedText = embedInParagraph(text: text)
         if let citation = citation {
@@ -115,28 +101,27 @@ struct ReblogFormatter {
         }
         return embedInWpQuote(html: formattedText)
     }
-    /// creates an html hyperlinh
+
     static func hyperLink(url: String, text: String) -> String {
         return "<a href=\"\(url)\">\(text)</a>"
     }
-    /// creates an html image url and embeds it into a Gutenberg-ready paragraph
+
     static func htmlImage(image: String) -> String {
         return embedInWpParagraph(text: "<img src=\"\(image)\">")
     }
 
-    /// embeds a text in a Gutenberg-ready html paragraph
     private static func embedInWpParagraph(text: String) -> String {
         return "<!-- wp:paragraph -->\n<p>\(text)</p>\n<!-- /wp:paragraph -->"
     }
-    /// embeds an html string in a Gutenberg-ready quote
+
     private static func embedInWpQuote(html: String) -> String {
         return "<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\">\(html)</blockquote>\n<!-- /wp:quote -->"
     }
-    /// embeds a text in an html paragraph
+
     private static func embedInParagraph(text: String) -> String {
         return "<p>\(text)</p>"
     }
-    /// embeds a text or an html element in a citation
+
     private static func embedinCitation(html: String) -> String {
         return "<cite>\(html)</cite>"
     }
