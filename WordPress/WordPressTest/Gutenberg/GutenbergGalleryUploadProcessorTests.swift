@@ -3,8 +3,19 @@ import XCTest
 
 class GutenbergGalleryUploadProcessorTests: XCTestCase {
 
-    let postContent = """
+    let idVariations = [
+        """
 <!-- wp:gallery {"ids":[-708,-415,-701],"columns":3,"linkTo":"media"} -->
+""",
+        """
+<!-- wp:gallery {"ids":["-708","-415","-701"],"columns":3,"linkTo":"media"} -->
+""",
+        """
+<!-- wp:gallery {"ids":[-708,-415,"-701"],"columns":3,"linkTo":"media"} -->
+""",
+    ]
+
+    let postContent = """
 <figure class="wp-block-gallery columns-3 is-cropped">
     <ul class="blocks-gallery-grid">
         <li class="blocks-gallery-item">
@@ -96,15 +107,16 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
             ImageUploadJob(uploadID: -415, serverID: 415, serverURL: "https://files.wordpress.com/415.jpg", mediaLink: "https://files.wordpress.com/?p=415"),
             ImageUploadJob(uploadID: -701, serverID: 701, serverURL: "https://files.wordpress.com/701.jpg", mediaLink: "https://files.wordpress.com/?p=701"),
         ]
+        for blockStart in idVariations {
+            var resultContent = blockStart + "\n" + postContent
 
-        var resultContent = postContent
+            resultContent = mediaJobs.reduce(into: resultContent) { (content, mediaJob) in
+                let processor = GutenbergGalleryUploadProcessor(mediaUploadID: mediaJob.uploadID, serverMediaID: mediaJob.serverID, remoteURLString: mediaJob.serverURL, mediaLink: mediaJob.mediaLink)
+                content = processor.process(content)
+            }
 
-        resultContent = mediaJobs.reduce(into: resultContent) { (content, mediaJob) in
-            let processor = GutenbergGalleryUploadProcessor(mediaUploadID: mediaJob.uploadID, serverMediaID: mediaJob.serverID, remoteURLString: mediaJob.serverURL, mediaLink: mediaJob.mediaLink)
-            content = processor.process(content)
+            XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
         }
-
-        XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
     }
 
 }

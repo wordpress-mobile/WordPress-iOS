@@ -105,10 +105,25 @@ class GutenbergGalleryUploadProcessor: Processor {
         static let linkTo = "linkTo"
     }
 
+    private func convertToIntArray(_ idsAny: [Any]) -> [Int32] {
+        var ids = [Int32]()
+        for id in idsAny {
+            if let idInt = id as? Int32 {
+                ids.append(idInt)
+            } else if let idString = id as? String, let idInt = Int32(idString) {
+                ids.append(idInt)
+            }
+        }
+        return ids
+    }
+
     lazy var galleryBlockProcessor = GutenbergBlockProcessor(for: GalleryBlockKeys.name, replacer: { block in
-        guard var ids = block.attributes[GalleryBlockKeys.ids] as? [Int32],
-            ids.contains(self.mediaUploadID) else {
+        guard let idsAny = block.attributes[GalleryBlockKeys.ids] as? [Any] else {
                 return nil
+        }
+        var ids = self.convertToIntArray(idsAny)
+        guard ids.contains(self.mediaUploadID) else {
+            return nil
         }
         var updatedBlock = "<!-- \(GalleryBlockKeys.name) "
         var attributes = block.attributes
