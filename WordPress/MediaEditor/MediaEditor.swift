@@ -46,18 +46,14 @@ public class MediaEditor: UINavigationController {
     }
 
     func presentIfSingleImageAndCapability() {
-        guard let _ = image, Self.capabilities.count == 1, let capabilityEntity = Self.capabilities.first else {
+        guard let image = image, Self.capabilities.count == 1, let capabilityEntity = Self.capabilities.first else {
             return
         }
 
-        present(capability: capabilityEntity)
+        present(capability: capabilityEntity, with: image)
     }
 
-    private func present(capability capabilityEntity: MediaEditorCapability.Type) {
-        guard let image = image else {
-            return
-        }
-
+    private func present(capability capabilityEntity: MediaEditorCapability.Type, with image: UIImage) {
         let capability = capabilityEntity.init(
             image,
             onFinishEditing: { image, actions in
