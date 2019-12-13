@@ -301,6 +301,7 @@ class PostCoordinator: NSObject {
         if media.remoteStatus == .failed {
             return
         }
+
         if media.mediaType == .image {
             let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             postContent = gutenbergImgPostUploadProcessor.process(postContent)
@@ -311,10 +312,11 @@ class PostCoordinator: NSObject {
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
             postContent = imgPostUploadProcessor.process(postContent)
         } else if media.mediaType == .video {
-            let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
-            postContent = videoPostUploadProcessor.process(postContent)
             let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             postContent = gutenbergVideoPostUploadProcessor.process(postContent)
+
+            let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
+            postContent = videoPostUploadProcessor.process(postContent)
         } else if let remoteURL = URL(string: remoteURLStr) {
             let documentTitle = remoteURL.lastPathComponent
             let documentUploadProcessor = DocumentUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, title: documentTitle)
