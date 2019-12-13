@@ -35,7 +35,8 @@ public class MediaEditor: UINavigationController {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        hub = MediaEditorHub()
+        super.init(coder: aDecoder)
     }
 
     public func edit(from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
