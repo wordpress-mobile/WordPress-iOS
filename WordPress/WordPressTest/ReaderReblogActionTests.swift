@@ -39,7 +39,7 @@ class ReaderReblogActionTests: XCTestCase {
         let readerPost = ReaderPost(context: self.context!)
         let presenter = MockReblogPresenter(postService: nil)
         let blogService = MockBlogService(managedObjectContext: self.context!)
-        blogService.blogsExpectation = expectation(description: "blogsForAllAccountsCalled")
+        blogService.blogsExpectation = expectation(description: "blogsForAllAccounts was called")
         presenter.presentReblogExpectation = expectation(description: "presentBlog was called")
         let action = ReaderReblogAction(blogService: blogService, presenter: presenter)
         let controller = UIViewController()

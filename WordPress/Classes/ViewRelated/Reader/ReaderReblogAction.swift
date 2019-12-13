@@ -78,7 +78,6 @@ fileprivate extension Post {
         }
         // insert the image on top of the content
         if let image = readerPost.featuredImage {
-            self.pathForDisplayImage = image
             content = ReblogFormatter.htmlImage(image: image) + content
         }
         self.content = content
