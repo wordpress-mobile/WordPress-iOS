@@ -1,6 +1,7 @@
 13.9
 -----
 * Stats: added a Today widget to display All-Time stats.
+* Quick Start: fixed issue that caused 'Follow other sites' tour to not be marked complete.
  
 13.8
 -----
