@@ -1,5 +1,10 @@
 import UIKit
 
+/**
+ Since each capability has it's own (or is a) View Controller, the Media Editor
+ is a Navigation Controller that presents them.
+ Also, by also being a ViewController, this allows it to be custom presented.
+ */
 public class MediaEditor: UINavigationController {
     static var capabilities: [MediaEditorCapability.Type] = [MediaEditorCrop.self]
 
