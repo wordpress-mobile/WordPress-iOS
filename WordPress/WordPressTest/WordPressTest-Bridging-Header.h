@@ -6,3 +6,4 @@
 #import "TestContextManager.h"
 #import "TestingAppDelegate.h"
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import "BlogService.h"

@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 #import "PostServiceOptions.h"
-#import "ReaderPost.h"
 
 @class AbstractPost;
 @class Blog;

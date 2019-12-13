@@ -103,7 +103,7 @@ fileprivate extension Post {
 }
 
 /// Contains methods to format Gutenberg-ready HTML content
-fileprivate struct ReblogFormatter {
+struct ReblogFormatter {
     /// Gutenberg-ready quote
     /// - Parameters:
     ///   - text: text to quote
