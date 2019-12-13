@@ -1,6 +1,11 @@
 13.9
 -----
 * Stats: added a Today widget to display All-Time stats.
+* Block Editor: New block "Gallery". You can now create image galleries using WordPress Media library.
+* Block Editor: Fix crash dismissing bottom-sheet after device rotation.
+* Block Editor: Add support for changing Settings in the List Block.
+* Block Editor: Add support for Video block settings.
+
 * Quick Start: fixed issue that caused 'Follow other sites' tour to not be marked complete.
  
 13.8
