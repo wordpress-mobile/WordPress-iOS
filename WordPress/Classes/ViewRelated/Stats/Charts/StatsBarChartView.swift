@@ -19,7 +19,7 @@ class StatsBarChartView: BarChartView {
         static let intrinsicHeight          = CGFloat(150)
         static let highlightAlpha           = CGFloat(1)
         static let horizontalAxisLabelCount = 2
-        static let markerAlpha              = CGFloat(0.2)
+        static let markerAlpha              = CGFloat(0.1)
         static let presentationDelay        = TimeInterval(0.01)
         static let primaryDataSetIndex      = 0
         static let rotationDelay            = TimeInterval(0.35)
