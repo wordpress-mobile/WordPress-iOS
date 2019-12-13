@@ -624,11 +624,11 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
-        guard let contentProvider = self.contentProvider else {
+        guard let contentProvider = self.contentProvider,
+            let tag = CardAction(rawValue: sender.tag) else {
             return
         }
 
-        let tag = CardAction(rawValue: sender.tag)!
         switch tag {
         case .comment :
             delegate?.readerCell(self, commentActionForProvider: contentProvider)

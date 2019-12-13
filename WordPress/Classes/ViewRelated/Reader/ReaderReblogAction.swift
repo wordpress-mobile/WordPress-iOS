@@ -83,7 +83,7 @@ fileprivate extension Post {
         self.content = content
     }
 
-    private func update(with readerPost: ReaderPost) {
+    func update(with readerPost: ReaderPost) {
         self.postTitle = readerPost.titleForDisplay()
         self.pathForDisplayImage = readerPost.featuredImage
         self.permaLink = readerPost.permaLink
