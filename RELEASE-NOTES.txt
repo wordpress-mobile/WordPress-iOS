@@ -4,6 +4,7 @@
 * Block Editor: New block "Gallery". You can now create image galleries using WordPress Media library.
 * Block Editor: Fix crash dismissing bottom-sheet after device rotation.
 * Block Editor: Add support for changing Settings in the List Block.
+* Block Editor: Add support for Video block settings.
 
  
 13.8
