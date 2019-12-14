@@ -49,7 +49,10 @@ class ReblogPresenter {
         case 0:
             break
         case 1:
-            let post = postService.createDraftPost(for: blogs[0])
+            guard let blog = blogs.first else {
+                return
+            }
+            let post = postService.createDraftPost(for: blog)
             post.prepareForReblog(with: readerPost)
             let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
             editor.modalPresentationStyle = .fullScreen
