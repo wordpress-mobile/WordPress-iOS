@@ -15,6 +15,7 @@
                 <outlet property="contentView" destination="iN0-l3-epB" id="4IS-I7-JV9"/>
                 <outlet property="placeholderLabel" destination="6Lf-XI-exE" id="vNK-7w-Wk1"/>
                 <outlet property="replyButton" destination="8sg-79-AsR" id="z4S-0x-kJt"/>
+                <outlet property="replyButtonTrailingConstraint" destination="4MX-yD-sG2" id="oKk-La-NVz"/>
                 <outlet property="separatorsView" destination="IdZ-UI-Nwf" id="Nuf-kh-FbD"/>
                 <outlet property="textView" destination="gfH-NN-dph" id="95e-jd-3uz"/>
             </connections>
@@ -29,16 +30,16 @@
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <view multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="t6q-rh-Bzh" customClass="ReplyBezierView" customModule="WordPress">
-                    <rect key="frame" x="15" y="1" width="262" height="73"/>
+                    <rect key="frame" x="15" y="1" width="257" height="73"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gfH-NN-dph">
-                            <rect key="frame" x="8" y="14" width="250" height="45"/>
+                            <rect key="frame" x="8" y="14" width="245" height="45"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Lf-XI-exE" userLabel="Placeholder">
-                            <rect key="frame" x="8" y="14" width="250" height="45"/>
+                            <rect key="frame" x="8" y="14" width="245" height="45"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -60,27 +61,40 @@
                     <edgeInsets key="layoutMargins" top="14" left="8" bottom="14" right="4"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VGi-tL-gUc">
-                    <rect key="frame" x="277" y="1" width="27" height="73"/>
+                    <rect key="frame" x="272" y="1" width="32" height="73"/>
                     <subviews>
                         <view contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Chg-FI-dzN" userLabel="Spacer View">
-                            <rect key="frame" x="0.0" y="0.0" width="27" height="40"/>
+                            <rect key="frame" x="0.0" y="0.0" width="32" height="40"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8sg-79-AsR" userLabel="Reply Button">
-                            <rect key="frame" x="0.0" y="40" width="27" height="33"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lA2-1V-bck">
+                            <rect key="frame" x="0.0" y="40" width="32" height="33"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8sg-79-AsR" userLabel="Reply Button">
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="33"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="33" id="9Ah-tj-7rP"/>
+                                    </constraints>
+                                    <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="6" maxY="15"/>
+                                    <state key="normal" image="icon-comment-reply">
+                                        <color key="titleColor" red="0.034757062790000001" green="0.31522077320000003" blue="0.81491315360000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="btnReplyPressed" destination="-1" eventType="touchUpInside" id="Jeq-hG-haN"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="33" id="9Ah-tj-7rP"/>
-                                <constraint firstAttribute="width" constant="27" id="F3x-eu-14r"/>
+                                <constraint firstAttribute="height" constant="33" id="2HH-iA-geS"/>
+                                <constraint firstAttribute="trailing" secondItem="8sg-79-AsR" secondAttribute="trailing" id="4MX-yD-sG2"/>
+                                <constraint firstItem="8sg-79-AsR" firstAttribute="width" secondItem="lA2-1V-bck" secondAttribute="width" id="UVG-FL-ebz"/>
+                                <constraint firstItem="8sg-79-AsR" firstAttribute="top" secondItem="lA2-1V-bck" secondAttribute="top" id="awo-Br-IxO"/>
+                                <constraint firstAttribute="bottom" secondItem="8sg-79-AsR" secondAttribute="bottom" id="oAO-1n-mSt"/>
+                                <constraint firstAttribute="width" constant="32" id="xZs-Ma-Hq7"/>
                             </constraints>
-                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="6" maxY="15"/>
-                            <state key="normal" image="icon-comment-reply">
-                                <color key="titleColor" red="0.034757062790000001" green="0.31522077320000003" blue="0.81491315360000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="btnReplyPressed" destination="-1" eventType="touchUpInside" id="Jeq-hG-haN"/>
-                            </connections>
-                        </button>
+                        </view>
                     </subviews>
                 </stackView>
             </subviews>
@@ -100,7 +114,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-170" y="726"/>
+            <point key="canvasLocation" x="-285" y="711"/>
         </view>
     </objects>
     <resources>

@@ -14,10 +14,8 @@ import WordPressShared.WPStyleGuide
 //
 @objc open class ReplyTextView: UIView, UITextViewDelegate {
     private struct AnimationParameters {
-        struct ReplyButton {
-            static let focusTransitionTime = TimeInterval(0.3)
-            static let stateTransitionTime = TimeInterval(0.2)
-        }
+        static let focusTransitionTime = TimeInterval(0.3)
+        static let stateTransitionTime = TimeInterval(0.2)
     }
 
     // MARK: - Initializers
@@ -35,7 +33,6 @@ import WordPressShared.WPStyleGuide
         super.init(coder: coder)!
         setupView()
     }
-
 
     // MARK: - Public Properties
     @objc open weak var delegate: ReplyTextViewDelegate?
@@ -112,6 +109,7 @@ import WordPressShared.WPStyleGuide
 
     open func textViewDidBeginEditing(_ textView: UITextView) {
         delegate?.textViewDidBeginEditing?(textView)
+        transitionReplyButton()
     }
 
     open func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
@@ -120,6 +118,7 @@ import WordPressShared.WPStyleGuide
 
     open func textViewDidEndEditing(_ textView: UITextView) {
         delegate?.textViewDidEndEditing?(textView)
+        transitionReplyButton()
     }
 
     open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -197,6 +196,7 @@ import WordPressShared.WPStyleGuide
     open override func layoutSubviews() {
         // Force invalidate constraints
         invalidateIntrinsicContentSize()
+
         super.layoutSubviews()
     }
 
@@ -250,8 +250,9 @@ import WordPressShared.WPStyleGuide
         replyButton.setImage(replyIcon?.imageWithTintColor(WPStyleGuide.Reply.disabledColor), for: .disabled)
 
         replyButton.isEnabled = false
-
         replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
+
+        transitionReplyButton(animated: false)
 
         // Background
         contentView.backgroundColor = WPStyleGuide.Reply.backgroundColor
@@ -274,7 +275,6 @@ import WordPressShared.WPStyleGuide
         ///
         frame.size.height = minimumHeight
     }
-
 
     // MARK: - Refresh Helpers
     fileprivate func refreshInterface() {
@@ -303,12 +303,12 @@ import WordPressShared.WPStyleGuide
         let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
         let isEnabled = self.textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
 
-        if(isEnabled == self.replyButton.isEnabled){
+        if isEnabled == self.replyButton.isEnabled {
             return
         }
 
         UIView.transition(with: replyButton as UIView,
-                          duration: AnimationParameters.ReplyButton.stateTransitionTime,
+                          duration: AnimationParameters.stateTransitionTime,
                           options: .transitionCrossDissolve,
                           animations: {
             self.replyButton.isEnabled = isEnabled
@@ -322,6 +322,22 @@ import WordPressShared.WPStyleGuide
         textView.scrollRectToVisible(caretRect, animated: false)
     }
 
+    fileprivate func transitionReplyButton(animated: Bool = true) {
+        replyButtonTrailingConstraint.constant = isFirstResponder ? 0.0 : -(frame.width * 2)
+
+        let updateFrame = {
+            self.layoutIfNeeded()
+        }
+
+        if animated {
+            UIView.animate(withDuration: AnimationParameters.focusTransitionTime) {
+                updateFrame()
+            }
+        }
+        else {
+            updateFrame()
+        }
+    }
 
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
@@ -335,6 +351,7 @@ import WordPressShared.WPStyleGuide
     @IBOutlet private var contentView: UIView!
     @IBOutlet private var bezierTopConstraint: NSLayoutConstraint!
     @IBOutlet private var bezierBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var replyButtonTrailingConstraint: NSLayoutConstraint!
 }
 
 
