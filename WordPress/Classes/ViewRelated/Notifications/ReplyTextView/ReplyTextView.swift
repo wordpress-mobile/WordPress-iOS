@@ -53,14 +53,6 @@ import WordPressShared.WPStyleGuide
             return placeholderLabel.text
         }
     }
-    @objc open var replyText: String! {
-        set {
-            replyButton.setTitle(newValue, for: UIControl.State())
-        }
-        get {
-            return replyButton.title(for: UIControl.State())
-        }
-    }
 
     open var maximumNumberOfVisibleLines = Settings.maximumNumberOfVisibleLines {
         didSet {
@@ -245,10 +237,12 @@ import WordPressShared.WPStyleGuide
         placeholderLabel.textColor = WPStyleGuide.Reply.placeholderColor
 
         // Reply
+        let replyIcon = UIImage(named: "icon-comment-reply")
+        replyButton.setImage(replyIcon?.imageWithTintColor(WPStyleGuide.Reply.enabledColor), for: .normal)
+        replyButton.setImage(replyIcon?.imageWithTintColor(WPStyleGuide.Reply.disabledColor), for: .disabled)
+
         replyButton.isEnabled = false
-        replyButton.titleLabel?.font = WPStyleGuide.Reply.buttonFont
-        replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, for: .disabled)
-        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor, for: UIControl.State())
+
         replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
 
         // Background
