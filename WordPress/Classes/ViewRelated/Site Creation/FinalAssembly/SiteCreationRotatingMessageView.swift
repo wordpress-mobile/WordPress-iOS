@@ -24,7 +24,7 @@ class SiteCreationRotatingMessageView: UIView {
     // MARK: - State Management
 
     /// A timer that determines how long to show each message
-    private(set) var animationTimer: Timer!
+    private(set) var animationTimer: Timer?
 
     /// The index of the currently visible message
     private(set) var visibleIndex = 0
