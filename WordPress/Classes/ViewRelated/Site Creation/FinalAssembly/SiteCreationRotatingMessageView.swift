@@ -18,9 +18,8 @@ class SiteCreationRotatingMessageView: UIView {
             return statusDisplayDuration + transitionAnimationDuration
         }
     }
-
     /// An array of status messages to rotating through
-    private(set) var statusMessages: [String]!
+    private(set) var statusMessages: [String]
 
     // MARK: - State Management
 
@@ -44,7 +43,9 @@ class SiteCreationRotatingMessageView: UIView {
     }
 
     // MARK: - View Properties
-    private var statusImageView: UIImageView!
+
+    /// The icon that is displayed next to the status view
+    private var statusImageView: UIImageView
 
     /// This advises the user that the site creation request is underway.
     private(set) var statusLabel: UILabel = {
