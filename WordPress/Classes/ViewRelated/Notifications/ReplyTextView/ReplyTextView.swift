@@ -13,6 +13,13 @@ import WordPressShared.WPStyleGuide
 // MARK: - ReplyTextView
 //
 @objc open class ReplyTextView: UIView, UITextViewDelegate {
+    private struct AnimationParameters {
+        struct ReplyButton {
+            static let focusTransitionTime = TimeInterval(0.3)
+            static let stateTransitionTime = TimeInterval(0.2)
+        }
+    }
+
     // MARK: - Initializers
     @objc public convenience init(width: CGFloat) {
         let frame = CGRect(x: 0, y: 0, width: width, height: 0)
@@ -44,6 +51,7 @@ import WordPressShared.WPStyleGuide
             return textView.text
         }
     }
+
     @objc open var placeholder: String! {
         set {
             placeholderLabel.text = newValue ?? String()
@@ -293,7 +301,18 @@ import WordPressShared.WPStyleGuide
 
     fileprivate func refreshReplyButton() {
         let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
-        replyButton.isEnabled = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
+        let isEnabled = self.textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
+
+        if(isEnabled == self.replyButton.isEnabled){
+            return
+        }
+
+        UIView.transition(with: replyButton as UIView,
+                          duration: AnimationParameters.ReplyButton.stateTransitionTime,
+                          options: .transitionCrossDissolve,
+                          animations: {
+            self.replyButton.isEnabled = isEnabled
+        })
     }
 
     fileprivate func refreshScrollPosition() {
