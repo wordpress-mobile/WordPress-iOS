@@ -6,7 +6,7 @@ import XCTest
 class MockReblogPresenter: ReblogPresenter {
     var presentReblogExpectation: XCTestExpectation?
 
-    override func presentReblog(blogs: [Blog], readerPost: ReaderPost, origin: UIViewController) {
+    override func presentReblog(blogService: BlogService, readerPost: ReaderPost, origin: UIViewController) {
         presentReblogExpectation?.fulfill()
     }
 }
@@ -39,7 +39,6 @@ class ReaderReblogActionTests: XCTestCase {
         let readerPost = ReaderPost(context: self.context!)
         let presenter = MockReblogPresenter(postService: nil)
         let blogService = MockBlogService(managedObjectContext: self.context!)
-        blogService.blogsExpectation = expectation(description: "blogsForAllAccounts was called")
         presenter.presentReblogExpectation = expectation(description: "presentBlog was called")
         let action = ReaderReblogAction(blogService: blogService, presenter: presenter)
         let controller = UIViewController()

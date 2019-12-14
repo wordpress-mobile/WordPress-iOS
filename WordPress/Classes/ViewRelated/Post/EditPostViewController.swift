@@ -15,6 +15,8 @@ class EditPostViewController: UIViewController {
     @objc var openWithPostPost: Bool = false
     /// appear with media pre-inserted into the post
     var insertedMedia: [Media]? = nil
+    /// appear with the blog selector visible
+    var openWithBlogSelector = false
     private let loadAutosaveRevision: Bool
 
     @objc fileprivate(set) var post: Post?
@@ -165,6 +167,9 @@ class EditPostViewController: UIViewController {
 
             if let insertedMedia = self.insertedMedia {
                 editor.prepopulateMediaItems(insertedMedia)
+            }
+            if self.openWithBlogSelector {
+                editor.displayBlogSelector()
             }
         }
     }

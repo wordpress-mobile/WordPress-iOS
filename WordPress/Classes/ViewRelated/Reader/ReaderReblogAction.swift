@@ -20,7 +20,7 @@ class ReaderReblogAction {
 
     /// Executes the reblog action on the origin UIViewController
     func execute(readerPost: ReaderPost, origin: UIViewController) {
-        presenter.presentReblog(blogs: blogService.blogsForAllAccounts(),
+        presenter.presentReblog(blogService: blogService,
                                 readerPost: readerPost,
                                 origin: origin)
     }
@@ -41,25 +41,38 @@ class ReblogPresenter {
     }
 
     /// Presents the reblog screen(s)
-    func presentReblog(blogs: [Blog],
+    func presentReblog(blogService: BlogService,
                        readerPost: ReaderPost,
                        origin: UIViewController) {
+        let blogCount = blogService.blogCountForAllAccounts()
 
-        switch blogs.count {
+        switch blogCount {
         case 0:
             break
         case 1:
-            guard let blog = blogs.first else {
+            guard let blog = blogService.blogsForAllAccounts().first else {
                 return
             }
-            let post = postService.createDraftPost(for: blog)
-            post.prepareForReblog(with: readerPost)
-            let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
-            editor.modalPresentationStyle = .fullScreen
-            origin.present(editor, animated: false)
+            presentEditor(with: readerPost, blog: blog, origin: origin)
         default:
-            break
+            guard let blog = blogService.lastUsedOrFirstBlog() else {
+                return
+            }
+            presentEditor(with: readerPost, blog: blog, origin: origin, presentBlogSelector: true)
         }
+    }
+    /// presents the editor when users have at least one blog site
+    private func presentEditor(with readerPost: ReaderPost,
+                               blog: Blog,
+                               origin: UIViewController,
+                               presentBlogSelector: Bool = false) {
+
+        let post = postService.createDraftPost(for: blog)
+        post.prepareForReblog(with: readerPost)
+        let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
+        editor.modalPresentationStyle = .fullScreen
+        editor.openWithBlogSelector = presentBlogSelector
+        origin.present(editor, animated: false)
     }
 }
 
