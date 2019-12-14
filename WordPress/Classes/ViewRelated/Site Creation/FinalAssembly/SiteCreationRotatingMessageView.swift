@@ -138,11 +138,8 @@ class SiteCreationRotatingMessageView: UIView {
     /// Updates the status label/accessiblity label with the provided text
     /// - Parameter message: The text to be displayed
     internal func updateStatus(message: String) {
-        let statusMessage = NSLocalizedString(message,
-                                              comment: "User-facing string, presented to reflect that site assembly is underway.")
-
-        statusLabel.text = statusMessage
-        statusLabel.accessibilityLabel = statusMessage
+        statusLabel.text = NSLocalizedString(message,
+                                             comment: "User-facing string, presented to reflect that site assembly is underway.")
     }
 
     // MARK: - Private
