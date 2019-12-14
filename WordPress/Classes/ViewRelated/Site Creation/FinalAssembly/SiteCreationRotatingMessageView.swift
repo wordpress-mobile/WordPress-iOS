@@ -81,7 +81,6 @@ class SiteCreationRotatingMessageView: UIView {
     /// - Parameter iconImage: The icon image to display before the status message
     init(messages: [String], iconImage: UIImage) {
         self.statusMessages = messages
-
         self.statusImageView = UIImageView(image: iconImage)
 
         super.init(frame: .zero)
@@ -96,7 +95,7 @@ class SiteCreationRotatingMessageView: UIView {
     func startAnimating() {
         stopAnimating()
 
-        self.animationTimer = Timer.scheduledTimer(timeInterval: Parameters.totalStatusDisplayDuration,
+        animationTimer = Timer.scheduledTimer(timeInterval: Parameters.totalStatusDisplayDuration,
                                                    target: self,
                                                    selector: #selector(SiteCreationRotatingMessageView.displayNextMessage),
                                                    userInfo: nil,
@@ -128,12 +127,12 @@ class SiteCreationRotatingMessageView: UIView {
     /// Updates the status label text with the next message to be displayed
     /// then updates the current visible index
     internal func updateStatusLabelWithNextMessage() {
-        let nextIndex = self.nextVisibleIndex
-        let statusMessage = self.statusMessages[nextIndex]
+        let nextIndex = nextVisibleIndex
+        let statusMessage = statusMessages[nextIndex]
 
-        self.updateStatus(message: statusMessage)
+        updateStatus(message: statusMessage)
 
-        self.visibleIndex = nextIndex
+        visibleIndex = nextIndex
     }
 
     /// Updates the status label/accessiblity label with the provided text
@@ -142,8 +141,8 @@ class SiteCreationRotatingMessageView: UIView {
         let statusMessage = NSLocalizedString(message,
                                               comment: "User-facing string, presented to reflect that site assembly is underway.")
 
-        self.statusLabel.text = statusMessage
-        self.statusLabel.accessibilityLabel = statusMessage
+        statusLabel.text = statusMessage
+        statusLabel.accessibilityLabel = statusMessage
     }
 
     // MARK: - Private
