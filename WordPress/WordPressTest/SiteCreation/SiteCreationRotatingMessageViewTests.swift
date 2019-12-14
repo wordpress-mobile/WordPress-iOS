@@ -23,11 +23,6 @@ class SiteCreationRotatingMessageViewTests: XCTestCase {
         super.tearDown()
     }
 
-    /// Make sure the view was properly configured with the provided status messages
-    func testSiteCreationRotatingMessageView_Initialize() {
-        XCTAssertEqual(rotatingMessageView?.statusMessages, testMessages)
-    }
-
     /// Test to make sure the statusLabel text and accesibility labels are being set correctly
     func testSiteCreationRotatingMessageView_StatusUpdate() {
         let message = "This is a test!"
