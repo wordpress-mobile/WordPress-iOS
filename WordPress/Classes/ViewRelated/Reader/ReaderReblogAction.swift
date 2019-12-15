@@ -4,6 +4,10 @@ class ReaderReblogAction {
     private let blogService: BlogService
     private let presenter: ReblogPresenter
 
+    enum OriginType {
+        case list, detail
+    }
+
     init(blogService: BlogService? = nil,
          presenter: ReblogPresenter = ReblogPresenter()) {
         self.presenter = presenter
@@ -17,10 +21,12 @@ class ReaderReblogAction {
     }
 
     /// Executes the reblog action on the origin UIViewController
-    func execute(readerPost: ReaderPost, origin: UIViewController) {
+    func execute(readerPost: ReaderPost, origin: UIViewController, originType: OriginType) {
         presenter.presentReblog(blogService: blogService,
                                 readerPost: readerPost,
                                 origin: origin)
+        // analytics
+        trackReblog(readerPost: readerPost, originType: originType)
     }
 }
 
@@ -31,7 +37,7 @@ class ReblogPresenter {
 
     private struct NoSitesConfiguration {
         static let noSitesTitle = NSLocalizedString("No available sites",
-                                                    comment: "A short message that informs the user no sites could be loaded in the share extension.")
+                                                    comment: "A short message that informs the user no sites could be found.")
         static let noSitesSubtitle = NSLocalizedString("Once you create a site, you can reblog content that you like to your own site.",
                                                        comment: "A subtitle with more detailed info for the user when no sites could be found.")
         static let manageSitesLabel = NSLocalizedString("Manage Sites",
@@ -188,5 +194,18 @@ struct ReblogFormatter {
 
     private static func embedinCitation(html: String) -> String {
         return "<cite>\(html)</cite>"
+    }
+}
+
+
+// MARK: - Analytics
+extension ReaderReblogAction {
+    fileprivate func trackReblog(readerPost: ReaderPost, originType: OriginType) {
+        switch originType {
+        case .list:
+            break
+        case .detail:
+            break
+        }
     }
 }
