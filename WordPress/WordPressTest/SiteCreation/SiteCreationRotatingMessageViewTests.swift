@@ -29,7 +29,6 @@ class SiteCreationRotatingMessageViewTests: XCTestCase {
         rotatingMessageView?.updateStatus(message: message)
 
         XCTAssertEqual(rotatingMessageView?.statusLabel.text, message)
-        XCTAssertEqual(rotatingMessageView?.statusLabel.accessibilityLabel, message)
     }
 
     /// Test to make sure the reset logic is working correctly
