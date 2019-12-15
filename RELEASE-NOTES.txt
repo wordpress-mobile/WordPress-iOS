@@ -5,9 +5,9 @@
 * Block Editor: Fix crash dismissing bottom-sheet after device rotation.
 * Block Editor: Add support for changing Settings in the List Block.
 * Block Editor: Add support for Video block settings.
-
+* Comment: Add ability to comment in fullscreen
 * Quick Start: fixed issue that caused 'Follow other sites' tour to not be marked complete.
- 
+
 13.8
 -----
 * When a post has an autosave, the autosave version can be loaded into the editor.
