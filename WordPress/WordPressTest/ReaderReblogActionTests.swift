@@ -25,8 +25,7 @@ class MockBlogService: BlogService {
         blogsForAllAccountsExpectation?.fulfill()
         return [Blog(context: self.managedObjectContext), Blog(context: self.managedObjectContext)]
     }
-
-    override func lastUsedBlog() -> Blog? {
+    override func lastUsedOrFirstBlog() -> Blog? {
         lastUsedOrFirstBlogExpectation?.fulfill()
         return Blog(context: self.managedObjectContext)
     }

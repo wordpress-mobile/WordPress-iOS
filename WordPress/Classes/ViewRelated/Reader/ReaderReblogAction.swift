@@ -1,5 +1,3 @@
-import Foundation
-
 /// Encapsulates a command to reblog a post
 class ReaderReblogAction {
 
@@ -26,9 +24,21 @@ class ReaderReblogAction {
     }
 }
 
+
 /// Presents the approptiate reblog scene, depending on the number of available sites
 class ReblogPresenter {
     private let postService: PostService
+
+    private struct NoSitesConfiguration {
+        static let noSitesTitle = NSLocalizedString("No available sites",
+                                                    comment: "A short message that informs the user no sites could be loaded in the share extension.")
+        static let noSitesSubtitle = NSLocalizedString("Once you create a site, you can reblog content that you like to your own site.",
+                                                       comment: "A subtitle with more detailed info for the user when no sites could be found.")
+        static let manageSitesLabel = NSLocalizedString("Manage Sites",
+                                                        comment: "Button title. Tapping lets the user manage the sites they follow.")
+        static let backButtonTitle = NSLocalizedString("Back",
+                                                       comment: "Back button title.")
+    }
 
     init(postService: PostService? = nil) {
 
@@ -44,11 +54,12 @@ class ReblogPresenter {
     func presentReblog(blogService: BlogService,
                        readerPost: ReaderPost,
                        origin: UIViewController) {
+
         let blogCount = blogService.blogCountForAllAccounts()
 
         switch blogCount {
         case 0:
-            break
+            presentNoSitesScreen(origin: origin)
         case 1:
             guard let blog = blogService.blogsForAllAccounts().first else {
                 return
@@ -61,6 +72,7 @@ class ReblogPresenter {
             presentEditor(with: readerPost, blog: blog, origin: origin, presentBlogSelector: true)
         }
     }
+    
     /// presents the editor when users have at least one blog site
     private func presentEditor(with readerPost: ReaderPost,
                                blog: Blog,
@@ -69,13 +81,49 @@ class ReblogPresenter {
 
         let post = postService.createDraftPost(for: blog)
         post.prepareForReblog(with: readerPost)
+
         let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
         editor.modalPresentationStyle = .fullScreen
         editor.openWithBlogSelector = presentBlogSelector
+
         origin.present(editor, animated: false)
+    }
+    
+    /// presents the no sites screen, with related actions
+    private func presentNoSitesScreen(origin: UIViewController) {
+        let controller = NoResultsViewController.controllerWith(title: NoSitesConfiguration.noSitesTitle,
+                                                                buttonTitle: NoSitesConfiguration.manageSitesLabel,
+                                                                subtitle: NoSitesConfiguration.noSitesSubtitle)
+        // add handlers to NoResultsController
+        controller.actionButtonHandler = { [weak origin] in
+            guard let tabBarController = origin?.tabBarController as? WPTabBarController else {
+                return
+            }
+            controller.dismiss(animated: true) {
+                tabBarController.showMySitesTab()
+            }
+        }
+
+        controller.dismissButtonHandler = {
+            controller.dismiss(animated: true)
+        }
+
+        controller.showDismissButton(title: NoSitesConfiguration.backButtonTitle)
+
+        let navigationController = AdaptiveNavigationController(rootViewController: controller)
+
+        if #available(iOS 13.0, *) {
+            navigationController.modalPresentationStyle = .automatic
+        } else {
+            // suits both iPad and iPhone
+            navigationController.modalPresentationStyle = .pageSheet
+        }
+        
+        origin.present(navigationController, animated: true)
     }
 }
 
+/// takes a newly created Post and injects a ReaderPost content in it
 fileprivate extension Post {
     /// Formats the post content for reblogging
     func prepareForReblog(with readerPost: ReaderPost) {
@@ -105,6 +153,7 @@ fileprivate extension Post {
         self.permaLink = readerPost.permaLink
     }
 }
+
 
 /// Contains methods to format Gutenberg-ready HTML content
 struct ReblogFormatter {

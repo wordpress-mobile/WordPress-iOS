@@ -59,6 +59,10 @@ import Reachability
 
     //For No results on connection issue
     private let reachability = Reachability.forInternetConnection()
+    /// sets an additional/alternate handler for the action button that can be injected when the delegate is unavailable
+    var actionButtonHandler: (() -> Void)?
+    /// sets an additional/alternate handler for the dismiss button that can be injected when the delegate is unavailable
+    var dismissButtonHandler: (() -> Void)?
 
     // MARK: - View
 
@@ -197,15 +201,15 @@ import Reachability
     }
 
     /// Public method to show a 'Dismiss' button in the navigation bar in place of the 'Back' button.
-    ///
-    func showDismissButton() {
+    /// Accepts an optional title, if none is provided, will default to 'Dismiss'
+    func showDismissButton(title: String? = nil) {
         navigationItem.hidesBackButton = true
 
-        let dismissButton = UIBarButtonItem(title: NSLocalizedString("Dismiss", comment: "Dismiss button title."),
+        let dismissButton = UIBarButtonItem(title: title ?? NSLocalizedString("Dismiss", comment: "Dismiss button title."),
                                             style: .done,
                                             target: self,
                                             action: #selector(self.dismissButtonPressed))
-        dismissButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss button title.")
+        dismissButton.accessibilityLabel = title ?? NSLocalizedString("Dismiss", comment: "Dismiss button title.")
         navigationItem.leftBarButtonItem = dismissButton
     }
 
@@ -473,10 +477,12 @@ private extension NoResultsViewController {
 
     @IBAction func actionButtonPressed(_ sender: UIButton) {
         delegate?.actionButtonPressed?()
+        actionButtonHandler?()
     }
 
     @objc func dismissButtonPressed() {
         delegate?.dismissButtonPressed?()
+        dismissButtonHandler?()
     }
 
     // MARK: - Helpers
