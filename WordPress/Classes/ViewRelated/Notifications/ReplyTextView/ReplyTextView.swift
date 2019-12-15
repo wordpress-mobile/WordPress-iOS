@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared.WPStyleGuide
-
-
+import Gridicons
 
 // MARK: - ReplyTextViewDelegate
 //
@@ -101,7 +100,6 @@ import WordPressShared.WPStyleGuide
         textView.replace(newRange, withText: replacementText)
     }
 
-
     // MARK: - UITextViewDelegate Methods
     open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         return delegate?.textViewShouldBeginEditing?(textView) ?? true
@@ -176,19 +174,57 @@ import WordPressShared.WPStyleGuide
         handler(newText!)
     }
 
+    @IBAction fileprivate func btnEnterFullscreenPressed(_ sender: Any) {
+        guard let editViewController = FullScreenCommentReplyViewController.newEdit() else {
+            return
+        }
+
+        guard let presenter = WPTabBarController.sharedInstance() else {
+            return
+        }
+
+        // Snapshot the first reponder status before presenting so we can restore it later
+        let didHaveFirstResponder = textView.isFirstResponder
+
+        editViewController.content = textView.text
+        editViewController.onExitFullscreen = { (shouldSave, updatedContent) in
+            self.text = updatedContent
+
+            // If the user was editing before they entered fullscreen, then restore that state
+            // when they exit fullscreen but are not going to save
+            if didHaveFirstResponder && shouldSave == false {
+                // Delay the firstResponder switch for a small amount to bring the keyboard up
+                // Slightly quicker and smoother
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) {
+                    self.becomeFirstResponder()
+                }
+            }
+
+            if shouldSave {
+                self.btnReplyPressed()
+            }
+
+            //Dimiss the fullscreen view, once it has fully closed process the saving if needed
+            presenter.dismiss(animated: true)
+        }
+
+        self.resignFirstResponder()
+
+        let navController = LightNavigationController(rootViewController: editViewController)
+        presenter.present(navController, animated: true)
+    }
 
     // MARK: - Gestures Recognizers
     @objc open func backgroundWasTapped() {
         _ = becomeFirstResponder()
     }
 
-
     // MARK: - View Methods
-    open override func becomeFirstResponder() -> Bool {
+    @discardableResult open override func becomeFirstResponder() -> Bool {
         return textView.becomeFirstResponder()
     }
 
-    open override func resignFirstResponder() -> Bool {
+    @discardableResult open override func resignFirstResponder() -> Bool {
         endEditing(true)
         return textView.resignFirstResponder()
     }
@@ -199,7 +235,6 @@ import WordPressShared.WPStyleGuide
 
         super.layoutSubviews()
     }
-
 
     // MARK: - Autolayout Helpers
     open override var intrinsicContentSize: CGSize {
@@ -212,7 +247,6 @@ import WordPressShared.WPStyleGuide
 
         return intrinsicSize
     }
-
 
     // MARK: - Setup Helpers
     fileprivate func setupView() {
@@ -243,6 +277,11 @@ import WordPressShared.WPStyleGuide
         // Placeholder
         placeholderLabel.font = WPStyleGuide.Reply.textFont
         placeholderLabel.textColor = WPStyleGuide.Reply.placeholderColor
+
+        // Fullscreen toggle button
+        let fullscreenImage = Gridicon.iconOfType(.chevronUp)
+        fullscreenToggleButton.setImage(fullscreenImage, for: .normal)
+        fullscreenToggleButton.tintColor = .listIcon
 
         // Reply
         let replyIcon = UIImage(named: "icon-comment-reply")
@@ -352,6 +391,7 @@ import WordPressShared.WPStyleGuide
     @IBOutlet private var bezierTopConstraint: NSLayoutConstraint!
     @IBOutlet private var bezierBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var replyButtonTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fullscreenToggleButton: UIButton!
 }
 
 
