@@ -264,7 +264,9 @@ final class SiteAssemblyContentView: UIView {
         statusStackView.addArrangedSubviews([ statusTitleLabel, statusSubtitleLabel, statusImageView, statusMessageRotatingView, activityIndicator ])
         addSubviews([ completionLabel, statusStackView ])
 
+        // Increase the spacing around the illustration
         statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusSubtitleLabel)
+        statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusImageView)
 
         let completionLabelTopInsetInitial = Parameters.verticalSpacing * 2
         let completionLabelInitialTopConstraint = completionLabel.topAnchor.constraint(equalTo: prevailingLayoutGuide.topAnchor, constant: completionLabelTopInsetInitial)
