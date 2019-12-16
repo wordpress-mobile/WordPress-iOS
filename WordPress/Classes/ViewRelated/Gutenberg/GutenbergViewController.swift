@@ -66,6 +66,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var isOpenedDirectlyForPhotoPost: Bool = false
 
+    var postIsReblogged: Bool = false
+
     // MARK: - Editor Media actions
 
     var isUploadingMedia: Bool {

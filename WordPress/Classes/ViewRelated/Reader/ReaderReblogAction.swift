@@ -91,6 +91,7 @@ class ReblogPresenter {
         let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
         editor.modalPresentationStyle = .fullScreen
         editor.openWithBlogSelector = presentBlogSelector
+        editor.postIsReblogged = true
 
         origin.present(editor, animated: false)
     }

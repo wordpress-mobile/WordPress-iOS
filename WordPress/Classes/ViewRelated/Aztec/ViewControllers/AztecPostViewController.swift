@@ -58,6 +58,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     var isOpenedDirectlyForPhotoPost = false
 
+    var postIsReblogged: Bool = false
+
     let navigationBarManager = PostEditorNavigationBarManager()
 
     let mediaUtility = EditorMediaUtility()

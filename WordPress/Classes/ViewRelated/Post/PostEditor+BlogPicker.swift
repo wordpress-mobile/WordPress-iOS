@@ -70,7 +70,7 @@ extension PostEditor where Self: UIViewController {
         let postService = PostService(managedObjectContext: mainContext)
         let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
 
-        newPost.content = contentByStrippingMediaAttachments()
+        newPost.content = postIsReblogged ? post.content : contentByStrippingMediaAttachments()
         newPost.postTitle = post.postTitle
         newPost.password = post.password
         newPost.dateCreated = post.dateCreated

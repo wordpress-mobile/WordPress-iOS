@@ -17,6 +17,9 @@ class EditPostViewController: UIViewController {
     var insertedMedia: [Media]? = nil
     /// appear with the blog selector visible
     var openWithBlogSelector = false
+    /// is editing a reblogged post
+    var postIsReblogged = false
+
     private let loadAutosaveRevision: Bool
 
     @objc fileprivate(set) var post: Post?
@@ -133,7 +136,7 @@ class EditPostViewController: UIViewController {
             replaceEditor: { [weak self] (editor, replacement) in
                 self?.replaceEditor(editor: editor, replacement: replacement)
         })
-
+        editor.postIsReblogged = postIsReblogged
         showEditor(editor)
     }
 
@@ -170,11 +173,14 @@ class EditPostViewController: UIViewController {
             }
             if self.openWithBlogSelector {
                 editor.displayBlogSelector()
+                self.openWithBlogSelector = false
+
             }
         }
     }
 
     func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {
+        replacement.postIsReblogged = postIsReblogged
         editor.dismiss(animated: true) { [weak self] in
             self?.showEditor(replacement)
         }
