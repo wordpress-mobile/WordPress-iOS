@@ -4,7 +4,7 @@ extension PostEditor where Self: UIViewController {
 
     func blogPickerWasPressed() {
         assert(isSingleSiteMode == false)
-        guard post.hasSiteSpecificChanges() else {
+        guard !postIsReblogged, post.hasSiteSpecificChanges()  else {
             displayBlogSelector()
             return
         }
