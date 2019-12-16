@@ -139,6 +139,7 @@ class SiteCreationRotatingMessageView: UIView {
     /// - Parameter message: The text to be displayed
     internal func updateStatus(message: String) {
         self.statusLabel.text = message
+        self.statusLabel.accessibilityLabel = message
     }
 
     // MARK: - Private
