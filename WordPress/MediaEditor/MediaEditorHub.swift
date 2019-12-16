@@ -61,6 +61,10 @@ class MediaEditorHub: UIViewController {
             cancelIconButton.tintColor = cancelColor
         }
 
+        if let cancelIcon = styles[.cancelIcon] as? UIImage {
+            cancelIconButton.setImage(cancelIcon, for: .normal)
+        }
+
         if let loadingLabel = styles[.loadingLabel] as? String {
             activityIndicatorLabel.text = loadingLabel
         }
