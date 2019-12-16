@@ -9,32 +9,24 @@ class ThisWeekViewController: UIViewController {
 
     @IBOutlet private var tableView: UITableView!
 
-    private var statsValues: ThisWeekWidgetStats? {
-        didSet {
-//            updateStatsLabels()
-        }
-    }
-
     private var footerHeight: CGFloat = 35
+    private var siteUrl: String = Constants.noDataLabel
+    private var statsValues: ThisWeekWidgetStats?
+    private var siteID: NSNumber?
+    private var timeZone: TimeZone?
+    private var oauthToken: String?
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
 
     private var haveSiteUrl: Bool {
         siteUrl != Constants.noDataLabel
     }
 
-    private var siteID: NSNumber?
-    private var timeZone: TimeZone?
-    private var oauthToken: String?
-
-    private var siteUrl: String = Constants.noDataLabel
-
-        private var isConfigured = false {
+    private var isConfigured = false {
         didSet {
             // If unconfigured, don't allow the widget to be expanded/compacted.
             extensionContext?.widgetLargestAvailableDisplayMode = isConfigured ? .expanded : .compact
         }
     }
-
-    private let tracks = Tracks(appGroupName: WPAppGroupName)
 
     // MARK: - View
 
@@ -266,7 +258,15 @@ private extension ThisWeekViewController {
             return UITableViewCell()
         }
 
-        // TODO: configure cell
+        let day: ThisWeekWidgetDay? = {
+            if let statsValues = statsValues,
+                indexPath.row < statsValues.days.endIndex {
+                return statsValues.days[indexPath.row]
+            }
+            return nil
+        }()
+
+        cell.configure(day: day, isToday: indexPath.row == 0)
         return cell
     }
 

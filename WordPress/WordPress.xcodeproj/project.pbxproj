@@ -1171,6 +1171,7 @@
 		987535642282682D001661B4 /* DetailDataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 987535622282682D001661B4 /* DetailDataCell.xib */; };
 		98797DBC222F434500128C21 /* OverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98797DBA222F434500128C21 /* OverviewCell.swift */; };
 		98797DBD222F434500128C21 /* OverviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98797DBB222F434500128C21 /* OverviewCell.xib */; };
+		9880150623A840200003BD11 /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		988056032183CCE50083B643 /* SiteStatsInsightsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */; };
 		98812966219CE42A0075FF33 /* StatsTotalRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98812964219CE42A0075FF33 /* StatsTotalRow.swift */; };
 		98812967219CE42A0075FF33 /* StatsTotalRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98812965219CE42A0075FF33 /* StatsTotalRow.xib */; };
@@ -10474,6 +10475,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				989643EF23A0437B0070720A /* WidgetDifferenceCell.xib in Resources */,
+				9880150623A840200003BD11 /* ColorPalette.xcassets in Resources */,
 				98A3C3022399A19F0048D38D /* MainInterface.storyboard in Resources */,
 				989643E823A031CD0070720A /* WidgetUnconfiguredCell.xib in Resources */,
 				983AE8512399B19200E5B7F6 /* Localizable.strings in Resources */,
