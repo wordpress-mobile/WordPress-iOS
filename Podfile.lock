@@ -220,7 +220,7 @@ PODS:
   - WordPress-Aztec-iOS (1.14.0)
   - WordPress-Editor-iOS (1.14.0):
     - WordPress-Aztec-iOS (= 1.14.0)
-  - WordPressAuthenticator (1.10.5-beta.4):
+  - WordPressAuthenticator (1.10.5):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.5)
@@ -240,7 +240,7 @@ PODS:
     - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
   - WordPressMocks (0.0.6)
-  - WordPressShared (1.8.10-beta-3):
+  - WordPressShared (1.8.10):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.5.0)
@@ -312,10 +312,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.14.0)
-  - WordPressAuthenticator (~> 1.10.5-beta.4)
+  - WordPressAuthenticator (~> 1.10.5)
   - WordPressKit (~> 4.5.5)
   - WordPressMocks (~> 0.0.6)
-  - WordPressShared (= 1.8.10-beta-3)
+  - WordPressShared (= 1.8.10)
   - WordPressUI (~> 1.5.0)
   - WPMediaPicker (~> 1.6.0)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.19.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -506,10 +506,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 72967764b174f49febbe8c3075aab36d391d715b
   WordPress-Editor-iOS: 508a0581810409b42ac721a32e0264841c31b892
-  WordPressAuthenticator: 79a4b65bf66c7b33388c0a8d431d733a380036e0
+  WordPressAuthenticator: c07d36f36ce73f77f468db665973faab6392ff43
   WordPressKit: 8029cb93a89de79442254c346523da11c2706d7b
   WordPressMocks: 5913bd04586a360212e07a8ccbcb36068d4425a3
-  WordPressShared: 3dd52145301cfb342ede30ebdf96d046a9a3f332
+  WordPressShared: 5561910e9b6635874abeb10e450b7d2a29f23838
   WordPressUI: 4a4adafd2b052e94e4846c0a0203761773dc4fd5
   WPMediaPicker: e5d28197da6b467d4e5975d64a49255977e39455
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
@@ -517,6 +517,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 20678b1ad35255af84b5f22b67451c3bdf45905b
+PODFILE CHECKSUM: 04a3aaf6200e0f0f0298bccb490b5ba0d421c85b
 
 COCOAPODS: 1.8.4
