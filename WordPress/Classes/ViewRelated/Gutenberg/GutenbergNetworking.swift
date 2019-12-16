@@ -24,13 +24,13 @@ struct GutenbergNetworkRequest {
     private func dotComRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
         blog.wordPressComRestApi()?.GET(dotComPath(with: dotComID), parameters: nil, success: { (response, httpResponse) in
             completion(.success(response))
-        }, failure: { (error, HTTPResponse) in
-            completion(.failure(error))
+        }, failure: { (error, httpResponse) in
+            completion(.failure(error.nsError(with: httpResponse)))
         })
     }
 
     private func dotComPath(with dotComID: NSNumber) -> String {
-        return path.replacingOccurrences(of: "/wp/v2/", with: "/wp/v2/sites/\(dotComID)/")
+        return path.replacingOccurrences(of: "/wp/v2/", with: "/wp/v2/sitesa/\(dotComID)/")
     }
 
     // MARK: - Self-Hosed
@@ -49,14 +49,31 @@ struct GutenbergNetworkRequest {
             switch response.result {
             case .success(let response):
                 completion(.success(response))
-            case .failure(let error):
-                completion(.failure(error as NSError))
+            case .failure(let afError):
+                let error = afError.nsError(with: response.response)
+                completion(.failure(error))
             }
         }
+    }
+
+    func nsError(from error: Error, response: HTTPURLResponse?) -> NSError {
+        let errorCode = response?.statusCode ?? URLError.Code.unknown.rawValue
+        let code = URLError.Code(rawValue: errorCode)
+        return URLError(code, userInfo: [NSLocalizedDescriptionKey: error.localizedDescription]) as NSError
     }
 
     private var selfHostedPath: String {
         let removedEditContext = path.replacingOccurrences(of: "context=edit", with: "context=view")
         return "wp-json\(removedEditContext)"
+    }
+}
+
+/// Helper to get an error instance with the real HTTP Status code, taken from the response object.
+/// This is needed since AlamoFire will return code: 7 for any error.
+private extension Error {
+    func nsError(with response: HTTPURLResponse?) -> NSError {
+        let errorCode = response?.statusCode ?? URLError.Code.unknown.rawValue
+        let code = URLError.Code(rawValue: errorCode)
+        return URLError(code, userInfo: [NSLocalizedDescriptionKey: localizedDescription]) as NSError
     }
 }
