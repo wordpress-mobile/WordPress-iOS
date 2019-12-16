@@ -44,7 +44,6 @@ public class MediaEditor: UINavigationController {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        hub = MediaEditorHub()
         super.init(coder: aDecoder)
     }
 
