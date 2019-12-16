@@ -1,5 +1,10 @@
 import UIKit
 
+/**
+ Since each capability has it's own (or is a) View Controller, the Media Editor
+ is a Navigation Controller that presents them.
+ Also, by also being a ViewController, this allows it to be custom presented.
+ */
 public class MediaEditor: UINavigationController {
     static var capabilities: [MediaEditorCapability.Type] = [MediaEditorCrop.self]
 
@@ -39,7 +44,8 @@ public class MediaEditor: UINavigationController {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        hub = MediaEditorHub()
+        super.init(coder: aDecoder)
     }
 
     public override func viewDidLoad() {
@@ -75,12 +81,12 @@ public class MediaEditor: UINavigationController {
         asyncImage?.full(finishedRetrievingFullImage: fullImageAvailable)
     }
 
-    private func presentIfSingleImageAndCapability() {
-        guard let _ = image, Self.capabilities.count == 1, let capabilityEntity = Self.capabilities.first else {
+    func presentIfSingleImageAndCapability() {
+        guard let image = image, Self.capabilities.count == 1, let capabilityEntity = Self.capabilities.first else {
             return
         }
 
-        present(capability: capabilityEntity)
+        present(capability: capabilityEntity, with: image)
     }
 
     private func cancel() {
@@ -88,11 +94,7 @@ public class MediaEditor: UINavigationController {
         dismiss(animated: true)
     }
 
-    private func present(capability capabilityEntity: MediaEditorCapability.Type) {
-        guard let image = image else {
-            return
-        }
-
+    private func present(capability capabilityEntity: MediaEditorCapability.Type, with image: UIImage) {
         prepareTransition()
 
         let capability = capabilityEntity.init(
