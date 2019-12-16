@@ -88,7 +88,7 @@ class ReaderReblogActionTests: ReblogTestCase {
         let action = ReaderReblogAction(blogService: blogService!, presenter: presenter)
         let controller = UIViewController()
         // When
-        action.execute(readerPost: readerPost!, origin: controller)
+        action.execute(readerPost: readerPost!, origin: controller, originType: .list)
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {
@@ -99,7 +99,7 @@ class ReaderReblogActionTests: ReblogTestCase {
 }
 
 class ReblogPresenterTests: ReblogTestCase {
-    
+
     func testPresentEditorForOneSite() {
         // Given
         postService!.draftPostExpectation = expectation(description: "createDraftPost was called")
@@ -138,7 +138,7 @@ class ReblogFormatterTests: XCTestCase {
         // Given
         let quote = "Quote"
         // When
-        let wpQuote = ReblogFormatter.wordPressQuote(text: quote)
+        let wpQuote = ReblogFormatter.gutenbergQuote(text: quote)
         // Then
         XCTAssertEqual("<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>Quote</p></blockquote>\n<!-- /wp:quote -->", wpQuote)
     }
@@ -157,7 +157,7 @@ class ReblogFormatterTests: XCTestCase {
         // Given
         let image = "image.jpg"
         // When
-        let wpImage = ReblogFormatter.htmlImage(image: image)
+        let wpImage = ReblogFormatter.gutenbergImage(image: image)
         // Then
         XCTAssertEqual("<!-- wp:paragraph -->\n<p><img src=\"image.jpg\"></p>\n<!-- /wp:paragraph -->", wpImage)
     }

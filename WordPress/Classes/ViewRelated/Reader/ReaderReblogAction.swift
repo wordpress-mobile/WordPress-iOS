@@ -30,8 +30,8 @@ class ReaderReblogAction {
     }
 }
 
-
-/// Presents the approptiate reblog scene, depending on the number of available sites
+// MARK: - Use cases presentation
+/// Presents the approptiate scene, depending on the number of available sites
 class ReblogPresenter {
     private let postService: PostService
 
@@ -78,7 +78,7 @@ class ReblogPresenter {
             presentEditor(with: readerPost, blog: blog, origin: origin, presentBlogSelector: true)
         }
     }
-    
+
     /// presents the editor when users have at least one blog site
     private func presentEditor(with readerPost: ReaderPost,
                                blog: Blog,
@@ -95,7 +95,7 @@ class ReblogPresenter {
 
         origin.present(editor, animated: false)
     }
-    
+
     /// presents the no sites screen, with related actions
     private func presentNoSitesScreen(origin: UIViewController) {
         let controller = NoResultsViewController.controllerWith(title: NoSitesConfiguration.noSitesTitle,
@@ -110,7 +110,6 @@ class ReblogPresenter {
                 tabBarController.showMySitesTab()
             }
         }
-
         controller.dismissButtonHandler = {
             controller.dismiss(animated: true)
         }
@@ -125,7 +124,6 @@ class ReblogPresenter {
             // suits both iPad and iPhone
             navigationController.modalPresentationStyle = .pageSheet
         }
-        
         origin.present(navigationController, animated: true)
     }
 }
@@ -145,11 +143,13 @@ fileprivate extension Post {
             if let permaLink = readerPost.permaLink, let title = readerPost.titleForDisplay() {
                 citation = ReblogFormatter.hyperLink(url: permaLink, text: title)
             }
-            content = ReblogFormatter.wordPressQuote(text: summary, citation: citation)
+            content = self.blog.isGutenbergEnabled ? ReblogFormatter.gutenbergQuote(text: summary, citation: citation) :
+                ReblogFormatter.classicEditorQuote(text: summary, citation: citation)
         }
         // insert the image on top of the content
         if let image = readerPost.featuredImage {
-            content = ReblogFormatter.htmlImage(image: image) + content
+            content = self.blog.isGutenbergEnabled ? ReblogFormatter.gutenbergImage(image: image) + content :
+                ReblogFormatter.classicEditorImage(image: image) + content
         }
         self.content = content
     }
@@ -161,40 +161,70 @@ fileprivate extension Post {
     }
 }
 
-
-/// Contains methods to format Gutenberg-ready HTML content
+// MARK: - Content formatter
+/// Contains methods to format post reblog content for either Gutenberg or Classic Editor
 struct ReblogFormatter {
 
-    static func wordPressQuote(text: String, citation: String? = nil) -> String {
-        var formattedText = embedInParagraph(text: text)
-        if let citation = citation {
-            formattedText.append(embedinCitation(html: citation))
-        }
-        return embedInWpQuote(html: formattedText)
+    static func gutenbergQuote(text: String, citation: String? = nil) -> String {
+        return embedInWpQuote(html: quoteWithCitation(text: text, citation: citation))
     }
 
-    static func hyperLink(url: String, text: String) -> String {
-        return "<a href=\"\(url)\">\(text)</a>"
+    static func gutenbergImage(image: String) -> String {
+        return embedInWpParagraph(html: htmlImage(image: image))
     }
 
-    static func htmlImage(image: String) -> String {
-        return embedInWpParagraph(text: "<img src=\"\(image)\">")
+
+    static func classicEditorQuote(text: String, citation: String? = nil) -> String {
+        return embedInQuote(html: quoteWithCitation(text: text, citation: citation))
     }
 
-    private static func embedInWpParagraph(text: String) -> String {
-        return "<!-- wp:paragraph -->\n<p>\(text)</p>\n<!-- /wp:paragraph -->"
+    static func classicEditorImage(image: String) -> String {
+        return embedInParagraph(html: htmlImage(image: image))
+    }
+}
+
+
+// MARK: - Gutenberg helpers
+extension ReblogFormatter {
+
+    private static func embedInWpParagraph(html: String) -> String {
+        return "<!-- wp:paragraph -->\n<p>\(html)</p>\n<!-- /wp:paragraph -->"
     }
 
     private static func embedInWpQuote(html: String) -> String {
         return "<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\">\(html)</blockquote>\n<!-- /wp:quote -->"
     }
+}
 
-    private static func embedInParagraph(text: String) -> String {
-        return "<p>\(text)</p>"
+// MARK: - Standard HTML helpers
+extension ReblogFormatter {
+
+    static func hyperLink(url: String, text: String) -> String {
+        return "<a href=\"\(url)\">\(text)</a>"
+    }
+
+    private static func htmlImage(image: String) -> String {
+        return "<img src=\"\(image)\">"
+    }
+
+    private static func embedInQuote(html: String) -> String {
+        return "<blockquote>\(html)</blockquote>"
+    }
+
+    private static func embedInParagraph(html: String) -> String {
+        return "<p>\(html)</p>"
     }
 
     private static func embedinCitation(html: String) -> String {
         return "<cite>\(html)</cite>"
+    }
+
+    private static func quoteWithCitation(text: String, citation: String? = nil) -> String {
+        var formattedText = embedInParagraph(html: text)
+        if let citation = citation {
+            formattedText.append(embedinCitation(html: citation))
+        }
+        return formattedText
     }
 }
 
