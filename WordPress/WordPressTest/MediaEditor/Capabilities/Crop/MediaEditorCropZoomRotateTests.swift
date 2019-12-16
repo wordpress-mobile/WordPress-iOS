@@ -4,18 +4,18 @@ import Nimble
 
 @testable import WordPress
 
-class MediaEditorCropTests: XCTestCase {
+class MediaEditorCropZoomRotateTests: XCTestCase {
 
     private let image = UIImage()
 
     func testIsAMediaEditorCapability() {
-        let mediaEditorCrop = MediaEditorCrop(image, onFinishEditing: { _, _ in }, onCancel: {})
+        let mediaEditorCrop = MediaEditorCropZoomRotate(image, onFinishEditing: { _, _ in }, onCancel: {})
 
         expect(mediaEditorCrop).to(beAKindOf(MediaEditorCapability.self))
     }
 
     func testDoNotHideNavigation() {
-        let mediaEditorCrop = MediaEditorCrop(image, onFinishEditing: { _, _ in }, onCancel: {})
+        let mediaEditorCrop = MediaEditorCropZoomRotate(image, onFinishEditing: { _, _ in }, onCancel: {})
 
         let viewController = mediaEditorCrop.viewController as? TOCropViewController
 
@@ -24,7 +24,7 @@ class MediaEditorCropTests: XCTestCase {
 
     func testOnDidCropToRectCallOnFinishEditing() {
         var onFinishEditingCalled = false
-        let mediaEditorCrop = MediaEditorCrop(
+        let mediaEditorCrop = MediaEditorCropZoomRotate(
             image,
             onFinishEditing: { _, _ in
                 onFinishEditingCalled = true
@@ -39,7 +39,7 @@ class MediaEditorCropTests: XCTestCase {
 
     func testOnDidFinishCancelledCall() {
         var onCancelCalled = false
-        let mediaEditorCrop = MediaEditorCrop(
+        let mediaEditorCrop = MediaEditorCropZoomRotate(
             image,
             onFinishEditing: { _, _ in },
             onCancel: {
@@ -54,7 +54,7 @@ class MediaEditorCropTests: XCTestCase {
     }
 
     func testHideRotateCounterclockwiseButton() {
-        let mediaEditorCrop = MediaEditorCrop(image, onFinishEditing: { _, _ in }, onCancel: {})
+        let mediaEditorCrop = MediaEditorCropZoomRotate(image, onFinishEditing: { _, _ in }, onCancel: {})
 
         mediaEditorCrop.apply(styles: [.rotateCounterclockwiseButtonHidden: true])
 

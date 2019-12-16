@@ -1,7 +1,7 @@
 import UIKit
 import TOCropViewController
 
-class MediaEditorCrop: MediaEditorCapability {
+class MediaEditorCropZoomRotate: MediaEditorCapability {
     var image: UIImage
 
     var onFinishEditing: (UIImage, [MediaEditorOperation]) -> ()

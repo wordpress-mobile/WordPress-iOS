@@ -6,7 +6,7 @@ import UIKit
  Also, by also being a ViewController, this allows it to be custom presented.
  */
 public class MediaEditor: UINavigationController {
-    static var capabilities: [MediaEditorCapability.Type] = [MediaEditorCrop.self]
+    static var capabilities: [MediaEditorCapability.Type] = [MediaEditorCropZoomRotate.self]
 
     var hub: MediaEditorHub = {
         let hub: MediaEditorHub = MediaEditorHub.initialize()
