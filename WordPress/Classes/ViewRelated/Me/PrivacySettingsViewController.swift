@@ -146,6 +146,7 @@ private class InfoCell: WPTableViewCellDefault {
         super.layoutSubviews()
         guard var imageFrame = imageView?.frame,
             let textLabel = textLabel,
+            let textLabelFont = textLabel.font,
             let text = textLabel.text else {
                 return
         }
@@ -156,13 +157,13 @@ private class InfoCell: WPTableViewCellDefault {
         // First a single line of text, so we can center against the first line of text
         let singleLineRect = "Text".boundingRect(with: size,
                                                  options: [ .usesLineFragmentOrigin, .usesFontLeading],
-                                                 attributes: [NSAttributedString.Key.font: textLabel.font],
+                                                 attributes: [NSAttributedString.Key.font: textLabelFont],
                                                  context: nil)
 
         // And then the whole text, so we can calculate padding in the label above and below the text
         let textRect = text.boundingRect(with: size,
                                          options: [ .usesLineFragmentOrigin, .usesFontLeading],
-                                         attributes: [NSAttributedString.Key.font: textLabel.font],
+                                         attributes: [NSAttributedString.Key.font: textLabelFont],
                                          context: nil)
 
         // Calculate the vertical padding in the label.

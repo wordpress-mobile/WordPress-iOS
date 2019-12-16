@@ -61,6 +61,12 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.register(SiteStatsTableHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
+        addWillEnterForegroundObserver()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeWillEnterForegroundObserver()
     }
 
     func configure(statSection: StatSection,
@@ -125,6 +131,13 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         return SiteStatsTableHeaderView.headerHeight()
     }
 
+}
+
+extension SiteStatsDetailTableViewController: StatsForegroundObservable {
+    func reloadStatsData() {
+        selectedDate = StatsDataHelper.currentDateForSite()
+        refreshData()
+    }
 }
 
 // MARK: - Table Methods

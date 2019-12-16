@@ -109,7 +109,7 @@ class PostCoordinatorTests: XCTestCase {
 
         postCoordinator.save(post) { result in
             switch result {
-            case .error(let error):
+            case .failure(let error):
                 returnedError = error
             default:
                 break
@@ -131,7 +131,7 @@ class PostCoordinatorTests: XCTestCase {
 
         postCoordinator.save(post) { result in
             switch result {
-            case .error(let error):
+            case .failure(let error):
                 returnedError = error
             default:
                 break
@@ -305,7 +305,7 @@ class PostCoordinatorTests: XCTestCase {
                                               actionDispatcherFacade: actionDispatcherFacadeMock)
 
         // Act
-        var result: Result<AbstractPost>? = nil
+        var result: Result<AbstractPost, Error>? = nil
         waitUntil(timeout: 2) { done in
             postCoordinator.save(post) { aResult in
                 result = aResult
@@ -344,7 +344,7 @@ class PostCoordinatorTests: XCTestCase {
                                               actionDispatcherFacade: actionDispatcherFacadeMock)
 
         // Act
-        var result: Result<AbstractPost>? = nil
+        var result: Result<AbstractPost, Error>? = nil
         waitUntil(timeout: 2) { done in
             postCoordinator.save(post) { aResult in
                 result = aResult
@@ -384,7 +384,7 @@ class PostCoordinatorTests: XCTestCase {
                                               actionDispatcherFacade: actionDispatcherFacadeMock)
 
         // Act
-        var result: Result<AbstractPost>? = nil
+        var result: Result<AbstractPost, Error>? = nil
         waitUntil(timeout: 2) { done in
             postCoordinator.save(post) { aResult in
                 result = aResult
@@ -424,7 +424,7 @@ class PostCoordinatorTests: XCTestCase {
                                               mediaCoordinator: mediaCoordinatorMock)
 
         // Act
-        var results = [Result<AbstractPost>]()
+        var results = [Result<AbstractPost, Error>]()
         waitUntil(timeout: 2) { done in
             postCoordinator.save(post) { aResult in
                 results.append(aResult)

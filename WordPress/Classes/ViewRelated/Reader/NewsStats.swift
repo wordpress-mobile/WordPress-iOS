@@ -1,8 +1,8 @@
 /// Abstract stats tracking
 protocol NewsStats {
-    func trackPresented(news: Result<NewsItem>?)
-    func trackDismissed(news: Result<NewsItem>?)
-    func trackRequestedExtendedInfo(news: Result<NewsItem>?)
+    func trackPresented(news: Result<NewsItem, Error>?)
+    func trackDismissed(news: Result<NewsItem, Error>?)
+    func trackRequestedExtendedInfo(news: Result<NewsItem, Error>?)
 }
 
 /// Implementation of the NewsStats protocol that provides Tracks integration for the NewsCard
@@ -18,15 +18,15 @@ final class TracksNewsStats: NewsStats {
         self.origin = origin
     }
 
-    func trackPresented(news: Result<NewsItem>?) {
+    func trackPresented(news: Result<NewsItem, Error>?) {
         track(event: .newsCardViewed, news: news)
     }
 
-    func trackDismissed(news: Result<NewsItem>?) {
+    func trackDismissed(news: Result<NewsItem, Error>?) {
         track(event: .newsCardDismissed, news: news)
     }
 
-    func trackRequestedExtendedInfo(news: Result<NewsItem>?) {
+    func trackRequestedExtendedInfo(news: Result<NewsItem, Error>?) {
         track(event: .newsCardRequestedExtendedInfo, news: news)
     }
 
@@ -35,13 +35,13 @@ final class TracksNewsStats: NewsStats {
                 StatsKeys.version: version.description]
     }
 
-    private func track(event: WPAnalyticsStat, news: Result<NewsItem>?) {
+    private func track(event: WPAnalyticsStat, news: Result<NewsItem, Error>?) {
         guard let actualNews = news else {
             return
         }
 
         switch actualNews {
-        case .error:
+        case .failure:
             return
         case .success(let newsItem):
             WPAppAnalytics.track(event, withProperties: eventProperties(version: newsItem.version))

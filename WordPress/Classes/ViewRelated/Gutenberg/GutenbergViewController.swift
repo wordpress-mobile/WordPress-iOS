@@ -163,6 +163,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
+    /// If true, apply autosave content when the editor creates a revision.
+    ///
+    private let loadAutosaveRevision: Bool
+
     let navigationBarManager = PostEditorNavigationBarManager()
 
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
@@ -218,10 +222,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Initializers
     required init(
         post: AbstractPost,
+        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         self.post = post
+        self.loadAutosaveRevision = loadAutosaveRevision
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
@@ -249,8 +255,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
         setupGutenbergView()
-        createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
 
@@ -348,6 +354,11 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+
+    func gutenbergDidRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
+        GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)
+    }
+
     func editorDidAutosave() {
         autosaver.contentDidChange()
     }
@@ -520,6 +531,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 showMediaSelectionOnStart()
             }
             focusTitleIfNeeded()
+            mediaInserterHelper.refreshMediaStatus()
         }
     }
 
@@ -541,12 +553,20 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogError(message)
         }
     }
+
+    func gutenbergDidRequestFullscreenImage(with mediaUrl: URL) {
+        navigationController?.definesPresentationContext = true
+        let controller = WPImageViewController(externalMediaURL: mediaUrl)
+        controller.post = self.post
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .overCurrentContext
+        self.present(controller, animated: true)
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
-
     func gutenbergLocale() -> String? {
         return WordPressComLanguageDatabase().deviceLanguage.slug
     }

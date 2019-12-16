@@ -5,7 +5,7 @@ protocol NewsManager {
     func readMore()
     func shouldPresentCard(contextId: Identifier) -> Bool
     func didPresentCard()
-    func load(then completion: @escaping (Result<NewsItem>) -> Void)
+    func load(then completion: @escaping (Result<NewsItem, Error>) -> Void)
 }
 
 protocol NewsManagerDelegate: class {

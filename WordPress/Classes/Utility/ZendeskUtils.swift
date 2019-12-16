@@ -591,8 +591,13 @@ private extension ZendeskUtils {
             let fileLogger = appDelegate.logger?.fileLogger,
             let logFileInformation = fileLogger.logFileManager.sortedLogFileInfos.first,
             let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
-            let logText = String(data: logData, encoding: .utf8) else {
+            var logText = String(data: logData, encoding: .utf8) else {
                 return ""
+        }
+
+        // Truncate the log text so it fits in the ticket field.
+        if logText.count > Constants.logFieldCharacterLimit {
+            logText = String(logText.suffix(Constants.logFieldCharacterLimit))
         }
 
         return logText
@@ -932,6 +937,7 @@ private extension ZendeskUtils {
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
         static let nameFieldCharacterLimit = 50
+        static let logFieldCharacterLimit = 50000
         static let sourcePlatform = "mobile_-_ios"
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
     }
