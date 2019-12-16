@@ -296,6 +296,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         updateGhostableTableViewOptions()
         ghostableTableView.reloadSections([0], with: .automatic)
 
+        postsViewButtonItem.accessibilityLabel = NSLocalizedString("List style", comment: "The accessibility label for the list style button in the Post List.")
+        postsViewButtonItem.accessibilityValue = isCompact ? NSLocalizedString("Compact", comment: "Accessibility indication that the current Post List style is currently Compact.") : NSLocalizedString("Expanded", comment: "Accessibility indication that the current Post List style is currently Expanded.")
         postsViewButtonItem.image = postViewIcon
     }
 
@@ -518,10 +520,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             presentAlertForPostBeingUploaded()
             return
         }
-        let editor = EditPostViewController(post: post)
-        editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false)
-        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
+
+        PostListEditorPresenter.handle(post: post, in: self)
     }
 
     func presentAlertForPostBeingUploaded() {

@@ -1,4 +1,5 @@
-- Con questo aggiornamento, l'assenza di Internet non sarà un problema. Modifica e salva gli articoli mentre sei offline, noi li caricheremo (o pubblicheremo) automaticamente una volta che il tuo dispositivo sarà di nuovo online.
-- A volte, la vista "Io" era vuota se avevi effettuato l'accesso con un sito ospitato personalmente: si trattava di un bug (1) e (2) non andava bene per la propria autostima. Lo abbiamo risolto.
-- A volte, l'aggiornamento di un articolo in sospeso ne causava la pubblicazione. Le funzionalità di sospensione e pubblicazione degli articoli sono state sistemate, quindi non accadrà più: gli articoli in sospeso rimarranno tali finché non deciderai diversamente.
-- Infine, altri miglioramenti all'editor dei blocchi: ora supporta opzioni per l'allineamento delle immagini.
+- L'editor dei blocchi ha un nuovo blocco Spazio vuoto per l'aggiunta di uno spazio bianco tra i contenuti, proprio come citato in tutti gli articoli sull'ottimizzazione e la leggibilità dei contenuti. Ora è possibile visualizzare l'anteprima delle immagini a schermo intero nei blocchi Immagine toccandola.
+- Ora puoi caricare la versione salvata automaticamente, se un articolo ne ha una. Ci scusiamo per qualsiasi revisione salvata automaticamente che sia stata trattata con negligenza.
+- Occasionalmente gli utenti visualizzano un errore "Impossibile inviare il messaggio" quando inviano messaggi al Supporto. Abbiamo corretto questo bug dato che il punto dei messaggi deve essere inviato, specialmente quando è necessaria l'assistenza.
+- Non puoi essere mai troppo sicuro su Internet. L'accesso con Apple supporta ora l'autenticazione a due fattori ed è stato corretto un problema con l'autenticazione a due fattori con Google. In questo modo puoi autenticare tutto.
+- È stato riscontrato un problema che a volte rendeva vuota la schermata "Io", che era al 100% un bug spiacevole e allo 0% un riflesso della tua immagine. Per fugare ogni dubbio, ora è stato risolto.

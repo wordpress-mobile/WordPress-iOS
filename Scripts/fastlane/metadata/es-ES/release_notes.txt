@@ -1,5 +1,5 @@
-- Con esta actualización, puedes conectar a Internet sin Internet real. Edita y guarda las entradas mientras estás offline, las cargaremos (o publicaremos) automáticamente cuando tu dispositivo vuelva a estar online.
-- A veces, la vista de «Yo» estaría en blanco si te conectaras con una web autoalojada, lo cual es (1) un fallo y (2) no es bueno para la autoestima de nadie. Eso está arreglado, así que «Yo» eres tú otra vez.
-- A veces, la actualización de una entrada pendiente hace que se publique la entrada. Todas las acciones que empiezan con «P» han sido corregidas y eso no sucederá más - las entradas pendientes permanecerán pendientes hasta que digas lo contrario.
-- Y, finalmente, más mejoras en el editor de bloques - ahora es compatible con opciones de alineación de imágenes.
-
+- El editor de bloques ahora tiene un nuevo bloque espaciador para añadir espacios en blanco entre contenidos, tal y como todos los artículos de optimización de contenidos y legibilidad te dicen, y ahora se pueden previsualizar en pantalla completa las imágenes y bloques de imágenes simplemente tocándolas.
+- Cuando una entrada tiene una revisión de guardado automático ahora tienes la opción de cargar la versión de guardado automático. Pedimos perdón a todas esas revisiones de guardado automático que se han sentido mal por nuestra negligencia.
+- Hay gente que ocasionalmente veía un error de «El mensaje no se pudo enviar» al enviar mensajes al soporte. Como los mensajes deben poder enviarse, especialmente cuando necesitas ayuda, hemos corregido ese fallo.
+- Nunca podrás estar seguro en Internet. La conexión con Apple ahora es compatible con la identificación en dos factores y se ha corregido el problema de conexión con Google mediante 2FA para que puedas identificar todo.
+- Hubo un problema que provocaba que la pantalla «Yo» estuviese en blanco en ocasiones, lo que era un fallo 100% desafortunado y un 0% reflejo de tu propia imagen. Para eliminar cualquier duda, ahora está corregido.

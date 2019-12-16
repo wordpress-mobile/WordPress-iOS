@@ -16,6 +16,8 @@ class DateCoordinator {
     }
 }
 
+// MARK: - Date Picker
+
 class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
 
     var coordinator: DateCoordinator? = nil
@@ -43,7 +45,14 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         return calendarMonthView
     }()
 
-    private lazy var closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.closeButtonPressed))
+    private lazy var closeButton: UIBarButtonItem = {
+        let item = UIBarButtonItem(image: Gridicon.iconOfType(.cross),
+                                   style: .plain,
+                                   target: self,
+                                   action: #selector(closeButtonPressed))
+        item.accessibilityLabel = NSLocalizedString("Close", comment: "Accessibility label for the date picker's close button.")
+        return item
+    }()
     private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
 
     override func viewDidLoad() {
@@ -59,6 +68,8 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         calendarMonthView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+
+        setupForAccessibility()
     }
 
     override func viewDidLayoutSubviews() {
@@ -78,16 +89,16 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        if traitCollection.verticalSizeClass == .compact {
-            navigationItem.leftBarButtonItems = [closeButton, publishButton]
-        } else {
-            navigationItem.leftBarButtonItems = [publishButton]
-        }
+        resetNavigationButtons()
     }
 
     @objc func closeButtonPressed() {
         dismiss(animated: true, completion: nil)
+    }
+
+    override func accessibilityPerformEscape() -> Bool {
+        dismiss(animated: true, completion: nil)
+        return true
     }
 
     @objc func publishImmediately() {
@@ -100,7 +111,39 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         vc.coordinator = coordinator
         navigationController?.pushViewController(vc, animated: true)
     }
+
+    @objc private func resetNavigationButtons() {
+        let includeCloseButton = traitCollection.verticalSizeClass == .compact ||
+            (isVoiceOverOrSwitchControlRunning && navigationController?.modalPresentationStyle != .popover)
+
+        if includeCloseButton {
+            navigationItem.leftBarButtonItems = [closeButton, publishButton]
+        } else {
+            navigationItem.leftBarButtonItems = [publishButton]
+        }
+    }
 }
+
+// MARK: Accessibility
+
+private extension SchedulingCalendarViewController {
+    func setupForAccessibility() {
+        let notificationNames = [
+            UIAccessibility.voiceOverStatusDidChangeNotification,
+            UIAccessibility.switchControlStatusDidChangeNotification
+        ]
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(resetNavigationButtons),
+                                               names: notificationNames,
+                                               object: nil)
+    }
+
+    var isVoiceOverOrSwitchControlRunning: Bool {
+        UIAccessibility.isVoiceOverRunning || UIAccessibility.isSwitchControlRunning
+    }
+}
+
+// MARK: - Time Picker
 
 class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
 

@@ -270,6 +270,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         titlePlaceholderLabel.translatesAutoresizingMaskIntoConstraints = false
         titlePlaceholderLabel.textAlignment = .natural
 
+        titlePlaceholderLabel.isAccessibilityElement = false
+
         return titlePlaceholderLabel
     }()
 
@@ -342,6 +344,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
+    /// If true, apply autosave content when the editor creates a revision.
+    ///
+    private let loadAutosaveRevision: Bool
+
     /// Active Downloads
     ///
     fileprivate var activeMediaRequests = [ImageDownloader.Task]()
@@ -404,9 +410,18 @@ class AztecPostViewController: UIViewController, PostEditor {
         insertItem.titleLabel?.font = Fonts.mediaPickerInsert
         insertItem.tintColor = .primary
         insertItem.setTitleColor(.primary, for: .normal)
+        insertItem.accessibilityLabel = Constants.mediaPickerInsertAccessibilityLabel
+        insertItem.accessibilityIdentifier = "insert_media_button"
 
         return insertItem
     }()
+
+    /// Indicates whether the `insertToolbarItem` is always shown in `FormatBarMode.media` mode.
+    ///
+    /// If true, the insertToolbarItem is enabled and disabled instead of shown and hidden.
+    private var alwaysDisplayInsertToolbarItem: Bool {
+        UIAccessibility.isVoiceOverRunning
+    }
 
     fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
 
@@ -434,20 +449,16 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Initializers
 
-    /// Initializer
-    ///
-    /// - Parameters:
-    ///     - post: the post to edit in this VC.  Must be already assigned to a `ManagedObjectContext`
-    ///             since that's necessary for the edits to be saved.
-    ///
     required init(
         post: AbstractPost,
+        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
+        self.loadAutosaveRevision = loadAutosaveRevision
         self.replaceEditor = replaceEditor
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
@@ -485,7 +496,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        createRevisionOfPost()
+        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
 
         // Setup
         configureNavigationBar()
@@ -2045,6 +2056,7 @@ extension AztecPostViewController {
         case .media:
             toolbar.setDefaultItems(mediaItemsForToolbar,
                                     overflowItems: [])
+            setupFormatBarAccessibilityForMediaMode(toolbar)
         }
     }
 
@@ -3108,7 +3120,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
-        return mediaUtility.placeholderImage(for: attachment, size: Constants.mediaPlaceholderImageSize)
+        return mediaUtility.placeholderImage(for: attachment, size: Constants.mediaPlaceholderImageSize, tintColor: textView.textColor)
     }
 }
 
@@ -3203,15 +3215,33 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         }
 
         if assetCount == 0 {
-            formatBar.trailingItem = nil
+            insertToolbarItem.isEnabled = false
+            insertToolbarItem.accessibilityValue = nil
+
+            insertToolbarItem.setTitle(Constants.mediaPickerInsertTextDefault, for: .normal)
+
+            if !alwaysDisplayInsertToolbarItem {
+                formatBar.trailingItem = nil
+            }
         } else {
+            insertToolbarItem.isEnabled = true
+            insertToolbarItem.accessibilityValue = "\(assetCount)"
+
             insertToolbarItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
-            insertToolbarItem.accessibilityIdentifier = "insert_media_button"
 
             if formatBar.trailingItem != insertToolbarItem {
                 formatBar.trailingItem = insertToolbarItem
             }
         }
+    }
+
+    /// Called once whenever the `formatBar` is switched from text to media mode.
+    private func setupFormatBarAccessibilityForMediaMode(_ formatBar: Aztec.FormatBar) {
+        if alwaysDisplayInsertToolbarItem {
+            formatBar.trailingItem = insertToolbarItem
+        }
+
+        updateFormatBarInsertAssetCount()
     }
 }
 
@@ -3289,7 +3319,9 @@ extension AztecPostViewController {
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
         static let toolbarHeight            = CGFloat(44.0)
+        static let mediaPickerInsertTextDefault = NSLocalizedString("Insert", comment: "Default button title used in media picker to insert media (photos / videos) into a post.")
         static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
+        static let mediaPickerInsertAccessibilityLabel = NSLocalizedString("Insert selected", comment: "Default accessibility label for the media picker insert button.")
         static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
         static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
         static let mediaOverlayBorderWidth  = CGFloat(3.0)

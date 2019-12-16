@@ -1,4 +1,5 @@
-- Bu güncelleme ile, gerçek internet olmadan internet yapabilirsiniz. Çevrimdışıyken yayınları düzenle ve kaydet, cihazınız tekrar çevrimiçi olduğunda otomatik olarak yükler (veya yayınlar).
-- Bazen, kendi başına barındırılan bir siteye giriş yaptıysanız “Ben” sayfası boş olabilir, bu hem (1) hata hem de (2) kimsenin kendine saygısı için harika bir şey değil. Bu düzeltildi, yani ben yine sensin.
-- Bazen bekleyen bir yazıyı güncellemek yazının yayınlanmasına neden oldu. P ile başlayan tüm eylemler düzeltildi ve bu artık gerçekleşmeyecek; aksi takdirde siz söyleyene kadar bekleyen yazılar beklemede kalacaktır.
-- Ve son olarak, daha fazla blok düzenleyici iyileştirmeleri - şimdi görüntü hizalama seçeneklerini destekliyor.
+- Blok editörünün içerik arasına beyaz boşluk eklemek için yeni bir Spacer bloğu var tıpkı içerik iyileştirme ve okunurluk makalelerinin belirttiği gibi, ayrıca görsel blokları içindeki görseller de üzerlerine dokunarak tam ekranda önizlemeleri görüntülenebilir.
+- Bir yayının otomatik olarak kaydedilmiş bir sürümü varsa artık bu sürümü de yükleme seçeneğiniz var. Kendilerini ihmal edilmiş hisseden otomatik olarak kaydedilmiş sürümlerden özür dileriz.
+- Bazen Destek'e gönderilen mesajlar "Mesaj gönderilemedi" hatası alır. Bu mesaj destek istediğinizde gönderdiğiniz bir mesaj olduğundan bu hatayı düzelttik.
+- İnternette asla fazla güvende olamazsınız. Apple ile giriş yapma artık iki faktörlü kimlik doğrulamayı destekliyor ve Google oturum açmayla ilgili bir 2FA sorunu da düzeltildi, böylece her şeyi doğrulayabilirsiniz.
+- “Ben” ekranının bazen boş olmasına neden olan bir sorun vardı, bu %100 talihsiz bir hata ve öz imajınızın %0 bir yansımasıydı. Şüpheleri yok etmek için, şimdi düzeltildi.

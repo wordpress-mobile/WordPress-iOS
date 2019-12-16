@@ -1,4 +1,5 @@
-- Denna uppdatering låter dig använda nätet även när du inte är uppkopplad. Redigera och spara inlägg utan uppkoppling, så kommer vi automatiskt att ladda upp (eller publicera) dem när din enhet åter får kontakt med nätet.
-- I vissa fall var vyn ”Jag” tom om du var inloggad med en webbplats som du driftar på egen hand, något som både är (1) ett fel och (2) kan vara mindre lyckat för självbilden. Det är rättat nu. Nu är du åter ditt gamla jag.
-- Ibland kunde ett väntande inlägg publiceras om man uppdaterade det. Hanteringen av väntande inlägg och publicering har korrigerats för att detta inte ska hända igen – nu kommer väntande inlägg att fortsätta vara väntande ända tills du uppger något annat.
-- Slutligen har vi några förbättringar av blockredigeraren – nu har den stöd för justering av bilder.
+- Nu har blockredigeraren begåvats med ett nytt distansblock så att man kan lägga in avstånd mellan innehållsblocken, något som otaliga artiklar om innehållsoptimering och läsbarhet råder oss att göra. Dessutom går det nu att förhandsvisa bildblock i helskärmsläge genom att trycka på blocket.
+- Om ett inlägg har en autosparad version har du nu möjlighet att ladda den autosparade versionen. Vi vill härmed be om ursäkt inför eventuella tidigare autosparade versioner som känt sig förbigångna.
+- Ibland råkade användare få svaret ”Det gick inte att skicka meddelandet” när de försökte kontakta supporten. Själva vitsen med ett meddelande är ju att det ska sändas, i synnerhet om du behöver hjälp. Därför rättade vi det felet.
+- Man måste alltid tänka på säkerheten ute på internet. Nu har vi fixat så att inloggning via Apple fungerar med tvåfaktorsautentisering och rättat ett problem med 2FA via Google-inloggning. Nu kan du autentisera dig på alla sätt du behöver.
+- Ett fel gjorde så att sidan ”Jag” ibland var helt tom: Det var ett 100 % tråkigt fel och återspeglade till 0 % din självbild. För att du inte ska tvivla på dig själv har vi nu ordnat detta.

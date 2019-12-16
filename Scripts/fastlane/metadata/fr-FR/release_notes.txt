@@ -1,4 +1,5 @@
-– Avec cette mise à jour, vous pouvez être connecté sans être vraiment connecté. Modifiez et enregistrez des articles lorsque vous n’avez pas de connexion, nous les téléverserons (ou publierons) automatiquement quand l’appareil sera de nouveau connecté.
-– Parfois, la vue « Moi » pouvait être vide si vous étiez connecté sur un site auto-hébergé qui est d’une, un bug et de de deux pas top pour qui a un peu d’estime en soit. C’est corrigé, donc Moi est vous à nouveau.
-– D’autre fois, mettre à jour un article en attente le publiait quand même. Les articles en attente resteront en attente jusqu’à ce que vous en décidiez autrement.
-– Finalement, des améliorations de l’éditeur de bloc. Des options d’alignement des images ont été ajoutées.
+- L’éditeur de blocs a un nouveau bloc Espacement pour ajouter un espace vide entre deux contenus comme il est conseillé de faire pour améliorer la lisibilité. Les images dans le bloc Images peuvent être prévisualiser en plein écran en les touchant.
+- Quand un article possède une révision sauvegardé automatiquement, vous avez une option pour charger cette version. Nous nous excusons pour les révisions qui ont été purement et simplement ignorées.
+- Certaines personnes avait parfois l’erreur « Le message n’a pas pu être envoyé » lors de l’envoi de messages au support. Nous avons corrigé ce bug.
+- Vous ne pourrez jamais être en sécurité sur Internet. Connexion avec Apple supporte l’authentification à double facteur et un problème avec la 2FA de la connexion Google a été corrigé.
+- Il y avait un problème avec l’écran « Moi » qui pouvait être parfois blanc. Cela reflétait à 100% un bug et à 0% votre propre image. Pour lever tous les doutes, c’est corrigé.

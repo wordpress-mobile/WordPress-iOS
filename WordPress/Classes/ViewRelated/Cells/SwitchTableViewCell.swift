@@ -91,3 +91,14 @@ open class SwitchTableViewCell: WPTableViewCell {
     // MARK: - Private Outlets
     @objc public var flipSwitch: UISwitch!
 }
+
+class SwitchWithSubtitleTableViewCell: SwitchTableViewCell {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+        setupSubviews()
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

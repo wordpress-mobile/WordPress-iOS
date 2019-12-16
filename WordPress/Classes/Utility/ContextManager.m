@@ -4,6 +4,8 @@
 #import "WordPress-Swift.h"
 @import WordPressShared.WPAnalytics;
 
+#define SentryStartupEventAddError(event, error) [event addError:error file:__FILE__ function:__FUNCTION__ line:__LINE__]
+
 // MARK: - Static Variables
 //
 static ContextManager *_instance;
@@ -85,6 +87,7 @@ static ContextManager *_override;
         NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         context.parentContext = self.writerContext;
         self.mainContext = context;
+        [[[NullBlogPropertySanitizer alloc] initWithContext:context] sanitize];
     });
 
     return _mainContext;
@@ -239,6 +242,7 @@ static ContextManager *_override;
     };
 
     NSError *error = nil;
+    SentryStartupEvent *startupEvent = [SentryStartupEvent new];
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
                                    initWithManagedObjectModel:[self managedObjectModel]];
 
@@ -249,6 +253,9 @@ static ContextManager *_override;
                                                            error:&error]) {
         DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 
+        SentryStartupEventAddError(startupEvent, error);
+        error = nil;
+
         _migrationFailed = YES;
         
         // make a backup of the old database
@@ -256,13 +263,28 @@ static ContextManager *_override;
                                                 toPath:[storeURL.path stringByAppendingString:@"~"]
                                                  error:&error];
 
+        if (error != nil) {
+            SentryStartupEventAddError(startupEvent, error);
+            error = nil;
+        }
+
         // delete the sqlite file and try again
-        [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
+
+        if (error != nil) {
+            SentryStartupEventAddError(startupEvent, error);
+            error = nil;
+        }
+
         if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                        configuration:nil
                                                                  URL:storeURL
                                                              options:nil
                                                                error:&error]) {
+
+            SentryStartupEventAddError(startupEvent, error);
+            [startupEvent sendWithTitle:@"Can't initialize Core Data stack"];
+
             @throw [NSException exceptionWithName:@"Can't initialize Core Data stack"
                                            reason:[error localizedDescription]
                                          userInfo:[error userInfo]];

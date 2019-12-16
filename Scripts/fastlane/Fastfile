@@ -248,7 +248,7 @@ import "./ScreenshotFastfile"
     # makes the default gym output override the "file" parameter. 
     appcenter_upload(
       api_token: get_required_env("APPCENTER_API_TOKEN"),
-      owner_name: "Hogwarts-Organization",
+      owner_name: "automattic",
       owner_type: "organization", 
       app_name: "WPiOS-One-Offs",
       ipa: "../build/WordPress Alpha.ipa",
@@ -258,7 +258,7 @@ import "./ScreenshotFastfile"
 
     download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
     UI.message("Successfully built and uploaded installable build here: #{download_url}")
-    install_url = "https://install.appcenter.ms/orgs/Hogwarts-Organization/apps/WPiOS-One-Offs/"
+    install_url = "https://install.appcenter.ms/orgs/automattic/apps/WPiOS-One-Offs/"
 
     # Create a comment.json file so that Peril to comment with the build details, if this is running on CI
     comment_body = "You can test the changes on this Pull Request by downloading it from AppCenter [here](#{install_url}) with build number: #{build_number}. IPA is available [here](#{download_url}). If you need access to this, you can ask a maintainer to add you."
@@ -300,7 +300,7 @@ import "./ScreenshotFastfile"
     # makes the default gym output override the "file" parameter. 
     appcenter_upload(
       api_token: ENV["APPCENTER_API_TOKEN"],
-      owner_name: "Hogwarts-Organization",
+      owner_name: "automattic",
       owner_type: "organization", 
       app_name: "WP-Internal",
       ipa: "../build/WordPress Internal.ipa",
@@ -376,7 +376,8 @@ import "./ScreenshotFastfile"
                        "org.wordpress.alpha.WordPressDraftAction",
                        "org.wordpress.alpha.WordPressTodayWidget",
                        "org.wordpress.alpha.WordPressNotificationServiceExtension",
-                       "org.wordpress.alpha.WordPressNotificationContentExtension"])
+                       "org.wordpress.alpha.WordPressNotificationContentExtension", 
+                       "org.wordpress.alpha.WordPressAllTimeWidget"])
   end
 
   private_lane :internal_code_signing do |options|
@@ -389,7 +390,8 @@ import "./ScreenshotFastfile"
                        "org.wordpress.internal.WordPressDraftAction",
                        "org.wordpress.internal.WordPressTodayWidget",
                        "org.wordpress.internal.WordPressNotificationServiceExtension",
-                       "org.wordpress.internal.WordPressNotificationContentExtension"])
+                       "org.wordpress.internal.WordPressNotificationContentExtension",
+                       "org.wordpress.internal.WordPressAllTimeWidget"])
   end
 
   private_lane :appstore_code_signing do |options|
@@ -402,7 +404,8 @@ import "./ScreenshotFastfile"
                        "org.wordpress.WordPressDraftAction",
                        "org.wordpress.WordPressTodayWidget",
                        "org.wordpress.WordPressNotificationServiceExtension",
-                       "org.wordpress.WordPressNotificationContentExtension"])
+                       "org.wordpress.WordPressNotificationContentExtension",
+                       "org.wordpress.WordPressAllTimeWidget"])
   end
 
 ########################################################################
