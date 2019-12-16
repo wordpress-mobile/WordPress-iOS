@@ -113,7 +113,7 @@
                                         <constraint firstAttribute="trailing" secondItem="xSh-vj-Klr" secondAttribute="trailing" constant="12" id="tGs-JQ-dWv"/>
                                     </constraints>
                                 </view>
-                                <blurEffect style="systemMaterialDark"/>
+                                <blurEffect style="dark"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
