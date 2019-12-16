@@ -171,11 +171,19 @@ final class SiteAssemblyContentView: UIView {
         self.statusMessageRotatingView = {
             //The rotating message view will automatically use the localized string based
             //on the message
+
             let statusMessages = [
-                "Grabbing site URL",
-                "Adding site features",
-                "Setting up theme",
-                "Creating dashboard"
+                NSLocalizedString("Grabbing site URL",
+                                  comment: "User-facing string, presented to reflect that site assembly is underway."),
+
+                NSLocalizedString("Adding site features",
+                                  comment: "User-facing string, presented to reflect that site assembly is underway."),
+
+                NSLocalizedString("Setting up theme",
+                                  comment: "User-facing string, presented to reflect that site assembly is underway."),
+
+                NSLocalizedString("Creating dashboard",
+                                  comment: "User-facing string, presented to reflect that site assembly is underway."),
             ]
 
             let icon: UIImage = {
