@@ -279,7 +279,7 @@ import WordPressShared.WPStyleGuide
     // MARK: - Refresh Helpers
     fileprivate func refreshInterface() {
         refreshPlaceholder()
-        refreshReplyButton()
+        enableRefreshButtonIfNeeded()
         refreshSizeIfNeeded()
         refreshScrollPosition()
     }
@@ -299,7 +299,7 @@ import WordPressShared.WPStyleGuide
         placeholderLabel.isHidden = !textView.text.isEmpty
     }
 
-    fileprivate func refreshReplyButton() {
+    private func enableRefreshButtonIfNeeded() {
         let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
         let isEnabled = self.textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
 
