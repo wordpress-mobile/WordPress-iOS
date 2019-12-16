@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.8.10-beta-3'
+    pod 'WordPressShared', '1.8.10'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -176,7 +176,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.5-beta.4'
+    pod 'WordPressAuthenticator', '~> 1.10.5'
     # pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/login-voiceover-enhancements'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
