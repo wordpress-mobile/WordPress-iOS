@@ -358,6 +358,9 @@
                                                 <state key="normal" title="Reblog">
                                                     <color key="titleShadowColor" red="0.50196078431372548" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="didTapReblogButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="ulr-3q-g0U"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XmB-eN-d59" customClass="PostMetaButton">
                                                 <rect key="frame" x="256" y="13" width="32" height="24"/>

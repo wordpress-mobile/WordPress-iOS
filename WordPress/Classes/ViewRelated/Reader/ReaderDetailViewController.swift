@@ -1287,6 +1287,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         })
     }
 
+    @IBAction func didTapReblogButton(_ sender: Any) {
+        guard let post = self.post else {
+            return
+        }
+        ReaderReblogAction().execute(readerPost: post, origin: self)
+    }
 
     @objc func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
         if gesture.state != .ended {
