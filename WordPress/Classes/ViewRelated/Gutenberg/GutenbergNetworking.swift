@@ -56,12 +56,6 @@ struct GutenbergNetworkRequest {
         }
     }
 
-    func nsError(from error: Error, response: HTTPURLResponse?) -> NSError {
-        let errorCode = response?.statusCode ?? URLError.Code.unknown.rawValue
-        let code = URLError.Code(rawValue: errorCode)
-        return URLError(code, userInfo: [NSLocalizedDescriptionKey: error.localizedDescription]) as NSError
-    }
-
     private var selfHostedPath: String {
         let removedEditContext = path.replacingOccurrences(of: "context=edit", with: "context=view")
         return "wp-json\(removedEditContext)"
