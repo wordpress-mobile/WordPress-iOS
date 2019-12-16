@@ -13,6 +13,16 @@ struct ActivityDateFormatting {
         return formatter
     }
 
+    static func longDateFormatterWithTime(for site: JetpackSiteRef,
+                                            managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .short
+        formatter.timeZone = timeZone(for: site)
+
+        return formatter
+    }
+
     static func longDateFormatterWithoutTime(for site: JetpackSiteRef,
                                              managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) -> DateFormatter {
         let formatter = DateFormatter()

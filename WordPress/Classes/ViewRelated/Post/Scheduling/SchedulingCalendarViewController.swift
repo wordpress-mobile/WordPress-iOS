@@ -8,10 +8,16 @@ protocol DateCoordinatorHandler: class {
 class DateCoordinator {
 
     var date: Date?
+    let timeZone: TimeZone
+    let dateFormatter: DateFormatter
+    let dateTimeFormatter: DateFormatter
     let updated: (Date?) -> Void
 
-    init(date: Date?, updated: @escaping (Date?) -> Void) {
+    init(date: Date?, timeZone: TimeZone, dateFormatter: DateFormatter, dateTimeFormatter: DateFormatter, updated: @escaping (Date?) -> Void) {
         self.date = date
+        self.timeZone = timeZone
+        self.dateFormatter = dateFormatter
+        self.dateTimeFormatter = dateTimeFormatter
         self.updated = updated
     }
 }
@@ -39,7 +45,7 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
                 newDate = Calendar.current.date(bySettingHour: components.hour ?? 0, minute: components.minute ?? 0, second: components.second ?? 0, of: newDate) ?? newDate
             }
             self?.coordinator?.date = newDate
-            self?.chosenValueRow.detailLabel.text = date.longString()
+            self?.chosenValueRow.detailLabel.text = self?.coordinator?.dateFormatter.string(from: date)
         }
 
         return calendarMonthView
@@ -154,6 +160,7 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .time
+        datePicker.timeZone = coordinator?.timeZone
         datePicker.addTarget(self, action: #selector(timePickerChanged(_:)), for: .valueChanged)
         if let date = coordinator?.date {
             datePicker.date = date
@@ -164,7 +171,7 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
     override func viewDidLoad() {
         super.viewDidLoad()
         chosenValueRow.titleLabel.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
-        chosenValueRow.detailLabel.text = datePicker.date.longStringWithTime()
+        chosenValueRow.detailLabel.text = coordinator?.dateTimeFormatter.string(from: datePicker.date)
         let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
 
         setup(topView: chosenValueRow, pickerView: datePicker)
@@ -174,7 +181,7 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
 
     // MARK: Change Selectors
     @objc func timePickerChanged(_ sender: Any) {
-        chosenValueRow.detailLabel.text = datePicker.date.longStringWithTime()
+        chosenValueRow.detailLabel.text = coordinator?.dateTimeFormatter.string(from: datePicker.date)
         coordinator?.date = datePicker.date
     }
 

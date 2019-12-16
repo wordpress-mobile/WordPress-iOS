@@ -15,10 +15,13 @@ struct PublishSettingsViewModel {
     }
 
     private(set) var state: State
-    let timeZone: OffsetTimeZone?
+    let timeZone: TimeZone
     let title: String?
 
     private let post: AbstractPost
+
+    let dateFormatter: DateFormatter
+    let dateTimeFormatter: DateFormatter
 
     init(post: AbstractPost) {
         if let dateCreated = post.dateCreated {
@@ -31,11 +34,11 @@ struct PublishSettingsViewModel {
 
         title = post.postTitle
 
-        if let gmtOffset = post.blog.settings?.gmtOffset {
-            timeZone = OffsetTimeZone(offset: gmtOffset.floatValue)
-        } else {
-            timeZone = nil
-        }
+        let jetpackSiteRef = JetpackSiteRef(blog: post.blog)!
+        timeZone = ActivityDateFormatting.timeZone(for: jetpackSiteRef)
+
+        dateFormatter = ActivityDateFormatting.longDateFormatterWithoutTime(for: jetpackSiteRef)
+        dateTimeFormatter = ActivityDateFormatting.longDateFormatterWithTime(for: jetpackSiteRef)
     }
 
     var cells: [PublishSettingsCell] {
@@ -144,9 +147,15 @@ private struct DateAndTimeRow: ImmuTableRow {
         let rows: [ImmuTableRow] = viewModel.cells.map { cell in
             switch cell {
             case .dateTime:
+                let detailString: String
+                if let date = viewModel.date {
+                    detailString = viewModel.dateTimeFormatter.string(from: date)
+                } else {
+                    detailString = NSLocalizedString("Immediately", comment: "Undated post time label")
+                }
                 return DateAndTimeRow(
                     title: NSLocalizedString("Date and Time", comment: "Date and Time"),
-                    detail: viewModel.date?.longStringWithTime() ?? NSLocalizedString("Immediately", comment: "Undated post time label"),
+                    detail: detailString,
                     accessibilityIdentifier: "Date and Time Row",
                     action: presenter.present(dateTimeCalendarViewController(with: viewModel))
                 )
@@ -156,9 +165,18 @@ private struct DateAndTimeRow: ImmuTableRow {
         let footerText: String?
 
         if let date = viewModel.date {
-            let publishedOnString = date.longStringWithTime()
-            let offsetLabel = viewModel.timeZone?.label ?? NSLocalizedString("Unknown UTC Offset", comment: "Unknown UTC offset label")
-            footerText = String.localizedStringWithFormat("Post will be published on %@ in your site timezone (%@)", publishedOnString, offsetLabel)
+            let publishedOnString = viewModel.dateTimeFormatter.string(from: date)
+
+            let nameStyle: NSTimeZone.NameStyle = viewModel.timeZone.isDaylightSavingTime(for: date) ? .daylightSaving : .standard
+            let timeZoneName = viewModel.timeZone.localizedName(for: nameStyle, locale: Locale.current)
+            let offsetLabel = timeZoneName ?? NSLocalizedString("Unknown Time Zone", comment: "Unknown Time Zone label")
+
+            switch viewModel.state {
+            case .scheduled, .immediately:
+                footerText = String.localizedStringWithFormat("Post will be published on %@ in your site timezone (%@ / %@)", publishedOnString, offsetLabel)
+            case .published:
+                footerText = String.localizedStringWithFormat("Post was published on %@ in your site timezone (%@ / %@)", publishedOnString, offsetLabel)
+            }
         } else {
             footerText = nil
         }
@@ -173,7 +191,7 @@ private struct DateAndTimeRow: ImmuTableRow {
         return { [weak self] row in
 
             let schedulingCalendarViewController = SchedulingCalendarViewController()
-            schedulingCalendarViewController.coordinator = DateCoordinator(date: model.date) { [weak self] date in
+            schedulingCalendarViewController.coordinator = DateCoordinator(date: model.date, timeZone: model.timeZone, dateFormatter: model.dateFormatter, dateTimeFormatter: model.dateTimeFormatter) { [weak self] date in
                 self?.viewModel.setDate(date)
                 NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
             }
