@@ -295,25 +295,44 @@ class PostCoordinator: NSObject {
             return
         }
 
+        let mediaLink = media.link
         let mediaUploadID = media.uploadID
         let gutenbergMediaUploadID = media.gutenbergUploadID
         if media.remoteStatus == .failed {
             return
         }
+        var gutenbergProcessors = [Processor]()
+        var aztecProcessors = [Processor]()
+
         if media.mediaType == .image {
-            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
-            postContent = imgPostUploadProcessor.process(postContent)
             let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-            postContent = gutenbergImgPostUploadProcessor.process(postContent)
+            gutenbergProcessors.append(gutenbergImgPostUploadProcessor)
+
+            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr, mediaLink: mediaLink)
+            gutenbergProcessors.append(gutenbergGalleryPostUploadProcessor)
+
+            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
+            aztecProcessors.append(imgPostUploadProcessor)
         } else if media.mediaType == .video {
-            let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
-            postContent = videoPostUploadProcessor.process(postContent)
             let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-            postContent = gutenbergVideoPostUploadProcessor.process(postContent)
+            gutenbergProcessors.append(gutenbergVideoPostUploadProcessor)
+
+            let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
+            aztecProcessors.append(videoPostUploadProcessor)
         } else if let remoteURL = URL(string: remoteURLStr) {
             let documentTitle = remoteURL.lastPathComponent
             let documentUploadProcessor = DocumentUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, title: documentTitle)
-            postContent = documentUploadProcessor.process(postContent)
+            aztecProcessors.append(documentUploadProcessor)
+        }
+
+        // Gutenberg processors need to run first because they are more specific/and target only content inside specific blocks
+        postContent = gutenbergProcessors.reduce(postContent) { (content, processor) -> String in
+            return processor.process(content)
+        }
+
+        // Aztec processors are next because they are more generic and only worried about HTML tags
+        postContent = aztecProcessors.reduce(postContent) { (content, processor) -> String in
+            return processor.process(content)
         }
 
         post.content = postContent
