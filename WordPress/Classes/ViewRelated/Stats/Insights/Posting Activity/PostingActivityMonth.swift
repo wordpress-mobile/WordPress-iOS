@@ -156,6 +156,8 @@ private extension PostingActivityMonth {
 ///
 private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
 
+    private var events = [PostingStreakEvent]()
+
     override var accessibilityFrameInContainerSpace: CGRect {
         get {
             (accessibilityContainer as? UIView)?.bounds ?? CGRect.zero
@@ -180,5 +182,7 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
         } else {
             accessibilityLabel = nil
         }
+
+        self.events = (events ?? [PostingStreakEvent]()).filter { $0.postCount > 0 }
     }
 }
