@@ -338,6 +338,7 @@
 		31C9F82E1A2368A2008BB945 /* BlogDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C9F82D1A2368A2008BB945 /* BlogDetailHeaderView.m */; };
 		31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */; };
 		321E292623A5F10900588610 /* FullScreenCommentReplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328CEC5D23A532BA00A6899E /* FullScreenCommentReplyViewController.swift */; };
+		325D3B3D23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325D3B3C23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift */; };
 		32CA6EC02390C61F00B51347 /* PostListEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CA6EBF2390C61F00B51347 /* PostListEditorPresenter.swift */; };
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
@@ -2511,6 +2512,7 @@
 		31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+Suggestions.m"; sourceTree = "<group>"; };
 		31FA16CC1A49B3C0003E1887 /* WordPress 25.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 25.xcdatamodel"; sourceTree = "<group>"; };
 		32282CF82390B614003378A7 /* WordPress 94.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 94.xcdatamodel"; sourceTree = "<group>"; };
+		325D3B3C23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewControllerTests.swift; sourceTree = "<group>"; };
 		328CEC5D23A532BA00A6899E /* FullScreenCommentReplyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewController.swift; sourceTree = "<group>"; };
 		32A29A16236BC8BC009488C2 /* WordPress 93.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 93.xcdatamodel"; sourceTree = "<group>"; };
 		32CA6EBF2390C61F00B51347 /* PostListEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListEditorPresenter.swift; sourceTree = "<group>"; };
@@ -5443,6 +5445,22 @@
 				17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */,
 			);
 			path = Me;
+			sourceTree = "<group>";
+		};
+		325D3B3A23A8372500766DF6 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				325D3B3B23A8373E00766DF6 /* Controllers */,
+			);
+			path = Comments;
+			sourceTree = "<group>";
+		};
+		325D3B3B23A8373E00766DF6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				325D3B3C23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		3792259E12F6DBCC00F2176A /* Stats */ = {
@@ -8495,6 +8513,7 @@
 		BE20F5E11B2F738E0020694C /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				325D3B3A23A8372500766DF6 /* Comments */,
 				BEC8A3FD1B4BAA08001CB8C3 /* Blog */,
 				E1B921BA1C0ED481003EA3CB /* Cells */,
 				8B7623352384372200AB3EE7 /* Pages */,
@@ -12544,6 +12563,7 @@
 				E11DF3E420C97F0A00C0B07C /* NotificationCenterObserveOnceTests.swift in Sources */,
 				5960967F1CF7959300848496 /* PostTests.swift in Sources */,
 				E6843840221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift in Sources */,
+				325D3B3D23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift in Sources */,
 				57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */,
 				D81C2F5C20F872C2002AE1F1 /* ReplyToCommentActionTests.swift in Sources */,
 				D848CC1720FF38EA00A9038F /* FormattableCommentRangeTests.swift in Sources */,
