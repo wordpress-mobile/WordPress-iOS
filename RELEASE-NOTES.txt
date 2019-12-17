@@ -1,5 +1,6 @@
 14.0
 -----
+* Fixed a bug that displayed incorrect time stamps for scheduled posts.
  
 13.9
 -----
