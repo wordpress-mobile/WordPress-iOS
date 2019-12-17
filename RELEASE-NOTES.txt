@@ -1,6 +1,7 @@
 14.0
 -----
- 
+* Stats: Updated default cards for the Insights view.
+
 13.9
 -----
 * Stats: added a Today widget to display All-Time stats.
