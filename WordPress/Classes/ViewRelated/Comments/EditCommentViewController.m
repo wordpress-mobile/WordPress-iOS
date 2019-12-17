@@ -102,14 +102,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
                                                                             action:@selector(btnCancelPressed)];
 }
 
-- (void)showDoneBarButton
-{
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
-                                                                             style:[WPStyleGuide barButtonStyleForDone]
-                                                                            target:self
-                                                                            action:@selector(btnDonePressed)];
-}
-
 - (void)showSaveBarButton
 {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
@@ -167,23 +159,9 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 #pragma mark - Text View Delegate Methods
 
-- (void)textViewDidBeginEditing:(UITextView *)aTextView
-{
-    if (IS_IPAD == NO) {
-        [self showDoneBarButton];
-    }
-}
-
 - (void)textViewDidChange:(UITextView *)textView
 {
     [self enableSaveIfNeeded];
-}
-
-- (void)textViewDidEndEditing:(UITextView *)aTextView
-{
-    if (IS_IPAD == NO) {
-        [self showCancelBarButton];
-    }
 }
 
 #pragma mark - Button Delegates
@@ -209,11 +187,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     alertController.popoverPresentationController.barButtonItem = self.navigationItem.leftBarButtonItem;
     [self presentViewController:alertController animated:YES completion:nil];
 
-}
-
-- (void)btnDonePressed
-{
-    [self.textView resignFirstResponder];
 }
 
 - (void)btnSavePressed
