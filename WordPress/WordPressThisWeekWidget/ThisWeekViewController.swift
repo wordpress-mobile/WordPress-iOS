@@ -258,15 +258,16 @@ private extension ThisWeekViewController {
             return UITableViewCell()
         }
 
-        let day: ThisWeekWidgetDay? = {
-            if let statsValues = statsValues,
-                indexPath.row < statsValues.days.endIndex {
-                return statsValues.days[indexPath.row]
-            }
-            return nil
-        }()
+        guard let statsValues = statsValues,
+            indexPath.row < statsValues.days.endIndex else {
+            cell.configure()
+            return cell
+        }
 
-        cell.configure(day: day, isToday: indexPath.row == 0)
+        cell.configure(day: statsValues.days[indexPath.row],
+                       isToday: indexPath.row == 0,
+                       hideSeparator: indexPath.row == (numberOfRowsToDisplay() - 1))
+
         return cell
     }
 
@@ -301,6 +302,7 @@ private extension ThisWeekViewController {
         }
 
         let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        print("🔴 rowHeight: ", rowHeight)
         height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
 
         return height

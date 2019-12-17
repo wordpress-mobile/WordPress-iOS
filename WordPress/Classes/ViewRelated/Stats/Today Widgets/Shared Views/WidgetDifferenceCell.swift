@@ -31,8 +31,9 @@ class WidgetDifferenceCell: UITableViewCell {
         configureColors()
     }
 
-    func configure(day: ThisWeekWidgetDay?, isToday: Bool) {
+    func configure(day: ThisWeekWidgetDay? = nil, isToday: Bool = false, hideSeparator: Bool = false) {
         configureLabels(day: day, isToday: isToday)
+        separatorLine.isHidden = hideSeparator
     }
 
 }
