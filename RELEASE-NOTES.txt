@@ -1,3 +1,7 @@
+14.0
+-----
+* Fixed a bug that displayed incorrect time stamps for scheduled posts.
+
 13.9
 -----
 * Stats: added a Today widget to display All-Time stats.
@@ -7,7 +11,6 @@
 * Block Editor: Add support for Video block settings.
 
 * Quick Start: fixed issue that caused 'Follow other sites' tour to not be marked complete.
-* Fixed a bug that displayed incorrect time stamps for scheduled posts.
  
 13.8
 -----
