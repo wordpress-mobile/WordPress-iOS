@@ -12,6 +12,9 @@ extension WPStyleGuide {
         searchBar.layer.borderColor = UIColor.neutral(.shade10).cgColor
         searchBar.layer.borderWidth = 1.0
         searchBar.returnKeyType = .done
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = .basicBackground
+        }
     }
 
     @objc public class func configureSearchBarAppearance() {
