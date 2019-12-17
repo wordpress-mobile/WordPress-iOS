@@ -1,11 +1,3 @@
-//
-//  DateFormatters.swift
-//  WordPress
-//
-//  Created by Brandon Titus on 12/16/19.
-//  Copyright © 2019 WordPress. All rights reserved.
-//
-
 import Foundation
 
 struct SiteDateFormatters {
