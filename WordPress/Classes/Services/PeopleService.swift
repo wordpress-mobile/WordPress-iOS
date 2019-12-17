@@ -5,11 +5,11 @@ import WordPressKit
 /// Service providing access to the People Management WordPress.com API.
 ///
 struct PeopleService {
-    /// MARK: - Public Properties
+    // MARK: - Public Properties
     ///
     let siteID: Int
 
-    /// MARK: - Private Properties
+    // MARK: - Private Properties
     ///
     fileprivate let context: NSManagedObjectContext
     fileprivate let remote: PeopleServiceRemote

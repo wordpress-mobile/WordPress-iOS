@@ -176,8 +176,8 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.5'
-    # pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/login-voiceover-enhancements'
+    pod 'WordPressAuthenticator', '~> 1.10.6-beta.1'
+    # pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/wp-13086-self-hosted-voiceover'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     aztec

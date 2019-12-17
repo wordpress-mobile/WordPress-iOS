@@ -15,12 +15,15 @@ struct PublishSettingsViewModel {
     }
 
     private(set) var state: State
-    let timeZone: OffsetTimeZone?
+    let timeZone: TimeZone
     let title: String?
 
     private let post: AbstractPost
 
-    init(post: AbstractPost) {
+    let dateFormatter: DateFormatter
+    let dateTimeFormatter: DateFormatter
+
+    init(post: AbstractPost, context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         if let dateCreated = post.dateCreated {
             state = post.hasFuturePublishDate() ? .scheduled(dateCreated) : .published(dateCreated)
         } else {
@@ -31,11 +34,11 @@ struct PublishSettingsViewModel {
 
         title = post.postTitle
 
-        if let gmtOffset = post.blog.settings?.gmtOffset {
-            timeZone = OffsetTimeZone(offset: gmtOffset.floatValue)
-        } else {
-            timeZone = nil
-        }
+        dateFormatter = SiteDateFormatters.dateFormatter(for: post.blog, dateStyle: .long, timeStyle: .none, managedObjectContext: context)
+        dateTimeFormatter = SiteDateFormatters.dateFormatter(for: post.blog, dateStyle: .long, timeStyle: .short, managedObjectContext: context)
+
+        let blogService = BlogService(managedObjectContext: context)
+        timeZone = blogService.timeZone(for: post.blog)
     }
 
     var cells: [PublishSettingsCell] {
@@ -144,9 +147,15 @@ private struct DateAndTimeRow: ImmuTableRow {
         let rows: [ImmuTableRow] = viewModel.cells.map { cell in
             switch cell {
             case .dateTime:
+                let detailString: String
+                if let date = viewModel.date {
+                    detailString = viewModel.dateTimeFormatter.string(from: date)
+                } else {
+                    detailString = NSLocalizedString("Immediately", comment: "Undated post time label")
+                }
                 return DateAndTimeRow(
                     title: NSLocalizedString("Date and Time", comment: "Date and Time"),
-                    detail: viewModel.date?.longStringWithTime() ?? NSLocalizedString("Immediately", comment: "Undated post time label"),
+                    detail: detailString,
                     accessibilityIdentifier: "Date and Time Row",
                     action: presenter.present(dateTimeCalendarViewController(with: viewModel))
                 )
@@ -156,9 +165,18 @@ private struct DateAndTimeRow: ImmuTableRow {
         let footerText: String?
 
         if let date = viewModel.date {
-            let publishedOnString = date.longStringWithTime()
-            let offsetLabel = viewModel.timeZone?.label ?? NSLocalizedString("Unknown UTC Offset", comment: "Unknown UTC offset label")
-            footerText = String.localizedStringWithFormat("Post will be published on %@ in your site timezone (%@)", publishedOnString, offsetLabel)
+            let publishedOnString = viewModel.dateTimeFormatter.string(from: date)
+
+            let offsetInHours = viewModel.timeZone.secondsFromGMT(for: date) / 60 / 60
+            let offsetTimeZone = OffsetTimeZone(offset: Float(offsetInHours))
+            let offsetLabel = offsetTimeZone.label
+
+            switch viewModel.state {
+            case .scheduled, .immediately:
+                footerText = String.localizedStringWithFormat("Post will be published on %@ in your site timezone (%@)", publishedOnString, offsetLabel)
+            case .published:
+                footerText = String.localizedStringWithFormat("Post was published on %@ in your site timezone (%@)", publishedOnString, offsetLabel)
+            }
         } else {
             footerText = nil
         }
@@ -173,7 +191,7 @@ private struct DateAndTimeRow: ImmuTableRow {
         return { [weak self] row in
 
             let schedulingCalendarViewController = SchedulingCalendarViewController()
-            schedulingCalendarViewController.coordinator = DateCoordinator(date: model.date) { [weak self] date in
+            schedulingCalendarViewController.coordinator = DateCoordinator(date: model.date, timeZone: model.timeZone, dateFormatter: model.dateFormatter, dateTimeFormatter: model.dateTimeFormatter) { [weak self] date in
                 self?.viewModel.setDate(date)
                 NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
             }
