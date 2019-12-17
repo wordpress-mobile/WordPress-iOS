@@ -39,11 +39,10 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         calendarMonthView.updated = { [weak self] date in
             var newDate = date
 
-            // If we have an existing time value, we want to set it to the calendar's selected date (which starts at midnight)
-            if let existingDate = self?.coordinator?.date {
-                let components = Calendar.current.dateComponents([.hour, .minute], from: existingDate)
-                newDate = Calendar.current.date(bySettingHour: components.hour ?? 0, minute: components.minute ?? 0, second: components.second ?? 0, of: newDate) ?? newDate
-            }
+            // Since the date from the calendar will not include hours and minutes, replace with the original date (either the current, or previously entered date)
+            let selectedComponents = Calendar.current.dateComponents([.hour, .minute], from: selectedDate)
+            newDate = Calendar.current.date(bySettingHour: selectedComponents.hour ?? 0, minute: selectedComponents.minute ?? 0, second: 0, of: newDate) ?? newDate
+
             self?.coordinator?.date = newDate
             self?.chosenValueRow.detailLabel.text = self?.coordinator?.dateFormatter.string(from: date)
         }
