@@ -202,22 +202,22 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
     }
 
     override func accessibilityDecrement() {
-        select(index: rotatedIndex(forward: false))
+        rotateAccessibilityValue(forward: false)
     }
 
     override func accessibilityIncrement() {
-        select(index: rotatedIndex(forward: true))
+        rotateAccessibilityValue(forward: true)
     }
 
-    private func select(index: Int) {
-        self.selectedIndex = index
+    private func rotateAccessibilityValue(forward: Bool) {
+        selectedIndex = rotatedIndex(forward: forward)
 
         guard events.isEmpty == false else {
             accessibilityValue = Strings.noPosts
             return
         }
 
-        guard let event = events[safe: index] else {
+        guard let event = events[safe: selectedIndex] else {
             accessibilityValue = nil
             return
         }
