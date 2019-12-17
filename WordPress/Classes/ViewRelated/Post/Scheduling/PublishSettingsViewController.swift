@@ -167,9 +167,9 @@ private struct DateAndTimeRow: ImmuTableRow {
         if let date = viewModel.date {
             let publishedOnString = viewModel.dateTimeFormatter.string(from: date)
 
-            let nameStyle: NSTimeZone.NameStyle = viewModel.timeZone.isDaylightSavingTime(for: date) ? .daylightSaving : .standard
-            let timeZoneName = viewModel.timeZone.localizedName(for: nameStyle, locale: Locale.current)
-            let offsetLabel = timeZoneName ?? NSLocalizedString("Unknown Time Zone", comment: "Unknown Time Zone label")
+            let offsetInHours = viewModel.timeZone.secondsFromGMT(for: date) / 60 / 60
+            let offsetTimeZone = OffsetTimeZone(offset: Float(offsetInHours))
+            let offsetLabel = offsetTimeZone.label
 
             switch viewModel.state {
             case .scheduled, .immediately:
