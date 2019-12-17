@@ -112,12 +112,12 @@ fileprivate extension Post {
                 citation = ReblogFormatter.hyperLink(url: permaLink, text: title)
             }
             content = self.blog.isGutenbergEnabled ? ReblogFormatter.gutenbergQuote(text: summary, citation: citation) :
-                ReblogFormatter.classicEditorQuote(text: summary, citation: citation)
+                ReblogFormatter.aztecQuote(text: summary, citation: citation)
         }
         // insert the image on top of the content
         if let image = readerPost.featuredImage {
             content = self.blog.isGutenbergEnabled ? ReblogFormatter.gutenbergImage(image: image) + content :
-                ReblogFormatter.classicEditorImage(image: image) + content
+                ReblogFormatter.aztecImage(image: image) + content
         }
         self.content = content
     }

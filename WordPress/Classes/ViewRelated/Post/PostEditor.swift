@@ -109,7 +109,7 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     var replaceEditor: (EditorViewController, EditorViewController) -> () { get }
 
     var autosaver: Autosaver { get set }
-    /// wether the post comes from a reblog action or not
+    /// true if the post is the result of a reblog
     var postIsReblogged: Bool { get set }
 }
 

@@ -1,4 +1,4 @@
-/// Contains methods to format post reblog content for either Gutenberg or Classic Editor
+/// Contains methods to format post reblog content for either Gutenberg (block) editor or Aztec (classic) editor
 struct ReblogFormatter {
 
     static func gutenbergQuote(text: String, citation: String? = nil) -> String {
@@ -12,12 +12,12 @@ struct ReblogFormatter {
     }
 
 
-    static func classicEditorQuote(text: String, citation: String? = nil) -> String {
+    static func aztecQuote(text: String, citation: String? = nil) -> String {
         let quote = quoteWithCitation(text: text, citation: citation)
         return embedInQuote(html: quote)
     }
 
-    static func classicEditorImage(image: String) -> String {
+    static func aztecImage(image: String) -> String {
         let imageInHtml = htmlImage(image: image)
         return embedInParagraph(html: imageInHtml)
     }
@@ -36,7 +36,7 @@ extension ReblogFormatter {
     }
 }
 
-// MARK: - Standard HTML formatter helpers
+// MARK: - Aztec formatter helpers
 extension ReblogFormatter {
 
     static func hyperLink(url: String, text: String) -> String {

@@ -88,7 +88,7 @@ class ReaderReblogActionTests: ReblogTestCase {
         let action = ReaderReblogAction(blogService: blogService!, presenter: presenter)
         let controller = UIViewController()
         // When
-        action.execute(readerPost: readerPost!, origin: controller, originType: .list)
+        action.execute(readerPost: readerPost!, origin: controller)
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {
