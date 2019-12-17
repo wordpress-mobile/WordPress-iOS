@@ -3,22 +3,15 @@ import XCTest
 @testable import WordPress
 
 class FullScreenCommentReplyViewControllerTests: XCTestCase {
-    private var controller: FullScreenCommentReplyViewController?
-    private var window: UIWindow?
+    private var controller: FullScreenCommentReplyViewController!
+    private var window: UIWindow!
 
     override func setUp() {
-        self.controller = FullScreenCommentReplyViewController.newEdit()
-        self.window = UIWindow()
+        controller = FullScreenCommentReplyViewController.newEdit()
+        window = UIWindow()
 
-        guard let controller = self.controller else {
-            XCTFail("Test controller did not load correctly")
-            return
-        }
-
-        guard let window = self.window else {
-            XCTFail("Test window did not load correctly")
-            return
-        }
+        XCTAssertNotNil(controller)
+        XCTAssertNotNil(window)
 
         loadView(forController: controller, inWindow: window)
     }
@@ -40,6 +33,7 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
             return
         }
 
+
         let content = "Test Content"
         controller.content = content
 
@@ -48,14 +42,9 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
 
     }
 
-    /// Tests the button state becomes correctly disabled
+    /// Tests the button state becomes correctly enabled
     /// as the `textView` content changes
     func testReplyButtonStateEnables() {
-        guard let controller = self.controller else {
-            XCTFail("Controller is nil")
-            return
-        }
-
         controller.textView.text = "Test - State Enabled"
         UIView.performWithoutAnimation {
             controller.contentDidChange()
@@ -66,11 +55,6 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
     /// Tests the button state becomes correctly disabled
     /// as the `textView` content changes
     func testReplyButtonStateDisables() {
-        guard let controller = self.controller else {
-            XCTFail("Controller is nil")
-            return
-        }
-
         controller.textView.text = ""
         UIView.performWithoutAnimation {
             controller.contentDidChange()
@@ -82,11 +66,6 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
     /// Tests the onExitFullscreen callback is correctly called when pressing the cancel button
     /// also validates the arguments being triggered are correct
     func testExitCallbackCalledWhenCancelPressed() {
-        guard let controller = self.controller else {
-            XCTFail("Controller is nil")
-            return
-        }
-
         let testContent = "Test - Cancel"
         let callbackExpectation = expectation(description: "onExitFullscreen is called successfully when the cancel button is pressed")
 
@@ -107,11 +86,6 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
     /// Tests the onExitFullscreen callback is correctly called when pressing the save button
     /// also validates the arguments being triggered are correct
     func testExitCallbackCalledWhenSavePressed() {
-        guard let controller = self.controller else {
-            XCTFail("Controller is nil")
-            return
-        }
-
         let testContent = "Test - Save"
         let callbackExpectation = expectation(description: "onExitFullscreen is called successfully when the save button is pressed")
 
