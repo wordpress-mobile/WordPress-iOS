@@ -16,7 +16,7 @@ public func PromptViewController<T: UIViewController>(_ viewController: T) -> UI
 /// the childrenViewController (which *must* implement the Confirmable protocol).
 ///
 private class PromptContainerViewController: UIViewController {
-    // MARK: - Initializers / Deinitializers
+    /// MARK: - Initializers / Deinitializers
 
     deinit {
         stopListeningToProperties(childViewController)

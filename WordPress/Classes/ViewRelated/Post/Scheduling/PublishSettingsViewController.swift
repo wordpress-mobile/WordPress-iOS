@@ -173,9 +173,9 @@ private struct DateAndTimeRow: ImmuTableRow {
 
             switch viewModel.state {
             case .scheduled, .immediately:
-                footerText = String.localizedStringWithFormat("Post will be published on %@ in your site timezone (%@ / %@)", publishedOnString, offsetLabel)
+                footerText = String.localizedStringWithFormat("Post will be published on %@ in your site timezone (%@)", publishedOnString, offsetLabel)
             case .published:
-                footerText = String.localizedStringWithFormat("Post was published on %@ in your site timezone (%@ / %@)", publishedOnString, offsetLabel)
+                footerText = String.localizedStringWithFormat("Post was published on %@ in your site timezone (%@)", publishedOnString, offsetLabel)
             }
         } else {
             footerText = nil
