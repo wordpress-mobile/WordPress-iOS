@@ -167,9 +167,12 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
         super.init(accessibilityContainer: container)
 
         accessibilityTraits = .adjustable
+        isAccessibilityElement = false
     }
 
     func configure(month: Date?, events: [PostingStreakEvent]?) {
+        isAccessibilityElement = month != nil
+
         if let month = month {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMMM yyyy"
