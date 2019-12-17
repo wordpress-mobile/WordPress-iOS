@@ -18,7 +18,7 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
     public var onExitFullscreen: ((Bool, String) -> ())?
 
     /// The save/reply button that is displayed in the rightBarButtonItem position
-    private var replyButton: UIButton!
+    private(set) var replyButton: UIButton!
 
     // MARK: - View Methods
     override func viewDidLoad() {
@@ -40,7 +40,8 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
     // MARK: - UITextViewDelegate
     override func textViewDidBeginEditing(_ textView: UITextView) { }
     override func textViewDidEndEditing(_ textView: UITextView) { }
-    override func textViewDidChange(_ textView: UITextView) {
+
+    override func contentDidChange() {
         enableRefreshButtonIfNeeded()
     }
 
@@ -49,6 +50,7 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
         exitFullscreen(shouldSave: true)
 
     }
+
     @objc func btnExitFullscreenPressed() {
         exitFullscreen(shouldSave: false)
     }
@@ -115,7 +117,7 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
     /// - Parameter animated: Whether or not the state change should be animated
     fileprivate func enableRefreshButtonIfNeeded(animated: Bool = true) {
         let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
-        let isEnabled = textViewText.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
+        let isEnabled = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
 
         if isEnabled == replyButton.isEnabled {
             return
@@ -145,7 +147,7 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
             return
         }
 
-        let updatedText = textViewText ?? ""
+        let updatedText = textView.text ?? ""
 
         completion(shouldSave, updatedText)
     }

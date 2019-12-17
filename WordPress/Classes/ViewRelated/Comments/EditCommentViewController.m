@@ -22,8 +22,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 #pragma mark ==========================================================================================
 
 @interface EditCommentViewController()
-
-@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView *textView;
+@property (readwrite, nonatomic, weak) IBOutlet UITextView     *textView;
 @property (nonatomic, strong) NSString *pristineText;
 @property (nonatomic, assign) CGRect   keyboardFrame;
 
@@ -71,12 +70,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     return [[[self class] alloc] initWithNibName:xibName bundle:nil];
 }
 
-#pragma mark - Getters
-- (NSString *)textViewText
-{
-    return self.textView.text;
-}
-
 #pragma mark - Lifecycle
 
 - (void)viewDidLoad
@@ -121,6 +114,11 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     [self.textView resignFirstResponder];
 }
 
+#pragma mark - Public
+- (void)contentDidChange
+{
+    [self enableSaveIfNeeded];
+}
 
 #pragma mark - View Helpers
 
@@ -205,7 +203,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self enableSaveIfNeeded];
+    [self contentDidChange];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView
