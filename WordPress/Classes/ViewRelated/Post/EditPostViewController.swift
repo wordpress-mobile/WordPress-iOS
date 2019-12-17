@@ -173,6 +173,7 @@ class EditPostViewController: UIViewController {
             }
             if self.openWithBlogSelector {
                 editor.displayBlogSelector()
+                // do not reopen blog selector when switching between Gutenberg and Classic
                 self.openWithBlogSelector = false
 
             }

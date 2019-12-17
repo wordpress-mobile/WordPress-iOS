@@ -2,20 +2,24 @@
 struct ReblogFormatter {
 
     static func gutenbergQuote(text: String, citation: String? = nil) -> String {
-        return embedInWpQuote(html: quoteWithCitation(text: text, citation: citation))
+        let quote = quoteWithCitation(text: text, citation: citation)
+        return embedInWpQuote(html: quote)
     }
 
     static func gutenbergImage(image: String) -> String {
-        return embedInWpParagraph(html: htmlImage(image: image))
+        let imageInHtml = htmlImage(image: image)
+        return embedInWpParagraph(html: imageInHtml)
     }
 
 
     static func classicEditorQuote(text: String, citation: String? = nil) -> String {
-        return embedInQuote(html: quoteWithCitation(text: text, citation: citation))
+        let quote = quoteWithCitation(text: text, citation: citation)
+        return embedInQuote(html: quote)
     }
 
     static func classicEditorImage(image: String) -> String {
-        return embedInParagraph(html: htmlImage(image: image))
+        let imageInHtml = htmlImage(image: image)
+        return embedInParagraph(html: imageInHtml)
     }
 }
 

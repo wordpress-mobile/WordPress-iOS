@@ -1,4 +1,4 @@
-/// Presents the approptiate scene, depending on the number of available sites
+/// Presents the approptiate reblog scene, depending on the number of available sites
 class ReblogPresenter {
     private let postService: PostService
 

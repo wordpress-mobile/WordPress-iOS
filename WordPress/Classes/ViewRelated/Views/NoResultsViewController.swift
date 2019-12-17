@@ -59,9 +59,9 @@ import Reachability
 
     //For No results on connection issue
     private let reachability = Reachability.forInternetConnection()
-    /// sets an additional/alternate handler for the action button that can be injected when the delegate is unavailable
+    /// sets an additional/alternate handler for the action button that can be directly injected
     var actionButtonHandler: (() -> Void)?
-    /// sets an additional/alternate handler for the dismiss button that can be injected when the delegate is unavailable
+    /// sets an additional/alternate handler for the dismiss button that can be directly injected
     var dismissButtonHandler: (() -> Void)?
 
     // MARK: - View
