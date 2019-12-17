@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.8.10-beta-3'
+    pod 'WordPressShared', '1.8.10'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.4'
+    pod 'WordPressKit', '~> 4.5.5'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/apple_2fa_auth'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
@@ -164,7 +164,7 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4.2'
+    pod 'Automattic-Tracks-iOS', '~> 0.4.3'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => '0cc8960098791cfe1b02914b15a662af20b60389'
 
@@ -176,8 +176,8 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.5-beta.3'
-    # pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/login-voiceover-enhancements'
+    pod 'WordPressAuthenticator', '~> 1.10.6-beta.1'
+    # pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/wp-13086-self-hosted-voiceover'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     aztec
