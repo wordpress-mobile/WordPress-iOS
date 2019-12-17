@@ -16,6 +16,30 @@ class PostingActivityMonth: UIView, NibLoadable {
     // Used to adjust the view width when hiding the last stack view.
     private let lastStackViewWidth = CGFloat(14)
 
+    /// The only accessibility element for self.
+    ///
+    /// This is only loaded if accessibility features are turned on.
+    ///
+    /// - SeeAlso: accessibilityElements
+    ///
+    private var accessibilityElement: PostingActivityMonthAccessibilityElement?
+
+    override var accessibilityElements: [Any]? {
+        get {
+            if let elementForSelf = accessibilityElement {
+                return [elementForSelf]
+            }
+
+            let elementForSelf = PostingActivityMonthAccessibilityElement(accessibilityContainer: self)
+            elementForSelf.configure(month: month, events: monthData)
+
+            accessibilityElement = elementForSelf
+
+            return [elementForSelf]
+        }
+        set { }
+    }
+
     // MARK: - Configure
 
     func configure(monthData: [PostingStreakEvent], postingActivityDayDelegate: PostingActivityDayDelegate? = nil) {
@@ -23,12 +47,16 @@ class PostingActivityMonth: UIView, NibLoadable {
         self.postingActivityDayDelegate = postingActivityDayDelegate
         getMonth()
         addDays()
+
+        accessibilityElement?.configure(month: month, events: monthData)
     }
 
     func configureGhost(monthData: [PostingStreakEvent]) {
         self.monthData = monthData
         monthLabel.text = ""
         addDays()
+
+        accessibilityElement?.configure(month: month, events: monthData)
     }
 }
 
@@ -120,4 +148,34 @@ private extension PostingActivityMonth {
         viewWidthConstraint.constant -= viewWidthAdjustment
     }
 
+}
+
+// MARK: - Accessibility
+
+/// An accessibility element for the whole `PostingActivityMonth` UI tree.
+///
+private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
+
+    override var accessibilityFrameInContainerSpace: CGRect {
+        get {
+            (accessibilityContainer as? UIView)?.bounds ?? CGRect.zero
+        }
+        set { }
+    }
+
+    override init(accessibilityContainer container: Any) {
+        super.init(accessibilityContainer: container)
+
+        accessibilityTraits = .adjustable
+    }
+
+    func configure(month: Date?, events: [PostingStreakEvent]?) {
+        if let month = month {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMMM yyyy"
+            accessibilityLabel = formatter.string(from: month)
+        } else {
+            accessibilityLabel = nil
+        }
+    }
 }
