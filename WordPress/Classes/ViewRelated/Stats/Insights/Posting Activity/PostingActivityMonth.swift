@@ -195,6 +195,14 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
         select(index: 0)
     }
 
+    override func accessibilityDecrement() {
+        select(index: rotatedIndex(forward: false))
+    }
+
+    override func accessibilityIncrement() {
+        select(index: rotatedIndex(forward: true))
+    }
+
     private func select(index: Int) {
         self.selectedIndex = index
 
@@ -215,6 +223,24 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
             accessibilityValue = String(format: Strings.dayAndPostsPlural,
                                         monthDayFormatter.string(from: event.date),
                                         event.postCount)
+        }
+    }
+
+    /// Returns the rotated index value of `selectedIndex`.
+    ///
+    private func rotatedIndex(forward: Bool) -> Int {
+        if forward {
+            var index = selectedIndex + 1
+            if index >= events.count {
+                index = 0
+            }
+            return index
+        } else {
+            var index = selectedIndex - 1
+            if index < 0 {
+                index = events.count - 1
+            }
+            return index
         }
     }
 
