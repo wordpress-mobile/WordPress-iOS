@@ -1570,7 +1570,7 @@ extension ReaderDetailViewController: Accessible {
 }
 
 
-/// MARK: - UIViewControllerTransitioningDelegate
+//// MARK: - UIViewControllerTransitioningDelegate
 ////
 extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -1582,7 +1582,7 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
     }
 }
 
-//// MARK: - NoResultsViewControllerDelegate
+/// MARK: - NoResultsViewControllerDelegate
 ///
 extension ReaderDetailViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
