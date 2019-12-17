@@ -23,7 +23,7 @@ struct PublishSettingsViewModel {
     let dateFormatter: DateFormatter
     let dateTimeFormatter: DateFormatter
 
-    init(post: AbstractPost) {
+    init(post: AbstractPost, context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         if let dateCreated = post.dateCreated {
             state = post.hasFuturePublishDate() ? .scheduled(dateCreated) : .published(dateCreated)
         } else {
@@ -34,11 +34,11 @@ struct PublishSettingsViewModel {
 
         title = post.postTitle
 
-        let jetpackSiteRef = JetpackSiteRef(blog: post.blog)!
-        timeZone = ActivityDateFormatting.timeZone(for: jetpackSiteRef)
+        dateFormatter = SiteDateFormatters.dateFormatter(for: post.blog, dateStyle: .long, timeStyle: .none, managedObjectContext: context)
+        dateTimeFormatter = SiteDateFormatters.dateFormatter(for: post.blog, dateStyle: .long, timeStyle: .short, managedObjectContext: context)
 
-        dateFormatter = ActivityDateFormatting.longDateFormatterWithoutTime(for: jetpackSiteRef)
-        dateTimeFormatter = ActivityDateFormatting.longDateFormatterWithTime(for: jetpackSiteRef)
+        let blogService = BlogService(managedObjectContext: context)
+        timeZone = blogService.timeZone(for: post.blog)
     }
 
     var cells: [PublishSettingsCell] {

@@ -30,7 +30,7 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
 
     let chosenValueRow = ChosenValueRow(frame: .zero)
 
-    private lazy var calendarMonthView: CalendarMonthView = {
+    lazy var calendarMonthView: CalendarMonthView = {
         let calendarMonthView = CalendarMonthView(frame: .zero)
         calendarMonthView.translatesAutoresizingMaskIntoConstraints = false
 
