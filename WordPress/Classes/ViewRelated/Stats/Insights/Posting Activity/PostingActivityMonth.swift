@@ -157,6 +157,13 @@ private extension PostingActivityMonth {
 private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
 
     private var events = [PostingStreakEvent]()
+    private var selectedIndex: Int = 0
+
+    private lazy var monthDayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM d"
+        return formatter
+    }()
 
     override var accessibilityFrameInContainerSpace: CGRect {
         get {
@@ -184,5 +191,44 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
         }
 
         self.events = (events ?? [PostingStreakEvent]()).filter { $0.postCount > 0 }
+
+        select(index: 0)
+    }
+
+    private func select(index: Int) {
+        self.selectedIndex = index
+
+        guard events.isEmpty == false else {
+            accessibilityValue = Strings.noPosts
+            return
+        }
+
+        guard let event = events[safe: index] else {
+            accessibilityValue = nil
+            return
+        }
+
+        if event.postCount == 1 {
+            accessibilityValue = String(format: Strings.dayAndPostsSingular,
+                                        monthDayFormatter.string(from: event.date))
+        } else {
+            accessibilityValue = String(format: Strings.dayAndPostsPlural,
+                                        monthDayFormatter.string(from: event.date),
+                                        event.postCount)
+        }
+    }
+
+    private enum Strings {
+        static let noPosts =
+            NSLocalizedString("No posts.",
+                              comment: "Accessibility value for a Stats' Posting Activity Month if there are no posts.")
+        static let dayAndPostsSingular =
+            NSLocalizedString("%@. 1 post.",
+                              comment: "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
+                                + " The first parameter is day (e.g. November 2019).")
+        static let dayAndPostsPlural =
+            NSLocalizedString("%@. %d posts.",
+                              comment: "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
+                                + " The first parameter is day (e.g. November 2019). The second parameter is the number of posts.")
     }
 }
