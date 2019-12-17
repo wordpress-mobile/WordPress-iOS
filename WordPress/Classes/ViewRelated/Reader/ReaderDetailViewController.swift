@@ -1582,7 +1582,7 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
     }
 }
 
-/// MARK: - NoResultsViewControllerDelegate
+//// MARK: - NoResultsViewControllerDelegate
 ///
 extension ReaderDetailViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
