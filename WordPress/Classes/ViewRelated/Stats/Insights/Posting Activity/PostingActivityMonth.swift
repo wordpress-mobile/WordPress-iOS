@@ -157,7 +157,15 @@ private extension PostingActivityMonth {
 private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
 
     private var events = [PostingStreakEvent]()
-    private var selectedIndex: Int = 0
+
+    /// The currently selected index for `event`
+    ///
+    /// This starts at -1 so that when `rotatedIndex(forward:)` is called with `true`, it will
+    /// return with `0`, which is what we want.
+    ///
+    /// - SeeAlso: rotatedIndex(forward:)
+    ///
+    private var selectedIndex: Int = -1
 
     private lazy var monthDayFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -191,8 +199,6 @@ private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
         }
 
         self.events = (events ?? [PostingStreakEvent]()).filter { $0.postCount > 0 }
-
-        select(index: 0)
     }
 
     override func accessibilityDecrement() {
