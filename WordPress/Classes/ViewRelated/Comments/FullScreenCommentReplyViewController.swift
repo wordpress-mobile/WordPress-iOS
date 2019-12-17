@@ -96,6 +96,8 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
                                            target: self,
                                            action: #selector(btnExitFullscreenPressed))
 
+            leftItem.accessibilityLabel = NSLocalizedString("Exit Full Screen",
+                                                            comment: "Accessibility Label for the exit full screen button on the full screen comment reply mode")
             return leftItem
         })()
 
