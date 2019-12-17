@@ -323,7 +323,8 @@ private extension SiteStatsInsightsTableViewController {
 
         let controller = AddInsightTableViewController(insightsDelegate: self,
                                                        insightsShown: insightsToShow.compactMap { $0.statSection })
-        navigationController?.pushViewController(controller, animated: true)
+        let navigationController = UINavigationController(rootViewController: controller)
+        present(navigationController, animated: true, completion: nil)
     }
 
     func moveInsightUp(_ insight: InsightType) {
