@@ -337,7 +337,7 @@ private extension AllTimeViewController {
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
 
-        if haveSiteUrl {
+        if showFooter() {
             height += tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
         }
 

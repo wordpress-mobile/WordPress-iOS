@@ -9,7 +9,6 @@ class ThisWeekViewController: UIViewController {
 
     @IBOutlet private var tableView: UITableView!
 
-    private var footerHeight: CGFloat = 35
     private var siteUrl: String = Constants.noDataLabel
     private var statsValues: ThisWeekWidgetStats?
     private var siteID: NSNumber?
@@ -123,9 +122,9 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
                 return nil
         }
 
-        footer.configure(siteUrl: siteUrl)
-        footerHeight = footer.frame.height
 
+        footer.configure(siteUrl: siteUrl)
+        footer.frame.size.height = Constants.footerHeight
         return footer
     }
 
@@ -134,7 +133,7 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
             return 0
         }
 
-        return footerHeight
+        return Constants.footerHeight
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -297,8 +296,8 @@ private extension ThisWeekViewController {
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
 
-        if haveSiteUrl {
-            height += tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
+        if showFooter() {
+            height += tableView.footerView(forSection: 0)?.frame.height ?? Constants.footerHeight
         }
 
         let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
@@ -313,6 +312,7 @@ private extension ThisWeekViewController {
     enum Constants {
         static let noDataLabel = "-"
         static let minRows: Int = 2
+        static let footerHeight: CGFloat = 32
     }
 
 }
