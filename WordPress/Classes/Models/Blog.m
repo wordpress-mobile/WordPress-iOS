@@ -463,8 +463,9 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
             return [self supportsSharing];
         case BlogFeatureOAuth2Login:
             return [self isHostedAtWPcom];
-        case BlogFeatureReblog:
         case BlogFeatureMentions:
+            return [self isHostedAtWPcom];
+        case BlogFeatureReblog:
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePluginManagement:
