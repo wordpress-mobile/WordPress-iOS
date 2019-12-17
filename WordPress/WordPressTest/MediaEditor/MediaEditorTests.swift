@@ -79,9 +79,19 @@ class MediaEditorTests: XCTestCase {
             didCallOnFinishEditing = true
         }
 
-        mediaEditor.currentCapability?.onFinishEditing(image, [])
+        mediaEditor.currentCapability?.onFinishEditing(image, [.rotate])
 
         expect(didCallOnFinishEditing).to(beTrue())
+    }
+
+    func testWhenFinishEditingKeepRecordOfTheActions() {
+        let mediaEditor = MediaEditor(image)
+        mediaEditor.actions = [.crop]
+        mediaEditor.onFinishEditing = { _, _ in }
+
+        mediaEditor.currentCapability?.onFinishEditing(image, [.rotate])
+
+        expect(mediaEditor.actions).to(equal([.crop, .rotate]))
     }
 
     // WHEN: Async image + one single capability
