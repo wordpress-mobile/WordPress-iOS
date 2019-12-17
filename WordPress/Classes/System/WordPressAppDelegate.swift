@@ -671,11 +671,9 @@ extension WordPressAppDelegate {
     }
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
-        let rawLevel = Int32(level.rawValue)
-
-        WPSharedSetLoggingLevel(rawLevel)
-        TracksSetLoggingLevel(rawLevel)
-        WPAuthenticatorSetLoggingLevel(rawLevel)
+        WPSharedSetLoggingLevel(level)
+        TracksSetLoggingLevel(level)
+        WPAuthenticatorSetLoggingLevel(level)
     }
 }
 

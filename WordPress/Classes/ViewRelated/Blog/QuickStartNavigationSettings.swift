@@ -1,9 +1,8 @@
-@objc
-class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
+class QuickStartNavigationSettings: NSObject {
     private weak var readerNav: UINavigationController?
     private var spotlightView: QuickStartSpotlightView?
 
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    func updateWith(navigationController: UINavigationController, andViewController viewController: UIViewController) {
         guard let tourGuide = QuickStartTourGuide.find() else {
             return
         }
@@ -31,7 +30,11 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
         return !readerNav.hasHorizontallyCompactView()
     }
 
-    private func checkToSpotlightReader() {
+}
+
+private extension QuickStartNavigationSettings {
+
+    func checkToSpotlightReader() {
         guard let tourGuide = QuickStartTourGuide.find(),
             tourGuide.isCurrentElement(.readerBack) else {
             return
@@ -57,7 +60,7 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
         spotlightView = newSpotlightView
     }
 
-    private func removeReaderSpotlight() {
+    func removeReaderSpotlight() {
         guard let spotlight = spotlightView else {
             return
         }
@@ -65,4 +68,5 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
         spotlight.removeFromSuperview()
         spotlightView = nil
     }
+
 }

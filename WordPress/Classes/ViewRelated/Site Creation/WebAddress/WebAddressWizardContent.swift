@@ -62,6 +62,8 @@ final class WebAddressWizardContent: UIViewController {
     /// This message advises the user that
     private let noResultsLabel: UILabel
 
+    private let isBottomToolbarAlwaysVisible = UIAccessibility.isVoiceOverRunning
+
     // MARK: WebAddressWizardContent
 
     init(creator: SiteCreator, service: SiteAddressService, selection: @escaping (DomainSuggestion) -> Void) {
@@ -79,9 +81,7 @@ final class WebAddressWizardContent: UIViewController {
             label.font = WPStyleGuide.fontForTextStyle(.title2)
             label.textAlignment = .center
             label.textColor = .text
-
-            let noResultsMessage = NSLocalizedString("No available addresses matching your search", comment: "Advises the user that no Domain suggestions could be found for the search query.")
-            label.text = noResultsMessage
+            label.text = Strings.noResults
 
             label.sizeToFit()
 
@@ -104,7 +104,7 @@ final class WebAddressWizardContent: UIViewController {
 
         self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table, footerControlContainer: view, footerControl: buttonWrapper, toolbarBottomConstraint: bottomConstraint)
 
-        tableViewOffsetCoordinator?.hideBottomToolbar()
+        toggleBottomToolbar(enabled: false)
 
         applyTitle()
         setupBackground()
@@ -180,7 +180,7 @@ final class WebAddressWizardContent: UIViewController {
     private func clearContent() {
         throttle.cancel()
 
-        tableViewOffsetCoordinator?.hideBottomToolbar()
+        toggleBottomToolbar(enabled: false)
 
         guard let validDataProvider = tableViewProvider as? WebAddressTableViewProvider else {
             setupTableDataProvider(isShowingImplicitSuggestions: true)
@@ -226,6 +226,10 @@ final class WebAddressWizardContent: UIViewController {
         } else {
             noResultsLabel.isHidden = true
         }
+
+        if !isShowingImplicitSuggestions {
+            postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: data.isEmpty)
+        }
     }
 
     private func handleError(_ error: Error) {
@@ -267,7 +271,8 @@ final class WebAddressWizardContent: UIViewController {
         let buttonTitle = NSLocalizedString("Create Site", comment: "Button to progress to the next step")
         createSite.setTitle(buttonTitle, for: .normal)
         createSite.accessibilityLabel = buttonTitle
-        createSite.accessibilityHint = NSLocalizedString("Creates a new Site", comment: "Site creation. Navigates to the next step")
+        createSite.accessibilityHint = NSLocalizedString("Creates a new site with the given information.",
+                                                         comment: "Accessibility hint for the Create Site button in Site Creation.")
 
         createSite.isPrimary = true
     }
@@ -351,6 +356,8 @@ final class WebAddressWizardContent: UIViewController {
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         header.textField.attributedPlaceholder = attributedPlaceholder
 
+        header.textField.accessibilityHint = NSLocalizedString("Searches for available domains to use for your site.", comment: "Accessibility hint for the domains search field in Site Creation.")
+
         table.tableHeaderView = header
 
         view.addSubview(noResultsLabel)
@@ -405,7 +412,7 @@ final class WebAddressWizardContent: UIViewController {
             let domainSuggestion = provider.data[selectedIndexPath.row]
             self.selectedDomain = domainSuggestion
             self.resignTextFieldResponderIfNeeded()
-            self.tableViewOffsetCoordinator?.showBottomToolbar()
+            self.toggleBottomToolbar(enabled: true)
         }
 
         let provider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
@@ -431,7 +438,7 @@ final class WebAddressWizardContent: UIViewController {
     private func clearSelectionAndCreateSiteButton() {
         selectedDomain = nil
         table.deselectSelectedRowWithAnimation(true)
-        tableViewOffsetCoordinator?.hideBottomToolbar()
+        toggleBottomToolbar(enabled: false)
     }
 
     private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
@@ -453,6 +460,29 @@ final class WebAddressWizardContent: UIViewController {
 
         performSearchIfNeeded(query: query)
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+    }
+
+    // MARK: - Toolbar
+
+    private func toggleBottomToolbar(enabled: Bool) {
+        createSite.isEnabled = enabled
+
+        if enabled {
+            tableViewOffsetCoordinator?.showBottomToolbar()
+        } else {
+            if !isBottomToolbarAlwaysVisible {
+                tableViewOffsetCoordinator?.hideBottomToolbar()
+            }
+        }
+    }
+
+    // MARK: - Others
+
+    private enum Strings {
+        static let suggestionsUpdated = NSLocalizedString("Suggestions updated",
+                                                          comment: "Announced by VoiceOver when new domains suggestions are shown in Site Creation.")
+        static let noResults = NSLocalizedString("No available addresses matching your search",
+                                                 comment: "Advises the user that no Domain suggestions could be found for the search query.")
     }
 }
 
@@ -496,5 +526,10 @@ extension WebAddressWizardContent {
 private extension WebAddressWizardContent {
     func postScreenChangedForVoiceOver() {
         UIAccessibility.post(notification: .screenChanged, argument: table.tableHeaderView)
+    }
+
+    func postSuggestionsUpdateAnnouncementForVoiceOver(listIsEmpty: Bool) {
+        let message: String = listIsEmpty ? Strings.noResults : Strings.suggestionsUpdated
+        UIAccessibility.post(notification: .announcement, argument: message)
     }
 }
