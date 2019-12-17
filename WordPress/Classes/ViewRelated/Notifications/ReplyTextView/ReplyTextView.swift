@@ -256,7 +256,7 @@ import WordPressShared.WPStyleGuide
         bezierContainerView.outerColor = WPStyleGuide.Reply.backgroundColor
 
         // Bezier
-        bezierContainerView.bezierColor = WPStyleGuide.Reply.separatorColor
+        bezierContainerView.bezierColor = WPStyleGuide.Reply.backgroundColor
         bezierContainerView.bezierFillColor = WPStyleGuide.Reply.textViewBackground
         bezierContainerView.translatesAutoresizingMaskIntoConstraints = false
 
