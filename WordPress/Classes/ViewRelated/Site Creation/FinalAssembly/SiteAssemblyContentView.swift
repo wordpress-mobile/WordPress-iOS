@@ -24,6 +24,15 @@ final class SiteAssemblyContentView: UIView {
     /// This advises the user that the site creation request completed successfully.
     private(set) var completionLabel: UILabel
 
+    /// This provides the user with some playful words while their site is being assembled
+    private let statusTitleLabel: UILabel
+
+    /// This provides the user with some expectation while the site is being assembled
+    private let statusSubtitleLabel: UILabel
+
+    /// This displays an image while the site is being assembled
+    private let statusImageView: UIImageView
+
     /// This advises the user that the site creation request is underway.
     private let statusLabel: UILabel
 
@@ -99,6 +108,49 @@ final class SiteAssemblyContentView: UIView {
             label.accessibilityLabel = createdText
 
             return label
+        }()
+
+        self.statusTitleLabel = {
+            let label = UILabel()
+
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.numberOfLines = 0
+
+            label.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
+            label.textColor = .text
+            label.textAlignment = .center
+
+            let statusText = NSLocalizedString("Hooray!\nAlmost done",
+                                               comment: "User-facing string, presented to reflect that site assembly is underway.")
+            label.text = statusText
+            label.accessibilityLabel = statusText
+
+            return label
+        }()
+
+        self.statusSubtitleLabel = {
+            let label = UILabel()
+
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.numberOfLines = 0
+
+            label.font = WPStyleGuide.fontForTextStyle(.title2)
+            label.textColor = .textSubtle
+            label.textAlignment = .center
+
+            let statusText = NSLocalizedString("Your site will be ready shortly",
+                                               comment: "User-facing string, presented to reflect that site assembly is underway.")
+            label.text = statusText
+            label.accessibilityLabel = statusText
+
+            return label
+        }()
+
+        self.statusImageView = {
+            let image = UIImage(named: "site-creation-loading")
+            let imageView = UIImageView(image: image)
+
+            return imageView
         }()
 
         self.statusLabel = {
@@ -187,8 +239,10 @@ final class SiteAssemblyContentView: UIView {
 
         backgroundColor = .listBackground
 
-        statusStackView.addArrangedSubviews([ statusLabel, activityIndicator ])
+        statusStackView.addArrangedSubviews([ statusTitleLabel, statusSubtitleLabel, statusImageView, statusLabel, activityIndicator ])
         addSubviews([ completionLabel, statusStackView ])
+
+        statusStackView.setCustomSpacing(Parameters.verticalSpacing, after: statusSubtitleLabel)
 
         let completionLabelTopInsetInitial = Parameters.verticalSpacing * 2
         let completionLabelInitialTopConstraint = completionLabel.topAnchor.constraint(equalTo: prevailingLayoutGuide.topAnchor, constant: completionLabelTopInsetInitial)
