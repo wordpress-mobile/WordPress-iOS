@@ -35,4 +35,16 @@ extension Media {
 
         return !posts.isEmpty
     }
+
+    // MARK: - Media Link
+
+    var link: String {
+        get {
+            guard let siteURL = self.blog.url,
+                let mediaID = self.mediaID else {
+                return ""
+            }
+            return "\(siteURL)/?p=\(mediaID)"
+        }
+    }
 }

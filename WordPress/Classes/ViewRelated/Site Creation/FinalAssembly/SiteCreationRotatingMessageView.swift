@@ -18,17 +18,16 @@ class SiteCreationRotatingMessageView: UIView {
             return statusDisplayDuration + transitionAnimationDuration
         }
     }
-
     /// An array of status messages to rotating through
-    private(set) var statusMessages: [String]!
+    private(set) var statusMessages: [String]
 
     // MARK: - State Management
 
     /// A timer that determines how long to show each message
-    internal var animationTimer: Timer!
+    private(set) var animationTimer: Timer?
 
     /// The index of the currently visible message
-    internal var visibleIndex = 0
+    private(set) var visibleIndex = 0
 
     /// Calculates the index that should be displayed next,
     /// This will automatically loop back to 0 if we hit the end
@@ -44,7 +43,9 @@ class SiteCreationRotatingMessageView: UIView {
     }
 
     // MARK: - View Properties
-    private var statusImageView: UIImageView!
+
+    /// The icon that is displayed next to the status view
+    private var statusImageView: UIImageView
 
     /// This advises the user that the site creation request is underway.
     private(set) var statusLabel: UILabel = {
@@ -80,7 +81,6 @@ class SiteCreationRotatingMessageView: UIView {
     /// - Parameter iconImage: The icon image to display before the status message
     init(messages: [String], iconImage: UIImage) {
         self.statusMessages = messages
-
         self.statusImageView = UIImageView(image: iconImage)
 
         super.init(frame: .zero)
@@ -95,7 +95,7 @@ class SiteCreationRotatingMessageView: UIView {
     func startAnimating() {
         stopAnimating()
 
-        self.animationTimer = Timer.scheduledTimer(timeInterval: Parameters.totalStatusDisplayDuration,
+        animationTimer = Timer.scheduledTimer(timeInterval: Parameters.totalStatusDisplayDuration,
                                                    target: self,
                                                    selector: #selector(SiteCreationRotatingMessageView.displayNextMessage),
                                                    userInfo: nil,
@@ -127,19 +127,19 @@ class SiteCreationRotatingMessageView: UIView {
     /// Updates the status label text with the next message to be displayed
     /// then updates the current visible index
     internal func updateStatusLabelWithNextMessage() {
-        let nextIndex = self.nextVisibleIndex
-        let statusMessage = self.statusMessages[nextIndex]
+        let nextIndex = nextVisibleIndex
+        let statusMessage = statusMessages[nextIndex]
 
-        self.updateStatus(message: statusMessage)
+        updateStatus(message: statusMessage)
 
-        self.visibleIndex = nextIndex
+        visibleIndex = nextIndex
     }
 
     /// Updates the status label/accessiblity label with the provided text
     /// - Parameter message: The text to be displayed
     internal func updateStatus(message: String) {
-        self.statusLabel.text = message
-        self.statusLabel.accessibilityLabel = message
+        statusLabel.text = NSLocalizedString(message,
+                                             comment: "User-facing string, presented to reflect that site assembly is underway.")
     }
 
     // MARK: - Private
