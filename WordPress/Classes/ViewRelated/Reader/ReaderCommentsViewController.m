@@ -347,7 +347,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     __typeof(self) __weak weakSelf = self;
 
     ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
-    replyTextView.replyText = [NSLocalizedString(@"Reply", @"") uppercaseString];
     replyTextView.onReply = ^(NSString *content) {
         [weakSelf sendReplyWithNewContent:content];
     };

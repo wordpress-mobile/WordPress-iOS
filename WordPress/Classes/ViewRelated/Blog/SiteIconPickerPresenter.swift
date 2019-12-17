@@ -8,7 +8,7 @@ import MobileCoreServices
 ///
 class SiteIconPickerPresenter: NSObject {
 
-    /// MARK: - Public Properties
+    // MARK: - Public Properties
 
     @objc var blog: Blog
     /// Will be invoked with a Media item from the user library or an error
@@ -16,7 +16,7 @@ class SiteIconPickerPresenter: NSObject {
     @objc var onIconSelection: (() -> Void)?
     @objc var originalMedia: Media?
 
-    /// MARK: - Private Properties
+    // MARK: - Private Properties
 
     fileprivate let noResultsView = NoResultsViewController.controller()
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
@@ -47,7 +47,7 @@ class SiteIconPickerPresenter: NSObject {
         return pickerViewController
     }()
 
-    /// MARK: - Public methods
+    // MARK: - Public methods
 
     /// Designated Initializer
     ///
@@ -71,7 +71,7 @@ class SiteIconPickerPresenter: NSObject {
         registerChangeObserver(forPicker: mediaPickerViewController.mediaPicker)
     }
 
-    /// MARK: - Private Methods
+    // MARK: - Private Methods
 
     fileprivate func showLoadingMessage() {
         SVProgressHUD.setDefaultMaskType(.clear)
