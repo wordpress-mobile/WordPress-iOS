@@ -285,6 +285,9 @@ import Gridicons
         let fullscreenImage = Gridicon.iconOfType(.chevronUp)
         fullscreenToggleButton.setImage(fullscreenImage, for: .normal)
         fullscreenToggleButton.tintColor = .listIcon
+        fullscreenToggleButton.accessibilityLabel = NSLocalizedString("Enter Full Screen",
+                                                                      comment: "Accessibility Label for the enter full screen button on the comment reply text view")
+
 
         // Reply
         let replyIcon = UIImage(named: "icon-comment-reply")
