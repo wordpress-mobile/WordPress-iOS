@@ -53,14 +53,16 @@ class ThisWeekViewController: UIViewController {
         let rowDifference = abs(updatedRowCount - tableView.visibleCells.count)
 
         // If the number of rows has not changed, do nothing.
-        guard rowDifference != 0 else {
+        guard rowDifference != 0,
+        let statsValues = statsValues else {
             return
         }
 
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.performBatchUpdates({
                 // Create IndexPaths for rows to be inserted / deleted.
-                let indexPaths = (1...rowDifference).map({ return IndexPath(row: $0, section: 0) })
+                let indexRange = (Constants.minRows..<statsValues.days.endIndex)
+                let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
 
                 updatedRowCount > Constants.minRows ?
                     self.tableView.insertRows(at: indexPaths, with: .fade) :
