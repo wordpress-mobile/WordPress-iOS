@@ -50,7 +50,7 @@ class ThisWeekViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         let updatedRowCount = numberOfRowsToDisplay()
-        let rowDifference = abs(updatedRowCount - tableView.visibleCells.count)
+        let rowDifference = abs(updatedRowCount - tableView.numberOfRows(inSection: 0))
 
         // If the number of rows has not changed, do nothing.
         guard rowDifference != 0,
@@ -303,7 +303,6 @@ private extension ThisWeekViewController {
         }
 
         let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
-        print("🔴 rowHeight: ", rowHeight)
         height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
 
         return height
