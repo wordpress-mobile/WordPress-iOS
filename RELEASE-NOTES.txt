@@ -1,5 +1,7 @@
 14.0
 -----
+* Fixed a bug that displayed incorrect time stamps for scheduled posts.
+* Post Settings: Added a new Calendar picker to select a Post's publish date
  
 13.9
 -----
