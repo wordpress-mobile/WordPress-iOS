@@ -441,6 +441,21 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
+    func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
+        let image = GutenbergMediaEditorImage(url: mediaUrl)
+
+        let mediaEditor = WPMediaEditor(image)
+        mediaEditor.edit(from: self,
+                              onFinishEditing: { image, actions in
+                                guard !actions.isEmpty else {
+                                    return
+                                }
+                                
+                                self.mediaInserterHelper.insertFromImage(image: image, callback: callback)
+                                mediaEditor.dismiss(animated: true)
+        })
+    }
+
     func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {
         mediaInserterHelper.insertFromDevice(url: url, callback: { media in
             callback(media?.first)
