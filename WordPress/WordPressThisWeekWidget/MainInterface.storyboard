@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XKX-aN-6Ny">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XKX-aN-6Ny">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,6 +19,7 @@
                         <connections>
                             <outlet property="dataSource" destination="XKX-aN-6Ny" id="DmI-rW-a7X"/>
                             <outlet property="delegate" destination="XKX-aN-6Ny" id="X45-X4-ivO"/>
+                            <outletCollection property="gestureRecognizers" destination="Ins-3Y-e7C" appends="YES" id="uHa-VA-YJj"/>
                         </connections>
                     </tableView>
                     <nil key="simulatedTopBarMetrics"/>
@@ -30,6 +31,11 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xkY-3H-gAF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Ins-3Y-e7C">
+                    <connections>
+                        <action selector="launchContainingApp" destination="XKX-aN-6Ny" id="Crb-wd-hw3"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-301" y="-1064"/>
         </scene>

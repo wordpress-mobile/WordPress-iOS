@@ -29,6 +29,7 @@ class WidgetDifferenceCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         configureColors()
+        initializeLabels()
     }
 
     func configure(day: ThisWeekWidgetDay? = nil, isToday: Bool = false, hideSeparator: Bool = false) {
@@ -50,11 +51,15 @@ private extension WidgetDifferenceCell {
         differenceView.layer.cornerRadius = Constants.cornerRadius
     }
 
+    func initializeLabels() {
+        dateLabel.text = Constants.noDataLabel
+        dataLabel.text = Constants.noDataLabel
+        differenceLabel.text = Constants.noDataLabel
+    }
+
     func configureLabels(day: ThisWeekWidgetDay?, isToday: Bool) {
         guard let day = day else {
-            dateLabel.text = Constants.noDataLabel
-            dataLabel.text = Constants.noDataLabel
-            differenceLabel.text = Constants.noDataLabel
+            initializeLabels()
             return
         }
 

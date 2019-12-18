@@ -154,6 +154,33 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension ThisWeekViewController {
 
+    // MARK: - Launch Containing App
+
+    @IBAction func launchContainingApp() {
+        guard let extensionContext = extensionContext,
+            let containingAppURL = appURL() else {
+                DDLogError("This Week Widget: Unable to get extensionContext or appURL.")
+                return
+        }
+
+        trackAppLaunch()
+        extensionContext.open(containingAppURL, completionHandler: nil)
+    }
+
+    func appURL() -> URL? {
+        let urlString = (siteID != nil) ? (Constants.statsUrl + siteID!.stringValue) : Constants.baseUrl
+        return URL(string: urlString)
+    }
+
+    func trackAppLaunch() {
+        guard let siteID = siteID else {
+            tracks.trackExtensionConfigureLaunched()
+            return
+        }
+
+        tracks.trackExtensionStatsLaunched(siteID.intValue)
+    }
+
     // MARK: - Site Configuration
 
     func retrieveSiteConfiguration() {
@@ -312,6 +339,8 @@ private extension ThisWeekViewController {
 
     enum Constants {
         static let noDataLabel = "-"
+        static let baseUrl: String = "\(WPComScheme)://"
+        static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
         static let minRows: Int = 2
         static let footerHeight: CGFloat = 32
     }
