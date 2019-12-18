@@ -3,58 +3,46 @@ import CoreData
 import XCTest
 
 
-class MockReblogPresenter: ReblogPresenter {
+class MockReblogPresenter: ReaderReblogPresenter {
     var presentReblogExpectation: XCTestExpectation?
 
-    override func presentReblog(blogs: [Blog], readerPost: ReaderPost, origin: UIViewController) {
+    override func presentReblog(blogService: BlogService, readerPost: ReaderPost, origin: UIViewController) {
         presentReblogExpectation?.fulfill()
     }
 }
 
 class MockBlogService: BlogService {
-    var blogsExpectation: XCTestExpectation?
-    override init(managedObjectContext context: NSManagedObjectContext) {
-        super.init(managedObjectContext: context)
+    var blogsForAllAccountsExpectation: XCTestExpectation?
+    var lastUsedOrFirstBlogExpectation: XCTestExpectation?
+
+    var blogCount = 1
+
+    override func blogCountForAllAccounts() -> Int {
+        return blogCount
     }
 
     override func blogsForAllAccounts() -> [Blog] {
-        blogsExpectation?.fulfill()
-        return []
+        blogsForAllAccountsExpectation?.fulfill()
+        return [Blog(context: self.managedObjectContext), Blog(context: self.managedObjectContext)]
+    }
+    override func lastUsedOrFirstBlog() -> Blog? {
+        lastUsedOrFirstBlogExpectation?.fulfill()
+        return Blog(context: self.managedObjectContext)
     }
 }
 
-class ReaderReblogActionTests: XCTestCase {
-    var context: NSManagedObjectContext?
+class MockPostService: PostService {
+    var draftPostExpectation: XCTestExpectation?
 
-    override func setUp() {
-        self.context = setUpInMemoryManagedObjectContext()
+    override func createDraftPost(for blog: Blog) -> Post {
+        draftPostExpectation?.fulfill()
+        return Post(context: self.managedObjectContext)
     }
+}
 
-    override func tearDown() {
-        self.context = nil
-    }
-
-    func testExecuteAction() {
-        // Given
-        let readerPost = ReaderPost(context: self.context!)
-        let presenter = MockReblogPresenter(postService: nil)
-        let blogService = MockBlogService(managedObjectContext: self.context!)
-        blogService.blogsExpectation = expectation(description: "blogsForAllAccounts was called")
-        presenter.presentReblogExpectation = expectation(description: "presentBlog was called")
-        let action = ReaderReblogAction(blogService: blogService, presenter: presenter)
-        let controller = UIViewController()
-        // When
-        action.execute(readerPost: readerPost, origin: controller)
-
-        // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
-    }
+class MockCoreData {
     /// creates an in-memory store
-    func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext? {
+    class func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext? {
 
         do {
             let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])
@@ -70,13 +58,87 @@ class ReaderReblogActionTests: XCTestCase {
     }
 }
 
+class ReblogTestCase: XCTestCase {
+    var context: NSManagedObjectContext?
+    var readerPost: ReaderPost?
+    var blogService: MockBlogService?
+    var postService: MockPostService?
+
+    override func setUp() {
+        context = MockCoreData.setUpInMemoryManagedObjectContext()
+        readerPost = ReaderPost(context: self.context!)
+        blogService = MockBlogService(managedObjectContext: self.context!)
+        postService = MockPostService(managedObjectContext: self.context!)
+    }
+
+    override func tearDown() {
+        context = nil
+        readerPost = nil
+        blogService = nil
+        postService = nil
+    }
+}
+
+class ReaderReblogActionTests: ReblogTestCase {
+
+    func testExecuteAction() {
+        // Given
+        let presenter = MockReblogPresenter(postService: postService!)
+        presenter.presentReblogExpectation = expectation(description: "presentBlog was called")
+        let action = ReaderReblogAction(blogService: blogService!, presenter: presenter)
+        let controller = UIViewController()
+        // When
+        action.execute(readerPost: readerPost!, origin: controller)
+        // Then
+        waitForExpectations(timeout: 4) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+    }
+}
+
+class ReblogPresenterTests: ReblogTestCase {
+
+    func testPresentEditorForOneSite() {
+        // Given
+        postService!.draftPostExpectation = expectation(description: "createDraftPost was called")
+        blogService!.blogsForAllAccountsExpectation = expectation(description: "blogsForAllAccounts was called")
+        let presenter = ReaderReblogPresenter(postService: postService!)
+        // When
+        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
+        // Then
+        waitForExpectations(timeout: 4) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+    }
+
+    func testPresentEditorForMultipleSites() {
+        // Given
+        postService!.draftPostExpectation = expectation(description: "createDraftPost was called")
+        blogService!.lastUsedOrFirstBlogExpectation = expectation(description: "lastUsedOrFirstBlog was called")
+        blogService?.blogCount = 2
+        let presenter = ReaderReblogPresenter(postService: postService!)
+        // When
+        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
+        // Then
+        waitForExpectations(timeout: 4) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+    }
+}
+
 class ReblogFormatterTests: XCTestCase {
 
     func testWordPressQuote() {
         // Given
         let quote = "Quote"
         // When
-        let wpQuote = ReblogFormatter.wordPressQuote(text: quote)
+        let wpQuote = ReaderReblogFormatter.gutenbergQuote(text: quote)
         // Then
         XCTAssertEqual("<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>Quote</p></blockquote>\n<!-- /wp:quote -->", wpQuote)
     }
@@ -86,7 +148,7 @@ class ReblogFormatterTests: XCTestCase {
         let url = "https://wordpress.com"
         let text = "WordPress.com"
         // When
-        let wpLink = ReblogFormatter.hyperLink(url: url, text: text)
+        let wpLink = ReaderReblogFormatter.hyperLink(url: url, text: text)
         // Then
         XCTAssertEqual("<a href=\"https://wordpress.com\">WordPress.com</a>", wpLink)
     }
@@ -95,7 +157,7 @@ class ReblogFormatterTests: XCTestCase {
         // Given
         let image = "image.jpg"
         // When
-        let wpImage = ReblogFormatter.htmlImage(image: image)
+        let wpImage = ReaderReblogFormatter.gutenbergImage(image: image)
         // Then
         XCTAssertEqual("<!-- wp:paragraph -->\n<p><img src=\"image.jpg\"></p>\n<!-- /wp:paragraph -->", wpImage)
     }
