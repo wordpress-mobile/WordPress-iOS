@@ -450,7 +450,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                 guard !actions.isEmpty else {
                                     return
                                 }
-                                
+
                                 self.mediaInserterHelper.insertFromImage(image: image, callback: callback)
                                 mediaEditor.dismiss(animated: true)
         })
