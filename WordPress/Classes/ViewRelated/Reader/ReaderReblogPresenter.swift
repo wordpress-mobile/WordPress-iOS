@@ -1,5 +1,5 @@
-/// Presents the approptiate reblog scene, depending on the number of available sites
-class ReblogPresenter {
+/// Presents the appropriate reblog scene, depending on the number of available sites
+class ReaderReblogPresenter {
     private let postService: PostService
 
     private struct NoSitesConfiguration {
@@ -109,15 +109,15 @@ fileprivate extension Post {
             var citation: String?
             // add the optional citation
             if let permaLink = readerPost.permaLink, let title = readerPost.titleForDisplay() {
-                citation = ReblogFormatter.hyperLink(url: permaLink, text: title)
+                citation = ReaderReblogFormatter.hyperLink(url: permaLink, text: title)
             }
-            content = self.blog.isGutenbergEnabled ? ReblogFormatter.gutenbergQuote(text: summary, citation: citation) :
-                ReblogFormatter.aztecQuote(text: summary, citation: citation)
+            content = self.blog.isGutenbergEnabled ? ReaderReblogFormatter.gutenbergQuote(text: summary, citation: citation) :
+                ReaderReblogFormatter.aztecQuote(text: summary, citation: citation)
         }
         // insert the image on top of the content
-        if let image = readerPost.featuredImage {
-            content = self.blog.isGutenbergEnabled ? ReblogFormatter.gutenbergImage(image: image) + content :
-                ReblogFormatter.aztecImage(image: image) + content
+        if let image = readerPost.featuredImage, image.isValidURL() {
+            content = self.blog.isGutenbergEnabled ? ReaderReblogFormatter.gutenbergImage(image: image) + content :
+                ReaderReblogFormatter.aztecImage(image: image) + content
         }
         self.content = content
     }

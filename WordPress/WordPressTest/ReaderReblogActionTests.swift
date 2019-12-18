@@ -3,7 +3,7 @@ import CoreData
 import XCTest
 
 
-class MockReblogPresenter: ReblogPresenter {
+class MockReblogPresenter: ReaderReblogPresenter {
     var presentReblogExpectation: XCTestExpectation?
 
     override func presentReblog(blogService: BlogService, readerPost: ReaderPost, origin: UIViewController) {
@@ -104,7 +104,7 @@ class ReblogPresenterTests: ReblogTestCase {
         // Given
         postService!.draftPostExpectation = expectation(description: "createDraftPost was called")
         blogService!.blogsForAllAccountsExpectation = expectation(description: "blogsForAllAccounts was called")
-        let presenter = ReblogPresenter(postService: postService!)
+        let presenter = ReaderReblogPresenter(postService: postService!)
         // When
         presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
         // Then
@@ -120,7 +120,7 @@ class ReblogPresenterTests: ReblogTestCase {
         postService!.draftPostExpectation = expectation(description: "createDraftPost was called")
         blogService!.lastUsedOrFirstBlogExpectation = expectation(description: "lastUsedOrFirstBlog was called")
         blogService?.blogCount = 2
-        let presenter = ReblogPresenter(postService: postService!)
+        let presenter = ReaderReblogPresenter(postService: postService!)
         // When
         presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
         // Then
@@ -138,7 +138,7 @@ class ReblogFormatterTests: XCTestCase {
         // Given
         let quote = "Quote"
         // When
-        let wpQuote = ReblogFormatter.gutenbergQuote(text: quote)
+        let wpQuote = ReaderReblogFormatter.gutenbergQuote(text: quote)
         // Then
         XCTAssertEqual("<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>Quote</p></blockquote>\n<!-- /wp:quote -->", wpQuote)
     }
@@ -148,7 +148,7 @@ class ReblogFormatterTests: XCTestCase {
         let url = "https://wordpress.com"
         let text = "WordPress.com"
         // When
-        let wpLink = ReblogFormatter.hyperLink(url: url, text: text)
+        let wpLink = ReaderReblogFormatter.hyperLink(url: url, text: text)
         // Then
         XCTAssertEqual("<a href=\"https://wordpress.com\">WordPress.com</a>", wpLink)
     }
@@ -157,7 +157,7 @@ class ReblogFormatterTests: XCTestCase {
         // Given
         let image = "image.jpg"
         // When
-        let wpImage = ReblogFormatter.gutenbergImage(image: image)
+        let wpImage = ReaderReblogFormatter.gutenbergImage(image: image)
         // Then
         XCTAssertEqual("<!-- wp:paragraph -->\n<p><img src=\"image.jpg\"></p>\n<!-- /wp:paragraph -->", wpImage)
     }

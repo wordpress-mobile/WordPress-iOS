@@ -145,11 +145,11 @@
 - (AbstractPost *)createRevision
 {
     if ([self isRevision]) {
-        DDLogInfo(@"!!! Attempted to create a revision of a revision");
+        DDLogInfo(@"Post is already a revision, no need to create a new one");
         return self;
     }
     if (self.revision) {
-        DDLogInfo(@"!!! Already have revision");
+        DDLogInfo(@"Returning existing revision");
         return self.revision;
     }
 

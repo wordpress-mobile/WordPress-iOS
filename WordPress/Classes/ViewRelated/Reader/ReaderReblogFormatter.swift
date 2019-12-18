@@ -1,5 +1,5 @@
 /// Contains methods to format post reblog content for either Gutenberg (block) editor or Aztec (classic) editor
-struct ReblogFormatter {
+struct ReaderReblogFormatter {
 
     static func gutenbergQuote(text: String, citation: String? = nil) -> String {
         let quote = quoteWithCitation(text: text, citation: citation)
@@ -25,19 +25,19 @@ struct ReblogFormatter {
 
 
 // MARK: - Gutenberg formatter helpers
-extension ReblogFormatter {
+private extension ReaderReblogFormatter {
 
-    private static func embedInWpParagraph(html: String) -> String {
+    static func embedInWpParagraph(html: String) -> String {
         return "<!-- wp:paragraph -->\n<p>\(html)</p>\n<!-- /wp:paragraph -->"
     }
 
-    private static func embedInWpQuote(html: String) -> String {
+    static func embedInWpQuote(html: String) -> String {
         return "<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\">\(html)</blockquote>\n<!-- /wp:quote -->"
     }
 }
 
 // MARK: - Aztec formatter helpers
-extension ReblogFormatter {
+extension ReaderReblogFormatter {
 
     static func hyperLink(url: String, text: String) -> String {
         return "<a href=\"\(url)\">\(text)</a>"

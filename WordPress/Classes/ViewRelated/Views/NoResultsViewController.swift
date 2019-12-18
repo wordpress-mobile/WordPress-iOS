@@ -204,12 +204,13 @@ import Reachability
     /// Accepts an optional title, if none is provided, will default to 'Dismiss'
     func showDismissButton(title: String? = nil) {
         navigationItem.hidesBackButton = true
+        let buttonTitle = title ?? NSLocalizedString("Dismiss", comment: "Dismiss button title.")
 
-        let dismissButton = UIBarButtonItem(title: title ?? NSLocalizedString("Dismiss", comment: "Dismiss button title."),
+        let dismissButton = UIBarButtonItem(title: buttonTitle,
                                             style: .done,
                                             target: self,
                                             action: #selector(self.dismissButtonPressed))
-        dismissButton.accessibilityLabel = title ?? NSLocalizedString("Dismiss", comment: "Dismiss button title.")
+        dismissButton.accessibilityLabel = buttonTitle
         navigationItem.leftBarButtonItem = dismissButton
     }
 

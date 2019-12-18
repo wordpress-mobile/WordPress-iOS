@@ -2,10 +2,10 @@
 class ReaderReblogAction {
 
     private let blogService: BlogService
-    private let presenter: ReblogPresenter
+    private let presenter: ReaderReblogPresenter
 
     init(blogService: BlogService? = nil,
-         presenter: ReblogPresenter = ReblogPresenter()) {
+         presenter: ReaderReblogPresenter = ReaderReblogPresenter()) {
         self.presenter = presenter
 
         // fallback for self.blogService
