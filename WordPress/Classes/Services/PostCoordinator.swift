@@ -116,16 +116,8 @@ class PostCoordinator: NSObject {
     /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
-    private func prepareToSave(_ postToSave: AbstractPost, automatedRetry: Bool = false,
+    private func prepareToSave(_ post: AbstractPost, automatedRetry: Bool = false,
                                then completion: @escaping (Result<AbstractPost, Error>) -> ()) {
-        var post = postToSave
-
-        if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
-            post = originalPost
-            post.applyRevision()
-            post.deleteRevision()
-        }
-
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
