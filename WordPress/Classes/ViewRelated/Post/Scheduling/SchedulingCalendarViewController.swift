@@ -8,13 +8,21 @@ protocol DateCoordinatorHandler: class {
 class DateCoordinator {
 
     var date: Date?
+    let timeZone: TimeZone
+    let dateFormatter: DateFormatter
+    let dateTimeFormatter: DateFormatter
     let updated: (Date?) -> Void
 
-    init(date: Date?, updated: @escaping (Date?) -> Void) {
+    init(date: Date?, timeZone: TimeZone, dateFormatter: DateFormatter, dateTimeFormatter: DateFormatter, updated: @escaping (Date?) -> Void) {
         self.date = date
+        self.timeZone = timeZone
+        self.dateFormatter = dateFormatter
+        self.dateTimeFormatter = dateTimeFormatter
         self.updated = updated
     }
 }
+
+// MARK: - Date Picker
 
 class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
 
@@ -22,7 +30,7 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
 
     let chosenValueRow = ChosenValueRow(frame: .zero)
 
-    private lazy var calendarMonthView: CalendarMonthView = {
+    lazy var calendarMonthView: CalendarMonthView = {
         let calendarMonthView = CalendarMonthView(frame: .zero)
         calendarMonthView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -31,19 +39,25 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         calendarMonthView.updated = { [weak self] date in
             var newDate = date
 
-            // If we have an existing time value, we want to set it to the calendar's selected date (which starts at midnight)
-            if let existingDate = self?.coordinator?.date {
-                let components = Calendar.current.dateComponents([.hour, .minute], from: existingDate)
-                newDate = Calendar.current.date(bySettingHour: components.hour ?? 0, minute: components.minute ?? 0, second: components.second ?? 0, of: newDate) ?? newDate
-            }
+            // Since the date from the calendar will not include hours and minutes, replace with the original date (either the current, or previously entered date)
+            let selectedComponents = Calendar.current.dateComponents([.hour, .minute], from: selectedDate)
+            newDate = Calendar.current.date(bySettingHour: selectedComponents.hour ?? 0, minute: selectedComponents.minute ?? 0, second: 0, of: newDate) ?? newDate
+
             self?.coordinator?.date = newDate
-            self?.chosenValueRow.detailLabel.text = date.longString()
+            self?.chosenValueRow.detailLabel.text = self?.coordinator?.dateFormatter.string(from: date)
         }
 
         return calendarMonthView
     }()
 
-    private lazy var closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.closeButtonPressed))
+    private lazy var closeButton: UIBarButtonItem = {
+        let item = UIBarButtonItem(image: Gridicon.iconOfType(.cross),
+                                   style: .plain,
+                                   target: self,
+                                   action: #selector(closeButtonPressed))
+        item.accessibilityLabel = NSLocalizedString("Close", comment: "Accessibility label for the date picker's close button.")
+        return item
+    }()
     private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
 
     override func viewDidLoad() {
@@ -59,6 +73,8 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         calendarMonthView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         calendarMonthView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+
+        setupForAccessibility()
     }
 
     override func viewDidLayoutSubviews() {
@@ -78,16 +94,16 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        if traitCollection.verticalSizeClass == .compact {
-            navigationItem.leftBarButtonItems = [closeButton, publishButton]
-        } else {
-            navigationItem.leftBarButtonItems = [publishButton]
-        }
+        resetNavigationButtons()
     }
 
     @objc func closeButtonPressed() {
         dismiss(animated: true, completion: nil)
+    }
+
+    override func accessibilityPerformEscape() -> Bool {
+        dismiss(animated: true, completion: nil)
+        return true
     }
 
     @objc func publishImmediately() {
@@ -100,7 +116,39 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
         vc.coordinator = coordinator
         navigationController?.pushViewController(vc, animated: true)
     }
+
+    @objc private func resetNavigationButtons() {
+        let includeCloseButton = traitCollection.verticalSizeClass == .compact ||
+            (isVoiceOverOrSwitchControlRunning && navigationController?.modalPresentationStyle != .popover)
+
+        if includeCloseButton {
+            navigationItem.leftBarButtonItems = [closeButton, publishButton]
+        } else {
+            navigationItem.leftBarButtonItems = [publishButton]
+        }
+    }
 }
+
+// MARK: Accessibility
+
+private extension SchedulingCalendarViewController {
+    func setupForAccessibility() {
+        let notificationNames = [
+            UIAccessibility.voiceOverStatusDidChangeNotification,
+            UIAccessibility.switchControlStatusDidChangeNotification
+        ]
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(resetNavigationButtons),
+                                               names: notificationNames,
+                                               object: nil)
+    }
+
+    var isVoiceOverOrSwitchControlRunning: Bool {
+        UIAccessibility.isVoiceOverRunning || UIAccessibility.isSwitchControlRunning
+    }
+}
+
+// MARK: - Time Picker
 
 class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
 
@@ -111,6 +159,7 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .time
+        datePicker.timeZone = coordinator?.timeZone
         datePicker.addTarget(self, action: #selector(timePickerChanged(_:)), for: .valueChanged)
         if let date = coordinator?.date {
             datePicker.date = date
@@ -121,7 +170,7 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
     override func viewDidLoad() {
         super.viewDidLoad()
         chosenValueRow.titleLabel.text = NSLocalizedString("Choose a time", comment: "Label for Publish time picker")
-        chosenValueRow.detailLabel.text = datePicker.date.longStringWithTime()
+        chosenValueRow.detailLabel.text = coordinator?.dateTimeFormatter.string(from: datePicker.date)
         let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
 
         setup(topView: chosenValueRow, pickerView: datePicker)
@@ -131,7 +180,7 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
 
     // MARK: Change Selectors
     @objc func timePickerChanged(_ sender: Any) {
-        chosenValueRow.detailLabel.text = datePicker.date.longStringWithTime()
+        chosenValueRow.detailLabel.text = coordinator?.dateTimeFormatter.string(from: datePicker.date)
         coordinator?.date = datePicker.date
     }
 

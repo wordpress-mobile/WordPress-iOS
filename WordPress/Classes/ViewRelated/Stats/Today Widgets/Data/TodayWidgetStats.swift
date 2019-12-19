@@ -18,11 +18,11 @@ struct TodayWidgetStats: Codable {
         case comments
     }
 
-    init(views: Int, visitors: Int, likes: Int, comments: Int) {
-        self.views = views
-        self.visitors = visitors
-        self.likes = likes
-        self.comments = comments
+    init(views: Int? = 0, visitors: Int? = 0, likes: Int? = 0, comments: Int? = 0) {
+        self.views = views ?? 0
+        self.visitors = visitors ?? 0
+        self.likes = likes ?? 0
+        self.comments = comments ?? 0
     }
 }
 
@@ -31,7 +31,8 @@ extension TodayWidgetStats {
     static func loadSavedData() -> TodayWidgetStats {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
-                return TodayWidgetStats(views: 0, visitors: 0, likes: 0, comments: 0)
+                DDLogError("TodayWidgetStats: data file '\(dataFileName)' does not exist.")
+                return TodayWidgetStats()
         }
 
         let decoder = PropertyListDecoder()
@@ -40,7 +41,7 @@ extension TodayWidgetStats {
             return try decoder.decode(TodayWidgetStats.self, from: data)
         } catch {
             DDLogError("Failed loading TodayWidgetStats data: \(error.localizedDescription)")
-            return TodayWidgetStats(views: 0, visitors: 0, likes: 0, comments: 0)
+            return TodayWidgetStats()
         }
     }
 
@@ -60,11 +61,13 @@ extension TodayWidgetStats {
         }
     }
 
+    private static var dataFileName = "TodayData.plist"
+
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
             return nil
         }
-        return url.appendingPathComponent("TodayData.plist")
+        return url.appendingPathComponent(dataFileName)
     }
 
 }
