@@ -2,7 +2,7 @@ import WordPressFlux
 import Gridicons
 
 open class QuickStartTourGuide: NSObject {
-    @objc var navigationWatcher = QuickStartNavigationWatcher()
+    var navigationSettings = QuickStartNavigationSettings()
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
     private var suggestionWorkItem: DispatchWorkItem?
@@ -196,7 +196,7 @@ open class QuickStartTourGuide: NSObject {
         }
         currentTourState = nextStep
 
-        if currentElement == .readerBack && navigationWatcher.shouldSkipReaderBack() {
+        if currentElement == .readerBack && navigationSettings.shouldSkipReaderBack() {
             visited(.readerBack)
             return
         }

@@ -1374,6 +1374,8 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatReaderArticleReblogged:
             eventName = @"reader_article_reblogged";
             break;
+        case WPAnalyticsStatReaderArticleDetailReblogged:
+            eventName = @"reader_article_detail_reblogged";
         case WPAnalyticsStatReaderArticleOpened:
             eventName = @"reader_article_opened";
             break;
@@ -1978,13 +1980,19 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSearchAdsAttribution:
             eventName = @"searchads_attribution_detail_received";
             break;
-            
+        case WPAnalyticsStatDebugDeletedOrphanedEntities:
+            eventName = @"debug_deleted_orphaned_entities";
+            break;
+
         // The following are yet to be implemented.
         //
         // If you get test failures in WPAnalyticsTrackerAutomatticTracksTests, it's most likely
         // because there are new WPAnalyticsStat enum values. This can mean that somebody is
         // currently working on it. In cases like this, add the enum values here, returning
         // as `nil`. The tests should pass.
+        case WPAnalyticsStatEditorAddedPhotoViaMediaEditor:
+        case WPAnalyticsStatMediaEditorShown:
+        case WPAnalyticsStatMediaEditorUsed:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
