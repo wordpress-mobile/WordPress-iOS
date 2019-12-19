@@ -56,7 +56,7 @@ class SiteStatsPeriodViewModel: Observable {
         periodReceipt = store.query(.periods(date: lastRequestedDate, period: lastRequestedPeriod))
         store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
                                                                                period: lastRequestedPeriod,
-                                                                               forceRefresh: false))
+                                                                               forceRefresh: true))
     }
 
     func isFetchingChart() -> Bool {
