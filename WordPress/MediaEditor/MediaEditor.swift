@@ -112,7 +112,7 @@ public class MediaEditor: UINavigationController {
     private func prepareTransition() {
         let transition: CATransition = CATransition()
         transition.duration = 0.3
-        transition.type = CATransitionType.fade
+        transition.type = .fade
         view.layer.add(transition, forKey: nil)
     }
 
