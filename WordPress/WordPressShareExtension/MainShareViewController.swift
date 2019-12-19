@@ -49,8 +49,15 @@ private extension MainShareViewController {
         }
 
         let shareNavController = UINavigationController(rootViewController: editorController)
-        shareNavController.transitioningDelegate = extensionTransitioningManager
-        shareNavController.modalPresentationStyle = .custom
+
+        if #available(iOS 13, *) {
+            // iOS 13 has proper animations and presentations for share and action sheets.
+            // We just need to make sure we don't end up with stacked modal view controllers by using this:
+            shareNavController.modalPresentationStyle = .overFullScreen
+        } else {
+            shareNavController.transitioningDelegate = extensionTransitioningManager
+            shareNavController.modalPresentationStyle = .custom
+        }
 
         present(shareNavController, animated: true)
     }

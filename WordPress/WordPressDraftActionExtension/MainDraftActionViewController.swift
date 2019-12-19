@@ -21,6 +21,7 @@ class MainDraftActionViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        modalPresentationStyle = .overFullScreen
     }
 
     override open func viewDidLoad() {
@@ -35,13 +36,11 @@ class MainDraftActionViewController: UIViewController {
 
 private extension MainDraftActionViewController {
     func setupAppearance() {
-        self.view.backgroundColor = .white
         let navigationBarAppearace = UINavigationBar.appearance()
-        navigationBarAppearace.barTintColor = .listBackground
-        navigationBarAppearace.barStyle = .default
-        navigationBarAppearace.tintColor = .primary
-        navigationBarAppearace.titleTextAttributes = [.foregroundColor: UIColor.primary]
         navigationBarAppearace.isTranslucent = false
+        navigationBarAppearace.tintColor = .white
+        navigationBarAppearace.barTintColor = .appBar
+        navigationBarAppearace.barStyle = .default
     }
 
     func loadAndPresentNavigationVC() {
@@ -51,8 +50,14 @@ private extension MainDraftActionViewController {
         }
 
         let shareNavController = MainDraftNavigationController(rootViewController: modularController)
-        shareNavController.transitioningDelegate = extensionTransitioningManager
-        shareNavController.modalPresentationStyle = .custom
+        if #available(iOS 13, *) {
+            // iOS 13 has proper animations and presentations for share and action sheets.
+            // We just need to make sure we don't end up with stacked modal view controllers by using this:
+            shareNavController.modalPresentationStyle = .overFullScreen
+        } else {
+            shareNavController.transitioningDelegate = extensionTransitioningManager
+            shareNavController.modalPresentationStyle = .custom
+        }
         present(shareNavController, animated: !shareNavController.shouldFillContentContainer)
     }
 
