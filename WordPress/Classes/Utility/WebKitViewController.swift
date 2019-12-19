@@ -9,28 +9,36 @@ class WebKitViewController: UIViewController {
     @objc let titleView = NavigationTitleView()
 
     @objc lazy var backButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
+        let backButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
                                style: .plain,
                                target: self,
                                action: #selector(goBack))
+        backButton.accessibilityLabel = NSLocalizedString("Back", comment: "Button to go back one webpage in the webview.")
+        return backButton
     }()
     @objc lazy var forwardButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(),
+        let forwardButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(),
                                style: .plain,
                                target: self,
                                action: #selector(goForward))
+        backButton.accessibilityLabel = NSLocalizedString("Back", comment: "Button to go forward one webpage in the webview.")
+        return forwardButton
     }()
     @objc lazy var shareButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+        let shareButton = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
                                style: .plain,
                                target: self,
                                action: #selector(share))
+        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Button to share the current webpage using the Share Extension.")
+        return shareButton
     }()
     @objc lazy var safariButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.globe),
+        let safariButton = UIBarButtonItem(image: Gridicon.iconOfType(.globe),
                                style: .plain,
                                target: self,
                                action: #selector(openInSafari))
+        safariButton.accessibilityLabel = NSLocalizedString("Open in Safari", comment: "Button to open the current webpage in Safari.")
+        return safariButton
     }()
     @objc var customOptionsButton: UIBarButtonItem?
 
@@ -181,6 +189,7 @@ class WebKitViewController: UIViewController {
 
     private func setupRefreshButton() {
         let refreshButton = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
+        refreshButton.accessibilityLabel = NSLocalizedString("Refresh Webpage", comment: "Button to refresh the current webpage.")
         if let customOptionsButton = customOptionsButton {
             navigationItem.rightBarButtonItems = [refreshButton, customOptionsButton]
         } else if !secureInteraction {
@@ -190,7 +199,7 @@ class WebKitViewController: UIViewController {
 
     private func setupCloseButton() {
         let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
-        closeButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
+        closeButton.accessibilityLabel = NSLocalizedString("Dismiss Webview", comment: "Dismiss a view. Verb")
         navigationItem.leftBarButtonItem = closeButton
     }
 
