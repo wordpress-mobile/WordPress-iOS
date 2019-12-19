@@ -185,9 +185,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     self.blogListViewController = [[BlogListViewController alloc] init];
-    _blogListNavigationController = [[ManyDelegateNavigationController alloc] initWithRootViewController:self.blogListViewController];
+    _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     _blogListNavigationController.navigationBar.translucent = NO;
-    _blogListNavigationController.delegate = self.tourGuide.navigationWatcher;
 
     UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-mysites"];
     _blogListNavigationController.tabBarItem.image = mySitesTabBarImage;
@@ -210,10 +209,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        _readerNavigationController = [[ManyDelegateNavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
 
         _readerNavigationController.navigationBar.translucent = NO;
-        _readerNavigationController.delegate = self.tourGuide.navigationWatcher;
 
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
         _readerNavigationController.tabBarItem.image = readerTabBarImage;

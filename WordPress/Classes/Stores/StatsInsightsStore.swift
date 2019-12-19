@@ -52,7 +52,11 @@ struct InsightStoreState {
 
     // Other Blocks
 
-    var allTimeStats: StatsAllTimesInsight?
+    var allTimeStats: StatsAllTimesInsight? {
+        didSet {
+            storeAllTimeWidgetData()
+        }
+    }
     var allTimeStatus: StoreFetchingStatus = .idle
 
     var annualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?
@@ -938,19 +942,42 @@ extension StatsInsightsStore {
     }
 }
 
+// MARK: - Widget Data
+
 private extension InsightStoreState {
+
     func storeTodayWidgetData() {
+        guard widgetUsingCurrentSite() else {
+            return
+        }
+
+        let data = TodayWidgetStats(views: todaysStats?.viewsCount,
+                                    visitors: todaysStats?.visitorsCount,
+                                    likes: todaysStats?.likesCount,
+                                    comments: todaysStats?.commentsCount)
+        data.saveData()
+    }
+
+    func storeAllTimeWidgetData() {
+        guard widgetUsingCurrentSite() else {
+            return
+        }
+
+        let data = AllTimeWidgetStats(views: allTimeStats?.viewsCount,
+                                    visitors: allTimeStats?.visitorsCount,
+                                    posts: allTimeStats?.postsCount,
+                                    bestViews: allTimeStats?.bestViewsPerDayCount)
+        data.saveData()
+    }
+
+    func widgetUsingCurrentSite() -> Bool {
         // Only store data if the widget is using the current site
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
             let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
             widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
-                return
+                return false
         }
-
-        let data = TodayWidgetStats(views: todaysStats?.viewsCount ?? 0,
-                                    visitors: todaysStats?.visitorsCount ?? 0,
-                                    likes: todaysStats?.likesCount ?? 0,
-                                    comments: todaysStats?.commentsCount ?? 0)
-        data.saveData()
+        return true
     }
+
 }

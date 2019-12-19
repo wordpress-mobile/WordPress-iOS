@@ -68,6 +68,10 @@ extension WPStyleGuide {
         navigationBarAppearanceProxy.barStyle = .default
         navigationBarAppearanceProxy.barTintColor = .white
 
+        navigationBarAppearanceProxy.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.text
+        ]
+
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.backgroundColor = .systemBackground
