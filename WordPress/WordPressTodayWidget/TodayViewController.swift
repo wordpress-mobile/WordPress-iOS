@@ -105,7 +105,7 @@ extension TodayViewController: NCWidgetProviding {
         }
 
         tracks.trackExtensionAccessed()
-        fetchData()
+        fetchData(completionHandler: completionHandler)
     }
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
@@ -155,7 +155,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard !isConfigured,
             let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
-            return UITableView.automaticDimension
+                return UITableView.automaticDimension
         }
 
         // Use the max compact height for unconfigured view.
@@ -231,7 +231,7 @@ private extension TodayViewController {
         statsValues?.saveData()
     }
 
-    func fetchData() {
+    func fetchData(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         guard let statsRemote = statsRemote() else {
             return
         }
@@ -239,18 +239,20 @@ private extension TodayViewController {
         statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
             if error != nil {
                 DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
+                completionHandler(NCUpdateResult.failed)
                 return
             }
 
             DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
 
             DispatchQueue.main.async {
-                self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount ?? 0,
-                                                    visitors: todayInsight?.visitorsCount ?? 0,
-                                                    likes: todayInsight?.likesCount ?? 0,
-                                                    comments: todayInsight?.commentsCount ?? 0)
+                self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount,
+                                                    visitors: todayInsight?.visitorsCount,
+                                                    likes: todayInsight?.likesCount,
+                                                    comments: todayInsight?.commentsCount)
                 self.tableView.reloadData()
             }
+            completionHandler(NCUpdateResult.newData)
         }
     }
 
@@ -286,6 +288,7 @@ private extension TodayViewController {
             return UITableViewCell()
         }
 
+        cell.configure(for: .today)
         return cell
     }
 
@@ -343,7 +346,7 @@ private extension TodayViewController {
     // MARK: - Helpers
 
     func displayString(for value: Int) -> String {
-        return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
+        return numberFormatter.string(from: NSNumber(value: value)) ?? String(value)
     }
 
     func updateStatsLabels() {

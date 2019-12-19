@@ -36,7 +36,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var bgTask: UIBackgroundTaskIdentifier? = nil
 
     private var shouldRestoreApplicationState = false
-    private var uploadsManager: UploadsManager = {
+    private lazy var uploadsManager: UploadsManager = {
+        // This is intentionally a `lazy var` to prevent `PostCoordinator.shared` (below) from
+        // triggering an initialization of `ContextManager.shared.mainContext` during the
+        // initialization of this class. This is so any track events in `mainContext`
+        // (e.g. by `NullBlogPropertySanitizer`) will be recorded properly.
+
         // It's not great that we're using singletons here.  This change is a good opportunity to
         // revisit if we can make the coordinators children to another owning object.
         //
@@ -666,11 +671,9 @@ extension WordPressAppDelegate {
     }
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
-        let rawLevel = Int32(level.rawValue)
-
-        WPSharedSetLoggingLevel(rawLevel)
-        TracksSetLoggingLevel(rawLevel)
-        WPAuthenticatorSetLoggingLevel(rawLevel)
+        WPSharedSetLoggingLevel(level)
+        TracksSetLoggingLevel(level)
+        WPAuthenticatorSetLoggingLevel(level)
     }
 }
 
