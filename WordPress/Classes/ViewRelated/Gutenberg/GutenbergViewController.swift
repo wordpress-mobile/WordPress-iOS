@@ -554,9 +554,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestFullscreenImage(with mediaUrl: URL) {
+    func gutenbergDidRequestImagePreview(with fullSizeUrl: URL, thumbUrl: URL?) {
         navigationController?.definesPresentationContext = true
-        let controller = WPImageViewController(externalMediaURL: mediaUrl)
+        let controller = WPImageViewController(externalMediaURL: fullSizeUrl)
         controller.post = self.post
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .overCurrentContext
