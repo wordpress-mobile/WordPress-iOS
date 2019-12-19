@@ -56,6 +56,12 @@ class MainShareViewController: UIViewController {
 
 private extension MainShareViewController {
     func setupAppearance() {
+
+        if editorController.originatingExtension == .saveToDraft {
+            // This should probably be showing over current context but this just matches previous behavior
+            view.backgroundColor = .basicBackground
+        }
+
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.isTranslucent = false
         navigationBarAppearace.tintColor = .white
