@@ -18,6 +18,13 @@ class WidgetDifferenceCell: UITableViewCell {
         return formatter
     }()
 
+    private var percentFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.positivePrefix = "+"
+        return formatter
+    }()
+
     private var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.setLocalizedDateFormatFromTemplate("MMM d, yyyy")
@@ -64,10 +71,7 @@ private extension WidgetDifferenceCell {
         }
 
         dataLabel.text = numberFormatter.string(from: NSNumber(value: day.viewsCount)) ?? String(day.viewsCount)
-
-        differenceLabel.text = String.localizedStringWithFormat(Constants.percentFormat,
-                                                                day.dailyChangePercent < 0 ? "" : "+",
-                                                                String(day.dailyChangePercent))
+        differenceLabel.text = percentFormatter.string(for: day.dailyChangePercent)
 
         guard !isToday else {
             dateLabel.text = Constants.today
@@ -82,7 +86,6 @@ private extension WidgetDifferenceCell {
     enum Constants {
         static let noDataLabel = "-"
         static let cornerRadius: CGFloat = 4.0
-        static let percentFormat = NSLocalizedString("%@%@%%", comment: "Difference label indicating change from previous day. Ex: +5%")
         static let today = NSLocalizedString("Today", comment: "Label for most recent stat row.")
         static let positiveColor = UIColor.success
         static let negativeColor = UIColor.error
