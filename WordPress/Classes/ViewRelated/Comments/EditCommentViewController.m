@@ -22,8 +22,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 #pragma mark ==========================================================================================
 
 @interface EditCommentViewController()
-
-@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView *textView;
+@property (readwrite, nonatomic, weak) IBOutlet UITextView     *textView;
 @property (nonatomic, strong) NSString *pristineText;
 @property (nonatomic, assign) CGRect   keyboardFrame;
 
@@ -41,11 +40,35 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 #pragma mark - Static Helpers
 
-+ (instancetype)newEditViewController
+/// Tries to determine the correct nibName to use when init'ing
+/// If the current class's nib doesn't exist, then we'll use the parent class
++ (NSString *)nibName
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
+  Class current = [self class];
+
+  //We use nib because the bundle won't look for xib's
+  BOOL nibExists = [[NSBundle mainBundle] pathForResource:NSStringFromClass(current) ofType:@"nib"] ? YES : NO;
+
+  if(!nibExists){
+    current = [self superclass];
+  }
+
+  nibExists = [[NSBundle mainBundle] pathForResource:NSStringFromClass(current) ofType:@"nib"] ? YES : NO;
+
+  if(!nibExists){
+    return nil;
+  }
+
+  return NSStringFromClass(current);
 }
 
+
++ (instancetype)newEditViewController
+{
+    NSString *xibName = [[self class] nibName];
+    
+    return [[[self class] alloc] initWithNibName:xibName bundle:nil];
+}
 
 #pragma mark - Lifecycle
 
@@ -91,6 +114,11 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     [self.textView resignFirstResponder];
 }
 
+#pragma mark - Public
+- (void)contentDidChange
+{
+    [self enableSaveIfNeeded];
+}
 
 #pragma mark - View Helpers
 
@@ -128,7 +156,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     self.navigationItem.rightBarButtonItem.enabled = self.hasChanges;
 }
 
-
 #pragma mark - KeyboardNotification Methods
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
@@ -161,7 +188,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self enableSaveIfNeeded];
+    [self contentDidChange];
 }
 
 #pragma mark - Button Delegates

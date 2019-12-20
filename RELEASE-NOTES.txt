@@ -1,6 +1,9 @@
 14.0
 -----
 * Stats: Updated default cards for the Insights view.
+* Fixed a bug that displayed incorrect time stamps for scheduled posts.
+* Post Settings: Added a new Calendar picker to select a Post's publish date
+* Fixed bugs with the "Save as Draft" action extension's navigation bar colors and iPad sizing in iOS 13.
 
 13.9
 -----
@@ -9,9 +12,9 @@
 * Block Editor: Fix crash dismissing bottom-sheet after device rotation.
 * Block Editor: Add support for changing Settings in the List Block.
 * Block Editor: Add support for Video block settings.
-
+* Comment: Add ability to comment in fullscreen
 * Quick Start: fixed issue that caused 'Follow other sites' tour to not be marked complete.
- 
+
 13.8
 -----
 * When a post has an autosave, the autosave version can be loaded into the editor.

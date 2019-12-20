@@ -92,6 +92,8 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) NoResultsViewController *noResultsView;
 @property (nonatomic, strong) NSObject *mediaLibraryChangeObserverKey;
 
+@property (nonatomic, strong) NSDateFormatter *postDateFormatter;
+
 #pragma mark - Properties: Services
 
 @property (nonatomic, strong, readonly) BlogService *blogService;
@@ -161,6 +163,8 @@ FeaturedImageViewControllerDelegate>
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     _blogService = [[BlogService alloc] initWithManagedObjectContext:mainContext];
     _locationService = [LocationService sharedService];
+    
+    [self setupPostDateFormatter];
     
     // It's recommended to keep this call near the end of the initial setup, since we don't want
     // reachability callbacks to trigger before such initial setup completes.
@@ -254,6 +258,15 @@ FeaturedImageViewControllerDelegate>
     };
     
     [self.internetReachability startNotifier];
+}
+
+- (void)setupPostDateFormatter
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateStyle = NSDateFormatterLongStyle;
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    dateFormatter.timeZone = [self.blogService timeZoneForBlog:self.apost.blog];
+    self.postDateFormatter = dateFormatter;
 }
 
 #pragma mark - Reachability handling
@@ -646,8 +659,8 @@ FeaturedImageViewControllerDelegate>
             } else {
                 cell.textLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
             }
-
-            cell.detailTextLabel.text = [self.apost.dateCreated shortStringWithTime];
+            
+            cell.detailTextLabel.text = [self.postDateFormatter stringFromDate:self.apost.dateCreated];
         } else {
             cell.textLabel.text = NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
