@@ -583,6 +583,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post.postTitle ?? ""
     }
 
+    func gutenbergPostType() -> String {
+        return post is Page ? "page" : "post"
+    }
+
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
         return attachmentDelegate
     }
