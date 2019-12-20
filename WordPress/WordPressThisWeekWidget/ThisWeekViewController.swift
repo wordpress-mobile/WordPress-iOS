@@ -1,44 +1,74 @@
 import UIKit
 import NotificationCenter
 import WordPressKit
+import WordPressUI
 
 class ThisWeekViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var statsValues: ThisWeekWidgetStats? {
-        // TODO: for testing only. Remove when UI added.
-        didSet {
-            print("🔴 siteUrl: ", siteUrl)
-            print("🔴 statsValues: ", statsValues)
-        }
-    }
+    @IBOutlet private var tableView: UITableView!
 
+    private var siteUrl: String = Constants.noDataLabel
+    private var statsValues: ThisWeekWidgetStats?
     private var siteID: NSNumber?
     private var timeZone: TimeZone?
     private var oauthToken: String?
-
-    private var siteUrl: String = Constants.noDataLabel
-
-    private var isConfigured = false
-
     private let tracks = Tracks(appGroupName: WPAppGroupName)
+
+    private var haveSiteUrl: Bool {
+        siteUrl != Constants.noDataLabel
+    }
+
+    private var isConfigured = false {
+        didSet {
+            // If unconfigured, don't allow the widget to be expanded/compacted.
+            extensionContext?.widgetLargestAvailableDisplayMode = isConfigured ? .expanded : .compact
+        }
+    }
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         retrieveSiteConfiguration()
+        registerTableCells()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadSavedData()
+        resizeView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         saveData()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        let updatedRowCount = numberOfRowsToDisplay()
+        let rowDifference = abs(updatedRowCount - tableView.numberOfRows(inSection: 0))
+
+        // If the number of rows has not changed, do nothing.
+        guard rowDifference != 0,
+        let statsValues = statsValues else {
+            return
+        }
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.performBatchUpdates({
+                // Create IndexPaths for rows to be inserted / deleted.
+                let indexRange = (Constants.minRows..<statsValues.days.endIndex)
+                let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
+
+                updatedRowCount > Constants.minRows ?
+                    self.tableView.insertRows(at: indexPaths, with: .fade) :
+                    self.tableView.deleteRows(at: indexPaths, with: .fade)
+            })
+        })
     }
 
 }
@@ -54,7 +84,7 @@ extension ThisWeekViewController: NCWidgetProviding {
             DDLogError("This Week Widget: Missing site ID, timeZone or oauth2Token")
 
             DispatchQueue.main.async {
-                // TODO: reload table here
+                self.tableView.reloadData()
             }
 
             completionHandler(NCUpdateResult.failed)
@@ -65,11 +95,91 @@ extension ThisWeekViewController: NCWidgetProviding {
         fetchData(completionHandler: completionHandler)
     }
 
+    func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+        tracks.trackDisplayModeChanged(properties: ["expanded": activeDisplayMode == .expanded])
+        resizeView(withMaximumSize: maxSize)
+    }
+
+}
+
+// MARK: - Table View Methods
+
+extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return numberOfRowsToDisplay()
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard isConfigured else {
+            return unconfiguredCellFor(indexPath: indexPath)
+        }
+
+        return statCellFor(indexPath: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard showFooter(),
+            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
+                return nil
+        }
+
+
+        footer.configure(siteUrl: siteUrl)
+        footer.frame.size.height = Constants.footerHeight
+        return footer
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if !showFooter() {
+            return 0
+        }
+
+        return Constants.footerHeight
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard !isConfigured,
+            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
+                return UITableView.automaticDimension
+        }
+
+        // Use the max compact height for unconfigured view.
+        return maxCompactSize.height
+    }
+
 }
 
 // MARK: - Private Extension
 
 private extension ThisWeekViewController {
+
+    // MARK: - Launch Containing App
+
+    @IBAction func launchContainingApp() {
+        guard let extensionContext = extensionContext,
+            let containingAppURL = appURL() else {
+                DDLogError("This Week Widget: Unable to get extensionContext or appURL.")
+                return
+        }
+
+        trackAppLaunch()
+        extensionContext.open(containingAppURL, completionHandler: nil)
+    }
+
+    func appURL() -> URL? {
+        let urlString = (siteID != nil) ? (Constants.statsUrl + siteID!.stringValue) : Constants.baseUrl
+        return URL(string: urlString)
+    }
+
+    func trackAppLaunch() {
+        guard let siteID = siteID else {
+            tracks.trackExtensionConfigureLaunched()
+            return
+        }
+
+        tracks.trackExtensionStatsLaunched(siteID.intValue)
+    }
 
     // MARK: - Site Configuration
 
@@ -129,7 +239,7 @@ private extension ThisWeekViewController {
             DispatchQueue.main.async {
                 let summaryData = summary?.summaryData.reversed() ?? []
                 self.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
-                // TODO: reload table here
+                self.tableView.reloadData()
             }
             completionHandler(NCUpdateResult.newData)
         }
@@ -149,10 +259,90 @@ private extension ThisWeekViewController {
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
     }
 
+    // MARK: - Table Helpers
+
+    func registerTableCells() {
+        let differenceCellNib = UINib(nibName: String(describing: WidgetDifferenceCell.self), bundle: Bundle(for: WidgetDifferenceCell.self))
+        tableView.register(differenceCellNib, forCellReuseIdentifier: WidgetDifferenceCell.reuseIdentifier)
+
+        let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
+        tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
+
+        let footerNib = UINib(nibName: String(describing: WidgetFooterView.self), bundle: Bundle(for: WidgetFooterView.self))
+        tableView.register(footerNib, forHeaderFooterViewReuseIdentifier: WidgetFooterView.reuseIdentifier)
+    }
+
+    func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetUnconfiguredCell.reuseIdentifier, for: indexPath) as? WidgetUnconfiguredCell else {
+            return UITableViewCell()
+        }
+
+        cell.configure(for: .thisWeek)
+        return cell
+    }
+
+    func statCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetDifferenceCell.reuseIdentifier, for: indexPath) as? WidgetDifferenceCell else {
+            return UITableViewCell()
+        }
+
+        guard let statsValues = statsValues,
+            indexPath.row < statsValues.days.endIndex else {
+            cell.configure()
+            return cell
+        }
+
+        cell.configure(day: statsValues.days[indexPath.row],
+                       isToday: indexPath.row == 0,
+                       hideSeparator: indexPath.row == (numberOfRowsToDisplay() - 1))
+
+        return cell
+    }
+
+    func showFooter() -> Bool {
+        return (extensionContext?.widgetActiveDisplayMode == .expanded && isConfigured && haveSiteUrl)
+    }
+
+    // MARK: - Expand / Compact View Helpers
+
+    func numberOfRowsToDisplay() -> Int {
+        if !isConfigured || extensionContext?.widgetActiveDisplayMode == .compact {
+            return Constants.minRows
+        }
+
+        return statsValues?.days.count ?? Constants.minRows
+    }
+
+    func resizeView(withMaximumSize size: CGSize? = nil) {
+        guard let maxSize = size ?? extensionContext?.widgetMaximumSize(for: .compact) else {
+            return
+        }
+
+        let expanded = extensionContext?.widgetActiveDisplayMode == .expanded
+        preferredContentSize = expanded ? CGSize(width: maxSize.width, height: expandedHeight()) : maxSize
+    }
+
+    func expandedHeight() -> CGFloat {
+        var height: CGFloat = 0
+
+        if showFooter() {
+            height += tableView.footerView(forSection: 0)?.frame.height ?? Constants.footerHeight
+        }
+
+        let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
+
+        return height
+    }
+
     // MARK: - Constants
 
     enum Constants {
         static let noDataLabel = "-"
+        static let baseUrl: String = "\(WPComScheme)://"
+        static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
+        static let minRows: Int = 2
+        static let footerHeight: CGFloat = 32
     }
 
 }

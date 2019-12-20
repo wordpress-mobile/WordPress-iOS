@@ -132,8 +132,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard haveSiteUrl,
-            isConfigured,
+        guard showFooter(),
             let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
                 return nil
         }
@@ -145,7 +144,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if !isConfigured || !haveSiteUrl {
+        if !showFooter() {
             return 0
         }
 
@@ -312,6 +311,10 @@ private extension TodayViewController {
         return cell
     }
 
+    func showFooter() -> Bool {
+        return (isConfigured && haveSiteUrl)
+    }
+
     // MARK: - Expand / Compact View Helpers
 
     func numberOfRowsToDisplay() -> Int {
@@ -334,7 +337,7 @@ private extension TodayViewController {
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
 
-        if haveSiteUrl {
+        if showFooter() {
             height += tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
         }
 

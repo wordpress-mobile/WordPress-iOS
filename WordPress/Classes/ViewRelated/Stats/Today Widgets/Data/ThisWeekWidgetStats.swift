@@ -17,12 +17,12 @@ struct ThisWeekWidgetStats: Codable {
 struct ThisWeekWidgetDay: Codable {
     let date: Date
     let viewsCount: Int
-    let dailyChange: Int
+    let dailyChangePercent: Float
 
-    init(date: Date, viewsCount: Int, dailyChange: Int) {
+    init(date: Date, viewsCount: Int, dailyChangePercent: Float) {
         self.date = date
         self.viewsCount = viewsCount
-        self.dailyChange = dailyChange
+        self.dailyChangePercent = dailyChangePercent
     }
 }
 
@@ -75,12 +75,19 @@ extension ThisWeekWidgetStats {
             }
 
             let currentDay = summaryData[index]
-            let previousDay = summaryData[index + 1]
-            let dailyChange = currentDay.viewsCount - previousDay.viewsCount
+            let previousDayCount = summaryData[index + 1].viewsCount
+            let difference = currentDay.viewsCount - previousDayCount
+
+            let dailyChangePercent: Float = {
+                if previousDayCount > 0 {
+                    return (Float(difference) / Float(previousDayCount))
+                }
+                return 0
+            }()
 
             let widgetData = ThisWeekWidgetDay(date: currentDay.periodStartDate,
                                                viewsCount: currentDay.viewsCount,
-                                               dailyChange: dailyChange)
+                                               dailyChangePercent: dailyChangePercent)
             days.append(widgetData)
         }
 
