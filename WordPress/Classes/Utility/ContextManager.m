@@ -87,6 +87,7 @@ static ContextManager *_override;
         NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         context.parentContext = self.writerContext;
         self.mainContext = context;
+        [[[NullBlogPropertySanitizer alloc] initWithContext:context] sanitize];
     });
 
     return _mainContext;

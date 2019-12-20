@@ -30,7 +30,7 @@ enum FeatureFlag: Int, CaseIterable {
             }
             return true
         case .postScheduling:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper,
                                                   .a8cBranchTest]
