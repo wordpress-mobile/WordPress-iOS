@@ -117,9 +117,8 @@ class ReblogPresenterTests: ReblogTestCase {
 
     func testPresentEditorForMultipleSites() {
         // Given
-        postService!.draftPostExpectation = expectation(description: "createDraftPost was called")
         blogService!.lastUsedOrFirstBlogExpectation = expectation(description: "lastUsedOrFirstBlog was called")
-        blogService?.blogCount = 2
+        blogService!.blogCount = 2
         let presenter = ReaderReblogPresenter(postService: postService!)
         // When
         presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())

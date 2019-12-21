@@ -9,20 +9,21 @@ typedef void (^BlogSelectorDismissHandler)(void);
 
 @interface BlogSelectorViewController : UITableViewController
 
-- (instancetype)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
-                              successHandler:(BlogSelectorSuccessHandler)successHandler
+- (instancetype)initWithSelectedBlogObjectID:(nullable NSManagedObjectID *)objectID
+                              successHandler:(nullable BlogSelectorSuccessHandler)successHandler
                               dismissHandler:(nullable BlogSelectorDismissHandler)dismissHandler;
 
 - (instancetype)initWithSelectedBlogDotComID:(nullable NSNumber *)dotComID
                               successHandler:(BlogSelectorSuccessDotComHandler)successHandler
                               dismissHandler:(nullable BlogSelectorDismissHandler)dismissHandler;
 
-@property (nonatomic, assign) BOOL displaysPrimaryBlogOnTop;
 @property (nonatomic, assign) BOOL displaysOnlyDefaultAccountSites;
 @property (nonatomic, assign) BOOL displaysNavigationBarWhenSearching;
 @property (nonatomic, assign) BOOL displaysCancelButton;
 @property (nonatomic, assign) BOOL dismissOnCancellation;
 @property (nonatomic, assign) BOOL dismissOnCompletion;
+
+@property (nonatomic, copy) BlogSelectorSuccessHandler successHandler;
 
 @end
 
