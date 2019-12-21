@@ -1,18 +1,6 @@
 import Foundation
 import WordPressShared
 import Gridicons
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
 
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
@@ -79,12 +67,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate var isSmallWidth: Bool {
         let width = superview?.frame.width ?? 0
         return  width <= 320
-    }
-    fileprivate var isMediumWidth: Bool {
-        return superview?.frame.width < 480
-    }
-    fileprivate var isBigWidth: Bool {
-        return !isMediumWidth
     }
 
     // MARK: - Accessors
@@ -513,10 +495,9 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate var shouldShowReblogActionButton: Bool {
-        // reblog button is hidden if there's no content or no logged in user
+        // reblog button is hidden if there's no content
         guard FeatureFlag.postReblogging.enabled,
-            contentProvider != nil,
-            loggedInActionVisibility.isEnabled else {
+            contentProvider != nil else {
             return false
         }
         return true
@@ -530,7 +511,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         let likeCount = provider.likeCount()?.intValue ?? 0
         let commentCount = provider.commentCount()?.intValue ?? 0
 
-        if !isBigWidth {
+        if self.traitCollection.horizontalSizeClass == .compact {
             // remove title text
             let likeTitle = likeCount > 0 ?  String(likeCount) : ""
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
@@ -630,9 +611,9 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
 
         switch tag {
-        case .comment :
+        case .comment:
             delegate?.readerCell(self, commentActionForProvider: contentProvider)
-        case .like :
+        case .like:
             delegate?.readerCell(self, likeActionForProvider: contentProvider)
         case .reblog:
             delegate?.readerCell(self, reblogActionForProvider: contentProvider)
