@@ -651,6 +651,13 @@ extension NotificationsViewController {
     private func showDetails(for note: Notification) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
+        // Before trying to show the details of a notification, we need to make sure the view is loaded.
+        //
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/12669#issuecomment-561579415
+        // Ref: https://sentry.io/organizations/a8c/issues/1329631657/?query=is%3Aunresolved
+        //
+        loadViewIfNeeded()
+
         /// Note: markAsRead should be the *first* thing we do. This triggers a context save, and may have many side effects that
         /// could affect the OP's that go below!!!.
         ///
