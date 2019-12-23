@@ -654,7 +654,7 @@ extension NotificationsViewController {
         // Before trying to show the details of a notification, we need to make sure the view is loaded.
         //
         // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/12669#issuecomment-561579415
-        // Ref: https://sentry.io/organizations/a8c/issues/1329631657/?query=is%3Aunresolved
+        // Ref: https://sentry.io/organizations/a8c/issues/1329631657/
         //
         loadViewIfNeeded()
 
