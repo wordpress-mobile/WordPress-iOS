@@ -111,7 +111,7 @@ public class MediaEditor: UINavigationController {
 
     private func prepareTransition() {
         let transition: CATransition = CATransition()
-        transition.duration = 0.3
+        transition.duration = Constants.transitionDuration
         transition.type = .fade
         view.layer.add(transition, forKey: nil)
     }
@@ -148,5 +148,9 @@ public class MediaEditor: UINavigationController {
 
     private func hideActivityIndicator() {
         hub.hideActivityIndicator()
+    }
+
+    private enum Constants {
+        static let transitionDuration = 0.3
     }
 }
