@@ -117,7 +117,7 @@ public class MediaEditor: UINavigationController {
     }
 
     private func thumbnailAvailable(_ thumb: UIImage?) {
-        guard let thumb = thumb else {
+        guard let thumb = thumb, image == nil else {
             return
         }
 
