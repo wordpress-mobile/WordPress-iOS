@@ -2,7 +2,7 @@
 -----
 * Fixed a bug that displayed incorrect time stamps for scheduled posts.
 * Post Settings: Added a new Calendar picker to select a Post's publish date
- 
+
 13.9
 -----
 * Stats: added a Today widget to display All-Time stats.
@@ -12,6 +12,7 @@
 * Block Editor: Add support for Video block settings.
 * Comment: Add ability to comment in fullscreen
 * Quick Start: fixed issue that caused 'Follow other sites' tour to not be marked complete.
+* Fixed a bug that was causing the App to crash when the user tapped on certain notifications.
 
 13.8
 -----
