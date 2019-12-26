@@ -71,6 +71,7 @@ class GutenbergImgUploadProcessor: Processor {
             mediaID == self.mediaUploadID else {
                 return nil
         }
+        
         var block = "<!-- wp:media-text "
         var attributes = imgBlock.attributes
         attributes["mediaId"] = self.serverMediaID

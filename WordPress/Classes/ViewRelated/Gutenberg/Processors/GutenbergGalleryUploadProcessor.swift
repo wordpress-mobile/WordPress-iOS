@@ -130,6 +130,7 @@ class GutenbergGalleryUploadProcessor: Processor {
         if let index = ids.firstIndex(of: self.mediaUploadID ) {
             ids[index] = Int32(self.serverMediaID)
         }
+        
         attributes[GalleryBlockKeys.ids] = ids
 
         if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),

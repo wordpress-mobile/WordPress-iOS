@@ -17,14 +17,13 @@ class GutenbergVideoUploadProcessor: Processor {
         var attributes = video.attributes
 
         attributes.set(.string(self.remoteURLString), forKey: "src")
-
         var html = "<video "
         let attributeSerializer = ShortcodeAttributeSerializer()
         html += attributeSerializer.serialize(attributes)
         html += "></video>"
         return html
     })
-
+    
     private struct VideoBlockKeys {
         static var name = "wp:video"
         static var id = "id"
