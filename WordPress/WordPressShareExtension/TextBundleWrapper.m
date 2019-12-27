@@ -193,7 +193,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
 
 - (NSString *)textFilenameForType:(NSString *)type
 {
-    NSString *ext = (__bridge NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)type, kUTTagClassFilenameExtension);
+    NSString *ext = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)type, kUTTagClassFilenameExtension);
     return [@"text" stringByAppendingPathExtension:ext];
 }
 
