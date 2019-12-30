@@ -11,4 +11,5 @@ public enum MediaEditorStyle {
     case cancelIcon
     case rotateClockwiseIcon
     case rotateCounterclockwiseButtonHidden
+    case loadingLabel
 }

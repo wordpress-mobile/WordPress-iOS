@@ -7,6 +7,12 @@ import Nimble
 class MediaEditorTests: XCTestCase {
     private let image = UIImage()
 
+    private var hub: MediaEditorHub {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        _ = hub.view
+        return hub
+    }
+
     override class func setUp() {
         super.setUp()
         MediaEditor.capabilities = [MockCapability.self]
@@ -78,6 +84,107 @@ class MediaEditorTests: XCTestCase {
         expect(didCallOnFinishEditing).to(beTrue())
     }
 
+    // WHEN: Async image + one single capability
+
+    func testRequestThumbAndFullImageQuality() {
+        let asyncImage = AsyncImageMock()
+
+        _ = MediaEditor(asyncImage)
+
+        expect(asyncImage.didCallThumbnail).to(beTrue())
+        expect(asyncImage.didCallFull).to(beTrue())
+    }
+
+    func testIfThumbnailIsAvailableShowItInHub() {
+        let asyncImage = AsyncImageMock()
+        asyncImage.thumb = UIImage()
+
+        let mediaEditor = MediaEditor(asyncImage)
+
+        expect(mediaEditor.hub.imageView.image).to(equal(asyncImage.thumb))
+    }
+
+    func testDoNotRequestThumbnailIfOneIsGiven() {
+        let asyncImage = AsyncImageMock()
+        asyncImage.thumb = UIImage()
+
+        _ = MediaEditor(asyncImage)
+
+        expect(asyncImage.didCallFull).to(beTrue())
+        expect(asyncImage.didCallThumbnail).to(beFalse())
+    }
+
+    func testShowActivityIndicatorWhenLoadingImage() {
+        let asyncImage = AsyncImageMock()
+        asyncImage.thumb = UIImage()
+
+        let mediaEditor = MediaEditor(asyncImage)
+
+        expect(mediaEditor.hub.activityIndicatorView.isHidden).to(beFalse())
+    }
+
+    func testWhenThumbnailIsAvailableShowItInHub() {
+        let asyncImage = AsyncImageMock()
+        let thumb = UIImage()
+        let mediaEditor = MediaEditor(asyncImage)
+
+        asyncImage.simulate(thumbHasBeenDownloaded: thumb)
+
+        expect(mediaEditor.hub.imageView.image).toEventually(equal(thumb))
+    }
+
+    func testWhenFullImageIsAvailableShowItInHub() {
+        let asyncImage = AsyncImageMock()
+        let fullImage = UIImage()
+        let mediaEditor = MediaEditor(asyncImage)
+
+        asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
+
+        expect(mediaEditor.hub.imageView.image).toEventually(equal(fullImage))
+    }
+
+    func testWhenFullImageIsAvailableHideActivityIndicatorView() {
+        let asyncImage = AsyncImageMock()
+        let fullImage = UIImage()
+        let mediaEditor = MediaEditor(asyncImage)
+
+        asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
+
+        expect(mediaEditor.hub.activityIndicatorView.isHidden).toEventually(beTrue())
+    }
+
+    func testPresentCapabilityAfterFullImageIsAvailable() {
+        let asyncImage = AsyncImageMock()
+        let fullImage = UIImage()
+        let mediaEditor = MediaEditor(asyncImage)
+
+        asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
+
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.currentCapability?.viewController))
+    }
+
+    func testCallCancelOnAsyncImageWhenUserCancel() {
+        let asyncImage = AsyncImageMock()
+        let mediaEditor = MediaEditor(asyncImage)
+
+        mediaEditor.hub.cancelButton.sendActions(for: .touchUpInside)
+
+        expect(asyncImage.didCallCancel).to(beTrue())
+    }
+
+    func testDoNotDisplayThumbnailIfFullImageIsAlreadyVisible() {
+        let asyncImage = AsyncImageMock()
+        let fullImage = UIImage(color: .white)!
+        let thumbImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor(asyncImage)
+
+        asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
+        asyncImage.simulate(thumbHasBeenDownloaded: thumbImage)
+
+        expect(mediaEditor.hub.imageView.image).toEventually(equal(fullImage))
+        expect(mediaEditor.hub.imageView.image).toEventuallyNot(equal(thumbImage))
+    }
 }
 
 class MockCapability: MediaEditorCapability {
@@ -101,6 +208,39 @@ class MockCapability: MediaEditorCapability {
 
     func apply(styles: MediaEditorStyles) {
         applyCalled = true
+    }
+}
+
+private class AsyncImageMock: AsyncImage {
+    var didCallThumbnail = false
+    var didCallFull = false
+    var didCallCancel = false
+
+    var finishedRetrievingThumbnail: ((UIImage?) -> ())?
+    var finishedRetrievingFullImage: ((UIImage?) -> ())?
+
+    var thumb: UIImage?
+
+    func thumbnail(finishedRetrievingThumbnail: @escaping (UIImage?) -> ()) {
+        didCallThumbnail = true
+        self.finishedRetrievingThumbnail = finishedRetrievingThumbnail
+    }
+
+    func full(finishedRetrievingFullImage: @escaping (UIImage?) -> ()) {
+        didCallFull = true
+        self.finishedRetrievingFullImage = finishedRetrievingFullImage
+    }
+
+    func cancel() {
+        didCallCancel = true
+    }
+
+    func simulate(thumbHasBeenDownloaded thumb: UIImage) {
+        finishedRetrievingThumbnail?(thumb)
+    }
+
+    func simulate(fullImageHasBeenDownloaded image: UIImage) {
+        finishedRetrievingFullImage?(image)
     }
 }
 
