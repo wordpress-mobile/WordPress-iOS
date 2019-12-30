@@ -206,7 +206,7 @@ final class ReaderPostCardCellTests: XCTestCase {
         XCTAssertFalse(button.isHidden, "Reblog button should be visible.")
     }
 
-    func testReblobButtonNotVisibleWithNoLoggedInUser() {
+    func testReblogButtonVisibleWithNoLoggedInUser() {
         guard FeatureFlag.postReblogging.enabled else {
             return
         }
@@ -217,6 +217,6 @@ final class ReaderPostCardCellTests: XCTestCase {
             XCTFail("Reblog button not found.")
             return
         }
-        XCTAssertTrue(button.isHidden, "Reblog button should not be visible.")
+        XCTAssertFalse(button.isHidden, "Reblog button should not be visible.")
     }
 }

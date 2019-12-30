@@ -51,7 +51,7 @@ class ReaderReblogPresenter {
 }
 
 
-//  MARK: - Blog Picker
+// MARK: - Blog Picker
 private extension ReaderReblogPresenter {
     /// presents the blog picker before the editor, for users with multiple sites
     func presentBlogPicker(from origin: UIViewController,
