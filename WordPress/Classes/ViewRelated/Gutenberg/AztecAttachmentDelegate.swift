@@ -37,7 +37,7 @@ class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
-        return mediaUtility.placeholderImage(for: attachment, size: Constants.mediaPlaceholderImageSize)
+        return mediaUtility.placeholderImage(for: attachment, size: Constants.mediaPlaceholderImageSize, tintColor: textView.textColor)
     }
 
     func textView(_ textView: TextView, deletedAttachment attachment: MediaAttachment) {

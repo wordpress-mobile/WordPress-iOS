@@ -1,3 +1,4 @@
-- Lots of updates to the mobile block editor in this release give you a bunch of new design and layout tools. Expand the visuals in your posts with the options to insert images from either the Free Photo Library or from other apps. You can also align paragraph blocks now, and the editor supports the preformatted block. And we took care of a small but annoying keyboard glitch that caused hiccups with capitalization in some sentences.
-- The Stats Today widget got an updated design, and you can expand it to display likes and comments along with viewer stats.
-- We found a bug that makes comment moderation on self-hosted sites fail on the first attempt, and then we fixed that bug. Nothing to see here!
+- We know that your website is a passion project and you never really look at your stats because they’re totally not important. But just in case, we added a Today widget you can use to display all-time stats.
+- The block editor has more goodies: you’ll find a Gallery block for making multi-image galleries from files in your Media Library, and there’s support for block-specific settings in the List and Video blocks.
+- It’s also got one fewer baddie: if your app ever crashed after you opened some block settings and then rotated your device, you’ve now had that experience for the last time.
+- And last but not least, sometimes you’d take the “Follow other sites” tour, but the tour wouldn’t be marked off as “Complete.” We never meant to deprive anyone of one of life’s greatest satisfactions, that of crossing a finished item off a list, so this is fixed.
