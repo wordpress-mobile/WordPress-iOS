@@ -1,6 +1,18 @@
 import Foundation
 import WordPressShared
 import Gridicons
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
@@ -67,6 +79,12 @@ import Gridicons
     fileprivate var isSmallWidth: Bool {
         let width = superview?.frame.width ?? 0
         return  width <= 320
+    }
+    fileprivate var isMediumWidth: Bool {
+        return superview?.frame.width < 480
+    }
+    fileprivate var isBigWidth: Bool {
+        return !isMediumWidth
     }
 
     // MARK: - Accessors
@@ -152,12 +170,8 @@ import Gridicons
         setupAttributionView()
         adjustInsetsForTextDirection()
         insetFollowButtonIcon()
-    }
-
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        configureFeaturedImageIfNeeded()
-        configureButtonTitles()
+        NotificationCenter.default.addObserver(self, selector: #selector(configureLayout),
+                                               name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
     open override func prepareForReuse() {
@@ -510,8 +524,7 @@ import Gridicons
 
         let likeCount = provider.likeCount()?.intValue ?? 0
         let commentCount = provider.commentCount()?.intValue ?? 0
-
-        if self.traitCollection.horizontalSizeClass == .compact {
+        if !isBigWidth {
             // remove title text
             let likeTitle = likeCount > 0 ?  String(likeCount) : ""
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
@@ -534,8 +547,13 @@ import Gridicons
             if FeatureFlag.postReblogging.enabled {
                 WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
             }
-
         }
+    }
+
+    /// configures the button labels and featured image depending on the horizontal size
+    @objc fileprivate func configureLayout() {
+        configureFeaturedImageIfNeeded()
+        configureButtonTitles()
     }
 
     /// Adds some space between the button and title.
