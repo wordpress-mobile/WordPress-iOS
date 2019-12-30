@@ -182,6 +182,19 @@ class MediaEditorTests: XCTestCase {
 
         expect(asyncImage.didCallCancel).to(beTrue())
     }
+
+    func testDoNotDisplayThumbnailIfFullImageIsAlreadyVisible() {
+        let asyncImage = AsyncImageMock()
+        let fullImage = UIImage(color: .white)!
+        let thumbImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor(asyncImage)
+
+        asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
+        asyncImage.simulate(thumbHasBeenDownloaded: thumbImage)
+
+        expect(mediaEditor.hub.imageView.image).toEventually(equal(fullImage))
+        expect(mediaEditor.hub.imageView.image).toEventuallyNot(equal(thumbImage))
+    }
 }
 
 class MockCapability: MediaEditorCapability {

@@ -116,13 +116,13 @@ public class MediaEditor: UINavigationController {
 
     private func prepareTransition() {
         let transition: CATransition = CATransition()
-        transition.duration = 0.3
-        transition.type = CATransitionType.fade
+        transition.duration = Constants.transitionDuration
+        transition.type = .fade
         view.layer.add(transition, forKey: nil)
     }
 
     private func thumbnailAvailable(_ thumb: UIImage?) {
-        guard let thumb = thumb else {
+        guard let thumb = thumb, image == nil else {
             return
         }
 
@@ -153,5 +153,9 @@ public class MediaEditor: UINavigationController {
 
     private func hideActivityIndicator() {
         hub.hideActivityIndicator()
+    }
+
+    private enum Constants {
+        static let transitionDuration = 0.3
     }
 }
