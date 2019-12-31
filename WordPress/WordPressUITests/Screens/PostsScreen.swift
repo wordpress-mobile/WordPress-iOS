@@ -4,6 +4,8 @@ import XCTest
 private struct ElementStringIDs {
     static let draftsButton = "drafts"
     static let publishedButton = "published"
+
+    static let autosaveVersionsAlert = "autosave-options-alert"
 }
 
 class PostsScreen: BaseScreen {
@@ -46,10 +48,21 @@ class PostsScreen: BaseScreen {
         scrollElementIntoView(element: cell, within: expectedElement)
         cell.tap()
 
+        dismissAutosaveDialogIfNeeded()
+
         let editorScreen = EditorScreen()
         editorScreen.dismissDialogsIfNeeded()
 
         return EditorScreen()
+    }
+
+    /// If there are two versions of a local post, the app will ask which version we want to use when editing.
+    /// We always want to use the local version (which is currently the first option)
+    private func dismissAutosaveDialogIfNeeded() {
+        let autosaveDialog = XCUIApplication().alerts[ElementStringIDs.autosaveVersionsAlert]
+        if autosaveDialog.exists {
+            autosaveDialog.buttons.firstMatch.tap()
+        }
     }
 }
 
