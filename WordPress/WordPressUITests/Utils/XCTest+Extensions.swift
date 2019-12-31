@@ -139,3 +139,9 @@ extension XCUIElement {
         startCoordinate.press(forDuration: 0.01, thenDragTo: destination)
     }
 }
+
+extension XCUIElementQuery {
+    var lastMatch: XCUIElement? {
+        return self.allElementsBoundByIndex.last
+    }
+}
