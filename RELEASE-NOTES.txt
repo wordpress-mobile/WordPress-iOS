@@ -6,6 +6,7 @@
 * Fixed bugs with the "Save as Draft" action extension's navigation bar colors and iPad sizing in iOS 13.
 * Fixes appearance issues with navigation bar colors when logged out of the app.
 * Fixed a bug that was causing the App to crash when the user tapped on certain notifications.
+* Comment: Add ability to comment in fullscreen
 
 13.9
 -----
@@ -14,7 +15,6 @@
 * Block Editor: Fix crash dismissing bottom-sheet after device rotation.
 * Block Editor: Add support for changing Settings in the List Block.
 * Block Editor: Add support for Video block settings.
-* Comment: Add ability to comment in fullscreen
 * Quick Start: fixed issue that caused 'Follow other sites' tour to not be marked complete.
 
 13.8
