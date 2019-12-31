@@ -19,9 +19,9 @@ class WordPressScreenshotGeneration: XCTestCase {
         setupSnapshot(app)
 
         if isIpad {
-            XCUIDevice().orientation = UIDeviceOrientation.landscapeLeft
+            XCUIDevice.shared.orientation = UIDeviceOrientation.landscapeLeft
         } else {
-            XCUIDevice().orientation = UIDeviceOrientation.portrait
+            XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
         LoginFlow.login(siteUrl: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
