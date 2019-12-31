@@ -37,7 +37,7 @@ class WordPressScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() {
 
         let mySite = MySiteScreen()
-            .switchSite()
+            .showSiteSwitcher()
             .switchToSite(withTitle: "infocusphotographers.com")
 
         let postList = mySite

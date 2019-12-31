@@ -48,9 +48,8 @@ class MySiteScreen: BaseScreen {
         return self
     }
 
-    func switchSite() -> MySitesScreen {
+    func showSiteSwitcher() -> MySitesScreen {
         navBackButton.tap()
-
         return MySitesScreen()
     }
 
