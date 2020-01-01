@@ -247,7 +247,7 @@ class AztecEditorScreen: BaseScreen {
 
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in
 
-                let discardButton = postHasChangesSheet.buttons.lastMatch
+                let discardButton = isIpad ? postHasChangesSheet.buttons.lastMatch : postHasChangesSheet.buttons.element(boundBy: 1)
 
                 if postHasChangesSheet.exists && (discardButton?.exists ?? false) {
                     Logger.log(message: "Discarding unsaved changes", event: .v)
