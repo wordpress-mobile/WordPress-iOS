@@ -29,7 +29,15 @@ class MeTabScreen: BaseScreen {
 
     func logout() -> WelcomeScreen {
         app.cells["logOutFromWPcomButton"].tap()
-        logOutAlert.buttons.element(boundBy: 1).tap() // Log out confirmation button
+
+        // Some localizations have very long "log out" text, which causes the UIAlertView
+        // to stack. We need to detect these cases in order to reliably tap the correct button
+        if logOutAlert.buttons.allElementsShareCommonXAxis {
+            logOutAlert.buttons.element(boundBy: 0).tap()
+        }
+        else {
+            logOutAlert.buttons.element(boundBy: 1).tap()
+        }
 
         return WelcomeScreen()
     }
