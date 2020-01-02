@@ -34,7 +34,6 @@
                                                             <constraint firstAttribute="width" constant="44" id="7gX-tZ-1Ed"/>
                                                             <constraint firstAttribute="height" constant="44" id="Atz-rc-Q7i"/>
                                                         </constraints>
-                                                        <state key="normal" image="xmark" catalog="system"/>
                                                         <connections>
                                                             <action selector="cancel:" destination="e8N-xf-0aT" eventType="touchUpInside" id="fAU-HY-XVa"/>
                                                         </connections>
@@ -149,7 +148,4 @@
             <point key="canvasLocation" x="73.913043478260875" y="-76.339285714285708"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="xmark" catalog="system" width="64" height="56"/>
-    </resources>
 </document>
