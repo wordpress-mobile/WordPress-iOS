@@ -18,8 +18,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         let app = XCUIApplication()
         setupSnapshot(app)
 
-        let isPad = UIDevice.current.userInterfaceIdiom == .pad
-        if isPad {
+        if isIpad {
             XCUIDevice().orientation = UIDeviceOrientation.landscapeLeft
         } else {
             XCUIDevice().orientation = UIDeviceOrientation.portrait
@@ -111,7 +110,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         let blogDetailsTable = app.tables["Blog Details Table"]
         XCTAssert(blogDetailsTable.exists, "My site view not visibile")
         // Select blog posts if on an iPad screen
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if isIpad {
             blogDetailsTable.cells["Blog Post Row"].tap()
             waitForElementToExist(element: app.tables["PostsTable"])
             sleep(imagesWaitTime) // Wait for post images to load
@@ -131,12 +130,12 @@ class WordPressScreenshotGeneration: XCTestCase {
         screenshotPost(withSlug: "ideas", called: "5-DraftEditor")
 
         // Get a screenshot of the full-screen editor
-        if isIpad(){
+        if isIpad {
             screenshotPost(withSlug: "now-booking-summer-sessions", called: "6-No-Keyboard-Editor")
         }
 
         // Tap the back button if on an iPhone screen
-        if UIDevice.current.userInterfaceIdiom == .phone {
+        if isIPhone {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
 
