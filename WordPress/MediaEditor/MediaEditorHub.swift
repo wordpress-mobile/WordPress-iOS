@@ -21,7 +21,7 @@ class MediaEditorHub: UIViewController {
         }
     }
 
-    var availableThumbs: [UIImage] = []
+    var availableThumbs: [Int: UIImage] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,11 +44,10 @@ class MediaEditorHub: UIViewController {
     }
 
     func show(thumb: UIImage, at index: Int) {
-        guard let cell = thumbsCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorThumbCell else {
-            return
-        }
+        availableThumbs[index] = thumb
 
-        cell.thumbImageView.image = thumb
+        let cell = thumbsCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorThumbCell
+        cell?.thumbImageView.image = thumb
     }
 
     func apply(styles: MediaEditorStyles) {
@@ -111,7 +110,7 @@ extension MediaEditorHub: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "thumbCell", for: indexPath)
         let thumbCell = cell as? MediaEditorThumbCell
 
-        thumbCell?.thumbImageView.image = availableThumbs.indices.contains(indexPath.row) ? availableThumbs[indexPath.row] : nil
+        thumbCell?.thumbImageView.image = availableThumbs[indexPath.row]
 
         return cell
     }

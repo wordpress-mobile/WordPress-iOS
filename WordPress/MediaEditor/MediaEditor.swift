@@ -93,7 +93,7 @@ public class MediaEditor: UINavigationController {
 
         hub.apply(styles: styles)
 
-        hub.availableThumbs = images
+        hub.availableThumbs = images.enumerated().reduce(into: [:]) { $0[$1.offset] = $1.element }
 
         hub.numberOfThumbs = max(images.count, asyncImages.count)
 
