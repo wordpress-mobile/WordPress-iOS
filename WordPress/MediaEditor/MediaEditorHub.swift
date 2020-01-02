@@ -10,6 +10,7 @@ class MediaEditorHub: UIViewController {
     @IBOutlet weak var horizontalToolbar: UIView!
     @IBOutlet weak var verticalToolbar: UIView!
     @IBOutlet weak var mainStackView: UIStackView!
+    @IBOutlet weak var thumbsToolbar: UIView!
 
     var onCancel: (() -> ())?
 
@@ -59,6 +60,14 @@ class MediaEditorHub: UIViewController {
 
     func hideActivityIndicator() {
         activityIndicatorView.isHidden = true
+    }
+
+    func showThumbsToolbar() {
+        thumbsToolbar.isHidden = false
+    }
+
+    func hideThumbsToolbar() {
+        thumbsToolbar.isHidden = true
     }
 
     private func setupForOrientation() {

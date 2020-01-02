@@ -195,6 +195,24 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.hub.imageView.image).toEventually(equal(fullImage))
         expect(mediaEditor.hub.imageView.image).toEventuallyNot(equal(thumbImage))
     }
+
+    func testHidesThumbsToolbar() {
+        let asyncImage = AsyncImageMock()
+
+        let mediaEditor = MediaEditor(asyncImage)
+
+        expect(mediaEditor.hub.thumbsToolbar.isHidden).to(beTrue())
+    }
+
+    // WHEN: Multiple images + one single capability
+
+    func testShowThumbsToolbar() {
+        let asyncImages = [AsyncImageMock(), AsyncImageMock()]
+
+        let mediaEditor = MediaEditor(asyncImages)
+
+        expect(mediaEditor.hub.thumbsToolbar.isHidden).to(beFalse())
+    }
 }
 
 class MockCapability: MediaEditorCapability {

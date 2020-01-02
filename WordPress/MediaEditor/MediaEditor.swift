@@ -45,6 +45,12 @@ public class MediaEditor: UINavigationController {
         setup()
     }
 
+    init(_ asyncImages: [AsyncImage]) {
+        self.asyncImages = asyncImages
+        super.init(rootViewController: hub)
+        setup()
+    }
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -75,9 +81,15 @@ public class MediaEditor: UINavigationController {
 
         hub.apply(styles: styles)
 
+        isMultipleImages() ? hub.showThumbsToolbar() : hub.hideThumbsToolbar()
+
         setupForAsync()
 
         presentIfSingleImageAndCapability()
+    }
+
+    private func isMultipleImages() -> Bool {
+        return asyncImages.count > 1 || images.count > 1
     }
 
     private func setupForAsync() {
