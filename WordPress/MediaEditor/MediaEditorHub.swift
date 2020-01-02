@@ -82,7 +82,7 @@ class MediaEditorHub: UIViewController {
 
     private func reloadThumbsCollectionView() {
         thumbsCollectionView.reloadData()
-        thumbsCollectionView.isHidden = numberOfThumbs > 0 ? false : true
+        thumbsToolbar.isHidden = numberOfThumbs > 1 ? false : true
     }
 
     private func setupForOrientation() {
@@ -108,7 +108,7 @@ extension MediaEditorHub: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "thumbCell", for: indexPath)
         let thumbCell = cell as? MediaEditorThumbCell
 
-        thumbCell?.thumbImageView.image = availableThumbs[indexPath.row]
+        thumbCell?.thumbImageView.image = availableThumbs.indices.contains(indexPath.row) ? availableThumbs[indexPath.row] : nil
 
         return cell
     }
