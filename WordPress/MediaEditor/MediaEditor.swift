@@ -14,9 +14,9 @@ public class MediaEditor: UINavigationController {
         return hub
     }()
 
-    var image: UIImage?
+    var images: [UIImage] = []
 
-    var asyncImage: AsyncImage?
+    var asyncImages: [AsyncImage] = []
 
     var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
 
@@ -34,13 +34,13 @@ public class MediaEditor: UINavigationController {
     }
 
     init(_ image: UIImage) {
-        self.image = image
+        self.images.append(image)
         super.init(rootViewController: hub)
         setup()
     }
 
     init(_ asyncImage: AsyncImage) {
-        self.asyncImage = asyncImage
+        self.asyncImages.append(asyncImage)
         super.init(rootViewController: hub)
         setup()
     }
@@ -81,18 +81,18 @@ public class MediaEditor: UINavigationController {
     }
 
     private func setupForAsync() {
-        if let thumb = asyncImage?.thumb {
+        if let thumb = asyncImages.first?.thumb {
             hub.show(image: thumb)
         } else {
-            asyncImage?.thumbnail(finishedRetrievingThumbnail: thumbnailAvailable)
+            asyncImages.first?.thumbnail(finishedRetrievingThumbnail: thumbnailAvailable)
         }
 
         showActivityIndicator()
-        asyncImage?.full(finishedRetrievingFullImage: fullImageAvailable)
+        asyncImages.first?.full(finishedRetrievingFullImage: fullImageAvailable)
     }
 
     func presentIfSingleImageAndCapability() {
-        guard let image = image, Self.capabilities.count == 1, let capabilityEntity = Self.capabilities.first else {
+        guard let image = images.first, images.count == 1, Self.capabilities.count == 1, let capabilityEntity = Self.capabilities.first else {
             return
         }
 
@@ -100,7 +100,7 @@ public class MediaEditor: UINavigationController {
     }
 
     private func cancel() {
-        asyncImage?.cancel()
+        asyncImages.forEach { $0.cancel() }
         dismiss(animated: true)
     }
 
@@ -132,7 +132,7 @@ public class MediaEditor: UINavigationController {
     }
 
     private func thumbnailAvailable(_ thumb: UIImage?) {
-        guard let thumb = thumb, image == nil else {
+        guard let thumb = thumb, images.first == nil else {
             return
         }
 
@@ -146,7 +146,7 @@ public class MediaEditor: UINavigationController {
             return
         }
 
-        self.image = image
+        self.images.append(image)
 
         DispatchQueue.main.async {
             self.hideActivityIndicator()
