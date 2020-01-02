@@ -24,7 +24,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             XCUIDevice().orientation = UIDeviceOrientation.portrait
         }
 
-        login()
+        LoginFlow.login(siteUrl: "WordPress.com", username: ScreenshotCredentials.username, password: ScreenshotCredentials.password)
     }
 
     override func tearDown() {
@@ -32,71 +32,6 @@ class WordPressScreenshotGeneration: XCTestCase {
         SDStatusBarManager.sharedInstance()?.disableOverrides()
 
         super.tearDown()
-    }
-
-    func login() {
-        let app = XCUIApplication()
-
-        let loginButton = app.buttons["Prologue Log In Button"]
-
-        // Logout first if needed
-        if !loginButton.waitForExistence(timeout: 3.0) {
-            logout()
-        }
-
-        loginButton.tap()
-        app.buttons["Self Hosted Login Button"].tap()
-
-        // We have to login by site address, due to security issues with the
-        // shared testing account which prevent us from signing in by email address.
-        let selfHostedUsernameField = app.textFields["usernameField"]
-        waitForElementToExist(element: selfHostedUsernameField)
-        selfHostedUsernameField.tap()
-        selfHostedUsernameField.typeText("WordPress.com")
-        app.buttons["Site Address Next Button"].tap()
-
-        let usernameField = app.textFields["usernameField"]
-        let passwordField = app.secureTextFields["passwordField"]
-
-        waitForElementToExist(element: passwordField)
-        usernameField.tap()
-        usernameField.typeText(ScreenshotCredentials.username)
-        passwordField.tap()
-        passwordField.typeText(ScreenshotCredentials.password)
-
-        app.buttons["submitButton"].tap()
-
-        let continueButton = app.buttons["Continue"]
-        waitForElementToExist(element: continueButton)
-        continueButton.tap()
-
-        // Wait for the notification primer, and dismiss if present
-        let cancelAlertButton = app.buttons["cancelAlertButton"]
-        if cancelAlertButton.waitForExistence(timeout: 3.0) {
-            cancelAlertButton.tap()
-        }
-    }
-
-    func logout() {
-        let app = XCUIApplication()
-        app.tabBars["Main Navigation"].buttons["meTabButton"].tap()
-
-        let loginButton = app.buttons["Prologue Log In Button"]
-        let logoutButton = app.tables.element(boundBy: 0).cells.element(boundBy: 5)
-        let logoutAlert = app.alerts.element(boundBy: 0)
-
-        // The order of cancel and log out in the alert varies by language
-        // There is no way to set accessibility identifers on them, so we must try both
-        logoutButton.tap()
-        logoutAlert.buttons.element(boundBy: 1).tap()
-
-        if !loginButton.waitForExistence(timeout: 3.0) {
-            // Still not logged out, try the other button
-            logoutButton.tap()
-            logoutAlert.buttons.buttons.element(boundBy: 0).tap()
-        }
-
-        waitForElementToExist(element: loginButton)
     }
 
     func testGenerateScreenshots() {
