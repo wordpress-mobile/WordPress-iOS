@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -24,8 +25,34 @@
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bCC-zp-fnr">
                                         <rect key="frame" x="0.0" y="730" width="414" height="44"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <subviews>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aiP-80-hUB">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FQk-zP-Mb0">
+                                                    <size key="itemSize" width="50" height="50"/>
+                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="thumbCell" id="FiQ-UG-fa8">
+                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="an7-K3-QRf">
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                        </collectionViewCellContentView>
+                                                    </collectionViewCell>
+                                                </cells>
+                                            </collectionView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="aiP-80-hUB" secondAttribute="bottom" id="8S6-Gh-W7H"/>
+                                            <constraint firstItem="aiP-80-hUB" firstAttribute="leading" secondItem="bCC-zp-fnr" secondAttribute="leading" id="8Yr-gt-DOs"/>
+                                            <constraint firstItem="aiP-80-hUB" firstAttribute="top" secondItem="bCC-zp-fnr" secondAttribute="top" id="Dda-mI-SKo"/>
+                                            <constraint firstAttribute="trailing" secondItem="aiP-80-hUB" secondAttribute="trailing" id="KCo-Vq-efz"/>
                                             <constraint firstAttribute="height" constant="44" id="cW8-4g-gpS"/>
                                         </constraints>
                                     </view>
@@ -147,6 +174,7 @@
                         <outlet property="horizontalToolbar" destination="oEl-Rm-OAA" id="Zrk-p2-D2B"/>
                         <outlet property="imageView" destination="5Tz-zw-SB3" id="ix9-cQ-25U"/>
                         <outlet property="mainStackView" destination="o0b-fF-tJw" id="5SY-51-tkZ"/>
+                        <outlet property="thumbsCollectionView" destination="aiP-80-hUB" id="k6N-kd-GNj"/>
                         <outlet property="thumbsToolbar" destination="bCC-zp-fnr" id="WdX-Xc-Zzs"/>
                         <outlet property="verticalToolbar" destination="DTT-LK-vW1" id="q5W-N8-2Tw"/>
                     </connections>

@@ -39,6 +39,12 @@ public class MediaEditor: UINavigationController {
         setup()
     }
 
+    init(_ images: [UIImage]) {
+        self.images = images
+        super.init(rootViewController: hub)
+        setup()
+    }
+
     init(_ asyncImage: AsyncImage) {
         self.asyncImages.append(asyncImage)
         super.init(rootViewController: hub)
@@ -81,7 +87,7 @@ public class MediaEditor: UINavigationController {
 
         hub.apply(styles: styles)
 
-        isMultipleImages() ? hub.showThumbsToolbar() : hub.hideThumbsToolbar()
+        hub.numberOfThumbs = max(images.count, asyncImages.count)
 
         setupForAsync()
 

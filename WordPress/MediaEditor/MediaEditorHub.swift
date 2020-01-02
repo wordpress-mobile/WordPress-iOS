@@ -11,13 +11,21 @@ class MediaEditorHub: UIViewController {
     @IBOutlet weak var verticalToolbar: UIView!
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var thumbsToolbar: UIView!
+    @IBOutlet weak var thumbsCollectionView: UICollectionView!
 
     var onCancel: (() -> ())?
+
+    var numberOfThumbs = 0 {
+        didSet {
+            reloadThumbsCollectionView()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         hideActivityIndicator()
         setupForOrientation()
+        thumbsCollectionView.dataSource = self
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -62,12 +70,9 @@ class MediaEditorHub: UIViewController {
         activityIndicatorView.isHidden = true
     }
 
-    func showThumbsToolbar() {
-        thumbsToolbar.isHidden = false
-    }
-
-    func hideThumbsToolbar() {
-        thumbsToolbar.isHidden = true
+    private func reloadThumbsCollectionView() {
+        thumbsCollectionView.reloadData()
+        thumbsCollectionView.isHidden = numberOfThumbs > 0 ? false : true
     }
 
     private func setupForOrientation() {
@@ -82,4 +87,14 @@ class MediaEditorHub: UIViewController {
         return UIStoryboard(name: "MediaEditorHub", bundle: nil).instantiateViewController(withIdentifier: "hubViewController") as! MediaEditorHub
     }
 
+}
+
+extension MediaEditorHub: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return numberOfThumbs
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        return collectionView.dequeueReusableCell(withReuseIdentifier: "thumbCell", for: indexPath)
+    }
 }
