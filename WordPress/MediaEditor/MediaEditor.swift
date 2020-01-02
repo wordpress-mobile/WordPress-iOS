@@ -87,6 +87,8 @@ public class MediaEditor: UINavigationController {
 
         hub.apply(styles: styles)
 
+        hub.availableThumbs = images
+
         hub.numberOfThumbs = max(images.count, asyncImages.count)
 
         setupForAsync()

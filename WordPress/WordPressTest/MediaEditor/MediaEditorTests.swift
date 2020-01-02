@@ -206,6 +206,20 @@ class MediaEditorTests: XCTestCase {
 
     // WHEN: Multiple images + one single capability
 
+    func testShowThumbs() {
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+
+        let firstThumb = mediaEditor.hub.collectionView(mediaEditor.hub.thumbsCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? MediaEditorThumbCell
+        let secondThumb = mediaEditor.hub.collectionView(mediaEditor.hub.thumbsCollectionView, cellForItemAt: IndexPath(row: 1, section: 0)) as? MediaEditorThumbCell
+        expect(firstThumb?.thumbImageView.image).to(equal(whiteImage))
+        expect(secondThumb?.thumbImageView.image).to(equal(blackImage))
+    }
+
+    // WHEN: Multiple async images + one single capability
+
     func testShowThumbsToolbar() {
         let asyncImages = [AsyncImageMock(), AsyncImageMock()]
 

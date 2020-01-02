@@ -21,6 +21,8 @@ class MediaEditorHub: UIViewController {
         }
     }
 
+    var availableThumbs: [UIImage] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         hideActivityIndicator()
@@ -39,6 +41,14 @@ class MediaEditorHub: UIViewController {
 
     func show(image: UIImage) {
         imageView.image = image
+    }
+
+    func show(thumb: UIImage, at index: Int) {
+        guard let cell = thumbsCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorThumbCell else {
+            return
+        }
+
+        cell.thumbImageView.image = thumb
     }
 
     func apply(styles: MediaEditorStyles) {
@@ -95,6 +105,11 @@ extension MediaEditorHub: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: "thumbCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "thumbCell", for: indexPath)
+        let thumbCell = cell as? MediaEditorThumbCell
+
+        thumbCell?.thumbImageView.image = availableThumbs[indexPath.row]
+
+        return cell
     }
 }
