@@ -7,12 +7,6 @@ import Nimble
 class MediaEditorTests: XCTestCase {
     private let image = UIImage()
 
-    private var hub: MediaEditorHub {
-        let hub: MediaEditorHub = MediaEditorHub.initialize()
-        _ = hub.view
-        return hub
-    }
-
     override class func setUp() {
         super.setUp()
         MediaEditor.capabilities = [MockCapability.self]
