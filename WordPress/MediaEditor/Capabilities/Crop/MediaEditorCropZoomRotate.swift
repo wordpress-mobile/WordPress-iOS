@@ -1,7 +1,7 @@
 import UIKit
 import TOCropViewController
 
-class MediaEditorCropZoomRotate: MediaEditorCapability {
+class MediaEditorCropZoomRotate: NSObject, MediaEditorCapability {
     var image: UIImage
 
     var onFinishEditing: (UIImage, [MediaEditorOperation]) -> ()
@@ -13,13 +13,7 @@ class MediaEditorCropZoomRotate: MediaEditorCapability {
 
         cropViewController.hidesNavigationBar = false
 
-        cropViewController.onDidCropToRect = { image, cropRect, angle in
-            self.onFinishEditing(image, cropViewController.actions)
-        }
-
-        cropViewController.onDidFinishCancelled = { _ in
-            self.onCancel()
-        }
+        cropViewController.delegate = self
 
         return cropViewController
     }()
@@ -69,5 +63,15 @@ class MediaEditorCropZoomRotate: MediaEditorCapability {
         if let rotateCounterclockwiseButtonHidden = styles[.rotateCounterclockwiseButtonHidden] as? Bool {
             viewController.toolbar.rotateCounterclockwiseButtonHidden = rotateCounterclockwiseButtonHidden
         }
+    }
+}
+
+extension MediaEditorCropZoomRotate: TOCropViewControllerDelegate {
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        onCancel()
+    }
+
+    func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
+        onFinishEditing(image, cropViewController.actions)
     }
 }

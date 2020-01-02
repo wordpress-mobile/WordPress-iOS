@@ -3475,9 +3475,8 @@ extension AztecPostViewController {
         let mediaEditor = WPMediaEditor(image)
 
         mediaEditor.edit(from: self,
-                              onFinishEditing: { image, actions in
-                                self.replace(attachment: imageAttachment, with: image, actions: actions)
-                                mediaEditor.dismiss(animated: true)
+                              onFinishEditing: { [weak self] image, actions in
+                                self?.replace(attachment: imageAttachment, with: image, actions: actions)
         })
     }
 

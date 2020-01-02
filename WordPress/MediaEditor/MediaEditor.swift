@@ -57,6 +57,11 @@ public class MediaEditor: UINavigationController {
         navigationBar.isHidden = true
     }
 
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        currentCapability = nil
+    }
+
     public func edit(from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
         self.onFinishEditing = onFinishEditing
         self.onCancel = onCancel
@@ -64,7 +69,9 @@ public class MediaEditor: UINavigationController {
     }
 
     private func setup() {
-        hub.onCancel = cancel
+        hub.onCancel = { [weak self] in
+            self?.cancel()
+        }
 
         hub.apply(styles: styles)
 
@@ -102,11 +109,14 @@ public class MediaEditor: UINavigationController {
 
         let capability = capabilityEntity.init(
             image,
-            onFinishEditing: { image, actions in
-                self.actions.append(contentsOf: actions)
-                self.onFinishEditing?(image, actions)
+            onFinishEditing: { [weak self] image, actions in
+                self?.actions.append(contentsOf: actions)
+                self?.onFinishEditing?(image, actions)
+                self?.dismiss(animated: true)
             },
-            onCancel: cancel
+            onCancel: { [weak self] in
+                self?.cancel()
+        }
         )
         capability.apply(styles: styles)
         currentCapability = capability
