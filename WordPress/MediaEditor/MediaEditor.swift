@@ -24,7 +24,13 @@ public class MediaEditor: UINavigationController {
 
     var actions: [MediaEditorOperation] = []
 
+    var isSingleImageAndCapability: Bool {
+        return (asyncImages.count == 1 || images.count == 1) && Self.capabilities.count == 1
+    }
+
     private(set) var currentCapability: MediaEditorCapability?
+
+    private(set) var selectedImageIndex = 0
 
     public var styles: MediaEditorStyles = [:] {
         didSet {
@@ -96,23 +102,27 @@ public class MediaEditor: UINavigationController {
         presentIfSingleImageAndCapability()
     }
 
-    private func isMultipleImages() -> Bool {
-        return asyncImages.count > 1 || images.count > 1
-    }
-
     private func setupForAsync() {
-        if let thumb = asyncImages.first?.thumb {
-            hub.show(image: thumb)
-        } else {
-            asyncImages.first?.thumbnail(finishedRetrievingThumbnail: thumbnailAvailable)
+        asyncImages.enumerated().forEach { offset, asyncImage in
+            if let thumb = asyncImage.thumb {
+                thumbnailAvailable(thumb, offset: offset)
+            } else {
+                asyncImage.thumbnail(finishedRetrievingThumbnail: { [weak self] thumb in
+                    self?.thumbnailAvailable(thumb, offset: offset)
+                })
+            }
         }
 
-        showActivityIndicator()
-        asyncImages.first?.full(finishedRetrievingFullImage: fullImageAvailable)
+        if isSingleImageAndCapability {
+            showActivityIndicator()
+            asyncImages.first?.full(finishedRetrievingFullImage: { [weak self] image in
+                self?.fullImageAvailable(image, offset: 0)
+            })
+        }
     }
 
     func presentIfSingleImageAndCapability() {
-        guard let image = images.first, images.count == 1, Self.capabilities.count == 1, let capabilityEntity = Self.capabilities.first else {
+        guard isSingleImageAndCapability, let image = images.first, let capabilityEntity = Self.capabilities.first else {
             return
         }
 
@@ -151,17 +161,21 @@ public class MediaEditor: UINavigationController {
         view.layer.add(transition, forKey: nil)
     }
 
-    private func thumbnailAvailable(_ thumb: UIImage?) {
-        guard let thumb = thumb, images.first == nil else {
+    private func thumbnailAvailable(_ thumb: UIImage?, offset: Int) {
+        guard let thumb = thumb else {
             return
         }
 
         DispatchQueue.main.async {
-            self.hub.show(image: thumb)
+            if offset == self.selectedImageIndex, !self.images.indices.contains(offset) {
+                self.hub.show(image: thumb)
+            }
+
+            self.hub.show(thumb: thumb, at: offset)
         }
     }
 
-    private func fullImageAvailable(_ image: UIImage?) {
+    private func fullImageAvailable(_ image: UIImage?, offset: Int) {
         guard let image = image else {
             return
         }
