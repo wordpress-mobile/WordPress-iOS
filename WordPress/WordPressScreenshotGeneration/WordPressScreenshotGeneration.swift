@@ -55,7 +55,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get a screenshot of the full-screen editor
         if isIpad {
-            let ipadScreenshot = postList.selectPost(withSlug:  "now-booking-summer-sessions")
+            let ipadScreenshot = postList.selectPost(withSlug: "now-booking-summer-sessions")
             snapshot("6-No-Keyboard-Editor")
             ipadScreenshot.close()
         }
