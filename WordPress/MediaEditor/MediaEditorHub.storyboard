@@ -29,7 +29,7 @@
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aiP-80-hUB">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FQk-zP-Mb0">
+                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FQk-zP-Mb0">
                                                     <size key="itemSize" width="50" height="50"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -37,10 +37,10 @@
                                                 </collectionViewFlowLayout>
                                                 <cells>
                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="thumbCell" id="FiQ-UG-fa8" customClass="MediaEditorThumbCell" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                        <rect key="frame" x="0.0" y="-3" width="50" height="50"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="an7-K3-QRf">
-                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wAG-en-yfG">
@@ -71,6 +71,7 @@
                                             <constraint firstItem="aiP-80-hUB" firstAttribute="leading" secondItem="bCC-zp-fnr" secondAttribute="leading" id="8Yr-gt-DOs"/>
                                             <constraint firstItem="aiP-80-hUB" firstAttribute="top" secondItem="bCC-zp-fnr" secondAttribute="top" id="Dda-mI-SKo"/>
                                             <constraint firstAttribute="trailing" secondItem="aiP-80-hUB" secondAttribute="trailing" id="KCo-Vq-efz"/>
+                                            <constraint firstAttribute="width" priority="999" constant="44" id="SPI-pL-LiJ"/>
                                             <constraint firstAttribute="height" constant="44" id="cW8-4g-gpS"/>
                                         </constraints>
                                     </view>
@@ -180,7 +181,7 @@
                             <constraint firstItem="xJb-mz-iou" firstAttribute="bottom" secondItem="o0b-fF-tJw" secondAttribute="bottom" id="QIG-ry-cgQ"/>
                             <constraint firstItem="Xsd-ER-63U" firstAttribute="centerY" secondItem="5Tz-zw-SB3" secondAttribute="centerY" id="TRc-km-WRS"/>
                             <constraint firstItem="o0b-fF-tJw" firstAttribute="top" secondItem="xJb-mz-iou" secondAttribute="top" id="VGD-hT-BgG"/>
-                            <constraint firstItem="xJb-mz-iou" firstAttribute="trailing" secondItem="o0b-fF-tJw" secondAttribute="trailing" constant="20" symbolic="YES" id="ucE-cD-JYq"/>
+                            <constraint firstItem="xJb-mz-iou" firstAttribute="trailing" secondItem="o0b-fF-tJw" secondAttribute="trailing" symbolic="YES" id="ucE-cD-JYq"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xJb-mz-iou"/>
                     </view>

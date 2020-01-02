@@ -91,6 +91,9 @@ class MediaEditorHub: UIViewController {
         mainStackView.semanticContentAttribute = isLandscape ? .forceRightToLeft : .unspecified
         horizontalToolbar.isHidden = isLandscape
         verticalToolbar.isHidden = !isLandscape
+        if let layout = thumbsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = isLandscape ? .vertical : .horizontal
+        }
     }
 
     static func initialize() -> MediaEditorHub {
