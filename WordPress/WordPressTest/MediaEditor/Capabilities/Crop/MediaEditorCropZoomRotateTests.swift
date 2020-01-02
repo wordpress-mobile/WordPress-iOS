@@ -32,7 +32,7 @@ class MediaEditorCropZoomRotateTests: XCTestCase {
             onCancel: {})
         let viewController = mediaEditorCrop.viewController as? TOCropViewController
 
-        viewController?.onDidCropToRect?(image, .zero, 0)
+        viewController?.delegate?.cropViewController?(viewController!, didCropTo: image, with: .zero, angle: 0)
 
         expect(onFinishEditingCalled).to(beTrue())
     }
@@ -48,7 +48,7 @@ class MediaEditorCropZoomRotateTests: XCTestCase {
         )
         let viewController = mediaEditorCrop.viewController as? TOCropViewController
 
-        viewController?.onDidFinishCancelled?(true)
+        viewController?.delegate?.cropViewController?(viewController!, didFinishCancelled: true)
 
         expect(onCancelCalled).to(beTrue())
     }
