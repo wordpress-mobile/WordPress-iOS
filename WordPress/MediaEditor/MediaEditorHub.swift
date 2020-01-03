@@ -38,7 +38,6 @@ class MediaEditorHub: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        showOrHideActivityIndicator()
         setupForOrientation()
         thumbsCollectionView.dataSource = self
         thumbsCollectionView.delegate = self
@@ -171,6 +170,7 @@ extension MediaEditorHub: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // Thumbs Collection View
         if collectionView == thumbsCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.thumbCellIdentifier, for: indexPath) as? MediaEditorThumbCell else {
                 return UICollectionViewCell()
@@ -182,11 +182,14 @@ extension MediaEditorHub: UICollectionViewDataSource {
             return cell
         }
 
+        // Images Collection View
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.imageCellIdentifier, for: indexPath) as? MediaEditorImageCell else {
             return UICollectionViewCell()
         }
 
         cell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
+
+        showOrHideActivityIndicator()
 
         return cell
     }
