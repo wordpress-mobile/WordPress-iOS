@@ -448,6 +448,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         mediaEditor.edit(from: self,
                               onFinishEditing: { image, actions in
                                 guard !actions.isEmpty else {
+                                    // If the image wasn't edited, do nothing
                                     return
                                 }
 
