@@ -76,6 +76,7 @@
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wAG-en-yfG">
                                                                     <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                                    <color key="backgroundColor" white="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="44" id="EzH-BA-21t"/>
                                                                         <constraint firstAttribute="height" constant="44" id="Xv1-Ws-giP"/>
