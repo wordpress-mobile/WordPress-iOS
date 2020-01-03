@@ -23,11 +23,14 @@ class MediaEditorHub: UIViewController {
 
     var availableThumbs: [Int: UIImage] = [:]
 
+    private var selectedThumbIndex = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
         hideActivityIndicator()
         setupForOrientation()
         thumbsCollectionView.dataSource = self
+        thumbsCollectionView.delegate = self
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -81,6 +84,8 @@ class MediaEditorHub: UIViewController {
 
     private func reloadThumbsCollectionView() {
         thumbsCollectionView.reloadData()
+        thumbsCollectionView.layoutIfNeeded()
+        thumbsCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
         thumbsToolbar.isHidden = numberOfThumbs > 1 ? false : true
     }
 
@@ -107,11 +112,26 @@ extension MediaEditorHub: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "thumbCell", for: indexPath)
-        let thumbCell = cell as? MediaEditorThumbCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "thumbCell", for: indexPath) as? MediaEditorThumbCell else {
+            return UICollectionViewCell()
+        }
 
-        thumbCell?.thumbImageView.image = availableThumbs[indexPath.row]
+        cell.thumbImageView.image = availableThumbs[indexPath.row]
+        indexPath.row == selectedThumbIndex ? cell.showBorder() : cell.hideBorder()
 
         return cell
+    }
+}
+
+extension MediaEditorHub: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as? MediaEditorThumbCell
+        cell?.showBorder()
+        selectedThumbIndex = indexPath.row
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as? MediaEditorThumbCell
+        cell?.hideBorder()
     }
 }
