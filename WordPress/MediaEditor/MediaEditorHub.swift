@@ -17,7 +17,7 @@ class MediaEditorHub: UIViewController {
 
     var numberOfThumbs = 0 {
         didSet {
-            reloadThumbsCollectionView()
+            reloadImagesAndReposition()
         }
     }
 
@@ -49,6 +49,15 @@ class MediaEditorHub: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setupForOrientation()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setupForOrientation()
+        
+        coordinator.animate(alongsideTransition: { _ in
+            self.reloadImagesAndReposition()
+        })
     }
 
     @IBAction func cancel(_ sender: Any) {
@@ -109,11 +118,12 @@ class MediaEditorHub: UIViewController {
         activityIndicatorView.isHidden = true
     }
 
-    private func reloadThumbsCollectionView() {
+    private func reloadImagesAndReposition() {
         thumbsCollectionView.reloadData()
         imagesCollectionView.reloadData()
         thumbsCollectionView.layoutIfNeeded()
         thumbsCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
+        imagesCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
         thumbsToolbar.isHidden = numberOfThumbs > 1 ? false : true
     }
 
