@@ -28,6 +28,7 @@ class MediaEditorHub: UIViewController {
     private(set) var selectedThumbIndex = 0 {
         didSet {
             highlightSelectedThumb(current: selectedThumbIndex, before: oldValue)
+            showOrHideActivityIndicator()
         }
     }
 
@@ -37,7 +38,7 @@ class MediaEditorHub: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        hideActivityIndicator()
+        showOrHideActivityIndicator()
         setupForOrientation()
         thumbsCollectionView.dataSource = self
         thumbsCollectionView.delegate = self
@@ -59,6 +60,8 @@ class MediaEditorHub: UIViewController {
 
         let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
         imageCell?.imageView.image = image
+
+        showOrHideActivityIndicator()
     }
 
     func show(thumb: UIImage, at index: Int) {
@@ -69,6 +72,8 @@ class MediaEditorHub: UIViewController {
 
         let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
         imageCell?.imageView.image = availableImages[index] ?? thumb
+
+        showOrHideActivityIndicator()
     }
 
     func apply(styles: MediaEditorStyles) {
@@ -130,6 +135,12 @@ class MediaEditorHub: UIViewController {
         let before = thumbsCollectionView.cellForItem(at: IndexPath(row: before, section: 0)) as? MediaEditorThumbCell
         before?.hideBorder()
         current?.showBorder()
+    }
+
+    private func showOrHideActivityIndicator() {
+        let imageAvailable = availableThumbs[selectedThumbIndex] ?? availableImages[selectedThumbIndex]
+
+        imageAvailable == nil ? showActivityIndicator() : hideActivityIndicator()
     }
 
     static func initialize() -> MediaEditorHub {
@@ -203,10 +214,18 @@ extension MediaEditorHub: UICollectionViewDelegate {
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        guard scrollView == imagesCollectionView else {
+            return
+        }
+
         isUserScrolling = true
     }
 
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        guard scrollView == imagesCollectionView else {
+            return
+        }
+
         isUserScrolling = false
     }
 }
