@@ -31,6 +31,8 @@ class MediaEditorHub: UIViewController {
         }
     }
 
+    private(set) var isUserScrolling = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         hideActivityIndicator()
@@ -114,6 +116,7 @@ class MediaEditorHub: UIViewController {
             layout.scrollDirection = isLandscape ? .vertical : .horizontal
         }
         mainStackView.layoutIfNeeded()
+        imagesCollectionView.scrollToItem(at: IndexPath(row: selectedThumbIndex, section: 0), at: .right, animated: false)
     }
 
     private func highlightSelectedThumb(current: Int, before: Int) {
@@ -173,13 +176,21 @@ extension MediaEditorHub: UICollectionViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard scrollView == imagesCollectionView else {
+        guard scrollView == imagesCollectionView, isUserScrolling else {
             return
         }
 
         let index = Int(round(scrollView.bounds.origin.x / imagesCollectionView.frame.width))
 
-        thumbsCollectionView.selectItem(at: IndexPath.init(row: index, section: 0), animated: true, scrollPosition: .right)
+        thumbsCollectionView.selectItem(at: IndexPath(row: index, section: 0), animated: true, scrollPosition: .right)
         selectedThumbIndex = index
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isUserScrolling = true
+    }
+
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        isUserScrolling = false
     }
 }
