@@ -3472,20 +3472,7 @@ extension AztecPostViewController {
             return
         }
 
-        WPAnalytics.track(.mediaEditorShown)
-
-        let mediaEditor = MediaEditor(image)
-
-        mediaEditor.styles = [
-            .doneLabel: NSLocalizedString("Done", comment: "Done editing an image"),
-            .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
-            .cancelColor: UIColor.white,
-            .resetIcon: Gridicon.iconOfType(.undo),
-            .doneIcon: Gridicon.iconOfType(.checkmark),
-            .cancelIcon: Gridicon.iconOfType(.cross),
-            .rotateClockwiseIcon: Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(),
-            .rotateCounterclockwiseButtonHidden: true
-        ]
+        let mediaEditor = WPMediaEditor(image)
 
         mediaEditor.edit(from: self,
                               onFinishEditing: { [weak self] image, actions in
@@ -3495,10 +3482,9 @@ extension AztecPostViewController {
 
     private func replace(attachment: ImageAttachment, with image: UIImage, actions: [MediaEditorOperation]) {
         guard !actions.isEmpty else {
+            // If the image wasn't edited, do nothing
             return
         }
-
-        WPAnalytics.track(.mediaEditorUsed, withProperties: ["actions": actions.description])
 
         let info = MediaAnalyticsInfo(origin: .editor(.mediaEditor), selectionMethod: mediaSelectionMethod)
         guard let media = mediaCoordinator.addMedia(from: image, to: post, analyticsInfo: info) else {

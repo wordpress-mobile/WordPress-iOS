@@ -22,6 +22,8 @@ public class MediaEditor: UINavigationController {
 
     var onCancel: (() -> ())?
 
+    var actions: [MediaEditorOperation] = []
+
     private(set) var currentCapability: MediaEditorCapability?
 
     public var styles: MediaEditorStyles = [:] {
@@ -71,6 +73,8 @@ public class MediaEditor: UINavigationController {
             self?.cancel()
         }
 
+        hub.apply(styles: styles)
+
         setupForAsync()
 
         presentIfSingleImageAndCapability()
@@ -106,6 +110,7 @@ public class MediaEditor: UINavigationController {
         let capability = capabilityEntity.init(
             image,
             onFinishEditing: { [weak self] image, actions in
+                self?.actions.append(contentsOf: actions)
                 self?.onFinishEditing?(image, actions)
                 self?.dismiss(animated: true)
             },
