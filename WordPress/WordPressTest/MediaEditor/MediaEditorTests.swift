@@ -104,8 +104,9 @@ class MediaEditorTests: XCTestCase {
         asyncImage.thumb = UIImage()
 
         let mediaEditor = MediaEditor(asyncImage)
+        UIApplication.shared.topWindow?.addSubview(mediaEditor.view)
 
-        expect(mediaEditor.hub.imageView.image).to(equal(asyncImage.thumb))
+        expect((mediaEditor.hub.imagesCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? MediaEditorImageCell)?.imageView.image).toEventually(equal(asyncImage.thumb))
     }
 
     func testDoNotRequestThumbnailIfOneIsGiven() {
@@ -131,26 +132,29 @@ class MediaEditorTests: XCTestCase {
         let asyncImage = AsyncImageMock()
         let thumb = UIImage()
         let mediaEditor = MediaEditor(asyncImage)
+        UIApplication.shared.topWindow?.addSubview(mediaEditor.view)
 
         asyncImage.simulate(thumbHasBeenDownloaded: thumb)
 
-        expect(mediaEditor.hub.imageView.image).toEventually(equal(thumb))
+        expect((mediaEditor.hub.collectionView(mediaEditor.hub.imagesCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? MediaEditorImageCell)?.imageView.image).toEventually(equal(thumb))
     }
 
     func testWhenFullImageIsAvailableShowItInHub() {
         let asyncImage = AsyncImageMock()
         let fullImage = UIImage()
         let mediaEditor = MediaEditor(asyncImage)
+        UIApplication.shared.topWindow?.addSubview(mediaEditor.view)
 
         asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
 
-        expect(mediaEditor.hub.imageView.image).toEventually(equal(fullImage))
+        expect((mediaEditor.hub.collectionView(mediaEditor.hub.imagesCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? MediaEditorImageCell)?.imageView.image).toEventually(equal(fullImage))
     }
 
     func testWhenFullImageIsAvailableHideActivityIndicatorView() {
         let asyncImage = AsyncImageMock()
         let fullImage = UIImage()
         let mediaEditor = MediaEditor(asyncImage)
+        UIApplication.shared.topWindow?.addSubview(mediaEditor.view)
 
         asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
 
@@ -182,12 +186,13 @@ class MediaEditorTests: XCTestCase {
         let fullImage = UIImage(color: .white)!
         let thumbImage = UIImage(color: .black)!
         let mediaEditor = MediaEditor(asyncImage)
+        UIApplication.shared.topWindow?.addSubview(mediaEditor.view)
 
         asyncImage.simulate(fullImageHasBeenDownloaded: fullImage)
         asyncImage.simulate(thumbHasBeenDownloaded: thumbImage)
 
-        expect(mediaEditor.hub.imageView.image).toEventually(equal(fullImage))
-        expect(mediaEditor.hub.imageView.image).toEventuallyNot(equal(thumbImage))
+        expect((mediaEditor.hub.imagesCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? MediaEditorImageCell)?.imageView.image).toEventually(equal(fullImage))
+        expect((mediaEditor.hub.imagesCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? MediaEditorImageCell)?.imageView.image).toEventuallyNot(equal(thumbImage))
     }
 
     func testHidesThumbsToolbar() {

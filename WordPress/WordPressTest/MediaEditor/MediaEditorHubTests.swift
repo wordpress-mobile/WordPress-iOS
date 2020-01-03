@@ -16,9 +16,10 @@ class MediaEditorHubTests: XCTestCase {
         _ = hub.view
         let image = UIImage()
 
-        hub.show(image: image)
+        hub.show(image: image, at: 0)
 
-        expect(hub.imageView.image).to(equal(image))
+        let firstImageCell = hub.collectionView(hub.imagesCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? MediaEditorImageCell
+        expect(firstImageCell?.imageView.image).to(equal(image))
     }
 
     func testTappingCancelButtonCallsOnCancel() {

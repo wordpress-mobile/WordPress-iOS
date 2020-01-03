@@ -23,7 +23,9 @@ class MediaEditorHub: UIViewController {
 
     var availableThumbs: [Int: UIImage] = [:]
 
-    private var selectedThumbIndex = 0 {
+    var availableImages: [Int: UIImage] = [:]
+
+    private(set) var selectedThumbIndex = 0 {
         didSet {
             highlightSelectedThumb(current: selectedThumbIndex, before: oldValue)
         }
@@ -48,8 +50,11 @@ class MediaEditorHub: UIViewController {
         onCancel?()
     }
 
-    func show(image: UIImage) {
-//        imageView.image = image
+    func show(image: UIImage, at index: Int) {
+        availableImages[index] = image
+
+        let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
+        imageCell?.imageView.image = image
     }
 
     func show(thumb: UIImage, at index: Int) {
@@ -59,7 +64,7 @@ class MediaEditorHub: UIViewController {
         cell?.thumbImageView.image = thumb
 
         let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
-        imageCell?.imageView.image = thumb
+        imageCell?.imageView.image = availableImages[index] ?? thumb
     }
 
     func apply(styles: MediaEditorStyles) {
@@ -144,7 +149,7 @@ extension MediaEditorHub: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        cell.imageView.image = availableThumbs[indexPath.row]
+        cell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
 
         return cell
     }

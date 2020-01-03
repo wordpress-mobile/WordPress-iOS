@@ -30,7 +30,9 @@ public class MediaEditor: UINavigationController {
 
     private(set) var currentCapability: MediaEditorCapability?
 
-    private(set) var selectedImageIndex = 0
+    var selectedImageIndex: Int {
+        return hub.selectedThumbIndex
+    }
 
     public var styles: MediaEditorStyles = [:] {
         didSet {
@@ -116,7 +118,8 @@ public class MediaEditor: UINavigationController {
         if isSingleImageAndCapability {
             showActivityIndicator()
             asyncImages.first?.full(finishedRetrievingFullImage: { [weak self] image in
-                self?.fullImageAvailable(image, offset: 0)
+                let offset = self?.selectedImageIndex ?? 0
+                self?.fullImageAvailable(image, offset: offset)
             })
         }
     }
@@ -167,10 +170,6 @@ public class MediaEditor: UINavigationController {
         }
 
         DispatchQueue.main.async {
-            if offset == self.selectedImageIndex, !self.images.indices.contains(offset) {
-                self.hub.show(image: thumb)
-            }
-
             self.hub.show(thumb: thumb, at: offset)
         }
     }
@@ -187,7 +186,7 @@ public class MediaEditor: UINavigationController {
 
             self.presentIfSingleImageAndCapability()
 
-            self.hub.show(image: image)
+            self.hub.show(image: image, at: offset)
         }
     }
 
