@@ -3482,6 +3482,7 @@ extension AztecPostViewController {
 
     private func replace(attachment: ImageAttachment, with image: UIImage, actions: [MediaEditorOperation]) {
         guard !actions.isEmpty else {
+            // If the image wasn't edited, do nothing
             return
         }
 
