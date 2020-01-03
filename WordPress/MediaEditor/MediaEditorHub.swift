@@ -113,6 +113,7 @@ class MediaEditorHub: UIViewController {
         if let layout = thumbsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = isLandscape ? .vertical : .horizontal
         }
+        mainStackView.layoutIfNeeded()
     }
 
     private func highlightSelectedThumb(current: Int, before: Int) {
