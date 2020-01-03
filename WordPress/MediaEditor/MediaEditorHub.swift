@@ -33,6 +33,8 @@ class MediaEditorHub: UIViewController {
 
     private(set) var isUserScrolling = false
 
+    private var selectedColor: UIColor?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         hideActivityIndicator()
@@ -88,6 +90,10 @@ class MediaEditorHub: UIViewController {
         if let loadingLabel = styles[.loadingLabel] as? String {
             activityIndicatorLabel.text = loadingLabel
         }
+
+        if let color = styles[.selectedColor] as? UIColor {
+            selectedColor = color
+        }
     }
 
     func showActivityIndicator() {
@@ -130,6 +136,10 @@ class MediaEditorHub: UIViewController {
         return UIStoryboard(name: "MediaEditorHub", bundle: nil).instantiateViewController(withIdentifier: "hubViewController") as! MediaEditorHub
     }
 
+    private enum Constants {
+        static var thumbCellIdentifier = "thumbCell"
+        static var imageCellIdentifier = "imageCell"
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -141,17 +151,17 @@ extension MediaEditorHub: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == thumbsCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "thumbCell", for: indexPath) as? MediaEditorThumbCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.thumbCellIdentifier, for: indexPath) as? MediaEditorThumbCell else {
                 return UICollectionViewCell()
             }
 
             cell.thumbImageView.image = availableThumbs[indexPath.row]
-            indexPath.row == selectedThumbIndex ? cell.showBorder() : cell.hideBorder()
+            indexPath.row == selectedThumbIndex ? cell.showBorder(color: selectedColor) : cell.hideBorder()
 
             return cell
         }
 
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as? MediaEditorImageCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.imageCellIdentifier, for: indexPath) as? MediaEditorImageCell else {
             return UICollectionViewCell()
         }
 
