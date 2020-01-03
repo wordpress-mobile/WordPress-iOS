@@ -12,7 +12,7 @@ class MediaEditorHub: UIViewController {
     @IBOutlet weak var thumbsToolbar: UIView!
     @IBOutlet weak var thumbsCollectionView: UICollectionView!
     @IBOutlet weak var imagesCollectionView: UICollectionView!
-    
+
     var onCancel: (() -> ())?
 
     var numberOfThumbs = 0 {
