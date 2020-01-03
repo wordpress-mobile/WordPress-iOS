@@ -132,6 +132,8 @@ class MediaEditorHub: UIViewController {
 
 }
 
+// MARK: - UICollectionViewDataSource
+
 extension MediaEditorHub: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfThumbs
@@ -159,11 +161,15 @@ extension MediaEditorHub: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
+
 extension MediaEditorHub: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: imagesCollectionView.frame.width, height: imagesCollectionView.frame.height)
     }
 }
+
+// MARK: - UICollectionViewDelegate
 
 extension MediaEditorHub: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
