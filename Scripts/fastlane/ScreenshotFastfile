@@ -54,7 +54,6 @@ platform :ios do
 
     capture_ios_screenshots(
       test_without_building: true,
-      concurrent_simulators: true,
       derived_data_path: File.join(fastlane_directory, "DerivedData"),
       languages: languages,
       clear_previous_screenshots: should_clear_previous_screenshots,
@@ -84,7 +83,7 @@ platform :ios do
     promo_screenshots(
       orig_folder: "screenshots",
       metadata_folder: "appstoreres/metadata",
-      output_folder: "promo_screenshots",
+      output_folder: File.join(Dir.pwd, "/promo_screenshots"),
       force: options[:force],
     )
   end

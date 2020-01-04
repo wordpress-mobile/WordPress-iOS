@@ -2,53 +2,53 @@
 	"version": 0.1,
 	"shadow_offset": 40,
 	"background_color": "#016087",
-	"stylesheet": "resources/style.css",
+	"stylesheet": "appstoreres/assets/style.css",
 	"devices": [
 		{
 			"name": "iPhone Xs max",
 			"canvas_size": [1242,2688],
-			"text_size": [1024, 510],
+			"text_size": [1242, 510],
 			"font_size": "90px",
 			"screenshot_size": [921, 1994],
 			"screenshot_offset": [161, 559],
-			"screenshot_mask": "appstoreres/assets/iphone-max-mask.png",
-			"device_frame": "appstoreres/assets/iphone-x.svg",
+			"screenshot_mask": "appstoreres/assets/iphone-x-mask.png",
+			"device_frame": "appstoreres/assets/iphone-x.png",
 			"device_frame_size": [1200, 2268],
 			"device_frame_offset": [21, 420]
 		},
 		{
 			"name": "iPhone 8",
 			"canvas_size": [1242,2208],
-			"text_size": [1024, 320],
+			"text_size": [1242, 320],
 			"font_size": "70px",
 			"screenshot_size": [921, 1638],
 			"screenshot_offset": [161, 580],
-			"device_frame": "appstoreres/assets/iphone-8.svg",
-			"device_frame_size": [1200, 2268],
-			"device_frame_offset": [21, 261]
+			"device_frame": "appstoreres/assets/iphone-8-white.png",
+			"device_frame_size": [1129, 2211],
+			"device_frame_offset": [56, 292]
 		},
 		{
 			"name": "iPad Pro",
 			"canvas_size": [2732,2048],
 			"text_size": [2732, 317],
 			"font_size": "90px",
-			"screenshot_size": [2060, 1544],
-			"screenshot_offset": [345, 388],
-			"device_frame": "appstoreres/assets/iPad Air.svg",
-			"device_frame_size": [2425, 1707],
-			"device_frame_offset": [154, 307]
+			"screenshot_size": [2220, 1670],
+			"screenshot_offset": [257, 410],
+			"device_frame": "appstoreres/assets/ipad-pro.png",
+			"device_frame_size": [2788, 1987],
+			"device_frame_offset": [-25, 248]
 		},
 		{
 			"name": "iPad X",
 			"canvas_size": [2732,2048],
 			"text_size": [2732, 317],
 			"font_size": "90px",
-			"screenshot_size": [2220, 1638],
+			"screenshot_size": [2220, 1670],
 			"screenshot_offset": [257, 410],
 			"screenshot_mask": "appstoreres/assets/ipad-x-mask.png",
-			"device_frame": "appstoreres/assets/iPad X.svg",
-			"device_frame_size": [2425, 1877],
-			"device_frame_offset": [154, 307]
+			"device_frame": "appstoreres/assets/ipad-x.png",
+			"device_frame_size": [2612, 2022],
+			"device_frame_offset": [61, 231]
 		}
 	],
 	"entries": [
@@ -56,16 +56,17 @@
 			"device": "iPhone Xs max",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_1.html",
 			"screenshot": "iPhone XS Max-1-PostEditor.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/1-top.png",
-					"size": [969,648],
-					"position": [71, 1086]
+					"file": "appstoreres/assets/white-box.svg",
+					"size": [865,1165],
+					"position": [186, 1101]
 				},
 				{
-					"file": "appstoreres/assets/attachments/1-bottom.png",
-					"size": [969,648],
-					"position": [210, 1801]
+					"file": "appstoreres/assets/attachments/1-photos-iPhoneX.png",
+					"size": [1108, 1364],
+					"position": [71, 1085]
 				}
 			]
 		},
@@ -73,11 +74,12 @@
 			"device": "iPhone Xs max",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_2.html",
 			"screenshot": "iPhone XS Max-2-Stats.png",
+			"background": "#9658A3",
 			"attachments": [
 				{
 					"file": "appstoreres/assets/attachments/2-chart.png",
 					"size": [1060,672],
-					"position": [91, 811]
+					"position": [91, 941]
 				}
 			]
 		},
@@ -85,21 +87,12 @@
 			"device": "iPhone Xs max",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_3.html",
 			"screenshot": "iPhone XS Max-3-Notifications.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/3-1.png",
-					"size": [968,288],
+					"file": "appstoreres/assets/attachments/3-notifications-iPhoneX.png",
+					"size": [1156, 1340],
 					"position": [89, 906]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-2.png",
-					"size": [968,288],
-					"position": [197, 1386]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-3.png",
-					"size": [968,288],
-					"position": [89, 1878]
 				}
 			]
 		},
@@ -107,30 +100,11 @@
 			"device": "iPhone Xs max",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_4.html",
 			"screenshot": "iPhone XS Max-4-Media.png",
+			"background": "#9658A3",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/4-1.png",
-					"size": [420,420],
-					"position": [516, 1993]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-2.png",
-					"size": [380,380],
-					"position": [85, 1540]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-3.png",
-					"size": [500,500],
-					"position": [516, 971]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-4.png",
-					"size": [320,320],
-					"position": [823, 1561]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-5.png",
-					"size": [320,320],
+					"file": "appstoreres/assets/attachments/4-photos-iPhoneX.png",
+					"size": [1072,1541],
 					"position": [71, 872]
 				}
 			]
@@ -139,11 +113,12 @@
 			"device": "iPhone Xs max",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_5.html",
 			"screenshot": "iPhone XS Max-5-DraftEditor.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
 					"file": "appstoreres/assets/ios-dictation-keyboard-x.png",
-					"size": [841,815],
-					"position": [201, 1697]
+					"size": [921,933],
+					"position": [161, 1622]
 				},
 				{
 					"file": "appstoreres/assets/attachments/5-1.png",
@@ -156,16 +131,17 @@
 			"device": "iPhone 8",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_1.html",
 			"screenshot": "iPhone 8 Plus-1-PostEditor.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/1-top.png",
-					"size": [969,579],
-					"position": [71, 1090]
+					"file": "appstoreres/assets/white-box.svg",
+					"size": [878,1062],
+					"position": [181, 1058]
 				},
 				{
-					"file": "appstoreres/assets/attachments/1-bottom.png",
-					"size": [969,579],
-					"position": [210, 1720]
+					"file": "appstoreres/assets/attachments/1-photos-iPhoneX.png",
+					"size": [1108,1364],
+					"position": [71, 1090]
 				}
 			]
 		},
@@ -173,11 +149,12 @@
 			"device": "iPhone 8",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_2.html",
 			"screenshot": "iPhone 8 Plus-2-Stats.png",
+			"background": "#9658A3",
 			"attachments": [
 				{
 					"file": "appstoreres/assets/attachments/2-chart.png",
 					"size": [1060,672],
-					"position": [91, 833]
+					"position": [91, 933]
 				}
 			]
 		},
@@ -185,21 +162,12 @@
 			"device": "iPhone 8",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_3.html",
 			"screenshot": "iPhone 8 Plus-3-Notifications.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/3-1.png",
-					"size": [968,288],
-					"position": [89, 906]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-2.png",
-					"size": [968,288],
-					"position": [197, 1386]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-3.png",
-					"size": [968,288],
-					"position": [89, 1878]
+					"file": "appstoreres/assets/attachments/3-notifications-iPhone8.png",
+					"size": [1156, 1340],
+					"position": [55, 705]
 				}
 			]
 		},
@@ -207,31 +175,12 @@
 			"device": "iPhone 8",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_4.html",
 			"screenshot": "iPhone 8 Plus-4-Media.png",
+			"background": "#9658A3",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/4-1.png",
-					"size": [420,420],
-					"position": [405, 1744]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-2.png",
-					"size": [380,380],
-					"position": [55, 1271]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-3.png",
-					"size": [500,500],
-					"position": [552, 799]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-4.png",
-					"size": [320,320],
-					"position": [850, 1373]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-5.png",
-					"size": [320,320],
-					"position": [85, 705]
+					"file": "appstoreres/assets/attachments/4-photos-iPhone8.png",
+					"size": [1115,1459],
+					"position": [55, 705]
 				}
 			]
 		},
@@ -239,11 +188,12 @@
 			"device": "iPhone 8",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_5.html",
 			"screenshot": "iPhone 8 Plus-5-DraftEditor.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
 					"file": "appstoreres/assets/ios-dictation-keyboard.png",
-					"size": [841,815],
-					"position": [201, 1353]
+					"size": [921,893],
+					"position": [161, 1407]
 				},
 				{
 					"file": "appstoreres/assets/attachments/5-1.png",
@@ -256,16 +206,17 @@
 			"device": "iPad X",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_1.html",
 			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-1-PostEditor.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/1-top.png",
-					"size": [1094,688],
-					"position": [751, 719]
+					"file": "appstoreres/assets/white-box.svg",
+					"size": [995,1081],
+					"position": [893, 772]
 				},
 				{
-					"file": "appstoreres/assets/attachments/1-bottom.png",
-					"size": [1094,689],
-					"position": [871, 1459]
+					"file": "appstoreres/assets/attachments/1-photos-iPad.png",
+					"size": [1213,1428],
+					"position": [751, 819]
 				}
 			]
 		},
@@ -273,31 +224,12 @@
 			"device": "iPad X",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_4.html",
 			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-4-Media.png",
+			"background": "#9658A3",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/4-1.png",
-					"size": [573,573],
-					"position": [1360, 1302]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-2.png",
-					"size": [380,380],
-					"position": [736, 1137]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-3.png",
-					"size": [500,500],
-					"position": [1548, 507]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-4.png",
-					"size": [320,320],
-					"position": [2211, 1007]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-5.png",
-					"size": [320,320],
-					"position": [956, 597]
+					"file": "appstoreres/assets/attachments/4-photos-iPad.png",
+					"size": [1795,1368],
+					"position": [736, 507]
 				}
 			]
 		},
@@ -305,11 +237,12 @@
 			"device": "iPad X",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_2.html",
 			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-2-Stats.png",
+			"background": "#9658A3",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/2-chart-ipad.png",
+					"file": "appstoreres/assets/attachments/2-chart-iPad.png",
 					"size": [1745,720],
-					"position": [746,525]
+					"position": [746,565]
 				}
 			]
 		},
@@ -317,31 +250,12 @@
 			"device": "iPad X",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_3.html",
 			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-3-Notifications.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/grey-box.svg",
-					"size": [1530,1362],
-					"position": [907, 564]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-1.png",
-					"size": [774,230],
+					"file": "appstoreres/assets/attachments/3-notifications-iPad.png",
+					"size": [880, 1158],
 					"position": [117, 688]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-2.png",
-					"size": [794,230],
-					"position": [203, 1132]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-3.png",
-					"size": [774,230],
-					"position": [117, 1616]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-star.png",
-					"size": [492,417],
-					"position": [1407, 957]
 				}
 			]
 		},
@@ -349,6 +263,7 @@
 			"device": "iPad X",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_6.html",
 			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-6-No-Keyboard-Editor.png",
+			"background": "#0F78A2",
 			"attachments": [
 			]
 		},
@@ -356,48 +271,17 @@
 			"device": "iPad Pro",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_1.html",
 			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-1-PostEditor.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/1-top.png",
-					"size": [1094,688],
-					"position": [751, 719]
+					"file": "appstoreres/assets/white-box.svg",
+					"size": [995,1081],
+					"position": [893, 772]
 				},
 				{
-					"file": "appstoreres/assets/attachments/1-bottom.png",
-					"size": [1094,689],
-					"position": [871, 1459]
-				}
-			]
-		},
-		{
-			"device": "iPad Pro",
-			"text": "appstoreres/metadata/%s/app_store_screenshot_4.html",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-4-Media.png",
-			"attachments": [
-				{
-					"file": "appstoreres/assets/attachments/4-1.png",
-					"size": [573,573],
-					"position": [1360, 1302]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-2.png",
-					"size": [380,380],
-					"position": [736, 1137]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-3.png",
-					"size": [500,500],
-					"position": [1548, 507]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-4.png",
-					"size": [320,320],
-					"position": [2211, 1007]
-				},
-				{
-					"file": "appstoreres/assets/attachments/4-5.png",
-					"size": [320,320],
-					"position": [956, 597]
+					"file": "appstoreres/assets/attachments/1-photos-iPad.png",
+					"size": [1213,1428],
+					"position": [751, 819]
 				}
 			]
 		},
@@ -405,11 +289,12 @@
 			"device": "iPad Pro",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_2.html",
 			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-2-Stats.png",
+			"background": "#9658A3",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/2-chart-ipad.png",
+					"file": "appstoreres/assets/attachments/2-chart-iPad.png",
 					"size": [1745,720],
-					"position": [746,525]
+					"position": [746,565]
 				}
 			]
 		},
@@ -417,31 +302,25 @@
 			"device": "iPad Pro",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_3.html",
 			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-3-Notifications.png",
+			"background": "#0F78A2",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/grey-box.svg",
-					"size": [1413,1357],
-					"position": [952, 535]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-1.png",
-					"size": [774,230],
+					"file": "appstoreres/assets/attachments/3-notifications-iPad.png",
+					"size": [924, 1222],
 					"position": [117, 688]
-				},
+				}
+			]
+		},
+		{
+			"device": "iPad Pro",
+			"text": "appstoreres/metadata/%s/app_store_screenshot_4.html",
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-4-Media.png",
+			"background": "#9658A3",
+			"attachments": [
 				{
-					"file": "appstoreres/assets/attachments/3-2.png",
-					"size": [794,230],
-					"position": [203, 1132]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-3.png",
-					"size": [774,230],
-					"position": [117, 1616]
-				},
-				{
-					"file": "appstoreres/assets/attachments/3-star.png",
-					"size": [492,417],
-					"position": [1407, 957]
+					"file": "appstoreres/assets/attachments/4-photos-iPad.png",
+					"size": [1795,1368],
+					"position": [736, 507]
 				}
 			]
 		},
@@ -449,6 +328,7 @@
 			"device": "iPad Pro",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_6.html",
 			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-6-No-Keyboard-Editor.png",
+			"background": "#0F78A2",
 			"attachments": [
 			]
 		}
