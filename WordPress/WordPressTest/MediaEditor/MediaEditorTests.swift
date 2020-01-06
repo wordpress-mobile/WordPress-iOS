@@ -229,6 +229,10 @@ class MediaEditorTests: XCTestCase {
 }
 
 class MockCapability: MediaEditorCapability {
+    static var name = "MockCapability"
+
+    static var icon = UIImage()
+
     var applyCalled = false
 
     var image: UIImage

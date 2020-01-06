@@ -1,7 +1,12 @@
 import UIKit
 import TOCropViewController
+import Gridicons
 
 class MediaEditorCropZoomRotate: NSObject, MediaEditorCapability {
+    static var name = "Crop, Zoom, Rotate"
+
+    static var icon = Gridicon.iconOfType(.crop)
+
     var image: UIImage
 
     var onFinishEditing: (UIImage, [MediaEditorOperation]) -> ()
