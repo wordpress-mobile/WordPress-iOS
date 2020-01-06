@@ -3187,6 +3187,21 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             return
         }
 
+        /*
+         Temporarilly enable Media Editor in internal builds.
+         This will be refactored soon.
+         */
+        if FeatureFlag.mediaEditor.enabled, let phAssets = assets as? [PHAsset] {
+            let mediaEditor = WPMediaEditor(phAssets)
+
+            mediaEditor.edit(from: self,
+                                  onFinishEditing: { [weak self] image, actions in
+                                    // Does nothing
+            })
+
+            return
+        }
+
         for asset in assets {
             switch asset {
             case let phAsset as PHAsset:
