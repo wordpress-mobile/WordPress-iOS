@@ -72,12 +72,13 @@ class MediaEditorTests: XCTestCase {
 
     func testWhenCancelingDismissTheMediaEditor() {
         let viewController = UIViewController()
+        UIApplication.shared.topWindow?.addSubview(viewController.view)
         let mediaEditor = MediaEditor(image)
         viewController.present(mediaEditor, animated: false)
 
         mediaEditor.currentCapability?.onCancel()
 
-        expect(viewController.presentedViewController).to(beNil())
+        expect(viewController.presentedViewController).toEventually(beNil())
     }
 
     func testWhenFinishEditingCallOnFinishEditing() {
@@ -276,6 +277,20 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.images[0]).to(equal(editedImage))
         expect(mediaEditor.hub.availableImages[0]).to(equal(editedImage))
         expect(mediaEditor.hub.availableThumbs[0]).to(equal(editedImage))
+    }
+
+    func testWhenCancelingDismissTheCapabilityAndGoesBackToHub() {
+        let viewController = UIViewController()
+        UIApplication.shared.topWindow?.addSubview(viewController.view)
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+        viewController.present(mediaEditor, animated: false)
+        mediaEditor.capabilityTapped(0)
+
+        mediaEditor.currentCapability?.onCancel()
+
+        expect(mediaEditor.visibleViewController).toEventually(equal(mediaEditor.hub))
     }
 
     // WHEN: Multiple async images + one single capability

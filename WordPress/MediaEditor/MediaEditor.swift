@@ -138,11 +138,17 @@ public class MediaEditor: UINavigationController {
 
     private func cancel() {
         if currentCapability == nil {
-            asyncImages.forEach { $0.cancel() }
-            dismiss(animated: true)
+            cancelPendingAsyncImagesAndDismiss()
+        } else if isSingleImageAndCapability {
+            cancelPendingAsyncImagesAndDismiss()
         } else {
             dismissCapability()
         }
+    }
+
+    private func cancelPendingAsyncImagesAndDismiss() {
+        asyncImages.forEach { $0.cancel() }
+        dismiss(animated: true)
     }
 
     private func present(capability capabilityEntity: MediaEditorCapability.Type, with image: UIImage) {
