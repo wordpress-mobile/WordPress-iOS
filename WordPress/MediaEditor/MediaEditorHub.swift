@@ -220,10 +220,10 @@ extension MediaEditorHub: UICollectionViewDelegate {
             return
         }
 
-        let index = Int(round(scrollView.bounds.origin.x / imagesCollectionView.frame.width))
+        let imageIndexBasedOnScroll = Int(round(scrollView.bounds.origin.x / imagesCollectionView.frame.width))
 
-        thumbsCollectionView.selectItem(at: IndexPath(row: index, section: 0), animated: true, scrollPosition: .right)
-        selectedThumbIndex = index
+        thumbsCollectionView.selectItem(at: IndexPath(row: imageIndexBasedOnScroll, section: 0), animated: true, scrollPosition: .right)
+        selectedThumbIndex = imageIndexBasedOnScroll
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
