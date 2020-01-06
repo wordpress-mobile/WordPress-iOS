@@ -75,4 +75,15 @@ class MediaEditorHubTests: XCTestCase {
         expect(hub.mainStackView.semanticContentAttribute).to(equal(.forceRightToLeft))
     }
 
+    func testShowButtonWithTheCapabilityIcon() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.loadViewIfNeeded()
+        let icon = UIImage()
+
+        hub.capabilities = [("Foo", icon)]
+
+        let capabilityCell = hub.collectionView(hub.capabilitiesCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? MediaEditorCapabilityCell
+        expect(capabilityCell?.iconButton.imageView?.image).to(equal(icon))
+    }
+
 }

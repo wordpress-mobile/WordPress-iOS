@@ -22,7 +22,11 @@ class MediaEditorHub: UIViewController {
         }
     }
 
-    var capabilities: [(String, UIImage)] = []
+    var capabilities: [(String, UIImage)] = [] {
+        didSet {
+            setupCapabilities()
+        }
+    }
 
     var availableThumbs: [Int: UIImage] = [:]
 
@@ -46,6 +50,8 @@ class MediaEditorHub: UIViewController {
         thumbsCollectionView.delegate = self
         imagesCollectionView.dataSource = self
         imagesCollectionView.delegate = self
+        capabilitiesCollectionView.dataSource = self
+        capabilitiesCollectionView.delegate = self
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -160,8 +166,6 @@ class MediaEditorHub: UIViewController {
 
     private func setupCapabilities() {
         capabilitiesCollectionView.isHidden = capabilities.count > 1 || numberOfThumbs > 1 ? false : true
-        capabilitiesCollectionView.dataSource = self
-        capabilitiesCollectionView.delegate = self
         capabilitiesCollectionView.reloadData()
     }
 
@@ -211,6 +215,10 @@ extension MediaEditorHub: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.capabCellIdentifier, for: indexPath) as? MediaEditorCapabilityCell else {
             return UICollectionViewCell()
         }
+
+        let (name, icon) = capabilities[indexPath.row]
+        cell.iconButton.setImage(icon, for: .normal)
+        cell.iconButton.accessibilityHint = name
 
         return cell
     }
