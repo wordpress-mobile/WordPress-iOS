@@ -287,6 +287,62 @@ class MediaEditorTests: XCTestCase {
 
         expect(mediaEditor.hub.thumbsToolbar.isHidden).to(beFalse())
     }
+
+    func testWhenGivenMultipleAsyncImagesPresentsTheHub() {
+        let asyncImages = [AsyncImageMock(), AsyncImageMock()]
+
+        let mediaEditor = MediaEditor(asyncImages)
+
+        expect(mediaEditor.currentCapability).to(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.hub))
+    }
+
+    func testTappingACapabilityDoesntPresentItRightAway() {
+        let asyncImages = [AsyncImageMock(), AsyncImageMock()]
+        let mediaEditor = MediaEditor(asyncImages)
+
+        mediaEditor.capabilityTapped(0)
+
+        expect(mediaEditor.currentCapability).to(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.hub))
+    }
+
+    func testTappingACapabilityStartsTheRequestForTheFullImage() {
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+
+        mediaEditor.capabilityTapped(0)
+
+        expect(firstImage.didCallFull).to(beTrue())
+    }
+
+    func testWhenTheFullImageIsAvailableShowTheCapability() {
+        let fullImage = UIImage()
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+        mediaEditor.capabilityTapped(0)
+
+        firstImage.simulate(fullImageHasBeenDownloaded: fullImage)
+
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.currentCapability?.viewController))
+    }
+
+    func testWhenTheFullImageIsAvailableUpdateTheImageReferences() {
+        let fullImage = UIImage()
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+        mediaEditor.capabilityTapped(0)
+
+        firstImage.simulate(fullImageHasBeenDownloaded: fullImage)
+
+        expect(mediaEditor.hub.availableThumbs[0]).toEventually(equal(fullImage))
+        expect(mediaEditor.hub.availableImages[0]).to(equal(fullImage))
+        expect(mediaEditor.images[0]).to(equal(fullImage))
+    }
 }
 
 class MockCapability: MediaEditorCapability {

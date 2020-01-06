@@ -233,7 +233,21 @@ extension MediaEditor: MediaEditorHubDelegate {
             let image = images[selectedImageIndex]
             present(capability: Self.capabilities[index], with: image)
         } else {
-            // Async
+            hub.showActivityIndicator()
+            let offset = selectedImageIndex
+            asyncImages[selectedImageIndex].full(finishedRetrievingFullImage: { [weak self] image in
+                guard let image = image else {
+                    return
+                }
+
+                self?.fullImageAvailable(image, offset: offset)
+
+                if self?.selectedImageIndex == offset {
+                    DispatchQueue.main.async {
+                        self?.present(capability: Self.capabilities[index], with: image)
+                    }
+                }
+            })
         }
     }
 }
