@@ -117,7 +117,7 @@ private final class PeriodChartDataTransformer {
         let viewsChartData = BarChartData(dataSets: viewsDataSets)
         chartData.append(viewsChartData)
 
-        let visitorsChartData = BarChartData(entries: visitorEntries)
+        let visitorsChartData = BarChartData(dataSet: visitorsDataSet)
         chartData.append(visitorsChartData)
 
         let likesChartData = BarChartData(entries: likeEntries)
