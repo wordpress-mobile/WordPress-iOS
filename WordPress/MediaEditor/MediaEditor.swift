@@ -25,7 +25,7 @@ public class MediaEditor: UINavigationController {
     var actions: [MediaEditorOperation] = []
 
     var isSingleImageAndCapability: Bool {
-        return (asyncImages.count == 1 || images.count == 1) && Self.capabilities.count == 1
+        return (asyncImages.count == 1) || (images.count == 1 && asyncImages.count == 0) && Self.capabilities.count == 1
     }
 
     private(set) var currentCapability: MediaEditorCapability?
@@ -137,8 +137,12 @@ public class MediaEditor: UINavigationController {
     }
 
     private func cancel() {
-        asyncImages.forEach { $0.cancel() }
-        dismiss(animated: true)
+        if currentCapability == nil {
+            asyncImages.forEach { $0.cancel() }
+            dismiss(animated: true)
+        } else {
+            dismissCapability()
+        }
     }
 
     private func present(capability capabilityEntity: MediaEditorCapability.Type, with image: UIImage) {
@@ -148,8 +152,7 @@ public class MediaEditor: UINavigationController {
             image,
             onFinishEditing: { [weak self] image, actions in
                 self?.actions.append(contentsOf: actions)
-                self?.onFinishEditing?(image, actions)
-                self?.dismiss(animated: true)
+                self?.finishEditing(image: image)
             },
             onCancel: { [weak self] in
                 self?.cancel()
@@ -159,6 +162,23 @@ public class MediaEditor: UINavigationController {
         currentCapability = capability
 
         pushViewController(capability.viewController, animated: false)
+    }
+
+    private func finishEditing(image: UIImage) {
+        if isSingleImageAndCapability {
+            onFinishEditing?(image, actions)
+            dismiss(animated: true)
+        } else {
+            hub.show(image: image, at: selectedImageIndex)
+            images[selectedImageIndex] = image
+            dismissCapability()
+        }
+    }
+
+    private func dismissCapability() {
+        prepareTransition()
+        popViewController(animated: false)
+        currentCapability = nil
     }
 
     private func prepareTransition() {
@@ -209,6 +229,11 @@ public class MediaEditor: UINavigationController {
 
 extension MediaEditor: MediaEditorHubDelegate {
     func capabilityTapped(_ index: Int) {
-
+        if images.indices.contains(selectedImageIndex) {
+            let image = images[selectedImageIndex]
+            present(capability: Self.capabilities[index], with: image)
+        } else {
+            // Async
+        }
     }
 }

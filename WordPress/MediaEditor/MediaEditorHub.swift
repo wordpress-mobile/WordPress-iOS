@@ -76,9 +76,13 @@ class MediaEditorHub: UIViewController {
 
     func show(image: UIImage, at index: Int) {
         availableImages[index] = image
+        availableThumbs[index] = image
 
         let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
         imageCell?.imageView.image = image
+
+        let cell = thumbsCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorThumbCell
+        cell?.thumbImageView.image = image
 
         showOrHideActivityIndicator()
     }

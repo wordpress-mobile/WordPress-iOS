@@ -231,6 +231,53 @@ class MediaEditorTests: XCTestCase {
         expect(secondThumb?.thumbImageView.image).to(equal(blackImage))
     }
 
+    func testPresentsTheHub() {
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+
+        expect(mediaEditor.currentCapability).to(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.hub))
+    }
+
+    func testTappingACapabilityPresentsIt() {
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+
+        mediaEditor.capabilityTapped(0)
+
+        expect(mediaEditor.currentCapability).toNot(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.currentCapability?.viewController))
+    }
+
+    func testCallingOnCancelWhenShowingACapabilityGoesBackToHub() {
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+        mediaEditor.capabilityTapped(0)
+
+        mediaEditor.currentCapability?.onCancel()
+
+        expect(mediaEditor.currentCapability).to(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.hub))
+    }
+
+    func testCallingOnFinishWhenShowingACapabilityUpdatesTheImage() {
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+        let editedImage = UIImage()
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+        mediaEditor.capabilityTapped(0)
+
+        mediaEditor.currentCapability?.onFinishEditing(editedImage, [.crop])
+
+        expect(mediaEditor.images[0]).to(equal(editedImage))
+        expect(mediaEditor.hub.availableImages[0]).to(equal(editedImage))
+        expect(mediaEditor.hub.availableThumbs[0]).to(equal(editedImage))
+    }
+
     // WHEN: Multiple async images + one single capability
 
     func testShowThumbsToolbar() {
