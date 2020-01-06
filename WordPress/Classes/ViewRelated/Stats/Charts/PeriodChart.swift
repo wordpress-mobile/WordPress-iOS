@@ -53,6 +53,14 @@ private struct PeriodChartData: BarChartDataConvertible {
 // MARK: - PeriodChartDataTransformer
 
 private final class PeriodChartDataTransformer {
+    /// A formatter for the Chart values with no decimals
+    ///
+    /// The Charts' default formatter has a single decimal defined. This causes VoiceOver to
+    /// sometimes read the decimal part. For example, VoiceOver would says “29.0” for a visitors
+    /// value.
+    ///
+    /// - SeeAlso: ChartUtils.defaultValueFormatter()
+    ///
     private static let dataSetValueFormatter = DefaultValueFormatter(decimals: 0)
 
     static func transform(data: StatsSummaryTimeIntervalData) -> (barChartData: [BarChartDataConvertible], barChartStyling: [BarChartStyling]) {
@@ -107,12 +115,11 @@ private final class PeriodChartDataTransformer {
         var chartData = [BarChartData]()
 
         let viewsDataSet = BarChartDataSet(values: viewEntries,
-                                           label: NSLocalizedString("Views", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."))
-        viewsDataSet.valueFormatter = dataSetValueFormatter
+                                           label: NSLocalizedString("Views", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
+                                           valueFormatter: dataSetValueFormatter)
         let visitorsDataSet = BarChartDataSet(values: visitorEntries,
-                                              label: NSLocalizedString("Visitors", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."))
-        visitorsDataSet.valueFormatter = dataSetValueFormatter
-
+                                              label: NSLocalizedString("Visitors", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
+                                              valueFormatter: dataSetValueFormatter)
         let viewsDataSets = [ viewsDataSet, visitorsDataSet ]
         let viewsChartData = BarChartData(dataSets: viewsDataSets)
         chartData.append(viewsChartData)
