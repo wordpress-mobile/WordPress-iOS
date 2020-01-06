@@ -129,6 +129,16 @@ class MediaEditorHubTests: XCTestCase {
         expect(hub.activityIndicatorView.isHidden).to(beFalse())
     }
 
+    func testDisableCapabilitiesWhenImageIsBeingLoaded() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.availableThumbs = [0: UIImage(), 1: UIImage()]
+        hub.loadViewIfNeeded()
+
+        hub.loadingImage(at: 0)
+
+        expect(hub.capabilitiesCollectionView.isUserInteractionEnabled).to(beFalse())
+    }
+
     func testHideActivityIndicatorWhenImageIsLoaded() {
         let hub: MediaEditorHub = MediaEditorHub.initialize()
         hub.availableThumbs = [0: UIImage(), 1: UIImage()]
@@ -138,6 +148,17 @@ class MediaEditorHubTests: XCTestCase {
         hub.loadedImage(at: 0)
 
         expect(hub.activityIndicatorView.isHidden).to(beTrue())
+    }
+
+    func testEnableCapabilitiesWhenImageIsLoaded() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.availableThumbs = [0: UIImage(), 1: UIImage()]
+        hub.loadViewIfNeeded()
+        hub.loadingImage(at: 0)
+
+        hub.loadedImage(at: 0)
+
+        expect(hub.capabilitiesCollectionView.isUserInteractionEnabled).to(beTrue())
     }
 
 }

@@ -37,7 +37,7 @@ class MediaEditorHub: UIViewController {
     private(set) var selectedThumbIndex = 0 {
         didSet {
             highlightSelectedThumb(current: selectedThumbIndex, before: oldValue)
-            showOrHideActivityIndicator()
+            showOrHideActivityIndicatorAndCapabilities()
         }
     }
 
@@ -86,7 +86,7 @@ class MediaEditorHub: UIViewController {
         let cell = thumbsCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorThumbCell
         cell?.thumbImageView.image = image
 
-        showOrHideActivityIndicator()
+        showOrHideActivityIndicatorAndCapabilities()
     }
 
     func show(thumb: UIImage, at index: Int) {
@@ -98,7 +98,7 @@ class MediaEditorHub: UIViewController {
         let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
         imageCell?.imageView.image = availableImages[index] ?? thumb
 
-        showOrHideActivityIndicator()
+        showOrHideActivityIndicatorAndCapabilities()
     }
 
     func apply(styles: MediaEditorStyles) {
@@ -135,13 +135,13 @@ class MediaEditorHub: UIViewController {
     }
 
     func loadingImage(at index: Int) {
-        showActivityIndicator()
         indexesOfImagesBeingLoaded.append(index)
+        showOrHideActivityIndicatorAndCapabilities()
     }
 
     func loadedImage(at index: Int) {
         indexesOfImagesBeingLoaded = indexesOfImagesBeingLoaded.filter { $0 != index }
-        showOrHideActivityIndicator()
+        showOrHideActivityIndicatorAndCapabilities()
     }
 
     private func reloadImagesAndReposition() {
@@ -176,12 +176,28 @@ class MediaEditorHub: UIViewController {
         current?.showBorder()
     }
 
-    private func showOrHideActivityIndicator() {
+    private func showOrHideActivityIndicatorAndCapabilities() {
         let imageAvailable = availableThumbs[selectedThumbIndex] ?? availableImages[selectedThumbIndex]
 
         let isBeingLoaded = imageAvailable == nil || indexesOfImagesBeingLoaded.contains(selectedThumbIndex)
 
-        isBeingLoaded ? showActivityIndicator() : hideActivityIndicator()
+        if isBeingLoaded {
+            showActivityIndicator()
+            disableCapabilities()
+        } else {
+            hideActivityIndicator()
+            enableCapabilities()
+        }
+    }
+
+    private func disableCapabilities() {
+        capabilitiesCollectionView.isUserInteractionEnabled = false
+        capabilitiesCollectionView.layer.opacity = 0.5
+    }
+
+    private func enableCapabilities() {
+        capabilitiesCollectionView.isUserInteractionEnabled = true
+        capabilitiesCollectionView.layer.opacity = 1
     }
 
     private func setupCapabilities() {
@@ -226,7 +242,7 @@ extension MediaEditorHub: UICollectionViewDataSource {
 
             cell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
 
-            showOrHideActivityIndicator()
+            showOrHideActivityIndicatorAndCapabilities()
 
             return cell
         }
