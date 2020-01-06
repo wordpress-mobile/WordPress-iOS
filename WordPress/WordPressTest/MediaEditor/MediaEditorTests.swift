@@ -38,6 +38,12 @@ class MediaEditorTests: XCTestCase {
         expect(hubDelegate).to(equal(mediaEditor))
     }
 
+    func testGivesTheListOfCapabilitiesIconsAndNames() {
+        let mediaEditor = MediaEditor(image)
+
+        expect(mediaEditor.hub.capabilities.count).to(equal(1))
+    }
+
     func testSettingStylesChangingTheCurrentShownCapability() {
         let mediaEditor = MediaEditor(image)
 

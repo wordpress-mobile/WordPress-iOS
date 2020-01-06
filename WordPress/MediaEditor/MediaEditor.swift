@@ -101,6 +101,8 @@ public class MediaEditor: UINavigationController {
 
         hub.numberOfThumbs = max(images.count, asyncImages.count)
 
+        hub.capabilities = Self.capabilities.reduce(into: []) { $0.append(($1.name, $1.icon)) }
+
         setupForAsync()
 
         presentIfSingleImageAndCapability()
@@ -207,6 +209,6 @@ public class MediaEditor: UINavigationController {
 
 extension MediaEditor: MediaEditorHubDelegate {
     func capabilityTapped(_ index: Int) {
-        
+
     }
 }
