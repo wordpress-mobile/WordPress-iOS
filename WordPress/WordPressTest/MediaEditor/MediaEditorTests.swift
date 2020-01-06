@@ -39,7 +39,7 @@ class MediaEditorTests: XCTestCase {
         expect(currentCapability?.applyCalled).to(beTrue())
     }
 
-    func editPresentsFromTheGivenViewController() {
+    func testEditPresentsFromTheGivenViewController() {
         let viewController = UIViewControllerMock()
         let mediaEditor = MediaEditor(image)
 
