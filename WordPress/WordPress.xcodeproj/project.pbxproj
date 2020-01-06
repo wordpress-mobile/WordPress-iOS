@@ -1037,6 +1037,7 @@
 		8B8FE8582343955500F9AD2E /* PostAutoUploadMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FE8562343952B00F9AD2E /* PostAutoUploadMessages.swift */; };
 		8B93856E22DC08060010BF02 /* PageListSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */; };
 		8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */; };
+		8B9DE00323C3A02500AC63CB /* PHAsset+AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9DE00223C3A02500AC63CB /* PHAsset+AsyncImage.swift */; };
 		8BB0360523C18089007D50FF /* MediaEditorCapabilityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB0360423C18089007D50FF /* MediaEditorCapabilityCell.swift */; };
 		8BB4D1432379C9CB0078A803 /* MediaEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4D1422379C9CB0078A803 /* MediaEditor.swift */; };
 		8BB4D1462379CA730078A803 /* MediaEditorCropZoomRotateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4D1452379CA730078A803 /* MediaEditorCropZoomRotateTests.swift */; };
@@ -3297,6 +3298,7 @@
 		8B8FE8562343952B00F9AD2E /* PostAutoUploadMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAutoUploadMessages.swift; sourceTree = "<group>"; };
 		8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListSectionHeaderView.swift; sourceTree = "<group>"; };
 		8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewControllerTests.swift; sourceTree = "<group>"; };
+		8B9DE00223C3A02500AC63CB /* PHAsset+AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHAsset+AsyncImage.swift"; sourceTree = "<group>"; };
 		8BB0360423C18089007D50FF /* MediaEditorCapabilityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaEditorCapabilityCell.swift; sourceTree = "<group>"; };
 		8BB4D1422379C9CB0078A803 /* MediaEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaEditor.swift; sourceTree = "<group>"; };
 		8BB4D1452379CA730078A803 /* MediaEditorCropZoomRotateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaEditorCropZoomRotateTests.swift; sourceTree = "<group>"; };
@@ -7134,11 +7136,20 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		8B9DE00423C3A18600AC63CB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8B9DE00223C3A02500AC63CB /* PHAsset+AsyncImage.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		8BB4D1412379C9B50078A803 /* MediaEditor */ = {
 			isa = PBXGroup;
 			children = (
 				8BBFBDA023A009900086AD4E /* Capabilities */,
 				8BBFBDA223A009CA0086AD4E /* Enums */,
+				8B9DE00423C3A18600AC63CB /* Extensions */,
 				8BB4D1422379C9CB0078A803 /* MediaEditor.swift */,
 				8BBFBD98239EAA8D0086AD4E /* MediaEditorHub.swift */,
 				8BBFBDA523A01AE30086AD4E /* AsyncImage.swift */,
@@ -11328,6 +11339,7 @@
 				B50C0C5F1EF42A4A00372C65 /* AztecPostViewController.swift in Sources */,
 				2FA6511321F26949009AA935 /* SiteVerticalsPromptService.swift in Sources */,
 				FF28B3F11AEB251200E11AAE /* InfoPListTranslator.m in Sources */,
+				8B9DE00323C3A02500AC63CB /* PHAsset+AsyncImage.swift in Sources */,
 				086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */,
 				9F3EFCA3208E308A00268758 /* UIViewController+Notice.swift in Sources */,
 				8B93856E22DC08060010BF02 /* PageListSectionHeaderView.swift in Sources */,
