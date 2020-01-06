@@ -14,7 +14,7 @@ public class MediaEditor: UINavigationController {
         return hub
     }()
 
-    var images: [UIImage] = []
+    var images: [Int: UIImage] = [:]
 
     var asyncImages: [AsyncImage] = []
 
@@ -42,13 +42,13 @@ public class MediaEditor: UINavigationController {
     }
 
     init(_ image: UIImage) {
-        self.images.append(image)
+        self.images = [0: image]
         super.init(rootViewController: hub)
         setup()
     }
 
     init(_ images: [UIImage]) {
-        self.images = images
+        self.images = images.enumerated().reduce(into: [:]) { $0[$1.offset] = $1.element }
         super.init(rootViewController: hub)
         setup()
     }
@@ -97,7 +97,7 @@ public class MediaEditor: UINavigationController {
 
         hub.apply(styles: styles)
 
-        hub.availableThumbs = images.enumerated().reduce(into: [:]) { $0[$1.offset] = $1.element }
+        hub.availableThumbs = images
 
         hub.numberOfThumbs = max(images.count, asyncImages.count)
 
@@ -129,7 +129,7 @@ public class MediaEditor: UINavigationController {
     }
 
     func presentIfSingleImageAndCapability() {
-        guard isSingleImageAndCapability, let image = images.first, let capabilityEntity = Self.capabilities.first else {
+        guard isSingleImageAndCapability, let image = images[0], let capabilityEntity = Self.capabilities.first else {
             return
         }
 
@@ -209,7 +209,7 @@ public class MediaEditor: UINavigationController {
             return
         }
 
-        self.images.append(image)
+        self.images[offset] = image
 
         DispatchQueue.main.async {
             self.hideActivityIndicator()
@@ -235,8 +235,7 @@ public class MediaEditor: UINavigationController {
 
 extension MediaEditor: MediaEditorHubDelegate {
     func capabilityTapped(_ index: Int) {
-        if images.indices.contains(selectedImageIndex) {
-            let image = images[selectedImageIndex]
+        if let image = images[selectedImageIndex] {
             present(capability: Self.capabilities[index], with: image)
         } else {
             let offset = selectedImageIndex
