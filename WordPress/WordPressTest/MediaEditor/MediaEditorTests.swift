@@ -30,6 +30,14 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.modalPresentationStyle).to(equal(.fullScreen))
     }
 
+    func testHubDelegate() {
+        let mediaEditor = MediaEditor(image)
+
+        let hubDelegate = mediaEditor.hub.delegate as? MediaEditor
+
+        expect(hubDelegate).to(equal(mediaEditor))
+    }
+
     func testSettingStylesChangingTheCurrentShownCapability() {
         let mediaEditor = MediaEditor(image)
 

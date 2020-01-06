@@ -72,6 +72,8 @@ public class MediaEditor: UINavigationController {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        hub.delegate = self
+
         modalTransitionStyle = .crossDissolve
         modalPresentationStyle = .fullScreen
         navigationBar.isHidden = true
@@ -200,5 +202,11 @@ public class MediaEditor: UINavigationController {
 
     private enum Constants {
         static let transitionDuration = 0.3
+    }
+}
+
+extension MediaEditor: MediaEditorHubDelegate {
+    func capabilityTapped(_ index: Int) {
+        
     }
 }
