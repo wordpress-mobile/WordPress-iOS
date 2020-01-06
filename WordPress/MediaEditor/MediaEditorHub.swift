@@ -45,6 +45,8 @@ class MediaEditorHub: UIViewController {
 
     private var selectedColor: UIColor?
 
+    private var indexesOfImagesBeingLoaded: [Int] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupForOrientation()
@@ -132,6 +134,16 @@ class MediaEditorHub: UIViewController {
         activityIndicatorView.isHidden = true
     }
 
+    func loadingImage(at index: Int) {
+        showActivityIndicator()
+        indexesOfImagesBeingLoaded.append(index)
+    }
+
+    func loadedImage(at index: Int) {
+        indexesOfImagesBeingLoaded = indexesOfImagesBeingLoaded.filter { $0 != index }
+        showOrHideActivityIndicator()
+    }
+
     private func reloadImagesAndReposition() {
         thumbsCollectionView.reloadData()
         imagesCollectionView.reloadData()
@@ -167,7 +179,9 @@ class MediaEditorHub: UIViewController {
     private func showOrHideActivityIndicator() {
         let imageAvailable = availableThumbs[selectedThumbIndex] ?? availableImages[selectedThumbIndex]
 
-        imageAvailable == nil ? showActivityIndicator() : hideActivityIndicator()
+        let isBeingLoaded = imageAvailable == nil || indexesOfImagesBeingLoaded.contains(selectedThumbIndex)
+
+        isBeingLoaded ? showActivityIndicator() : hideActivityIndicator()
     }
 
     private func setupCapabilities() {

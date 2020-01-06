@@ -97,6 +97,49 @@ class MediaEditorHubTests: XCTestCase {
         expect(delegateMock.didCallCapabilityTappedWithIndex).to(equal(1))
     }
 
+    func testShowActivityIndicatorWhenLoadingAnImage() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.loadViewIfNeeded()
+
+        hub.loadingImage(at: 1)
+
+        expect(hub.activityIndicatorView.isHidden).to(beFalse())
+    }
+
+    func testDoNotShowActivityIndicatorIfImageIsNotBeingLoaded() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.availableThumbs = [0: UIImage(), 1: UIImage()]
+        hub.loadViewIfNeeded()
+        hub.loadingImage(at: 0)
+
+        hub.collectionView(hub.thumbsCollectionView, didSelectItemAt: IndexPath(row: 1, section: 0))
+
+        expect(hub.activityIndicatorView.isHidden).to(beTrue())
+    }
+
+    func testShowActivityIndicatorWhenSwipingToAnImageBeingLoaded() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.availableThumbs = [0: UIImage(), 1: UIImage()]
+        hub.loadViewIfNeeded()
+        hub.loadingImage(at: 1)
+        hub.loadingImage(at: 0)
+
+        hub.collectionView(hub.thumbsCollectionView, didSelectItemAt: IndexPath(row: 1, section: 0))
+
+        expect(hub.activityIndicatorView.isHidden).to(beFalse())
+    }
+
+    func testHideActivityIndicatorWhenImageIsLoaded() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.availableThumbs = [0: UIImage(), 1: UIImage()]
+        hub.loadViewIfNeeded()
+        hub.loadingImage(at: 0)
+
+        hub.loadedImage(at: 0)
+
+        expect(hub.activityIndicatorView.isHidden).to(beTrue())
+    }
+
 }
 
 private class MediaEditorHubDelegateMock: MediaEditorHubDelegate {
