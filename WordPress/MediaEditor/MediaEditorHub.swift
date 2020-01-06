@@ -14,6 +14,8 @@ class MediaEditorHub: UIViewController {
     @IBOutlet weak var imagesCollectionView: UICollectionView!
     @IBOutlet weak var capabilitiesCollectionView: UICollectionView!
 
+    weak var delegate: MediaEditorHubDelegate?
+
     var onCancel: (() -> ())?
 
     var numberOfThumbs = 0 {
@@ -240,8 +242,11 @@ extension MediaEditorHub: UICollectionViewDelegateFlowLayout {
 
 extension MediaEditorHub: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard collectionView == thumbsCollectionView else {
-            return
+        if collectionView == thumbsCollectionView {
+            selectedThumbIndex = indexPath.row
+            imagesCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
+        } else if collectionView == capabilitiesCollectionView {
+            delegate?.capabilityTapped(indexPath.row)
         }
     }
 
@@ -271,4 +276,8 @@ extension MediaEditorHub: UICollectionViewDelegate {
 
         isUserScrolling = false
     }
+}
+
+protocol MediaEditorHubDelegate: class {
+    func capabilityTapped(_ index: Int)
 }

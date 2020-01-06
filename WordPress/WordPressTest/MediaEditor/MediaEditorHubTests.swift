@@ -86,4 +86,23 @@ class MediaEditorHubTests: XCTestCase {
         expect(capabilityCell?.iconButton.imageView?.image).to(equal(icon))
     }
 
+    func testCallsDelegateWhenCapabilityIsTapped() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.loadViewIfNeeded()
+        let delegateMock = MediaEditorHubDelegateMock()
+        hub.delegate = delegateMock
+
+        hub.collectionView(hub.capabilitiesCollectionView, didSelectItemAt: IndexPath(row: 1, section: 0))
+
+        expect(delegateMock.didCallCapabilityTappedWithIndex).to(equal(1))
+    }
+
+}
+
+private class MediaEditorHubDelegateMock: MediaEditorHubDelegate {
+    var didCallCapabilityTappedWithIndex: Int?
+
+    func capabilityTapped(_ index: Int) {
+        didCallCapabilityTappedWithIndex = index
+    }
 }
