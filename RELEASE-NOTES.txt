@@ -1,8 +1,12 @@
 14.0
 -----
+* Stats: Updated default cards for the Insights view.
 * Fixed a bug that displayed incorrect time stamps for scheduled posts.
 * Post Settings: Added a new Calendar picker to select a Post's publish date
- 
+* Fixed bugs with the "Save as Draft" action extension's navigation bar colors and iPad sizing in iOS 13.
+* Fixes appearance issues with navigation bar colors when logged out of the app.
+* Fixed a bug that was causing the App to crash when the user tapped on certain notifications.
+
 13.9
 -----
 * Stats: added a Today widget to display All-Time stats.
