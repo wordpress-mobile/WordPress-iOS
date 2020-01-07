@@ -77,6 +77,13 @@ struct OverviewTabData: FilterTabBarItem {
         return self.tabTitle.localizedLowercase
     }
 
+    var accessibilityLabel: String? {
+        tabTitle
+    }
+
+    var accessibilityValue: String? {
+        return tabDataStub != nil ? "" : "\(tabData)"
+    }
 }
 
 class OverviewCell: UITableViewCell, NibLoadable {
