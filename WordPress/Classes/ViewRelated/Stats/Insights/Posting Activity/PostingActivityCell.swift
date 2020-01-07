@@ -1,6 +1,6 @@
 import UIKit
 
-class PostingActivityCell: UITableViewCell, NibLoadable {
+class PostingActivityCell: UITableViewCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -23,6 +23,7 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
         super.awakeFromNib()
         applyStyles()
         addLegend()
+        prepareForVoiceOver()
     }
 
     func configure(withData monthsData: [[PostingStreakEvent]], andDelegate delegate: SiteStatsInsightsDelegate?) {
@@ -33,6 +34,11 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
     override func prepareForReuse() {
         super.prepareForReuse()
         removeExistingMonths()
+    }
+
+    func prepareForVoiceOver() {
+        viewMoreButton.accessibilityLabel =
+            NSLocalizedString("View more", comment: "Accessibility label for viewing more posting activity.")
     }
 }
 
