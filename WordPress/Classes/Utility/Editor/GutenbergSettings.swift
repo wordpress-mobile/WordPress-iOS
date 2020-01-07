@@ -54,9 +54,13 @@ class GutenbergSettings {
     }
 
     func performGutenbergPhase2MigrationIfNeeded() {
-        guard let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() else {
+        guard
+            ReachabilityUtils.isInternetReachable(),
+            let account = AccountService(managedObjectContext: context).defaultWordPressComAccount()
+        else {
             return
         }
+
         var rollout = GutenbergRollout(database: database)
         if rollout.shouldPerformPhase2Migration(userId: account.userID.intValue) {
             setGutenbergEnabledForAllSites()
