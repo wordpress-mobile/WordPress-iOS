@@ -18,7 +18,7 @@ public class MediaEditor: UINavigationController {
 
     var asyncImages: [AsyncImage] = []
 
-    var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
+    var onFinishEditing: (([AsyncImage], [MediaEditorOperation]) -> ())?
 
     var onCancel: (() -> ())?
 
@@ -84,7 +84,7 @@ public class MediaEditor: UINavigationController {
         currentCapability = nil
     }
 
-    public func edit(from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
+    public func edit(from viewController: UIViewController? = nil, onFinishEditing: @escaping ([AsyncImage], [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
         self.onFinishEditing = onFinishEditing
         self.onCancel = onCancel
         viewController?.present(self, animated: true)
@@ -172,7 +172,7 @@ public class MediaEditor: UINavigationController {
 
     private func finishEditing(image: UIImage) {
         if isSingleImageAndCapability {
-            onFinishEditing?(image, actions)
+            onFinishEditing?([image], actions)
             dismiss(animated: true)
         } else {
             hub.show(image: image, at: selectedImageIndex)

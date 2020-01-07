@@ -1,6 +1,6 @@
 import UIKit
 
-protocol AsyncImage {
+public protocol AsyncImage {
     var thumb: UIImage? { get }
 
     func thumbnail(finishedRetrievingThumbnail: @escaping (UIImage?) -> ())

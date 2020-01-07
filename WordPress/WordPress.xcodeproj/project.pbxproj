@@ -1038,6 +1038,7 @@
 		8B93856E22DC08060010BF02 /* PageListSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */; };
 		8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */; };
 		8B9DE00323C3A02500AC63CB /* PHAsset+AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9DE00223C3A02500AC63CB /* PHAsset+AsyncImage.swift */; };
+		8B9DE00623C4C8AF00AC63CB /* UIImage+AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9DE00523C4C8AF00AC63CB /* UIImage+AsyncImage.swift */; };
 		8BB0360523C18089007D50FF /* MediaEditorCapabilityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB0360423C18089007D50FF /* MediaEditorCapabilityCell.swift */; };
 		8BB4D1432379C9CB0078A803 /* MediaEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4D1422379C9CB0078A803 /* MediaEditor.swift */; };
 		8BB4D1462379CA730078A803 /* MediaEditorCropZoomRotateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4D1452379CA730078A803 /* MediaEditorCropZoomRotateTests.swift */; };
@@ -3299,6 +3300,7 @@
 		8B93856D22DC08060010BF02 /* PageListSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListSectionHeaderView.swift; sourceTree = "<group>"; };
 		8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewControllerTests.swift; sourceTree = "<group>"; };
 		8B9DE00223C3A02500AC63CB /* PHAsset+AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHAsset+AsyncImage.swift"; sourceTree = "<group>"; };
+		8B9DE00523C4C8AF00AC63CB /* UIImage+AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AsyncImage.swift"; sourceTree = "<group>"; };
 		8BB0360423C18089007D50FF /* MediaEditorCapabilityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaEditorCapabilityCell.swift; sourceTree = "<group>"; };
 		8BB4D1422379C9CB0078A803 /* MediaEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaEditor.swift; sourceTree = "<group>"; };
 		8BB4D1452379CA730078A803 /* MediaEditorCropZoomRotateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaEditorCropZoomRotateTests.swift; sourceTree = "<group>"; };
@@ -7140,6 +7142,7 @@
 			isa = PBXGroup;
 			children = (
 				8B9DE00223C3A02500AC63CB /* PHAsset+AsyncImage.swift */,
+				8B9DE00523C4C8AF00AC63CB /* UIImage+AsyncImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -12208,6 +12211,7 @@
 				9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
 				9A4E271D22EF33F5001F6A6B /* AccountSettingsStore.swift in Sources */,
+				8B9DE00623C4C8AF00AC63CB /* UIImage+AsyncImage.swift in Sources */,
 				4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
 				73FF7032221F469100541798 /* Charts+Support.swift in Sources */,
 				171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */,
