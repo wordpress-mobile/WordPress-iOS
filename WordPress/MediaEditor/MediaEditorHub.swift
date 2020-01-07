@@ -224,37 +224,44 @@ extension MediaEditorHub: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // Thumbs Collection View
         if collectionView == thumbsCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.thumbCellIdentifier, for: indexPath) as? MediaEditorThumbCell else {
-                return UICollectionViewCell()
-            }
-
-            cell.thumbImageView.image = availableThumbs[indexPath.row]
-            indexPath.row == selectedThumbIndex ? cell.showBorder(color: selectedColor) : cell.hideBorder()
-
-            return cell
+            return cellForThumbsCollectionView(cellForItemAt: indexPath)
         } else if collectionView == imagesCollectionView {
-            // Images Collection View
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.imageCellIdentifier, for: indexPath) as? MediaEditorImageCell else {
-                return UICollectionViewCell()
-            }
-
-            cell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
-
-            showOrHideActivityIndicatorAndCapabilities()
-
-            return cell
+            return cellForImagesCollectionView(cellForItemAt: indexPath)
         }
 
-        // Capability Collection View
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.capabCellIdentifier, for: indexPath) as? MediaEditorCapabilityCell else {
-            return UICollectionViewCell()
+        return cellForCapabilityCollectionView(cellForItemAt: indexPath)
+    }
+
+    private func cellForThumbsCollectionView(cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = thumbsCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.thumbCellIdentifier, for: indexPath)
+
+        if let thumbCell = cell as? MediaEditorThumbCell {
+            thumbCell.thumbImageView.image = availableThumbs[indexPath.row]
+            indexPath.row == selectedThumbIndex ? thumbCell.showBorder(color: selectedColor) : thumbCell.hideBorder()
         }
 
-        let (name, icon) = capabilities[indexPath.row]
-        cell.iconButton.setImage(icon, for: .normal)
-        cell.iconButton.accessibilityHint = name
+        return cell
+    }
+
+    private func cellForImagesCollectionView(cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = imagesCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.imageCellIdentifier, for: indexPath)
+
+        if let imageCell = cell as? MediaEditorImageCell {
+            imageCell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
+        }
+
+        showOrHideActivityIndicatorAndCapabilities()
+
+        return cell
+    }
+
+    private func cellForCapabilityCollectionView(cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = capabilitiesCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.capabCellIdentifier, for: indexPath)
+
+        if let capabilityCell = cell as? MediaEditorCapabilityCell {
+            capabilityCell.configure(capabilities[indexPath.row])
+        }
 
         return cell
     }
@@ -289,10 +296,10 @@ extension MediaEditorHub: UICollectionViewDelegate {
             return
         }
 
-        let index = Int(round(scrollView.bounds.origin.x / imagesCollectionView.frame.width))
+        let imageIndexBasedOnScroll = Int(round(scrollView.bounds.origin.x / imagesCollectionView.frame.width))
 
-        thumbsCollectionView.selectItem(at: IndexPath(row: index, section: 0), animated: true, scrollPosition: .right)
-        selectedThumbIndex = index
+        thumbsCollectionView.selectItem(at: IndexPath(row: imageIndexBasedOnScroll, section: 0), animated: true, scrollPosition: .right)
+        selectedThumbIndex = imageIndexBasedOnScroll
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
