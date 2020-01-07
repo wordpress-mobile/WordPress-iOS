@@ -178,22 +178,22 @@ extension MediaEditorHub: UICollectionViewDataSource {
     }
 
     private func cellForThumbsCollectionView(cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = thumbsCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.thumbCellIdentifier, for: indexPath) as? MediaEditorThumbCell else {
-            return UICollectionViewCell()
-        }
+        let cell = thumbsCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.thumbCellIdentifier, for: indexPath)
 
-        cell.thumbImageView.image = availableThumbs[indexPath.row]
-        indexPath.row == selectedThumbIndex ? cell.showBorder(color: selectedColor) : cell.hideBorder()
+        if let thumbCell = cell as? MediaEditorThumbCell {
+            thumbCell.thumbImageView.image = availableThumbs[indexPath.row]
+            indexPath.row == selectedThumbIndex ? thumbCell.showBorder(color: selectedColor) : thumbCell.hideBorder()
+        }
 
         return cell
     }
 
     private func cellForImagesCollectionView(cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = imagesCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.imageCellIdentifier, for: indexPath) as? MediaEditorImageCell else {
-            return UICollectionViewCell()
-        }
+        let cell = imagesCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.imageCellIdentifier, for: indexPath)
 
-        cell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
+        if let imageCell = cell as? MediaEditorImageCell {
+            imageCell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
+        }
 
         showOrHideActivityIndicator()
 
