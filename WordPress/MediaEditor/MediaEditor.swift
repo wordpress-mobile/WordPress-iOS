@@ -157,6 +157,7 @@ public class MediaEditor: UINavigationController {
     private func done() {
         let outputImages = isEditingPlainUIImages ? mapEditedImages() : mapEditedAsyncImages()
         onFinishEditing?(outputImages, actions)
+        dismiss(animated: true)
     }
 
     /*
