@@ -104,6 +104,13 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 
         forwardButton.accessibilityLabel = NSLocalizedString("Next period", comment: "Accessibility label")
         forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
+
+        accessibilityElements = [
+            dateLabel,
+            timezoneLabel,
+            backButton,
+            forwardButton
+        ].compactMap { $0 }
     }
 
     func updateDate(with intervalDate: Date) {
