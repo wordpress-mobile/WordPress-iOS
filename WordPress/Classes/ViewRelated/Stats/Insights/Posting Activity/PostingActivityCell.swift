@@ -12,6 +12,7 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
     @IBOutlet private var viewMoreView: UIView!
+    @IBOutlet private weak var viewMoreButton: UIButton!
 
     private typealias Style = WPStyleGuide.Stats
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
