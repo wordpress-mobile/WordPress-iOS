@@ -8,10 +8,14 @@ protocol FilterTabBarItem {
     var title: String { get }
     var attributedTitle: NSAttributedString? { get }
     var accessibilityIdentifier: String { get }
+    var accessibilityLabel: String? { get }
+    var accessibilityValue: String? { get }
 }
 
 extension FilterTabBarItem {
     var attributedTitle: NSAttributedString? { return nil }
+    var accessibilityLabel: String? { return nil }
+    var accessibilityValue: String? { return nil }
 }
 
 extension FilterTabBarItem where Self: RawRepresentable {
@@ -267,6 +271,8 @@ class FilterTabBar: UIControl {
         tab.setAttributedTitle(addColor(deselectedTabColor, toAttributedString: item.attributedTitle), for: .normal)
 
         tab.accessibilityIdentifier = item.accessibilityIdentifier
+        tab.accessibilityLabel = item.accessibilityLabel
+        tab.accessibilityValue = item.accessibilityValue
 
         tab.contentEdgeInsets = item.attributedTitle != nil ?
             AppearanceMetrics.buttonInsetsAttributedTitle :
