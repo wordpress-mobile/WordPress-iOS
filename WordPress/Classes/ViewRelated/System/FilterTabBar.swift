@@ -10,12 +10,14 @@ protocol FilterTabBarItem {
     var accessibilityIdentifier: String { get }
     var accessibilityLabel: String? { get }
     var accessibilityValue: String? { get }
+    var accessibilityHint: String? { get }
 }
 
 extension FilterTabBarItem {
     var attributedTitle: NSAttributedString? { return nil }
     var accessibilityLabel: String? { return nil }
     var accessibilityValue: String? { return nil }
+    var accessibilityHint: String? { return nil }
 }
 
 extension FilterTabBarItem where Self: RawRepresentable {
@@ -273,6 +275,7 @@ class FilterTabBar: UIControl {
         tab.accessibilityIdentifier = item.accessibilityIdentifier
         tab.accessibilityLabel = item.accessibilityLabel
         tab.accessibilityValue = item.accessibilityValue
+        tab.accessibilityHint = item.accessibilityHint
 
         tab.contentEdgeInsets = item.attributedTitle != nil ?
             AppearanceMetrics.buttonInsetsAttributedTitle :
