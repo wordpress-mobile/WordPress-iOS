@@ -39,7 +39,7 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
         headerLabel.isAccessibilityElement = (headerLabel.text?.isEmpty == false)
         headerLabel.accessibilityElementsHidden = (headerLabel.text?.isEmpty == true)
         headerLabel.accessibilityLabel = headerLabel.text
-        headerLabel.accessibilityTraits = .staticText
+        headerLabel.accessibilityTraits = .header
 
         manageInsightImageView.isAccessibilityElement = false
         manageInsightButton.isAccessibilityElement = !manageInsightButton.isHidden
