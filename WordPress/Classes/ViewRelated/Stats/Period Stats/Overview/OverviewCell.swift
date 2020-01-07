@@ -10,6 +10,8 @@ struct OverviewTabData: FilterTabBarItem {
     var period: StatsPeriodUnit?
     var analyticsStat: WPAnalyticsStat?
 
+    private(set) var accessibilityHint: String?
+
     init(tabTitle: String,
          tabData: Int,
          tabDataStub: String? = nil,
@@ -17,7 +19,8 @@ struct OverviewTabData: FilterTabBarItem {
          differencePercent: Int,
          date: Date? = nil,
          period: StatsPeriodUnit? = nil,
-         analyticsStat: WPAnalyticsStat? = nil) {
+         analyticsStat: WPAnalyticsStat? = nil,
+         accessibilityHint: String? = nil) {
         self.tabTitle = tabTitle
         self.tabData = tabData
         self.tabDataStub = tabDataStub
@@ -26,6 +29,7 @@ struct OverviewTabData: FilterTabBarItem {
         self.date = date
         self.period = period
         self.analyticsStat = analyticsStat
+        self.accessibilityHint = accessibilityHint
     }
 
     var attributedTitle: NSAttributedString? {
