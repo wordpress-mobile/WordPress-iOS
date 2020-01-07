@@ -14,9 +14,9 @@ public class MediaEditor: UINavigationController {
         return hub
     }()
 
-    var image: UIImage?
+    var images: [UIImage] = []
 
-    var asyncImage: AsyncImage?
+    var asyncImages: [AsyncImage] = []
 
     var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
 
@@ -24,7 +24,15 @@ public class MediaEditor: UINavigationController {
 
     var actions: [MediaEditorOperation] = []
 
+    var isSingleImageAndCapability: Bool {
+        return (asyncImages.count == 1 || images.count == 1) && Self.capabilities.count == 1
+    }
+
     private(set) var currentCapability: MediaEditorCapability?
+
+    var selectedImageIndex: Int {
+        return hub.selectedThumbIndex
+    }
 
     public var styles: MediaEditorStyles = [:] {
         didSet {
@@ -34,13 +42,25 @@ public class MediaEditor: UINavigationController {
     }
 
     init(_ image: UIImage) {
-        self.image = image
+        self.images.append(image)
+        super.init(rootViewController: hub)
+        setup()
+    }
+
+    init(_ images: [UIImage]) {
+        self.images = images
         super.init(rootViewController: hub)
         setup()
     }
 
     init(_ asyncImage: AsyncImage) {
-        self.asyncImage = asyncImage
+        self.asyncImages.append(asyncImage)
+        super.init(rootViewController: hub)
+        setup()
+    }
+
+    init(_ asyncImages: [AsyncImage]) {
+        self.asyncImages = asyncImages
         super.init(rootViewController: hub)
         setup()
     }
@@ -75,24 +95,37 @@ public class MediaEditor: UINavigationController {
 
         hub.apply(styles: styles)
 
+        hub.availableThumbs = images.enumerated().reduce(into: [:]) { $0[$1.offset] = $1.element }
+
+        hub.numberOfThumbs = max(images.count, asyncImages.count)
+
         setupForAsync()
 
         presentIfSingleImageAndCapability()
     }
 
     private func setupForAsync() {
-        if let thumb = asyncImage?.thumb {
-            hub.show(image: thumb)
-        } else {
-            asyncImage?.thumbnail(finishedRetrievingThumbnail: thumbnailAvailable)
+        asyncImages.enumerated().forEach { offset, asyncImage in
+            if let thumb = asyncImage.thumb {
+                thumbnailAvailable(thumb, offset: offset)
+            } else {
+                asyncImage.thumbnail(finishedRetrievingThumbnail: { [weak self] thumb in
+                    self?.thumbnailAvailable(thumb, offset: offset)
+                })
+            }
         }
 
-        showActivityIndicator()
-        asyncImage?.full(finishedRetrievingFullImage: fullImageAvailable)
+        if isSingleImageAndCapability {
+            showActivityIndicator()
+            asyncImages.first?.full(finishedRetrievingFullImage: { [weak self] image in
+                let offset = self?.selectedImageIndex ?? 0
+                self?.fullImageAvailable(image, offset: offset)
+            })
+        }
     }
 
     func presentIfSingleImageAndCapability() {
-        guard let image = image, Self.capabilities.count == 1, let capabilityEntity = Self.capabilities.first else {
+        guard isSingleImageAndCapability, let image = images.first, let capabilityEntity = Self.capabilities.first else {
             return
         }
 
@@ -100,7 +133,7 @@ public class MediaEditor: UINavigationController {
     }
 
     private func cancel() {
-        asyncImage?.cancel()
+        asyncImages.forEach { $0.cancel() }
         dismiss(animated: true)
     }
 
@@ -131,29 +164,29 @@ public class MediaEditor: UINavigationController {
         view.layer.add(transition, forKey: nil)
     }
 
-    private func thumbnailAvailable(_ thumb: UIImage?) {
-        guard let thumb = thumb, image == nil else {
+    private func thumbnailAvailable(_ thumb: UIImage?, offset: Int) {
+        guard let thumb = thumb else {
             return
         }
 
         DispatchQueue.main.async {
-            self.hub.show(image: thumb)
+            self.hub.show(thumb: thumb, at: offset)
         }
     }
 
-    private func fullImageAvailable(_ image: UIImage?) {
+    private func fullImageAvailable(_ image: UIImage?, offset: Int) {
         guard let image = image else {
             return
         }
 
-        self.image = image
+        self.images.append(image)
 
         DispatchQueue.main.async {
             self.hideActivityIndicator()
 
             self.presentIfSingleImageAndCapability()
 
-            self.hub.show(image: image)
+            self.hub.show(image: image, at: offset)
         }
     }
 

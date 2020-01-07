@@ -446,14 +446,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
         let mediaEditor = WPMediaEditor(image)
         mediaEditor.edit(from: self,
-                              onFinishEditing: { image, actions in
+                              onFinishEditing: { [weak self] image, actions in
                                 guard !actions.isEmpty else {
                                     // If the image wasn't edited, do nothing
                                     return
                                 }
 
-                                self.mediaInserterHelper.insertFromImage(image: image, callback: callback)
-                                mediaEditor.dismiss(animated: true)
+                                self?.mediaInserterHelper.insertFromImage(image: image, callback: callback)
         })
     }
 

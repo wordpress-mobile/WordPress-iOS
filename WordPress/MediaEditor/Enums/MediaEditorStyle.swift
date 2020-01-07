@@ -12,4 +12,5 @@ public enum MediaEditorStyle {
     case rotateClockwiseIcon
     case rotateCounterclockwiseButtonHidden
     case loadingLabel
+    case selectedColor
 }

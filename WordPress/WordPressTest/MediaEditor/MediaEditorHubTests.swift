@@ -16,9 +16,10 @@ class MediaEditorHubTests: XCTestCase {
         _ = hub.view
         let image = UIImage()
 
-        hub.show(image: image)
+        hub.show(image: image, at: 0)
 
-        expect(hub.imageView.image).to(equal(image))
+        let firstImageCell = hub.collectionView(hub.imagesCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? MediaEditorImageCell
+        expect(firstImageCell?.imageView.image).to(equal(image))
     }
 
     func testTappingCancelButtonCallsOnCancel() {
@@ -39,15 +40,7 @@ class MediaEditorHubTests: XCTestCase {
 
         hub.apply(styles: [.cancelLabel: "foo"])
 
-        expect(hub.cancelButton.titleLabel?.text).to(equal("foo"))
-    }
-
-    func testHideActivityIndicatorView() {
-        let hub: MediaEditorHub = MediaEditorHub.initialize()
-
-        _ = hub.view
-
-        expect(hub.activityIndicatorView.isHidden).to(beTrue())
+        expect(hub.cancelButton.titleLabel?.text).toEventually(equal("foo"))
     }
 
     func testApplyLoadingLabel() {
@@ -58,7 +51,7 @@ class MediaEditorHubTests: XCTestCase {
         expect(hub.activityIndicatorLabel.text).to(equal("foo"))
     }
 
-    func testWhenInPortraitShowTheCorrectToolbarAndConstraints() {
+    func testWhenInPortraitShowTheCorrectToolbarAndStackViewAxis() {
         XCUIDevice.shared.orientation = .portrait
         let hub: MediaEditorHub = MediaEditorHub.initialize()
 
@@ -66,11 +59,11 @@ class MediaEditorHubTests: XCTestCase {
 
         expect(hub.horizontalToolbar.isHidden).to(beFalse())
         expect(hub.verticalToolbar.isHidden).to(beTrue())
-        expect(hub.portraitConstraints.allSatisfy { $0.isActive }).to(beTrue())
-        expect(hub.landscapeConstraints.allSatisfy { !$0.isActive }).to(beTrue())
+        expect(hub.mainStackView.axis).to(equal(.vertical))
+        expect(hub.mainStackView.semanticContentAttribute).to(equal(.unspecified))
     }
 
-    func testWhenInLandscapeShowTheCorrectToolbarAndConstraints() {
+    func testWhenInLandscapeShowTheCorrectToolbarAndStackViewAxis() {
         XCUIDevice.shared.orientation = .landscapeLeft
         let hub: MediaEditorHub = MediaEditorHub.initialize()
 
@@ -78,8 +71,8 @@ class MediaEditorHubTests: XCTestCase {
 
         expect(hub.horizontalToolbar.isHidden).to(beTrue())
         expect(hub.verticalToolbar.isHidden).to(beFalse())
-        expect(hub.portraitConstraints.allSatisfy { !$0.isActive }).to(beTrue())
-        expect(hub.landscapeConstraints.allSatisfy { $0.isActive }).to(beTrue())
+        expect(hub.mainStackView.axis).to(equal(.horizontal))
+        expect(hub.mainStackView.semanticContentAttribute).to(equal(.forceRightToLeft))
     }
 
 }
