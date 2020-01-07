@@ -218,6 +218,9 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
     private var isFirstGutenbergLayout = true
     var shouldPresentInformativeDialog = false
+    lazy var shouldPresentPhase2informativeDialog: Bool = {
+        return GutenbergSettings().shouldPresentInformativeDialog(for: post.blog)
+    }()
 
     // MARK: - Initializers
     required init(
@@ -316,7 +319,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     func focusTitleIfNeeded() {
-        guard !post.hasContent() && shouldPresentInformativeDialog == false else {
+        guard !post.hasContent(), shouldPresentInformativeDialog == false, shouldPresentPhase2informativeDialog == false else {
             return
         }
         gutenberg.setFocusOnTitle()

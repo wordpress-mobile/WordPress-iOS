@@ -104,12 +104,20 @@ class GutenbergSettings {
         let allBlogs = BlogService(managedObjectContext: context).blogsForAllAccounts()
         allBlogs.forEach { blog in
             if blog.editor == .aztec {
-                database.set(true, forKey: Key.showPhase2Dialog(for: blog))
+                setShowPhase2Dialog(true, for: blog)
                 database.set(true, forKey: Key.enabledOnce(for: blog))
             }
         }
         let editorSettingsService = EditorSettingsService(managedObjectContext: context)
         editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true)
+    }
+
+    func shouldPresentInformativeDialog(for blog: Blog) -> Bool {
+        return database.bool(forKey: Key.showPhase2Dialog(for: blog))
+    }
+
+    func setShowPhase2Dialog(_ showDialog: Bool, for blog: Blog) {
+        database.set(showDialog, forKey: Key.showPhase2Dialog(for: blog))
     }
 
     /// Sets gutenberg enabled without registering the enabled action ("enabledOnce")
