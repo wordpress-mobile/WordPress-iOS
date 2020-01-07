@@ -47,6 +47,8 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
         manageInsightButton.accessibilityTraits = .button
         manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Accessibility label for button that displays Manage Insight options.")
         manageInsightButton.accessibilityHint = NSLocalizedString("Select to manage this Insight.", comment: "Accessibility hint for Manage Insight button.")
+
+        accessibilityElements = [headerLabel, manageInsightButton].compactMap { $0 }
     }
 }
 
