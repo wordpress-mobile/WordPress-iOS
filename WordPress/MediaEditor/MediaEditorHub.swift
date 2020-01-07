@@ -20,6 +20,8 @@ class MediaEditorHub: UIViewController {
 
     var onCancel: (() -> ())?
 
+    var onDone: (() -> ())?
+
     var numberOfThumbs = 0 {
         didSet {
             reloadImagesAndReposition()
@@ -79,6 +81,7 @@ class MediaEditorHub: UIViewController {
     }
 
     @IBAction func done(_ sender: Any) {
+        onDone?()
     }
 
     func show(image: UIImage, at index: Int) {

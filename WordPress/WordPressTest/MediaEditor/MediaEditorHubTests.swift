@@ -35,6 +35,19 @@ class MediaEditorHubTests: XCTestCase {
         expect(didCallOnCancel).to(beTrue())
     }
 
+    func testTappingDoneButtonCallsOnDone() {
+        var didCallOnDone = false
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        _ = hub.view
+        hub.onDone = {
+            didCallOnDone = true
+        }
+
+        hub.doneButton.sendActions(for: .touchUpInside)
+
+        expect(didCallOnDone).to(beTrue())
+    }
+
     func testApplyStyles() {
         let hub: MediaEditorHub = MediaEditorHub.initialize()
 
