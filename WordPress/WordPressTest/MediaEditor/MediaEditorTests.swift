@@ -230,6 +230,25 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.hub.thumbsToolbar.isHidden).to(beTrue())
     }
 
+    func testWhenFinishEditingAsyncImageReturnTheAsyncImage() {
+        // Given
+        var returnedImages: [AsyncImage] = []
+        let asyncImage = AsyncImageMock()
+        let mediaEditor = MediaEditor(asyncImage)
+        asyncImage.simulate(fullImageHasBeenDownloaded: UIImage())
+        mediaEditor.onFinishEditing = { images, _ in
+            returnedImages = images
+        }
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil()) // Wait capability appear
+
+        // When
+        mediaEditor.currentCapability?.onFinishEditing(image, [.rotate])
+
+        // Then
+        expect(returnedImages.first?.isEdited).to(beTrue())
+        expect(returnedImages.first?.editedImage).to(equal(image))
+    }
+
     // WHEN: Multiple images + one single capability
 
     func testShowThumbs() {
@@ -384,6 +403,28 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.hub.availableThumbs[0]).toEventually(equal(fullImage))
         expect(mediaEditor.hub.availableImages[0]).to(equal(fullImage))
         expect(mediaEditor.images[0]).to(equal(fullImage))
+    }
+
+    func testWhenFinishEditingMultipleAsyncImageReturnAllAsyncImages() {
+        // Given
+        var returnedImages: [AsyncImage] = []
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+        mediaEditor.capabilityTapped(0)
+        firstImage.simulate(fullImageHasBeenDownloaded: UIImage())
+        mediaEditor.onFinishEditing = { images, _ in
+            returnedImages = images
+        }
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil()) // Wait capability appear
+        mediaEditor.currentCapability?.onFinishEditing(image, [.rotate])
+
+        // When
+        mediaEditor.hub.doneButton.sendActions(for: .touchUpInside)
+
+        // Then
+        expect(returnedImages.first?.isEdited).to(beTrue())
+        expect(returnedImages.first?.editedImage).to(equal(image))
     }
 }
 

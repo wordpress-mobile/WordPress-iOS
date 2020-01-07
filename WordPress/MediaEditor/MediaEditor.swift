@@ -30,6 +30,8 @@ public class MediaEditor: UINavigationController {
 
     private(set) var currentCapability: MediaEditorCapability?
 
+    private var isEditingPlainUIImages = false
+
     var selectedImageIndex: Int {
         return hub.selectedThumbIndex
     }
@@ -71,6 +73,8 @@ public class MediaEditor: UINavigationController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+
+        isEditingPlainUIImages = images.count > 0
 
         hub.delegate = self
 
@@ -151,7 +155,30 @@ public class MediaEditor: UINavigationController {
     }
 
     private func done() {
-        onFinishEditing?(images.map { index, value in value }, actions)
+        let outputImages = isEditingPlainUIImages ? mapEditedImages() : mapEditedAsyncImages()
+        onFinishEditing?(outputImages, actions)
+    }
+
+    /*
+     Map the images hash to an images array preserving the original order,
+     since Hashes are non-order preserving.
+     */
+    private func mapEditedImages() -> [UIImage] {
+        return images.enumerated().compactMap { index, _ in images[index] }
+    }
+
+    private func mapEditedAsyncImages() -> [AsyncImage] {
+        var editedImages: [AsyncImage] = []
+
+        for (index, var asyncImage) in asyncImages.enumerated() {
+            if let editedImage = images[index] {
+                asyncImage.isEdited = true
+                asyncImage.editedImage = editedImage
+            }
+            editedImages.append(asyncImage)
+        }
+
+        return editedImages
     }
 
     private func cancelPendingAsyncImagesAndDismiss() {
@@ -180,7 +207,7 @@ public class MediaEditor: UINavigationController {
 
     private func finishEditing(image: UIImage) {
         if isSingleImageAndCapability {
-            onFinishEditing?([image], actions)
+            done()
             dismiss(animated: true)
         } else {
             hub.show(image: image, at: selectedImageIndex)
