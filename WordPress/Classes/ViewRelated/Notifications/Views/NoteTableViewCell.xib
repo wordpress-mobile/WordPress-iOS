@@ -86,14 +86,14 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="Z3U-oU-FSh" firstAttribute="centerX" secondItem="JUi-EY-Obv" secondAttribute="centerX" constant="19" id="6if-Fj-ZiN"/>
-                    <constraint firstItem="WuB-h0-mSd" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="topMargin" constant="2" id="CiS-sV-QaR"/>
-                    <constraint firstItem="JUi-EY-Obv" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leadingMargin" constant="1" id="FNd-KV-ja4"/>
-                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="WuB-h0-mSd" secondAttribute="bottom" constant="5" id="W83-eQ-gaV"/>
+                    <constraint firstItem="WuB-h0-mSd" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="13" id="CiS-sV-QaR"/>
+                    <constraint firstItem="JUi-EY-Obv" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="16" id="FNd-KV-ja4"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WuB-h0-mSd" secondAttribute="bottom" constant="16" id="W83-eQ-gaV"/>
                     <constraint firstItem="WuB-h0-mSd" firstAttribute="leading" secondItem="JUi-EY-Obv" secondAttribute="trailing" constant="16" id="Wef-tC-bRq"/>
-                    <constraint firstAttribute="topMargin" secondItem="JUi-EY-Obv" secondAttribute="top" constant="-5" id="Zav-nr-UzA"/>
-                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="JUi-EY-Obv" secondAttribute="bottom" priority="999" constant="3" id="bb5-uM-agq"/>
+                    <constraint firstAttribute="top" secondItem="JUi-EY-Obv" secondAttribute="top" constant="-16" id="Zav-nr-UzA"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="JUi-EY-Obv" secondAttribute="bottom" priority="999" constant="16" id="bb5-uM-agq"/>
                     <constraint firstItem="Z3U-oU-FSh" firstAttribute="centerY" secondItem="JUi-EY-Obv" secondAttribute="centerY" constant="19" id="h5p-yY-IvK"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="WuB-h0-mSd" secondAttribute="trailing" constant="1" id="tuw-OS-5Gn"/>
+                    <constraint firstAttribute="trailing" secondItem="WuB-h0-mSd" secondAttribute="trailing" constant="16" id="tuw-OS-5Gn"/>
                 </constraints>
             </tableViewCellContentView>
             <accessibility key="accessibilityConfiguration">
