@@ -2407,6 +2407,10 @@ extension AztecPostViewController {
         insert(exportableAsset: url as NSURL, source: .otherApps)
     }
 
+    fileprivate func insertImage(image: UIImage) {
+        insert(exportableAsset: image, source: .deviceLibrary)
+    }
+
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
         insert(exportableAsset: phAsset, source: .deviceLibrary)
     }
@@ -3191,12 +3195,18 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
          Temporarilly enable Media Editor in internal builds.
          This will be refactored soon.
          */
-        if FeatureFlag.mediaEditor.enabled, let phAssets = assets as? [PHAsset] {
+        if FeatureFlag.mediaEditor.enabled, let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
             let mediaEditor = WPMediaEditor(phAssets)
 
             mediaEditor.edit(from: self,
-                                  onFinishEditing: { [weak self] image, actions in
-                                    // Does nothing
+                                  onFinishEditing: { [weak self] images, actions in
+                                    images.forEach { mediaEditorImage in
+                                        if let image = mediaEditorImage.editedImage {
+                                            self?.insertImage(image: image)
+                                        } else if let phAsset = mediaEditorImage as? PHAsset {
+                                            self?.insertDeviceMedia(phAsset: phAsset)
+                                        }
+                                    }
             })
 
             return
