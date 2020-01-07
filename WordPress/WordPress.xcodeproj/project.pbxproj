@@ -1963,6 +1963,8 @@
 		F15A230420A3EBE300625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F15A230520A3ECC500625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F1655B4822A6C2FA00227BFB /* Routes+Mbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */; };
+		F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */; };
+		F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */; };
 		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
 		F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
@@ -4425,6 +4427,8 @@
 		F14B5F75208E64F900439554 /* Version.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.internal.xcconfig; sourceTree = "<group>"; };
 		F14E844C2317252200D0C63E /* WordPress 90.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 90.xcdatamodel"; sourceTree = "<group>"; };
 		F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Mbar.swift"; sourceTree = "<group>"; };
+		F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
+		F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
 		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
 		F1D690141F828FF000200E30 /* BuildConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfiguration.swift; sourceTree = "<group>"; };
 		F1D690151F828FF000200E30 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
@@ -8218,6 +8222,7 @@
 				177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */,
 				7326A4A7221C8F4100B4EB8C /* UIStackView+Subviews.swift */,
 				D829C33A21B12EFE00B09F12 /* UIView+Borders.swift */,
+				F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */,
 				9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */,
 				9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */,
 				9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */,
@@ -9303,6 +9308,7 @@
 				0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */,
 				D88A649D208D82D2008AE9BC /* XCTestCase+Wait.swift */,
 				E11DF3E320C97F0A00C0B07C /* NotificationCenterObserveOnceTests.swift */,
+				F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */,
 				F9941D1722A805F600788F33 /* UIImage+XCAssetTests.swift */,
 				8BFE36FE230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift */,
 			);
@@ -11929,6 +11935,7 @@
 				FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */,
 				D816B8D92112D85F0052CE4D /* News.swift in Sources */,
 				8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */,
+				F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */,
 				400A2C892217A985000A8A59 /* CountryStatsRecordValue+CoreDataProperties.swift in Sources */,
 				9881296E219CF1310075FF33 /* StatsCellHeader.swift in Sources */,
 				E1823E6C1E42231C00C19F53 /* UIEdgeInsets.swift in Sources */,
@@ -12552,6 +12559,7 @@
 				D800D87820999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift in Sources */,
 				D816B8CA2112D2FD0052CE4D /* LocalNewsServiceTests.swift in Sources */,
 				D800D87A20999C0500E7C7E5 /* OtherMenuItemCreatorTests.swift in Sources */,
+				F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */,
 				9A9D34FD23607CCC00BC95A3 /* AsyncOperationTests.swift in Sources */,
 				B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */,
 				73178C3521BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift in Sources */,
