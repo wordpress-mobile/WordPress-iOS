@@ -128,7 +128,8 @@ public class MediaEditor: UINavigationController {
         }
 
         if isSingleImageAndCapability {
-            showActivityIndicator()
+            hub.showActivityIndicator()
+            hub.disableDoneButton()
             asyncImages.first?.full(finishedRetrievingFullImage: { [weak self] image in
                 let offset = self?.selectedImageIndex ?? 0
                 self?.fullImageAvailable(image, offset: offset)
@@ -248,20 +249,14 @@ public class MediaEditor: UINavigationController {
         self.images[offset] = image
 
         DispatchQueue.main.async {
-            self.hideActivityIndicator()
+            self.hub.hideActivityIndicator()
+
+            self.hub.enableDoneButton()
 
             self.presentIfSingleImageAndCapability()
 
             self.hub.show(image: image, at: offset)
         }
-    }
-
-    private func showActivityIndicator() {
-        hub.showActivityIndicator()
-    }
-
-    private func hideActivityIndicator() {
-        hub.hideActivityIndicator()
     }
 
     private enum Constants {

@@ -155,6 +155,16 @@ class MediaEditorHub: UIViewController {
         activityIndicatorView.isHidden = true
     }
 
+    func disableDoneButton() {
+        doneButton.isEnabled = false
+        doneIconButton.isEnabled = false
+    }
+
+    func enableDoneButton() {
+        doneButton.isEnabled = true
+        doneIconButton.isEnabled = true
+    }
+
     func loadingImage(at index: Int) {
         indexesOfImagesBeingLoaded.append(index)
         showOrHideActivityIndicatorAndCapabilities()

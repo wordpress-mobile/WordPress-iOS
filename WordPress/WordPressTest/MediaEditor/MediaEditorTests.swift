@@ -249,6 +249,26 @@ class MediaEditorTests: XCTestCase {
         expect(returnedImages.first?.editedImage).to(equal(image))
     }
 
+
+    func testDisableDoneButtonWhileLoading() {
+        let asyncImage = AsyncImageMock()
+
+        let mediaEditor = MediaEditor(asyncImage)
+
+        expect(mediaEditor.hub.doneButton.isEnabled).to(beFalse())
+        expect(mediaEditor.hub.doneIconButton.isEnabled).to(beFalse())
+    }
+
+    func testEnableDoneButtonOnceImageIsLoaded() {
+        let asyncImage = AsyncImageMock()
+        let mediaEditor = MediaEditor(asyncImage)
+
+        asyncImage.simulate(fullImageHasBeenDownloaded: image)
+
+        expect(mediaEditor.hub.doneButton.isEnabled).toEventually(beTrue())
+        expect(mediaEditor.hub.doneIconButton.isEnabled).to(beTrue())
+    }
+
     // WHEN: Multiple images + one single capability
 
     func testShowThumbs() {
