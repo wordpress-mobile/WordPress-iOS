@@ -151,7 +151,7 @@ public class MediaEditor: UINavigationController {
     }
 
     private func done() {
-        // Map images and return
+        onFinishEditing?(images.map { index, value in value }, actions)
     }
 
     private func cancelPendingAsyncImagesAndDismiss() {

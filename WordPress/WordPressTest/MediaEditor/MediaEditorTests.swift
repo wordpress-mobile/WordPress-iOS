@@ -103,6 +103,18 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.actions).to(equal([.crop, .rotate]))
     }
 
+    func testWhenFinishEditingImagesReturnTheImages() {
+        var returnedImages: [UIImage] = []
+        let mediaEditor = MediaEditor(image)
+        mediaEditor.onFinishEditing = { images, _ in
+            returnedImages = images as! [UIImage]
+        }
+
+        mediaEditor.currentCapability?.onFinishEditing(image, [.rotate])
+
+        expect(returnedImages).to(equal([image]))
+    }
+
     // WHEN: Async image + one single capability
 
     func testRequestThumbAndFullImageQuality() {
@@ -291,6 +303,21 @@ class MediaEditorTests: XCTestCase {
         mediaEditor.currentCapability?.onCancel()
 
         expect(mediaEditor.visibleViewController).toEventually(equal(mediaEditor.hub))
+    }
+
+    func testWhenFinishEditingMultipleImagesReturnAllTheImages() {
+        var returnedImages: [UIImage] = []
+        let editedImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor([image, image])
+        mediaEditor.onFinishEditing = { images, _ in
+            returnedImages = images as! [UIImage]
+        }
+        mediaEditor.capabilityTapped(0)
+        mediaEditor.currentCapability?.onFinishEditing(editedImage, [.rotate])
+
+        mediaEditor.hub.doneButton.sendActions(for: .touchUpInside)
+
+        expect(returnedImages).to(equal([editedImage, image]))
     }
 
     // WHEN: Multiple async images + one single capability
