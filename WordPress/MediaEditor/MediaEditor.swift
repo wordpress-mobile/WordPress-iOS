@@ -95,6 +95,10 @@ public class MediaEditor: UINavigationController {
             self?.cancel()
         }
 
+        hub.onDone = { [weak self] in
+            self?.done()
+        }
+
         hub.apply(styles: styles)
 
         hub.availableThumbs = images
@@ -144,6 +148,10 @@ public class MediaEditor: UINavigationController {
         } else {
             dismissCapability()
         }
+    }
+
+    private func done() {
+        // Map images and return
     }
 
     private func cancelPendingAsyncImagesAndDismiss() {
