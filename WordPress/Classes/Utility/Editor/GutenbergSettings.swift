@@ -1,5 +1,39 @@
 import Foundation
 
+struct GutenbergRollout {
+    enum Key {
+        static let userInRolloutGroup = "kUserInGutenbergRolloutGroup"
+    }
+    let database: KeyValueDatabase
+    private let phase2Percentage = 30
+    private let context = Environment.current.contextManager.mainContext
+
+    var isUserInRolloutGroup: Bool {
+        get {
+            database.bool(forKey: Key.userInRolloutGroup)
+        }
+        set {
+            database.set(newValue, forKey: Key.userInRolloutGroup)
+        }
+    }
+
+    func shouldPerformPhase2Migration(userId: Int) -> Bool {
+        return
+            isUserInRolloutGroup == false &&
+            atLeastOneSiteHasAztecEnabled() &&
+            isUserIdInPhase2RolloutPercentage(userId)
+    }
+
+    private func isUserIdInPhase2RolloutPercentage(_ userId: Int) -> Bool {
+        return userId % 100 >= (100 - phase2Percentage)
+    }
+
+    private func atLeastOneSiteHasAztecEnabled() -> Bool {
+        let allBlogs = BlogService(managedObjectContext: context).blogsForAllAccounts()
+        return allBlogs.contains { $0.editor == .aztec }
+    }
+}
+
 /// Takes care of storing and accessing Gutenberg settings.
 ///
 class GutenbergSettings {
@@ -9,6 +43,10 @@ class GutenbergSettings {
         static func enabledOnce(for blog: Blog) -> String {
             let url = (blog.url ?? "") as String
             return "com.wordpress.gutenberg-autoenabled-" + url
+        }
+        static func showPhase2Dialog(for blog: Blog) -> String {
+            let url = (blog.url ?? "") as String
+            return "kShowGutenbergPhase2Dialog-" + url
         }
     }
 
@@ -49,6 +87,29 @@ class GutenbergSettings {
         if isEnabled {
             database.set(true, forKey: Key.enabledOnce(for: blog))
         }
+    }
+
+    func performGutenbergPhase2MigrationIfNeeded() {
+        guard let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() else {
+            return
+        }
+        var rollout = GutenbergRollout(database: database)
+        if rollout.shouldPerformPhase2Migration(userId: account.userID.intValue) {
+            setGutenbergEnabledForAllSites()
+            rollout.isUserInRolloutGroup = true
+        }
+    }
+
+    private func setGutenbergEnabledForAllSites() {
+        let allBlogs = BlogService(managedObjectContext: context).blogsForAllAccounts()
+        allBlogs.forEach { blog in
+            if blog.editor == .aztec {
+                database.set(true, forKey: Key.showPhase2Dialog(for: blog))
+                database.set(true, forKey: Key.enabledOnce(for: blog))
+            }
+        }
+        let editorSettingsService = EditorSettingsService(managedObjectContext: context)
+        editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true)
     }
 
     /// Sets gutenberg enabled without registering the enabled action ("enabledOnce")
