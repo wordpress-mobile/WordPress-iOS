@@ -94,10 +94,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     }
 
     func prepareForVoiceOver() {
-        if let period = dateLabel.text {
-            let localizedLabel = NSLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
-            dateLabel.accessibilityLabel = .localizedStringWithFormat(localizedLabel, period)
-        }
+        dateLabel.accessibilityLabel = displayDateAccessibilityLabel()
 
         backButton.accessibilityLabel = NSLocalizedString("Previous period", comment: "Accessibility label")
         backButton.accessibilityHint = NSLocalizedString("Tap to select the previous period", comment: "Accessibility hint")
@@ -158,6 +155,23 @@ private extension SiteStatsTableHeaderView {
             return "\(from)"
         }
     }
+
+    func displayDateAccessibilityLabel() -> String? {
+        guard let components = displayDateComponents() else {
+            return nil
+        }
+
+        let (from, to) = components
+
+        if let to = to {
+            let format = NSLocalizedString("Current period: %@ to %@", comment: "Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12.")
+            return .localizedStringWithFormat(format, from, to)
+        } else {
+            let format = NSLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
+            return .localizedStringWithFormat(format, from)
+        }
+    }
+
     /// Returns the formatted dates for the current period.
     func displayDateComponents() -> (from: String, to: String?)? {
         guard let date = date, let period = period else {
