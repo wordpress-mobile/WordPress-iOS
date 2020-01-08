@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,13 +30,32 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="esr-2y-uLo">
                                 <rect key="frame" x="0.0" y="48" width="288" height="48"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ke9-nm-91h" userLabel="Separator Line">
+                                    <visualEffectView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9MM-O1-Ae9">
                                         <rect key="frame" x="-16" y="8" width="320" height="0.5"/>
-                                        <color key="backgroundColor" name="Gray40"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="f0r-aX-Lqg">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ke9-nm-91h" userLabel="Separator Line">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="tintColor" name="Gray40"/>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="ke9-nm-91h" secondAttribute="bottom" id="MKb-61-MrF"/>
+                                                <constraint firstAttribute="trailing" secondItem="ke9-nm-91h" secondAttribute="trailing" id="jOh-8U-P34"/>
+                                                <constraint firstItem="ke9-nm-91h" firstAttribute="leading" secondItem="f0r-aX-Lqg" secondAttribute="leading" id="jRd-a2-CVg"/>
+                                                <constraint firstItem="ke9-nm-91h" firstAttribute="top" secondItem="f0r-aX-Lqg" secondAttribute="top" id="zV7-09-nse"/>
+                                            </constraints>
+                                        </view>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="0.5" id="1k6-km-IFb"/>
+                                            <constraint firstAttribute="height" constant="0.5" id="iCl-xD-ecX"/>
                                         </constraints>
-                                    </view>
+                                        <vibrancyEffect>
+                                            <blurEffect style="light"/>
+                                        </vibrancyEffect>
+                                    </visualEffectView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open WordPress" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTQ-mH-dxy" userLabel="Open WordPress Label">
                                         <rect key="frame" x="0.0" y="16.5" width="288" height="31.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
@@ -46,10 +65,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="ke9-nm-91h" firstAttribute="top" secondItem="esr-2y-uLo" secondAttribute="top" constant="8" id="Fgo-ME-2FH"/>
                                     <constraint firstAttribute="trailing" secondItem="zTQ-mH-dxy" secondAttribute="trailing" id="HzB-Ci-tiL"/>
-                                    <constraint firstItem="zTQ-mH-dxy" firstAttribute="top" secondItem="ke9-nm-91h" secondAttribute="bottom" constant="8" id="avy-PY-R4Y"/>
+                                    <constraint firstItem="9MM-O1-Ae9" firstAttribute="top" secondItem="esr-2y-uLo" secondAttribute="top" constant="8" id="Unf-FW-XJX"/>
                                     <constraint firstItem="zTQ-mH-dxy" firstAttribute="leading" secondItem="esr-2y-uLo" secondAttribute="leading" id="pys-2R-IuN"/>
+                                    <constraint firstItem="zTQ-mH-dxy" firstAttribute="top" secondItem="9MM-O1-Ae9" secondAttribute="bottom" constant="8" id="qt6-MQ-atd"/>
                                     <constraint firstAttribute="bottom" secondItem="zTQ-mH-dxy" secondAttribute="bottom" id="rg6-UN-q8D"/>
                                 </constraints>
                             </view>
@@ -66,14 +85,15 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="ke9-nm-91h" secondAttribute="trailing" id="iEa-x3-8ma"/>
-                <constraint firstItem="ke9-nm-91h" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="pvM-uZ-KDd"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="9MM-O1-Ae9" secondAttribute="trailing" id="Nb8-FO-ob2"/>
+                <constraint firstItem="9MM-O1-Ae9" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="yhw-Qy-yMt"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="configureLabel" destination="BeG-f7-LNj" id="JmX-XL-Xav"/>
                 <outlet property="openWordPressLabel" destination="zTQ-mH-dxy" id="1bT-PO-Kbd"/>
                 <outlet property="separatorLine" destination="ke9-nm-91h" id="59e-Kh-Ifx"/>
+                <outlet property="separatorVisualEffect" destination="9MM-O1-Ae9" id="kqo-dY-OzW"/>
             </connections>
             <point key="canvasLocation" x="-106" y="147"/>
         </tableViewCell>

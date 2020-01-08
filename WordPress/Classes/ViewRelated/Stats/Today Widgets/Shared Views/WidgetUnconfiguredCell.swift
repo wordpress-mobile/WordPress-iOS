@@ -1,4 +1,5 @@
 import UIKit
+import NotificationCenter
 
 enum WidgetType {
     case today
@@ -13,6 +14,7 @@ class WidgetUnconfiguredCell: UITableViewCell {
 
     @IBOutlet private var configureLabel: UILabel!
     @IBOutlet private var separatorLine: UIView!
+    @IBOutlet private var separatorVisualEffect: UIVisualEffectView!
     @IBOutlet private var openWordPressLabel: UILabel!
 
     // MARK: - View
@@ -39,10 +41,18 @@ private extension WidgetUnconfiguredCell {
         }()
 
         openWordPressLabel.text = LocalizedText.openWordPress
-
         configureLabel.textColor = .text
         openWordPressLabel.textColor = .text
-        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
+
+        if #available(iOS 13, *) {
+            separatorLine.backgroundColor = UIColor(white: 1.0, alpha: 0.5)
+            separatorLine.tintColor = UIColor(white: 1.0, alpha: 0.5)
+            separatorVisualEffect.effect = UIVibrancyEffect.widgetEffect(forVibrancyStyle: .separator)
+        } else {
+            separatorLine.backgroundColor = .divider
+            separatorLine.tintColor = .divider
+            separatorVisualEffect.effect = UIVibrancyEffect.widgetSecondary()
+        }
     }
 
     enum LocalizedText {
