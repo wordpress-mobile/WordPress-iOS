@@ -38,7 +38,7 @@ extension WKWebView {
             result = output
         }
 
-        while (!finished) {
+        while !finished {
             RunLoop.current.run(mode: .default, before: NSDate.distantFuture)
         }
 
