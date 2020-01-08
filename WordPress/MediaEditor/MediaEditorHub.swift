@@ -12,12 +12,21 @@ class MediaEditorHub: UIViewController {
     @IBOutlet weak var thumbsToolbar: UIView!
     @IBOutlet weak var thumbsCollectionView: UICollectionView!
     @IBOutlet weak var imagesCollectionView: UICollectionView!
+    @IBOutlet weak var capabilitiesCollectionView: UICollectionView!
+
+    weak var delegate: MediaEditorHubDelegate?
 
     var onCancel: (() -> ())?
 
     var numberOfThumbs = 0 {
         didSet {
             reloadImagesAndReposition()
+        }
+    }
+
+    var capabilities: [(String, UIImage)] = [] {
+        didSet {
+            setupCapabilities()
         }
     }
 
@@ -28,13 +37,15 @@ class MediaEditorHub: UIViewController {
     private(set) var selectedThumbIndex = 0 {
         didSet {
             highlightSelectedThumb(current: selectedThumbIndex, before: oldValue)
-            showOrHideActivityIndicator()
+            showOrHideActivityIndicatorAndCapabilities()
         }
     }
 
     private(set) var isUserScrolling = false
 
     private var selectedColor: UIColor?
+
+    private var indexesOfImagesBeingLoaded: [Int] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +54,8 @@ class MediaEditorHub: UIViewController {
         thumbsCollectionView.delegate = self
         imagesCollectionView.dataSource = self
         imagesCollectionView.delegate = self
+        capabilitiesCollectionView.dataSource = self
+        capabilitiesCollectionView.delegate = self
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -65,11 +78,15 @@ class MediaEditorHub: UIViewController {
 
     func show(image: UIImage, at index: Int) {
         availableImages[index] = image
+        availableThumbs[index] = image
 
         let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
         imageCell?.imageView.image = image
 
-        showOrHideActivityIndicator()
+        let cell = thumbsCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorThumbCell
+        cell?.thumbImageView.image = image
+
+        showOrHideActivityIndicatorAndCapabilities()
     }
 
     func show(thumb: UIImage, at index: Int) {
@@ -81,7 +98,7 @@ class MediaEditorHub: UIViewController {
         let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
         imageCell?.imageView.image = availableImages[index] ?? thumb
 
-        showOrHideActivityIndicator()
+        showOrHideActivityIndicatorAndCapabilities()
     }
 
     func apply(styles: MediaEditorStyles) {
@@ -117,6 +134,16 @@ class MediaEditorHub: UIViewController {
         activityIndicatorView.isHidden = true
     }
 
+    func loadingImage(at index: Int) {
+        indexesOfImagesBeingLoaded.append(index)
+        showOrHideActivityIndicatorAndCapabilities()
+    }
+
+    func loadedImage(at index: Int) {
+        indexesOfImagesBeingLoaded = indexesOfImagesBeingLoaded.filter { $0 != index }
+        showOrHideActivityIndicatorAndCapabilities()
+    }
+
     private func reloadImagesAndReposition() {
         thumbsCollectionView.reloadData()
         imagesCollectionView.reloadData()
@@ -135,6 +162,9 @@ class MediaEditorHub: UIViewController {
         if let layout = thumbsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = isLandscape ? .vertical : .horizontal
         }
+        if let layout = capabilitiesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = isLandscape ? .vertical : .horizontal
+        }
         mainStackView.layoutIfNeeded()
         imagesCollectionView.scrollToItem(at: IndexPath(row: selectedThumbIndex, section: 0), at: .right, animated: false)
     }
@@ -146,10 +176,33 @@ class MediaEditorHub: UIViewController {
         current?.showBorder()
     }
 
-    private func showOrHideActivityIndicator() {
+    private func showOrHideActivityIndicatorAndCapabilities() {
         let imageAvailable = availableThumbs[selectedThumbIndex] ?? availableImages[selectedThumbIndex]
 
-        imageAvailable == nil ? showActivityIndicator() : hideActivityIndicator()
+        let isBeingLoaded = imageAvailable == nil || indexesOfImagesBeingLoaded.contains(selectedThumbIndex)
+
+        if isBeingLoaded {
+            showActivityIndicator()
+            disableCapabilities()
+        } else {
+            hideActivityIndicator()
+            enableCapabilities()
+        }
+    }
+
+    private func disableCapabilities() {
+        capabilitiesCollectionView.isUserInteractionEnabled = false
+        capabilitiesCollectionView.layer.opacity = 0.5
+    }
+
+    private func enableCapabilities() {
+        capabilitiesCollectionView.isUserInteractionEnabled = true
+        capabilitiesCollectionView.layer.opacity = 1
+    }
+
+    private func setupCapabilities() {
+        capabilitiesCollectionView.isHidden = capabilities.count > 1 || numberOfThumbs > 1 ? false : true
+        capabilitiesCollectionView.reloadData()
     }
 
     static func initialize() -> MediaEditorHub {
@@ -159,6 +212,7 @@ class MediaEditorHub: UIViewController {
     private enum Constants {
         static var thumbCellIdentifier = "thumbCell"
         static var imageCellIdentifier = "imageCell"
+        static var capabCellIdentifier = "capabilityCell"
     }
 }
 
@@ -166,15 +220,17 @@ class MediaEditorHub: UIViewController {
 
 extension MediaEditorHub: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numberOfThumbs
+        return collectionView == capabilitiesCollectionView ? capabilities.count : numberOfThumbs
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == thumbsCollectionView {
             return cellForThumbsCollectionView(cellForItemAt: indexPath)
+        } else if collectionView == imagesCollectionView {
+            return cellForImagesCollectionView(cellForItemAt: indexPath)
         }
 
-        return cellForImagesCollectionView(cellForItemAt: indexPath)
+        return cellForCapabilityCollectionView(cellForItemAt: indexPath)
     }
 
     private func cellForThumbsCollectionView(cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -195,7 +251,17 @@ extension MediaEditorHub: UICollectionViewDataSource {
             imageCell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
         }
 
-        showOrHideActivityIndicator()
+        showOrHideActivityIndicatorAndCapabilities()
+
+        return cell
+    }
+
+    private func cellForCapabilityCollectionView(cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = capabilitiesCollectionView.dequeueReusableCell(withReuseIdentifier: Constants.capabCellIdentifier, for: indexPath)
+
+        if let capabilityCell = cell as? MediaEditorCapabilityCell {
+            capabilityCell.configure(capabilities[indexPath.row])
+        }
 
         return cell
     }
@@ -205,7 +271,11 @@ extension MediaEditorHub: UICollectionViewDataSource {
 
 extension MediaEditorHub: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: imagesCollectionView.frame.width, height: imagesCollectionView.frame.height)
+        if collectionView == imagesCollectionView {
+            return CGSize(width: imagesCollectionView.frame.width, height: imagesCollectionView.frame.height)
+        }
+
+        return CGSize(width: 44, height: 44)
     }
 }
 
@@ -213,12 +283,12 @@ extension MediaEditorHub: UICollectionViewDelegateFlowLayout {
 
 extension MediaEditorHub: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard collectionView == thumbsCollectionView else {
-            return
+        if collectionView == thumbsCollectionView {
+            selectedThumbIndex = indexPath.row
+            imagesCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
+        } else if collectionView == capabilitiesCollectionView {
+            delegate?.capabilityTapped(indexPath.row)
         }
-
-        selectedThumbIndex = indexPath.row
-        imagesCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -247,4 +317,8 @@ extension MediaEditorHub: UICollectionViewDelegate {
 
         isUserScrolling = false
     }
+}
+
+protocol MediaEditorHubDelegate: class {
+    func capabilityTapped(_ index: Int)
 }

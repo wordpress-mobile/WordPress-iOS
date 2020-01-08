@@ -1,6 +1,10 @@
 import Foundation
 
 public protocol MediaEditorCapability {
+    static var name: String { get }
+
+    static var icon: UIImage { get }
+
     var image: UIImage { get set }
 
     var viewController: UIViewController { get }

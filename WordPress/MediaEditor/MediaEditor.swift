@@ -14,7 +14,7 @@ public class MediaEditor: UINavigationController {
         return hub
     }()
 
-    var images: [UIImage] = []
+    var images: [Int: UIImage] = [:]
 
     var asyncImages: [AsyncImage] = []
 
@@ -25,7 +25,7 @@ public class MediaEditor: UINavigationController {
     var actions: [MediaEditorOperation] = []
 
     var isSingleImageAndCapability: Bool {
-        return (asyncImages.count == 1 || images.count == 1) && Self.capabilities.count == 1
+        return (asyncImages.count == 1) || (images.count == 1 && asyncImages.count == 0) && Self.capabilities.count == 1
     }
 
     private(set) var currentCapability: MediaEditorCapability?
@@ -42,13 +42,13 @@ public class MediaEditor: UINavigationController {
     }
 
     init(_ image: UIImage) {
-        self.images.append(image)
+        self.images = [0: image]
         super.init(rootViewController: hub)
         setup()
     }
 
     init(_ images: [UIImage]) {
-        self.images = images
+        self.images = images.enumerated().reduce(into: [:]) { $0[$1.offset] = $1.element }
         super.init(rootViewController: hub)
         setup()
     }
@@ -71,6 +71,8 @@ public class MediaEditor: UINavigationController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+
+        hub.delegate = self
 
         modalTransitionStyle = .crossDissolve
         modalPresentationStyle = .fullScreen
@@ -95,9 +97,11 @@ public class MediaEditor: UINavigationController {
 
         hub.apply(styles: styles)
 
-        hub.availableThumbs = images.enumerated().reduce(into: [:]) { $0[$1.offset] = $1.element }
+        hub.availableThumbs = images
 
         hub.numberOfThumbs = max(images.count, asyncImages.count)
+
+        hub.capabilities = Self.capabilities.reduce(into: []) { $0.append(($1.name, $1.icon)) }
 
         setupForAsync()
 
@@ -125,7 +129,7 @@ public class MediaEditor: UINavigationController {
     }
 
     func presentIfSingleImageAndCapability() {
-        guard isSingleImageAndCapability, let image = images.first, let capabilityEntity = Self.capabilities.first else {
+        guard isSingleImageAndCapability, let image = images[0], let capabilityEntity = Self.capabilities.first else {
             return
         }
 
@@ -133,6 +137,16 @@ public class MediaEditor: UINavigationController {
     }
 
     private func cancel() {
+        if currentCapability == nil {
+            cancelPendingAsyncImagesAndDismiss()
+        } else if isSingleImageAndCapability {
+            cancelPendingAsyncImagesAndDismiss()
+        } else {
+            dismissCapability()
+        }
+    }
+
+    private func cancelPendingAsyncImagesAndDismiss() {
         asyncImages.forEach { $0.cancel() }
         dismiss(animated: true)
     }
@@ -144,8 +158,7 @@ public class MediaEditor: UINavigationController {
             image,
             onFinishEditing: { [weak self] image, actions in
                 self?.actions.append(contentsOf: actions)
-                self?.onFinishEditing?(image, actions)
-                self?.dismiss(animated: true)
+                self?.finishEditing(image: image)
             },
             onCancel: { [weak self] in
                 self?.cancel()
@@ -155,6 +168,23 @@ public class MediaEditor: UINavigationController {
         currentCapability = capability
 
         pushViewController(capability.viewController, animated: false)
+    }
+
+    private func finishEditing(image: UIImage) {
+        if isSingleImageAndCapability {
+            onFinishEditing?(image, actions)
+            dismiss(animated: true)
+        } else {
+            hub.show(image: image, at: selectedImageIndex)
+            images[selectedImageIndex] = image
+            dismissCapability()
+        }
+    }
+
+    private func dismissCapability() {
+        prepareTransition()
+        popViewController(animated: false)
+        currentCapability = nil
     }
 
     private func prepareTransition() {
@@ -179,7 +209,7 @@ public class MediaEditor: UINavigationController {
             return
         }
 
-        self.images.append(image)
+        self.images[offset] = image
 
         DispatchQueue.main.async {
             self.hideActivityIndicator()
@@ -200,5 +230,29 @@ public class MediaEditor: UINavigationController {
 
     private enum Constants {
         static let transitionDuration = 0.3
+    }
+}
+
+extension MediaEditor: MediaEditorHubDelegate {
+    func capabilityTapped(_ index: Int) {
+        if let image = images[selectedImageIndex] {
+            present(capability: Self.capabilities[index], with: image)
+        } else {
+            let offset = selectedImageIndex
+            hub.loadingImage(at: offset)
+            asyncImages[selectedImageIndex].full(finishedRetrievingFullImage: { [weak self] image in
+                DispatchQueue.main.async {
+
+                    self?.hub.loadedImage(at: offset)
+
+                    self?.fullImageAvailable(image, offset: offset)
+
+                    if self?.selectedImageIndex == offset, let image = image {
+                        self?.present(capability: Self.capabilities[index], with: image)
+                    }
+
+                }
+            })
+        }
     }
 }

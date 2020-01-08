@@ -30,6 +30,20 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.modalPresentationStyle).to(equal(.fullScreen))
     }
 
+    func testHubDelegate() {
+        let mediaEditor = MediaEditor(image)
+
+        let hubDelegate = mediaEditor.hub.delegate as? MediaEditor
+
+        expect(hubDelegate).to(equal(mediaEditor))
+    }
+
+    func testGivesTheListOfCapabilitiesIconsAndNames() {
+        let mediaEditor = MediaEditor(image)
+
+        expect(mediaEditor.hub.capabilities.count).to(equal(1))
+    }
+
     func testSettingStylesChangingTheCurrentShownCapability() {
         let mediaEditor = MediaEditor(image)
 
@@ -39,7 +53,7 @@ class MediaEditorTests: XCTestCase {
         expect(currentCapability?.applyCalled).to(beTrue())
     }
 
-    func editPresentsFromTheGivenViewController() {
+    func testEditPresentsFromTheGivenViewController() {
         let viewController = UIViewControllerMock()
         let mediaEditor = MediaEditor(image)
 
@@ -58,12 +72,13 @@ class MediaEditorTests: XCTestCase {
 
     func testWhenCancelingDismissTheMediaEditor() {
         let viewController = UIViewController()
+        UIApplication.shared.topWindow?.addSubview(viewController.view)
         let mediaEditor = MediaEditor(image)
         viewController.present(mediaEditor, animated: false)
 
         mediaEditor.currentCapability?.onCancel()
 
-        expect(viewController.presentedViewController).to(beNil())
+        expect(viewController.presentedViewController).toEventually(beNil())
     }
 
     func testWhenFinishEditingCallOnFinishEditing() {
@@ -217,6 +232,67 @@ class MediaEditorTests: XCTestCase {
         expect(secondThumb?.thumbImageView.image).to(equal(blackImage))
     }
 
+    func testPresentsTheHub() {
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+
+        expect(mediaEditor.currentCapability).to(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.hub))
+    }
+
+    func testTappingACapabilityPresentsIt() {
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+
+        mediaEditor.capabilityTapped(0)
+
+        expect(mediaEditor.currentCapability).toNot(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.currentCapability?.viewController))
+    }
+
+    func testCallingOnCancelWhenShowingACapabilityGoesBackToHub() {
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+        mediaEditor.capabilityTapped(0)
+
+        mediaEditor.currentCapability?.onCancel()
+
+        expect(mediaEditor.currentCapability).to(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.hub))
+    }
+
+    func testCallingOnFinishWhenShowingACapabilityUpdatesTheImage() {
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+        let editedImage = UIImage()
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+        mediaEditor.capabilityTapped(0)
+
+        mediaEditor.currentCapability?.onFinishEditing(editedImage, [.crop])
+
+        expect(mediaEditor.images[0]).to(equal(editedImage))
+        expect(mediaEditor.hub.availableImages[0]).to(equal(editedImage))
+        expect(mediaEditor.hub.availableThumbs[0]).to(equal(editedImage))
+    }
+
+    func testWhenCancelingDismissTheCapabilityAndGoesBackToHub() {
+        let viewController = UIViewController()
+        UIApplication.shared.topWindow?.addSubview(viewController.view)
+        let whiteImage = UIImage(color: .white)!
+        let blackImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor([whiteImage, blackImage])
+        viewController.present(mediaEditor, animated: false)
+        mediaEditor.capabilityTapped(0)
+
+        mediaEditor.currentCapability?.onCancel()
+
+        expect(mediaEditor.visibleViewController).toEventually(equal(mediaEditor.hub))
+    }
+
     // WHEN: Multiple async images + one single capability
 
     func testShowThumbsToolbar() {
@@ -226,9 +302,69 @@ class MediaEditorTests: XCTestCase {
 
         expect(mediaEditor.hub.thumbsToolbar.isHidden).to(beFalse())
     }
+
+    func testWhenGivenMultipleAsyncImagesPresentsTheHub() {
+        let asyncImages = [AsyncImageMock(), AsyncImageMock()]
+
+        let mediaEditor = MediaEditor(asyncImages)
+
+        expect(mediaEditor.currentCapability).to(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.hub))
+    }
+
+    func testTappingACapabilityDoesntPresentItRightAway() {
+        let asyncImages = [AsyncImageMock(), AsyncImageMock()]
+        let mediaEditor = MediaEditor(asyncImages)
+
+        mediaEditor.capabilityTapped(0)
+
+        expect(mediaEditor.currentCapability).to(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.hub))
+    }
+
+    func testTappingACapabilityStartsTheRequestForTheFullImage() {
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+
+        mediaEditor.capabilityTapped(0)
+
+        expect(firstImage.didCallFull).to(beTrue())
+    }
+
+    func testWhenTheFullImageIsAvailableShowTheCapability() {
+        let fullImage = UIImage()
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+        mediaEditor.capabilityTapped(0)
+
+        firstImage.simulate(fullImageHasBeenDownloaded: fullImage)
+
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil())
+        expect(mediaEditor.visibleViewController).to(equal(mediaEditor.currentCapability?.viewController))
+    }
+
+    func testWhenTheFullImageIsAvailableUpdateTheImageReferences() {
+        let fullImage = UIImage()
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+        mediaEditor.capabilityTapped(0)
+
+        firstImage.simulate(fullImageHasBeenDownloaded: fullImage)
+
+        expect(mediaEditor.hub.availableThumbs[0]).toEventually(equal(fullImage))
+        expect(mediaEditor.hub.availableImages[0]).to(equal(fullImage))
+        expect(mediaEditor.images[0]).to(equal(fullImage))
+    }
 }
 
 class MockCapability: MediaEditorCapability {
+    static var name = "MockCapability"
+
+    static var icon = UIImage()
+
     var applyCalled = false
 
     var image: UIImage
