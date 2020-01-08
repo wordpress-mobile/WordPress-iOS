@@ -146,6 +146,20 @@ private extension SiteStatsTableHeaderView {
     }
 
     func displayDate() -> String? {
+        guard let components = displayDateComponents() else {
+            return nil
+        }
+
+        let (from, to) = components
+
+        if let to = to {
+            return "\(from) - \(to)"
+        } else {
+            return "\(from)"
+        }
+    }
+    /// Returns the formatted dates for the current period.
+    func displayDateComponents() -> (from: String, to: String?)? {
         guard let date = date, let period = period else {
             return nil
         }
@@ -155,14 +169,14 @@ private extension SiteStatsTableHeaderView {
 
         switch period {
         case .day, .month, .year:
-            return dateFormatter.string(from: date)
+            return (dateFormatter.string(from: date), nil)
         case .week:
             let week = StatsPeriodHelper().weekIncludingDate(date)
             guard let weekStart = week?.weekStart, let weekEnd = week?.weekEnd else {
                 return nil
             }
 
-            return "\(dateFormatter.string(from: weekStart)) – \(dateFormatter.string(from: weekEnd))"
+            return (dateFormatter.string(from: weekStart), dateFormatter.string(from: weekEnd))
         }
     }
 
