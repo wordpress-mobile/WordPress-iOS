@@ -6,6 +6,13 @@ import WebKit
 ///
 extension WKWebView {
 
+    /// Synchornous evaluation of JavaScript in WKWebView.
+    ///
+    /// - Parameters:
+    ///     - javascriptString: the JavaScript string to evaluate.
+    ///
+    /// - Returns: the result of the evaluation.
+    ///
     @objc
     func stringByEvaluatingJavaScript(fromString javascriptString: String) -> String {
         var result = ""
@@ -37,28 +44,4 @@ extension WKWebView {
 
         return result
     }
-    /*
-    - (NSString *)stringByEvaluatingJavaScriptFromString:(NSString *)script; {
-        __block NSString *resultString = nil;
-        __block BOOL finished = NO;
-
-        [self evaluateJavaScript:script completionHandler:^(id result, NSError *error) {
-            if (error == nil) {
-                if (result != nil) {
-                    resultString = [NSString stringWithFormat:@"%@", result];
-                }
-            } else {
-                NSLog(@"evaluateJavaScript error : %@", error.localizedDescription);
-            }
-            
-            finished = YES;
-        }];
-
-        while (!finished)
-        {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-        }
-
-        return resultString;
-    }*/
 }
