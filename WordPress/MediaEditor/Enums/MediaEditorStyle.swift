@@ -4,6 +4,7 @@ public typealias MediaEditorStyles = [MediaEditorStyle: Any]
 
 public enum MediaEditorStyle {
     case doneLabel
+    case doneColor
     case cancelLabel
     case cancelColor
     case resetIcon

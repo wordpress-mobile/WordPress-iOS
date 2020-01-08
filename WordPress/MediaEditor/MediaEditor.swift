@@ -18,17 +18,19 @@ public class MediaEditor: UINavigationController {
 
     var asyncImages: [AsyncImage] = []
 
-    var onFinishEditing: ((UIImage, [MediaEditorOperation]) -> ())?
+    var onFinishEditing: (([AsyncImage], [MediaEditorOperation]) -> ())?
 
     var onCancel: (() -> ())?
 
     var actions: [MediaEditorOperation] = []
 
     var isSingleImageAndCapability: Bool {
-        return (asyncImages.count == 1) || (images.count == 1 && asyncImages.count == 0) && Self.capabilities.count == 1
+        return ((asyncImages.count == 1) || (images.count == 1 && asyncImages.count == 0)) && Self.capabilities.count == 1
     }
 
     private(set) var currentCapability: MediaEditorCapability?
+
+    private var isEditingPlainUIImages = false
 
     var selectedImageIndex: Int {
         return hub.selectedThumbIndex
@@ -72,6 +74,8 @@ public class MediaEditor: UINavigationController {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        isEditingPlainUIImages = images.count > 0
+
         hub.delegate = self
 
         modalTransitionStyle = .crossDissolve
@@ -84,7 +88,7 @@ public class MediaEditor: UINavigationController {
         currentCapability = nil
     }
 
-    public func edit(from viewController: UIViewController? = nil, onFinishEditing: @escaping (UIImage, [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
+    public func edit(from viewController: UIViewController? = nil, onFinishEditing: @escaping ([AsyncImage], [MediaEditorOperation]) -> (), onCancel: (() -> ())? = nil) {
         self.onFinishEditing = onFinishEditing
         self.onCancel = onCancel
         viewController?.present(self, animated: true)
@@ -93,6 +97,10 @@ public class MediaEditor: UINavigationController {
     private func setup() {
         hub.onCancel = { [weak self] in
             self?.cancel()
+        }
+
+        hub.onDone = { [weak self] in
+            self?.done()
         }
 
         hub.apply(styles: styles)
@@ -120,8 +128,11 @@ public class MediaEditor: UINavigationController {
         }
 
         if isSingleImageAndCapability {
-            showActivityIndicator()
+            let index = selectedImageIndex
+            hub.loadingImage(at: index)
+            hub.disableDoneButton()
             asyncImages.first?.full(finishedRetrievingFullImage: { [weak self] image in
+                self?.hub.loadedImage(at: index)
                 let offset = self?.selectedImageIndex ?? 0
                 self?.fullImageAvailable(image, offset: offset)
             })
@@ -144,6 +155,34 @@ public class MediaEditor: UINavigationController {
         } else {
             dismissCapability()
         }
+    }
+
+    private func done() {
+        let outputImages = isEditingPlainUIImages ? mapEditedImages() : mapEditedAsyncImages()
+        onFinishEditing?(outputImages, actions)
+        dismiss(animated: true)
+    }
+
+    /*
+     Map the images hash to an images array preserving the original order,
+     since Hashes are non-order preserving.
+     */
+    private func mapEditedImages() -> [UIImage] {
+        return images.enumerated().compactMap { index, _ in images[index] }
+    }
+
+    private func mapEditedAsyncImages() -> [AsyncImage] {
+        var editedImages: [AsyncImage] = []
+
+        for (index, var asyncImage) in asyncImages.enumerated() {
+            if let editedImage = images[index] {
+                asyncImage.isEdited = true
+                asyncImage.editedImage = editedImage
+            }
+            editedImages.append(asyncImage)
+        }
+
+        return editedImages
     }
 
     private func cancelPendingAsyncImagesAndDismiss() {
@@ -172,7 +211,7 @@ public class MediaEditor: UINavigationController {
 
     private func finishEditing(image: UIImage) {
         if isSingleImageAndCapability {
-            onFinishEditing?(image, actions)
+            done()
             dismiss(animated: true)
         } else {
             hub.show(image: image, at: selectedImageIndex)
@@ -212,20 +251,14 @@ public class MediaEditor: UINavigationController {
         self.images[offset] = image
 
         DispatchQueue.main.async {
-            self.hideActivityIndicator()
+            self.hub.hideActivityIndicator()
+
+            self.hub.enableDoneButton()
 
             self.presentIfSingleImageAndCapability()
 
             self.hub.show(image: image, at: offset)
         }
-    }
-
-    private func showActivityIndicator() {
-        hub.showActivityIndicator()
-    }
-
-    private func hideActivityIndicator() {
-        hub.hideActivityIndicator()
     }
 
     private enum Constants {

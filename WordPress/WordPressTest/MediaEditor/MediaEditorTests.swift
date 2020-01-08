@@ -103,6 +103,18 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.actions).to(equal([.crop, .rotate]))
     }
 
+    func testWhenFinishEditingImagesReturnTheImages() {
+        var returnedImages: [UIImage] = []
+        let mediaEditor = MediaEditor(image)
+        mediaEditor.onFinishEditing = { images, _ in
+            returnedImages = images as! [UIImage]
+        }
+
+        mediaEditor.currentCapability?.onFinishEditing(image, [.rotate])
+
+        expect(returnedImages).to(equal([image]))
+    }
+
     // WHEN: Async image + one single capability
 
     func testRequestThumbAndFullImageQuality() {
@@ -218,6 +230,45 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.hub.thumbsToolbar.isHidden).to(beTrue())
     }
 
+    func testWhenFinishEditingAsyncImageReturnTheAsyncImage() {
+        // Given
+        var returnedImages: [AsyncImage] = []
+        let asyncImage = AsyncImageMock()
+        let mediaEditor = MediaEditor(asyncImage)
+        asyncImage.simulate(fullImageHasBeenDownloaded: UIImage())
+        mediaEditor.onFinishEditing = { images, _ in
+            returnedImages = images
+        }
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil()) // Wait capability appear
+
+        // When
+        mediaEditor.currentCapability?.onFinishEditing(image, [.rotate])
+
+        // Then
+        expect(returnedImages.first?.isEdited).to(beTrue())
+        expect(returnedImages.first?.editedImage).to(equal(image))
+    }
+
+
+    func testDisableDoneButtonWhileLoading() {
+        let asyncImage = AsyncImageMock()
+
+        let mediaEditor = MediaEditor(asyncImage)
+
+        expect(mediaEditor.hub.doneButton.isEnabled).to(beFalse())
+        expect(mediaEditor.hub.doneIconButton.isEnabled).to(beFalse())
+    }
+
+    func testEnableDoneButtonOnceImageIsLoaded() {
+        let asyncImage = AsyncImageMock()
+        let mediaEditor = MediaEditor(asyncImage)
+
+        asyncImage.simulate(fullImageHasBeenDownloaded: image)
+
+        expect(mediaEditor.hub.doneButton.isEnabled).toEventually(beTrue())
+        expect(mediaEditor.hub.doneIconButton.isEnabled).to(beTrue())
+    }
+
     // WHEN: Multiple images + one single capability
 
     func testShowThumbs() {
@@ -293,6 +344,21 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.visibleViewController).toEventually(equal(mediaEditor.hub))
     }
 
+    func testWhenFinishEditingMultipleImagesReturnAllTheImages() {
+        var returnedImages: [UIImage] = []
+        let editedImage = UIImage(color: .black)!
+        let mediaEditor = MediaEditor([image, image])
+        mediaEditor.onFinishEditing = { images, _ in
+            returnedImages = images as! [UIImage]
+        }
+        mediaEditor.capabilityTapped(0)
+        mediaEditor.currentCapability?.onFinishEditing(editedImage, [.rotate])
+
+        mediaEditor.hub.doneButton.sendActions(for: .touchUpInside)
+
+        expect(returnedImages).to(equal([editedImage, image]))
+    }
+
     // WHEN: Multiple async images + one single capability
 
     func testShowThumbsToolbar() {
@@ -357,6 +423,28 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.hub.availableThumbs[0]).toEventually(equal(fullImage))
         expect(mediaEditor.hub.availableImages[0]).to(equal(fullImage))
         expect(mediaEditor.images[0]).to(equal(fullImage))
+    }
+
+    func testWhenFinishEditingMultipleAsyncImageReturnAllAsyncImages() {
+        // Given
+        var returnedImages: [AsyncImage] = []
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+        mediaEditor.capabilityTapped(0)
+        firstImage.simulate(fullImageHasBeenDownloaded: UIImage())
+        mediaEditor.onFinishEditing = { images, _ in
+            returnedImages = images
+        }
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil()) // Wait capability appear
+        mediaEditor.currentCapability?.onFinishEditing(image, [.rotate])
+
+        // When
+        mediaEditor.hub.doneButton.sendActions(for: .touchUpInside)
+
+        // Then
+        expect(returnedImages.first?.isEdited).to(beTrue())
+        expect(returnedImages.first?.editedImage).to(equal(image))
     }
 }
 

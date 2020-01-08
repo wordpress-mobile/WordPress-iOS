@@ -2,6 +2,8 @@ import UIKit
 
 class MediaEditorHub: UIViewController {
 
+    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var doneIconButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var cancelIconButton: UIButton!
     @IBOutlet weak var activityIndicatorView: UIVisualEffectView!
@@ -17,6 +19,8 @@ class MediaEditorHub: UIViewController {
     weak var delegate: MediaEditorHubDelegate?
 
     var onCancel: (() -> ())?
+
+    var onDone: (() -> ())?
 
     var numberOfThumbs = 0 {
         didSet {
@@ -76,6 +80,10 @@ class MediaEditorHub: UIViewController {
         onCancel?()
     }
 
+    @IBAction func done(_ sender: Any) {
+        onDone?()
+    }
+
     func show(image: UIImage, at index: Int) {
         availableImages[index] = image
         availableThumbs[index] = image
@@ -108,13 +116,26 @@ class MediaEditorHub: UIViewController {
             cancelButton.setTitle(cancelLabel, for: .normal)
         }
 
+        if let doneLabel = styles[.doneLabel] as? String {
+            doneButton.setTitle(doneLabel, for: .normal)
+        }
+
         if let cancelColor = styles[.cancelColor] as? UIColor {
             cancelButton.tintColor = cancelColor
             cancelIconButton.tintColor = cancelColor
         }
 
+        if let doneColor = styles[.doneColor] as? UIColor {
+            doneButton.tintColor = doneColor
+            doneIconButton.tintColor = doneColor
+        }
+
         if let cancelIcon = styles[.cancelIcon] as? UIImage {
             cancelIconButton.setImage(cancelIcon, for: .normal)
+        }
+
+        if let doneIcon = styles[.doneIcon] as? UIImage {
+            doneIconButton.setImage(doneIcon, for: .normal)
         }
 
         if let loadingLabel = styles[.loadingLabel] as? String {
@@ -132,6 +153,16 @@ class MediaEditorHub: UIViewController {
 
     func hideActivityIndicator() {
         activityIndicatorView.isHidden = true
+    }
+
+    func disableDoneButton() {
+        doneButton.isEnabled = false
+        doneIconButton.isEnabled = false
+    }
+
+    func enableDoneButton() {
+        doneButton.isEnabled = true
+        doneIconButton.isEnabled = true
     }
 
     func loadingImage(at index: Int) {
