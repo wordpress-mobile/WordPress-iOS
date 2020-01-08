@@ -8,6 +8,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var viewMoreView: UIView!
     @IBOutlet weak var viewMoreLabel: UILabel!
+    @IBOutlet weak var viewMoreButton: UIButton!
     @IBOutlet weak var bottomSeparatorLine: UIView!
     @IBOutlet weak var rowsStackViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var viewMoreHeightConstraint: NSLayoutConstraint!
