@@ -1216,6 +1216,8 @@
 		98BFF57C2398406A008A1DCB /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */; };
 		98BFF57E23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */; };
 		98BFF57F23984345008A1DCB /* AllTimeWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BFF57D23984344008A1DCB /* AllTimeWidgetStats.swift */; };
+		98C0CE9B23C559C800D0F27C /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
+		98C0CE9C23C559C800D0F27C /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
 		98CAD296221B4ED2003E8F45 /* StatSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CAD295221B4ED1003E8F45 /* StatSection.swift */; };
 		98D31B8F2396ED7F009CFF43 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E5283B19A7741A003A1A9C /* NotificationCenter.framework */; };
 		98D31B992396ED7F009CFF43 /* WordPressAllTimeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 98D31B8E2396ED7E009CFF43 /* WordPressAllTimeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -12370,6 +12372,7 @@
 				433ADC1C223B2A7E00ED9DE1 /* TextBundleWrapper.m in Sources */,
 				93E5284119A7741A003A1A9C /* TodayViewController.swift in Sources */,
 				938CF3DE1EF1BE8000AF838E /* CocoaLumberjack.swift in Sources */,
+				98C0CE9C23C559C800D0F27C /* Double+Stats.swift in Sources */,
 				93C2075A1CC7FF9C00C94D04 /* Tracks.swift in Sources */,
 				436110DA22C3ED44000773AD /* FeatureFlag.swift in Sources */,
 				436110DB22C3ED4C000773AD /* BuildConfiguration.swift in Sources */,
@@ -12402,6 +12405,7 @@
 				98A6B993239881860031AEBD /* MurielColor.swift in Sources */,
 				98D31BC223972A79009CFF43 /* SFHFKeychainUtils.m in Sources */,
 				98D31BAE239708FB009CFF43 /* Constants.m in Sources */,
+				98C0CE9B23C559C800D0F27C /* Double+Stats.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
