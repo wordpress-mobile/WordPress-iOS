@@ -18,6 +18,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var actionLabel: UILabel!
     @IBOutlet weak var actionImageView: UIImageView!
+    @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var disclosureImageView: UIImageView!
 
     @IBOutlet weak var topSeparatorLine: UIView!
