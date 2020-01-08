@@ -216,6 +216,13 @@ private extension OverviewCell {
         resetChartContainerView()
         chartContainerView.addSubview(chartView)
 
+        // There's a weird bug that happens when the user switches to a different tab
+        // (Views, Visitors, Likes, or Comments). VoiceOver would read the previous chart's
+        // accessibility label and would even not allow you to select the individual bar chart items.
+        //
+        // Forcing the `accessibilityElements` fixes this. ¯\_(ツ)_/¯
+        chartContainerView.accessibilityElements = [chartView]
+
         NSLayoutConstraint.activate([
             chartView.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor),
             chartView.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor),
