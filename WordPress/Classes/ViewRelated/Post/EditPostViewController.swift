@@ -231,13 +231,23 @@ class EditPostViewController: UIViewController {
         guard let post = post else {
             return
         }
-        let controller = PostPreviewViewController(post: post)
-        controller.hidesBottomBarWhenPushed = true
-        controller.onClose = {
-            self.dismiss(animated: true) {}
+
+        if FeatureFlag.postPreview.enabled {
+            let controller = NewPostPreviewViewController(post: post)
+            controller.onClose = {
+                self.dismiss(animated: true) {}
+            }
+            let navWrapper = UINavigationController(rootViewController: controller)
+            postPost.present(navWrapper, animated: true) {}
+        } else {
+            let controller = PostPreviewViewController(post: post)
+            controller.hidesBottomBarWhenPushed = true
+            controller.onClose = {
+                self.dismiss(animated: true) {}
+            }
+            let navWrapper = UINavigationController(rootViewController: controller)
+            postPost.present(navWrapper, animated: true) {}
         }
-        let navWrapper = UINavigationController(rootViewController: controller)
-        postPost.present(navWrapper, animated: true) {}
     }
 
     @objc func closePostPost(animated: Bool) {
