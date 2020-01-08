@@ -40,6 +40,13 @@ class PostingActivityCell: UITableViewCell, NibLoadable, Accessible {
         viewMoreButton.accessibilityLabel =
             NSLocalizedString("View more", comment: "Accessibility label for viewing more posting activity.")
     }
+
+    override var accessibilityElements: [Any]? {
+        get {
+            monthsStackView.arrangedSubviews + [viewMoreButton].compactMap { $0 }
+        }
+        set { }
+    }
 }
 
 // MARK: - Private Extension
