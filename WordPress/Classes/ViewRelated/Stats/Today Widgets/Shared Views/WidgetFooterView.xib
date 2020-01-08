@@ -72,7 +72,7 @@
             <connections>
                 <outlet property="backgroundColorView" destination="Cyd-Yd-Bok" id="tnD-Kc-G7Q"/>
                 <outlet property="separatorLine" destination="txP-Kv-gSY" id="zbg-Oo-iy2"/>
-                <outlet property="separatorVisualEffect" destination="hXp-MF-wn4" id="ihh-t6-1od"/>
+                <outlet property="separatorVisualEffectView" destination="hXp-MF-wn4" id="czX-oh-JPJ"/>
                 <outlet property="siteUrlLabel" destination="Y4f-Rk-ldQ" id="8Tu-IB-bkB"/>
             </connections>
             <point key="canvasLocation" x="-317.39130434782612" y="188.50446428571428"/>

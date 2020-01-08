@@ -93,7 +93,7 @@
                 <outlet property="configureLabel" destination="BeG-f7-LNj" id="JmX-XL-Xav"/>
                 <outlet property="openWordPressLabel" destination="zTQ-mH-dxy" id="1bT-PO-Kbd"/>
                 <outlet property="separatorLine" destination="ke9-nm-91h" id="59e-Kh-Ifx"/>
-                <outlet property="separatorVisualEffect" destination="9MM-O1-Ae9" id="kqo-dY-OzW"/>
+                <outlet property="separatorVisualEffectView" destination="9MM-O1-Ae9" id="uRN-tS-eA1"/>
             </connections>
             <point key="canvasLocation" x="-106" y="147"/>
         </tableViewCell>
