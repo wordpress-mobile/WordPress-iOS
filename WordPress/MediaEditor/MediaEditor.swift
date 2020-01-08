@@ -25,7 +25,7 @@ public class MediaEditor: UINavigationController {
     var actions: [MediaEditorOperation] = []
 
     var isSingleImageAndCapability: Bool {
-        return (asyncImages.count == 1) || (images.count == 1 && asyncImages.count == 0) && Self.capabilities.count == 1
+        return ((asyncImages.count == 1) || (images.count == 1 && asyncImages.count == 0)) && Self.capabilities.count == 1
     }
 
     private(set) var currentCapability: MediaEditorCapability?
@@ -128,9 +128,11 @@ public class MediaEditor: UINavigationController {
         }
 
         if isSingleImageAndCapability {
-            hub.showActivityIndicator()
+            let index = selectedImageIndex
+            hub.loadingImage(at: index)
             hub.disableDoneButton()
             asyncImages.first?.full(finishedRetrievingFullImage: { [weak self] image in
+                self?.hub.loadedImage(at: index)
                 let offset = self?.selectedImageIndex ?? 0
                 self?.fullImageAvailable(image, offset: offset)
             })
