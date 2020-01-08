@@ -18,6 +18,7 @@ class GutenbergSettings {
         case viaSiteSettings = "via-site-settings"
         case onSiteCreation = "on-site-creation"
         case onBlockPostOpening = "on-block-post-opening"
+        case onProgressiveRolloutPhase2 = "on-progressive-rollout-phase-2"
     }
 
     // MARK: - Internal variables
@@ -65,6 +66,7 @@ class GutenbergSettings {
         if rollout.shouldPerformPhase2Migration(userId: account.userID.intValue) {
             setGutenbergEnabledForAllSites()
             rollout.isUserInRolloutGroup = true
+            trackSettingChange(to: true, from: .onProgressiveRolloutPhase2)
         }
     }
 
@@ -77,7 +79,9 @@ class GutenbergSettings {
             }
         }
         let editorSettingsService = EditorSettingsService(managedObjectContext: context)
-        editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true)
+        editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true, onSuccess: {
+            WPAnalytics.refreshMetadata()
+        })
     }
 
     func shouldPresentInformativeDialog(for blog: Blog) -> Bool {

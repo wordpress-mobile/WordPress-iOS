@@ -50,7 +50,7 @@ import Foundation
 
     /// This method is intended to be called only after the db 87 to 88 migration
     ///
-    func migrateGlobalSettingToRemote(isGutenbergEnabled: Bool, overrideRemote: Bool = false) {
+    func migrateGlobalSettingToRemote(isGutenbergEnabled: Bool, overrideRemote: Bool = false, onSuccess: (() -> Void)? = nil) {
         guard let api = apiForDefaultAccount else {
             // SelfHosted non-jetpack sites won't sync with remote.
             return
@@ -61,6 +61,7 @@ import Foundation
         let service = EditorServiceRemote(wordPressComRestApi: api)
         service.postDesignateMobileEditorForAllSites(remoteEditor, setOnlyIfEmpty: !overrideRemote, success: { response in
             self.updateAllSites(with: response)
+            onSuccess?()
         }) { (error) in
             DDLogError("Error saving editor settings: \(error)")
         }
