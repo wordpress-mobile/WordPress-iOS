@@ -10,9 +10,9 @@ extension WKWebView {
     ///
     @objc
     func userAgent() -> String {
-        return stringByEvaluatingJavaScript(fromString: "navigator.userAgent");
+        return stringByEvaluatingJavaScript(fromString: "navigator.userAgent")
     }
-    
+
     /// Static version of the method that returns the current user agent.
     ///
     @objc
