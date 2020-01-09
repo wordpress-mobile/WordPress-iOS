@@ -57,7 +57,6 @@ class MediaEditorHub: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupForOrientation()
         thumbsCollectionView.dataSource = self
         thumbsCollectionView.delegate = self
         capabilitiesCollectionView.dataSource = self
@@ -73,12 +72,11 @@ class MediaEditorHub: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        setupForOrientation()
+        reloadImagesAndReposition()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        setupForOrientation()
 
         coordinator.animate(alongsideTransition: { _ in
             self.reloadImagesAndReposition()
@@ -180,20 +178,6 @@ class MediaEditorHub: UIViewController {
         imagesCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
         toolbarHeight.constant = isSingleImage ? Constants.doneButtonHeight : Constants.thumbHeight
         thumbsCollectionView.isHidden = isSingleImage ? true : false
-    }
-
-    private func setupForOrientation() {
-        let isLandscape = UIDevice.current.orientation.isLandscape
-//        mainStackView.axis = isLandscape ? .horizontal : .vertical
-//        mainStackView.semanticContentAttribute = isLandscape ? .forceRightToLeft : .unspecified
-//        if let layout = thumbsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-//            layout.scrollDirection = isLandscape ? .vertical : .horizontal
-//        }
-//        if let layout = capabilitiesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-//            layout.scrollDirection = isLandscape ? .vertical : .horizontal
-//        }
-//        mainStackView.layoutIfNeeded()
-//        imagesCollectionView.scrollToItem(at: IndexPath(row: selectedThumbIndex, section: 0), at: .right, animated: false)
     }
 
     private func highlightSelectedThumb(current: Int, before: Int) {
