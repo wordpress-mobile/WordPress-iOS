@@ -193,7 +193,7 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
 
 - (NSString *)textFilenameForType:(NSString *)type
 {
-    NSString *ext = (__bridge NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)type, kUTTagClassFilenameExtension);
+    NSString *ext = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)type, kUTTagClassFilenameExtension);
     return [@"text" stringByAppendingPathExtension:ext];
 }
 
@@ -254,10 +254,10 @@ NSString * const TextBundleErrorDomain = @"TextBundleErrorDomain";
     NSMutableDictionary *allMetadata = [NSMutableDictionary dictionary];
     [allMetadata addEntriesFromDictionary:metadata];
     
-    if (self.version)           { allMetadata[kTextBundleVersion] = self.version;                     }
-    if (self.type)              { allMetadata[kTextBundleType] = self.type;                           }
-    if (self.transient)         { allMetadata[kTextBundleTransient] = self.transient;                 }
-    if (self.creatorIdentifier) { allMetadata[kTextBundleCreatorIdentifier] = self.creatorIdentifier; }
+    if (self.version != nil)           { allMetadata[kTextBundleVersion] = self.version;                     }
+    if (self.type != nil)              { allMetadata[kTextBundleType] = self.type;                           }
+    if (self.transient != nil)         { allMetadata[kTextBundleTransient] = self.transient;                 }
+    if (self.creatorIdentifier != nil) { allMetadata[kTextBundleCreatorIdentifier] = self.creatorIdentifier; }
     
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:allMetadata
                                                        options:NSJSONWritingPrettyPrinted

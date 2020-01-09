@@ -77,7 +77,15 @@ import AutomatticTracks
 
         let statsViewController = StatsViewController()
         statsViewController.blog = blog
+
+        let currentSiteID = SiteStatsInformation.sharedInstance.siteID
+
         statsViewController.dismissBlock = {
+            // The currently selected site could be different from the URL site.
+            // After the Stats modal is dismissed, restore the selected site's ID
+            // so the Stats view displays the correct stats.
+            SiteStatsInformation.sharedInstance.siteID = currentSiteID
+
             WPTabBarController.sharedInstance()?.dismiss(animated: true, completion: nil)
         }
 
