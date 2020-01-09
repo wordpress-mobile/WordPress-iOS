@@ -1,5 +1,4 @@
 import UIKit
-import NotificationCenter
 
 enum WidgetType {
     case today

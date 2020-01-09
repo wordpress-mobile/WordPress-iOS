@@ -1,4 +1,5 @@
 import Foundation
+import NotificationCenter
 
 class WidgetStyles: NSObject {
 

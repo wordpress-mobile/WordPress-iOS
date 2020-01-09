@@ -1,5 +1,4 @@
 import UIKit
-import NotificationCenter
 
 class WidgetFooterView: UITableViewHeaderFooterView {
 
