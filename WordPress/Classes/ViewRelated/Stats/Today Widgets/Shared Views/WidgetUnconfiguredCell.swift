@@ -14,6 +14,7 @@ class WidgetUnconfiguredCell: UITableViewCell {
 
     @IBOutlet private var configureLabel: UILabel!
     @IBOutlet private var separatorLine: UIView!
+    @IBOutlet private var separatorVisualEffectView: UIVisualEffectView!
     @IBOutlet private var openWordPressLabel: UILabel!
 
     // MARK: - View
@@ -42,10 +43,10 @@ private extension WidgetUnconfiguredCell {
         }()
 
         openWordPressLabel.text = LocalizedText.openWordPress
-
-        configureLabel.textColor = .text
-        openWordPressLabel.textColor = .text
-        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
+        configureLabel.textColor = WidgetStyles.primaryTextColor
+        openWordPressLabel.textColor = WidgetStyles.primaryTextColor
+        WidgetStyles.configureSeparator(separatorLine)
+        WidgetStyles.configureSeparatorVisualEffectView(separatorVisualEffectView)
     }
 
     enum LocalizedText {
