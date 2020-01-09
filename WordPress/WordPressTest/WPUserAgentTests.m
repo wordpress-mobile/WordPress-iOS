@@ -31,7 +31,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     NSString *defaultUserAgent = [WPUserAgent defaultUserAgent];
     NSString *expectedUserAgent = [NSString stringWithFormat:@"%@ wp-iphone/%@", defaultUserAgent, appVersion];
 
-    XCTAssertTrue([[WPUserAgent wordPressUserAgent] containsString:expectedUserAgent]);
+    XCTAssertEqualObjects([WPUserAgent wordPressUserAgent], expectedUserAgent);
 }
 
 - (void)testUseWordPressUserAgentInWebViews
