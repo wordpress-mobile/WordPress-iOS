@@ -10,7 +10,6 @@ import Foundation
 import WebKit
 import Gridicons
 
-//TODO: Check whether we need `ParentPageSettingsViewController`
 class NewPostPreviewViewController: UIViewController {
     var webView: WKWebView!
 
@@ -19,8 +18,9 @@ class NewPostPreviewViewController: UIViewController {
     let post: AbstractPost
 
     private let generator: PostPreviewGenerator
+    private var reachabilityObserver: Any?
 
-    private var reachabilityObserver: Any? = nil
+    private weak var noResultsViewController: NoResultsViewController?
 
     init(post: AbstractPost, previewURL: URL? = nil) {
         self.post = post
@@ -125,22 +125,41 @@ class NewPostPreviewViewController: UIViewController {
         navigationItem.leftBarButtonItem = navigationItem.backBarButtonItem
         navigationItem.title = NSLocalizedString("Preview", comment: "Post Editor / Preview screen title.")
     }
+
+    private func showNoResults(withTitle title: String) {
+        let controller = NoResultsViewController.controllerWith(title: title,
+                                                                buttonTitle: NSLocalizedString("Retry", comment: "Button to retry a preview that failed to load"),
+                                                                subtitle: nil,
+                                                                attributedSubtitle: nil,
+                                                                attributedSubtitleConfiguration: nil,
+                                                                image: nil,
+                                                                subtitleImage: nil,
+                                                                accessoryView: nil)
+        controller.delegate = self
+        noResultsViewController = controller
+        addChild(controller)
+        view.addSubview(controller.view)
+        view.pinSubviewToAllEdges(controller.view)
+        noResultsViewController?.didMove(toParent: self)
+    }
 }
 
 extension NewPostPreviewViewController: PostPreviewGeneratorDelegate {
     func preview(_ generator: PostPreviewGenerator, attemptRequest request: URLRequest) {
         startLoadAnimation()
-        webView.load(request)
-        //TODO: Remove No Results View
+        var newRequest = request
+        newRequest.url = URL(string: "http://sdfsldfjlwefj.sdlfj")
+        webView.load(newRequest)
+        noResultsViewController?.removeFromView()
     }
 
     func preview(_ generator: PostPreviewGenerator, loadHTML html: String) {
         webView.loadHTMLString(html, baseURL: nil)
-        //TODO: Remove No Results View
+        noResultsViewController?.removeFromView()
     }
 
     func previewFailed(_ generator: PostPreviewGenerator, message: String) {
-        //TODO: Show No Results with message
+        showNoResults(withTitle: message)
         reloadWhenConnectionRestored()
     }
 
@@ -154,33 +173,11 @@ extension NewPostPreviewViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        handle(error: error)
+    }
 
-        //TODO: Remove this and handle all
-        let error = error as NSError
-
-        // Watch for NSURLErrorCancelled (aka NSURLErrorDomain error -999). This error is returned
-        // when an asynchronous load is canceled. For example, a link is tapped (or some other
-        // action that causes a new page to load) before the current page has completed loading.
-        // It should be safe to ignore.
-        if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-            return
-        }
-
-        // In iOS 11, it seems UIWebView is based on WebKit, and it's returning a different error when
-        // we redirect and cancel a request from shouldStartLoadWithRequest:
-        //
-        //   Error Domain=WebKitErrorDomain Code=102 "Frame load interrupted"
-        //
-        // I haven't found a relevant WebKit constant for error 102
-        if error.domain == "WebKitErrorDomain" && error.code == 102 {
-            return
-        }
-
-        stopLoadAnimation()
-
-        let reasonString = "Generic web view error Error. Error code: \(error.code), Error domain: \(error.domain)"
-
-        generator.previewRequestFailed(reason: reasonString)
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        handle(error: error)
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -212,5 +209,44 @@ extension NewPostPreviewViewController: WKNavigationDelegate {
         }
 
         decisionHandler(.allow)
+    }
+
+    private func handle(error: Error) {
+        let error = error as NSError
+
+        // Watch for NSURLErrorCancelled (aka NSURLErrorDomain error -999). This error is returned
+        // when an asynchronous load is canceled. For example, a link is tapped (or some other
+        // action that causes a new page to load) before the current page has completed loading.
+        // It should be safe to ignore.
+        if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+            return
+        }
+
+        // In iOS 11, it seems UIWebView is based on WebKit, and it's returning a different error when
+        // we redirect and cancel a request from shouldStartLoadWithRequest:
+        //
+        //   Error Domain=WebKitErrorDomain Code=102 "Frame load interrupted"
+        //
+        // I haven't found a relevant WebKit constant for error 102
+        if error.domain == "WebKitErrorDomain" && error.code == 102 {
+            return
+        }
+
+        stopLoadAnimation()
+
+        let reasonString = "Generic web view error Error. Error code: \(error.code), Error domain: \(error.domain)"
+
+        generator.previewRequestFailed(reason: reasonString)
+    }
+}
+
+extension NewPostPreviewViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        stopWaitingForConnectionRestored()
+        noResultsViewController?.removeFromView()
+        refreshWebView()
+    }
+
+    func dismissButtonPressed() {
     }
 }
