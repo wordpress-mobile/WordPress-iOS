@@ -18,7 +18,11 @@ class MediaEditorHub: UIViewController {
 
     var onDone: (() -> ())?
 
-    var numberOfThumbs = 0
+    var numberOfThumbs = 0 {
+        didSet {
+            setupToolbar()
+        }
+    }
 
     var capabilities: [(String, UIImage)] = [] {
         didSet {
@@ -172,6 +176,9 @@ class MediaEditorHub: UIViewController {
         thumbsCollectionView.layoutIfNeeded()
         thumbsCollectionView.selectItem(at: IndexPath(row: selectedThumbIndex, section: 0), animated: false, scrollPosition: .right)
         imagesCollectionView.scrollToItem(at: IndexPath(row: selectedThumbIndex, section: 0), at: .right, animated: false)
+    }
+
+    private func setupToolbar() {
         toolbarHeight.constant = isSingleImage ? Constants.doneButtonHeight : Constants.thumbHeight
         thumbsCollectionView.isHidden = isSingleImage ? true : false
     }
