@@ -8,7 +8,7 @@ class WidgetStyles: NSObject {
 
     private static var separatorColor: UIColor = {
         if #available(iOS 13, *) {
-            return UIColor(white: 1.0, alpha: 0.5)
+            return .separator
         } else {
             return .divider
         }
