@@ -58,17 +58,16 @@ private extension ReaderReblogPresenter {
                            blog: Blog,
                            blogService: BlogService,
                            readerPost: ReaderPost) {
-        // instantiate
+
         let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: nil,
                                                                 successHandler: nil,
                                                                 dismissHandler: nil)
-        // configure
+
         selectorViewController.displaysNavigationBarWhenSearching = WPDeviceIdentification.isiPad()
         selectorViewController.dismissOnCancellation = true
 
         let navigationController = getNavigationController(selectorViewController)
 
-        // handler
         let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
             guard let newBlog = blogService.managedObjectContext.object(with: selectedObjectID) as? Blog else {
                 return
@@ -78,7 +77,6 @@ private extension ReaderReblogPresenter {
             }
         }
         selectorViewController.successHandler = successHandler
-        // present
         origin.present(navigationController, animated: true)
     }
 
@@ -120,12 +118,11 @@ private extension ReaderReblogPresenter {
 private extension ReaderReblogPresenter {
     /// presents the no sites screen, with related actions
     func presentNoSitesScene(origin: UIViewController) {
-        // instantiate & configure
         let controller = NoResultsViewController.controllerWith(title: NoSitesConfiguration.noSitesTitle,
                                                                 buttonTitle: NoSitesConfiguration.manageSitesLabel,
                                                                 subtitle: NoSitesConfiguration.noSitesSubtitle)
         controller.showDismissButton(title: NoSitesConfiguration.backButtonTitle)
-        // handlers
+
         controller.actionButtonHandler = { [weak origin] in
             guard let tabBarController = origin?.tabBarController as? WPTabBarController else {
                 return
@@ -138,7 +135,7 @@ private extension ReaderReblogPresenter {
         controller.dismissButtonHandler = {
             controller.dismiss(animated: true)
         }
-        // present
+
         let navigationController = getNavigationController(controller)
         origin.present(navigationController, animated: true)
     }
