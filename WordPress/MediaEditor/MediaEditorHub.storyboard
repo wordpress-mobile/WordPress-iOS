@@ -20,50 +20,69 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="o0b-fF-tJw">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="YUc-Qf-Gm9">
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NE3-IH-MzE">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="CWq-nn-G4B"/>
-                                            <constraint firstAttribute="width" priority="999" constant="44" id="YUf-mr-8Ht"/>
-                                        </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="3i8-4g-zqe">
-                                            <size key="itemSize" width="50" height="50"/>
-                                            <size key="estimatedItemSize" width="44" height="44"/>
-                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        </collectionViewFlowLayout>
-                                        <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="capabilityCell" id="Z78-n9-pAQ" customClass="MediaEditorCapabilityCell" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="-3" width="50" height="50"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Yi2-iG-hCx">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Wz-bX-y3d">
-                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="44" id="8Z3-NE-bqz"/>
-                                                                <constraint firstAttribute="width" constant="44" id="rx5-sT-4h7"/>
-                                                            </constraints>
-                                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </button>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="7Wz-bX-y3d" secondAttribute="bottom" id="Ao4-wB-PzR"/>
-                                                        <constraint firstItem="7Wz-bX-y3d" firstAttribute="top" secondItem="Yi2-iG-hCx" secondAttribute="top" id="BcH-Qa-nSY"/>
-                                                        <constraint firstAttribute="trailing" secondItem="7Wz-bX-y3d" secondAttribute="trailing" id="EHp-JR-iSY"/>
-                                                        <constraint firstItem="7Wz-bX-y3d" firstAttribute="leading" secondItem="Yi2-iG-hCx" secondAttribute="leading" id="kws-2X-UzP"/>
-                                                    </constraints>
-                                                </collectionViewCellContentView>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2D1-xm-eyg">
+                                                <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="44" id="7gX-tZ-1Ed"/>
+                                                    <constraint firstAttribute="height" constant="44" id="Atz-rc-Q7i"/>
+                                                </constraints>
                                                 <connections>
-                                                    <outlet property="iconButton" destination="7Wz-bX-y3d" id="lwy-eC-2Ta"/>
+                                                    <action selector="cancel:" destination="e8N-xf-0aT" eventType="touchUpInside" id="fAU-HY-XVa"/>
                                                 </connections>
-                                            </collectionViewCell>
-                                        </cells>
-                                    </collectionView>
+                                            </button>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="YUc-Qf-Gm9">
+                                                <rect key="frame" x="44" y="0.0" width="370" height="44"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="CWq-nn-G4B"/>
+                                                    <constraint firstAttribute="width" priority="999" constant="44" id="YUf-mr-8Ht"/>
+                                                </constraints>
+                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="3i8-4g-zqe">
+                                                    <size key="itemSize" width="50" height="50"/>
+                                                    <size key="estimatedItemSize" width="44" height="44"/>
+                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="capabilityCell" id="Z78-n9-pAQ" customClass="MediaEditorCapabilityCell" customModule="WordPress" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Yi2-iG-hCx">
+                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <subviews>
+                                                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Wz-bX-y3d">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="44" id="8Z3-NE-bqz"/>
+                                                                        <constraint firstAttribute="width" constant="44" id="rx5-sT-4h7"/>
+                                                                    </constraints>
+                                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </button>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="bottom" secondItem="7Wz-bX-y3d" secondAttribute="bottom" id="Ao4-wB-PzR"/>
+                                                                <constraint firstItem="7Wz-bX-y3d" firstAttribute="top" secondItem="Yi2-iG-hCx" secondAttribute="top" id="BcH-Qa-nSY"/>
+                                                                <constraint firstAttribute="trailing" secondItem="7Wz-bX-y3d" secondAttribute="trailing" id="EHp-JR-iSY"/>
+                                                                <constraint firstItem="7Wz-bX-y3d" firstAttribute="leading" secondItem="Yi2-iG-hCx" secondAttribute="leading" id="kws-2X-UzP"/>
+                                                            </constraints>
+                                                        </collectionViewCellContentView>
+                                                        <connections>
+                                                            <outlet property="iconButton" destination="7Wz-bX-y3d" id="lwy-eC-2Ta"/>
+                                                        </connections>
+                                                    </collectionViewCell>
+                                                </cells>
+                                            </collectionView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="aPN-D2-S9K"/>
+                                            <constraint firstAttribute="width" priority="999" constant="44" id="pcj-Rh-F53"/>
+                                        </constraints>
+                                    </stackView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="t2B-QE-aMZ">
                                         <rect key="frame" x="0.0" y="44" width="414" height="666"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -168,40 +187,17 @@
                                                             <action selector="done:" destination="e8N-xf-0aT" eventType="touchUpInside" id="Pf0-oZ-qAE"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2D1-xm-eyg">
-                                                        <rect key="frame" x="185" y="0.0" width="44" height="44"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="44" id="7gX-tZ-1Ed"/>
-                                                            <constraint firstAttribute="height" constant="44" id="Atz-rc-Q7i"/>
-                                                        </constraints>
-                                                        <connections>
-                                                            <action selector="cancel:" destination="e8N-xf-0aT" eventType="touchUpInside" id="fAU-HY-XVa"/>
-                                                        </connections>
-                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="E3p-rR-UYh" firstAttribute="centerX" secondItem="DTT-LK-vW1" secondAttribute="centerX" id="1QB-Fp-ceb"/>
-                                                    <constraint firstAttribute="bottom" secondItem="2D1-xm-eyg" secondAttribute="bottom" id="BAx-mY-VtM"/>
                                                     <constraint firstAttribute="width" priority="999" constant="44" id="JCW-jV-DX6"/>
                                                     <constraint firstItem="E3p-rR-UYh" firstAttribute="top" secondItem="DTT-LK-vW1" secondAttribute="top" id="a1i-YA-hd4"/>
-                                                    <constraint firstItem="2D1-xm-eyg" firstAttribute="centerX" secondItem="DTT-LK-vW1" secondAttribute="centerX" id="aJW-fE-n0i"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oEl-Rm-OAA">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cCN-Nm-Ahb">
-                                                        <rect key="frame" x="10" y="0.0" width="53" height="44"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="53" id="Nfx-cX-gcv"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <state key="normal" title="Cancel"/>
-                                                        <connections>
-                                                            <action selector="cancel:" destination="e8N-xf-0aT" eventType="touchUpInside" id="r4U-1e-ql7"/>
-                                                        </connections>
-                                                    </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MW9-rG-pUQ">
                                                         <rect key="frame" x="351" y="0.0" width="53" height="44"/>
                                                         <constraints>
@@ -217,12 +213,9 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="cCN-Nm-Ahb" firstAttribute="top" secondItem="oEl-Rm-OAA" secondAttribute="top" id="4Z6-ri-im4"/>
-                                                    <constraint firstItem="cCN-Nm-Ahb" firstAttribute="leading" secondItem="oEl-Rm-OAA" secondAttribute="leading" constant="10" id="6uU-J0-waC"/>
                                                     <constraint firstAttribute="height" constant="44" id="CUv-j6-ETf"/>
                                                     <constraint firstAttribute="trailing" secondItem="MW9-rG-pUQ" secondAttribute="trailing" constant="10" id="haq-nr-gjw"/>
                                                     <constraint firstAttribute="bottom" secondItem="MW9-rG-pUQ" secondAttribute="bottom" id="jFO-Fh-nAH"/>
-                                                    <constraint firstAttribute="bottom" secondItem="cCN-Nm-Ahb" secondAttribute="bottom" id="oe7-cN-D4V"/>
                                                     <constraint firstItem="MW9-rG-pUQ" firstAttribute="top" secondItem="oEl-Rm-OAA" secondAttribute="top" id="pgt-xM-Eiw"/>
                                                 </constraints>
                                             </view>
@@ -292,7 +285,6 @@
                     <connections>
                         <outlet property="activityIndicatorLabel" destination="e4Q-QZ-yuo" id="p1R-24-vGe"/>
                         <outlet property="activityIndicatorView" destination="Xsd-ER-63U" id="boC-Kk-1td"/>
-                        <outlet property="cancelButton" destination="cCN-Nm-Ahb" id="2yx-pN-P3d"/>
                         <outlet property="cancelIconButton" destination="2D1-xm-eyg" id="UqS-jv-SC1"/>
                         <outlet property="capabilitiesCollectionView" destination="YUc-Qf-Gm9" id="grx-bJ-0NB"/>
                         <outlet property="doneButton" destination="MW9-rG-pUQ" id="7oe-3F-eud"/>

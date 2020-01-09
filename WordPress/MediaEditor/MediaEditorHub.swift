@@ -4,7 +4,6 @@ class MediaEditorHub: UIViewController {
 
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var doneIconButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var cancelIconButton: UIButton!
     @IBOutlet weak var activityIndicatorView: UIVisualEffectView!
     @IBOutlet weak var activityIndicatorLabel: UILabel!
@@ -112,16 +111,11 @@ class MediaEditorHub: UIViewController {
     func apply(styles: MediaEditorStyles) {
         loadViewIfNeeded()
 
-        if let cancelLabel = styles[.cancelLabel] as? String {
-            cancelButton.setTitle(cancelLabel, for: .normal)
-        }
-
         if let doneLabel = styles[.doneLabel] as? String {
             doneButton.setTitle(doneLabel, for: .normal)
         }
 
         if let cancelColor = styles[.cancelColor] as? UIColor {
-            cancelButton.tintColor = cancelColor
             cancelIconButton.tintColor = cancelColor
         }
 
