@@ -209,6 +209,21 @@
         }
     }
 
+    var tabAccessibilityHint: String {
+        switch self {
+        case .periodOverviewViews:
+            return TabAccessibilityHints.overviewViews
+        case .periodOverviewVisitors:
+            return TabAccessibilityHints.overviewVisitors
+        case .periodOverviewLikes:
+            return TabAccessibilityHints.overviewLikes
+        case .periodOverviewComments:
+            return TabAccessibilityHints.overviewComments
+        default:
+            return ""
+        }
+    }
+
     var totalFollowers: String {
         switch self {
         case .insightsFollowersWordPress:
@@ -361,6 +376,13 @@
         static let overviewVisitors = NSLocalizedString("Visitors", comment: "Label for Period Overview visitors")
         static let overviewLikes = NSLocalizedString("Likes", comment: "Label for Period Overview likes")
         static let overviewComments = NSLocalizedString("Comments", comment: "Label for Period Overview comments")
+    }
+
+    struct TabAccessibilityHints {
+        static let overviewViews = NSLocalizedString("Updates the bar chart to show views.", comment: "Accessibility hint for the Views button in Stats Overview.")
+        static let overviewVisitors = NSLocalizedString("Updates the bar chart to show visitors.", comment: "Accessibility hint for the Visitors button in Stats Overview.")
+        static let overviewLikes = NSLocalizedString("Updates the bar chart to show likes.", comment: "Accessibility hint for the Likes button in Stats Overview.")
+        static let overviewComments = NSLocalizedString("Updates the bar chart to show comments.", comment: "Accessibility hint for the Comments button in Stats Overview.")
     }
 
     struct TotalFollowers {

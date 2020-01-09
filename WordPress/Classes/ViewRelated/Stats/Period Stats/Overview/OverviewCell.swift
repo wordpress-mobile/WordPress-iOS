@@ -10,6 +10,8 @@ struct OverviewTabData: FilterTabBarItem {
     var period: StatsPeriodUnit?
     var analyticsStat: WPAnalyticsStat?
 
+    private(set) var accessibilityHint: String?
+
     init(tabTitle: String,
          tabData: Int,
          tabDataStub: String? = nil,
@@ -17,7 +19,8 @@ struct OverviewTabData: FilterTabBarItem {
          differencePercent: Int,
          date: Date? = nil,
          period: StatsPeriodUnit? = nil,
-         analyticsStat: WPAnalyticsStat? = nil) {
+         analyticsStat: WPAnalyticsStat? = nil,
+         accessibilityHint: String? = nil) {
         self.tabTitle = tabTitle
         self.tabData = tabData
         self.tabDataStub = tabDataStub
@@ -26,6 +29,7 @@ struct OverviewTabData: FilterTabBarItem {
         self.date = date
         self.period = period
         self.analyticsStat = analyticsStat
+        self.accessibilityHint = accessibilityHint
     }
 
     var attributedTitle: NSAttributedString? {
@@ -77,6 +81,13 @@ struct OverviewTabData: FilterTabBarItem {
         return self.tabTitle.localizedLowercase
     }
 
+    var accessibilityLabel: String? {
+        tabTitle
+    }
+
+    var accessibilityValue: String? {
+        return tabDataStub != nil ? "" : "\(tabData)"
+    }
 }
 
 class OverviewCell: UITableViewCell, NibLoadable {
@@ -204,6 +215,13 @@ private extension OverviewCell {
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)
+
+        // There's a weird bug that happens when the user switches to a different tab
+        // (Views, Visitors, Likes, or Comments). VoiceOver would read the previous chart's
+        // accessibility label and would even not allow you to select the individual bar chart items.
+        //
+        // Forcing the `accessibilityElements` fixes this. ¯\_(ツ)_/¯
+        chartContainerView.accessibilityElements = [chartView]
 
         NSLayoutConstraint.activate([
             chartView.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor),
