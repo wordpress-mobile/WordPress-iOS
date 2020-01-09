@@ -3,17 +3,14 @@ import UIKit
 class MediaEditorHub: UIViewController {
 
     @IBOutlet weak var doneButton: UIButton!
-    @IBOutlet weak var doneIconButton: UIButton!
     @IBOutlet weak var cancelIconButton: UIButton!
     @IBOutlet weak var activityIndicatorView: UIVisualEffectView!
     @IBOutlet weak var activityIndicatorLabel: UILabel!
-    @IBOutlet weak var horizontalToolbar: UIView!
-    @IBOutlet weak var verticalToolbar: UIView!
     @IBOutlet weak var mainStackView: UIStackView!
-    @IBOutlet weak var thumbsToolbar: UIView!
     @IBOutlet weak var thumbsCollectionView: UICollectionView!
     @IBOutlet weak var imagesCollectionView: UICollectionView!
     @IBOutlet weak var capabilitiesCollectionView: UICollectionView!
+    @IBOutlet weak var thumbsCollectionViewHeight: NSLayoutConstraint!
 
     weak var delegate: MediaEditorHubDelegate?
 
@@ -49,6 +46,10 @@ class MediaEditorHub: UIViewController {
     private var selectedColor: UIColor?
 
     private var indexesOfImagesBeingLoaded: [Int] = []
+
+    private var isSingleImage: Bool {
+        return numberOfThumbs == 1
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,15 +122,10 @@ class MediaEditorHub: UIViewController {
 
         if let doneColor = styles[.doneColor] as? UIColor {
             doneButton.tintColor = doneColor
-            doneIconButton.tintColor = doneColor
         }
 
         if let cancelIcon = styles[.cancelIcon] as? UIImage {
             cancelIconButton.setImage(cancelIcon, for: .normal)
-        }
-
-        if let doneIcon = styles[.doneIcon] as? UIImage {
-            doneIconButton.setImage(doneIcon, for: .normal)
         }
 
         if let loadingLabel = styles[.loadingLabel] as? String {
@@ -151,12 +147,10 @@ class MediaEditorHub: UIViewController {
 
     func disableDoneButton() {
         doneButton.isEnabled = false
-        doneIconButton.isEnabled = false
     }
 
     func enableDoneButton() {
         doneButton.isEnabled = true
-        doneIconButton.isEnabled = true
     }
 
     func loadingImage(at index: Int) {
@@ -175,23 +169,22 @@ class MediaEditorHub: UIViewController {
         thumbsCollectionView.layoutIfNeeded()
         thumbsCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
         imagesCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
-        thumbsToolbar.isHidden = numberOfThumbs > 1 ? false : true
+        thumbsCollectionViewHeight.constant = isSingleImage ? Constants.doneButtonHeight : Constants.thumbHeight
+        thumbsCollectionView.layer.opacity = isSingleImage ? 0 : 1
     }
 
     private func setupForOrientation() {
         let isLandscape = UIDevice.current.orientation.isLandscape
-        mainStackView.axis = isLandscape ? .horizontal : .vertical
-        mainStackView.semanticContentAttribute = isLandscape ? .forceRightToLeft : .unspecified
-        horizontalToolbar.isHidden = isLandscape
-        verticalToolbar.isHidden = !isLandscape
-        if let layout = thumbsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = isLandscape ? .vertical : .horizontal
-        }
-        if let layout = capabilitiesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = isLandscape ? .vertical : .horizontal
-        }
-        mainStackView.layoutIfNeeded()
-        imagesCollectionView.scrollToItem(at: IndexPath(row: selectedThumbIndex, section: 0), at: .right, animated: false)
+//        mainStackView.axis = isLandscape ? .horizontal : .vertical
+//        mainStackView.semanticContentAttribute = isLandscape ? .forceRightToLeft : .unspecified
+//        if let layout = thumbsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+//            layout.scrollDirection = isLandscape ? .vertical : .horizontal
+//        }
+//        if let layout = capabilitiesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+//            layout.scrollDirection = isLandscape ? .vertical : .horizontal
+//        }
+//        mainStackView.layoutIfNeeded()
+//        imagesCollectionView.scrollToItem(at: IndexPath(row: selectedThumbIndex, section: 0), at: .right, animated: false)
     }
 
     private func highlightSelectedThumb(current: Int, before: Int) {
@@ -226,7 +219,7 @@ class MediaEditorHub: UIViewController {
     }
 
     private func setupCapabilities() {
-        capabilitiesCollectionView.isHidden = capabilities.count > 1 || numberOfThumbs > 1 ? false : true
+        capabilitiesCollectionView.layer.opacity = capabilities.count > 1 || numberOfThumbs > 1 ? 1 : 0
         capabilitiesCollectionView.reloadData()
     }
 
@@ -238,6 +231,8 @@ class MediaEditorHub: UIViewController {
         static var thumbCellIdentifier = "thumbCell"
         static var imageCellIdentifier = "imageCell"
         static var capabCellIdentifier = "capabilityCell"
+        static var thumbHeight: CGFloat = 64
+        static var doneButtonHeight: CGFloat = 44
     }
 }
 
