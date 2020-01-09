@@ -65,7 +65,7 @@
                                         </cells>
                                     </collectionView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="t2B-QE-aMZ">
-                                        <rect key="frame" x="0.0" y="44" width="414" height="686"/>
+                                        <rect key="frame" x="0.0" y="44" width="414" height="666"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="ZBA-T2-zcM">
                                             <size key="itemSize" width="50" height="50"/>
@@ -99,12 +99,12 @@
                                         </cells>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bCC-zp-fnr">
-                                        <rect key="frame" x="0.0" y="730" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="710" width="414" height="64"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aiP-80-hUB">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FQk-zP-Mb0">
+                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="5" minimumInteritemSpacing="5" id="FQk-zP-Mb0">
                                                     <size key="itemSize" width="50" height="50"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -112,18 +112,18 @@
                                                 </collectionViewFlowLayout>
                                                 <cells>
                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="thumbCell" id="FiQ-UG-fa8" customClass="MediaEditorThumbCell" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="-3" width="50" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="an7-K3-QRf">
-                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wAG-en-yfG">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
                                                                     <color key="backgroundColor" white="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="44" id="EzH-BA-21t"/>
-                                                                        <constraint firstAttribute="height" constant="44" id="Xv1-Ws-giP"/>
+                                                                        <constraint firstAttribute="width" constant="64" id="EzH-BA-21t"/>
+                                                                        <constraint firstAttribute="height" constant="64" id="Xv1-Ws-giP"/>
                                                                     </constraints>
                                                                 </imageView>
                                                             </subviews>
@@ -147,8 +147,8 @@
                                             <constraint firstItem="aiP-80-hUB" firstAttribute="leading" secondItem="bCC-zp-fnr" secondAttribute="leading" id="8Yr-gt-DOs"/>
                                             <constraint firstItem="aiP-80-hUB" firstAttribute="top" secondItem="bCC-zp-fnr" secondAttribute="top" id="Dda-mI-SKo"/>
                                             <constraint firstAttribute="trailing" secondItem="aiP-80-hUB" secondAttribute="trailing" id="KCo-Vq-efz"/>
-                                            <constraint firstAttribute="width" priority="999" constant="44" id="SPI-pL-LiJ"/>
-                                            <constraint firstAttribute="height" constant="44" id="cW8-4g-gpS"/>
+                                            <constraint firstAttribute="width" priority="999" constant="64" id="SPI-pL-LiJ"/>
+                                            <constraint firstAttribute="height" constant="64" id="cW8-4g-gpS"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iCM-A8-y8w">
@@ -242,7 +242,7 @@
                                 </subviews>
                             </stackView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xsd-ER-63U">
-                                <rect key="frame" x="126.5" y="409" width="161" height="44"/>
+                                <rect key="frame" x="126.5" y="399" width="161" height="44"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ddb-h0-XWe">
                                     <rect key="frame" x="0.0" y="0.0" width="161" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
