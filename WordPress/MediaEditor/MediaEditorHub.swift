@@ -120,7 +120,7 @@ class MediaEditorHub: UIViewController {
         loadViewIfNeeded()
 
         if let doneLabel = styles[.doneLabel] as? String {
-            doneButton.setTitle(doneLabel, for: .normal)
+            doneButton.setTitle(String(format: doneLabel, "\(numberOfThumbs)"), for: .normal)
         }
 
         if let cancelColor = styles[.cancelColor] as? UIColor {
