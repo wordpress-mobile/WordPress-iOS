@@ -18,11 +18,7 @@ class MediaEditorHub: UIViewController {
 
     var onDone: (() -> ())?
 
-    var numberOfThumbs = 0 {
-        didSet {
-            reloadImagesAndReposition()
-        }
-    }
+    var numberOfThumbs = 0
 
     var capabilities: [(String, UIImage)] = [] {
         didSet {
@@ -61,13 +57,13 @@ class MediaEditorHub: UIViewController {
         thumbsCollectionView.delegate = self
         capabilitiesCollectionView.dataSource = self
         capabilitiesCollectionView.delegate = self
+        imagesCollectionView.dataSource = self
+        imagesCollectionView.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        imagesCollectionView.dataSource = self
-        imagesCollectionView.delegate = self
+        selectLastAsset()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -174,8 +170,8 @@ class MediaEditorHub: UIViewController {
         thumbsCollectionView.reloadData()
         imagesCollectionView.reloadData()
         thumbsCollectionView.layoutIfNeeded()
-        thumbsCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
-        imagesCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
+        thumbsCollectionView.selectItem(at: IndexPath(row: selectedThumbIndex, section: 0), animated: false, scrollPosition: .right)
+        imagesCollectionView.scrollToItem(at: IndexPath(row: selectedThumbIndex, section: 0), at: .right, animated: false)
         toolbarHeight.constant = isSingleImage ? Constants.doneButtonHeight : Constants.thumbHeight
         thumbsCollectionView.isHidden = isSingleImage ? true : false
     }
@@ -214,6 +210,14 @@ class MediaEditorHub: UIViewController {
     private func setupCapabilities() {
         capabilitiesCollectionView.isHidden = isSingleCapabilityAndImage ? true : false
         capabilitiesCollectionView.reloadData()
+    }
+
+    private func selectLastAsset() {
+        DispatchQueue.main.async {
+            self.selectedThumbIndex = self.numberOfThumbs - 1
+            self.imagesCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
+            self.thumbsCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
+        }
     }
 
     static func initialize() -> MediaEditorHub {
