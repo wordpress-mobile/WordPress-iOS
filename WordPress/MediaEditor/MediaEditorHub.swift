@@ -10,7 +10,7 @@ class MediaEditorHub: UIViewController {
     @IBOutlet weak var thumbsCollectionView: UICollectionView!
     @IBOutlet weak var imagesCollectionView: UICollectionView!
     @IBOutlet weak var capabilitiesCollectionView: UICollectionView!
-    @IBOutlet weak var thumbsCollectionViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var toolbarHeight: NSLayoutConstraint!
 
     weak var delegate: MediaEditorHubDelegate?
 
@@ -49,6 +49,10 @@ class MediaEditorHub: UIViewController {
 
     private var isSingleImage: Bool {
         return numberOfThumbs == 1
+    }
+
+    private var isSingleCapabilityAndImage: Bool {
+        isSingleImage && capabilities.count == 1
     }
 
     override func viewDidLoad() {
@@ -174,8 +178,8 @@ class MediaEditorHub: UIViewController {
         thumbsCollectionView.layoutIfNeeded()
         thumbsCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
         imagesCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
-        thumbsCollectionViewHeight.constant = isSingleImage ? Constants.doneButtonHeight : Constants.thumbHeight
-        thumbsCollectionView.layer.opacity = isSingleImage ? 0 : 1
+        toolbarHeight.constant = isSingleImage ? Constants.doneButtonHeight : Constants.thumbHeight
+        thumbsCollectionView.isHidden = isSingleImage ? true : false
     }
 
     private func setupForOrientation() {
@@ -224,7 +228,7 @@ class MediaEditorHub: UIViewController {
     }
 
     private func setupCapabilities() {
-        capabilitiesCollectionView.layer.opacity = capabilities.count > 1 || numberOfThumbs > 1 ? 1 : 0
+        capabilitiesCollectionView.isHidden = isSingleCapabilityAndImage ? true : false
         capabilitiesCollectionView.reloadData()
     }
 
