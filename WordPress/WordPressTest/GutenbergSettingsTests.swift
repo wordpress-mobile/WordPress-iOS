@@ -46,6 +46,7 @@ class GutenbergSettingsTests: XCTestCase {
         contextManager = TestContextManager()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
+        Environment.replaceEnvironment(contextManager: contextManager)
         database = EphemeralKeyValueDatabase()
         settings = GutenbergSettings(database: database)
         blog = newTestBlog()
@@ -332,7 +333,7 @@ class GutenbergSettingsTests: XCTestCase {
         account.authToken = "auth"
         account.uuid = UUID().uuidString
         account.userID = NSNumber(value: userId)
-        try! context.save()
+        contextManager.saveContextAndWait(context)
         AccountService(managedObjectContext: context).setDefaultWordPressComAccount(account)
     }
 }
