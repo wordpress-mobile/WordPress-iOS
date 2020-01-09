@@ -37,12 +37,6 @@ class AllTimeViewController: UIViewController {
         }
     }
 
-    private let numberFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
-
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
     // MARK: - View
@@ -345,15 +339,12 @@ private extension AllTimeViewController {
 
     // MARK: - Helpers
 
-    func displayString(for value: Int) -> String {
-        return numberFormatter.string(from: NSNumber(value: value)) ?? String(value)
-    }
-
     func updateStatsLabels() {
-        viewCount = displayString(for: statsValues?.views ?? 0)
-        visitorCount = displayString(for: statsValues?.visitors ?? 0)
-        postCount = displayString(for: statsValues?.posts ?? 0)
-        bestCount = displayString(for: statsValues?.bestViews ?? 0)
+        let values = statsValues ?? AllTimeWidgetStats()
+        viewCount = values.views.abbreviatedString()
+        visitorCount = values.visitors.abbreviatedString()
+        postCount = values.posts.abbreviatedString()
+        bestCount = values.bestViews.abbreviatedString()
     }
 
     // MARK: - Constants
