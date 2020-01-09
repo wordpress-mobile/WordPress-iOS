@@ -3,6 +3,7 @@ import Foundation
 extension Double {
 
     private static var _numberFormatter: NumberFormatter = NumberFormatter()
+    private static var _decimalFormatter: NumberFormatter = NumberFormatter()
 
     private var numberFormatter: NumberFormatter {
         get {
@@ -12,6 +13,15 @@ extension Double {
             return formatter
         }
     }
+
+    private var decimalFormatter: NumberFormatter {
+         get {
+             let formatter = Double._decimalFormatter
+             // Show at least one digit after the decimal
+             formatter.minimumFractionDigits = 1
+             return formatter
+         }
+     }
 
     /// Provides a short, friendly representation of the current Double value. If the value is
     /// below 10,000, the decimal is stripped and the string returned will look like an Int. If the value
@@ -32,29 +42,42 @@ extension Double {
     ///  - 1000000000000 becomes "1t"
 
     func abbreviatedString(forHeroNumber: Bool = false) -> String {
-        var num = self
-        let sign = num < 0 ? "-" : ""
-        num = fabs(num)
 
+        let absValue = fabs(self)
         let abbreviationLimit = forHeroNumber ? 100000.0 : 10000.0
 
-        if num < abbreviationLimit {
-            return "\(sign)\(num.formatWithCommas())"
+        if absValue < abbreviationLimit {
+            return self.formatWithCommas()
         }
 
-        let exp: Int = Int(log10(num) / 3.0)
+        let exp: Int = Int(log10(absValue) / 3.0)
         let units: [String] = ["K", "M", "B", "T", "P", "E"]
-        let roundedNum: Double = Foundation.round(10 * num / pow(1000.0, Double(exp))) / 10
 
-        if roundedNum == 1000.0 {
-            return "\(sign)\(1)\(units[exp])"
+        let unsignedRoundedNum: Double = Foundation.round(10 * absValue / pow(1000.0, Double(exp))) / 10
+
+        var roundedNum: Double
+        var unit: String
+
+        if unsignedRoundedNum == 1000.0 {
+            roundedNum = 1
+            unit = units[exp]
         } else {
-            return "\(sign)\(roundedNum)\(units[exp-1])"
+            roundedNum = unsignedRoundedNum
+            unit = units[exp-1]
         }
+
+        roundedNum = self < 0 ? -roundedNum : roundedNum
+
+        let displayFormat = NSLocalizedString("%@%@", comment: "Label displaying abbreviated value. The first parameter is the value, the second is the unit. Ex: 55.5M, 66.6K.")
+        return .localizedStringWithFormat(displayFormat, roundedNum.formatWithFractions(), unit)
     }
 
     private func formatWithCommas() -> String {
         return numberFormatter.string(for: self) ?? ""
+    }
+
+    private func formatWithFractions() -> String {
+        return decimalFormatter.string(for: self) ?? String(self)
     }
 
 }
