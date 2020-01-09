@@ -147,12 +147,12 @@ private extension SiteStatsTableHeaderView {
             return nil
         }
 
-        let (from, to) = components
+        let (fromDate, toDate) = components
 
-        if let to = to {
-            return "\(from) - \(to)"
+        if let toDate = toDate {
+            return "\(fromDate) - \(toDate)"
         } else {
-            return "\(from)"
+            return "\(fromDate)"
         }
     }
 
@@ -161,19 +161,19 @@ private extension SiteStatsTableHeaderView {
             return nil
         }
 
-        let (from, to) = components
+        let (fromDate, toDate) = components
 
-        if let to = to {
+        if let toDate = toDate {
             let format = NSLocalizedString("Current period: %@ to %@", comment: "Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12.")
-            return .localizedStringWithFormat(format, from, to)
+            return .localizedStringWithFormat(format, fromDate, toDate)
         } else {
             let format = NSLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
-            return .localizedStringWithFormat(format, from)
+            return .localizedStringWithFormat(format, fromDate)
         }
     }
 
     /// Returns the formatted dates for the current period.
-    func displayDateComponents() -> (from: String, to: String?)? {
+    func displayDateComponents() -> (fromDate: String, toDate: String?)? {
         guard let date = date, let period = period else {
             return nil
         }
