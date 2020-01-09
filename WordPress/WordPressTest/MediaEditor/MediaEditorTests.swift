@@ -203,7 +203,7 @@ class MediaEditorTests: XCTestCase {
         let asyncImage = AsyncImageMock()
         let mediaEditor = MediaEditor(asyncImage)
 
-        mediaEditor.hub.cancelButton.sendActions(for: .touchUpInside)
+        mediaEditor.hub.cancelIconButton.sendActions(for: .touchUpInside)
 
         expect(asyncImage.didCallCancel).to(beTrue())
     }
@@ -227,7 +227,7 @@ class MediaEditorTests: XCTestCase {
 
         let mediaEditor = MediaEditor(asyncImage)
 
-        expect(mediaEditor.hub.thumbsToolbar.isHidden).to(beTrue())
+        expect(mediaEditor.hub.thumbsCollectionView.isHidden).to(beTrue())
     }
 
     func testWhenFinishEditingAsyncImageReturnTheAsyncImage() {
@@ -256,7 +256,6 @@ class MediaEditorTests: XCTestCase {
         let mediaEditor = MediaEditor(asyncImage)
 
         expect(mediaEditor.hub.doneButton.isEnabled).to(beFalse())
-        expect(mediaEditor.hub.doneIconButton.isEnabled).to(beFalse())
     }
 
     func testEnableDoneButtonOnceImageIsLoaded() {
@@ -266,7 +265,6 @@ class MediaEditorTests: XCTestCase {
         asyncImage.simulate(fullImageHasBeenDownloaded: image)
 
         expect(mediaEditor.hub.doneButton.isEnabled).toEventually(beTrue())
-        expect(mediaEditor.hub.doneIconButton.isEnabled).to(beTrue())
     }
 
     // WHEN: Multiple images + one single capability
@@ -366,7 +364,7 @@ class MediaEditorTests: XCTestCase {
 
         let mediaEditor = MediaEditor(asyncImages)
 
-        expect(mediaEditor.hub.thumbsToolbar.isHidden).to(beFalse())
+        expect(mediaEditor.hub.thumbsCollectionView.isHidden).to(beFalse())
     }
 
     func testWhenGivenMultipleAsyncImagesPresentsTheHub() {

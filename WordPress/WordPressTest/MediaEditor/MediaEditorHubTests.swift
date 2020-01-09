@@ -30,7 +30,7 @@ class MediaEditorHubTests: XCTestCase {
             didCallOnCancel = true
         }
 
-        hub.cancelButton.sendActions(for: .touchUpInside)
+        hub.cancelIconButton.sendActions(for: .touchUpInside)
 
         expect(didCallOnCancel).to(beTrue())
     }
@@ -48,44 +48,12 @@ class MediaEditorHubTests: XCTestCase {
         expect(didCallOnDone).to(beTrue())
     }
 
-    func testApplyStyles() {
-        let hub: MediaEditorHub = MediaEditorHub.initialize()
-
-        hub.apply(styles: [.cancelLabel: "foo"])
-
-        expect(hub.cancelButton.titleLabel?.text).toEventually(equal("foo"))
-    }
-
     func testApplyLoadingLabel() {
         let hub: MediaEditorHub = MediaEditorHub.initialize()
 
         hub.apply(styles: [.loadingLabel: "foo"])
 
         expect(hub.activityIndicatorLabel.text).to(equal("foo"))
-    }
-
-    func testWhenInPortraitShowTheCorrectToolbarAndStackViewAxis() {
-        XCUIDevice.shared.orientation = .portrait
-        let hub: MediaEditorHub = MediaEditorHub.initialize()
-
-        hub.loadViewIfNeeded()
-
-        expect(hub.horizontalToolbar.isHidden).to(beFalse())
-        expect(hub.verticalToolbar.isHidden).to(beTrue())
-        expect(hub.mainStackView.axis).to(equal(.vertical))
-        expect(hub.mainStackView.semanticContentAttribute).to(equal(.unspecified))
-    }
-
-    func testWhenInLandscapeShowTheCorrectToolbarAndStackViewAxis() {
-        XCUIDevice.shared.orientation = .landscapeLeft
-        let hub: MediaEditorHub = MediaEditorHub.initialize()
-
-        hub.loadViewIfNeeded()
-
-        expect(hub.horizontalToolbar.isHidden).to(beTrue())
-        expect(hub.verticalToolbar.isHidden).to(beFalse())
-        expect(hub.mainStackView.axis).to(equal(.horizontal))
-        expect(hub.mainStackView.semanticContentAttribute).to(equal(.forceRightToLeft))
     }
 
     func testShowButtonWithTheCapabilityIcon() {
