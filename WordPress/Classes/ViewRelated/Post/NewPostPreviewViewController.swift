@@ -24,7 +24,7 @@ class NewPostPreviewViewController: UIViewController {
 
     /// Creates a view controller displaying a preview web view.
     /// - Parameters:
-    ///   - post: The post to use for generating the preview URL. **NOTE**: This will not be used if `previewURL` is passed.
+    ///   - post: The post to use for generating the preview URL and authenticating to the blog. **NOTE**: `previewURL` will be used as the URL instead, when available.
     ///   - previewURL: The URL to display in the preview web view.
     init(post: AbstractPost, previewURL: URL? = nil) {
         self.post = post
@@ -83,6 +83,7 @@ class NewPostPreviewViewController: UIViewController {
     @objc private func dismissPreview() {
         if let onClose = onClose {
             onClose()
+            self.onClose = nil
         } else {
             presentingViewController?.dismiss(animated: true, completion: nil)
         }
