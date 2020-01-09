@@ -1,21 +1,14 @@
-//
-//  PostPreviewViewController.swift
-//  WordPress
-//
-//  Created by Brandon Titus on 1/7/20.
-//  Copyright © 2020 WordPress. All rights reserved.
-//
-
 import Foundation
 import WebKit
 import Gridicons
 
 class NewPostPreviewViewController: UIViewController {
-    var webView: WKWebView!
 
     var onClose: (() -> Void)? = nil
 
     let post: AbstractPost
+
+    private let webView = WKWebView(frame: .zero)
 
     private let generator: PostPreviewGenerator
     private var reachabilityObserver: Any?
@@ -80,15 +73,17 @@ class NewPostPreviewViewController: UIViewController {
     }
 
     private func setupWebView() {
-        webView = WKWebView(frame: view.bounds)
         webView.navigationDelegate = self
         view.addSubview(webView)
         view.pinSubviewToAllEdges(webView)
     }
 
     @objc private func dismissPreview() {
-        onClose?()
-        presentingViewController?.dismiss(animated: true, completion: nil)
+        if let onClose = onClose {
+            onClose()
+        } else {
+            presentingViewController?.dismiss(animated: true, completion: nil)
+        }
     }
 
     @objc private func sharePost() {
@@ -147,9 +142,7 @@ class NewPostPreviewViewController: UIViewController {
 extension NewPostPreviewViewController: PostPreviewGeneratorDelegate {
     func preview(_ generator: PostPreviewGenerator, attemptRequest request: URLRequest) {
         startLoadAnimation()
-        var newRequest = request
-        newRequest.url = URL(string: "http://sdfsldfjlwefj.sdlfj")
-        webView.load(newRequest)
+        webView.load(request)
         noResultsViewController?.removeFromView()
     }
 
@@ -185,30 +178,35 @@ extension NewPostPreviewViewController: WKNavigationDelegate {
         let redirectRequest = generator.interceptRedirect(request: navigationAction.request)
 
         if let request = redirectRequest {
+            DDLogInfo("Found redirect to \(String(describing: redirectRequest))")
             decisionHandler(.cancel)
             webView.load(request)
             return
         }
 
-        if navigationAction.request.url?.query == "action=postpass" {
+        guard navigationAction.request.url?.query != "action=postpass" else {
             // Password-protected post, user entered password
             decisionHandler(.allow)
             return
         }
 
-        if navigationAction.request.url?.absoluteString == post.permaLink {
-            // Always allow loading the preview
+        guard navigationAction.request.url?.absoluteString != post.permaLink else {
+            // Always allow loading the preview for `post`
             decisionHandler(.allow)
             return
         }
 
-        if navigationAction.navigationType == .linkActivated {
-            UIApplication.shared.open(navigationAction.request.url!, options: [:], completionHandler: nil)
+        switch navigationAction.navigationType {
+        case .linkActivated:
+            if let url = navigationAction.request.url {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
             decisionHandler(.cancel)
-            return
+        case .formSubmitted:
+            decisionHandler(.cancel)
+        default:
+            decisionHandler(.allow)
         }
-
-        decisionHandler(.allow)
     }
 
     private func handle(error: Error) {
