@@ -4,9 +4,14 @@ import Gridicons
 
 class NewPostPreviewViewController: UIViewController {
 
+    // MARK: Public Properties
+
+    /// A block to be called when the Dismiss/Close button is pressed
     var onClose: (() -> Void)? = nil
 
     let post: AbstractPost
+
+    // MARK: Private Properties
 
     private let webView = WKWebView(frame: .zero)
 
@@ -15,6 +20,12 @@ class NewPostPreviewViewController: UIViewController {
 
     private weak var noResultsViewController: NoResultsViewController?
 
+    // MARK: Initializers
+
+    /// Creates a view controller displaying a preview web view.
+    /// - Parameters:
+    ///   - post: The post to use for generating the preview URL. **NOTE**: This will not be used if `previewURL` is passed.
+    ///   - previewURL: The URL to display in the preview web view.
     init(post: AbstractPost, previewURL: URL? = nil) {
         self.post = post
         generator = PostPreviewGenerator(post: post, previewURL: previewURL)
@@ -25,6 +36,8 @@ class NewPostPreviewViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: UI Constructor Properties
 
     private lazy var statusButtonItem: UIBarButtonItem = {
         let statusView = LoadingStatusView(title: NSLocalizedString("Loading", comment: "Label for button to present loading preview status"))
@@ -47,6 +60,8 @@ class NewPostPreviewViewController: UIViewController {
         return buttonItem
     }()
 
+    // MARK: View Lifecycle Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupWebView()
@@ -63,20 +78,7 @@ class NewPostPreviewViewController: UIViewController {
         stopWaitingForConnectionRestored()
     }
 
-    private func refreshWebView() {
-        generator.generate()
-    }
-
-    private func setupBarButtons() {
-        navigationItem.rightBarButtonItems = [doneBarButtonItem, shareBarButtonItem]
-        navigationItem.leftItemsSupplementBackButton = true
-    }
-
-    private func setupWebView() {
-        webView.navigationDelegate = self
-        view.addSubview(webView)
-        view.pinSubviewToAllEdges(webView)
-    }
+    // MARK: Action Selectors
 
     @objc private func dismissPreview() {
         if let onClose = onClose {
@@ -93,6 +95,40 @@ class NewPostPreviewViewController: UIViewController {
         }
     }
 
+    // MARK: Private Instance Methods
+
+    private func refreshWebView() {
+        generator.generate()
+    }
+
+    private func setupBarButtons() {
+        navigationItem.rightBarButtonItems = [doneBarButtonItem, shareBarButtonItem]
+        navigationItem.leftItemsSupplementBackButton = true
+    }
+
+    private func setupWebView() {
+        webView.navigationDelegate = self
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(webView)
+        view.pinSubviewToAllEdges(webView)
+    }
+
+    private func showNoResults(withTitle title: String) {
+        let controller = NoResultsViewController.controllerWith(title: title,
+                                                                buttonTitle: NSLocalizedString("Retry", comment: "Button to retry a preview that failed to load"),
+                                                                subtitle: nil,
+                                                                attributedSubtitle: nil,
+                                                                attributedSubtitleConfiguration: nil,
+                                                                image: nil,
+                                                                subtitleImage: nil,
+                                                                accessoryView: nil)
+        controller.delegate = self
+        noResultsViewController = controller
+        addChild(controller)
+        view.addSubview(controller.view)
+        view.pinSubviewToAllEdges(controller.view)
+        noResultsViewController?.didMove(toParent: self)
+    }
 
     // MARK: Reachability
 
@@ -120,24 +156,9 @@ class NewPostPreviewViewController: UIViewController {
         navigationItem.leftBarButtonItem = navigationItem.backBarButtonItem
         navigationItem.title = NSLocalizedString("Preview", comment: "Post Editor / Preview screen title.")
     }
-
-    private func showNoResults(withTitle title: String) {
-        let controller = NoResultsViewController.controllerWith(title: title,
-                                                                buttonTitle: NSLocalizedString("Retry", comment: "Button to retry a preview that failed to load"),
-                                                                subtitle: nil,
-                                                                attributedSubtitle: nil,
-                                                                attributedSubtitleConfiguration: nil,
-                                                                image: nil,
-                                                                subtitleImage: nil,
-                                                                accessoryView: nil)
-        controller.delegate = self
-        noResultsViewController = controller
-        addChild(controller)
-        view.addSubview(controller.view)
-        view.pinSubviewToAllEdges(controller.view)
-        noResultsViewController?.didMove(toParent: self)
-    }
 }
+
+// MARK: PostPreviewGeneratorDelegate
 
 extension NewPostPreviewViewController: PostPreviewGeneratorDelegate {
     func preview(_ generator: PostPreviewGenerator, attemptRequest request: URLRequest) {
@@ -158,6 +179,8 @@ extension NewPostPreviewViewController: PostPreviewGeneratorDelegate {
 
 
 }
+
+// MARK: WKNavigationDelegate
 
 extension NewPostPreviewViewController: WKNavigationDelegate {
 
@@ -237,6 +260,8 @@ extension NewPostPreviewViewController: WKNavigationDelegate {
         generator.previewRequestFailed(reason: reasonString)
     }
 }
+
+// MARK: NoResultsViewController Delegate
 
 extension NewPostPreviewViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
