@@ -37,8 +37,8 @@ class StatsTwoColumnRow: UIView, NibLoadable {
         rightItemLabel.text = rowData.rightColumnName
         rightDataLabel.text = rowData.rightColumnData
 
-        leftDataLabel.accessibilityLabel = rowData.leftColumnData.accessibilityLabel ?? rowData.leftColumnData
-        rightDataLabel.accessibilityLabel = rowData.rightColumnData.accessibilityLabel ?? rowData.rightColumnData
+        leftDataLabel.accessibilityLabel = rowData.leftColumnData.accessibilityLabel
+        rightDataLabel.accessibilityLabel = rowData.rightColumnData.accessibilityLabel
 
         applyStyles()
     }
