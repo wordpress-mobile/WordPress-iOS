@@ -56,10 +56,15 @@ class MediaEditorHub: UIViewController {
         setupForOrientation()
         thumbsCollectionView.dataSource = self
         thumbsCollectionView.delegate = self
-        imagesCollectionView.dataSource = self
-        imagesCollectionView.delegate = self
         capabilitiesCollectionView.dataSource = self
         capabilitiesCollectionView.delegate = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        imagesCollectionView.dataSource = self
+        imagesCollectionView.delegate = self
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
