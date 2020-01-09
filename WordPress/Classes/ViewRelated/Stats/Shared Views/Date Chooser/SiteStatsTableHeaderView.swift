@@ -98,9 +98,11 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
 
         backButton.accessibilityLabel = NSLocalizedString("Previous period", comment: "Accessibility label")
         backButton.accessibilityHint = NSLocalizedString("Tap to select the previous period", comment: "Accessibility hint")
+        backButton.accessibilityTraits = backButton.isEnabled ? [.button] : [.button, .notEnabled]
 
         forwardButton.accessibilityLabel = NSLocalizedString("Next period", comment: "Accessibility label")
         forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
+        forwardButton.accessibilityTraits = forwardButton.isEnabled ? [.button] : [.button, .notEnabled]
 
         accessibilityElements = [
             dateLabel,
