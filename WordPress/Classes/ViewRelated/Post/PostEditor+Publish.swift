@@ -330,6 +330,8 @@ extension PostEditor where Self: UIViewController {
 
         mapUIContentToPostAndSave(immediate: true)
 
+        consolidateChangesIfPostIsNew()
+
         PostCoordinator.shared.save(post,
                                     defaultFailureNotice: uploadFailureNotice(action: action)) { [weak self] result in
             guard let self = self else {
@@ -373,6 +375,18 @@ extension PostEditor where Self: UIViewController {
         dismissOrPopView()
 
         self.postEditorStateContext.updated(isBeingPublished: false)
+    }
+
+    /// If the post is fresh new and doesn't has remote we apply the current changes to the original post
+    ///
+    fileprivate func consolidateChangesIfPostIsNew() {
+        guard post.isRevision() && !post.hasRemote(), let originalPost = post.original else {
+            return
+        }
+
+        originalPost.applyRevision()
+        originalPost.deleteRevision()
+        post = originalPost
     }
 
     func dismissOrPopView(didSave: Bool = true) {
