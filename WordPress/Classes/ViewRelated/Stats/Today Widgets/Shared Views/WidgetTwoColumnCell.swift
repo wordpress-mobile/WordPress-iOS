@@ -25,6 +25,9 @@ class WidgetTwoColumnCell: UITableViewCell {
         leftDataLabel.text = leftItemData
         rightItemLabel.text = rightItemName
         rightDataLabel.text = rightItemData
+
+        leftDataLabel.accessibilityLabel = leftItemData.accessibilityLabel
+        rightDataLabel.accessibilityLabel = rightItemData.accessibilityLabel
     }
 
 }
