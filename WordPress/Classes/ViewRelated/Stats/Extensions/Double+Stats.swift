@@ -7,56 +7,59 @@ fileprivate struct Unit {
 
 extension Double {
 
-    private static var _numberFormatter: NumberFormatter = NumberFormatter()
-    private static var _decimalFormatter: NumberFormatter = NumberFormatter()
-
     private var numberFormatter: NumberFormatter {
         get {
-            let formatter = Double._numberFormatter
-            // Add commas to value
-            formatter.numberStyle = .decimal
-            return formatter
+            struct Cache {
+                static let formatter: NumberFormatter = {
+                    let formatter = NumberFormatter()
+                    // Add commas to value
+                    formatter.numberStyle = .decimal
+                    return formatter
+                }()
+            }
+
+            return Cache.formatter
         }
     }
 
     private var decimalFormatter: NumberFormatter {
         get {
-            let formatter = Double._decimalFormatter
-            // Show at least one digit after the decimal
-            formatter.minimumFractionDigits = 1
-            return formatter
-        }
-    }
+            struct Cache {
+                static let formatter: NumberFormatter = {
+                    let formatter = NumberFormatter()
+                    // Show at least one digit after the decimal
+                    formatter.minimumFractionDigits = 1
+                    return formatter
+                }()
+            }
 
-    private static var _units: [Unit] {
-        get {
-            var unitsArray: [Unit] = []
-
-            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@K", comment: "Label displaying value in thousands. Ex: 66.6K."),
-                                   accessibilityLabelFormat: NSLocalizedString("%@ thousand", comment: "Accessibility label for value in thousands. Ex: 66.6 thousand.")))
-
-            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@M", comment: "Label displaying value in millions. Ex: 66.6M."),
-                                   accessibilityLabelFormat: NSLocalizedString("%@ million", comment: "Accessibility label for value in millions. Ex: 66.6 million.")))
-
-            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@B", comment: "Label displaying value in billions. Ex: 66.6B."),
-                                   accessibilityLabelFormat: NSLocalizedString("%@ billion", comment: "Accessibility label for value in billions. Ex: 66.6 billion.")))
-
-            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@T", comment: "Label displaying value in trillions. Ex: 66.6T."),
-                                   accessibilityLabelFormat: NSLocalizedString("%@ trillion", comment: "Accessibility label for value in trillions. Ex: 66.6 trillion.")))
-
-            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@P", comment: "Label displaying value in quadrillions. Ex: 66.6P."),
-                                   accessibilityLabelFormat: NSLocalizedString("%@ quadrillion", comment: "Accessibility label for value in quadrillion. Ex: 66.6 quadrillion.")))
-
-            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@E", comment: "Label displaying value in quintillions. Ex: 66.6E."),
-                                   accessibilityLabelFormat: NSLocalizedString("%@ quintillion", comment: "Accessibility label for value in quintillions. Ex: 66.6 quintillion.")))
-
-            return unitsArray
+            return Cache.formatter
         }
     }
 
     private var units: [Unit] {
         get {
-            return Double._units
+            struct Cache {
+                static let units: [Unit] = {
+                    var units: [Unit] = []
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@K", comment: "Label displaying value in thousands. Ex: 66.6K."), accessibilityLabelFormat: NSLocalizedString("%@ thousand", comment: "Accessibility label for value in thousands. Ex: 66.6 thousand.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@M", comment: "Label displaying value in millions. Ex: 66.6M."), accessibilityLabelFormat: NSLocalizedString("%@ million", comment: "Accessibility label for value in millions. Ex: 66.6 million.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@B", comment: "Label displaying value in billions. Ex: 66.6B."), accessibilityLabelFormat: NSLocalizedString("%@ billion", comment: "Accessibility label for value in billions. Ex: 66.6 billion.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@T", comment: "Label displaying value in trillions. Ex: 66.6T."), accessibilityLabelFormat: NSLocalizedString("%@ trillion", comment: "Accessibility label for value in trillions. Ex: 66.6 trillion.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@P", comment: "Label displaying value in quadrillions. Ex: 66.6P."), accessibilityLabelFormat: NSLocalizedString("%@ quadrillion", comment: "Accessibility label for value in quadrillion. Ex: 66.6 quadrillion.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@E", comment: "Label displaying value in quintillions. Ex: 66.6E."), accessibilityLabelFormat: NSLocalizedString("%@ quintillion", comment: "Accessibility label for value in quintillions. Ex: 66.6 quintillion.")))
+
+                    return units
+                }()
+            }
+
+            return Cache.units
         }
     }
 
