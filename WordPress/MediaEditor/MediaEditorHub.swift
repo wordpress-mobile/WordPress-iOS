@@ -3,18 +3,14 @@ import UIKit
 class MediaEditorHub: UIViewController {
 
     @IBOutlet weak var doneButton: UIButton!
-    @IBOutlet weak var doneIconButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var cancelIconButton: UIButton!
     @IBOutlet weak var activityIndicatorView: UIVisualEffectView!
     @IBOutlet weak var activityIndicatorLabel: UILabel!
-    @IBOutlet weak var horizontalToolbar: UIView!
-    @IBOutlet weak var verticalToolbar: UIView!
     @IBOutlet weak var mainStackView: UIStackView!
-    @IBOutlet weak var thumbsToolbar: UIView!
     @IBOutlet weak var thumbsCollectionView: UICollectionView!
     @IBOutlet weak var imagesCollectionView: UICollectionView!
     @IBOutlet weak var capabilitiesCollectionView: UICollectionView!
+    @IBOutlet weak var toolbarHeight: NSLayoutConstraint!
 
     weak var delegate: MediaEditorHubDelegate?
 
@@ -24,7 +20,7 @@ class MediaEditorHub: UIViewController {
 
     var numberOfThumbs = 0 {
         didSet {
-            reloadImagesAndReposition()
+            setupToolbar()
         }
     }
 
@@ -51,25 +47,36 @@ class MediaEditorHub: UIViewController {
 
     private var indexesOfImagesBeingLoaded: [Int] = []
 
+    private var isSingleImage: Bool {
+        return numberOfThumbs == 1
+    }
+
+    private var isSingleCapabilityAndImage: Bool {
+        isSingleImage && capabilities.count == 1
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupForOrientation()
         thumbsCollectionView.dataSource = self
         thumbsCollectionView.delegate = self
-        imagesCollectionView.dataSource = self
-        imagesCollectionView.delegate = self
         capabilitiesCollectionView.dataSource = self
         capabilitiesCollectionView.delegate = self
+        imagesCollectionView.dataSource = self
+        imagesCollectionView.delegate = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        selectLastAsset()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        setupForOrientation()
+        reloadImagesAndReposition()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        setupForOrientation()
 
         coordinator.animate(alongsideTransition: { _ in
             self.reloadImagesAndReposition()
@@ -112,30 +119,20 @@ class MediaEditorHub: UIViewController {
     func apply(styles: MediaEditorStyles) {
         loadViewIfNeeded()
 
-        if let cancelLabel = styles[.cancelLabel] as? String {
-            cancelButton.setTitle(cancelLabel, for: .normal)
-        }
-
-        if let doneLabel = styles[.doneLabel] as? String {
-            doneButton.setTitle(doneLabel, for: .normal)
+        if let doneLabel = (styles[.insertLabel] ?? styles[.doneLabel]) as? String {
+            doneButton.setTitle(String(format: doneLabel, "\(numberOfThumbs)"), for: .normal)
         }
 
         if let cancelColor = styles[.cancelColor] as? UIColor {
-            cancelButton.tintColor = cancelColor
             cancelIconButton.tintColor = cancelColor
         }
 
         if let doneColor = styles[.doneColor] as? UIColor {
             doneButton.tintColor = doneColor
-            doneIconButton.tintColor = doneColor
         }
 
         if let cancelIcon = styles[.cancelIcon] as? UIImage {
             cancelIconButton.setImage(cancelIcon, for: .normal)
-        }
-
-        if let doneIcon = styles[.doneIcon] as? UIImage {
-            doneIconButton.setImage(doneIcon, for: .normal)
         }
 
         if let loadingLabel = styles[.loadingLabel] as? String {
@@ -157,12 +154,10 @@ class MediaEditorHub: UIViewController {
 
     func disableDoneButton() {
         doneButton.isEnabled = false
-        doneIconButton.isEnabled = false
     }
 
     func enableDoneButton() {
         doneButton.isEnabled = true
-        doneIconButton.isEnabled = true
     }
 
     func loadingImage(at index: Int) {
@@ -179,25 +174,13 @@ class MediaEditorHub: UIViewController {
         thumbsCollectionView.reloadData()
         imagesCollectionView.reloadData()
         thumbsCollectionView.layoutIfNeeded()
-        thumbsCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
-        imagesCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
-        thumbsToolbar.isHidden = numberOfThumbs > 1 ? false : true
+        thumbsCollectionView.selectItem(at: IndexPath(row: selectedThumbIndex, section: 0), animated: false, scrollPosition: .right)
+        imagesCollectionView.scrollToItem(at: IndexPath(row: selectedThumbIndex, section: 0), at: .right, animated: false)
     }
 
-    private func setupForOrientation() {
-        let isLandscape = UIDevice.current.orientation.isLandscape
-        mainStackView.axis = isLandscape ? .horizontal : .vertical
-        mainStackView.semanticContentAttribute = isLandscape ? .forceRightToLeft : .unspecified
-        horizontalToolbar.isHidden = isLandscape
-        verticalToolbar.isHidden = !isLandscape
-        if let layout = thumbsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = isLandscape ? .vertical : .horizontal
-        }
-        if let layout = capabilitiesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = isLandscape ? .vertical : .horizontal
-        }
-        mainStackView.layoutIfNeeded()
-        imagesCollectionView.scrollToItem(at: IndexPath(row: selectedThumbIndex, section: 0), at: .right, animated: false)
+    private func setupToolbar() {
+        toolbarHeight.constant = isSingleImage ? Constants.doneButtonHeight : Constants.thumbHeight
+        thumbsCollectionView.isHidden = isSingleImage ? true : false
     }
 
     private func highlightSelectedThumb(current: Int, before: Int) {
@@ -232,8 +215,16 @@ class MediaEditorHub: UIViewController {
     }
 
     private func setupCapabilities() {
-        capabilitiesCollectionView.isHidden = capabilities.count > 1 || numberOfThumbs > 1 ? false : true
+        capabilitiesCollectionView.isHidden = isSingleCapabilityAndImage ? true : false
         capabilitiesCollectionView.reloadData()
+    }
+
+    private func selectLastAsset() {
+        DispatchQueue.main.async {
+            self.selectedThumbIndex = self.numberOfThumbs - 1
+            self.imagesCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
+            self.thumbsCollectionView.scrollToItem(at: IndexPath(row: self.selectedThumbIndex, section: 0), at: .right, animated: false)
+        }
     }
 
     static func initialize() -> MediaEditorHub {
@@ -244,6 +235,8 @@ class MediaEditorHub: UIViewController {
         static var thumbCellIdentifier = "thumbCell"
         static var imageCellIdentifier = "imageCell"
         static var capabCellIdentifier = "capabilityCell"
+        static var thumbHeight: CGFloat = 64
+        static var doneButtonHeight: CGFloat = 44
     }
 }
 

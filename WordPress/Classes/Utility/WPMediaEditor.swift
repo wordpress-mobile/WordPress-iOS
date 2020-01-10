@@ -8,6 +8,7 @@ class WPMediaEditor: MediaEditor {
     override var styles: MediaEditorStyles {
         get {
             return [
+                .insertLabel: NSLocalizedString("Insert %@", comment: "Button title used in media editor. Placeholder will be the number of items that will be inserted."),
                 .doneLabel: NSLocalizedString("Done", comment: "Done editing an image"),
                 .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
                 .cancelColor: UIColor.white,

@@ -4,7 +4,7 @@ class MediaEditorThumbCell: UICollectionViewCell {
     @IBOutlet weak var thumbImageView: UIImageView!
 
     func showBorder(color: UIColor? = nil) {
-        layer.borderWidth = 1.5
+        layer.borderWidth = 5
         layer.borderColor = color?.cgColor ?? Constant.defaultSelectedColor
     }
 

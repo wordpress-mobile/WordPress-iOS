@@ -95,6 +95,12 @@ public class MediaEditor: UINavigationController {
     }
 
     private func setup() {
+        setupHub()
+        setupForAsync()
+        presentIfSingleImageAndCapability()
+    }
+
+    private func setupHub() {
         hub.onCancel = { [weak self] in
             self?.cancel()
         }
@@ -111,9 +117,7 @@ public class MediaEditor: UINavigationController {
 
         hub.capabilities = Self.capabilities.reduce(into: []) { $0.append(($1.name, $1.icon)) }
 
-        setupForAsync()
-
-        presentIfSingleImageAndCapability()
+        hub.apply(styles: styles)
     }
 
     private func setupForAsync() {
