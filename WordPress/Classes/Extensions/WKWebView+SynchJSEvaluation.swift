@@ -6,7 +6,7 @@ import WebKit
 ///
 extension WKWebView {
 
-    /// Synchornous evaluation of JavaScript in WKWebView.
+    /// Synchronous evaluation of JavaScript in WKWebView.
     ///
     /// - Parameters:
     ///     - javascriptString: the JavaScript string to evaluate.
