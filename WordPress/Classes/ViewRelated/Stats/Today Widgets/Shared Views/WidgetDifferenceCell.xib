@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="69" id="KGk-i7-Jjw" customClass="WidgetDifferenceCell" customModule="WordPress" customModuleProvider="target">
+        <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="69" id="KGk-i7-Jjw" customClass="WidgetDifferenceCell" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -63,22 +63,12 @@
                             <constraint firstItem="rvr-HI-sb7" firstAttribute="centerY" secondItem="uVM-wL-EAn" secondAttribute="centerY" id="kmf-cY-UR0"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RWl-4v-7oa" userLabel="Separator Line">
-                        <rect key="frame" x="0.0" y="57.5" width="320" height="0.5"/>
-                        <color key="backgroundColor" name="Gray40"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="Ias-PD-uZV"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="uVM-wL-EAn" secondAttribute="trailing" constant="16" id="7C8-NR-C9W"/>
                     <constraint firstAttribute="bottom" secondItem="uVM-wL-EAn" secondAttribute="bottom" id="H7a-ow-IuJ"/>
-                    <constraint firstItem="RWl-4v-7oa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="MD7-T1-ZQt"/>
                     <constraint firstItem="uVM-wL-EAn" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="VLA-oc-efy"/>
-                    <constraint firstAttribute="trailing" secondItem="RWl-4v-7oa" secondAttribute="trailing" id="i6z-12-6K9"/>
                     <constraint firstItem="uVM-wL-EAn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="lOj-RF-YIX"/>
-                    <constraint firstAttribute="bottom" secondItem="RWl-4v-7oa" secondAttribute="bottom" id="qv3-y8-zIo"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -89,7 +79,6 @@
                 <outlet property="dateLabel" destination="rvr-HI-sb7" id="NJs-Ja-sRp"/>
                 <outlet property="differenceLabel" destination="Ej9-9e-JJA" id="Zdk-0d-YFi"/>
                 <outlet property="differenceView" destination="Xw3-YV-gjz" id="w8X-GD-3ao"/>
-                <outlet property="separatorLine" destination="RWl-4v-7oa" id="Wgx-kJ-Y9p"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="157.36607142857142"/>
         </tableViewCell>

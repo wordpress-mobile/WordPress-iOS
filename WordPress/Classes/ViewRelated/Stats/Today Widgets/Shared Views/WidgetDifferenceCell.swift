@@ -10,7 +10,6 @@ class WidgetDifferenceCell: UITableViewCell {
     @IBOutlet private var dataLabel: UILabel!
     @IBOutlet private var differenceView: UIView!
     @IBOutlet private var differenceLabel: UILabel!
-    @IBOutlet private var separatorLine: UIView!
 
     private var numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -39,9 +38,8 @@ class WidgetDifferenceCell: UITableViewCell {
         initializeLabels()
     }
 
-    func configure(day: ThisWeekWidgetDay? = nil, isToday: Bool = false, hideSeparator: Bool = false) {
+    func configure(day: ThisWeekWidgetDay? = nil, isToday: Bool = false) {
         configureLabels(day: day, isToday: isToday)
-        separatorLine.isHidden = hideSeparator
     }
 
 }
@@ -51,10 +49,9 @@ class WidgetDifferenceCell: UITableViewCell {
 private extension WidgetDifferenceCell {
 
     func configureColors() {
-        dateLabel.textColor = .text
-        dataLabel.textColor = .text
+        dateLabel.textColor = WidgetStyles.primaryTextColor
+        dataLabel.textColor = WidgetStyles.primaryTextColor
         differenceLabel.textColor = .white
-        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
         differenceView.layer.cornerRadius = Constants.cornerRadius
     }
 
