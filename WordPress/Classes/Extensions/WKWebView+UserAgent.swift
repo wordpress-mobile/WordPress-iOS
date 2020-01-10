@@ -19,7 +19,7 @@ extension WKWebView {
                     level: .error)
                 return ""
         }
-        
+
         return userAgent
     }
 
