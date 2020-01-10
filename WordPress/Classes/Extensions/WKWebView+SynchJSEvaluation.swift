@@ -6,7 +6,7 @@ import WebKit
 ///
 extension WKWebView {
 
-    /// Synchornous evaluation of JavaScript in WKWebView.
+    /// Synchronous evaluation of JavaScript in WKWebView.
     ///
     /// - Parameters:
     ///     - javascriptString: the JavaScript string to evaluate.
@@ -39,7 +39,7 @@ extension WKWebView {
         }
 
         while !finished {
-            RunLoop.current.run(mode: .default, before: NSDate.distantFuture)
+            RunLoop.current.run(mode: .default, before: .distantFuture)
         }
 
         return result
