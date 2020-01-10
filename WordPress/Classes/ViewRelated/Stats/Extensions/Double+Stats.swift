@@ -100,7 +100,13 @@ extension Double {
             unit = units[exp]
         } else {
             roundedNum = unsignedRoundedNum
-            unit = units[exp-1]
+            let unitIndex = exp - 1
+
+            guard unitIndex >= units.startIndex else {
+                return self.formatWithCommas()
+            }
+
+            unit = units[unitIndex]
         }
 
         roundedNum = self < 0 ? -roundedNum : roundedNum
