@@ -1,5 +1,4 @@
-- The block editor’s got a new Spacer block for adding white space between content just like all the articles content optimization and readability tell you to, and images in Image blocks can now be previewed full screen by tapping on them.
-- When a post has an autosaved revision, you now have the option to load the autosaved version. We apologize to any autosaved revisions that had been struggling with feelings of neglect.
-- People would occasionally get a “Message failed to send” error when sending messages to Support. Since the point of messages is to be sent, especially when you need support, we fixed that bug.
-- You can never be too safe on the internet. Sign in with Apple now supports two-factor authentication and a 2FA issue with Google sign-in is fixed, so you can authenticate all the things.
-- There was an issue that caused the “Me” screen to sometimes be blank, which was 100% an unfortunate bug and 0% a reflection of your self-image. To remove any doubt, it’s fixed now.
+- We know that your website is a passion project and you never really look at your stats because they’re totally not important. But just in case, we added a Today widget you can use to display all-time stats.
+- The block editor has more goodies: you’ll find a Gallery block for making multi-image galleries from files in your Media Library, and there’s support for block-specific settings in the List and Video blocks.
+- It’s also got one fewer baddie: if your app ever crashed after you opened some block settings and then rotated your device, you’ve now had that experience for the last time.
+- And last but not least, sometimes you’d take the “Follow other sites” tour, but the tour wouldn’t be marked off as “Complete.” We never meant to deprive anyone of one of life’s greatest satisfactions, that of crossing a finished item off a list, so this is fixed.

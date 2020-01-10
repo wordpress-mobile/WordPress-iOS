@@ -1,5 +1,4 @@
-- ブロックエディターにスペーサーブロックが追加されました。コンテンツの最適化と読みやすさの記事で推奨されているように、コンテンツ間に空白を追加できるようになりました。さらに、画像ブロック内の画像をタップすると、全画面でプレビューできるようになりました。
-- 投稿に自動保存されたリビジョンがある場合、自動保存されたバージョンを読み込めるようになりました。これまで自動保存されたリビジョンは放置されていました。
-- サポートにメッセージを送信するときに、「メッセージを送信できませんでした」というエラーが表示されることがありました。特にサポートが必要な場合は、メッセージが送信されることが重要であるため、このバグを修正しました。
-- インターネットにおいて安全すぎるということはありません。Apple でのサインインが二段階認証に対応するようになり、Google サインインでの2FA の問題が修正され、それぞれの認証を利用できるようになりました。
-- 「自分」画面が時々空白になる問題がありました。これは、完全にバグが原因でした。この問題は修正されました。
+- We know that your website is a passion project and you never really look at your stats because they’re totally not important.But just in case, we added a Today widget you can use to display all-time stats.
+- The block editor has more goodies:you’ll find a Gallery block for making multi-image galleries from files in your Media Library, and there’s support for block-specific settings in the List and Video blocks.
+- It’s also got one fewer baddie:if your app ever crashed after you opened some block settings and then rotated your device, you’ve now had that experience for the last time.
+- And last but not least, sometimes you’d take the “Follow other sites” tour, but the tour wouldn’t be marked off as “Complete.” We never meant to deprive anyone of one of life’s greatest satisfactions, that of crossing a finished item off a list, so this is fixed.
