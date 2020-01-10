@@ -119,7 +119,7 @@ class MediaEditorHub: UIViewController {
     func apply(styles: MediaEditorStyles) {
         loadViewIfNeeded()
 
-        if let doneLabel = styles[.doneLabel] as? String {
+        if let doneLabel = (styles[.insertLabel] ?? styles[.doneLabel]) as? String {
             doneButton.setTitle(String(format: doneLabel, "\(numberOfThumbs)"), for: .normal)
         }
 

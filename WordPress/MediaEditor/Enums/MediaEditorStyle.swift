@@ -3,6 +3,7 @@ import Foundation
 public typealias MediaEditorStyles = [MediaEditorStyle: Any]
 
 public enum MediaEditorStyle {
+    case insertLabel
     case doneLabel
     case doneColor
     case cancelLabel
