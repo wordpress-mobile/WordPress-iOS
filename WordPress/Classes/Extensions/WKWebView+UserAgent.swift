@@ -1,15 +1,26 @@
+import AutomatticTracks
 import WebKit
 
 /// This extension provides a mechanism to request the UserAgent for WKWebViews
 ///
 @objc
 extension WKWebView {
+    static let userAgentKey = "_userAgent"
 
     /// Call this method to get the user agent for the WKWebView
     ///
     @objc
     func userAgent() -> String {
-        return stringByEvaluatingJavaScript(fromString: "navigator.userAgent")
+        guard let userAgent = value(forKey: WKWebView.userAgentKey) as? String,
+            userAgent.count > 0 else {
+                CrashLogging.logMessage(
+                    "This method for retrieveing the user agent seems to be no longer working.  We need to figure out an alternative.",
+                    properties: [:],
+                    level: .error)
+                return ""
+        }
+        
+        return userAgent
     }
 
     /// Static version of the method that returns the current user agent.
