@@ -63,10 +63,6 @@ class MediaEditorHub: UIViewController {
         capabilitiesCollectionView.delegate = self
         imagesCollectionView.dataSource = self
         imagesCollectionView.delegate = self
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         selectLastAsset()
     }
 
