@@ -1,4 +1,3 @@
-import AutomatticTracks
 import WebKit
 
 /// This extension provides a mechanism to request the UserAgent for WKWebViews
