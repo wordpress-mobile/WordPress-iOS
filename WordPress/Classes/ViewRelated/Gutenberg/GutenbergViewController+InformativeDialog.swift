@@ -12,6 +12,10 @@ extension GutenbergViewController {
             "You’re now using the block editor for new pages — great! If you’d like to change to the classic editor, go to ‘My Site’ > ‘Site Settings’.",
             comment: "Popup content about why this post is being opened in block editor"
         )
+        static let phase2Message = NSLocalizedString(
+            "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.",
+            comment: "Popup content about why this post is being opened in block editor"
+        )
         static let title = NSLocalizedString(
             "Block editor enabled",
             comment: "Popup title about why this post is being opened in block editor"
@@ -21,9 +25,20 @@ extension GutenbergViewController {
 
     func showInformativeDialogIfNecessary() {
         if shouldPresentInformativeDialog {
-            let message = post is Page ? InfoDialog.pageMessage : InfoDialog.postMessage
-            GutenbergViewController.showInformativeDialog(on: self, message: message)
+            showMigrationInformativeDialog()
+        } else if shouldPresentPhase2informativeDialog {
+            showPhase2InformativeDialog()
         }
+    }
+
+    func showMigrationInformativeDialog() {
+        let message = post is Page ? InfoDialog.pageMessage : InfoDialog.postMessage
+        GutenbergViewController.showInformativeDialog(on: self, message: message)
+    }
+
+    func showPhase2InformativeDialog() {
+        GutenbergViewController.showInformativeDialog(on: self, message: InfoDialog.phase2Message)
+        GutenbergSettings().setShowPhase2Dialog(false, for: post.blog)
     }
 
     static func showInformativeDialog(
