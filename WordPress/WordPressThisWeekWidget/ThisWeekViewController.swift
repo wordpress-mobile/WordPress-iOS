@@ -33,6 +33,7 @@ class ThisWeekViewController: UIViewController {
         super.viewDidLoad()
         retrieveSiteConfiguration()
         registerTableCells()
+        configureTableSeparator()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -272,6 +273,11 @@ private extension ThisWeekViewController {
         tableView.register(footerNib, forHeaderFooterViewReuseIdentifier: WidgetFooterView.reuseIdentifier)
     }
 
+    func configureTableSeparator() {
+        tableView.separatorColor = WidgetStyles.separatorColor
+        tableView.separatorEffect = WidgetStyles.separatorVibrancyEffect
+    }
+
     func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetUnconfiguredCell.reuseIdentifier, for: indexPath) as? WidgetUnconfiguredCell else {
             return UITableViewCell()
@@ -292,9 +298,7 @@ private extension ThisWeekViewController {
             return cell
         }
 
-        cell.configure(day: statsValues.days[indexPath.row],
-                       isToday: indexPath.row == 0,
-                       hideSeparator: indexPath.row == (numberOfRowsToDisplay() - 1))
+        cell.configure(day: statsValues.days[indexPath.row], isToday: indexPath.row == 0)
 
         return cell
     }

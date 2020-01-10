@@ -46,7 +46,7 @@ private extension WidgetUnconfiguredCell {
         configureLabel.textColor = WidgetStyles.primaryTextColor
         openWordPressLabel.textColor = WidgetStyles.primaryTextColor
         WidgetStyles.configureSeparator(separatorLine)
-        WidgetStyles.configureSeparatorVisualEffectView(separatorVisualEffectView)
+        separatorVisualEffectView.effect = WidgetStyles.separatorVibrancyEffect
     }
 
     enum LocalizedText {
