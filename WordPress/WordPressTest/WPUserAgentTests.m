@@ -1,6 +1,7 @@
 #import <XCTest/XCTest.h>
 
 #import "WPUserAgent.h"
+@import WebKit;
 
 static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
@@ -19,15 +20,21 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     return [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
 }
 
+- (NSString *)currentUserAgentFromWKWebView
+{
+    return [[WKWebView new] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+}
+
 - (void)testWordPressUserAgent
 {
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *customAgent = [NSString stringWithFormat:@"wp-iphone/%@", appVersion];
+    NSString *defaultUserAgent = [WPUserAgent defaultUserAgent];
+    NSString *expectedUserAgent = [NSString stringWithFormat:@"%@ wp-iphone/%@", defaultUserAgent, appVersion];
 
-    XCTAssertTrue([[WPUserAgent wordPressUserAgent] containsString:customAgent]);
+    XCTAssertEqualObjects([WPUserAgent wordPressUserAgent], expectedUserAgent);
 }
 
-- (void)testUseWordPressUserAgentInUIWebViews
+- (void)testUseWordPressUserAgentInWebViews
 {
     NSString *defaultUA = [WPUserAgent defaultUserAgent];
     NSString *wordPressUA = [WPUserAgent wordPressUserAgent];
@@ -35,30 +42,47 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPUserAgentKeyUserAgent];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: defaultUA}];
 
-    XCTAssertTrue([[self currentUserAgentFromUserDefaults] isEqualToString:defaultUA]);
-    XCTAssertTrue([[self currentUserAgentFromUIWebView] isEqualToString:defaultUA]);
+    XCTAssertEqualObjects([self currentUserAgentFromUserDefaults], defaultUA);
+    XCTAssertEqualObjects([self currentUserAgentFromUIWebView], defaultUA);
+    XCTAssertEqualObjects([self currentUserAgentFromWKWebView], defaultUA);
 
-    [WPUserAgent useWordPressUserAgentInUIWebViews];
+    [WPUserAgent useWordPressUserAgentInWebViews];
     
-    XCTAssertTrue([[self currentUserAgentFromUserDefaults] isEqualToString:wordPressUA]);
-    XCTAssertTrue([[self currentUserAgentFromUIWebView] isEqualToString:wordPressUA]);
+    XCTAssertEqualObjects([self currentUserAgentFromUserDefaults], wordPressUA);
+    XCTAssertEqualObjects([self currentUserAgentFromUIWebView], wordPressUA);
+    XCTAssertEqualObjects([self currentUserAgentFromWKWebView], wordPressUA);
 }
 
 - (void)testThatOriginalRemovalOfWPUseKeyUserAgentDoesntWork {
     // get the original user agent
-    NSString *originalUserAgent = [self currentUserAgentFromUIWebView];
-    NSLog(@"OriginalUserAgent: %@", originalUserAgent);
+    NSString *originalUserAgentInUIWebView = [self currentUserAgentFromUIWebView];
+    NSLog(@"OriginalUserAgent (UIWebView): %@", originalUserAgentInUIWebView);
+    
+    NSString *originalUserAgentInWKWebView = [self currentUserAgentFromWKWebView];
+    NSLog(@"OriginalUserAgent (WKWebView): %@", originalUserAgentInWKWebView);
+    
     // set a new one
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent:@"new user agent"}];
-    NSString *changedUserAgent = [self currentUserAgentFromUIWebView];
-    NSLog(@"changedUserAgent: %@", changedUserAgent);
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: @"new user agent"}];
+    
+    NSString *changedUserAgentInUIWebView = [self currentUserAgentFromUIWebView];
+    NSLog(@"changedUserAgent (UIWebView): %@", changedUserAgentInUIWebView);
+    
+    NSString *changedUserAgentInWKWebView = [self currentUserAgentFromWKWebView];
+    NSLog(@"changedUserAgent (WKWebView): %@", changedUserAgentInWKWebView);
 
     // try to remove it using old method
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{}];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPUserAgentKeyUserAgent];
-    NSString *shouldBeOriginal = [self currentUserAgentFromUIWebView];
-    NSLog(@"shouldBeOriginal: %@", shouldBeOriginal);
-    XCTAssertNotEqualObjects(originalUserAgent, shouldBeOriginal, "This agent should be the same");
+    
+    NSString *shouldBeOriginalInUIWebView = [self currentUserAgentFromUIWebView];
+    NSLog(@"shouldBeOriginal (UIWebView): %@", shouldBeOriginalInUIWebView);
+    
+    XCTAssertNotEqualObjects(originalUserAgentInUIWebView, shouldBeOriginalInUIWebView, "This agent should be the same");
+    
+    NSString *shouldBeOriginalInWKWebView = [self currentUserAgentFromWKWebView];
+    NSLog(@"shouldBeOriginal (WKWebView): %@", shouldBeOriginalInWKWebView);
+    
+    XCTAssertNotEqualObjects(originalUserAgentInWKWebView, shouldBeOriginalInWKWebView, "This agent should be the same");
 }
 
 - (void)testThatCallingFromAnotherThreadWorks {

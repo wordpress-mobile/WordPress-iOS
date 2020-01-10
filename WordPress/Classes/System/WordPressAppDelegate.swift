@@ -80,6 +80,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Restore a disassociated account prior to fixing tokens.
         AccountService(managedObjectContext: ContextManager.shared.mainContext).restoreDisassociatedAccountIfNecessary()
 
+        customizeAppearance()
+
         let solver = WPAuthTokenIssueSolver()
         let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
             self?.runStartupSequence(with: launchOptions ?? [:])
@@ -165,6 +167,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
             checkAppleIDCredentialState()
         }
+        GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -251,15 +254,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         ZendeskUtils.setup()
 
         setupNetworkActivityIndicator()
-        WPUserAgent.useWordPressInUIWebViews()
-
-        // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
-        // by any of the Noto varients.  Size is arbitrary.
-        // See: https://github.com/wordpress-mobile/WordPress-Shared-iOS/issues/79
-        // Remove this when #79 is resolved.
-        WPFontManager.notoRegularFont(ofSize: 16.0)
-
-        customizeAppearance()
+        WPUserAgent.useWordPressInWebViews()
 
         // Push notifications
         // This is silent (the user isn't prompted) so we can do it on launch.

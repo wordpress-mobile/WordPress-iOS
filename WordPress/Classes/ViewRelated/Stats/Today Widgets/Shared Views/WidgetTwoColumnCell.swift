@@ -33,9 +33,9 @@ class WidgetTwoColumnCell: UITableViewCell {
 
 private extension WidgetTwoColumnCell {
     func configureColors() {
-        leftItemLabel.textColor = .text
-        leftDataLabel.textColor = .text
-        rightItemLabel.textColor = .text
-        rightDataLabel.textColor = .text
+        leftItemLabel.textColor = WidgetStyles.primaryTextColor
+        leftDataLabel.textColor = WidgetStyles.primaryTextColor
+        rightItemLabel.textColor = WidgetStyles.primaryTextColor
+        rightDataLabel.textColor = WidgetStyles.primaryTextColor
     }
 }

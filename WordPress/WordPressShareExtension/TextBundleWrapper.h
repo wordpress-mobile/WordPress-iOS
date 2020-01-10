@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, TextBundleError)
 /**
  File wrapper represeting the whole TextBundle.
  */
-@property (readonly, nonatomic) NSFileWrapper *fileWrapper;
+@property (readonly, nullable, nonatomic) NSFileWrapper *fileWrapper;
 
 /**
  File wrapper containing all asset files referenced from the plain text file.
