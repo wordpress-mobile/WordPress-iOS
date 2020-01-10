@@ -1,18 +1,6 @@
 import Foundation
 import WordPressShared
 import Gridicons
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
 
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
@@ -25,6 +13,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, reblogActionForProvider provider: ReaderPostContentProvider)
     func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String?
 }
 
@@ -60,6 +49,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
     @IBOutlet fileprivate weak var commentActionButton: UIButton!
     @IBOutlet fileprivate weak var menuButton: UIButton!
+    @IBOutlet fileprivate weak var reblogActionButton: UIButton!
 
     // Layout Constraints
     @IBOutlet fileprivate weak var featuredMediaHeightConstraint: NSLayoutConstraint!
@@ -77,12 +67,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate var isSmallWidth: Bool {
         let width = superview?.frame.width ?? 0
         return  width <= 320
-    }
-    fileprivate var isMediumWidth: Bool {
-        return superview?.frame.width < 480
-    }
-    fileprivate var isBigWidth: Bool {
-        return !isMediumWidth
     }
 
     // MARK: - Accessors
@@ -154,7 +138,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         setupMenuButton()
         setupVisitButton()
-        setupSaveForLaterButton()
         setupCommentActionButton()
         setupLikeActionButton()
 
@@ -227,10 +210,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         visitButton.setImage(highlightIcon, for: .highlighted)
     }
 
-    fileprivate func setupSaveForLaterButton() {
-        WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
-    }
-
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = Gridicon.iconOfType(.ellipsis, withSize: size)
@@ -246,7 +225,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             visitButton,
             likeActionButton,
             commentActionButton,
-            saveForLaterButton]
+            saveForLaterButton,
+            reblogActionButton]
         for button in buttonsToAdjust {
             button.flipInsetsForRightToLeftLayoutDirection()
         }
@@ -261,6 +241,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         borderedView.backgroundColor = .listForeground
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = .hairlineBorderWidth
+
+        WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
+
+        if FeatureFlag.postReblogging.enabled {
+            WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
+        }
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
@@ -407,14 +393,16 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             resetActionButton(commentActionButton)
             resetActionButton(likeActionButton)
             resetActionButton(saveForLaterButton)
+            resetActionButton(reblogActionButton)
             return
         }
 
+        configureSaveForLaterButton()
         configureCommentActionButton()
         configureLikeActionButton()
-        configureActionButtonsInsets()
+        configureReblogActionButton()
 
-        configureSaveForLaterButton()
+        configureActionButtonsInsets()
     }
 
     fileprivate func resetActionButton(_ button: UIButton) {
@@ -501,6 +489,20 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         saveForLaterButton.isSelected = postIsSavedForLater
     }
 
+    fileprivate func configureReblogActionButton() {
+        reblogActionButton.tag = CardAction.reblog.rawValue
+        reblogActionButton.isHidden = !shouldShowReblogActionButton
+    }
+
+    fileprivate var shouldShowReblogActionButton: Bool {
+        // reblog button is hidden if there's no content
+        guard FeatureFlag.postReblogging.enabled,
+            contentProvider != nil else {
+            return false
+        }
+        return true
+    }
+
     fileprivate func configureButtonTitles() {
         guard let provider = contentProvider else {
             return
@@ -509,13 +511,18 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         let likeCount = provider.likeCount()?.intValue ?? 0
         let commentCount = provider.commentCount()?.intValue ?? 0
 
-        if !isBigWidth {
+        if self.traitCollection.horizontalSizeClass == .compact {
             // remove title text
             let likeTitle = likeCount > 0 ?  String(likeCount) : ""
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            saveForLaterButton.setTitle("", for: .normal)
+            if FeatureFlag.postReblogging.enabled {
+                WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
+                WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
+            } else {
+                saveForLaterButton.setTitle("", for: .normal)
+            }
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
@@ -524,6 +531,9 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             commentActionButton.setTitle(commentTitle, for: .normal)
 
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
+            if FeatureFlag.postReblogging.enabled {
+                WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
+            }
         }
     }
 
@@ -594,16 +604,18 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
-        if contentProvider == nil {
+        guard let contentProvider = self.contentProvider,
+            let tag = CardAction(rawValue: sender.tag) else {
             return
         }
 
-        let tag = CardAction(rawValue: sender.tag)!
         switch tag {
-        case .comment :
-            delegate?.readerCell(self, commentActionForProvider: contentProvider!)
-        case .like :
-            delegate?.readerCell(self, likeActionForProvider: contentProvider!)
+        case .comment:
+            delegate?.readerCell(self, commentActionForProvider: contentProvider)
+        case .like:
+            delegate?.readerCell(self, likeActionForProvider: contentProvider)
+        case .reblog:
+            delegate?.readerCell(self, reblogActionForProvider: contentProvider)
         }
     }
 
@@ -624,6 +636,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate enum CardAction: Int {
         case comment = 1
         case like
+        case reblog
     }
 }
 
@@ -643,6 +656,9 @@ extension ReaderPostCardCell: Accessible {
         prepareMenuForVoiceOver()
         prepareVisitForVoiceOver()
         prepareFollowButtonForVoiceOver()
+        if FeatureFlag.postReblogging.enabled {
+            prepareReblogForVoiceOver()
+        }
     }
 
     private func prepareCardForVoiceOver() {
@@ -786,6 +802,12 @@ extension ReaderPostCardCell: Accessible {
         visitButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 
+    private func prepareReblogForVoiceOver() {
+        reblogActionButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
+        reblogActionButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
+        reblogActionButton.accessibilityTraits = UIAccessibilityTraits.button
+    }
+
     func prepareFollowButtonForVoiceOver() {
         if hidesFollowButton {
             return
@@ -871,5 +893,9 @@ extension ReaderPostCardCell {
 
     func getVisitButtonForTesting() -> UIButton {
         return visitButton
+    }
+
+    func getReblogButtonForTesting() -> UIButton {
+        return reblogActionButton
     }
 }
