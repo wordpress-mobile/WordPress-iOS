@@ -15,8 +15,6 @@ class EditPostViewController: UIViewController {
     @objc var openWithPostPost: Bool = false
     /// appear with media pre-inserted into the post
     var insertedMedia: [Media]? = nil
-    /// appear with the blog selector visible
-    var openWithBlogSelector = false
     /// is editing a reblogged post
     var postIsReblogged = false
 
@@ -170,12 +168,6 @@ class EditPostViewController: UIViewController {
 
             if let insertedMedia = self.insertedMedia {
                 editor.prepopulateMediaItems(insertedMedia)
-            }
-            if self.openWithBlogSelector {
-                editor.displayBlogSelector()
-                // do not reopen blog selector when switching between Block and Classic editors
-                self.openWithBlogSelector = false
-
             }
         }
     }

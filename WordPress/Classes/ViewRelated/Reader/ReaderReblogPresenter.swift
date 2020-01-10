@@ -42,34 +42,87 @@ class ReaderReblogPresenter {
             guard let blog = blogService.lastUsedOrFirstBlog() else {
                 return
             }
-            presentEditor(with: readerPost, blog: blog, origin: origin, presentBlogSelector: true)
+            presentBlogPicker(from: origin,
+                              blog: blog,
+                              blogService: blogService,
+                              readerPost: readerPost)
         }
     }
+}
 
-    /// presents the editor when users have at least one blog site. If they have more than one
-    /// the blog selector is presented.
-    private func presentEditor(with readerPost: ReaderPost,
-                               blog: Blog,
-                               origin: UIViewController,
-                               presentBlogSelector: Bool = false) {
 
-        let post = postService.createDraftPost(for: blog)
-        post.prepareForReblog(with: readerPost)
+// MARK: - Blog Picker
+private extension ReaderReblogPresenter {
+    /// presents the blog picker before the editor, for users with multiple sites
+    func presentBlogPicker(from origin: UIViewController,
+                           blog: Blog,
+                           blogService: BlogService,
+                           readerPost: ReaderPost) {
 
-        let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
-        editor.modalPresentationStyle = .fullScreen
-        editor.openWithBlogSelector = presentBlogSelector
-        editor.postIsReblogged = true
+        let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: nil,
+                                                                successHandler: nil,
+                                                                dismissHandler: nil)
 
-        origin.present(editor, animated: false)
+        selectorViewController.displaysNavigationBarWhenSearching = WPDeviceIdentification.isiPad()
+        selectorViewController.dismissOnCancellation = true
+
+        let navigationController = getNavigationController(selectorViewController)
+
+        let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
+            guard let newBlog = blogService.managedObjectContext.object(with: selectedObjectID) as? Blog else {
+                return
+            }
+            navigationController.dismiss(animated: true) {
+                self.presentEditor(with: readerPost, blog: newBlog, origin: origin)
+            }
+        }
+        selectorViewController.successHandler = successHandler
+        origin.present(navigationController, animated: true)
     }
 
+    /// returns an AdaptiveNavigationController with preconfigured modal presentation style
+    func getNavigationController(_ controller: UIViewController) -> AdaptiveNavigationController {
+        let navigationController = AdaptiveNavigationController(rootViewController: controller)
+        if #available(iOS 13.0, *) {
+            navigationController.modalPresentationStyle = .automatic
+        } else {
+            // suits both iPad and iPhone
+            navigationController.modalPresentationStyle = .pageSheet
+        }
+        return navigationController
+    }
+}
+
+
+// MARK: - Post Editor
+private extension ReaderReblogPresenter {
+    /// presents the post editor when users have at least one blog site.
+    func presentEditor(with readerPost: ReaderPost,
+                               blog: Blog,
+                               origin: UIViewController) {
+
+        // get post and put content in it
+        let post = postService.createDraftPost(for: blog)
+        post.prepareForReblog(with: readerPost)
+        // instantiate & configure editor
+        let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
+        editor.modalPresentationStyle = .fullScreen
+        editor.postIsReblogged = true
+        // present
+        origin.present(editor, animated: false)
+    }
+}
+
+
+// MARK: - No Sites
+private extension ReaderReblogPresenter {
     /// presents the no sites screen, with related actions
-    private func presentNoSitesScene(origin: UIViewController) {
+    func presentNoSitesScene(origin: UIViewController) {
         let controller = NoResultsViewController.controllerWith(title: NoSitesConfiguration.noSitesTitle,
                                                                 buttonTitle: NoSitesConfiguration.manageSitesLabel,
                                                                 subtitle: NoSitesConfiguration.noSitesSubtitle)
-        // add handlers to NoResultsController
+        controller.showDismissButton(title: NoSitesConfiguration.backButtonTitle)
+
         controller.actionButtonHandler = { [weak origin] in
             guard let tabBarController = origin?.tabBarController as? WPTabBarController else {
                 return
@@ -78,26 +131,18 @@ class ReaderReblogPresenter {
                 tabBarController.showMySitesTab()
             }
         }
+
         controller.dismissButtonHandler = {
             controller.dismiss(animated: true)
         }
 
-        controller.showDismissButton(title: NoSitesConfiguration.backButtonTitle)
-
-        let navigationController = AdaptiveNavigationController(rootViewController: controller)
-
-        if #available(iOS 13.0, *) {
-            navigationController.modalPresentationStyle = .automatic
-        } else {
-            // suits both iPad and iPhone
-            navigationController.modalPresentationStyle = .pageSheet
-        }
+        let navigationController = getNavigationController(controller)
         origin.present(navigationController, animated: true)
     }
 }
 
 // MARK: - Post updates
-fileprivate extension Post {
+private extension Post {
     /// Formats the new Post content for reblogging, using an existing ReaderPost
     func prepareForReblog(with readerPost: ReaderPost) {
         // update the post
