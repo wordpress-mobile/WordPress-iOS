@@ -276,7 +276,8 @@ private extension SiteStatsPeriodViewModel {
                                            differencePercent: viewsData.percentage,
                                            date: periodDate,
                                            period: period,
-                                           analyticsStat: .statsOverviewTypeTappedViews)
+                                           analyticsStat: .statsOverviewTypeTappedViews,
+                                           accessibilityHint: StatSection.periodOverviewViews.tabAccessibilityHint)
 
         let visitorsData = intervalData(summaryType: .visitors)
         let visitorsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle,
@@ -285,7 +286,8 @@ private extension SiteStatsPeriodViewModel {
                                               differencePercent: visitorsData.percentage,
                                               date: periodDate,
                                               period: period,
-                                              analyticsStat: .statsOverviewTypeTappedVisitors)
+                                              analyticsStat: .statsOverviewTypeTappedVisitors,
+                                              accessibilityHint: StatSection.periodOverviewVisitors.tabAccessibilityHint)
 
         let likesData = intervalData(summaryType: .likes)
         // If Summary Likes is still loading, show dashes (instead of 0)
@@ -298,7 +300,8 @@ private extension SiteStatsPeriodViewModel {
                                            differencePercent: likesData.percentage,
                                            date: periodDate,
                                            period: period,
-                                           analyticsStat: .statsOverviewTypeTappedLikes)
+                                           analyticsStat: .statsOverviewTypeTappedLikes,
+                                           accessibilityHint: StatSection.periodOverviewLikes.tabAccessibilityHint)
 
         let commentsData = intervalData(summaryType: .comments)
         let commentsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle,
@@ -307,7 +310,8 @@ private extension SiteStatsPeriodViewModel {
                                               differencePercent: commentsData.percentage,
                                               date: periodDate,
                                               period: period,
-                                              analyticsStat: .statsOverviewTypeTappedComments)
+                                              analyticsStat: .statsOverviewTypeTappedComments,
+                                              accessibilityHint: StatSection.periodOverviewComments.tabAccessibilityHint)
 
         var barChartData = [BarChartDataConvertible]()
         var barChartStyling = [BarChartStyling]()

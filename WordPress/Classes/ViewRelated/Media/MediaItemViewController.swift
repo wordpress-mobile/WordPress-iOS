@@ -220,10 +220,6 @@ class MediaItemViewController: UITableViewController {
         controller.navigationItem.titleView = nil
         controller.title = media.title ?? ""
 
-        if let webView = controller.view.subviews.first as? UIWebView {
-            webView.backgroundColor = .lightGray
-        }
-
         navigationController?.pushViewController(controller, animated: true)
     }
 

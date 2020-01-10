@@ -7,6 +7,7 @@ class WidgetFooterView: UITableViewHeaderFooterView {
     static let reuseIdentifier = "WidgetFooterView"
 
     @IBOutlet private var separatorLine: UIView!
+    @IBOutlet private var separatorVisualEffectView: UIVisualEffectView!
     @IBOutlet private var siteUrlLabel: UILabel!
     @IBOutlet private var backgroundColorView: UIView!
 
@@ -27,8 +28,9 @@ class WidgetFooterView: UITableViewHeaderFooterView {
 
 private extension WidgetFooterView {
     func configureColors() {
-        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
-        siteUrlLabel.textColor = .textSubtle
+        siteUrlLabel.textColor = WidgetStyles.secondaryTextColor
         backgroundColorView.backgroundColor = .clear
+        WidgetStyles.configureSeparator(separatorLine)
+        WidgetStyles.configureSeparatorVisualEffectView(separatorVisualEffectView)
     }
 }
