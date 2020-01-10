@@ -1,8 +1,8 @@
 import Foundation
 
 fileprivate struct Unit {
-    let abbreviation: String
-    let name: String
+    let abbreviationFormat: String
+    let accessibilityLabelFormat: String
 }
 
 extension Double {
@@ -20,23 +20,36 @@ extension Double {
     }
 
     private var decimalFormatter: NumberFormatter {
-         get {
-             let formatter = Double._decimalFormatter
-             // Show at least one digit after the decimal
-             formatter.minimumFractionDigits = 1
-             return formatter
-         }
-     }
+        get {
+            let formatter = Double._decimalFormatter
+            // Show at least one digit after the decimal
+            formatter.minimumFractionDigits = 1
+            return formatter
+        }
+    }
 
     private static var _units: [Unit] {
         get {
             var unitsArray: [Unit] = []
-            unitsArray.append(Unit(abbreviation: "K", name: "thousand"))
-            unitsArray.append(Unit(abbreviation: "M", name: "million"))
-            unitsArray.append(Unit(abbreviation: "B", name: "billion"))
-            unitsArray.append(Unit(abbreviation: "T", name: "trillion"))
-            unitsArray.append(Unit(abbreviation: "P", name: "quadrillion"))
-            unitsArray.append(Unit(abbreviation: "E", name: "quintillion"))
+
+            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@K", comment: "Label displaying value in thousands. Ex: 66.6K."),
+                                   accessibilityLabelFormat: NSLocalizedString("%@ thousand", comment: "Accessibility label for value in thousands. Ex: 66.6 thousand.")))
+
+            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@M", comment: "Label displaying value in millions. Ex: 66.6M."),
+                                   accessibilityLabelFormat: NSLocalizedString("%@ million", comment: "Accessibility label for value in millions. Ex: 66.6 million.")))
+
+            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@B", comment: "Label displaying value in billions. Ex: 66.6B."),
+                                   accessibilityLabelFormat: NSLocalizedString("%@ billion", comment: "Accessibility label for value in billions. Ex: 66.6 billion.")))
+
+            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@T", comment: "Label displaying value in trillions. Ex: 66.6T."),
+                                   accessibilityLabelFormat: NSLocalizedString("%@ trillion", comment: "Accessibility label for value in trillions. Ex: 66.6 trillion.")))
+
+            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@P", comment: "Label displaying value in quadrillions. Ex: 66.6P."),
+                                   accessibilityLabelFormat: NSLocalizedString("%@ quadrillion", comment: "Accessibility label for value in quadrillion. Ex: 66.6 quadrillion.")))
+
+            unitsArray.append(Unit(abbreviationFormat: NSLocalizedString("%@E", comment: "Label displaying value in quintillions. Ex: 66.6E."),
+                                   accessibilityLabelFormat: NSLocalizedString("%@ quintillion", comment: "Accessibility label for value in quintillions. Ex: 66.6 quintillion.")))
+
             return unitsArray
         }
     }
@@ -90,9 +103,8 @@ extension Double {
         roundedNum = self < 0 ? -roundedNum : roundedNum
         let formattedValue = roundedNum.formatWithFractions()
 
-        let format = NSLocalizedString("%@%@", comment: "Label displaying abbreviated value. The first parameter is the value, the second is the unit. Ex: 55.5M, 66.6K.")
-        let formattedString = String.localizedStringWithFormat(format, formattedValue, unit.abbreviation)
-        formattedString.accessibilityLabel = String.localizedStringWithFormat(format, formattedValue, unit.name)
+        let formattedString = String.localizedStringWithFormat(unit.abbreviationFormat, formattedValue)
+        formattedString.accessibilityLabel = String.localizedStringWithFormat(unit.accessibilityLabelFormat, formattedValue)
 
         return formattedString
     }
