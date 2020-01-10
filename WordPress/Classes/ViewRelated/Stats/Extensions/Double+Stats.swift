@@ -96,16 +96,20 @@ extension Double {
         var unit: Unit
 
         if unsignedRoundedNum == 1000.0 {
+            guard exp >= units.startIndex else {
+                return self.formatWithCommas()
+            }
+
             roundedNum = 1
             unit = units[exp]
         } else {
-            roundedNum = unsignedRoundedNum
             let unitIndex = exp - 1
 
             guard unitIndex >= units.startIndex else {
                 return self.formatWithCommas()
             }
 
+            roundedNum = unsignedRoundedNum
             unit = units[unitIndex]
         }
 
