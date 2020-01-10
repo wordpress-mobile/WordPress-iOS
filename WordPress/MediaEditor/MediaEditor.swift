@@ -192,6 +192,7 @@ public class MediaEditor: UINavigationController {
     }
 
     private func cancelPendingAsyncImagesAndDismiss() {
+        onCancel?()
         asyncImages.forEach { $0.cancel() }
         dismiss(animated: true)
     }
