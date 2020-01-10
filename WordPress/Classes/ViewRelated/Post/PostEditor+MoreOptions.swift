@@ -89,8 +89,8 @@ extension PostEditor where Self: UIViewController {
                     }
                     previewController = NewPostPreviewViewController(post: self.post)
                 }
-                previewController.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(previewController, animated: true)
+                let navWrapper = UINavigationController(rootViewController: previewController)
+                self.navigationController?.present(navWrapper, animated: true)
             } else {
                 var previewController: PostPreviewViewController
                 if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {

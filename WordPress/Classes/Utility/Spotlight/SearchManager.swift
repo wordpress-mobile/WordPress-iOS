@@ -477,11 +477,7 @@ fileprivate extension SearchManager {
 
         if FeatureFlag.postPreview.enabled {
             let controller = NewPostPreviewViewController(post: apost)
-            controller.hidesBottomBarWhenPushed = true
             let navWrapper = UINavigationController(rootViewController: controller)
-            controller.onClose = {
-                navWrapper.dismiss(animated: true) {}
-            }
             WPTabBarController.sharedInstance().present(navWrapper, animated: true)
         } else {
             let controller = PostPreviewViewController(post: apost)

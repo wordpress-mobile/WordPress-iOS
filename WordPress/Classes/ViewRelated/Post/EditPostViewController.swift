@@ -234,9 +234,6 @@ class EditPostViewController: UIViewController {
 
         if FeatureFlag.postPreview.enabled {
             let controller = NewPostPreviewViewController(post: post)
-            controller.onClose = {
-                self.dismiss(animated: true) {}
-            }
             let navWrapper = UINavigationController(rootViewController: controller)
             postPost.present(navWrapper, animated: true) {}
         } else {

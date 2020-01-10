@@ -34,7 +34,6 @@ class PostNoticeNavigationCoordinator {
         } else {
             let controller = NewPostPreviewViewController(post: page)
             controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-            controller.hidesBottomBarWhenPushed = true
 
             let navigationController = UINavigationController(rootViewController: controller)
             navigationController.modalPresentationStyle = .formSheet

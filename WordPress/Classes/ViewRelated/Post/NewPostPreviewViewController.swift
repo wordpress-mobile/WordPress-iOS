@@ -6,9 +6,6 @@ class NewPostPreviewViewController: UIViewController {
 
     // MARK: Public Properties
 
-    /// A block to be called when the Dismiss/Close button is pressed
-    var onClose: (() -> Void)? = nil
-
     let post: AbstractPost
 
     // MARK: Private Properties
@@ -47,6 +44,7 @@ class NewPostPreviewViewController: UIViewController {
     }()
 
     private lazy var doneBarButtonItem: UIBarButtonItem = {
+//        let buttonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(dismissPreview))
         let buttonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for button to dismiss post preview"), style: .done, target: self, action: #selector(dismissPreview))
         buttonItem.accessibilityIdentifier = "Done"
         return buttonItem
@@ -81,12 +79,7 @@ class NewPostPreviewViewController: UIViewController {
     // MARK: Action Selectors
 
     @objc private func dismissPreview() {
-        if let onClose = onClose {
-            onClose()
-            self.onClose = nil
-        } else {
-            presentingViewController?.dismiss(animated: true, completion: nil)
-        }
+        dismiss(animated: true, completion: nil)
     }
 
     @objc private func sharePost() {
@@ -103,8 +96,8 @@ class NewPostPreviewViewController: UIViewController {
     }
 
     private func setupBarButtons() {
-        navigationItem.rightBarButtonItems = [doneBarButtonItem, shareBarButtonItem]
-        navigationItem.leftItemsSupplementBackButton = true
+        navigationItem.leftBarButtonItem = doneBarButtonItem
+        navigationItem.rightBarButtonItem = shareBarButtonItem
     }
 
     private func setupWebView() {
@@ -154,7 +147,7 @@ class NewPostPreviewViewController: UIViewController {
     }
 
     private func stopLoadAnimation() {
-        navigationItem.leftBarButtonItem = navigationItem.backBarButtonItem
+        navigationItem.leftBarButtonItem = doneBarButtonItem
         navigationItem.title = NSLocalizedString("Preview", comment: "Post Editor / Preview screen title.")
     }
 }
