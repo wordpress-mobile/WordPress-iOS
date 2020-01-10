@@ -254,7 +254,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         ZendeskUtils.setup()
 
         setupNetworkActivityIndicator()
-        WPUserAgent.useWordPressInUIWebViews()
+        WPUserAgent.useWordPressInWebViews()
 
         // Push notifications
         // This is silent (the user isn't prompted) so we can do it on launch.
