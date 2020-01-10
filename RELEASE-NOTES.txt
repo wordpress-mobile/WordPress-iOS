@@ -6,6 +6,11 @@
 * Fixed bugs with the "Save as Draft" action extension's navigation bar colors and iPad sizing in iOS 13.
 * Fixes appearance issues with navigation bar colors when logged out of the app.
 * Fixed a bug that was causing the App to crash when the user tapped on certain notifications.
+* Block Editor: Hide image size selection options when image is a url
+* Block Editor: Fix displaying placeholder for images
+* Block Editor: Fix crash on undo
+* Block Editor: Fix styling on navigation UI
+* Block Editor: Fix a focus issue
 * Fixed a bug that displayed incorrect time stamps for scheduled posts.
 * Post Settings: Added a new Calendar picker to select a Post's publish date
 * Comment: Add ability to comment in fullscreen
