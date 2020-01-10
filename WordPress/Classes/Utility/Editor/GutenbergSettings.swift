@@ -1,5 +1,3 @@
-import Foundation
-
 /// Takes care of storing and accessing Gutenberg settings.
 ///
 class GutenbergSettings {
@@ -10,12 +8,17 @@ class GutenbergSettings {
             let url = (blog.url ?? "") as String
             return "com.wordpress.gutenberg-autoenabled-" + url
         }
+        static func showPhase2Dialog(for blog: Blog) -> String {
+            let url = (blog.url ?? "") as String
+            return "kShowGutenbergPhase2Dialog-" + url
+        }
     }
 
     enum TracksSwitchSource: String {
         case viaSiteSettings = "via-site-settings"
         case onSiteCreation = "on-site-creation"
         case onBlockPostOpening = "on-block-post-opening"
+        case onProgressiveRolloutPhase2 = "on-progressive-rollout-phase-2"
     }
 
     // MARK: - Internal variables
@@ -49,6 +52,44 @@ class GutenbergSettings {
         if isEnabled {
             database.set(true, forKey: Key.enabledOnce(for: blog))
         }
+    }
+
+    func performGutenbergPhase2MigrationIfNeeded() {
+        guard
+            ReachabilityUtils.isInternetReachable(),
+            let account = AccountService(managedObjectContext: context).defaultWordPressComAccount()
+        else {
+            return
+        }
+
+        var rollout = GutenbergRollout(database: database)
+        if rollout.shouldPerformPhase2Migration(userId: account.userID.intValue) {
+            setGutenbergEnabledForAllSites()
+            rollout.isUserInRolloutGroup = true
+            trackSettingChange(to: true, from: .onProgressiveRolloutPhase2)
+        }
+    }
+
+    private func setGutenbergEnabledForAllSites() {
+        let allBlogs = BlogService(managedObjectContext: context).blogsForAllAccounts()
+        allBlogs.forEach { blog in
+            if blog.editor == .aztec {
+                setShowPhase2Dialog(true, for: blog)
+                database.set(true, forKey: Key.enabledOnce(for: blog))
+            }
+        }
+        let editorSettingsService = EditorSettingsService(managedObjectContext: context)
+        editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true, onSuccess: {
+            WPAnalytics.refreshMetadata()
+        })
+    }
+
+    func shouldPresentInformativeDialog(for blog: Blog) -> Bool {
+        return database.bool(forKey: Key.showPhase2Dialog(for: blog))
+    }
+
+    func setShowPhase2Dialog(_ showDialog: Bool, for blog: Blog) {
+        database.set(showDialog, forKey: Key.showPhase2Dialog(for: blog))
     }
 
     /// Sets gutenberg enabled without registering the enabled action ("enabledOnce")
