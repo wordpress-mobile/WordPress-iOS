@@ -6,7 +6,6 @@
 * Fixed bugs with the "Save as Draft" action extension's navigation bar colors and iPad sizing in iOS 13.
 * Fixes appearance issues with navigation bar colors when logged out of the app.
 * Fixed a bug that was causing the App to crash when the user tapped on certain notifications.
-* Block Editor: Select Spacer block's height using a new Stepper UI component
 * Block Editor: Hide image size selection options when image is a url
 * Block Editor: Fix displaying placeholder for images
 * Block Editor: Fix crash on undo
