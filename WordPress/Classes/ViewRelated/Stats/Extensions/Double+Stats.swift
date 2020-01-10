@@ -90,11 +90,9 @@ extension Double {
         roundedNum = self < 0 ? -roundedNum : roundedNum
         let formattedValue = roundedNum.formatWithFractions()
 
-        let displayFormat = NSLocalizedString("%@%@", comment: "Label displaying abbreviated value. The first parameter is the value, the second is the unit. Ex: 55.5M, 66.6K.")
-        let formattedString = String.localizedStringWithFormat(displayFormat, formattedValue, unit.abbreviation)
-
-        let accessibleFormat = NSLocalizedString("%@%@", comment: "Accessibility label for abbreviated values. The first parameter is the value, the second is the unit name. Ex: 55.5 million, 66.6 thousand.")
-        formattedString.accessibilityLabel = String.localizedStringWithFormat(accessibleFormat, formattedValue, unit.name)
+        let format = NSLocalizedString("%@%@", comment: "Label displaying abbreviated value. The first parameter is the value, the second is the unit. Ex: 55.5M, 66.6K.")
+        let formattedString = String.localizedStringWithFormat(format, formattedValue, unit.abbreviation)
+        formattedString.accessibilityLabel = String.localizedStringWithFormat(format, formattedValue, unit.name)
 
         return formattedString
     }
