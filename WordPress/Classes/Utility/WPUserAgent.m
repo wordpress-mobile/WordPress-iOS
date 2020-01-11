@@ -42,7 +42,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     return _wordPressUserAgent;
 }
 
-+ (void)useWordPressUserAgentInUIWebViews
++ (void)useWordPressUserAgentInWebViews
 {
     // Cleanup unused NSUserDefaults keys from older WPUserAgent implementation
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"DefaultUserAgent"];

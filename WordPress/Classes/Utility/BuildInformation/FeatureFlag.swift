@@ -9,6 +9,7 @@ enum FeatureFlag: Int, CaseIterable {
     case postScheduling
     case debugMenu
     case postPreview
+    case postReblogging
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -36,6 +37,8 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper,
                                                   .a8cBranchTest]
         case .postPreview:
+            return BuildConfiguration.current == .localDeveloper
+        case .postReblogging:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -69,6 +72,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Debug menu"
         case .postPreview:
             return "Post preview redesign"
+        case .postReblogging:
+            return "Post Reblogging"
         }
     }
 

@@ -46,6 +46,7 @@ class GutenbergSettingsTests: XCTestCase {
         contextManager = TestContextManager()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
+        Environment.replaceEnvironment(contextManager: contextManager)
         database = EphemeralKeyValueDatabase()
         settings = GutenbergSettings(database: database)
         blog = newTestBlog()
@@ -296,5 +297,43 @@ class GutenbergSettingsTests: XCTestCase {
             let perSiteEnabledKey = GutenbergSettings.Key.enabledOnce(for: blog)
             database.set(true, forKey: perSiteEnabledKey)
         }
+    }
+
+    // mark - Phase 2
+
+    func testPhase2RolloutMigration() {
+        blog.mobileEditor = .aztec
+        setupAccount(withId: 80)
+        makeNetworkAvailable()
+
+        settings.performGutenbergPhase2MigrationIfNeeded()
+
+        XCTAssertTrue(database.bool(forKey: GutenbergSettings.Key.showPhase2Dialog(for: blog)))
+        XCTAssertTrue(GutenbergRollout(database: database).isUserInRolloutGroup)
+    }
+
+    func testPhase2RolloutMigrationIsTracked() {
+        blog.mobileEditor = .aztec
+        setupAccount(withId: 80)
+        makeNetworkAvailable()
+
+        settings.performGutenbergPhase2MigrationIfNeeded()
+
+        XCTAssertEqual(TestAnalyticsTracker.tracked.count, 1)
+
+        let trackEvent = TestAnalyticsTracker.tracked.first
+        XCTAssertEqual(trackEvent?.stat, WPAnalyticsStat.appSettingsGutenbergEnabled)
+
+        let property = trackEvent?.properties["source"] as? String
+        XCTAssertEqual(property, GutenbergSettings.TracksSwitchSource.onProgressiveRolloutPhase2.rawValue)
+    }
+
+    func setupAccount(withId userId: Int) {
+        let account = ModelTestHelper.insertAccount(context: context)
+        account.authToken = "auth"
+        account.uuid = UUID().uuidString
+        account.userID = NSNumber(value: userId)
+        contextManager.saveContextAndWait(context)
+        AccountService(managedObjectContext: context).setDefaultWordPressComAccount(account)
     }
 }

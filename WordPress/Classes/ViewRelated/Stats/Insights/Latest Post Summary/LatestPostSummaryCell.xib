@@ -170,6 +170,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="actionButton" destination="3OP-qA-To0" id="KWR-Es-zem"/>
                 <outlet property="actionImageView" destination="OZB-d7-5Vo" id="ZYF-8v-WcS"/>
                 <outlet property="actionLabel" destination="Xet-wC-hmj" id="amV-hg-OIZ"/>
                 <outlet property="actionStackView" destination="dj8-5c-J6O" id="gkV-Yq-6bI"/>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -153,11 +153,11 @@
                                                 </connections>
                                             </button>
                                             <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="RFs-ae-iqC" userLabel="View (Spacer)">
-                                                <rect key="frame" x="23" y="0.0" width="80" height="44"/>
+                                                <rect key="frame" x="23" y="0.0" width="36" height="44"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRe-Q4-Aq4" customClass="PostMetaButton">
-                                                <rect key="frame" x="103" y="0.0" width="44" height="44"/>
+                                                <rect key="frame" x="59" y="0.0" width="44" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="nN7-IP-LxP"/>
                                                 </constraints>
@@ -170,6 +170,22 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="didTapSaveForLaterButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="15b-36-u3n"/>
+                                                </connections>
+                                            </button>
+                                            <button contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mch-Ja-RJu" customClass="PostMetaButton">
+                                                <rect key="frame" x="103" y="0.0" width="44" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="xtD-oQ-xDy"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="3" maxY="0.0"/>
+                                                <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Reblog">
+                                                    <color key="titleColor" red="0.6588235294117647" green="0.74509803921568629" blue="0.80784313725490198" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="titleShadowColor" white="0.33000000000000002" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="Dcu-sf-zWH"/>
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W2-KV-isX" customClass="PostMetaButton">
@@ -276,6 +292,7 @@
                 <outlet property="interfaceVerticalSizingHelperView" destination="Aav-jm-io6" id="2VW-l9-UiQ"/>
                 <outlet property="likeActionButton" destination="z4x-8W-5Dc" id="anJ-1J-8im"/>
                 <outlet property="menuButton" destination="Z6l-P3-Z3i" id="4gf-Ii-bwa"/>
+                <outlet property="reblogActionButton" destination="Mch-Ja-RJu" id="RnC-n2-AhY"/>
                 <outlet property="saveForLaterButton" destination="YRe-Q4-Aq4" id="6Hb-rc-u9V"/>
                 <outlet property="summaryLabel" destination="u1n-gR-1xw" id="jsD-Vc-hr5"/>
                 <outlet property="titleLabel" destination="Zf5-cD-Pd2" id="56V-Zc-1sF"/>
@@ -284,8 +301,9 @@
                 <outletCollection property="actionButtons" destination="3W2-KV-isX" collectionClass="NSMutableArray" id="4sJ-zt-Nh2"/>
                 <outletCollection property="actionButtons" destination="z4x-8W-5Dc" collectionClass="NSMutableArray" id="isM-Mg-Ff8"/>
                 <outletCollection property="actionButtons" destination="Z6l-P3-Z3i" collectionClass="NSMutableArray" id="ci6-3H-ccj"/>
+                <outletCollection property="actionButtons" destination="Mch-Ja-RJu" collectionClass="NSMutableArray" id="ff2-tZ-cST"/>
             </connections>
-            <point key="canvasLocation" x="478" y="470"/>
+            <point key="canvasLocation" x="476.80000000000001" y="469.56521739130437"/>
         </tableViewCell>
     </objects>
     <resources>
