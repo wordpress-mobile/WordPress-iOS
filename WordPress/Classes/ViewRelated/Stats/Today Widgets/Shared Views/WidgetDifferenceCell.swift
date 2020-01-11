@@ -51,7 +51,7 @@ private extension WidgetDifferenceCell {
     func configureColors() {
         dateLabel.textColor = WidgetStyles.primaryTextColor
         dataLabel.textColor = WidgetStyles.primaryTextColor
-        differenceLabel.textColor = .white
+        differenceLabel.textColor = Constants.differenceTextColor
         differenceView.layer.cornerRadius = Constants.cornerRadius
     }
 
@@ -84,9 +84,10 @@ private extension WidgetDifferenceCell {
         static let noDataLabel = "-"
         static let cornerRadius: CGFloat = 4.0
         static let today = NSLocalizedString("Today", comment: "Label for most recent stat row.")
-        static let positiveColor = UIColor.success
-        static let negativeColor = UIColor.error
-        static let neutralColor = UIColor.neutral(.shade40)
+        static let positiveColor: UIColor = .success
+        static let negativeColor: UIColor = .error
+        static let neutralColor: UIColor = .neutral(.shade40)
+        static let differenceTextColor: UIColor = .white
     }
 
 }
