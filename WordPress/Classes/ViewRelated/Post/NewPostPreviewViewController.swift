@@ -44,7 +44,6 @@ class NewPostPreviewViewController: UIViewController {
     }()
 
     private lazy var doneBarButtonItem: UIBarButtonItem = {
-//        let buttonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(dismissPreview))
         let buttonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for button to dismiss post preview"), style: .done, target: self, action: #selector(dismissPreview))
         buttonItem.accessibilityIdentifier = "Done"
         return buttonItem
