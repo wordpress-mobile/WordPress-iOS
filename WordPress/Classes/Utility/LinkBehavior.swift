@@ -9,7 +9,14 @@ enum LinkBehavior {
     func handle(navigationAction: WKNavigationAction, for webView: WKWebView) -> WKNavigationActionPolicy {
 
         // We only want to apply this policy for links, not for all resource loads
-        guard navigationAction.navigationType == .linkActivated else { return .allow }
+        guard navigationAction.navigationType == .linkActivated else {
+            return .allow
+        }
+
+        // Should not happen, but future checks will not work if we can't check the URL
+        guard let navigationURL = navigationAction.request.url else {
+            return .allow
+        }
 
         switch self {
         case .all:
@@ -18,14 +25,14 @@ enum LinkBehavior {
             if navigationAction.request.url?.host == url.host {
                 return .allow
             } else {
-                UIApplication.shared.open(navigationAction.request.url!)
+                UIApplication.shared.open(navigationAction.request.url)
                 return .cancel
             }
         case .urlOnly(let url):
             if navigationAction.request.url?.absoluteString == url.absoluteString {
                 return .allow
             } else {
-                UIApplication.shared.open(navigationAction.request.url!)
+                UIApplication.shared.open(navigationAction.request.url)
                 return .cancel
             }
         }

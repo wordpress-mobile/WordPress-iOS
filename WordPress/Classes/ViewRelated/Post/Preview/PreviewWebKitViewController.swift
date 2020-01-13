@@ -10,7 +10,7 @@ class PreviewWebKitViewController: WebKitViewController {
     private weak var noResultsViewController: NoResultsViewController?
 
     lazy var publishButton: UIBarButtonItem = {
-        let publishButton = UIBarButtonItem(title: "Publish",
+        let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post."),
                                             style: .plain,
                                             target: self,
                                             action: #selector(PreviewWebKitViewController.publishButtonPressed(_:)))
@@ -51,7 +51,7 @@ class PreviewWebKitViewController: WebKitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if webView.url?.absoluteString == "about:blank" {
-            showNoResults(withTitle: "No Preview URL available")
+            showNoResults(withTitle: NSLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview") )
         }
     }
 
@@ -96,14 +96,7 @@ class PreviewWebKitViewController: WebKitViewController {
     }
 
     private func showNoResults(withTitle title: String) {
-        let controller = NoResultsViewController.controllerWith(title: title,
-                                                                buttonTitle: nil,
-                                                                subtitle: nil,
-                                                                attributedSubtitle: nil,
-                                                                attributedSubtitleConfiguration: nil,
-                                                                image: nil,
-                                                                subtitleImage: nil,
-                                                                accessoryView: nil)
+        let controller = NoResultsViewController.controllerWith(title: title)
         controller.delegate = self
         noResultsViewController = controller
         addChild(controller)
@@ -119,7 +112,6 @@ extension PreviewWebKitViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         noResultsViewController?.removeFromView()
         webView.reload()
-        noResultsViewController?.removeFromView()
     }
 
     func dismissButtonPressed() {

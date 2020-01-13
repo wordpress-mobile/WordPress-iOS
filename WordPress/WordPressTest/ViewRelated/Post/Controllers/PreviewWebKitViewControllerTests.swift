@@ -1,11 +1,3 @@
-//
-//  PreviewWebKitViewController.swift
-//  WordPressTest
-//
-//  Created by Brandon Titus on 1/13/20.
-//  Copyright © 2020 WordPress. All rights reserved.
-//
-
 import XCTest
 @testable import WordPress
 
@@ -45,11 +37,11 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         let vc = PreviewWebKitViewController(post: post, previewURL: nil)
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
-        XCTAssertTrue(items.contains(vc.publishButton), "Should contain publish button")
+        XCTAssertTrue(items.contains(vc.publishButton), "Preview toolbar for draft should contain publish button.")
         XCTAssertFalse(items.contains(vc.safariButton),
-                       "Should contain back button")
-        XCTAssertFalse(items.contains(vc.backButton), "Should contain back button")
-        XCTAssertFalse(items.contains(vc.forwardButton), "Should contain back button")
+                       "Preview toolbar for draft should not contain Safari button.")
+        XCTAssertFalse(items.contains(vc.backButton), "Preview toolbar for draft should not contain back button.")
+        XCTAssertFalse(items.contains(vc.forwardButton), "Preview toolbar for draft should not contain foward button.")
     }
 
     func testPublishedToolbarItems() {
@@ -60,10 +52,10 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         let vc = PreviewWebKitViewController(post: post, previewURL: nil)
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
-        XCTAssertTrue(items.contains(vc.shareButton), "Should contain back button")
-        XCTAssertTrue(items.contains(vc.safariButton), "Should contain back button")
-        XCTAssertFalse(items.contains(vc.backButton), "Should contain back button")
-        XCTAssertFalse(items.contains(vc.forwardButton), "Should contain back button")
+        XCTAssertTrue(items.contains(vc.shareButton), "Preview toolbar for post should contain publish button.")
+        XCTAssertTrue(items.contains(vc.safariButton), "Preview toolbar for post should contain Safari button.")
+        XCTAssertFalse(items.contains(vc.backButton), "Preview toolbar for post should not contain back button.")
+        XCTAssertFalse(items.contains(vc.forwardButton), "Preview toolbar for post should not contain forward button.")
     }
 
     func testSitePageToolbarItems() {
@@ -74,9 +66,9 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         let vc = PreviewWebKitViewController(post: page, previewURL: nil)
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
-        XCTAssertFalse(items.contains(vc.publishButton), "Should contain back button")
-        XCTAssertTrue(items.contains(vc.safariButton), "Should contain back button")
-        XCTAssertTrue(items.contains(vc.backButton), "Should contain back button")
-        XCTAssertTrue(items.contains(vc.forwardButton), "Should contain back button")
+        XCTAssertFalse(items.contains(vc.publishButton), "Preview toolbar for page should not contain publish button.")
+        XCTAssertTrue(items.contains(vc.safariButton), "Preview toolbar for page should contain Safari button.")
+        XCTAssertTrue(items.contains(vc.backButton), "Preview toolbar for page should contain back button.")
+        XCTAssertTrue(items.contains(vc.forwardButton), "Preview toolbar for page should contain forward button.")
     }
 }
