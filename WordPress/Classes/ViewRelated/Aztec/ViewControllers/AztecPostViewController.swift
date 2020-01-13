@@ -3494,8 +3494,9 @@ extension AztecPostViewController {
                                 }
 
                                 self?.dismissMediaPicker()
-            }, onCancel: { [weak self] in
-                self?.dismissMediaPicker()
+            }, onCancel: {
+                // Dismiss the Preview screen in Media Picker
+                picker.navigationController?.popViewController(animated: false)
         })
     }
 
