@@ -9,6 +9,15 @@ class PreviewWebKitViewController: WebKitViewController {
 
     private weak var noResultsViewController: NoResultsViewController?
 
+    lazy var publishButton: UIBarButtonItem = {
+        let publishButton = UIBarButtonItem(title: "Publish",
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(PreviewWebKitViewController.publishButtonPressed(_:)))
+        publishButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.muriel(color: MurielColor(name: .pink))], for: .normal)
+        return publishButton
+    }()
+
     /// Creates a view controller displaying a preview web view.
     /// - Parameters:
     ///   - post: The post to use for generating the preview URL and authenticating to the blog. **NOTE**: `previewURL` will be used as the URL instead, when available.
@@ -49,6 +58,12 @@ class PreviewWebKitViewController: WebKitViewController {
     override func configureToolbarButtons() {
         super.configureToolbarButtons()
 
+        let items = toolbarItems(linkBehavior: linkBehavior)
+
+        setToolbarItems(items, animated: false)
+    }
+
+    func toolbarItems(linkBehavior: LinkBehavior) -> [UIBarButtonItem] {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let items: [UIBarButtonItem]
@@ -66,15 +81,13 @@ class PreviewWebKitViewController: WebKitViewController {
             ]
         case .urlOnly:
             if canPublish {
-                let publishButton = UIBarButtonItem(title: "Publish", style: .plain, target: self, action: #selector(PreviewWebKitViewController.publishButtonPressed(_:)))
-                publishButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.muriel(color: MurielColor(name: .pink))], for: .normal)
                 items = [publishButton]
             } else {
                 items = [shareButton, space, safariButton]
             }
         }
 
-        setToolbarItems(items, animated: false)
+        return items
     }
 
     @objc private func publishButtonPressed(_ sender: UIBarButtonItem) {

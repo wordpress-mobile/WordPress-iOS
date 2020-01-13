@@ -2000,6 +2000,7 @@
 		F5D0A64923C8FA1500B20D27 /* LinkBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A64823C8FA1500B20D27 /* LinkBehavior.swift */; };
 		F5D0A64E23CC159400B20D27 /* PreviewWebKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A64D23CC159400B20D27 /* PreviewWebKitViewController.swift */; };
 		F5D0A65023CC15A800B20D27 /* PreviewNonceHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A64F23CC15A800B20D27 /* PreviewNonceHandler.swift */; };
+		F5D0A65223CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A65123CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift */; };
 		F5EF481723ABCAD8004C3532 /* MainShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74337EDC20054D5500777997 /* MainShareViewController.swift */; };
 		F5EF481823ABCAE0004C3532 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740C7C4E202F4CD6001C31B0 /* MainInterface.storyboard */; };
 		F928EDA3226140620030D451 /* WPCrashLoggingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */; };
@@ -4476,6 +4477,7 @@
 		F5D0A64823C8FA1500B20D27 /* LinkBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkBehavior.swift; sourceTree = "<group>"; };
 		F5D0A64D23CC159400B20D27 /* PreviewWebKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWebKitViewController.swift; sourceTree = "<group>"; };
 		F5D0A64F23CC15A800B20D27 /* PreviewNonceHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewNonceHandler.swift; sourceTree = "<group>"; };
+		F5D0A65123CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWebKitViewControllerTests.swift; sourceTree = "<group>"; };
 		F7E3CC306AECBBCB71D2E19C /* Pods_WordPressDraftActionExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressDraftActionExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPCrashLoggingProvider.swift; sourceTree = "<group>"; };
 		F93735F022D534FE00A3C312 /* LoggingURLRedactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggingURLRedactor.swift; sourceTree = "<group>"; };
@@ -5855,6 +5857,7 @@
 				F543AF5623A84E4D0022F595 /* PublishSettingsControllerTests.swift */,
 				F543AF5823A84F200022F595 /* SchedulingCalendarViewControllerTests.swift */,
 				F582060323A88379005159A9 /* TimePickerViewControllerTests.swift */,
+				F5D0A65123CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift */,
 			);
 			name = Controllers;
 			path = ViewRelated/Post/Controllers;
@@ -12648,6 +12651,7 @@
 				08F8CD2D1EBD24600049D0C0 /* MediaExporterTests.swift in Sources */,
 				73178C3321BEE94700E37C9A /* SiteAssemblyServiceTests.swift in Sources */,
 				D88A6492208D7A0A008AE9BC /* MockStockPhotosService.swift in Sources */,
+				F5D0A65223CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift in Sources */,
 				B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
 				E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */,
