@@ -61,7 +61,7 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
             return ""
         }
 
-        return "\(formatter.string(from: weekStart)) – \(formatter.string(from: weekEnd))"
+        return "\(formatter.string(from: weekStart)) to \(formatter.string(from: weekEnd))"
     }
 }
 

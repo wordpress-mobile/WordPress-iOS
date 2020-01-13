@@ -61,7 +61,7 @@ extension WPStyleGuide {
     }
 
     class func applyBorderStyle(_ view: UIView) {
-        view.heightAnchor.constraint(equalToConstant: separatorHeight).isActive = true
+        view.updateConstraint(for: .height, withRelation: .equal, setConstant: separatorHeight, setActive: true)
         view.backgroundColor = postCardBorderColor
     }
 

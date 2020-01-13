@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 class AddInsightTableViewController: UITableViewController {
 
@@ -39,6 +40,8 @@ class AddInsightTableViewController: UITableViewController {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         tableView.accessibilityIdentifier = "Add Insight Table"
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(doneTapped))
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,6 +60,9 @@ class AddInsightTableViewController: UITableViewController {
         return 0
     }
 
+    @objc private func doneTapped() {
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 private extension AddInsightTableViewController {
@@ -91,7 +97,7 @@ private extension AddInsightTableViewController {
         return { [unowned self] row in
             self.selectedStat = statSection
             self.insightsDelegate?.addInsightSelected?(statSection)
-            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true, completion: nil)
         }
     }
 

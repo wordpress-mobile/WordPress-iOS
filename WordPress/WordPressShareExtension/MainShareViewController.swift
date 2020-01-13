@@ -2,6 +2,17 @@ import UIKit
 import WordPressShared
 import WordPressUI
 
+fileprivate extension OriginatingExtension {
+    var viewControllerIdentifier: String {
+        switch self {
+        case .saveToDraft:
+            return "ShareModularViewController"
+        case .share:
+            return "ShareExtensionEditorViewController"
+        }
+    }
+}
+
 class MainShareViewController: UIViewController {
 
     fileprivate let extensionTransitioningManager: ExtensionTransitioningManager = {
@@ -10,12 +21,22 @@ class MainShareViewController: UIViewController {
         return manager
     }()
 
-    fileprivate let editorController: ShareExtensionEditorViewController = {
+    fileprivate let editorController: ShareExtensionAbstractViewController = {
         let storyboard = UIStoryboard(name: "ShareExtension", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "ShareExtensionEditorViewController") as? ShareExtensionEditorViewController else {
+
+
+        let origination: OriginatingExtension
+
+        if Bundle.main.bundleIdentifier == "org.wordpress.WordPressDraftAction" {
+            origination = .saveToDraft
+        } else {
+            origination = .share
+        }
+
+        guard let controller = storyboard.instantiateViewController(withIdentifier: origination.viewControllerIdentifier) as? ShareExtensionAbstractViewController else {
             fatalError("Unable to create share extension editor screen.")
         }
-        controller.originatingExtension = .share
+        controller.originatingExtension = origination
         return controller
     }()
 
@@ -35,6 +56,12 @@ class MainShareViewController: UIViewController {
 
 private extension MainShareViewController {
     func setupAppearance() {
+
+        if editorController.originatingExtension == .saveToDraft {
+            // This should probably be showing over current context but this just matches previous behavior
+            view.backgroundColor = .basicBackground
+        }
+
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.isTranslucent = false
         navigationBarAppearace.tintColor = .white
@@ -49,8 +76,15 @@ private extension MainShareViewController {
         }
 
         let shareNavController = UINavigationController(rootViewController: editorController)
-        shareNavController.transitioningDelegate = extensionTransitioningManager
-        shareNavController.modalPresentationStyle = .custom
+
+        if #available(iOS 13, *), editorController.originatingExtension == .saveToDraft {
+            // iOS 13 has proper animations and presentations for share and action sheets. So the `else` case should be removed when iOS 13 is minimum.
+            // We  need to make sure we don't end up with stacked modal view controllers by using this:
+            shareNavController.modalPresentationStyle = .overFullScreen
+        } else {
+            shareNavController.transitioningDelegate = extensionTransitioningManager
+            shareNavController.modalPresentationStyle = .custom
+        }
 
         present(shareNavController, animated: true)
     }

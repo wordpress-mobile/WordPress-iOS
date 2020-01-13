@@ -1,7 +1,7 @@
 import UIKit
 import Gridicons
 
-class LatestPostSummaryCell: UITableViewCell, NibLoadable {
+class LatestPostSummaryCell: UITableViewCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -18,6 +18,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var actionLabel: UILabel!
     @IBOutlet weak var actionImageView: UIImageView!
+    @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var disclosureImageView: UIImageView!
 
     @IBOutlet weak var topSeparatorLine: UIView!
@@ -40,6 +41,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
+        prepareForVoiceOver()
     }
 
     override func prepareForReuse() {
@@ -72,6 +74,10 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         actionType = .viewMore
     }
 
+    func prepareForVoiceOver() {
+        actionButton.accessibilityLabel =
+            NSLocalizedString("View more", comment: "Accessibility label for the View more button in Stats' Post Summary.")
+    }
 }
 
 // MARK: - Private Extension

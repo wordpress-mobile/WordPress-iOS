@@ -27,7 +27,6 @@ class ViewMoreRow: UIView, NibLoadable, Accessible {
 
         accessibilityLabel = viewMoreLabel.text
         accessibilityTraits = .button
-        accessibilityHint = NSLocalizedString("Tap for more detail.", comment: "Accessibility hint")
     }
 }
 
