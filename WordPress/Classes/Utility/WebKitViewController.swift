@@ -40,6 +40,7 @@ class WebKitViewController: UIViewController {
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
     @objc var addsHideMasterbarParameters = true
+    var linkBehavior: LinkBehavior
     @objc var customTitle: String?
 
     private var reachabilityObserver: Any?
@@ -59,6 +60,7 @@ class WebKitViewController: UIViewController {
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
+        linkBehavior = configuration.linkBehavior
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -74,6 +76,7 @@ class WebKitViewController: UIViewController {
         customTitle = parent.customTitle
         authenticator = parent.authenticator
         navigationDelegate = parent.navigationDelegate
+        linkBehavior = parent.linkBehavior
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -97,17 +100,17 @@ class WebKitViewController: UIViewController {
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
     }
 
-    override func loadView() {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
             webView
             ])
         stackView.axis = .vertical
-        view = stackView
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
 
         configureNavigation()
         configureToolbar()
@@ -241,7 +244,8 @@ class WebKitViewController: UIViewController {
         styleToolBarButtons()
     }
 
-    private func configureToolbarButtons() {
+    func configureToolbarButtons() {
+
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let items = [
@@ -407,7 +411,10 @@ extension WebKitViewController: WKNavigationDelegate {
             decisionHandler(policy.action)
             return
         }
-        decisionHandler(.allow)
+
+        let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)
+
+        decisionHandler(policy)
     }
 }
 

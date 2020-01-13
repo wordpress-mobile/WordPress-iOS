@@ -1997,7 +1997,9 @@
 		F59AAC16235EA46D00385EE6 /* LightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */; };
 		F5D03DFF2370E28D0043F287 /* LightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */; };
 		F5D03E002370E28E0043F287 /* LightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */; };
-		F5D0A63223C522DA00B20D27 /* NewPostPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A63123C522DA00B20D27 /* NewPostPreviewViewController.swift */; };
+		F5D0A64923C8FA1500B20D27 /* LinkBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A64823C8FA1500B20D27 /* LinkBehavior.swift */; };
+		F5D0A64E23CC159400B20D27 /* PreviewWebKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A64D23CC159400B20D27 /* PreviewWebKitViewController.swift */; };
+		F5D0A65023CC15A800B20D27 /* PreviewNonceHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D0A64F23CC15A800B20D27 /* PreviewNonceHandler.swift */; };
 		F5EF481723ABCAD8004C3532 /* MainShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74337EDC20054D5500777997 /* MainShareViewController.swift */; };
 		F5EF481823ABCAE0004C3532 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740C7C4E202F4CD6001C31B0 /* MainInterface.storyboard */; };
 		F928EDA3226140620030D451 /* WPCrashLoggingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */; };
@@ -4471,7 +4473,9 @@
 		F5844B6A235EAF3D007C6557 /* HalfScreenPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfScreenPresentationController.swift; sourceTree = "<group>"; };
 		F59AAC0F235E430E00385EE6 /* ChosenValueRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChosenValueRow.swift; sourceTree = "<group>"; };
 		F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightNavigationController.swift; sourceTree = "<group>"; };
-		F5D0A63123C522DA00B20D27 /* NewPostPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostPreviewViewController.swift; sourceTree = "<group>"; };
+		F5D0A64823C8FA1500B20D27 /* LinkBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkBehavior.swift; sourceTree = "<group>"; };
+		F5D0A64D23CC159400B20D27 /* PreviewWebKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWebKitViewController.swift; sourceTree = "<group>"; };
+		F5D0A64F23CC15A800B20D27 /* PreviewNonceHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewNonceHandler.swift; sourceTree = "<group>"; };
 		F7E3CC306AECBBCB71D2E19C /* Pods_WordPressDraftActionExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressDraftActionExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F928EDA2226140620030D451 /* WPCrashLoggingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPCrashLoggingProvider.swift; sourceTree = "<group>"; };
 		F93735F022D534FE00A3C312 /* LoggingURLRedactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggingURLRedactor.swift; sourceTree = "<group>"; };
@@ -7822,6 +7826,7 @@
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				F5D0A64C23CC157100B20D27 /* Preview */,
 				F57402A5235FF71F00374346 /* Scheduling */,
 				4349B0A6218A2E810034118A /* Revisions */,
 				5D1EBF56187C9B95003393F8 /* Categories */,
@@ -7845,7 +7850,6 @@
 				43D54D121DCAA070007F575F /* PostPostViewController.swift */,
 				ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */,
 				ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */,
-				F5D0A63123C522DA00B20D27 /* NewPostPreviewViewController.swift */,
 				5DBFC8A81A9BE07B00E00DE4 /* Posts.storyboard */,
 				5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */,
 				ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */,
@@ -8006,6 +8010,7 @@
 				E161B7EB1F839345000FDF0B /* CookieJar.swift */,
 				E137B1651F8B77D4006AC7FC /* WebNavigationDelegate.swift */,
 				E16FB7E21F8B61030004DD9F /* WebKitViewController.swift */,
+				F5D0A64823C8FA1500B20D27 /* LinkBehavior.swift */,
 				E1222B621F877FD700D23173 /* WebProgressView.swift */,
 				E1BB85971F82459800797050 /* WebViewAuthenticator.swift */,
 				E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */,
@@ -9602,6 +9607,15 @@
 				F57402A6235FF9C300374346 /* SchedulingDate+Helpers.swift */,
 			);
 			path = Scheduling;
+			sourceTree = "<group>";
+		};
+		F5D0A64C23CC157100B20D27 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				F5D0A64D23CC159400B20D27 /* PreviewWebKitViewController.swift */,
+				F5D0A64F23CC15A800B20D27 /* PreviewNonceHandler.swift */,
+			);
+			path = Preview;
 			sourceTree = "<group>";
 		};
 		F93735F422D53C1800A3C312 /* Logging */ = {
@@ -11506,6 +11520,7 @@
 				17E4CD0C238C33F300C56916 /* DebugMenuViewController.swift in Sources */,
 				08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */,
 				08216FCC1CDBF96000304BA7 /* MenuItemLinkViewController.m in Sources */,
+				F5D0A64E23CC159400B20D27 /* PreviewWebKitViewController.swift in Sources */,
 				173F6DFE212352D000A4C8E2 /* GiphyService.swift in Sources */,
 				733195832284FE9F0007D904 /* PeriodChart.swift in Sources */,
 				08216FC81CDBF96000304BA7 /* MenuItemAbstractPostsViewController.m in Sources */,
@@ -11672,6 +11687,7 @@
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
 				D8B9B591204F658A003C6042 /* CommentsViewController+NetworkAware.swift in Sources */,
 				4034FDEA2007C42400153B87 /* ExpandableCell.swift in Sources */,
+				F5D0A65023CC15A800B20D27 /* PreviewNonceHandler.swift in Sources */,
 				4054F43C221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				7E4123B920F4097B00DF8486 /* FormattableContentFactory.swift in Sources */,
 				40E469932017F4070030DB5F /* PluginDirectoryViewController.swift in Sources */,
@@ -11912,6 +11928,7 @@
 				E60C2ED71DE5075100488630 /* ReaderCommentCell.swift in Sources */,
 				5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */,
 				403F57BC20E5CA6A004E889A /* RewindStatusRow.swift in Sources */,
+				F5D0A64923C8FA1500B20D27 /* LinkBehavior.swift in Sources */,
 				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
 				7E3E7A5320E44B260075D159 /* SubjectContentStyles.swift in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
@@ -12023,7 +12040,6 @@
 				E125F1E41E8E595E00320B67 /* SharePost.swift in Sources */,
 				B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */,
 				D82253DC2199411F0014D0E2 /* SiteAddressService.swift in Sources */,
-				F5D0A63223C522DA00B20D27 /* NewPostPreviewViewController.swift in Sources */,
 				17E60E09220DBD6E00848F89 /* WKWebView+Preview.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
