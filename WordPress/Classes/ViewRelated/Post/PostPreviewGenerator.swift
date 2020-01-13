@@ -14,15 +14,15 @@ class PostPreviewGenerator: NSObject {
     @objc weak var delegate: PostPreviewGeneratorDelegate?
     fileprivate let authenticator: WebViewAuthenticator?
 
-    @objc init(post: AbstractPost) {
-        self.post = post
-        authenticator = WebViewAuthenticator(blog: post.blog)
-        super.init()
+    @objc convenience init(post: AbstractPost) {
+        self.init(post: post, previewURL: nil)
     }
 
-    @objc convenience init(post: AbstractPost, previewURL: URL) {
-        self.init(post: post)
+    @objc init(post: AbstractPost, previewURL: URL? = nil) {
+        self.post = post
         self.previewURL = previewURL
+        authenticator = WebViewAuthenticator(blog: post.blog)
+        super.init()
     }
 
     @objc func generate() {
