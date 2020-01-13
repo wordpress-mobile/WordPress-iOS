@@ -167,6 +167,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
             checkAppleIDCredentialState()
         }
+        GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -253,7 +254,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         ZendeskUtils.setup()
 
         setupNetworkActivityIndicator()
-        WPUserAgent.useWordPressInUIWebViews()
+        WPUserAgent.useWordPressInWebViews()
 
         // Push notifications
         // This is silent (the user isn't prompted) so we can do it on launch.

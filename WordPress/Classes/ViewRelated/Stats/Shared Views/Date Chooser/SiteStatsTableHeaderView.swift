@@ -94,16 +94,22 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     }
 
     func prepareForVoiceOver() {
-        if let period = dateLabel.text {
-            let localizedLabel = NSLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
-            dateLabel.accessibilityLabel = .localizedStringWithFormat(localizedLabel, period)
-        }
+        dateLabel.accessibilityLabel = displayDateAccessibilityLabel()
 
         backButton.accessibilityLabel = NSLocalizedString("Previous period", comment: "Accessibility label")
         backButton.accessibilityHint = NSLocalizedString("Tap to select the previous period", comment: "Accessibility hint")
+        backButton.accessibilityTraits = backButton.isEnabled ? [.button] : [.button, .notEnabled]
 
         forwardButton.accessibilityLabel = NSLocalizedString("Next period", comment: "Accessibility label")
         forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
+        forwardButton.accessibilityTraits = forwardButton.isEnabled ? [.button] : [.button, .notEnabled]
+
+        accessibilityElements = [
+            dateLabel,
+            timezoneLabel,
+            backButton,
+            forwardButton
+        ].compactMap { $0 }
     }
 
     func updateDate(with intervalDate: Date) {
@@ -139,6 +145,37 @@ private extension SiteStatsTableHeaderView {
     }
 
     func displayDate() -> String? {
+        guard let components = displayDateComponents() else {
+            return nil
+        }
+
+        let (fromDate, toDate) = components
+
+        if let toDate = toDate {
+            return "\(fromDate) - \(toDate)"
+        } else {
+            return "\(fromDate)"
+        }
+    }
+
+    func displayDateAccessibilityLabel() -> String? {
+        guard let components = displayDateComponents() else {
+            return nil
+        }
+
+        let (fromDate, toDate) = components
+
+        if let toDate = toDate {
+            let format = NSLocalizedString("Current period: %@ to %@", comment: "Week Period Accessibility label. Prefix the current selected period. Ex. Current period: Jan 6 to Jan 12.")
+            return .localizedStringWithFormat(format, fromDate, toDate)
+        } else {
+            let format = NSLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
+            return .localizedStringWithFormat(format, fromDate)
+        }
+    }
+
+    /// Returns the formatted dates for the current period.
+    func displayDateComponents() -> (fromDate: String, toDate: String?)? {
         guard let date = date, let period = period else {
             return nil
         }
@@ -148,14 +185,14 @@ private extension SiteStatsTableHeaderView {
 
         switch period {
         case .day, .month, .year:
-            return dateFormatter.string(from: date)
+            return (dateFormatter.string(from: date), nil)
         case .week:
             let week = StatsPeriodHelper().weekIncludingDate(date)
             guard let weekStart = week?.weekStart, let weekEnd = week?.weekEnd else {
                 return nil
             }
 
-            return "\(dateFormatter.string(from: weekStart)) – \(dateFormatter.string(from: weekEnd))"
+            return (dateFormatter.string(from: weekStart), dateFormatter.string(from: weekEnd))
         }
     }
 
