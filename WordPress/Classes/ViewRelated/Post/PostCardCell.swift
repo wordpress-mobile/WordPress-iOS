@@ -324,7 +324,13 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         let stickyChunk =
             post.isStickyPost ? NSLocalizedString("Sticky.", comment: "Accessibility label for a sticky post in the post list.") : nil
 
-        let statusChunk = viewModel.status
+        let statusChunk: String? = {
+            guard let status = viewModel.status else {
+                return nil
+            }
+
+            return "\(status)."
+        }()
 
         let excerptChunk: String? = {
             let excerpt = post.contentPreviewForDisplay()
