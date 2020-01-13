@@ -22,7 +22,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 - (NSString *)currentUserAgentFromWKWebView
 {
-    return [[WKWebView new] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    return [WKWebView userAgent];
 }
 
 - (void)testWordPressUserAgent
