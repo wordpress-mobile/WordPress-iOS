@@ -1112,6 +1112,7 @@
 		98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98077B592075561800109F95 /* SupportTableViewController.swift */; };
 		9808655A203D075E00D58786 /* EpilogueUserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98086559203D075D00D58786 /* EpilogueUserInfoCell.xib */; };
 		9808655C203D079B00D58786 /* EpilogueUserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808655B203D079A00D58786 /* EpilogueUserInfoCell.swift */; };
+		980D3B1B23C925F40060A890 /* WidgetStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985ED0E323C6950600B8D06A /* WidgetStyles.swift */; };
 		9813512E22F0FC2700F7425D /* FileDownloadsStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9813512D22F0FC2700F7425D /* FileDownloadsStatsRecordValueTests.swift */; };
 		981676D6221B7A4300B81C3F /* CountriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981676D4221B7A4300B81C3F /* CountriesCell.swift */; };
 		981676D7221B7A4300B81C3F /* CountriesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 981676D5221B7A4300B81C3F /* CountriesCell.xib */; };
@@ -12638,6 +12639,7 @@
 				98E419DF2399B62A00D8C822 /* Tracks.swift in Sources */,
 				989643E423A02F4E0070720A /* UIColor+MurielColors.swift in Sources */,
 				989643E223A02F080070720A /* WidgetUnconfiguredCell.swift in Sources */,
+				980D3B1B23C925F40060A890 /* WidgetStyles.swift in Sources */,
 				989643E323A02F150070720A /* WidgetFooterView.swift in Sources */,
 				98E419DE2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift in Sources */,
 				98A3C3052399A2370048D38D /* ThisWeekViewController.swift in Sources */,

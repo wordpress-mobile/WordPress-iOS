@@ -10,7 +10,6 @@ class WidgetDifferenceCell: UITableViewCell {
     @IBOutlet private var dataLabel: UILabel!
     @IBOutlet private var differenceView: UIView!
     @IBOutlet private var differenceLabel: UILabel!
-    @IBOutlet private var separatorLine: UIView!
 
     private var numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -39,9 +38,8 @@ class WidgetDifferenceCell: UITableViewCell {
         initializeLabels()
     }
 
-    func configure(day: ThisWeekWidgetDay? = nil, isToday: Bool = false, hideSeparator: Bool = false) {
+    func configure(day: ThisWeekWidgetDay? = nil, isToday: Bool = false) {
         configureLabels(day: day, isToday: isToday)
-        separatorLine.isHidden = hideSeparator
     }
 
 }
@@ -51,10 +49,9 @@ class WidgetDifferenceCell: UITableViewCell {
 private extension WidgetDifferenceCell {
 
     func configureColors() {
-        dateLabel.textColor = .text
-        dataLabel.textColor = .text
-        differenceLabel.textColor = .white
-        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
+        dateLabel.textColor = WidgetStyles.primaryTextColor
+        dataLabel.textColor = WidgetStyles.primaryTextColor
+        differenceLabel.textColor = Constants.differenceTextColor
         differenceView.layer.cornerRadius = Constants.cornerRadius
     }
 
@@ -87,9 +84,10 @@ private extension WidgetDifferenceCell {
         static let noDataLabel = "-"
         static let cornerRadius: CGFloat = 4.0
         static let today = NSLocalizedString("Today", comment: "Label for most recent stat row.")
-        static let positiveColor = UIColor.success
-        static let negativeColor = UIColor.error
-        static let neutralColor = UIColor.neutral(.shade40)
+        static let positiveColor: UIColor = .success
+        static let negativeColor: UIColor = .error
+        static let neutralColor: UIColor = .neutral(.shade40)
+        static let differenceTextColor: UIColor = .white
     }
 
 }
