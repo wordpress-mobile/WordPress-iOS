@@ -211,7 +211,7 @@ class SiteStatsPeriodViewModel: Observable {
 
         lastRequestedDate = date
         lastRequestedPeriod = period
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: false))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
     }
 
     // MARK: - State

@@ -1058,6 +1058,8 @@ private extension StatsPeriodStore {
         operationQueue.cancelAllOperations()
 
         statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
+        setAllFetchingStatus(.idle)
+
         // `invalidateAndCancelTasks` invalidates the SessionManager,
         // so we need to recreate it to run queries.
         initializeStatsRemote()

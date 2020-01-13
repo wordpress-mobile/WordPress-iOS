@@ -38,6 +38,7 @@
 * Block editor: Images from Image Block can now be previewed full screen by tapping on them.
 * Fixed an issue that caused logging in with a 2FA Google account to fail.
 * Sign in with Apple: now supports logging in with 2FA enabled on linked WordPress accounts.
+* Stats: Fixed issue that caused incorrect data to be displayed.
 
 13.7
 -----
