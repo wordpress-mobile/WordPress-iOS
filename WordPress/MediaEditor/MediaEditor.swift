@@ -229,7 +229,6 @@ public class MediaEditor: UINavigationController {
             dismiss(animated: true)
         } else {
             hub.show(image: image, at: selectedImageIndex)
-            images[selectedImageIndex] = image
             dismissCapability()
         }
     }
