@@ -13,6 +13,8 @@ extension MediaEditorOperation {
             return "crop"
         case .rotate:
             return "rotate"
+        case .other:
+            return "other"
         }
     }
 }
