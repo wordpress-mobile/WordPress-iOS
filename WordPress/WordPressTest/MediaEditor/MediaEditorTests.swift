@@ -444,6 +444,24 @@ class MediaEditorTests: XCTestCase {
         expect(returnedImages.first?.isEdited).to(beTrue())
         expect(returnedImages.first?.editedImage).to(equal(image))
     }
+
+    func testUpdateEditedImagesIndexesAfterEditingAnImage() {
+        // Given
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+        mediaEditor.capabilityTapped(0)
+        firstImage.simulate(fullImageHasBeenDownloaded: image)
+        seconImage.simulate(fullImageHasBeenDownloaded: UIImage())
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil()) // Wait capability appear
+
+        // When
+        mediaEditor.currentCapability?.onFinishEditing(image, [.rotate])
+
+        // Then
+        expect(mediaEditor.editedImagesIndexes).to(equal([0]))
+    }
+
 }
 
 class MockCapability: MediaEditorCapability {

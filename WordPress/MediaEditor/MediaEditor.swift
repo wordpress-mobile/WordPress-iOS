@@ -18,6 +18,8 @@ public class MediaEditor: UINavigationController {
 
     var asyncImages: [AsyncImage] = []
 
+    var editedImagesIndexes: Set<Int> = []
+
     var onFinishEditing: (([AsyncImage], [MediaEditorOperation]) -> ())?
 
     var onCancel: (() -> ())?
@@ -179,7 +181,7 @@ public class MediaEditor: UINavigationController {
         var editedImages: [AsyncImage] = []
 
         for (index, var asyncImage) in asyncImages.enumerated() {
-            if let editedImage = images[index] {
+            if editedImagesIndexes.contains(index), let editedImage = images[index] {
                 asyncImage.isEdited = true
                 asyncImage.editedImage = editedImage
             }
@@ -200,8 +202,7 @@ public class MediaEditor: UINavigationController {
         let capability = capabilityEntity.init(
             image,
             onFinishEditing: { [weak self] image, actions in
-                self?.actions.append(contentsOf: actions)
-                self?.finishEditing(image: image)
+                self?.finishEditing(image: image, actions: actions)
             },
             onCancel: { [weak self] in
                 self?.cancel()
@@ -213,7 +214,15 @@ public class MediaEditor: UINavigationController {
         pushViewController(capability.viewController, animated: false)
     }
 
-    private func finishEditing(image: UIImage) {
+    private func finishEditing(image: UIImage, actions: [MediaEditorOperation]) {
+        images[selectedImageIndex] = image
+
+        self.actions.append(contentsOf: actions)
+
+        if !actions.isEmpty {
+            editedImagesIndexes.insert(selectedImageIndex)
+        }
+
         if isSingleImageAndCapability {
             done()
             dismiss(animated: true)
