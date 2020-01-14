@@ -134,14 +134,8 @@ public class MediaEditor: UINavigationController {
         }
 
         if isSingleImageAndCapability {
-            let index = selectedImageIndex
-            hub.loadingImage(at: index)
             hub.disableDoneButton()
-            asyncImages.first?.full(finishedRetrievingFullImage: { [weak self] image in
-                self?.hub.loadedImage(at: index)
-                let offset = self?.selectedImageIndex ?? 0
-                self?.fullImageAvailable(image, offset: offset)
-            })
+            capabilityTapped(0)
         }
     }
 
