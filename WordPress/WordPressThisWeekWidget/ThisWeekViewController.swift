@@ -10,11 +10,16 @@ class ThisWeekViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
 
     private var siteUrl: String = Constants.noDataLabel
-    private var statsValues: ThisWeekWidgetStats?
     private var siteID: NSNumber?
     private var timeZone: TimeZone?
     private var oauthToken: String?
     private let tracks = Tracks(appGroupName: WPAppGroupName)
+
+    private var statsValues: ThisWeekWidgetStats? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     private var haveSiteUrl: Bool {
         siteUrl != Constants.noDataLabel
@@ -240,7 +245,6 @@ private extension ThisWeekViewController {
             DispatchQueue.main.async {
                 let summaryData = summary?.summaryData.reversed() ?? []
                 self.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
-                self.tableView.reloadData()
             }
             completionHandler(NCUpdateResult.newData)
         }
