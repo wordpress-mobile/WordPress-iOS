@@ -63,7 +63,7 @@ Hints should:
 
 ### <a name="grouping-elements"></a>Grouping Elements
 
-If a group of elements represents a single unit of information, consider grouping them into one accessibility element. This helps reduce clutter and makes your app easier to understand and navigate. 
+If a group of elements represent a single unit of information, consider grouping them into one accessibility element. This helps reduce clutter and makes your app easier to understand and navigate. 
 
 Take the following custom `UITableViewCell` as an example. It has at least 6 accessible elements. 
 
@@ -72,7 +72,7 @@ Take the following custom `UITableViewCell` as an example. It has at least 6 acc
 Since there are potentially more cells like this in the table, it would be very easy for a VoiceOver user to lose context. To improve this, we can:
 
 - Group the elements together by concatenating the information in the `UITableViewCell`'s `accessibilityLabel`.
-- Making the child elements inaccessible by setting their `isAccessibilityElement` to `false`.
+- And make the child elements inaccessible by setting their `isAccessibilityElement` to `false`.
 
 ```swift
 class CustomCell: UITableViewCell {
