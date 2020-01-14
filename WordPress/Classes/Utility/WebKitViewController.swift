@@ -40,9 +40,9 @@ class WebKitViewController: UIViewController {
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
     @objc var addsHideMasterbarParameters = true
-    let opensNewInSafari: Bool
-    let linkBehavior: LinkBehavior
     @objc var customTitle: String?
+    private let opensNewInSafari: Bool
+    let linkBehavior: LinkBehavior
 
     private var reachabilityObserver: Any?
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)

@@ -52,7 +52,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         let vc = PreviewWebKitViewController(post: post, previewURL: nil)
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
-        XCTAssertTrue(items.contains(vc.shareButton), "Preview toolbar for post should contain publish button.")
+        XCTAssertTrue(items.contains(vc.shareButton), "Preview toolbar for post should contain share button.")
         XCTAssertTrue(items.contains(vc.safariButton), "Preview toolbar for post should contain Safari button.")
         XCTAssertFalse(items.contains(vc.backButton), "Preview toolbar for post should not contain back button.")
         XCTAssertFalse(items.contains(vc.forwardButton), "Preview toolbar for post should not contain forward button.")

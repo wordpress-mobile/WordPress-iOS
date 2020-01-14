@@ -14,7 +14,7 @@ enum LinkBehavior {
         }
 
         // Should not happen, but future checks will not work if we can't check the URL
-        guard var navigationURL = navigationAction.request.url else {
+        guard let navigationURL = navigationAction.request.url else {
             return .allow
         }
 
