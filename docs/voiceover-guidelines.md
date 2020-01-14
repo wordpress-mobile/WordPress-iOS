@@ -5,7 +5,6 @@
 - [Getting Started](#getting-started)
 - [Guidelines](#guidelines)
 	- [Basics](#basics)
-	- [Simple Views](#simple-views)
     - [Grouping Elements](#grouping-elements)
     - [Spoken order](#spoken-order)
     - [Controls with not enough information](#not-enough-info)
@@ -38,7 +37,7 @@ button.accessibilityHint = "Opens the sharing sheet."
 
 However, it is important to provide [helpful and accurate attributes](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/iPhoneAccessibility/Making_Application_Accessible/Making_Application_Accessible.html#//apple_ref/doc/uid/TP40008785-CH102-SW6). The strings used for the attributes should also be [localized](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/InternationalizingYourCode/InternationalizingYourCode.html#//apple_ref/doc/uid/10000171i-CH4-SW1).
 
-### <a namme="simple-views"></a>Simple Views
+#### <a namme="labels"></a>Labels
 
 For a regular control or view, Apple recommends that labels should:
 
@@ -50,9 +49,13 @@ For a regular control or view, Apple recommends that labels should:
 
 Beginning with a capitalized word and not ending with a period helps VoiceOver read the label with the appropiate inflection.
 
+#### <a name="traits"></a>Traits
+
 The traits attribute contains one or more individual traits that, taken together, describe the behavior of an accessible user interface element. Because some individual traits can be combined to describe a single element, the element’s behavior can be precisely characterized.
 
-Hints should:
+#### <a name="hints"></a>Hints
+
+Apple recommends that hints should:
 
 - Briefly describe the results. What is going to happen after interacting with this control or view?
 - Begin with a verb and ignore the subject.
