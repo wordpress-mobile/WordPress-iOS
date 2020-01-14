@@ -65,7 +65,7 @@ Hints should:
 
 If a group of elements represent a single unit of information, consider grouping them into one accessibility element. This helps reduce clutter and makes your app easier to understand and navigate. 
 
-Take the following custom `UITableViewCell` as an example. It has at least 6 accessible elements. 
+Take the following custom `UITableViewCell` as an example. It has at least 5 accessible elements. 
 
 <img src="images/voiceover-guidelines/group-elements-before.png" width="240">
 
