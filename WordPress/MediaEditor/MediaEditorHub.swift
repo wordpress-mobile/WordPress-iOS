@@ -285,6 +285,7 @@ extension MediaEditorHub: UICollectionViewDataSource {
             imageCell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
             imageCell.errorView.isHidden = true
             imageCell.apply(styles: styles!)
+            imageCell.delegate = delegate
         }
 
         showOrHideActivityIndicatorAndCapabilities()
@@ -357,4 +358,5 @@ extension MediaEditorHub: UICollectionViewDelegate {
 
 protocol MediaEditorHubDelegate: class {
     func capabilityTapped(_ index: Int)
+    func retry()
 }

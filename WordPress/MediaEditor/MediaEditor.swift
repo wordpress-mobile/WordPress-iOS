@@ -298,4 +298,8 @@ extension MediaEditor: MediaEditorHubDelegate {
             })
         }
     }
+
+    func retry() {
+        
+    }
 }

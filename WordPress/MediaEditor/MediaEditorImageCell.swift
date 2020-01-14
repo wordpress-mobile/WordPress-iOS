@@ -6,6 +6,8 @@ class MediaEditorImageCell: UICollectionViewCell {
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var retryButton: UIButton!
 
+    weak var delegate: MediaEditorHubDelegate?
+
     func apply(styles: MediaEditorStyles) {
 
         if let errorLoadingImageMessage = styles[.errorLoadingImageMessage] as? String {
@@ -19,7 +21,7 @@ class MediaEditorImageCell: UICollectionViewCell {
     }
 
     @IBAction func retry(_ sender: Any) {
-        
+        delegate?.retry()
     }
 
 }
