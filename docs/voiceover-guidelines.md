@@ -1,5 +1,13 @@
 # VoiceOver Guidelines
 
+### Table of Contents
+
+- [Basics](#basics)
+- [Simple Views](#simple-views)
+- [Complex Views](#complex-views)
+
+## <a name="basics"></a>Basics
+
 Providing support for VoiceOver is quite straightforward. For most  cases, providing only three attributes should be enough:
 
 * **Label:** A short, localized word or phrase that succinctly describes the control or view, but does not identify the element’s type.
@@ -12,6 +20,8 @@ As an example, for a Share button, the recommended attributes would be along the
 - Hint: “Opens the sharing sheet.”
 
 However, it is important to provide [helpful and accurate attributes](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/iPhoneAccessibility/Making_Application_Accessible/Making_Application_Accessible.html#//apple_ref/doc/uid/TP40008785-CH102-SW6)
+
+## <a namme="simple-views"></a>Simple Views
 
 For a regular control or view, Apple recommends that labels should:
 - Describe the element briefly
@@ -35,6 +45,8 @@ Hints should:
 ## When to, and when not to
 
 UIKit does a good job adapting the default UIView elements to VoiceOver automatically,  but there are cases where it's necessary to do it manually:
+
+## <a name="complex-views"></a>Complex Views
 
 ### Complex views that represent one unit of information
 A good example here is a custom `UITableViewCell`. A single cell usually represents just one unit of information. When they are complex enough with many labels, images, buttons, etc... a VoiceOver user can easily get lost in a forest of separate UI elements, where the grouping of information is given by the visual boundaries of the cell itself. 
