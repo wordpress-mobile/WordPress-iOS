@@ -25,14 +25,14 @@ enum LinkBehavior {
             if navigationAction.request.url?.host == url.host {
                 return .allow
             } else {
-                UIApplication.shared.open(navigationAction.request.url)
+                UIApplication.shared.open(navigationURL)
                 return .cancel
             }
         case .urlOnly(let url):
             if navigationAction.request.url?.absoluteString == url.absoluteString {
                 return .allow
             } else {
-                UIApplication.shared.open(navigationAction.request.url)
+                UIApplication.shared.open(navigationURL)
                 return .cancel
             }
         }
