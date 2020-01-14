@@ -102,6 +102,7 @@ Excerpt. Today, we’re highlighting five sites from the island paradise of Jama
 
 - Prefer to place the most important elements first. The VoiceOver user can prefer to skip if they've already listened to what they need. This is why we placed the `excerpt` last in the example.
 - Don't forget the periods when concatenating. They make VoiceOver pause which helps in understanding.
+- The `"Excerpt".` static text in the example is used as a separator and _signals_ that a very long text will be read by VoiceOver.
 
 ### <a name="spoken-order"></a>Spoken order
 
