@@ -56,6 +56,17 @@ class MediaEditorHubTests: XCTestCase {
         expect(hub.activityIndicatorLabel.text).to(equal("foo"))
     }
 
+    func testApplyErrorLoadingImageLabelIntoImageCell() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.availableThumbs = [0: UIImage()]
+
+        hub.apply(styles: [.errorLoadingImageMessage: "error loading image"])
+
+        let cell = hub.collectionView(hub.imagesCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? MediaEditorImageCell
+        expect(cell?.errorLabel.text).to(equal("error loading image"))
+    }
+
+
     func testShowButtonWithTheCapabilityIcon() {
         let hub: MediaEditorHub = MediaEditorHub.initialize()
         hub.loadViewIfNeeded()

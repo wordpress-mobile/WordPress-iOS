@@ -55,6 +55,8 @@ class MediaEditorHub: UIViewController {
         isSingleImage && capabilities.count == 1
     }
 
+    private var errorLoadingImageMessage: String?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         thumbsCollectionView.dataSource = self
@@ -137,6 +139,10 @@ class MediaEditorHub: UIViewController {
 
         if let color = styles[.selectedColor] as? UIColor {
             selectedColor = color
+        }
+
+        if let errorLoadingImageMessage = styles[.errorLoadingImageMessage] as? String {
+            self.errorLoadingImageMessage = errorLoadingImageMessage
         }
     }
 
@@ -269,6 +275,8 @@ extension MediaEditorHub: UICollectionViewDataSource {
 
         if let imageCell = cell as? MediaEditorImageCell {
             imageCell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
+            imageCell.errorView.isHidden = true
+            imageCell.errorLabel.text = errorLoadingImageMessage ?? imageCell.errorLabel.text
         }
 
         showOrHideActivityIndicatorAndCapabilities()

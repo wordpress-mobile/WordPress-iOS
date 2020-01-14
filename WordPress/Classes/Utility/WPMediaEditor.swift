@@ -11,6 +11,7 @@ class WPMediaEditor: MediaEditor {
                 .insertLabel: NSLocalizedString("Insert %@", comment: "Button title used in media editor. Placeholder will be the number of items that will be inserted."),
                 .doneLabel: NSLocalizedString("Done", comment: "Done editing an image"),
                 .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
+                .errorLoadingImageMessage: NSLocalizedString("Error loading image", comment: "Description that appears when a image fails to load in the Media Editor."),
                 .cancelColor: UIColor.white,
                 .resetIcon: Gridicon.iconOfType(.undo),
                 .doneIcon: Gridicon.iconOfType(.checkmark),
