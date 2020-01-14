@@ -413,9 +413,9 @@ class MediaEditorTests: XCTestCase {
         let firstImage = AsyncImageMock()
         let seconImage = AsyncImageMock()
         let mediaEditor = MediaEditor([firstImage, seconImage])
-        tapFirstCapability(in: mediaEditor)
+        mediaEditor.capabilityTapped(0)
 
-        seconImage.simulate(fullImageHasBeenDownloaded: fullImage)
+        firstImage.simulate(fullImageHasBeenDownloaded: fullImage)
 
         expect(mediaEditor.currentCapability).toEventuallyNot(beNil())
         expect(mediaEditor.visibleViewController).to(equal(mediaEditor.currentCapability?.viewController))
@@ -441,8 +441,8 @@ class MediaEditorTests: XCTestCase {
         let firstImage = AsyncImageMock()
         let seconImage = AsyncImageMock()
         let mediaEditor = MediaEditor([firstImage, seconImage])
-        tapFirstCapability(in: mediaEditor)
-        seconImage.simulate(fullImageHasBeenDownloaded: UIImage())
+        mediaEditor.capabilityTapped(0)
+        firstImage.simulate(fullImageHasBeenDownloaded: UIImage())
         mediaEditor.onFinishEditing = { images, _ in
             returnedImages = images
         }
@@ -453,15 +453,8 @@ class MediaEditorTests: XCTestCase {
         mediaEditor.hub.doneButton.sendActions(for: .touchUpInside)
 
         // Then
-        expect(returnedImages[1].isEdited).to(beTrue())
-        expect(returnedImages[1].editedImage).to(equal(image))
-    }
-
-    // Wait for the last image to be selected and then
-    // tap the first capability.
-    private func tapFirstCapability(in mediaEditor: MediaEditor) {
-        expect(mediaEditor.selectedImageIndex).toEventually(equal(1))
-        mediaEditor.capabilityTapped(0)
+        expect(returnedImages.first?.isEdited).to(beTrue())
+        expect(returnedImages.first?.editedImage).to(equal(image))
     }
 
     func testUpdateEditedImagesIndexesAfterEditingAnImage() {
