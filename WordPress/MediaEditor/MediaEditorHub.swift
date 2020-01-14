@@ -94,6 +94,7 @@ class MediaEditorHub: UIViewController {
         availableThumbs[index] = image
 
         let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
+        imageCell?.errorView.isHidden = true
         imageCell?.imageView.image = image
 
         let cell = thumbsCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorThumbCell
