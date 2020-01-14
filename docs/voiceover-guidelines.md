@@ -6,8 +6,8 @@
 - [Guidelines](#guidelines)
 	- [Basics](#basics)
     - [Grouping Elements](#grouping-elements)
-    - [Spoken order](#spoken-order)
-    - [Controls with not enough information](#not-enough-info)
+    - [Spoken Order](#spoken-order)
+    - [Appearing and Disappearing Elements](#appearing-disappearing)
 - [Auditing](#auditing)
 - [Further Reading](#further-reading)
 
@@ -104,16 +104,19 @@ Excerpt. Today, we’re highlighting five sites from the island paradise of Jama
 ```
 
 - Prefer to place the most important elements first. The VoiceOver user can prefer to skip if they've already listened to what they need. This is why we placed the `excerpt` last in the example.
-- Don't forget the periods when concatenating. They make VoiceOver pause which helps in understanding.
+- Don't forget the periods when concatenating. They make VoiceOver pause which helps in comprehension.
 - The `"Excerpt".` static text in the example is used as a separator and _signals_ that a very long text will be read by VoiceOver.
 
-### <a name="spoken-order"></a>Spoken order
+### <a name="spoken-order"></a>Spoken Order
 
-Some column-based data is contained inside of stack views. VoiceOver may not speak the data in the desired order. For example, this tableview cell has nested stack views. The vertical stack view is the parent and multiple horizontal stack views are children. Two labels are contained inside of each horizontal stack view, one with the title for the data (e.g. Subtotal) and one for the data value (e.g. $999.99).
+Some column-based data is contained inside of stack views. VoiceOver may not speak the data in the desired order. For example, this tableview cell has nested stack views. 
+
+- The vertical stack view is the parent and multiple horizontal stack views are children. 
+- Two labels are contained inside of each horizontal stack view. One for the title (e.g. Subtotal) and one for the value (e.g. $999.99).
 
 ![](images/voiceover-guidelines.png)
 
-The reading order is expected to be spoken as `"Subtotal: nine hundred ninety-nine dollars and ninety nine cents"`. In this case, VoiceOver defaults to reading the first item in each horizontal stack view, followed by the second. VoiceOver would speak `"Subtotal - Discount - Shipping - Taxes"`, followed by the values `"$999.99, -$601.00, $0.01, $333.33"`. This makes the information difficult to comprehend.
+The reading order is expected to be spoken as `"Subtotal: nine hundred ninety-nine dollars and ninety nine cents"`. In this case, however, VoiceOver defaults to reading the first item in each horizontal stack view, followed by the second. VoiceOver would speak `"Subtotal - Discount - Shipping - Taxes"`, followed by the values `"$999.99, -$601.00, $0.01, $333.33"`. This makes the information difficult to comprehend.
 
 Use `.accessibilityElements` on the parent view to list the desired reading order of the subviews.
 
@@ -130,9 +133,30 @@ contentView.accessibilityElements = [subtotalTitleLabel,
 
 This also works for buttons, images, and views.
 
-### <a name="not-enough-info"></a>Controls with not enough information
+### <a name="appearing-disappearing"></a>Appearing and Disappearing Elements
 
-Sometimes buttons, labels, or other views are just showing an image, a number, or a symbol. With this information only, UIKit can't provide a good label to be read by VoiceOver. In this cases it is our job to let UIKit know what is the meaning of that image/number/symbol, so it can be communicated to the VoiceOver user appropriately.
+If you have a UI element that is shown after an event happens, consider notifying VoiceOver that a new UI element is visible in the screen. 
+
+An example of this is a custom snackbar:
+
+<img src="images/voiceover-guidelines/announce-elements-notice.gif" width="320">
+
+A blind user may never discover that a snackbar was shown in the screen unless they accidentally move their finger over it. To make the user aware of it, we can send a notification to VoiceOver using [`UIAccessibility.post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) and [`.layoutChanged`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620186-layoutchanged).
+
+```swift
+let snackBarView = createSnackBarView()
+presentSnackBar(snackBarView)
+
+UIAccessibility.post(notification: .layoutChanged, argument: snackBarView)
+```
+
+This notifies VoiceOver that a new view, `snackBarView`, has appeared and it should _select_ it. VoiceOver will then read its `accessibilityLabel`.
+
+Once the element disappears, we should send another notification but with a `nil` argument. This makes VoiceOver immediately select a different element from the current view.
+
+```swift
+UIAccessibility.post(notification: .layoutChanged, argument: nil)
+```
 
 ## <a name="auditing"></a>Auditing
 
