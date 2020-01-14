@@ -258,6 +258,9 @@ public class MediaEditor: UINavigationController {
 
     private func fullImageAvailable(_ image: UIImage?, offset: Int) {
         guard let image = image else {
+            DispatchQueue.main.async {
+                self.hub.failedToLoad(at: offset)
+            }
             return
         }
 
