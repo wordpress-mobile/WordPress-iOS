@@ -6,10 +6,9 @@
 - [Guidelines](#guidelines)
 	- [Basics](#basics)
 	- [Simple Views](#simple-views)
-	- [Complex Views](#complex-views)
-		- [Views that represent one unit of information](#one-unit)
-		- [Spoken order](#spoken-order)
-		- [Controls with not enough information](#not-enough-info)
+    - [Grouping Elements](#grouping-elements)
+    - [Spoken order](#spoken-order)
+    - [Controls with not enough information](#not-enough-info)
 - [Auditing](#auditing)
 - [Further Reading](#further-reading)
 
@@ -62,23 +61,49 @@ Hints should:
 - Do not include the name or the type of control or view.
 - Be localized.
 
-### <a name="complex-views"></a>Complex Views
+### <a name="grouping-elements"></a>Grouping Elements
 
-UIKit does a good job adapting the default UIView elements to VoiceOver automatically. But there are cases where it's necessary to do it manually:
+If a group of elements represents a single unit of information, consider grouping them into one accessibility element. This helps reduce clutter and makes your app easier to understand and navigate. 
 
-#### <a name="one-unit"></a>Views that represent one unit of information
+Take the following custom `UITableViewCell` as an example. It has at least 6 accessible elements. 
 
-A good example here is a custom `UITableViewCell`. A single cell usually represents just one unit of information. When they are complex enough with many labels, images, buttons, etc... a VoiceOver user can easily get lost in a forest of separate UI elements, where the grouping of information is given by the visual boundaries of the cell itself. 
+<img src="images/voiceover-guidelines/group-elements-before.png" width="240">
 
-To avoid that problem, the cell needs to become a VoiceOver element itself, with a label that tells the story that is displayed in the cell. A good example is the Reader cell, where its content is read by VoiceOver as follows:
+Since there are potentially more cells like this in the table, it would be very easy for a VoiceOver user to lose context. To improve this, we can:
+
+- Group the elements together by concatenating the information in the `UITableViewCell`'s `accessibilityLabel`.
+- Making the child elements inaccessible by setting their `isAccessibilityElement` to `false`.
+
+```swift
+class CustomCell: UITableViewCell {
+    override var accessibilityLabel: String? {
+        get {
+            let format = "Post by %@, from %@. %@. %@. %@. Excerpt. %@."
+            return String(format: format,
+                          author,
+                          blogName,
+                          datePublished,
+                          isFollowing ? "Following" : "",
+                          title,
+                          excerpt)
+        }
+        set { }
+    }
+}
 ```
-Post by {author}, from {blog}, {time}.
-{post_title}
-{post_short_description}
-```
-This pulls together the most important information from different UILabels into a single well-structured description.
 
-#### <a name="spoken-order"></a>Spoken order
+When selecting the cell, VoiceOver would then speak something like this:
+
+```
+Post by Carolyn Wells, from Discover. 6 days ago. Following. 
+Around the World with WordPress: Jamaica. 
+Excerpt. Today, we’re highlighting five sites from the island paradise of Jamaica.
+```
+
+- Prefer to place the most important elements first. The VoiceOver user can prefer to skip if they've already listened to what they need. This is why we placed the `excerpt` last in the example.
+- Don't forget the periods when concatenating. They make VoiceOver pause which helps in understanding.
+
+### <a name="spoken-order"></a>Spoken order
 
 Some column-based data is contained inside of stack views. VoiceOver may not speak the data in the desired order. For example, this tableview cell has nested stack views. The vertical stack view is the parent and multiple horizontal stack views are children. Two labels are contained inside of each horizontal stack view, one with the title for the data (e.g. Subtotal) and one for the data value (e.g. $999.99).
 
