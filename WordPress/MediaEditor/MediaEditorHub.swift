@@ -55,7 +55,7 @@ class MediaEditorHub: UIViewController {
         isSingleImage && capabilities.count == 1
     }
 
-    private var errorLoadingImageMessage: String?
+    private var styles: MediaEditorStyles?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +65,10 @@ class MediaEditorHub: UIViewController {
         capabilitiesCollectionView.delegate = self
         imagesCollectionView.dataSource = self
         imagesCollectionView.delegate = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         selectLastAsset()
     }
 
@@ -118,6 +122,8 @@ class MediaEditorHub: UIViewController {
     func apply(styles: MediaEditorStyles) {
         loadViewIfNeeded()
 
+        self.styles = styles
+
         if let doneLabel = (styles[.insertLabel] ?? styles[.doneLabel]) as? String {
             doneButton.setTitle(String(format: doneLabel, "\(numberOfThumbs)"), for: .normal)
         }
@@ -140,10 +146,6 @@ class MediaEditorHub: UIViewController {
 
         if let color = styles[.selectedColor] as? UIColor {
             selectedColor = color
-        }
-
-        if let errorLoadingImageMessage = styles[.errorLoadingImageMessage] as? String {
-            self.errorLoadingImageMessage = errorLoadingImageMessage
         }
     }
 
@@ -282,7 +284,7 @@ extension MediaEditorHub: UICollectionViewDataSource {
         if let imageCell = cell as? MediaEditorImageCell {
             imageCell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
             imageCell.errorView.isHidden = true
-            imageCell.errorLabel.text = errorLoadingImageMessage ?? imageCell.errorLabel.text
+            imageCell.apply(styles: styles!)
         }
 
         showOrHideActivityIndicatorAndCapabilities()

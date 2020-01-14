@@ -95,38 +95,65 @@
                                         <rect key="frame" x="0.0" y="44" width="414" height="710"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="ZBA-T2-zcM">
-                                            <size key="itemSize" width="50" height="50"/>
+                                            <size key="itemSize" width="406" height="698"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imageCell" id="Ls1-Pp-3Ej" customClass="MediaEditorImageCell" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <rect key="frame" x="0.0" y="6" width="406" height="698"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="s4y-N0-CsG">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="406" height="698"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Tz-zw-SB3">
-                                                            <rect key="frame" x="10" y="10" width="30" height="30"/>
+                                                            <rect key="frame" x="10" y="10" width="386" height="678"/>
                                                         </imageView>
                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mpE-6f-GCR">
-                                                            <rect key="frame" x="-95" y="-39" width="240" height="128"/>
+                                                            <rect key="frame" x="-1341" y="-1097.5" width="3088" height="2893"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Failed to retrieve image." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oUq-o7-fBI">
-                                                                    <rect key="frame" x="20" y="20" width="200" height="88"/>
-                                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="pg4-Tn-2hl">
+                                                                    <rect key="frame" x="0.0" y="1409.5" width="3088" height="74.5"/>
+                                                                    <subviews>
+                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2dK-kk-349">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="3088" height="44"/>
+                                                                            <subviews>
+                                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bsq-5s-s4y">
+                                                                                    <rect key="frame" x="1522" y="0.0" width="44" height="44"/>
+                                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                    <constraints>
+                                                                                        <constraint firstAttribute="width" constant="44" id="2t7-l0-CfV"/>
+                                                                                        <constraint firstAttribute="height" constant="44" id="i8v-7A-YoC"/>
+                                                                                    </constraints>
+                                                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                    <connections>
+                                                                                        <action selector="retry:" destination="Ls1-Pp-3Ej" eventType="touchUpInside" id="U5T-Wb-tgx"/>
+                                                                                    </connections>
+                                                                                </button>
+                                                                            </subviews>
+                                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="bottom" secondItem="Bsq-5s-s4y" secondAttribute="bottom" id="4S5-rf-B6s"/>
+                                                                                <constraint firstItem="Bsq-5s-s4y" firstAttribute="top" secondItem="2dK-kk-349" secondAttribute="top" id="Ypw-fw-ZY6"/>
+                                                                                <constraint firstItem="Bsq-5s-s4y" firstAttribute="centerX" secondItem="2dK-kk-349" secondAttribute="centerX" id="ewg-Xv-6AU"/>
+                                                                            </constraints>
+                                                                        </view>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Failed to retrieve image." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oUq-o7-fBI">
+                                                                            <rect key="frame" x="0.0" y="54" width="3088" height="20.5"/>
+                                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
                                                             </subviews>
                                                             <color key="backgroundColor" white="0.12" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="bottom" secondItem="oUq-o7-fBI" secondAttribute="bottom" constant="20" symbolic="YES" id="Jkn-eE-rdi"/>
-                                                                <constraint firstItem="oUq-o7-fBI" firstAttribute="top" secondItem="mpE-6f-GCR" secondAttribute="top" constant="20" symbolic="YES" id="UZ2-ad-sun"/>
-                                                                <constraint firstItem="oUq-o7-fBI" firstAttribute="leading" secondItem="mpE-6f-GCR" secondAttribute="leading" constant="20" symbolic="YES" id="XqS-6j-pzQ"/>
-                                                                <constraint firstAttribute="trailing" secondItem="oUq-o7-fBI" secondAttribute="trailing" constant="20" symbolic="YES" id="zgd-iL-hma"/>
+                                                                <constraint firstItem="pg4-Tn-2hl" firstAttribute="centerY" secondItem="mpE-6f-GCR" secondAttribute="centerY" id="AVp-jW-ams"/>
+                                                                <constraint firstAttribute="trailing" secondItem="pg4-Tn-2hl" secondAttribute="trailing" id="CBc-zR-Nyp"/>
+                                                                <constraint firstItem="pg4-Tn-2hl" firstAttribute="leading" secondItem="mpE-6f-GCR" secondAttribute="leading" id="qeg-Md-qlF"/>
                                                             </constraints>
                                                         </view>
                                                     </subviews>
@@ -141,10 +168,12 @@
                                                         <constraint firstItem="mpE-6f-GCR" firstAttribute="centerX" secondItem="5Tz-zw-SB3" secondAttribute="centerX" id="zKG-ch-KUG"/>
                                                     </constraints>
                                                 </collectionViewCellContentView>
+                                                <size key="customSize" width="406" height="698"/>
                                                 <connections>
                                                     <outlet property="errorLabel" destination="oUq-o7-fBI" id="IDS-ej-4dU"/>
                                                     <outlet property="errorView" destination="mpE-6f-GCR" id="zeP-B2-R4G"/>
                                                     <outlet property="imageView" destination="5Tz-zw-SB3" id="XOe-qd-G6m"/>
+                                                    <outlet property="retryButton" destination="Bsq-5s-s4y" id="0jd-x7-4ra"/>
                                                 </connections>
                                             </collectionViewCell>
                                         </cells>

@@ -17,7 +17,8 @@ class WPMediaEditor: MediaEditor {
                 .doneIcon: Gridicon.iconOfType(.checkmark),
                 .cancelIcon: Gridicon.iconOfType(.cross),
                 .rotateClockwiseIcon: Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(),
-                .rotateCounterclockwiseButtonHidden: true
+                .rotateCounterclockwiseButtonHidden: true,
+                .retryIcon: Gridicon.iconOfType(.refresh, withSize: CGSize(width: 48, height: 48))
             ]
         }
 
