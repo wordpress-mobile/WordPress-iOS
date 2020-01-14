@@ -40,7 +40,8 @@ class WebKitViewController: UIViewController {
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
     @objc var addsHideMasterbarParameters = true
-    var linkBehavior: LinkBehavior
+    let opensNewInSafari: Bool
+    let linkBehavior: LinkBehavior
     @objc var customTitle: String?
 
     private var reachabilityObserver: Any?
@@ -61,6 +62,7 @@ class WebKitViewController: UIViewController {
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
         linkBehavior = configuration.linkBehavior
+        opensNewInSafari = configuration.opensNewInSafari
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -77,6 +79,7 @@ class WebKitViewController: UIViewController {
         authenticator = parent.authenticator
         navigationDelegate = parent.navigationDelegate
         linkBehavior = parent.linkBehavior
+        opensNewInSafari = parent.opensNewInSafari
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -396,9 +399,11 @@ class WebKitViewController: UIViewController {
 }
 
 extension WebKitViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+
+    @available(iOS 13.0, *)
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
         if let request = authenticator?.interceptRedirect(request: navigationAction.request) {
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             load(request: request)
             return
         }
@@ -408,13 +413,19 @@ extension WebKitViewController: WKNavigationDelegate {
             if let redirect = policy.redirectRequest {
                 load(request: redirect)
             }
-            decisionHandler(policy.action)
+            decisionHandler(policy.action, preferences)
+            return
+        }
+
+        // Allow request if it is to `wp-login` for 2fa
+        if let url = navigationAction.request.url, authenticator?.isLogin(url: url) == true {
+            decisionHandler(.allow, preferences)
             return
         }
 
         let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)
 
-        decisionHandler(policy)
+        decisionHandler(policy, preferences)
     }
 }
 
@@ -422,9 +433,14 @@ extension WebKitViewController: WKUIDelegate {
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if navigationAction.targetFrame == nil,
             let url = navigationAction.request.url {
-            let controller = WebKitViewController(url: url, parent: self)
-            let navController = UINavigationController(rootViewController: controller)
-            present(navController, animated: true)
+
+            if opensNewInSafari {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                let controller = WebKitViewController(url: url, parent: self)
+                let navController = UINavigationController(rootViewController: controller)
+                present(navController, animated: true)
+            }
         }
         return nil
     }

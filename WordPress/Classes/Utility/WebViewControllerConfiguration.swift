@@ -7,6 +7,11 @@ class WebViewControllerConfiguration: NSObject {
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
     @objc var addsHideMasterbarParameters = true
+
+    /// Opens any new pages in Safari. Otherwise, a new web view will be opened
+    var opensNewInSafari = false
+
+    /// The behavior to use for allowing links to be loaded by the web view based
     var linkBehavior = LinkBehavior.all
     @objc var customTitle: String?
     @objc var authenticator: WebViewAuthenticator?

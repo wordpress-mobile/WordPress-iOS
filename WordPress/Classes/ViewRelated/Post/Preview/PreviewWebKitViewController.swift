@@ -40,6 +40,7 @@ class PreviewWebKitViewController: WebKitViewController {
 
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.linkBehavior = isPage ? .hostOnly(url) : .urlOnly(url)
+        configuration.opensNewInSafari = true
         configuration.authenticate(blog: post.blog)
         super.init(configuration: configuration)
     }
