@@ -12,7 +12,7 @@
 
 ## <a name="getting-started"></a>Getting Started
 
-If you haven't worked with VoiceOver before, we recommend the following resources. Going through these should make you more equipped with understanding the guidelines here. 
+If you haven't worked with VoiceOver before, we recommend going through the following resources before reading further. 
 
 - [Using VoiceOver](using-voiceover.md)
 
@@ -20,20 +20,23 @@ If you haven't worked with VoiceOver before, we recommend the following resource
 
 ### <a name="basics"></a>Basics
 
-Providing support for VoiceOver is quite straightforward. For most  cases, providing only three attributes should be enough:
+Providing support for VoiceOver is quite straightforward. For most cases, providing only three attributes should be enough:
 
-* **Label:** A short, localized word or phrase that succinctly describes the control or view, but does not identify the element’s type.
-* **Traits:** A combination of one or more individual traits, each of which describes a single aspect of an element’s state, behavior, or usage
-* **Hint:** A brief, localized phrase that describes the results of an action on an element
+* `accessibilityLabel`: A short, localized word or phrase that succinctly describes the control or view, but does not identify the element’s type.
+* `accessibilityTraits`: A combination of one or more individual traits, each of which describes a single aspect of an element’s state, behavior, or usage
+* `accessibilityHint`: A brief, localized phrase that describes the results of an action on an element
 
 #### Example
 
-As an example, for a Share button, the recommended attributes would be along the lines of: 
-- Label: “Share”
-- Traits: UIAccessibilityTraitButton
-- Hint: “Opens the sharing sheet.”
+As an example, for a Share button, the recommended attributes would be:
 
-However, it is important to provide [helpful and accurate attributes](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/iPhoneAccessibility/Making_Application_Accessible/Making_Application_Accessible.html#//apple_ref/doc/uid/TP40008785-CH102-SW6)
+```swift
+shareButton.accessibilityLabel = "Share"
+shareButton.accessibilityTraits = .button
+shareButton.accessibilityHint = "Opens the sharing sheet."
+```
+
+However, it is important to provide [helpful and accurate attributes](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/iPhoneAccessibility/Making_Application_Accessible/Making_Application_Accessible.html#//apple_ref/doc/uid/TP40008785-CH102-SW6). Also, not included in the sample code for brevity, the strings used for the attributes should be [localized](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/InternationalizingYourCode/InternationalizingYourCode.html#//apple_ref/doc/uid/10000171i-CH4-SW1).
 
 ### <a namme="simple-views"></a>Simple Views
 
