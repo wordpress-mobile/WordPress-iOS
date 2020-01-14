@@ -6,20 +6,20 @@ import Foundation
 extension Tracks {
     // MARK: - Public Methods
     public func trackExtensionAccessed() {
-        trackExtensionEvent(.Accessed)
+        trackExtensionEvent(.accessed)
     }
 
     public func trackExtensionStatsLaunched(_ siteID: Int) {
         let properties = ["site_id": siteID]
-        trackExtensionEvent(.StatsLaunched, properties: properties as [String: AnyObject]?)
+        trackExtensionEvent(.statsLaunched, properties: properties as [String: AnyObject]?)
     }
 
     public func trackExtensionConfigureLaunched() {
-        trackExtensionEvent(.ConfigureLaunched)
+        trackExtensionEvent(.configureLaunched)
     }
 
     public func trackDisplayModeChanged(properties: [String: Bool]) {
-        trackExtensionEvent(.DisplayModeChanged, properties: properties as [String: AnyObject])
+        trackExtensionEvent(.displayModeChanged, properties: properties as [String: AnyObject])
     }
 
     // MARK: - Private Helpers
@@ -30,9 +30,9 @@ extension Tracks {
 
     // MARK: - Private Enums
     fileprivate enum ExtensionEvents: String {
-        case Accessed           = "wpios_today_extension_accessed"
-        case StatsLaunched      = "wpios_today_extension_stats_launched"
-        case ConfigureLaunched  = "wpios_today_extension_configure_launched"
-        case DisplayModeChanged = "wpios_today_extension_display_mode_changed"
+        case accessed           = "wpios_today_extension_accessed"
+        case statsLaunched      = "wpios_today_extension_stats_launched"
+        case configureLaunched  = "wpios_today_extension_configure_launched"
+        case displayModeChanged = "wpios_today_extension_display_mode_changed"
     }
 }
