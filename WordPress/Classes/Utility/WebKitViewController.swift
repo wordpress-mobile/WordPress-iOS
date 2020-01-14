@@ -399,11 +399,9 @@ class WebKitViewController: UIViewController {
 }
 
 extension WebKitViewController: WKNavigationDelegate {
-
-    @available(iOS 13.0, *)
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let request = authenticator?.interceptRedirect(request: navigationAction.request) {
-            decisionHandler(.cancel, preferences)
+            decisionHandler(.cancel)
             load(request: request)
             return
         }
@@ -413,19 +411,19 @@ extension WebKitViewController: WKNavigationDelegate {
             if let redirect = policy.redirectRequest {
                 load(request: redirect)
             }
-            decisionHandler(policy.action, preferences)
+            decisionHandler(policy.action)
             return
         }
 
         // Allow request if it is to `wp-login` for 2fa
         if let url = navigationAction.request.url, authenticator?.isLogin(url: url) == true {
-            decisionHandler(.allow, preferences)
+            decisionHandler(.allow)
             return
         }
 
         let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)
 
-        decisionHandler(policy, preferences)
+        decisionHandler(policy)
     }
 }
 
