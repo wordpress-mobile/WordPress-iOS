@@ -154,7 +154,7 @@ contentView.accessibilityElements = [subtotalTitleLabel,
 			             taxesValueLabel]
 ``` 
 
-The `accessibilityElements` can be used for all types of elements, including but not limited to, buttons and images views. You can also use `accessibilityElements` to make an element inaccessible by not including it in the list.
+The `accessibilityElements` can be used for all types of elements, including but not limited to, buttons and images view. You can also use `accessibilityElements` to make an element inaccessible by not including it in the list.
 
 ### <a name="appearing-disappearing"></a>Appearing and Disappearing Elements
 
@@ -164,7 +164,7 @@ An example of this is a custom snackbar.
 
 <img src="images/voiceover-guidelines/announce-elements-notice.gif" width="320">
 
-A blind user may never discover that a snackbar was shown in the screen unless they accidentally move their finger over it. To make the user aware of it, we can send a notification to VoiceOver using [`UIAccessibility.post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) with [`.layoutChanged`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620186-layoutchanged).
+A blind user may never discover that a snackbar was shown in the screen unless they accidentally moved their finger over it. To make the user aware of it, we can send a notification to VoiceOver using [`UIAccessibility.post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) with [`.layoutChanged`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620186-layoutchanged).
 
 ```swift
 let snackBarView = createSnackBarView()
@@ -173,7 +173,7 @@ presentSnackBar(snackBarView)
 UIAccessibility.post(notification: .layoutChanged, argument: snackBarView)
 ```
 
-This notifies VoiceOver that a new view, `snackBarView`, has appeared and it should _select_ it. VoiceOver will then read its `accessibilityLabel`.
+This notifies VoiceOver that a new view, `snackBarView`, has appeared and it should _select_ it. VoiceOver will then read its derived `accessibilityLabel`.
 
 Once the element disappears, we should send another notification but with a `nil` argument. This makes VoiceOver immediately select a different element on the screen.
 
