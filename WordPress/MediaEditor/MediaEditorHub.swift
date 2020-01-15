@@ -194,6 +194,7 @@ class MediaEditorHub: UIViewController {
     }
 
     private func reloadImagesAndReposition() {
+        view.layoutIfNeeded()
         thumbsCollectionView.reloadData()
         imagesCollectionView.reloadData()
         thumbsCollectionView.layoutIfNeeded()
