@@ -357,6 +357,18 @@ class MediaEditorTests: XCTestCase {
         expect(returnedImages).to(equal([editedImage, image]))
     }
 
+    func testWhenCancelEditingMultipleImagesCallOnCancel() {
+        var didCallOnCancel = false
+        let mediaEditor = MediaEditor([image, image])
+        mediaEditor.onCancel = {
+            didCallOnCancel = true
+        }
+
+        mediaEditor.hub.cancelIconButton.sendActions(for: .touchUpInside)
+
+        expect(didCallOnCancel).to(beTrue())
+    }
+
     // WHEN: Multiple async images + one single capability
 
     func testShowThumbsToolbar() {
@@ -452,7 +464,7 @@ class MediaEditorTests: XCTestCase {
         let mediaEditor = MediaEditor([firstImage, seconImage])
         mediaEditor.capabilityTapped(0)
         firstImage.simulate(fullImageHasBeenDownloaded: image)
-        seconImage.simulate(fullImageHasBeenDownloaded: UIImage())
+        seconImage.simulate(fullImageHasBeenDownloaded: image)
         expect(mediaEditor.currentCapability).toEventuallyNot(beNil()) // Wait capability appear
 
         // When

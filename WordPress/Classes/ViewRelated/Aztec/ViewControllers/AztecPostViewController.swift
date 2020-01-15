@@ -3191,27 +3191,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             return
         }
 
-        /*
-         Temporarilly enable Media Editor in internal builds.
-         This will be refactored soon.
-         */
-        if FeatureFlag.mediaEditor.enabled, let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
-            let mediaEditor = WPMediaEditor(phAssets)
-
-            mediaEditor.edit(from: self,
-                                  onFinishEditing: { [weak self] images, actions in
-                                    images.forEach { mediaEditorImage in
-                                        if let image = mediaEditorImage.editedImage {
-                                            self?.insertImage(image: image)
-                                        } else if let phAsset = mediaEditorImage as? PHAsset {
-                                            self?.insertDeviceMedia(phAsset: phAsset)
-                                        }
-                                    }
-            })
-
-            return
-        }
-
         for asset in assets {
             switch asset {
             case let phAsset as PHAsset:
@@ -3238,8 +3217,13 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
-        mediaPreviewHelper = MediaPreviewHelper(assets: assets)
-        return mediaPreviewHelper?.previewViewController(selectedIndex: selected)
+        if FeatureFlag.mediaEditor.enabled, let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
+            edit(fromMediaPicker: picker, assets: phAssets)
+            return nil
+        } else {
+            mediaPreviewHelper = MediaPreviewHelper(assets: assets)
+            return mediaPreviewHelper?.previewViewController(selectedIndex: selected)
+        }
     }
 
     private func updateFormatBarInsertAssetCount() {
@@ -3492,7 +3476,34 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 // MARK: - Media Editing
 //
 extension AztecPostViewController {
-    func edit(_ imageAttachment: ImageAttachment) {
+    private func edit(fromMediaPicker picker: WPMediaPickerViewController, assets: [PHAsset]) {
+        let mediaEditor = WPMediaEditor(assets)
+
+        mediaEditor.edit(from: picker,
+                              onFinishEditing: { [weak self] images, actions in
+                                images.forEach { mediaEditorImage in
+                                    if let image = mediaEditorImage.editedImage {
+                                        self?.insertImage(image: image)
+                                    } else if let phAsset = mediaEditorImage as? PHAsset {
+                                        self?.insertDeviceMedia(phAsset: phAsset)
+                                    }
+                                }
+
+                                self?.dismissMediaPicker()
+            }, onCancel: {
+                // Dismiss the Preview screen in Media Picker
+                picker.navigationController?.popViewController(animated: false)
+        })
+    }
+
+    private func dismissMediaPicker() {
+        unregisterChangeObserver()
+        mediaLibraryDataSource.searchCancelled()
+        closeMediaPickerInputViewController()
+        dismiss(animated: false)
+    }
+
+    private func edit(_ imageAttachment: ImageAttachment) {
         guard let image = imageAttachment.image else {
             return
         }

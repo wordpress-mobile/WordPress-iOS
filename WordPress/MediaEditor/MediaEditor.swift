@@ -192,6 +192,7 @@ public class MediaEditor: UINavigationController {
     }
 
     private func cancelPendingAsyncImagesAndDismiss() {
+        onCancel?()
         asyncImages.forEach { $0.cancel() }
         dismiss(animated: true)
     }
@@ -228,7 +229,6 @@ public class MediaEditor: UINavigationController {
             dismiss(animated: true)
         } else {
             hub.show(image: image, at: selectedImageIndex)
-            images[selectedImageIndex] = image
             dismissCapability()
         }
     }

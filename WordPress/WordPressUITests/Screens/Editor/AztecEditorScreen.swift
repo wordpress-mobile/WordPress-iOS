@@ -224,9 +224,6 @@ class AztecEditorScreen: BaseScreen {
         MediaPickerAlbumScreen().selectImage(atIndex: 0)
         insertMediaButton.tap()
 
-        // Tap Done in Media Editor
-        app.buttons["Done"].tap()
-
         // Wait for upload to finish
         waitFor(element: uploadProgressBar, predicate: "exists == false", timeout: 10)
 
