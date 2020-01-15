@@ -174,6 +174,7 @@ class MediaEditorHub: UIViewController {
     func failedToLoad(at index: Int) {
         let cell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
         cell?.errorView.isHidden = false
+        hideActivityIndicator()
     }
 
     private func reloadImagesAndReposition() {
