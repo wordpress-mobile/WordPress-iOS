@@ -8,6 +8,7 @@
     - [Grouping Elements](#grouping-elements)
     - [Spoken Order](#spoken-order)
     - [Appearing and Disappearing Elements](#appearing-disappearing)
+    - [Prefer Disabling Instead of Hiding Elements](#prefer-disabling)
 - [Auditing](#auditing)
 - [Further Reading](#further-reading)
 
@@ -114,7 +115,7 @@ Some column-based data is contained inside of stack views. VoiceOver may not spe
 - The vertical stack view is the parent and multiple horizontal stack views are children. 
 - Two labels are contained inside of each horizontal stack view. One for the title (e.g. Subtotal) and one for the value (e.g. $999.99).
 
-![](images/voiceover-guidelines.png)
+<img src="images/voiceover-guidelines.png" width="520">
 
 The reading order is expected to be spoken as `"Subtotal: nine hundred ninety-nine dollars and ninety nine cents"`. In this case, however, VoiceOver defaults to reading the first item in each horizontal stack view, followed by the second. VoiceOver would speak `"Subtotal - Discount - Shipping - Taxes"`, followed by the values `"$999.99, -$601.00, $0.01, $333.33"`. This makes the information difficult to comprehend.
 
@@ -158,7 +159,7 @@ Once the element disappears, we should send another notification but with a `nil
 UIAccessibility.post(notification: .layoutChanged, argument: nil)
 ```
 
-### Prefer Disabling Instead of Hiding Elements
+### <a name="prefer-disabling"></a>Prefer Disabling Instead of Hiding Elements
 
 A common UI pattern is hiding elements, such as buttons, until users are able to use them. 
 
@@ -170,17 +171,17 @@ Consider making the element visible, but disabled, instead.
 
 ```swift
 func viewDidLoad() {
-    /// Allow VoiceOver users to discover the Insert button. But don't let them use it yet.
+    // Allow VoiceOver users to discover the Insert button. But don't let them use it yet.
     insertButton.isEnabled = false
 }
 
 func onImageSelected() {
-    /// Enable the Insert button when an image was selected.
+    // Enable the Insert button when an image was selected.
     insertButton.isEnabled = true
 }
 ```
 
-If a `UIControl`'s `isEnabled` property is set to `false`, UIKit would, by default, automatically add the [`.notEnabled` accessibility trait](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620208-notenabled). This would make VoiceOver read the button as `”dimmed”`, which sufficiently informs the user that the `UIControl` is present but cannot be used yet.
+If a `UIControl`'s `isEnabled` property is set to `false`, UIKit would, by default, automatically add the [`.notEnabled` accessibility trait](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620208-notenabled). This makes VoiceOver read the button as `”dimmed”`, which sufficiently informs the user that the `UIControl` is present but cannot be used yet.
 
 ## <a name="auditing"></a>Auditing
 
