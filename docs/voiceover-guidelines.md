@@ -11,6 +11,7 @@
     - [Prefer Disabling Instead of Hiding Elements](#prefer-disabling)
     - [Use Static Labels for Toggle Buttons](#toggle-buttons)
     - [Consider Using Custom Actions to Simplify Navigation](#custom-actions)
+    - [Provide Sufficient Context in Labels of Repeating Elements](#repeating-elements-labels)
 - [Auditing](#auditing)
 - [Further Reading](#further-reading)
 
@@ -239,7 +240,7 @@ Let's take a blog post's `UITableViewCell` as an example. It has three buttons, 
 
 <img src="images/voiceover-guidelines/custom-actions-cells.png" width="240">
 
-We can make the buttons accessible individually. But that would increase the number of elements that the user has to navigate to. Using custom actions, we can decrease the accessible elements, simplifying the app, and still allow the users to perform the buttons' actions.
+We can make the buttons accessible individually. But that would increase the number of elements that the user has to navigate to. Using custom actions, we can decrease the accessible elements, simplifying the app, and still allow the user to perform the buttons' actions.
 
 ```swift
 class PostCell: UITableViewCell {
@@ -258,6 +259,24 @@ class PostCell: UITableViewCell {
     }
 }
 ```
+
+### <a name="repeating-elements-labels"></a>Provide Sufficient Context in Labels of Repeating Elements
+
+Repeating elements, like buttons inside table view cells, with the same `accessibilityLabel` adds some overhead to users. When focusing on one, a user would have to identify for which item the button is.
+
+Consider the follwing table with at least three _Insight_ cells. The cells have buttons on the right whose `accessibilityLabel` values are all the same, `"Manage Insight"`. 
+
+<img src="images/voiceover-guidelines/repeating-elements-labels.png" width="240">
+
+You might want to consider making the `accessibilityLabel` of these buttons to be more specific but still succinct. 
+
+```swift
+todayInsightCell.manageButton.accessibilityLabel = "Manage Today Insight"
+allTimeInsightCell.manageButton.accessibilityLabel = "Manage All-Time Insight"
+mostPopularInsightCell.manageButton.accessibilityLabel = "Manage Most Popular Insight"
+```
+
+With this, a user focusing a `manageButton` would have enough context. They wouldn't need to go navigate back to the cell's title to deduce the context themselves.
 
 ## <a name="auditing"></a>Auditing
 
