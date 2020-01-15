@@ -55,6 +55,8 @@ class MediaEditorHub: UIViewController {
         isSingleImage && capabilities.count == 1
     }
 
+    private var hubDidAppeared = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         thumbsCollectionView.dataSource = self
@@ -65,9 +67,19 @@ class MediaEditorHub: UIViewController {
         imagesCollectionView.delegate = self
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        selectLastAsset()
+    /// Select the last asset every time the view layout it's subviews until the hub appears.
+    /// This is needed because of some layout recalculations that happens.
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if !hubDidAppeared {
+            selectLastAsset()
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        hubDidAppeared = true
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
