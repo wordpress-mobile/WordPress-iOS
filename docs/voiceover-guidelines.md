@@ -10,6 +10,7 @@
     - [Appearing and Disappearing Elements](#appearing-disappearing)
     - [Prefer Disabling Instead of Hiding Elements](#prefer-disabling)
     - [Use Static Labels for Toggle Buttons](#toggle-buttons)
+    - [Consider Using Custom Actions to Simplify Navigation](#custom-actions)
 - [Auditing](#auditing)
 - [Further Reading](#further-reading)
 
@@ -79,7 +80,7 @@ Take the following custom `UITableViewCell` as an example. It has at least 5 acc
 
 <img src="images/voiceover-guidelines/group-elements-before.png" width="320">
 
-Since there are potentially more cells like this in the table, it would be very easy for a VoiceOver user to lose context. To improve this, we can:
+Since there are potentially more cells like this in the table, it would be very easy for a VoiceOver user to lose context. To improve this, you can:
 
 - Group the elements together by concatenating the information in the `UITableViewCell`'s `accessibilityLabel`.
 - And make the child elements inaccessible by setting their `isAccessibilityElement` to `false`.
@@ -102,7 +103,7 @@ class CustomCell: UITableViewCell {
 }
 ```
 
-When selecting the cell, VoiceOver would then speak something like this:
+When the cell is focused, VoiceOver would then speak something like this:
 
 ```
 Post by Carolyn Wells, from Discover. 6 days ago. Following. 
@@ -164,7 +165,7 @@ An example of this is a custom snackbar.
 
 <img src="images/voiceover-guidelines/announce-elements-notice.gif" width="320">
 
-A blind user may never discover that a snackbar was shown in the screen unless they accidentally moved their finger over it. To make the user aware of it, we can send a notification to VoiceOver using [`UIAccessibility.post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) with [`.layoutChanged`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620186-layoutchanged).
+A blind user may never discover that a snackbar was shown in the screen unless they accidentally moved their finger over it. To make the user aware of it, you can send a notification to VoiceOver using [`UIAccessibility.post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) with [`.layoutChanged`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620186-layoutchanged).
 
 ```swift
 let snackBarView = createSnackBarView()
@@ -173,9 +174,9 @@ presentSnackBar(snackBarView)
 UIAccessibility.post(notification: .layoutChanged, argument: snackBarView)
 ```
 
-This notifies VoiceOver that a new view, `snackBarView`, has appeared and it should _select_ it. VoiceOver will then read its derived `accessibilityLabel`.
+This notifies VoiceOver that a new view, `snackBarView`, has appeared and it should move the _focus_ to it. VoiceOver will then read its derived `accessibilityLabel`.
 
-Once the element disappears, we should send another notification but with a `nil` argument. This makes VoiceOver immediately select a different element on the screen.
+Once the element disappears, you should send another notification but with a `nil` argument. This makes VoiceOver immediately move the focus to a different element on the screen.
 
 ```swift
 UIAccessibility.post(notification: .layoutChanged, argument: nil)
@@ -209,7 +210,7 @@ If a `UIControl`'s `isEnabled` property is set to `false`, UIKit would, by defau
 
 In general, avoid changing the `accessibilityLabel` of elements after it's already been set. If an element's `accessibilityLabel` changes over time, users may think that it is **a different element**. This can be confusing, especially if the element is at the same position on the screen.
 
-If the behavior or meaning of an element, such as a toggle button, changes over time, consider updating the [`accessibilityValue`](https://developer.apple.com/documentation/objectivec/nsobject/1615117-accessibilityvalue) instead. The `accessibilityValue` is read by VoiceOver right after the `accessibilityLabel`. This keeps the user informed that they have the same element selected but it has a different status, and will have a different when activated. 
+If the behavior or meaning of an element, such as a toggle button, changes over time, consider updating the [`accessibilityValue`](https://developer.apple.com/documentation/objectivec/nsobject/1615117-accessibilityvalue) instead. The `accessibilityValue` is read by VoiceOver right after the `accessibilityLabel`. This keeps the user informed that they have the same element focused but it has a different state, and will have a different behavior when activated. 
 
 <img src="images/voiceover-guidelines/toggle-button.gif" width="320">
 
@@ -229,6 +230,34 @@ func showCompactView() {
 ```
 
 The `accessibilityValue` should be set to the current state of the element. You might also want to update the [`accessibilityHint`](https://developer.apple.com/documentation/objectivec/nsobject/1615093-accessibilityhint) if the activation behavior is not obvious.
+
+### <a name="custom-actions"></a>Consider Using Custom Actions to Simplify Navigation
+
+If you have a view containing a few buttons, you can simplify your app's navigation and improve the experience by using [custom actions](https://developer.apple.com/documentation/uikit/uiaccessibilitycustomaction). This is especially useful for table view cells where the buttons can become repetitive.
+
+Let's take a blog post's `UITableViewCell` as an example. It has three buttons, Edit, View, and More. And since it's a cell, it can be repeated multiple times in the table. 
+
+<img src="images/voiceover-guidelines/custom-actions-cells.png" width="240">
+
+We can make the buttons accessible individually. But that would increase the number of elements that the user has to navigate to. Using custom actions, we can decrease the accessible elements, simplifying the app, and still allow the users to perform the buttons' actions.
+
+```swift
+class PostCell: UITableViewCell {
+        override var accessibilityCustomActions: [UIAccessibilityCustomAction]? {
+        get {
+            let editAction = UIAccessibilityCustomAction(name: "Edit",
+                target: self, selector: #selector(showEditor))
+            let viewAction = UIAccessibilityCustomAction(name: "View",
+                target: self, selector: #selector(showPreview))
+            let moreAction = UIAccessibilityCustomAction(name: "More",
+                target: self, selector: #selector(showMoreDialog))
+
+            return [editAction, viewAction, moreAction]
+        }
+        set { }
+    }
+}
+```
 
 ## <a name="auditing"></a>Auditing
 
