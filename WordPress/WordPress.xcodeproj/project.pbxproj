@@ -15032,7 +15032,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressThisWeekWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "WordPress This Week Widget App Store Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore org.wordpress.WordPressThisWeekWidget";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressThisWeekWidget/WordPressThisWeekWidget-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -15061,7 +15061,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = PZYM8XX95Q;
+				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -15078,9 +15078,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressThisWeekWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal.WordPressThisWeekWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "WordPress This Week Widget Ad Hoc Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.internal.WordPressThisWeekWidget";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressThisWeekWidget/WordPressThisWeekWidget-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -15109,7 +15109,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = PZYM8XX95Q;
+				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -15126,9 +15126,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressThisWeekWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha.WordPressThisWeekWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "WordPress This Week Widget Ad Hoc Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "match InHouse org.wordpress.alpha.WordPressThisWeekWidget";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressThisWeekWidget/WordPressThisWeekWidget-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
