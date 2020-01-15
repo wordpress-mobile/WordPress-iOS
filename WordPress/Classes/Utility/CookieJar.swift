@@ -71,24 +71,30 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
 extension WKHTTPCookieStore: CookieJarSharedImplementation {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
 
-        var urlCookies: [HTTPCookie] = []
-
-        DispatchQueue.main.async {
+        // This fixes an issue with `getAllCookies` not calling its completion block (related: https://stackoverflow.com/q/55565188)
+        DispatchQueue.global(qos: .userInitiated).async {
             let group = DispatchGroup()
             group.enter()
 
-            self.getAllCookies { (cookies) in
-                urlCookies = cookies.filter({ (cookie) in
-                    return cookie.matches(url: url)
-                })
-                group.leave()
+            var urlCookies: [HTTPCookie] = []
+
+            DispatchQueue.main.async {
+                self.getAllCookies { (cookies) in
+                    urlCookies = cookies.filter({ (cookie) in
+                        return cookie.matches(url: url)
+                    })
+                    group.leave()
+                }
             }
 
             let result = group.wait(timeout: .now() + .seconds(2))
             if result == .timedOut {
                 DDLogWarn("Time out waiting for WKHTTPCookieStore to get cookies")
             }
-            completion(urlCookies)
+
+            DispatchQueue.main.async {
+                completion(urlCookies)
+            }
         }
     }
 
