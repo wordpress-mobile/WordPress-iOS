@@ -72,6 +72,11 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
 
         // This fixes an issue with `getAllCookies` not calling its completion block (related: https://stackoverflow.com/q/55565188)
+        // - adds timeout so the above failure will eventually return
+        // - waits for the cookies on a background thread so that:
+        //   1. we are not blocking the main thread for UI reasons
+        //   2. cookies seem to never load when main thread is blocked (perhaps they dispatch to the main thread later on)
+
         DispatchQueue.global(qos: .userInitiated).async {
             let group = DispatchGroup()
             group.enter()
