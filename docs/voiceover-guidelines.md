@@ -6,7 +6,7 @@
 - [Guidelines](#guidelines)
 	- [Basics](#basics)
     - [Grouping Elements](#grouping-elements)
-    - [Spoken Order](#spoken-order)
+    - [Navigation Order](#navigation-order)
     - [Appearing and Disappearing Elements](#appearing-disappearing)
     - [Prefer Disabling Instead of Hiding Elements](#prefer-disabling)
     - [Use Static Labels for Toggle Buttons](#toggle-buttons)
@@ -114,18 +114,34 @@ Excerpt. Today, we’re highlighting five sites from the island paradise of Jama
 - Don't forget the periods when concatenating. They make VoiceOver pause which helps in comprehension.
 - The `"Excerpt".` static text in the example is used as a separator and _signals_ that a very long text will be read by VoiceOver.
 
-### <a name="spoken-order"></a>Spoken Order
+### <a name="navigation-order"></a>Navigation Order
 
-Some column-based data is contained inside of stack views. VoiceOver may not speak the data in the desired order. For example, this tableview cell has nested stack views. 
+VoiceOver may not navigate views in the order that you'd naturally expect. For example, this `UITableViewCell` has nested stack views where:
 
 - The vertical stack view is the parent and multiple horizontal stack views are children. 
 - Two labels are contained inside of each horizontal stack view. One for the title (e.g. Subtotal) and one for the value (e.g. $999.99).
 
 <img src="images/voiceover-guidelines.png" width="520">
 
-The reading order is expected to be spoken as `"Subtotal: nine hundred ninety-nine dollars and ninety nine cents"`. In this case, however, VoiceOver defaults to reading the first item in each horizontal stack view, followed by the second. VoiceOver would speak `"Subtotal - Discount - Shipping - Taxes"`, followed by the values `"$999.99, -$601.00, $0.01, $333.33"`. This makes the information difficult to comprehend.
+You would expect VoiceOver to navigate the elements in this order:
 
-Use `.accessibilityElements` on the parent view to list the desired reading order of the subviews.
+1. `"Subtotal"`
+2. `"$999.99"`
+3. `"Discount"`
+4. `"-$601.00"`
+5. _and so on..._
+
+In this case, however, VoiceOver defaults to navigating to the first item in each horizontal stack view, followed by the second.
+
+1. `"Subtotal"`
+2. `"Discount"`
+3. `"Shipping"`
+4. `"Taxes"`
+5. `"$999.99"`
+6. `"-$601.00"`
+7. _and so on..._
+
+This makes the information difficult to comprehend. To fix this, use [`accessibilityElements`](https://developer.apple.com/documentation/objectivec/nsobject/1615147-accessibilityelements) on the parent view to list the desired navigation order of the subviews.
 
 ```swift
 contentView.accessibilityElements = [subtotalTitleLabel, 
@@ -138,7 +154,7 @@ contentView.accessibilityElements = [subtotalTitleLabel,
 			             taxesValueLabel]
 ``` 
 
-This also works for buttons, images, and views.
+The `accessibilityElements` can be used for all types of elements, including but not limited to, buttons and images views. You can also use `accessibilityElements` to make an element inaccessible by not including it in the list.
 
 ### <a name="appearing-disappearing"></a>Appearing and Disappearing Elements
 
