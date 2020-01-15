@@ -30,11 +30,11 @@ extension CookieJarSharedImplementation {
     func _hasCookie(url: URL, username: String, completion: @escaping (Bool) -> Void) {
         getCookies(url: url) { (cookies) in
             let cookie = cookies
-                .first(where: { cookie in
+                .contains(where: { cookie in
                     return cookie.isWordPressLoggedIn(username: username)
                 })
 
-            completion(cookie != nil)
+            completion(cookie)
         }
     }
 
