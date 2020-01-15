@@ -78,16 +78,16 @@ extension PostEditor where Self: UIViewController {
             }
 
             if FeatureFlag.postPreview.enabled {
-                let previewController: NewPostPreviewViewController
+                let previewController: PreviewWebKitViewController
                 if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {
-                    previewController = NewPostPreviewViewController(post: self.post, previewURL: previewURL)
+                    previewController = PreviewWebKitViewController(post: self.post, previewURL: previewURL)
                 } else {
                     if self.post.permaLink == nil {
                         DDLogError("displayPreview: Post permalink is unexpectedly nil")
                         self.displayPreviewNotAvailable(title: NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
                         return
                     }
-                    previewController = NewPostPreviewViewController(post: self.post)
+                    previewController = PreviewWebKitViewController(post: self.post)
                 }
                 let navWrapper = UINavigationController(rootViewController: previewController)
                 self.navigationController?.present(navWrapper, animated: true)
