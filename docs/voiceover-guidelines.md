@@ -218,4 +218,15 @@ The `accessibilityValue` should be set to the current state of the element. You 
 
 ## <a name="further-reading"></a>Further Reading
 
-- [What iOS Traits Actually Do](https://www.deque.com/blog/ios-traits/)
+- Apple Docs 
+    - [Accessibility Programming Guide for iOS](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/iPhoneAccessibility/Introduction/Introduction.html)
+    - [View Controller Programming Guide for iOS: Supporting Accessibility](https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html#//apple_ref/doc/uid/TP40007457-CH12-SW1)
+- WWDC Videos
+    - [Writing Great Accessibility Labels - WWDC 2019](https://developer.apple.com/videos/play/wwdc2019/254/)
+    - [Deliver an Exceptional Accessibility Experience - WWDC 2018](https://developer.apple.com/videos/play/wwdc2018/230/)
+    - [Making Apps More Accessible With Custom Actions - WWDC 2019](https://developer.apple.com/videos/play/wwdc2019/250/)
+    - [Accessibility Inspector - WWDC 2019](https://developer.apple.com/videos/play/wwdc2019/257/)
+    - [What's New in Accessibility - WWDC 2017](https://developer.apple.com/videos/play/wwdc2017/215/)
+- [What iOS Traits Actually Do](https://www.deque.com/blog/ios-traits/) by Deque
+- [iOS Developer Accessibility Guidelines](https://a11y-guidelines.orange.com/mobile_EN/dev-ios.html) by Orange.
+- [Placeholders in Form Fields Are Harmful](https://www.nngroup.com/articles/form-design-placeholders/)
