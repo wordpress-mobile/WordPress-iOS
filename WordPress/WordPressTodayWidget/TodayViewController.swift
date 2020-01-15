@@ -13,6 +13,7 @@ class TodayViewController: UIViewController {
     private var statsValues: TodayWidgetStats? {
         didSet {
             updateStatsLabels()
+            tableView.reloadData()
         }
     }
 
@@ -243,7 +244,6 @@ private extension TodayViewController {
                                                     visitors: todayInsight?.visitorsCount,
                                                     likes: todayInsight?.likesCount,
                                                     comments: todayInsight?.commentsCount)
-                self.tableView.reloadData()
             }
             completionHandler(NCUpdateResult.newData)
         }

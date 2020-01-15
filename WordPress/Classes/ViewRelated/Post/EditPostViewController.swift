@@ -237,7 +237,7 @@ class EditPostViewController: UIViewController {
         }
 
         if FeatureFlag.postPreview.enabled {
-            let controller = NewPostPreviewViewController(post: post)
+            let controller = PreviewWebKitViewController(post: post)
             let navWrapper = UINavigationController(rootViewController: controller)
             postPost.present(navWrapper, animated: true) {}
         } else {
