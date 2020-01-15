@@ -106,7 +106,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate(set) lazy var editorView: Aztec.EditorView = {
 
         Configuration.headersWithBoldTrait = true
-        
+
         let paragraphStyle = ParagraphStyle.default
 
         // Paragraph style customizations will go here.
