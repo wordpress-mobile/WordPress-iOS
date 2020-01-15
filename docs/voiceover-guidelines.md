@@ -9,6 +9,7 @@
     - [Spoken Order](#spoken-order)
     - [Appearing and Disappearing Elements](#appearing-disappearing)
     - [Prefer Disabling Instead of Hiding Elements](#prefer-disabling)
+    - [Use Static Labels for Toggle Buttons](#toggle-buttons)
 - [Auditing](#auditing)
 - [Further Reading](#further-reading)
 
@@ -182,6 +183,31 @@ func onImageSelected() {
 ```
 
 If a `UIControl`'s `isEnabled` property is set to `false`, UIKit would, by default, automatically add the [`.notEnabled` accessibility trait](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620208-notenabled). This makes VoiceOver read the button as `”dimmed”`, which sufficiently informs the user that the `UIControl` is present but cannot be used yet.
+
+### <a name="toggle-buttons"></a>Use Static Labels for Toggle Buttons
+
+In general, avoid changing the `accessibilityLabel` of elements after it's already been set. If an element's `accessibilityLabel` changes over time, users may think that it is **a different element**. This can be confusing, especially if the element is at the same position on the screen.
+
+If the behavior or meaning of an element, such as a toggle button, changes over time, consider updating the [`accessibilityValue`](https://developer.apple.com/documentation/objectivec/nsobject/1615117-accessibilityvalue) instead. The `accessibilityValue` is read by VoiceOver right after the `accessibilityLabel`. This keeps the user informed that they have the same element selected but it has a different status, and will have a different when activated. 
+
+<img src="images/voiceover-guidelines/toggle-button.gif" width="320">
+
+```swift
+func viewDidLoad() {
+    listStyleToggleButton.accessibilityLabel = "List Style"
+    showExpandedView()
+}
+
+func showExpandedView() {
+    listStyleToggleButton.accessibilityValue = "Expanded"
+}
+
+func showCompactView() {
+    listStyleToggleButton.accessibilityValue = "Compact"
+}
+```
+
+The `accessibilityValue` should be set to the current state of the element. You might also want to update the [`accessibilityHint`](https://developer.apple.com/documentation/objectivec/nsobject/1615093-accessibilityhint) if the activation behavior is not obvious.
 
 ## <a name="auditing"></a>Auditing
 
