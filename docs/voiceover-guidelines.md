@@ -25,9 +25,9 @@ If you haven't worked with VoiceOver before, we recommend going through the foll
 
 Providing support for VoiceOver is quite straightforward. For most cases, providing only three attributes should be enough:
 
-* `accessibilityLabel`: A short, localized word or phrase that succinctly describes the control or view, but does not identify the element’s type.
-* `accessibilityTraits`: A combination of one or more individual traits, each of which describes a single aspect of an element’s state, behavior, or usage
-* `accessibilityHint`: A brief, localized phrase that describes the results of an action on an element
+* [`accessibilityLabel`](https://developer.apple.com/documentation/objectivec/nsobject/1615181-accessibilitylabel): A short, localized word or phrase that succinctly describes the control or view, but does not identify the element’s type.
+* [`accessibilityTraits`](https://developer.apple.com/documentation/objectivec/nsobject/1615202-accessibilitytraits): A combination of one or more individual traits, each of which describes a single aspect of an element’s state, behavior, or usage
+* [`accessibilityHint`](https://developer.apple.com/documentation/objectivec/nsobject/1615093-accessibilityhint): A brief, localized phrase that describes the results of an action on an element
 
 As an example, for a Share button, the recommended attributes would be:
 
@@ -54,6 +54,11 @@ Beginning with a capitalized word and not ending with a period helps VoiceOver r
 #### <a name="traits"></a>Traits
 
 The traits attribute contains one or more individual traits that, taken together, describe the behavior of an accessible user interface element. Because some individual traits can be combined to describe a single element, the element’s behavior can be precisely characterized.
+
+Here are some guidelines for using [accessibility traits](https://developer.apple.com/documentation/uikit/accessibility/uiaccessibility/accessibility_traits).
+
+- Use [`.link`](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620178-link) instead of `.button` if a button will show the Safari app. A transition to a separate app may not be immediately obvious to a VoiceOver user. VoiceOver speaking `”link”` instead of `”button”` helps with this.
+- Take advantage of opportunities to use [`.header`](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620170-header). Using the [rotor](https://support.apple.com/en-ca/guide/iphone/iph3e2e3a6d/13.0/ios/13.0), VoiceOver users can opt to _navigate by headers_. The presence of the `.header` trait helps the user understand the structure of the screen.
 
 #### <a name="hints"></a>Hints
 
@@ -212,3 +217,5 @@ The `accessibilityValue` should be set to the current state of the element. You 
 ## <a name="auditing"></a>Auditing
 
 ## <a name="further-reading"></a>Further Reading
+
+- [What iOS Traits Actually Do](https://www.deque.com/blog/ios-traits/)
