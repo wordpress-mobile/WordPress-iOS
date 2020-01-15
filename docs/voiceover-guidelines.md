@@ -5,6 +5,7 @@
 - [Getting Started](#getting-started)
 - [Guidelines](#guidelines)
 	- [Basics](#basics)
+    - [Always add Labels to Text Fields](#textfield-labels)
     - [Grouping Elements](#grouping-elements)
     - [Navigation Order](#navigation-order)
     - [Appearing and Disappearing Elements](#appearing-disappearing)
@@ -72,6 +73,31 @@ Apple recommends that hints should:
 - End with a period.
 - Do not include the name or the type of control or view.
 - Be localized.
+
+### <a name="textfield-labels"></a>Always add Labels to Text Fields
+
+By default, text fields _with placeholders_ provide sufficient accessibility. VoiceOver will read the placeholder and describe that it is a text field.
+
+In the following example, VoiceOver will speak `”First name, Text field, ...”` for the First name field, and a similar message for the Last name field.
+
+<img src="images/voiceover-guidelines/textfield-empty.png" width="400">
+
+However, a problem shows up if you enter `”John”` as the first name, and `”Doe”` as the last name. 
+
+<img src="images/voiceover-guidelines/textfield-filled.png" width="400">
+
+VoiceOver will no longer read the `”First name”` and `”Last name”` placeholders. How will a user, especially someone with short-term memory, know which field is which? 
+
+You can improve the experience by making sure that the text fields have accessibility labels.
+
+```swift
+firstNameTextField.accessibilityLabel = "First name"
+lastNameTextField.accessibilityLabel = "Last name"
+```
+
+<img src="images/voiceover-guidelines/textfield-filled-with-label.png" width="400">
+
+With this, VoiceOver will read the label (e.g. `"First name"`) and the value (e.g. `"John"`).
 
 ### <a name="grouping-elements"></a>Grouping Elements
 
