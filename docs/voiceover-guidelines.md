@@ -70,7 +70,7 @@ If a group of elements represent a single unit of information, consider grouping
 
 Take the following custom `UITableViewCell` as an example. It has at least 5 accessible elements. 
 
-<img src="images/voiceover-guidelines/group-elements-before.png" width="240">
+<img src="images/voiceover-guidelines/group-elements-before.png" width="320">
 
 Since there are potentially more cells like this in the table, it would be very easy for a VoiceOver user to lose context. To improve this, we can:
 
@@ -135,13 +135,13 @@ This also works for buttons, images, and views.
 
 ### <a name="appearing-disappearing"></a>Appearing and Disappearing Elements
 
-If you have a UI element that is shown after an event happens, consider notifying VoiceOver that a new UI element is visible in the screen. 
+If you have a UI element that is shown after an event happens, consider notifying VoiceOver that a new UI element is visible on the screen. 
 
-An example of this is a custom snackbar:
+An example of this is a custom snackbar.
 
 <img src="images/voiceover-guidelines/announce-elements-notice.gif" width="320">
 
-A blind user may never discover that a snackbar was shown in the screen unless they accidentally move their finger over it. To make the user aware of it, we can send a notification to VoiceOver using [`UIAccessibility.post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) and [`.layoutChanged`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620186-layoutchanged).
+A blind user may never discover that a snackbar was shown in the screen unless they accidentally move their finger over it. To make the user aware of it, we can send a notification to VoiceOver using [`UIAccessibility.post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) with [`.layoutChanged`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620186-layoutchanged).
 
 ```swift
 let snackBarView = createSnackBarView()
@@ -152,11 +152,35 @@ UIAccessibility.post(notification: .layoutChanged, argument: snackBarView)
 
 This notifies VoiceOver that a new view, `snackBarView`, has appeared and it should _select_ it. VoiceOver will then read its `accessibilityLabel`.
 
-Once the element disappears, we should send another notification but with a `nil` argument. This makes VoiceOver immediately select a different element from the current view.
+Once the element disappears, we should send another notification but with a `nil` argument. This makes VoiceOver immediately select a different element on the screen.
 
 ```swift
 UIAccessibility.post(notification: .layoutChanged, argument: nil)
 ```
+
+### Prefer Disabling Instead of Hiding Elements
+
+A common UI pattern is hiding elements, such as buttons, until users are able to use them. 
+
+<img src="images/voiceover-guidelines/hidden-button.gif" width="320">
+
+This is not ideal for vision accessibility. VoiceOver users, especially first-time users, may try to understand how to interact with your UI by navigating through all the elements on the screen. If an important button, such as the **Insert button** example above, is initially hidden, they may never discover it. This can make comprehension difficult.
+
+Consider making the element visible, but disabled, instead. 
+
+```swift
+func viewDidLoad() {
+    /// Allow VoiceOver users to discover the Insert button. But don't let them use it yet.
+    insertButton.isEnabled = false
+}
+
+func onImageSelected() {
+    /// Enable the Insert button when an image was selected.
+    insertButton.isEnabled = true
+}
+```
+
+If a `UIControl`'s `isEnabled` property is set to `false`, UIKit would, by default, automatically add the [`.notEnabled` accessibility trait](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620208-notenabled). This would make VoiceOver read the button as `”dimmed”`, which sufficiently informs the user that the `UIControl` is present but cannot be used yet.
 
 ## <a name="auditing"></a>Auditing
 
