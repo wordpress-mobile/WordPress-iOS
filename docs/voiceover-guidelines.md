@@ -311,9 +311,9 @@ With this, a user focusing a `manageButton` would have enough context. They woul
 
 VoiceOver has a standard escape gesture which dismisses an alert or returns to the previous screen. You can perform the gesture by moving two fingers back and forth three times quickly, making a “z”. 
 
-This is generally supported by the all the UIKit components. Most of the time, you shouldn't need to think about it. 
+This is generally supported by the all the UIKit components. If you make custom (modal) views, however, VoiceOver may not know how to dismiss it. This can potentially lock your user within that view forever.
 
-If you make custom (modal) views, however, you might need to manually support it. This can be done by overridding [`accessibilityPerformEscape`](https://developer.apple.com/documentation/objectivec/nsobject/1615091-accessibilityperformescape) in your custom `UIView` or `UIViewController`. 
+You can support the gesture by overridding [`accessibilityPerformEscape`](https://developer.apple.com/documentation/objectivec/nsobject/1615091-accessibilityperformescape) in your custom `UIView` or `UIViewController`. 
 
 ```swift 
 class MyModalView: UIView {
