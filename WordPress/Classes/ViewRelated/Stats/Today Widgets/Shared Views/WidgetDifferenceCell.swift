@@ -11,12 +11,6 @@ class WidgetDifferenceCell: UITableViewCell {
     @IBOutlet private var differenceView: UIView!
     @IBOutlet private var differenceLabel: UILabel!
 
-    private var numberFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
-
     private var percentFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
@@ -67,7 +61,7 @@ private extension WidgetDifferenceCell {
             return
         }
 
-        dataLabel.text = numberFormatter.string(from: NSNumber(value: day.viewsCount)) ?? String(day.viewsCount)
+        dataLabel.text = day.viewsCount.abbreviatedString()
         differenceLabel.text = percentFormatter.string(for: day.dailyChangePercent)
 
         guard !isToday else {

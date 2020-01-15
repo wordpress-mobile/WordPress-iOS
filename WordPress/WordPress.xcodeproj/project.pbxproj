@@ -1152,6 +1152,7 @@
 		984B139221F66AC60004B6A2 /* SiteStatsPeriodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984B139121F66AC50004B6A2 /* SiteStatsPeriodViewModel.swift */; };
 		984B139421F66B2D0004B6A2 /* StatsPeriodStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984B139321F66B2D0004B6A2 /* StatsPeriodStore.swift */; };
 		984B4EF320742FCC00F87888 /* ZendeskUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984B4EF220742FCC00F87888 /* ZendeskUtils.swift */; };
+		984BE91523CE72D600B37D90 /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
 		984F86FB21DEDB070070E0E3 /* TopTotalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984F86FA21DEDB060070E0E3 /* TopTotalsCell.swift */; };
 		98563DDD21BF30C40006F5E9 /* TabbedTotalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98563DDB21BF30C40006F5E9 /* TabbedTotalsCell.swift */; };
 		98563DDE21BF30C40006F5E9 /* TabbedTotalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98563DDC21BF30C40006F5E9 /* TabbedTotalsCell.xib */; };
@@ -12653,6 +12654,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				984BE91523CE72D600B37D90 /* Double+Stats.swift in Sources */,
 				983AE84C2399AC5B00E5B7F6 /* SFHFKeychainUtils.m in Sources */,
 				98F93184239AF76900E4E96E /* CocoaLumberjack.swift in Sources */,
 				98E419DF2399B62A00D8C822 /* Tracks.swift in Sources */,
