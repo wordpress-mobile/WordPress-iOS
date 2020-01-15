@@ -65,10 +65,6 @@ class MediaEditorHub: UIViewController {
         capabilitiesCollectionView.delegate = self
         imagesCollectionView.dataSource = self
         imagesCollectionView.delegate = self
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         selectLastAsset()
     }
 
@@ -284,7 +280,7 @@ extension MediaEditorHub: UICollectionViewDataSource {
         if let imageCell = cell as? MediaEditorImageCell {
             imageCell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
             imageCell.errorView.isHidden = true
-            imageCell.apply(styles: styles!)
+            imageCell.apply(styles: styles)
             imageCell.delegate = delegate
         }
 

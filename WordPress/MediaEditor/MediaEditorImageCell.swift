@@ -8,7 +8,10 @@ class MediaEditorImageCell: UICollectionViewCell {
 
     weak var delegate: MediaEditorHubDelegate?
 
-    func apply(styles: MediaEditorStyles) {
+    func apply(styles: MediaEditorStyles?) {
+        guard let styles = styles else {
+            return
+        }
 
         if let errorLoadingImageMessage = styles[.errorLoadingImageMessage] as? String {
             errorLabel.text = errorLoadingImageMessage

@@ -153,12 +153,30 @@ class MediaEditorHubTests: XCTestCase {
         expect(hub.capabilitiesCollectionView.isUserInteractionEnabled).to(beTrue())
     }
 
+    func testCallRetryDelegate() {
+        let hub: MediaEditorHub = MediaEditorHub.initialize()
+        hub.availableThumbs = [0: UIImage(), 1: UIImage()]
+        hub.loadViewIfNeeded()
+        let delegateMock = MediaEditorHubDelegateMock()
+        hub.delegate = delegateMock
+
+        let cell = hub.collectionView(hub.imagesCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? MediaEditorImageCell
+        cell?.retryButton.sendActions(for: .touchUpInside)
+
+        expect(delegateMock.didCallRetry).to(beTrue())
+    }
+
 }
 
 private class MediaEditorHubDelegateMock: MediaEditorHubDelegate {
     var didCallCapabilityTappedWithIndex: Int?
+    var didCallRetry = false
 
     func capabilityTapped(_ index: Int) {
         didCallCapabilityTappedWithIndex = index
+    }
+
+    func retry() {
+        didCallRetry = true
     }
 }

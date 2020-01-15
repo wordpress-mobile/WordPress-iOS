@@ -34,6 +34,8 @@ public class MediaEditor: UINavigationController {
 
     private var isEditingPlainUIImages = false
 
+    private var lastTappedCapabilityIndex = 0
+
     var selectedImageIndex: Int {
         return hub.selectedThumbIndex
     }
@@ -278,6 +280,8 @@ public class MediaEditor: UINavigationController {
 
 extension MediaEditor: MediaEditorHubDelegate {
     func capabilityTapped(_ index: Int) {
+        lastTappedCapabilityIndex = index
+
         if let image = images[selectedImageIndex] {
             present(capability: Self.capabilities[index], with: image)
         } else {
@@ -300,6 +304,6 @@ extension MediaEditor: MediaEditorHubDelegate {
     }
 
     func retry() {
-        
+        capabilityTapped(lastTappedCapabilityIndex)
     }
 }

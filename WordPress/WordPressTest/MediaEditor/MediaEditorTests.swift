@@ -474,6 +474,22 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.editedImagesIndexes).to(equal([1]))
     }
 
+    func testRetryAfterAMediaFailsToLoad() {
+        // Given
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+        tapFirstCapability(in: mediaEditor)
+        seconImage.simulateFailure()
+
+        // When
+        mediaEditor.retry()
+        seconImage.simulate(fullImageHasBeenDownloaded: image)
+
+        // Then
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil())
+    }
+
     // Wait for the last image to be selected and then
     // tap the first capability.
     private func tapFirstCapability(in mediaEditor: MediaEditor) {
@@ -541,6 +557,10 @@ private class AsyncImageMock: AsyncImage {
 
     func simulate(fullImageHasBeenDownloaded image: UIImage) {
         finishedRetrievingFullImage?(image)
+    }
+
+    func simulateFailure() {
+        finishedRetrievingFullImage?(nil)
     }
 }
 
