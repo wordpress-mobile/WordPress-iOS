@@ -41,6 +41,8 @@ class WebKitViewController: UIViewController {
     @objc var addsWPComReferrer = false
     @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
+    private let opensNewInSafari: Bool
+    let linkBehavior: LinkBehavior
 
     private var reachabilityObserver: Any?
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)
@@ -59,6 +61,8 @@ class WebKitViewController: UIViewController {
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
+        linkBehavior = configuration.linkBehavior
+        opensNewInSafari = configuration.opensNewInSafari
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -74,6 +78,8 @@ class WebKitViewController: UIViewController {
         customTitle = parent.customTitle
         authenticator = parent.authenticator
         navigationDelegate = parent.navigationDelegate
+        linkBehavior = parent.linkBehavior
+        opensNewInSafari = parent.opensNewInSafari
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -97,17 +103,17 @@ class WebKitViewController: UIViewController {
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
     }
 
-    override func loadView() {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
             webView
             ])
         stackView.axis = .vertical
-        view = stackView
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
 
         configureNavigation()
         configureToolbar()
@@ -241,7 +247,8 @@ class WebKitViewController: UIViewController {
         styleToolBarButtons()
     }
 
-    private func configureToolbarButtons() {
+    func configureToolbarButtons() {
+
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let items = [
@@ -407,7 +414,16 @@ extension WebKitViewController: WKNavigationDelegate {
             decisionHandler(policy.action)
             return
         }
-        decisionHandler(.allow)
+
+        // Allow request if it is to `wp-login` for 2fa
+        if let url = navigationAction.request.url, authenticator?.isLogin(url: url) == true {
+            decisionHandler(.allow)
+            return
+        }
+
+        let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)
+
+        decisionHandler(policy)
     }
 }
 
@@ -415,9 +431,14 @@ extension WebKitViewController: WKUIDelegate {
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if navigationAction.targetFrame == nil,
             let url = navigationAction.request.url {
-            let controller = WebKitViewController(url: url, parent: self)
-            let navController = UINavigationController(rootViewController: controller)
-            present(navController, animated: true)
+
+            if opensNewInSafari {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                let controller = WebKitViewController(url: url, parent: self)
+                let navController = UINavigationController(rootViewController: controller)
+                present(navController, animated: true)
+            }
         }
         return nil
     }

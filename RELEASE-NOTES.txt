@@ -1,5 +1,6 @@
 14.1
 -----
+* Fixes a bug that could cause some web page previews to remain unauthenticated even after logging in.
  
 14.0
 -----
