@@ -1,5 +1,7 @@
 # VoiceOver Guidelines
 
+If you haven't worked with VoiceOver before, we recommend going through the [Using VoiceOver](using-voiceover.md) guide first.
+
 #### Table of Contents
 
 - [Guidelines](#guidelines)
@@ -19,8 +21,6 @@
     - [Manual Audit](#audit-manual)
     - [Automated Audit](#audit-automated)
 - [Further Reading](#further-reading)
-
-If you haven't worked with VoiceOver before, we recommend going through the [Using VoiceOver](using-voiceover.md) guide first.
 
 ## <a name="guidelines"></a>Guidelines
 
