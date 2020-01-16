@@ -394,12 +394,12 @@ As you perform an audit, you can keep these questions in mind.
 
 - Is the navigation order what you expect? 
 - Are there elements on the screen that were not accessed? 
-- Are there accessible elements that does not make sense to be accessible?
+- Are there accessible elements that do not make sense to be accessible?
 - Are there too many accessible elements? 
 - Did VoiceOver speak the appropriate trait? For example, `"Button"` or `"Heading"`.
 - Is there something in the [guidelines](#guidelines) that I could use to improve the experience?
-- Are the labels and hints localized?
 - Can you leave the current screen using the escape gesture (make a Z with 2 fingers)?
+- Are the labels and hints localized?
 
 ### <a name="audit-manual"></a>Manual Audit
 
@@ -407,9 +407,13 @@ As you perform an audit, you can keep these questions in mind.
 - Navigate to the first element and start moving to the next elements by swiping right. 
 - Swipe up with two fingers to make VoiceOver speak the entire screen from the top. 
 - Set the [rotor](https://support.apple.com/en-ca/guide/iphone/iph3e2e3a6d/ios) to navigate by Headings. Swipe up and down to go through all the page headings.
+- Use [Screen Curtain](https://support.apple.com/en-us/HT201443) to turn the screen off. This forces you to navigate your app without being able to see anything.
 
 ### <a name="audit-automated"></a>Automated Audit
 
+The Accessibility Inspector can run an automated accessibility audit. It is a great tool to use especially if you're just starting out with accessibility. [This WWDC video](https://developer.apple.com/videos/play/wwdc2019/257/) gives a great introduction on how to use it and what it provides.
+
+The automated audit does not cover everything in the [guidelines](#guidelines). We recommend that you use Accessibility Inspector as a complement.
 
 ## <a name="further-reading"></a>Further Reading
 
