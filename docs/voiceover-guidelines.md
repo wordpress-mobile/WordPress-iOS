@@ -65,7 +65,7 @@ The traits attribute contains one or more individual traits that, taken together
 
 Here are some guidelines for using [accessibility traits](https://developer.apple.com/documentation/uikit/accessibility/uiaccessibility/accessibility_traits).
 
-- Use [`.link`](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620178-link) instead of `.button` if a button will show the Safari app. A transition to a separate app may not be immediately obvious to a VoiceOver user. VoiceOver speaking `”link”` instead of `”button”` helps with this.
+- Use [`.link`](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620178-link) instead of `.button` if a button will show the Safari app. A transition to a separate app may not be immediately obvious to a VoiceOver user. VoiceOver speaking `“link”` instead of `“button”` helps with this.
 - Take advantage of opportunities to use [`.header`](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620170-header). Using the [rotor](https://support.apple.com/en-ca/guide/iphone/iph3e2e3a6d/13.0/ios/13.0), VoiceOver users can opt to _navigate by headers_. The presence of the `.header` trait helps the user understand the structure of the screen.
 
 #### <a name="hints"></a>Hints
@@ -83,15 +83,15 @@ Apple recommends that hints should:
 
 By default, text fields _with placeholders_ provide sufficient accessibility. VoiceOver will read the placeholder and describe that it is a text field.
 
-In the following example, VoiceOver will speak `”First name, Text field, ...”` for the First name field, and a similar message for the Last name field.
+In the following example, VoiceOver will speak `“First name, Text field, ...”` for the First name field, and a similar message for the Last name field.
 
 <img src="images/voiceover-guidelines/textfield-empty.png" width="400">
 
-However, a problem shows up if you enter `”John”` as the first name, and `”Doe”` as the last name. 
+However, a problem shows up if you enter `“John”` as the first name, and `“Doe”` as the last name. 
 
 <img src="images/voiceover-guidelines/textfield-filled.png" width="400">
 
-VoiceOver will no longer read the `”First name”` and `”Last name”` placeholders. How will a user, especially someone with short-term memory, know which field is which? 
+VoiceOver will no longer read the `“First name”` and `“Last name”` placeholders. How will a user, especially someone with short-term memory, know which field is which? 
 
 You can improve the experience by making sure that the text fields have accessibility labels.
 
@@ -102,11 +102,11 @@ lastNameTextField.accessibilityLabel = "Last name"
 
 <img src="images/voiceover-guidelines/textfield-filled-with-label.png" width="400">
 
-With this, VoiceOver will read the label (e.g. `"First name"`) and the value (e.g. `"John"`).
+With this, VoiceOver will read the label (e.g. `"First name"`) and the value (e.g. `“John"`).
 
 ### <a name="grouping-elements"></a>Grouping Elements
 
-If a group of elements represent a single unit of information, consider grouping them into one accessibility element. This helps reduce clutter and makes your app easier to understand and navigate. 
+If a group of elements represents a single unit of information, consider grouping them into one accessibility element. This helps reduce clutter and makes your app easier to understand and navigate. 
 
 Take the following custom `UITableViewCell` as an example. It has at least five accessible elements. 
 
@@ -158,21 +158,25 @@ VoiceOver may not navigate views in the order that you'd naturally expect. For e
 
 You would expect VoiceOver to navigate the elements in this order:
 
-1. `"Subtotal"`
-2. `"$999.99"`
-3. `"Discount"`
-4. `"-$601.00"`
-5. _and so on..._
+1. `“Subtotal”`
+2. `“$999.99”`
+3. `“Discount”`
+4. `“-$601.00”`
+5. `“Shipping”`
+6. `“$0.01”`
+7. `“Taxes”`
+8. `“$333.33”`
 
 In this case, however, VoiceOver defaults to navigating to the first item in each horizontal stack view, followed by the second.
 
-1. `"Subtotal"`
-2. `"Discount"`
-3. `"Shipping"`
-4. `"Taxes"`
-5. `"$999.99"`
-6. `"-$601.00"`
-7. _and so on..._
+1. `“Subtotal”`
+2. `“Discount”`
+3. `“Shipping”`
+4. `“Taxes”`
+5. `“$999.99”`
+6. `“-$601.00”`
+7. `“$0.01”`
+8. `“$333.33”`
 
 This makes the information difficult to comprehend. To fix this, use [`accessibilityElements`](https://developer.apple.com/documentation/objectivec/nsobject/1615147-accessibilityelements) on the parent view to list the desired navigation order of the subviews.
 
@@ -193,11 +197,11 @@ The `accessibilityElements` can be used for all types of elements, including but
 
 If you have a UI element that is shown after an event happens, consider notifying VoiceOver that a new UI element is visible on the screen. 
 
-An example of this is a custom snackbar.
+An example of this is a custom Snackbar.
 
 <img src="images/voiceover-guidelines/announce-elements-notice.gif" width="320">
 
-A blind user may never discover that a snackbar was shown in the screen unless they accidentally moved their finger over it. To make the user aware of it, you can send a notification to VoiceOver using [`UIAccessibility.post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) with [`.layoutChanged`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620186-layoutchanged).
+A blind user may never discover that a Snackbar was shown on the screen unless they accidentally moved their finger over it. To make the user aware of it, you can send a notification to VoiceOver using [`UIAccessibility.post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) with [`.layoutChanged`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620186-layoutchanged).
 
 ```swift
 let snackBarView = createSnackBarView()
@@ -216,7 +220,7 @@ UIAccessibility.post(notification: .layoutChanged, argument: nil)
 
 ### <a name="prefer-disabling"></a>Prefer Disabling Instead of Hiding Elements
 
-A common UI pattern is hiding elements, such as buttons, until users can use them. 
+A common UI pattern is hiding elements (e.g. buttons) until users can use them. 
 
 <img src="images/voiceover-guidelines/hidden-button.gif" width="320">
 
@@ -236,7 +240,7 @@ func onImageSelected() {
 }
 ```
 
-If a `UIControl`'s `isEnabled` property is set to `false`, UIKit would, by default, automatically add the [`.notEnabled` accessibility trait](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620208-notenabled). This makes VoiceOver read the button as `”dimmed”`, which sufficiently informs the user that the `UIControl` is present but cannot be used yet.
+If a `UIControl`'s `isEnabled` property is set to `false`, UIKit would, by default, automatically add the [`.notEnabled` accessibility trait](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620208-notenabled). This makes VoiceOver read the button as `“dimmed”`, which sufficiently informs the user that the `UIControl` is present but cannot be used yet.
 
 ### <a name="toggle-buttons"></a>Use Static Labels for Toggle Buttons
 
@@ -297,9 +301,9 @@ class PostCell: UITableViewCell {
 
 ### <a name="repeating-elements-labels"></a>Provide Sufficient Context in Labels of Repeating Elements
 
-Repeating elements, like buttons inside table view cells, with the same `accessibilityLabel` adds some overhead to users. When focusing on one, a user would have to identify for which item the button is.
+Repeating elements, like buttons inside table view cells, with the same `accessibilityLabel`, adds some overhead to users. When focusing on one, a user would have to identify for which item the button is.
 
-Consider the follwing table with at least three _Insight_ cells. The cells have buttons on the right whose `accessibilityLabel` values are all the same, `"Manage Insight"`. 
+Consider the following table with at least three _Insight_ cells. The cells have buttons on the right whose `accessibilityLabel` values are all the same, `"Manage Insight"`. 
 
 <img src="images/voiceover-guidelines/repeating-elements-labels.png" width="240">
 
@@ -319,7 +323,7 @@ With this, a user focusing a `manageButton` would have enough context. They woul
 
 VoiceOver has a standard escape gesture that dismisses an alert or returns to the previous screen. You can perform the gesture by moving two fingers back and forth three times quickly, making a “z”. 
 
-This is generally supported by the all the UIKit components. If you make custom (modal) views, however, VoiceOver may not know how to dismiss it. This can potentially lock your user within that view forever.
+This is generally supported by all the UIKit components. If you make custom (modal) views, however, VoiceOver may not know how to dismiss it. This can potentially lock your user within that view forever.
 
 You can support the gesture by overriding [`accessibilityPerformEscape`](https://developer.apple.com/documentation/objectivec/nsobject/1615091-accessibilityperformescape) in your custom `UIView` or `UIViewController`. 
 
@@ -411,9 +415,9 @@ As you perform an audit, you can keep these questions in mind.
 
 ### <a name="audit-automated"></a>Automated Audit
 
-The Accessibility Inspector can run an automated accessibility audit. It is a great tool to use especially if you're just starting out with accessibility. [This WWDC video](https://developer.apple.com/videos/play/wwdc2019/257/) gives a great introduction on how to use it and what it provides.
+The Accessibility Inspector can run an automated accessibility audit. It is a great tool to use especially if you're just starting with accessibility. [This WWDC video](https://developer.apple.com/videos/play/wwdc2019/257/) gives a great introduction about it.
 
-The automated audit does not cover everything in the [guidelines](#guidelines). We recommend that you use Accessibility Inspector as a complement.
+The automated audit does not cover everything in the [guidelines](#guidelines). We recommend that you use the Accessibility Inspector to complement your auditing practice.
 
 ## <a name="further-reading"></a>Further Reading
 
