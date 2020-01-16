@@ -16,6 +16,9 @@
     - [Support Escape Gesture for Custom Modal Views](#escape-gesture)
     - [Consider Using Adjustables to Consolidate Related Buttons](#increment-decrement)
 - [Auditing](#auditing)
+    - [Questions to ask](#questions-to-ask)
+    - [Manual Audit](#audit-manual)
+    - [Automated Audit](#audit-automated)
 - [Further Reading](#further-reading)
 
 ## <a name="getting-started"></a>Getting Started
@@ -54,7 +57,7 @@ For a regular control or view, Apple recommends that labels should:
 - Not end with a period.
 - Be localized.
 
-Beginning with a capitalized word and not ending with a period helps VoiceOver read the label with the appropiate inflection.
+Beginning with a capitalized word and not ending with a period helps VoiceOver read the label with the appropriate inflection.
 
 #### <a name="traits"></a>Traits
 
@@ -340,7 +343,6 @@ Let's take a calendar's month navigation as an example. To allow navigation betw
 If we consider that there will be more accessible buttons on the screen like the individual days, the two buttons will just add to the clutter. We can improve this by making the parent view an adjustable element and use [`accessibilityIncrement`](https://developer.apple.com/documentation/objectivec/nsobject/1615076-accessibilityincrement) and [`accessibilityDecrement`](https://developer.apple.com/documentation/objectivec/nsobject/1615169-accessibilitydecrement) for navigation.
 
 ```swift
-/// The parent view
 class MonthNavigationView: UIView {
     // Make the parent accessible. This will make the subviews 
     // (i.e. the Previous and Next buttons) inaccessible.
@@ -383,6 +385,31 @@ class MonthNavigationView: UIView {
 With this change, users can change the month by just swiping up or down. We eliminated the need to navigate between the buttons, saving a few taps.
 
 ## <a name="auditing"></a>Auditing
+
+There are many ways to audit your app for VoiceOver. The following is just something to help get you started. 
+
+### <a name="questions-to-ask"></a>Questions to ask
+
+As you perform an audit, you can keep these questions in mind.
+
+- Is the navigation order what you expect? 
+- Are there elements on the screen that were not accessed? 
+- Are there accessible elements that does not make sense to be accessible?
+- Are there too many accessible elements? 
+- Did VoiceOver speak the appropriate trait? For example, `"Button"` or `"Heading"`.
+- Is there something in the [guidelines](#guidelines) that I could use to improve the experience?
+- Are the labels and hints localized?
+- Can you leave the current screen using the escape gesture (make a Z with 2 fingers)?
+
+### <a name="audit-manual"></a>Manual Audit
+
+- Enable the **Caption Panel** in iOS Settings → Accessibility → VoiceOver. When enabled, anything that VoiceOver speaks will be displayed at the bottom of the screen. This helps with double-checking what you heard.
+- Navigate to the first element and start moving to the next elements by swiping right. 
+- Swipe up with two fingers to make VoiceOver speak the entire screen from the top. 
+- Set the [rotor](https://support.apple.com/en-ca/guide/iphone/iph3e2e3a6d/ios) to navigate by Headings. Swipe up and down to go through all the page headings.
+
+### <a name="audit-automated"></a>Automated Audit
+
 
 ## <a name="further-reading"></a>Further Reading
 
