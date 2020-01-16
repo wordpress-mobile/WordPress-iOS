@@ -108,13 +108,13 @@ With this, VoiceOver will read the label (e.g. `"First name"`) and the value (e.
 
 If a group of elements represent a single unit of information, consider grouping them into one accessibility element. This helps reduce clutter and makes your app easier to understand and navigate. 
 
-Take the following custom `UITableViewCell` as an example. It has at least 5 accessible elements. 
+Take the following custom `UITableViewCell` as an example. It has at least five accessible elements. 
 
 <img src="images/voiceover-guidelines/group-elements-before.png" width="320">
 
 Since there are potentially more cells like this in the table, it would be very easy for a VoiceOver user to lose context. To improve this, you can:
 
-- Group the elements together by concatenating the information in the `UITableViewCell`'s `accessibilityLabel`.
+- Group the elements by concatenating the information in the `UITableViewCell`'s `accessibilityLabel`.
 - And make the child elements inaccessible by setting their `isAccessibilityElement` to `false`.
 
 ```swift
@@ -144,14 +144,14 @@ Excerpt. Today, we’re highlighting five sites from the island paradise of Jama
 ```
 
 - Prefer to place the most important elements first. The VoiceOver user can prefer to skip if they've already listened to what they need. This is why we placed the `excerpt` last in the example.
-- Don't forget the periods when concatenating. They make VoiceOver pause which helps in comprehension.
+- Don't forget the periods when concatenating. They make VoiceOver pause, which helps prevent incomprehension.
 - The `"Excerpt".` static text in the example is used as a separator and _signals_ that a very long text will be read by VoiceOver.
 
 ### <a name="navigation-order"></a>Navigation Order
 
 VoiceOver may not navigate views in the order that you'd naturally expect. For example, this `UITableViewCell` has nested stack views where:
 
-- The vertical stack view is the parent and multiple horizontal stack views are children. 
+- The vertical stack view is the parent, and multiple horizontal stack views are children. 
 - Two labels are contained inside of each horizontal stack view. One for the title (e.g. Subtotal) and one for the value (e.g. $999.99).
 
 <img src="images/voiceover-guidelines.png" width="520">
@@ -216,7 +216,7 @@ UIAccessibility.post(notification: .layoutChanged, argument: nil)
 
 ### <a name="prefer-disabling"></a>Prefer Disabling Instead of Hiding Elements
 
-A common UI pattern is hiding elements, such as buttons, until users are able to use them. 
+A common UI pattern is hiding elements, such as buttons, until users can use them. 
 
 <img src="images/voiceover-guidelines/hidden-button.gif" width="320">
 
@@ -242,7 +242,7 @@ If a `UIControl`'s `isEnabled` property is set to `false`, UIKit would, by defau
 
 In general, avoid changing the `accessibilityLabel` of elements after it's already been set. If an element's `accessibilityLabel` changes over time, users may think that it is **a different element**. This can be confusing, especially if the element is at the same position on the screen.
 
-If the behavior or meaning of an element, such as a toggle button, changes over time, consider updating the [`accessibilityValue`](https://developer.apple.com/documentation/objectivec/nsobject/1615117-accessibilityvalue) instead. The `accessibilityValue` is read by VoiceOver right after the `accessibilityLabel`. This keeps the user informed that they have the same element focused but it has a different state, and will have a different behavior when activated. 
+Consider updating the [`accessibilityValue`](https://developer.apple.com/documentation/objectivec/nsobject/1615117-accessibilityvalue) instead. The `accessibilityValue` is read by VoiceOver right after the `accessibilityLabel`. This informs the user that the element is the same but it has a different state. 
 
 <img src="images/voiceover-guidelines/toggle-button.gif" width="320">
 
@@ -317,11 +317,11 @@ With this, a user focusing a `manageButton` would have enough context. They woul
 
 <img src="images/voiceover-guidelines/custom-dialog.gif" width="240">
 
-VoiceOver has a standard escape gesture which dismisses an alert or returns to the previous screen. You can perform the gesture by moving two fingers back and forth three times quickly, making a “z”. 
+VoiceOver has a standard escape gesture that dismisses an alert or returns to the previous screen. You can perform the gesture by moving two fingers back and forth three times quickly, making a “z”. 
 
 This is generally supported by the all the UIKit components. If you make custom (modal) views, however, VoiceOver may not know how to dismiss it. This can potentially lock your user within that view forever.
 
-You can support the gesture by overridding [`accessibilityPerformEscape`](https://developer.apple.com/documentation/objectivec/nsobject/1615091-accessibilityperformescape) in your custom `UIView` or `UIViewController`. 
+You can support the gesture by overriding [`accessibilityPerformEscape`](https://developer.apple.com/documentation/objectivec/nsobject/1615091-accessibilityperformescape) in your custom `UIView` or `UIViewController`. 
 
 ```swift 
 class MyModalView: UIView {
