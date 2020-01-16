@@ -2,10 +2,11 @@
 
 ## Prepare for VoiceOver
 
-You can set up an easy short-cut to access VoiceOver from anywhere. Go to:
+You can set up an easy shortcut to access VoiceOver from anywhere. 
 
-- iOS Settings → General → Accessibility → Accessibility Shortcut → Select VoiceOver.
-- Now you can triple-click the side button (on iPhone X series) or the home button (on devices with home button) to turn on and off VoiceOver.
+Go to iOS Settings → General → Accessibility → Accessibility Shortcut. Then select VoiceOver. 
+
+Now, you can triple-click the side button (on iPhone X series) or the home button (on devices with home button) to turn on and off VoiceOver.
 
 ## Using VoiceOver
 
