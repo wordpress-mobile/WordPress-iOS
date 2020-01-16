@@ -12,6 +12,7 @@ class AllTimeViewController: UIViewController {
     private var statsValues: AllTimeWidgetStats? {
         didSet {
             updateStatsLabels()
+            tableView.reloadData()
         }
     }
 
@@ -244,7 +245,6 @@ private extension AllTimeViewController {
                                             visitors: allTimesStats?.visitorsCount,
                                             posts: allTimesStats?.postsCount,
                                             bestViews: allTimesStats?.bestViewsPerDayCount)
-                self.tableView.reloadData()
             }
             completionHandler(NCUpdateResult.newData)
         }

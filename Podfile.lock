@@ -239,7 +239,7 @@ PODS:
     - UIDeviceIdentifier (~> 1)
     - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
-  - WordPressMocks (0.0.6)
+  - WordPressMocks (0.0.7)
   - WordPressShared (1.8.11):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
@@ -314,7 +314,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.14.0)
   - WordPressAuthenticator (~> 1.10.6)
   - WordPressKit (~> 4.5.6)
-  - WordPressMocks (~> 0.0.6)
+  - WordPressMocks (~> 0.0.7)
   - WordPressShared (= 1.8.11)
   - WordPressUI (~> 1.5.0)
   - WPMediaPicker (~> 1.6.0)
@@ -508,7 +508,7 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: 508a0581810409b42ac721a32e0264841c31b892
   WordPressAuthenticator: de9ef4de7c9d06d89f938f69b01d810aebe9dfc6
   WordPressKit: 5b37877f273fc4bc7289eb736df3bd3122535bd4
-  WordPressMocks: 5913bd04586a360212e07a8ccbcb36068d4425a3
+  WordPressMocks: 64d77a10fba970a0e98760af651ba8ea6a54fcb8
   WordPressShared: 39ce162e3efe0c85b40790ef654e5a0452c45bbb
   WordPressUI: 4a4adafd2b052e94e4846c0a0203761773dc4fd5
   WPMediaPicker: e5d28197da6b467d4e5975d64a49255977e39455
@@ -517,6 +517,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: e0ba916c47509fb48eddaa3e9bcfb889a2f48090
+PODFILE CHECKSUM: 93012cd7324b6bdb65f2a739a388df85014e50b4
 
 COCOAPODS: 1.8.4
