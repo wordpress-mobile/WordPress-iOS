@@ -2,7 +2,6 @@
 
 #### Table of Contents
 
-- [Getting Started](#getting-started)
 - [Guidelines](#guidelines)
 	- [Basics](#basics)
     - [Always add Labels to Text Fields](#textfield-labels)
@@ -21,11 +20,7 @@
     - [Automated Audit](#audit-automated)
 - [Further Reading](#further-reading)
 
-## <a name="getting-started"></a>Getting Started
-
-If you haven't worked with VoiceOver before, we recommend going through the following resources before reading further. 
-
-- [Using VoiceOver](using-voiceover.md)
+If you haven't worked with VoiceOver before, we recommend going through the [Using VoiceOver](using-voiceover.md) guide first.
 
 ## <a name="guidelines"></a>Guidelines
 
