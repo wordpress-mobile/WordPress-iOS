@@ -14,6 +14,7 @@
     - [Consider Using Custom Actions to Simplify Navigation](#custom-actions)
     - [Provide Sufficient Context in Labels of Repeating Elements](#repeating-elements-labels)
     - [Support Escape Gesture for Custom Modal Views](#escape-gesture)
+    - [Consider Using Adjustables to Consolidate Related Buttons](#increment-decrement)
 - [Auditing](#auditing)
 - [Further Reading](#further-reading)
 
@@ -284,7 +285,8 @@ class PostCell: UITableViewCell {
     }
 
     @objc private func showEditor() -> Bool {
-        // Return true if the method was successful. Returning false will trigger a different VoiceOver sound.
+        // Return true if the method was successful. Returning false will 
+        // trigger a different VoiceOver sound.
         return true
     }
 }
@@ -326,6 +328,59 @@ class MyModalView: UIView {
     }
 }
 ```
+
+### <a name="increment-decrement"></a>Consider Using Adjustables to Consolidate Related Buttons
+
+If you have buttons that operate on a single source, such as Previous and Next buttons, you can opt to group them into a single [adjustable element](https://developer.apple.com/documentation/uikit/uiaccessibility/uiaccessibilitytraits/1620177-adjustable).
+
+Let's take a calendar's month navigation as an example. To allow navigation between months, we expose a Previous and a Next button. 
+
+<img src="images/voiceover-guidelines/adjustable-previous.png" width="320">
+
+If we consider that there will be more accessible buttons on the screen like the individual days, the two buttons will just add to the clutter. We can improve this by making the parent view an adjustable element and use [`accessibilityIncrement`](https://developer.apple.com/documentation/objectivec/nsobject/1615076-accessibilityincrement) and [`accessibilityDecrement`](https://developer.apple.com/documentation/objectivec/nsobject/1615169-accessibilitydecrement) for navigation.
+
+```swift
+/// The parent view
+class MonthNavigationView: UIView {
+    // Make the parent accessible. This will make the subviews 
+    // (i.e. the Previous and Next buttons) inaccessible.
+    override var isAccessibilityElement: Bool {
+        get { true }
+        set { }
+    }
+
+    // Change to an adjustable. VoiceOver will inform the user that they can 
+    // swipe up or down while the element is focused to change the value.
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get { .adjustable }
+        set { }
+    }
+
+    override var accessibilityLabel: String? {
+        get { "Month" }
+        set { }
+    }
+
+    override var accessibilityValue: String? {
+        get { "RETURN_THE_CURRENT_MONTH_AND_YEAR_VALUE_HERE" }
+        set { }
+    }
+
+    // Called when the user swipes up while this element is focused.
+    override func accessibilityIncrement() {
+        moveToNextMonth()
+    }
+
+    // Called when the user swipes down while this element is focused.
+    override func accessibilityDecrement() {
+        moveToPreviousMonth()
+    }
+}
+```
+
+<img src="images/voiceover-guidelines/adjustable-result.gif" width="320">
+
+With this change, users can change the month by just swiping up or down. We eliminated the need to navigate between the buttons, saving a few taps.
 
 ## <a name="auditing"></a>Auditing
 
