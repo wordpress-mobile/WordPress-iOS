@@ -46,4 +46,5 @@ You can stop VoiceOver any time by triple-clicking the side/home button again an
 ## Further Reading
 
 - [Learn VoiceOver gestures on iPhone](https://support.apple.com/en-ca/guide/iphone/iph3e2e2281/ios)
+- [Control VoiceOver using the rotor on iPhone](https://support.apple.com/en-ca/guide/iphone/iph3e2e3a6d/13.0/ios/13.0)
 - [iOS VoiceOver Cheat Sheet (PDF)](https://interactiveaccessibility.com/education/training/downloads/iOS-Cheatsheet.pdf)
