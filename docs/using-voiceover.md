@@ -18,4 +18,7 @@ Now, you can triple-click the side button (on iPhone X series) or the home butto
 - For the iPhone X family, the swipe from the bottom of the screen gesture is different. When you start dragging, you will hear a little sound, then you need to continue dragging until you hear another sound. The speed is not important, it can be slow.
 - You can stop VoiceOver any time by triple-clicking the side/home button again and unchecking VoiceOver.
 
-For more actions, you can check [This handy cheat sheet](https://interactiveaccessibility.com/education/training/downloads/iOS-Cheatsheet.pdf).
+## Further Reading
+
+- [Learn VoiceOver gestures on iPhone](https://support.apple.com/en-ca/guide/iphone/iph3e2e2281/ios)
+- [iOS VoiceOver Cheat Sheet (PDF)](https://interactiveaccessibility.com/education/training/downloads/iOS-Cheatsheet.pdf)
