@@ -34,7 +34,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.5.0'
+    pod 'WordPressUI', '~> 1.5.1-beta'
 
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
