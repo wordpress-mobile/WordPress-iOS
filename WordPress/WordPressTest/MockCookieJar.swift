@@ -1,5 +1,6 @@
 import Foundation
 import WordPress
+import WebKit
 
 class MockCookieJar: HTTPCookieStorage {
     var _cookies = [HTTPCookie]()
@@ -24,15 +25,32 @@ class MockCookieJar: HTTPCookieStorage {
         }
         _cookies.append(cookie)
     }
+}
 
+fileprivate func wordPressCookie(username: String, domain: String) -> HTTPCookie {
+    return HTTPCookie(properties: [
+        .domain: domain,
+        .path: "/",
+        .secure: true,
+        .name: "wordpress_logged_in",
+        .value: "\(username)%00000"
+    ])!
+}
+
+extension HTTPCookieStorage {
     func setWordPressCookie(username: String, domain: String) {
-        let cookie = HTTPCookie(properties: [
-            .domain: domain,
-            .path: "/",
-            .secure: true,
-            .name: "wordpress_logged_in",
-            .value: "\(username)%00000"
-            ])!
+        let cookie = wordPressCookie(username: username, domain: domain)
+        setCookie(cookie)
+    }
+
+    func setWordPressComCookie(username: String) {
+        setWordPressCookie(username: username, domain: ".wordpress.com")
+    }
+}
+
+extension WKHTTPCookieStore {
+    func setWordPressCookie(username: String, domain: String) {
+        let cookie = wordPressCookie(username: username, domain: domain)
         setCookie(cookie)
     }
 
