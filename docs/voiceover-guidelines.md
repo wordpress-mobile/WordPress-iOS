@@ -271,18 +271,21 @@ We can make the buttons accessible individually. But that would increase the num
 
 ```swift
 class PostCell: UITableViewCell {
-        override var accessibilityCustomActions: [UIAccessibilityCustomAction]? {
+    override var accessibilityCustomActions: [UIAccessibilityCustomAction]? {
         get {
             let editAction = UIAccessibilityCustomAction(name: "Edit",
                 target: self, selector: #selector(showEditor))
-            let viewAction = UIAccessibilityCustomAction(name: "View",
-                target: self, selector: #selector(showPreview))
-            let moreAction = UIAccessibilityCustomAction(name: "More",
-                target: self, selector: #selector(showMoreDialog))
+            let viewAction = // ...
+            let moreAction = // ...
 
             return [editAction, viewAction, moreAction]
         }
         set { }
+    }
+
+    @objc private func showEditor() -> Bool {
+        // Return true if the method was successful. Returning false will trigger a different VoiceOver sound.
+        return true
     }
 }
 ```
