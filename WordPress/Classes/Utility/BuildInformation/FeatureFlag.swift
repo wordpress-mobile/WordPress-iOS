@@ -8,6 +8,8 @@ enum FeatureFlag: Int, CaseIterable {
     case signInWithApple
     case postScheduling
     case debugMenu
+    case postPreview
+    case postReblogging
     case mediaEditor
 
     /// Returns a boolean indicating if the feature is enabled
@@ -35,6 +37,10 @@ enum FeatureFlag: Int, CaseIterable {
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper,
                                                   .a8cBranchTest]
+        case .postPreview:
+            return BuildConfiguration.current == .localDeveloper
+        case .postReblogging:
+            return BuildConfiguration.current == .localDeveloper
         case .mediaEditor:
             return true
         }
@@ -67,6 +73,10 @@ extension FeatureFlag: OverrideableFlag {
             return "Post scheduling improvements"
         case .debugMenu:
             return "Debug menu"
+        case .postPreview:
+            return "Post preview redesign"
+        case .postReblogging:
+            return "Post Reblogging"
         case .mediaEditor:
             return "Media Editor"
         }

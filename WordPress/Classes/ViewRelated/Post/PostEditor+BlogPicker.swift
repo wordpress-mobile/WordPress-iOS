@@ -4,7 +4,8 @@ extension PostEditor where Self: UIViewController {
 
     func blogPickerWasPressed() {
         assert(isSingleSiteMode == false)
-        guard post.hasSiteSpecificChanges() else {
+        // if it's a reblog, we won't change the content, so don't show the alert
+        guard !postIsReblogged, post.hasSiteSpecificChanges()  else {
             displayBlogSelector()
             return
         }
@@ -36,9 +37,6 @@ extension PostEditor where Self: UIViewController {
         let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: post.blog.objectID,
                                                                 successHandler: successHandler,
                                                                 dismissHandler: dismissHandler)
-        selectorViewController.title = NSLocalizedString("Select Site", comment: "Blog Picker's Title")
-        selectorViewController.displaysPrimaryBlogOnTop = true
-
         // Note:
         // On iPad Devices, we'll disable the Picker's SearchController's "Autohide Navbar Feature", since
         // upon dismissal, it may force the NavigationBar to show up, even when it was initially hidden.
@@ -69,8 +67,8 @@ extension PostEditor where Self: UIViewController {
         let shouldCreatePage = post is Page
         let postService = PostService(managedObjectContext: mainContext)
         let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
-
-        newPost.content = contentByStrippingMediaAttachments()
+        // if it's a reblog, use the existing content and don't strip the image
+        newPost.content = postIsReblogged ? post.content : contentByStrippingMediaAttachments()
         newPost.postTitle = post.postTitle
         newPost.password = post.password
         newPost.dateCreated = post.dateCreated
