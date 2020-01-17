@@ -86,7 +86,7 @@ class PreviewWebKitViewController: WebKitViewController {
         setToolbarItems(items, animated: false)
     }
 
-    private func toolbarItems(linkBehavior: LinkBehavior) -> [UIBarButtonItem] {
+    func toolbarItems(linkBehavior: LinkBehavior) -> [UIBarButtonItem] {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let items: [UIBarButtonItem]
