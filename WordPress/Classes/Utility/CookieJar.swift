@@ -30,11 +30,11 @@ extension CookieJarSharedImplementation {
     func _hasCookie(url: URL, username: String, completion: @escaping (Bool) -> Void) {
         getCookies(url: url) { (cookies) in
             let cookie = cookies
-                .first(where: { cookie in
+                .contains(where: { cookie in
                     return cookie.isWordPressLoggedIn(username: username)
                 })
 
-            completion(cookie != nil)
+            completion(cookie)
         }
     }
 
@@ -71,24 +71,35 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
 extension WKHTTPCookieStore: CookieJarSharedImplementation {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
 
-        var urlCookies: [HTTPCookie] = []
+        // This fixes an issue with `getAllCookies` not calling its completion block (related: https://stackoverflow.com/q/55565188)
+        // - adds timeout so the above failure will eventually return
+        // - waits for the cookies on a background thread so that:
+        //   1. we are not blocking the main thread for UI reasons
+        //   2. cookies seem to never load when main thread is blocked (perhaps they dispatch to the main thread later on)
 
-        DispatchQueue.main.async {
+        DispatchQueue.global(qos: .userInitiated).async {
             let group = DispatchGroup()
             group.enter()
 
-            self.getAllCookies { (cookies) in
-                urlCookies = cookies.filter({ (cookie) in
-                    return cookie.matches(url: url)
-                })
-                group.leave()
+            var urlCookies: [HTTPCookie] = []
+
+            DispatchQueue.main.async {
+                self.getAllCookies { (cookies) in
+                    urlCookies = cookies.filter({ (cookie) in
+                        return cookie.matches(url: url)
+                    })
+                    group.leave()
+                }
             }
 
             let result = group.wait(timeout: .now() + .seconds(2))
             if result == .timedOut {
                 DDLogWarn("Time out waiting for WKHTTPCookieStore to get cookies")
             }
-            completion(urlCookies)
+
+            DispatchQueue.main.async {
+                completion(urlCookies)
+            }
         }
     }
 

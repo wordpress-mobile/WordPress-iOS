@@ -184,7 +184,8 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         isAccessibilityElement = true
 
         let itemTitle = itemLabel.text ?? ""
-        let dataTitle = dataLabel.text ?? ""
+        let dataTitle = dataLabel.text?.accessibilityLabel ?? dataLabel.text ?? ""
+
         accessibilityLabel = [itemTitle, dataTitle].joined(separator: ", ")
 
         if let statSection = rowData?.statSection, statSection == .insightsAddInsight {
