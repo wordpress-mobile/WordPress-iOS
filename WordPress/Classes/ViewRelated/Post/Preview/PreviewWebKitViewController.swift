@@ -1,4 +1,5 @@
 import Gridicons
+import WebKit
 
 /// An augmentation of WebKitViewController to provide Previewing for different devices
 class PreviewWebKitViewController: WebKitViewController {
@@ -158,6 +159,16 @@ extension PreviewWebKitViewController {
         popoverPresentationController.sourceView = navigationController.toolbar.superview
     }
 }
+
+// MARK: WKNavigationDelegate
+
+extension PreviewWebKitViewController {
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        if selectedDevice == .desktop {
+            // Change the viewport scale to match a desktop environment
+            webView.evaluateJavaScript("let originalVp = document.querySelector('meta[name=viewport]').cloneNode(true); originalVp.setAttribute('name', 'original_viewport' ); document.querySelector('head').appendChild(originalVp); parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content','initial-scale=0');", completionHandler: nil)
+        }
+    }
 }
 
 // MARK: NoResultsViewController Delegate
