@@ -14,8 +14,8 @@ class PreviewWebKitViewController: WebKitViewController {
         didSet {
             if selectedDevice != oldValue {
                 webView.reload()
-                showLabel(device: selectedDevice)
             }
+            showLabel(device: selectedDevice)
         }
     }
 
