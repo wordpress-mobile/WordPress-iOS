@@ -4,9 +4,9 @@ import WebKit
 /// An augmentation of WebKitViewController to provide Previewing for different devices
 class PreviewWebKitViewController: WebKitViewController {
 
-    private let canPublish: Bool
-
     let post: AbstractPost
+
+    private let canPublish: Bool
 
     private weak var noResultsViewController: NoResultsViewController?
 
@@ -72,7 +72,7 @@ class PreviewWebKitViewController: WebKitViewController {
         setToolbarItems(items, animated: false)
     }
 
-    func toolbarItems(linkBehavior: LinkBehavior) -> [UIBarButtonItem] {
+    private func toolbarItems(linkBehavior: LinkBehavior) -> [UIBarButtonItem] {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let items: [UIBarButtonItem]
@@ -113,7 +113,7 @@ class PreviewWebKitViewController: WebKitViewController {
         }
 
         popoverContentController.modalPresentationStyle = .popover
-        popoverContentController.popoverPresentationController!.delegate = self
+        popoverContentController.popoverPresentationController?.delegate = self
         self.present(popoverContentController, animated: true, completion: nil)
     }
 
@@ -177,8 +177,5 @@ extension PreviewWebKitViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         noResultsViewController?.removeFromView()
         webView.reload()
-    }
-
-    func dismissButtonPressed() {
     }
 }

@@ -34,11 +34,9 @@ class PreviewDeviceSelectionViewController: UIViewController {
         super.viewDidLoad()
         let blurEffect: UIBlurEffect
         if #available(iOS 13.0, *) {
-            blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
-//            view.backgroundColor = .clear
+            blurEffect = UIBlurEffect(style: .systemMaterial)
         } else {
-            blurEffect = UIBlurEffect(style: .extraLight)
-//            view.backgroundColor = .clear
+            blurEffect = UIBlurEffect(style: .light)
         }
 
         let effectView = UIVisualEffectView(effect: blurEffect)
