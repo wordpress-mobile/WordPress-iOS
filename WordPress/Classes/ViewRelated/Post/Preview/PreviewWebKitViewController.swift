@@ -92,7 +92,7 @@ class PreviewWebKitViewController: WebKitViewController {
         let items: [UIBarButtonItem]
 
         switch linkBehavior {
-        case .all, .hostOnly:
+        case .all:
             items = [
                 backButton,
                 space,
@@ -102,6 +102,28 @@ class PreviewWebKitViewController: WebKitViewController {
                 space,
                 safariButton
             ]
+        case .hostOnly:
+            if canPublish {
+                items = [
+                    backButton,
+                    space,
+                    forwardButton,
+                    space,
+                    previewButton
+                ]
+            } else {
+                items = [
+                    backButton,
+                    space,
+                    forwardButton,
+                    space,
+                    shareButton,
+                    space,
+                    safariButton,
+                    space,
+                    previewButton
+                ]
+            }
         case .urlOnly:
             if canPublish {
                 items = [publishButton, space, previewButton]
