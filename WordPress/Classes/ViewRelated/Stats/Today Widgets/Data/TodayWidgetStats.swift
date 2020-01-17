@@ -11,13 +11,6 @@ struct TodayWidgetStats: Codable {
     let likes: Int
     let comments: Int
 
-    private enum CodingKeys: String, CodingKey {
-        case views
-        case visitors
-        case likes
-        case comments
-    }
-
     init(views: Int? = 0, visitors: Int? = 0, likes: Int? = 0, comments: Int? = 0) {
         self.views = views ?? 0
         self.visitors = visitors ?? 0

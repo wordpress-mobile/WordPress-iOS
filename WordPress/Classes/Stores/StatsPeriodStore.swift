@@ -127,7 +127,12 @@ struct PeriodStoreState {
 
     // Period overview
 
-    var summary: StatsSummaryTimeIntervalData?
+    var summary: StatsSummaryTimeIntervalData? {
+        didSet {
+            storeThisWeekWidgetData()
+        }
+    }
+
     var summaryStatus: StoreFetchingStatus = .idle
     var summaryLikesStatus: StoreFetchingStatus = .idle
 
@@ -1335,4 +1340,38 @@ extension StatsPeriodStore {
         }
         return status
     }
+}
+
+// MARK: - Widget Data
+
+private extension PeriodStoreState {
+
+    func storeThisWeekWidgetData() {
+        // Only store data if:
+        // - The widget is using the current site
+        // - The summary period is days
+        // - The summary period end date is the current date
+
+        guard widgetUsingCurrentSite(),
+            summary?.period == .day,
+            summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate() else {
+                return
+        }
+
+        // Include an extra day. It's needed to get the dailyChange for the last day.
+        let summaryData = Array(summary?.summaryData.reversed().prefix(ThisWeekWidgetStats.maxDaysToDisplay + 1) ?? [])
+
+        let widgetData = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
+        widgetData.saveData()
+    }
+
+    func widgetUsingCurrentSite() -> Bool {
+        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
+            let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
+            widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
+                return false
+        }
+        return true
+    }
+
 }

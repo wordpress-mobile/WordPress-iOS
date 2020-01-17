@@ -31,6 +31,6 @@ private extension WidgetFooterView {
         siteUrlLabel.textColor = WidgetStyles.secondaryTextColor
         backgroundColorView.backgroundColor = .clear
         WidgetStyles.configureSeparator(separatorLine)
-        WidgetStyles.configureSeparatorVisualEffectView(separatorVisualEffectView)
+        separatorVisualEffectView.effect = WidgetStyles.separatorVibrancyEffect
     }
 }
