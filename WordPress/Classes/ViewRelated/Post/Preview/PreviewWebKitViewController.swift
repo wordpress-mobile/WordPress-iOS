@@ -9,6 +9,8 @@ class PreviewWebKitViewController: WebKitViewController {
 
     private weak var noResultsViewController: NoResultsViewController?
 
+    private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default
+
     lazy var publishButton: UIBarButtonItem = {
         let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post."),
                                             style: .plain,
@@ -17,6 +19,11 @@ class PreviewWebKitViewController: WebKitViewController {
         publishButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.muriel(color: MurielColor(name: .pink))], for: .normal)
         return publishButton
     }()
+
+    lazy var previewButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: Gridicon.iconOfType(.computer), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
+    }()
+
 
     /// Creates a view controller displaying a preview web view.
     /// - Parameters:
@@ -82,9 +89,9 @@ class PreviewWebKitViewController: WebKitViewController {
             ]
         case .urlOnly:
             if canPublish {
-                items = [publishButton]
+                items = [publishButton, space, previewButton]
             } else {
-                items = [shareButton, space, safariButton]
+                items = [shareButton, space, safariButton, space, previewButton]
             }
         }
 
@@ -96,6 +103,19 @@ class PreviewWebKitViewController: WebKitViewController {
         dismiss(animated: true, completion: nil)
     }
 
+    @objc private func previewButtonPressed(_ sender: UIBarButtonItem) {
+        let popoverContentController = PreviewDeviceSelectionViewController()
+        popoverContentController.selectedOption = selectedDevice
+        popoverContentController.dismissHandler = { [weak self] option in
+            self?.selectedDevice = option
+            self?.webView.reload()
+        }
+
+        popoverContentController.modalPresentationStyle = .popover
+        popoverContentController.popoverPresentationController!.delegate = self
+        self.present(popoverContentController, animated: true, completion: nil)
+    }
+
     private func showNoResults(withTitle title: String) {
         let controller = NoResultsViewController.controllerWith(title: title)
         controller.delegate = self
@@ -105,6 +125,39 @@ class PreviewWebKitViewController: WebKitViewController {
         view.pinSubviewToAllEdges(controller.view)
         noResultsViewController?.didMove(toParent: self)
     }
+}
+
+// MARK: UIPopoverPresentationDelegate
+
+extension PreviewWebKitViewController {
+    override func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        guard let navigationController = navigationController, popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+            super.prepareForPopoverPresentation(popoverPresentationController)
+            return
+        }
+
+        popoverPresentationController.permittedArrowDirections = .down
+
+        popoverPresentationController.sourceRect = CGRect(x: navigationController.toolbar.frame.maxX - 36, y: navigationController.toolbar.frame.minY - 2, width: 0, height: 0)
+        popoverPresentationController.sourceView = navigationController.toolbar.superview
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Reset our source rect and view for a transition to a new size
+        guard let navigationController = navigationController,
+            let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
+            popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else { return }
+
+        popoverPresentationController.sourceRect = CGRect(x: navigationController.toolbar.frame.maxX - 36, y: navigationController.toolbar.frame.minY - 2, width: 0, height: 0)
+        popoverPresentationController.sourceView = navigationController.toolbar.superview
+    }
+}
 }
 
 // MARK: NoResultsViewController Delegate
