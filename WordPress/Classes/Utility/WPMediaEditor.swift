@@ -11,12 +11,14 @@ class WPMediaEditor: MediaEditor {
                 .insertLabel: NSLocalizedString("Insert %@", comment: "Button title used in media editor. Placeholder will be the number of items that will be inserted."),
                 .doneLabel: NSLocalizedString("Done", comment: "Done editing an image"),
                 .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
+                .errorLoadingImageMessage: NSLocalizedString("We couldn't retrieve this media.\nPlease tap to retry.", comment: "Description that appears when a media fails to load in the Media Editor."),
                 .cancelColor: UIColor.white,
                 .resetIcon: Gridicon.iconOfType(.undo),
                 .doneIcon: Gridicon.iconOfType(.checkmark),
                 .cancelIcon: Gridicon.iconOfType(.cross),
                 .rotateClockwiseIcon: Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(),
-                .rotateCounterclockwiseButtonHidden: true
+                .rotateCounterclockwiseButtonHidden: true,
+                .retryIcon: Gridicon.iconOfType(.refresh, withSize: CGSize(width: 48, height: 48))
             ]
         }
 

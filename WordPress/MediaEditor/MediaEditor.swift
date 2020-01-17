@@ -34,6 +34,8 @@ public class MediaEditor: UINavigationController {
 
     private var isEditingPlainUIImages = false
 
+    private var lastTappedCapabilityIndex = 0
+
     var selectedImageIndex: Int {
         return hub.selectedThumbIndex
     }
@@ -134,14 +136,8 @@ public class MediaEditor: UINavigationController {
         }
 
         if isSingleImageAndCapability {
-            let index = selectedImageIndex
-            hub.loadingImage(at: index)
             hub.disableDoneButton()
-            asyncImages.first?.full(finishedRetrievingFullImage: { [weak self] image in
-                self?.hub.loadedImage(at: index)
-                let offset = self?.selectedImageIndex ?? 0
-                self?.fullImageAvailable(image, offset: offset)
-            })
+            capabilityTapped(0)
         }
     }
 
@@ -258,6 +254,9 @@ public class MediaEditor: UINavigationController {
 
     private func fullImageAvailable(_ image: UIImage?, offset: Int) {
         guard let image = image else {
+            DispatchQueue.main.async {
+                self.hub.failedToLoad(at: offset)
+            }
             return
         }
 
@@ -281,6 +280,8 @@ public class MediaEditor: UINavigationController {
 
 extension MediaEditor: MediaEditorHubDelegate {
     func capabilityTapped(_ index: Int) {
+        lastTappedCapabilityIndex = index
+
         if let image = images[selectedImageIndex] {
             present(capability: Self.capabilities[index], with: image)
         } else {
@@ -300,5 +301,9 @@ extension MediaEditor: MediaEditorHubDelegate {
                 }
             })
         }
+    }
+
+    func retry() {
+        capabilityTapped(lastTappedCapabilityIndex)
     }
 }

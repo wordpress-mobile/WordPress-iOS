@@ -474,6 +474,22 @@ class MediaEditorTests: XCTestCase {
         expect(mediaEditor.editedImagesIndexes).to(equal([0]))
     }
 
+    func testRetryAfterAMediaFailsToLoad() {
+        // Given
+        let firstImage = AsyncImageMock()
+        let seconImage = AsyncImageMock()
+        let mediaEditor = MediaEditor([firstImage, seconImage])
+        mediaEditor.capabilityTapped(0)
+        firstImage.simulateFailure()
+
+        // When
+        mediaEditor.retry()
+        firstImage.simulate(fullImageHasBeenDownloaded: image)
+
+        // Then
+        expect(mediaEditor.currentCapability).toEventuallyNot(beNil())
+    }
+
 }
 
 class MockCapability: MediaEditorCapability {
@@ -534,6 +550,10 @@ private class AsyncImageMock: AsyncImage {
 
     func simulate(fullImageHasBeenDownloaded image: UIImage) {
         finishedRetrievingFullImage?(image)
+    }
+
+    func simulateFailure() {
+        finishedRetrievingFullImage?(nil)
     }
 }
 

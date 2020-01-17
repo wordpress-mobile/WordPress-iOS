@@ -55,6 +55,8 @@ class MediaEditorHub: UIViewController {
         isSingleImage && capabilities.count == 1
     }
 
+    private var styles: MediaEditorStyles?
+
     private var hubDidAppeared = false
 
     override func viewDidLoad() {
@@ -108,6 +110,7 @@ class MediaEditorHub: UIViewController {
         availableThumbs[index] = image
 
         let imageCell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
+        imageCell?.errorView.isHidden = true
         imageCell?.imageView.image = image
 
         let cell = thumbsCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorThumbCell
@@ -130,6 +133,8 @@ class MediaEditorHub: UIViewController {
 
     func apply(styles: MediaEditorStyles) {
         loadViewIfNeeded()
+
+        self.styles = styles
 
         if let doneLabel = (styles[.insertLabel] ?? styles[.doneLabel]) as? String {
             doneButton.setTitle(String(format: doneLabel, "\(numberOfThumbs)"), for: .normal)
@@ -182,7 +187,14 @@ class MediaEditorHub: UIViewController {
         showOrHideActivityIndicatorAndCapabilities()
     }
 
+    func failedToLoad(at index: Int) {
+        let cell = imagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? MediaEditorImageCell
+        cell?.errorView.isHidden = false
+        hideActivityIndicator()
+    }
+
     private func reloadImagesAndReposition() {
+        view.layoutIfNeeded()
         thumbsCollectionView.reloadData()
         imagesCollectionView.reloadData()
         thumbsCollectionView.layoutIfNeeded()
@@ -285,6 +297,9 @@ extension MediaEditorHub: UICollectionViewDataSource {
 
         if let imageCell = cell as? MediaEditorImageCell {
             imageCell.imageView.image = availableImages[indexPath.row] ?? availableThumbs[indexPath.row]
+            imageCell.errorView.isHidden = true
+            imageCell.apply(styles: styles)
+            imageCell.delegate = delegate
         }
 
         showOrHideActivityIndicatorAndCapabilities()
@@ -357,4 +372,5 @@ extension MediaEditorHub: UICollectionViewDelegate {
 
 protocol MediaEditorHubDelegate: class {
     func capabilityTapped(_ index: Int)
+    func retry()
 }
