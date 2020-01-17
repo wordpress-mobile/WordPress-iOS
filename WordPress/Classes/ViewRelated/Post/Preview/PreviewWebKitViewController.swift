@@ -10,7 +10,11 @@ class PreviewWebKitViewController: WebKitViewController {
 
     private weak var noResultsViewController: NoResultsViewController?
 
-    private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default
+    private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default {
+        didSet {
+            showLabel(device: selectedDevice)
+        }
+    }
 
     lazy var publishButton: UIBarButtonItem = {
         let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post."),
@@ -25,6 +29,13 @@ class PreviewWebKitViewController: WebKitViewController {
         return UIBarButtonItem(image: Gridicon.iconOfType(.computer), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
     }()
 
+    lazy var deviceLabel: PreviewDeviceLabel = {
+        let label = PreviewDeviceLabel()
+        label.insets = UIEdgeInsets(top: 6, left: 6, bottom: 8, right: 8)
+        label.backgroundColor = UIColor.text.withAlphaComponent(0.8)
+        label.textColor = .textInverted
+        return label
+    }()
 
     /// Creates a view controller displaying a preview web view.
     /// - Parameters:
@@ -62,7 +73,10 @@ class PreviewWebKitViewController: WebKitViewController {
         if webView.url?.absoluteString == "about:blank" {
             showNoResults(withTitle: NSLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview") )
         }
+        setupDeviceLabel()
     }
+
+    // MARK: Toolbar Items
 
     override func configureToolbarButtons() {
         super.configureToolbarButtons()
@@ -99,6 +113,8 @@ class PreviewWebKitViewController: WebKitViewController {
         return items
     }
 
+    // MARK: Button Actionss
+
     @objc private func publishButtonPressed(_ sender: UIBarButtonItem) {
         PostCoordinator.shared.publish(post)
         dismiss(animated: true, completion: nil)
@@ -125,6 +141,26 @@ class PreviewWebKitViewController: WebKitViewController {
         view.addSubview(controller.view)
         view.pinSubviewToAllEdges(controller.view)
         noResultsViewController?.didMove(toParent: self)
+    }
+
+    // MARK: Selected Device Label
+
+    private func setupDeviceLabel() {
+        view.addSubview(deviceLabel)
+
+        deviceLabel.translatesAutoresizingMaskIntoConstraints = false
+        deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        view.addConstraints([
+            deviceLabel.rightAnchor.constraint(equalTo: view.safeRightAnchor, constant: 4),
+            deviceLabel.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: 4)
+        ])
+        showLabel(device: selectedDevice)
+    }
+
+    private func showLabel(device: PreviewDeviceSelectionViewController.PreviewDevice) {
+        deviceLabel.isHidden = device == .default
+        deviceLabel.text = device.title
     }
 }
 

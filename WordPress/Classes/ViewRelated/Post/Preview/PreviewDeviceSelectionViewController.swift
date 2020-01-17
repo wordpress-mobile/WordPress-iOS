@@ -4,13 +4,24 @@ class PreviewDeviceSelectionViewController: UIViewController {
     enum PreviewDevice: CaseIterable {
         case desktop
         case `default`
+        case mobile
 
         var title: String {
             switch self {
             case .desktop:
-                return "Desktop"
+                return NSLocalizedString("Desktop", comment: "Title for the desktop web preview")
             case .`default`:
-                return "Default"
+                return NSLocalizedString("Default", comment: "Title for the default web preview")
+            case .mobile:
+                return NSLocalizedString("Mobile", comment: "Title for the mobile web preview")
+            }
+        }
+
+        static var available: [PreviewDevice] {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                return [.mobile, .default]
+            } else {
+                return [.desktop, .default]
             }
         }
     }
@@ -70,7 +81,7 @@ class PreviewDeviceSelectionViewController: UIViewController {
 
 extension PreviewDeviceSelectionViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return PreviewDevice.allCases.count
+        return PreviewDevice.available.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -78,7 +89,7 @@ extension PreviewDeviceSelectionViewController: UITableViewDataSource {
 
         cell.backgroundColor = .clear
 
-        let device = PreviewDevice.allCases[indexPath.row]
+        let device = PreviewDevice.available[indexPath.row]
 
         cell.textLabel?.text = device.title
         cell.textLabel?.font = WPStyleGuide.regularTextFont()
@@ -107,7 +118,7 @@ extension PreviewDeviceSelectionViewController: UITableViewDataSource {
 
 extension PreviewDeviceSelectionViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        dismissHandler?(PreviewDevice.allCases[indexPath.row])
+        dismissHandler?(PreviewDevice.available[indexPath.row])
         dismiss(animated: true, completion: nil)
     }
 }
