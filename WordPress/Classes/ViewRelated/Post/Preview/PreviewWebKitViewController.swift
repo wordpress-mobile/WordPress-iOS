@@ -12,6 +12,7 @@ class PreviewWebKitViewController: WebKitViewController {
 
     private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default {
         didSet {
+            webView.reload()
             showLabel(device: selectedDevice)
         }
     }
@@ -147,7 +148,6 @@ class PreviewWebKitViewController: WebKitViewController {
         popoverContentController.selectedOption = selectedDevice
         popoverContentController.dismissHandler = { [weak self] option in
             self?.selectedDevice = option
-            self?.webView.reload()
         }
 
         popoverContentController.modalPresentationStyle = .popover
@@ -157,7 +157,6 @@ class PreviewWebKitViewController: WebKitViewController {
 
     private func showNoResults(withTitle title: String) {
         let controller = NoResultsViewController.controllerWith(title: title)
-        controller.delegate = self
         noResultsViewController = controller
         addChild(controller)
         view.addSubview(controller.view)
@@ -211,7 +210,9 @@ extension PreviewWebKitViewController {
         // Reset our source rect and view for a transition to a new size
         guard let navigationController = navigationController,
             let popoverPresentationController = presentedViewController?.presentationController as? UIPopoverPresentationController,
-            popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else { return }
+            popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
+                return
+        }
 
         popoverPresentationController.sourceRect = CGRect(x: navigationController.toolbar.frame.maxX - 36, y: navigationController.toolbar.frame.minY - 2, width: 0, height: 0)
         popoverPresentationController.sourceView = navigationController.toolbar.superview
@@ -226,14 +227,5 @@ extension PreviewWebKitViewController {
             // Change the viewport scale to match a desktop environment
             webView.evaluateJavaScript("let originalVp = document.querySelector('meta[name=viewport]').cloneNode(true); originalVp.setAttribute('name', 'original_viewport' ); document.querySelector('head').appendChild(originalVp); parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content','initial-scale=0');", completionHandler: nil)
         }
-    }
-}
-
-// MARK: NoResultsViewController Delegate
-
-extension PreviewWebKitViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        noResultsViewController?.removeFromView()
-        webView.reload()
     }
 }

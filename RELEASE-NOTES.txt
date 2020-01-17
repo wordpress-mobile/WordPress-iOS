@@ -1,8 +1,6 @@
 14.1
 -----
 * Fixes a bug that could cause some web page previews to remain unauthenticated even after logging in.
-* Post Preview: Adds new UI for blog and site page previews.
-* Post Preview: Adds preview for Desktop devices to blog and site page previews.
  
 14.0
 -----
