@@ -1185,6 +1185,7 @@
 		987535642282682D001661B4 /* DetailDataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 987535622282682D001661B4 /* DetailDataCell.xib */; };
 		98797DBC222F434500128C21 /* OverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98797DBA222F434500128C21 /* OverviewCell.swift */; };
 		98797DBD222F434500128C21 /* OverviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98797DBB222F434500128C21 /* OverviewCell.xib */; };
+		987E9C7D23D290DF006B3ECF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 987E9C7C23D290DF006B3ECF /* InfoPlist.strings */; };
 		9880150623A840200003BD11 /* ColorPalette.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 435B76292297484200511813 /* ColorPalette.xcassets */; };
 		988056032183CCE50083B643 /* SiteStatsInsightsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */; };
 		98812966219CE42A0075FF33 /* StatsTotalRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98812964219CE42A0075FF33 /* StatsTotalRow.swift */; };
@@ -3513,6 +3514,7 @@
 		987535622282682D001661B4 /* DetailDataCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailDataCell.xib; sourceTree = "<group>"; };
 		98797DBA222F434500128C21 /* OverviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewCell.swift; sourceTree = "<group>"; };
 		98797DBB222F434500128C21 /* OverviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewCell.xib; sourceTree = "<group>"; };
+		987E9C7C23D290DF006B3ECF /* InfoPlist.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsInsightsTableViewController.swift; sourceTree = "<group>"; };
 		98812964219CE42A0075FF33 /* StatsTotalRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTotalRow.swift; sourceTree = "<group>"; };
 		98812965219CE42A0075FF33 /* StatsTotalRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTotalRow.xib; sourceTree = "<group>"; };
@@ -7272,6 +7274,7 @@
 		93E5283E19A7741A003A1A9C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				987E9C7C23D290DF006B3ECF /* InfoPlist.strings */,
 				93E5283F19A7741A003A1A9C /* Info.plist */,
 				93267A6019B896CD00997EB8 /* Info-Internal.plist */,
 				591252291A38AE9C00468279 /* TodayWidgetPrefix.pch */,
@@ -10557,6 +10560,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98906501237CC1DF00218CD2 /* WidgetFooterView.xib in Resources */,
+				987E9C7D23D290DF006B3ECF /* InfoPlist.strings in Resources */,
 				93E5284319A7741A003A1A9C /* MainInterface.storyboard in Resources */,
 				98906509237CC1DF00218CD2 /* WidgetTwoColumnCell.xib in Resources */,
 				9A144AC822FD6A650069DD71 /* ColorPalette.xcassets in Resources */,
