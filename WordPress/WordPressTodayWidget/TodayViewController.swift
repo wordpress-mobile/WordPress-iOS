@@ -126,6 +126,11 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+        if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
+            return WidgetUrlCell.height
+        }
+
         guard !isConfigured,
             let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
                 return UITableView.automaticDimension
