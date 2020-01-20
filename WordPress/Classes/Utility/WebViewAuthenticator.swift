@@ -26,6 +26,7 @@ class WebViewAuthenticator: NSObject {
     /// If true, the authenticator will assume that redirect URLs are allowed and
     /// won't use the special WordPress.com redirect URL
     ///
+    @objc
     var safeRedirect = false
 
     init(credentials: Credentials) {

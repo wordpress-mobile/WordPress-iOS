@@ -28,7 +28,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 @interface WPWebViewController () <UIWebViewDelegate>
 
-@property (nonatomic,   weak) IBOutlet UIWebView                *webView;
+@property (nonatomic,   weak) IBOutlet WKWebView                *webView;
 @property (nonatomic,   weak) IBOutlet WebProgressView          *progressView;
 @property (nonatomic, strong) UIBarButtonItem                   *dismissButton;
 
@@ -39,7 +39,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 @property (nonatomic, strong) NavigationTitleView               *titleView;
 @property (nonatomic, copy)   NSString                          *customTitle;
-@property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
 @property (nonatomic, strong) id                                reachabilityObserver;
 
@@ -56,7 +55,9 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 {
     [self stopWaitingForConnectionRestored];
 
-    _webView.delegate = nil;
+    _webView.UIDelegate = nil;
+    _webView.navigationDelegate = nil;
+
     if (_webView.isLoading) {
         [_webView stopLoading];
     }
@@ -122,13 +123,18 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.forwardButton.tintColor            = [UIColor murielNeutral20];
     self.toolbarBottomConstraint.constant   = WPWebViewToolbarHiddenConstant;
 
-    // WebView
-    self.webView.scalesPageToFit            = YES;
-
     // Share
     if (!self.secureInteraction) {
         self.navigationItem.rightBarButtonItem  = self.optionsButton;
     }
+    
+    // Authenticator
+    //
+    // @diegoreymendez: While testing this VC for the migration from UIWebView to WKWebView I noticed this wasn't working
+    // at all in the simulator.  I'm not sure why this is necessary, but it seems like the authenticator is failing to redirect us
+    // if this isn't set to true.  @kokejb suggested this change - unfortunately evaluating why this is necessary goes far beyond the
+    // scope of my current work.  I just want the reader to know the context behind this adition.
+    self.authenticator.safeRedirect = true;
 
     // Fire away!
     [self applyModalStyleIfNeeded];
@@ -185,7 +191,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (NSString *)documentPermalink
 {
-    NSString *permaLink = self.webView.request.URL.absoluteString;
+    NSString *permaLink = self.webView.URL.absoluteString;
 
     // Make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
     if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) {
@@ -197,7 +203,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (NSString *)documentTitle
 {
-    NSString *title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    NSString *title = self.webView.title;
 
     if (title != nil && [[title trim] isEqualToString:@""] == NO) {
         return title;
@@ -220,6 +226,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [self loadRequest:request];
         return;
     }
+    
     id<CookieJar> cookieJar = (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage];
     [self.authenticator requestWithUrl:self.url
                              cookieJar:cookieJar
@@ -248,13 +255,13 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 {
     self.backButton.enabled = self.webView.canGoBack;
     self.forwardButton.enabled = self.webView.canGoForward;
-    self.titleView.titleLabel.text = self.loading ? nil : [self documentTitle];
-    self.titleView.subtitleLabel.text = self.webView.request.URL.host;
+    self.titleView.titleLabel.text = self.webView.loading ? nil : [self documentTitle];
+    self.titleView.subtitleLabel.text = self.webView.URL.host;
 
-    if ([self.webView.request.URL.absoluteString isEqualToString:@""]) {
+    if ([self.webView.URL.absoluteString isEqualToString:@""]) {
         self.optionsButton.enabled = FALSE;
     } else {
-        self.optionsButton.enabled = !self.loading;
+        self.optionsButton.enabled = !self.webView.loading;
     }
 }
 
@@ -359,9 +366,95 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
+#pragma mark - WKNavigationDelegate
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+    NSURLRequest *request = [navigationAction request];
+    
+    DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
+    
+    NSURLRequest *redirectRequest = [self.authenticator interceptRedirectWithRequest:request];
+    if (redirectRequest != NULL) {
+        DDLogInfo(@"Found redirect to %@", redirectRequest);
+        [self.webView loadRequest:redirectRequest];
+        
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
+    
+    // To handle WhatsApp and Telegraph shares
+    // Even though the documentation says that canOpenURL will only return YES for
+    // URLs configured on the plist under LSApplicationQueriesSchemes if we don't filter
+    // out http requests it also returns YES for those
+    if (![request.URL.scheme hasPrefix:@"http"]
+        && [[UIApplication sharedApplication] canOpenURL:request.URL]) {
+        [[UIApplication sharedApplication] openURL:request.URL
+                                           options:nil
+                                 completionHandler:nil];
+        
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
+
+    if (self.navigationDelegate != nil) {
+        WebNavigationPolicy *policy = [self.navigationDelegate shouldNavigateWithRequest:request];
+        
+        if (policy.redirectRequest != NULL) {
+            [self.webView loadRequest:policy.redirectRequest];
+            decisionHandler(WKNavigationActionPolicyCancel);
+            return;
+        }
+        
+        decisionHandler(policy.action);
+    }
+
+    //  Note:
+    //  UIWebView callbacks will get hit for every frame that gets loaded. As a workaround, we'll consider
+    //  we're in a "loading" state just for the Top Level request.
+    //
+/*    if ([request.mainDocumentURL isEqual:request.URL]) {
+        [self refreshInterface];
+    }
+*/
+    decisionHandler(WKNavigationActionPolicyAllow);
+}
+
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation
+{
+    DDLogInfo(@"%@ Started Loading [%@]", NSStringFromClass([self class]), webView.URL);
+    
+    [self.progressView startedLoading];
+}
+
+- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error
+{
+    DDLogInfo(@"%@ Error Loading [%@]", NSStringFromClass([self class]), error);
+
+    [self.progressView finishedLoading];
+    [self refreshInterface];
+
+    // Don't show Ajax Canceled or Frame Load Interrupted errors
+    if (error.code == WPWebViewErrorAjaxCancelled || error.code == WPWebViewErrorFrameLoadInterrupted) {
+        return;
+    } else if ([error.domain isEqualToString:WPWebViewWebKitErrorDomain] && error.code == WPWebViewErrorPluginHandledLoad) {
+        return;
+    }
+
+    [self displayLoadError:error];
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
+{
+    DDLogInfo(@"%@ Finished Loading [%@]", NSStringFromClass([self class]), webView.URL);
+
+    [self.progressView finishedLoading];
+    [self refreshInterface];
+    [self showBottomToolbarIfNeeded];
+}
 
 #pragma mark - UIWebViewDelegate
-
+/*
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
@@ -403,8 +496,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }
 
     return YES;
-}
-
+}*/
+/*
 - (void)webViewDidStartLoad:(UIWebView *)aWebView
 {
     DDLogInfo(@"%@ Started Loading [%@]", NSStringFromClass([self class]), aWebView.request.URL);
@@ -415,8 +508,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }
 
     [self.progressView startedLoading];
-}
-
+}*/
+/*
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     DDLogInfo(@"%@ Error Loading [%@]", NSStringFromClass([self class]), error);
@@ -425,9 +518,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     if (!self.loading) {
         return;
     }
-
-    // Refresh the Interface
-    self.loading = NO;
 
     [self.progressView finishedLoading];
     [self refreshInterface];
@@ -440,7 +530,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }
 
     [self displayLoadError:error];
-}
+}*/
 
 - (void)displayLoadError:(NSError *)error
 {
@@ -451,7 +541,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [WPError showAlertWithTitle: NSLocalizedString(@"Error", @"Generic error alert title") message: error.localizedDescription];
     }
 }
-
+/*
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
 {
     DDLogInfo(@"%@ Finished Loading [%@]", NSStringFromClass([self class]), aWebView.request.URL);
@@ -466,6 +556,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     [self.progressView finishedLoading];
     [self refreshInterface];
     [self showBottomToolbarIfNeeded];
-}
+}*/
 
 @end
