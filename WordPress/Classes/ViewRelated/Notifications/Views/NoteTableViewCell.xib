@@ -99,7 +99,7 @@
             <accessibility key="accessibilityConfiguration">
                 <accessibilityTraits key="traits" button="YES"/>
             </accessibility>
-            <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="iconImageView" destination="JUi-EY-Obv" id="TRa-w4-qvm"/>
                 <outlet property="noticonContainerView" destination="Z3U-oU-FSh" id="sEj-sO-l50"/>
