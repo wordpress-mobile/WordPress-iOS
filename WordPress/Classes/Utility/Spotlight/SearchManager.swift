@@ -477,7 +477,7 @@ fileprivate extension SearchManager {
 
         if FeatureFlag.postPreview.enabled {
             let controller = PreviewWebKitViewController(post: apost)
-            let navWrapper = UINavigationController(rootViewController: controller)
+            let navWrapper = LightNavigationController(rootViewController: controller)
             WPTabBarController.sharedInstance().present(navWrapper, animated: true)
         } else {
             let controller = PostPreviewViewController(post: apost)
