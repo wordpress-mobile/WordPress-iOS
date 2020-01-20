@@ -298,8 +298,8 @@ class WebKitViewController: UIViewController {
     // MARK: Reachability Helpers
 
     private func reloadWhenConnectionRestored() {
-        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable {
-            self.loadWebViewRequest()
+        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable { [weak self] in
+            self?.loadWebViewRequest()
         }
     }
 
