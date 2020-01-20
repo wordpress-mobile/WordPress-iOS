@@ -94,7 +94,7 @@ PODS:
   - Nimble (7.3.4)
   - NSObject-SafeExpectations (0.0.3)
   - "NSURL+IDN (0.3)"
-  - OCMock (3.5)
+  - OCMock (3.4.3)
   - OHHTTPStubs (6.1.0):
     - OHHTTPStubs/Default (= 6.1.0)
   - OHHTTPStubs/Core (6.1.0)
@@ -280,7 +280,7 @@ DEPENDENCIES:
   - Nimble (~> 7.3.1)
   - NSObject-SafeExpectations (= 0.0.3)
   - "NSURL+IDN (= 0.3)"
-  - OCMock (~> 3.4)
+  - OCMock (= 3.4.3)
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
@@ -472,7 +472,7 @@ SPEC CHECKSUMS:
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
   "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
-  OCMock: 4ab4577fc941af31f4a0398f6e7e230cf21fc72a
+  OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   React: f208cb37831d73d3feafe90ff5c353ef67516cfb
@@ -517,6 +517,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: cc48a7a6157ba8a7518a8ea8dea653b339685380
+PODFILE CHECKSUM: 5d97604bfecfc99a3712a49504669ecaaeec4341
 
 COCOAPODS: 1.8.4
