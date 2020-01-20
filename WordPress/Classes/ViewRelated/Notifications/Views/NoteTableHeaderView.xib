@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="v2Z-s3-Kgc" customClass="NoteTableHeaderView" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="700" height="48"/>
+            <rect key="frame" x="0.0" y="0.0" width="700" height="40"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-Ni-9e0" customClass="SeparatorsView" customModule="WordPress" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="700" height="48"/>
+                    <rect key="frame" x="0.0" y="0.0" width="700" height="40"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="reader-postaction-time" translatesAutoresizingMaskIntoConstraints="NO" id="imt-VI-wdh" userLabel="Icon">
                             <rect key="frame" x="20" y="16" width="16" height="16"/>
@@ -38,9 +38,9 @@
                     </accessibility>
                     <constraints>
                         <constraint firstItem="zK2-Ta-Z1W" firstAttribute="leading" secondItem="imt-VI-wdh" secondAttribute="trailing" constant="4" id="5gJ-xQ-IIv"/>
-                        <constraint firstItem="imt-VI-wdh" firstAttribute="centerY" secondItem="AjL-Ni-9e0" secondAttribute="centerY" id="7ht-6A-0hZ"/>
+                        <constraint firstItem="imt-VI-wdh" firstAttribute="centerY" secondItem="zK2-Ta-Z1W" secondAttribute="centerY" id="7ht-6A-0hZ"/>
                         <constraint firstItem="zK2-Ta-Z1W" firstAttribute="top" secondItem="AjL-Ni-9e0" secondAttribute="top" constant="16" id="84n-R2-3hp"/>
-                        <constraint firstAttribute="bottom" secondItem="zK2-Ta-Z1W" secondAttribute="bottom" constant="16" id="H5r-aJ-Jgz"/>
+                        <constraint firstAttribute="bottom" secondItem="zK2-Ta-Z1W" secondAttribute="bottom" constant="8" id="H5r-aJ-Jgz"/>
                         <constraint firstItem="imt-VI-wdh" firstAttribute="leading" secondItem="AjL-Ni-9e0" secondAttribute="leadingMargin" id="X3z-pE-0Uc"/>
                         <constraint firstItem="zK2-Ta-Z1W" firstAttribute="trailing" secondItem="AjL-Ni-9e0" secondAttribute="trailingMargin" id="seF-xR-8yi"/>
                     </constraints>
