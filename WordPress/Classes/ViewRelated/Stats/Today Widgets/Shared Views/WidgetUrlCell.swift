@@ -1,15 +1,15 @@
 import UIKit
 
-class WidgetFooterView: UITableViewHeaderFooterView {
+class WidgetUrlCell: UITableViewCell {
 
     // MARK: - Properties
 
-    static let reuseIdentifier = "WidgetFooterView"
+    static let reuseIdentifier = "WidgetUrlCell"
+    static let height: CGFloat = 32
 
     @IBOutlet private var separatorLine: UIView!
     @IBOutlet private var separatorVisualEffectView: UIVisualEffectView!
     @IBOutlet private var siteUrlLabel: UILabel!
-    @IBOutlet private var backgroundColorView: UIView!
 
     // MARK: - View
 
@@ -18,18 +18,18 @@ class WidgetFooterView: UITableViewHeaderFooterView {
         configureColors()
     }
 
-    func configure(siteUrl: String) {
+    func configure(siteUrl: String, hideSeparator: Bool = false) {
         siteUrlLabel.text = siteUrl
+        separatorVisualEffectView.isHidden = hideSeparator
     }
 
 }
 
 // MARK: - Private Extension
 
-private extension WidgetFooterView {
+private extension WidgetUrlCell {
     func configureColors() {
         siteUrlLabel.textColor = WidgetStyles.secondaryTextColor
-        backgroundColorView.backgroundColor = .clear
         WidgetStyles.configureSeparator(separatorLine)
         separatorVisualEffectView.effect = WidgetStyles.separatorVibrancyEffect
     }
