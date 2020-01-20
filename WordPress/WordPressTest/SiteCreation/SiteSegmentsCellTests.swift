@@ -45,7 +45,18 @@ final class SiteSegmentsCellTests: XCTestCase {
     }
 
     func testCellTitleIsTheCorrectFont() {
-        XCTAssertEqual(cell?.title.font, WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold))
+        // SiteSegmentsCell's UILabel has `title.adjustsFontForContentSizeCategory = true`.
+        //  We cannot relaly assert on the Label's font, since it's bond to be changed.
+        //
+        //  XCTAssertEqual(cell?.title.font, WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold))
+
+        let expectedFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        let actualFont = cell?.title.font
+
+        XCTAssertNotNil(actualFont)
+
+        XCTAssertEqual(expectedFont.fontName, actualFont!.fontName)
+        XCTAssertEqual(expectedFont.pointSize, actualFont!.pointSize, accuracy: 0.01)
     }
 
     func testCellSubtitleIsTheCorrectFont() {
