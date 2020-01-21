@@ -37,6 +37,8 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
 
+        Configuration.headersWithBoldTrait = true
+
         let paragraphStyle = ParagraphStyle.default
 
         // Paragraph style customizations will go here.
@@ -59,7 +61,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.textColor = .text
         textView.tintColor = ShareColors.aztecCursorColor
         textView.blockquoteBackgroundColor = .neutral(.shade5)
-        textView.blockquoteBorderColor = .listIcon
+        textView.blockquoteBorderColors = [.listIcon]
         textView.preBackgroundColor = .neutral(.shade5)
         textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
