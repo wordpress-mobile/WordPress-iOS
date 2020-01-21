@@ -38,6 +38,19 @@ extension AllTimeWidgetStats {
         }
     }
 
+    static func clearSavedData() {
+        guard let dataFileURL = AllTimeWidgetStats.dataFileURL else {
+            return
+        }
+
+        do {
+            try FileManager.default.removeItem(at: dataFileURL)
+        }
+        catch {
+            DDLogError("AllTimeWidgetStats: failed deleting data file '\(dataFileName)': \(error.localizedDescription)")
+        }
+    }
+
     func saveData() {
         guard let dataFileURL = AllTimeWidgetStats.dataFileURL else {
                 return
