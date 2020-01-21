@@ -346,7 +346,10 @@ private extension AllTimeViewController {
     // MARK: - Helpers
 
     func updateStatsLabels() {
-        let values = statsValues ?? AllTimeWidgetStats()
+        guard let values = statsValues else {
+            return
+        }
+
         viewCount = values.views.abbreviatedString()
         visitorCount = values.visitors.abbreviatedString()
         postCount = values.posts.abbreviatedString()

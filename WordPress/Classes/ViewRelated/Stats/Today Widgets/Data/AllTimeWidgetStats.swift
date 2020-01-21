@@ -21,11 +21,11 @@ struct AllTimeWidgetStats: Codable {
 
 extension AllTimeWidgetStats {
 
-    static func loadSavedData() -> AllTimeWidgetStats {
+    static func loadSavedData() -> AllTimeWidgetStats? {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
                 DDLogError("AllTimeWidgetStats: data file '\(dataFileName)' does not exist.")
-                return AllTimeWidgetStats()
+                return nil
         }
 
         let decoder = PropertyListDecoder()
@@ -34,7 +34,7 @@ extension AllTimeWidgetStats {
             return try decoder.decode(AllTimeWidgetStats.self, from: data)
         } catch {
             DDLogError("Failed loading AllTimeWidgetStats data: \(error.localizedDescription)")
-            return AllTimeWidgetStats()
+            return nil
         }
     }
 
