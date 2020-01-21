@@ -67,8 +67,9 @@ class MySiteScreen: BaseScreen {
         return PostsScreen()
     }
 
-    func gotoMediaScreen() {
+    func gotoMediaScreen() -> MediaScreen {
         mediaButton.tap()
+        return MediaScreen()
     }
 
     func gotoStatsScreen() -> StatsScreen {

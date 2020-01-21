@@ -64,7 +64,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             postList.pop()
         }
 
-        mySite.gotoMediaScreen()
+        _ = mySite.gotoMediaScreen()
         sleep(imagesWaitTime) // wait for post images to load
         snapshot("4-Media")
 
