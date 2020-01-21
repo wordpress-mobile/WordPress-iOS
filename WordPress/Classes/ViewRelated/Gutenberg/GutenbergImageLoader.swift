@@ -56,6 +56,9 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
     }
 
     private func getCacheKey(for url: URL, size: CGSize) -> URL? {
+        guard size != CGSize.zero else {
+            return url
+        }
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         let queryItems = components?.queryItems
         let newQueryItems = (queryItems ?? []) + [URLQueryItem(name: "cachekey", value: "\(size)")]

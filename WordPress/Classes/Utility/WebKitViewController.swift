@@ -202,7 +202,7 @@ class WebKitViewController: UIViewController {
 
     private func setupNavBarTitleView() {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
-        if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, *), navigationController is LightNavigationController == false {
             titleView.titleLabel.textColor = UIColor(light: .white, dark: .neutral(.shade70))
         } else {
             titleView.titleLabel.textColor = .neutral(.shade70)
@@ -284,7 +284,7 @@ class WebKitViewController: UIViewController {
     }
 
     private func styleBarButton(_ button: UIBarButtonItem) {
-        if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, *), navigationController is LightNavigationController == false {
             button.tintColor = UIColor(light: .white, dark: .neutral(.shade70))
         } else {
             button.tintColor = .listIcon
@@ -298,8 +298,8 @@ class WebKitViewController: UIViewController {
     // MARK: Reachability Helpers
 
     private func reloadWhenConnectionRestored() {
-        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable {
-            self.loadWebViewRequest()
+        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable { [weak self] in
+            self?.loadWebViewRequest()
         }
     }
 
