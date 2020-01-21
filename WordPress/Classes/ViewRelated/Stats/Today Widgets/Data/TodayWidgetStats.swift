@@ -21,12 +21,11 @@ struct TodayWidgetStats: Codable {
 
 extension TodayWidgetStats {
 
-    static func loadSavedData() -> TodayWidgetStats {
+    static func loadSavedData() -> TodayWidgetStats? {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
                 DDLogError("TodayWidgetStats: data file '\(dataFileName)' does not exist.")
-                // TODO: fix this - don't return zeros.
-                return TodayWidgetStats()
+                return nil
         }
 
         let decoder = PropertyListDecoder()
@@ -35,8 +34,7 @@ extension TodayWidgetStats {
             return try decoder.decode(TodayWidgetStats.self, from: data)
         } catch {
             DDLogError("TodayWidgetStats: Failed loading data: \(error.localizedDescription)")
-            // TODO: fix this - don't return zeros.
-            return TodayWidgetStats()
+            return nil
         }
     }
 

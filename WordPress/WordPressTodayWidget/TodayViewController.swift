@@ -346,7 +346,10 @@ private extension TodayViewController {
     // MARK: - Helpers
 
     func updateStatsLabels() {
-        let values = statsValues ?? TodayWidgetStats()
+        guard let values = statsValues else {
+            return
+        }
+
         viewCount = values.views.abbreviatedString()
         visitorCount = values.visitors.abbreviatedString()
         likeCount = values.likes.abbreviatedString()
