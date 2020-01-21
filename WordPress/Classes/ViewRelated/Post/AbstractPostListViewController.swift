@@ -1175,6 +1175,17 @@ class AbstractPostListViewController: UIViewController,
         dismissAllNetworkErrorNotices()
         super.present(viewControllerToPresent, animated: flag, completion: completion)
     }
+
+    // MARK: - Accessibility
+
+    override func accessibilityPerformEscape() -> Bool {
+        guard searchController.isActive else {
+            return super.accessibilityPerformEscape()
+        }
+
+        searchController.isActive = false
+        return true
+    }
 }
 
 extension AbstractPostListViewController: NetworkStatusDelegate {
