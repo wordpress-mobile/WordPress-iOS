@@ -88,8 +88,8 @@ extension ThisWeekViewController: NCWidgetProviding {
         if !isConfigured {
             DDLogError("This Week Widget: Missing site ID, timeZone or oauth2Token")
 
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
 
             completionHandler(NCUpdateResult.failed)
@@ -221,9 +221,9 @@ private extension ThisWeekViewController {
 
             DDLogDebug("This Week Widget: Fetched summary data.")
 
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 let summaryData = summary?.summaryData.reversed() ?? []
-                self.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
+                self?.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
             }
             completionHandler(NCUpdateResult.newData)
         }

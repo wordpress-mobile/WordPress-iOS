@@ -90,8 +90,8 @@ extension AllTimeViewController: NCWidgetProviding {
         if !isConfigured {
             DDLogError("All Time Widget: Missing site ID, timeZone or oauth2Token")
 
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
 
             completionHandler(NCUpdateResult.failed)
@@ -223,8 +223,8 @@ private extension AllTimeViewController {
 
             DDLogDebug("All Time Widget: Fetched StatsAllTimesInsight data.")
 
-            DispatchQueue.main.async {
-                self.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
+            DispatchQueue.main.async { [weak self] in
+                self?.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
                                             visitors: allTimesStats?.visitorsCount,
                                             posts: allTimesStats?.postsCount,
                                             bestViews: allTimesStats?.bestViewsPerDayCount)
