@@ -126,6 +126,7 @@ import Foundation
     @objc class func clearWidgetsData() {
         TodayWidgetStats.clearSavedData()
         AllTimeWidgetStats.clearSavedData()
+        ThisWeekWidgetStats.clearSavedData()
     }
 
     // MARK: - Helpers

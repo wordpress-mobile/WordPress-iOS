@@ -49,6 +49,19 @@ extension ThisWeekWidgetStats {
         }
     }
 
+    static func clearSavedData() {
+        guard let dataFileURL = ThisWeekWidgetStats.dataFileURL else {
+            return
+        }
+
+        do {
+            try FileManager.default.removeItem(at: dataFileURL)
+        }
+        catch {
+            DDLogError("ThisWeekWidgetStats: failed deleting data file '\(dataFileName)': \(error.localizedDescription)")
+        }
+    }
+
     func saveData() {
         guard let dataFileURL = ThisWeekWidgetStats.dataFileURL else {
             return
