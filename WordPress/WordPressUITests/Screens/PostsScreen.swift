@@ -70,7 +70,7 @@ struct EditorScreen {
 
     var isGutenbergEditor: Bool {
         let blockEditorElement = "add-block-button"
-        return XCUIApplication().buttons[blockEditorElement].exists
+        return XCUIApplication().buttons[blockEditorElement].waitForExistence(timeout: 3)
     }
 
     var isAztecEditor: Bool {
