@@ -32,7 +32,7 @@ class PostNoticeNavigationCoordinator {
             navigationController.modalPresentationStyle = .formSheet
             presenter.present(navigationController, animated: true)
         } else {
-            let controller = NewPostPreviewViewController(post: page)
+            let controller = PreviewWebKitViewController(post: page)
             controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
 
             let navigationController = UINavigationController(rootViewController: controller)

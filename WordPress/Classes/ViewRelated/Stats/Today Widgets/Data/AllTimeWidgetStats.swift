@@ -11,13 +11,6 @@ struct AllTimeWidgetStats: Codable {
     let posts: Int
     let bestViews: Int
 
-    private enum CodingKeys: String, CodingKey {
-        case views
-        case visitors
-        case posts
-        case bestViews
-    }
-
     init(views: Int? = 0, visitors: Int? = 0, posts: Int? = 0, bestViews: Int? = 0) {
         self.views = views ?? 0
         self.visitors = visitors ?? 0

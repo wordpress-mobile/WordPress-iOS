@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="69" id="KGk-i7-Jjw" customClass="WidgetDifferenceCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVM-wL-EAn">
+                        <rect key="frame" x="16" y="0.0" width="288" height="58"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aug 27, 2020" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvr-HI-sb7" userLabel="Date Label">
+                                <rect key="frame" x="0.0" y="19" width="101.5" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9,999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKM-eR-jz7" userLabel="Data Label">
+                                <rect key="frame" x="160.5" y="19" width="45.5" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xw3-YV-gjz" userLabel="Difference View">
+                                <rect key="frame" x="222" y="12" width="66" height="34"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+27%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ej9-9e-JJA" userLabel="Difference Label">
+                                        <rect key="frame" x="20" y="7" width="39" height="20"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" name="Gray40"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Ej9-9e-JJA" secondAttribute="bottom" constant="7" id="Nf6-FP-evz"/>
+                                    <constraint firstItem="Ej9-9e-JJA" firstAttribute="top" secondItem="Xw3-YV-gjz" secondAttribute="top" constant="7" id="XbS-sj-P1l"/>
+                                    <constraint firstAttribute="width" constant="66" id="u3C-Jd-nUL"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ej9-9e-JJA" secondAttribute="trailing" constant="7" id="zhb-dP-WPX"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Xw3-YV-gjz" firstAttribute="top" secondItem="uVM-wL-EAn" secondAttribute="top" constant="12" id="8Od-Yx-dM9"/>
+                            <constraint firstAttribute="trailing" secondItem="Xw3-YV-gjz" secondAttribute="trailing" id="CNZ-jT-6JE"/>
+                            <constraint firstItem="Xw3-YV-gjz" firstAttribute="leading" secondItem="DKM-eR-jz7" secondAttribute="trailing" constant="16" id="SVF-Er-IEw"/>
+                            <constraint firstAttribute="bottom" secondItem="Xw3-YV-gjz" secondAttribute="bottom" constant="12" id="VQD-f1-n00"/>
+                            <constraint firstItem="DKM-eR-jz7" firstAttribute="centerY" secondItem="uVM-wL-EAn" secondAttribute="centerY" id="dCA-De-0U3"/>
+                            <constraint firstItem="rvr-HI-sb7" firstAttribute="leading" secondItem="uVM-wL-EAn" secondAttribute="leading" id="h49-bk-5mD"/>
+                            <constraint firstItem="rvr-HI-sb7" firstAttribute="centerY" secondItem="uVM-wL-EAn" secondAttribute="centerY" id="kmf-cY-UR0"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="uVM-wL-EAn" secondAttribute="trailing" constant="16" id="7C8-NR-C9W"/>
+                    <constraint firstAttribute="bottom" secondItem="uVM-wL-EAn" secondAttribute="bottom" id="H7a-ow-IuJ"/>
+                    <constraint firstItem="uVM-wL-EAn" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="VLA-oc-efy"/>
+                    <constraint firstItem="uVM-wL-EAn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="lOj-RF-YIX"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="dataLabel" destination="DKM-eR-jz7" id="sBr-K4-Rkl"/>
+                <outlet property="dateLabel" destination="rvr-HI-sb7" id="NJs-Ja-sRp"/>
+                <outlet property="differenceLabel" destination="Ej9-9e-JJA" id="Zdk-0d-YFi"/>
+                <outlet property="differenceView" destination="Xw3-YV-gjz" id="w8X-GD-3ao"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="157.36607142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="Gray40">
+            <color red="0.47058823529411764" green="0.48627450980392156" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

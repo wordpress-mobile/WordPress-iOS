@@ -1,35 +1,30 @@
 import UIKit
 import NotificationCenter
-import CocoaLumberjack
 import WordPressKit
 import WordPressUI
 
-class TodayViewController: UIViewController {
+class ThisWeekViewController: UIViewController {
 
     // MARK: - Properties
 
     @IBOutlet private var tableView: UITableView!
 
-    private var statsValues: TodayWidgetStats? {
+    private var siteUrl: String = Constants.noDataLabel
+    private var siteID: NSNumber?
+    private var timeZone: TimeZone?
+    private var oauthToken: String?
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
+
+    private var statsValues: ThisWeekWidgetStats? {
         didSet {
-            updateStatsLabels()
             tableView.reloadData()
         }
     }
-
-    private var visitorCount: String = Constants.noDataLabel
-    private var viewCount: String = Constants.noDataLabel
-    private var likeCount: String = Constants.noDataLabel
-    private var commentCount: String = Constants.noDataLabel
-    private var siteUrl: String = Constants.noDataLabel
 
     private var haveSiteUrl: Bool {
         siteUrl != Constants.noDataLabel
     }
 
-    private var siteID: NSNumber?
-    private var timeZone: TimeZone?
-    private var oauthToken: String?
     private var isConfigured = false {
         didSet {
             // If unconfigured, don't allow the widget to be expanded/compacted.
@@ -37,14 +32,13 @@ class TodayViewController: UIViewController {
         }
     }
 
-    private let tracks = Tracks(appGroupName: WPAppGroupName)
-
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         retrieveSiteConfiguration()
         registerTableCells()
+        configureTableSeparator()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -62,18 +56,24 @@ class TodayViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         let updatedRowCount = numberOfRowsToDisplay()
+        let rowDifference = abs(updatedRowCount - tableView.numberOfRows(inSection: 0))
 
         // If the number of rows has not changed, do nothing.
-        guard updatedRowCount != tableView.visibleCells.count else {
+        guard rowDifference != 0,
+        let statsValues = statsValues else {
             return
         }
 
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.performBatchUpdates({
-                let lastDataRowIndexPath = [IndexPath(row: 1, section: 0)]
-                updatedRowCount > self.minRowsToDisplay() ?
-                    self.tableView.insertRows(at: lastDataRowIndexPath, with: .fade) :
-                    self.tableView.deleteRows(at: lastDataRowIndexPath, with: .fade)
+                // Create IndexPaths for rows to be inserted / deleted.
+                // Include endIndex to account for url row.
+                let indexRange = (Constants.minRows...statsValues.days.endIndex)
+                let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
+
+                updatedRowCount > Constants.minRows ?
+                    self.tableView.insertRows(at: indexPaths, with: .fade) :
+                    self.tableView.deleteRows(at: indexPaths, with: .fade)
             })
         })
     }
@@ -82,13 +82,13 @@ class TodayViewController: UIViewController {
 
 // MARK: - Widget Updating
 
-extension TodayViewController: NCWidgetProviding {
+extension ThisWeekViewController: NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         retrieveSiteConfiguration()
 
         if !isConfigured {
-            DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+            DDLogError("This Week Widget: Missing site ID, timeZone or oauth2Token")
 
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -111,7 +111,7 @@ extension TodayViewController: NCWidgetProviding {
 
 // MARK: - Table View Methods
 
-extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
+extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return numberOfRowsToDisplay()
@@ -126,11 +126,6 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
-        if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
-            return WidgetUrlCell.height
-        }
-
         guard !isConfigured,
             let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
                 return UITableView.automaticDimension
@@ -144,14 +139,14 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - Private Extension
 
-private extension TodayViewController {
+private extension ThisWeekViewController {
 
     // MARK: - Launch Containing App
 
     @IBAction func launchContainingApp() {
         guard let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
-                DDLogError("Today Widget: Unable to get extensionContext or appURL.")
+                DDLogError("This Week Widget: Unable to get extensionContext or appURL.")
                 return
         }
 
@@ -177,7 +172,7 @@ private extension TodayViewController {
 
     func retrieveSiteConfiguration() {
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName) else {
-            DDLogError("Today Widget: Unable to get sharedDefaults.")
+            DDLogError("This Week Widget: Unable to get sharedDefaults.")
             isConfigured = false
             return
         }
@@ -202,7 +197,7 @@ private extension TodayViewController {
     // MARK: - Data Management
 
     func loadSavedData() {
-        statsValues = TodayWidgetStats.loadSavedData()
+        statsValues = ThisWeekWidgetStats.loadSavedData()
     }
 
     func saveData() {
@@ -214,20 +209,23 @@ private extension TodayViewController {
             return
         }
 
-        statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
+        // Get the current date in the site's time zone.
+        let siteTimeZone = timeZone ?? .autoupdatingCurrent
+        let weekEndingDate = Date().convert(from: siteTimeZone).normalizedDate()
+
+        // Include an extra day. It's needed to get the dailyChange for the last day.
+        statsRemote.getData(for: .day, endingOn: weekEndingDate, limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [unowned self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
+                DDLogError("This Week Widget: Error fetching summary: \(String(describing: error?.localizedDescription))")
                 completionHandler(NCUpdateResult.failed)
                 return
             }
 
-            DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
+            DDLogDebug("This Week Widget: Fetched summary data.")
 
             DispatchQueue.main.async {
-                self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount,
-                                                    visitors: todayInsight?.visitorsCount,
-                                                    likes: todayInsight?.likesCount,
-                                                    comments: todayInsight?.commentsCount)
+                let summaryData = summary?.summaryData.reversed() ?? []
+                self.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
             }
             completionHandler(NCUpdateResult.newData)
         }
@@ -239,7 +237,7 @@ private extension TodayViewController {
             let timeZone = timeZone,
             let oauthToken = oauthToken
             else {
-                DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+                DDLogError("This Week Widget: Missing site ID, timeZone or oauth2Token")
                 return nil
         }
 
@@ -250,8 +248,8 @@ private extension TodayViewController {
     // MARK: - Table Helpers
 
     func registerTableCells() {
-        let twoColumnCellNib = UINib(nibName: String(describing: WidgetTwoColumnCell.self), bundle: Bundle(for: WidgetTwoColumnCell.self))
-        tableView.register(twoColumnCellNib, forCellReuseIdentifier: WidgetTwoColumnCell.reuseIdentifier)
+        let differenceCellNib = UINib(nibName: String(describing: WidgetDifferenceCell.self), bundle: Bundle(for: WidgetDifferenceCell.self))
+        tableView.register(differenceCellNib, forCellReuseIdentifier: WidgetDifferenceCell.reuseIdentifier)
 
         let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
         tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
@@ -260,12 +258,17 @@ private extension TodayViewController {
         tableView.register(urlCellNib, forCellReuseIdentifier: WidgetUrlCell.reuseIdentifier)
     }
 
+    func configureTableSeparator() {
+        tableView.separatorColor = WidgetStyles.separatorColor
+        tableView.separatorEffect = WidgetStyles.separatorVibrancyEffect
+    }
+
     func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetUnconfiguredCell.reuseIdentifier, for: indexPath) as? WidgetUnconfiguredCell else {
             return UITableViewCell()
         }
 
-        cell.configure(for: .today)
+        cell.configure(for: .thisWeek)
         return cell
     }
 
@@ -277,46 +280,42 @@ private extension TodayViewController {
                 return UITableViewCell()
             }
 
-            urlCell.configure(siteUrl: siteUrl)
+            urlCell.configure(siteUrl: siteUrl, hideSeparator: true)
             return urlCell
         }
 
+
         // Data Cells
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetTwoColumnCell.reuseIdentifier, for: indexPath) as? WidgetTwoColumnCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetDifferenceCell.reuseIdentifier, for: indexPath) as? WidgetDifferenceCell else {
             return UITableViewCell()
         }
 
-        if indexPath.row == 0 {
-            cell.configure(leftItemName: LocalizedText.views,
-                           leftItemData: viewCount,
-                           rightItemName: LocalizedText.visitors,
-                           rightItemData: visitorCount)
-        } else {
-            cell.configure(leftItemName: LocalizedText.likes,
-                           leftItemData: likeCount,
-                           rightItemName: LocalizedText.comments,
-                           rightItemData: commentCount)
+        guard let statsValues = statsValues,
+            indexPath.row < statsValues.days.endIndex else {
+            cell.configure()
+            return cell
         }
+
+        cell.configure(day: statsValues.days[indexPath.row], isToday: indexPath.row == 0)
 
         return cell
     }
 
     func showUrl() -> Bool {
-        return (isConfigured && haveSiteUrl)
+        return (extensionContext?.widgetActiveDisplayMode == .expanded && isConfigured && haveSiteUrl)
     }
 
     // MARK: - Expand / Compact View Helpers
 
-    func minRowsToDisplay() -> Int {
-        return showUrl() ? 2 : 1
-    }
-
-    func maxRowsToDisplay() -> Int {
-        return showUrl() ? 3 : 2
-    }
-
     func numberOfRowsToDisplay() -> Int {
-        return extensionContext?.widgetActiveDisplayMode == .compact ? minRowsToDisplay() : maxRowsToDisplay()
+        guard isConfigured,
+            extensionContext?.widgetActiveDisplayMode == .expanded,
+            let numDays = statsValues?.days.count else {
+                return Constants.minRows
+        }
+
+        // Add one for URL row
+        return numDays + 1
     }
 
     func resizeView(withMaximumSize size: CGSize? = nil) {
@@ -330,42 +329,31 @@ private extension TodayViewController {
 
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
-        let dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
-        let numRows = numberOfRowsToDisplay()
 
         if showUrl() {
             height += WidgetUrlCell.height
-            height += (dataRowHeight * CGFloat(numRows - 1))
-        } else {
-            height += (dataRowHeight * CGFloat(numRows))
         }
+
+        let dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        height += (dataRowHeight * CGFloat(numberOfRowsToDisplay() - 1))
 
         return height
     }
 
-    // MARK: - Helpers
-
-    func updateStatsLabels() {
-        let values = statsValues ?? TodayWidgetStats()
-        viewCount = values.views.abbreviatedString()
-        visitorCount = values.visitors.abbreviatedString()
-        likeCount = values.likes.abbreviatedString()
-        commentCount = values.comments.abbreviatedString()
-    }
-
     // MARK: - Constants
-
-    enum LocalizedText {
-        static let visitors = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
-        static let views = NSLocalizedString("Views", comment: "Stats Views Label")
-        static let likes = NSLocalizedString("Likes", comment: "Stats Likes Label")
-        static let comments = NSLocalizedString("Comments", comment: "Stats Comments Label")
-    }
 
     enum Constants {
         static let noDataLabel = "-"
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
+        static let minRows: Int = 2
     }
 
+}
+
+private extension Date {
+    func convert(from timeZone: TimeZone, comparedWith target: TimeZone = TimeZone.current) -> Date {
+        let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - target.secondsFromGMT(for: self))
+        return addingTimeInterval(delta)
+    }
 }
