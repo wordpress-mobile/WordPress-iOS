@@ -25,6 +25,7 @@ extension TodayWidgetStats {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
                 DDLogError("TodayWidgetStats: data file '\(dataFileName)' does not exist.")
+                // TODO: fix this - don't return zeros.
                 return TodayWidgetStats()
         }
 
@@ -33,8 +34,22 @@ extension TodayWidgetStats {
             let data = try Data(contentsOf: sharedDataFileURL)
             return try decoder.decode(TodayWidgetStats.self, from: data)
         } catch {
-            DDLogError("Failed loading TodayWidgetStats data: \(error.localizedDescription)")
+            DDLogError("TodayWidgetStats: Failed loading data: \(error.localizedDescription)")
+            // TODO: fix this - don't return zeros.
             return TodayWidgetStats()
+        }
+    }
+
+    static func clearSavedData() {
+        guard let dataFileURL = TodayWidgetStats.dataFileURL else {
+            return
+        }
+
+        do {
+            try FileManager.default.removeItem(at: dataFileURL)
+        }
+        catch {
+            DDLogError("TodayWidgetStats: failed deleting data file '\(dataFileName)': \(error.localizedDescription)")
         }
     }
 
