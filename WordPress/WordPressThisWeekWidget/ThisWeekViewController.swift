@@ -59,16 +59,14 @@ class ThisWeekViewController: UIViewController {
         let rowDifference = abs(updatedRowCount - tableView.numberOfRows(inSection: 0))
 
         // If the number of rows has not changed, do nothing.
-        guard rowDifference != 0,
-        let statsValues = statsValues else {
+        guard rowDifference != 0 else {
             return
         }
 
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.performBatchUpdates({
                 // Create IndexPaths for rows to be inserted / deleted.
-                // Include endIndex to account for url row.
-                let indexRange = (Constants.minRows...statsValues.days.endIndex)
+                let indexRange = (Constants.minRows..<self.maxRowsToDisplay())
                 let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
 
                 updatedRowCount > Constants.minRows ?
@@ -309,13 +307,21 @@ private extension ThisWeekViewController {
 
     func numberOfRowsToDisplay() -> Int {
         guard isConfigured,
-            extensionContext?.widgetActiveDisplayMode == .expanded,
-            let numDays = statsValues?.days.count else {
+            extensionContext?.widgetActiveDisplayMode == .expanded else {
                 return Constants.minRows
+        }
+        return maxRowsToDisplay()
+    }
+
+    func maxRowsToDisplay() -> Int {
+        guard let values = statsValues,
+            !values.days.isEmpty else {
+                // Add one for URL row
+                return ThisWeekWidgetStats.maxDaysToDisplay + 1
         }
 
         // Add one for URL row
-        return numDays + 1
+        return values.days.count + 1
     }
 
     func resizeView(withMaximumSize size: CGSize? = nil) {
