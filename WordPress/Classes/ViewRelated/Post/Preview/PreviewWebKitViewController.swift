@@ -29,7 +29,7 @@ class PreviewWebKitViewController: WebKitViewController {
     }()
 
     lazy var previewButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.computer), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
+        return UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
     }()
 
     lazy var deviceLabel: PreviewDeviceLabel = {
