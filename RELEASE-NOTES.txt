@@ -2,6 +2,7 @@
 -----
 * Fixes a bug that could cause some web page previews to remain unauthenticated even after logging in.
 * Stats: added a This Week widget to display Views for the past week.
+* Web Views: the title and button colors in the header of web views was grey, and is now white.
  
 14.0
 -----
