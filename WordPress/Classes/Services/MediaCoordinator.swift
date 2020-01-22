@@ -641,13 +641,14 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
         // the media library.
         // If the errors are causes by a missing file, we want to ignore that too.
 
-        let mediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
+        let allFailedMediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
 
-        let allMediaHaveAssociatedPost = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasAssociatedPost() }
+        let allFailedMediaHaveAssociatedPost = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasAssociatedPost() }
 
-        if !mediaErrorsAreMissingFilesErrors,
-            !allMediaHaveAssociatedPost,
-            mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
+        if !mediaProgressCoordinator.failedMedia.isEmpty,
+           !allFailedMediaErrorsAreMissingFilesErrors,
+           !allFailedMediaHaveAssociatedPost,
+           mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
 
             let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
             if let notice = model?.notice {
