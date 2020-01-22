@@ -3,6 +3,7 @@ import NotificationCenter
 import CocoaLumberjack
 import WordPressKit
 import WordPressUI
+import Reachability
 
 class TodayViewController: UIViewController {
 
@@ -32,12 +33,22 @@ class TodayViewController: UIViewController {
     private var oauthToken: String?
     private var isConfigured = false {
         didSet {
-            // If unconfigured, don't allow the widget to be expanded/compacted.
-            extensionContext?.widgetLargestAvailableDisplayMode = isConfigured ? .expanded : .compact
+            setAvailableDisplayMode()
+        }
+    }
+
+    private var isReachable: Bool = true {
+        didSet {
+            setAvailableDisplayMode()
+
+            if isReachable != oldValue {
+                tableView.reloadData()
+            }
         }
     }
 
     private let tracks = Tracks(appGroupName: WPAppGroupName)
+    private let reachability: Reachability = .forInternetConnection()
 
     // MARK: - View
 
@@ -49,6 +60,7 @@ class TodayViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupReachability()
         loadSavedData()
         resizeView()
     }
@@ -64,7 +76,7 @@ class TodayViewController: UIViewController {
         let updatedRowCount = numberOfRowsToDisplay()
 
         // If the number of rows has not changed, do nothing.
-        guard updatedRowCount != tableView.visibleCells.count else {
+        guard updatedRowCount != tableView.numberOfRows(inSection: 0) else {
             return
         }
 
@@ -86,9 +98,10 @@ extension TodayViewController: NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         retrieveSiteConfiguration()
+        isReachable = reachability.isReachable()
 
-        if !isConfigured {
-            DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+        if !isConfigured || !isReachable {
+            DDLogError("Today Widget: unable to update. Configured: \(isConfigured) Reachable: \(isReachable)")
 
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
@@ -118,7 +131,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard isConfigured else {
+        guard isConfigured, isReachable else {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
@@ -127,17 +140,17 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
+        if !isConfigured || !isReachable,
+            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) {
+            // Use the max compact height for unconfigured view.
+            return maxCompactSize.height
+        }
+
         if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
             return WidgetUrlCell.height
         }
 
-        guard !isConfigured,
-            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
-                return UITableView.automaticDimension
-        }
-
-        // Use the max compact height for unconfigured view.
-        return maxCompactSize.height
+        return UITableView.automaticDimension
     }
 
 }
@@ -265,7 +278,7 @@ private extension TodayViewController {
             return UITableViewCell()
         }
 
-        cell.configure(for: .today)
+        isReachable ? cell.configure(for: .today) : cell.configure(for: .noConnection)
         return cell
     }
 
@@ -307,11 +320,24 @@ private extension TodayViewController {
 
     // MARK: - Expand / Compact View Helpers
 
+    func setAvailableDisplayMode() {
+        // If unconfigured or no connection, don't allow the widget to be expanded.
+        extensionContext?.widgetLargestAvailableDisplayMode = isReachable && isConfigured ? .expanded : .compact
+    }
+
     func minRowsToDisplay() -> Int {
+        if !isReachable {
+            return 1
+        }
+
         return showUrl() ? 2 : 1
     }
 
     func maxRowsToDisplay() -> Int {
+        if !isReachable {
+            return 1
+        }
+
         return showUrl() ? 3 : 2
     }
 
@@ -341,6 +367,22 @@ private extension TodayViewController {
         }
 
         return height
+    }
+
+    // MARK: - Reachability
+
+    func setupReachability() {
+        isReachable = reachability.isReachable()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reachabilityChanged),
+                                               name: NSNotification.Name.reachabilityChanged,
+                                               object: nil)
+        reachability.startNotifier()
+    }
+
+    @objc func reachabilityChanged() {
+        isReachable = reachability.isReachable()
     }
 
     // MARK: - Helpers
