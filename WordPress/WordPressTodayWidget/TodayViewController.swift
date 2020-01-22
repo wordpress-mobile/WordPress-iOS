@@ -159,9 +159,18 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension TodayViewController {
 
-    // MARK: - Launch Containing App
+    // MARK: - Tap Gesture Handling
 
-    @IBAction func launchContainingApp() {
+    @IBAction func handleTapGesture() {
+
+        // If showing the No Connection view, attempt to reload.
+        if let unconfiguredCell = tableView.visibleCells.first as? WidgetUnconfiguredCell,
+            unconfiguredCell.widgetType == .noConnection {
+            tableView.reloadData()
+            return
+        }
+
+        // Otherwise, open the app.
         guard let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
                 DDLogError("Today Widget: Unable to get extensionContext or appURL.")
