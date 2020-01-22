@@ -192,7 +192,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 
 #pragma mark - WebView Delegate Methods
-
+/*
 - (BOOL)webView:(UIWebView *)webView
     shouldStartLoadWithRequest:(NSURLRequest *)request
                 navigationType:(UIWebViewNavigationType)navigationType
@@ -240,5 +240,6 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
         [super webViewDidFinishLoad:webView];
     }
 }
+ */
 
 @end
