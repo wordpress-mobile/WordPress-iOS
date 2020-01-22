@@ -43,7 +43,8 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
     }
 
     func sourceAttributionStyle() -> SourceAttributionStyle {
-        return .post
+        // will make all buttons visible
+        return .none
     }
 
     func sourceAuthorNameForDisplay() -> String! {
@@ -150,6 +151,7 @@ final class ReaderPostCardCellTests: XCTestCase {
         static let moreLabel = NSLocalizedString("More", comment: "More")
         static let commentsLabelformat = NSLocalizedString("%@ comments", comment: "Number of Comments")
         static let visitLabel = NSLocalizedString("Visit", comment: "Visit")
+        static let reblogLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
     }
 
     override func setUp() {
@@ -184,5 +186,37 @@ final class ReaderPostCardCellTests: XCTestCase {
     func testVisitButtonLabelMatchesExpectation() {
         XCTAssertEqual(cell?.getVisitButtonForTesting().accessibilityLabel, String(format: "%@", TestConstants.visitLabel), "Incorrect accessibility label: Visit button"
     )
+    }
+
+    func testReblogActionButtonMatchesExpectation() {
+        guard FeatureFlag.postReblogging.enabled else {
+            return
+        }
+        XCTAssertEqual(cell?.getReblogButtonForTesting().accessibilityLabel, TestConstants.reblogLabel, "Incorrect accessibility label: Reblog button")
+    }
+
+    func testReblogButtonIsVisible() {
+        guard FeatureFlag.postReblogging.enabled else {
+            return
+        }
+        guard let button = cell?.getReblogButtonForTesting() else {
+            XCTFail("Reblog button not found.")
+            return
+        }
+        XCTAssertFalse(button.isHidden, "Reblog button should be visible.")
+    }
+
+    func testReblogButtonVisibleWithNoLoggedInUser() {
+        guard FeatureFlag.postReblogging.enabled else {
+            return
+        }
+        cell?.loggedInActionVisibility = .visible(enabled: false)
+        cell?.configureCell(mock!)
+
+        guard let button = cell?.getReblogButtonForTesting() else {
+            XCTFail("Reblog button not found.")
+            return
+        }
+        XCTAssertFalse(button.isHidden, "Reblog button should not be visible.")
     }
 }

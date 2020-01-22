@@ -377,7 +377,8 @@ import "./ScreenshotFastfile"
                        "org.wordpress.alpha.WordPressTodayWidget",
                        "org.wordpress.alpha.WordPressNotificationServiceExtension",
                        "org.wordpress.alpha.WordPressNotificationContentExtension", 
-                       "org.wordpress.alpha.WordPressAllTimeWidget"])
+                       "org.wordpress.alpha.WordPressAllTimeWidget",
+                       "org.wordpress.alpha.WordPressThisWeekWidget"])
   end
 
   private_lane :internal_code_signing do |options|
@@ -391,7 +392,8 @@ import "./ScreenshotFastfile"
                        "org.wordpress.internal.WordPressTodayWidget",
                        "org.wordpress.internal.WordPressNotificationServiceExtension",
                        "org.wordpress.internal.WordPressNotificationContentExtension",
-                       "org.wordpress.internal.WordPressAllTimeWidget"])
+                       "org.wordpress.internal.WordPressAllTimeWidget",
+                       "org.wordpress.internal.WordPressThisWeekWidget"])
   end
 
   private_lane :appstore_code_signing do |options|
@@ -405,7 +407,8 @@ import "./ScreenshotFastfile"
                        "org.wordpress.WordPressTodayWidget",
                        "org.wordpress.WordPressNotificationServiceExtension",
                        "org.wordpress.WordPressNotificationContentExtension",
-                       "org.wordpress.WordPressAllTimeWidget"])
+                       "org.wordpress.WordPressAllTimeWidget",
+                       "org.wordpress.WordPressThisWeekWidget"])
   end
 
 ########################################################################

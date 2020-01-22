@@ -1,3 +1,8 @@
+14.1
+-----
+* Fixes a bug that could cause some web page previews to remain unauthenticated even after logging in.
+* Stats: added a This Week widget to display Views for the past week.
+ 
 14.0
 -----
 * Stats: Updated default cards for the Insights view.
@@ -6,6 +11,11 @@
 * Fixed bugs with the "Save as Draft" action extension's navigation bar colors and iPad sizing in iOS 13.
 * Fixes appearance issues with navigation bar colors when logged out of the app.
 * Fixed a bug that was causing the App to crash when the user tapped on certain notifications.
+* Block Editor: Hide image size selection options when image is a url
+* Block Editor: Fix displaying placeholder for images
+* Block Editor: Fix crash on undo
+* Block Editor: Fix styling on navigation UI
+* Block Editor: Fix a focus issue
 * Fixed a bug that displayed incorrect time stamps for scheduled posts.
 * Post Settings: Added a new Calendar picker to select a Post's publish date
 * Comment: Add ability to comment in fullscreen
@@ -33,6 +43,7 @@
 * Block editor: Images from Image Block can now be previewed full screen by tapping on them.
 * Fixed an issue that caused logging in with a 2FA Google account to fail.
 * Sign in with Apple: now supports logging in with 2FA enabled on linked WordPress accounts.
+* Stats: Fixed issue that caused incorrect data to be displayed.
 
 13.7
 -----

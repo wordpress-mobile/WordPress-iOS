@@ -218,3 +218,12 @@ private extension WebViewAuthenticator {
     static let wordPressComLoginUrl = URL(string: "https://wordpress.com/wp-login.php")!
     static let redirectParameter = "wpios_redirect"
 }
+
+extension WebViewAuthenticator {
+    func isLogin(url: URL) -> Bool {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        components?.queryItems = nil
+
+        return components?.url == WebViewAuthenticator.wordPressComLoginUrl
+    }
+}

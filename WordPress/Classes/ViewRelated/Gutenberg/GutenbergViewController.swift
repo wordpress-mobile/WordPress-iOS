@@ -66,6 +66,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var isOpenedDirectlyForPhotoPost: Bool = false
 
+    var postIsReblogged: Bool = false
+
     // MARK: - Editor Media actions
 
     var isUploadingMedia: Bool {
@@ -557,9 +559,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestFullscreenImage(with mediaUrl: URL) {
+    func gutenbergDidRequestImagePreview(with fullSizeUrl: URL, thumbUrl: URL?) {
         navigationController?.definesPresentationContext = true
-        let controller = WPImageViewController(externalMediaURL: mediaUrl)
+
+        let controller: WPImageViewController
+        if let image = AnimatedImageCache.shared.cachedStaticImage(url: fullSizeUrl) {
+            controller = WPImageViewController(image: image)
+        } else {
+            controller = WPImageViewController(externalMediaURL: fullSizeUrl)
+        }
+
         controller.post = self.post
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .overCurrentContext
