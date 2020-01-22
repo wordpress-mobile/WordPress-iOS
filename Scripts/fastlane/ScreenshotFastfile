@@ -22,18 +22,20 @@ platform :ios do
   desc "Generate localised screenshots"
   lane :screenshots  do |options| 
     fastlane_directory = File.expand_path File.dirname(__FILE__)
-  
+    derived_data_path = File.join(fastlane_directory, "DerivedData")
+
     Dir.chdir("../../") do
       FileUtils.rm_rf('Pods')
     end
 
     sh('bundle exec pod install')
+    FileUtils.rm_rf(derived_data_path)
 
     scan(
       workspace: File.join(fastlane_directory, "../../WordPress.xcworkspace"),
       scheme: "WordPressScreenshotGeneration",
       build_for_testing: true,
-      derived_data_path: File.join(fastlane_directory, "DerivedData"),
+      derived_data_path: derived_data_path,
     )
 
     # By default, clear previous screenshots
@@ -54,7 +56,7 @@ platform :ios do
 
     capture_ios_screenshots(
       test_without_building: true,
-      derived_data_path: File.join(fastlane_directory, "DerivedData"),
+      derived_data_path: derived_data_path,
       languages: languages,
       clear_previous_screenshots: should_clear_previous_screenshots,
     )
