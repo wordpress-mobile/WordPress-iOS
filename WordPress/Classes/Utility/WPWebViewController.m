@@ -295,7 +295,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 {
     NSString *const WPWebViewLoadingTitle = NSLocalizedString(@"Loading...", @"Loading. Verb");
     
-    self.titleView.titleLabel.text = self.webView.loading ? WPWebViewLoadingTitle : [self documentTitle];
+    // This method could be called before the first request starts, so we need to both check there
+    // is a URL set, and we're no longer loading it.
+    BOOL hasFinishedLoading = self.webView.URL != nil && !self.webView.loading;
+    
+    self.titleView.titleLabel.text = hasFinishedLoading ? [self documentTitle] : WPWebViewLoadingTitle;
 }
 
 - (void)showBottomToolbarIfNeeded
@@ -442,14 +446,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         decisionHandler(policy.action);
     }
 
-    //  Note:
-    //  UIWebView callbacks will get hit for every frame that gets loaded. As a workaround, we'll consider
-    //  we're in a "loading" state just for the Top Level request.
-    //
-/*    if ([request.mainDocumentURL isEqual:request.URL]) {
-        [self refreshInterface];
-    }
-*/
     [self refreshInterface];
     
     decisionHandler(WKNavigationActionPolicyAllow);
@@ -488,84 +484,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     [self showBottomToolbarIfNeeded];
 }
 
-#pragma mark - UIWebViewDelegate
-/*
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
-
-    NSURLRequest *redirectRequest = [self.authenticator interceptRedirectWithRequest:request];
-    if (redirectRequest != NULL) {
-        DDLogInfo(@"Found redirect to %@", redirectRequest);
-        [self.webView loadRequest:redirectRequest];
-        return NO;
-    }
-
-    // To handle WhatsApp and Telegraph shares
-    // Even though the documentation says that canOpenURL will only return YES for
-    // URLs configured on the plist under LSApplicationQueriesSchemes if we don't filter
-    // out http requests it also returns YES for those
-    if (![request.URL.scheme hasPrefix:@"http"]
-        && [[UIApplication sharedApplication] canOpenURL:request.URL]) {
-        [[UIApplication sharedApplication] openURL:request.URL
-                                           options:nil
-                                 completionHandler:nil];
-        return NO;
-    }
-
-    if (self.navigationDelegate != nil) {
-        WebNavigationPolicy *policy = [self.navigationDelegate shouldNavigateWithRequest:request];
-        if (policy.redirectRequest != NULL) {
-            [self.webView loadRequest:policy.redirectRequest];
-        }
-        return policy.action == WKNavigationResponsePolicyAllow;
-    }
-
-    //  Note:
-    //  UIWebView callbacks will get hit for every frame that gets loaded. As a workaround, we'll consider
-    //  we're in a "loading" state just for the Top Level request.
-    //
-    if ([request.mainDocumentURL isEqual:request.URL]) {
-        self.loading = YES;
-        [self refreshInterface];
-    }
-
-    return YES;
-}*/
-/*
-- (void)webViewDidStartLoad:(UIWebView *)aWebView
-{
-    DDLogInfo(@"%@ Started Loading [%@]", NSStringFromClass([self class]), aWebView.request.URL);
-
-    // Bypass if we're not loading the "Main Document"
-    if (!self.loading) {
-        return;
-    }
-
-    [self.progressView startedLoading];
-}*/
-/*
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    DDLogInfo(@"%@ Error Loading [%@]", NSStringFromClass([self class]), error);
-
-    // Bypass if we're not loading the "Main Document"
-    if (!self.loading) {
-        return;
-    }
-
-    [self.progressView finishedLoading];
-    [self refreshInterface];
-
-    // Don't show Ajax Canceled or Frame Load Interrupted errors
-    if (error.code == WPWebViewErrorAjaxCancelled || error.code == WPWebViewErrorFrameLoadInterrupted) {
-        return;
-    } else if ([error.domain isEqualToString:WPWebViewWebKitErrorDomain] && error.code == WPWebViewErrorPluginHandledLoad) {
-        return;
-    }
-
-    [self displayLoadError:error];
-}*/
+#pragma mark - Handling Loading Errors
 
 - (void)displayLoadError:(NSError *)error
 {
@@ -576,21 +495,5 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [WPError showAlertWithTitle: NSLocalizedString(@"Error", @"Generic error alert title") message: error.localizedDescription];
     }
 }
-/*
-- (void)webViewDidFinishLoad:(UIWebView *)aWebView
-{
-    DDLogInfo(@"%@ Finished Loading [%@]", NSStringFromClass([self class]), aWebView.request.URL);
-
-    // Bypass if we're not loading the "Main Document"
-    if (!self.loading) {
-        return;
-    }
-
-    self.loading = NO;
-
-    [self.progressView finishedLoading];
-    [self refreshInterface];
-    [self showBottomToolbarIfNeeded];
-}*/
 
 @end
