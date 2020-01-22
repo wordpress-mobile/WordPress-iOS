@@ -2,6 +2,7 @@
 #import <NotificationCenter/NotificationCenter.h>
 #import "Constants.h"
 #import "SFHFKeychainUtils.h"
+#import "WordPress-Swift.h"
 
 @implementation TodayExtensionService
 
@@ -15,11 +16,16 @@
     NSParameterAssert(blogName != nil);
     NSParameterAssert(timeZone != nil);
     NSParameterAssert(oauth2Token.length > 0);
-    
-    [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
-    
-    // Save the site information to shared user defaults for use in the today widget
+
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+    
+    // If the widget site has changed, clear the widgets saved data.
+    NSNumber *previousSiteID = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+    if (siteID != previousSiteID) {
+        [StatsDataHelper clearWidgetsData];
+    }
+
+    // Save the site information to shared user defaults for use in the today widgets.
     [sharedDefaults setObject:timeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults setObject:siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults setObject:blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];

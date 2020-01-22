@@ -32,11 +32,11 @@ extension ThisWeekWidgetStats {
         return 7
     }
 
-    static func loadSavedData() -> ThisWeekWidgetStats {
+    static func loadSavedData() -> ThisWeekWidgetStats? {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
                 DDLogError("ThisWeekWidgetStats: data file '\(dataFileName)' does not exist.")
-                return ThisWeekWidgetStats()
+                return nil
         }
 
         let decoder = PropertyListDecoder()
@@ -45,7 +45,20 @@ extension ThisWeekWidgetStats {
             return try decoder.decode(ThisWeekWidgetStats.self, from: data)
         } catch {
             DDLogError("Failed loading ThisWeekWidgetStats data: \(error.localizedDescription)")
-            return ThisWeekWidgetStats()
+            return nil
+        }
+    }
+
+    static func clearSavedData() {
+        guard let dataFileURL = ThisWeekWidgetStats.dataFileURL else {
+            return
+        }
+
+        do {
+            try FileManager.default.removeItem(at: dataFileURL)
+        }
+        catch {
+            DDLogError("ThisWeekWidgetStats: failed deleting data file '\(dataFileName)': \(error.localizedDescription)")
         }
     }
 

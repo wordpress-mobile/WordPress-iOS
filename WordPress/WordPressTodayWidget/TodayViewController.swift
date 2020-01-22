@@ -90,8 +90,8 @@ extension TodayViewController: NCWidgetProviding {
         if !isConfigured {
             DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
 
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
 
             completionHandler(NCUpdateResult.failed)
@@ -223,8 +223,8 @@ private extension TodayViewController {
 
             DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
 
-            DispatchQueue.main.async {
-                self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount,
+            DispatchQueue.main.async { [weak self] in
+                self?.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount,
                                                     visitors: todayInsight?.visitorsCount,
                                                     likes: todayInsight?.likesCount,
                                                     comments: todayInsight?.commentsCount)
@@ -346,7 +346,10 @@ private extension TodayViewController {
     // MARK: - Helpers
 
     func updateStatsLabels() {
-        let values = statsValues ?? TodayWidgetStats()
+        guard let values = statsValues else {
+            return
+        }
+
         viewCount = values.views.abbreviatedString()
         visitorCount = values.visitors.abbreviatedString()
         likeCount = values.likes.abbreviatedString()
