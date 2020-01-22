@@ -91,15 +91,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     NSAssert(_toolbarBottomConstraint, @"Missing Outlet!");
 
     // TitleView
-    self.titleView                          = [NavigationTitleView new];
-    self.titleView.titleLabel.text          = NSLocalizedString(@"Loading...", @"Loading. Verb");
-    self.titleView.subtitleLabel.text       = self.url.host;
-
-    if (self.customTitle != nil) {
-        self.title = self.customTitle;
-    } else {
-        self.navigationItem.titleView = self.titleView;
-    }
+    [self setupTitle];
 
     // Buttons
     if (!self.optionsButton) {
@@ -163,11 +155,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     navigationBar.barStyle                  = UIBarStyleDefault;
     [navigationBar setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
 
-    self.titleView.titleLabel.textColor     = [UIColor murielNeutral70];
-    self.titleView.subtitleLabel.textColor  = [UIColor murielNeutral30];
+    self.titleView.titleLabel.textColor     = [UIColor whiteColor];
+    self.titleView.subtitleLabel.textColor  = [UIColor whiteColor];
 
-    self.dismissButton.tintColor            = [UIColor murielNeutral20];
-    self.optionsButton.tintColor            = [UIColor murielNeutral20];
+    self.dismissButton.tintColor            = [UIColor whiteColor];
+    self.optionsButton.tintColor            = [UIColor whiteColor];
 
     self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }
@@ -192,6 +184,20 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (void)setupAuthenticator
 {
     self.authenticator.safeRedirect = true;
+}
+
+- (void)setupTitle
+{
+    self.titleView = [NavigationTitleView new];
+    
+    [self refreshTitle];
+    [self refreshSubtitle];
+
+    if (self.customTitle != nil) {
+        self.title = self.customTitle;
+    } else {
+        self.navigationItem.titleView = self.titleView;
+    }
 }
 
 - (void)setupWebView
@@ -268,7 +274,9 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 {
     self.backButton.enabled = self.webView.canGoBack;
     self.forwardButton.enabled = self.webView.canGoForward;
-    self.titleView.titleLabel.text = self.webView.loading ? nil : [self documentTitle];
+    
+    [self refreshTitle];
+    
     self.titleView.subtitleLabel.text = self.webView.URL.host;
 
     if ([self.webView.URL.absoluteString isEqualToString:@""]) {
@@ -276,6 +284,18 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     } else {
         self.optionsButton.enabled = !self.webView.loading;
     }
+}
+
+- (void)refreshSubtitle
+{
+    self.titleView.subtitleLabel.text = self.url.host;
+}
+
+- (void)refreshTitle
+{
+    NSString *const WPWebViewLoadingTitle = NSLocalizedString(@"Loading...", @"Loading. Verb");
+    
+    self.titleView.titleLabel.text = self.webView.loading ? WPWebViewLoadingTitle : [self documentTitle];
 }
 
 - (void)showBottomToolbarIfNeeded
