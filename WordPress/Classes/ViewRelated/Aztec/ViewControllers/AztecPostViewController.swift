@@ -105,6 +105,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate(set) lazy var editorView: Aztec.EditorView = {
 
+        Configuration.headersWithBoldTrait = true
+
         let paragraphStyle = ParagraphStyle.default
 
         // Paragraph style customizations will go here.
@@ -156,7 +158,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         textView.backgroundColor = Colors.aztecBackground
         textView.blockquoteBackgroundColor = .neutral(.shade5)
-        textView.blockquoteBorderColor = .listIcon
+        textView.blockquoteBorderColors = [.listIcon]
         textView.preBackgroundColor = .neutral(.shade5)
 
         textView.linkTextAttributes = linkAttributes
