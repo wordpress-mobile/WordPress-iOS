@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+@import WebKit;
 
 @class Blog;
 @class WPAccount;
@@ -9,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - WPWebViewController
 
-@interface WPWebViewController : UIViewController<UIWebViewDelegate>
+@interface WPWebViewController : UIViewController<WKNavigationDelegate>
 
 - (instancetype)initWithConfiguration:(WebViewControllerConfiguration *)configuration;
 

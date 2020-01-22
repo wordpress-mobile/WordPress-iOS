@@ -128,13 +128,9 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         self.navigationItem.rightBarButtonItem  = self.optionsButton;
     }
     
-    // Authenticator
-    //
-    // @diegoreymendez: While testing this VC for the migration from UIWebView to WKWebView I noticed this wasn't working
-    // at all in the simulator.  I'm not sure why this is necessary, but it seems like the authenticator is failing to redirect us
-    // if this isn't set to true.  @kokejb suggested this change - unfortunately evaluating why this is necessary goes far beyond the
-    // scope of my current work.  I just want the reader to know the context behind this adition.
-    self.authenticator.safeRedirect = true;
+    // Additional Setup
+    [self setupWebView];
+    [self setupAuthenticator];
 
     // Fire away!
     [self applyModalStyleIfNeeded];
@@ -184,6 +180,23 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (BOOL)expectsWidePanel
 {
     return YES;
+}
+
+#pragma mark - Setup
+
+/// While testing this VC for the migration from UIWebView to WKWebView I noticed redirects weren't working
+/// at all in the simulator.  I'm not sure why this is necessary, but it seems like the authenticator is failing to redirect us
+/// if this isn't set to true.  @kokejb suggested this change - unfortunately evaluating why this is necessary goes far beyond the
+/// scope of my current work.  I just want the reader to know the context behind this adition.
+///
+- (void)setupAuthenticator
+{
+    self.authenticator.safeRedirect = true;
+}
+
+- (void)setupWebView
+{
+    self.webView.navigationDelegate = self;
 }
 
 
@@ -417,6 +430,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [self refreshInterface];
     }
 */
+    [self refreshInterface];
+    
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 
