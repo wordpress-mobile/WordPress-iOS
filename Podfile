@@ -177,7 +177,7 @@ target 'WordPress' do
     pod 'Gridicons', '~> 0.16'
 
     #pod 'WordPressAuthenticator', '~> 1.10.6'
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'feature/magic_email_clients'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'feature/magic-email-clients'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     aztec

@@ -312,7 +312,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.14.0)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/magic_email_clients`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/magic-email-clients`)
   - WordPressKit (~> 4.5.6)
   - WordPressMocks (~> 0.0.7)
   - WordPressShared (= 1.8.11)
@@ -425,7 +425,7 @@ EXTERNAL SOURCES:
     :commit: aaa43ff63c6fc8dd44f6bd45af25e2f91619d6a5
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressAuthenticator:
-    :branch: feature/magic_email_clients
+    :branch: feature/magic-email-clients
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/aaa43ff63c6fc8dd44f6bd45af25e2f91619d6a5/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
@@ -444,7 +444,7 @@ CHECKOUT OPTIONS:
     :commit: aaa43ff63c6fc8dd44f6bd45af25e2f91619d6a5
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressAuthenticator:
-    :commit: 483060a88972a745310c9f510159f8799d27822a
+    :commit: 2b8d9cb0c8b0f58e36b1a5e11c45dbd2028c650f
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   ZendeskSDK:
     :git: https://github.com/zendesk/zendesk_sdk_ios
@@ -511,7 +511,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 72967764b174f49febbe8c3075aab36d391d715b
   WordPress-Editor-iOS: 508a0581810409b42ac721a32e0264841c31b892
-  WordPressAuthenticator: c6cc1c7298e3d8e7838a893f306b30408a33666c
+  WordPressAuthenticator: 206d23ab7244f7bc4a1f0eea7e8bf560f79d66fc
   WordPressKit: 5b37877f273fc4bc7289eb736df3bd3122535bd4
   WordPressMocks: 64d77a10fba970a0e98760af651ba8ea6a54fcb8
   WordPressShared: 39ce162e3efe0c85b40790ef654e5a0452c45bbb
@@ -522,6 +522,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 7cb45308b7ffc9c0e6b756032f19ff968266cdaf
+PODFILE CHECKSUM: 9a85c142f29f0cad45106a6345b036c16814a656
 
 COCOAPODS: 1.8.4
