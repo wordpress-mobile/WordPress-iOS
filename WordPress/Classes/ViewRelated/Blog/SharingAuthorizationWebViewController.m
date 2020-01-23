@@ -196,6 +196,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     // Prevent a second verify load by someone happy clicking.
     if (self.loadingVerify) {
         decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
 
     AuthorizeAction action = [self requestedAuthorizeAction:webView.URL];
