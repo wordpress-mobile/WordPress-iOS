@@ -2,6 +2,7 @@ import Foundation
 import CoreServices
 import WPMediaPicker
 import Gutenberg
+import MediaEditor
 
 class GutenbergMediaInserterHelper: NSObject {
     fileprivate let post: AbstractPost

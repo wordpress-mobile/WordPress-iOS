@@ -1,4 +1,5 @@
 import Foundation
+import MediaEditor
 
 extension Array where Element == MediaEditorOperation {
     var description: String {

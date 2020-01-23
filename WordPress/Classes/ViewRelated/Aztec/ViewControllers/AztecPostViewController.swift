@@ -11,6 +11,7 @@ import WPMediaPicker
 import AVKit
 import MobileCoreServices
 import AutomatticTracks
+import MediaEditor
 
 // MARK: - Aztec's Native Editor!
 //
