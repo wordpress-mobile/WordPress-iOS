@@ -76,6 +76,8 @@ Scripts/fastlane/README.md
 Scripts/Preview.html
 Scripts/fastlane/test_output/
 Scripts/fastlane/google_cloud_keys.json
+Scripts/fastlane/promo_screenshots
+/Scripts/default.profraw
 derived-data/
 
 # Generated Internal Icons

@@ -29,6 +29,7 @@ class PostEditorNavigationBarManager {
         cancelButton.leftSpacing = Constants.cancelButtonPadding.left
         cancelButton.rightSpacing = Constants.cancelButtonPadding.right
         cancelButton.setContentHuggingPriority(.required, for: .horizontal)
+        cancelButton.accessibilityIdentifier = "editor-close-button"
         return cancelButton
     }()
 

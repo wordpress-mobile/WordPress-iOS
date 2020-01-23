@@ -24,6 +24,7 @@ class TabNavComponent: BaseScreen {
         return MeTabScreen()
     }
 
+    @discardableResult
     func gotoMySiteScreen() -> MySiteScreen {
         // Avoid transitioning to the sites list if MySites is already on screen
         if !MySiteScreen.isVisible {

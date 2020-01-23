@@ -29,7 +29,7 @@ class EditorGutenbergTests: XCTestCase {
             .addParagraphBlock(withText: content)
             .publish()
             .viewPublishedPost(withTitle: title)
-            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)
+            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()
     }
 
@@ -50,7 +50,7 @@ class EditorGutenbergTests: XCTestCase {
             .closePostSettings()
         BlockEditorScreen().publish()
             .viewPublishedPost(withTitle: title)
-            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)
+            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()
     }
 }

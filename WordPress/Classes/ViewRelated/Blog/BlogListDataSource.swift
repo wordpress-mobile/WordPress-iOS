@@ -325,6 +325,8 @@ extension BlogListDataSource: UITableViewDataSource {
             cell.detailTextLabel?.text = nil
         }
 
+        cell.accessibilityIdentifier = blog.displayURL as String?
+
         if selecting {
             if selectedBlogId == blog.objectID {
                 cell.accessoryType = .checkmark
