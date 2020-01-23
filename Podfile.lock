@@ -315,7 +315,6 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - TOCropViewController (~> 2.5.2)
   - WordPress-Editor-iOS (~> 1.14.0)
   - WordPressAuthenticator (~> 1.10.6)
   - WordPressKit (~> 4.5.6)
@@ -526,6 +525,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 89a0006cbfbb1a89f36c3e0a4abaad13adc048a2
+PODFILE CHECKSUM: b4d5bb708291f60db719092df046b3b33fc5b8ab
 
 COCOAPODS: 1.8.4
