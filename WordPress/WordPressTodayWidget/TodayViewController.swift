@@ -47,6 +47,10 @@ class TodayViewController: UIViewController {
         }
     }
 
+    private var showNoConnection: Bool {
+        return !isReachable && statsValues == nil
+    }
+
     private let tracks = Tracks(appGroupName: WPAppGroupName)
     private let reachability: Reachability = .forInternetConnection()
 
@@ -131,7 +135,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard isConfigured, isReachable else {
+        guard isConfigured, !showNoConnection else {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
@@ -140,7 +144,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if !isConfigured || !isReachable,
+        if !isConfigured || showNoConnection,
             let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) {
             // Use the max compact height for unconfigured view.
             return maxCompactSize.height
@@ -287,7 +291,7 @@ private extension TodayViewController {
             return UITableViewCell()
         }
 
-        isReachable ? cell.configure(for: .today) : cell.configure(for: .noConnection)
+        showNoConnection ? cell.configure(for: .noConnection) : cell.configure(for: .today)
         return cell
     }
 
@@ -331,11 +335,11 @@ private extension TodayViewController {
 
     func setAvailableDisplayMode() {
         // If unconfigured or no connection, don't allow the widget to be expanded.
-        extensionContext?.widgetLargestAvailableDisplayMode = isReachable && isConfigured ? .expanded : .compact
+        extensionContext?.widgetLargestAvailableDisplayMode = !showNoConnection && isConfigured ? .expanded : .compact
     }
 
     func minRowsToDisplay() -> Int {
-        if !isReachable {
+        if showNoConnection {
             return 1
         }
 
@@ -343,7 +347,7 @@ private extension TodayViewController {
     }
 
     func maxRowsToDisplay() -> Int {
-        if !isReachable {
+        if showNoConnection {
             return 1
         }
 
