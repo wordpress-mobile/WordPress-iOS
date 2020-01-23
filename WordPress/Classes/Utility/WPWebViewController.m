@@ -444,6 +444,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         }
         
         decisionHandler(policy.action);
+        return;
     }
 
     [self refreshInterface];
