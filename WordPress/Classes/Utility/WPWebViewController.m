@@ -161,11 +161,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     navigationBar.barStyle                  = UIBarStyleDefault;
     [navigationBar setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
 
-    self.titleView.titleLabel.textColor     = [UIColor murielNeutral70];
-    self.titleView.subtitleLabel.textColor  = [UIColor murielNeutral30];
+    self.titleView.titleLabel.textColor     = [UIColor whiteColor];
+    self.titleView.subtitleLabel.textColor  = [UIColor whiteColor];
 
-    self.dismissButton.tintColor            = [UIColor murielNeutral20];
-    self.optionsButton.tintColor            = [UIColor murielNeutral20];
+    self.dismissButton.tintColor            = [UIColor whiteColor];
+    self.optionsButton.tintColor            = [UIColor whiteColor];
 
     self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }
