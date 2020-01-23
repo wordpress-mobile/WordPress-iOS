@@ -205,14 +205,17 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
         case AuthorizeActionUnknown:
         case AuthorizeActionRequest:
             [super webView:webView decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
+            return;
 
         case AuthorizeActionVerify:
             self.loadingVerify = YES;
             decisionHandler(WKNavigationActionPolicyAllow);
+            return;
 
         case AuthorizeActionDeny:
             [self dismiss];
             decisionHandler(WKNavigationActionPolicyCancel);
+            return;
     }
 }
 
