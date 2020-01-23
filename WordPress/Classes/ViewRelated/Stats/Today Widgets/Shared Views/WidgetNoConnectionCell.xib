@@ -17,29 +17,27 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zKo-vV-9NC">
-                        <rect key="frame" x="16" y="0.0" width="288" height="94"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No network available" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B1Z-xs-l7W" userLabel="Title Label">
-                                <rect key="frame" x="73" y="0.0" width="142" height="50"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stats will be updated next time you're online" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SbK-FW-nQ4" userLabel="Message Label">
-                                <rect key="frame" x="10.5" y="50" width="267.5" height="44"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                    </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No network available" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B1Z-xs-l7W" userLabel="Title Label">
+                        <rect key="frame" x="16" y="20" width="288" height="18"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stats will be updated next time you're online" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SbK-FW-nQ4" userLabel="Message Label">
+                        <rect key="frame" x="16" y="54" width="288" height="16"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="zKo-vV-9NC" secondAttribute="trailing" constant="16" id="3v1-g1-Q8f"/>
-                    <constraint firstAttribute="bottom" secondItem="zKo-vV-9NC" secondAttribute="bottom" constant="16" id="Q7p-lT-wKS"/>
-                    <constraint firstItem="zKo-vV-9NC" firstAttribute="top" secondItem="Jm7-ae-Ize" secondAttribute="top" id="g2E-qH-0rj"/>
-                    <constraint firstItem="zKo-vV-9NC" firstAttribute="leading" secondItem="Jm7-ae-Ize" secondAttribute="leading" constant="16" id="rRH-dM-zjt"/>
+                    <constraint firstItem="SbK-FW-nQ4" firstAttribute="leading" secondItem="Jm7-ae-Ize" secondAttribute="leading" constant="16" id="6H6-nf-w1b"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="SbK-FW-nQ4" secondAttribute="bottom" constant="16" id="B9x-hx-pgs"/>
+                    <constraint firstAttribute="trailing" secondItem="SbK-FW-nQ4" secondAttribute="trailing" constant="16" id="GJx-mX-d0a"/>
+                    <constraint firstItem="B1Z-xs-l7W" firstAttribute="top" secondItem="Jm7-ae-Ize" secondAttribute="top" constant="20" symbolic="YES" id="Utf-TU-DtH"/>
+                    <constraint firstItem="SbK-FW-nQ4" firstAttribute="top" secondItem="B1Z-xs-l7W" secondAttribute="bottom" constant="16" id="WeU-Pd-r2c"/>
+                    <constraint firstAttribute="trailing" secondItem="B1Z-xs-l7W" secondAttribute="trailing" constant="16" id="lL9-9v-wof"/>
+                    <constraint firstItem="B1Z-xs-l7W" firstAttribute="leading" secondItem="Jm7-ae-Ize" secondAttribute="leading" constant="16" id="vMI-Mc-3lK"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -49,7 +47,7 @@
                 <outlet property="messageLabel" destination="SbK-FW-nQ4" id="m4i-M6-p1w"/>
                 <outlet property="titleLabel" destination="B1Z-xs-l7W" id="eyF-SA-wH2"/>
             </connections>
-            <point key="canvasLocation" x="-335" y="-240"/>
+            <point key="canvasLocation" x="-336.23188405797106" y="-240.40178571428569"/>
         </tableViewCell>
     </objects>
 </document>
