@@ -11,7 +11,6 @@
 
 @property (nonatomic, strong) NSNumber                      *selectedObjectDotcomID;
 @property (nonatomic, strong) NSManagedObjectID             *selectedObjectID;
-@property (nonatomic,   copy) BlogSelectorSuccessHandler    successHandler;
 @property (nonatomic,   copy) BlogSelectorDismissHandler    dismissHandler;
 @property (nonatomic, strong) UISearchController            *searchController;
 @property (nonatomic, strong) BlogListDataSource            *dataSource;
@@ -128,6 +127,7 @@
     [self.tableView reloadData];
     [self syncBlogs];
     [self scrollToSelectedObjectID];
+    self.title = NSLocalizedString(@"Select Site", comment: @"Blog Picker's Title");
     self.visible = YES;
 }
 

@@ -12,6 +12,7 @@ class AllTimeViewController: UIViewController {
     private var statsValues: AllTimeWidgetStats? {
         didSet {
             updateStatsLabels()
+            tableView.reloadData()
         }
     }
 
@@ -20,7 +21,6 @@ class AllTimeViewController: UIViewController {
     private var postCount: String = Constants.noDataLabel
     private var bestCount: String = Constants.noDataLabel
     private var siteUrl: String = Constants.noDataLabel
-    private var footerHeight: CGFloat = 35
 
     private var haveSiteUrl: Bool {
         siteUrl != Constants.noDataLabel
@@ -70,10 +70,10 @@ class AllTimeViewController: UIViewController {
 
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.performBatchUpdates({
-                let lastRowIndexPath = [IndexPath(row: Constants.maxRows - 1, section: 0)]
-                updatedRowCount > Constants.minRows ?
-                    self.tableView.insertRows(at: lastRowIndexPath, with: .fade) :
-                    self.tableView.deleteRows(at: lastRowIndexPath, with: .fade)
+                let lastDataRowIndexPath = [IndexPath(row: 1, section: 0)]
+                updatedRowCount > self.minRowsToDisplay() ?
+                    self.tableView.insertRows(at: lastDataRowIndexPath, with: .fade) :
+                    self.tableView.deleteRows(at: lastDataRowIndexPath, with: .fade)
             })
         })
     }
@@ -90,8 +90,8 @@ extension AllTimeViewController: NCWidgetProviding {
         if !isConfigured {
             DDLogError("All Time Widget: Missing site ID, timeZone or oauth2Token")
 
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
 
             completionHandler(NCUpdateResult.failed)
@@ -125,28 +125,12 @@ extension AllTimeViewController: UITableViewDelegate, UITableViewDataSource {
         return statCellFor(indexPath: indexPath)
     }
 
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard haveSiteUrl,
-            isConfigured,
-            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
-                return nil
-        }
-
-        footer.configure(siteUrl: siteUrl)
-        footerHeight = footer.frame.height
-
-        return footer
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if !isConfigured || !haveSiteUrl {
-            return 0
-        }
-
-        return footerHeight
-    }
-
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+        if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
+            return WidgetUrlCell.height
+        }
+
         guard !isConfigured,
             let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
                 return UITableView.automaticDimension
@@ -239,12 +223,11 @@ private extension AllTimeViewController {
 
             DDLogDebug("All Time Widget: Fetched StatsAllTimesInsight data.")
 
-            DispatchQueue.main.async {
-                self.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
+            DispatchQueue.main.async { [weak self] in
+                self?.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
                                             visitors: allTimesStats?.visitorsCount,
                                             posts: allTimesStats?.postsCount,
                                             bestViews: allTimesStats?.bestViewsPerDayCount)
-                self.tableView.reloadData()
             }
             completionHandler(NCUpdateResult.newData)
         }
@@ -273,8 +256,8 @@ private extension AllTimeViewController {
         let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
         tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
 
-        let footerNib = UINib(nibName: String(describing: WidgetFooterView.self), bundle: Bundle(for: WidgetFooterView.self))
-        tableView.register(footerNib, forHeaderFooterViewReuseIdentifier: WidgetFooterView.reuseIdentifier)
+        let urlCellNib = UINib(nibName: String(describing: WidgetUrlCell.self), bundle: Bundle(for: WidgetUrlCell.self))
+        tableView.register(urlCellNib, forCellReuseIdentifier: WidgetUrlCell.reuseIdentifier)
     }
 
     func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
@@ -287,6 +270,18 @@ private extension AllTimeViewController {
     }
 
     func statCellFor(indexPath: IndexPath) -> UITableViewCell {
+
+        // URL Cell
+        if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
+            guard let urlCell = tableView.dequeueReusableCell(withIdentifier: WidgetUrlCell.reuseIdentifier, for: indexPath) as? WidgetUrlCell else {
+                return UITableViewCell()
+            }
+
+            urlCell.configure(siteUrl: siteUrl)
+            return urlCell
+        }
+
+        // Data Cells
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetTwoColumnCell.reuseIdentifier, for: indexPath) as? WidgetTwoColumnCell else {
             return UITableViewCell()
         }
@@ -306,14 +301,22 @@ private extension AllTimeViewController {
         return cell
     }
 
+    func showUrl() -> Bool {
+        return (isConfigured && haveSiteUrl)
+    }
+
     // MARK: - Expand / Compact View Helpers
 
-    func numberOfRowsToDisplay() -> Int {
-        if !isConfigured || extensionContext?.widgetActiveDisplayMode == .compact {
-            return Constants.minRows
-        }
+    func minRowsToDisplay() -> Int {
+        return showUrl() ? 2 : 1
+    }
 
-        return Constants.maxRows
+    func maxRowsToDisplay() -> Int {
+        return showUrl() ? 3 : 2
+    }
+
+    func numberOfRowsToDisplay() -> Int {
+        return extensionContext?.widgetActiveDisplayMode == .compact ? minRowsToDisplay() : maxRowsToDisplay()
     }
 
     func resizeView(withMaximumSize size: CGSize? = nil) {
@@ -327,20 +330,26 @@ private extension AllTimeViewController {
 
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
+        let dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        let numRows = numberOfRowsToDisplay()
 
-        if haveSiteUrl {
-            height += tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
+        if showUrl() {
+            height += WidgetUrlCell.height
+            height += (dataRowHeight * CGFloat(numRows - 1))
+        } else {
+            height += (dataRowHeight * CGFloat(numRows))
         }
 
-        let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
-        height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
         return height
     }
 
     // MARK: - Helpers
 
     func updateStatsLabels() {
-        let values = statsValues ?? AllTimeWidgetStats()
+        guard let values = statsValues else {
+            return
+        }
+
         viewCount = values.views.abbreviatedString()
         visitorCount = values.visitors.abbreviatedString()
         postCount = values.posts.abbreviatedString()
@@ -360,8 +369,6 @@ private extension AllTimeViewController {
         static let noDataLabel = "-"
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
-        static let minRows: Int = 1
-        static let maxRows: Int = 2
     }
 
 }

@@ -51,7 +51,7 @@ class PostCardStatusViewModel: NSObject {
         super.init()
     }
 
-    private var status: String? {
+    var status: String? {
         // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")

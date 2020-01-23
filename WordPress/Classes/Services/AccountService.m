@@ -462,21 +462,24 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         });
     } else {
         // Required Attributes
-        
+
         BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        NSTimeZone *timeZone        = [blogService timeZoneForBlog:defaultBlog];
         NSString *oauth2Token       = defaultAccount.authToken;
-        
-        // For the Today Extension, if the user has set a non-primary site, use that.
+
+        // For the Today Extensions, if the user has set a non-primary site, use that.
         NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
         NSNumber *todayExtensionSiteID = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
         NSString *todayExtensionBlogName = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
         NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
-        
+
+        Blog *todayExtensionBlog = [blogService blogByBlogId:todayExtensionSiteID];
+        NSTimeZone *timeZone = [blogService timeZoneForBlog:todayExtensionBlog];
+
         if (todayExtensionSiteID == NULL) {
             todayExtensionSiteID = siteId;
             todayExtensionBlogName = blogName;
             todayExtensionBlogUrl = blogUrl;
+            timeZone = [blogService timeZoneForBlog:defaultBlog];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{

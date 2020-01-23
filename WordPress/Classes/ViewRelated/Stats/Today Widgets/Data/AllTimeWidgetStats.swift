@@ -11,13 +11,6 @@ struct AllTimeWidgetStats: Codable {
     let posts: Int
     let bestViews: Int
 
-    private enum CodingKeys: String, CodingKey {
-        case views
-        case visitors
-        case posts
-        case bestViews
-    }
-
     init(views: Int? = 0, visitors: Int? = 0, posts: Int? = 0, bestViews: Int? = 0) {
         self.views = views ?? 0
         self.visitors = visitors ?? 0
@@ -28,11 +21,11 @@ struct AllTimeWidgetStats: Codable {
 
 extension AllTimeWidgetStats {
 
-    static func loadSavedData() -> AllTimeWidgetStats {
+    static func loadSavedData() -> AllTimeWidgetStats? {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
                 DDLogError("AllTimeWidgetStats: data file '\(dataFileName)' does not exist.")
-                return AllTimeWidgetStats()
+                return nil
         }
 
         let decoder = PropertyListDecoder()
@@ -41,7 +34,20 @@ extension AllTimeWidgetStats {
             return try decoder.decode(AllTimeWidgetStats.self, from: data)
         } catch {
             DDLogError("Failed loading AllTimeWidgetStats data: \(error.localizedDescription)")
-            return AllTimeWidgetStats()
+            return nil
+        }
+    }
+
+    static func clearSavedData() {
+        guard let dataFileURL = AllTimeWidgetStats.dataFileURL else {
+            return
+        }
+
+        do {
+            try FileManager.default.removeItem(at: dataFileURL)
+        }
+        catch {
+            DDLogError("AllTimeWidgetStats: failed deleting data file '\(dataFileName)': \(error.localizedDescription)")
         }
     }
 

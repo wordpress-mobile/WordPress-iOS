@@ -1,3 +1,9 @@
+14.1
+-----
+* Fixes a bug that could cause some web page previews to remain unauthenticated even after logging in.
+* Stats: added a This Week widget to display Views for the past week.
+* Web Views: the title and button colors in the header of web views was grey, and is now white.
+ 
 14.0
 -----
 * Stats: Updated default cards for the Insights view.
@@ -38,6 +44,7 @@
 * Block editor: Images from Image Block can now be previewed full screen by tapping on them.
 * Fixed an issue that caused logging in with a 2FA Google account to fail.
 * Sign in with Apple: now supports logging in with 2FA enabled on linked WordPress accounts.
+* Stats: Fixed issue that caused incorrect data to be displayed.
 
 13.7
 -----

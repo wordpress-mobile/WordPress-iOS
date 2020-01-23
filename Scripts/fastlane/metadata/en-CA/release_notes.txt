@@ -1,5 +1,0 @@
-- The block editor’s got a new Spacer block for adding white space between content just like all the articles content optimization and readability tell you to, and images in Image blocks can now be previewed full screen by tapping on them.
-- When a post has an autosaved revision, you now have the option to load the autosaved version. We apologize to any autosaved revisions that had been struggling with feelings of neglect.
-- People would occasionally get a “Message failed to send” error when sending messages to Support. Since the point of messages is to be sent, especially when you need support, we fixed that bug.
-- You can never be too safe on the internet. Sign in with Apple now supports two-factor authentication and a 2FA issue with Google sign-in is fixed, so you can authenticate all the things.
-- There was an issue that caused the “Me” screen to sometimes be blank, which was 100% an unfortunate bug and 0% a reflection of your self-image. To remove any doubt, it’s fixed now.
