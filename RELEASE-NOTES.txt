@@ -2,7 +2,9 @@
 -----
 * Fixes a bug that could cause some web page previews to remain unauthenticated even after logging in.
 * Stats: added a This Week widget to display Views for the past week.
- 
+* Block Editor: Reduced padding around text on Rich Text based blocks.
+* Block Editor: New block "Shortcode". You can now create and edit Shortcode blocks in the editor.
+
 14.0
 -----
 * Stats: Updated default cards for the Insights view.
