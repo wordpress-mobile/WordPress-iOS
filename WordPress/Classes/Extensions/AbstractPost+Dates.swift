@@ -12,14 +12,21 @@ extension AbstractPost {
         let blogService = BlogService(managedObjectContext: context)
         let timeZone = blogService.timeZone(for: blog)
 
+        // Unpublished post shows relative or date string
         if originalIsDraft() || status == .pending {
             return dateModified?.mediumString(timeZone: timeZone)
-        } else if isScheduled() {
-            return dateCreated?.mediumStringWithTime(timeZone: timeZone)
-        } else if shouldPublishImmediately() {
-            return NSLocalizedString("Publish Immediately", comment: "A short phrase indicating a post is due to be immedately published.")
-        } else {
-            return dateCreated?.mediumString(timeZone: timeZone)
         }
+
+        // Scheduled Post shows date with time to be clear about when it goes live
+        if isScheduled() {
+            return dateCreated?.mediumStringWithTime(timeZone: timeZone)
+        }
+
+        // Publish Immediately shows hard coded string
+        if shouldPublishImmediately() {
+            return NSLocalizedString("Publish Immediately", comment: "A short phrase indicating a post is due to be immedately published.")
+        }
+
+        return dateCreated?.mediumString(timeZone: timeZone)
     }
 }
