@@ -86,10 +86,25 @@ class TodayViewController: UIViewController {
 
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.performBatchUpdates({
-                let lastDataRowIndexPath = [IndexPath(row: 1, section: 0)]
+
+                var indexPathsToInsert = [IndexPath]()
+                var indexPathsToDelete = [IndexPath]()
+
+                // If the first row was unconfigured, then rows are just being added.
+                // Otherwise, a data row is being inserted/deleted.
+                if self.tableView.visibleCells.first is WidgetUnconfiguredCell {
+                    let indexRange = (1..<updatedRowCount)
+                    let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
+                    indexPathsToInsert.append(contentsOf: indexPaths)
+                } else {
+                    let lastDataRowIndexPath = IndexPath(row: 1, section: 0)
+                    indexPathsToInsert.append(lastDataRowIndexPath)
+                    indexPathsToDelete.append(lastDataRowIndexPath)
+                }
+
                 updatedRowCount > self.minRowsToDisplay() ?
-                    self.tableView.insertRows(at: lastDataRowIndexPath, with: .fade) :
-                    self.tableView.deleteRows(at: lastDataRowIndexPath, with: .fade)
+                    self.tableView.insertRows(at: indexPathsToInsert, with: .fade) :
+                    self.tableView.deleteRows(at: indexPathsToDelete, with: .fade)
             })
         })
     }
@@ -369,7 +384,17 @@ private extension TodayViewController {
 
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
-        let dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        var dataRowHeight: CGFloat = 0
+
+        // This method is called before the rows are updated.
+        // So if an unconfigured cell was displayed, use the default height for data rows.
+        // Otherwise, use the actual height from the first data row.
+        if tableView.visibleCells.first is WidgetUnconfiguredCell {
+            dataRowHeight = WidgetTwoColumnCell.defaultHeight
+        } else {
+            dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        }
+
         let numRows = numberOfRowsToDisplay()
 
         if showUrl() {
