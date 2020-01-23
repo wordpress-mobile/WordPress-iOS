@@ -397,7 +397,7 @@ private extension TodayViewController {
 
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
-        var dataRowHeight: CGFloat = 0
+        let dataRowHeight: CGFloat
 
         // This method is called before the rows are updated.
         // So if a no connection cell was displayed, use the default height for data rows.
