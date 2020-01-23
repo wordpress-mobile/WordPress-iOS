@@ -262,6 +262,7 @@ extension PostEditor where Self: UIViewController {
         let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
 
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.view.accessibilityIdentifier = "post-has-changes-alert"
 
         // Button: Keep editing
         alertController.addCancelActionWithTitle(cancelTitle)

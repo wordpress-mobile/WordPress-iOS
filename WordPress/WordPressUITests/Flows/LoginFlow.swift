@@ -2,6 +2,7 @@ import XCTest
 
 class LoginFlow {
 
+    @discardableResult
     static func login(siteUrl: String, username: String, password: String) -> MySiteScreen {
         logoutIfNeeded()
 
