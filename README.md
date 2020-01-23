@@ -21,7 +21,7 @@ In order to login to WordPress.com using the app:
 1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information. 
 1. From a command line, ensure you are in the project's working directory and run `cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/wpcom_app_credentials` to copy the sample credentials file.
-1. Open the newly copied `.configure-files/wpcom_app_credentials` with the text editor of your choice, and replace `WPCOM_APP_ID` and `WPCOM_APP_SECRET` with the `Client ID` and `Client Secret` the application you created. Note that `.configure-files` will be hidden by default in Finder. If you need to view it in Finder, hold down `Control`+`Shift`+`.` and it should appear.
+1. Open the newly copied `.configure-files/wpcom_app_credentials` with the text editor of your choice, and replace `WPCOM_APP_ID` and `WPCOM_APP_SECRET` with the `Client ID` and `Client Secret` of the application you created. Note that `.configure-files` will be hidden by default in Finder. If you need to view it in Finder, hold down `Control`+`Shift`+`.` and it should appear.
 1. Recompile and run the app on a device or an simulator.
 
 You can only log in with the WordPress.com account that you used to create the WordPress application.
@@ -77,7 +77,7 @@ When creating your application, select "Native client" for the application type.
 
 Your new application will have an associated client ID and a client secret key. These are used to authenticate the API calls made by your application. 
 
-Next, create a credential file on your build machine. Start by copying the sample credentials file in your local repo by doing this:
+Next, create a credential file. Start by copying the sample credentials file in your local repo by doing this:
 
 `cp WordPress/Credentials/wpcom_app_credentials-example .configure-files/wpcom_app_credentials`
 
