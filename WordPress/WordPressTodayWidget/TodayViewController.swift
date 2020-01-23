@@ -41,8 +41,9 @@ class TodayViewController: UIViewController {
         didSet {
             setAvailableDisplayMode()
 
-            if isReachable != oldValue {
-                tableView.reloadData()
+            if isReachable != oldValue,
+                let completionHandler = widgetCompletionBlock {
+                widgetPerformUpdate(completionHandler: completionHandler)
             }
         }
     }
@@ -53,6 +54,9 @@ class TodayViewController: UIViewController {
 
     private let tracks = Tracks(appGroupName: WPAppGroupName)
     private let reachability: Reachability = .forInternetConnection()
+
+    private typealias WidgetCompletionBlock = (NCUpdateResult) -> Void
+    private var widgetCompletionBlock: WidgetCompletionBlock?
 
     // MARK: - View
 
@@ -116,6 +120,7 @@ class TodayViewController: UIViewController {
 extension TodayViewController: NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
+        widgetCompletionBlock = completionHandler
         retrieveSiteConfiguration()
         isReachable = reachability.isReachable()
 
@@ -184,8 +189,9 @@ private extension TodayViewController {
 
         // If showing the No Connection view, attempt to reload.
         if let unconfiguredCell = tableView.visibleCells.first as? WidgetUnconfiguredCell,
-            unconfiguredCell.widgetType == .noConnection {
-            tableView.reloadData()
+            unconfiguredCell.widgetType == .noConnection,
+            let completionHandler = widgetCompletionBlock {
+            widgetPerformUpdate(completionHandler: completionHandler)
             return
         }
 
