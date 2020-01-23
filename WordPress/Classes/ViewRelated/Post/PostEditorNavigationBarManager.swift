@@ -38,7 +38,8 @@ class PostEditorNavigationBarManager {
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
         button.frame = CGRect(origin: .zero, size: image.size)
-        button.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        button.accessibilityLabel = NSLocalizedString("More Options", comment: "Action button to display more available options")
+        button.accessibilityIdentifier = "more_post_options"
         button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
         button.setContentHuggingPriority(.required, for: .horizontal)
         return button

@@ -19,7 +19,7 @@ class AztecEditorScreen: BaseScreen {
 
     let editorCloseButton = XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"]
     let publishButton = XCUIApplication().buttons["Publish"]
-    let moreButton = XCUIApplication().buttons["More"]
+    let moreButton = XCUIApplication().buttons["more_post_options"]
     let uploadProgressBar = XCUIApplication().progressIndicators["Progress"]
 
     let titleView = XCUIApplication().textViews["Title"]
