@@ -18,6 +18,10 @@ class FancyAlertComponent: BaseScreen {
     }
 
     func acceptAlert() {
+        XCTAssert(defaultAlertButton.waitForExistence(timeout: 3))
+        XCTAssert(defaultAlertButton.waitForHittability(timeout: 3))
+
+        XCTAssert(defaultAlertButton.isHittable)
         defaultAlertButton.tap()
     }
 

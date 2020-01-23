@@ -14,4 +14,10 @@ class MySitesScreen: BaseScreen {
     static func isLoaded() -> Bool {
         return XCUIApplication().tables["Blogs"].exists
     }
+
+    @discardableResult
+    func switchToSite(withTitle title: String) -> MySiteScreen {
+        XCUIApplication().cells[title].tap()
+        return MySiteScreen()
+    }
 }
