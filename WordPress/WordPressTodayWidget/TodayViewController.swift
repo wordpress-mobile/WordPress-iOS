@@ -75,6 +75,7 @@ class TodayViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        reachability.stopNotifier()
         saveData()
     }
 
