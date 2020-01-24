@@ -71,6 +71,7 @@ extension AllTimeWidgetStats {
 
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
+            DDLogError("AllTimeWidgetStats: unable to get file URL for \(WPAppGroupName).")
             return nil
         }
         return url.appendingPathComponent(dataFileName)

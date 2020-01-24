@@ -37,7 +37,7 @@ class TodayViewController: UIViewController {
         }
     }
 
-    private var isReachable: Bool = true {
+    private var isReachable = true {
         didSet {
             setAvailableDisplayMode()
 
