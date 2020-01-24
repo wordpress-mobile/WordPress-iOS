@@ -4,6 +4,16 @@ enum WidgetType {
     case today
     case allTime
     case thisWeek
+    case noConnection
+
+    var configureLabelFont: UIFont {
+        switch self {
+        case .noConnection:
+            return UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize)
+        default:
+            return UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
+        }
+    }
 }
 
 class WidgetUnconfiguredCell: UITableViewCell {
@@ -15,12 +25,15 @@ class WidgetUnconfiguredCell: UITableViewCell {
     @IBOutlet private var configureLabel: UILabel!
     @IBOutlet private var separatorLine: UIView!
     @IBOutlet private var separatorVisualEffectView: UIVisualEffectView!
-    @IBOutlet private var openWordPressLabel: UILabel!
+    @IBOutlet private var actionLabel: UILabel!
+
+    private(set) var widgetType: WidgetType?
 
     // MARK: - View
 
     func configure(for widgetType: WidgetType) {
-        configureView(for: widgetType)
+        self.widgetType = widgetType
+        configureView()
     }
 
 }
@@ -29,7 +42,12 @@ class WidgetUnconfiguredCell: UITableViewCell {
 
 private extension WidgetUnconfiguredCell {
 
-    func configureView(for widgetType: WidgetType) {
+    func configureView() {
+        guard let widgetType = widgetType else {
+            return
+        }
+
+        configureLabel.font = widgetType.configureLabelFont
 
         configureLabel.text = {
             switch widgetType {
@@ -39,12 +57,14 @@ private extension WidgetUnconfiguredCell {
                 return LocalizedText.configureAllTime
             case .thisWeek:
                 return LocalizedText.configureThisWeek
+            case .noConnection:
+                return LocalizedText.noConnection
             }
         }()
 
-        openWordPressLabel.text = LocalizedText.openWordPress
+        actionLabel.text = widgetType == .noConnection ? LocalizedText.retry : LocalizedText.openWordPress
         configureLabel.textColor = WidgetStyles.primaryTextColor
-        openWordPressLabel.textColor = WidgetStyles.primaryTextColor
+        actionLabel.textColor = WidgetStyles.primaryTextColor
         WidgetStyles.configureSeparator(separatorLine)
         separatorVisualEffectView.effect = WidgetStyles.separatorVibrancyEffect
     }
@@ -54,6 +74,8 @@ private extension WidgetUnconfiguredCell {
         static let configureAllTime = NSLocalizedString("Display your all-time site stats here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats all-time widget helper text")
         static let configureThisWeek = NSLocalizedString("Display your site stats for this week here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats this week widget helper text")
         static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget label to launch WP app")
+        static let noConnection = NSLocalizedString("No network available", comment: "Displayed in the Stats widgets when there is no network")
+        static let retry = NSLocalizedString("Retry", comment: "Stats widgets label to reload the widget")
     }
 
 }
