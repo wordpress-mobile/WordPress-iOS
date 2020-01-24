@@ -7,7 +7,7 @@ class BlockEditorScreen: BaseScreen {
     let editorNavBar = XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"]
     let editorCloseButton = XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
     let publishButton = XCUIApplication().buttons["Publish"]
-    let moreButton = XCUIApplication().buttons["More"]
+    let moreButton = XCUIApplication().buttons["more_post_options"]
 
     // Editor area
     // Title
