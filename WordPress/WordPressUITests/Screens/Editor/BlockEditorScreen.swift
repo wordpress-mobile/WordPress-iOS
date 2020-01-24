@@ -7,7 +7,7 @@ class BlockEditorScreen: BaseScreen {
     let editorNavBar = XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"]
     let editorCloseButton = XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
     let publishButton = XCUIApplication().buttons["Publish"]
-    let moreButton = XCUIApplication().buttons["More"]
+    let moreButton = XCUIApplication().buttons["more_post_options"]
 
     // Editor area
     // Title
@@ -18,7 +18,7 @@ class BlockEditorScreen: BaseScreen {
     let imagePlaceholder = XCUIApplication().buttons["Image block. Empty"] // Uses a localized string
 
     // Toolbar
-    let addBlockButton = XCUIApplication().buttons["Add block"] // Uses a localized string
+    let addBlockButton = XCUIApplication().buttons["add-block-button"] // Uses a testID
 
     // Action sheets
     let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
@@ -78,8 +78,7 @@ class BlockEditorScreen: BaseScreen {
             }
 
             // Wait for close button to be hittable (i.e. React "Loading from pre-bundled file" message is gone)
-            waitFor(element: editorCloseButton, predicate: "isHittable == true")
-
+            editorCloseButton.waitForHittability(timeout: 3)
             editorCloseButton.tap()
 
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in
@@ -139,6 +138,12 @@ class BlockEditorScreen: BaseScreen {
             } else {
                 app.sheets.buttons["Publish"].tap()
             }
+        }
+    }
+
+    func dismissBlockEditorEnabledDialog() {
+        if FancyAlertComponent.isLoaded() {
+            FancyAlertComponent().acceptAlert()
         }
     }
 

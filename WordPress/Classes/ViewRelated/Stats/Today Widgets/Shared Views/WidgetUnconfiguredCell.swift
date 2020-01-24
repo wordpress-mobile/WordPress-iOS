@@ -15,12 +15,15 @@ class WidgetUnconfiguredCell: UITableViewCell {
     @IBOutlet private var configureLabel: UILabel!
     @IBOutlet private var separatorLine: UIView!
     @IBOutlet private var separatorVisualEffectView: UIVisualEffectView!
-    @IBOutlet private var openWordPressLabel: UILabel!
+    @IBOutlet private var actionLabel: UILabel!
+
+    private var widgetType: WidgetType?
 
     // MARK: - View
 
     func configure(for widgetType: WidgetType) {
-        configureView(for: widgetType)
+        self.widgetType = widgetType
+        configureView()
     }
 
 }
@@ -29,7 +32,10 @@ class WidgetUnconfiguredCell: UITableViewCell {
 
 private extension WidgetUnconfiguredCell {
 
-    func configureView(for widgetType: WidgetType) {
+    func configureView() {
+        guard let widgetType = widgetType else {
+            return
+        }
 
         configureLabel.text = {
             switch widgetType {
@@ -42,9 +48,9 @@ private extension WidgetUnconfiguredCell {
             }
         }()
 
-        openWordPressLabel.text = LocalizedText.openWordPress
+        actionLabel.text = LocalizedText.openWordPress
         configureLabel.textColor = WidgetStyles.primaryTextColor
-        openWordPressLabel.textColor = WidgetStyles.primaryTextColor
+        actionLabel.textColor = WidgetStyles.primaryTextColor
         WidgetStyles.configureSeparator(separatorLine)
         separatorVisualEffectView.effect = WidgetStyles.separatorVibrancyEffect
     }

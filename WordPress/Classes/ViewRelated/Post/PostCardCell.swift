@@ -62,6 +62,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         configureStatusLabel()
         configureProgressView()
         configureActionBar()
+        configureAccessibility()
     }
 
     override func awakeFromNib() {
@@ -214,6 +215,8 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         if let titleForDisplay = post.titleForDisplay() {
             WPStyleGuide.applyPostTitleStyle(titleForDisplay, into: titleLabel)
         }
+
+        self.accessibilityIdentifier = post.slugForDisplay()
     }
 
     private func configureSnippet() {
@@ -293,6 +296,58 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         viewButton.isHidden = !primaryButtons.contains(.view)
         moreButton.isHidden = !primaryButtons.contains(.more)
         trashButton.isHidden = !primaryButtons.contains(.trash)
+    }
+
+    private func configureAccessibility() {
+        guard let viewModel = viewModel else {
+            accessibilityLabel = nil
+            return
+        }
+
+        let post = viewModel.post
+
+        let titleAndDateChunk: String = {
+            let format = NSLocalizedString("%@, %@.", comment: "Accessibility label for a post in the post list." +
+                    " The parameters are the title, and date respectively." +
+                    " For example, \"Let it Go, 1 hour ago.\"")
+            return String(format: format, post.titleForDisplay(), post.dateStringForDisplay())
+        }()
+
+        let authorChunk: String? = {
+            let author = viewModel.author
+            guard !author.isEmpty else {
+                return nil
+            }
+            let format = NSLocalizedString("By %@.", comment: "Accessibility label for the post author in the post list." +
+                " The parameter is the author name. For example, \"By Elsa.\"")
+            return String(format: format, author)
+        }()
+
+        let stickyChunk =
+            post.isStickyPost ? NSLocalizedString("Sticky.", comment: "Accessibility label for a sticky post in the post list.") : nil
+
+        let statusChunk: String? = {
+            guard let status = viewModel.status else {
+                return nil
+            }
+
+            return "\(status)."
+        }()
+
+        let excerptChunk: String? = {
+            let excerpt = post.contentPreviewForDisplay()
+            guard !excerpt.isEmpty else {
+                return nil
+            }
+
+            let format = NSLocalizedString("Excerpt. %@.", comment: "Accessibility label for a post's excerpt in the post list." +
+                " The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\"")
+            return String(format: format, excerpt)
+        }()
+
+        accessibilityLabel = [titleAndDateChunk, authorChunk, stickyChunk, statusChunk, excerptChunk]
+            .compactMap { $0 }
+            .joined(separator: " ")
     }
 
     private func setupBorders() {

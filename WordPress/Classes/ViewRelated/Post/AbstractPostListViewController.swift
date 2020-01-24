@@ -945,7 +945,7 @@ class AbstractPostListViewController: UIViewController,
             // NOTE: We'll set the title to match the title of the View action button.
             // If the button title changes we should also update the title here.
             controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-            let navWrapper = UINavigationController(rootViewController: controller)
+            let navWrapper = LightNavigationController(rootViewController: controller)
             navigationController?.present(navWrapper, animated: true)
         } else {
             let controller = PostPreviewViewController(post: post)
@@ -1174,6 +1174,17 @@ class AbstractPostListViewController: UIViewController,
         // presenting.
         dismissAllNetworkErrorNotices()
         super.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
+
+    // MARK: - Accessibility
+
+    override func accessibilityPerformEscape() -> Bool {
+        guard searchController.isActive else {
+            return super.accessibilityPerformEscape()
+        }
+
+        searchController.isActive = false
+        return true
     }
 }
 
