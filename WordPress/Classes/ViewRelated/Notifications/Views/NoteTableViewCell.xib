@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,18 +17,18 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JUi-EY-Obv" userLabel="IconImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="15" y="11" width="46" height="46"/>
+                        <rect key="frame" x="16" y="16" width="46" height="46"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="46" id="JQZ-Z6-YPJ"/>
                             <constraint firstAttribute="height" constant="46" id="R98-OQ-ZNf"/>
                         </constraints>
                     </imageView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="WuB-h0-mSd">
-                        <rect key="frame" x="74" y="8" width="231" height="38"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="WuB-h0-mSd">
+                        <rect key="frame" x="78" y="13" width="226" height="40"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Text" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81k-rx-Ws8" userLabel="SubjectLabel">
-                                <rect key="frame" x="0.0" y="0.0" width="231" height="19"/>
+                                <rect key="frame" x="0.0" y="0.0" width="226" height="19"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -36,7 +36,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LwI-5x-Xx8" userLabel="SnippetLabel">
-                                <rect key="frame" x="0.0" y="19" width="231" height="19"/>
+                                <rect key="frame" x="0.0" y="21" width="226" height="19"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -46,7 +46,7 @@
                         </subviews>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z3U-oU-FSh" userLabel="NoticonContainerView">
-                        <rect key="frame" x="45" y="41" width="24" height="24"/>
+                        <rect key="frame" x="46" y="46" width="24" height="24"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v6e-fz-xh3" userLabel="NoticonView">
                                 <rect key="frame" x="2" y="2" width="20" height="20"/>
@@ -86,20 +86,20 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="Z3U-oU-FSh" firstAttribute="centerX" secondItem="JUi-EY-Obv" secondAttribute="centerX" constant="19" id="6if-Fj-ZiN"/>
-                    <constraint firstItem="WuB-h0-mSd" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="topMargin" constant="-3" id="CiS-sV-QaR"/>
-                    <constraint firstItem="JUi-EY-Obv" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leadingMargin" id="FNd-KV-ja4"/>
-                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="WuB-h0-mSd" secondAttribute="bottom" id="W83-eQ-gaV"/>
-                    <constraint firstItem="WuB-h0-mSd" firstAttribute="leading" secondItem="JUi-EY-Obv" secondAttribute="trailing" constant="13" id="Wef-tC-bRq"/>
-                    <constraint firstAttribute="topMargin" secondItem="JUi-EY-Obv" secondAttribute="top" id="Zav-nr-UzA"/>
-                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="JUi-EY-Obv" secondAttribute="bottom" priority="999" constant="3" id="bb5-uM-agq"/>
+                    <constraint firstItem="WuB-h0-mSd" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="13" id="CiS-sV-QaR"/>
+                    <constraint firstItem="JUi-EY-Obv" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="16" id="FNd-KV-ja4"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WuB-h0-mSd" secondAttribute="bottom" constant="16" id="W83-eQ-gaV"/>
+                    <constraint firstItem="WuB-h0-mSd" firstAttribute="leading" secondItem="JUi-EY-Obv" secondAttribute="trailing" constant="16" id="Wef-tC-bRq"/>
+                    <constraint firstAttribute="top" secondItem="JUi-EY-Obv" secondAttribute="top" constant="-16" id="Zav-nr-UzA"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="JUi-EY-Obv" secondAttribute="bottom" priority="999" constant="16" id="bb5-uM-agq"/>
                     <constraint firstItem="Z3U-oU-FSh" firstAttribute="centerY" secondItem="JUi-EY-Obv" secondAttribute="centerY" constant="19" id="h5p-yY-IvK"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="WuB-h0-mSd" secondAttribute="trailing" id="tuw-OS-5Gn"/>
+                    <constraint firstAttribute="trailing" secondItem="WuB-h0-mSd" secondAttribute="trailing" constant="16" id="tuw-OS-5Gn"/>
                 </constraints>
             </tableViewCellContentView>
             <accessibility key="accessibilityConfiguration">
                 <accessibilityTraits key="traits" button="YES"/>
             </accessibility>
-            <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="iconImageView" destination="JUi-EY-Obv" id="TRa-w4-qvm"/>
                 <outlet property="noticonContainerView" destination="Z3U-oU-FSh" id="sEj-sO-l50"/>
