@@ -9,7 +9,7 @@ enum LinkBehavior {
     func handle(navigationAction: WKNavigationAction, for webView: WKWebView) -> WKNavigationActionPolicy {
 
         // We only want to apply this policy for links, not for all resource loads
-        guard navigationAction.navigationType == .linkActivated else {
+        guard navigationAction.navigationType == .linkActivated && navigationAction.request.url == navigationAction.request.mainDocumentURL else {
             return .allow
         }
 

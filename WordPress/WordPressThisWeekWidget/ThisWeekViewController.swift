@@ -59,15 +59,14 @@ class ThisWeekViewController: UIViewController {
         let rowDifference = abs(updatedRowCount - tableView.numberOfRows(inSection: 0))
 
         // If the number of rows has not changed, do nothing.
-        guard rowDifference != 0,
-        let statsValues = statsValues else {
+        guard rowDifference != 0 else {
             return
         }
 
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.performBatchUpdates({
                 // Create IndexPaths for rows to be inserted / deleted.
-                let indexRange = (Constants.minRows..<statsValues.days.endIndex)
+                let indexRange = (Constants.minRows..<self.maxRowsToDisplay())
                 let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
 
                 updatedRowCount > Constants.minRows ?
@@ -89,8 +88,8 @@ extension ThisWeekViewController: NCWidgetProviding {
         if !isConfigured {
             DDLogError("This Week Widget: Missing site ID, timeZone or oauth2Token")
 
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
 
             completionHandler(NCUpdateResult.failed)
@@ -122,26 +121,6 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         return statCellFor(indexPath: indexPath)
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard showFooter(),
-            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
-                return nil
-        }
-
-
-        footer.configure(siteUrl: siteUrl)
-        footer.frame.size.height = Constants.footerHeight
-        return footer
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if !showFooter() {
-            return 0
-        }
-
-        return Constants.footerHeight
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -242,9 +221,9 @@ private extension ThisWeekViewController {
 
             DDLogDebug("This Week Widget: Fetched summary data.")
 
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 let summaryData = summary?.summaryData.reversed() ?? []
-                self.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
+                self?.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
             }
             completionHandler(NCUpdateResult.newData)
         }
@@ -273,8 +252,8 @@ private extension ThisWeekViewController {
         let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
         tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
 
-        let footerNib = UINib(nibName: String(describing: WidgetFooterView.self), bundle: Bundle(for: WidgetFooterView.self))
-        tableView.register(footerNib, forHeaderFooterViewReuseIdentifier: WidgetFooterView.reuseIdentifier)
+        let urlCellNib = UINib(nibName: String(describing: WidgetUrlCell.self), bundle: Bundle(for: WidgetUrlCell.self))
+        tableView.register(urlCellNib, forCellReuseIdentifier: WidgetUrlCell.reuseIdentifier)
     }
 
     func configureTableSeparator() {
@@ -292,6 +271,19 @@ private extension ThisWeekViewController {
     }
 
     func statCellFor(indexPath: IndexPath) -> UITableViewCell {
+
+        // URL Cell
+        if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
+            guard let urlCell = tableView.dequeueReusableCell(withIdentifier: WidgetUrlCell.reuseIdentifier, for: indexPath) as? WidgetUrlCell else {
+                return UITableViewCell()
+            }
+
+            urlCell.configure(siteUrl: siteUrl, hideSeparator: true)
+            return urlCell
+        }
+
+
+        // Data Cells
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetDifferenceCell.reuseIdentifier, for: indexPath) as? WidgetDifferenceCell else {
             return UITableViewCell()
         }
@@ -307,18 +299,29 @@ private extension ThisWeekViewController {
         return cell
     }
 
-    func showFooter() -> Bool {
+    func showUrl() -> Bool {
         return (extensionContext?.widgetActiveDisplayMode == .expanded && isConfigured && haveSiteUrl)
     }
 
     // MARK: - Expand / Compact View Helpers
 
     func numberOfRowsToDisplay() -> Int {
-        if !isConfigured || extensionContext?.widgetActiveDisplayMode == .compact {
-            return Constants.minRows
+        guard isConfigured,
+            extensionContext?.widgetActiveDisplayMode == .expanded else {
+                return Constants.minRows
+        }
+        return maxRowsToDisplay()
+    }
+
+    func maxRowsToDisplay() -> Int {
+        guard let values = statsValues,
+            !values.days.isEmpty else {
+                // Add one for URL row
+                return ThisWeekWidgetStats.maxDaysToDisplay + 1
         }
 
-        return statsValues?.days.count ?? Constants.minRows
+        // Add one for URL row
+        return values.days.count + 1
     }
 
     func resizeView(withMaximumSize size: CGSize? = nil) {
@@ -333,12 +336,12 @@ private extension ThisWeekViewController {
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
 
-        if showFooter() {
-            height += tableView.footerView(forSection: 0)?.frame.height ?? Constants.footerHeight
+        if showUrl() {
+            height += WidgetUrlCell.height
         }
 
-        let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
-        height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
+        let dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        height += (dataRowHeight * CGFloat(numberOfRowsToDisplay() - 1))
 
         return height
     }
@@ -350,7 +353,6 @@ private extension ThisWeekViewController {
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
         static let minRows: Int = 2
-        static let footerHeight: CGFloat = 32
     }
 
 }

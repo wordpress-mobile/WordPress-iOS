@@ -58,6 +58,17 @@ final class FormattableContentFormatterTests: XCTestCase {
         XCTAssertEqual(formattedText.string, Constants.textExpectation)
     }
 
+    func testInvalidRange() {
+        let postProperties = NotificationContentRange.Properties(range: NSRange(location: 0, length: 1))
+
+        let content = FormattableTextContent(text: "", ranges: [
+            NotificationContentRange(kind: .post, properties: postProperties)
+        ])
+
+        let formattedText = formatter.render(content: content, with: SubjectContentStyles())
+        XCTAssert(formattedText.length == 0)
+    }
+
     private func contentWithNoticon() -> FormattableTextContent {
         let range = FormattableNoticonRange(value: Constants.noticon, range: Constants.range)
         return FormattableTextContent(text: Constants.text, ranges: [range])

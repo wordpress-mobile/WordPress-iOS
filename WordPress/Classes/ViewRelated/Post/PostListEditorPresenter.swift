@@ -64,6 +64,8 @@ struct PostListEditorPresenter {
             didTapOption(true)
         })
 
+        alertController.view.accessibilityIdentifier = "autosave-options-alert"
+
         return alertController
     }
 }

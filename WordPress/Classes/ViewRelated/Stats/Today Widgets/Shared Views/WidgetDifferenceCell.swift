@@ -57,7 +57,6 @@ private extension WidgetDifferenceCell {
 
     func configureLabels(day: ThisWeekWidgetDay?, isToday: Bool) {
         guard let day = day else {
-            initializeLabels()
             return
         }
 

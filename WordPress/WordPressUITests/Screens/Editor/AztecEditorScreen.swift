@@ -14,12 +14,12 @@ class AztecEditorScreen: BaseScreen {
     let mode: Mode
     var textView: XCUIElement
 
-    private var richTextField = "Rich Content"
-    private var htmlTextField = "HTMLContentView"
+    private var richTextField = "aztec-rich-text-view"
+    private var htmlTextField = "aztec-html-text-view"
 
     let editorCloseButton = XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"]
     let publishButton = XCUIApplication().buttons["Publish"]
-    let moreButton = XCUIApplication().buttons["More"]
+    let moreButton = XCUIApplication().buttons["more_post_options"]
     let uploadProgressBar = XCUIApplication().progressIndicators["Progress"]
 
     let titleView = XCUIApplication().textViews["Title"]
@@ -44,9 +44,9 @@ class AztecEditorScreen: BaseScreen {
 
     // Action sheets
     let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
-    let discardButton = XCUIApplication().buttons["Discard"]
     let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"]
     let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"]
+    let postHasChangesSheet = XCUIApplication().sheets["post-has-changes-alert"]
 
     init(mode: Mode) {
         var textField = ""
@@ -246,10 +246,12 @@ class AztecEditorScreen: BaseScreen {
             editorCloseButton.tap()
 
             XCTContext.runActivity(named: "Discard any local changes") { (activity) in
-                let notSavedState = app.staticTexts["You have unsaved changes."]
-                if notSavedState.exists {
+
+                let discardButton = isIpad ? postHasChangesSheet.buttons.lastMatch : postHasChangesSheet.buttons.element(boundBy: 1)
+
+                if postHasChangesSheet.exists && (discardButton?.exists ?? false) {
                     Logger.log(message: "Discarding unsaved changes", event: .v)
-                    discardButton.tap()
+                    discardButton?.tap()
                 }
             }
 
