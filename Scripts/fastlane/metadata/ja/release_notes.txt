@@ -1,4 +1,4 @@
-- We know that your website is a passion project and you never really look at your stats because they’re totally not important.But just in case, we added a Today widget you can use to display all-time stats.
-- The block editor has more goodies:you’ll find a Gallery block for making multi-image galleries from files in your Media Library, and there’s support for block-specific settings in the List and Video blocks.
-- It’s also got one fewer baddie:if your app ever crashed after you opened some block settings and then rotated your device, you’ve now had that experience for the last time.
-- And last but not least, sometimes you’d take the “Follow other sites” tour, but the tour wouldn’t be marked off as “Complete.” We never meant to deprive anyone of one of life’s greatest satisfactions, that of crossing a finished item off a list, so this is fixed.
+- コメント書き込み時にフルスクリーンモードに切り替えられるようになったため、執筆に集中し、質を高めることができます。
+- 統計情報を確認する方は少ないかもしれませんが、新しい「統計情報」ウィジェットでは「今日」ウィジェットに重要な数値が簡潔に表示されて見やすくなり、「統計概要」ビューが最新のカードに基づいて更新されました。
+- 一部の予約済み投稿で誤ったタイムスタンプが表示されていた原因はバグでした。この問題は修正されました。通知をタップするとクラッシュする原因となっていたバグも修正されました。
+- 他のアプリからインポートしたファイルの名前がランダムに変更されるという別のバグも修正されました。このバグを修正するか、ランダムな名前が常に特異であり「バグを修正」が常に優先されることを確認するか慎重に検討しました。
