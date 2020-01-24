@@ -645,9 +645,7 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
         let allFailedMediaHaveAssociatedPost = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasAssociatedPost() }
 
-        if !mediaProgressCoordinator.failedMedia.isEmpty,
-           !allFailedMediaErrorsAreMissingFilesErrors,
-           !allFailedMediaHaveAssociatedPost,
+        if mediaProgressCoordinator.failedMedia.isEmpty || (!allFailedMediaErrorsAreMissingFilesErrors && !allFailedMediaHaveAssociatedPost),
            mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
 
             let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
