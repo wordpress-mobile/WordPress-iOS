@@ -1,4 +1,5 @@
 import Foundation
+import MediaEditor
 
 /**
  This is a struct to be given to MediaEditor that represent the image.

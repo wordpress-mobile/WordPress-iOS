@@ -158,7 +158,6 @@ target 'WordPress' do
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
-    pod 'TOCropViewController', '~> 2.5.2'
 
     ## Automattic libraries
     ## ====================
@@ -180,6 +179,9 @@ target 'WordPress' do
     pod 'WordPressAuthenticator', '~> 1.10.6'
     #pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/wordpresskit-456-beta1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+
+    pod 'MediaEditor', '~> 0.1.1'
+    # pod 'MediaEditor', :path => '../MediaEditor-iOS'
 
     aztec
     wordpress_ui

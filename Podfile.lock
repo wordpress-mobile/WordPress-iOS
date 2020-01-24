@@ -63,6 +63,8 @@ PODS:
     - WordPress-Aztec-iOS
   - JTAppleCalendar (8.0.2)
   - lottie-ios (2.5.2)
+  - MediaEditor (0.1.1):
+    - TOCropViewController (~> 2.5.2)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
     - MRProgress/Blur (= 0.8.3)
@@ -277,6 +279,7 @@ DEPENDENCIES:
   - Gridicons (~> 0.16)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `aafa4188ebd4f76116ee3dce81a9a5fb870a01bf`)
   - JTAppleCalendar (~> 8.0.2)
+  - MediaEditor (~> 0.1.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
   - NSObject-SafeExpectations (= 0.0.3)
@@ -312,7 +315,6 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - TOCropViewController (~> 2.5.2)
   - WordPress-Editor-iOS (~> 1.14.0)
   - WordPressAuthenticator (~> 1.10.6)
   - WordPressKit (~> 4.5.6)
@@ -344,6 +346,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - JTAppleCalendar
     - lottie-ios
+    - MediaEditor
     - MRProgress
     - Nimble
     - NSObject-SafeExpectations
@@ -471,6 +474,7 @@ SPEC CHECKSUMS:
   Gutenberg: a4ddae69a01f4fbbf6c0e85af1bda494680f10e8
   JTAppleCalendar: bb3dd3752e2bcc85cb798ab763fbdd6e142715fc
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
+  MediaEditor: b128eb4fb1f6d4483a7bc482a9bdec7f06359f60
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
@@ -521,6 +525,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: e3ff38fb279da2fa847a32a8b8ada22f7003f336
+PODFILE CHECKSUM: b4d5bb708291f60db719092df046b3b33fc5b8ab
 
 COCOAPODS: 1.8.4

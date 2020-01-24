@@ -1,4 +1,5 @@
 import XCTest
+import MediaEditor
 import Nimble
 
 @testable import WordPress
