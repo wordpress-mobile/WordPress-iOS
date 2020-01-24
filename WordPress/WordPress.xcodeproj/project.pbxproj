@@ -1177,6 +1177,14 @@
 		986FF29E2141971D005B28EC /* WPAnimatedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = E240859B183D82AE002EB0EF /* WPAnimatedBox.m */; };
 		986FF29F214198D9005B28EC /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55FFCF91F034F1A0070812C /* String+Ranges.swift */; };
 		986FF2A0214198D9005B28EC /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55FFCF91F034F1A0070812C /* String+Ranges.swift */; };
+		98712D1B23DA1C7E00555316 /* WidgetNoConnectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98712D1923DA1C7E00555316 /* WidgetNoConnectionCell.swift */; };
+		98712D1C23DA1C7E00555316 /* WidgetNoConnectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98712D1A23DA1C7E00555316 /* WidgetNoConnectionCell.xib */; };
+		98712D1D23DA1D0800555316 /* WidgetNoConnectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98712D1923DA1C7E00555316 /* WidgetNoConnectionCell.swift */; };
+		98712D1E23DA1D0900555316 /* WidgetNoConnectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98712D1923DA1C7E00555316 /* WidgetNoConnectionCell.swift */; };
+		98712D1F23DA1D0A00555316 /* WidgetNoConnectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98712D1923DA1C7E00555316 /* WidgetNoConnectionCell.swift */; };
+		98712D2023DA1D1000555316 /* WidgetNoConnectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98712D1A23DA1C7E00555316 /* WidgetNoConnectionCell.xib */; };
+		98712D2123DA1D1100555316 /* WidgetNoConnectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98712D1A23DA1C7E00555316 /* WidgetNoConnectionCell.xib */; };
+		98712D2223DA1D1200555316 /* WidgetNoConnectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98712D1A23DA1C7E00555316 /* WidgetNoConnectionCell.xib */; };
 		9872CB30203B8A730066A293 /* SignupEpilogueTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9872CB2F203B8A730066A293 /* SignupEpilogueTableViewController.swift */; };
 		9874766F219630240080967F /* SiteStatsTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9874766E219630240080967F /* SiteStatsTableViewCells.swift */; };
 		9874767321963D330080967F /* SiteStatsInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9874767221963D320080967F /* SiteStatsInformation.swift */; };
@@ -3548,6 +3556,8 @@
 		986C90872231AD6200FC31E1 /* PostStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStatsViewModel.swift; sourceTree = "<group>"; };
 		986CC4D120E1B2F6004F300E /* CustomLogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLogFormatter.swift; sourceTree = "<group>"; };
 		986DD19B218D002500D28061 /* WPStyleGuide+Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Stats.swift"; sourceTree = "<group>"; };
+		98712D1923DA1C7E00555316 /* WidgetNoConnectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetNoConnectionCell.swift; sourceTree = "<group>"; };
+		98712D1A23DA1C7E00555316 /* WidgetNoConnectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WidgetNoConnectionCell.xib; sourceTree = "<group>"; };
 		9872CB2F203B8A730066A293 /* SignupEpilogueTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupEpilogueTableViewController.swift; sourceTree = "<group>"; };
 		9874766E219630240080967F /* SiteStatsTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsTableViewCells.swift; sourceTree = "<group>"; };
 		9874767221963D320080967F /* SiteStatsInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsInformation.swift; sourceTree = "<group>"; };
@@ -7613,6 +7623,8 @@
 				989064FC237CC1DE00218CD2 /* WidgetUnconfiguredCell.xib */,
 				988F073323D0CE8800AC67A6 /* WidgetUrlCell.swift */,
 				988F073423D0CE8800AC67A6 /* WidgetUrlCell.xib */,
+				98712D1923DA1C7E00555316 /* WidgetNoConnectionCell.swift */,
+				98712D1A23DA1C7E00555316 /* WidgetNoConnectionCell.xib */,
 			);
 			path = "Shared Views";
 			sourceTree = "<group>";
@@ -10504,6 +10516,7 @@
 				17E363A022C41DBA000E0C79 /* hot_pink_icon_60pt@2x.png in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
 				17DC4C4E22C5E6D60059CA11 /* open_source_icon_20pt.png in Resources */,
+				98712D1C23DA1C7E00555316 /* WidgetNoConnectionCell.xib in Resources */,
 				9826AE8321B5C6A700C851FA /* LatestPostSummaryCell.xib in Resources */,
 				17E3639722C41DBA000E0C79 /* hot_pink_icon_29pt@2x.png in Resources */,
 				5D2FB2831AE98C4600F1D4ED /* RestorePostTableViewCell.xib in Resources */,
@@ -10618,6 +10631,7 @@
 				93E5284319A7741A003A1A9C /* MainInterface.storyboard in Resources */,
 				98906509237CC1DF00218CD2 /* WidgetTwoColumnCell.xib in Resources */,
 				9A144AC822FD6A650069DD71 /* ColorPalette.xcassets in Resources */,
+				98712D2023DA1D1000555316 /* WidgetNoConnectionCell.xib in Resources */,
 				98906505237CC1DF00218CD2 /* WidgetUnconfiguredCell.xib in Resources */,
 				E1B6A9CC1E54B6B2008FD47E /* Localizable.strings in Resources */,
 				988F073723D0D15D00AC67A6 /* WidgetUrlCell.xib in Resources */,
@@ -10632,6 +10646,7 @@
 				987E9C8123D29676006B3ECF /* InfoPlist.strings in Resources */,
 				9880150623A840200003BD11 /* ColorPalette.xcassets in Resources */,
 				98A3C3022399A19F0048D38D /* MainInterface.storyboard in Resources */,
+				98712D2223DA1D1200555316 /* WidgetNoConnectionCell.xib in Resources */,
 				989643E823A031CD0070720A /* WidgetUnconfiguredCell.xib in Resources */,
 				983AE8512399B19200E5B7F6 /* Localizable.strings in Resources */,
 				988F073923D0D15E00AC67A6 /* WidgetUrlCell.xib in Resources */,
@@ -10646,6 +10661,7 @@
 				987E9C7F23D29417006B3ECF /* InfoPlist.strings in Resources */,
 				985ED0E223C686CA00B8D06A /* ColorPalette.xcassets in Resources */,
 				98D31BBD23971F4B009CFF43 /* Localizable.strings in Resources */,
+				98712D2123DA1D1100555316 /* WidgetNoConnectionCell.xib in Resources */,
 				98A6B996239882350031AEBD /* WidgetUnconfiguredCell.xib in Resources */,
 				98D7ECCE23983D0800B87710 /* MainInterface.storyboard in Resources */,
 				988F073823D0D15D00AC67A6 /* WidgetUrlCell.xib in Resources */,
@@ -11544,6 +11560,7 @@
 				1750BD6D201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift in Sources */,
 				E6ED09091D46AD29003283C4 /* ReaderFollowedSitesStreamHeader.swift in Sources */,
 				E66969E41B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift in Sources */,
+				98712D1B23DA1C7E00555316 /* WidgetNoConnectionCell.swift in Sources */,
 				7E5887A020FE956100DB6F80 /* AppRatingUtilityType.swift in Sources */,
 				08216FD01CDBF96000304BA7 /* MenuItemSourceFooterView.m in Sources */,
 				9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */,
@@ -12732,6 +12749,7 @@
 				433ADC1C223B2A7E00ED9DE1 /* TextBundleWrapper.m in Sources */,
 				93E5284119A7741A003A1A9C /* TodayViewController.swift in Sources */,
 				938CF3DE1EF1BE8000AF838E /* CocoaLumberjack.swift in Sources */,
+				98712D1D23DA1D0800555316 /* WidgetNoConnectionCell.swift in Sources */,
 				98C0CE9C23C559C800D0F27C /* Double+Stats.swift in Sources */,
 				93C2075A1CC7FF9C00C94D04 /* Tracks.swift in Sources */,
 				436110DA22C3ED44000773AD /* FeatureFlag.swift in Sources */,
@@ -12763,6 +12781,7 @@
 				980D3B1B23C925F40060A890 /* WidgetStyles.swift in Sources */,
 				988F073C23D0D16800AC67A6 /* WidgetUrlCell.swift in Sources */,
 				98E419DE2399B5A700D8C822 /* Tracks+ThisWeekWidget.swift in Sources */,
+				98712D1F23DA1D0A00555316 /* WidgetNoConnectionCell.swift in Sources */,
 				98A3C3052399A2370048D38D /* ThisWeekViewController.swift in Sources */,
 				989643E523A02F640070720A /* MurielColor.swift in Sources */,
 				983AE84D2399AC6B00E5B7F6 /* Constants.m in Sources */,
@@ -12784,6 +12803,7 @@
 				98D31BAC23970078009CFF43 /* Tracks+AllTimeWidget.swift in Sources */,
 				988F073B23D0D16800AC67A6 /* WidgetUrlCell.swift in Sources */,
 				98D31BA72396F7E2009CFF43 /* AllTimeViewController.swift in Sources */,
+				98712D1E23DA1D0900555316 /* WidgetNoConnectionCell.swift in Sources */,
 				98A6B993239881860031AEBD /* MurielColor.swift in Sources */,
 				98D31BC223972A79009CFF43 /* SFHFKeychainUtils.m in Sources */,
 				98D31BAE239708FB009CFF43 /* Constants.m in Sources */,

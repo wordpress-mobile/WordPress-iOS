@@ -95,9 +95,9 @@ class TodayViewController: UIViewController {
                 var indexPathsToInsert = [IndexPath]()
                 var indexPathsToDelete = [IndexPath]()
 
-                // If the first row was unconfigured, then rows are just being added.
+                // If no connection was displayed, then rows are just being added.
                 // Otherwise, a data row is being inserted/deleted.
-                if self.tableView.visibleCells.first is WidgetUnconfiguredCell {
+                if self.tableView.visibleCells.first is WidgetNoConnectionCell {
                     let indexRange = (1..<updatedRowCount)
                     let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
                     indexPathsToInsert.append(contentsOf: indexPaths)
@@ -156,7 +156,11 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard isConfigured, !showNoConnection else {
+        if showNoConnection {
+            return noConnectionCellFor(indexPath: indexPath)
+        }
+
+        if !isConfigured {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
@@ -187,17 +191,8 @@ private extension TodayViewController {
     // MARK: - Tap Gesture Handling
 
     @IBAction func handleTapGesture() {
-
-        // If showing the No Connection view, attempt to reload.
-        if let unconfiguredCell = tableView.visibleCells.first as? WidgetUnconfiguredCell,
-            unconfiguredCell.widgetType == .noConnection,
-            let completionHandler = widgetCompletionBlock {
-            widgetPerformUpdate(completionHandler: completionHandler)
-            return
-        }
-
-        // Otherwise, open the app.
-        guard let extensionContext = extensionContext,
+        guard !isConfigured,
+            let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
                 DDLogError("Today Widget: Unable to get extensionContext or appURL.")
                 return
@@ -306,6 +301,17 @@ private extension TodayViewController {
 
         let urlCellNib = UINib(nibName: String(describing: WidgetUrlCell.self), bundle: Bundle(for: WidgetUrlCell.self))
         tableView.register(urlCellNib, forCellReuseIdentifier: WidgetUrlCell.reuseIdentifier)
+
+        let noConnectionCellNib = UINib(nibName: String(describing: WidgetNoConnectionCell.self), bundle: Bundle(for: WidgetNoConnectionCell.self))
+        tableView.register(noConnectionCellNib, forCellReuseIdentifier: WidgetNoConnectionCell.reuseIdentifier)
+    }
+
+    func noConnectionCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetNoConnectionCell.reuseIdentifier, for: indexPath) as? WidgetNoConnectionCell else {
+            return UITableViewCell()
+        }
+
+        return cell
     }
 
     func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
@@ -313,7 +319,7 @@ private extension TodayViewController {
             return UITableViewCell()
         }
 
-        showNoConnection ? cell.configure(for: .noConnection) : cell.configure(for: .today)
+        cell.configure(for: .today)
         return cell
     }
 
@@ -394,9 +400,9 @@ private extension TodayViewController {
         let dataRowHeight: CGFloat
 
         // This method is called before the rows are updated.
-        // So if an unconfigured cell was displayed, use the default height for data rows.
+        // So if a no connection cell was displayed, use the default height for data rows.
         // Otherwise, use the actual height from the first data row.
-        if tableView.visibleCells.first is WidgetUnconfiguredCell {
+        if tableView.visibleCells.first is WidgetNoConnectionCell {
             dataRowHeight = WidgetTwoColumnCell.defaultHeight
         } else {
             dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
