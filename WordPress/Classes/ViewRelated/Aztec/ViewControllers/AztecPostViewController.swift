@@ -167,6 +167,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.smartDashesType = .no
         textView.smartQuotesType = .no
 
+        textView.accessibilityIdentifier = "aztec-rich-text-view"
+
         // Set up the editor for screenshot generation, if needed
         if UIApplication.shared.isCreatingScreenshots() {
             textView.autocorrectionType = .no
@@ -228,6 +230,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.adjustsFontForContentSizeCategory = true
         textView.smartDashesType = .no
         textView.smartQuotesType = .no
+
+        textView.accessibilityIdentifier = "aztec-html-text-view"
     }
 
 
@@ -241,9 +245,11 @@ class AztecPostViewController: UIViewController, PostEditor {
                                                         .font: Fonts.title,
                                                         .paragraphStyle: titleParagraphStyle]
 
-        let textView = UITextView()
+        let textView =
+            UIApplication.shared.isCreatingScreenshots() ? UITextViewWithoutCaret() : UITextView()
 
         textView.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
+        textView.accessibilityIdentifier = "aztec-editor-title"
         textView.delegate = self
         textView.font = Fonts.title
         textView.returnKeyType = .next
@@ -257,7 +263,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         return textView
     }()
-
 
     /// Placeholder Label
     ///
@@ -3454,5 +3459,34 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
         navigationItem.leftBarButtonItems = items
+    }
+}
+
+
+// MARK: - Screenshot Generation Add-ons
+extension AztecPostViewController {
+
+    fileprivate class UITextViewWithoutCaret: UITextView {
+
+        override func didMoveToSuperview() {
+            registerDismissKeyboardGestureRecognizer(on: self)
+        }
+
+        override func caretRect(for position: UITextPosition) -> CGRect {
+            return .zero
+        }
+
+        fileprivate func registerDismissKeyboardGestureRecognizer(on textView: UITextView) {
+            let gr = UITapGestureRecognizer(target: self, action: #selector(didInvokeDismissKeyboard(_:)))
+
+            gr.numberOfTapsRequired = 1
+            gr.numberOfTouchesRequired = 5
+
+            textView.addGestureRecognizer(gr)
+        }
+
+        @objc func didInvokeDismissKeyboard(_ sender: UITextView?) {
+            self.endEditing(true)
+        }
     }
 }
