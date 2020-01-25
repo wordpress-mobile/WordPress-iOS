@@ -5,6 +5,7 @@ class WidgetDifferenceCell: UITableViewCell {
     // MARK: - Properties
 
     static let reuseIdentifier = "WidgetDifferenceCell"
+    static let defaultHeight: CGFloat = 56
 
     @IBOutlet private var dateLabel: UILabel!
     @IBOutlet private var dataLabel: UILabel!
