@@ -942,6 +942,7 @@ class AbstractPostListViewController: UIViewController,
 
         if FeatureFlag.postPreview.enabled {
             let controller = PreviewWebKitViewController(post: post)
+            controller.trackOpenEvent()
             // NOTE: We'll set the title to match the title of the View action button.
             // If the button title changes we should also update the title here.
             controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")

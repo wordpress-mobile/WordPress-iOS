@@ -61,7 +61,7 @@ PODS:
     - React-RCTImage (= 0.60.0-patched)
     - RNTAztecView
     - WordPress-Aztec-iOS
-  - JTAppleCalendar (8.0.3)
+  - JTAppleCalendar (8.0.2)
   - lottie-ios (2.5.2)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
@@ -240,7 +240,7 @@ PODS:
     - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
   - WordPressMocks (0.0.8)
-  - WordPressShared (1.8.12-beta.1):
+  - WordPressShared (1.8.12-beta.3):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.5.1-beta.1)
@@ -256,7 +256,7 @@ PODS:
   - ZendeskSDK/UI (4.0.0):
     - ZendeskSDK/Core
     - ZendeskSDK/Providers
-  - ZIPFoundation (0.9.10)
+  - ZIPFoundation (0.9.9)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
@@ -315,7 +315,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.10.6)
   - WordPressKit (~> 4.5.6)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (= 1.8.12-beta.1)
+  - WordPressShared (= 1.8.12-beta.3)
   - WordPressUI (~> 1.5.1-beta)
   - WPMediaPicker (~> 1.6.0)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.21.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -466,7 +466,7 @@ SPEC CHECKSUMS:
   Gridicons: dc92efbe5fd60111d2e8ea051d84a60cca552abc
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   Gutenberg: 80da4d78e47eeb0a84d6f714ad4b968384e33eb7
-  JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
+  JTAppleCalendar: bb3dd3752e2bcc85cb798ab763fbdd6e142715fc
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
@@ -509,14 +509,14 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: de9ef4de7c9d06d89f938f69b01d810aebe9dfc6
   WordPressKit: 5b37877f273fc4bc7289eb736df3bd3122535bd4
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
-  WordPressShared: 14773e80abc9c1f5e19d9b61ff9f1a0966359305
+  WordPressShared: 66f0e9e1a814977801e2a5134e1638c4930d8cf0
   WordPressUI: f4802317fc746e4122d7755cb4771dde9549b362
   WPMediaPicker: e5d28197da6b467d4e5975d64a49255977e39455
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 4e71c9a33abf45ba55af55ae9cbc86f4234bb2a9
   ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
-  ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
+  ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 6d5eb2351944fe981bff7b5e0184fa9604c01e3c
+PODFILE CHECKSUM: 75fe08e0317867382f86cd42178b1f7beafa0f47
 
 COCOAPODS: 1.8.4
