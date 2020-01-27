@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared.WPStyleGuide
-
-
+import Gridicons
 
 // MARK: - ReplyTextViewDelegate
 //
@@ -13,6 +12,11 @@ import WordPressShared.WPStyleGuide
 // MARK: - ReplyTextView
 //
 @objc open class ReplyTextView: UIView, UITextViewDelegate {
+    private struct AnimationParameters {
+        static let focusTransitionTime = TimeInterval(0.3)
+        static let stateTransitionTime = TimeInterval(0.2)
+    }
+
     // MARK: - Initializers
     @objc public convenience init(width: CGFloat) {
         let frame = CGRect(x: 0, y: 0, width: width, height: 0)
@@ -29,7 +33,6 @@ import WordPressShared.WPStyleGuide
         setupView()
     }
 
-
     // MARK: - Public Properties
     @objc open weak var delegate: ReplyTextViewDelegate?
 
@@ -44,6 +47,7 @@ import WordPressShared.WPStyleGuide
             return textView.text
         }
     }
+
     @objc open var placeholder: String! {
         set {
             placeholderLabel.text = newValue ?? String()
@@ -51,14 +55,6 @@ import WordPressShared.WPStyleGuide
         }
         get {
             return placeholderLabel.text
-        }
-    }
-    @objc open var replyText: String! {
-        set {
-            replyButton.setTitle(newValue, for: UIControl.State())
-        }
-        get {
-            return replyButton.title(for: UIControl.State())
         }
     }
 
@@ -104,7 +100,6 @@ import WordPressShared.WPStyleGuide
         textView.replace(newRange, withText: replacementText)
     }
 
-
     // MARK: - UITextViewDelegate Methods
     open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         return delegate?.textViewShouldBeginEditing?(textView) ?? true
@@ -112,6 +107,7 @@ import WordPressShared.WPStyleGuide
 
     open func textViewDidBeginEditing(_ textView: UITextView) {
         delegate?.textViewDidBeginEditing?(textView)
+        transitionReplyButton()
     }
 
     open func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
@@ -120,6 +116,7 @@ import WordPressShared.WPStyleGuide
 
     open func textViewDidEndEditing(_ textView: UITextView) {
         delegate?.textViewDidEndEditing?(textView)
+        transitionReplyButton()
     }
 
     open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -177,19 +174,60 @@ import WordPressShared.WPStyleGuide
         handler(newText!)
     }
 
+    @IBAction fileprivate func btnEnterFullscreenPressed(_ sender: Any) {
+        guard let editViewController = FullScreenCommentReplyViewController.newEdit() else {
+            return
+        }
+
+        guard let presenter = WPTabBarController.sharedInstance() else {
+            return
+        }
+
+        // Snapshot the first reponder status before presenting so we can restore it later
+        let didHaveFirstResponder = textView.isFirstResponder
+
+        editViewController.content = textView.text
+        if #available(iOS 13.0, *) {
+            editViewController.isModalInPresentation = true
+        }
+        editViewController.onExitFullscreen = { (shouldSave, updatedContent) in
+            self.text = updatedContent
+
+            // If the user was editing before they entered fullscreen, then restore that state
+            // when they exit fullscreen but are not going to save
+            if didHaveFirstResponder && shouldSave == false {
+                // Delay the firstResponder switch for a small amount to bring the keyboard up
+                // Slightly quicker and smoother
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) {
+                    self.becomeFirstResponder()
+                }
+            }
+
+            if shouldSave {
+                self.btnReplyPressed()
+            }
+
+            //Dimiss the fullscreen view, once it has fully closed process the saving if needed
+            presenter.dismiss(animated: true)
+        }
+
+        self.resignFirstResponder()
+
+        let navController = LightNavigationController(rootViewController: editViewController)
+        presenter.present(navController, animated: true)
+    }
 
     // MARK: - Gestures Recognizers
     @objc open func backgroundWasTapped() {
         _ = becomeFirstResponder()
     }
 
-
     // MARK: - View Methods
-    open override func becomeFirstResponder() -> Bool {
+    @discardableResult open override func becomeFirstResponder() -> Bool {
         return textView.becomeFirstResponder()
     }
 
-    open override func resignFirstResponder() -> Bool {
+    @discardableResult open override func resignFirstResponder() -> Bool {
         endEditing(true)
         return textView.resignFirstResponder()
     }
@@ -197,9 +235,9 @@ import WordPressShared.WPStyleGuide
     open override func layoutSubviews() {
         // Force invalidate constraints
         invalidateIntrinsicContentSize()
+
         super.layoutSubviews()
     }
-
 
     // MARK: - Autolayout Helpers
     open override var intrinsicContentSize: CGSize {
@@ -212,7 +250,6 @@ import WordPressShared.WPStyleGuide
 
         return intrinsicSize
     }
-
 
     // MARK: - Setup Helpers
     fileprivate func setupView() {
@@ -244,19 +281,30 @@ import WordPressShared.WPStyleGuide
         placeholderLabel.font = WPStyleGuide.Reply.textFont
         placeholderLabel.textColor = WPStyleGuide.Reply.placeholderColor
 
+        // Fullscreen toggle button
+        let fullscreenImage = Gridicon.iconOfType(.chevronUp)
+        fullscreenToggleButton.setImage(fullscreenImage, for: .normal)
+        fullscreenToggleButton.tintColor = .listIcon
+        fullscreenToggleButton.accessibilityLabel = NSLocalizedString("Enter Full Screen",
+                                                                      comment: "Accessibility Label for the enter full screen button on the comment reply text view")
+
+
         // Reply
+        let replyIcon = UIImage(named: "icon-comment-reply")
+        replyButton.setImage(replyIcon?.imageWithTintColor(WPStyleGuide.Reply.enabledColor), for: .normal)
+        replyButton.setImage(replyIcon?.imageWithTintColor(WPStyleGuide.Reply.disabledColor), for: .disabled)
+
         replyButton.isEnabled = false
-        replyButton.titleLabel?.font = WPStyleGuide.Reply.buttonFont
-        replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, for: .disabled)
-        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor, for: UIControl.State())
         replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
+
+        transitionReplyButton(animated: false)
 
         // Background
         contentView.backgroundColor = WPStyleGuide.Reply.backgroundColor
         bezierContainerView.outerColor = WPStyleGuide.Reply.backgroundColor
 
         // Bezier
-        bezierContainerView.bezierColor = WPStyleGuide.Reply.separatorColor
+        bezierContainerView.bezierColor = WPStyleGuide.Reply.backgroundColor
         bezierContainerView.bezierFillColor = WPStyleGuide.Reply.textViewBackground
         bezierContainerView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -273,11 +321,10 @@ import WordPressShared.WPStyleGuide
         frame.size.height = minimumHeight
     }
 
-
     // MARK: - Refresh Helpers
     fileprivate func refreshInterface() {
         refreshPlaceholder()
-        refreshReplyButton()
+        enableRefreshButtonIfNeeded()
         refreshSizeIfNeeded()
         refreshScrollPosition()
     }
@@ -297,9 +344,20 @@ import WordPressShared.WPStyleGuide
         placeholderLabel.isHidden = !textView.text.isEmpty
     }
 
-    fileprivate func refreshReplyButton() {
+    private func enableRefreshButtonIfNeeded() {
         let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
-        replyButton.isEnabled = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
+        let isEnabled = self.textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
+
+        if isEnabled == self.replyButton.isEnabled {
+            return
+        }
+
+        UIView.transition(with: replyButton as UIView,
+                          duration: AnimationParameters.stateTransitionTime,
+                          options: .transitionCrossDissolve,
+                          animations: {
+            self.replyButton.isEnabled = isEnabled
+        })
     }
 
     fileprivate func refreshScrollPosition() {
@@ -309,6 +367,22 @@ import WordPressShared.WPStyleGuide
         textView.scrollRectToVisible(caretRect, animated: false)
     }
 
+    fileprivate func transitionReplyButton(animated: Bool = true) {
+        replyButtonTrailingConstraint.constant = isFirstResponder ? 0.0 : -(frame.width * 2)
+
+        let updateFrame = {
+            self.layoutIfNeeded()
+        }
+
+        if animated {
+            UIView.animate(withDuration: AnimationParameters.focusTransitionTime) {
+                updateFrame()
+            }
+        }
+        else {
+            updateFrame()
+        }
+    }
 
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
@@ -322,6 +396,8 @@ import WordPressShared.WPStyleGuide
     @IBOutlet private var contentView: UIView!
     @IBOutlet private var bezierTopConstraint: NSLayoutConstraint!
     @IBOutlet private var bezierBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var replyButtonTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fullscreenToggleButton: UIButton!
 }
 
 
@@ -371,7 +447,7 @@ private extension ReplyTextView {
 
         /// Maximum number of *visible* lines
         ///
-        static let maximumNumberOfVisibleLines = 5
+        static let maximumNumberOfVisibleLines = 4
 
         /// Default Line Height. Used as a safety measure, in case the actual font is not yet loaded.
         ///

@@ -99,6 +99,7 @@
                 <outlet property="rowsStackView" destination="53U-Zk-ZGa" id="T8V-zp-KCA"/>
                 <outlet property="rowsStackViewBottomConstraint" destination="5cr-Nz-ZDr" id="gpX-JD-vtf"/>
                 <outlet property="topSeparatorLine" destination="NTK-eu-Zrd" id="9Sq-Ea-hi8"/>
+                <outlet property="viewMoreButton" destination="uon-fL-Zcd" id="qrf-iG-gty"/>
                 <outlet property="viewMoreHeightConstraint" destination="44e-cc-T7y" id="641-sy-IiJ"/>
                 <outlet property="viewMoreLabel" destination="1To-pb-uoT" id="nmB-Rf-6TI"/>
                 <outlet property="viewMoreView" destination="Cfy-Hl-Mjq" id="ljz-6d-bwT"/>
