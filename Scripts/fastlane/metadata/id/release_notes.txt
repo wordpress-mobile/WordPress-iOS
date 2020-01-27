@@ -1,4 +1,0 @@
-- Kami tahu bahwa situs web Anda merupakan proyek yang berangkat dari passion dan Anda jarang melihat statistik karena angka-angka tersebut tidak penting bagi Anda. Tetapi buat jaga-jaga, kami menambahkan widget Hari Ini yang dapat Anda gunakan untuk menampilkan statistik semua waktu.
-- Penyunting blok yang memiliki banyak fitur yang menarik: Anda akan menemukan blok Galeri untuk membuat galeri berisi beberapa gambar dari file di Pustaka Media, dan terdapat dukungan untuk pengaturan khusus blok di blok Daftar dan Video.
-- Anda juga mendapatkan beberapa bug: jika aplikasi crash setelah membuka beberapa pengaturan blok lalu Anda memutar perangkat, Anda akan mengalaminya untuk terakhir kalinya.
-- Yang tidak kalah pentingnya, Anda terkadang mengikuti tur “Ikuti situs lainnya”, tetapi tur tidak ditandai sebagai “Selesai.” Kita tidak ingin merusak kepuasan terbaik seseorang, seperti mencoret item yang selesai dari daftar, jadi kami telah memperbaikinya.
