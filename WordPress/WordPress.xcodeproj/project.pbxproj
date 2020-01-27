@@ -2028,6 +2028,7 @@
 		F5660D09235D1CDD00020B1E /* CalendarMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5660D08235D1CDD00020B1E /* CalendarMonthView.swift */; };
 		F57402A7235FF9C300374346 /* SchedulingDate+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57402A6235FF9C300374346 /* SchedulingDate+Helpers.swift */; };
 		F580C3C123D22E2D0038E243 /* PreviewDeviceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F580C3C023D22E2D0038E243 /* PreviewDeviceLabel.swift */; };
+		F580C3CB23D8F9B40038E243 /* AbstractPost+Dates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F580C3CA23D8F9B40038E243 /* AbstractPost+Dates.swift */; };
 		F582060223A85495005159A9 /* SiteDateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F582060123A85495005159A9 /* SiteDateFormatters.swift */; };
 		F582060423A88379005159A9 /* TimePickerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F582060323A88379005159A9 /* TimePickerViewControllerTests.swift */; };
 		F5844B6B235EAF3D007C6557 /* HalfScreenPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5844B6A235EAF3D007C6557 /* HalfScreenPresentationController.swift */; };
@@ -4582,6 +4583,7 @@
 		F5660D08235D1CDD00020B1E /* CalendarMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMonthView.swift; sourceTree = "<group>"; };
 		F57402A6235FF9C300374346 /* SchedulingDate+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SchedulingDate+Helpers.swift"; sourceTree = "<group>"; };
 		F580C3C023D22E2D0038E243 /* PreviewDeviceLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDeviceLabel.swift; sourceTree = "<group>"; };
+		F580C3CA23D8F9B40038E243 /* AbstractPost+Dates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Dates.swift"; sourceTree = "<group>"; };
 		F582060123A85495005159A9 /* SiteDateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDateFormatters.swift; sourceTree = "<group>"; };
 		F582060323A88379005159A9 /* TimePickerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerViewControllerTests.swift; sourceTree = "<group>"; };
 		F5844B6A235EAF3D007C6557 /* HalfScreenPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfScreenPresentationController.swift; sourceTree = "<group>"; };
@@ -8404,6 +8406,7 @@
 				086C4D0C1E81F7920011D960 /* Media */,
 				B587798319B799EB00E57C5A /* Notifications */,
 				7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */,
+				F580C3CA23D8F9B40038E243 /* AbstractPost+Dates.swift */,
 				8BFE36FC230F16580061EBA8 /* AbstractPost+fixLocalMediaURLs.swift */,
 				E1AB5A061E0BF17500574B4E /* Array.swift */,
 				9A2CD5362146B8C700AE5055 /* Array+Page.swift */,
@@ -11369,6 +11372,7 @@
 				4054F4572214E3C800D261AB /* TagsCategoriesStatsRecordValue+CoreDataProperties.swift in Sources */,
 				9A2B28F52192121400458F2A /* RevisionOperation.swift in Sources */,
 				984B4EF320742FCC00F87888 /* ZendeskUtils.swift in Sources */,
+				F580C3CB23D8F9B40038E243 /* AbstractPost+Dates.swift in Sources */,
 				1E9D544D23C4C56300F6A9E0 /* GutenbergRollout.swift in Sources */,
 				17E24F5420FCF1D900BD70A3 /* Routes+MySites.swift in Sources */,
 				0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */,
