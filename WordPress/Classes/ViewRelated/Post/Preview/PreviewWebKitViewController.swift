@@ -29,7 +29,7 @@ class PreviewWebKitViewController: WebKitViewController {
     }()
 
     lazy var previewButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.computer), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
+        return UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
     }()
 
     lazy var deviceLabel: PreviewDeviceLabel = {
@@ -69,6 +69,14 @@ class PreviewWebKitViewController: WebKitViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func trackOpenEvent() {
+        let eventProperties: [String: Any] = [
+            "post_type": post.analyticsPostType ?? "unsupported",
+            "blog_type": post.blog.analyticsType.rawValue
+        ]
+        WPAppAnalytics.track(.openedWebPreview, withProperties: eventProperties)
     }
 
     override func viewDidLoad() {

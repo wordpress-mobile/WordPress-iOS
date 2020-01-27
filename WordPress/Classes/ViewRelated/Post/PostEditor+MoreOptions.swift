@@ -89,6 +89,7 @@ extension PostEditor where Self: UIViewController {
                     }
                     previewController = PreviewWebKitViewController(post: self.post)
                 }
+                previewController.trackOpenEvent()
                 let navWrapper = LightNavigationController(rootViewController: previewController)
                 self.navigationController?.present(navWrapper, animated: true)
             } else {

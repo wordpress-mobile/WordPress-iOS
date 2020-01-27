@@ -32,6 +32,7 @@ class CustomizeInsightsCell: UITableViewCell, NibLoadable, Accessible {
 
         dismissButton.accessibilityLabel = Labels.dismiss
         dismissButton.accessibilityHint = Labels.dismissHint
+        dismissButton.accessibilityIdentifier = "dismiss-customize-insights-cell"
 
         tryButton.accessibilityLabel = Labels.tryIt
         tryButton.accessibilityHint = Labels.tryItHint
