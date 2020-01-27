@@ -11,14 +11,14 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.8.11'
+    pod 'WordPressShared', '1.8.12'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => '4be5415'
 end
 
 def aztec
@@ -34,7 +34,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.5.1-beta'
+    pod 'WordPressUI', '~> 1.5.1'
 
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
@@ -66,7 +66,7 @@ end
 def shared_test_pods
     pod 'OHHTTPStubs', '6.1.0'
     pod 'OHHTTPStubs/Swift', '6.1.0'
-    pod 'OCMock', '~> 3.4'
+    pod 'OCMock', '3.4.3'
 end
 
 def shared_with_extension_pods
@@ -339,8 +339,9 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.7'
+  pod 'WordPressMocks', '~> 0.0.8'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
+  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => 'add/screenshot-mocks'
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 

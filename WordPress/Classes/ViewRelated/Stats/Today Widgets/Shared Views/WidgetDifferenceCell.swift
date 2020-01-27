@@ -5,6 +5,7 @@ class WidgetDifferenceCell: UITableViewCell {
     // MARK: - Properties
 
     static let reuseIdentifier = "WidgetDifferenceCell"
+    static let defaultHeight: CGFloat = 56
 
     @IBOutlet private var dateLabel: UILabel!
     @IBOutlet private var dataLabel: UILabel!
@@ -57,7 +58,6 @@ private extension WidgetDifferenceCell {
 
     func configureLabels(day: ThisWeekWidgetDay?, isToday: Bool) {
         guard let day = day else {
-            initializeLabels()
             return
         }
 

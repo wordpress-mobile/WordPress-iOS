@@ -21,11 +21,11 @@ struct AllTimeWidgetStats: Codable {
 
 extension AllTimeWidgetStats {
 
-    static func loadSavedData() -> AllTimeWidgetStats {
+    static func loadSavedData() -> AllTimeWidgetStats? {
         guard let sharedDataFileURL = dataFileURL,
             FileManager.default.fileExists(atPath: sharedDataFileURL.path) == true else {
                 DDLogError("AllTimeWidgetStats: data file '\(dataFileName)' does not exist.")
-                return AllTimeWidgetStats()
+                return nil
         }
 
         let decoder = PropertyListDecoder()
@@ -34,7 +34,20 @@ extension AllTimeWidgetStats {
             return try decoder.decode(AllTimeWidgetStats.self, from: data)
         } catch {
             DDLogError("Failed loading AllTimeWidgetStats data: \(error.localizedDescription)")
-            return AllTimeWidgetStats()
+            return nil
+        }
+    }
+
+    static func clearSavedData() {
+        guard let dataFileURL = AllTimeWidgetStats.dataFileURL else {
+            return
+        }
+
+        do {
+            try FileManager.default.removeItem(at: dataFileURL)
+        }
+        catch {
+            DDLogError("AllTimeWidgetStats: failed deleting data file '\(dataFileName)': \(error.localizedDescription)")
         }
     }
 
@@ -58,6 +71,7 @@ extension AllTimeWidgetStats {
 
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
+            DDLogError("AllTimeWidgetStats: unable to get file URL for \(WPAppGroupName).")
             return nil
         }
         return url.appendingPathComponent(dataFileName)

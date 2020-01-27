@@ -20,17 +20,45 @@ platform :ios do
   # bundle exec fastlane screenshots
   #####################################################################################
   desc "Generate localised screenshots"
-  lane :screenshots do
+  lane :screenshots  do |options| 
     fastlane_directory = File.expand_path File.dirname(__FILE__)
+    derived_data_path = File.join(fastlane_directory, "DerivedData")
+
+    Dir.chdir("../../") do
+      FileUtils.rm_rf('Pods')
+    end
+
+    sh('bundle exec pod install')
+    FileUtils.rm_rf(derived_data_path)
+
     scan(
       workspace: File.join(fastlane_directory, "../../WordPress.xcworkspace"),
       scheme: "WordPressScreenshotGeneration",
       build_for_testing: true,
-      derived_data_path: File.join(fastlane_directory, "DerivedData"),
+      derived_data_path: derived_data_path,
     )
+
+    # By default, clear previous screenshots
+    should_clear_previous_screenshots = true
+    languages = "da de-DE en-AU en-CA en-GB en-US es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant".split(" ")
+
+    # Allow creating screenshots for just one languages
+    if options[:language] != nil
+      languages.keep_if { |language|
+        language.casecmp(options[:language]) == 0
+      }
+
+      # Don't clear, because we might just be fixing one locale
+      should_clear_previous_screenshots = false
+    end
+
+    puts languages
+
     capture_ios_screenshots(
       test_without_building: true,
-      derived_data_path: File.join(fastlane_directory, "DerivedData"),
+      derived_data_path: derived_data_path,
+      languages: languages,
+      clear_previous_screenshots: should_clear_previous_screenshots,
     )
   end
 
@@ -51,56 +79,16 @@ platform :ios do
   #####################################################################################
   desc "Creates promo screenshots"
   lane :create_promo_screenshots do |options| 
-    locales = {
-      "da" => {},
-      "de-DE" => {},
-      "en-AU" => {},
-      "en-CA" => {},
-      "en-GB" => {},
-      "en-US" => {},
-      "es-ES" => {},
-      "fr-FR" => {},
-      "id" => {},
-      "it" => {},
-      "ja" => {font: "/Library/Fonts/Arial Unicode.ttf"},
-      "ko" => {font: "/Library/Fonts/Arial Unicode.ttf", text_size: 60},
-      "nl-NL" => {},
-      "no" => {},
-      "pt-BR" => {},
-      "pt-PT" => {},
-      "ru" => {},
-      "sv" => {},
-      "th" => {},
-      "tr" => {},
-      "zh-Hans" => {font: "/Library/Fonts/Arial Unicode.ttf", text_size: 60},
-      "zh-Hant" => {font: "/Library/Fonts/Arial Unicode.ttf", text_size: 60}
-    }
-
-    config_data = [
-      {device: "iPhone 8 Plus", template: "./fastlane/appstoreres/assets/ios-phone-5-5-template.png", comp_size: "924x1640", comp_offset: "+161+568"},
-      {device: "iPhone XS Max", template: "./fastlane/appstoreres/assets/ios-phone-5-65-template.png", top_template: "./fastlane/appstoreres/assets/ios-phone-notch.png", comp_size: "932x2017", comp_offset: "+155+671", text_offset: 130},
-      {device: "iPad Pro (12.9-inch)", template: "./fastlane/appstoreres/assets/ios-tab12-landscape-template.png", comp_size: "2298x1723", comp_offset: "+221+322", text_offset: 20, text_adj: 80}
-    ]
-
-    orig_folder = "./screenshots_orig"
-    output_folder = "./screenshots"
-
-    # Set up folders
-    if (File.exists?(output_folder) && !File.exists?(orig_folder)) then
-      if UI.confirm("Do you want to use the files in #{output_folder} as originals?")
-        FileUtils.mv(output_folder, orig_folder)
-        Dir.mkdir(output_folder)
-      end
-    end 
-
-    # Run screenshots generator tool 
-    promo_screenshots(orig_folder: "./fastlane/screenshots_orig",
-      output_folder: "./fastlane/screenshots",
-      locales: locales,
-      device_config: config_data,
-      default_locale: "en-US", 
-      metadata_folder: "./fastlane/appstoreres/metadata")  
-  end 
+ 
+    # Run screenshots generator tool
+    # All file paths are relative to the `fast file`.
+    promo_screenshots(
+      orig_folder: "screenshots",
+      metadata_folder: "appstoreres/metadata",
+      output_folder: File.join(Dir.pwd, "/promo_screenshots"),
+      force: options[:force],
+    )
+  end
 
   #####################################################################################
   # download_promo_strings
@@ -122,6 +110,13 @@ platform :ios do
       "app_store_screenshot-3" => {desc: "app_store_screenshot_3.txt"},
       "app_store_screenshot-4" => {desc: "app_store_screenshot_1.txt"},
       "app_store_screenshot-5" => {desc: "app_store_screenshot_4.txt"},
+
+      "enhanced_app_store_screenshot-1" => {desc: "app_store_screenshot_1.html"},
+      "enhanced_app_store_screenshot-2" => {desc: "app_store_screenshot_2.html"},
+      "enhanced_app_store_screenshot-3" => {desc: "app_store_screenshot_3.html"},
+      "enhanced_app_store_screenshot-4" => {desc: "app_store_screenshot_4.html"},
+      "enhanced_app_store_screenshot-5" => {desc: "app_store_screenshot_5.html"},
+      "enhanced_app_store_screenshot-6" => {desc: "app_store_screenshot_6.html"}
     }
 
     metadata_locales = [

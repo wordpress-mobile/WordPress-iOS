@@ -363,6 +363,27 @@ import "./ScreenshotFastfile"
     sh("cd .. && rm WordPress.app.dSYM.zip")
   end
 
+########################################################################
+# Cnfigure Lanes
+########################################################################
+  #####################################################################################
+  # update_certs_and_profiles
+  # -----------------------------------------------------------------------------------
+  # This lane downloads all the required certs and profiles and, 
+  # if not run on CI it creates the missing ones.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_certs_and_profiles 
+  #
+  # Example:
+  # bundle exec fastlane update_certs_and_profiles 
+  #####################################################################################
+  lane :update_certs_and_profiles do | options |
+    alpha_code_signing
+    internal_code_signing
+    appstore_code_signing
+  end
+
   ########################################################################
   # Fastlane match code signing
   ########################################################################  

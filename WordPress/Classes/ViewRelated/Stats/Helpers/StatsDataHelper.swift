@@ -2,7 +2,7 @@ import Foundation
 
 /// Helper class for getting/modifying Stats data for display purposes.
 ///
-class StatsDataHelper {
+@objc class StatsDataHelper: NSObject {
 
     // Max number of rows to display on Insights and Period stat cards.
     static let maxRowsToDisplay = 6
@@ -119,6 +119,14 @@ class StatsDataHelper {
             StatsTotalRowData(name: StatsDataHelper.displayMonth(forDate: $0.date),
                               data: $0.viewsCount.abbreviatedString())
         }
+    }
+
+    // MARK: - Widget Stored Data Support
+
+    @objc class func clearWidgetsData() {
+        TodayWidgetStats.clearSavedData()
+        AllTimeWidgetStats.clearSavedData()
+        ThisWeekWidgetStats.clearSavedData()
     }
 
     // MARK: - Helpers

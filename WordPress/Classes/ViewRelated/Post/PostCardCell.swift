@@ -215,6 +215,8 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         if let titleForDisplay = post.titleForDisplay() {
             WPStyleGuide.applyPostTitleStyle(titleForDisplay, into: titleLabel)
         }
+
+        self.accessibilityIdentifier = post.slugForDisplay()
     }
 
     private func configureSnippet() {
@@ -236,7 +238,11 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
-        dateLabel.text = post.dateStringForDisplay()
+        if FeatureFlag.postScheduling.enabled {
+            dateLabel.text = post.displayDate()
+        } else {
+            dateLabel.text = post.dateStringForDisplay()
+        }
     }
 
     private func configureAuthor() {

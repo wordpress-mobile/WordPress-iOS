@@ -71,6 +71,14 @@ class PreviewWebKitViewController: WebKitViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func trackOpenEvent() {
+        let eventProperties: [String: Any] = [
+            "post_type": post.analyticsPostType ?? "unsupported",
+            "blog_type": post.blog.analyticsType.rawValue
+        ]
+        WPAppAnalytics.track(.openedWebPreview, withProperties: eventProperties)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if webView.url?.absoluteString == "about:blank" {

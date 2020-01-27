@@ -5,6 +5,7 @@ class WidgetTwoColumnCell: UITableViewCell {
     // MARK: - Properties
 
     static let reuseIdentifier = "WidgetTwoColumnCell"
+    static let defaultHeight: CGFloat = 78
 
     @IBOutlet private var leftItemLabel: UILabel!
     @IBOutlet private var leftDataLabel: UILabel!

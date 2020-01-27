@@ -27,6 +27,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// Filtering Tab Bar
     ///
     @IBOutlet weak var filterTabBar: FilterTabBar!
+
     /// Inline Prompt Header View
     ///
     @IBOutlet var inlinePromptView: AppFeedbackPromptView!
@@ -515,7 +516,7 @@ private extension NotificationsViewController {
         inlinePromptSpaceConstraint.isActive = false
 
         if shouldShowPrimeForPush {
-           setupNotificationPrompt()
+            setupNotificationPrompt()
         } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
             setupAppRatings()
             showInlinePrompt()
@@ -1297,7 +1298,11 @@ internal extension NotificationsViewController {
         }
 
         // allows the inline prompt to push the selector down
-        self.inlinePromptSpaceConstraint.isActive = true
+        inlinePromptSpaceConstraint.isActive = true
+
+        // Layout immediately the TableHeaderView. Otherwise we'll see a seriously uncool Buttons Resizing animation.
+        tableHeaderView.layoutIfNeeded()
+
         UIView.animate(withDuration: WPAnimationDurationDefault, delay: InlinePrompt.animationDelay, options: .curveEaseIn, animations: {
             self.inlinePromptView.alpha = WPAlphaFull
             self.layoutHeaderIfNeeded()
@@ -1307,10 +1312,9 @@ internal extension NotificationsViewController {
     }
 
     func hideInlinePrompt(delay: TimeInterval) {
-        self.inlinePromptSpaceConstraint.isActive = false
-        UIView.animate(withDuration: WPAnimationDurationDefault,
-                       delay: delay,
-                       animations: {
+        inlinePromptSpaceConstraint.isActive = false
+
+        UIView.animate(withDuration: WPAnimationDurationDefault, delay: delay, animations: {
             self.inlinePromptView.alpha = WPAlphaZero
             self.layoutHeaderIfNeeded()
         })
