@@ -199,7 +199,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
         return;
     }
 
-    AuthorizeAction action = [self requestedAuthorizeAction:webView.URL];
+    AuthorizeAction action = [self requestedAuthorizeAction:navigationAction.request.URL];
     switch (action) {
         case AuthorizeActionNone:
         case AuthorizeActionUnknown:
