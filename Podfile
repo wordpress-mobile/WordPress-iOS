@@ -89,9 +89,14 @@ end
 
 def gutenberg_dependencies(options)
     dependencies = [
+        'FBReactNativeSpec',
+        'FBLazyVector',
         'React',
+        'ReactCommon',
+        'RCTRequired',
+        'RCTTypeSafety',
         'React-Core',
-        'React-DevSupport',
+        'React-CoreModules',
         'React-RCTActionSheet',
         'React-RCTAnimation',
         'React-RCTBlob',
@@ -100,13 +105,12 @@ def gutenberg_dependencies(options)
         'React-RCTNetwork',
         'React-RCTSettings',
         'React-RCTText',
-        'React-RCTVibration',
-        'React-RCTWebSocket',
+        'React-RCTVibration',        
         'React-cxxreact',
         'React-jsinspector',
         'React-jsi',
         'React-jsiexecutor',
-        'yoga',
+        'Yoga',
         'Folly',
         'glog',
         'react-native-keyboard-aware-scroll-view',
@@ -141,7 +145,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.21.0'
+    gutenberg :commit => 'f14f1e4da70089cb1c3151f6e7da1f2ad94e3621'
 
     ## Third party libraries
     ## =====================
