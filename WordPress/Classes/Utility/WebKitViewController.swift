@@ -29,7 +29,7 @@ class WebKitViewController: UIViewController {
                                style: .plain,
                                target: self,
                                action: #selector(share))
-        button.accessibilityLabel = NSLocalizedString("Share", comment: "Button label to share a web page")
+        button.title = NSLocalizedString("Share", comment: "Button label to share a web page")
         return button
     }()
     @objc lazy var safariButton: UIBarButtonItem = {
@@ -37,18 +37,18 @@ class WebKitViewController: UIViewController {
                                style: .plain,
                                target: self,
                                action: #selector(openInSafari))
-        button.accessibilityLabel = NSLocalizedString("Safari", comment: "Button label to open web page in Safari")
-        button.accessibilityHint = "Opens in Safari"
+        button.title = NSLocalizedString("Safari", comment: "Button label to open web page in Safari")
+        button.accessibilityHint = NSLocalizedString("Opens the web page in Safari", comment: "Accessibility hint to open web page in Safari")
         return button
     }()
     @objc lazy var refreshButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
-        button.accessibilityLabel = NSLocalizedString("Refresh", comment: "Button label to refres a web page")
+        button.title = NSLocalizedString("Refresh", comment: "Button label to refres a web page")
         return button
     }()
     @objc lazy var closeButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
-        button.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
+        button.title = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
         return button
     }()
 
