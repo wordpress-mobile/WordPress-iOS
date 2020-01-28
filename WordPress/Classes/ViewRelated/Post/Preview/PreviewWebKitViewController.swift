@@ -20,11 +20,11 @@ class PreviewWebKitViewController: WebKitViewController {
     }
 
     lazy var publishButton: UIBarButtonItem = {
-        let publishButton = UIBarButtonItem(title: NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post."),
+        let publishButton = UIBarButtonItem(title: Constants.publishButtonTitle,
                                             style: .plain,
                                             target: self,
                                             action: #selector(PreviewWebKitViewController.publishButtonPressed(_:)))
-        publishButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.muriel(color: MurielColor(name: .pink))], for: .normal)
+        publishButton.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .title2), NSAttributedString.Key.foregroundColor: Constants.publishButtonColor], for: .normal)
         return publishButton
     }()
 
@@ -34,8 +34,8 @@ class PreviewWebKitViewController: WebKitViewController {
 
     lazy var deviceLabel: PreviewDeviceLabel = {
         let label = PreviewDeviceLabel()
-        label.insets = UIEdgeInsets(top: 6, left: 6, bottom: 8, right: 8)
-        label.backgroundColor = UIColor.text.withAlphaComponent(0.8)
+        label.insets = Constants.deviceLabelInset
+        label.backgroundColor = Constants.deviceLabelBackgroundColor
         label.textColor = .textInverted
         return label
     }()
@@ -54,7 +54,7 @@ class PreviewWebKitViewController: WebKitViewController {
         canPublish = post.isDraft() || isNotCancelableWithFailedToUploadChanges
 
         guard let url = PreviewNonceHandler.nonceURL(post: post, previewURL: previewURL) else {
-            super.init(configuration: WebViewControllerConfiguration(url: URL(string: "about:blank")!))
+            super.init(configuration: WebViewControllerConfiguration(url: URL(string: Constants.blankURL)!))
             return
         }
 
@@ -81,8 +81,8 @@ class PreviewWebKitViewController: WebKitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if webView.url?.absoluteString == "about:blank" {
-            showNoResults(withTitle: NSLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview") )
+        if webView.url?.absoluteString == Constants.blankURL {
+            showNoResults(withTitle: Constants.noPreviewTitle)
         }
         setupDeviceLabel()
     }
@@ -183,8 +183,8 @@ class PreviewWebKitViewController: WebKitViewController {
         deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         deviceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         view.addConstraints([
-            deviceLabel.rightAnchor.constraint(equalTo: view.safeRightAnchor, constant: 4),
-            deviceLabel.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: 4)
+            deviceLabel.rightAnchor.constraint(equalTo: view.safeRightAnchor, constant: Constants.deviceLabelPadding),
+            deviceLabel.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: Constants.deviceLabelPadding)
         ])
         showLabel(device: selectedDevice)
     }
@@ -193,11 +193,30 @@ class PreviewWebKitViewController: WebKitViewController {
         deviceLabel.isHidden = device == .default
         deviceLabel.text = device.title
     }
+
+    enum Constants {
+        static let deviceLabelPadding: CGFloat = 4
+
+        static let deviceLabelInset = UIEdgeInsets(top: 6, left: 6, bottom: 8, right: 8)
+
+        static let deviceLabelBackgroundColor = UIColor.text.withAlphaComponent(0.8)
+
+        static let devicePickerPopoverOffset: (CGFloat, CGFloat) = (x: -36, y: -2)
+
+        static let noPreviewTitle = NSLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview")
+
+        static let publishButtonTitle = NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
+
+        static let publishButtonColor = UIColor.muriel(color: MurielColor.accent)
+
+        static let blankURL = "about:blank"
+    }
 }
 
 // MARK: UIPopoverPresentationDelegate
 
 extension PreviewWebKitViewController {
+
     override func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
         guard let navigationController = navigationController, popoverPresentationController.presentedViewController is PreviewDeviceSelectionViewController else {
             super.prepareForPopoverPresentation(popoverPresentationController)
@@ -206,7 +225,7 @@ extension PreviewWebKitViewController {
 
         popoverPresentationController.permittedArrowDirections = .down
 
-        popoverPresentationController.sourceRect = CGRect(x: navigationController.toolbar.frame.maxX - 36, y: navigationController.toolbar.frame.minY - 2, width: 0, height: 0)
+        popoverPresentationController.sourceRect = sourceRect(for: navigationController.toolbar, offsetBy: Constants.devicePickerPopoverOffset)
         popoverPresentationController.sourceView = navigationController.toolbar.superview
     }
 
@@ -224,8 +243,21 @@ extension PreviewWebKitViewController {
                 return
         }
 
-        popoverPresentationController.sourceRect = CGRect(x: navigationController.toolbar.frame.maxX - 36, y: navigationController.toolbar.frame.minY - 2, width: 0, height: 0)
+        popoverPresentationController.sourceRect = sourceRect(for: navigationController.toolbar, offsetBy: Constants.devicePickerPopoverOffset)
         popoverPresentationController.sourceView = navigationController.toolbar.superview
+    }
+
+    /// Returns a rect that represents the far right corner of `view` offset by `offsetBy`.
+    /// - Parameter view: The view to use for finding the upper right corner.
+    /// - Parameter offsetBy: An x, y pair to offset the view's coordinates by
+    func sourceRect(for view: UIView, offsetBy offset: (x: CGFloat, y: CGFloat)) -> CGRect {
+        return CGRect(origin: view.frame.topRightVertex, size: .zero).offsetBy(dx: offset.x, dy: offset.y)
+    }
+}
+
+private extension CGRect {
+    var topRightVertex: CGPoint {
+        return CGPoint(x: maxX, y: minY)
     }
 }
 
@@ -235,7 +267,7 @@ extension PreviewWebKitViewController {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         if selectedDevice == .desktop {
             // Change the viewport scale to match a desktop environment
-            webView.evaluateJavaScript("let originalVp = document.querySelector('meta[name=viewport]').cloneNode(true); originalVp.setAttribute('name', 'original_viewport' ); document.querySelector('head').appendChild(originalVp); parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content','initial-scale=0');", completionHandler: nil)
+            webView.evaluateJavaScript("let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content','initial-scale=0');", completionHandler: nil)
         }
     }
 }
