@@ -11205,7 +11205,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Close all simulators so on next launch they use the settings below\nkillall Simulator\n\n# Disable the hardware keyboard in the simulator\ndefaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false\n";
+			shellScript = "# Close all simulators so on next launch they use the settings below\nxcrun simctl shutdown all\n\n# Disable the hardware keyboard in the simulator\ndefaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false\n";
 		};
 		E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
