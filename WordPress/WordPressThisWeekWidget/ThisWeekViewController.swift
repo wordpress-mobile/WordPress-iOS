@@ -2,6 +2,7 @@ import UIKit
 import NotificationCenter
 import WordPressKit
 import WordPressUI
+import Reachability
 
 class ThisWeekViewController: UIViewController {
 
@@ -14,6 +15,10 @@ class ThisWeekViewController: UIViewController {
     private var timeZone: TimeZone?
     private var oauthToken: String?
     private let tracks = Tracks(appGroupName: WPAppGroupName)
+    private let reachability: Reachability = .forInternetConnection()
+
+    private typealias WidgetCompletionBlock = (NCUpdateResult) -> Void
+    private var widgetCompletionBlock: WidgetCompletionBlock?
 
     private var statsValues: ThisWeekWidgetStats? {
         didSet {
@@ -27,9 +32,23 @@ class ThisWeekViewController: UIViewController {
 
     private var isConfigured = false {
         didSet {
-            // If unconfigured, don't allow the widget to be expanded/compacted.
-            extensionContext?.widgetLargestAvailableDisplayMode = isConfigured ? .expanded : .compact
+            setAvailableDisplayMode()
         }
+    }
+
+    private var isReachable = true {
+        didSet {
+            setAvailableDisplayMode()
+
+            if isReachable != oldValue,
+                let completionHandler = widgetCompletionBlock {
+                widgetPerformUpdate(completionHandler: completionHandler)
+            }
+        }
+    }
+
+    private var showNoConnection: Bool {
+        return !isReachable && statsValues == nil
     }
 
     // MARK: - View
@@ -44,11 +63,13 @@ class ThisWeekViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadSavedData()
+        setupReachability()
         resizeView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        reachability.stopNotifier()
         saveData()
     }
 
@@ -65,13 +86,27 @@ class ThisWeekViewController: UIViewController {
 
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.performBatchUpdates({
-                // Create IndexPaths for rows to be inserted / deleted.
-                let indexRange = (Constants.minRows..<self.maxRowsToDisplay())
-                let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
+
+                var indexPathsToInsert = [IndexPath]()
+                var indexPathsToDelete = [IndexPath]()
+
+                // If no connection was displayed, then rows are just being added.
+                // Otherwise, data rows are being inserted/deleted.
+                if self.tableView.visibleCells.first is WidgetNoConnectionCell {
+                    let indexRange = (1..<self.maxRowsToDisplay())
+                    let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
+                    indexPathsToInsert.append(contentsOf: indexPaths)
+                } else {
+                    // Create IndexPaths for rows to be inserted / deleted.
+                    let indexRange = (Constants.minRows..<self.maxRowsToDisplay())
+                    let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
+                    indexPathsToInsert.append(contentsOf: indexPaths)
+                    indexPathsToDelete.append(contentsOf: indexPaths)
+                }
 
                 updatedRowCount > Constants.minRows ?
-                    self.tableView.insertRows(at: indexPaths, with: .fade) :
-                    self.tableView.deleteRows(at: indexPaths, with: .fade)
+                    self.tableView.insertRows(at: indexPathsToInsert, with: .fade) :
+                    self.tableView.deleteRows(at: indexPathsToDelete, with: .fade)
             })
         })
     }
@@ -83,10 +118,12 @@ class ThisWeekViewController: UIViewController {
 extension ThisWeekViewController: NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
+        widgetCompletionBlock = completionHandler
         retrieveSiteConfiguration()
+        isReachable = reachability.isReachable()
 
-        if !isConfigured {
-            DDLogError("This Week Widget: Missing site ID, timeZone or oauth2Token")
+        if !isConfigured || !isReachable {
+            DDLogError("This Week Widget: unable to update. Configured: \(isConfigured) Reachable: \(isReachable)")
 
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
@@ -116,7 +153,11 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard isConfigured else {
+        if showNoConnection {
+            return noConnectionCellFor(indexPath: indexPath)
+        }
+
+        if !isConfigured {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
@@ -124,13 +165,13 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard !isConfigured,
-            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
-                return UITableView.automaticDimension
+        if !isConfigured || showNoConnection,
+            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) {
+            // Use the max compact height for unconfigured view.
+            return maxCompactSize.height
         }
 
-        // Use the max compact height for unconfigured view.
-        return maxCompactSize.height
+        return UITableView.automaticDimension
     }
 
 }
@@ -139,10 +180,11 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension ThisWeekViewController {
 
-    // MARK: - Launch Containing App
+    // MARK: - Tap Gesture Handling
 
-    @IBAction func launchContainingApp() {
-        guard let extensionContext = extensionContext,
+    @IBAction func handleTapGesture() {
+        guard !isConfigured,
+            let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
                 DDLogError("This Week Widget: Unable to get extensionContext or appURL.")
                 return
@@ -254,11 +296,22 @@ private extension ThisWeekViewController {
 
         let urlCellNib = UINib(nibName: String(describing: WidgetUrlCell.self), bundle: Bundle(for: WidgetUrlCell.self))
         tableView.register(urlCellNib, forCellReuseIdentifier: WidgetUrlCell.reuseIdentifier)
+
+        let noConnectionCellNib = UINib(nibName: String(describing: WidgetNoConnectionCell.self), bundle: Bundle(for: WidgetNoConnectionCell.self))
+        tableView.register(noConnectionCellNib, forCellReuseIdentifier: WidgetNoConnectionCell.reuseIdentifier)
     }
 
     func configureTableSeparator() {
         tableView.separatorColor = WidgetStyles.separatorColor
         tableView.separatorEffect = WidgetStyles.separatorVibrancyEffect
+    }
+
+    func noConnectionCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetNoConnectionCell.reuseIdentifier, for: indexPath) as? WidgetNoConnectionCell else {
+            return UITableViewCell()
+        }
+
+        return cell
     }
 
     func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
@@ -300,20 +353,29 @@ private extension ThisWeekViewController {
     }
 
     func showUrl() -> Bool {
-        return (extensionContext?.widgetActiveDisplayMode == .expanded && isConfigured && haveSiteUrl)
+        return (extensionContext?.widgetActiveDisplayMode == .expanded && isConfigured && !showNoConnection && haveSiteUrl)
     }
 
     // MARK: - Expand / Compact View Helpers
 
+    func setAvailableDisplayMode() {
+        // If unconfigured or no connection, don't allow the widget to be expanded.
+        extensionContext?.widgetLargestAvailableDisplayMode = isConfigured && !showNoConnection ? .expanded : .compact
+    }
+
     func numberOfRowsToDisplay() -> Int {
-        guard isConfigured,
-            extensionContext?.widgetActiveDisplayMode == .expanded else {
-                return Constants.minRows
+        if !isConfigured {
+            return Constants.minRows
         }
+
         return maxRowsToDisplay()
     }
 
     func maxRowsToDisplay() -> Int {
+        if showNoConnection {
+            return 1
+        }
+
         guard let values = statsValues,
             !values.days.isEmpty else {
                 // Add one for URL row
@@ -335,15 +397,40 @@ private extension ThisWeekViewController {
 
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
+        let dataRowHeight: CGFloat
+
+        // This method is called before the rows are updated.
+        // So if a no connection cell was displayed, use the default height for data rows.
+        // Otherwise, use the actual height from the first data row.
+        if tableView.visibleCells.first is WidgetNoConnectionCell {
+            dataRowHeight = WidgetDifferenceCell.defaultHeight
+        } else {
+            dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        }
+
+        height += (dataRowHeight * CGFloat(numberOfRowsToDisplay() - 1))
 
         if showUrl() {
             height += WidgetUrlCell.height
         }
 
-        let dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
-        height += (dataRowHeight * CGFloat(numberOfRowsToDisplay() - 1))
-
         return height
+    }
+
+    // MARK: - Reachability
+
+    func setupReachability() {
+        isReachable = reachability.isReachable()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reachabilityChanged),
+                                               name: NSNotification.Name.reachabilityChanged,
+                                               object: nil)
+        reachability.startNotifier()
+    }
+
+    @objc func reachabilityChanged() {
+        isReachable = reachability.isReachable()
     }
 
     // MARK: - Constants

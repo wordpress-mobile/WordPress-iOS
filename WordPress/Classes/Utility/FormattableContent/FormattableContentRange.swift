@@ -25,6 +25,14 @@ extension FormattableContentRange {
     }
 
     func apply(_ styles: FormattableContentStyles, to string: NSMutableAttributedString, at shiftedRange: NSRange) {
+
+        var shiftedRange = shiftedRange
+
+        // Don't attempt to apply styles past the end of a string – it will cause a crash
+        if shiftedRange.upperBound > string.length {
+            shiftedRange = NSRange(location: shiftedRange.location, length: string.length - shiftedRange.location)
+        }
+
         if let rangeStyle = styles.rangeStylesMap?[kind] {
             string.addAttributes(rangeStyle, range: shiftedRange)
         }

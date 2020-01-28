@@ -40,7 +40,6 @@ class NoteTableHeaderView: UIView {
 
         // Make sure the Outlets are loaded
         assert(contentView != nil)
-        assert(imageView != nil)
         assert(titleLabel != nil)
 
         // Background + Separators
@@ -56,10 +55,9 @@ class NoteTableHeaderView: UIView {
     typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Static Properties
-    @objc static let estimatedHeight  = CGFloat(26)
+    @objc static let estimatedHeight = CGFloat(26)
 
     // MARK: - Outlets
     @IBOutlet fileprivate var contentView: SeparatorsView!
-    @IBOutlet fileprivate var imageView: UIImageView!
     @IBOutlet fileprivate var titleLabel: UILabel!
 }

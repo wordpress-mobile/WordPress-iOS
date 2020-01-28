@@ -238,7 +238,11 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
-        dateLabel.text = post.dateStringForDisplay()
+        if FeatureFlag.postScheduling.enabled {
+            dateLabel.text = post.displayDate()
+        } else {
+            dateLabel.text = post.dateStringForDisplay()
+        }
     }
 
     private func configureAuthor() {
