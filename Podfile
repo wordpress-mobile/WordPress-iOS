@@ -25,7 +25,7 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
@@ -89,14 +89,9 @@ end
 
 def gutenberg_dependencies(options)
     dependencies = [
-        'FBReactNativeSpec',
-        'FBLazyVector',
         'React',
-        'ReactCommon',
-        'RCTRequired',
-        'RCTTypeSafety',
         'React-Core',
-        'React-CoreModules',
+        'React-DevSupport',
         'React-RCTActionSheet',
         'React-RCTAnimation',
         'React-RCTBlob',
@@ -106,11 +101,12 @@ def gutenberg_dependencies(options)
         'React-RCTSettings',
         'React-RCTText',
         'React-RCTVibration',
+        'React-RCTWebSocket',
         'React-cxxreact',
         'React-jsinspector',
         'React-jsi',
         'React-jsiexecutor',
-        'Yoga',
+        'yoga',
         'Folly',
         'glog',
         'react-native-keyboard-aware-scroll-view',
@@ -145,7 +141,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '7963eeed7aaa0ca9529fcbaf7408ca12fe132122'
+    gutenberg :tag => 'v1.21.0'
 
     ## Third party libraries
     ## =====================
@@ -390,7 +386,7 @@ pre_install do |installer|
           next
         end
         static << pod
-		pod.instance_variable_set(:@build_type, Pod::Target::BuildType.static_framework)
+    pod.instance_variable_set(:@build_type, Pod::Target::BuildType.static_framework)
     end
     puts "Installing #{static.count} pods as static frameworks"
     puts "Installing #{dynamic.count} pods as dynamic frameworks"
