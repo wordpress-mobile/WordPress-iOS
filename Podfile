@@ -105,7 +105,7 @@ def gutenberg_dependencies(options)
         'React-RCTNetwork',
         'React-RCTSettings',
         'React-RCTText',
-        'React-RCTVibration',        
+        'React-RCTVibration',
         'React-cxxreact',
         'React-jsinspector',
         'React-jsi',
@@ -145,7 +145,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'f14f1e4da70089cb1c3151f6e7da1f2ad94e3621'
+    gutenberg :commit => 'bed0461d837de235c8ba87b42a7c2931834b2e4a'
 
     ## Third party libraries
     ## =====================
