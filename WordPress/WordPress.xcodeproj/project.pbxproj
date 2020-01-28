@@ -1541,7 +1541,6 @@
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
 		C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56636E71868D0CE00226AAB /* StatsViewController.m */; };
-		C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */; };
 		CC19BE06223FECAC00CAB3E1 /* EditorPostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */; };
 		CC2BB0CA2289CC3B0034F9AB /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
 		CC2BB0D0228ACF710034F9AB /* EditorGutenbergTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */; };
@@ -3948,8 +3947,6 @@
 		C545E0A11811B9880020844C /* ContextManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextManager.m; sourceTree = "<group>"; };
 		C56636E61868D0CE00226AAB /* StatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsViewController.h; sourceTree = "<group>"; };
 		C56636E71868D0CE00226AAB /* StatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = StatsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C58349C31806F95100B64089 /* IOS7CorrectedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOS7CorrectedTextView.h; sourceTree = "<group>"; };
-		C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOS7CorrectedTextView.m; sourceTree = "<group>"; };
 		C9264D275F6288F66C33D2CE /* Pods-WordPressTest.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-internal.xcconfig"; sourceTree = "<group>"; };
 		C9BDC428A69177C2CBF0C247 /* Pods-WordPressShareExtension.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release-internal.xcconfig"; sourceTree = "<group>"; };
 		CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPostSettings.swift; sourceTree = "<group>"; };
@@ -4890,8 +4887,6 @@
 				37EAAF4C1A11799A006D6306 /* CircularImageView.swift */,
 				ADF544C0195A0F620092213D /* CustomHighlightButton.h */,
 				ADF544C1195A0F620092213D /* CustomHighlightButton.m */,
-				C58349C31806F95100B64089 /* IOS7CorrectedTextView.h */,
-				C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */,
 				B5B410B51B1772B000CFCF8D /* NavigationTitleView.swift */,
 				982A4C3420227D6700B5518E /* NoResultsViewController.swift */,
 				98B33C87202283860071E1E2 /* NoResults.storyboard */,
@@ -11487,7 +11482,6 @@
 				7EFF208C20EADF68009C4699 /* FormattableCommentContent.swift in Sources */,
 				E1E5EE37231E47A80018E9E3 /* ContextManager+ErrorHandling.swift in Sources */,
 				D8212CBF20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift in Sources */,
-				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				FFABD800213423F1003C65B6 /* LinkSettingsViewController.swift in Sources */,
 				E15644F11CE0E56600D96E64 /* FeatureItemCell.swift in Sources */,
 				E62AFB6B1DC8E593007484FC /* WPRichContentView.swift in Sources */,
