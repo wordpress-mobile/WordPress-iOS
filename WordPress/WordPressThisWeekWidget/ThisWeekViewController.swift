@@ -183,7 +183,7 @@ private extension ThisWeekViewController {
     // MARK: - Tap Gesture Handling
 
     @IBAction func handleTapGesture() {
-        guard !isConfigured,
+        guard isReachable,
             let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
                 DDLogError("This Week Widget: Unable to get extensionContext or appURL.")
