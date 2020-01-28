@@ -73,6 +73,9 @@ import Foundation
         // Also clear the spotlight index
         SearchManager.shared.deleteAllSearchableItems()
 
+        // Clear Today Widgets' stored data
+        StatsDataHelper.clearWidgetsData()
+
         // Delete donated user activities (e.g., for Siri Shortcuts)
         if #available(iOS 12.0, *) {
             NSUserActivity.deleteAllSavedUserActivities {}
