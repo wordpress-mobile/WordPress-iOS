@@ -1,4 +1,0 @@
-- Sappiamo che il tuo sito web è un progetto svolto con passione e che non guardi mai realmente le statistiche perché non sono davvero importanti. In ogni caso, abbiamo aggiunto un widget Oggi che puoi utilizzare per visualizzare tutte le statistiche.
-- L'editor dei blocchi ha altre sorprese: troverai un blocco Galleria per realizzare gallerie con più immagini dai file nella tua libreria multimediale ed è presente il supporto per impostazioni specifiche del blocco nei blocchi Video ed Elenco.
-- Ha anche uno piccolo svantaggio: se la tua app si è mai arrestata in modo anomalo dopo aver aperto alcune impostazioni del blocco e aver poi ruotato il dispositivo, ora non accadrà più.
-- Ultimo ma non meno importante, a volte il tour "Segui altri siti" non veniva contrassegnato come completato. Non volevamo togliere a nessuno una delle più grandi soddisfazioni della vita, quella di spuntare una voce completata su un elenco, quindi abbiamo risolto questo problema.

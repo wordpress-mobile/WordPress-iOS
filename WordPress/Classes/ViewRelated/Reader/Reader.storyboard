@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -346,8 +346,22 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yq2-Pz-GyO">
-                                                <rect key="frame" x="48" y="0.0" width="192" height="50"/>
+                                                <rect key="frame" x="48" y="0.0" width="136" height="50"/>
                                             </view>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="piB-Zd-RVQ" customClass="PostMetaButton">
+                                                <rect key="frame" x="200" y="13" width="40" height="24"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="Mum-BO-4Xd"/>
+                                                    <constraint firstAttribute="height" constant="24" id="QBk-ZS-SRK"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <state key="normal" title="Reblog">
+                                                    <color key="titleShadowColor" red="0.50196078431372548" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapReblogButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="ulr-3q-g0U"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XmB-eN-d59" customClass="PostMetaButton">
                                                 <rect key="frame" x="256" y="13" width="32" height="24"/>
                                                 <constraints>
@@ -426,6 +440,7 @@
                         <outlet property="headerView" destination="A1K-ZI-1wr" id="yu0-A1-s21"/>
                         <outlet property="likeButton" destination="2yJ-O3-UEu" id="bB9-Wv-BHT"/>
                         <outlet property="menuButton" destination="Sz9-nP-NnE" id="xCl-dG-HXD"/>
+                        <outlet property="reblogButton" destination="piB-Zd-RVQ" id="FrA-wI-NBq"/>
                         <outlet property="saveForLaterButton" destination="168-Gh-oaD" id="on8-nx-5m3"/>
                         <outlet property="tagButton" destination="mBC-NT-IsJ" id="fV5-hf-glc"/>
                         <outlet property="textFooterStackView" destination="fO8-Q5-Boc" id="wu2-Zu-2kO"/>

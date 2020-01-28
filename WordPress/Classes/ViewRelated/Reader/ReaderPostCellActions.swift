@@ -80,6 +80,13 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         showAttributionForPost(post)
     }
 
+    func readerCell(_ cell: ReaderPostCardCell, reblogActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost, let origin = origin else {
+            return
+        }
+        ReaderReblogAction().execute(readerPost: post, origin: origin, reblogSource: .list)
+    }
+
     func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String? {
         return imageRequestAuthToken
     }

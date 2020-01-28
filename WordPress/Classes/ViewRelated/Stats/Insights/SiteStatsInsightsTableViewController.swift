@@ -21,11 +21,10 @@ enum InsightType: Int {
     case allAnnual
 
     // These Insights will be displayed in this order if a site's Insights have not been customized.
-    static let defaultInsights = [InsightType.postingActivity,
+    static let defaultInsights = [InsightType.latestPostSummary,
                                   .todaysStats,
                                   .allTimeStats,
-                                  .mostPopularTime,
-                                  .comments
+                                  .followersTotals
     ]
 
     static let defaultInsightsValues = InsightType.defaultInsights.map { $0.rawValue }
@@ -324,7 +323,8 @@ private extension SiteStatsInsightsTableViewController {
 
         let controller = AddInsightTableViewController(insightsDelegate: self,
                                                        insightsShown: insightsToShow.compactMap { $0.statSection })
-        navigationController?.pushViewController(controller, animated: true)
+        let navigationController = UINavigationController(rootViewController: controller)
+        present(navigationController, animated: true, completion: nil)
     }
 
     func moveInsightUp(_ insight: InsightType) {

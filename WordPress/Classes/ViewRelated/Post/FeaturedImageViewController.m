@@ -27,7 +27,7 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Featured Image", @"Title for the Featured Image view");
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor murielBasicBackground];
     self.navigationItem.leftBarButtonItems = @[self.doneButton];
     self.navigationItem.rightBarButtonItems = @[self.removeButton];
 }
@@ -94,7 +94,7 @@
         if (hide) {
             self.view.backgroundColor = [UIColor blackColor];
         } else {
-            self.view.backgroundColor = [UIColor whiteColor];
+            self.view.backgroundColor = [UIColor murielBasicBackground];
         }
     }];
 }
