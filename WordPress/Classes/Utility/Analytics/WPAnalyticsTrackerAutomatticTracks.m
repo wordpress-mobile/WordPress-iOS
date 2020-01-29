@@ -473,6 +473,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"stock_photos" };
             break;
+        case WPAnalyticsStatEditorAddedPhotoViaMediaEditor:
+            eventName = @"editor_photo_added";
+            eventProperties = @{ @"via" : @"media_editor" };
+            break;
         case WPAnalyticsStatEditorAztecBetaLink:
             eventName = @"editor_aztec_beta_link";
             break;
@@ -841,6 +845,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
+            break;
+        case WPAnalyticsStatMediaEditorShown:
+            eventName = @"media_editor_shown";
+            break;
+        case WPAnalyticsStatMediaEditorUsed:
+            eventName = @"media_editor_used";
             break;
         case WPAnalyticsStatMediaLibraryDeletedItems:
             eventName = @"media_library_deleted_items";
@@ -1984,9 +1994,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         // because there are new WPAnalyticsStat enum values. This can mean that somebody is
         // currently working on it. In cases like this, add the enum values here, returning
         // as `nil`. The tests should pass.
-        case WPAnalyticsStatEditorAddedPhotoViaMediaEditor:
-        case WPAnalyticsStatMediaEditorShown:
-        case WPAnalyticsStatMediaEditorUsed:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:

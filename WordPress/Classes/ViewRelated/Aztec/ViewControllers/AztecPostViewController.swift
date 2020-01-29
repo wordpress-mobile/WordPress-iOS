@@ -11,6 +11,7 @@ import WPMediaPicker
 import AVKit
 import MobileCoreServices
 import AutomatticTracks
+import MediaEditor
 
 // MARK: - Aztec's Native Editor!
 //
@@ -2416,6 +2417,10 @@ extension AztecPostViewController {
         insert(exportableAsset: url as NSURL, source: .otherApps)
     }
 
+    fileprivate func insertImage(image: UIImage) {
+        insert(exportableAsset: image, source: .deviceLibrary)
+    }
+
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
         insert(exportableAsset: phAsset, source: .deviceLibrary)
     }
@@ -2842,11 +2847,19 @@ extension AztecPostViewController {
 
         if showDefaultActions {
             if let imageAttachment = attachment as? ImageAttachment {
-                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
+                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.settingsActionTitle,
                                                                                      style: .default,
                                                                                      handler: { (action) in
                                                                                         self.displayDetails(forAttachment: imageAttachment)
                 })
+
+                if imageAttachment.isLoaded {
+                    alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
+                                                                                         style: .default,
+                                                                                         handler: { (action) in
+                                                                                            self.edit(imageAttachment)
+                    })
+                }
             } else if let videoAttachment = attachment as? VideoAttachment {
                 alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.playVideoActionTitle,
                                                                                      style: .default,
@@ -3214,8 +3227,13 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
-        mediaPreviewHelper = MediaPreviewHelper(assets: assets)
-        return mediaPreviewHelper?.previewViewController(selectedIndex: selected)
+        if FeatureFlag.mediaEditor.enabled, let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
+            edit(fromMediaPicker: picker, assets: phAssets)
+            return nil
+        } else {
+            mediaPreviewHelper = MediaPreviewHelper(assets: assets)
+            return mediaPreviewHelper?.previewViewController(selectedIndex: selected)
+        }
     }
 
     private func updateFormatBarInsertAssetCount() {
@@ -3373,6 +3391,7 @@ extension AztecPostViewController {
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
+        static let settingsActionTitle = NSLocalizedString("Media Settings", comment: "User action to edit media settings.")
         static let editActionTitle = NSLocalizedString("Edit", comment: "User action to edit media details.")
         static let playVideoActionTitle = NSLocalizedString("Play video", comment: "User action to play a video on the editor.")
         static let removeImageActionTitle = NSLocalizedString("Remove image", comment: "User action to remove image.")
@@ -3464,7 +3483,6 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
     }
 }
 
-
 // MARK: - Screenshot Generation Add-ons
 extension AztecPostViewController {
 
@@ -3490,5 +3508,67 @@ extension AztecPostViewController {
         @objc func didInvokeDismissKeyboard(_ sender: UITextView?) {
             self.endEditing(true)
         }
+    }
+}
+
+// MARK: - Media Editing
+//
+extension AztecPostViewController {
+    private func edit(fromMediaPicker picker: WPMediaPickerViewController, assets: [PHAsset]) {
+        let mediaEditor = WPMediaEditor(assets)
+
+        mediaEditor.edit(from: picker,
+                              onFinishEditing: { [weak self] images, actions in
+                                images.forEach { mediaEditorImage in
+                                    if let image = mediaEditorImage.editedImage {
+                                        self?.insertImage(image: image)
+                                    } else if let phAsset = mediaEditorImage as? PHAsset {
+                                        self?.insertDeviceMedia(phAsset: phAsset)
+                                    }
+                                }
+
+                                self?.dismissMediaPicker()
+            }, onCancel: {
+                // Dismiss the Preview screen in Media Picker
+                picker.navigationController?.popViewController(animated: false)
+        })
+    }
+
+    private func dismissMediaPicker() {
+        unregisterChangeObserver()
+        mediaLibraryDataSource.searchCancelled()
+        closeMediaPickerInputViewController()
+        dismiss(animated: false)
+    }
+
+    private func edit(_ imageAttachment: ImageAttachment) {
+        guard let image = imageAttachment.image else {
+            return
+        }
+
+        let mediaEditor = WPMediaEditor(image)
+
+        mediaEditor.edit(from: self,
+                              onFinishEditing: { [weak self] images, actions in
+                                guard !actions.isEmpty, let image = images.first as? UIImage else {
+                                    // If the image wasn't edited, do nothing
+                                    return
+                                }
+
+                                self?.replace(attachment: imageAttachment, with: image, actions: actions)
+        })
+    }
+
+    private func replace(attachment: ImageAttachment, with image: UIImage, actions: [MediaEditorOperation]) {
+        guard !actions.isEmpty else {
+            // If the image wasn't edited, do nothing
+            return
+        }
+
+        let info = MediaAnalyticsInfo(origin: .editor(.mediaEditor), selectionMethod: mediaSelectionMethod)
+        guard let media = mediaCoordinator.addMedia(from: image, to: post, analyticsInfo: info) else {
+            return
+        }
+        attachment.uploadID = media.uploadID
     }
 }

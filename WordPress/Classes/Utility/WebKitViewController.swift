@@ -9,32 +9,52 @@ class WebKitViewController: UIViewController {
     @objc let titleView = NavigationTitleView()
 
     @objc lazy var backButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
                                style: .plain,
                                target: self,
                                action: #selector(goBack))
+        button.title = NSLocalizedString("Back", comment: "Previous web page")
+        return button
     }()
     @objc lazy var forwardButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(),
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight),
                                style: .plain,
                                target: self,
                                action: #selector(goForward))
+        button.title = NSLocalizedString("Forward", comment: "Next web page")
+        return button
     }()
     @objc lazy var shareButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
                                style: .plain,
                                target: self,
                                action: #selector(share))
+        button.title = NSLocalizedString("Share", comment: "Button label to share a web page")
+        return button
     }()
     @objc lazy var safariButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.globe),
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.globe),
                                style: .plain,
                                target: self,
                                action: #selector(openInSafari))
+        button.title = NSLocalizedString("Safari", comment: "Button label to open web page in Safari")
+        button.accessibilityHint = NSLocalizedString("Opens the web page in Safari", comment: "Accessibility hint to open web page in Safari")
+        return button
     }()
+    @objc lazy var refreshButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
+        button.title = NSLocalizedString("Refresh", comment: "Button label to refres a web page")
+        return button
+    }()
+    @objc lazy var closeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
+        button.title = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
+        return button
+    }()
+
     @objc var customOptionsButton: UIBarButtonItem?
 
-    @objc let url: URL
+    @objc let url: URL?
     @objc let authenticator: WebViewAuthenticator?
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
@@ -137,7 +157,9 @@ class WebKitViewController: UIViewController {
         }
 
         guard let authenticator = authenticator else {
-            load(request: URLRequest(url: url))
+            if let url = url {
+                load(request: URLRequest(url: url))
+            }
             return
         }
 
@@ -146,8 +168,10 @@ class WebKitViewController: UIViewController {
                 return
             }
 
-            authenticator.request(url: strongSelf.url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
-                self?.load(request: request)
+            if let url = strongSelf.url {
+                authenticator.request(url: url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
+                    self?.load(request: request)
+                }
             }
         }
     }
@@ -186,7 +210,6 @@ class WebKitViewController: UIViewController {
     }
 
     private func setupRefreshButton() {
-        let refreshButton = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
         if let customOptionsButton = customOptionsButton {
             navigationItem.rightBarButtonItems = [refreshButton, customOptionsButton]
         } else if !secureInteraction {
@@ -195,8 +218,6 @@ class WebKitViewController: UIViewController {
     }
 
     private func setupCloseButton() {
-        let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
-        closeButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
         navigationItem.leftBarButtonItem = closeButton
     }
 
@@ -395,6 +416,14 @@ class WebKitViewController: UIViewController {
         default:
             assertionFailure("Observed change to web view that we are not handling")
         }
+
+        // Set the title for the HUD which shows up on tap+hold w/ accessibile font sizes enabled
+        navigationItem.title = "\(titleView.titleLabel.text ?? "")\n\n\(String(describing: titleView.subtitleLabel.text ?? ""))"
+
+        // Accessibility values which emulate those found in Safari
+        navigationItem.accessibilityLabel = NSLocalizedString("Title", comment: "Accessibility label for web page preview title")
+        navigationItem.titleView?.accessibilityValue = titleView.titleLabel.text
+        navigationItem.titleView?.accessibilityTraits = .updatesFrequently
     }
 }
 

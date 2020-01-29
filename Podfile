@@ -145,7 +145,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '7963eeed7aaa0ca9529fcbaf7408ca12fe132122'
+    gutenberg :commit => '1616ba1b8f5c02cf4f928410a92ce65e2e594f37'
 
     ## Third party libraries
     ## =====================
@@ -184,6 +184,9 @@ target 'WordPress' do
     #pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/wordpresskit-456-beta1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
+    pod 'MediaEditor', '~> 0.1.3'
+    # pod 'MediaEditor', :path => '../MediaEditor-iOS'
+
     aztec
     wordpress_ui
 
@@ -196,6 +199,9 @@ target 'WordPress' do
 
 
     post_install do
+        puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
+        %x(patch Pods/React-Core/React/Views/RCTShadowView.m < patches/react-native+0.61.5.patch)
+
 
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
