@@ -1,6 +1,7 @@
 14.2
 -----
- 
+* Media editing: You can now crop, zoom in/out and rotate images that are inserted or being inserted in a post.
+
 14.1
 -----
 * Fixes a bug that could cause some web page previews to remain unauthenticated even after logging in.
@@ -9,7 +10,7 @@
 * Block Editor: New block "Shortcode". You can now create and edit Shortcode blocks in the editor.
 
 * Web Views: the title and button colors in the header of web views was grey, and is now white.
- 
+
 14.0
 -----
 * Stats: Updated default cards for the Insights view.
