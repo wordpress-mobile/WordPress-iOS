@@ -1,3 +1,5 @@
+@import WebKit;
+
 #import "SharingAuthorizationWebViewController.h"
 #import "Blog.h"
 #import "WPUserAgent.h"
@@ -87,9 +89,9 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 }
 
 
-- (void)saveHostForRequest:(NSURLRequest *)request
+- (void)saveHostFromURL:(NSURL *)url
 {
-    NSString *host = request.URL.host;
+    NSString *host = url.host;
     if (!host || [host containsString:@"wordpress"] || [self.hosts containsObject:host]) {
         return;
     }
@@ -136,10 +138,10 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     }
 }
 
-- (AuthorizeAction)requestedAuthorizeAction:(NSURLRequest *)request
+- (AuthorizeAction)requestedAuthorizeAction:(NSURL *)url
 {
-    NSString *requested = [request.URL absoluteString];
-
+    NSString *requested = [url absoluteString];
+    
     // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
     NSRange denyRange = [requested rangeOfString:SharingAuthorizationPathDecline];
     if (denyRange.location != NSNotFound) {
@@ -187,36 +189,37 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     return AuthorizeActionUnknown;
 }
 
+#pragma mark - WKWebViewNavigationDelegate
 
-#pragma mark - WebView Delegate Methods
-
-- (BOOL)webView:(UIWebView *)webView
-    shouldStartLoadWithRequest:(NSURLRequest *)request
-                navigationType:(UIWebViewNavigationType)navigationType
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     // Prevent a second verify load by someone happy clicking.
     if (self.loadingVerify) {
-        return NO;
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
 
-    AuthorizeAction action = [self requestedAuthorizeAction:request];
+    AuthorizeAction action = [self requestedAuthorizeAction:navigationAction.request.URL];
     switch (action) {
         case AuthorizeActionNone:
         case AuthorizeActionUnknown:
         case AuthorizeActionRequest:
-            return [super webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+            [super webView:webView decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
+            return;
 
         case AuthorizeActionVerify:
             self.loadingVerify = YES;
-            return YES;
+            decisionHandler(WKNavigationActionPolicyAllow);
+            return;
 
         case AuthorizeActionDeny:
             [self dismiss];
-            return NO;
+            decisionHandler(WKNavigationActionPolicyCancel);
+            return;
     }
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error
 {
     if (self.loadingVerify && error.code == NSURLErrorCancelled) {
         // Authenticating to Facebook and Twitter can return an false
@@ -224,17 +227,17 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
         [self handleAuthorizationAllowed];
         return;
     }
-    [super webView:webView didFailLoadWithError:error];
+    [super webView:webView didFailNavigation:navigation withError:error];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
 {
-    [self saveHostForRequest:webView.request];
+    [self saveHostFromURL:webView.URL];
 
     if (self.loadingVerify) {
         [self handleAuthorizationAllowed];
     } else {
-        [super webViewDidFinishLoad:webView];
+        [super webView:webView didFinishNavigation:navigation];
     }
 }
 
