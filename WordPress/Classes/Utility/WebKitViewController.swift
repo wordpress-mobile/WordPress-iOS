@@ -54,7 +54,7 @@ class WebKitViewController: UIViewController {
 
     @objc var customOptionsButton: UIBarButtonItem?
 
-    @objc let url: URL
+    @objc let url: URL?
     @objc let authenticator: WebViewAuthenticator?
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
@@ -157,7 +157,9 @@ class WebKitViewController: UIViewController {
         }
 
         guard let authenticator = authenticator else {
-            load(request: URLRequest(url: url))
+            if let url = url {
+                load(request: URLRequest(url: url))
+            }
             return
         }
 
@@ -166,8 +168,10 @@ class WebKitViewController: UIViewController {
                 return
             }
 
-            authenticator.request(url: strongSelf.url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
-                self?.load(request: request)
+            if let url = strongSelf.url {
+                authenticator.request(url: url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
+                    self?.load(request: request)
+                }
             }
         }
     }
@@ -349,7 +353,6 @@ class WebKitViewController: UIViewController {
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         activityViewController.modalPresentationStyle = .popover
         activityViewController.popoverPresentationController?.barButtonItem = shareButton
-        activityViewController.navigationController?.navigationBar.tintColor = UIColor.red
 
         activityViewController.completionWithItemsHandler = { (type, completed, _, _) in
             if completed, let type = type?.rawValue {
@@ -418,7 +421,7 @@ class WebKitViewController: UIViewController {
         navigationItem.title = "\(titleView.titleLabel.text ?? "")\n\n\(String(describing: titleView.subtitleLabel.text ?? ""))"
 
         // Accessibility values which emulate those found in Safari
-        navigationItem.accessibilityLabel = "Title"
+        navigationItem.accessibilityLabel = NSLocalizedString("Title", comment: "Accessibility label for web page preview title")
         navigationItem.titleView?.accessibilityValue = titleView.titleLabel.text
         navigationItem.titleView?.accessibilityTraits = .updatesFrequently
     }

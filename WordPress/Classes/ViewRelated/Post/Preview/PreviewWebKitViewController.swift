@@ -54,7 +54,7 @@ class PreviewWebKitViewController: WebKitViewController {
         canPublish = post.isDraft() || isNotCancelableWithFailedToUploadChanges
 
         guard let url = PreviewNonceHandler.nonceURL(post: post, previewURL: previewURL) else {
-            super.init(configuration: WebViewControllerConfiguration(url: URL(string: Constants.blankURL)!))
+            super.init(configuration: WebViewControllerConfiguration(url: Constants.blankURL))
             return
         }
 
@@ -81,7 +81,7 @@ class PreviewWebKitViewController: WebKitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if webView.url?.absoluteString == Constants.blankURL {
+        if webView.url?.absoluteString == Constants.blankURL?.absoluteString {
             showNoResults(withTitle: Constants.noPreviewTitle)
         }
         setupDeviceLabel()
@@ -209,7 +209,7 @@ class PreviewWebKitViewController: WebKitViewController {
 
         static let publishButtonColor = UIColor.muriel(color: MurielColor.accent)
 
-        static let blankURL = "about:blank"
+        static let blankURL = URL(string: "about:blank")
     }
 }
 
