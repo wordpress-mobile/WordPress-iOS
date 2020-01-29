@@ -51,6 +51,7 @@ class SiteStatsDashboardViewController: UIViewController {
         restoreSelectedPeriodFromUserDefaults()
         addWillEnterForegroundObserver()
         view.accessibilityIdentifier = "stats-dashboard"
+        view.backgroundColor = .basicBackground
     }
 
     override func viewWillDisappear(_ animated: Bool) {
