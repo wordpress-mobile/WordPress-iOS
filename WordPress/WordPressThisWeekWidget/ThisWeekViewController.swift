@@ -133,7 +133,6 @@ extension ThisWeekViewController: NCWidgetProviding {
             return
         }
 
-        tracks.trackExtensionAccessed()
         fetchData(completionHandler: completionHandler)
     }
 

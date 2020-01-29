@@ -136,7 +136,6 @@ extension AllTimeViewController: NCWidgetProviding {
             return
         }
 
-        tracks.trackExtensionAccessed()
         fetchData(completionHandler: completionHandler)
     }
 
