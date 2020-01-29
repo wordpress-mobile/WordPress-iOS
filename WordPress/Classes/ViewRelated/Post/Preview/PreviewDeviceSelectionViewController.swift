@@ -94,11 +94,12 @@ extension PreviewDeviceSelectionViewController: UITableViewDataSource {
         cell.textLabel?.text = device.title
         cell.textLabel?.font = WPStyleGuide.regularTextFont()
 
-
         if device == selectedOption {
             cell.accessoryType = .checkmark
+            cell.accessibilityTraits = [.button, .selected]
         } else {
             cell.accessoryType = .none
+            cell.accessibilityTraits = .button
         }
 
         return cell
