@@ -145,7 +145,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '7963eeed7aaa0ca9529fcbaf7408ca12fe132122'
+    gutenberg :commit => '1616ba1b8f5c02cf4f928410a92ce65e2e594f37'
 
     ## Third party libraries
     ## =====================
@@ -183,6 +183,9 @@ target 'WordPress' do
     pod 'WordPressAuthenticator', '~> 1.10.6'
     #pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/wordpresskit-456-beta1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+
+    pod 'MediaEditor', '~> 0.1.3'
+    # pod 'MediaEditor', :path => '../MediaEditor-iOS'
 
     aztec
     wordpress_ui
