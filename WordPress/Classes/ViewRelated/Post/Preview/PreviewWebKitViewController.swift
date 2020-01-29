@@ -29,7 +29,10 @@ class PreviewWebKitViewController: WebKitViewController {
     }()
 
     lazy var previewButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
+        let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
+        button.title = NSLocalizedString("Preview Device", comment: "Title for web preview device switching button")
+        button.accessibilityHint = NSLocalizedString("Change the device type used for preview", comment: "Accessibility hint for web preview device switching button")
+        return button
     }()
 
     lazy var deviceLabel: PreviewDeviceLabel = {
