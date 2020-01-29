@@ -39,6 +39,7 @@ class ThisWeekViewController: UIViewController {
     private var isReachable = true {
         didSet {
             setAvailableDisplayMode()
+            tableView.separatorStyle = showNoConnection ? .none : .singleLine
 
             if isReachable != oldValue,
                 let completionHandler = widgetCompletionBlock {
