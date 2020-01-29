@@ -40,6 +40,7 @@ class ThisWeekViewController: UIViewController {
     private var isReachable = true {
         didSet {
             setAvailableDisplayMode()
+            resizeView()
             tableView.separatorStyle = showNoConnection ? .none : .singleLine
 
             if isReachable != oldValue,
