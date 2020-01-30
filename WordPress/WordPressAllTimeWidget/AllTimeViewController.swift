@@ -296,13 +296,14 @@ private extension AllTimeViewController {
                                                       bestViews: allTimesStats?.bestViewsPerDayCount)
 
                 // Update the widget only if the data has changed.
-                if updatedStats != self?.statsValues {
-                    self?.statsValues = updatedStats
-                    completionHandler(.newData)
-                    self?.saveData()
-                } else {
+                guard updatedStats != self?.statsValues else {
                     completionHandler(.noData)
+                    return
                 }
+
+                self?.statsValues = updatedStats
+                completionHandler(.newData)
+                self?.saveData()
             }
         }
     }
