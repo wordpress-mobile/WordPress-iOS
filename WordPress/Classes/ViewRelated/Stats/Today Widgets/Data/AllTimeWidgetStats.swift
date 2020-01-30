@@ -78,3 +78,12 @@ extension AllTimeWidgetStats {
     }
 
 }
+
+extension AllTimeWidgetStats: Equatable {
+    static func == (lhs: AllTimeWidgetStats, rhs: AllTimeWidgetStats) -> Bool {
+        return lhs.views == rhs.views &&
+            lhs.visitors == rhs.visitors &&
+            lhs.posts == rhs.posts &&
+            lhs.bestViews == rhs.bestViews
+    }
+}
