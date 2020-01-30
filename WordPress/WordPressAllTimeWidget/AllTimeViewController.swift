@@ -52,6 +52,20 @@ class AllTimeViewController: UIViewController {
         return !isReachable && statsValues == nil
     }
 
+    private var loadingFailed = false {
+        didSet {
+            setAvailableDisplayMode()
+
+            if loadingFailed != oldValue {
+                tableView.reloadData()
+            }
+        }
+    }
+
+    private var failedState: Bool {
+        return !isConfigured || showNoConnection || loadingFailed
+    }
+
     private let tracks = Tracks(appGroupName: WPAppGroupName)
     private let reachability: Reachability = .forInternetConnection()
 
@@ -158,7 +172,7 @@ extension AllTimeViewController: UITableViewDelegate, UITableViewDataSource {
             return noConnectionCellFor(indexPath: indexPath)
         }
 
-        if !isConfigured {
+        if !isConfigured || loadingFailed {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
@@ -167,7 +181,7 @@ extension AllTimeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if !isConfigured || showNoConnection,
+        if failedState,
             let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) {
             // Use the max compact height for unconfigured view.
             return maxCompactSize.height
@@ -189,6 +203,15 @@ private extension AllTimeViewController {
     // MARK: - Tap Gesture Handling
 
     @IBAction func handleTapGesture() {
+
+        // If showing the loading failed view, reload the widget.
+        if loadingFailed,
+            let completionHandler = widgetCompletionBlock {
+            widgetPerformUpdate(completionHandler: completionHandler)
+            return
+        }
+
+        // Otherwise, open the app.
         guard isReachable,
             let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
@@ -255,7 +278,9 @@ private extension AllTimeViewController {
             return
         }
 
-        statsRemote.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
+        statsRemote.getInsight { [weak self] (allTimesStats: StatsAllTimesInsight?, error) in
+            self?.loadingFailed = (error != nil)
+
             if error != nil {
                 DDLogError("All Time Widget: Error fetching StatsAllTimesInsight: \(String(describing: error?.localizedDescription))")
                 completionHandler(.failed)
@@ -325,7 +350,7 @@ private extension AllTimeViewController {
             return UITableViewCell()
         }
 
-        cell.configure(for: .allTime)
+        loadingFailed ? cell.configure(for: .loadingFailed) : cell.configure(for: .allTime)
         return cell
     }
 
@@ -368,8 +393,8 @@ private extension AllTimeViewController {
     // MARK: - Expand / Compact View Helpers
 
     func setAvailableDisplayMode() {
-        // If unconfigured or no connection, don't allow the widget to be expanded.
-        extensionContext?.widgetLargestAvailableDisplayMode = !showNoConnection && isConfigured ? .expanded : .compact
+        // If something went wrong, don't allow the widget to be expanded.
+        extensionContext?.widgetLargestAvailableDisplayMode = failedState ? .compact : .expanded
     }
 
     func minRowsToDisplay() -> Int {
