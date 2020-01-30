@@ -55,6 +55,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         applyStyles()
         setupReadableGuideForiPad()
         setupSeparator()
+        setupAccessibility()
     }
 
     private func resetGhostStyles() {
@@ -151,6 +152,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
                 }
             }
         }
+    }
+
+    private func setupAccessibility() {
+        menuButton.accessibilityLabel =
+            NSLocalizedString("More", comment: "Accessibility label for the More button in Post List (compact view).")
     }
 
     private enum Constants {

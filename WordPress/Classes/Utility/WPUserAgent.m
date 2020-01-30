@@ -1,4 +1,7 @@
 #import "WPUserAgent.h"
+#import "WordPress-Swift.h"
+
+@import WebKit;
 
 static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
@@ -14,10 +17,10 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
         [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: @(0)}];
         
         if ([NSThread isMainThread]){
-            _defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+            _defaultUserAgent = [WKWebView userAgent];
         } else {
             dispatch_sync(dispatch_get_main_queue(), ^{
-                _defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+                _defaultUserAgent = [WKWebView userAgent];
             });
         }
         if (storeCurrentUA) {
@@ -42,7 +45,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     return _wordPressUserAgent;
 }
 
-+ (void)useWordPressUserAgentInUIWebViews
++ (void)useWordPressUserAgentInWebViews
 {
     // Cleanup unused NSUserDefaults keys from older WPUserAgent implementation
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"DefaultUserAgent"];

@@ -16,6 +16,30 @@ class PostingActivityMonth: UIView, NibLoadable {
     // Used to adjust the view width when hiding the last stack view.
     private let lastStackViewWidth = CGFloat(14)
 
+    /// The only accessibility element for self.
+    ///
+    /// This is only loaded if accessibility features are turned on.
+    ///
+    /// - SeeAlso: accessibilityElements
+    ///
+    private var accessibilityElement: PostingActivityMonthAccessibilityElement?
+
+    override var accessibilityElements: [Any]? {
+        get {
+            if let elementForSelf = accessibilityElement {
+                return [elementForSelf]
+            }
+
+            let elementForSelf = PostingActivityMonthAccessibilityElement(accessibilityContainer: self)
+            elementForSelf.configure(month: month, events: monthData)
+
+            accessibilityElement = elementForSelf
+
+            return [elementForSelf]
+        }
+        set { }
+    }
+
     // MARK: - Configure
 
     func configure(monthData: [PostingStreakEvent], postingActivityDayDelegate: PostingActivityDayDelegate? = nil) {
@@ -23,12 +47,16 @@ class PostingActivityMonth: UIView, NibLoadable {
         self.postingActivityDayDelegate = postingActivityDayDelegate
         getMonth()
         addDays()
+
+        accessibilityElement?.configure(month: month, events: monthData)
     }
 
     func configureGhost(monthData: [PostingStreakEvent]) {
         self.monthData = monthData
         monthLabel.text = ""
         addDays()
+
+        accessibilityElement?.configure(month: month, events: monthData)
     }
 }
 
@@ -120,4 +148,119 @@ private extension PostingActivityMonth {
         viewWidthConstraint.constant -= viewWidthAdjustment
     }
 
+}
+
+// MARK: - Accessibility
+
+/// An accessibility element for the whole `PostingActivityMonth` UI tree.
+///
+private class PostingActivityMonthAccessibilityElement: UIAccessibilityElement {
+
+    private var events = [PostingStreakEvent]()
+
+    /// The currently selected index for `event`
+    ///
+    /// This starts at -1 so that when `rotatedIndex(forward:)` is called with `true`, it will
+    /// return with `0`, which is what we want.
+    ///
+    /// - SeeAlso: rotatedIndex(forward:)
+    ///
+    private var selectedIndex: Int = -1
+
+    private lazy var monthDayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM d"
+        return formatter
+    }()
+
+    override var accessibilityFrameInContainerSpace: CGRect {
+        get {
+            (accessibilityContainer as? UIView)?.bounds ?? CGRect.zero
+        }
+        set { }
+    }
+
+    override init(accessibilityContainer container: Any) {
+        super.init(accessibilityContainer: container)
+
+        accessibilityTraits = .adjustable
+        isAccessibilityElement = false
+    }
+
+    func configure(month: Date?, events: [PostingStreakEvent]?) {
+        isAccessibilityElement = month != nil
+
+        if let month = month {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMMM yyyy"
+            accessibilityLabel = formatter.string(from: month)
+        } else {
+            accessibilityLabel = nil
+        }
+
+        self.events = (events ?? [PostingStreakEvent]()).filter { $0.postCount > 0 }
+    }
+
+    override func accessibilityDecrement() {
+        rotateAccessibilityValue(forward: false)
+    }
+
+    override func accessibilityIncrement() {
+        rotateAccessibilityValue(forward: true)
+    }
+
+    private func rotateAccessibilityValue(forward: Bool) {
+        selectedIndex = rotatedIndex(forward: forward)
+
+        guard events.isEmpty == false else {
+            accessibilityValue = Strings.noPosts
+            return
+        }
+
+        guard let event = events[safe: selectedIndex] else {
+            accessibilityValue = nil
+            return
+        }
+
+        if event.postCount == 1 {
+            accessibilityValue = String(format: Strings.dayAndPostsSingular,
+                                        monthDayFormatter.string(from: event.date))
+        } else {
+            accessibilityValue = String(format: Strings.dayAndPostsPlural,
+                                        monthDayFormatter.string(from: event.date),
+                                        event.postCount)
+        }
+    }
+
+    /// Returns the rotated index value of `selectedIndex`.
+    ///
+    private func rotatedIndex(forward: Bool) -> Int {
+        if forward {
+            var index = selectedIndex + 1
+            if index >= events.count {
+                index = 0
+            }
+            return index
+        } else {
+            var index = selectedIndex - 1
+            if index < 0 {
+                index = events.count - 1
+            }
+            return index
+        }
+    }
+
+    private enum Strings {
+        static let noPosts =
+            NSLocalizedString("No posts.",
+                              comment: "Accessibility value for a Stats' Posting Activity Month if there are no posts.")
+        static let dayAndPostsSingular =
+            NSLocalizedString("%@. 1 post.",
+                              comment: "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
+                                + " The first parameter is day (e.g. November 2019).")
+        static let dayAndPostsPlural =
+            NSLocalizedString("%@. %d posts.",
+                              comment: "Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts."
+                                + " The first parameter is day (e.g. November 2019). The second parameter is the number of posts.")
+    }
 }

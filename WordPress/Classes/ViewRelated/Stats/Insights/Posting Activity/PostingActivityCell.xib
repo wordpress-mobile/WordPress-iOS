@@ -112,6 +112,7 @@
                 <outlet property="legendView" destination="MNM-OS-iwT" id="3sj-wa-JnR"/>
                 <outlet property="monthsStackView" destination="BVC-pc-qhM" id="IlC-oK-tm8"/>
                 <outlet property="topSeparatorLine" destination="SrM-6z-hC1" id="AGS-zl-lmo"/>
+                <outlet property="viewMoreButton" destination="XhD-aG-GxJ" id="zDw-mj-d6m"/>
                 <outlet property="viewMoreLabel" destination="D7G-gg-9QM" id="6DH-YF-5A5"/>
                 <outlet property="viewMoreView" destination="A6f-g5-v7s" id="ISO-67-aVn"/>
             </connections>

@@ -63,17 +63,9 @@ extension XCTestCase {
     public func systemAlertHandler(alertTitle: String, alertButton: String) {
         addUIInterruptionMonitor(withDescription: alertTitle) { (alert) -> Bool in
             let alertButtonElement = alert.buttons[alertButton]
-            self.waitForElementToExist(element: alertButtonElement)
+            XCTAssert(alertButtonElement.waitForExistence(timeout: 5))
             alertButtonElement.tap()
             return true
-        }
-    }
-
-    public func waitForElementToExist(element: XCUIElement, timeout: TimeInterval? = nil) {
-        let timeoutValue = timeout ?? 30
-        guard element.waitForExistence(timeout: timeoutValue) else {
-            XCTFail("Failed to find \(element) after \(timeoutValue) seconds.")
-            return
         }
     }
 
@@ -112,7 +104,7 @@ extension XCTestCase {
     }
 
     public func getCategory() -> String {
-        return "iOS Test"
+        return "Wedding"
     }
 
     public func getTag() -> String {
@@ -124,5 +116,49 @@ extension XCTestCase {
         static let sentences = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec.", "Nam congue efficitur leo eget porta.", "Proin dictum non ligula aliquam varius.", "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."]
         static let category = "iOS Test"
         static let tag = "tag \(Date().toString())"
+    }
+
+    public func elementIsFullyVisibleOnScreen(element: XCUIElement) -> Bool {
+        guard element.exists && !element.frame.isEmpty && element.isHittable else { return false }
+        return XCUIApplication().windows.element(boundBy: 0).frame.contains(element.frame)
+    }
+
+    // A shortcut to scroll TableViews or CollectionViews to top
+    func tapStatusBarToScrollToTop() {
+        XCUIApplication().statusBars.firstMatch.tap()
+    }
+}
+
+extension XCUIElement {
+
+    func scroll(byDeltaX deltaX: CGFloat, deltaY: CGFloat) {
+
+        let startCoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
+        let destination = startCoordinate.withOffset(CGVector(dx: deltaX, dy: deltaY * -1))
+
+        startCoordinate.press(forDuration: 0.01, thenDragTo: destination)
+    }
+
+    @discardableResult
+    func waitForHittability(timeout: TimeInterval) -> Bool {
+
+        let predicate = NSPredicate(format: "isHittable == true")
+        let elementPredicate = XCTNSPredicateExpectation(predicate: predicate, object: self)
+        let result = XCTWaiter.wait(for: [elementPredicate], timeout: timeout)
+
+        return result == .completed
+    }
+}
+
+extension XCUIElementQuery {
+    var lastMatch: XCUIElement? {
+        return self.allElementsBoundByIndex.last
+    }
+
+    var allElementsShareCommonXAxis: Bool {
+        let elementXPositions = allElementsBoundByIndex.map { $0.frame.minX }
+
+        // Use a set to remove duplicates – if all elements are the same, only one should remain
+        return Set(elementXPositions).count == 1
     }
 }

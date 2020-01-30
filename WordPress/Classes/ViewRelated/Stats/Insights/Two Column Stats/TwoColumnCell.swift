@@ -1,6 +1,6 @@
 import UIKit
 
-class TwoColumnCell: UITableViewCell, NibLoadable {
+class TwoColumnCell: UITableViewCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -8,6 +8,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var viewMoreView: UIView!
     @IBOutlet weak var viewMoreLabel: UILabel!
+    @IBOutlet weak var viewMoreButton: UIButton!
     @IBOutlet weak var bottomSeparatorLine: UIView!
     @IBOutlet weak var rowsStackViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var viewMoreHeightConstraint: NSLayoutConstraint!
@@ -22,6 +23,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
+        prepareForVoiceOver()
     }
 
     override func prepareForReuse() {
@@ -35,6 +37,11 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         addRows()
         toggleViewMore()
+    }
+
+    func prepareForVoiceOver() {
+        viewMoreButton.accessibilityLabel =
+            NSLocalizedString("View more", comment: "Accessibility label for View more button in Stats.")
     }
 }
 

@@ -76,19 +76,37 @@ extension PostEditor where Self: UIViewController {
                 self.displayPreviewNotAvailable(title: title)
                 return
             }
-            var previewController: PostPreviewViewController
-            if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {
-                previewController = PostPreviewViewController(post: self.post, previewURL: previewURL)
-            } else {
-                if self.post.permaLink == nil {
-                    DDLogError("displayPreview: Post permalink is unexpectedly nil")
-                    self.displayPreviewNotAvailable(title: NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
-                    return
+
+            if FeatureFlag.postPreview.enabled {
+                let previewController: PreviewWebKitViewController
+                if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {
+                    previewController = PreviewWebKitViewController(post: self.post, previewURL: previewURL)
+                } else {
+                    if self.post.permaLink == nil {
+                        DDLogError("displayPreview: Post permalink is unexpectedly nil")
+                        self.displayPreviewNotAvailable(title: NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
+                        return
+                    }
+                    previewController = PreviewWebKitViewController(post: self.post)
                 }
-                previewController = PostPreviewViewController(post: self.post)
+                previewController.trackOpenEvent()
+                let navWrapper = LightNavigationController(rootViewController: previewController)
+                self.navigationController?.present(navWrapper, animated: true)
+            } else {
+                var previewController: PostPreviewViewController
+                if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {
+                    previewController = PostPreviewViewController(post: self.post, previewURL: previewURL)
+                } else {
+                    if self.post.permaLink == nil {
+                        DDLogError("displayPreview: Post permalink is unexpectedly nil")
+                        self.displayPreviewNotAvailable(title: NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" ))
+                        return
+                    }
+                    previewController = PostPreviewViewController(post: self.post)
+                }
+                previewController.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(previewController, animated: true)
             }
-            previewController.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(previewController, animated: true)
         }
     }
 

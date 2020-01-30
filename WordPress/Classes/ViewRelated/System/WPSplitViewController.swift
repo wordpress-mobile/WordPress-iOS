@@ -14,6 +14,8 @@ import WordPressShared
 
 class WPSplitViewController: UISplitViewController {
 
+    private let quickStartNavigationSettings = QuickStartNavigationSettings()
+
     fileprivate static let navigationControllerRestorationIdentifier = "WPSplitViewDetailNavigationControllerRestorationID"
     fileprivate static let preferredDisplayModeModifiedRestorationKey = "WPSplitViewPreferredDisplayModeRestorationKey"
 
@@ -524,6 +526,8 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         } else if navigationController == viewControllers.last {
             detailNavigationController(navigationController, willShowViewController: viewController, animated: animated)
         }
+
+        quickStartNavigationSettings.updateWith(navigationController: navigationController, andViewController: viewController)
     }
 
     fileprivate func primaryNavigationController(_ navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {

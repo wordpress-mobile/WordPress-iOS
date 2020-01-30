@@ -66,6 +66,8 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var isOpenedDirectlyForPhotoPost: Bool = false
 
+    var postIsReblogged: Bool = false
+
     // MARK: - Editor Media actions
 
     var isUploadingMedia: Bool {
@@ -218,6 +220,9 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
     private var isFirstGutenbergLayout = true
     var shouldPresentInformativeDialog = false
+    lazy var shouldPresentPhase2informativeDialog: Bool = {
+        return GutenbergSettings().shouldPresentInformativeDialog(for: post.blog)
+    }()
 
     // MARK: - Initializers
     required init(
@@ -316,7 +321,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     func focusTitleIfNeeded() {
-        guard !post.hasContent() && shouldPresentInformativeDialog == false else {
+        guard !post.hasContent(), shouldPresentInformativeDialog == false, shouldPresentPhase2informativeDialog == false else {
             return
         }
         gutenberg.setFocusOnTitle()
@@ -441,6 +446,21 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
+    func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
+        let image = GutenbergMediaEditorImage(url: mediaUrl)
+
+        let mediaEditor = WPMediaEditor(image)
+        mediaEditor.edit(from: self,
+                              onFinishEditing: { [weak self] images, actions in
+                                guard let image = images.first?.editedImage else {
+                                    // If the image wasn't edited, do nothing
+                                    return
+                                }
+
+                                self?.mediaInserterHelper.insertFromImage(image: image, callback: callback)
+        })
+    }
+
     func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {
         mediaInserterHelper.insertFromDevice(url: url, callback: { media in
             callback(media?.first)
@@ -554,9 +574,16 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestFullscreenImage(with mediaUrl: URL) {
+    func gutenbergDidRequestImagePreview(with fullSizeUrl: URL, thumbUrl: URL?) {
         navigationController?.definesPresentationContext = true
-        let controller = WPImageViewController(externalMediaURL: mediaUrl)
+
+        let controller: WPImageViewController
+        if let image = AnimatedImageCache.shared.cachedStaticImage(url: fullSizeUrl) {
+            controller = WPImageViewController(image: image)
+        } else {
+            controller = WPImageViewController(externalMediaURL: fullSizeUrl)
+        }
+
         controller.post = self.post
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .overCurrentContext
@@ -581,6 +608,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergInitialTitle() -> String? {
         return post.postTitle ?? ""
+    }
+
+    func gutenbergPostType() -> String {
+        return post is Page ? "page" : "post"
     }
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {

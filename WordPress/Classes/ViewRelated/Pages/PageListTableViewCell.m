@@ -33,6 +33,7 @@ static CGFloat const FeaturedImageSize = 120.0;
     [super awakeFromNib];
 
     [self applyStyles];
+    [self setupAccessibility];
 }
 
 - (void)prepareForReuse
@@ -96,6 +97,7 @@ static CGFloat const FeaturedImageSize = 120.0;
     [self configureForStatus];
     [self configureBadges];
     [self configureFeaturedImage];
+    self.accessibilityIdentifier = post.slugForDisplay;
 }
 
 #pragma mark - Configuration
@@ -179,6 +181,10 @@ static CGFloat const FeaturedImageSize = 120.0;
                                                }];
         
     }
+}
+
+- (void)setupAccessibility {
+    self.menuButton.accessibilityLabel = NSLocalizedString(@"More", @"Accessibility label for the More button in Page List.");
 }
 
 @end

@@ -17,8 +17,11 @@ class MediaURLExporterTests: XCTestCase {
         let exporter = MediaURLExporter(url: url)
         exporter.mediaDirectoryType = .temporary
         exporter.export(onCompletion: { (urlExport) in
-                        MediaExporterTests.cleanUpExportedMedia(atURL: urlExport.url)
                         expect.fulfill()
+                        let exportFileName = urlExport.url.lastPathComponent.replacingMatches(of: "." + urlExport.url.pathExtension, with: "")
+                        let originalFileName = url.lastPathComponent.replacingMatches(of: "." + url.pathExtension, with: "")
+                        XCTAssertEqual(exportFileName, originalFileName)
+                        MediaExporterTests.cleanUpExportedMedia(atURL: urlExport.url)
         }) { (error) in
             XCTFail("Error: an error occurred testing a URL export: \(error.toNSError())")
             expect.fulfill()

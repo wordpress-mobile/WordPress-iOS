@@ -140,7 +140,7 @@ class PostActionSheetTests: XCTestCase {
 
 }
 
-class UIViewControllerMock: UIViewController {
+private class UIViewControllerMock: UIViewController {
 
     var didCallPresent = false
     var viewControllerPresented: UIAlertController?
