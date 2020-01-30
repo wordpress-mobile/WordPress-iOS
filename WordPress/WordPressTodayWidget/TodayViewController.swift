@@ -76,7 +76,6 @@ class TodayViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         reachability.stopNotifier()
-        saveData()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -132,7 +131,7 @@ extension TodayViewController: NCWidgetProviding {
                 self?.tableView.reloadData()
             }
 
-            completionHandler(NCUpdateResult.failed)
+            completionHandler(.failed)
             return
         }
 
@@ -259,19 +258,28 @@ private extension TodayViewController {
         statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
             if error != nil {
                 DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
-                completionHandler(NCUpdateResult.failed)
+                completionHandler(.failed)
                 return
             }
 
             DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
 
             DispatchQueue.main.async { [weak self] in
-                self?.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount,
+                let updatedStats = TodayWidgetStats(views: todayInsight?.viewsCount,
                                                     visitors: todayInsight?.visitorsCount,
                                                     likes: todayInsight?.likesCount,
                                                     comments: todayInsight?.commentsCount)
+
+                // Update the widget only if the data has changed.
+                guard updatedStats != self?.statsValues else {
+                    completionHandler(.noData)
+                    return
+                }
+
+                self?.statsValues = updatedStats
+                completionHandler(.newData)
+                self?.saveData()
             }
-            completionHandler(NCUpdateResult.newData)
         }
     }
 
