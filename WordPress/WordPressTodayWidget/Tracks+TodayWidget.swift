@@ -4,10 +4,8 @@ import Foundation
 /// This extension implements helper tracking methods, meant for Today Widget Usage.
 ///
 extension Tracks {
+
     // MARK: - Public Methods
-    public func trackExtensionAccessed() {
-        trackExtensionEvent(.accessed)
-    }
 
     public func trackExtensionStatsLaunched(_ siteID: Int) {
         let properties = ["site_id": siteID]
@@ -23,14 +21,15 @@ extension Tracks {
     }
 
     // MARK: - Private Helpers
+
     fileprivate func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
         track(event.rawValue, properties: properties)
     }
 
 
     // MARK: - Private Enums
+
     fileprivate enum ExtensionEvents: String {
-        case accessed           = "wpios_today_extension_accessed"
         case statsLaunched      = "wpios_today_extension_stats_launched"
         case configureLaunched  = "wpios_today_extension_configure_launched"
         case displayModeChanged = "wpios_today_extension_display_mode_changed"

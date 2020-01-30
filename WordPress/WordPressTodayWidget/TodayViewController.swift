@@ -136,7 +136,6 @@ extension TodayViewController: NCWidgetProviding {
             return
         }
 
-        tracks.trackExtensionAccessed()
         fetchData(completionHandler: completionHandler)
     }
 
