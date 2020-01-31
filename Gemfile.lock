@@ -131,7 +131,7 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
-    fastlane-plugin-appcenter (1.6.0)
+    fastlane-plugin-appcenter (1.7.1)
     fastlane-plugin-sentry (1.6.0)
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
@@ -265,7 +265,7 @@ DEPENDENCIES
   commonmarker!
   dotenv!
   fastlane (= 2.141.0)!
-  fastlane-plugin-appcenter (= 1.6.0)
+  fastlane-plugin-appcenter (= 1.7.1)
   fastlane-plugin-sentry
   fastlane-plugin-wpmreleasetoolkit!
   octokit (~> 4.0)!
