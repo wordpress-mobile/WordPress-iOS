@@ -260,6 +260,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        WPFontManager.loadNotoFontFamily()
         createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
         setupGutenbergView()
         configureNavigationBar()
