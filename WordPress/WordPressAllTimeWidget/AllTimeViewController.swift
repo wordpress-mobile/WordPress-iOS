@@ -76,7 +76,6 @@ class AllTimeViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         reachability.stopNotifier()
-        saveData()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -132,11 +131,10 @@ extension AllTimeViewController: NCWidgetProviding {
                 self?.tableView.reloadData()
             }
 
-            completionHandler(NCUpdateResult.failed)
+            completionHandler(.failed)
             return
         }
 
-        tracks.trackExtensionAccessed()
         fetchData(completionHandler: completionHandler)
     }
 
@@ -260,19 +258,28 @@ private extension AllTimeViewController {
         statsRemote.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
             if error != nil {
                 DDLogError("All Time Widget: Error fetching StatsAllTimesInsight: \(String(describing: error?.localizedDescription))")
-                completionHandler(NCUpdateResult.failed)
+                completionHandler(.failed)
                 return
             }
 
             DDLogDebug("All Time Widget: Fetched StatsAllTimesInsight data.")
 
             DispatchQueue.main.async { [weak self] in
-                self?.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
-                                            visitors: allTimesStats?.visitorsCount,
-                                            posts: allTimesStats?.postsCount,
-                                            bestViews: allTimesStats?.bestViewsPerDayCount)
+                let updatedStats = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
+                                                      visitors: allTimesStats?.visitorsCount,
+                                                      posts: allTimesStats?.postsCount,
+                                                      bestViews: allTimesStats?.bestViewsPerDayCount)
+
+                // Update the widget only if the data has changed.
+                guard updatedStats != self?.statsValues else {
+                    completionHandler(.noData)
+                    return
+                }
+
+                self?.statsValues = updatedStats
+                completionHandler(.newData)
+                self?.saveData()
             }
-            completionHandler(NCUpdateResult.newData)
         }
     }
 

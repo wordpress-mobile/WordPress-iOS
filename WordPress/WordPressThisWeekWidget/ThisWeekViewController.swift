@@ -70,7 +70,6 @@ class ThisWeekViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         reachability.stopNotifier()
-        saveData()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -129,11 +128,10 @@ extension ThisWeekViewController: NCWidgetProviding {
                 self?.tableView.reloadData()
             }
 
-            completionHandler(NCUpdateResult.failed)
+            completionHandler(.failed)
             return
         }
 
-        tracks.trackExtensionAccessed()
         fetchData(completionHandler: completionHandler)
     }
 
@@ -257,7 +255,7 @@ private extension ThisWeekViewController {
         statsRemote.getData(for: .day, endingOn: weekEndingDate, limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [unowned self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("This Week Widget: Error fetching summary: \(String(describing: error?.localizedDescription))")
-                completionHandler(NCUpdateResult.failed)
+                completionHandler(.failed)
                 return
             }
 
@@ -265,9 +263,18 @@ private extension ThisWeekViewController {
 
             DispatchQueue.main.async { [weak self] in
                 let summaryData = summary?.summaryData.reversed() ?? []
-                self?.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
+                let updatedStats = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
+
+                // Update the widget only if the data has changed.
+                guard updatedStats != self?.statsValues else {
+                    completionHandler(.noData)
+                    return
+                }
+
+                self?.statsValues = updatedStats
+                completionHandler(.newData)
+                self?.saveData()
             }
-            completionHandler(NCUpdateResult.newData)
         }
     }
 
