@@ -9,9 +9,9 @@ enum WidgetType {
     var configureLabelFont: UIFont {
         switch self {
         case .loadingFailed:
-            return UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize)
+            return WidgetStyles.headlineFont
         default:
-            return UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
+            return WidgetStyles.footnoteNote
         }
     }
 }
