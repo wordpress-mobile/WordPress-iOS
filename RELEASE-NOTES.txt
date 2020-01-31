@@ -1,6 +1,7 @@
 14.2
 -----
-* Comment Editing: Fixed a bug that could cause the text selection to be on the wrong line 
+* Comment Editing: Fixed a bug that could cause the text selection to be on the wrong line
+* Comments: Fixed an bug that could cause HTML markup to be displayed in the comment content
 * Media editing: You can now crop, zoom in/out and rotate images that are inserted or being inserted in a post.
 
 14.1
