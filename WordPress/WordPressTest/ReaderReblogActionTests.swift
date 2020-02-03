@@ -158,6 +158,10 @@ class ReblogFormatterTests: XCTestCase {
         // When
         let wpImage = ReaderReblogFormatter.gutenbergImage(image: image)
         // Then
-        XCTAssertEqual("<!-- wp:paragraph -->\n<p><img src=\"image.jpg\"></p>\n<!-- /wp:paragraph -->", wpImage)
+        XCTAssertEqual("<!-- wp:image {\"className\":\"size-large\"} -->\n" +
+                       "<figure class=\"wp-block-image size-large\">" +
+                       "<img src=\"image.jpg\" alt=\"\"/>" +
+                       "</figure>\n<!-- /wp:image -->",
+                       wpImage)
     }
 }
