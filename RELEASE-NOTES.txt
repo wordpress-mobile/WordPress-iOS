@@ -4,6 +4,10 @@
 * Media editing: You can now crop, zoom in/out and rotate images that are inserted or being inserted in a post.
 * Post Preview: Added a new Desktop preview mode on iPhone and Mobile preview on iPad when previewing posts or pages.
 * Post Preview: Added new navigation, "Open in Safari" and Share options when previewing posts or pages.
+* Block editor: Long-press Inserter icon to show options to add before/after
+* Block editor: Fix issue with gallery upload progress indication
+* Block editor: Retry displaying image when connectivity restores
+* Block editor: Show an "Edit" button overlay on selected image blocks
 
 14.1
 -----
