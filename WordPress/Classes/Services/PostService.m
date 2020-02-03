@@ -312,18 +312,22 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
     }
 }
 
-- (void)autoSave:(AbstractPost *)post
-         success:(void (^)(AbstractPost *post, NSString *previewURL))success
-         failure:(void (^)(NSError * _Nullable error))failure
+#pragma mark - Autosave Related
+
+typedef void (^AutosaveFailureBlock)(NSError *error);
+typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
+
+- (NSError *)defaultAutosaveError
+{
+    return [NSError errorWithDomain:PostServiceErrorDomain
+                               code:0
+                           userInfo:@{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." }];
+}
+
+- (AutosaveFailureBlock)wrappedAutosaveFailureBlock:(AbstractPost *)post failure:(void (^)(NSError * _Nullable error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
-
-    NSError *defaultError =
-        [NSError errorWithDomain:PostServiceErrorDomain
-                            code:0
-                        userInfo:@{ NSLocalizedDescriptionKey : @"Previews are unavailable for this kind of post." }];
-
-    void (^setPostAsFailedAndCallFailureBlock)(NSError *error) = ^(NSError *error) {
+    return ^(NSError *error) {
         [self.managedObjectContext performBlock:^{
             AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
@@ -333,69 +337,128 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
             failure(error);
         }];
     };
+}
 
+- (AutosaveSuccessBlock)wrappedAutosaveSuccessBlock:(NSManagedObjectID *)postObjectID
+                                            success:(void (^)(AbstractPost *post, NSString *previewURL))success
+{
+    return ^(RemotePost *post, NSString *previewURL) {
+        [self.managedObjectContext performBlock:^{
+            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            if (postInContext) {
+                postInContext.remoteStatus = AbstractPostRemoteStatusAutoSaved;
+                [self updateMediaForPost:postInContext success:^{
+                    if (success) {
+                        success(postInContext, previewURL);
+                    }
+                } failure:^(NSError * _Nullable error) {
+                    DDLogInfo(@"Error in updateMediaForPost while remote auto-saving post. description: %@", error.localizedDescription);
+                    // even if media fails to attach we are answering with success because the post auto-save was successful.
+                    if (success) {
+                        success(postInContext, previewURL);
+                    }
+                }];
+            } else {
+                // This can happen if the post was deleted right after triggering the auto-save.
+                if (success) {
+                    success(nil, nil);
+                }
+            }
+        }];
+    };
+
+}
+
+- (void)autoSave:(AbstractPost *)post
+         success:(void (^)(AbstractPost *post, NSString *previewURL))success
+         failure:(void (^)(NSError * _Nullable error))failure
+{
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
-        PostServiceRemoteREST *restRemote = (PostServiceRemoteREST*) remote;
-        RemotePost *remotePost = [self remotePostWithPost:post];
+        [self handleAutoSaveWithRestRemote:(PostServiceRemoteREST *)remote forPost:post success:success failure:failure];
 
-        void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
-            [self.managedObjectContext performBlock:^{
-                AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
-                if (postInContext) {
-                    postInContext.remoteStatus = AbstractPostRemoteStatusAutoSaved;
-                    [self updateMediaForPost:postInContext success:^{
-                        if (success) {
-                            success(postInContext, previewURL);
-                        }
-                    } failure:^(NSError * _Nullable error) {
-                        DDLogInfo(@"Error in updateMediaForPost while remote auto-saving post. description: %@", error.localizedDescription);
-                        // even if media fails to attach we are answering with success because the post auto-save was successful.
-                        if (success) {
-                            success(postInContext, previewURL);
-                        }
-                    }];
-                } else {
-                    // This can happen if the post was deleted right after triggering the auto-save.
-                    if (success) {
-                        success(nil, nil);
-                    }
-                }
-            }];
-        };
-        
-        // The autoSave endpoint returns an exception on posts that do not exist on the server
-        // so we'll create the post instead if necessary.
-        BOOL mustBeCreated = ![post hasRemote];
-
-        if (mustBeCreated) {
-            // Abort if the status is trashed/deleted. We'd rather not automatically create a
-            // locally trashed post as drafts in the server.
-            if ([post.status isEqualToString:PostStatusTrash] || [post.status isEqualToString:PostStatusDeleted]) {
-                setPostAsFailedAndCallFailureBlock(defaultError);
-                return;
-            }
-
-            [self uploadPost:post
-        forceDraftIfCreating:YES
-                     success:^(AbstractPost * _Nonnull post) {
-                         success(post, nil);
-                     }
-                     failure:failure];
-        } else {
-            [restRemote autoSave:remotePost
-                         success:successBlock
-                         failure:setPostAsFailedAndCallFailureBlock];
-        }
     } else if ([post originalIsDraft] && [post isDraft]) {
         [self uploadPost:post
                  success:^(AbstractPost * _Nonnull post) {
                      success(post, nil);
                  } failure:failure];
+
     } else {
-        setPostAsFailedAndCallFailureBlock(defaultError);
+        NSError *defaultError = [self defaultAutosaveError];
+        AutosaveFailureBlock failureBlock = [self wrappedAutosaveFailureBlock:post failure:failure];
+        failureBlock(defaultError);
     }
 }
+
+- (void)handleAutoSaveWithRestRemote:(PostServiceRemoteREST *)restRemote
+                             forPost:(AbstractPost *)post
+                             success:(void (^)(AbstractPost *post, NSString *previewURL))success
+                             failure:(void (^)(NSError * _Nullable error))failure
+{
+    NSManagedObjectID *postObjectID = post.objectID;
+    RemotePost *remotePost = [self remotePostWithPost:post];
+
+    AutosaveSuccessBlock successBlock = [self wrappedAutosaveSuccessBlock:postObjectID success:success];
+    AutosaveFailureBlock failureBlock = [self wrappedAutosaveFailureBlock:post failure:failure];
+
+    // The autoSave endpoint returns an exception on posts that do not exist on the server
+    // so we'll create the post instead if necessary.
+    BOOL mustBeCreated = ![post hasRemote];
+
+    if (mustBeCreated) {
+        // Abort if the status is trashed/deleted. We'd rather not automatically create a
+        // locally trashed post as drafts in the server.
+        if ([post.status isEqualToString:PostStatusTrash] || [post.status isEqualToString:PostStatusDeleted]) {
+            NSError *error = [self defaultAutosaveError];
+            failureBlock(error);
+            return;
+        }
+
+        [self uploadPost:post
+    forceDraftIfCreating:YES
+                 success:^(AbstractPost * _Nonnull post) {
+                     success(post, nil);
+                 }
+                 failure:failure];
+        return;
+    }
+
+    if ([post originalIsDraft]) {
+        // Calling the v1.1 autosave endpoint for a draft post will close
+        // the comments for the post. See https://github.com/wordpress-mobile/WordPress-iOS/issues/13079
+        // and p3hLNG-15Z-p2 for more background on this issue.
+        // For drafts, we can just call uploadPost and a new revision is
+        // automatically created anyway. We check original is draft since
+        // the post should be a draft on the server if we're uploading vs
+        // autosaving.
+        [restRemote getPostWithID:remotePost.postID success:^(RemotePost *tempPost) {
+            if ([tempPost.status isEqualToString:PostStatusDraft]) {
+
+                [self uploadPost:post
+                success:^(AbstractPost * _Nonnull post) {
+                    success(post, nil);
+                } failure:failure];
+
+            } else {
+                [restRemote autoSave:remotePost
+                             success:successBlock
+                             failure:failureBlock];
+            }
+        } failure:^(NSError *error) {
+            failureBlock(error);
+        }];
+
+        return;
+    }
+
+    // Otherwise autosave.
+    [restRemote autoSave:remotePost
+                 success:successBlock
+                 failure:failureBlock];
+
+}
+
+#pragma mark - Delete, Trashing, Restoring
 
 - (void)deletePost:(AbstractPost *)post
            success:(void (^)(void))success
