@@ -479,7 +479,7 @@ fileprivate extension SearchManager {
         controller.trackOpenEvent()
         let navWrapper = LightNavigationController(rootViewController: controller)
         WPTabBarController.sharedInstance().present(navWrapper, animated: true)
-        
+
         openListView(for: apost)
     }
 
@@ -490,13 +490,13 @@ fileprivate extension SearchManager {
         guard let navController = WPTabBarController.sharedInstance().presentedViewController as? UINavigationController else {
             return
         }
-        
+
         guard let previewVC = navController.topViewController as? PreviewWebKitViewController,
             previewVC.post != apost else {
                 // Do nothing — post is already loaded or the post preview view controller isn't visible
                 return
         }
-        
+
         navController.dismiss(animated: true)
     }
 
