@@ -9,7 +9,8 @@ startup time. This will block the thread. Do not use unless you're sure.
     private var errors = [String]()
 
     func add(error: NSError, file: String = #file, function: String = #function, line: UInt = #line) {
-        errors.append("\(function) (\(file):\(line)) \(error.localizedDescription) | userInfo: \(error.userInfo)")
+        let filename = (file as NSString).lastPathComponent
+        errors.append("\(function) (\(filename):\(line)) \(error.localizedDescription) | userInfo: \(error.userInfo)")
     }
 
     @objc(addError:file:function:line:)
