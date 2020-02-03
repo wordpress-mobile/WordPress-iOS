@@ -2,7 +2,6 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int, CaseIterable {
-    case exampleFeature
     case jetpackDisconnect
     case domainCredit
     case signInWithApple
@@ -18,8 +17,6 @@ enum FeatureFlag: Int, CaseIterable {
         }
 
         switch self {
-        case .exampleFeature:
-            return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .domainCredit:
@@ -58,8 +55,6 @@ extension FeatureFlag: OverrideableFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {
-        case .exampleFeature:
-            return "Example feature"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .domainCredit:
@@ -79,7 +74,7 @@ extension FeatureFlag: OverrideableFlag {
 
     var canOverride: Bool {
         switch self {
-        case .debugMenu, .exampleFeature:
+        case .debugMenu:
             return false
         default:
             return true
