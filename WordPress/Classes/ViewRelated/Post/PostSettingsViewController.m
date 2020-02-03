@@ -586,11 +586,7 @@ FeaturedImageViewControllerDelegate>
     } else if (cell.tag == PostSettingsRowTags) {
         [self showTagsPicker];
     } else if (cell.tag == PostSettingsRowPublishDate && !self.datePicker) {
-        if ([Feature enabled:FeatureFlagPostScheduling]) {
-            [self showPublishSchedulingController];
-        } else {
-            [self configureAndShowDatePicker];
-        }
+        [self showPublishSchedulingController];
     } else if (cell.tag == PostSettingsRowStatus) {
         [self showPostStatusSelector];
     } else if (cell.tag == PostSettingsRowVisibility) {
