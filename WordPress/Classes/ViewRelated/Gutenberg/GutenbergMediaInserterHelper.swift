@@ -2,6 +2,7 @@ import Foundation
 import CoreServices
 import WPMediaPicker
 import Gutenberg
+import MediaEditor
 
 class GutenbergMediaInserterHelper: NSObject {
     fileprivate let post: AbstractPost
@@ -34,6 +35,11 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromDevice(assets: [PHAsset], callback: @escaping MediaPickerDidPickMediaCallback) {
+        guard (assets as [AsyncImage]).filter({ $0.isEdited }).isEmpty else {
+            insertFromMediaEditor(assets: assets, callback: callback)
+            return
+        }
+
         var mediaCollection: [MediaInfo] = []
         let group = DispatchGroup()
         assets.forEach { asset in
@@ -89,6 +95,57 @@ class GutenbergMediaInserterHelper: NSObject {
         }
         let mediaUploadID = media.gutenbergUploadID
         callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
+    }
+
+    func insertFromImage(image: UIImage, callback: @escaping MediaPickerDidPickMediaCallback) {
+        guard let media = insert(exportableAsset: image, source: .mediaEditor) else {
+            callback([])
+            return
+        }
+        let mediaUploadID = media.gutenbergUploadID
+
+        let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
+        let url = URL(fileURLWithPath: filePath)
+        do {
+            try image.writeJPEGToURL(url)
+            callback([MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString)])
+        } catch {
+            callback([MediaInfo(id: mediaUploadID, url: nil, type: media.mediaTypeString)])
+            return
+        }
+    }
+
+    func insertFromMediaEditor(assets: [AsyncImage], callback: @escaping MediaPickerDidPickMediaCallback) {
+        var mediaCollection: [MediaInfo] = []
+        let group = DispatchGroup()
+        assets.forEach { asset in
+            group.enter()
+            if let image = asset.editedImage {
+                insertFromImage(image: image, callback: { media in
+                    guard let media = media,
+                    let selectedMedia = media.first else {
+                        group.leave()
+                        return
+                    }
+                    mediaCollection.append(selectedMedia)
+                    group.leave()
+                })
+            } else if let asset = asset as? PHAsset {
+                insertFromDevice(asset: asset, callback: { media in
+                    guard let media = media,
+                    let selectedMedia = media.first else {
+                        group.leave()
+                        return
+                    }
+                    mediaCollection.append(selectedMedia)
+                    group.leave()
+                })
+            }
+        }
+
+        group.notify(queue: .main) {
+            callback(mediaCollection)
+        }
     }
 
     func syncUploads() {

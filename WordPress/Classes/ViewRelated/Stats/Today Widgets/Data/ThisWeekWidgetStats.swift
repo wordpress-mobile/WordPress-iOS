@@ -118,3 +118,17 @@ extension ThisWeekWidgetStats {
     }
 
 }
+
+extension ThisWeekWidgetStats: Equatable {
+    static func == (lhs: ThisWeekWidgetStats, rhs: ThisWeekWidgetStats) -> Bool {
+        return lhs.days.elementsEqual(rhs.days)
+    }
+}
+
+extension ThisWeekWidgetDay: Equatable {
+    static func == (lhs: ThisWeekWidgetDay, rhs: ThisWeekWidgetDay) -> Bool {
+        return lhs.date == rhs.date &&
+        lhs.viewsCount == rhs.viewsCount &&
+        lhs.dailyChangePercent == rhs.dailyChangePercent
+    }
+}

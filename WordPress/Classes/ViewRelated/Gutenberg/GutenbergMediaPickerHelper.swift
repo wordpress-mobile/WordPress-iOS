@@ -118,4 +118,34 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         didPickMediaCallback?(asset)
         didPickMediaCallback = nil
     }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
+        if FeatureFlag.mediaEditor.enabled, let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
+            edit(fromMediaPicker: picker, assets: phAssets)
+            return nil
+        }
+
+        return nil
+    }
+}
+
+// MARK: - Media Editing
+//
+extension GutenbergMediaPickerHelper {
+        private func edit(fromMediaPicker picker: WPMediaPickerViewController, assets: [PHAsset]) {
+            let mediaEditor = WPMediaEditor(assets)
+
+            mediaEditor.edit(from: picker,
+                                  onFinishEditing: { [weak self] images, actions in
+                                    guard let images = images as? [PHAsset] else {
+                                        return
+                                    }
+
+                                    self?.didPickMediaCallback?(images)
+                                    self?.context.dismiss(animated: false)
+                }, onCancel: {
+                    // Dismiss the Preview screen in Media Picker
+                    picker.navigationController?.popViewController(animated: false)
+            })
+        }
 }
