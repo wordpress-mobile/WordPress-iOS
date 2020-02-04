@@ -397,15 +397,20 @@ PODS:
   - WPMediaPicker (1.6.0)
   - wpxmlrpc (0.8.4)
   - Yoga (1.14.0)
-  - ZendeskSDK (4.0.0):
-    - ZendeskSDK/Providers (= 4.0.0)
-    - ZendeskSDK/UI (= 4.0.0)
-  - ZendeskSDK/Core (4.0.0)
-  - ZendeskSDK/Providers (4.0.0):
-    - ZendeskSDK/Core
-  - ZendeskSDK/UI (4.0.0):
-    - ZendeskSDK/Core
-    - ZendeskSDK/Providers
+  - ZendeskCommonUISDK (4.0.0):
+    - ZendeskSDKConfigurationsSDK (~> 1.1.2)
+  - ZendeskCoreSDK (2.2.1)
+  - ZendeskMessagingAPISDK (3.0.0):
+    - ZendeskSDKConfigurationsSDK (~> 1.1.2)
+  - ZendeskMessagingSDK (3.0.0):
+    - ZendeskCommonUISDK (~> 4.0.0)
+    - ZendeskMessagingAPISDK (~> 3.0.0)
+  - ZendeskSDKConfigurationsSDK (1.1.2)
+  - ZendeskSupportProvidersSDK (5.0.0):
+    - ZendeskCoreSDK (~> 2.2.1)
+  - ZendeskSupportSDK (5.0.0):
+    - ZendeskMessagingSDK (~> 3.0.0)
+    - ZendeskSupportProvidersSDK (~> 5.0.0)
   - ZIPFoundation (0.9.9)
 
 DEPENDENCIES:
@@ -474,7 +479,7 @@ DEPENDENCIES:
   - WordPressUI (~> 1.5.1)
   - WPMediaPicker (~> 1.6.0)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/772b61065f2b480e582a442517ee63ed7dfa7ae6/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
-  - ZendeskSDK (from `https://github.com/zendesk/zendesk_sdk_ios`, tag `4.0.0`)
+  - ZendeskSupportSDK (= 5.0.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
@@ -520,6 +525,13 @@ SPEC REPOS:
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
+    - ZendeskCommonUISDK
+    - ZendeskCoreSDK
+    - ZendeskMessagingAPISDK
+    - ZendeskMessagingSDK
+    - ZendeskSDKConfigurationsSDK
+    - ZendeskSupportProvidersSDK
+    - ZendeskSupportSDK
     - ZIPFoundation
 
 EXTERNAL SOURCES:
@@ -592,9 +604,6 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/772b61065f2b480e582a442517ee63ed7dfa7ae6/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
-  ZendeskSDK:
-    :git: https://github.com/zendesk/zendesk_sdk_ios
-    :tag: 4.0.0
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -606,9 +615,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 772b61065f2b480e582a442517ee63ed7dfa7ae6
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  ZendeskSDK:
-    :git: https://github.com/zendesk/zendesk_sdk_ios
-    :tag: 4.0.0
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -685,9 +691,15 @@ SPEC CHECKSUMS:
   WPMediaPicker: e5d28197da6b467d4e5975d64a49255977e39455
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
-  ZendeskSDK: 99679d8420a6d862773e2ddef0ebcc51b282317d
+  ZendeskCommonUISDK: 3c432801e31abff97d6e30441ea102eaef6b99e2
+  ZendeskCoreSDK: f264e849b941a4b9b22215520765b8d9980478c3
+  ZendeskMessagingAPISDK: 7c0cbd1d2c941f05b36f73e7db5faee5863fe8b0
+  ZendeskMessagingSDK: 6f168161d834dd66668344f645f7a6b6b121b58a
+  ZendeskSDKConfigurationsSDK: 13eaf9b688504aaf7d5803c33772ced314b2e837
+  ZendeskSupportProvidersSDK: 96b704d58bf0d44978de135607059f379c766e58
+  ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 7cab731c88783b6df4688ffd083742a63913fa4d
+PODFILE CHECKSUM: e8db1b19e493b0c59359f97209f045719507e877
 
 COCOAPODS: 1.8.4
