@@ -65,6 +65,7 @@ private extension ReaderReblogPresenter {
 
         selectorViewController.displaysNavigationBarWhenSearching = WPDeviceIdentification.isiPad()
         selectorViewController.dismissOnCancellation = true
+        selectorViewController.displaysOnlyDefaultAccountSites = true
 
         let navigationController = getNavigationController(selectorViewController)
 

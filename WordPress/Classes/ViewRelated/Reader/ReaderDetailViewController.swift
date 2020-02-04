@@ -886,7 +886,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 configureCommentActionButton()
             }
         }
-        configureReblogButton()
+        // Show reblog only if logged in
+        if ReaderHelpers.isLoggedIn() {
+            configureReblogButton()
+        }
         configureSaveForLaterButton()
     }
 
