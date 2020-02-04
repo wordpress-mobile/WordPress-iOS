@@ -150,6 +150,7 @@ private extension ReaderReblogPresenter {
 // MARK: - Post updates
 private extension Post {
     /// Formats the new Post content for reblogging, using an existing ReaderPost
+    /// Uses the passed imageSize to obtain a Photon URL for the featured image
     func prepareForReblog(with readerPost: ReaderPost, imageSize: CGSize) {
         // update the post
         update(with: readerPost)
