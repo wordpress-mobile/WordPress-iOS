@@ -104,7 +104,12 @@ private extension ReaderReblogPresenter {
 
         // get post and put content in it
         let post = postService.createDraftPost(for: blog)
-        post.prepareForReblog(with: readerPost)
+        // size used for photon url. Set height to 0 will preserve aspect ratio
+        let photonSize = CGSize(width: min(origin.view.frame.width,
+                                           origin.view.frame.height),
+                                height: 0)
+
+        post.prepareForReblog(with: readerPost, imageSize: photonSize)
         // instantiate & configure editor
         let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
         editor.modalPresentationStyle = .fullScreen
@@ -145,7 +150,7 @@ private extension ReaderReblogPresenter {
 // MARK: - Post updates
 private extension Post {
     /// Formats the new Post content for reblogging, using an existing ReaderPost
-    func prepareForReblog(with readerPost: ReaderPost) {
+    func prepareForReblog(with readerPost: ReaderPost, imageSize: CGSize) {
         // update the post
         update(with: readerPost)
         // initialize the content
@@ -161,9 +166,13 @@ private extension Post {
                 ReaderReblogFormatter.aztecQuote(text: summary, citation: citation)
         }
         // insert the image on top of the content
-        if let image = readerPost.featuredImage, image.isValidURL() {
-            content = self.blog.isGutenbergEnabled ? ReaderReblogFormatter.gutenbergImage(image: image) + content :
-                ReaderReblogFormatter.aztecImage(image: image) + content
+        if let image = readerPost.featuredImage,
+            image.isValidURL(),
+            let cdnImage = PhotonImageURLHelper.photonURL(with: imageSize,
+                                                          forImageURL: URL(string: image)) {
+
+            content = self.blog.isGutenbergEnabled ? ReaderReblogFormatter.gutenbergImage(image: cdnImage.absoluteString) + content :
+                ReaderReblogFormatter.aztecImage(image: cdnImage.absoluteString) + content
         }
         self.content = content
     }

@@ -30,10 +30,6 @@ private extension ReaderReblogFormatter {
         return "<!-- wp:image {\"className\":\"\(size)\"} -->\n" + gutenbergFigure(image: image, size: size) + "\n<!-- /wp:image -->"
     }
 
-    static func embedInWpParagraph(html: String) -> String {
-        return "<!-- wp:paragraph -->\n<p>\(html)</p>\n<!-- /wp:paragraph -->"
-    }
-
     static func embedInWpQuote(html: String) -> String {
         return "<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\">\(html)</blockquote>\n<!-- /wp:quote -->"
     }
