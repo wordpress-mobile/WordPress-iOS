@@ -5,7 +5,6 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case domainCredit
     case signInWithApple
-    case postScheduling
     case debugMenu
     case postPreview
     case postReblogging
@@ -28,8 +27,6 @@ enum FeatureFlag: Int, CaseIterable {
             if BuildConfiguration.current == .a8cBranchTest || BuildConfiguration.current == .a8cPrereleaseTesting {
                 return false
             }
-            return true
-        case .postScheduling:
             return true
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper,
@@ -64,8 +61,6 @@ extension FeatureFlag: OverrideableFlag {
             return "Use domain credits"
         case .signInWithApple:
             return "Sign in with Apple"
-        case .postScheduling:
-            return "Post scheduling improvements"
         case .debugMenu:
             return "Debug menu"
         case .postPreview:
