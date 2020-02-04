@@ -3,7 +3,6 @@
 @objc
 enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
-    case domainCredit
     case signInWithApple
     case debugMenu
     case postPreview
@@ -19,8 +18,6 @@ enum FeatureFlag: Int, CaseIterable {
         switch self {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .domainCredit:
-            return true
         case .signInWithApple:
             // SIWA can NOT be enabled for internal builds
             // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
@@ -57,8 +54,6 @@ extension FeatureFlag: OverrideableFlag {
         switch self {
         case .jetpackDisconnect:
             return "Jetpack disconnect"
-        case .domainCredit:
-            return "Use domain credits"
         case .signInWithApple:
             return "Sign in with Apple"
         case .debugMenu:
