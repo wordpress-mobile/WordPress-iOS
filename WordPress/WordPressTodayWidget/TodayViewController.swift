@@ -3,6 +3,7 @@ import NotificationCenter
 import CocoaLumberjack
 import WordPressKit
 import WordPressUI
+import Reachability
 
 class TodayViewController: UIViewController {
 
@@ -13,6 +14,7 @@ class TodayViewController: UIViewController {
     private var statsValues: TodayWidgetStats? {
         didSet {
             updateStatsLabels()
+            tableView.reloadData()
         }
     }
 
@@ -21,7 +23,6 @@ class TodayViewController: UIViewController {
     private var likeCount: String = Constants.noDataLabel
     private var commentCount: String = Constants.noDataLabel
     private var siteUrl: String = Constants.noDataLabel
-    private var footerHeight: CGFloat = 35
 
     private var haveSiteUrl: Bool {
         siteUrl != Constants.noDataLabel
@@ -32,18 +33,44 @@ class TodayViewController: UIViewController {
     private var oauthToken: String?
     private var isConfigured = false {
         didSet {
-            // If unconfigured, don't allow the widget to be expanded/compacted.
-            extensionContext?.widgetLargestAvailableDisplayMode = isConfigured ? .expanded : .compact
+            setAvailableDisplayMode()
         }
     }
 
-    private let numberFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
+    private var isReachable = true {
+        didSet {
+            setAvailableDisplayMode()
+
+            if isReachable != oldValue,
+                let completionHandler = widgetCompletionBlock {
+                widgetPerformUpdate(completionHandler: completionHandler)
+            }
+        }
+    }
+
+    private var showNoConnection: Bool {
+        return !isReachable && statsValues == nil
+    }
+
+    private var loadingFailed = false {
+        didSet {
+            setAvailableDisplayMode()
+
+            if loadingFailed != oldValue {
+                tableView.reloadData()
+            }
+        }
+    }
+
+    private var failedState: Bool {
+        return !isConfigured || showNoConnection || loadingFailed
+    }
 
     private let tracks = Tracks(appGroupName: WPAppGroupName)
+    private let reachability: Reachability = .forInternetConnection()
+
+    private typealias WidgetCompletionBlock = (NCUpdateResult) -> Void
+    private var widgetCompletionBlock: WidgetCompletionBlock?
 
     // MARK: - View
 
@@ -55,13 +82,14 @@ class TodayViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupReachability()
         loadSavedData()
         resizeView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        saveData()
+        reachability.stopNotifier()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -70,16 +98,31 @@ class TodayViewController: UIViewController {
         let updatedRowCount = numberOfRowsToDisplay()
 
         // If the number of rows has not changed, do nothing.
-        guard updatedRowCount != tableView.visibleCells.count else {
+        guard updatedRowCount != tableView.numberOfRows(inSection: 0) else {
             return
         }
 
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.performBatchUpdates({
-                let lastRowIndexPath = [IndexPath(row: Constants.maxRows - 1, section: 0)]
-                updatedRowCount > Constants.minRows ?
-                    self.tableView.insertRows(at: lastRowIndexPath, with: .fade) :
-                    self.tableView.deleteRows(at: lastRowIndexPath, with: .fade)
+
+                var indexPathsToInsert = [IndexPath]()
+                var indexPathsToDelete = [IndexPath]()
+
+                // If no connection was displayed, then rows are just being added.
+                // Otherwise, a data row is being inserted/deleted.
+                if self.tableView.visibleCells.first is WidgetNoConnectionCell {
+                    let indexRange = (1..<updatedRowCount)
+                    let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
+                    indexPathsToInsert.append(contentsOf: indexPaths)
+                } else {
+                    let lastDataRowIndexPath = IndexPath(row: 1, section: 0)
+                    indexPathsToInsert.append(lastDataRowIndexPath)
+                    indexPathsToDelete.append(lastDataRowIndexPath)
+                }
+
+                updatedRowCount > self.minRowsToDisplay() ?
+                    self.tableView.insertRows(at: indexPathsToInsert, with: .fade) :
+                    self.tableView.deleteRows(at: indexPathsToDelete, with: .fade)
             })
         })
     }
@@ -91,21 +134,22 @@ class TodayViewController: UIViewController {
 extension TodayViewController: NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
+        widgetCompletionBlock = completionHandler
         retrieveSiteConfiguration()
+        isReachable = reachability.isReachable()
 
-        if !isConfigured {
-            DDLogError("Today Widget: Missing site ID, timeZone or oauth2Token")
+        if !isConfigured || !isReachable {
+            DDLogError("Today Widget: unable to update. Configured: \(isConfigured) Reachable: \(isReachable)")
 
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
 
-            completionHandler(NCUpdateResult.failed)
+            completionHandler(.failed)
             return
         }
 
-        tracks.trackExtensionAccessed()
-        fetchData()
+        fetchData(completionHandler: completionHandler)
     }
 
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
@@ -124,42 +168,30 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard isConfigured else {
+        if showNoConnection {
+            return noConnectionCellFor(indexPath: indexPath)
+        }
+
+        if !isConfigured || loadingFailed {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
         return statCellFor(indexPath: indexPath)
     }
 
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard haveSiteUrl,
-            isConfigured,
-            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
-                return nil
-        }
-
-        footer.configure(siteUrl: siteUrl)
-        footerHeight = footer.frame.height
-
-        return footer
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if !isConfigured || !haveSiteUrl {
-            return 0
-        }
-
-        return footerHeight
-    }
-
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard !isConfigured,
-            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
-            return UITableView.automaticDimension
+
+        if failedState,
+            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) {
+            // Use the max compact height for unconfigured view.
+            return maxCompactSize.height
         }
 
-        // Use the max compact height for unconfigured view.
-        return maxCompactSize.height
+        if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
+            return WidgetUrlCell.height
+        }
+
+        return UITableView.automaticDimension
     }
 
 }
@@ -168,10 +200,20 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension TodayViewController {
 
-    // MARK: - Launch Containing App
+    // MARK: - Tap Gesture Handling
 
-    @IBAction func launchContainingApp() {
-        guard let extensionContext = extensionContext,
+    @IBAction func handleTapGesture() {
+
+        // If showing the loading failed view, reload the widget.
+        if loadingFailed,
+            let completionHandler = widgetCompletionBlock {
+            widgetPerformUpdate(completionHandler: completionHandler)
+            return
+        }
+
+        // Otherwise, open the app.
+        guard isReachable,
+            let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
                 DDLogError("Today Widget: Unable to get extensionContext or appURL.")
                 return
@@ -231,25 +273,37 @@ private extension TodayViewController {
         statsValues?.saveData()
     }
 
-    func fetchData() {
+    func fetchData(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         guard let statsRemote = statsRemote() else {
             return
         }
 
-        statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
+        statsRemote.getInsight { [weak self] (todayInsight: StatsTodayInsight?, error) in
+            self?.loadingFailed = (error != nil)
+
             if error != nil {
                 DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
+                completionHandler(.failed)
                 return
             }
 
             DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
 
-            DispatchQueue.main.async {
-                self.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount ?? 0,
-                                                    visitors: todayInsight?.visitorsCount ?? 0,
-                                                    likes: todayInsight?.likesCount ?? 0,
-                                                    comments: todayInsight?.commentsCount ?? 0)
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                let updatedStats = TodayWidgetStats(views: todayInsight?.viewsCount,
+                                                    visitors: todayInsight?.visitorsCount,
+                                                    likes: todayInsight?.likesCount,
+                                                    comments: todayInsight?.commentsCount)
+
+                // Update the widget only if the data has changed.
+                guard updatedStats != self?.statsValues else {
+                    completionHandler(.noData)
+                    return
+                }
+
+                self?.statsValues = updatedStats
+                completionHandler(.newData)
+                self?.saveData()
             }
         }
     }
@@ -277,8 +331,19 @@ private extension TodayViewController {
         let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
         tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
 
-        let footerNib = UINib(nibName: String(describing: WidgetFooterView.self), bundle: Bundle(for: WidgetFooterView.self))
-        tableView.register(footerNib, forHeaderFooterViewReuseIdentifier: WidgetFooterView.reuseIdentifier)
+        let urlCellNib = UINib(nibName: String(describing: WidgetUrlCell.self), bundle: Bundle(for: WidgetUrlCell.self))
+        tableView.register(urlCellNib, forCellReuseIdentifier: WidgetUrlCell.reuseIdentifier)
+
+        let noConnectionCellNib = UINib(nibName: String(describing: WidgetNoConnectionCell.self), bundle: Bundle(for: WidgetNoConnectionCell.self))
+        tableView.register(noConnectionCellNib, forCellReuseIdentifier: WidgetNoConnectionCell.reuseIdentifier)
+    }
+
+    func noConnectionCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetNoConnectionCell.reuseIdentifier, for: indexPath) as? WidgetNoConnectionCell else {
+            return UITableViewCell()
+        }
+
+        return cell
     }
 
     func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
@@ -286,10 +351,23 @@ private extension TodayViewController {
             return UITableViewCell()
         }
 
+        loadingFailed ? cell.configure(for: .loadingFailed) : cell.configure(for: .today)
         return cell
     }
 
     func statCellFor(indexPath: IndexPath) -> UITableViewCell {
+
+        // URL Cell
+        if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
+            guard let urlCell = tableView.dequeueReusableCell(withIdentifier: WidgetUrlCell.reuseIdentifier, for: indexPath) as? WidgetUrlCell else {
+                return UITableViewCell()
+            }
+
+            urlCell.configure(siteUrl: siteUrl)
+            return urlCell
+        }
+
+        // Data Cells
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetTwoColumnCell.reuseIdentifier, for: indexPath) as? WidgetTwoColumnCell else {
             return UITableViewCell()
         }
@@ -309,14 +387,35 @@ private extension TodayViewController {
         return cell
     }
 
+    func showUrl() -> Bool {
+        return (isConfigured && haveSiteUrl)
+    }
+
     // MARK: - Expand / Compact View Helpers
 
-    func numberOfRowsToDisplay() -> Int {
-        if !isConfigured || extensionContext?.widgetActiveDisplayMode == .compact {
-            return Constants.minRows
+    func setAvailableDisplayMode() {
+        // If something went wrong, don't allow the widget to be expanded.
+        extensionContext?.widgetLargestAvailableDisplayMode = failedState ? .compact : .expanded
+    }
+
+    func minRowsToDisplay() -> Int {
+        if showNoConnection {
+            return 1
         }
 
-        return Constants.maxRows
+        return showUrl() ? 2 : 1
+    }
+
+    func maxRowsToDisplay() -> Int {
+        if showNoConnection {
+            return 1
+        }
+
+        return showUrl() ? 3 : 2
+    }
+
+    func numberOfRowsToDisplay() -> Int {
+        return extensionContext?.widgetActiveDisplayMode == .compact ? minRowsToDisplay() : maxRowsToDisplay()
     }
 
     func resizeView(withMaximumSize size: CGSize? = nil) {
@@ -330,27 +429,56 @@ private extension TodayViewController {
 
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
+        let dataRowHeight: CGFloat
 
-        if haveSiteUrl {
-            height += tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
+        // This method is called before the rows are updated.
+        // So if a no connection cell was displayed, use the default height for data rows.
+        // Otherwise, use the actual height from the first data row.
+        if tableView.visibleCells.first is WidgetNoConnectionCell {
+            dataRowHeight = WidgetTwoColumnCell.defaultHeight
+        } else {
+            dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
         }
 
-        let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
-        height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
+        let numRows = numberOfRowsToDisplay()
+
+        if showUrl() {
+            height += WidgetUrlCell.height
+            height += (dataRowHeight * CGFloat(numRows - 1))
+        } else {
+            height += (dataRowHeight * CGFloat(numRows))
+        }
+
         return height
+    }
+
+    // MARK: - Reachability
+
+    func setupReachability() {
+        isReachable = reachability.isReachable()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reachabilityChanged),
+                                               name: NSNotification.Name.reachabilityChanged,
+                                               object: nil)
+        reachability.startNotifier()
+    }
+
+    @objc func reachabilityChanged() {
+        isReachable = reachability.isReachable()
     }
 
     // MARK: - Helpers
 
-    func displayString(for value: Int) -> String {
-        return numberFormatter.string(from: NSNumber(value: value)) ?? "0"
-    }
-
     func updateStatsLabels() {
-        viewCount = displayString(for: statsValues?.views ?? 0)
-        visitorCount = displayString(for: statsValues?.visitors ?? 0)
-        likeCount = displayString(for: statsValues?.likes ?? 0)
-        commentCount = displayString(for: statsValues?.comments ?? 0)
+        guard let values = statsValues else {
+            return
+        }
+
+        viewCount = values.views.abbreviatedString()
+        visitorCount = values.visitors.abbreviatedString()
+        likeCount = values.likes.abbreviatedString()
+        commentCount = values.comments.abbreviatedString()
     }
 
     // MARK: - Constants
@@ -366,8 +494,6 @@ private extension TodayViewController {
         static let noDataLabel = "-"
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
-        static let minRows: Int = 1
-        static let maxRows: Int = 2
     }
 
 }

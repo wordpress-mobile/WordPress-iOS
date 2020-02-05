@@ -93,7 +93,7 @@ extension GiphyMedia: ExportableAsset {
     }
 }
 
-//// MARK: - MediaExternalAsset conformance
+// MARK: - MediaExternalAsset conformance
 //
 extension GiphyMedia: MediaExternalAsset {
     var URL: URL {

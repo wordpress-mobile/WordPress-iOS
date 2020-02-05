@@ -27,6 +27,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// Filtering Tab Bar
     ///
     @IBOutlet weak var filterTabBar: FilterTabBar!
+
     /// Inline Prompt Header View
     ///
     @IBOutlet var inlinePromptView: AppFeedbackPromptView!
@@ -515,7 +516,7 @@ private extension NotificationsViewController {
         inlinePromptSpaceConstraint.isActive = false
 
         if shouldShowPrimeForPush {
-           setupNotificationPrompt()
+            setupNotificationPrompt()
         } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
             setupAppRatings()
             showInlinePrompt()
@@ -650,6 +651,13 @@ extension NotificationsViewController {
     ///
     private func showDetails(for note: Notification) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
+
+        // Before trying to show the details of a notification, we need to make sure the view is loaded.
+        //
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/12669#issuecomment-561579415
+        // Ref: https://sentry.io/organizations/a8c/issues/1329631657/
+        //
+        loadViewIfNeeded()
 
         /// Note: markAsRead should be the *first* thing we do. This triggers a context save, and may have many side effects that
         /// could affect the OP's that go below!!!.
@@ -1290,7 +1298,11 @@ internal extension NotificationsViewController {
         }
 
         // allows the inline prompt to push the selector down
-        self.inlinePromptSpaceConstraint.isActive = true
+        inlinePromptSpaceConstraint.isActive = true
+
+        // Layout immediately the TableHeaderView. Otherwise we'll see a seriously uncool Buttons Resizing animation.
+        tableHeaderView.layoutIfNeeded()
+
         UIView.animate(withDuration: WPAnimationDurationDefault, delay: InlinePrompt.animationDelay, options: .curveEaseIn, animations: {
             self.inlinePromptView.alpha = WPAlphaFull
             self.layoutHeaderIfNeeded()
@@ -1300,10 +1312,9 @@ internal extension NotificationsViewController {
     }
 
     func hideInlinePrompt(delay: TimeInterval) {
-        self.inlinePromptSpaceConstraint.isActive = false
-        UIView.animate(withDuration: WPAnimationDurationDefault,
-                       delay: delay,
-                       animations: {
+        inlinePromptSpaceConstraint.isActive = false
+
+        UIView.animate(withDuration: WPAnimationDurationDefault, delay: delay, animations: {
             self.inlinePromptView.alpha = WPAlphaZero
             self.layoutHeaderIfNeeded()
         })

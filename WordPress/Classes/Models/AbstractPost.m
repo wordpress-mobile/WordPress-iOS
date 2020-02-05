@@ -37,6 +37,7 @@
 @dynamic autosaveExcerpt;
 @dynamic autosaveTitle;
 @dynamic autosaveModifiedDate;
+@dynamic autosaveIdentifier;
 
 @synthesize restorableStatus;
 
@@ -144,11 +145,11 @@
 - (AbstractPost *)createRevision
 {
     if ([self isRevision]) {
-        DDLogInfo(@"!!! Attempted to create a revision of a revision");
+        DDLogInfo(@"Post is already a revision, no need to create a new one");
         return self;
     }
     if (self.revision) {
-        DDLogInfo(@"!!! Already have revision");
+        DDLogInfo(@"Returning existing revision");
         return self.revision;
     }
 
@@ -424,7 +425,7 @@
 
 - (NSString *)authorNameForDisplay
 {
-    return [NSString makePlainText:self.author];
+    return [self.author makePlainText];
 }
 
 - (NSURL *)avatarURLForDisplay
@@ -434,7 +435,7 @@
 
 - (NSString *)blogNameForDisplay
 {
-    return [NSString makePlainText:self.blog.settings.name];
+    return [self.blog.settings.name makePlainText];
 }
 
 - (NSURL *)blogURL

@@ -25,8 +25,8 @@ struct GutenbergNetworkRequest {
     private func dotComRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
         blog.wordPressComRestApi()?.GET(dotComPath(with: dotComID), parameters: nil, success: { (response, httpResponse) in
             completion(.success(response))
-        }, failure: { (error, HTTPResponse) in
-            completion(.failure(error))
+        }, failure: { (error, httpResponse) in
+            completion(.failure(error.nsError(with: httpResponse)))
         })
     }
 
@@ -49,5 +49,20 @@ struct GutenbergNetworkRequest {
                         completion(.failure(error as NSError))
                 }
             }
+    }
+
+    private var selfHostedPath: String {
+        let removedEditContext = path.replacingOccurrences(of: "context=edit", with: "context=view")
+        return "wp-json\(removedEditContext)"
+    }
+}
+
+/// Helper to get an error instance with the real HTTP Status code, taken from the response object.
+/// This is needed since AlamoFire will return code: 7 for any error.
+private extension Error {
+    func nsError(with response: HTTPURLResponse?) -> NSError {
+        let errorCode = response?.statusCode ?? URLError.Code.unknown.rawValue
+        let code = URLError.Code(rawValue: errorCode)
+        return URLError(code, userInfo: [NSLocalizedDescriptionKey: localizedDescription]) as NSError
     }
 }

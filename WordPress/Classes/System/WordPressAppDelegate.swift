@@ -7,6 +7,11 @@ import WordPressShared
 import AlamofireNetworkActivityIndicator
 import AutomatticTracks
 
+#if APPCENTER_ENABLED
+import AppCenter
+import AppCenterDistribute
+#endif
+
 import ZendeskCoreSDK
 
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,7 +19,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     var analytics: WPAppAnalytics?
-    var hockey: HockeyManager?
     private lazy var crashLoggingProvider: WPCrashLoggingProvider = {
         return WPCrashLoggingProvider()
     }()
@@ -32,7 +36,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var bgTask: UIBackgroundTaskIdentifier? = nil
 
     private var shouldRestoreApplicationState = false
-    private var uploadsManager: UploadsManager = {
+    private lazy var uploadsManager: UploadsManager = {
+        // This is intentionally a `lazy var` to prevent `PostCoordinator.shared` (below) from
+        // triggering an initialization of `ContextManager.shared.mainContext` during the
+        // initialization of this class. This is so any track events in `mainContext`
+        // (e.g. by `NullBlogPropertySanitizer`) will be recorded properly.
+
         // It's not great that we're using singletons here.  This change is a good opportunity to
         // revisit if we can make the coordinators children to another owning object.
         //
@@ -70,6 +79,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Restore a disassociated account prior to fixing tokens.
         AccountService(managedObjectContext: ContextManager.shared.mainContext).restoreDisassociatedAccountIfNecessary()
+
+        customizeAppearance()
 
         let solver = WPAuthTokenIssueSolver()
         let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
@@ -156,6 +167,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
             checkAppleIDCredentialState()
         }
+        GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -224,7 +236,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         CrashLogging.start(withDataProvider: crashLoggingProvider)
 
-        configureHockeySDK()
+        configureAppCenterSDK()
         configureAppRatingUtility()
         configureAnalytics()
 
@@ -242,15 +254,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         ZendeskUtils.setup()
 
         setupNetworkActivityIndicator()
-        WPUserAgent.useWordPressInUIWebViews()
-
-        // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
-        // by any of the Noto varients.  Size is arbitrary.
-        // See: https://github.com/wordpress-mobile/WordPress-Shared-iOS/issues/79
-        // Remove this when #79 is resolved.
-        WPFontManager.notoRegularFont(ofSize: 16.0)
-
-        customizeAppearance()
+        WPUserAgent.useWordPressInWebViews()
 
         // Push notifications
         // This is silent (the user isn't prompted) so we can do it on launch.
@@ -386,9 +390,11 @@ extension WordPressAppDelegate {
         })
     }
 
-    @objc func configureHockeySDK() {
-        hockey = HockeyManager()
-        hockey?.configure()
+    @objc func configureAppCenterSDK() {
+        #if APPCENTER_ENABLED
+        MSAppCenter.start(ApiCredentials.appCenterAppId(), withServices: [MSDistribute.self])
+        MSDistribute.setEnabled(true)
+        #endif
     }
 
     func configureReachability() {
@@ -660,11 +666,9 @@ extension WordPressAppDelegate {
     }
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
-        let rawLevel = Int32(level.rawValue)
-
-        WPSharedSetLoggingLevel(rawLevel)
-        TracksSetLoggingLevel(rawLevel)
-        WPAuthenticatorSetLoggingLevel(rawLevel)
+        WPSharedSetLoggingLevel(level)
+        TracksSetLoggingLevel(level)
+        WPAuthenticatorSetLoggingLevel(level)
     }
 }
 

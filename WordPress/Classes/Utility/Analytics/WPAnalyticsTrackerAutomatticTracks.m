@@ -473,6 +473,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"stock_photos" };
             break;
+        case WPAnalyticsStatEditorAddedPhotoViaMediaEditor:
+            eventName = @"editor_photo_added";
+            eventProperties = @{ @"via" : @"media_editor" };
+            break;
         case WPAnalyticsStatEditorAztecBetaLink:
             eventName = @"editor_aztec_beta_link";
             break;
@@ -841,6 +845,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
+            break;
+        case WPAnalyticsStatMediaEditorShown:
+            eventName = @"media_editor_shown";
+            break;
+        case WPAnalyticsStatMediaEditorUsed:
+            eventName = @"media_editor_used";
             break;
         case WPAnalyticsStatMediaLibraryDeletedItems:
             eventName = @"media_library_deleted_items";
@@ -1363,6 +1373,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatReaderArticleReblogged:
             eventName = @"reader_article_reblogged";
+            break;
+        case WPAnalyticsStatReaderArticleDetailReblogged:
+            eventName = @"reader_article_detail_reblogged";
             break;
         case WPAnalyticsStatReaderArticleOpened:
             eventName = @"reader_article_opened";
@@ -1920,6 +1933,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatOpenedAppSettings:
             eventName = @"app_settings_opened";
             break;
+        case WPAnalyticsStatOpenedWebPreview:
+            eventName = @"web_preview_opened";
+            break;
         case WPAnalyticsStatOpenedMyProfile:
             eventName = @"my_profile_opened";
             break;
@@ -1968,7 +1984,13 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSearchAdsAttribution:
             eventName = @"searchads_attribution_detail_received";
             break;
-            
+        case WPAnalyticsStatDebugDeletedOrphanedEntities:
+            eventName = @"debug_deleted_orphaned_entities";
+            break;
+        case WPAnalyticsStatWidgetActiveSiteChanged:
+            eventName = @"widget_active_site_changed";
+            break;
+
         // The following are yet to be implemented.
         //
         // If you get test failures in WPAnalyticsTrackerAutomatticTracksTests, it's most likely

@@ -117,7 +117,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
     ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
     replyTextView.placeholder = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
-    replyTextView.replyText = [NSLocalizedString(@"Reply", @"") uppercaseString];
     replyTextView.onReply = ^(NSString *content) {
         [weakSelf sendReplyWithNewContent:content];
     };
@@ -561,7 +560,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)editComment
 {
     EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
-    editViewController.content = self.comment.content;
+    editViewController.content = [self.comment contentForDisplay];
 
     __typeof(self) __weak weakSelf = self;
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {

@@ -11,6 +11,7 @@ import WPMediaPicker
 import AVKit
 import MobileCoreServices
 import AutomatticTracks
+import MediaEditor
 
 // MARK: - Aztec's Native Editor!
 //
@@ -58,6 +59,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     var isOpenedDirectlyForPhotoPost = false
 
+    var postIsReblogged: Bool = false
+
     let navigationBarManager = PostEditorNavigationBarManager()
 
     let mediaUtility = EditorMediaUtility()
@@ -102,6 +105,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// The editor view.
     ///
     fileprivate(set) lazy var editorView: Aztec.EditorView = {
+
+        Configuration.headersWithBoldTrait = true
 
         let paragraphStyle = ParagraphStyle.default
 
@@ -154,7 +159,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         textView.backgroundColor = Colors.aztecBackground
         textView.blockquoteBackgroundColor = .neutral(.shade5)
-        textView.blockquoteBorderColor = .listIcon
+        textView.blockquoteBorderColors = [.listIcon]
         textView.preBackgroundColor = .neutral(.shade5)
 
         textView.linkTextAttributes = linkAttributes
@@ -164,6 +169,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         textView.smartDashesType = .no
         textView.smartQuotesType = .no
+
+        textView.accessibilityIdentifier = "aztec-rich-text-view"
 
         // Set up the editor for screenshot generation, if needed
         if UIApplication.shared.isCreatingScreenshots() {
@@ -226,6 +233,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.adjustsFontForContentSizeCategory = true
         textView.smartDashesType = .no
         textView.smartQuotesType = .no
+
+        textView.accessibilityIdentifier = "aztec-html-text-view"
     }
 
 
@@ -239,9 +248,11 @@ class AztecPostViewController: UIViewController, PostEditor {
                                                         .font: Fonts.title,
                                                         .paragraphStyle: titleParagraphStyle]
 
-        let textView = UITextView()
+        let textView =
+            UIApplication.shared.isCreatingScreenshots() ? UITextViewWithoutCaret() : UITextView()
 
         textView.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
+        textView.accessibilityIdentifier = "aztec-editor-title"
         textView.delegate = self
         textView.font = Fonts.title
         textView.returnKeyType = .next
@@ -256,7 +267,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         return textView
     }()
 
-
     /// Placeholder Label
     ///
     fileprivate(set) lazy var titlePlaceholderLabel: UILabel = {
@@ -269,6 +279,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         titlePlaceholderLabel.sizeToFit()
         titlePlaceholderLabel.translatesAutoresizingMaskIntoConstraints = false
         titlePlaceholderLabel.textAlignment = .natural
+
+        titlePlaceholderLabel.isAccessibilityElement = false
 
         return titlePlaceholderLabel
     }()
@@ -342,6 +354,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
+    /// If true, apply autosave content when the editor creates a revision.
+    ///
+    private let loadAutosaveRevision: Bool
+
     /// Active Downloads
     ///
     fileprivate var activeMediaRequests = [ImageDownloader.Task]()
@@ -404,9 +420,18 @@ class AztecPostViewController: UIViewController, PostEditor {
         insertItem.titleLabel?.font = Fonts.mediaPickerInsert
         insertItem.tintColor = .primary
         insertItem.setTitleColor(.primary, for: .normal)
+        insertItem.accessibilityLabel = Constants.mediaPickerInsertAccessibilityLabel
+        insertItem.accessibilityIdentifier = "insert_media_button"
 
         return insertItem
     }()
+
+    /// Indicates whether the `insertToolbarItem` is always shown in `FormatBarMode.media` mode.
+    ///
+    /// If true, the insertToolbarItem is enabled and disabled instead of shown and hidden.
+    private var alwaysDisplayInsertToolbarItem: Bool {
+        UIAccessibility.isVoiceOverRunning
+    }
 
     fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
 
@@ -434,20 +459,16 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Initializers
 
-    /// Initializer
-    ///
-    /// - Parameters:
-    ///     - post: the post to edit in this VC.  Must be already assigned to a `ManagedObjectContext`
-    ///             since that's necessary for the edits to be saved.
-    ///
     required init(
         post: AbstractPost,
+        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
+        self.loadAutosaveRevision = loadAutosaveRevision
         self.replaceEditor = replaceEditor
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
@@ -485,7 +506,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        createRevisionOfPost()
+        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
 
         // Setup
         configureNavigationBar()
@@ -2045,6 +2066,7 @@ extension AztecPostViewController {
         case .media:
             toolbar.setDefaultItems(mediaItemsForToolbar,
                                     overflowItems: [])
+            setupFormatBarAccessibilityForMediaMode(toolbar)
         }
     }
 
@@ -2393,6 +2415,10 @@ extension AztecPostViewController {
 
     fileprivate func insertExternalMediaWithURL(_ url: URL) {
         insert(exportableAsset: url as NSURL, source: .otherApps)
+    }
+
+    fileprivate func insertImage(image: UIImage) {
+        insert(exportableAsset: image, source: .deviceLibrary)
     }
 
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
@@ -2821,11 +2847,19 @@ extension AztecPostViewController {
 
         if showDefaultActions {
             if let imageAttachment = attachment as? ImageAttachment {
-                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
+                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.settingsActionTitle,
                                                                                      style: .default,
                                                                                      handler: { (action) in
                                                                                         self.displayDetails(forAttachment: imageAttachment)
                 })
+
+                if imageAttachment.isLoaded {
+                    alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
+                                                                                         style: .default,
+                                                                                         handler: { (action) in
+                                                                                            self.edit(imageAttachment)
+                    })
+                }
             } else if let videoAttachment = attachment as? VideoAttachment {
                 alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.playVideoActionTitle,
                                                                                      style: .default,
@@ -3108,7 +3142,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
-        return mediaUtility.placeholderImage(for: attachment, size: Constants.mediaPlaceholderImageSize)
+        return mediaUtility.placeholderImage(for: attachment, size: Constants.mediaPlaceholderImageSize, tintColor: textView.textColor)
     }
 }
 
@@ -3193,8 +3227,13 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
-        mediaPreviewHelper = MediaPreviewHelper(assets: assets)
-        return mediaPreviewHelper?.previewViewController(selectedIndex: selected)
+        if FeatureFlag.mediaEditor.enabled, let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
+            edit(fromMediaPicker: picker, assets: phAssets)
+            return nil
+        } else {
+            mediaPreviewHelper = MediaPreviewHelper(assets: assets)
+            return mediaPreviewHelper?.previewViewController(selectedIndex: selected)
+        }
     }
 
     private func updateFormatBarInsertAssetCount() {
@@ -3203,15 +3242,33 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         }
 
         if assetCount == 0 {
-            formatBar.trailingItem = nil
+            insertToolbarItem.isEnabled = false
+            insertToolbarItem.accessibilityValue = nil
+
+            insertToolbarItem.setTitle(Constants.mediaPickerInsertTextDefault, for: .normal)
+
+            if !alwaysDisplayInsertToolbarItem {
+                formatBar.trailingItem = nil
+            }
         } else {
+            insertToolbarItem.isEnabled = true
+            insertToolbarItem.accessibilityValue = "\(assetCount)"
+
             insertToolbarItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
-            insertToolbarItem.accessibilityIdentifier = "insert_media_button"
 
             if formatBar.trailingItem != insertToolbarItem {
                 formatBar.trailingItem = insertToolbarItem
             }
         }
+    }
+
+    /// Called once whenever the `formatBar` is switched from text to media mode.
+    private func setupFormatBarAccessibilityForMediaMode(_ formatBar: Aztec.FormatBar) {
+        if alwaysDisplayInsertToolbarItem {
+            formatBar.trailingItem = insertToolbarItem
+        }
+
+        updateFormatBarInsertAssetCount()
     }
 }
 
@@ -3289,7 +3346,9 @@ extension AztecPostViewController {
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
         static let toolbarHeight            = CGFloat(44.0)
+        static let mediaPickerInsertTextDefault = NSLocalizedString("Insert", comment: "Default button title used in media picker to insert media (photos / videos) into a post.")
         static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
+        static let mediaPickerInsertAccessibilityLabel = NSLocalizedString("Insert selected", comment: "Default accessibility label for the media picker insert button.")
         static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
         static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
@@ -3332,6 +3391,7 @@ extension AztecPostViewController {
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
+        static let settingsActionTitle = NSLocalizedString("Media Settings", comment: "User action to edit media settings.")
         static let editActionTitle = NSLocalizedString("Edit", comment: "User action to edit media details.")
         static let playVideoActionTitle = NSLocalizedString("Play video", comment: "User action to play a video on the editor.")
         static let removeImageActionTitle = NSLocalizedString("Remove image", comment: "User action to remove image.")
@@ -3420,5 +3480,95 @@ extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, reloadLeftNavigationItems items: [UIBarButtonItem]) {
         navigationItem.leftBarButtonItems = items
+    }
+}
+
+// MARK: - Screenshot Generation Add-ons
+extension AztecPostViewController {
+
+    fileprivate class UITextViewWithoutCaret: UITextView {
+
+        override func didMoveToSuperview() {
+            registerDismissKeyboardGestureRecognizer(on: self)
+        }
+
+        override func caretRect(for position: UITextPosition) -> CGRect {
+            return .zero
+        }
+
+        fileprivate func registerDismissKeyboardGestureRecognizer(on textView: UITextView) {
+            let gr = UITapGestureRecognizer(target: self, action: #selector(didInvokeDismissKeyboard(_:)))
+
+            gr.numberOfTapsRequired = 1
+            gr.numberOfTouchesRequired = 5
+
+            textView.addGestureRecognizer(gr)
+        }
+
+        @objc func didInvokeDismissKeyboard(_ sender: UITextView?) {
+            self.endEditing(true)
+        }
+    }
+}
+
+// MARK: - Media Editing
+//
+extension AztecPostViewController {
+    private func edit(fromMediaPicker picker: WPMediaPickerViewController, assets: [PHAsset]) {
+        let mediaEditor = WPMediaEditor(assets)
+
+        mediaEditor.edit(from: picker,
+                              onFinishEditing: { [weak self] images, actions in
+                                images.forEach { mediaEditorImage in
+                                    if let image = mediaEditorImage.editedImage {
+                                        self?.insertImage(image: image)
+                                    } else if let phAsset = mediaEditorImage as? PHAsset {
+                                        self?.insertDeviceMedia(phAsset: phAsset)
+                                    }
+                                }
+
+                                self?.dismissMediaPicker()
+            }, onCancel: {
+                // Dismiss the Preview screen in Media Picker
+                picker.navigationController?.popViewController(animated: false)
+        })
+    }
+
+    private func dismissMediaPicker() {
+        unregisterChangeObserver()
+        mediaLibraryDataSource.searchCancelled()
+        closeMediaPickerInputViewController()
+        dismiss(animated: false)
+    }
+
+    private func edit(_ imageAttachment: ImageAttachment) {
+        guard let image = imageAttachment.image else {
+            return
+        }
+
+        let mediaEditor = WPMediaEditor(image)
+
+        mediaEditor.edit(from: self,
+                              onFinishEditing: { [weak self] images, actions in
+                                guard !actions.isEmpty, let image = images.first as? UIImage else {
+                                    // If the image wasn't edited, do nothing
+                                    return
+                                }
+
+                                self?.replace(attachment: imageAttachment, with: image, actions: actions)
+        })
+    }
+
+    private func replace(attachment: ImageAttachment, with image: UIImage, actions: [MediaEditorOperation]) {
+        guard !actions.isEmpty else {
+            // If the image wasn't edited, do nothing
+            return
+        }
+
+        let info = MediaAnalyticsInfo(origin: .editor(.mediaEditor), selectionMethod: mediaSelectionMethod)
+        guard let media = mediaCoordinator.addMedia(from: image, to: post, analyticsInfo: info) else {
+            return
+        }
+        attachment.uploadID = media.uploadID
     }
 }

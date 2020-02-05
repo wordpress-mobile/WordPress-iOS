@@ -2,7 +2,6 @@
 #import "CommentViewController.h"
 #import "CommentService.h"
 #import "ContextManager.h"
-#import "IOS7CorrectedTextView.h"
 
 #import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
@@ -22,8 +21,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 #pragma mark ==========================================================================================
 
 @interface EditCommentViewController()
-
-@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView *textView;
+@property (readwrite, nonatomic, weak) IBOutlet UITextView     *textView;
 @property (nonatomic, strong) NSString *pristineText;
 @property (nonatomic, assign) CGRect   keyboardFrame;
 
@@ -41,11 +39,35 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 #pragma mark - Static Helpers
 
-+ (instancetype)newEditViewController
+/// Tries to determine the correct nibName to use when init'ing
+/// If the current class's nib doesn't exist, then we'll use the parent class
++ (NSString *)nibName
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
+  Class current = [self class];
+
+  //We use nib because the bundle won't look for xib's
+  BOOL nibExists = [[NSBundle mainBundle] pathForResource:NSStringFromClass(current) ofType:@"nib"] ? YES : NO;
+
+  if(!nibExists){
+    current = [self superclass];
+  }
+
+  nibExists = [[NSBundle mainBundle] pathForResource:NSStringFromClass(current) ofType:@"nib"] ? YES : NO;
+
+  if(!nibExists){
+    return nil;
+  }
+
+  return NSStringFromClass(current);
 }
 
+
++ (instancetype)newEditViewController
+{
+    NSString *xibName = [[self class] nibName];
+    
+    return [[[self class] alloc] initWithNibName:xibName bundle:nil];
+}
 
 #pragma mark - Lifecycle
 
@@ -91,6 +113,11 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     [self.textView resignFirstResponder];
 }
 
+#pragma mark - Public
+- (void)contentDidChange
+{
+    [self enableSaveIfNeeded];
+}
 
 #pragma mark - View Helpers
 
@@ -100,14 +127,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(btnCancelPressed)];
-}
-
-- (void)showDoneBarButton
-{
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
-                                                                             style:[WPStyleGuide barButtonStyleForDone]
-                                                                            target:self
-                                                                            action:@selector(btnDonePressed)];
 }
 
 - (void)showSaveBarButton
@@ -135,7 +154,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 {
     self.navigationItem.rightBarButtonItem.enabled = self.hasChanges;
 }
-
 
 #pragma mark - KeyboardNotification Methods
 
@@ -167,23 +185,9 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 #pragma mark - Text View Delegate Methods
 
-- (void)textViewDidBeginEditing:(UITextView *)aTextView
-{
-    if (IS_IPAD == NO) {
-        [self showDoneBarButton];
-    }
-}
-
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self enableSaveIfNeeded];
-}
-
-- (void)textViewDidEndEditing:(UITextView *)aTextView
-{
-    if (IS_IPAD == NO) {
-        [self showCancelBarButton];
-    }
+    [self contentDidChange];
 }
 
 #pragma mark - Button Delegates
@@ -209,11 +213,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     alertController.popoverPresentationController.barButtonItem = self.navigationItem.leftBarButtonItem;
     [self presentViewController:alertController animated:YES completion:nil];
 
-}
-
-- (void)btnDonePressed
-{
-    [self.textView resignFirstResponder];
 }
 
 - (void)btnSavePressed

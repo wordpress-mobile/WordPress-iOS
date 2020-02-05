@@ -1,4 +1,5 @@
-- With this update, you can internet without the actual internet. Edit and save posts while you’re offline, we’ll automatically upload (or publish) them when your device is back online.
-- Sometimes, the “Me” view would be blank if you logged in with a self-hosted site, which is both (1) a bug and (2) not great for anyone’s self-esteem. That’s fixed, so Me is you again.
-- Sometimes updating a pending post caused the post to be published. All actions starting with P have been straightened out, and that won’t happen anymore – pending posts will remaining pending until you say otherwise.
-- And finally, more block editor improvements — it supports image alignment options now.
+- Now you can switch to fullscreen mode when writing a comment, so nothing distracts you from writing and you can maximise the hotness of your take.
+- We’re sure you almost never look at your stats because there are more important things in life, but in case you ever peek, the correct stats will now display in the Stats widget, we abbreviated large numbers in the Today Widget to make reading easier and we updated the Insights view based on the most frequently-added cards.
+- Some scheduled posts displayed incorrect time stamps, which was totally a bug and not us trying to mess with you. That’s fixed. We also fixed one that caused the app to crash when you tapped on a notification.
+- There was another bug that would randomly rename files imported from other apps. We had a long talk about whether we should fix the bug or just make sure the random names were always funny, and “Fix the bug” won out in the end.
+- Sometimes the Block editor would crash when you tried to undo something, which was a little too much undoing. That’s also fixed, along with some image-related bugs causing minor shenanigans with image placeholders.

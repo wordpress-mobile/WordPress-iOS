@@ -5,6 +5,7 @@ class WidgetTwoColumnCell: UITableViewCell {
     // MARK: - Properties
 
     static let reuseIdentifier = "WidgetTwoColumnCell"
+    static let defaultHeight: CGFloat = 78
 
     @IBOutlet private var leftItemLabel: UILabel!
     @IBOutlet private var leftDataLabel: UILabel!
@@ -25,6 +26,9 @@ class WidgetTwoColumnCell: UITableViewCell {
         leftDataLabel.text = leftItemData
         rightItemLabel.text = rightItemName
         rightDataLabel.text = rightItemData
+
+        leftDataLabel.accessibilityLabel = leftItemData.accessibilityLabel
+        rightDataLabel.accessibilityLabel = rightItemData.accessibilityLabel
     }
 
 }
@@ -33,9 +37,9 @@ class WidgetTwoColumnCell: UITableViewCell {
 
 private extension WidgetTwoColumnCell {
     func configureColors() {
-        leftItemLabel.textColor = .text
-        leftDataLabel.textColor = .text
-        rightItemLabel.textColor = .text
-        rightDataLabel.textColor = .text
+        leftItemLabel.textColor = WidgetStyles.primaryTextColor
+        leftDataLabel.textColor = WidgetStyles.primaryTextColor
+        rightItemLabel.textColor = WidgetStyles.primaryTextColor
+        rightDataLabel.textColor = WidgetStyles.primaryTextColor
     }
 }

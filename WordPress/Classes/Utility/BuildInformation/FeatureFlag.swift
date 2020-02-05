@@ -1,18 +1,22 @@
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int {
-    case exampleFeature
+enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case domainCredit
     case signInWithApple
-    case postScheduling
+    case debugMenu
+    case postPreview
+    case postReblogging
+    case mediaEditor
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
+        if let overriddenValue = FeatureFlagOverrideStore().overriddenValue(for: self) {
+            return overriddenValue
+        }
+
         switch self {
-        case .exampleFeature:
-            return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .domainCredit:
@@ -24,8 +28,15 @@ enum FeatureFlag: Int {
                 return false
             }
             return true
-        case .postScheduling:
+        case .debugMenu:
+            return BuildConfiguration.current ~= [.localDeveloper,
+                                                  .a8cBranchTest]
+        case .postPreview:
+            return true
+        case .postReblogging:
             return BuildConfiguration.current == .localDeveloper
+        case .mediaEditor:
+            return true
         }
     }
 }
@@ -37,5 +48,36 @@ class Feature: NSObject {
     /// Returns a boolean indicating if the feature is enabled
     @objc static func enabled(_ feature: FeatureFlag) -> Bool {
         return feature.enabled
+    }
+}
+
+extension FeatureFlag: OverrideableFlag {
+    /// Descriptions used to display the feature flag override menu in debug builds
+    var description: String {
+        switch self {
+        case .jetpackDisconnect:
+            return "Jetpack disconnect"
+        case .domainCredit:
+            return "Use domain credits"
+        case .signInWithApple:
+            return "Sign in with Apple"
+        case .debugMenu:
+            return "Debug menu"
+        case .postPreview:
+            return "Post preview redesign"
+        case .postReblogging:
+            return "Post Reblogging"
+        case .mediaEditor:
+            return "Media Editor"
+        }
+    }
+
+    var canOverride: Bool {
+        switch self {
+        case .debugMenu:
+            return false
+        default:
+            return true
+        }
     }
 }

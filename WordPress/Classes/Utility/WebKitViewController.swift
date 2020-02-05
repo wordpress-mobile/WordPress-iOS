@@ -9,38 +9,60 @@ class WebKitViewController: UIViewController {
     @objc let titleView = NavigationTitleView()
 
     @objc lazy var backButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
                                style: .plain,
                                target: self,
                                action: #selector(goBack))
+        button.title = NSLocalizedString("Back", comment: "Previous web page")
+        return button
     }()
     @objc lazy var forwardButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(),
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight),
                                style: .plain,
                                target: self,
                                action: #selector(goForward))
+        button.title = NSLocalizedString("Forward", comment: "Next web page")
+        return button
     }()
     @objc lazy var shareButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
                                style: .plain,
                                target: self,
                                action: #selector(share))
+        button.title = NSLocalizedString("Share", comment: "Button label to share a web page")
+        return button
     }()
     @objc lazy var safariButton: UIBarButtonItem = {
-        return UIBarButtonItem(image: Gridicon.iconOfType(.globe),
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.globe),
                                style: .plain,
                                target: self,
                                action: #selector(openInSafari))
+        button.title = NSLocalizedString("Safari", comment: "Button label to open web page in Safari")
+        button.accessibilityHint = NSLocalizedString("Opens the web page in Safari", comment: "Accessibility hint to open web page in Safari")
+        return button
     }()
+    @objc lazy var refreshButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
+        button.title = NSLocalizedString("Refresh", comment: "Button label to refres a web page")
+        return button
+    }()
+    @objc lazy var closeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
+        button.title = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
+        return button
+    }()
+
     @objc var customOptionsButton: UIBarButtonItem?
 
-    @objc let url: URL
+    @objc let url: URL?
     @objc let authenticator: WebViewAuthenticator?
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
     @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
+    private let opensNewInSafari: Bool
+    let linkBehavior: LinkBehavior
 
     private var reachabilityObserver: Any?
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)
@@ -59,6 +81,8 @@ class WebKitViewController: UIViewController {
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
+        linkBehavior = configuration.linkBehavior
+        opensNewInSafari = configuration.opensNewInSafari
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -74,6 +98,8 @@ class WebKitViewController: UIViewController {
         customTitle = parent.customTitle
         authenticator = parent.authenticator
         navigationDelegate = parent.navigationDelegate
+        linkBehavior = parent.linkBehavior
+        opensNewInSafari = parent.opensNewInSafari
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -97,17 +123,17 @@ class WebKitViewController: UIViewController {
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
     }
 
-    override func loadView() {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
             webView
             ])
         stackView.axis = .vertical
-        view = stackView
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
 
         configureNavigation()
         configureToolbar()
@@ -131,7 +157,9 @@ class WebKitViewController: UIViewController {
         }
 
         guard let authenticator = authenticator else {
-            load(request: URLRequest(url: url))
+            if let url = url {
+                load(request: URLRequest(url: url))
+            }
             return
         }
 
@@ -140,8 +168,10 @@ class WebKitViewController: UIViewController {
                 return
             }
 
-            authenticator.request(url: strongSelf.url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
-                self?.load(request: request)
+            if let url = strongSelf.url {
+                authenticator.request(url: url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
+                    self?.load(request: request)
+                }
             }
         }
     }
@@ -180,7 +210,6 @@ class WebKitViewController: UIViewController {
     }
 
     private func setupRefreshButton() {
-        let refreshButton = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
         if let customOptionsButton = customOptionsButton {
             navigationItem.rightBarButtonItems = [refreshButton, customOptionsButton]
         } else if !secureInteraction {
@@ -189,14 +218,12 @@ class WebKitViewController: UIViewController {
     }
 
     private func setupCloseButton() {
-        let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
-        closeButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
         navigationItem.leftBarButtonItem = closeButton
     }
 
     private func setupNavBarTitleView() {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
-        if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, *), navigationController is LightNavigationController == false {
             titleView.titleLabel.textColor = UIColor(light: .white, dark: .neutral(.shade70))
         } else {
             titleView.titleLabel.textColor = .neutral(.shade70)
@@ -241,7 +268,8 @@ class WebKitViewController: UIViewController {
         styleToolBarButtons()
     }
 
-    private func configureToolbarButtons() {
+    func configureToolbarButtons() {
+
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let items = [
@@ -277,7 +305,7 @@ class WebKitViewController: UIViewController {
     }
 
     private func styleBarButton(_ button: UIBarButtonItem) {
-        if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, *), navigationController is LightNavigationController == false {
             button.tintColor = UIColor(light: .white, dark: .neutral(.shade70))
         } else {
             button.tintColor = .listIcon
@@ -291,8 +319,8 @@ class WebKitViewController: UIViewController {
     // MARK: Reachability Helpers
 
     private func reloadWhenConnectionRestored() {
-        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable {
-            self.loadWebViewRequest()
+        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable { [weak self] in
+            self?.loadWebViewRequest()
         }
     }
 
@@ -388,6 +416,14 @@ class WebKitViewController: UIViewController {
         default:
             assertionFailure("Observed change to web view that we are not handling")
         }
+
+        // Set the title for the HUD which shows up on tap+hold w/ accessibile font sizes enabled
+        navigationItem.title = "\(titleView.titleLabel.text ?? "")\n\n\(String(describing: titleView.subtitleLabel.text ?? ""))"
+
+        // Accessibility values which emulate those found in Safari
+        navigationItem.accessibilityLabel = NSLocalizedString("Title", comment: "Accessibility label for web page preview title")
+        navigationItem.titleView?.accessibilityValue = titleView.titleLabel.text
+        navigationItem.titleView?.accessibilityTraits = .updatesFrequently
     }
 }
 
@@ -407,7 +443,16 @@ extension WebKitViewController: WKNavigationDelegate {
             decisionHandler(policy.action)
             return
         }
-        decisionHandler(.allow)
+
+        // Allow request if it is to `wp-login` for 2fa
+        if let url = navigationAction.request.url, authenticator?.isLogin(url: url) == true {
+            decisionHandler(.allow)
+            return
+        }
+
+        let policy = linkBehavior.handle(navigationAction: navigationAction, for: webView)
+
+        decisionHandler(policy)
     }
 }
 
@@ -415,9 +460,14 @@ extension WebKitViewController: WKUIDelegate {
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if navigationAction.targetFrame == nil,
             let url = navigationAction.request.url {
-            let controller = WebKitViewController(url: url, parent: self)
-            let navController = UINavigationController(rootViewController: controller)
-            present(navController, animated: true)
+
+            if opensNewInSafari {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                let controller = WebKitViewController(url: url, parent: self)
+                let navController = UINavigationController(rootViewController: controller)
+                present(navController, animated: true)
+            }
         }
         return nil
     }

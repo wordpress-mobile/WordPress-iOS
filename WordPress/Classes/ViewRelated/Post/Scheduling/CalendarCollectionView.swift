@@ -25,6 +25,7 @@ class CalendarCollectionView: JTACMonthView {
         scrollDirection = .horizontal
         scrollingMode = .stopAtEachCalendarFrame
         showsHorizontalScrollIndicator = false
+        isDirectionalLockEnabled = true
 
         calendarDataSource = calDataSource
         calendarDelegate = calDataSource

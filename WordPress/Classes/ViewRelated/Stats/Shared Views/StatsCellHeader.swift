@@ -39,7 +39,7 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
         headerLabel.isAccessibilityElement = (headerLabel.text?.isEmpty == false)
         headerLabel.accessibilityElementsHidden = (headerLabel.text?.isEmpty == true)
         headerLabel.accessibilityLabel = headerLabel.text
-        headerLabel.accessibilityTraits = .staticText
+        headerLabel.accessibilityTraits = .header
 
         manageInsightImageView.isAccessibilityElement = false
         manageInsightButton.isAccessibilityElement = !manageInsightButton.isHidden
@@ -47,6 +47,8 @@ class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
         manageInsightButton.accessibilityTraits = .button
         manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Accessibility label for button that displays Manage Insight options.")
         manageInsightButton.accessibilityHint = NSLocalizedString("Select to manage this Insight.", comment: "Accessibility hint for Manage Insight button.")
+
+        accessibilityElements = [headerLabel, manageInsightButton].compactMap { $0 }
     }
 }
 

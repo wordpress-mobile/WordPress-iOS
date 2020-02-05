@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="32" id="KGk-i7-Jjw" customClass="WidgetUrlCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="32"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="32"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="my.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k43-6g-GOQ" userLabel="Site Url Label">
+                        <rect key="frame" x="16" y="8" width="288" height="16"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <visualEffectView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iDH-uD-Xqz">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
+                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="hw0-mW-GUJ">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Shw-yz-55M" userLabel="Separator Line">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="tintColor" name="Gray40"/>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="Shw-yz-55M" secondAttribute="bottom" id="7sa-Lw-mPl"/>
+                                <constraint firstItem="Shw-yz-55M" firstAttribute="leading" secondItem="hw0-mW-GUJ" secondAttribute="leading" id="H9Z-qJ-wEN"/>
+                                <constraint firstAttribute="trailing" secondItem="Shw-yz-55M" secondAttribute="trailing" id="NXp-Mw-cr9"/>
+                                <constraint firstItem="Shw-yz-55M" firstAttribute="top" secondItem="hw0-mW-GUJ" secondAttribute="top" id="i7p-oF-xyq"/>
+                            </constraints>
+                        </view>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="0.5" id="8Lw-BH-CCF"/>
+                            <constraint firstAttribute="height" constant="0.5" id="YbR-z5-ko3"/>
+                        </constraints>
+                        <vibrancyEffect>
+                            <blurEffect style="light"/>
+                        </vibrancyEffect>
+                    </visualEffectView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="k43-6g-GOQ" secondAttribute="trailing" constant="16" id="2Mx-9o-jDo"/>
+                    <constraint firstAttribute="bottom" secondItem="k43-6g-GOQ" secondAttribute="bottom" constant="8" id="4Cf-tg-98V"/>
+                    <constraint firstItem="iDH-uD-Xqz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="8Tq-kn-yZL"/>
+                    <constraint firstItem="k43-6g-GOQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="HMG-Fh-2vn"/>
+                    <constraint firstItem="k43-6g-GOQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="SKT-Uu-oE4"/>
+                    <constraint firstAttribute="trailing" secondItem="iDH-uD-Xqz" secondAttribute="trailing" id="SPW-d6-Mg0"/>
+                    <constraint firstItem="iDH-uD-Xqz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="zYY-n7-wDb"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="separatorLine" destination="Shw-yz-55M" id="JVp-HD-1EW"/>
+                <outlet property="separatorVisualEffectView" destination="iDH-uD-Xqz" id="w99-u1-U9C"/>
+                <outlet property="siteUrlLabel" destination="k43-6g-GOQ" id="50c-yS-I8Z"/>
+            </connections>
+            <point key="canvasLocation" x="-57" y="153"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="Gray40">
+            <color red="0.47058823529411764" green="0.48627450980392156" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

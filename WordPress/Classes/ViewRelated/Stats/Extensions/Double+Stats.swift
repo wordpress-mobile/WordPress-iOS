@@ -1,15 +1,65 @@
 import Foundation
 
-extension Double {
+fileprivate struct Unit {
+    let abbreviationFormat: String
+    let accessibilityLabelFormat: String
+}
 
-    private static var _numberFormatter: NumberFormatter = NumberFormatter()
+extension Double {
 
     private var numberFormatter: NumberFormatter {
         get {
-            let formatter = Double._numberFormatter
-            // Add commas to value
-            formatter.numberStyle = .decimal
-            return formatter
+            struct Cache {
+                static let formatter: NumberFormatter = {
+                    let formatter = NumberFormatter()
+                    // Add commas to value
+                    formatter.numberStyle = .decimal
+                    return formatter
+                }()
+            }
+
+            return Cache.formatter
+        }
+    }
+
+    private var decimalFormatter: NumberFormatter {
+        get {
+            struct Cache {
+                static let formatter: NumberFormatter = {
+                    let formatter = NumberFormatter()
+                    // Show at least one digit after the decimal
+                    formatter.minimumFractionDigits = 1
+                    return formatter
+                }()
+            }
+
+            return Cache.formatter
+        }
+    }
+
+    private var units: [Unit] {
+        get {
+            struct Cache {
+                static let units: [Unit] = {
+                    var units: [Unit] = []
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@K", comment: "Label displaying value in thousands. Ex: 66.6K."), accessibilityLabelFormat: NSLocalizedString("%@ thousand", comment: "Accessibility label for value in thousands. Ex: 66.6 thousand.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@M", comment: "Label displaying value in millions. Ex: 66.6M."), accessibilityLabelFormat: NSLocalizedString("%@ million", comment: "Accessibility label for value in millions. Ex: 66.6 million.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@B", comment: "Label displaying value in billions. Ex: 66.6B."), accessibilityLabelFormat: NSLocalizedString("%@ billion", comment: "Accessibility label for value in billions. Ex: 66.6 billion.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@T", comment: "Label displaying value in trillions. Ex: 66.6T."), accessibilityLabelFormat: NSLocalizedString("%@ trillion", comment: "Accessibility label for value in trillions. Ex: 66.6 trillion.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@P", comment: "Label displaying value in quadrillions. Ex: 66.6P."), accessibilityLabelFormat: NSLocalizedString("%@ quadrillion", comment: "Accessibility label for value in quadrillion. Ex: 66.6 quadrillion.")))
+
+                    units.append(Unit(abbreviationFormat: NSLocalizedString("%@E", comment: "Label displaying value in quintillions. Ex: 66.6E."), accessibilityLabelFormat: NSLocalizedString("%@ quintillion", comment: "Accessibility label for value in quintillions. Ex: 66.6 quintillion.")))
+
+                    return units
+                }()
+            }
+
+            return Cache.units
         }
     }
 
@@ -32,29 +82,52 @@ extension Double {
     ///  - 1000000000000 becomes "1t"
 
     func abbreviatedString(forHeroNumber: Bool = false) -> String {
-        var num = self
-        let sign = num < 0 ? "-" : ""
-        num = fabs(num)
-
+        let absValue = fabs(self)
         let abbreviationLimit = forHeroNumber ? 100000.0 : 10000.0
 
-        if num < abbreviationLimit {
-            return "\(sign)\(num.formatWithCommas())"
+        if absValue < abbreviationLimit {
+            return self.formatWithCommas()
         }
 
-        let exp: Int = Int(log10(num) / 3.0)
-        let units: [String] = ["K", "M", "B", "T", "P", "E"]
-        let roundedNum: Double = Foundation.round(10 * num / pow(1000.0, Double(exp))) / 10
+        let exp: Int = Int(log10(absValue) / 3.0)
+        let unsignedRoundedNum: Double = Foundation.round(10 * absValue / pow(1000.0, Double(exp))) / 10
 
-        if roundedNum == 1000.0 {
-            return "\(sign)\(1)\(units[exp])"
+        var roundedNum: Double
+        var unit: Unit
+
+        if unsignedRoundedNum == 1000.0 {
+            guard exp >= units.startIndex else {
+                return self.formatWithCommas()
+            }
+
+            roundedNum = 1
+            unit = units[exp]
         } else {
-            return "\(sign)\(roundedNum)\(units[exp-1])"
+            let unitIndex = exp - 1
+
+            guard unitIndex >= units.startIndex else {
+                return self.formatWithCommas()
+            }
+
+            roundedNum = unsignedRoundedNum
+            unit = units[unitIndex]
         }
+
+        roundedNum = self < 0 ? -roundedNum : roundedNum
+        let formattedValue = roundedNum.formatWithFractions()
+
+        let formattedString = String.localizedStringWithFormat(unit.abbreviationFormat, formattedValue)
+        formattedString.accessibilityLabel = String.localizedStringWithFormat(unit.accessibilityLabelFormat, formattedValue)
+
+        return formattedString
     }
 
     private func formatWithCommas() -> String {
         return numberFormatter.string(for: self) ?? ""
+    }
+
+    private func formatWithFractions() -> String {
+        return decimalFormatter.string(for: self) ?? String(self)
     }
 
 }

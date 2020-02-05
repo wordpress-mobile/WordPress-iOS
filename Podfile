@@ -11,14 +11,14 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.9-beta.1'
+    pod 'WordPressShared', '~> 1.8.13-beta'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared', :branch => ''
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => 'efe5a065f3ace331353595ef85eef502baa23497'
 end
 
 def aztec
@@ -29,12 +29,12 @@ def aztec
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.13.0'
+    pod 'WordPress-Editor-iOS', '~> 1.15.0'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.5.0'
+    pod 'WordPressUI', '~> 1.5.1'
 
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
@@ -66,7 +66,7 @@ end
 def shared_test_pods
     pod 'OHHTTPStubs', '6.1.0'
     pod 'OHHTTPStubs/Swift', '6.1.0'
-    pod 'OCMock', '~> 3.4'
+    pod 'OCMock', '3.4.3'
 end
 
 def shared_with_extension_pods
@@ -89,9 +89,14 @@ end
 
 def gutenberg_dependencies(options)
     dependencies = [
+        'FBReactNativeSpec',
+        'FBLazyVector',
         'React',
+        'ReactCommon',
+        'RCTRequired',
+        'RCTTypeSafety',
         'React-Core',
-        'React-DevSupport',
+        'React-CoreModules',
         'React-RCTActionSheet',
         'React-RCTAnimation',
         'React-RCTBlob',
@@ -101,12 +106,11 @@ def gutenberg_dependencies(options)
         'React-RCTSettings',
         'React-RCTText',
         'React-RCTVibration',
-        'React-RCTWebSocket',
         'React-cxxreact',
         'React-jsinspector',
         'React-jsi',
         'React-jsiexecutor',
-        'yoga',
+        'Yoga',
         'Folly',
         'glog',
         'react-native-keyboard-aware-scroll-view',
@@ -114,6 +118,7 @@ def gutenberg_dependencies(options)
         'react-native-video',
         'RNSVG',
         'ReactNativeDarkMode',
+        'react-native-slider'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -140,7 +145,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '2c53980dceefb8d1c43d286af671b321fb15791f'
+    gutenberg :commit => '772b61065f2b480e582a442517ee63ed7dfa7ae6'
 
     ## Third party libraries
     ## =====================
@@ -148,11 +153,12 @@ target 'WordPress' do
     pod '1PasswordExtension', '1.8.5'
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
-    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'AppCenter/Distribute', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '3.0.3'
+    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '4.0.0'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
@@ -162,7 +168,7 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4.2'
+    pod 'Automattic-Tracks-iOS', '~> 0.4.3'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => '0cc8960098791cfe1b02914b15a662af20b60389'
 
@@ -174,9 +180,12 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.3-beta.1'
+    pod 'WordPressAuthenticator', '~> 1.10.6'
+    #pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/wordpresskit-456-beta1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/social-signed-in-event'
+
+    pod 'MediaEditor', '~> 0.1.3'
+    # pod 'MediaEditor', :path => '../MediaEditor-iOS'
 
     aztec
     wordpress_ui
@@ -190,6 +199,9 @@ target 'WordPress' do
 
 
     post_install do
+        puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
+        %x(patch Pods/React-Core/React/Views/RCTShadowView.m < patches/react-native+0.61.5.patch)
+
 
         ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
         require 'commonmarker'
@@ -276,11 +288,33 @@ target 'WordPressTodayWidget' do
 
     shared_with_all_pods
     shared_with_networking_pods
-    
+
     wordpress_ui
 end
 
+## All Time Widget
+## ============
+##
+target 'WordPressAllTimeWidget' do
+    project 'WordPress/WordPress.xcodeproj'
 
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
+
+## This Week Widget
+## ============
+##
+target 'WordPressThisWeekWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    wordpress_ui
+end
 
 ## Notification Content Extension
 ## ==============================
@@ -311,8 +345,9 @@ end
 ## ===================
 ##
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.6'
+  pod 'WordPressMocks', '~> 0.0.8'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
+  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => 'add/screenshot-mocks'
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 

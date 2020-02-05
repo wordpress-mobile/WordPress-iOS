@@ -11,7 +11,7 @@ class AppFeedbackPromptView: UIView {
     private let buttonStack = UIStackView()
     private var onRequestingFeedback = false
 
-    /// MARK: - UIView's Methods
+    // MARK: - UIView's Methods
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,7 +23,7 @@ class AppFeedbackPromptView: UIView {
         setupSubviews()
     }
 
-    /// MARK: - Helpers
+    // MARK: - Helpers
 
     fileprivate func setupSubviews() {
         translatesAutoresizingMaskIntoConstraints = false
@@ -136,7 +136,7 @@ class AppFeedbackPromptView: UIView {
         }
     }
 
-    /// MARK: - Static Constants
+    // MARK: - Static Constants
 
     // these values based on Zeplin mockups
     private struct LayoutConstants {

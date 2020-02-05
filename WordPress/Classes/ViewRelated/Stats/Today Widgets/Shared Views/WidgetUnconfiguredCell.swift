@@ -1,5 +1,21 @@
 import UIKit
 
+enum WidgetType {
+    case today
+    case allTime
+    case thisWeek
+    case loadingFailed
+
+    var configureLabelFont: UIFont {
+        switch self {
+        case .loadingFailed:
+            return WidgetStyles.headlineFont
+        default:
+            return WidgetStyles.footnoteNote
+        }
+    }
+}
+
 class WidgetUnconfiguredCell: UITableViewCell {
 
     // MARK: - Properties
@@ -8,12 +24,15 @@ class WidgetUnconfiguredCell: UITableViewCell {
 
     @IBOutlet private var configureLabel: UILabel!
     @IBOutlet private var separatorLine: UIView!
-    @IBOutlet private var openWordPressLabel: UILabel!
+    @IBOutlet private var separatorVisualEffectView: UIVisualEffectView!
+    @IBOutlet private var actionLabel: UILabel!
+
+    private var widgetType: WidgetType?
 
     // MARK: - View
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    func configure(for widgetType: WidgetType) {
+        self.widgetType = widgetType
         configureView()
     }
 
@@ -24,17 +43,38 @@ class WidgetUnconfiguredCell: UITableViewCell {
 private extension WidgetUnconfiguredCell {
 
     func configureView() {
-        configureLabel.text = LocalizedText.configure
-        openWordPressLabel.text = LocalizedText.openWordPress
+        guard let widgetType = widgetType else {
+            return
+        }
 
-        configureLabel.textColor = .text
-        openWordPressLabel.textColor = .text
-        separatorLine.backgroundColor = UIColor(light: .divider, dark: .textSubtle)
+        configureLabel.text = {
+            switch widgetType {
+            case .today:
+                return LocalizedText.configureToday
+            case .allTime:
+                return LocalizedText.configureAllTime
+            case .thisWeek:
+                return LocalizedText.configureThisWeek
+            case .loadingFailed:
+                return LocalizedText.loadingFailed
+            }
+        }()
+
+        configureLabel.font = widgetType.configureLabelFont
+        actionLabel.text = widgetType == .loadingFailed ? LocalizedText.retry : LocalizedText.openWordPress
+        configureLabel.textColor = WidgetStyles.primaryTextColor
+        actionLabel.textColor = WidgetStyles.primaryTextColor
+        WidgetStyles.configureSeparator(separatorLine)
+        separatorVisualEffectView.effect = WidgetStyles.separatorVibrancyEffect
     }
 
     enum LocalizedText {
-        static let configure = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
+        static let configureToday = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
+        static let configureAllTime = NSLocalizedString("Display your all-time site stats here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats all-time widget helper text")
+        static let configureThisWeek = NSLocalizedString("Display your site stats for this week here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats this week widget helper text")
         static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget label to launch WP app")
+        static let loadingFailed = NSLocalizedString("Couldn't load data", comment: "Message displayed when a Stats widget failed to load data.")
+        static let retry = NSLocalizedString("Retry", comment: "Stats widgets label to reload the widget.")
     }
 
 }

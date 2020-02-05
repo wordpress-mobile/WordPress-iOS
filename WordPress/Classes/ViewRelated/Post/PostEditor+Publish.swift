@@ -262,6 +262,7 @@ extension PostEditor where Self: UIViewController {
         let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
 
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.view.accessibilityIdentifier = "post-has-changes-alert"
 
         // Button: Keep editing
         alertController.addCancelActionWithTitle(cancelTitle)
@@ -330,6 +331,8 @@ extension PostEditor where Self: UIViewController {
 
         mapUIContentToPostAndSave(immediate: true)
 
+        consolidateChangesIfPostIsNew()
+
         PostCoordinator.shared.save(post,
                                     defaultFailureNotice: uploadFailureNotice(action: action)) { [weak self] result in
             guard let self = self else {
@@ -375,6 +378,18 @@ extension PostEditor where Self: UIViewController {
         self.postEditorStateContext.updated(isBeingPublished: false)
     }
 
+    /// If the post is fresh new and doesn't has remote we apply the current changes to the original post
+    ///
+    fileprivate func consolidateChangesIfPostIsNew() {
+        guard post.isRevision() && !post.hasRemote(), let originalPost = post.original else {
+            return
+        }
+
+        originalPost.applyRevision()
+        originalPost.deleteRevision()
+        post = originalPost
+    }
+
     func dismissOrPopView(didSave: Bool = true) {
         stopEditing()
 
@@ -400,7 +415,7 @@ extension PostEditor where Self: UIViewController {
     }
 
     // TODO: Rip this out and put it into the PostService
-    func createRevisionOfPost() {
+    func createRevisionOfPost(loadAutosaveRevision: Bool = false) {
 
         if post.isLocalRevision, post.original?.postTitle == nil, post.original?.content == nil {
             // Editing a locally made revision has bit of weirdness in how autosave and
@@ -440,6 +455,13 @@ extension PostEditor where Self: UIViewController {
 
         managedObjectContext.performAndWait {
             post = self.post.createRevision()
+
+            if loadAutosaveRevision {
+                post.postTitle = post.autosaveTitle
+                post.mt_excerpt = post.autosaveExcerpt
+                post.content = post.autosaveContent
+            }
+
             ContextManager.sharedInstance().save(managedObjectContext)
         }
     }

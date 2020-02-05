@@ -75,7 +75,7 @@ class MediaImageExporter: MediaExporter {
     }
 
     convenience init(url: URL) {
-        self.init(image: nil, filename: nil, data: nil, url: url, caption: nil)
+        self.init(image: nil, filename: url.lastPathComponent, data: nil, url: url, caption: nil)
     }
 
     convenience init(data: Data, filename: String?, typeHint: String? = nil) {
@@ -184,7 +184,7 @@ class MediaImageExporter: MediaExporter {
                 throw ImageExportError.imageSourceIsAnUnknownType
             }
             return exportImageSource(source,
-                              filename: UUID().uuidString,
+                              filename: filename,
                               type: options.exportImageType ?? utType as String,
                               onCompletion: onCompletion,
                               onError: onError)

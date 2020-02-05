@@ -29,7 +29,6 @@ extension NotificationsViewController {
         defer {
             WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.inlineKey])
         }
-        showInlinePrompt()
 
         inlinePromptView.setupHeading(NSLocalizedString("We'll notify you when you get followers, comments, and likes.",
                                                         comment: "This is the string we display when asking the user to approve push notifications"))
@@ -57,6 +56,11 @@ extension NotificationsViewController {
             self?.hideInlinePrompt(delay: 0.0)
             UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
         }
+
+        // We _seriously_ need to call the following method at last.
+        // Why I: Because you must first set the Heading (at least), so that the InlinePrompt's height can be properly calculated.
+        // Why II: UITableView's Header inability to deal with Autolayout was never, ever addressed by AAPL.
+        showInlinePrompt()
     }
 
     private func setupWinback() {

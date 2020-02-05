@@ -51,7 +51,7 @@ class PostCardStatusViewModel: NSObject {
         super.init()
     }
 
-    private var status: String? {
+    var status: String? {
         // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
@@ -59,6 +59,8 @@ class PostCardStatusViewModel: NSObject {
             return generateFailedStatusMessage()
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
+        } else if !post.hasLocalChanges() && post.hasAutosaveRevision {
+            return StatusMessages.hasUnsavedChanges
         } else {
             return post.statusForDisplay()
         }
@@ -96,6 +98,10 @@ class PostCardStatusViewModel: NSObject {
         if post.isFailed {
             let autoUploadAction = autoUploadInteractor.autoUploadAction(for: post)
             return (autoUploadAction == .upload || post.wasAutoUploadCancelled) ? .warning : .error
+        }
+
+        if post.hasAutosaveRevision {
+            return .warning(.shade40)
         }
 
         switch status {
@@ -262,5 +268,7 @@ class PostCardStatusViewModel: NSObject {
                                                             comment: "Message displayed on a post's card when the post has failed to upload")
         static let localChanges = NSLocalizedString("Local changes",
                                                             comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
+        static let hasUnsavedChanges = NSLocalizedString("You've made unsaved changes to this post",
+                                                            comment: "Message displayed on a post's card when the post has unsaved changes")
     }
 }
