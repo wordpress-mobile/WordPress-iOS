@@ -25,6 +25,7 @@ class ActionButton: UIView {
         let titleLabel = UILabel()
         titleLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
         titleLabel.textAlignment = .center
+        titleLabel.adjustsFontForContentSizeCategory = true
         return titleLabel
     }()
 

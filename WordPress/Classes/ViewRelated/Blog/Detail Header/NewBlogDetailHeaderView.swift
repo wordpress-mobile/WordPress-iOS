@@ -7,6 +7,7 @@ class NewBlogDetailHeaderView: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -14,6 +15,7 @@ class NewBlogDetailHeaderView: UIView {
         let label = UILabel()
         label.font = WPStyleGuide.fontForTextStyle(.subheadline)
         label.textColor = UIColor.textSubtle
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
