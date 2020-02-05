@@ -434,8 +434,16 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         [restRemote getPostWithID:remotePost.postID success:^(RemotePost *tempPost) {
             if ([tempPost.status isEqualToString:PostStatusDraft]) {
 
+                // We have to be careful about uploading when the status has been
+                // changed locally. Since the post is a draft on the server,
+                // use the draft status now, and restore to whatever the status
+                // might have been set to after the call completes.
+                NSString *savedStatus = post.status;
+                post.status = PostStatusDraft;
+
                 [self uploadPost:post
                 success:^(AbstractPost * _Nonnull post) {
+                    post.status = savedStatus;
                     success(post, nil);
                 } failure:failure];
 
