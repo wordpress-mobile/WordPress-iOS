@@ -93,3 +93,11 @@ struct PostCountLabels {
 
 let postCountText = (count == 1 ? PostCountLabels.singular : PostCountLabels.plural)
 ```
+
+## Numbers
+
+Localize numbers whenever possible. 
+
+```swift
+let localizedCount = NumberFormatter.localizedString(from: NSNumber(value: count), number: .none)
+```
