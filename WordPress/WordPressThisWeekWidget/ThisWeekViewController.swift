@@ -16,6 +16,7 @@ class ThisWeekViewController: UIViewController {
     private var oauthToken: String?
     private let tracks = Tracks(appGroupName: WPAppGroupName)
     private let reachability: Reachability = .forInternetConnection()
+    private var calculatedDataRowHeight: CGFloat?
 
     private typealias WidgetCompletionBlock = (NCUpdateResult) -> Void
     private var widgetCompletionBlock: WidgetCompletionBlock?
@@ -39,6 +40,8 @@ class ThisWeekViewController: UIViewController {
     private var isReachable = true {
         didSet {
             setAvailableDisplayMode()
+            resizeView()
+            tableView.separatorStyle = showNoConnection ? .none : .singleLine
 
             if isReachable != oldValue,
                 let completionHandler = widgetCompletionBlock {
@@ -433,12 +436,14 @@ private extension ThisWeekViewController {
         let dataRowHeight: CGFloat
 
         // This method is called before the rows are updated.
-        // So if a no connection cell was displayed, use the default height for data rows.
+        // So if a no connection cell was displayed, use either the previously calculated
+        // height or the default height for data rows.
         // Otherwise, use the actual height from the first data row.
         if tableView.visibleCells.first is WidgetNoConnectionCell {
-            dataRowHeight = WidgetDifferenceCell.defaultHeight
+            dataRowHeight = calculatedDataRowHeight ?? WidgetDifferenceCell.defaultHeight
         } else {
             dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+            calculatedDataRowHeight = dataRowHeight
         }
 
         height += (dataRowHeight * CGFloat(numberOfRowsToDisplay() - 1))
