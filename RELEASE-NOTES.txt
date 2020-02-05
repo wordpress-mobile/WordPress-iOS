@@ -8,6 +8,7 @@
 * Block editor: Fix issue with gallery upload progress indication
 * Block editor: Retry displaying image when connectivity restores
 * Block editor: Show an "Edit" button overlay on selected image blocks
+* Block editor: Add support for image size options in the gallery block
 
 14.1
 -----
