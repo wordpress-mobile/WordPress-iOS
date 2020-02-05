@@ -447,7 +447,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let image = GutenbergMediaEditorImage(url: mediaUrl)
+        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post)
 
         let mediaEditor = WPMediaEditor(image)
         mediaEditor.edit(from: self,
