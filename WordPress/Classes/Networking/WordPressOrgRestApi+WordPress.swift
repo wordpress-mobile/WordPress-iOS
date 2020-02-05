@@ -19,12 +19,13 @@ private func makeCookieNonceAuthenticator(blog: Blog) -> Authenticator? {
     guard let loginURL = try? blog.loginUrl().asURL(),
         let adminURL = try? blog.adminUrl(withPath: "").asURL(),
         let username = blog.username,
-        let password = blog.password else {
+        let password = blog.password,
+        let version = blog.version as String? else {
         DDLogError("Failed to initialize a .org API client with blog: \(blog)")
         return nil
     }
 
-    return CookieNonceAuthenticator.cookieNonce(username: username, password: password, loginURL: loginURL, adminURL: adminURL)
+    return CookieNonceAuthenticator.cookieNonce(username: username, password: password, loginURL: loginURL, adminURL: adminURL, version: version)
 }
 
 private func apiBase(blog: Blog) -> URL? {
