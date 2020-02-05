@@ -149,11 +149,11 @@ NSString * const CommentStatusDraft = @"draft";
 
 - (NSString *)contentForDisplay
 {
-    // Unescape HTML characters and add <br /> tags
-    NSString *commentContent = [[self.content stringByDecodingXMLCharacters] trim];    
-    NSRegularExpression *removeNewlinesAfterHtmlTags = [NSRegularExpression regularExpressionWithPattern:@"(?<=\\>)\n\n" options:0 error:nil];
-    commentContent = [removeNewlinesAfterHtmlTags stringByReplacingMatchesInString:commentContent options:0 range:NSMakeRange(0, [commentContent length]) withTemplate:@""];
-    commentContent = [commentContent stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"];
+    //Strip HTML from the comment content
+    NSString *commentContent = [self.content stringByDecodingXMLCharacters];
+    commentContent = [commentContent trim];
+    commentContent = [commentContent stringByStrippingHTML];
+    commentContent = [commentContent stringByNormalizingWhitespace];    
 
     return commentContent;
 }
