@@ -398,8 +398,8 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     NSManagedObjectID *postObjectID = post.objectID;
     RemotePost *remotePost = [self remotePostWithPost:post];
 
-    AutosaveSuccessBlock successBlock = [self wrappedAutosaveSuccessBlock:postObjectID success:success];
-    AutosaveFailureBlock failureBlock = [self wrappedAutosaveFailureBlock:post failure:failure];
+    AutosaveSuccessBlock autosaveSuccessBlock = [self wrappedAutosaveSuccessBlock:postObjectID success:success];
+    AutosaveFailureBlock setPostAsFailedAndCallFailureBlock = [self wrappedAutosaveFailureBlock:post failure:failure];
 
     // The autoSave endpoint returns an exception on posts that do not exist on the server
     // so we'll create the post instead if necessary.
@@ -410,7 +410,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         // locally trashed post as drafts in the server.
         if ([post.status isEqualToString:PostStatusTrash] || [post.status isEqualToString:PostStatusDeleted]) {
             NSError *error = [self defaultAutosaveError];
-            failureBlock(error);
+            setPostAsFailedAndCallFailureBlock(error);
             return;
         }
 
@@ -441,11 +441,11 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
             } else {
                 [restRemote autoSave:remotePost
-                             success:successBlock
-                             failure:failureBlock];
+                             success:autosaveSuccessBlock
+                             failure:setPostAsFailedAndCallFailureBlock];
             }
         } failure:^(NSError *error) {
-            failureBlock(error);
+            setPostAsFailedAndCallFailureBlock(error);
         }];
 
         return;
@@ -453,8 +453,8 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
     // Otherwise autosave.
     [restRemote autoSave:remotePost
-                 success:successBlock
-                 failure:failureBlock];
+                 success:autosaveSuccessBlock
+                 failure:setPostAsFailedAndCallFailureBlock];
 
 }
 
