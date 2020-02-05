@@ -26,7 +26,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 #pragma mark - Private Properties
 
-@interface WPWebViewController () <UIWebViewDelegate>
+@interface WPWebViewController ()
 
 @property (nonatomic,   weak) IBOutlet WKWebView                *webView;
 @property (nonatomic,   weak) IBOutlet WebProgressView          *progressView;
