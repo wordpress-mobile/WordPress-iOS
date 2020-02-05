@@ -28,13 +28,13 @@ class ReaderReblogPresenter {
                        readerPost: ReaderPost,
                        origin: UIViewController) {
 
-        let blogCount = blogService.blogCountForWPComAccounts()
+        let blogCount = blogService.blogCountVisibleForWPComAccounts()
 
         switch blogCount {
         case 0:
             presentNoSitesScene(origin: origin)
         case 1:
-            guard let blog = blogService.blogsForWPComAccounts().first else {
+            guard let blog = blogService.visibleBlogsForWPComAccounts().first else {
                 return
             }
             presentEditor(with: readerPost, blog: blog, origin: origin)

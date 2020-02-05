@@ -17,11 +17,11 @@ class MockBlogService: BlogService {
 
     var blogCount = 1
 
-    override func blogCountForWPComAccounts() -> Int {
+    override func blogCountVisibleForWPComAccounts() -> Int {
         return blogCount
     }
 
-    override func blogsForWPComAccounts() -> [Blog] {
+    override func visibleBlogsForWPComAccounts() -> [Blog] {
         blogsForAllAccountsExpectation?.fulfill()
         return [Blog(context: self.managedObjectContext), Blog(context: self.managedObjectContext)]
     }
