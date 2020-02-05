@@ -32,6 +32,12 @@ class RoundedButton: UIButton {
         }
     }
 
+    @IBInspectable var selectedBackgroundColor: UIColor? {
+        didSet {
+            updateAppearance()
+        }
+    }
+
     override var reversesTitleShadowWhenHighlighted: Bool {
         didSet {
             updateAppearance()
@@ -66,7 +72,7 @@ class RoundedButton: UIButton {
             setBackgroundImage(UIImage(color: tintColor), for: .highlighted)
         } else {
             setTitleColor(tintColor.withAlphaComponent(0.5), for: .highlighted)
-            setBackgroundImage(UIImage(color: backgroundColor), for: .highlighted)
+            setBackgroundImage(UIImage(color: selectedBackgroundColor ?? backgroundColor), for: .highlighted)
         }
     }
 

@@ -163,7 +163,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate>
 
-@property (nonatomic, strong) BlogDetailHeaderView *headerView;
+@property (nonatomic, strong) UIView<BlogDetailHeader> *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
@@ -307,6 +307,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
     [self startObservingQuickStart];
+}
+
+/// Resizes the `tableHeaderView` as necessary whenever its size changes.
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    if ([Feature enabled:FeatureFlagQuickActions]) {
+        UIView *headerView = self.tableView.tableHeaderView;
+        
+        CGSize size = [self.tableView.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        if (headerView.frame.size.height != size.height) {
+            headerView.frame = CGRectMake(headerView.frame.origin.x, headerView.frame.origin.y, headerView.frame.size.width, size.height);
+            
+            self.tableView.tableHeaderView = headerView;
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -681,29 +697,32 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                             accessibilityIdentifier:@"Site Pages Row"
-                                                    image:[Gridicon iconOfType:GridiconTypePages]
-                                                 callback:^{
-                                                     [weakSelf showPageList];
-                                                 }];
-    pagesRow.quickStartIdentifier = QuickStartTourElementPages;
-    [rows addObject:pagesRow];
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
-                                  accessibilityIdentifier:@"Blog Post Row"
-                                                    image:[[Gridicon iconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
-                                                 callback:^{
-                                                     [weakSelf showPostList];
-                                                 }]];
+    if ([Feature enabled:FeatureFlagQuickActions] == NO) {
+        BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                                 accessibilityIdentifier:@"Site Pages Row"
+                                                        image:[Gridicon iconOfType:GridiconTypePages]
+                                                     callback:^{
+                                                         [weakSelf showPageList];
+                                                     }];
+        pagesRow.quickStartIdentifier = QuickStartTourElementPages;
+        [rows addObject:pagesRow];
+
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
+                                      accessibilityIdentifier:@"Blog Post Row"
+                                                        image:[[Gridicon iconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
+                                                     callback:^{
+                                                         [weakSelf showPostList];
+                                                     }]];
 
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
-                                  accessibilityIdentifier:@"Media Row"
-                                                    image:[Gridicon iconOfType:GridiconTypeImage]
-                                                 callback:^{
-                                                     [weakSelf showMediaLibrary];
-                                                 }]];
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
+                                      accessibilityIdentifier:@"Media Row"
+                                                        image:[Gridicon iconOfType:GridiconTypeImage]
+                                                     callback:^{
+                                                         [weakSelf showMediaLibrary];
+                                                     }]];
+    }
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[[Gridicon iconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
@@ -867,25 +886,35 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)configureBlogDetailHeader
 {
-    // Wrapper view
-    UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize + BlogDetailHeaderViewVerticalMargin * 2)];
-    headerWrapper.preservesSuperviewLayoutMargins = YES;
-    self.tableView.tableHeaderView = headerWrapper;
+    if ([Feature enabled:FeatureFlagQuickActions]) {
+        NewBlogDetailHeaderView *headerView = [self configureHeaderView];
+        headerView.delegate = self;
+        
+        self.headerView = headerView;
+        
+        self.tableView.tableHeaderView = headerView;
+    } else {
+        // Wrapper view
+        UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize + BlogDetailHeaderViewVerticalMargin * 2)];
+        headerWrapper.preservesSuperviewLayoutMargins = YES;
+        self.tableView.tableHeaderView = headerWrapper;
 
-    // Blog detail header view
-    BlogDetailHeaderView *headerView = [[BlogDetailHeaderView alloc] init];
-    headerView.translatesAutoresizingMaskIntoConstraints = NO;
-    headerView.delegate = self;
-    [headerWrapper addSubview:headerView];
-
-    UILayoutGuide *readableGuide = headerWrapper.readableContentGuide;
-    [NSLayoutConstraint activateConstraints:@[
-                                              [headerView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
-                                              [headerView.topAnchor constraintEqualToAnchor:headerWrapper.topAnchor],
-                                              [headerView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
-                                              [headerView.bottomAnchor constraintEqualToAnchor:headerWrapper.bottomAnchor],
-                                              ]];
-     self.headerView = headerView;
+        // Blog detail header view
+        BlogDetailHeaderView *headerView = [[BlogDetailHeaderView alloc] init];
+        headerView.translatesAutoresizingMaskIntoConstraints = NO;
+        headerView.delegate = self;
+        [headerWrapper addSubview:headerView];
+        self.headerView = headerView;
+        
+        
+        UILayoutGuide *readableGuide = headerWrapper.readableContentGuide;
+        [NSLayoutConstraint activateConstraints:@[
+                                                  [headerView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                                  [headerView.topAnchor constraintEqualToAnchor:headerWrapper.topAnchor],
+                                                  [headerView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                                  [headerView.bottomAnchor constraintEqualToAnchor:headerWrapper.bottomAnchor],
+                                                  ]];
+    }
 }
 
 #pragma mark BlogDetailHeaderViewDelegate
