@@ -3,10 +3,10 @@ class ReaderReblogPresenter {
     private let postService: PostService
 
     private struct NoSitesConfiguration {
-        static let noSitesTitle = NSLocalizedString("No available sites",
-                                                    comment: "A short message that informs the user no sites could be found.")
-        static let noSitesSubtitle = NSLocalizedString("Once you create a site, you can reblog content that you like to your own site.",
-                                                       comment: "A subtitle with more detailed info for the user when no sites could be found.")
+        static let noSitesTitle = NSLocalizedString("No available WordPress.com sites",
+                                                    comment: "A short message that informs the user no WordPress.com sites could be found.")
+        static let noSitesSubtitle = NSLocalizedString("Once you create a WordPress.com site, you can reblog content that you like to your own site.",
+                                                       comment: "A subtitle with more detailed info for the user when no WordPress.com sites could be found.")
         static let manageSitesLabel = NSLocalizedString("Manage Sites",
                                                         comment: "Button title. Tapping lets the user manage the sites they follow.")
         static let backButtonTitle = NSLocalizedString("Back",
@@ -28,13 +28,13 @@ class ReaderReblogPresenter {
                        readerPost: ReaderPost,
                        origin: UIViewController) {
 
-        let blogCount = blogService.blogCountForAllAccounts()
+        let blogCount = blogService.blogCountForWPComAccounts()
 
         switch blogCount {
         case 0:
             presentNoSitesScene(origin: origin)
         case 1:
-            guard let blog = blogService.blogsForAllAccounts().first else {
+            guard let blog = blogService.blogsForWPComAccounts().first else {
                 return
             }
             presentEditor(with: readerPost, blog: blog, origin: origin)

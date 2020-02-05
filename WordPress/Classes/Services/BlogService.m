@@ -510,6 +510,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [self blogsWithPredicate:nil];
 }
 
+- (NSArray<Blog *> *)blogsForWPComAccounts
+{
+    return [self blogsWithPredicate:[NSPredicate predicateWithFormat:@"account != NULL"]];
+}
+
 - (NSDictionary *)blogsForAllAccountsById
 {
     NSMutableDictionary *blogMap = [NSMutableDictionary dictionary];
