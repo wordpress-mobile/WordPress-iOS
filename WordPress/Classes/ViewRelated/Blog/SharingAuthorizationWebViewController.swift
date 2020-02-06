@@ -80,6 +80,12 @@ static NSString * const SharingAuthorizationDenied = @"denied=";
 // Facebook and Google+
 static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied";
  */
+
+    // Special handling for the inconsistent way that services respond to a user's choice to decline
+    // oauth authorization.
+    // Right now we have no clear way to know if Tumblr fails.  This is something we should try
+    // fixing moving forward.
+    // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
     private static let declinePath = "/decline"
     private static let userRefused = "oauth_problem=user_refused"
     private static let authorizationDenied = "denied="
@@ -106,7 +112,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 // From old header...
 //@property (nonatomic, weak) id<SharingAuthorizationDelegate> delegate;
-    private let delegate: SharingAuthorizationDelegate
+    private weak var delegate: SharingAuthorizationDelegate?
 
 /*
 @end
@@ -251,6 +257,11 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
     @IBAction
     override func dismiss() {
+        guard let delegate = delegate else {
+            super.dismiss()
+            return
+        }
+        
         delegate.authorizeDidCancel(publicizer)
     }
 
@@ -270,7 +281,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
         // Note: There are situations where this can be called in error due to how
         // individual services choose to reply to an authorization request.
         // Delegates should expect to handle a false positive.
-        delegate.authorizeDidSucceed(publicizer)
+        delegate?.authorizeDidSucceed(publicizer)
     }
 
     /*
@@ -283,7 +294,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
      */
 
     private func displayLoadError(error: NSError) {
-        delegate.authorize(self.publicizer, didFailWithError: error)
+        delegate?.authorize(self.publicizer, didFailWithError: error)
     }
 
     /*
