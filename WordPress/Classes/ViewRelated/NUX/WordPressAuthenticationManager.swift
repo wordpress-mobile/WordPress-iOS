@@ -20,6 +20,11 @@ class WordPressAuthenticationManager: NSObject {
     /// Initializes WordPressAuthenticator with all of the parameters that will be needed during the login flow.
     ///
     func initializeWordPressAuthenticator() {
+
+        // SIWA can not be enabled for internal builds
+        // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
+        let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
+
         let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
                                                                 wpcomSecret: ApiCredentials.secret(),
                                                                 wpcomScheme: WPComScheme,
@@ -31,7 +36,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 googleLoginScheme: ApiCredentials.googleLoginSchemeId(),
                                                                 userAgent: WPUserAgent.wordPress(),
                                                                 showNewLoginFlow: true,
-                                                                enableSignInWithApple: FeatureFlag.signInWithApple.enabled)
+                                                                enableSignInWithApple: enableSignInWithApple)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
