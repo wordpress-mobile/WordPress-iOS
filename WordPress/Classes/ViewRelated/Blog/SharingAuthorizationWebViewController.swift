@@ -261,7 +261,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
             super.dismiss()
             return
         }
-        
+
         delegate.authorizeDidCancel(publicizer)
     }
 
