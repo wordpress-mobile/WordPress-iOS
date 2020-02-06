@@ -63,6 +63,7 @@ class NewBlogDetailHeaderView: UIView {
     private enum Constants {
         static let spacingBelowIcon: CGFloat = 16
         static let spacingBelowTitle: CGFloat = 8
+        static let minimumSideSpacing: CGFloat = 8
         static let interSectionSpacing: CGFloat = 32
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
@@ -112,8 +113,9 @@ class NewBlogDetailHeaderView: UIView {
         bottomConstraint.priority = UILayoutPriority(999) // Allow to break so encapsulated height (on initial table view load) doesn't spew warnings
 
         let edgeConstraints = [
-            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            stackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.minimumSideSpacing),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing),
             buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
             buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),

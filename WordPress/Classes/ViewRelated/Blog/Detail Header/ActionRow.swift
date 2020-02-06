@@ -6,7 +6,7 @@ class ActionButton: UIView {
         static let borderColor = UIColor.secondaryButtonBorder
         static let backgroundColor = UIColor.secondaryButtonBackground
         static let selectedBackgroundColor = UIColor.secondaryButtonDownBackground
-        static let iconColor = UIColor.text
+        static let iconColor = UIColor.listIcon
     }
 
     private let button: UIButton = {
@@ -17,7 +17,7 @@ class ActionButton: UIView {
         button.backgroundColor = Constants.backgroundColor
         button.selectedBackgroundColor = Constants.selectedBackgroundColor
         button.tintColor = Constants.iconColor
-        button.imageView?.contentMode = .scaleAspectFill
+        button.imageView?.contentMode = .center
         button.imageView?.clipsToBounds = false
         return button
     }()
