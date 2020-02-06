@@ -88,7 +88,7 @@ struct EditorScreen {
 
     func dismissDialogsIfNeeded() {
         if self.isGutenbergEditor {
-            blockEditor.dismissBlockEditorEnabledDialog()
+            blockEditor.dismissNotificationAlertIfNeeded(.accept)
         }
     }
 
