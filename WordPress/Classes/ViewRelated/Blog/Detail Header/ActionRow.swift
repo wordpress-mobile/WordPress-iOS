@@ -1,7 +1,7 @@
 class ActionButton: UIView {
 
     private enum Constants {
-        static let size: CGFloat = 56
+        static let maxButtonSize: CGFloat = 56
         static let spacing: CGFloat = 8
         static let borderColor = UIColor.secondaryButtonBorder
         static let backgroundColor = UIColor.secondaryButtonBackground
@@ -11,13 +11,14 @@ class ActionButton: UIView {
 
     private let button: UIButton = {
         let button = RoundedButton(type: .custom)
+        button.isCircular = true
         button.borderColor = Constants.borderColor
         button.borderWidth = 1
         button.backgroundColor = Constants.backgroundColor
         button.selectedBackgroundColor = Constants.selectedBackgroundColor
         button.tintColor = Constants.iconColor
         button.imageView?.contentMode = .scaleAspectFill
-        button.cornerRadius = Constants.size/2
+        button.imageView?.clipsToBounds = false
         return button
     }()
 
@@ -50,8 +51,8 @@ class ActionButton: UIView {
         button.addTarget(self, action: #selector(ActionButton.tapped), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            button.heightAnchor.constraint(equalToConstant: Constants.size),
-            button.widthAnchor.constraint(equalToConstant: Constants.size)
+            button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 1),
+            button.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxButtonSize)
         ])
 
         addSubview(stackView)
@@ -65,6 +66,10 @@ class ActionButton: UIView {
 }
 
 class ActionRow: UIStackView {
+
+    enum Constants {
+        static let minimumSpacing: CGFloat = 8
+    }
 
     struct Item {
         let image: UIImage
@@ -81,6 +86,7 @@ class ActionRow: UIStackView {
         self.init(arrangedSubviews: buttons)
 
         distribution = .equalSpacing
+        spacing = Constants.minimumSpacing
         translatesAutoresizingMaskIntoConstraints = false
     }
 }

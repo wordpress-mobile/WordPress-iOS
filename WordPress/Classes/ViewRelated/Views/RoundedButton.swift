@@ -2,6 +2,9 @@ import UIKit
 
 @IBDesignable
 class RoundedButton: UIButton {
+
+    @IBInspectable var isCircular: Bool = false
+
     @IBInspectable var cornerRadius: CGFloat = 4.0 {
         didSet {
             updateAppearance()
@@ -60,7 +63,9 @@ class RoundedButton: UIButton {
         contentEdgeInsets = UIEdgeInsets(top: verticalEdgeInset, left: horizontalEdgeInset, bottom: verticalEdgeInset, right: horizontalEdgeInset)
 
         layer.masksToBounds = true
-        layer.cornerRadius = cornerRadius
+        if !isCircular {
+            layer.cornerRadius = cornerRadius
+        }
         layer.borderWidth = borderWidth
         layer.borderColor = borderColor?.cgColor ?? tintColor.cgColor
 
@@ -73,6 +78,14 @@ class RoundedButton: UIButton {
         } else {
             setTitleColor(tintColor.withAlphaComponent(0.5), for: .highlighted)
             setBackgroundImage(UIImage(color: selectedBackgroundColor ?? backgroundColor), for: .highlighted)
+        }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if isCircular {
+            layer.cornerRadius = frame.size.width / 2
         }
     }
 

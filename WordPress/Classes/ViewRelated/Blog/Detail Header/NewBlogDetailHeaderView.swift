@@ -64,7 +64,9 @@ class NewBlogDetailHeaderView: UIView {
         static let spacingBelowIcon: CGFloat = 16
         static let spacingBelowTitle: CGFloat = 8
         static let interSectionSpacing: CGFloat = 32
-        static let bottomPadding: CGFloat = 40
+        static let buttonsBottomPadding: CGFloat = 40
+        static let buttonsSidePadding: CGFloat = 40
+        static let buttonsMinSidePadding: CGFloat = 12
     }
 
     convenience init(items: [ActionRow.Item]) {
@@ -94,7 +96,7 @@ class NewBlogDetailHeaderView: UIView {
         addSubview(buttonsStackView)
 
 
-        // Set up constratints for spacing
+        // Set up constraints for spacing
 
         stackView.setCustomSpacing(Constants.spacingBelowIcon, after: siteIconView)
         stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleLabel)
@@ -105,11 +107,19 @@ class NewBlogDetailHeaderView: UIView {
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing)
         ])
 
+        let normalSideConstraints = [
+            buttonsStackView.trailingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor, constant: -Constants.buttonsSidePadding),
+            buttonsStackView.leadingAnchor.constraint(lessThanOrEqualTo: stackView.leadingAnchor, constant: Constants.buttonsSidePadding)
+        ]
+
+        NSLayoutConstraint.activate(normalSideConstraints)
+
         NSLayoutConstraint.activate([
             buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
-            buttonsStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: Constants.bottomPadding),
-            buttonsStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -Constants.bottomPadding),
-            buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.bottomPadding),
+            buttonsStackView.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: Constants.buttonsMinSidePadding),
+            buttonsStackView.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -Constants.buttonsMinSidePadding),
+            buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.buttonsBottomPadding),
         ])
     }
 
