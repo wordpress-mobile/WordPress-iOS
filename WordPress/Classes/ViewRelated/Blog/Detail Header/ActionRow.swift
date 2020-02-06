@@ -43,6 +43,7 @@ class ActionButton: UIView {
             button,
             titleLabel
         ])
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.spacing
         stackView.axis = .vertical
@@ -85,7 +86,7 @@ class ActionRow: UIStackView {
 
         self.init(arrangedSubviews: buttons)
 
-        distribution = .equalSpacing
+        distribution = .equalCentering
         spacing = Constants.minimumSpacing
         translatesAutoresizingMaskIntoConstraints = false
     }
