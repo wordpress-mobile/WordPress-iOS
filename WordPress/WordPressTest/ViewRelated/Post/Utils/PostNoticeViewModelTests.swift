@@ -28,6 +28,7 @@ class PostNoticeViewModelTests: XCTestCase {
         struct Expectation {
             let scenario: String
             let post: Post
+            let isInternetReachable: Bool
             let title: String
             let actionTitle: String
         }
@@ -37,68 +38,85 @@ class PostNoticeViewModelTests: XCTestCase {
             Expectation(
                 scenario: "Local draft",
                 post: createPost(.draft),
+                isInternetReachable: false,
                 title: PostAutoUploadMessages.draftWillBeUploaded,
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with confirmed local changes",
                 post: createPost(.draft, hasRemote: true),
+                isInternetReachable: false,
                 title: PostAutoUploadMessages.draftWillBeUploaded,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Local published draft",
                 post: createPost(.publish),
+                isInternetReachable: false,
                 title: PostAutoUploadMessages.postWillBePublished,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Published post with confirmed local changes",
                 post: createPost(.publish, hasRemote: true),
+                isInternetReachable: false,
                 title: PostAutoUploadMessages.postWillBePublished,
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Locally scheduled post",
                 post: createPost(.scheduled),
+                isInternetReachable: false,
                 title: i18n("We'll schedule your post when your device is back online."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Scheduled post with confirmed local changes",
                 post: createPost(.scheduled, hasRemote: true),
+                isInternetReachable: false,
                 title: i18n("We'll schedule your post when your device is back online."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Post with at least 1 auto upload to publish attempt",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
+                isInternetReachable: false,
                 title: i18n("We couldn't publish this post, but we'll try again later."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Post with the maximum number of auto upload to publish attempts",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
                 title: i18n("We couldn't complete this action, and didn't publish this post."),
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with at least 1 auto upload attempt",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 2),
+                isInternetReachable: false,
                 title: i18n("We couldn't complete this action, but we'll try again later."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Draft with the maximum number of auto upload attempts",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
                 title: i18n("We couldn't complete this action."),
                 actionTitle: FailureActionTitles.retry
             ),
+            Expectation(
+                scenario: "Draft with at least 1 auto upload attempt",
+                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
+                isInternetReachable: true,
+                title: i18n("Post failed to upload"),
+                actionTitle: FailureActionTitles.retry
+            )
         ]
 
         expectations.forEach { expectation in
             // Act
-            let notice = PostNoticeViewModel(post: expectation.post).notice
+            let notice = PostNoticeViewModel(post: expectation.post, isInternetReachable: expectation.isInternetReachable).notice
 
             // Assert
             expect({
