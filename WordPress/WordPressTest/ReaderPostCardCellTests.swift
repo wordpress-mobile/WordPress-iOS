@@ -217,6 +217,6 @@ final class ReaderPostCardCellTests: XCTestCase {
             XCTFail("Reblog button not found.")
             return
         }
-        XCTAssertFalse(button.isHidden, "Reblog button should not be visible.")
+        XCTAssertTrue(button.isHidden, "Reblog button should not be visible.")
     }
 }
