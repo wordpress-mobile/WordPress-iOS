@@ -20,7 +20,9 @@ class GutenbergMediaPickerHelper: NSObject {
     /// Media Library Data Source
     ///
     fileprivate lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
-        return MediaLibraryPickerDataSource(post: self.post)
+        let dataSource = MediaLibraryPickerDataSource(post: self.post)
+        dataSource.ignoreSyncErrors = true
+        return dataSource
     }()
 
     /// Device Photo Library Data Source
