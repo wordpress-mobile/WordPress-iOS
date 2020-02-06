@@ -83,7 +83,7 @@ NSLocalizedString(
 
 ## Pluralization
 
-Pluralization is currently manually done by having separate strings for the plural and singular. 
+GlotPress currently does not support pluralization using the [`.stringsdict` file](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/LocalizingYourApp/LocalizingYourApp.html#//apple_ref/doc/uid/10000171i-CH5-SW10). So, right now, you have to support plurals manually by having separate localized strings.
 
 ```swift
 struct PostCountLabels {
