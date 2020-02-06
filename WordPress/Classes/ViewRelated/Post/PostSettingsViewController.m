@@ -10,7 +10,6 @@
 #import "PostGeolocationViewController.h"
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
-#import "PublishDatePickerView.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
@@ -52,7 +51,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 static CGFloat CellHeight = 44.0f;
 static CGFloat LoadingIndicatorHeight = 28.0f;
 
-static NSInteger RowIndexForDatePicker = 0;
 static NSInteger RowIndexForPassword = 3;
 static CGFloat LocationCellHeightToWidthAspectRatio = 0.5f;
 
@@ -64,7 +62,7 @@ static NSString *const TableViewStickyPostCellIdentifier = @"TableViewStickyPost
 
 static void *PostGeoLocationObserverContext = &PostGeoLocationObserverContext;
 
-@interface PostSettingsViewController () <UITextFieldDelegate, WPPickerViewDelegate,
+@interface PostSettingsViewController () <UITextFieldDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate,
 PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate,
@@ -80,7 +78,6 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) NSData *animatedFeaturedImageData;
 
 @property (nonatomic, readonly) CGSize featuredImageSize;
-@property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL textFieldDidHaveFocusBeforeOrientationChange;
 
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
@@ -189,8 +186,6 @@ FeaturedImageViewControllerDelegate>
     [self.apost.managedObjectContext performBlock:^{
         [self.apost.managedObjectContext save:nil];
     }];
-
-    [self hideDatePicker];
 }
 
 - (void)didReceiveMemoryWarning
@@ -377,11 +372,6 @@ FeaturedImageViewControllerDelegate>
 
 #pragma mark - TextField Delegate Methods
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [self hideDatePicker];
-}
-
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     if (self.textFieldDidHaveFocusBeforeOrientationChange) {
@@ -538,9 +528,7 @@ FeaturedImageViewControllerDelegate>
     }
 
     if (sectionId == PostSettingsSectionMeta) {
-        if (indexPath.row == RowIndexForDatePicker && self.datePicker) {
-            return CGRectGetHeight(self.datePicker.frame);
-        } else if (indexPath.row == RowIndexForPassword) {
+        if (indexPath.row == RowIndexForPassword) {
             return CellHeight;
         }
     }
@@ -585,12 +573,8 @@ FeaturedImageViewControllerDelegate>
         [self showCategoriesSelection];
     } else if (cell.tag == PostSettingsRowTags) {
         [self showTagsPicker];
-    } else if (cell.tag == PostSettingsRowPublishDate && !self.datePicker) {
-        if ([Feature enabled:FeatureFlagPostScheduling]) {
-            [self showPublishSchedulingController];
-        } else {
-            [self configureAndShowDatePicker];
-        }
+    } else if (cell.tag == PostSettingsRowPublishDate) {
+        [self showPublishSchedulingController];
     } else if (cell.tag == PostSettingsRowStatus) {
         [self showPostStatusSelector];
     } else if (cell.tag == PostSettingsRowVisibility) {
@@ -650,7 +634,7 @@ FeaturedImageViewControllerDelegate>
 - (UITableViewCell *)configureMetaPostMetaCellForIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    if (indexPath.row == 0 && !self.datePicker) {
+    if (indexPath.row == 0) {
         // Publish date
         cell = [self getWPTableViewDisclosureCell];
         if (self.apost.dateCreated && ![self.apost shouldPublishImmediately]) {
@@ -666,9 +650,6 @@ FeaturedImageViewControllerDelegate>
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
         cell.tag = PostSettingsRowPublishDate;
-    } else if (indexPath.row == 0 && self.datePicker) {
-        // Date picker
-        cell = [self getWPTableViewDatePickerCell];
     } else if (indexPath.row == 1) {
         // Publish Status
         cell = [self getWPTableViewDisclosureCell];
@@ -985,24 +966,6 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (WPTableViewCell *)getWPTableViewDatePickerCell
-{
-    static NSString *WPTableViewDatePickerCellIdentifier = @"WPTableViewDatePickerCellIdentifier";
-    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTableViewDatePickerCellIdentifier];
-    if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:WPTableViewDatePickerCellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [WPStyleGuide configureTableViewCell:cell];
-        CGRect frame = self.datePicker.frame;
-        frame.size.width = cell.contentView.frame.size.width;
-        self.datePicker.frame = frame;
-        [cell.contentView addSubview:self.datePicker];
-    }
-    cell.tag = PostSettingsRowPublishDate;
-    return cell;
-}
-
 - (WPTableViewActivityCell *)getWPTableViewActivityCell
 {
     WPTableViewActivityCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier];
@@ -1031,43 +994,6 @@ FeaturedImageViewControllerDelegate>
     }
     cell.tag = 0;
     return cell;
-}
-
-- (void)hideDatePicker
-{
-    if (!self.datePicker) {
-        return;
-    }
-    self.datePicker = nil;
-
-    // Reload the whole section since other rows might be affected by any change.
-    NSIndexSet *sections = [NSIndexSet indexSetWithIndex:[self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]]];
-    [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
-}
-
-- (void)configureAndShowDatePicker
-{
-    NSDate *date;
-    if (self.apost.dateCreated) {
-        date = self.apost.dateCreated;
-    } else {
-        date = [NSDate date];
-    }
-
-    self.datePicker = [[PublishDatePickerView alloc] initWithDate:date];
-    self.datePicker.delegate = self;
-    CGRect frame = self.datePicker.frame;
-    if (IS_IPAD) {
-        frame.size.width = WPTableViewFixedWidth;
-    } else {
-        frame.size.width = CGRectGetWidth(self.tableView.bounds);
-    }
-    self.datePicker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.datePicker.frame = frame;
-
-    NSUInteger sec = [self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:RowIndexForDatePicker inSection:sec];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)showPublishSchedulingController
@@ -1457,52 +1383,6 @@ FeaturedImageViewControllerDelegate>
     } else {
         [picker hideSearchBar];
     }
-}
-
-#pragma mark - WPPickerView Delegate
-
-- (void)pickerView:(WPPickerView *)pickerView didChangeValue:(id)value
-{
-    [self handleDateChange:value];
-}
-
-- (void)pickerView:(WPPickerView *)pickerView didFinishWithValue:(id)value
-{
-    [self handleDateChange:value];
-    [self hideDatePicker];
-}
-
-- (void)handleDateChange:(id)value
-{
-    if (value == nil) {
-        // Publish Immediately
-        [self.apost publishImmediately];
-    } else {
-        // Compare via timeIntervalSinceDate to let us ignore subsecond variation.
-        NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
-        NSDate *selectedDate = (NSDate *)value;
-        NSTimeInterval interval = [startingDate timeIntervalSinceDate:selectedDate];
-        if (fabs(interval) < 1.0) {
-            return;
-        }
-        
-        self.apost.dateCreated = selectedDate;
-        
-        if ([self isFutureDated:selectedDate]) {
-            self.apost.status = PostStatusScheduled;
-        }
-    }
-}
-
-- (BOOL)isFutureDated:(NSDate *)date {
-    
-    if (date == nil) {
-        return NO;
-    }
-    
-    NSComparisonResult comparison = [NSCalendar.currentCalendar compareDate:[NSDate date] toDate:date toUnitGranularity:NSCalendarUnitMinute];
-    
-    return comparison == NSOrderedAscending;
 }
 
 #pragma mark - WPMediaPickerViewControllerDelegate methods

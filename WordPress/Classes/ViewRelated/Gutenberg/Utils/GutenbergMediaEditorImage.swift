@@ -10,6 +10,8 @@ class GutenbergMediaEditorImage: AsyncImage {
 
     private var originalURL: URL
 
+    private let post: AbstractPost
+
     private var fullQualityURL: URL? {
         guard var urlComponents = URLComponents(url: originalURL, resolvingAgainstBaseURL: false) else {
             return nil
@@ -20,10 +22,15 @@ class GutenbergMediaEditorImage: AsyncImage {
         return try? urlComponents.asURL()
     }
 
+    private lazy var mediaUtility: EditorMediaUtility = {
+        return EditorMediaUtility()
+    }()
+
     var thumb: UIImage?
 
-    init(url: URL) {
+    init(url: URL, post: AbstractPost) {
         originalURL = url
+        self.post = post
         thumb = AnimatedImageCache.shared.cachedStaticImage(url: originalURL)
     }
 
@@ -46,14 +53,13 @@ class GutenbergMediaEditorImage: AsyncImage {
     Fetch the full high-quality image
     */
     func full(finishedRetrievingFullImage: @escaping (UIImage?) -> ()) {
-        let task = ImageDownloader.shared.downloadImage(at: self.fullQualityURL!, completion: { image, error in
-            guard let image = image else {
-                finishedRetrievingFullImage(nil)
-                return
-            }
-
+        // By passing .zero as the size the full quality image will be downloaded
+        let task = mediaUtility.downloadImage(from: fullQualityURL!, size: .zero, scale: .greatestFiniteMagnitude, post: post, success: { image in
             finishedRetrievingFullImage(image)
+        }, onFailure: { _ in
+            finishedRetrievingFullImage(nil)
         })
+
         self.tasks.append(task)
     }
 

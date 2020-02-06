@@ -2,7 +2,7 @@ import Foundation
 import WebKit
 
 /// Provides a common interface to look for a logged-in WordPress cookie in different
-/// cookie storage systems, to aid with the transition from UIWebView to WebKit.
+/// cookie storage systems.
 ///
 @objc protocol CookieJar {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void)

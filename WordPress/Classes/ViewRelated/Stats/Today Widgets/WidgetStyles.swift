@@ -5,6 +5,8 @@ class WidgetStyles: NSObject {
 
     static let primaryTextColor: UIColor = .text
     static let secondaryTextColor: UIColor = .textSubtle
+    static let headlineFont = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize)
+    static let footnoteNote = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
 
     static var separatorColor: UIColor = {
         if #available(iOS 13, *) {
