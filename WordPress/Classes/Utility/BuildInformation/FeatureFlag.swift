@@ -31,7 +31,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .postPreview:
             return true
         case .postReblogging:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .mediaEditor:
             return true
         }

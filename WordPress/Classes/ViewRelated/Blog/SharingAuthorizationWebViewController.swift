@@ -347,7 +347,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
             return .deny
         }
 
-        if requested.hasPrefix(SharingAuthorizationWebViewController.authorizationPrefix) {
+        if !requested.hasPrefix(SharingAuthorizationWebViewController.authorizationPrefix) {
             return .none
         }
 
@@ -435,12 +435,15 @@ extension SharingAuthorizationWebViewController {
             fallthrough
         case .request:
             super.webView(webView, decidePolicyFor: navigationAction, decisionHandler: decisionHandler)
+            return
         case .verify:
             loadingVerify = true
             decisionHandler(.allow)
+            return
         case .deny:
             decisionHandler(.cancel)
             dismiss()
+            return
         }
     }
 
