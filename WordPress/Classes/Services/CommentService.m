@@ -417,6 +417,11 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     Comment *comment = [self createHierarchicalCommentWithContent:content withParent:nil postID:post.postID siteID:post.siteID];
     BOOL isPrivateSite = post.isPrivate;
+    
+    // This fixes an issue where the comment may not appear for some posts after a successful posting
+    // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
+    comment.post = post;
+
     NSManagedObjectID *commentID = comment.objectID;
     void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
         [self.managedObjectContext performBlock:^{
@@ -466,6 +471,11 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     Comment *comment = [self createHierarchicalCommentWithContent:content withParent:commentID postID:post.postID siteID:post.siteID];
     BOOL isPrivateSite = post.isPrivate;
+    
+    // This fixes an issue where the comment may not appear for some posts after a successful posting
+    // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
+    comment.post = post;
+
     NSManagedObjectID *commentObjectID = comment.objectID;
     void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
         // Update and save the comment

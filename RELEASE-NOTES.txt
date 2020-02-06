@@ -8,6 +8,7 @@
 * Signup and Login: signup or login via magic link now supports multiple email clients.
                     Tapping on the "Open Email" button will present a list of installed email client to choose from.
 * Posts: Fixed a bug that could disable comments on a draft post when previewing that post.
+* Reader: Fixed an issue where a new comment may not appear.
 * Reader: Added Post Reblogging feature. You can now reblog a post from the reader to your site(s). There is a new "reblog" button in the post action bar.
           Tapping on it allows to choose the site where to post, and opens the editor of your choice with pre-populated content from the original post.
 
