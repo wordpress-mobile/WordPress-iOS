@@ -56,7 +56,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     NSParameterAssert([userAgent isKindOfClass:[NSString class]]);
     
     NSDictionary *dictionary = @{WPUserAgentKeyUserAgent: userAgent};
-    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
+    // We have to call registerDefaults else the change isn't picked up by WKWebViews.
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
     
     DDLogVerbose(@"User-Agent set to: %@", userAgent);
