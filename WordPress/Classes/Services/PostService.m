@@ -423,46 +423,40 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         return;
     }
 
-    if ([post originalIsDraft]) {
-        // Calling the v1.1 autosave endpoint for a draft post will close
-        // the comments for the post. See https://github.com/wordpress-mobile/WordPress-iOS/issues/13079
-        // and p3hLNG-15Z-p2 for more background on this issue.
-        // For drafts, we can just call uploadPost and a new revision is
-        // automatically created anyway. We check original is draft since
-        // the post should be a draft on the server if we're uploading vs
-        // autosaving.
-        [restRemote getPostWithID:remotePost.postID success:^(RemotePost *tempPost) {
-            if ([tempPost.status isEqualToString:PostStatusDraft]) {
+    // Calling the v1.1 autosave endpoint for a draft post will close
+    // the comments for the post. See https://github.com/wordpress-mobile/WordPress-iOS/issues/13079
+    // and p3hLNG-15Z-p2 for more background on this issue.
+    // For drafts, we can just call uploadPost and a new revision is
+    // automatically created anyway. We check original is draft since
+    // the post should be a draft on the server if we're uploading vs
+    // autosaving.
+    [restRemote getPostWithID:remotePost.postID success:^(RemotePost *tempPost) {
+        if ([tempPost.status isEqualToString:PostStatusDraft]) {
 
-                // We have to be careful about uploading when the status has been
-                // changed locally. Since the post is a draft on the server,
-                // use the draft status now, and restore to whatever the status
-                // might have been set to after the call completes.
-                NSString *savedStatus = post.status;
-                post.status = PostStatusDraft;
+            // We have to be careful about uploading when the status has been
+            // changed locally. Since the post is a draft on the server,
+            // use the draft status now, and restore to whatever the status
+            // might have been set to after the call completes.
+            NSString *savedStatus = post.status;
+            post.status = PostStatusDraft;
 
-                [self uploadPost:post
-                success:^(AbstractPost * _Nonnull post) {
-                    post.status = savedStatus;
-                    success(post, nil);
-                } failure:failure];
+            [self uploadPost:post
+            success:^(AbstractPost * _Nonnull post) {
+                post.status = savedStatus;
+                success(post, nil);
+            } failure:^(NSError * _Nonnull error) {
+                post.status = savedStatus;
+                failure(error);
+            }];
 
-            } else {
-                [restRemote autoSave:remotePost
-                             success:autosaveSuccessBlock
-                             failure:setPostAsFailedAndCallFailureBlock];
-            }
-        } failure:^(NSError *error) {
-            setPostAsFailedAndCallFailureBlock(error);
-        }];
-
-        return;
-    }
-
-    // Otherwise autosave.
-    [restRemote autoSave:remotePost
-                 success:autosaveSuccessBlock
-                 failure:setPostAsFailedAndCallFailureBlock];
+        } else {
+            [restRemote autoSave:remotePost
+                         success:autosaveSuccessBlock
+                         failure:setPostAsFailedAndCallFailureBlock];
+        }
+    } failure:^(NSError *error) {
+        setPostAsFailedAndCallFailureBlock(error);
+    }];
 
 }
 
