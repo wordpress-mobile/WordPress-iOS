@@ -135,6 +135,11 @@ extension GutenbergMediaPickerHelper {
         private func edit(fromMediaPicker picker: WPMediaPickerViewController, assets: [PHAsset]) {
             let mediaEditor = WPMediaEditor(assets)
 
+            // When the photo's library is updated (eg.: a new photo is added)
+            // the actionBar is appearing and conflicting with Media Editor.
+            // We hide it to prevent that issue
+            picker.actionBar?.isHidden = true
+
             mediaEditor.edit(from: picker,
                                   onFinishEditing: { [weak self] images, actions in
                                     guard let images = images as? [PHAsset] else {
@@ -146,6 +151,9 @@ extension GutenbergMediaPickerHelper {
                 }, onCancel: {
                     // Dismiss the Preview screen in Media Picker
                     picker.navigationController?.popViewController(animated: false)
+
+                    // Show picker actionBar again
+                    picker.actionBar?.isHidden = false
             })
         }
 }
