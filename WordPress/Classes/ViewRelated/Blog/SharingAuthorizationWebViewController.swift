@@ -19,10 +19,10 @@ import WebKit
 protocol SharingAuthorizationDelegate: NSObjectProtocol {
     @objc
     func authorize(_ publicizer: PublicizeService, didFailWithError error: NSError)
-    
+
     @objc
     func authorizeDidSucceed(_ publicizer: PublicizeService)
-    
+
     @objc
     func authorizeDidCancel(_ publicizer: PublicizeService)
 }
@@ -67,7 +67,7 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     private static let requestActionParameter = "action=request"
     private static let verifyActionParameter = "action=verify"
     private static let denyActionParameter = "action=deny"
-    
+
 /*
 // Special handling for the inconsistent way that services respond to a user's choice to decline oauth authorization.
 // Tumblr is uncooporative and doesn't respond in a way that clearly indicates failure.
@@ -93,13 +93,13 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
  */
 //@property (nonatomic, assign) BOOL loadingVerify;
     private var loadingVerify: Bool = false
-    
+
 /**
  *    @brief    publicize service being authorized
  */
 //@property (nonatomic, strong) PublicizeService *publicizer;
     private let publicizer: PublicizeService
-    
+
 
 //@property (nonatomic, strong) NSMutableArray *hosts;
     private var hosts = [String]()
@@ -107,13 +107,13 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 // From old header...
 //@property (nonatomic, weak) id<SharingAuthorizationDelegate> delegate;
     private let delegate: SharingAuthorizationDelegate
-    
+
 /*
 @end
 
 @implementation SharingAuthorizationWebViewController
 */
-    
+
     /*
 + (instancetype)controllerWithPublicizer:(PublicizeService *)publicizer
                            connectionURL:(NSURL *)connectionURL
@@ -136,18 +136,18 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     init(with publicizer: PublicizeService, url: URL, for blog: Blog, delegate: SharingAuthorizationDelegate) {
         self.delegate = delegate
         self.publicizer = publicizer
-        
+
         super.init(nibName: "WPWebViewController", bundle: nil)
-        
+
         self.authenticator = WebViewAuthenticator(blog: blog)
         self.secureInteraction = true
         self.url = url
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
 /*
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -158,10 +158,10 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
      */
 
      // MARK: - View Lifecycle
-     
+
      override func viewWillDisappear(_ animated: Bool) {
          super.viewWillDisappear(animated)
-         
+
          cleanup()
      }
 
@@ -188,26 +188,26 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     [self.hosts addObject:hostName];
 }
      */
-  
+
     // MARK: - Misc
-    
+
     func saveHost(from url: URL) {
         guard let host = url.host,
             !host.contains("wordpress"),
             !hosts.contains(host) else {
                 return
         }
-        
+
         let components = host.components(separatedBy: ".")
-        
+
         // A bit of paranioa here. The components should never be less than two but just in case...
         guard let hostName = components.count > 1 ? components[components.count - 2] : components.first else {
             return
         }
-        
+
         hosts.append(hostName)
     }
-    
+
 /*
 - (void)cleanup
 {
@@ -222,15 +222,15 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     }
 }
     */
-    
+
     func cleanup() {
         let storage = HTTPCookieStorage.shared
-        
+
         guard let cookies = storage.cookies else {
             // Nothing to cleanup
             return
         }
-        
+
         for cookie in cookies {
             for host in hosts {
                 if cookie.domain.contains(host) {
@@ -239,7 +239,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
             }
         }
     }
-    
+
 /*
 - (IBAction)dismiss
 {
@@ -248,7 +248,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     }
 }
      */
-    
+
     @IBAction
     override func dismiss() {
         delegate.authorizeDidCancel(publicizer)
@@ -265,14 +265,14 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     }
 }
      */
-    
+
     private func handleAuthorizationAllowed() {
         // Note: There are situations where this can be called in error due to how
         // individual services choose to reply to an authorization request.
         // Delegates should expect to handle a false positive.
         delegate.authorizeDidSucceed(publicizer)
     }
-    
+
     /*
 - (void)displayLoadError:(NSError *)error
 {
@@ -285,7 +285,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     private func displayLoadError(error: NSError) {
         delegate.authorize(self.publicizer, didFailWithError: error)
     }
-    
+
     /*
 - (AuthorizeAction)requestedAuthorizeAction:(NSURL *)url
 {
@@ -338,10 +338,10 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     return AuthorizeActionUnknown;
 }
      */
-  
+
     private func requestedAuthorizeAction(url: URL) -> AuthorizeAction {
         let requested = url.absoluteString
-        
+
         // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
         if requested.range(of: SharingAuthorizationWebViewController.declinePath) != nil {
             return .deny
@@ -350,16 +350,16 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
         if requested.hasPrefix(SharingAuthorizationWebViewController.authorizationPrefix) {
             return .none
         }
-        
+
         if requested.range(of: SharingAuthorizationWebViewController.requestActionParameter) != nil {
             return .request
         }
-        
+
         // Check the rest of the various decline ranges
         if requested.range(of: SharingAuthorizationWebViewController.denyActionParameter) != nil {
             return .deny
         }
-        
+
         // LinkedIn
         if requested.range(of: SharingAuthorizationWebViewController.userRefused) != nil {
             return .deny
@@ -369,25 +369,25 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
         if requested.range(of: SharingAuthorizationWebViewController.accessDenied) != nil {
             return .deny
         }
-        
+
         // If we've made it this far and verifyRange is found then we're *probably*
         // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
         // where verification is declined and we get a false positive.
         if requested.range(of: SharingAuthorizationWebViewController.verifyActionParameter) != nil {
             return .verify
         }
-        
+
         return .unknown
     }
 }
-    
+
 /*
 #pragma mark - WKWebViewNavigationDelegate
      */
 // MARK: - WKNavigationDelegate
 
 extension SharingAuthorizationWebViewController {
-    
+
 /*
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
@@ -418,16 +418,16 @@ extension SharingAuthorizationWebViewController {
 }
      */
     override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        
+
         // Prevent a second verify load by someone happy clicking.
         guard !loadingVerify,
             let url = navigationAction.request.url else {
                 decisionHandler(.cancel)
                 return
         }
-        
+
         let action = requestedAuthorizeAction(url: url)
-        
+
         switch(action) {
         case .none:
             fallthrough
@@ -443,7 +443,7 @@ extension SharingAuthorizationWebViewController {
             dismiss()
         }
     }
-    
+
 /*
 - (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error
 {
@@ -463,11 +463,11 @@ extension SharingAuthorizationWebViewController {
             handleAuthorizationAllowed()
             return
         }
-        
+
         super.webView(webView, didFail: navigation, withError: error)
     }
-    
-    
+
+
     /*
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
 {
@@ -485,14 +485,14 @@ extension SharingAuthorizationWebViewController {
         if let url = webView.url {
             saveHost(from: url)
         }
-        
+
         if loadingVerify {
             handleAuthorizationAllowed()
         } else {
             super.webView(webView, didFinish: navigation)
         }
     }
-    
+
     /*
 @end
 */
