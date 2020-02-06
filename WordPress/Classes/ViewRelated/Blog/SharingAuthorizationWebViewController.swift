@@ -439,7 +439,7 @@ extension SharingAuthorizationWebViewController {
 
         let action = requestedAuthorizeAction(url: url)
 
-        switch(action) {
+        switch action {
         case .none:
             fallthrough
         case .unknown:
