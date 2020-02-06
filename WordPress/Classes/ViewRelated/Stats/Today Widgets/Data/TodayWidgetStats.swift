@@ -71,9 +71,19 @@ extension TodayWidgetStats {
 
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
+            DDLogError("TodayWidgetStats: unable to get file URL for \(WPAppGroupName).")
             return nil
         }
         return url.appendingPathComponent(dataFileName)
     }
 
+}
+
+extension TodayWidgetStats: Equatable {
+    static func == (lhs: TodayWidgetStats, rhs: TodayWidgetStats) -> Bool {
+        return lhs.views == rhs.views &&
+            lhs.visitors == rhs.visitors &&
+            lhs.likes == rhs.likes &&
+            lhs.comments == rhs.comments
+    }
 }

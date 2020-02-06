@@ -4,6 +4,16 @@ enum WidgetType {
     case today
     case allTime
     case thisWeek
+    case loadingFailed
+
+    var configureLabelFont: UIFont {
+        switch self {
+        case .loadingFailed:
+            return WidgetStyles.headlineFont
+        default:
+            return WidgetStyles.footnoteNote
+        }
+    }
 }
 
 class WidgetUnconfiguredCell: UITableViewCell {
@@ -15,12 +25,15 @@ class WidgetUnconfiguredCell: UITableViewCell {
     @IBOutlet private var configureLabel: UILabel!
     @IBOutlet private var separatorLine: UIView!
     @IBOutlet private var separatorVisualEffectView: UIVisualEffectView!
-    @IBOutlet private var openWordPressLabel: UILabel!
+    @IBOutlet private var actionLabel: UILabel!
+
+    private var widgetType: WidgetType?
 
     // MARK: - View
 
     func configure(for widgetType: WidgetType) {
-        configureView(for: widgetType)
+        self.widgetType = widgetType
+        configureView()
     }
 
 }
@@ -29,7 +42,10 @@ class WidgetUnconfiguredCell: UITableViewCell {
 
 private extension WidgetUnconfiguredCell {
 
-    func configureView(for widgetType: WidgetType) {
+    func configureView() {
+        guard let widgetType = widgetType else {
+            return
+        }
 
         configureLabel.text = {
             switch widgetType {
@@ -39,12 +55,15 @@ private extension WidgetUnconfiguredCell {
                 return LocalizedText.configureAllTime
             case .thisWeek:
                 return LocalizedText.configureThisWeek
+            case .loadingFailed:
+                return LocalizedText.loadingFailed
             }
         }()
 
-        openWordPressLabel.text = LocalizedText.openWordPress
+        configureLabel.font = widgetType.configureLabelFont
+        actionLabel.text = widgetType == .loadingFailed ? LocalizedText.retry : LocalizedText.openWordPress
         configureLabel.textColor = WidgetStyles.primaryTextColor
-        openWordPressLabel.textColor = WidgetStyles.primaryTextColor
+        actionLabel.textColor = WidgetStyles.primaryTextColor
         WidgetStyles.configureSeparator(separatorLine)
         separatorVisualEffectView.effect = WidgetStyles.separatorVibrancyEffect
     }
@@ -54,6 +73,8 @@ private extension WidgetUnconfiguredCell {
         static let configureAllTime = NSLocalizedString("Display your all-time site stats here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats all-time widget helper text")
         static let configureThisWeek = NSLocalizedString("Display your site stats for this week here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats this week widget helper text")
         static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget label to launch WP app")
+        static let loadingFailed = NSLocalizedString("Couldn't load data", comment: "Message displayed when a Stats widget failed to load data.")
+        static let retry = NSLocalizedString("Retry", comment: "Stats widgets label to reload the widget.")
     }
 
 }

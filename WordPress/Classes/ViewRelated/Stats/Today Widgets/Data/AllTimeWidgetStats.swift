@@ -71,9 +71,19 @@ extension AllTimeWidgetStats {
 
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
+            DDLogError("AllTimeWidgetStats: unable to get file URL for \(WPAppGroupName).")
             return nil
         }
         return url.appendingPathComponent(dataFileName)
     }
 
+}
+
+extension AllTimeWidgetStats: Equatable {
+    static func == (lhs: AllTimeWidgetStats, rhs: AllTimeWidgetStats) -> Bool {
+        return lhs.views == rhs.views &&
+            lhs.visitors == rhs.visitors &&
+            lhs.posts == rhs.posts &&
+            lhs.bestViews == rhs.bestViews
+    }
 }

@@ -1,9 +1,20 @@
+14.2
+-----
+* Comment Editing: Fixed a bug that could cause the text selection to be on the wrong line
+* Comments: Fixed an bug that could cause HTML markup to be displayed in the comment content
+* Media editing: You can now crop, zoom in/out and rotate images that are inserted or being inserted in a post.
+* Post Preview: Added a new Desktop preview mode on iPhone and Mobile preview on iPad when previewing posts or pages.
+* Post Preview: Added new navigation, "Open in Safari" and Share options when previewing posts or pages.
+
 14.1
 -----
 * Fixes a bug that could cause some web page previews to remain unauthenticated even after logging in.
 * Stats: added a This Week widget to display Views for the past week.
+* Block Editor: Reduced padding around text on Rich Text based blocks.
+* Block Editor: New block "Shortcode". You can now create and edit Shortcode blocks in the editor.
+* Publicize: connecting with Facebook is working again.
 * Web Views: the title and button colors in the header of web views was grey, and is now white.
- 
+
 14.0
 -----
 * Stats: Updated default cards for the Insights view.

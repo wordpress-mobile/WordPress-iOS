@@ -1,11 +1,11 @@
 /* News Card title. */
-"Title" = "Clearer Stats";
+"Title" = "Offline Support";
 
 /* News Card content. */
-"Content" = "The stats experience just vastly improved, with a broad range of innovations in both the UI and backend.";
+"Content" = "Our mobile apps now support offline publishing and editing.";
 
 /* News Card link. */
-"URL" = "https://en.blog.wordpress.com/2019/07/16/more-stats-better-stats-faster-stats-a-whole-new-mobile-experience/";
+"URL" = "https://en.blog.wordpress.com/2020/01/30/improved-offline-publishing/";
 
 /* Build version this card applies to. */
-"version" = "12.6";
+"version" = "14.1";

@@ -238,7 +238,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
-        dateLabel.text = post.dateStringForDisplay()
+        dateLabel.text = post.displayDate()
     }
 
     private func configureAuthor() {

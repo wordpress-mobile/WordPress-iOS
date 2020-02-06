@@ -33,6 +33,7 @@ class PostNoticeNavigationCoordinator {
             presenter.present(navigationController, animated: true)
         } else {
             let controller = PreviewWebKitViewController(post: page)
+            controller.trackOpenEvent()
             controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
 
             let navigationController = UINavigationController(rootViewController: controller)

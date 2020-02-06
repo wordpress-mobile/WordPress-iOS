@@ -111,9 +111,24 @@ extension ThisWeekWidgetStats {
 
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
+            DDLogError("ThisWeekWidgetStats: unable to get file URL for \(WPAppGroupName).")
             return nil
         }
         return url.appendingPathComponent(dataFileName)
     }
 
+}
+
+extension ThisWeekWidgetStats: Equatable {
+    static func == (lhs: ThisWeekWidgetStats, rhs: ThisWeekWidgetStats) -> Bool {
+        return lhs.days.elementsEqual(rhs.days)
+    }
+}
+
+extension ThisWeekWidgetDay: Equatable {
+    static func == (lhs: ThisWeekWidgetDay, rhs: ThisWeekWidgetDay) -> Bool {
+        return lhs.date == rhs.date &&
+        lhs.viewsCount == rhs.viewsCount &&
+        lhs.dailyChangePercent == rhs.dailyChangePercent
+    }
 }

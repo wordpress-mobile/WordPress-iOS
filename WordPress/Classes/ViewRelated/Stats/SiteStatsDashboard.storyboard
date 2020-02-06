@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,7 +13,7 @@
             <objects>
                 <navigationController id="Tqa-zb-Liz" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="5Sw-Z8-I7L">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -35,14 +33,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6d-mo-itW" customClass="FilterTabBar" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="64" width="375" height="46"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="46"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="u03-Cy-Pus"/>
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6j-x0-sMS">
-                                <rect key="frame" x="0.0" y="110" width="375" height="557"/>
+                                <rect key="frame" x="0.0" y="90" width="375" height="577"/>
                                 <connections>
                                     <segue destination="83f-eK-Wfs" kind="embed" id="Vur-EF-t51"/>
                                 </connections>
@@ -51,7 +49,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="3Vy-SZ-45b"/>
-                            <constraint firstItem="J6j-x0-sMS" firstAttribute="bottom" secondItem="Ocg-ig-pQt" secondAttribute="bottom" id="5Dc-js-I5s"/>
+                            <constraint firstItem="J6j-x0-sMS" firstAttribute="bottom" secondItem="IsW-kc-L5Q" secondAttribute="bottom" id="5Dc-js-I5s"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="Cgj-jO-OfC"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="GXb-KG-d0p"/>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="top" secondItem="Ocg-ig-pQt" secondAttribute="top" id="gS5-1d-Huj"/>
