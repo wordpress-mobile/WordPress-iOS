@@ -1278,7 +1278,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         guard let post = self.post else {
             return
         }
-        
+
         ReaderCommentAction().execute(post: post, origin: self)
     }
 
