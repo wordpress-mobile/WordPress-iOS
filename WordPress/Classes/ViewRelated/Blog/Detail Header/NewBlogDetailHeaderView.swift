@@ -116,12 +116,15 @@ class NewBlogDetailHeaderView: UIView {
 
         NSLayoutConstraint.activate(normalSideConstraints)
 
+        let bottomConstraint = buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.buttonsBottomPadding)
+        bottomConstraint.priority = UILayoutPriority(999) // Allow to break so encapsulated height (on initial table view load) doesn't spew warnings
+
         NSLayoutConstraint.activate([
             buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
             buttonsStackView.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: Constants.buttonsMinSidePadding),
             buttonsStackView.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -Constants.buttonsMinSidePadding),
             buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.buttonsBottomPadding),
+            bottomConstraint,
         ])
     }
 
