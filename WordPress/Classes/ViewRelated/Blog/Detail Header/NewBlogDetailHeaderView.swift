@@ -66,7 +66,7 @@ class NewBlogDetailHeaderView: UIView {
         static let interSectionSpacing: CGFloat = 32
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
-        static let buttonsMinSidePadding: CGFloat = 12
+        static let buttonsMinSidePadding: CGFloat = 0
     }
 
     convenience init(items: [ActionRow.Item]) {
@@ -88,7 +88,6 @@ class NewBlogDetailHeaderView: UIView {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(stackView)
@@ -101,7 +100,10 @@ class NewBlogDetailHeaderView: UIView {
         stackView.setCustomSpacing(Constants.spacingBelowIcon, after: siteIconView)
         stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleLabel)
 
-        NSLayoutConstraint.activate(stackView.constrainToSuperview(axis: .horizontal, constant: 0))
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor)
+        ])
 
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing)
