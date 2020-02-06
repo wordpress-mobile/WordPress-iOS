@@ -66,7 +66,6 @@ class NewBlogDetailHeaderView: UIView {
         static let interSectionSpacing: CGFloat = 32
         static let buttonsBottomPadding: CGFloat = 40
         static let buttonsSidePadding: CGFloat = 40
-        static let buttonsMinSidePadding: CGFloat = 0
     }
 
     convenience init(items: [ActionRow.Item]) {
@@ -94,38 +93,34 @@ class NewBlogDetailHeaderView: UIView {
 
         addSubview(buttonsStackView)
 
-
-        // Set up constraints for spacing
-
         stackView.setCustomSpacing(Constants.spacingBelowIcon, after: siteIconView)
         stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleLabel)
 
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor)
-        ])
-
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing)
-        ])
-
-        let normalSideConstraints = [
+        /// Constraints for larger widths with extra padding (iPhone portrait)
+        let extraPaddingSideConstraints = [
             buttonsStackView.trailingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor, constant: -Constants.buttonsSidePadding),
             buttonsStackView.leadingAnchor.constraint(lessThanOrEqualTo: stackView.leadingAnchor, constant: Constants.buttonsSidePadding)
         ]
 
-        NSLayoutConstraint.activate(normalSideConstraints)
+        /// Constraints for constrained widths (iPad portrait)
+        let minimumPaddingSideConstraints = [
+            buttonsStackView.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: 0),
+            buttonsStackView.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: 0),
+        ]
 
         let bottomConstraint = buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.buttonsBottomPadding)
         bottomConstraint.priority = UILayoutPriority(999) // Allow to break so encapsulated height (on initial table view load) doesn't spew warnings
 
-        NSLayoutConstraint.activate([
+        let edgeConstraints = [
+            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing),
             buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
-            buttonsStackView.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: Constants.buttonsMinSidePadding),
-            buttonsStackView.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor, constant: -Constants.buttonsMinSidePadding),
             buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            bottomConstraint,
-        ])
+            bottomConstraint
+        ]
+
+        NSLayoutConstraint.activate(extraPaddingSideConstraints + minimumPaddingSideConstraints + edgeConstraints)
     }
 
     override init(frame: CGRect) {
