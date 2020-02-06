@@ -1964,7 +1964,6 @@
 		E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */; };
 		E69BA1981BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m in Sources */ = {isa = PBXBuildFile; fileRef = E69BA1971BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m */; };
 		E69EF9D51BFA539F00ED0554 /* ReaderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */; };
-		E6A09BA61C4492DC008626FB /* SharingAuthorizationWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */; };
 		E6A2158E1D10627500DE5270 /* ReaderMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A2158D1D10627500DE5270 /* ReaderMenuViewModel.swift */; };
 		E6A215901D1065F200DE5270 /* AbstractPostTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A2158F1D1065F200DE5270 /* AbstractPostTest.swift */; };
 		E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A3384B1BB08E3F00371587 /* ReaderGapMarker.m */; };
@@ -2011,6 +2010,7 @@
 		F15A230420A3EBE300625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F15A230520A3ECC500625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F1655B4822A6C2FA00227BFB /* Routes+Mbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */; };
+		F16601C423E9E783007950AE /* SharingAuthorizationWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16601C323E9E783007950AE /* SharingAuthorizationWebViewController.swift */; };
 		F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */; };
 		F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */; };
 		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
@@ -4500,8 +4500,6 @@
 		E69BA1961BB5D7D300078740 /* WPStyleGuide+ReadableMargins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+ReadableMargins.h"; sourceTree = "<group>"; };
 		E69BA1971BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+ReadableMargins.m"; sourceTree = "<group>"; };
 		E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderDetailViewController.swift; sourceTree = "<group>"; };
-		E6A09BA41C4492DC008626FB /* SharingAuthorizationWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingAuthorizationWebViewController.h; sourceTree = "<group>"; };
-		E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingAuthorizationWebViewController.m; sourceTree = "<group>"; };
 		E6A2158D1D10627500DE5270 /* ReaderMenuViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderMenuViewModel.swift; sourceTree = "<group>"; };
 		E6A2158F1D1065F200DE5270 /* AbstractPostTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AbstractPostTest.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E6A3384A1BB08E3F00371587 /* ReaderGapMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderGapMarker.h; sourceTree = "<group>"; };
@@ -4560,6 +4558,7 @@
 		F14B5F75208E64F900439554 /* Version.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.internal.xcconfig; sourceTree = "<group>"; };
 		F14E844C2317252200D0C63E /* WordPress 90.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 90.xcdatamodel"; sourceTree = "<group>"; };
 		F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Mbar.swift"; sourceTree = "<group>"; };
+		F16601C323E9E783007950AE /* SharingAuthorizationWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingAuthorizationWebViewController.swift; sourceTree = "<group>"; };
 		F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
 		F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
 		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
@@ -9644,8 +9643,7 @@
 				E6431DE01C4E892900FD8D90 /* SharingConnectionsViewController.m */,
 				E63BBC941C5168BE00598BE8 /* SharingAuthorizationHelper.h */,
 				E63BBC951C5168BE00598BE8 /* SharingAuthorizationHelper.m */,
-				E6A09BA41C4492DC008626FB /* SharingAuthorizationWebViewController.h */,
-				E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */,
+				F16601C323E9E783007950AE /* SharingAuthorizationWebViewController.swift */,
 				E663D18F1C65383E0017F109 /* SharingAccountViewController.swift */,
 				E6431DE11C4E892900FD8D90 /* SharingDetailViewController.h */,
 				E6431DE21C4E892900FD8D90 /* SharingDetailViewController.m */,
@@ -11786,7 +11784,6 @@
 				9A8ECE0F2254A3260043C8DA /* JetpackRemoteInstallViewController.swift in Sources */,
 				1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */,
 				9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */,
-				E6A09BA61C4492DC008626FB /* SharingAuthorizationWebViewController.m in Sources */,
 				5D6C4B091B603E03005E3C43 /* WPTableViewHandler.m in Sources */,
 				40EE947F2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataClass.swift in Sources */,
 				F5660D03235CF73800020B1E /* SchedulingCalendarViewController.swift in Sources */,
@@ -12418,6 +12415,7 @@
 				9A4E271D22EF33F5001F6A6B /* AccountSettingsStore.swift in Sources */,
 				4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
 				73FF7032221F469100541798 /* Charts+Support.swift in Sources */,
+				F16601C423E9E783007950AE /* SharingAuthorizationWebViewController.swift in Sources */,
 				171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */,
 				173F6DFC21232F2A00A4C8E2 /* NoResultsGiphyConfiguration.swift in Sources */,
 				0815CF461E96F22600069916 /* MediaImportService.swift in Sources */,
