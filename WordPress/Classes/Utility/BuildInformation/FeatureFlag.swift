@@ -3,10 +3,10 @@
 @objc
 enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
-    case signInWithApple
     case debugMenu
     case postPreview
     case postReblogging
+    case unifiedAuth
     case quickActions
 
     /// Returns a boolean indicating if the feature is enabled
@@ -18,13 +18,6 @@ enum FeatureFlag: Int, CaseIterable {
         switch self {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .signInWithApple:
-            // SIWA can NOT be enabled for internal builds
-            // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
-            if BuildConfiguration.current == .a8cBranchTest || BuildConfiguration.current == .a8cPrereleaseTesting {
-                return false
-            }
-            return true
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper,
                                                   .a8cBranchTest]
@@ -32,6 +25,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .postReblogging:
             return true
+        case .unifiedAuth:
+            return BuildConfiguration.current == .localDeveloper
         case .quickActions:
             return BuildConfiguration.current == .localDeveloper
         }
@@ -54,14 +49,14 @@ extension FeatureFlag: OverrideableFlag {
         switch self {
         case .jetpackDisconnect:
             return "Jetpack disconnect"
-        case .signInWithApple:
-            return "Sign in with Apple"
         case .debugMenu:
             return "Debug menu"
         case .postPreview:
             return "Post preview redesign"
         case .postReblogging:
             return "Post Reblogging"
+        case .unifiedAuth:
+            return "Unified Auth"
         case .quickActions:
             return "Quick Actions"
         }
