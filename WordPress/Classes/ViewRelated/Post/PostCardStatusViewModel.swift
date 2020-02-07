@@ -159,7 +159,11 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.retry)
             }
 
-            if canCancelAutoUpload {
+            if post.isFailed && isInternetReachable {
+                buttons.append(.retry)
+            }
+
+            if canCancelAutoUpload && !isInternetReachable {
                 buttons.append(.cancelAutoUpload)
             }
 

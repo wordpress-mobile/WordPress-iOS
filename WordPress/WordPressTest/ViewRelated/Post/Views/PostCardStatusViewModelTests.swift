@@ -74,7 +74,7 @@ class PostCardStatusViewModelTests: XCTestCase {
 
         // Act and Assert
         expectations.forEach { scenario, post, expectedButtonGroups in
-            let viewModel = PostCardStatusViewModel(post: post)
+            let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: false)
 
             expect({
                 guard viewModel.buttonGroups == expectedButtonGroups else {
