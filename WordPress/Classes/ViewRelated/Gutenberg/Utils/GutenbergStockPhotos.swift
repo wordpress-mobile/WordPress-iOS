@@ -25,7 +25,7 @@ class GutenbergStockPhotos {
 }
 
 extension GutenbergStockPhotos: StockPhotosPickerDelegate {
-    
+
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
         defer {
             mediaPickerCallback = nil
@@ -38,13 +38,9 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
 
         // For blocks that support multiple uploads this will upload all images.
         // If multiple uploads are not supported then it will seperate them out to Image Blocks.
-        if (multipleSelection) {
-            insertOnBlock(with: assets)
-        } else {
-            insertSingleImages(assets)
-        }
+        multipleSelection ? insertOnBlock(with: assets) : insertSingleImages(assets)
     }
-    
+
     /// Adds the given image object to the requesting block and seperates multiple images to seperate image blocks
     /// - Parameter asset: Stock Media object to add.
     func insertSingleImages(_ assets: [StockPhotosMedia]) {
@@ -63,7 +59,7 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
         guard let callback = mediaPickerCallback else {
             return assertionFailure("Image picked without callback")
         }
-        
+
         let mediaInfo = assets.compactMap({ (asset) -> MediaInfo? in
             guard let media = self.mediaInserter.insert(exportableAsset: asset, source: .giphy) else {
                 return nil
@@ -71,7 +67,7 @@ extension GutenbergStockPhotos: StockPhotosPickerDelegate {
             let mediaUploadID = media.gutenbergUploadID
             return MediaInfo(id: mediaUploadID, url: asset.URL.absoluteString, type: media.mediaTypeString)
         })
-        
+
         callback(mediaInfo)
     }
 
