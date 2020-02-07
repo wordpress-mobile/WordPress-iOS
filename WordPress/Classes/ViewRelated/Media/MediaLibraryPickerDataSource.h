@@ -8,7 +8,7 @@
 
 @interface MediaLibraryGroup: NSObject <WPMediaGroup>
 
-- (instancetype)initWithBlog:(Blog *)blog;
+- (nonnull instancetype)initWithBlog:(Blog *_Nonnull)blog;
 
 @property (nonatomic, assign) WPMediaType filter;
 
@@ -16,14 +16,14 @@
 
 @interface MediaLibraryPickerDataSource : NSObject <WPMediaCollectionDataSource>
 
-- (instancetype)initWithBlog:(Blog *)blog;
+- (nonnull instancetype)initWithBlog:(Blog *_Nonnull)blog;
 
-- (instancetype)initWithPost:(AbstractPost *)post;
+- (nonnull instancetype)initWithPost:(AbstractPost *_Nonnull)post;
 
 /// If a search query is set, the media assets fetched by the data source
 /// will be filtered to only those whose name, caption, or description
 /// contain the search query.
-@property (nonatomic, copy) NSString *searchQuery;
+@property (nonatomic, copy, nullable) NSString *searchQuery;
 
 /// Defaults to `NO`.
 /// By default, the data source will only show media that has been synced to the

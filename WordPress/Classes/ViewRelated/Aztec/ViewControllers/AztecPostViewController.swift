@@ -365,7 +365,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Media Library Data Source
     ///
     lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
-        return MediaLibraryPickerDataSource(post: self.post)
+        let dataSource = MediaLibraryPickerDataSource(post: self.post)
+        dataSource.ignoreSyncErrors = true
+        return dataSource
     }()
 
     /// Device Photo Library Data Source
