@@ -38,13 +38,10 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v14.0-whats-new"
+msgctxt "v14.1-whats-new"
 msgid ""
-"- Now you can switch to fullscreen mode when writing a comment, so nothing distracts from you from writing and you can maximize the hotness of your take.\n"
-"- We’re sure you almost never look at your stats because there are more important things in life, but in case you ever peek, the correct stats will now display in the Stats widget, we abbreviated large numbers in the Today Widget to make reading easier, and we updated the Insights view based on the most frequently-added cards.\n"
-"- Some scheduled posts displayed incorrect time stamps, which was totally a bug and not us trying to mess with you. That’s fixed. We also fixed one that caused the app to crash when you tapped on a notification.\n"
-"- There was another bug that would randomly rename files imported from other apps. We had a long talk about whether we should fix the bug or just make sure the random names were always funny, and “Fix the bug” won out in the end.\n"
-"- Sometimes the Block editor would crash when you tried to undo something, which was a little too much undoing. That’s also fixed, along with some image-related bugs causing minor shenanigans with image placeholders and image size selection options.\n"
+"- There’s a new Shortcode block so you can create and edit shortcodes in the block editor.\n"
+"- On your stats page, we’ve added a This Week widget to display your views for the past week.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

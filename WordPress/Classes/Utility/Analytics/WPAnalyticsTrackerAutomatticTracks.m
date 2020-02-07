@@ -1987,6 +1987,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatDebugDeletedOrphanedEntities:
             eventName = @"debug_deleted_orphaned_entities";
             break;
+        case WPAnalyticsStatWidgetActiveSiteChanged:
+            eventName = @"widget_active_site_changed";
+            break;
 
         // The following are yet to be implemented.
         //

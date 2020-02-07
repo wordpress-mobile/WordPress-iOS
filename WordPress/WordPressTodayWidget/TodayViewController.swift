@@ -52,6 +52,20 @@ class TodayViewController: UIViewController {
         return !isReachable && statsValues == nil
     }
 
+    private var loadingFailed = false {
+        didSet {
+            setAvailableDisplayMode()
+
+            if loadingFailed != oldValue {
+                tableView.reloadData()
+            }
+        }
+    }
+
+    private var failedState: Bool {
+        return !isConfigured || showNoConnection || loadingFailed
+    }
+
     private let tracks = Tracks(appGroupName: WPAppGroupName)
     private let reachability: Reachability = .forInternetConnection()
 
@@ -76,7 +90,6 @@ class TodayViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         reachability.stopNotifier()
-        saveData()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -132,11 +145,10 @@ extension TodayViewController: NCWidgetProviding {
                 self?.tableView.reloadData()
             }
 
-            completionHandler(NCUpdateResult.failed)
+            completionHandler(.failed)
             return
         }
 
-        tracks.trackExtensionAccessed()
         fetchData(completionHandler: completionHandler)
     }
 
@@ -160,7 +172,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
             return noConnectionCellFor(indexPath: indexPath)
         }
 
-        if !isConfigured {
+        if !isConfigured || loadingFailed {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
@@ -169,7 +181,7 @@ extension TodayViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if !isConfigured || showNoConnection,
+        if failedState,
             let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) {
             // Use the max compact height for unconfigured view.
             return maxCompactSize.height
@@ -191,7 +203,16 @@ private extension TodayViewController {
     // MARK: - Tap Gesture Handling
 
     @IBAction func handleTapGesture() {
-        guard !isConfigured,
+
+        // If showing the loading failed view, reload the widget.
+        if loadingFailed,
+            let completionHandler = widgetCompletionBlock {
+            widgetPerformUpdate(completionHandler: completionHandler)
+            return
+        }
+
+        // Otherwise, open the app.
+        guard isReachable,
             let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
                 DDLogError("Today Widget: Unable to get extensionContext or appURL.")
@@ -257,22 +278,33 @@ private extension TodayViewController {
             return
         }
 
-        statsRemote.getInsight { (todayInsight: StatsTodayInsight?, error) in
+        statsRemote.getInsight { [weak self] (todayInsight: StatsTodayInsight?, error) in
+            self?.loadingFailed = (error != nil)
+
             if error != nil {
                 DDLogError("Today Widget: Error fetching StatsTodayInsight: \(String(describing: error?.localizedDescription))")
-                completionHandler(NCUpdateResult.failed)
+                completionHandler(.failed)
                 return
             }
 
             DDLogDebug("Today Widget: Fetched StatsTodayInsight data.")
 
             DispatchQueue.main.async { [weak self] in
-                self?.statsValues = TodayWidgetStats(views: todayInsight?.viewsCount,
+                let updatedStats = TodayWidgetStats(views: todayInsight?.viewsCount,
                                                     visitors: todayInsight?.visitorsCount,
                                                     likes: todayInsight?.likesCount,
                                                     comments: todayInsight?.commentsCount)
+
+                // Update the widget only if the data has changed.
+                guard updatedStats != self?.statsValues else {
+                    completionHandler(.noData)
+                    return
+                }
+
+                self?.statsValues = updatedStats
+                completionHandler(.newData)
+                self?.saveData()
             }
-            completionHandler(NCUpdateResult.newData)
         }
     }
 
@@ -319,7 +351,7 @@ private extension TodayViewController {
             return UITableViewCell()
         }
 
-        cell.configure(for: .today)
+        loadingFailed ? cell.configure(for: .loadingFailed) : cell.configure(for: .today)
         return cell
     }
 
@@ -362,8 +394,8 @@ private extension TodayViewController {
     // MARK: - Expand / Compact View Helpers
 
     func setAvailableDisplayMode() {
-        // If unconfigured or no connection, don't allow the widget to be expanded.
-        extensionContext?.widgetLargestAvailableDisplayMode = !showNoConnection && isConfigured ? .expanded : .compact
+        // If something went wrong, don't allow the widget to be expanded.
+        extensionContext?.widgetLargestAvailableDisplayMode = failedState ? .compact : .expanded
     }
 
     func minRowsToDisplay() -> Int {

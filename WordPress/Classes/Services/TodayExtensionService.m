@@ -23,6 +23,7 @@
     NSNumber *previousSiteID = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     if (siteID != previousSiteID) {
         [StatsDataHelper clearWidgetsData];
+        [WPAnalytics track:WPAnalyticsStatWidgetActiveSiteChanged];
     }
 
     // Save the site information to shared user defaults for use in the today widgets.

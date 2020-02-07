@@ -2,7 +2,7 @@ import UIKit
 import WebKit
 
 class WebViewControllerConfiguration: NSObject {
-    @objc var url: URL
+    @objc var url: URL?
     @objc var optionsButton: UIBarButtonItem?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
@@ -17,7 +17,7 @@ class WebViewControllerConfiguration: NSObject {
     @objc var authenticator: WebViewAuthenticator?
     @objc weak var navigationDelegate: WebNavigationDelegate?
 
-    @objc init(url: URL) {
+    @objc init(url: URL?) {
         self.url = url
         super.init()
     }

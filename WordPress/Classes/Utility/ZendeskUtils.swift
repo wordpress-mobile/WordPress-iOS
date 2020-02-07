@@ -2,7 +2,7 @@ import Foundation
 import CoreTelephony
 import WordPressAuthenticator
 
-import ZendeskSDK
+import SupportSDK
 import ZendeskCoreSDK
 
 extension NSNotification.Name {

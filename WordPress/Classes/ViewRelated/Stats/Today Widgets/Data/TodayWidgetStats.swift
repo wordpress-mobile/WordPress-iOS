@@ -78,3 +78,12 @@ extension TodayWidgetStats {
     }
 
 }
+
+extension TodayWidgetStats: Equatable {
+    static func == (lhs: TodayWidgetStats, rhs: TodayWidgetStats) -> Bool {
+        return lhs.views == rhs.views &&
+            lhs.visitors == rhs.visitors &&
+            lhs.likes == rhs.likes &&
+            lhs.comments == rhs.comments
+    }
+}

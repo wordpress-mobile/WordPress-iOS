@@ -425,7 +425,7 @@
 
 - (NSString *)authorNameForDisplay
 {
-    return [NSString makePlainText:self.author];
+    return [self.author makePlainText];
 }
 
 - (NSURL *)avatarURLForDisplay
@@ -435,7 +435,7 @@
 
 - (NSString *)blogNameForDisplay
 {
-    return [NSString makePlainText:self.blog.settings.name];
+    return [self.blog.settings.name makePlainText];
 }
 
 - (NSURL *)blogURL
