@@ -16,6 +16,8 @@ class GutenbergMediaPickerHelper: NSObject {
 
     fileprivate let post: AbstractPost
     fileprivate unowned let context: UIViewController
+    fileprivate unowned var navigationPicker: WPNavigationMediaPickerViewController?
+    fileprivate let noResultsView = NoResultsViewController.controller()
 
     /// Media Library Data Source
     ///
@@ -57,7 +59,7 @@ class GutenbergMediaPickerHelper: NSObject {
         didPickMediaCallback = callback
 
         let picker = WPNavigationMediaPickerViewController()
-
+        navigationPicker = picker
         switch dataSourceType {
         case .device:
             picker.dataSource = devicePhotoLibraryDataSource
@@ -129,6 +131,31 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
 
         return nil
     }
+
+    func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
+        guard picker == navigationPicker?.mediaPicker else {
+            return nil
+        }
+        return noResultsView
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
+        if (mediaLibraryDataSource.searchQuery?.count ?? 0) > 0 {
+            noResultsView.configureForNoSearchResult()
+        } else {
+            noResultsView.removeFromView()
+        }
+    }
+
+    func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
+        noResultsView.configureForFetching()
+    }
+
+    func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
+        noResultsView.removeFromView()
+        noResultsView.configureForNoAssets(userCanUploadMedia: false)
+    }
+    
 }
 
 // MARK: - Media Editing

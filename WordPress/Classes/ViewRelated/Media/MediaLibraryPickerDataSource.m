@@ -146,7 +146,7 @@
                                    successBlock();
                                }
                            } failure:^(NSError * _Nonnull error) {
-                               if (localResultsAvailable && ignoreSyncError && successBlock) {
+                               if (ignoreSyncError && successBlock) {
                                    successBlock();
                                    return;
                                }
