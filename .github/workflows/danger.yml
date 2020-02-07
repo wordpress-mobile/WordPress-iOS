@@ -1,0 +1,12 @@
+name: Danger
+on:
+  issues:
+    types: [opened, labeled, unlabeled]
+jobs:
+  danger_issue_label_check:
+    name: "Check Labels"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Hello World"
+        run: echo 'Hello World 👋'
+
