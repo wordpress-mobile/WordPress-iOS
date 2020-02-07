@@ -155,7 +155,7 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         noResultsView.removeFromView()
         noResultsView.configureForNoAssets(userCanUploadMedia: false)
     }
-    
+
 }
 
 // MARK: - Media Editing
