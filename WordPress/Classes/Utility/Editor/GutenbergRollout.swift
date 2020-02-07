@@ -5,7 +5,7 @@ struct GutenbergRollout {
         static let userInRolloutGroup = "kUserInGutenbergRolloutGroup"
     }
     let database: KeyValueDatabase
-    private let phase2Percentage = 30
+    private let phase2Percentage = 100
     private let context = Environment.current.contextManager.mainContext
 
     var isUserInRolloutGroup: Bool {

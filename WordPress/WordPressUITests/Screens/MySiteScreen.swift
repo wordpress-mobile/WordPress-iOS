@@ -41,13 +41,6 @@ class MySiteScreen: BaseScreen {
         super.init(element: blogTable)
     }
 
-    func dismissNotificationAlertIfNeeded() -> MySiteScreen {
-        if FancyAlertComponent.isLoaded() {
-            FancyAlertComponent().cancelAlert()
-        }
-        return self
-    }
-
     func showSiteSwitcher() -> MySitesScreen {
         navBackButton.tap()
         return MySitesScreen()
