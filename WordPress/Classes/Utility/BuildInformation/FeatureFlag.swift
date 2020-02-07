@@ -7,6 +7,7 @@ enum FeatureFlag: Int, CaseIterable {
     case postPreview
     case postReblogging
     case unifiedAuth
+    case quickActions
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -25,6 +26,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .postReblogging:
             return true
         case .unifiedAuth:
+            return BuildConfiguration.current == .localDeveloper
+        case .quickActions:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -54,6 +57,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Post Reblogging"
         case .unifiedAuth:
             return "Unified Auth"
+        case .quickActions:
+            return "Quick Actions"
         }
     }
 
