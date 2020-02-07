@@ -40,15 +40,12 @@ class SharingAuthorizationWebViewController: WPWebViewController {
     private static let authorizationDenied = "denied="
     private static let accessDenied = "error=access_denied"
 
-
-    /**
-     *    @brief    verification loading -- dismiss on completion
-     */
+    /// Verification loading -- dismiss on completion
+    ///
     private var loadingVerify: Bool = false
 
-    /**
-     *    @brief    publicize service being authorized
-     */
+    /// Publicize service being authorized
+    ///
     private let publicizer: PublicizeService
 
     private var hosts = [String]()
