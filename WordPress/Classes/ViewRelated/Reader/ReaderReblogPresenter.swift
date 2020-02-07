@@ -3,10 +3,10 @@ class ReaderReblogPresenter {
     private let postService: PostService
 
     private struct NoSitesConfiguration {
-        static let noSitesTitle = NSLocalizedString("No available sites",
-                                                    comment: "A short message that informs the user no sites could be found.")
-        static let noSitesSubtitle = NSLocalizedString("Once you create a site, you can reblog content that you like to your own site.",
-                                                       comment: "A subtitle with more detailed info for the user when no sites could be found.")
+        static let noSitesTitle = NSLocalizedString("No available WordPress.com sites",
+                                                    comment: "A short message that informs the user no WordPress.com sites could be found.")
+        static let noSitesSubtitle = NSLocalizedString("Once you create a WordPress.com site, you can reblog content that you like to your own site.",
+                                                       comment: "A subtitle with more detailed info for the user when no WordPress.com sites could be found.")
         static let manageSitesLabel = NSLocalizedString("Manage Sites",
                                                         comment: "Button title. Tapping lets the user manage the sites they follow.")
         static let backButtonTitle = NSLocalizedString("Back",
@@ -28,13 +28,13 @@ class ReaderReblogPresenter {
                        readerPost: ReaderPost,
                        origin: UIViewController) {
 
-        let blogCount = blogService.blogCountForAllAccounts()
+        let blogCount = blogService.blogCountVisibleForWPComAccounts()
 
         switch blogCount {
         case 0:
             presentNoSitesScene(origin: origin)
         case 1:
-            guard let blog = blogService.blogsForAllAccounts().first else {
+            guard let blog = blogService.visibleBlogsForWPComAccounts().first else {
                 return
             }
             presentEditor(with: readerPost, blog: blog, origin: origin)
@@ -65,6 +65,7 @@ private extension ReaderReblogPresenter {
 
         selectorViewController.displaysNavigationBarWhenSearching = WPDeviceIdentification.isiPad()
         selectorViewController.dismissOnCancellation = true
+        selectorViewController.displaysOnlyDefaultAccountSites = true
 
         let navigationController = getNavigationController(selectorViewController)
 
@@ -103,7 +104,12 @@ private extension ReaderReblogPresenter {
 
         // get post and put content in it
         let post = postService.createDraftPost(for: blog)
-        post.prepareForReblog(with: readerPost)
+        // size used for photon url. Set height to 0 will preserve aspect ratio
+        let photonSize = CGSize(width: min(origin.view.frame.width,
+                                           origin.view.frame.height),
+                                height: 0)
+
+        post.prepareForReblog(with: readerPost, imageSize: photonSize)
         // instantiate & configure editor
         let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
         editor.modalPresentationStyle = .fullScreen
@@ -144,7 +150,8 @@ private extension ReaderReblogPresenter {
 // MARK: - Post updates
 private extension Post {
     /// Formats the new Post content for reblogging, using an existing ReaderPost
-    func prepareForReblog(with readerPost: ReaderPost) {
+    /// Uses the passed imageSize to obtain a Photon URL for the featured image
+    func prepareForReblog(with readerPost: ReaderPost, imageSize: CGSize) {
         // update the post
         update(with: readerPost)
         // initialize the content
@@ -160,9 +167,13 @@ private extension Post {
                 ReaderReblogFormatter.aztecQuote(text: summary, citation: citation)
         }
         // insert the image on top of the content
-        if let image = readerPost.featuredImage, image.isValidURL() {
-            content = self.blog.isGutenbergEnabled ? ReaderReblogFormatter.gutenbergImage(image: image) + content :
-                ReaderReblogFormatter.aztecImage(image: image) + content
+        if let image = readerPost.featuredImage,
+            image.isValidURL(),
+            let cdnImage = PhotonImageURLHelper.photonURL(with: imageSize,
+                                                          forImageURL: URL(string: image)) {
+
+            content = self.blog.isGutenbergEnabled ? ReaderReblogFormatter.gutenbergImage(image: cdnImage.absoluteString) + content :
+                ReaderReblogFormatter.aztecImage(image: cdnImage.absoluteString) + content
         }
         self.content = content
     }

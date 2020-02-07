@@ -232,6 +232,11 @@
 		<string>whatsapp</string>
 		<string>tg</string>
 		<string>googlegmail</string>
+		<string>airmail</string>
+		<string>ms-outlook</string>
+		<string>readdle-spark</string>
+		<string>ymail</string>
+		<string>fastmail</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

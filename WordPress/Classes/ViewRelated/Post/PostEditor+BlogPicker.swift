@@ -41,6 +41,9 @@ extension PostEditor where Self: UIViewController {
         // On iPad Devices, we'll disable the Picker's SearchController's "Autohide Navbar Feature", since
         // upon dismissal, it may force the NavigationBar to show up, even when it was initially hidden.
         selectorViewController.displaysNavigationBarWhenSearching = WPDeviceIdentification.isiPad()
+        if postIsReblogged {
+            selectorViewController.displaysOnlyDefaultAccountSites = true
+        }
 
         // Setup Navigation
         let navigationController = AdaptiveNavigationController(rootViewController: selectorViewController)
