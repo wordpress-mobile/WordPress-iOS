@@ -175,6 +175,8 @@ extern NSString *const WPBlogUpdatedNotification;
 
 - (NSArray<Blog *> *)blogsForAllAccounts;
 
+- (NSArray<Blog *> *)visibleBlogsForWPComAccounts;
+
 - (NSArray *)blogsWithNoAccount;
 
 - (NSArray *)blogsWithPredicate:(NSPredicate *)predicate;

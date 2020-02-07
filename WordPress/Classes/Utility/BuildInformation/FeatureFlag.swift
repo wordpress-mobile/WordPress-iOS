@@ -7,7 +7,6 @@ enum FeatureFlag: Int, CaseIterable {
     case debugMenu
     case postPreview
     case postReblogging
-    case mediaEditor
     case quickActions
 
     /// Returns a boolean indicating if the feature is enabled
@@ -32,8 +31,6 @@ enum FeatureFlag: Int, CaseIterable {
         case .postPreview:
             return true
         case .postReblogging:
-            return BuildConfiguration.current == .localDeveloper
-        case .mediaEditor:
             return true
         case .quickActions:
             return BuildConfiguration.current == .localDeveloper
@@ -65,8 +62,6 @@ extension FeatureFlag: OverrideableFlag {
             return "Post preview redesign"
         case .postReblogging:
             return "Post Reblogging"
-        case .mediaEditor:
-            return "Media Editor"
         case .quickActions:
             return "Quick Actions"
         }

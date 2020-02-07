@@ -8,10 +8,12 @@ struct PostNoticeViewModel {
     private let post: AbstractPost
     private let postCoordinator: PostCoordinator
     private let autoUploadInteractor = PostAutoUploadInteractor()
+    private let isInternetReachable: Bool
 
-    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared) {
+    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
         self.post = post
         self.postCoordinator = postCoordinator
+        self.isInternetReachable = isInternetReachable
     }
 
     /// Returns the Notice represented by this view model.
@@ -111,6 +113,10 @@ struct PostNoticeViewModel {
             } else {
                 return PostAutoUploadMessages.postFailedToUpload
             }
+        }
+
+        guard !isInternetReachable else {
+            return defaultTitle
         }
 
         if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
@@ -221,7 +227,7 @@ struct PostNoticeViewModel {
     }
 
     private var failureAction: FailureAction {
-        return autoUploadInteractor.canCancelAutoUpload(of: post) ? .cancel : .retry
+        return autoUploadInteractor.canCancelAutoUpload(of: post) && !isInternetReachable ? .cancel : .retry
     }
 
     // MARK: - Action Handlers
