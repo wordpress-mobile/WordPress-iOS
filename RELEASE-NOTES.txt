@@ -5,6 +5,10 @@
 * Media editing: You can now crop, zoom in/out and rotate images that are inserted or being inserted in a post.
 * Post Preview: Added a new Desktop preview mode on iPhone and Mobile preview on iPad when previewing posts or pages.
 * Post Preview: Added new navigation, "Open in Safari" and Share options when previewing posts or pages.
+* Block editor: Long-press Inserter icon to show options to add before/after
+* Block editor: Retry displaying image when connectivity restores
+* Block editor: Show an "Edit" button overlay on selected image blocks
+* Block editor: Add support for image size options in the gallery block
 * Signup and Login: signup or login via magic link now supports multiple email clients.
                     Tapping on the "Open Email" button will present a list of installed email client to choose from.
 * Posts: Fixed a bug that could disable comments on a draft post when previewing that post.
