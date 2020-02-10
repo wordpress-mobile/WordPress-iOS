@@ -35,7 +35,24 @@ class SiteIconView: UIView {
         return indicatorView
     }()
 
-    var callback: (() -> Void)?
+    var tapped: (() -> Void)?
+    var dropped: (([UIImage]) -> Void)?
+
+    private var dropInteraction: UIDropInteraction?
+
+    var allowsDropInteraction: Bool = false {
+        didSet {
+            if allowsDropInteraction {
+                let interaction = UIDropInteraction(delegate: self)
+                addInteraction(interaction)
+                dropInteraction = interaction
+            } else {
+                if let dropInteraction = dropInteraction {
+                    removeInteraction(dropInteraction)
+                }
+            }
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,7 +61,7 @@ class SiteIconView: UIView {
 
         button.addSubview(imageView)
         button.pinSubviewToAllEdges(imageView, insets: paddingInsets)
-        button.addTarget(self, action: #selector(tapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(touchedButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
 
         button.addSubview(activityIndicator)
@@ -58,7 +75,55 @@ class SiteIconView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func tapped() {
-        callback?()
+    @objc func touchedButton() {
+        tapped?()
+    }
+}
+
+extension SiteIconView: UIDropInteractionDelegate {
+    func dropInteraction(_ interaction: UIDropInteraction, sessionDidEnter session: UIDropSession) {
+        imageView.depressSpringAnimation()
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
+        let isImage = session.canLoadObjects(ofClass: UIImage.self)
+        let isSingleImage = session.items.count == 1
+        return isImage && isSingleImage
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
+        let location = session.location(in: self)
+
+        let operation: UIDropOperation
+
+        if bounds.contains(location) {
+            operation = .copy
+        } else {
+            operation = .cancel
+        }
+
+        return UIDropProposal(operation: operation)
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
+        activityIndicator.startAnimating()
+
+        session.loadObjects(ofClass: UIImage.self) { [weak self] images in
+            if let images = images as? [UIImage] {
+                self?.dropped?(images)
+            }
+        }
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, concludeDrop session: UIDropSession) {
+        imageView.normalizeSpringAnimation()
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, sessionDidExit session: UIDropSession) {
+        imageView.normalizeSpringAnimation()
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, sessionDidEnd session: UIDropSession) {
+        imageView.normalizeSpringAnimation()
     }
 }
