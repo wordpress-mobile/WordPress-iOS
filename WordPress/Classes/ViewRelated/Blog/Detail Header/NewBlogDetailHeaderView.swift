@@ -46,6 +46,8 @@ class NewBlogDetailHeaderView: UIView {
             let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
             titleLabel.text = title
             subtitleLabel.text = blog?.displayURL as String?
+
+            siteIconView.allowsDropInteraction = delegate?.siteIconShouldAllowDroppedImages() == true
         }
     }
 
@@ -73,8 +75,12 @@ class NewBlogDetailHeaderView: UIView {
 
         self.init(frame: .zero)
 
-        siteIconView.callback = { [weak self] in
+        siteIconView.tapped = { [weak self] in
             self?.delegate?.siteIconTapped()
+        }
+
+        siteIconView.dropped = { [weak self] images in
+            self?.delegate?.siteIconReceivedDroppedImage(images.first)
         }
 
         let buttonsStackView = ActionRow(items: items)
