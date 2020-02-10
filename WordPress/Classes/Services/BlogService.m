@@ -485,11 +485,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (NSInteger)blogCountVisibleForWPComAccounts
 {
-    NSArray *subpredicates = @[
-                            [self predicateForVisibleBlogs],
-                            [NSPredicate predicateWithFormat:@"account != NULL"],
-                            ];
-    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
+    NSPredicate *predicate = [self predicateForVisibleBlogsWPComAccounts];
     return [self blogCountWithPredicate:predicate];
 }
 
@@ -508,6 +504,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (NSArray<Blog *> *)blogsForAllAccounts
 {
     return [self blogsWithPredicate:nil];
+}
+
+- (NSArray<Blog *> *)visibleBlogsForWPComAccounts
+{
+    NSPredicate *predicate = [self predicateForVisibleBlogsWPComAccounts];
+    return [self blogsWithPredicate:predicate];
 }
 
 - (NSDictionary *)blogsForAllAccountsById
@@ -849,6 +851,18 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (NSPredicate *)predicateForVisibleBlogs
 {
     return [NSPredicate predicateWithFormat:@"visible = YES"];
+}
+
+
+- (NSPredicate *)predicateForVisibleBlogsWPComAccounts
+{
+    NSArray *subpredicates = @[
+                            [self predicateForVisibleBlogs],
+                            [NSPredicate predicateWithFormat:@"account != NULL"],
+                            ];
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
+
+    return predicate;
 }
 
 - (NSPredicate *)predicateForNoAccount

@@ -8,4 +8,4 @@ end
 
 gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', tag: '0.8.0'
 gem 'fastlane-plugin-sentry'
-gem 'fastlane-plugin-appcenter', '1.6.0'
+gem 'fastlane-plugin-appcenter', '1.7.1'

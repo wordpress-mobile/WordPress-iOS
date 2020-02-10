@@ -204,6 +204,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         filterTabBariOS10TopConstraint.isActive = false
     }
 
+
+    override func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        updateGhostableTableViewOptions()
+        super.selectedFilterDidChange(filterBar)
+    }
+
+
     /// Update the `GhostOptions` to correctly show compact or default cells
     private func updateGhostableTableViewOptions() {
         let ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])

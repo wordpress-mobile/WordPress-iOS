@@ -3,7 +3,6 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "SVProgressHUD+Dismiss.h"
-#import "SharingAuthorizationWebViewController.h"
 
 #import <WordPressUI/WordPressUI.h>
 
@@ -92,10 +91,7 @@
  */
 - (void)authorizeWithConnectionURL:(NSURL *)connectionURL
 {
-    SharingAuthorizationWebViewController *webViewController = [SharingAuthorizationWebViewController controllerWithPublicizer:self.publicizeService
-                                                                                                                 connectionURL:connectionURL
-                                                                                                                       forBlog:self.blog];
-    webViewController.delegate = self;
+    SharingAuthorizationWebViewController *webViewController = [[SharingAuthorizationWebViewController alloc] initWith:self.publicizeService url:connectionURL for:self.blog delegate:self];
 
     self.navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     self.navController.modalPresentationStyle = UIModalPresentationFormSheet;
