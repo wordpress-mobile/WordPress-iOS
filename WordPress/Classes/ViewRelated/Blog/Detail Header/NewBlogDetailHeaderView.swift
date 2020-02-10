@@ -59,7 +59,7 @@ class NewBlogDetailHeaderView: UIView {
             siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
 
-        //TODO: Refresh spotlight view
+        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
     }
 
     private enum Constants {
