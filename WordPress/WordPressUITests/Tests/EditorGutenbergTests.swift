@@ -25,6 +25,7 @@ class EditorGutenbergTests: XCTestCase {
         let title = getRandomPhrase()
         let content = getRandomContent()
         editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .publish()
@@ -39,6 +40,7 @@ class EditorGutenbergTests: XCTestCase {
         let category = getCategory()
         let tag = getTag()
         editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImage()

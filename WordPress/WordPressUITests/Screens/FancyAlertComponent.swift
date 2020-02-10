@@ -5,6 +5,11 @@ class FancyAlertComponent: BaseScreen {
     let defaultAlertButton: XCUIElement
     let cancelAlertButton: XCUIElement
 
+    enum Action {
+        case accept
+        case cancel
+    }
+
     struct ElementIDs {
         static let defaultButton = "fancy-alert-view-default-button"
         static let cancelButton = "fancy-alert-view-cancel-button"

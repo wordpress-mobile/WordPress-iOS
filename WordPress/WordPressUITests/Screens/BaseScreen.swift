@@ -102,6 +102,19 @@ class BaseScreen {
     func pop() {
         navBackButton.tap()
     }
+
+    @discardableResult
+    func dismissNotificationAlertIfNeeded(_ action: FancyAlertComponent.Action = .cancel) -> Self {
+        if FancyAlertComponent.isLoaded() {
+            switch action {
+            case .accept:
+                FancyAlertComponent().acceptAlert()
+            case .cancel:
+                FancyAlertComponent().cancelAlert()
+            }
+        }
+        return self
+    }
 }
 
 private extension XCUIElement {
