@@ -6,11 +6,19 @@ WARNING: This class was created to track events of failures during
 startup time. This will block the thread. Do not use unless you're sure.
 */
 @objc class SentryStartupEvent: NSObject {
-    private var errors = [String]()
+    private typealias UserInfo = [String:Any]
+    private typealias ErrorWithInfo = (String, UserInfo)
+
+    private var errors = [ErrorWithInfo]()
 
     func add(error: NSError, file: String = #file, function: String = #function, line: UInt = #line) {
         let filename = (file as NSString).lastPathComponent
-        errors.append("\(function) (\(filename):\(line)) \(error.localizedDescription) | userInfo: \(error.userInfo)")
+        let info: UserInfo = [
+            "Description": error.description,   // Not using `localizedDescription`, as it helps to have error in Sentry in a single language
+            "User Info": error.userInfo
+        ]
+
+        errors.append(("\(function) (\(filename):\(line))", info))
     }
 
     @objc(addError:file:function:line:)
@@ -26,11 +34,11 @@ startup time. This will block the thread. Do not use unless you're sure.
         }
         let semaphore = DispatchSemaphore(value: 0)
         let event = Event(level: .debug)
-        let lastError = errors.removeLast()
-        event.message = "\(title): \(lastError)"
+        event.message = title
         for error in errors {
             let breadcrumb = Breadcrumb(level: .debug, category: "Startup")
-            breadcrumb.message = error
+            breadcrumb.message = error.0
+            breadcrumb.data = error.1
             client.breadcrumbs.add(breadcrumb)
         }
         client.send(event: event, completion: { _ in
