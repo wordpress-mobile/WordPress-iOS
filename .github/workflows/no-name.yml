@@ -1,0 +1,9 @@
+name: No name jobs
+on: push
+
+jobs:
+  danger_check_pr_ios_specific:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello world
+        run: echo "Hello 🌏👋"
