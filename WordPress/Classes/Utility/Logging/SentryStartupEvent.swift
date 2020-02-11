@@ -35,10 +35,10 @@ startup time. This will block the thread. Do not use unless you're sure.
         let semaphore = DispatchSemaphore(value: 0)
         let event = Event(level: .debug)
         event.message = title
-        for error in errors {
+        for (message, data) in errors {
             let breadcrumb = Breadcrumb(level: .debug, category: "Startup")
-            breadcrumb.message = error.0
-            breadcrumb.data = error.1
+            breadcrumb.message = message
+            breadcrumb.data = data
             client.breadcrumbs.add(breadcrumb)
         }
         client.send(event: event, completion: { _ in
