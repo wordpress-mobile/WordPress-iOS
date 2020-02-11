@@ -9,6 +9,7 @@ extension BlogDetailsViewController {
             guard self?.blog.managedObjectContext != nil else {
                 return
             }
+            self?.refreshSiteIcon()
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
             if let index = QuickStartTourGuide.find()?.currentElementInt(),
