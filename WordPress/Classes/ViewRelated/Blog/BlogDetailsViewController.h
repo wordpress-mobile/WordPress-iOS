@@ -120,5 +120,6 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 - (void)showPageList;
 - (void)showMediaLibrary;
 - (void)showStats;
+- (void)refreshSiteIcon;
 
 @end

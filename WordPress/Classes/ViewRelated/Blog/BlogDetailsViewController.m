@@ -1059,6 +1059,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconRemoved];
 }
 
+- (void)refreshSiteIcon {
+    [self.headerView refreshIconImage];
+}
+
 - (void)updateBlogIconWithMedia:(Media *)media
 {
     self.blog.settings.iconMediaID = media.mediaID;
