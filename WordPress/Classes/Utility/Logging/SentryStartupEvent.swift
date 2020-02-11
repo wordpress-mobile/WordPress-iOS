@@ -6,7 +6,7 @@ WARNING: This class was created to track events of failures during
 startup time. This will block the thread. Do not use unless you're sure.
 */
 @objc class SentryStartupEvent: NSObject {
-    private typealias UserInfo = [String:Any]
+    private typealias UserInfo = [String: Any]
     private typealias ErrorWithInfo = (String, UserInfo)
 
     private var errors = [ErrorWithInfo]()
