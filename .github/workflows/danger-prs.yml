@@ -1,0 +1,19 @@
+name: iOS Code Sanity Checks
+on:
+  pull_request:
+    # The restrictions on the types of pull_request event that can trigger this
+    # workflow is intentional. We only want to run these sanity checks when the
+    # PR is opened or reopened, or its branch receives a push.
+    types: [opened, reopened, synchronize]
+
+jobs:
+  danger_check_pr_ios_specific:
+    name: iOS Sanity Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run sanity checks on the iOS project
+        uses: danger/danger-js@9.1.8
+        with:
+          args: "--dangerfile Automattic/peril-settings/org/pr/ios-macos.ts"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
