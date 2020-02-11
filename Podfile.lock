@@ -69,7 +69,7 @@ PODS:
     - React-CoreModules (= 0.61.5)
     - React-RCTImage (= 0.61.5)
     - RNTAztecView
-  - JTAppleCalendar (8.0.2)
+  - JTAppleCalendar (8.0.3)
   - lottie-ios (2.5.2)
   - MediaEditor (1.0.0):
     - TOCropViewController (~> 2.5.2)
@@ -413,7 +413,7 @@ PODS:
   - ZendeskSupportSDK (5.0.0):
     - ZendeskMessagingSDK (~> 3.0.0)
     - ZendeskSupportProvidersSDK (~> 5.0.0)
-  - ZIPFoundation (0.9.9)
+  - ZIPFoundation (0.9.10)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
@@ -528,12 +528,12 @@ SPEC REPOS:
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
-    - ZendeskCommonUISDK	
-    - ZendeskCoreSDK	
-    - ZendeskMessagingAPISDK	
-    - ZendeskMessagingSDK	
-    - ZendeskSDKConfigurationsSDK	
-    - ZendeskSupportProvidersSDK	
+    - ZendeskCommonUISDK
+    - ZendeskCoreSDK
+    - ZendeskMessagingAPISDK
+    - ZendeskMessagingSDK
+    - ZendeskSDKConfigurationsSDK
+    - ZendeskSupportProvidersSDK
     - ZendeskSupportSDK
     - ZIPFoundation
 
@@ -644,7 +644,7 @@ SPEC CHECKSUMS:
   Gridicons: dc92efbe5fd60111d2e8ea051d84a60cca552abc
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   Gutenberg: 2efd3e4c77c7f199576f0487ccccd7af706c517d
-  JTAppleCalendar: bb3dd3752e2bcc85cb798ab763fbdd6e142715fc
+  JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MediaEditor: 96af896a36e7db523ce1868d3d3602204a5fa870
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -704,7 +704,7 @@ SPEC CHECKSUMS:
   ZendeskSDKConfigurationsSDK: 13eaf9b688504aaf7d5803c33772ced314b2e837
   ZendeskSupportProvidersSDK: 96b704d58bf0d44978de135607059f379c766e58
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
-  ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
+  ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
 PODFILE CHECKSUM: 9082c3fb0653a1832e7eec27e372e9a7660fee2c
 
