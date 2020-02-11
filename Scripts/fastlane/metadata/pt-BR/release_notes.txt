@@ -1,0 +1,2 @@
+- Adicionamos um novo bloco de shortcode para que você possa criar e editar shortcodes no editor de blocos.
+- Na página de estatísticas, adicionamos o widget "Esta semana" para exibir as visualizações da última semana.

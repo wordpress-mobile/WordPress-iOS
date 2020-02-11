@@ -14,6 +14,8 @@ extension MediaEditorOperation {
             return "crop"
         case .rotate:
             return "rotate"
+        case .filter:
+            return "filter"
         case .other:
             return "other"
         }

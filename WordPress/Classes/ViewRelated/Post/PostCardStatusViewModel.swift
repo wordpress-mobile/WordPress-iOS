@@ -30,6 +30,8 @@ class PostCardStatusViewModel: NSObject {
 
     private let autoUploadInteractor = PostAutoUploadInteractor()
 
+    private let isInternetReachable: Bool
+
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
@@ -46,8 +48,9 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    init(post: Post) {
+    init(post: Post, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
         self.post = post
+        self.isInternetReachable = isInternetReachable
         super.init()
     }
 
@@ -89,6 +92,10 @@ class PostCardStatusViewModel: NSObject {
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
             return .neutral(.shade30)
+        }
+
+        if post.isFailed && isInternetReachable {
+            return .error
         }
 
         if post.isRevision() {
@@ -152,7 +159,11 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.retry)
             }
 
-            if canCancelAutoUpload {
+            if post.isFailed && isInternetReachable {
+                buttons.append(.retry)
+            }
+
+            if canCancelAutoUpload && !isInternetReachable {
                 buttons.append(.cancelAutoUpload)
             }
 
@@ -235,6 +246,10 @@ class PostCardStatusViewModel: NSObject {
 
         if post.wasAutoUploadCancelled {
             return post.hasPermanentFailedMedia() ? PostAutoUploadMessages.failedMedia : StatusMessages.localChanges
+        }
+
+        if post.isFailed && isInternetReachable {
+            return defaultFailedMessage
         }
 
         if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
