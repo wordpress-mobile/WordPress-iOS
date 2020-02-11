@@ -154,6 +154,27 @@ class PostServiceWPComTests: XCTestCase {
         expect(post.remoteStatus).to(equal(.sync))
     }
 
+    func testAutoSavingADraftWillCallTheUpdateEndpointInstead() {
+        // Arrange
+        let post = PostBuilder(context).with(statusAfterSync: .draft).drafted().withRemote().build()
+        try! context.save()
+
+        let remotePost = createRemotePost(.draft)
+        remoteMock.remotePostToReturnOnUpdatePost = remotePost
+        remoteMock.remotePostToReturnOnGetPostWithID = remotePost
+
+        // Act
+        waitUntil(timeout: 3) { done in
+            self.service.autoSave(post, success: { _, _ in
+                done()
+            }, failure: self.impossibleFailureBlock)
+        }
+
+        // Assert
+        expect(self.remoteMock.invocationsCountOfUpdate).to(equal(1))
+        expect(post.remoteStatus).to(equal(.sync))
+    }
+
     /// Local drafts with `.published` status will be created on the server as a `.draft`.
     func testAutoSavingALocallyPublishedDraftWillCreateThePostAsADraft() {
         // Arrange
@@ -269,6 +290,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
 
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
+    private(set) var invocationsCountOfUpdate = 0
 
     override func getPostWithID(_ postID: NSNumber!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
@@ -284,6 +306,7 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
 
     override func update(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
+            self.invocationsCountOfUpdate += 1
             success(self.remotePostToReturnOnUpdatePost)
         }
     }

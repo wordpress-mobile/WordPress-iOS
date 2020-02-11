@@ -74,7 +74,7 @@ class PostCardStatusViewModelTests: XCTestCase {
 
         // Act and Assert
         expectations.forEach { scenario, post, expectedButtonGroups in
-            let viewModel = PostCardStatusViewModel(post: post)
+            let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: false)
 
             expect({
                 guard viewModel.buttonGroups == expectedButtonGroups else {
@@ -88,6 +88,28 @@ class PostCardStatusViewModelTests: XCTestCase {
                 return .succeeded
             }).to(succeed())
         }
+    }
+
+    /// If the post fails to upload and there is internet connectivity, show "Upload failed" message
+    ///
+    func testReturnFailedMessageIfPostFailedAndThereIsConnectivity() {
+        let post = PostBuilder(context).revision().with(remoteStatus: .failed).confirmedAutoUpload().build()
+
+        let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: true)
+
+        expect(viewModel.status).to(equal(i18n("Upload failed")))
+        expect(viewModel.statusColor).to(equal(.error))
+    }
+
+    /// If the post fails to upload and there is NO internet connectivity, show a message that we'll publish when the user is back online
+    ///
+    func testReturnWillUploadLaterMessageIfPostFailedAndThereIsConnectivity() {
+        let post = PostBuilder(context).revision().with(remoteStatus: .failed).confirmedAutoUpload().build()
+
+        let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: false)
+
+        expect(viewModel.status).to(equal(i18n("We'll publish the post when your device is back online.")))
+        expect(viewModel.statusColor).to(equal(.warning))
     }
 }
 

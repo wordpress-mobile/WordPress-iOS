@@ -5,7 +5,7 @@ extern const CGFloat BlogDetailHeaderViewBlavatarSize;
 @protocol BlogDetailHeaderViewDelegate
 
 - (void)siteIconTapped;
-- (void)siteIconReceivedDroppedImage:(UIImage *)image;
+- (void)siteIconReceivedDroppedImage:(UIImage * _Nullable)image;
 - (BOOL)siteIconShouldAllowDroppedImages;
 
 @end
@@ -14,16 +14,16 @@ extern const CGFloat BlogDetailHeaderViewBlavatarSize;
 
 @interface BlogDetailHeaderView : UIView
 
-@property (nonatomic, strong) UIImageView *blavatarImageView;
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *subtitleLabel;
-@property (nonatomic, strong) Blog *blog;
-@property (nonatomic, weak) id<BlogDetailHeaderViewDelegate> delegate;
+@property (nonatomic, strong, nonnull) UIImageView *blavatarImageView;
+@property (nonatomic, strong, nonnull) UILabel *titleLabel;
+@property (nonatomic, strong, nonnull) UILabel *subtitleLabel;
+@property (nonatomic, strong, nullable) Blog *blog;
+@property (nonatomic, weak, nullable) id<BlogDetailHeaderViewDelegate> delegate;
 @property (nonatomic) BOOL updatingIcon;
 
 - (void)refreshIconImage;
-- (void)setTitleText:(NSString *)title;
-- (void)setSubtitleText:(NSString *)subtitle;
-- (void)loadImageAtPath:(NSString *)imagePath;
+- (void)setTitleText:(NSString * _Nullable)title;
+- (void)setSubtitleText:(NSString * _Nullable)subtitle;
+- (void)loadImageAtPath:(NSString * _Nonnull)imagePath;
 
 @end
