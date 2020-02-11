@@ -244,14 +244,12 @@ import "./ScreenshotFastfile"
 
     sh("mv ../../build/WordPress.ipa \"../../build/WordPress Alpha.ipa\"")
       
-    # NOTE: "ipa" parameter is deprecated in appcenter_upload 1.6.0, but there's a bug in the action that
-    # makes the default gym output override the "file" parameter. 
     appcenter_upload(
       api_token: get_required_env("APPCENTER_API_TOKEN"),
       owner_name: "automattic",
       owner_type: "organization", 
       app_name: "WPiOS-One-Offs",
-      ipa: "../build/WordPress Alpha.ipa",
+      file: "../build/WordPress Alpha.ipa",
       destinations: "All-users-of-WPiOS-One-Offs",
       notify_testers: false 
     )
@@ -296,14 +294,12 @@ import "./ScreenshotFastfile"
 
     sh("mv ../../build/WordPress.ipa \"../../build/WordPress Internal.ipa\"")
 
-    # NOTE: "ipa" parameter is deprecated in appcenter_upload 1.6.0, but there's a bug in the action that
-    # makes the default gym output override the "file" parameter. 
     appcenter_upload(
       api_token: ENV["APPCENTER_API_TOKEN"],
       owner_name: "automattic",
       owner_type: "organization", 
       app_name: "WP-Internal",
-      ipa: "../build/WordPress Internal.ipa",
+      file: "../build/WordPress Internal.ipa",
       notify_testers: false 
     )
     

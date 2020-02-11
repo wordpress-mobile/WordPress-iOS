@@ -115,4 +115,10 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
 - (void)scrollToElement:(QuickStartTourElement)element;
+
+- (void)showPostList;
+- (void)showPageList;
+- (void)showMediaLibrary;
+- (void)showStats;
+
 @end

@@ -26,7 +26,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 #pragma mark - Private Properties
 
-@interface WPWebViewController () <UIWebViewDelegate>
+@interface WPWebViewController ()
 
 @property (nonatomic,   weak) IBOutlet WKWebView                *webView;
 @property (nonatomic,   weak) IBOutlet WebProgressView          *progressView;
@@ -176,10 +176,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 #pragma mark - Setup
 
-/// While testing this VC for the migration from UIWebView to WKWebView I noticed redirects weren't working
-/// at all in the simulator.  I'm not sure why this is necessary, but it seems like the authenticator is failing to redirect us
-/// if this isn't set to true.  @kokejb suggested this change - unfortunately evaluating why this is necessary goes far beyond the
-/// scope of my current work.  I just want the reader to know the context behind this adition.
+/// I'm not sure why this is necessary, but it seems like the authenticator is failing to redirect us if
+/// this isn't set to true.  @kokejb suggested this change and it's working for now.
 ///
 - (void)setupAuthenticator
 {

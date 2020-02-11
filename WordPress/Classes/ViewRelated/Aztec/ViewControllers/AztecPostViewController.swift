@@ -365,7 +365,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Media Library Data Source
     ///
     lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
-        return MediaLibraryPickerDataSource(post: self.post)
+        let dataSource = MediaLibraryPickerDataSource(post: self.post)
+        dataSource.ignoreSyncErrors = true
+        return dataSource
     }()
 
     /// Device Photo Library Data Source
@@ -3227,7 +3229,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
-        if FeatureFlag.mediaEditor.enabled, let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
+        if let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
             edit(fromMediaPicker: picker, assets: phAssets)
             return nil
         } else {
@@ -3517,6 +3519,11 @@ extension AztecPostViewController {
     private func edit(fromMediaPicker picker: WPMediaPickerViewController, assets: [PHAsset]) {
         let mediaEditor = WPMediaEditor(assets)
 
+        // When the photo's library is updated (eg.: a new photo is added)
+        // the actionBar is appearing and conflicting with Media Editor.
+        // We hide it to prevent that issue
+        picker.actionBar?.isHidden = true
+
         mediaEditor.edit(from: picker,
                               onFinishEditing: { [weak self] images, actions in
                                 images.forEach { mediaEditorImage in
@@ -3531,6 +3538,9 @@ extension AztecPostViewController {
             }, onCancel: {
                 // Dismiss the Preview screen in Media Picker
                 picker.navigationController?.popViewController(animated: false)
+
+                // Show picker actionBar again
+                picker.actionBar?.isHidden = false
         })
     }
 
