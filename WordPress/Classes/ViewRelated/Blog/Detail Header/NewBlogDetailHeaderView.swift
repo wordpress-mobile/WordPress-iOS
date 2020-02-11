@@ -76,6 +76,9 @@ class NewBlogDetailHeaderView: UIView {
         self.init(frame: .zero)
 
         siteIconView.tapped = { [weak self] in
+            QuickStartTourGuide.find()?.visited(.siteIcon)
+            self?.siteIconView.spotlightIsShown = false
+
             self?.delegate?.siteIconTapped()
         }
 
