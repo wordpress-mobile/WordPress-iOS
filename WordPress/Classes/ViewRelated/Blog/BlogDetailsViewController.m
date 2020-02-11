@@ -339,6 +339,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self animateDeselectionInteractively];
         self.restorableSelectedIndexPath = nil;
     }
+    
+    self.navigationItem.title = self.blog.settings.name;
 
     [self.headerView setBlog:self.blog];
 
