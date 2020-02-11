@@ -528,6 +528,13 @@ SPEC REPOS:
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
+    - ZendeskCommonUISDK	
+    - ZendeskCoreSDK	
+    - ZendeskMessagingAPISDK	
+    - ZendeskMessagingSDK	
+    - ZendeskSDKConfigurationsSDK	
+    - ZendeskSupportProvidersSDK	
+    - ZendeskSupportSDK
     - ZIPFoundation
 
 EXTERNAL SOURCES:
