@@ -2,19 +2,23 @@ import Foundation
 
 class PostAutoUploadMessages {
     let post: AbstractPost
-    let messageProvider: AutoUploadMessageProvider
+    let messageProvider: AutoUploadMessageProvider.Type
 
-    init(for post: AbstractPost, messageProvider: AutoUploadMessageProvider? = nil) {
+    // MARK: - Overrideable Messages
+
+    private let onlineFailedUploadMessageOverride: String?
+
+    // MARK: - Initialization
+
+    init(for post: AbstractPost, onlineFailedUploadMessage: String? = nil) {
         self.post = post
 
-        if let messageProvider = messageProvider {
-            self.messageProvider = messageProvider
+        onlineFailedUploadMessageOverride = onlineFailedUploadMessage
+
+        if post is Page {
+            self.messageProvider = PageAutoUploadMessageProvider.self
         } else {
-            if post is Page {
-                self.messageProvider = PageAutoUploadMessageProvider()
-            } else {
-                self.messageProvider = PostAutoUploadMessageProvider()
-            }
+            self.messageProvider = PostAutoUploadMessageProvider.self
         }
     }
 
@@ -65,6 +69,10 @@ class PostAutoUploadMessages {
     }
 
     private func onlineFailedUploadMessage() -> String {
+        if let onlineFailedUploadMessage = onlineFailedUploadMessageOverride {
+            return onlineFailedUploadMessage
+        }
+
         return messageProvider.onlineUploadFailure
     }
 

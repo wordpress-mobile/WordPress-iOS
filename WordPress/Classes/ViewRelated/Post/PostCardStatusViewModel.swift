@@ -239,13 +239,7 @@ class PostCardStatusViewModel: NSObject {
     /// This is a helper method for `status`.
     private func generateFailedStatusMessage() -> String {
 
-        class CustomMessageProvider: PostAutoUploadMessageProvider {
-            init() {
-                super.init(onlineUploadFailure: StatusMessages.uploadFailed)
-            }
-        }
-
-        let postAutoUploadMessages = PostAutoUploadMessages(for: post, messageProvider: CustomMessageProvider())
+        let postAutoUploadMessages = PostAutoUploadMessages(for: post, onlineFailedUploadMessage: StatusMessages.uploadFailed)
 
         if post.wasAutoUploadCancelled {
             return post.hasPermanentFailedMedia() ? postAutoUploadMessages.failedMediaUploadMessage(for: post.status) : StatusMessages.localChanges
