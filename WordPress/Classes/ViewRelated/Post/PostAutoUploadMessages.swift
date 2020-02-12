@@ -2,15 +2,19 @@ import Foundation
 
 class PostAutoUploadMessages {
     let post: AbstractPost
-    let messageProvider: AutoUploadMessageProvider.Type
+    let messageProvider: AutoUploadMessageProvider
 
-    init(for post: AbstractPost) {
+    init(for post: AbstractPost, messageProvider: AutoUploadMessageProvider? = nil) {
         self.post = post
 
-        if post is Page {
-            messageProvider = PageAutoUploadMessageProvider.self
+        if let messageProvider = messageProvider {
+            self.messageProvider = messageProvider
         } else {
-            messageProvider = PostAutoUploadMessageProvider.self
+            if post is Page {
+                self.messageProvider = PageAutoUploadMessageProvider()
+            } else {
+                self.messageProvider = PostAutoUploadMessageProvider()
+            }
         }
     }
 

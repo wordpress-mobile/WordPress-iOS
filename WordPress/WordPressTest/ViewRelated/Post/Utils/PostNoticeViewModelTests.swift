@@ -39,77 +39,77 @@ class PostNoticeViewModelTests: XCTestCase {
                 scenario: "Local draft",
                 post: createPost(.draft),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.offlineDraftFailureFirstTry,
+                title: i18n("We'll save your draft when your device is back online."),
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with confirmed local changes",
                 post: createPost(.draft, hasRemote: true),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.offlineDraftFailureFirstTry,
+                title: i18n("We'll save your draft when your device is back online."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Local published draft",
                 post: createPost(.publish),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.offlinePublishFailureFirstTry,
+                title: i18n("We'll publish the post when your device is back online."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Published post with confirmed local changes",
                 post: createPost(.publish, hasRemote: true),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.offlinePublishFailureFirstTry,
+                title: i18n("We'll publish the post when your device is back online."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Locally scheduled post",
                 post: createPost(.scheduled),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.offlineScheduledFailureFirstTry,
+                title: i18n("We'll schedule your post when your device is back online."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Scheduled post with confirmed local changes",
                 post: createPost(.scheduled, hasRemote: true),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.offlineScheduledFailureFirstTry,
+                title: i18n("We'll schedule your post when your device is back online."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Post with at least 1 auto upload to publish attempt",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.onlinePublishFailureRetry,
+                title: i18n("We couldn't publish this post, but we'll try again later."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Post with the maximum number of auto upload to publish attempts",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.onlinePublishFailureWithoutRetry,
+                title: i18n("We couldn't complete this action, and didn't publish this post."),
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with at least 1 auto upload attempt",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 2),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.onlineDefaultFailureRetry,
+                title: i18n("We couldn't complete this action, but we'll try again later."),
                 actionTitle: FailureActionTitles.cancel
             ),
             Expectation(
                 scenario: "Draft with the maximum number of auto upload attempts",
                 post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
                 isInternetReachable: false,
-                title: PostAutoUploadMessageProvider.onlineDefaultFailureWithoutRetry,
+                title: i18n("We couldn't complete this action."),
                 actionTitle: FailureActionTitles.retry
             ),
             Expectation(
                 scenario: "Draft with at least 1 auto upload attempt",
                 post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
                 isInternetReachable: true,
-                title: PostAutoUploadMessageProvider.onlineUploadFailure,
+                title: i18n("Post failed to upload"),
                 actionTitle: FailureActionTitles.retry
             )
         ]
