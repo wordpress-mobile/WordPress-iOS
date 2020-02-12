@@ -247,7 +247,7 @@ class PostCardStatusViewModel: NSObject {
 
         return postAutoUploadMessages.failedUploadMessage(
             isInternetReachable: isInternetReachable,
-            withState: autoUploadInteractor.autoUploadAttemptState(of: post),
+            autoUploadState: autoUploadInteractor.autoUploadAttemptState(of: post),
             autoUploadAction: autoUploadInteractor.autoUploadAction(for: post))
     }
 

@@ -43,7 +43,7 @@ class PostAutoUploadMessages {
 
     func failedUploadMessage(
         isInternetReachable: Bool,
-        withState state: PostAutoUploadInteractor.AutoUploadAttemptState,
+        autoUploadState state: PostAutoUploadInteractor.AutoUploadAttemptState,
         autoUploadAction: PostAutoUploadInteractor.AutoUploadAction) -> String {
 
         guard !isInternetReachable else {
