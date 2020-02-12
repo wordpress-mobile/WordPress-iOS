@@ -242,12 +242,14 @@ class PostCardStatusViewModel: NSObject {
 
         guard post.isFailed,
             let _ = post.status else {
-                
+
             return defaultFailedMessage
         }
 
+        let postAutoUploadMessages = PostAutoUploadMessages(for: post)
+
         if post.wasAutoUploadCancelled {
-            return post.hasPermanentFailedMedia() ? PostAutoUploadMessages.failedMedia : StatusMessages.localChanges
+            return post.hasPermanentFailedMedia() ? postAutoUploadMessages.failedMediaUploadMessage(for: post.status) : StatusMessages.localChanges
         }
 
         if post.isFailed && isInternetReachable {
@@ -258,7 +260,7 @@ class PostCardStatusViewModel: NSObject {
             return defaultFailedMessage
         }
 
-        return PostAutoUploadMessages.failureMessage(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post))
+        return postAutoUploadMessages.offlineFailedUploadMessage(withState: autoUploadInteractor.autoUploadAttemptState(of: post))
     }
 
     private enum Constants {
