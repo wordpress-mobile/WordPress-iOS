@@ -110,13 +110,10 @@ struct PostNoticeViewModel {
 
         let postAutoUploadMessages = PostAutoUploadMessages(for: post)
 
-        guard !isInternetReachable,
-            autoUploadInteractor.autoUploadAction(for: post) == .upload else {
-
-                return postAutoUploadMessages.onlineFailedUploadMessage()
-        }
-
-        return postAutoUploadMessages.offlineFailedUploadMessage(withState: autoUploadInteractor.autoUploadAttemptState(of: post))
+        return postAutoUploadMessages.failedUploadMessage(
+            isInternetReachable: isInternetReachable,
+            withState: autoUploadInteractor.autoUploadAttemptState(of: post),
+            autoUploadAction: autoUploadInteractor.autoUploadAction(for: post))
     }
 
     private var message: String {

@@ -33,19 +33,35 @@ class PostAutoUploadMessages {
 
     // MARK: - Failure Messages
 
-    func onlineFailedUploadMessage() -> String {
-        return messageProvider.onlineUploadFailure
-    }
+    func failedUploadMessage(
+        isInternetReachable: Bool,
+        withState state: PostAutoUploadInteractor.AutoUploadAttemptState,
+        autoUploadAction: PostAutoUploadInteractor.AutoUploadAction) -> String {
 
-    func offlineFailedUploadMessage(withState state: PostAutoUploadInteractor.AutoUploadAttemptState) -> String {
+        guard !isInternetReachable else {
+            return onlineFailedUploadMessage()
+        }
+
         switch state {
         case .notAttempted:
+            guard autoUploadAction == .upload else {
+                return onlineFailedUploadMessage()
+            }
+
             return offlineFailedUploadMessageFirstTry(postStatus: post.status)
         case .attempted:
+            guard autoUploadAction == .upload else {
+                return onlineFailedUploadMessage()
+            }
+
             return offlineFailedUploadMessageWithRetry(for: post.status)
         case .reachedLimit:
             return post.hasFailedMedia ? failedMediaUploadMessage(for: post.status) : offlineFailedUploadMessageWithoutRetry(for: post.status)
         }
+    }
+
+    private func onlineFailedUploadMessage() -> String {
+        return messageProvider.onlineUploadFailure
     }
 
     private func offlineFailedUploadMessageFirstTry(
@@ -78,7 +94,7 @@ class PostAutoUploadMessages {
         case .pending:
             return messageProvider.onlineSubmitFailureRetry
         default:
-            return messageProvider.onlineSubmitFailureRetry
+            return messageProvider.onlineDefaultFailureRetry
         }
     }
 
