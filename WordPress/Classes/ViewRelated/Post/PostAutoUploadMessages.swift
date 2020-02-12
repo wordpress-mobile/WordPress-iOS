@@ -5,8 +5,6 @@ enum PostAutoUploadMessages {
                                                        comment: "Text displayed in notice after a post if published while offline.")
     static let draftWillBeUploaded = NSLocalizedString("We'll save your draft when your device is back online.",
                                                        comment: "Text displayed in notice after the app fails to upload a draft.")
-    static let pageFailedToUpload = NSLocalizedString("Page failed to upload",
-                                                      comment: "Title of notification displayed when a page has failed to upload.")
     static let postFailedToUpload = NSLocalizedString("Post failed to upload",
                                                       comment: "Title of notification displayed when a post has failed to upload.")
     static let willAttemptToPublishLater = NSLocalizedString("We couldn't publish this post, but we'll try again later.",
@@ -54,6 +52,8 @@ enum PostAutoUploadMessages {
     static let failedMediaForPending = NSLocalizedString("We couldn't upload this media, and didn't submit this post for review.",
                                                          comment: "Text displayed if a media couldn't be uploaded for a pending post.")
 
+    // MARK: - Cancel Message
+    
     static func cancelMessage(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
         case .publish:
@@ -68,61 +68,92 @@ enum PostAutoUploadMessages {
             return PostAutoUploadMessages.changesWillNotBeSubmitted
         }
     }
+    
+    // MARK: - Offline Message
+    
+    static func offlineMessage(for post: AbstractPost) -> String {
+        if post is Page {
+            return pageFailedToUpload
+        } else {
+            return postFailedToUpload
+        }
+    }
 
-    static func attemptFailures(for post: AbstractPost,
-                                withState state: PostAutoUploadInteractor.AutoUploadAttemptState) -> String? {
+    // MARK: - Failure Message
+
+    static func failureMessage(for post: AbstractPost,
+                               withState state: PostAutoUploadInteractor.AutoUploadAttemptState) -> String {
         switch state {
+        case .notAttempted:
+            return failedUploadMessage(postStatus: post.status)
         case .attempted:
-            return PostAutoUploadMessages.willAttemptToAutoUpload(for: post.status)
+            return failedUploadMessageForRetry(for: post.status)
         case .reachedLimit:
-            return post.hasFailedMedia ? PostAutoUploadMessages.failedMedia(for: post.status) : PostAutoUploadMessages.willNotAttemptToAutoUpload(for: post.status)
+            return post.hasFailedMedia ? failedMediaMessage(for: post.status) : failureMessageNoRetry(for: post.status)
+        }
+    }
+    
+    private static func failedUploadMessage(postStatus: BasePost.Status?) -> String {
+        switch postStatus {
+        case .draft:
+            return draftWillBeUploaded
+        case .publishPrivate:
+            return privateWillBeUploaded
+        case .scheduled:
+            return scheduledWillBeUploaded
+        case .publish:
+            return postWillBePublished
         default:
-            return nil
+            return willSubmitLater
+        }
+    }
+    
+    
+
+    private static func failedUploadMessageForRetry(for postStatus: BasePost.Status?) -> String {
+        switch postStatus {
+        case .publish:
+            return willAttemptToPublishLater
+        case .publishPrivate:
+            return willAttemptToPublishPrivateLater
+        case .scheduled:
+            return willAttemptToScheduleLater
+        case .pending:
+            return willAttemptToSubmitLater
+        default:
+            return willAttemptLater
         }
     }
 
-    static func failedMedia(for postStatus: BasePost.Status?) -> String {
+    private static func failureMessageNoRetry(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
         case .publish:
-            return PostAutoUploadMessages.failedMediaForPublish
+            return willNotAttemptToPublishLater
         case .publishPrivate:
-            return PostAutoUploadMessages.failedMediaForPrivate
+            return willNotAttemptToPublishPrivateLater
         case .scheduled:
-            return PostAutoUploadMessages.failedMediaForScheduled
+            return willNotAttemptToScheduleLater
         case .pending:
-            return PostAutoUploadMessages.failedMediaForPending
+            return willNotAttemptToSubmitLater
         default:
-            return PostAutoUploadMessages.failedMedia
+            return willNotAttemptLater
         }
     }
+    
+    // MARK: - Failed Media
 
-    private static func willAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
+    static func failedMediaMessage(for postStatus: BasePost.Status?) -> String {
         switch postStatus {
         case .publish:
-            return PostAutoUploadMessages.willAttemptToPublishLater
+            return failedMediaForPublish
         case .publishPrivate:
-            return PostAutoUploadMessages.willAttemptToPublishPrivateLater
+            return failedMediaForPrivate
         case .scheduled:
-            return PostAutoUploadMessages.willAttemptToScheduleLater
+            return failedMediaForScheduled
         case .pending:
-            return PostAutoUploadMessages.willAttemptToSubmitLater
+            return failedMediaForPending
         default:
-            return PostAutoUploadMessages.willAttemptLater
-        }
-    }
-
-    private static func willNotAttemptToAutoUpload(for postStatus: BasePost.Status?) -> String {
-        switch postStatus {
-        case .publish:
-            return PostAutoUploadMessages.willNotAttemptToPublishLater
-        case .publishPrivate:
-            return PostAutoUploadMessages.willNotAttemptToPublishPrivateLater
-        case .scheduled:
-            return PostAutoUploadMessages.willNotAttemptToScheduleLater
-        case .pending:
-            return PostAutoUploadMessages.willNotAttemptToSubmitLater
-        default:
-            return PostAutoUploadMessages.willNotAttemptLater
+            return failedMedia
         }
     }
 }

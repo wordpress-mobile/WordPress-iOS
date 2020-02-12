@@ -240,7 +240,9 @@ class PostCardStatusViewModel: NSObject {
     private func generateFailedStatusMessage() -> String {
         let defaultFailedMessage = StatusMessages.uploadFailed
 
-        guard post.isFailed, let postStatus = post.status else {
+        guard post.isFailed,
+            let _ = post.status else {
+                
             return defaultFailedMessage
         }
 
@@ -252,26 +254,11 @@ class PostCardStatusViewModel: NSObject {
             return defaultFailedMessage
         }
 
-        if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
-            return autoUploadMessage
-        }
-
         if autoUploadInteractor.autoUploadAction(for: post) != .upload {
             return defaultFailedMessage
         }
 
-        switch postStatus {
-        case .draft:
-            return PostAutoUploadMessages.draftWillBeUploaded
-        case .publishPrivate:
-            return PostAutoUploadMessages.privateWillBeUploaded
-        case .scheduled:
-            return PostAutoUploadMessages.scheduledWillBeUploaded
-        case .publish:
-            return PostAutoUploadMessages.postWillBePublished
-        default:
-            return PostAutoUploadMessages.willSubmitLater
-        }
+        return PostAutoUploadMessages.failureMessage(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post))
     }
 
     private enum Constants {

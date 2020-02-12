@@ -2011,6 +2011,7 @@
 		F15A230520A3ECC500625EA2 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		F1655B4822A6C2FA00227BFB /* Routes+Mbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */; };
 		F16601C423E9E783007950AE /* SharingAuthorizationWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16601C323E9E783007950AE /* SharingAuthorizationWebViewController.swift */; };
+		F16C35D623F33DE400C81331 /* PageAutoUploadMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16C35D523F33DE400C81331 /* PageAutoUploadMessages.swift */; };
 		F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */; };
 		F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */; };
 		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
@@ -4563,6 +4564,7 @@
 		F14E844C2317252200D0C63E /* WordPress 90.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 90.xcdatamodel"; sourceTree = "<group>"; };
 		F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Mbar.swift"; sourceTree = "<group>"; };
 		F16601C323E9E783007950AE /* SharingAuthorizationWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingAuthorizationWebViewController.swift; sourceTree = "<group>"; };
+		F16C35D523F33DE400C81331 /* PageAutoUploadMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PageAutoUploadMessages.swift; path = ../Post/PageAutoUploadMessages.swift; sourceTree = "<group>"; };
 		F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
 		F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
 		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
@@ -5345,7 +5347,7 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				98D31BBF239720E4009CFF43 /* MainInterface.storyboard */,
@@ -7807,6 +7809,7 @@
 			isa = PBXGroup;
 			children = (
 				9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */,
+				F16C35D523F33DE400C81331 /* PageAutoUploadMessages.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -10318,7 +10321,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11446,6 +11449,7 @@
 				738B9A5A21B85CF20005062B /* SiteCreationHeaderData.swift in Sources */,
 				319D6E7B19E447500013871C /* Suggestion.m in Sources */,
 				594399931B45091000539E21 /* WPAuthTokenIssueSolver.m in Sources */,
+				F16C35D623F33DE400C81331 /* PageAutoUploadMessages.swift in Sources */,
 				7E7B4CF820459E21001463D6 /* PersonHeaderCell.swift in Sources */,
 				B555E1151C04A68D00CEC81B /* WordPress-41-42.xcmappingmodel in Sources */,
 				E16A76F11FC4758300A661E3 /* JetpackSiteRef.swift in Sources */,
