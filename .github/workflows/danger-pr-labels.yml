@@ -1,0 +1,18 @@
+name: Validated PR Labels
+on:
+  pull_request:
+    # The restrictions on the types of pull_request event that can trigger this
+    # workflow is intentional. We only want to run label related checks on a
+    # new or reopened PR, or when its labels change.
+    types: [opened, reopened, labeled, unlabeled]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR Labels
+        uses: danger/danger-js@9.1.8
+        with:
+          args: "--dangerfile Automattic/peril-settings/org/pr/label.ts"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
