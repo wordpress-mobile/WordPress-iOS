@@ -476,8 +476,9 @@ fileprivate extension SearchManager {
         closePreviewIfNeeded(for: apost)
 
         if FeatureFlag.postPreview.enabled {
-            let controller = NewPostPreviewViewController(post: apost)
-            let navWrapper = UINavigationController(rootViewController: controller)
+            let controller = PreviewWebKitViewController(post: apost)
+            controller.trackOpenEvent()
+            let navWrapper = LightNavigationController(rootViewController: controller)
             WPTabBarController.sharedInstance().present(navWrapper, animated: true)
         } else {
             let controller = PostPreviewViewController(post: apost)
@@ -499,7 +500,7 @@ fileprivate extension SearchManager {
             return
         }
         if FeatureFlag.postPreview.enabled {
-            guard let previewVC = navController.topViewController as? NewPostPreviewViewController,
+            guard let previewVC = navController.topViewController as? PreviewWebKitViewController,
                 previewVC.post != apost else {
                     // Do nothing — post is already loaded or PostPreviewViewController isn't visible
                     return
@@ -518,7 +519,7 @@ fileprivate extension SearchManager {
     ///
     func closeAnyOpenPreview() {
         guard let navController = WPTabBarController.sharedInstance().presentedViewController as? UINavigationController,
-            navController.topViewController is PostPreviewViewController || navController.topViewController is NewPostPreviewViewController else {
+            navController.topViewController is PostPreviewViewController || navController.topViewController is PreviewWebKitViewController else {
                 return
         }
         navController.dismiss(animated: true)

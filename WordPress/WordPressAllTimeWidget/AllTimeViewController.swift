@@ -2,6 +2,7 @@ import UIKit
 import NotificationCenter
 import WordPressKit
 import WordPressUI
+import Reachability
 
 class AllTimeViewController: UIViewController {
 
@@ -12,6 +13,7 @@ class AllTimeViewController: UIViewController {
     private var statsValues: AllTimeWidgetStats? {
         didSet {
             updateStatsLabels()
+            tableView.reloadData()
         }
     }
 
@@ -20,7 +22,6 @@ class AllTimeViewController: UIViewController {
     private var postCount: String = Constants.noDataLabel
     private var bestCount: String = Constants.noDataLabel
     private var siteUrl: String = Constants.noDataLabel
-    private var footerHeight: CGFloat = 35
 
     private var haveSiteUrl: Bool {
         siteUrl != Constants.noDataLabel
@@ -32,12 +33,30 @@ class AllTimeViewController: UIViewController {
 
     private var isConfigured = false {
         didSet {
-            // If unconfigured, don't allow the widget to be expanded/compacted.
-            extensionContext?.widgetLargestAvailableDisplayMode = isConfigured ? .expanded : .compact
+            setAvailableDisplayMode()
         }
     }
 
+    private var isReachable = true {
+        didSet {
+            setAvailableDisplayMode()
+
+            if isReachable != oldValue,
+                let completionHandler = widgetCompletionBlock {
+                widgetPerformUpdate(completionHandler: completionHandler)
+            }
+        }
+    }
+
+    private var showNoConnection: Bool {
+        return !isReachable && statsValues == nil
+    }
+
     private let tracks = Tracks(appGroupName: WPAppGroupName)
+    private let reachability: Reachability = .forInternetConnection()
+
+    private typealias WidgetCompletionBlock = (NCUpdateResult) -> Void
+    private var widgetCompletionBlock: WidgetCompletionBlock?
 
     // MARK: - View
 
@@ -50,11 +69,13 @@ class AllTimeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadSavedData()
+        setupReachability()
         resizeView()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        reachability.stopNotifier()
         saveData()
     }
 
@@ -64,16 +85,31 @@ class AllTimeViewController: UIViewController {
         let updatedRowCount = numberOfRowsToDisplay()
 
         // If the number of rows has not changed, do nothing.
-        guard updatedRowCount != tableView.visibleCells.count else {
+        guard updatedRowCount != tableView.numberOfRows(inSection: 0) else {
             return
         }
 
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.performBatchUpdates({
-                let lastRowIndexPath = [IndexPath(row: Constants.maxRows - 1, section: 0)]
-                updatedRowCount > Constants.minRows ?
-                    self.tableView.insertRows(at: lastRowIndexPath, with: .fade) :
-                    self.tableView.deleteRows(at: lastRowIndexPath, with: .fade)
+
+                var indexPathsToInsert = [IndexPath]()
+                var indexPathsToDelete = [IndexPath]()
+
+                // If no connection was displayed, then rows are just being added.
+                // Otherwise, a data row is being inserted/deleted.
+                if self.tableView.visibleCells.first is WidgetNoConnectionCell {
+                    let indexRange = (1..<updatedRowCount)
+                    let indexPaths = indexRange.map({ return IndexPath(row: $0, section: 0) })
+                    indexPathsToInsert.append(contentsOf: indexPaths)
+                } else {
+                    let lastDataRowIndexPath = IndexPath(row: 1, section: 0)
+                    indexPathsToInsert.append(lastDataRowIndexPath)
+                    indexPathsToDelete.append(lastDataRowIndexPath)
+                }
+
+                updatedRowCount > self.minRowsToDisplay() ?
+                    self.tableView.insertRows(at: indexPathsToInsert, with: .fade) :
+                    self.tableView.deleteRows(at: indexPathsToDelete, with: .fade)
             })
         })
     }
@@ -85,13 +121,15 @@ class AllTimeViewController: UIViewController {
 extension AllTimeViewController: NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
+        widgetCompletionBlock = completionHandler
         retrieveSiteConfiguration()
+        isReachable = reachability.isReachable()
 
-        if !isConfigured {
-            DDLogError("All Time Widget: Missing site ID, timeZone or oauth2Token")
+        if !isConfigured || !isReachable {
+            DDLogError("All Time Widget: unable to update. Configured: \(isConfigured) Reachable: \(isReachable)")
 
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
 
             completionHandler(NCUpdateResult.failed)
@@ -118,42 +156,30 @@ extension AllTimeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard isConfigured else {
+        if showNoConnection {
+            return noConnectionCellFor(indexPath: indexPath)
+        }
+
+        if !isConfigured {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
         return statCellFor(indexPath: indexPath)
     }
 
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard haveSiteUrl,
-            isConfigured,
-            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: WidgetFooterView.reuseIdentifier) as? WidgetFooterView else {
-                return nil
-        }
-
-        footer.configure(siteUrl: siteUrl)
-        footerHeight = footer.frame.height
-
-        return footer
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if !isConfigured || !haveSiteUrl {
-            return 0
-        }
-
-        return footerHeight
-    }
-
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard !isConfigured,
-            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) else {
-                return UITableView.automaticDimension
+
+        if !isConfigured || showNoConnection,
+            let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) {
+            // Use the max compact height for unconfigured view.
+            return maxCompactSize.height
         }
 
-        // Use the max compact height for unconfigured view.
-        return maxCompactSize.height
+        if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
+            return WidgetUrlCell.height
+        }
+
+        return UITableView.automaticDimension
     }
 
 }
@@ -162,10 +188,11 @@ extension AllTimeViewController: UITableViewDelegate, UITableViewDataSource {
 
 private extension AllTimeViewController {
 
-    // MARK: - Launch Containing App
+    // MARK: - Tap Gesture Handling
 
-    @IBAction func launchContainingApp() {
-        guard let extensionContext = extensionContext,
+    @IBAction func handleTapGesture() {
+        guard isReachable,
+            let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
                 DDLogError("All Time Widget: Unable to get extensionContext or appURL.")
                 return
@@ -239,12 +266,11 @@ private extension AllTimeViewController {
 
             DDLogDebug("All Time Widget: Fetched StatsAllTimesInsight data.")
 
-            DispatchQueue.main.async {
-                self.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
+            DispatchQueue.main.async { [weak self] in
+                self?.statsValues = AllTimeWidgetStats(views: allTimesStats?.viewsCount,
                                             visitors: allTimesStats?.visitorsCount,
                                             posts: allTimesStats?.postsCount,
                                             bestViews: allTimesStats?.bestViewsPerDayCount)
-                self.tableView.reloadData()
             }
             completionHandler(NCUpdateResult.newData)
         }
@@ -273,8 +299,19 @@ private extension AllTimeViewController {
         let unconfiguredCellNib = UINib(nibName: String(describing: WidgetUnconfiguredCell.self), bundle: Bundle(for: WidgetUnconfiguredCell.self))
         tableView.register(unconfiguredCellNib, forCellReuseIdentifier: WidgetUnconfiguredCell.reuseIdentifier)
 
-        let footerNib = UINib(nibName: String(describing: WidgetFooterView.self), bundle: Bundle(for: WidgetFooterView.self))
-        tableView.register(footerNib, forHeaderFooterViewReuseIdentifier: WidgetFooterView.reuseIdentifier)
+        let urlCellNib = UINib(nibName: String(describing: WidgetUrlCell.self), bundle: Bundle(for: WidgetUrlCell.self))
+        tableView.register(urlCellNib, forCellReuseIdentifier: WidgetUrlCell.reuseIdentifier)
+
+        let noConnectionCellNib = UINib(nibName: String(describing: WidgetNoConnectionCell.self), bundle: Bundle(for: WidgetNoConnectionCell.self))
+        tableView.register(noConnectionCellNib, forCellReuseIdentifier: WidgetNoConnectionCell.reuseIdentifier)
+    }
+
+    func noConnectionCellFor(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetNoConnectionCell.reuseIdentifier, for: indexPath) as? WidgetNoConnectionCell else {
+            return UITableViewCell()
+        }
+
+        return cell
     }
 
     func unconfiguredCellFor(indexPath: IndexPath) -> UITableViewCell {
@@ -287,6 +324,18 @@ private extension AllTimeViewController {
     }
 
     func statCellFor(indexPath: IndexPath) -> UITableViewCell {
+
+        // URL Cell
+        if showUrl() && indexPath.row == numberOfRowsToDisplay() - 1 {
+            guard let urlCell = tableView.dequeueReusableCell(withIdentifier: WidgetUrlCell.reuseIdentifier, for: indexPath) as? WidgetUrlCell else {
+                return UITableViewCell()
+            }
+
+            urlCell.configure(siteUrl: siteUrl)
+            return urlCell
+        }
+
+        // Data Cells
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WidgetTwoColumnCell.reuseIdentifier, for: indexPath) as? WidgetTwoColumnCell else {
             return UITableViewCell()
         }
@@ -306,14 +355,27 @@ private extension AllTimeViewController {
         return cell
     }
 
+    func showUrl() -> Bool {
+        return (isConfigured && haveSiteUrl)
+    }
+
     // MARK: - Expand / Compact View Helpers
 
-    func numberOfRowsToDisplay() -> Int {
-        if !isConfigured || extensionContext?.widgetActiveDisplayMode == .compact {
-            return Constants.minRows
-        }
+    func setAvailableDisplayMode() {
+        // If unconfigured or no connection, don't allow the widget to be expanded.
+        extensionContext?.widgetLargestAvailableDisplayMode = !showNoConnection && isConfigured ? .expanded : .compact
+    }
 
-        return Constants.maxRows
+    func minRowsToDisplay() -> Int {
+        return showUrl() ? 2 : 1
+    }
+
+    func maxRowsToDisplay() -> Int {
+        return showUrl() ? 3 : 2
+    }
+
+    func numberOfRowsToDisplay() -> Int {
+        return extensionContext?.widgetActiveDisplayMode == .compact ? minRowsToDisplay() : maxRowsToDisplay()
     }
 
     func resizeView(withMaximumSize size: CGSize? = nil) {
@@ -327,20 +389,51 @@ private extension AllTimeViewController {
 
     func expandedHeight() -> CGFloat {
         var height: CGFloat = 0
+        let dataRowHeight: CGFloat
 
-        if haveSiteUrl {
-            height += tableView.footerView(forSection: 0)?.frame.height ?? footerHeight
+        // This method is called before the rows are updated.
+        // So if a no connection cell was displayed, use the default height for data rows.
+        // Otherwise, use the actual height from the first data row.
+        if tableView.visibleCells.first is WidgetNoConnectionCell {
+            dataRowHeight = WidgetTwoColumnCell.defaultHeight
+        } else {
+            dataRowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
         }
 
-        let rowHeight = tableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
-        height += (rowHeight * CGFloat(numberOfRowsToDisplay()))
+        let numRows = numberOfRowsToDisplay()
+
+        if showUrl() {
+            height += WidgetUrlCell.height
+            height += (dataRowHeight * CGFloat(numRows - 1))
+        } else {
+            height += (dataRowHeight * CGFloat(numRows))
+        }
+
         return height
+    }
+    // MARK: - Reachability
+
+    func setupReachability() {
+        isReachable = reachability.isReachable()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reachabilityChanged),
+                                               name: NSNotification.Name.reachabilityChanged,
+                                               object: nil)
+        reachability.startNotifier()
+    }
+
+    @objc func reachabilityChanged() {
+        isReachable = reachability.isReachable()
     }
 
     // MARK: - Helpers
 
     func updateStatsLabels() {
-        let values = statsValues ?? AllTimeWidgetStats()
+        guard let values = statsValues else {
+            return
+        }
+
         viewCount = values.views.abbreviatedString()
         visitorCount = values.visitors.abbreviatedString()
         postCount = values.posts.abbreviatedString()
@@ -360,8 +453,6 @@ private extension AllTimeViewController {
         static let noDataLabel = "-"
         static let baseUrl: String = "\(WPComScheme)://"
         static let statsUrl: String = Constants.baseUrl + "viewstats?siteId="
-        static let minRows: Int = 1
-        static let maxRows: Int = 2
     }
 
 }

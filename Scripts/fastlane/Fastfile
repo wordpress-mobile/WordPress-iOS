@@ -363,6 +363,27 @@ import "./ScreenshotFastfile"
     sh("cd .. && rm WordPress.app.dSYM.zip")
   end
 
+########################################################################
+# Cnfigure Lanes
+########################################################################
+  #####################################################################################
+  # update_certs_and_profiles
+  # -----------------------------------------------------------------------------------
+  # This lane downloads all the required certs and profiles and, 
+  # if not run on CI it creates the missing ones.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_certs_and_profiles 
+  #
+  # Example:
+  # bundle exec fastlane update_certs_and_profiles 
+  #####################################################################################
+  lane :update_certs_and_profiles do | options |
+    alpha_code_signing
+    internal_code_signing
+    appstore_code_signing
+  end
+
   ########################################################################
   # Fastlane match code signing
   ########################################################################  
@@ -377,7 +398,8 @@ import "./ScreenshotFastfile"
                        "org.wordpress.alpha.WordPressTodayWidget",
                        "org.wordpress.alpha.WordPressNotificationServiceExtension",
                        "org.wordpress.alpha.WordPressNotificationContentExtension", 
-                       "org.wordpress.alpha.WordPressAllTimeWidget"])
+                       "org.wordpress.alpha.WordPressAllTimeWidget",
+                       "org.wordpress.alpha.WordPressThisWeekWidget"])
   end
 
   private_lane :internal_code_signing do |options|
@@ -391,7 +413,8 @@ import "./ScreenshotFastfile"
                        "org.wordpress.internal.WordPressTodayWidget",
                        "org.wordpress.internal.WordPressNotificationServiceExtension",
                        "org.wordpress.internal.WordPressNotificationContentExtension",
-                       "org.wordpress.internal.WordPressAllTimeWidget"])
+                       "org.wordpress.internal.WordPressAllTimeWidget",
+                       "org.wordpress.internal.WordPressThisWeekWidget"])
   end
 
   private_lane :appstore_code_signing do |options|
@@ -405,7 +428,8 @@ import "./ScreenshotFastfile"
                        "org.wordpress.WordPressTodayWidget",
                        "org.wordpress.WordPressNotificationServiceExtension",
                        "org.wordpress.WordPressNotificationContentExtension",
-                       "org.wordpress.WordPressAllTimeWidget"])
+                       "org.wordpress.WordPressAllTimeWidget",
+                       "org.wordpress.WordPressThisWeekWidget"])
   end
 
 ########################################################################

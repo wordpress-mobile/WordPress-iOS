@@ -25,11 +25,12 @@ class EditorGutenbergTests: XCTestCase {
         let title = getRandomPhrase()
         let content = getRandomContent()
         editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .publish()
             .viewPublishedPost(withTitle: title)
-            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)
+            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()
     }
 
@@ -39,6 +40,7 @@ class EditorGutenbergTests: XCTestCase {
         let category = getCategory()
         let tag = getTag()
         editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImage()
@@ -50,7 +52,7 @@ class EditorGutenbergTests: XCTestCase {
             .closePostSettings()
         BlockEditorScreen().publish()
             .viewPublishedPost(withTitle: title)
-            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)
+            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .done()
     }
 }

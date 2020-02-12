@@ -1,2 +1,2 @@
-Recibe avisos
+Recibe notificaciones
 en tiempo real

@@ -178,9 +178,7 @@ class NoteTableViewCell: UITableViewCell {
     // MARK: - Private Methods
 
     @objc func refreshSeparators() {
-        var insets = UIEdgeInsets.zero
-        insets.left = readableContentGuide.layoutFrame.origin.x
-        separatorsView.bottomInsets = insets
+        separatorsView.bottomInsets = .zero
     }
 
     fileprivate func refreshBackgrounds() {

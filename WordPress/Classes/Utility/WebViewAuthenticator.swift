@@ -26,6 +26,7 @@ class WebViewAuthenticator: NSObject {
     /// If true, the authenticator will assume that redirect URLs are allowed and
     /// won't use the special WordPress.com redirect URL
     ///
+    @objc
     var safeRedirect = false
 
     init(credentials: Credentials) {
@@ -217,4 +218,13 @@ private extension WebViewAuthenticator {
 
     static let wordPressComLoginUrl = URL(string: "https://wordpress.com/wp-login.php")!
     static let redirectParameter = "wpios_redirect"
+}
+
+extension WebViewAuthenticator {
+    func isLogin(url: URL) -> Bool {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        components?.queryItems = nil
+
+        return components?.url == WebViewAuthenticator.wordPressComLoginUrl
+    }
 }
