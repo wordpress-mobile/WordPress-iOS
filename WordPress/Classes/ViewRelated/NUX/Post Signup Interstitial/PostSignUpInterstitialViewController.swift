@@ -48,6 +48,10 @@ class PostSignUpInterstitialViewController: UIViewController {
         configureI18N()
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+
     // MARK: - IBAction's
     @IBAction func createSite(_ sender: Any) {
         dismiss(animated: true) {
