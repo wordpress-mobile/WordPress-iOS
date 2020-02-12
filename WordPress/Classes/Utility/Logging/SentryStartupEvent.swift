@@ -14,7 +14,7 @@ startup time. This will block the thread. Do not use unless you're sure.
     func add(error: NSError, file: String = #file, function: String = #function, line: UInt = #line) {
         let filename = (file as NSString).lastPathComponent
         let info: UserInfo = [
-            "Description": error.description,   // Not using `localizedDescription`, as it helps to have error in Sentry in a single language
+            "Description": error.description,   // Intentionally not using `localizedDescription`, as it helps to have error in Sentry in a single language
             "User Info": error.userInfo
         ]
 
@@ -35,12 +35,16 @@ startup time. This will block the thread. Do not use unless you're sure.
         let semaphore = DispatchSemaphore(value: 0)
         let event = Event(level: .debug)
         event.message = title
-        for (message, data) in errors {
-            let breadcrumb = Breadcrumb(level: .debug, category: "Startup")
-            breadcrumb.message = message
-            breadcrumb.data = data
-            client.breadcrumbs.add(breadcrumb)
-        }
+
+        event.extra = errors.enumerated().reduce(into: [String: Any](), { (result, arg1) in
+            let (index, error) = arg1
+            let (message, info) = error
+            result["Error \(index + 1)"] = [
+                "Method": message,
+                "Error": info.description,
+            ]
+        })
+
         client.send(event: event, completion: { _ in
             semaphore.signal()
         })
