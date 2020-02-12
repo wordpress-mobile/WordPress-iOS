@@ -285,7 +285,7 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, PostAutoUploadMessages.postWillBePublished)
+        XCTAssertEqual(postCell.statusLabel.text, PostAutoUploadMessageProvider.offlinePublishFailureFirstTry)
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
@@ -360,7 +360,7 @@ class PostCardCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.statusLabel.text, PostAutoUploadMessages.draftWillBeUploaded)
+        XCTAssertEqual(postCell.statusLabel.text, PostAutoUploadMessageProvider.offlineDraftFailureFirstTry)
         XCTAssertEqual(postCell.statusLabel.textColor, UIColor.warning)
     }
 
