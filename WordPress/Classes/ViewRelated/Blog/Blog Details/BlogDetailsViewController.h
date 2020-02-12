@@ -111,6 +111,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 }
 
 @property (nonatomic, strong, nonnull) Blog * blog;
+@property (nonatomic, strong) id<ScenePresenter> _Nonnull scenePresenter;
 
 - (id _Nonnull)initWithScenePresenter:(id<ScenePresenter> _Nonnull)presenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;

@@ -6,20 +6,32 @@ import UIKit
 /// in a UISplitViewController/UINavigationController view hierarchy
 @objc
 class MeScenePresenter: NSObject, ScenePresenter {
+    // weak reference to the presented scene (no reference retained after dismissal)
+    private weak var presentedViewController: UIViewController?
 
-    private var splitViewController: WPSplitViewController?
+    /// Done button action
+    @objc
+    private func dismissHandler() {
+        self.presentedViewController?.dismiss(animated: true)
+    }
 
-    func makeDoneButton() -> UIBarButtonItem {
+    /// ScenePresenter conformance
+    func present(on viewController: UIViewController) {
+        let presentedViewController = makePresentedViewController()
+        self.presentedViewController = presentedViewController
+        viewController.present(presentedViewController, animated: true)
+    }
+}
+
+
+/// Presented UIViewController factory methodsqq
+extension MeScenePresenter {
+
+    private func makeDoneButton() -> UIBarButtonItem {
         return UIBarButtonItem(title: NSLocalizedString("Done", comment: "Title of the Done button on the me page"),
                                style: .done,
                                target: self,
                                action: #selector(dismissHandler))
-    }
-
-    @objc
-    private func dismissHandler() {
-        self.splitViewController?.dismiss(animated: true)
-        self.splitViewController = nil
     }
 
     private func makeMeViewController() -> MeViewController {
@@ -33,17 +45,10 @@ class MeScenePresenter: NSObject, ScenePresenter {
         return navigationController
     }
 
-    private func makeSplitViewController() -> WPSplitViewController {
+    private func makePresentedViewController() -> WPSplitViewController {
         let splitViewController = WPSplitViewController()
         splitViewController.setInitialPrimaryViewController(makeNavigationController())
         splitViewController.wpPrimaryColumnWidth = .narrow
         return splitViewController
     }
-
-    func present(on viewController: UIViewController) {
-        let splitViewController = makeSplitViewController()
-        self.splitViewController = splitViewController
-        viewController.present(splitViewController, animated: true)
-    }
 }
-

@@ -169,7 +169,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
 @property (nonatomic, strong) ImageCropViewController *imageCropViewController;
-@property (nonatomic, strong) id<ScenePresenter> scenePresenter;
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
@@ -315,6 +314,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
     [self startObservingQuickStart];
+    if([Feature enabled:FeatureFlagMeMove]) {
+        [self addMeButtonToNavigationBar];
+    }
 }
 
 /// Resizes the `tableHeaderView` as necessary whenever its size changes.
