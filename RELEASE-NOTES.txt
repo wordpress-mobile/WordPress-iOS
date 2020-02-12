@@ -1,3 +1,6 @@
+14.3
+-----
+ 
 14.2
 -----
 * Comment Editing: Fixed a bug that could cause the text selection to be on the wrong line

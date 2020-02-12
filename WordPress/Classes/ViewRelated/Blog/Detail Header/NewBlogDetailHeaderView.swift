@@ -59,7 +59,7 @@ class NewBlogDetailHeaderView: UIView {
             siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
 
-        //TODO: Refresh spotlight view
+        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
     }
 
     private enum Constants {
@@ -76,6 +76,9 @@ class NewBlogDetailHeaderView: UIView {
         self.init(frame: .zero)
 
         siteIconView.tapped = { [weak self] in
+            QuickStartTourGuide.find()?.visited(.siteIcon)
+            self?.siteIconView.spotlightIsShown = false
+
             self?.delegate?.siteIconTapped()
         }
 
