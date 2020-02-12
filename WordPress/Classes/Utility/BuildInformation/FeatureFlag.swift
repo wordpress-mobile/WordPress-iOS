@@ -8,6 +8,7 @@ enum FeatureFlag: Int, CaseIterable {
     case postReblogging
     case unifiedAuth
     case quickActions
+    case meMove
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -28,6 +29,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedAuth:
             return BuildConfiguration.current == .localDeveloper
         case .quickActions:
+            return BuildConfiguration.current == .localDeveloper
+        case .meMove:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -59,6 +62,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Unified Auth"
         case .quickActions:
             return "Quick Actions"
+        case .meMove:
+            return "Move the Me Scene to My Site"
         }
     }
 

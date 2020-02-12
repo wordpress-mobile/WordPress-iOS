@@ -169,6 +169,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
 @property (nonatomic, strong) ImageCropViewController *imageCropViewController;
+@property (nonatomic, strong) id<ScenePresenter> scenePresenter;
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
@@ -251,6 +252,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)dealloc
 {
     [self stopObservingQuickStart];
+}
+
+- (id)initWithScenePresenter:(id<ScenePresenter>)presenter
+{
+    self = [super init];
+    self.scenePresenter = presenter;
+    return self;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style

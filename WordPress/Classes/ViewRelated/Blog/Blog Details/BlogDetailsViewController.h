@@ -104,6 +104,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 
 @end
 
+@protocol ScenePresenter;
 
 @interface BlogDetailsViewController : UITableViewController <UIViewControllerRestoration, UIViewControllerTransitioningDelegate> {
     
@@ -111,6 +112,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 
 @property (nonatomic, strong, nonnull) Blog * blog;
 
+- (id _Nonnull)initWithScenePresenter:(id<ScenePresenter> _Nonnull)presenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
