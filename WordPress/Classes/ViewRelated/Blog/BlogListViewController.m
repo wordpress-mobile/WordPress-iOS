@@ -210,12 +210,32 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)maybeShowNUX
 {
-    if (self.dataSource.allBlogsCount > 0) {
+    NSInteger blogCount = self.dataSource.allBlogsCount;
+    BOOL isLoggedIn = AccountHelper.isLoggedIn;
+
+    if (blogCount > 0 && !isLoggedIn) {
         return;
     }
+    
     if (![self defaultWordPressComAccount]) {
         [[WordPressAppDelegate shared] showWelcomeScreenIfNeededAnimated:YES];
     }
+
+    else if(blogCount <= 0){
+        [self showPostSignUpInterstitial];
+    }
+}
+
+#warning TODO: Change Name
+- (void)showPostSignUpInterstitial
+{
+    #warning TODO: Add logic to only display this once
+    PostSignUpInterstitialViewController *psiViewController = [[PostSignUpInterstitialViewController alloc] init];
+    psiViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+
+    [self presentViewController:psiViewController
+                       animated:YES
+                     completion:nil];
 }
 
 - (void)updateViewsForCurrentSiteCount
