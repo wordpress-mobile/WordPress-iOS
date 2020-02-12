@@ -1,24 +1,24 @@
 import Foundation
 import Sentry
 
+private struct ErrorWithCaller {
+    let error: NSError
+    let caller: String
+}
+
 /**
 WARNING: This class was created to track events of failures during
 startup time. This will block the thread. Do not use unless you're sure.
 */
 @objc class SentryStartupEvent: NSObject {
     private typealias UserInfo = [String: Any]
-    private typealias ErrorWithInfo = (String, UserInfo)
 
-    private var errors = [ErrorWithInfo]()
+    private var errors = [ErrorWithCaller]()
 
     func add(error: NSError, file: String = #file, function: String = #function, line: UInt = #line) {
         let filename = (file as NSString).lastPathComponent
-        let info: UserInfo = [
-            "Description": error.description,   // Intentionally not using `localizedDescription`, as it helps to have error in Sentry in a single language
-            "User Info": error.userInfo
-        ]
 
-        errors.append(("\(function) (\(filename):\(line))", info))
+        errors.append(ErrorWithCaller(error: error, caller: "\(function) (\(filename):\(line))"))
     }
 
     @objc(addError:file:function:line:)
@@ -37,11 +37,14 @@ startup time. This will block the thread. Do not use unless you're sure.
         event.message = title
 
         event.extra = errors.enumerated().reduce(into: [String: Any](), { (result, arg1) in
-            let (index, error) = arg1
-            let (message, info) = error
+            let (index, errorWithCaller) = arg1
+            let error = errorWithCaller.error
             result["Error \(index + 1)"] = [
-                "Method": message,
-                "Error": info.description,
+                "Method": errorWithCaller.caller,
+                "Domain": error.domain,
+                "Code": error.code,
+                "Description": error.localizedDescription,
+                "User Info": error.userInfo.description
             ]
         })
 
