@@ -339,6 +339,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self animateDeselectionInteractively];
         self.restorableSelectedIndexPath = nil;
     }
+    
+    self.navigationItem.title = self.blog.settings.name;
 
     [self.headerView setBlog:self.blog];
 
@@ -1055,6 +1057,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.blog.settings.iconMediaID = @0;
     [self updateBlogSettingsAndRefreshIcon];
     [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconRemoved];
+}
+
+- (void)refreshSiteIcon {
+    [self.headerView refreshIconImage];
 }
 
 - (void)updateBlogIconWithMedia:(Media *)media
