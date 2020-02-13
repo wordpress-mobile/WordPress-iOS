@@ -1,3 +1,4 @@
+import Gridicons
 import UIKit
 
 
@@ -6,7 +7,7 @@ import UIKit
 extension BlogDetailsViewController {
 
     private func makeAvatarImage() -> UIImage? {
-        return UIImage(named: "icon-tab-me")
+        return Gridicon.iconOfType(.userCircle)
     }
 
     private func makeMeBarButton() -> UIBarButtonItem {
