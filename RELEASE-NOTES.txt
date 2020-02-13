@@ -1,5 +1,6 @@
 14.3
 -----
+* Block editor: Add support for upload options in Gallery block
  
 14.2
 -----
