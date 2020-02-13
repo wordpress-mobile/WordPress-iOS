@@ -9,7 +9,7 @@ private typealias FailureActionTitles = PostNoticeViewModel.FailureActionTitles
 class PostNoticeViewModelTests: XCTestCase {
     private struct Scenario {
         let name: String
-        let post: Post
+        let post: AbstractPost
         let isInternetReachable: Bool
         let expectation: Expectation
 
@@ -19,9 +19,27 @@ class PostNoticeViewModelTests: XCTestCase {
             let postTitle: String?
         }
 
+        init(name: String, page: Page, isInternetReachable: Bool, expectedTitle: String, expectedActionTitle: String) {
+            self.init(
+                name: name,
+                abstractPost: page,
+                isInternetReachable: isInternetReachable,
+                expectedTitle: expectedTitle,
+                expectedActionTitle: expectedActionTitle)
+        }
+
         init(name: String, post: Post, isInternetReachable: Bool, expectedTitle: String, expectedActionTitle: String) {
+            self.init(
+                name: name,
+                abstractPost: post,
+                isInternetReachable: isInternetReachable,
+                expectedTitle: expectedTitle,
+                expectedActionTitle: expectedActionTitle)
+        }
+
+        private init(name: String, abstractPost: AbstractPost, isInternetReachable: Bool, expectedTitle: String, expectedActionTitle: String) {
             self.name = name
-            self.post = post
+            self.post = abstractPost
             self.isInternetReachable = isInternetReachable
             self.expectation = Expectation(title: expectedTitle, actionTitle: expectedActionTitle, postTitle: post.postTitle)
         }
@@ -65,7 +83,7 @@ class PostNoticeViewModelTests: XCTestCase {
         return .succeeded
     }
 
-    // MARK: - Offline Notices: First Try
+    // MARK: - Post Offline Notices: First Try
 
     func testNoticesToBeShownAfterFailingToUploadPostsOnFirstTry() {
 
@@ -93,7 +111,7 @@ class PostNoticeViewModelTests: XCTestCase {
                 expectedActionTitle: FailureActionTitles.cancel
             ),
             Scenario(
-                name: "Schedule post while offline, first try",
+                name: "Schedule while offline, first try",
                 post: createPost(.scheduled, hasRemote: true),
                 isInternetReachable: false,
                 expectedTitle: i18n("We'll schedule your post when your device is back online."),
@@ -113,22 +131,22 @@ class PostNoticeViewModelTests: XCTestCase {
         }
     }
 
-    // MARK: - Offline Notices: Retry
+    // MARK: - Post Offline Notices: Retry
 
     func testNoticesToBeShownAfterFailingToUploadPostsOnRetry() {
 
         // Arrange
         let scenarios: [Scenario] = [
             Scenario(
-                name: "We couldn't complete this action, but we'll try again later.",
-                post: createPost(.draft),
+                name: "Save draft while offline, retry",
+                post: createPost(.draft, autoUploadAttemptsCount: 1),
                 isInternetReachable: false,
-                expectedTitle: i18n("We'll save your draft when your device is back online."),
+                expectedTitle: i18n("We couldn't complete this action, but we'll try again later."),
                 expectedActionTitle: FailureActionTitles.retry
             ),
             Scenario(
                 name: "Private Publish while offline, retry",
-                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 1),
+                post: createPost(.publishPrivate, hasRemote: true, autoUploadAttemptsCount: 1),
                 isInternetReachable: false,
                 expectedTitle: i18n("We couldn't publish this private post, but we'll try again later."),
                 expectedActionTitle: FailureActionTitles.cancel
@@ -141,7 +159,7 @@ class PostNoticeViewModelTests: XCTestCase {
                 expectedActionTitle: FailureActionTitles.cancel
             ),
             Scenario(
-                name: "Schedule post while offline, retry",
+                name: "Schedule while offline, retry",
                 post: createPost(.scheduled, hasRemote: true, autoUploadAttemptsCount: 1),
                 isInternetReachable: false,
                 expectedTitle: i18n("We couldn't schedule this post, but we'll try again later."),
@@ -153,6 +171,54 @@ class PostNoticeViewModelTests: XCTestCase {
                 isInternetReachable: false,
                 expectedTitle: i18n("We couldn't submit this post for review, but we'll try again later."),
                 expectedActionTitle: FailureActionTitles.cancel
+            ),
+        ]
+
+        scenarios.forEach { scenario in
+            expect({ self.verify(scenario) }).to(succeed())
+        }
+    }
+
+    // MARK: - Post Offline Notices: No Retries
+
+    func testNoticesToBeShownAfterFailingToUploadPostsLastTry() {
+
+        // Arrange
+        let scenarios: [Scenario] = [
+            Scenario(
+                name: "Save draft while offline, last try",
+                post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Private Publish while offline, last try",
+                post: createPost(.publishPrivate, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action, and didn't publish this private post."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Publish while offline, last try",
+                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action, and didn't publish this post."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Schedule while offline, last try",
+                post: createPost(.scheduled, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action, and didn't schedule this post."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Submit for review while offline, last try",
+                post: createPost(.pending, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action, and didn't submit this post for review."),
+                expectedActionTitle: FailureActionTitles.retry
             ),
         ]
 
@@ -201,7 +267,6 @@ class PostNoticeViewModelTests: XCTestCase {
         // Then
         expect(post.shouldAttemptAutoUpload).to(beTrue())
     }
-
 
     private func createPost(_ status: BasePost.Status, hasRemote: Bool = false, autoUploadAttemptsCount: Int = 0) -> Post {
         var builder = PostBuilder(context)

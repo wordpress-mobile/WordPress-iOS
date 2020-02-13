@@ -28,6 +28,8 @@ class PageAutoUploadMessageProvider: AutoUploadMessageProvider {
                                                                  comment: "Text displayed in notice after a page if published while offline.")
     static let offlineScheduledFailureFirstTry = NSLocalizedString("We'll schedule your page when your device is back online.",
                                                                    comment: "Text displayed after the app fails to upload a scheduled page.")
+    static let offlineSubmitFailureFirstTry = NSLocalizedString("We'll submit your page for review when your device is back online.",
+                                                                comment: "Text displayed in notice after the app fails to upload a page], it will attempt to upload it later.")
 
 
     // MARK: - Offline: Retry
@@ -42,8 +44,6 @@ class PageAutoUploadMessageProvider: AutoUploadMessageProvider {
                                                               comment: "Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later.")
     static let onlineSubmitFailureRetry = NSLocalizedString("We couldn't submit this page for review, but we'll try again later.",
                                                             comment: "Text displayed in notice after the app fails to upload a page, it will attempt to upload it later.")
-    static let offlineSubmitFailureFirstTry = NSLocalizedString("We'll submit your page for review when your device is back online.",
-                                                                comment: "Text displayed in notice after the app fails to upload a page], it will attempt to upload it later.")
 
     // MARK: - Offline: No Retry
 
