@@ -1,3 +1,7 @@
+14.3
+-----
+* Block editor: Add support for upload options in Gallery block
+ 
 14.2
 -----
 * Comment Editing: Fixed a bug that could cause the text selection to be on the wrong line

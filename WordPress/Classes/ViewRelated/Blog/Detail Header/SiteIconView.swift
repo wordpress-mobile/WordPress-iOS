@@ -5,17 +5,21 @@ class SiteIconView: UIView {
         static let borderRadius: CGFloat = 4
         static let imageRadius: CGFloat = 2
         static let imagePadding: CGFloat = 4
+        static let spotlightOffset: CGFloat = -8
     }
 
-    private let button: UIButton = {
-        let button = UIButton(frame: .zero)
-        button.backgroundColor = UIColor.secondaryButtonBackground
-        button.clipsToBounds = true
-        button.layer.borderColor = UIColor.secondaryButtonBorder.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = Constants.borderRadius
-        return button
-    }()
+    /// Whether or not to show the spotlight animation to illustrate tapping the icon.
+    var spotlightIsShown: Bool = true {
+        didSet {
+            spotlightView.isHidden = !spotlightIsShown
+        }
+    }
+
+    /// A block to be called when the image button is tapped.
+    var tapped: (() -> Void)?
+
+    /// A block to be called when an image is dropped on to the view.
+    var dropped: (([UIImage]) -> Void)?
 
     let imageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -35,10 +39,25 @@ class SiteIconView: UIView {
         return indicatorView
     }()
 
-    var tapped: (() -> Void)?
-    var dropped: (([UIImage]) -> Void)?
-
     private var dropInteraction: UIDropInteraction?
+
+    private let button: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.backgroundColor = UIColor.secondaryButtonBackground
+        button.clipsToBounds = true
+        button.layer.borderColor = UIColor.secondaryButtonBorder.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = Constants.borderRadius
+        return button
+    }()
+
+    private let spotlightView: UIView = {
+        let spotlightView = QuickStartSpotlightView()
+        spotlightView.translatesAutoresizingMaskIntoConstraints = false
+
+        spotlightView.isHidden = true
+        return spotlightView
+    }()
 
     var allowsDropInteraction: Bool = false {
         didSet {
@@ -68,6 +87,14 @@ class SiteIconView: UIView {
         button.pinSubviewAtCenter(activityIndicator)
 
         addSubview(button)
+
+        addSubview(spotlightView)
+
+        NSLayoutConstraint.activate([
+            trailingAnchor.constraint(equalTo: spotlightView.trailingAnchor, constant: Constants.spotlightOffset),
+            bottomAnchor.constraint(equalTo: spotlightView.bottomAnchor, constant: Constants.spotlightOffset)
+        ])
+
         pinSubviewToAllEdges(button)
     }
 
