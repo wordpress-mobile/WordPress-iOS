@@ -6,6 +6,9 @@ extension NSNotification.Name {
 }
 
 private struct Constants {
+    static let userDefaultsKeyFormat = "PostSignUpInterstitial.hasSeenBefore.%@"
+
+    // I18N Strings
     static let welcomeTitleText = NSLocalizedString(
         "Welcome to WordPress",
         comment: "Post Signup Interstitial Title Text"
@@ -46,6 +49,9 @@ class PostSignUpInterstitialViewController: UIViewController {
         view.backgroundColor = .listBackground
 
         configureI18N()
+
+        //Mark it as seen
+        PostSignUpInterstitialViewController.markAsSeen()
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -76,5 +82,60 @@ class PostSignUpInterstitialViewController: UIViewController {
         createSiteButton.setTitle(Constants.createSiteButtonTitleText, for: .normal)
         addSelfHostedButton.setTitle(Constants.addSelfHostedButtonTitleText, for: .normal)
         cancelButton.setTitle(Constants.cancelButtonTitleText, for: .normal)
+    }
+}
+
+// MARK: - Display Logic and Helpers
+extension PostSignUpInterstitialViewController {
+    /// Generates the user defaults key for the logged in user
+    /// Returns nil if we can not get the default WP.com account
+    private class var userDefaultsKey: String? {
+        get {
+            guard
+                let account = defaultWPComAccount(),
+                let userId = account.userID
+            else {
+                return nil
+            }
+
+            let key = String.init(format: Constants.userDefaultsKeyFormat, userId)
+            return key
+        }
+    }
+
+    /// Determines whether or not the PSI should be displayed for the logged in user
+    /// - Parameters:
+    ///   - numberOfBlogs: The number of blogs the account has
+    @objc class func shouldDisplay (numberOfBlogs: Int) -> Bool {
+        if !AccountHelper.isLoggedIn || hasSeenBefore() {
+            return false
+        }
+
+        return (numberOfBlogs == 0)
+    }
+
+    /// Determines whether the PSI has been displayed to the logged in user
+    private class func hasSeenBefore() -> Bool {
+        guard let key = userDefaultsKey else {
+            return false
+        }
+
+        return UserDefaults.standard.bool(forKey: key)
+    }
+
+    /// Marks the PSI as seen for the logged in user
+    private class func markAsSeen() {
+        guard let key = userDefaultsKey else {
+            return
+        }
+
+        UserDefaults.standard.set(true, forKey: key)
+    }
+
+    /// Grabs the default WordPress.com account
+    private class func defaultWPComAccount() -> WPAccount? {
+        let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
+        return acctServ.defaultWordPressComAccount()
     }
 }
