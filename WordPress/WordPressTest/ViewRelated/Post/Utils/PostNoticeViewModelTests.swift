@@ -7,8 +7,30 @@ import Nimble
 private typealias FailureActionTitles = PostNoticeViewModel.FailureActionTitles
 
 class PostNoticeViewModelTests: XCTestCase {
+    private struct Scenario {
+        let name: String
+        let post: Post
+        let isInternetReachable: Bool
+        let expectation: Expectation
+
+        struct Expectation {
+            let title: String
+            let actionTitle: String
+            let postTitle: String?
+        }
+
+        init(name: String, post: Post, isInternetReachable: Bool, expectedTitle: String, expectedActionTitle: String) {
+            self.name = name
+            self.post = post
+            self.isInternetReachable = isInternetReachable
+            self.expectation = Expectation(title: expectedTitle, actionTitle: expectedActionTitle, postTitle: post.postTitle)
+        }
+    }
+
     private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
+
+    // MARK: - Test Setup
 
     override func setUp() {
         super.setUp()
@@ -24,114 +46,118 @@ class PostNoticeViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func testNoticesToBeShownAfterFailingToUploadPosts() {
-        struct Expectation {
-            let scenario: String
-            let post: Post
-            let isInternetReachable: Bool
-            let title: String
-            let actionTitle: String
+    // MARK: - Expectations
+
+    private func verify(_ scenario: Scenario) -> Nimble.ToSucceedResult {
+        let expectation = scenario.expectation
+        let notice = PostNoticeViewModel(post: scenario.post, isInternetReachable: scenario.isInternetReachable).notice
+
+        guard notice.title == expectation.title else {
+            return .failed(reason: "Scenario “\(scenario.name)” failed. Expected notice.title to equal ”\(expectation.title)”. Actual is ”\(notice.title)”.")
+        }
+        guard notice.actionTitle == expectation.actionTitle else {
+            return .failed(reason: "Scenario ”\(scenario.name)” failed. Expected notice.actionTitle to equal ”\(expectation.actionTitle)”. Actual is ”\(String(describing: notice.actionTitle))”.")
+        }
+        guard notice.message == expectation.postTitle else {
+            return .failed(reason: "Scenario ”\(scenario.name)” failed. Expected notice.message to equal ”\(String(describing: expectation.postTitle))”. Actual is ”\(String(describing: notice.message))”.")
         }
 
+        return .succeeded
+    }
+
+    // MARK: - Offline Notices: First Try
+
+    func testNoticesToBeShownAfterFailingToUploadPostsOnFirstTry() {
+
         // Arrange
-        let expectations: [Expectation] = [
-            Expectation(
-                scenario: "Local draft",
+        let scenarios: [Scenario] = [
+            Scenario(
+                name: "Save draft while offline, first try",
                 post: createPost(.draft),
                 isInternetReachable: false,
-                title: i18n("We'll save your draft when your device is back online."),
-                actionTitle: FailureActionTitles.retry
+                expectedTitle: i18n("We'll save your draft when your device is back online."),
+                expectedActionTitle: FailureActionTitles.retry
             ),
-            Expectation(
-                scenario: "Draft with confirmed local changes",
-                post: createPost(.draft, hasRemote: true),
+            Scenario(
+                name: "Private Publish while offline, first try",
+                post: createPost(.publishPrivate),
                 isInternetReachable: false,
-                title: i18n("We'll save your draft when your device is back online."),
-                actionTitle: FailureActionTitles.cancel
+                expectedTitle: i18n("We'll publish your private post when your device is back online."),
+                expectedActionTitle: FailureActionTitles.cancel
             ),
-            Expectation(
-                scenario: "Local published draft",
+            Scenario(
+                name: "Publish while offline, first try",
                 post: createPost(.publish),
                 isInternetReachable: false,
-                title: i18n("We'll publish the post when your device is back online."),
-                actionTitle: FailureActionTitles.cancel
+                expectedTitle: i18n("We'll publish the post when your device is back online."),
+                expectedActionTitle: FailureActionTitles.cancel
             ),
-            Expectation(
-                scenario: "Published post with confirmed local changes",
-                post: createPost(.publish, hasRemote: true),
-                isInternetReachable: false,
-                title: i18n("We'll publish the post when your device is back online."),
-                actionTitle: FailureActionTitles.cancel
-            ),
-            Expectation(
-                scenario: "Locally scheduled post",
-                post: createPost(.scheduled),
-                isInternetReachable: false,
-                title: i18n("We'll schedule your post when your device is back online."),
-                actionTitle: FailureActionTitles.cancel
-            ),
-            Expectation(
-                scenario: "Scheduled post with confirmed local changes",
+            Scenario(
+                name: "Schedule post while offline, first try",
                 post: createPost(.scheduled, hasRemote: true),
                 isInternetReachable: false,
-                title: i18n("We'll schedule your post when your device is back online."),
-                actionTitle: FailureActionTitles.cancel
+                expectedTitle: i18n("We'll schedule your post when your device is back online."),
+                expectedActionTitle: FailureActionTitles.cancel
             ),
-            Expectation(
-                scenario: "Post with at least 1 auto upload to publish attempt",
-                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
+            Scenario(
+                name: "Submit for review while offline, first try",
+                post: createPost(.pending, hasRemote: true),
                 isInternetReachable: false,
-                title: i18n("We couldn't publish this post, but we'll try again later."),
-                actionTitle: FailureActionTitles.cancel
+                expectedTitle: i18n("We'll submit your post for review when your device is back online."),
+                expectedActionTitle: FailureActionTitles.cancel
             ),
-            Expectation(
-                scenario: "Post with the maximum number of auto upload to publish attempts",
-                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
-                isInternetReachable: false,
-                title: i18n("We couldn't complete this action, and didn't publish this post."),
-                actionTitle: FailureActionTitles.retry
-            ),
-            Expectation(
-                scenario: "Draft with at least 1 auto upload attempt",
-                post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 2),
-                isInternetReachable: false,
-                title: i18n("We couldn't complete this action, but we'll try again later."),
-                actionTitle: FailureActionTitles.cancel
-            ),
-            Expectation(
-                scenario: "Draft with the maximum number of auto upload attempts",
-                post: createPost(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
-                isInternetReachable: false,
-                title: i18n("We couldn't complete this action."),
-                actionTitle: FailureActionTitles.retry
-            ),
-            Expectation(
-                scenario: "Draft with at least 1 auto upload attempt",
-                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
-                isInternetReachable: true,
-                title: i18n("Post failed to upload"),
-                actionTitle: FailureActionTitles.retry
-            )
         ]
 
-        expectations.forEach { expectation in
-            // Act
-            let notice = PostNoticeViewModel(post: expectation.post, isInternetReachable: expectation.isInternetReachable).notice
+        scenarios.forEach { scenario in
+            expect({ self.verify(scenario) }).to(succeed())
+        }
+    }
 
-            // Assert
-            expect({
-                guard notice.title == expectation.title else {
-                    return .failed(reason: "Scenario “\(expectation.scenario)” failed. Expected notice.title to equal ”\(expectation.title)”. Actual is ”\(notice.title)”.")
-                }
-                guard notice.actionTitle == expectation.actionTitle else {
-                    return .failed(reason: "Scenario ”\(expectation.scenario)” failed. Expected notice.actionTitle to equal ”\(expectation.actionTitle)”. Actual is ”\(String(describing: notice.actionTitle))”.")
-                }
-                guard notice.message == expectation.post.postTitle else {
-                    return .failed(reason: "Scenario ”\(expectation.scenario)” failed. Expected notice.message to equal ”\(String(describing: expectation.post.postTitle))”. Actual is ”\(String(describing: notice.message))”.")
-                }
+    // MARK: - Offline Notices: Retry
 
-                return .succeeded
-            }).to(succeed())
+    func testNoticesToBeShownAfterFailingToUploadPostsOnRetry() {
+
+        // Arrange
+        let scenarios: [Scenario] = [
+            Scenario(
+                name: "We couldn't complete this action, but we'll try again later.",
+                post: createPost(.draft),
+                isInternetReachable: false,
+                expectedTitle: i18n("We'll save your draft when your device is back online."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Private Publish while offline, retry",
+                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 1),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't publish this private post, but we'll try again later."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+            Scenario(
+                name: "Publish while offline, retry",
+                post: createPost(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't publish this post, but we'll try again later."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+            Scenario(
+                name: "Schedule post while offline, retry",
+                post: createPost(.scheduled, hasRemote: true, autoUploadAttemptsCount: 1),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't schedule this post, but we'll try again later."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+            Scenario(
+                name: "Submit for review while offline, retry",
+                post: createPost(.pending, hasRemote: true, autoUploadAttemptsCount: 2),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't submit this post for review, but we'll try again later."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+        ]
+
+        scenarios.forEach { scenario in
+            expect({ self.verify(scenario) }).to(succeed())
         }
     }
 
