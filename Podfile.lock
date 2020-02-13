@@ -435,7 +435,7 @@ DEPENDENCIES:
   - Gridicons (~> 0.16)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.22.0-merged-develop`)
   - JTAppleCalendar (~> 8.0.2)
-  - MediaEditor (from `https://github.com/wordpress-mobile/MediaEditor-iOS.git`, commit `6e4f636b6f054fdaa604906faa00cd1b2128f1a1`)
+  - MediaEditor (~> 1.0.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
   - NSObject-SafeExpectations (= 0.0.3)
@@ -505,6 +505,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - JTAppleCalendar
     - lottie-ios
+    - MediaEditor
     - MRProgress
     - Nimble
     - NSObject-SafeExpectations
@@ -551,9 +552,6 @@ EXTERNAL SOURCES:
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.22.0-merged-develop
-  MediaEditor:
-    :commit: 6e4f636b6f054fdaa604906faa00cd1b2128f1a1
-    :git: https://github.com/wordpress-mobile/MediaEditor-iOS.git
   RCTRequired:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.22.0-merged-develop/react-native-gutenberg-bridge/third-party-podspecs/RCTRequired.podspec.json
   RCTTypeSafety:
@@ -619,9 +617,6 @@ CHECKOUT OPTIONS:
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.22.0-merged-develop
-  MediaEditor:
-    :commit: 6e4f636b6f054fdaa604906faa00cd1b2128f1a1
-    :git: https://github.com/wordpress-mobile/MediaEditor-iOS.git
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.22.0-merged-develop
@@ -711,6 +706,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: ab02551122d8e53229a58c2e2379011cf13a4a42
+PODFILE CHECKSUM: 06bd3daae92f95f1d25f55845edf4d8f51dc8db1
 
 COCOAPODS: 1.8.4
