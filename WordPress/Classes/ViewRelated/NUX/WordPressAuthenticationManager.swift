@@ -226,10 +226,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// WordPress.com account has no sites. Capicci?
     ///
     func shouldPresentLoginEpilogue(isJetpackLogin: Bool) -> Bool {
-        #warning("TODO: This is overriden, find a better solution for this.")
-
-        return false
-
         guard isJetpackLogin else {
             return true
         }
@@ -244,8 +240,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Indicates if the Signup Epilogue should be displayed.
     ///
     func shouldPresentSignupEpilogue() -> Bool {
-        #warning("TODO: This is overriden, find a better solution for this.")
-        return false
+        return true
     }
 
     /// Whenever a WordPress.com acocunt has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
