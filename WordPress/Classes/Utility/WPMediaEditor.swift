@@ -6,6 +6,16 @@ import Gridicons
  Displays the Media Editor with our custom styles and tracking
  */
 class WPMediaEditor: MediaEditor {
+
+    /// A Bool value indicating if the image being edited is already published. If true, it changes the Media Editor label to "Done"
+    var editingAlreadyPublishedImage: Bool = false {
+        didSet {
+            if editingAlreadyPublishedImage {
+                hub.doneButton.setTitle(NSLocalizedString("Done", comment: "Done editing an image"), for: .normal)
+            }
+        }
+    }
+
     override var styles: MediaEditorStyles {
         get {
             return [
