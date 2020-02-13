@@ -10,7 +10,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostSignUpInterstitialViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="addSelfHostedButton" destination="JzC-d5-c3A" id="32W-0f-Xl2"/>
+                <outlet property="cancelButton" destination="kkA-2A-oQc" id="8c3-7h-dBg"/>
+                <outlet property="createSiteButton" destination="r6K-uZ-29W" id="7AY-Mm-WeY"/>
+                <outlet property="subTitleLabel" destination="qaw-pG-rKU" id="JPQ-AV-SRz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="welcomeLabel" destination="4Zg-pY-BXB" id="Cjg-0o-iCM"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -101,7 +106,7 @@
                 <constraint firstItem="Vgl-ir-q3p" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="k5v-HX-Ggv"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="-2529" y="-39"/>
+            <point key="canvasLocation" x="-2445" y="-60"/>
         </view>
     </objects>
     <resources>
