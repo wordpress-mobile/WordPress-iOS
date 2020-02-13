@@ -132,19 +132,7 @@ static NSInteger HideSearchMinSites = 3;
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
     [self registerForAccountChangeNotification];
-
-    #warning TODO: Find a better place for these to go
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(launchSiteCreation)
-                                                 name:@"PSICreateSite"
-                                               object:nil];
-
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showLoginControllerForAddingSelfHostedSite)
-                                                 name:@"PSIAddSelfHosted"
-                                               object:nil];
-
+    [self registerForPostSignUpNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -558,6 +546,19 @@ static NSInteger HideSearchMinSites = 3;
 }
 
 #pragma mark - Notifications
+- (void)registerForPostSignUpNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(launchSiteCreation)
+                                                 name:@"PSICreateSite"
+                                               object:nil];
+
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showLoginControllerForAddingSelfHostedSite)
+                                                 name:@"PSIAddSelfHosted"
+                                               object:nil];
+}
 
 - (void)registerForAccountChangeNotification
 {
