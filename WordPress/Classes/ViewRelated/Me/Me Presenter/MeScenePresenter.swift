@@ -24,31 +24,30 @@ class MeScenePresenter: NSObject, ScenePresenter {
 }
 
 
-/// Presented UIViewController factory methodsqq
-extension MeScenePresenter {
+/// Presented UIViewController factory methods
+private extension MeScenePresenter {
 
-    private func makeDoneButton() -> UIBarButtonItem {
+    func makeDoneButton() -> UIBarButtonItem {
         return UIBarButtonItem(title: NSLocalizedString("Done", comment: "Title of the Done button on the me page"),
                                style: .done,
                                target: self,
                                action: #selector(dismissHandler))
     }
 
-    private func makeMeViewController() -> MeViewController {
+    func makeMeViewController() -> MeViewController {
         return MeViewController()
     }
 
-    private func makeNavigationController() -> UINavigationController {
+    func makeNavigationController() -> UINavigationController {
         let meController = makeMeViewController()
         let navigationController = UINavigationController(rootViewController: meController)
         meController.navigationItem.rightBarButtonItem = makeDoneButton()
         return navigationController
     }
 
-    private func makePresentedViewController() -> WPSplitViewController {
+    func makePresentedViewController() -> WPSplitViewController {
         let splitViewController = WPSplitViewController()
         splitViewController.setInitialPrimaryViewController(makeNavigationController())
-        splitViewController.wpPrimaryColumnWidth = .narrow
         return splitViewController
     }
 }

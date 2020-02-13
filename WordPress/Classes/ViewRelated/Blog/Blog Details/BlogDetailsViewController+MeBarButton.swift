@@ -5,11 +5,11 @@ import UIKit
 /// to the nav bar, to present the Me scene
 extension BlogDetailsViewController {
 
-    func makeAvatarImage() -> UIImage? {
+    private func makeAvatarImage() -> UIImage? {
         return UIImage(named: "icon-tab-me")
     }
 
-    func makeMeBarButton() -> UIBarButtonItem {
+    private func makeMeBarButton() -> UIBarButtonItem {
         guard let image = makeAvatarImage() else {
             /// Fall back to text in case image fails
             return UIBarButtonItem(title: NSLocalizedString("Me",
@@ -26,12 +26,12 @@ extension BlogDetailsViewController {
     }
 
     @objc
-    func addMeButtonToNavigationBar() {
-        navigationItem.rightBarButtonItem = makeMeBarButton()
+    private func presentHandler() {
+        scenePresenter.present(on: self)
     }
 
     @objc
-    func presentHandler() {
-        scenePresenter.present(on: self)
+    func addMeButtonToNavigationBar() {
+        navigationItem.rightBarButtonItem = makeMeBarButton()
     }
 }
