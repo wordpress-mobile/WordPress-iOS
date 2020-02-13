@@ -452,7 +452,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
         let mediaEditor = WPMediaEditor(image)
         mediaEditor.alreadyPublishedImage = true
-        
+
         mediaEditor.edit(from: self,
                               onFinishEditing: { [weak self] images, actions in
                                 guard let image = images.first?.editedImage else {
