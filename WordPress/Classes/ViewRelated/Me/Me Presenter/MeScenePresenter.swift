@@ -41,7 +41,7 @@ private extension MeScenePresenter {
     func makeNavigationController() -> UINavigationController {
         let meController = makeMeViewController()
         let navigationController = UINavigationController(rootViewController: meController)
-        meController.navigationItem.rightBarButtonItem = makeDoneButton()
+        meController.navigationItem.leftBarButtonItem = makeDoneButton()
         return navigationController
     }
 
