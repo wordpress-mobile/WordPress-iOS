@@ -3557,6 +3557,7 @@ extension AztecPostViewController {
         }
 
         let mediaEditor = WPMediaEditor(image)
+        mediaEditor.alreadyPublishedImage = true
 
         mediaEditor.edit(from: self,
                               onFinishEditing: { [weak self] images, actions in
