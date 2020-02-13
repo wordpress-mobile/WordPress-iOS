@@ -9,7 +9,7 @@ class WPMediaEditor: MediaEditor {
     var alreadyPublishedImage: Bool = false {
         didSet {
             if alreadyPublishedImage {
-                hub.doneButton.setTitle(Constants.doneLabel, for: .normal)
+                hub.doneButton.setTitle(NSLocalizedString("Done", comment: "Done editing an image"), for: .normal)
             }
         }
     }
@@ -18,7 +18,7 @@ class WPMediaEditor: MediaEditor {
         get {
             return [
                 .insertLabel: NSLocalizedString("Insert %@", comment: "Button title used in media editor. Placeholder will be the number of items that will be inserted."),
-                .doneLabel: Constants.doneLabel,
+                .doneLabel: NSLocalizedString("Done", comment: "Done editing an image"),
                 .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
                 .errorLoadingImageMessage: NSLocalizedString("We couldn't retrieve this media.\nPlease tap to retry.", comment: "Description that appears when a media fails to load in the Media Editor."),
                 .cancelColor: UIColor.white,
@@ -53,9 +53,5 @@ class WPMediaEditor: MediaEditor {
         }
 
         WPAnalytics.track(.mediaEditorUsed, withProperties: ["actions": actions.description])
-    }
-
-    private enum Constants {
-        static var doneLabel = NSLocalizedString("Done", comment: "Done editing an image")
     }
 }
