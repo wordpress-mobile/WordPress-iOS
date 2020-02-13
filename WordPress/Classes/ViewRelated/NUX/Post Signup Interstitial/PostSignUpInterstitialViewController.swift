@@ -87,9 +87,22 @@ class PostSignUpInterstitialViewController: UIViewController {
 
 // MARK: - Display Logic and Helpers
 extension PostSignUpInterstitialViewController {
+    /// Determines whether or not the PSI should be displayed for the logged in user
+    /// - Parameters:
+    ///   - numberOfBlogs: The number of blogs the account has
+    @objc class func shouldDisplay(numberOfBlogs: Int) -> Bool {
+        if !AccountHelper.isLoggedIn || hasSeenBefore() {
+            return false
+        }
+
+        return (numberOfBlogs == 0)
+    }
+}
+
+private extension PostSignUpInterstitialViewController {
     /// Generates the user defaults key for the logged in user
     /// Returns nil if we can not get the default WP.com account
-    private class var userDefaultsKey: String? {
+    class var userDefaultsKey: String? {
         get {
             guard
                 let account = defaultWPComAccount(),
@@ -98,24 +111,12 @@ extension PostSignUpInterstitialViewController {
                 return nil
             }
 
-            let key = String.init(format: Constants.userDefaultsKeyFormat, userId)
-            return key
+            return String.init(format: Constants.userDefaultsKeyFormat, userId)
         }
-    }
-
-    /// Determines whether or not the PSI should be displayed for the logged in user
-    /// - Parameters:
-    ///   - numberOfBlogs: The number of blogs the account has
-    @objc class func shouldDisplay (numberOfBlogs: Int) -> Bool {
-        if !AccountHelper.isLoggedIn || hasSeenBefore() {
-            return false
-        }
-
-        return (numberOfBlogs == 0)
     }
 
     /// Determines whether the PSI has been displayed to the logged in user
-    private class func hasSeenBefore() -> Bool {
+    class func hasSeenBefore() -> Bool {
         guard let key = userDefaultsKey else {
             return false
         }
@@ -124,7 +125,7 @@ extension PostSignUpInterstitialViewController {
     }
 
     /// Marks the PSI as seen for the logged in user
-    private class func markAsSeen() {
+    class func markAsSeen() {
         guard let key = userDefaultsKey else {
             return
         }
@@ -133,7 +134,7 @@ extension PostSignUpInterstitialViewController {
     }
 
     /// Grabs the default WordPress.com account
-    private class func defaultWPComAccount() -> WPAccount? {
+    class func defaultWPComAccount() -> WPAccount? {
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         return acctServ.defaultWordPressComAccount()
