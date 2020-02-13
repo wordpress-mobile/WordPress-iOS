@@ -118,7 +118,8 @@ def gutenberg_dependencies(options)
         'react-native-video',
         'RNSVG',
         'ReactNativeDarkMode',
-        'react-native-slider'
+        'react-native-slider',
+        'react-native-linear-gradient'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -145,7 +146,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'de155cb53f82e78092ca14436e3b79efa4170b88'
+    gutenberg :tag => 'v1.22.0-merged-develop'
 
     ## Third party libraries
     ## =====================
