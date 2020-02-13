@@ -6,11 +6,19 @@ import Gridicons
  Displays the Media Editor with our custom styles and tracking
  */
 class WPMediaEditor: MediaEditor {
+    var alreadyPublishedImage: Bool = false {
+        didSet {
+            if alreadyPublishedImage {
+                hub.doneButton.setTitle(Constants.doneLabel, for: .normal)
+            }
+        }
+    }
+
     override var styles: MediaEditorStyles {
         get {
             return [
                 .insertLabel: NSLocalizedString("Insert %@", comment: "Button title used in media editor. Placeholder will be the number of items that will be inserted."),
-                .doneLabel: NSLocalizedString("Done", comment: "Done editing an image"),
+                .doneLabel: Constants.doneLabel,
                 .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
                 .errorLoadingImageMessage: NSLocalizedString("We couldn't retrieve this media.\nPlease tap to retry.", comment: "Description that appears when a media fails to load in the Media Editor."),
                 .cancelColor: UIColor.white,
@@ -45,5 +53,9 @@ class WPMediaEditor: MediaEditor {
         }
 
         WPAnalytics.track(.mediaEditorUsed, withProperties: ["actions": actions.description])
+    }
+
+    private enum Constants {
+        static var doneLabel = NSLocalizedString("Done", comment: "Done editing an image")
     }
 }
