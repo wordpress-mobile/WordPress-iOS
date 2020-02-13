@@ -227,6 +227,150 @@ class PostNoticeViewModelTests: XCTestCase {
         }
     }
 
+    // MARK: - Pages Offline Notices: First Try
+
+    func testNoticesToBeShownAfterFailingToUploadPagesOnFirstTry() {
+
+        // Arrange
+        let scenarios: [Scenario] = [
+            Scenario(
+                name: "Save draft while offline, first try",
+                page: createPage(.draft),
+                isInternetReachable: false,
+                expectedTitle: i18n("We'll save your draft when your device is back online."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Private Publish while offline, first try",
+                page: createPage(.publishPrivate),
+                isInternetReachable: false,
+                expectedTitle: i18n("We'll publish your private page when your device is back online."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+            Scenario(
+                name: "Publish while offline, first try",
+                page: createPage(.publish),
+                isInternetReachable: false,
+                expectedTitle: i18n("We'll publish the page when your device is back online."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+            Scenario(
+                name: "Schedule while offline, first try",
+                page: createPage(.scheduled, hasRemote: true),
+                isInternetReachable: false,
+                expectedTitle: i18n("We'll schedule your page when your device is back online."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+            Scenario(
+                name: "Submit for review while offline, first try",
+                page: createPage(.pending, hasRemote: true),
+                isInternetReachable: false,
+                expectedTitle: i18n("We'll submit your page for review when your device is back online."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+        ]
+
+        scenarios.forEach { scenario in
+            expect({ self.verify(scenario) }).to(succeed())
+        }
+    }
+
+    // MARK: - Page Offline Notices: Retry
+
+    func testNoticesToBeShownAfterFailingToUploadPagesOnRetry() {
+
+        // Arrange
+        let scenarios: [Scenario] = [
+            Scenario(
+                name: "Save draft while offline, retry",
+                page: createPage(.draft, autoUploadAttemptsCount: 1),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action, but we'll try again later."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Private Publish while offline, retry",
+                page: createPage(.publishPrivate, hasRemote: true, autoUploadAttemptsCount: 1),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't publish this private page, but we'll try again later."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+            Scenario(
+                name: "Publish while offline, retry",
+                page: createPage(.publish, hasRemote: true, autoUploadAttemptsCount: 2),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't publish this page, but we'll try again later."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+            Scenario(
+                name: "Schedule while offline, retry",
+                page: createPage(.scheduled, hasRemote: true, autoUploadAttemptsCount: 1),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't schedule this page, but we'll try again later."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+            Scenario(
+                name: "Submit for review while offline, retry",
+                page: createPage(.pending, hasRemote: true, autoUploadAttemptsCount: 2),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't submit this page for review, but we'll try again later."),
+                expectedActionTitle: FailureActionTitles.cancel
+            ),
+        ]
+
+        scenarios.forEach { scenario in
+            expect({ self.verify(scenario) }).to(succeed())
+        }
+    }
+
+    // MARK: - Page Offline Notices: No Retries
+
+    func testNoticesToBeShownAfterFailingToUploadPagesLastTry() {
+
+        // Arrange
+        let scenarios: [Scenario] = [
+            Scenario(
+                name: "Save draft while offline, last try",
+                page: createPage(.draft, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Private Publish while offline, last try",
+                page: createPage(.publishPrivate, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action, and didn't publish this private page."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Publish while offline, last try",
+                page: createPage(.publish, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action, and didn't publish this page."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Schedule while offline, last try",
+                page: createPage(.scheduled, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action, and didn't schedule this page."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+            Scenario(
+                name: "Submit for review while offline, last try",
+                page: createPage(.pending, hasRemote: true, autoUploadAttemptsCount: 3),
+                isInternetReachable: false,
+                expectedTitle: i18n("We couldn't complete this action, and didn't submit this page for review."),
+                expectedActionTitle: FailureActionTitles.retry
+            ),
+        ]
+
+        scenarios.forEach { scenario in
+            expect({ self.verify(scenario) }).to(succeed())
+        }
+    }
+
     func testFailedPublishedPostsCancelButtonWillCancelAutoUpload() {
         // Given
         let post = PostBuilder(context)
@@ -266,6 +410,17 @@ class PostNoticeViewModelTests: XCTestCase {
 
         // Then
         expect(post.shouldAttemptAutoUpload).to(beTrue())
+    }
+
+    private func createPage(_ status: BasePost.Status, hasRemote: Bool = false, autoUploadAttemptsCount: Int = 0) -> Page {
+        return PageBuilder(context)
+            .with(title: UUID().uuidString)
+            .with(status: status)
+            .with(remoteStatus: .failed)
+            .with(remote: hasRemote)
+            .with(autoUploadAttemptsCount: autoUploadAttemptsCount)
+            .with(shouldAttemptAutoUpload: true) // IMPORTANT: This refreshes the upload hash, so call this last
+            .build()
     }
 
     private func createPost(_ status: BasePost.Status, hasRemote: Bool = false, autoUploadAttemptsCount: Int = 0) -> Post {
