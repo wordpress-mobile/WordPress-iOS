@@ -386,7 +386,7 @@ class PostCoordinator: NSObject {
             try? moc?.save()
         }
 
-        let notice = Notice(title: PostAutoUploadMessages.cancelMessage(for: post.status), message: "")
+        let notice = Notice(title: PostAutoUploadMessages(for: post).cancelMessage(), message: "")
         actionDispatcherFacade.dispatch(NoticeAction.post(notice))
     }
 
