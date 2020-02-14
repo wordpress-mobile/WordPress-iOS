@@ -6,28 +6,25 @@ private struct Constants {
 
 class PostSignUpInterstitialCoordinator {
     private let database: KeyValueDatabase
-    private let account: WPAccount?
+    private let userId: NSNumber?
 
-    init(database: KeyValueDatabase = UserDefaults.standard, account: WPAccount? = nil) {
+    init(database: KeyValueDatabase = UserDefaults.standard, userId: NSNumber? = nil ) {
         self.database = database
 
-        if account == nil {
+        self.userId = userId ?? {
             let context = ContextManager.sharedInstance().mainContext
             let acctServ = AccountService(managedObjectContext: context)
-            self.account =  acctServ.defaultWordPressComAccount()
-        } else {
-            self.account = account
-        }
+            let account = acctServ.defaultWordPressComAccount()
+
+            return account?.userID
+        }()
     }
 
     /// Generates the user defaults key for the logged in user
     /// Returns nil if we can not get the default WP.com account
     private var userDefaultsKey: String? {
         get {
-            guard
-                let account = self.account,
-                let userId = account.userID
-            else {
+            guard let userId = self.userId else {
                 return nil
             }
 
