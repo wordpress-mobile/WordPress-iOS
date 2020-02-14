@@ -4,6 +4,7 @@
 enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
+    case offlinePages
     case postPreview
     case postReblogging
     case unifiedAuth
@@ -22,6 +23,8 @@ enum FeatureFlag: Int, CaseIterable {
         case .debugMenu:
             return BuildConfiguration.current ~= [.localDeveloper,
                                                   .a8cBranchTest]
+        case .offlinePages:
+            return BuildConfiguration.current == .localDeveloper
         case .postPreview:
             return true
         case .postReblogging:
@@ -54,6 +57,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Jetpack disconnect"
         case .debugMenu:
             return "Debug menu"
+        case .offlinePages:
+            return "Offline Pages"
         case .postPreview:
             return "Post preview redesign"
         case .postReblogging:

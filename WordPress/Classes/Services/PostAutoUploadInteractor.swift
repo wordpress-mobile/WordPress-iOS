@@ -46,7 +46,7 @@ final class PostAutoUploadInteractor {
         guard post.isFailed,
             let status = post.status,
             !PostAutoUploadInteractor.disallowedStatuses.contains(status),
-            !(post is Page),
+            FeatureFlag.offlinePages.enabled == true || !(post is Page),
             post.autoUploadAttemptsCount.intValue < PostAutoUploadInteractor.maxNumberOfAttempts else {
                 return .nothing
         }
