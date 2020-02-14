@@ -226,24 +226,38 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// WordPress.com account has no sites. Capicci?
     ///
     func shouldPresentLoginEpilogue(isJetpackLogin: Bool) -> Bool {
-        guard isJetpackLogin else {
-            return true
-        }
+//        guard isJetpackLogin else {
+//            return true
+//        }
 
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
 
-        return numberOfBlogs > 0
+        if numberOfBlogs > 0 {
+            return true
+        }
+
+        let psiCoordinator = PostSignUpInterstitialCoordinator()
+        return psiCoordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
     }
 
     /// Indicates if the Signup Epilogue should be displayed.
     ///
     func shouldPresentSignupEpilogue() -> Bool {
-        return true
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
+
+        if numberOfBlogs > 0 {
+            return true
+        }
+
+        let psiCoordinator = PostSignUpInterstitialCoordinator()
+        return psiCoordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
     }
 
-    /// Whenever a WordPress.com acocunt has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
+    /// Whenever a WordPress.com account has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
     /// the new DefaultWordPressComAccount.
     ///
     func createdWordPressComAccount(username: String, authToken: String) {
