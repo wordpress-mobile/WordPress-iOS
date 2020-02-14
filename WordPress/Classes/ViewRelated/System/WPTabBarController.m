@@ -104,11 +104,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [self setupColors];
 
-        [self setViewControllers:@[self.blogListSplitViewController,
-                                   self.readerSplitViewController,
-                                   self.newPostViewController,
-                                   self.meSplitViewController,
-                                   self.notificationsSplitViewController]];
+        [self setViewControllers:[self tabViewControllers]];
 
         [self setSelectedViewController:self.blogListSplitViewController];
 
@@ -419,11 +415,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _notificationsNavigationController = nil;
     _notificationsSplitViewController = nil;
 
-    [self setViewControllers:@[self.blogListSplitViewController,
-                               self.readerSplitViewController,
-                               self.newPostViewController,
-                               self.meSplitViewController,
-                               self.notificationsSplitViewController]];
+    [self setViewControllers:[self tabViewControllers]];
 
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
@@ -435,11 +427,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _readerMenuViewController = nil;
     _readerSplitViewController = nil;
 
-    [self setViewControllers:@[self.blogListSplitViewController,
-                               self.readerSplitViewController,
-                               self.newPostViewController,
-                               self.meSplitViewController,
-                               self.notificationsSplitViewController]];
+    [self setViewControllers:[self tabViewControllers]];
 }
 
 #pragma mark - Navigation Coordinators
@@ -459,6 +447,22 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 }
 
 #pragma mark - Navigation Helpers
+
+- (NSArray<UIViewController *> *)tabViewControllers
+{
+    
+    NSMutableArray<UIViewController *> *allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+                                                        self.readerSplitViewController,
+                                                        self.newPostViewController,
+                                                        self.meSplitViewController,
+                                                        self.notificationsSplitViewController]];
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [allViewControllers removeObject:self.newPostViewController];
+    }
+    
+    return allViewControllers;
+}
 
 - (void)showTabForIndex:(NSInteger)tabIndex
 {
@@ -976,6 +980,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self startWatchingQuickTours];
 
     [self trackTabAccessOnViewDidAppear];
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [self addFloatingButton];
+    }
 }
 
 - (void)viewDidLayoutSubviews
