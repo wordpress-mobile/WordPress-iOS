@@ -1,14 +1,16 @@
-import Gridicons
-
 class FloatingActionButton: UIButton {
+
+    convenience init(image: UIImage) {
+        self.init(frame: .zero)
+
+        setImage(image, for: .normal)
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         backgroundColor = .accent
         tintColor = .white
-
-        setImage(Gridicon.iconOfType(.create), for: .normal)
 
         refreshShadow()
     }

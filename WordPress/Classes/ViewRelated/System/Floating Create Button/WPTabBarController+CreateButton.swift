@@ -1,3 +1,5 @@
+import Gridicons
+
 extension WPTabBarController {
 
     private enum Constants {
@@ -6,8 +8,8 @@ extension WPTabBarController {
     }
 
     @objc func addFloatingButton() {
-
-        let button = FloatingActionButton()
+        let button = FloatingActionButton(image: Gridicon.iconOfType(.create))
+        button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(showPostViewController(_:)), for: .touchUpInside)
 
