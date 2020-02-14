@@ -17,7 +17,7 @@ extension WPTabBarController {
 
         NSLayoutConstraint.activate([
             button.bottomAnchor.constraint(equalTo: tabBar.topAnchor, constant: Constants.padding),
-            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.padding),
+            button.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: Constants.padding),
             button.heightAnchor.constraint(equalToConstant: Constants.heightWidth),
             button.widthAnchor.constraint(equalToConstant: Constants.heightWidth)
         ])
