@@ -52,7 +52,7 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
         let page = PageBuilder(context)
             .with(status: .scheduled)
             .with(remoteStatus: .pushing)
-            .with(remote: true)
+            .withRemote()
             .build()
         let postService = PostService()
 
