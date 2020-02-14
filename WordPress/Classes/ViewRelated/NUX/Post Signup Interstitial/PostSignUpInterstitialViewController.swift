@@ -6,6 +6,7 @@ extension NSNotification.Name {
 }
 
 private struct Constants {
+    // I18N Strings
     static let welcomeTitleText = NSLocalizedString(
         "Welcome to WordPress",
         comment: "Post Signup Interstitial Title Text"
@@ -39,6 +40,8 @@ class PostSignUpInterstitialViewController: UIViewController {
     @IBOutlet weak var addSelfHostedButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
 
+    let coordinator = PostSignUpInterstitialCoordinator()
+
     // MARK: - View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +49,8 @@ class PostSignUpInterstitialViewController: UIViewController {
         view.backgroundColor = .listBackground
 
         configureI18N()
+
+        coordinator.markAsSeen()
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -77,4 +82,13 @@ class PostSignUpInterstitialViewController: UIViewController {
         addSelfHostedButton.setTitle(Constants.addSelfHostedButtonTitleText, for: .normal)
         cancelButton.setTitle(Constants.cancelButtonTitleText, for: .normal)
     }
+
+    /// Determines whether or not the PSI should be displayed for the logged in user
+    /// - Parameters:
+    ///   - numberOfBlogs: The number of blogs the account has
+    @objc class func shouldDisplay(numberOfBlogs: Int) -> Bool {
+        let coordinator = PostSignUpInterstitialCoordinator()
+        return coordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
+    }
+
 }

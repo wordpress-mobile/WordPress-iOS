@@ -132,6 +132,7 @@ static NSInteger HideSearchMinSites = 3;
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
     [self registerForAccountChangeNotification];
+    [self registerForPostSignUpNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -210,12 +211,35 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)maybeShowNUX
 {
-    if (self.dataSource.allBlogsCount > 0) {
+    NSInteger blogCount = self.dataSource.allBlogsCount;
+    BOOL isLoggedIn = AccountHelper.isLoggedIn;
+
+    if (blogCount > 0 && !isLoggedIn) {
         return;
     }
+    
     if (![self defaultWordPressComAccount]) {
         [[WordPressAppDelegate shared] showWelcomeScreenIfNeededAnimated:YES];
+        return;
     }
+
+    BOOL shouldDisplayPSI = [PostSignUpInterstitialViewController shouldDisplayWithNumberOfBlogs:blogCount];
+
+    if (!shouldDisplayPSI) {
+        return;
+    }
+
+    [self showPostSignUpInterstitial];
+}
+
+- (void)showPostSignUpInterstitial
+{
+    PostSignUpInterstitialViewController *viewController = [[PostSignUpInterstitialViewController alloc] init];
+    viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+
+    [self.navigationController presentViewController:viewController
+                                            animated:YES
+                                          completion:nil];
 }
 
 - (void)updateViewsForCurrentSiteCount
@@ -525,6 +549,19 @@ static NSInteger HideSearchMinSites = 3;
 }
 
 #pragma mark - Notifications
+- (void)registerForPostSignUpNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(launchSiteCreation)
+                                                 name:@"PSICreateSite"
+                                               object:nil];
+
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showLoginControllerForAddingSelfHostedSite)
+                                                 name:@"PSIAddSelfHosted"
+                                               object:nil];
+}
 
 - (void)registerForAccountChangeNotification
 {
