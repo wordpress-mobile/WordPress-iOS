@@ -253,6 +253,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self stopObservingQuickStart];
 }
 
+- (id)initWithScenePresenter:(id<ScenePresenter>)presenter
+{
+    self = [super init];
+    self.scenePresenter = presenter;
+    return self;
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -307,6 +314,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
     [self startObservingQuickStart];
+    if([Feature enabled:FeatureFlagMeMove]) {
+        [self addMeButtonToNavigationBar];
+    }
 }
 
 /// Resizes the `tableHeaderView` as necessary whenever its size changes.

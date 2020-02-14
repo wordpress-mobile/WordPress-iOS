@@ -497,7 +497,8 @@ import Gridicons
     fileprivate var shouldShowReblogActionButton: Bool {
         // reblog button is hidden if there's no content
         guard FeatureFlag.postReblogging.enabled,
-            contentProvider != nil,
+            let provider = contentProvider,
+            !provider.isPrivate(),
             loggedInActionVisibility.isEnabled else {
             return false
         }
