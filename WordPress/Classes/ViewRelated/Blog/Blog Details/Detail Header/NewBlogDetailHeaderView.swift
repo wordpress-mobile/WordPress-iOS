@@ -2,8 +2,6 @@ class NewBlogDetailHeaderView: UIView {
 
     @objc var delegate: BlogDetailHeaderViewDelegate?
 
-    //TODO: Add drop target
-
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
