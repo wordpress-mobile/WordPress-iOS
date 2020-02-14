@@ -39,6 +39,9 @@ class ActionButton: UIView {
         button.setImage(image, for: .normal)
         titleLabel.text = title
 
+        button.accessibilityLabel = title
+        accessibilityElements = [button]
+
         let stackView = UIStackView(arrangedSubviews: [
             button,
             titleLabel

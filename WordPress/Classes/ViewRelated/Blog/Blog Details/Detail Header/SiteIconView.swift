@@ -86,6 +86,9 @@ class SiteIconView: UIView {
         button.addSubview(activityIndicator)
         button.pinSubviewAtCenter(activityIndicator)
 
+        button.accessibilityLabel = NSLocalizedString("Site Icon", comment: "Accessibility label for site icon button")
+        accessibilityElements = [button]
+
         addSubview(button)
 
         addSubview(spotlightView)
