@@ -232,10 +232,8 @@ static NSInteger HideSearchMinSites = 3;
     [self showPostSignUpInterstitial];
 }
 
-#warning TODO: Change Name
 - (void)showPostSignUpInterstitial
 {
-    #warning TODO: Add logic to only display this once
     PostSignUpInterstitialViewController *viewController = [[PostSignUpInterstitialViewController alloc] init];
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
