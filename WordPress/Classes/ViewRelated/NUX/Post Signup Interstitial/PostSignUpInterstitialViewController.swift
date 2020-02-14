@@ -95,7 +95,7 @@ extension PostSignUpInterstitialViewController {
             return false
         }
 
-        return (numberOfBlogs == 0)
+        return numberOfBlogs == 0
     }
 }
 
@@ -111,7 +111,7 @@ private extension PostSignUpInterstitialViewController {
                 return nil
             }
 
-            return String.init(format: Constants.userDefaultsKeyFormat, userId)
+            return String(format: Constants.userDefaultsKeyFormat, userId)
         }
     }
 
