@@ -9,11 +9,13 @@ struct PostNoticeViewModel {
     private let postCoordinator: PostCoordinator
     private let autoUploadInteractor = PostAutoUploadInteractor()
     private let isInternetReachable: Bool
+    private let displayTextResolver: PostDisplayTextResolver
 
     init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
         self.post = post
         self.postCoordinator = postCoordinator
         self.isInternetReachable = isInternetReachable
+        self.displayTextResolver = PostDisplayTextResolver(for: post)
     }
 
     /// Returns the Notice represented by this view model.
@@ -69,48 +71,11 @@ struct PostNoticeViewModel {
     // MARK: - Display values for Notice
 
     private var title: String {
-        if let page = post as? Page {
-            return title(for: page)
-        } else {
-            return title(for: post)
-        }
-    }
-
-    private func title(for page: Page) -> String {
-        let status = page.status ?? .publish
-
-        switch status {
-        case .draft:
-            return NSLocalizedString("Page draft uploaded", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
-        case .scheduled:
-            return NSLocalizedString("Page scheduled", comment: "Title of notification displayed when a page has been successfully scheduled.")
-        case .pending:
-            return NSLocalizedString("Page pending review", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
-        default:
-            return NSLocalizedString("Page published", comment: "Title of notification displayed when a page has been successfully published.")
-        }
-    }
-
-    private func title(for post: AbstractPost) -> String {
-        let status = post.status ?? .publish
-
-        switch status {
-        case .draft:
-            return NSLocalizedString("Post draft uploaded", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
-        case .scheduled:
-            return NSLocalizedString("Post scheduled", comment: "Title of notification displayed when a post has been successfully scheduled.")
-        case .pending:
-            return NSLocalizedString("Post pending review", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
-        default:
-            return NSLocalizedString("Post published", comment: "Title of notification displayed when a post has been successfully published.")
-        }
+        return displayTextResolver.title()
     }
 
     private var failureTitle: String {
-
-        let postAutoUploadMessages = PostAutoUploadMessages(for: post)
-
-        return postAutoUploadMessages.failedUploadMessage(
+        return displayTextResolver.failedUploadMessage(
             isInternetReachable: isInternetReachable,
             autoUploadState: autoUploadInteractor.autoUploadAttemptState(of: post),
             autoUploadAction: autoUploadInteractor.autoUploadAction(for: post))
