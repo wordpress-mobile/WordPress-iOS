@@ -2,6 +2,9 @@ import UIKit
 
 // Makes a UIImageView circular. Handy for gravatars
 class CircularImageView: UIImageView {
+    // custom animation that can ba set to animate the view on tap
+    var tapAnimation: ((CircularImageView) -> Void)?
+
     @objc var shouldRoundCorners: Bool = true {
         didSet {
             let rect = frame
@@ -33,5 +36,12 @@ class CircularImageView: UIImageView {
         if layer.masksToBounds != shouldRoundCorners {
             layer.masksToBounds = shouldRoundCorners
         }
+    }
+    /// Add the custom animation on tap.
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let animation = tapAnimation else {
+            return
+        }
+        animation(self)
     }
 }
