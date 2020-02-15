@@ -31,7 +31,6 @@ private extension UIBarButtonItem {
         static let startAlpha: CGFloat = 0.5
         static let endAlpha: CGFloat = 1.0
         static let aimationDuration: TimeInterval = 0.5
-        static let gravatarFrame = CGRect(x: 0, y: 0, width: radius, height: radius)
         static let fallBackImage = Gridicon.iconOfType(.userCircle)
     }
 
@@ -45,7 +44,6 @@ private extension UIBarButtonItem {
                       action: action)
             return
         }
-
         self.init()
 
         customView = makeGravatarView(with: email)
@@ -54,7 +52,7 @@ private extension UIBarButtonItem {
 
     /// Create the gravatar CircluarImageView with a fade animation on tap.
     func makeGravatarView(with email: String) -> CircularImageView {
-        let gravatarImageView = CircularImageView(frame: GravatarConfiguration.gravatarFrame)
+        let gravatarImageView = CircularImageView()
         gravatarImageView.isUserInteractionEnabled = true
 
         gravatarImageView.tapAnimation = { imageView in
@@ -63,6 +61,25 @@ private extension UIBarButtonItem {
                 imageView.alpha = GravatarConfiguration.endAlpha
             }
         }
+
+        gravatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: gravatarImageView,
+                           attribute: .width,
+                           relatedBy: .equal,
+                           toItem: nil,
+                           attribute: .notAnAttribute,
+                           multiplier: 1,
+                           constant: GravatarConfiguration.radius)
+            .isActive = true
+
+        NSLayoutConstraint(item: gravatarImageView,
+                           attribute: .height,
+                           relatedBy: .equal,
+                           toItem: nil,
+                           attribute: .notAnAttribute,
+                           multiplier: 1,
+                           constant: GravatarConfiguration.radius)
+            .isActive = true
 
         gravatarImageView.contentMode = .scaleAspectFit
 

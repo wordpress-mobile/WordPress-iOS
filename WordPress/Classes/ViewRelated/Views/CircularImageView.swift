@@ -40,6 +40,7 @@ class CircularImageView: UIImageView {
     /// Add the custom animation on tap.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let animation = tapAnimation else {
+            super.touchesBegan(touches, with: event)
             return
         }
         animation(self)

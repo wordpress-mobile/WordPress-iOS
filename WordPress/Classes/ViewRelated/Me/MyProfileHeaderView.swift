@@ -68,6 +68,7 @@ class MyProfileHeaderView: WPTableViewCell {
         //
         if let email = gravatarEmail {
             gravatarImageView.overrideGravatarImageCache(image, rating: UIImageView.GravatarRatings.x, email: email)
+            gravatarImageView.updateGravatar(image: image, email: email)
         }
     }
 
