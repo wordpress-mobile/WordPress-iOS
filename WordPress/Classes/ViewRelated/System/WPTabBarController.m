@@ -466,7 +466,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)showTabForIndex:(NSInteger)tabIndex
 {
-    [self setSelectedIndex:tabIndex];
+    NSInteger newIndex = [self adjustedTabIndex:tabIndex];
+    [self setSelectedIndex:newIndex];
+}
+
+- (NSInteger)adjustedTabIndex:(NSInteger)oldIndex {
+    //TODO: Remove this change once `floatingCreateButton` feature flag is enabled
+    if ([Feature enabled:FeatureFlagFloatingCreateButton] && oldIndex > WPTabReader) {
+        return oldIndex + 1; // Adjust the index if we are hiding the new post button
+    } else {
+        return oldIndex;
+    }
 }
 
 - (void)showMySitesTab
@@ -643,7 +653,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)switchMySitesTabToMediaForBlog:(Blog *)blog
 {
-    if (self.selectedIndex == WPTabMySites) {
+    if ([self adjustedTabIndex:self.selectedIndex] == WPTabMySites) {
         UIViewController *topViewController = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
         if ([topViewController isKindOfClass:[MediaLibraryViewController class]]) {
             MediaLibraryViewController *mediaVC = (MediaLibraryViewController *)topViewController;
@@ -755,7 +765,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     // Check which tab is currently selected
     NSString *currentlySelectedScreen = @"";
-    switch (self.selectedIndex) {
+    switch ([self adjustedTabIndex:self.selectedIndex]) {
         case WPTabMySites:
             currentlySelectedScreen = @"Blog List";
             break;
@@ -775,7 +785,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (Blog *)currentlyVisibleBlog
 {
-    if (self.selectedIndex != WPTabMySites) {
+    if ([self adjustedTabIndex:self.selectedIndex] != WPTabMySites) {
         return nil;
     }
 
@@ -790,6 +800,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     NSUInteger newIndex = [tabBarController.viewControllers indexOfObject:viewController];
+    
+    newIndex = [self adjustedTabIndex:newIndex];
 
     if (newIndex == WPTabNewPost) {
         [self showPostTab];
