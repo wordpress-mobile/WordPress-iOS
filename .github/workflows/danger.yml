@@ -45,3 +45,9 @@ jobs:
           yarn run danger ci \
             --dangerfile Automattic/peril-settings/org/pr/ios-macos.ts \
             --id consistency_checks
+
+      - name: Check Diff Size
+        run: |
+          yarn run danger ci \
+            --dangerfile Automattic/peril-settings/org/pr/diff-size.ts \
+            --id diff_size
