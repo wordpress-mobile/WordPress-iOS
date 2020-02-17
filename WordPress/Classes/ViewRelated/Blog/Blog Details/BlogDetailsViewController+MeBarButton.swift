@@ -28,9 +28,6 @@ private extension UIBarButtonItem {
     /// gravatar configuration parameters
     struct GravatarConfiguration {
         static let radius: CGFloat = 24.0
-        static let startAlpha: CGFloat = 0.5
-        static let endAlpha: CGFloat = 1.0
-        static let aimationDuration: TimeInterval = 0.5
         static let fallBackImage = Gridicon.iconOfType(.userCircle)
     }
 
@@ -54,13 +51,7 @@ private extension UIBarButtonItem {
     func makeGravatarView(with email: String) -> CircularImageView {
         let gravatarImageView = CircularImageView()
         gravatarImageView.isUserInteractionEnabled = true
-
-        gravatarImageView.tapAnimation = { imageView in
-            imageView.alpha = GravatarConfiguration.startAlpha
-            UIView.animate(withDuration: GravatarConfiguration.aimationDuration) {
-                imageView.alpha = GravatarConfiguration.endAlpha
-            }
-        }
+        gravatarImageView.animatesTouch = true
 
         gravatarImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(item: gravatarImageView,
