@@ -113,7 +113,7 @@ class PostCompactCellTests: XCTestCase {
         postCell.configure(with: post)
 
         // Then
-        XCTAssertEqual(postCell.badgesLabel.text, PostAutoUploadMessages.postWillBePublished)
+        XCTAssertEqual(postCell.badgesLabel.text, i18n("We'll publish the post when your device is back online."))
         XCTAssertEqual(postCell.badgesLabel.textColor, UIColor.warning)
     }
 

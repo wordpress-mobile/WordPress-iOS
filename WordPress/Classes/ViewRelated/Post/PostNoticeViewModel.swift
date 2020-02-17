@@ -107,39 +107,13 @@ struct PostNoticeViewModel {
     }
 
     private var failureTitle: String {
-        var defaultTitle: String {
-            if post is Page {
-                return PostAutoUploadMessages.pageFailedToUpload
-            } else {
-                return PostAutoUploadMessages.postFailedToUpload
-            }
-        }
 
-        guard !isInternetReachable else {
-            return defaultTitle
-        }
+        let postAutoUploadMessages = PostAutoUploadMessages(for: post)
 
-        if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
-            return autoUploadMessage
-        }
-
-        guard let postStatus = post.status,
-            autoUploadInteractor.autoUploadAction(for: post) == .upload else {
-            return defaultTitle
-        }
-
-        switch postStatus {
-        case .draft:
-            return PostAutoUploadMessages.draftWillBeUploaded
-        case .publishPrivate:
-            return PostAutoUploadMessages.privateWillBeUploaded
-        case .scheduled:
-            return PostAutoUploadMessages.scheduledWillBeUploaded
-        case .publish:
-            return PostAutoUploadMessages.postWillBePublished
-        default:
-            return PostAutoUploadMessages.willSubmitLater
-        }
+        return postAutoUploadMessages.failedUploadMessage(
+            isInternetReachable: isInternetReachable,
+            autoUploadState: autoUploadInteractor.autoUploadAttemptState(of: post),
+            autoUploadAction: autoUploadInteractor.autoUploadAction(for: post))
     }
 
     private var message: String {

@@ -30,7 +30,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedAuth:
             return BuildConfiguration.current == .localDeveloper
         case .quickActions:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .meMove:
             return BuildConfiguration.current == .localDeveloper
         case .floatingCreateButton:
