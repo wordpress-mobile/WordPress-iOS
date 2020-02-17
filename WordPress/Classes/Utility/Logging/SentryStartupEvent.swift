@@ -1,15 +1,24 @@
 import Foundation
 import Sentry
 
+private struct ErrorWithCaller {
+    let error: NSError
+    let caller: String
+}
+
 /**
 WARNING: This class was created to track events of failures during
 startup time. This will block the thread. Do not use unless you're sure.
 */
 @objc class SentryStartupEvent: NSObject {
-    private var errors = [String]()
+    private typealias UserInfo = [String: Any]
+
+    private var errors = [ErrorWithCaller]()
 
     func add(error: NSError, file: String = #file, function: String = #function, line: UInt = #line) {
-        errors.append("\(function) (\(file):\(line)) \(error.localizedDescription) | userInfo: \(error.userInfo)")
+        let filename = (file as NSString).lastPathComponent
+
+        errors.append(ErrorWithCaller(error: error, caller: "\(function) (\(filename):\(line))"))
     }
 
     @objc(addError:file:function:line:)
@@ -25,13 +34,20 @@ startup time. This will block the thread. Do not use unless you're sure.
         }
         let semaphore = DispatchSemaphore(value: 0)
         let event = Event(level: .debug)
-        let lastError = errors.removeLast()
-        event.message = "\(title): \(lastError)"
-        for error in errors {
-            let breadcrumb = Breadcrumb(level: .debug, category: "Startup")
-            breadcrumb.message = error
-            client.breadcrumbs.add(breadcrumb)
-        }
+        event.message = title
+
+        event.extra = errors.enumerated().reduce(into: [String: Any](), { (result, arg1) in
+            let (index, errorWithCaller) = arg1
+            let error = errorWithCaller.error
+            result["Error \(index + 1)"] = [
+                "Method": errorWithCaller.caller,
+                "Domain": error.domain,
+                "Code": error.code,
+                "Description": error.localizedDescription,
+                "User Info": error.userInfo.description
+            ]
+        })
+
         client.send(event: event, completion: { _ in
             semaphore.signal()
         })
