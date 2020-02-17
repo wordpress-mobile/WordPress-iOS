@@ -40,6 +40,10 @@ class PostSignUpInterstitialViewController: UIViewController {
     @IBOutlet weak var addSelfHostedButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
 
+    /// Closure to be executed upon dismissal.
+    ///
+    var onDismiss: (() -> Void)?
+
     let coordinator = PostSignUpInterstitialCoordinator()
 
     // MARK: - View Methods
@@ -53,25 +57,34 @@ class PostSignUpInterstitialViewController: UIViewController {
         coordinator.markAsSeen()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
     }
 
     // MARK: - IBAction's
     @IBAction func createSite(_ sender: Any) {
-        dismiss(animated: true) {
+        onDismiss?()
+
+        navigationController?.dismiss(animated: true) {
             NotificationCenter.default.post(name: .createSite, object: nil)
         }
     }
 
     @IBAction func addSelfHosted(_ sender: Any) {
-        dismiss(animated: true) {
+        onDismiss?()
+        navigationController?.dismiss(animated: true) {
             NotificationCenter.default.post(name: .addSelfHosted, object: nil)
         }
     }
 
     @IBAction func cancel(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        onDismiss?()
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Private
