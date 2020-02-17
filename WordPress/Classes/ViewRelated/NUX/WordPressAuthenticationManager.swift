@@ -197,6 +197,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
+        if PostSignUpInterstitialViewController.shouldDisplay() {
+            self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
+            return
+        }
+
+        //Present the epilogue view
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
@@ -218,6 +224,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
+        epilogueViewController.onContinue = {
+            if PostSignUpInterstitialViewController.shouldDisplay() {
+                self.presentPostSignUpInterstitial(in: navigationController)
+            } else {
+                navigationController.dismiss(animated: true)
+            }
+        }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
@@ -226,36 +239,23 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// WordPress.com account has no sites. Capicci?
     ///
     func shouldPresentLoginEpilogue(isJetpackLogin: Bool) -> Bool {
-//        guard isJetpackLogin else {
-//            return true
-//        }
+        guard isJetpackLogin else {
+            return true
+        }
 
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
 
-        if numberOfBlogs > 0 {
-            return true
-        }
-
-        let psiCoordinator = PostSignUpInterstitialCoordinator()
-        return psiCoordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
+        return numberOfBlogs > 0
     }
 
     /// Indicates if the Signup Epilogue should be displayed.
     ///
     func shouldPresentSignupEpilogue() -> Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
-
-        if numberOfBlogs > 0 {
-            return true
-        }
-
-        let psiCoordinator = PostSignUpInterstitialCoordinator()
-        return psiCoordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
+        return true
     }
+
 
     /// Whenever a WordPress.com account has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
     /// the new DefaultWordPressComAccount.
@@ -317,6 +317,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 // MARK: - WordPressAuthenticatorManager
 //
 private extension WordPressAuthenticationManager {
+    /// Displays the post sign up interstitial if needed, if it's not displayed
+    private func presentPostSignUpInterstitial(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
+        let viewController = PostSignUpInterstitialViewController()
+        viewController.onDismiss = onDismiss
+
+        navigationController.pushViewController(viewController, animated: true)
+    }
 
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///
