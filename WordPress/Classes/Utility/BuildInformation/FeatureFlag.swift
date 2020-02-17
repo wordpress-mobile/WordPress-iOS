@@ -76,6 +76,8 @@ extension FeatureFlag: OverrideableFlag {
         switch self {
         case .debugMenu:
             return false
+        case .floatingCreateButton:
+            return true
         default:
             return true
         }
