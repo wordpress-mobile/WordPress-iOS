@@ -1,6 +1,7 @@
 14.3
 -----
 * Block editor: Add support for upload options in Gallery block
+* Aztec and Block Editor: Fix the presentation of ordered lists with large numbers.
  
 14.2
 -----
