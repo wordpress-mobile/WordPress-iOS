@@ -1,8 +1,12 @@
 14.3
 -----
-* Block editor: Add support for upload options in Gallery block
 * Aztec and Block Editor: Fix the presentation of ordered lists with large numbers.
 * Added Quick Action buttons on the Site Details page to access the most frequently used parts of a site.
+* Block editor: Add support for changing image sizes in Gallery and Image blocks
+* Block editor: Add support for upload options in Gallery block
+* Block editor: Added the Button block
+* Block editor: Add scroll support inside block picker and block settings
+
  
 14.2
 -----
