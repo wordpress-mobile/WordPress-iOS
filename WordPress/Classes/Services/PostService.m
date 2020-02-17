@@ -243,8 +243,8 @@ forceDraftIfCreating:NO
 
 - (void)uploadPost:(AbstractPost *)post
 forceDraftIfCreating:(BOOL)forceDraftIfCreating
-           success:(void (^)(AbstractPost *post))success
-           failure:(void (^)(NSError *error))failure
+           success:(nullable void (^)(AbstractPost * _Nullable post))success
+           failure:(nullable void (^)(NSError * _Nullable error))failure;
 {
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     RemotePost *remotePost = [self remotePostWithPost:post];
