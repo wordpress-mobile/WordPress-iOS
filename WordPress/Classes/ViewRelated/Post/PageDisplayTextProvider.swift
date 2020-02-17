@@ -1,6 +1,17 @@
 import Foundation
 
-class PageAutoUploadMessageProvider: AutoUploadMessageProvider {
+class PageDisplayTextProvider: AbstractPostDisplayTextProvider {
+
+    // MARK: - Titles
+
+    static let draftUploadedTitle = NSLocalizedString("Page draft uploaded",
+                                                      comment: "Title of notification displayed when a page has been successfully saved as a draft.")
+    static let pendingTitle = NSLocalizedString("Page pending review",
+                                                comment: "Title of notification displayed when a page has been successfully saved as a draft.")
+    static let publishedTitle = NSLocalizedString("Page published",
+                                                  comment: "Title of notification displayed when a page has been successfully published.")
+    static let scheduledTitle = NSLocalizedString("Page scheduled",
+                                                  comment: "Title of notification displayed when a page has been successfully scheduled.")
 
     // MARK: - Cancelling
 

@@ -1,6 +1,17 @@
 import Foundation
 
-class PostAutoUploadMessageProvider: AutoUploadMessageProvider {
+class PostDisplayTextProvider: AbstractPostDisplayTextProvider {
+
+    // MARK: - Titles
+
+    static let draftUploadedTitle = NSLocalizedString("Post draft uploaded",
+                                                      comment: "Title of notification displayed when a post has been successfully saved as a draft.")
+    static let pendingTitle = NSLocalizedString("Post pending review",
+                                                comment: "Title of notification displayed when a post has been successfully saved as a draft.")
+    static let publishedTitle = NSLocalizedString("Post published",
+                                                  comment: "Title of notification displayed when a post has been successfully published.")
+    static let scheduledTitle = NSLocalizedString("Post scheduled",
+                                                  comment: "Title of notification displayed when a post has been successfully scheduled.")
 
     // MARK: - Cancelling
 

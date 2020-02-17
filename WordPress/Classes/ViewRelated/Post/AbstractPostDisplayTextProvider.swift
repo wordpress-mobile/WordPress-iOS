@@ -1,6 +1,13 @@
 import Foundation
 
-protocol AutoUploadMessageProvider {
+protocol AbstractPostDisplayTextProvider {
+
+    // MARK: - Titles
+
+    static var draftUploadedTitle: String { get }
+    static var pendingTitle: String { get }
+    static var publishedTitle: String { get }
+    static var scheduledTitle: String { get }
 
     // MARK: - Cancelling
 
