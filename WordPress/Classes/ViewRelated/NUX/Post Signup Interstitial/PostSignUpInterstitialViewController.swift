@@ -103,7 +103,7 @@ class PostSignUpInterstitialViewController: UIViewController {
         let coordinator = PostSignUpInterstitialCoordinator()
         return coordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
     }
-    
+
     private class func numberOfBlogs() -> Int {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
