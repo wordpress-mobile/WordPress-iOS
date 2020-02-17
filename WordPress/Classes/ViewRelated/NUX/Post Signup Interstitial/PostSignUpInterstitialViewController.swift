@@ -84,11 +84,17 @@ class PostSignUpInterstitialViewController: UIViewController {
     }
 
     /// Determines whether or not the PSI should be displayed for the logged in user
-    /// - Parameters:
-    ///   - numberOfBlogs: The number of blogs the account has
-    @objc class func shouldDisplay(numberOfBlogs: Int) -> Bool {
+    @objc class func shouldDisplay() -> Bool {
+        let numberOfBlogs = self.numberOfBlogs()
+
         let coordinator = PostSignUpInterstitialCoordinator()
         return coordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
     }
+    
+    private class func numberOfBlogs() -> Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
 
+        return service.defaultWordPressComAccount()?.blogs.count ?? 0
+    }
 }
