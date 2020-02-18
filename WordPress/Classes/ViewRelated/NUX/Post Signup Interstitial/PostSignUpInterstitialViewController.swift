@@ -106,8 +106,10 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     private class func numberOfBlogs() -> Int {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
+        let blogService = BlogService(managedObjectContext: context)
 
-        return service.defaultWordPressComAccount()?.blogs.count ?? 0
+        let blogCount = blogService.blogCountForAllAccounts()
+
+        return blogCount
     }
 }
