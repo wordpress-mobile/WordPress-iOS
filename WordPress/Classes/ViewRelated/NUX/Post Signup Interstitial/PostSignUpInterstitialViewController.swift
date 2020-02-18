@@ -84,6 +84,8 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     @IBAction func cancel(_ sender: Any) {
         onDismiss?()
+
+        WPTabBarController.sharedInstance().showReaderTab()
         navigationController?.dismiss(animated: true, completion: nil)
     }
 
