@@ -13,7 +13,7 @@ class TabNavComponent: BaseScreen {
         let tabBars = XCUIApplication().tabBars["Main Navigation"]
         mySitesTabButton = tabBars.buttons["mySitesTabButton"]
         readerTabButton = tabBars.buttons["readerTabButton"]
-        writeTabButton = XCUIApplication().buttons["Create"]
+        writeTabButton = XCUIApplication().buttons["floatingCreateButton"]
         notificationsTabButton = tabBars.buttons["notificationsTabButton"]
         meTabButton = tabBars.buttons["meTabButton"]
         super.init(element: meTabButton)
