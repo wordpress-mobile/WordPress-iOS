@@ -14,7 +14,7 @@ import AppCenterDistribute
 
 import ZendeskCoreSDK
 
-class WordPressAppDelegate: UIResponder, UIApplicationDelegate{
+class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
