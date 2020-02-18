@@ -33,7 +33,7 @@ class PostCoordinatorTests: XCTestCase {
 
         postCoordinator.save(post)
 
-        expect(postServiceMock.didCallMarkAsFailedAndDraftIfNeeded).toEventually(beTrue())
+        expect(postServiceMock.didCallMarkAsFailed).toEventually(beTrue())
         expect(postServiceMock.didCallUploadPost).to(beFalse())
     }
 
@@ -443,7 +443,7 @@ private class PostServiceMock: PostService {
         let forceDraftIfCreating: Bool
     }
 
-    private(set) var didCallMarkAsFailedAndDraftIfNeeded = false
+    private(set) var didCallMarkAsFailed = false
     private(set) var didCallAutoSave = false
 
     private(set) var lastUploadPostInvocation: UploadPostInvocation?
@@ -471,8 +471,8 @@ private class PostServiceMock: PostService {
         didCallAutoSave = true
     }
 
-    override func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
-        didCallMarkAsFailedAndDraftIfNeeded = true
+    override func markAsFailed(post: AbstractPost) {
+        didCallMarkAsFailed = true
     }
 }
 
