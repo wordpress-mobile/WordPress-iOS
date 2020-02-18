@@ -13,7 +13,7 @@ extension BlogDetailsViewController {
 
     @objc
     private func presentHandler() {
-        scenePresenter.present(on: self)
+        scenePresenter.present(on: self, animated: true, completion: nil)
     }
 
     @objc

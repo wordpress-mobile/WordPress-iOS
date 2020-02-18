@@ -6,8 +6,8 @@ import UIKit
 /// in a UISplitViewController/UINavigationController view hierarchy
 @objc
 class MeScenePresenter: NSObject, ScenePresenter {
-    // weak reference to the presented scene (no reference retained after dismissal)
-    private weak var presentedViewController: UIViewController?
+    /// weak reference to the presented scene (no reference retained after it's dismissed)
+    private(set) weak var presentedViewController: UIViewController?
 
     /// Done button action
     @objc
@@ -15,11 +15,14 @@ class MeScenePresenter: NSObject, ScenePresenter {
         self.presentedViewController?.dismiss(animated: true)
     }
 
-    /// ScenePresenter conformance
-    func present(on viewController: UIViewController) {
+    func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        // prevent presenting if the scene is already presented
+        guard presentedViewController == nil else {
+            return
+        }
         let presentedViewController = makePresentedViewController()
         self.presentedViewController = presentedViewController
-        viewController.present(presentedViewController, animated: true)
+        viewController.present(presentedViewController, animated: animated, completion: completion)
     }
 }
 

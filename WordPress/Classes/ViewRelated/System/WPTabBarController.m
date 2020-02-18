@@ -112,6 +112,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [self setSelectedViewController:self.blogListSplitViewController];
 
+        self.scenePresenter = [[MeScenePresenter alloc] init];
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
                                                      name:NSNotification.ZendeskPushNotificationReceivedNotification
@@ -504,7 +506,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self showPostTabAnimated:YES toMedia:NO blog:blog];
     }
 }
-
+// will be removed when the new IA implementation completes
 - (void)showMeTab
 {
     [self showTabForIndex:WPTabMe];
@@ -569,11 +571,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
         [topDetailVC.navigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
     }
-}
-
-- (void)popMeTabToRoot
-{
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
 }
 
 - (void)popNotificationsTabToRoot
@@ -688,48 +685,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [blogListVC setSelectedBlog:blog animated:NO];
 }
 
-- (void)switchMeTabToAccountSettings
-{
-    [self showMeTab];
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
-
-    // If we don't dispatch_async here, the top inset of the app
-    // settings VC isn't correct when pushed...
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.meViewController navigateToAccountSettings];
-    });
-}
-
-- (void)switchMeTabToAppSettings
-{
-    [self showMeTab];
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
-
-    // If we don't dispatch_async here, the top inset of the app
-    // settings VC isn't correct when pushed...
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.meViewController navigateToAppSettings];
-    });
-}
-
 - (void)switchNotificationsTabToNotificationSettings
 {
     [self showNotificationsTab];
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 
     [self.notificationsViewController showNotificationSettings];
-}
-
-- (void)switchMeTabToSupport
-{
-    [self showMeTab];
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
-
-    // If we don't dispatch_async here, the top inset of the app
-    // settings VC isn't correct when pushed...
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.meViewController navigateToHelpAndSupport];
-    });
 }
 
 - (void)switchReaderTabToSavedPosts
@@ -957,6 +918,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
              [UIKeyCommand keyCommandWithInput:@"N" modifierFlags:UIKeyModifierCommand action:@selector(showPostTab) discoverabilityTitle:NSLocalizedString(@"New Post", @"The accessibility value of the post tab.")],
              [UIKeyCommand keyCommandWithInput:@"1" modifierFlags:UIKeyModifierCommand action:@selector(showMySitesTab) discoverabilityTitle:NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.")],
              [UIKeyCommand keyCommandWithInput:@"2" modifierFlags:UIKeyModifierCommand action:@selector(showReaderTab) discoverabilityTitle:NSLocalizedString(@"Reader", @"The accessibility value of the reader tab.")],
+             // will be removed when the new IA implementation completes
              [UIKeyCommand keyCommandWithInput:@"3" modifierFlags:UIKeyModifierCommand action:@selector(showMeTab) discoverabilityTitle:NSLocalizedString(@"Me", @"The accessibility value of the me tab.")],
              [UIKeyCommand keyCommandWithInput:@"4" modifierFlags:UIKeyModifierCommand action:@selector(showNotificationsTab) discoverabilityTitle:NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label")],
              ];
