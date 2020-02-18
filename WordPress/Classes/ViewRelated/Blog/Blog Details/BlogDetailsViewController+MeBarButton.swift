@@ -32,16 +32,18 @@ private extension UIBarButtonItem {
     }
 
     /// Assign the gravatar CircularImageView to the customView property and attach the passed target/action.
-    /// If email is nil, fall back to the gravatar icon.
+    /// If email is nil, fall back to the gravatar icon. Adds `Me` accessibility traits to the button
     convenience init(email: String?, style: UIBarButtonItem.Style = .plain, target: Any?, action: Selector?) {
         guard let email = email else {
             self.init(image: GravatarConfiguration.fallBackImage,
                       style: style,
                       target: target,
                       action: action)
+            makeMeButtonAccessible()
             return
         }
         self.init()
+        makeMeButtonAccessible()
 
         customView = makeGravatarView(with: email)
         addTapToCustomView(target: target, action: action)
@@ -83,5 +85,16 @@ private extension UIBarButtonItem {
         customView?.isUserInteractionEnabled = true
         let tapRecognizer = UITapGestureRecognizer(target: target, action: action)
         customView?.addGestureRecognizer(tapRecognizer)
+    }
+}
+
+
+/// Accessibility
+private extension UIBarButtonItem {
+    /// Adds accessibility traits for the `Me` bar button item
+    func makeMeButtonAccessible() {
+        accessibilityLabel = NSLocalizedString("Me", comment: "Accessibility label for the Me button in My Site.")
+        accessibilityHint = NSLocalizedString("Open the Me Section", comment: "Accessibility hint the Me button in My Site.")
+        accessibilityTraits = UIAccessibilityTraits.button
     }
 }
