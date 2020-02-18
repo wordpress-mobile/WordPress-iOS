@@ -346,6 +346,7 @@
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
 		37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EAAF4C1A11799A006D6306 /* CircularImageView.swift */; };
+		3F1AD48123FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */; };
 		3F1B66A323A2F54B0075F09E /* ReaderReblogActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */; };
 		3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */; };
 		3F43602F23F31D48001DEE70 /* ScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43602E23F31D48001DEE70 /* ScenePresenter.swift */; };
@@ -2653,6 +2654,7 @@
 		37E3F5EA2ED7005A5E0BBEC3 /* Pods-WordPressTodayWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release.xcconfig"; sourceTree = "<group>"; };
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
 		3B28C7D4D65D0CA6AB9FCFDC /* Pods-WordPressDraftActionExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressDraftActionExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
+		3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+MeButtonTests.swift"; sourceTree = "<group>"; };
 		3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogActionTests.swift; sourceTree = "<group>"; };
 		3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+MeNavigation.swift"; sourceTree = "<group>"; };
 		3F43602E23F31D48001DEE70 /* ScenePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePresenter.swift; sourceTree = "<group>"; };
@@ -8941,6 +8943,7 @@
 				BE1071FD1BC75FCF00906AFF /* Style */,
 				02761EC122700A9C009BAF0F /* BlogDetailsSubsectionToSectionCategoryTests.swift */,
 				02761EC3227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift */,
+				3F1AD48023FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -12978,6 +12981,7 @@
 				17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */,
 				73B6693A21CAD960008456C3 /* ErrorStateViewTests.swift in Sources */,
 				1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */,
+				3F1AD48123FC87A400BB1375 /* BlogDetailsViewController+MeButtonTests.swift in Sources */,
 				08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */,
 				D81C2F6220F89632002AE1F1 /* EditCommentActionTests.swift in Sources */,
 				E66969CD1B9E2EBF00EC9C00 /* SafeReaderTopicToReaderTopic.m in Sources */,
