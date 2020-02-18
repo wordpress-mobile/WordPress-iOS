@@ -6,6 +6,7 @@
 * Block editor: Add support for upload options in Gallery block
 * Block editor: Added the Button block
 * Block editor: Add scroll support inside block picker and block settings
+* Block editor: Fix issue where adding emojis to the post title added strong HTML elements to the title of the post
 
  
 14.2
