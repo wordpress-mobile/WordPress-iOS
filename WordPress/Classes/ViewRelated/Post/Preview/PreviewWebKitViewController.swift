@@ -13,6 +13,12 @@ class PreviewWebKitViewController: WebKitViewController {
     private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default {
         didSet {
             if selectedDevice != oldValue {
+                switch selectedDevice {
+                case .mobile:
+                    setWidth(400)
+                default:
+                    setWidth(nil)
+                }
                 webView.reload()
             }
             showLabel(device: selectedDevice)

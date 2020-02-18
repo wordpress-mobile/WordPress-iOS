@@ -66,6 +66,7 @@ class WebKitViewController: UIViewController {
 
     private var reachabilityObserver: Any?
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)
+    private var widthConstraint: NSLayoutConstraint?
 
     private struct WebViewErrors {
         static let frameLoadInterrupted = 102
@@ -126,6 +127,8 @@ class WebKitViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .basicBackground
+
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
             webView
@@ -133,7 +136,23 @@ class WebKitViewController: UIViewController {
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
-        view.pinSubviewToAllEdges(stackView)
+
+        let edgeConstraints = [
+            view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            view.topAnchor.constraint(equalTo: stackView.topAnchor),
+            view.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+        ]
+        edgeConstraints.forEach({ $0.priority = UILayoutPriority.defaultHigh })
+
+        NSLayoutConstraint.activate(edgeConstraints)
+
+        view.pinSubviewAtCenter(stackView)
+
+        let stackWidthConstraint = stackView.widthAnchor.constraint(equalToConstant: 0)
+        stackWidthConstraint.priority = UILayoutPriority.defaultLow
+        widthConstraint = stackWidthConstraint
+        NSLayoutConstraint.activate([stackWidthConstraint])
 
         configureNavigation()
         configureToolbar()
@@ -294,6 +313,15 @@ class WebKitViewController: UIViewController {
 
     private func styleToolBarButtons() {
         navigationController?.toolbar.items?.forEach(styleToolBarButton)
+    }
+
+    func setWidth(_ width: CGFloat?) {
+        if let width = width {
+            widthConstraint?.constant = width
+            widthConstraint?.priority = UILayoutPriority.required
+        } else {
+            widthConstraint?.priority = UILayoutPriority.defaultLow
+        }
     }
 
     // MARK: Helpers
