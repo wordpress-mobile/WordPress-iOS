@@ -983,6 +983,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self startObserversForTabAccessTracking];
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [self addFloatingButton];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -992,10 +996,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self startWatchingQuickTours];
 
     [self trackTabAccessOnViewDidAppear];
-    
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self addFloatingButton];
-    }
 }
 
 - (void)viewDidLayoutSubviews
