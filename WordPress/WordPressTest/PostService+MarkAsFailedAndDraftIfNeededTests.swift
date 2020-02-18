@@ -33,7 +33,7 @@ class PostServiceMarkAsFailedTests: XCTestCase {
         expect(post.status).to(equal(.pending))
     }
 
-    func testMarksALocalPageAsFailedAndResetsItToDraft() {
+    func testMarksALocalPageAsFailedAndKeepItsStatus() {
         let page = PageBuilder(context)
             .with(status: .publish)
             .with(remoteStatus: .pushing)
@@ -44,8 +44,7 @@ class PostServiceMarkAsFailedTests: XCTestCase {
         postService.markAsFailed(post: page)
 
         expect(page.remoteStatus).to(equal(.failed))
-        expect(page.status).to(equal(.draft))
-        expect(page.dateModified).to(beCloseTo(Date(), within: 3))
+        expect(page.status).to(equal(.publish))
     }
 
     func testMarkingExistingPagesAsFailedWillNotRevertTheStatusToDraft() {
