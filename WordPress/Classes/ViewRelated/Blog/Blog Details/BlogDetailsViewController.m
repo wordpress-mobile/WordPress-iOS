@@ -399,14 +399,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showStats];
+            [self showStatsFromSource:BlogDetailsNavigationSourceLink];
             break;
         case BlogDetailsSubsectionPosts:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showPostList];
+            [self showPostListFromSource:BlogDetailsNavigationSourceLink];
             break;
         case BlogDetailsSubsectionThemes:
         case BlogDetailsSubsectionCustomize:
@@ -423,14 +423,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showMediaLibrary];
+            [self showMediaLibraryFromSource:BlogDetailsNavigationSourceLink];
             break;
         case BlogDetailsSubsectionPages:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showPageList];
+            [self showPageListFromSource:BlogDetailsNavigationSourceLink];
             break;
         case BlogDetailsSubsectionActivity:
             if ([self.blog supports:BlogFeatureActivity]) {
@@ -676,7 +676,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                   accessibilityIdentifier:@"Stats Row"
                                                     image:[Gridicon iconOfType:GridiconTypeStatsAlt]
                                                  callback:^{
-                                                     [weakSelf showStats];
+        [weakSelf showStatsFromSource:BlogDetailsNavigationSourceRow];
                                                  }];
     statsRow.quickStartIdentifier = QuickStartTourElementStats;
     [rows addObject:statsRow];
@@ -714,7 +714,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                              accessibilityIdentifier:@"Site Pages Row"
                                                     image:[Gridicon iconOfType:GridiconTypePages]
                                                  callback:^{
-                                                     [weakSelf showPageList];
+        [weakSelf showPageListFromSource:BlogDetailsNavigationSourceRow];
                                                  }];
     pagesRow.quickStartIdentifier = QuickStartTourElementPages;
     [rows addObject:pagesRow];
@@ -723,7 +723,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                   accessibilityIdentifier:@"Blog Post Row"
                                                     image:[[Gridicon iconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
                                                  callback:^{
-                                                     [weakSelf showPostList];
+        [weakSelf showPostListFromSource:BlogDetailsNavigationSourceRow];
                                                  }]];
 
 
@@ -731,7 +731,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                   accessibilityIdentifier:@"Media Row"
                                                     image:[Gridicon iconOfType:GridiconTypeImage]
                                                  callback:^{
-                                                     [weakSelf showMediaLibrary];
+        [weakSelf showMediaLibraryFromSource:BlogDetailsNavigationSourceRow];
                                                  }]];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
@@ -1248,6 +1248,29 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Private methods
 
+- (void)trackEvent:(WPAnalyticsStat)event fromSource:(BlogDetailsNavigationSource)source {
+    
+    NSString *sourceString;
+    
+    switch (source) {
+        case BlogDetailsNavigationSourceRow:
+            sourceString = @"row";
+            break;
+            
+        case BlogDetailsNavigationSourceLink:
+            sourceString = @"link";
+            break;
+            
+        case BlogDetailsNavigationSourceButton:
+            sourceString = @"button";
+            break;
+            
+        default:
+            break;
+    }
+    
+    [WPAppAnalytics track:event withProperties:@{@"tap_source": sourceString} withBlog:self.blog];
+}
 
 - (void)preloadBlogData
 {
@@ -1371,27 +1394,27 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showPostList
+- (void)showPostListFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPosts withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatOpenedPosts fromSource:source];
     PostListViewController *controller = [PostListViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showPageList
+- (void)showPageListFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPages withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatOpenedPages fromSource:source];
     PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementPages];
 }
 
-- (void)showMediaLibrary
+- (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedMediaLibrary withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatOpenedMediaLibrary fromSource:source];
     MediaLibraryViewController *controller = [[MediaLibraryViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
@@ -1451,9 +1474,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide find] visited:QuickStartTourElementSharing];
 }
 
-- (void)showStats
+- (void)showStatsFromSource:(BlogDetailsNavigationSource)source
 {
-    [WPAppAnalytics track:WPAnalyticsStatStatsAccessed withBlog:self.blog];
+    [self trackEvent:WPAnalyticsStatStatsAccessed fromSource:source];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
 

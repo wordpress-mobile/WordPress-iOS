@@ -5,19 +5,19 @@ extension BlogDetailsViewController {
         let headerView = NewBlogDetailHeaderView(items: [
             ActionRow.Item(image: Gridicon.iconOfType(.statsAlt), title: NSLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showStats()
+                self?.showStats(from: .button)
             },
             ActionRow.Item(image: Gridicon.iconOfType(.pages), title: NSLocalizedString("Pages", comment: "Noun. Title. Links to the blog's Pages screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showPageList()
+                self?.showPageList(from: .button)
             },
             ActionRow.Item(image: Gridicon.iconOfType(.posts), title: NSLocalizedString("Posts", comment: "Noun. Title. Links to the blog's Posts screen.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showPostList()
+                self?.showPostList(from: .button)
             },
             ActionRow.Item(image: Gridicon.iconOfType(.image), title: NSLocalizedString("Media", comment: "Noun. Title. Links to the blog's Media library.")) { [weak self] in
                 self?.tableView.deselectSelectedRowWithAnimation(false)
-                self?.showMediaLibrary()
+                self?.showMediaLibrary(from: .button)
             }
         ])
         return headerView
