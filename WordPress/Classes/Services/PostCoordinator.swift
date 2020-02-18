@@ -363,7 +363,7 @@ class PostCoordinator: NSObject {
 
         context.perform {
             if status == .failed {
-                self.mainService.markAsFailedAndDraftIfNeeded(post: post)
+                self.mainService.markAsFailed(post: post)
             } else {
                 post.remoteStatus = status
             }

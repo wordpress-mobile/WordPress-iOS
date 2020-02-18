@@ -4,8 +4,8 @@ import Nimble
 
 @testable import WordPress
 
-/// Test cases for PostService.markAsFailedAndDraftIfNeeded()
-class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
+/// Test cases for PostService.markAsFailed()
+class PostServiceMarkAsFailedTests: XCTestCase {
 
     private var context: NSManagedObjectContext!
 
@@ -27,7 +27,7 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
             .build()
         let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: post)
+        postService.markAsFailed(post: post)
 
         expect(post.remoteStatus).to(equal(.failed))
         expect(post.status).to(equal(.pending))
@@ -41,7 +41,7 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
             .build()
         let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: page)
+        postService.markAsFailed(post: page)
 
         expect(page.remoteStatus).to(equal(.failed))
         expect(page.status).to(equal(.draft))
@@ -56,7 +56,7 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
             .build()
         let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: page)
+        postService.markAsFailed(post: page)
 
         expect(page.status).to(equal(.scheduled))
         expect(page.remoteStatus).to(equal(.failed))
