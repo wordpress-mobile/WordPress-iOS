@@ -337,41 +337,42 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Builds and uploads for distribution"
   lane :build_and_upload_itc do | options |
-    #ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless (options[:skip_prechecks])
-    #ios_build_preflight() unless (options[:skip_prechecks])
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless (options[:skip_prechecks])
+    ios_build_preflight() unless (options[:skip_prechecks])
 
     appstore_code_signing
 
     gym(scheme: "WordPress", workspace: "../WordPress.xcworkspace",
-#      clean: true,
+      clean: true,
       export_team_id: get_required_env("EXT_EXPORT_TEAM_ID"), 
       derived_data_path: "../derived-data/itc/",
       export_options: { method: "app-store" }
     )
 
-    #testflight(
-    #  skip_waiting_for_build_processing: true,
-    #  team_id: "299112",
-    #)
+    testflight(
+      skip_waiting_for_build_processing: true,
+      team_id: "299112",
+    )
 
-    #sh("cd .. && rm WordPress.ipa")
-    #dSYM_PATH = File.dirname(Dir.pwd) + "/WordPress.app.dSYM.zip"
+    sh("cd .. && rm WordPress.ipa")
+    dSYM_PATH = File.dirname(Dir.pwd) + "/WordPress.app.dSYM.zip"
 
-    #sentry_upload_dsym(
-    #  dsym_path: dSYM_PATH,
-    #  auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
-    #  org_slug: 'a8c',
-    #  project_slug: 'wordpress-ios',
-    #)
+    sentry_upload_dsym(
+      dsym_path: dSYM_PATH,
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      org_slug: 'a8c',
+      project_slug: 'wordpress-ios',
+    )
 
-    #sh("cd .. && rm WordPress.app.dSYM.zip")
+    sh("cd .. && rm WordPress.app.dSYM.zip")
 
     if (options[:create_release])
       archive_zip_path = File.dirname(Dir.pwd) + "/WordPress.xarchive.zip"
       zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
+      version = ios_get_app_version()
       create_release(repository:GHHELPER_REPO, 
-        version:'10.10', 
+        version: version, 
         release_notes_file_path:'../WordPress/Resources/release_notes.txt',
         release_assets:"#{archive_zip_path}"
       )
