@@ -55,6 +55,8 @@ class PostSignUpInterstitialViewController: UIViewController {
         configureI18N()
 
         coordinator.markAsSeen()
+
+        WPAnalytics.track(.welcomeNoSitesInterstitialShown)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -69,10 +71,11 @@ class PostSignUpInterstitialViewController: UIViewController {
     // MARK: - IBAction's
     @IBAction func createSite(_ sender: Any) {
         onDismiss?()
-
         navigationController?.dismiss(animated: true) {
             NotificationCenter.default.post(name: .createSite, object: nil)
         }
+
+        WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
     }
 
     @IBAction func addSelfHosted(_ sender: Any) {
@@ -80,6 +83,8 @@ class PostSignUpInterstitialViewController: UIViewController {
         navigationController?.dismiss(animated: true) {
             NotificationCenter.default.post(name: .addSelfHosted, object: nil)
         }
+
+        WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "add_self_hosted_site"])
     }
 
     @IBAction func cancel(_ sender: Any) {
@@ -87,6 +92,8 @@ class PostSignUpInterstitialViewController: UIViewController {
 
         WPTabBarController.sharedInstance().showReaderTab()
         navigationController?.dismiss(animated: true, completion: nil)
+
+        WPAnalytics.track(.welcomeNoSitesInterstitialDismissed)
     }
 
     // MARK: - Private
