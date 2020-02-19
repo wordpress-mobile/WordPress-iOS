@@ -777,8 +777,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     if (selectedBlog != _selectedBlog || !_blogDetailsViewController) {
         _selectedBlog = selectedBlog;
-
-        self.blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+        self.blogDetailsViewController = [self makeBlogDetailsViewController];
         self.blogDetailsViewController.blog = selectedBlog;
 
         if (![self splitViewControllerIsHorizontallyCompact]) {

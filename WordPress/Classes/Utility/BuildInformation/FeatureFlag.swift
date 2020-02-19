@@ -8,6 +8,8 @@ enum FeatureFlag: Int, CaseIterable {
     case postReblogging
     case unifiedAuth
     case quickActions
+    case meMove
+    case floatingCreateButton
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -28,6 +30,10 @@ enum FeatureFlag: Int, CaseIterable {
         case .unifiedAuth:
             return BuildConfiguration.current == .localDeveloper
         case .quickActions:
+            return true
+        case .meMove:
+            return BuildConfiguration.current == .localDeveloper
+        case .floatingCreateButton:
             return BuildConfiguration.current == .localDeveloper
         }
     }
@@ -59,12 +65,18 @@ extension FeatureFlag: OverrideableFlag {
             return "Unified Auth"
         case .quickActions:
             return "Quick Actions"
+        case .meMove:
+            return "Move the Me Scene to My Site"
+        case .floatingCreateButton:
+            return "Floating Create Button"
         }
     }
 
     var canOverride: Bool {
         switch self {
         case .debugMenu:
+            return false
+        case .floatingCreateButton:
             return false
         default:
             return true

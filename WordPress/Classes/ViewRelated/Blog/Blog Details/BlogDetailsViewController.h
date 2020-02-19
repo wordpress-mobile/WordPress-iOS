@@ -60,6 +60,12 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementPlans = 19,
 };
 
+typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
+    BlogDetailsNavigationSourceButton = 0,
+    BlogDetailsNavigationSourceRow = 1,
+    BlogDetailsNavigationSourceLink = 2
+};
+
 
 @interface BlogDetailsSection : NSObject
 
@@ -104,22 +110,25 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 
 @end
 
+@protocol ScenePresenter;
 
 @interface BlogDetailsViewController : UITableViewController <UIViewControllerRestoration, UIViewControllerTransitioningDelegate> {
     
 }
 
 @property (nonatomic, strong, nonnull) Blog * blog;
+@property (nonatomic, strong) id<ScenePresenter> _Nonnull scenePresenter;
 
+- (id _Nonnull)initWithScenePresenter:(id<ScenePresenter> _Nonnull)presenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
 - (void)scrollToElement:(QuickStartTourElement)element;
 
-- (void)showPostList;
-- (void)showPageList;
-- (void)showMediaLibrary;
-- (void)showStats;
+- (void)showPostListFromSource:(BlogDetailsNavigationSource)source;
+- (void)showPageListFromSource:(BlogDetailsNavigationSource)source;
+- (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source;
+- (void)showStatsFromSource:(BlogDetailsNavigationSource)sourc;;
 - (void)refreshSiteIcon;
 
 @end
