@@ -576,6 +576,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogError(message)
         }
     }
+    
+    func gutenbergLogUserEvent(_ event: GutenbergUserEvent, properties: [AnyHashable: Any]) {
+        switch event {
+        case .pageTemplateApplied:
+            gutenbergDidLogSessionTemplateEvent(properties)
+        }
+    }
 
     func gutenbergDidRequestImagePreview(with fullSizeUrl: URL, thumbUrl: URL?) {
         navigationController?.definesPresentationContext = true
@@ -591,6 +598,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .overCurrentContext
         self.present(controller, animated: true)
+    }
+    
+    private func gutenbergDidLogSessionTemplateEvent(_ properties: [AnyHashable: Any]) {
+        guard let appliedTemplate = properties["template"] as? String else { return }
+        editorSession.editorSessionTemplateApplied(appliedTemplate)
     }
 }
 

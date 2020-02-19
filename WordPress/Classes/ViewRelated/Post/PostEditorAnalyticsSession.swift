@@ -9,6 +9,7 @@ struct PostEditorAnalyticsSession {
     var currentEditor: Editor
     var hasUnsupportedBlocks = false
     var outcome: Outcome? = nil
+    var pageTemplateApplied = ""
 
     init(editor: Editor, post: AbstractPost) {
         currentEditor = editor
@@ -25,6 +26,10 @@ struct PostEditorAnalyticsSession {
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
+    }
+    
+    mutating func editorSessionTemplateApplied(_ appliedTemplate:String) {
+        pageTemplateApplied = appliedTemplate
     }
 
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
@@ -55,6 +60,7 @@ struct PostEditorAnalyticsSession {
         let outcome = self.outcome ?? endOutcome
         let properties = [
             Property.outcome: outcome.rawValue,
+            Property.template: pageTemplateApplied,
             ].merging(commonProperties, uniquingKeysWith: { $1 })
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
@@ -71,6 +77,7 @@ private extension PostEditorAnalyticsSession {
         static let postType = "post_type"
         static let outcome = "outcome"
         static let sessionId = "session_id"
+        static let template = "template"
     }
 
     var commonProperties: [String: String] {
