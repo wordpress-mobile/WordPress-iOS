@@ -78,9 +78,7 @@ extension LoginEpilogueTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard indexPath.section == Sections.userInfoSection else {
             let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
-            let cell = blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
-            cell.backgroundColor = .basicBackground
-            return cell
+            return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as! EpilogueUserInfoCell

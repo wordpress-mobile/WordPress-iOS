@@ -19,20 +19,17 @@ extension WPStyleGuide {
     }
 
     @objc public class func configureCellForLogin(_ cell: WPBlogTableViewCell) {
-        // TODO: make this dynamic size once @elibud's dynamic type code is merged
-        cell.textLabel?.font = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
-        cell.textLabel?.sizeToFit()
         cell.textLabel?.textColor = .text
+        cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
 
-        cell.detailTextLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-        cell.detailTextLabel?.sizeToFit()
-        cell.detailTextLabel?.textColor = .text
+        cell.detailTextLabel?.textColor = .textSubtle
+        cell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
 
         cell.imageView?.layer.borderColor = UIColor.neutral(.shade10).cgColor
         cell.imageView?.layer.borderWidth = 1
         cell.imageView?.tintColor = .neutral(.shade30)
 
-        cell.backgroundColor = .listBackground
+        cell.backgroundColor = .basicBackground
     }
 
  }
