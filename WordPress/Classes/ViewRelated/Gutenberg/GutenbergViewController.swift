@@ -576,7 +576,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogError(message)
         }
     }
-    
+
     func gutenbergLogUserEvent(_ event: GutenbergUserEvent, properties: [AnyHashable: Any]) {
         switch event {
         case .pageTemplateApplied:
@@ -599,7 +599,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         controller.modalPresentationStyle = .overCurrentContext
         self.present(controller, animated: true)
     }
-    
+
     private func gutenbergDidLogSessionTemplateEvent(_ properties: [AnyHashable: Any]) {
         guard let appliedTemplate = properties["template"] as? String else { return }
         editorSession.editorSessionTemplateApplied(appliedTemplate)

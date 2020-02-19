@@ -27,8 +27,8 @@ struct PostEditorAnalyticsSession {
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
     }
-    
-    mutating func editorSessionTemplateApplied(_ appliedTemplate:String) {
+
+    mutating func editorSessionTemplateApplied(_ appliedTemplate: String) {
         pageTemplateApplied = appliedTemplate
     }
 
