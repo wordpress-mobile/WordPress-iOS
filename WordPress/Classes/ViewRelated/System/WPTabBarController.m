@@ -104,11 +104,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [self setupColors];
 
+        self.meScenePresenter = [[MeScenePresenter alloc] init];
+
         [self setViewControllers:[self tabViewControllers]];
 
         [self setSelectedViewController:self.blogListSplitViewController];
-
-        self.scenePresenter = [[MeScenePresenter alloc] init];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
@@ -182,7 +182,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         return _blogListNavigationController;
     }
 
-    self.blogListViewController = [[BlogListViewController alloc] init];
+    self.blogListViewController = [[BlogListViewController alloc] initWithMeScenePresenter:self.meScenePresenter];
     _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     _blogListNavigationController.navigationBar.translucent = NO;
 
@@ -462,7 +462,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
         [allViewControllers removeObject:self.newPostViewController];
     }
-    
+
     return allViewControllers;
 }
 

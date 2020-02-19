@@ -6,7 +6,7 @@ import UIKit
 extension BlogDetailsViewController {
     @objc
     private func presentHandler() {
-        scenePresenter.present(on: self, animated: true, completion: nil)
+        meScenePresenter.present(on: self, animated: true, completion: nil)
     }
 
     @objc
@@ -20,7 +20,7 @@ extension BlogDetailsViewController {
 extension BlogListViewController {
     @objc
     private func presentHandler() {
-        scenePresenter.present(on: self, animated: true, completion: nil)
+        meScenePresenter.present(on: self, animated: true, completion: nil)
     }
 
     @objc

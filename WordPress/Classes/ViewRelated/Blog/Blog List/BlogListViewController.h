@@ -7,8 +7,10 @@
 @interface BlogListViewController : UIViewController
 
 @property (nonatomic, strong) Blog *selectedBlog;
-@property (nonatomic, strong) id<ScenePresenter> scenePresenter;
+@property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
 
+
+- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter;
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated;
 
 - (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView;

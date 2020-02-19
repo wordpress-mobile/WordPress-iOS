@@ -33,7 +33,7 @@ class BlogDetailsViewControllerTests: XCTestCase {
             XCTFail("Presenter not initialized")
             return
         }
-        blogDetailsViewController = BlogDetailsViewController(scenePresenter: presenter)
+        blogDetailsViewController = BlogDetailsViewController(meScenePresenter: presenter)
     }
 
     override func tearDown() {

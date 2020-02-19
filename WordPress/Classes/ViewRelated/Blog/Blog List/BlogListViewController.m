@@ -48,10 +48,19 @@ static NSInteger HideSearchMinSites = 3;
         self.restorationClass = [self class];
         [self configureDataSource];
         [self configureNavigationBar];
-        self.scenePresenter = [[MeScenePresenter alloc] init];
     }
     return self;
 }
+
+- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
+{
+    self = [self init];
+    if (self) {
+        self.meScenePresenter = meScenePresenter;
+    }
+    return self;
+}
+
 
 - (void)configureDataSource
 {
