@@ -315,6 +315,8 @@ class WebKitViewController: UIViewController {
         navigationController?.toolbar.items?.forEach(styleToolBarButton)
     }
 
+    /// Sets the width of the web preview
+    /// - Parameter width: The width value to set the webView to
     func setWidth(_ width: CGFloat?) {
         if let width = width {
             widthConstraint?.constant = width

@@ -15,7 +15,7 @@ class PreviewWebKitViewController: WebKitViewController {
             if selectedDevice != oldValue {
                 switch selectedDevice {
                 case .mobile:
-                    setWidth(400)
+                    setWidth(Constants.mobilePreviewWidth)
                 default:
                     setWidth(nil)
                 }
@@ -219,6 +219,8 @@ class PreviewWebKitViewController: WebKitViewController {
         static let publishButtonColor = UIColor.muriel(color: MurielColor.accent)
 
         static let blankURL = URL(string: "about:blank")
+
+        static let mobilePreviewWidth: CGFloat = 460
     }
 }
 
