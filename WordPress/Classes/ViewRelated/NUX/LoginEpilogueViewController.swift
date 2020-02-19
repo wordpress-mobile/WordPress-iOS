@@ -53,9 +53,8 @@ class LoginEpilogueViewController: UIViewController {
             fatalError()
         }
 
+        view.backgroundColor = .basicBackground
         refreshInterface(with: credentials)
-
-        view.backgroundColor = .neutral(.shade0)
     }
 
     override func viewWillAppear(_ animated: Bool) {

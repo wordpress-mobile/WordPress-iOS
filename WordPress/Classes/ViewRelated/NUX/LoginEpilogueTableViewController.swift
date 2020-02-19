@@ -35,7 +35,7 @@ class LoginEpilogueTableViewController: UITableViewController {
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
 
-        view.backgroundColor = .listBackground
+        view.backgroundColor = .basicBackground
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
@@ -78,7 +78,9 @@ extension LoginEpilogueTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard indexPath.section == Sections.userInfoSection else {
             let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
-            return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
+            let cell = blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
+            cell.backgroundColor = .basicBackground
+            return cell
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as! EpilogueUserInfoCell
@@ -106,6 +108,7 @@ extension LoginEpilogueTableViewController {
         }
 
         cell.titleLabel?.text = title(for: section)
+        cell.backgroundColor = .basicBackground
         cell.accessibilityIdentifier = "Login Cell"
 
         return cell
@@ -148,7 +151,6 @@ extension LoginEpilogueTableViewController {
 
         headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         headerView.textLabel?.textColor = .neutral(.shade50)
-        headerView.contentView.backgroundColor = .listBackground
     }
 }
 
