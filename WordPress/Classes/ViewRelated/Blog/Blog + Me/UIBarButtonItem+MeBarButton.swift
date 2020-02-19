@@ -4,13 +4,6 @@ import UIKit
 
 /// Add a UIBarButtonItem to the navigation bar that  presents the Me scene.
 extension BlogDetailsViewController {
-
-    private func makeMeBarButton() -> UIBarButtonItem {
-        return UIBarButtonItem(email: blog.account?.email,
-                               target: self,
-                               action: #selector(presentHandler))
-    }
-
     @objc
     private func presentHandler() {
         scenePresenter.present(on: self, animated: true, completion: nil)
@@ -18,7 +11,23 @@ extension BlogDetailsViewController {
 
     @objc
     func addMeButtonToNavigationBar() {
-        navigationItem.rightBarButtonItem = makeMeBarButton()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(email: blog.account?.email,
+                                                            target: self,
+                                                            action: #selector(presentHandler))
+    }
+}
+
+extension BlogListViewController {
+    @objc
+    private func presentHandler() {
+        scenePresenter.present(on: self, animated: true, completion: nil)
+    }
+
+    @objc
+    func addMeButtonToNavigationBar(with email: String) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(email: email,
+                                                            target: self,
+                                                            action: #selector(presentHandler))
     }
 }
 

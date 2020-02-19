@@ -48,6 +48,7 @@ static NSInteger HideSearchMinSites = 3;
         self.restorationClass = [self class];
         [self configureDataSource];
         [self configureNavigationBar];
+        self.scenePresenter = [[MeScenePresenter alloc] init];
     }
     return self;
 }
@@ -853,7 +854,11 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setAddSiteBarButtonItem
 {
     if (self.dataSource.allBlogsCount == 0) {
-        self.navigationItem.rightBarButtonItem = nil;
+        if([Feature enabled:FeatureFlagMeMove]) {
+            [self addMeButtonToNavigationBarWith:[[self defaultWordPressComAccount] email]];
+        } else {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
     }
     else {
         self.navigationItem.rightBarButtonItem = self.addSiteButton;
