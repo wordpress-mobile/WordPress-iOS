@@ -222,24 +222,6 @@ static NSInteger HideSearchMinSites = 3;
         [[WordPressAppDelegate shared] showWelcomeScreenIfNeededAnimated:YES];
         return;
     }
-
-    BOOL shouldDisplayPSI = [PostSignUpInterstitialViewController shouldDisplayWithNumberOfBlogs:blogCount];
-
-    if (!shouldDisplayPSI) {
-        return;
-    }
-
-    [self showPostSignUpInterstitial];
-}
-
-- (void)showPostSignUpInterstitial
-{
-    PostSignUpInterstitialViewController *viewController = [[PostSignUpInterstitialViewController alloc] init];
-    viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-
-    [self.navigationController presentViewController:viewController
-                                            animated:YES
-                                          completion:nil];
 }
 
 - (void)updateViewsForCurrentSiteCount

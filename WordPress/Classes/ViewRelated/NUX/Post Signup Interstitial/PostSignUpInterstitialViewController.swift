@@ -40,6 +40,10 @@ class PostSignUpInterstitialViewController: UIViewController {
     @IBOutlet weak var addSelfHostedButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
 
+    /// Closure to be executed upon dismissal.
+    ///
+    var onDismiss: (() -> Void)?
+
     let coordinator = PostSignUpInterstitialCoordinator()
 
     // MARK: - View Methods
@@ -53,25 +57,36 @@ class PostSignUpInterstitialViewController: UIViewController {
         coordinator.markAsSeen()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
     }
 
     // MARK: - IBAction's
     @IBAction func createSite(_ sender: Any) {
-        dismiss(animated: true) {
+        onDismiss?()
+
+        navigationController?.dismiss(animated: true) {
             NotificationCenter.default.post(name: .createSite, object: nil)
         }
     }
 
     @IBAction func addSelfHosted(_ sender: Any) {
-        dismiss(animated: true) {
+        onDismiss?()
+        navigationController?.dismiss(animated: true) {
             NotificationCenter.default.post(name: .addSelfHosted, object: nil)
         }
     }
 
     @IBAction func cancel(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        onDismiss?()
+
+        WPTabBarController.sharedInstance().showReaderTab()
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Private
@@ -84,11 +99,19 @@ class PostSignUpInterstitialViewController: UIViewController {
     }
 
     /// Determines whether or not the PSI should be displayed for the logged in user
-    /// - Parameters:
-    ///   - numberOfBlogs: The number of blogs the account has
-    @objc class func shouldDisplay(numberOfBlogs: Int) -> Bool {
+    @objc class func shouldDisplay() -> Bool {
+        let numberOfBlogs = self.numberOfBlogs()
+
         let coordinator = PostSignUpInterstitialCoordinator()
         return coordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
     }
 
+    private class func numberOfBlogs() -> Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+
+        let blogCount = blogService.blogCountForAllAccounts()
+
+        return blogCount
+    }
 }
