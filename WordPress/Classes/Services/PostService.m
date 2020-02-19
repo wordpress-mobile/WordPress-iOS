@@ -241,6 +241,11 @@ forceDraftIfCreating:NO
              failure:failure];
 }
 
+- (PostServiceQueueList *)queueList
+{
+    return [PostServiceQueueList sharedInstance];
+}
+
 - (void)uploadPost:(AbstractPost *)post
 forceDraftIfCreating:(BOOL)forceDraftIfCreating
            success:(nullable void (^)(AbstractPost * _Nullable post))success
@@ -252,6 +257,10 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
     post.remoteStatus = AbstractPostRemoteStatusPushing;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     NSManagedObjectID *postObjectID = post.objectID;
+
+    // Add the post to the uploading queue list
+    [self.queueList uploading:postObjectID];
+
     void (^successBlock)(RemotePost *post) = ^(RemotePost *post) {
         [self.managedObjectContext performBlock:^{
             AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
@@ -259,13 +268,20 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                 if ([postInContext isRevision]) {
                     postInContext = postInContext.original;
                     [postInContext applyRevision];
-                    [postInContext deleteRevision];
+
+                    // If the same entity is being uploaded at the same time, we'll delete the revision
+                    // only when the last call succeeds.
+                    // This avoids a crash when we try to save a deleted entity due to concurrency.
+                    if ([self.queueList isSingleUpload:postObjectID]) {
+                        [postInContext deleteRevision];
+                    }
                 }
                 
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
 
                 [self updateMediaForPost:postInContext success:^{
+
                     if (success) {
                         success(postInContext);
                     }
@@ -282,6 +298,9 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                     success(nil);
                 }
             }
+
+            // Remove the post from the uploading queue list
+            [self.queueList finishedUploading:postObjectID];
         }];
     };
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
@@ -294,6 +313,9 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
             if (failure) {
                 failure(error);
             }
+
+            // Remove the post from the uploading queue list
+            [self.queueList finishedUploading:postObjectID];
         }];
     };
 
