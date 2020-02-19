@@ -18,6 +18,7 @@ class MeScenePresenter: NSObject, ScenePresenter {
     func present(on viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
         // prevent presenting if the scene is already presented
         guard presentedViewController == nil else {
+            completion?()
             return
         }
         let presentedViewController = makePresentedViewController()
