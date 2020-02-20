@@ -241,9 +241,9 @@ forceDraftIfCreating:NO
              failure:failure];
 }
 
-- (PostServiceQueueList *)queueList
+- (PostServiceUploadingList *)uploadingList
 {
-    return [PostServiceQueueList sharedInstance];
+    return [PostServiceUploadingList sharedInstance];
 }
 
 - (void)uploadPost:(AbstractPost *)post
@@ -259,7 +259,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
     NSManagedObjectID *postObjectID = post.objectID;
 
     // Add the post to the uploading queue list
-    [self.queueList uploading:postObjectID];
+    [self.uploadingList uploading:postObjectID];
 
     void (^successBlock)(RemotePost *post) = ^(RemotePost *post) {
         [self.managedObjectContext performBlock:^{
@@ -269,10 +269,10 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                     postInContext = postInContext.original;
                     [postInContext applyRevision];
 
-                    // If the same entity is being uploaded at the same time, we'll delete the revision
+                    // If multiple calls to upload the same post are made, we'll delete the revision
                     // only when the last call succeeds.
-                    // This avoids a crash when we try to save a deleted entity due to concurrency.
-                    if ([self.queueList isSingleUpload:postObjectID]) {
+                    // This avoids deleting an entity that's being used by another call, which can lead to crashes.
+                    if ([self.uploadingList isSingleUpload:postObjectID]) {
                         [postInContext deleteRevision];
                     }
                 }
@@ -300,7 +300,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
             }
 
             // Remove the post from the uploading queue list
-            [self.queueList finishedUploading:postObjectID];
+            [self.uploadingList finishedUploading:postObjectID];
         }];
     };
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
@@ -315,7 +315,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
             }
 
             // Remove the post from the uploading queue list
-            [self.queueList finishedUploading:postObjectID];
+            [self.uploadingList finishedUploading:postObjectID];
         }];
     };
 

@@ -1,16 +1,18 @@
 import Foundation
 
-@objc class PostServiceQueueList: NSObject {
-    /// The current NSManagedObjectID being uploaded
+/// This Class stores ID of posts being uploaded.
+/// A single ID can be stored multiple times, which means it's being uploaded from concurrent calls
+@objc class PostServiceUploadingList: NSObject {
+    /// The current NSManagedObjectIDs being uploaded
     private var ids: [NSManagedObjectID] = []
 
     /// Shared Instance
-    static let shared = PostServiceQueueList()
+    static let shared = PostServiceUploadingList()
 
     private override init() {}
 
-    @objc class func sharedInstance() -> PostServiceQueueList {
-        return PostServiceQueueList.shared
+    @objc class func sharedInstance() -> PostServiceUploadingList {
+        return PostServiceUploadingList.shared
     }
 
     /// Adds an id to the list of posts being uploaded

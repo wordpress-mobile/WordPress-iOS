@@ -8,7 +8,7 @@
 @class Page;
 @class RemotePost;
 @class PostServiceRemoteFactory;
-@class PostServiceQueueList;
+@class PostServiceUploadingList;
 
 NS_ASSUME_NONNULL_BEGIN
 
