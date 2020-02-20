@@ -463,12 +463,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [allViewControllers removeObject:self.newPostViewController];
     }
 
+    if ([Feature enabled:FeatureFlagMeMove]) {
+        [allViewControllers removeObject:self.meSplitViewController];
+    }
+
     return allViewControllers;
 }
 
 - (void)showTabForIndex:(NSInteger)tabIndex
 {
-    NSInteger newIndex = [self adjustedTabIndex:tabIndex toTabType:false];
+    //TODO: only for FeatureFlagMeMove: this always receives a WPTabType, so we set toTabType = true
+    NSInteger newIndex = [self adjustedTabIndex:tabIndex toTabType:true];
     [self setSelectedIndex:newIndex];
 }
 
@@ -478,7 +483,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (NSInteger)adjustedTabIndex:(NSInteger)tabIndex toTabType:(BOOL)toTabType {
     //TODO: Remove this change once `floatingCreateButton` feature flag is enabled
     if ([Feature enabled:FeatureFlagFloatingCreateButton] && tabIndex > WPTabReader) {
-        return tabIndex + (toTabType ? -1 : 1); // Adjust the index if we are hiding the new post button
+        if ([Feature enabled:FeatureFlagMeMove]) {
+            return tabIndex + (toTabType ? -2 : 2);
+        } else {
+            return tabIndex + (toTabType ? -1 : 1); // Adjust the index if we are hiding the new post button
+        }
+
     } else {
         return tabIndex;
     }
@@ -764,7 +774,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     NSUInteger newIndex = [tabBarController.viewControllers indexOfObject:viewController];
-    
+
     newIndex = [self adjustedTabIndex:newIndex toTabType:false];
 
     if (newIndex == WPTabNewPost) {
@@ -804,7 +814,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    [self updateMeNotificationIcon];
+    if (![Feature enabled:FeatureFlagMeMove]) {
+        [self updateMeNotificationIcon];
+    }
 }
 
 - (void)bypassBlogListViewControllerIfNecessary
@@ -837,7 +849,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)updateIconIndicators:(NSNotification *)notification
 {
-    [self updateMeNotificationIcon];
+    if (![Feature enabled:FeatureFlagMeMove]) {
+        [self updateMeNotificationIcon];
+    }
     [self updateNotificationBadgeVisibility];
 }
 
