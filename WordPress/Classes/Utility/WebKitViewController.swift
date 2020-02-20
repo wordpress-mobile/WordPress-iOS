@@ -127,7 +127,7 @@ class WebKitViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .basicBackground
+        view.backgroundColor = UIColor(light: UIColor.muriel(color: .gray, .shade0), dark: .basicBackground)
 
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
@@ -143,7 +143,7 @@ class WebKitViewController: UIViewController {
             view.topAnchor.constraint(equalTo: stackView.topAnchor),
             view.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
         ]
-        edgeConstraints.forEach({ $0.priority = UILayoutPriority.defaultHigh })
+        edgeConstraints.forEach({ $0.priority = UILayoutPriority(rawValue: UILayoutPriority.defaultHigh.rawValue - 1) })
 
         NSLayoutConstraint.activate(edgeConstraints)
 
@@ -320,7 +320,7 @@ class WebKitViewController: UIViewController {
     func setWidth(_ width: CGFloat?) {
         if let width = width {
             widthConstraint?.constant = width
-            widthConstraint?.priority = UILayoutPriority.required
+            widthConstraint?.priority = UILayoutPriority.defaultHigh
         } else {
             widthConstraint?.priority = UILayoutPriority.defaultLow
         }
