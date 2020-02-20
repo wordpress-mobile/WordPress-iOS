@@ -15,7 +15,10 @@ class PageListTableViewCell: BasePageListCell {
 //    @property (nonatomic, strong) IBOutlet NSLayoutConstraint *labelsContainerTrailing;
 //    @property (nonatomic, strong) IBOutlet NSLayoutConstraint *leadingContentConstraint;
     @IBOutlet private var titleLabel: UILabel!
-    @IBOutlet private var timestampLabel: UILabel!
+    // The next line was disabled as it was crashing.  The weird thing is that the outlet
+    // isn't wired in develop either.
+    //
+    //@IBOutlet private var timestampLabel: UILabel!
     @IBOutlet private var badgesLabel: UILabel!
     @IBOutlet private var featuredImageView: CachedAnimatedImageView!
     @IBOutlet private var menuButton: UIButton!
