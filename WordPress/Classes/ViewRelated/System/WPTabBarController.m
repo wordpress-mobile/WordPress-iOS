@@ -482,16 +482,14 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 /// @param toTabType Whether the new index is being converted to the WPTabType index. If true, the index should come from the tab bar.
 - (NSInteger)adjustedTabIndex:(NSInteger)tabIndex toTabType:(BOOL)toTabType {
     //TODO: Remove this change once `floatingCreateButton` feature flag is enabled
+    NSInteger tabOffset = 0;
     if ([Feature enabled:FeatureFlagFloatingCreateButton] && tabIndex > WPTabReader) {
-        if ([Feature enabled:FeatureFlagMeMove]) {
-            return tabIndex + (toTabType ? -2 : 2);
-        } else {
-            return tabIndex + (toTabType ? -1 : 1); // Adjust the index if we are hiding the new post button
-        }
-
-    } else {
-        return tabIndex;
+        tabOffset += 1;
     }
+    if ([Feature enabled:FeatureFlagMeMove] && tabIndex > WPTabNewPost) {
+        tabOffset += 1;
+    }
+    return tabIndex + (toTabType ? -tabOffset : tabOffset);
 }
 
 - (void)showMySitesTab
