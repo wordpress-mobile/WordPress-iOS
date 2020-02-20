@@ -60,8 +60,14 @@ class PostActionSheet {
                     actionSheetController.addDefaultActionWithTitle(Titles.cancelAutoUpload) { [weak self] _ in
                         self?.interactivePostViewDelegate?.cancelAutoUpload(post)
                     }
-                default:
-                    CrashLogging.logMessage("Cannot handle unexpected button for post action sheet: \(button). This is a configuration error.", level: .error)
+                case .retry:
+                    actionSheetController.addDefaultActionWithTitle(Titles.retry) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.retry(post)
+                    }
+                case .edit:
+                    break // Not available in Action Sheet
+                case .more:
+                    break // Not available in Action Sheet
                 }
         }
 
@@ -83,5 +89,6 @@ class PostActionSheet {
         static let delete = NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
         static let trash = NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder")
         static let view = NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
+        static let retry = NSLocalizedString("Retry", comment: "Retry uploading the post.")
     }
 }
