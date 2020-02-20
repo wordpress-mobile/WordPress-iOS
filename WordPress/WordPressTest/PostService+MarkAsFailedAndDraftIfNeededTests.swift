@@ -4,8 +4,8 @@ import Nimble
 
 @testable import WordPress
 
-/// Test cases for PostService.markAsFailedAndDraftIfNeeded()
-class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
+/// Test cases for PostService.markAsFailed()
+class PostServiceMarkAsFailedTests: XCTestCase {
 
     private var context: NSManagedObjectContext!
 
@@ -27,13 +27,13 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
             .build()
         let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: post)
+        postService.markAsFailed(post: post)
 
         expect(post.remoteStatus).to(equal(.failed))
         expect(post.status).to(equal(.pending))
     }
 
-    func testMarksALocalPageAsFailedAndResetsItToDraft() {
+    func testMarksALocalPageAsFailedAndKeepItsStatus() {
         let page = PageBuilder(context)
             .with(status: .publish)
             .with(remoteStatus: .pushing)
@@ -41,11 +41,10 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
             .build()
         let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: page)
+        postService.markAsFailed(post: page)
 
         expect(page.remoteStatus).to(equal(.failed))
-        expect(page.status).to(equal(.draft))
-        expect(page.dateModified).to(beCloseTo(Date(), within: 3))
+        expect(page.status).to(equal(.publish))
     }
 
     func testMarkingExistingPagesAsFailedWillNotRevertTheStatusToDraft() {
@@ -56,7 +55,7 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
             .build()
         let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: page)
+        postService.markAsFailed(post: page)
 
         expect(page.status).to(equal(.scheduled))
         expect(page.remoteStatus).to(equal(.failed))

@@ -137,14 +137,6 @@ class PostAutoUploadInteractorTests: XCTestCase {
 
         expect(action).to(equal(.uploadAsDraft))
     }
-
-    func testPageNotAutoUploaded() {
-        let page = createPage(.draft)
-
-        let action = interactor.autoUploadAction(for: page)
-
-        expect(action).to(equal(.nothing))
-    }
 }
 
 private extension PostAutoUploadInteractorTests {

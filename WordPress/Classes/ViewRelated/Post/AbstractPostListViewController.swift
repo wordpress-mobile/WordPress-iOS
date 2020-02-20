@@ -72,6 +72,8 @@ class AbstractPostListViewController: UIViewController,
     @objc var tableViewController: UITableViewController!
     @objc var reloadTableViewBeforeAppearing = false
 
+    private var offlineNoticeShown = false
+
     @objc var tableView: UITableView {
         get {
             return self.tableViewController.tableView
@@ -1159,12 +1161,23 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - NetworkAwareUI
 
-    func contentIsEmpty() -> Bool {
-        return tableViewHandler.resultsController.isEmpty()
+    func shouldPresentAlert() -> Bool {
+        guard !contentIsEmpty(),
+            !offlineNoticeShown else {
+
+            return false
+        }
+
+        offlineNoticeShown = true
+        return true
     }
 
     func noConnectionMessage() -> String {
         return ReachabilityUtils.noConnectionMessage()
+    }
+
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
     }
 
     // MARK: - Others
