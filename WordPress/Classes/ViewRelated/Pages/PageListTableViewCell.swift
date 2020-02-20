@@ -6,7 +6,7 @@ class PageListTableViewCell: BasePageListCell {
 //    static CGFloat const FeaturedImageSize = 120.0;
     private static let pageListTableViewCellTagLabelRadius = CGFloat(2)
     private static let featuredImageSize = CGFloat(120)
-    
+
 //    @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 //    @property (nonatomic, strong) IBOutlet UILabel *timestampLabel;
 //    @property (nonatomic, strong) IBOutlet UILabel *badgesLabel;
@@ -21,7 +21,7 @@ class PageListTableViewCell: BasePageListCell {
     @IBOutlet private var menuButton: UIButton!
     @IBOutlet private var labelsContainerTrailing: NSLayoutConstraint!
     @IBOutlet private var leadingContentConstraint: NSLayoutConstraint!
-    
+
 //    @property (nonatomic, strong) ImageLoader *featuredImageLoader;
 //    @property (nonatomic, strong) NSDateFormatter *dateFormatter;
     private lazy var featuredImageLoader: ImageLoader = {
@@ -50,7 +50,7 @@ class PageListTableViewCell: BasePageListCell {
         dateFormatter.doesRelativeDateFormatting = true
         dateFormatter.dateStyle = .none
         dateFormatter.timeStyle = .short
-        
+
         return dateFormatter
     }()
 
@@ -58,7 +58,7 @@ class PageListTableViewCell: BasePageListCell {
 //    NSInteger _indentationLevel;
     private var privateIndentationWidth: CGFloat = 0
     private var privateIndentationLevel: Int = 0
-    
+
     override var indentationWidth: CGFloat {
         get {
 //            - (CGFloat)indentationWidth
@@ -67,7 +67,7 @@ class PageListTableViewCell: BasePageListCell {
 //            }
             return privateIndentationWidth
         }
-        
+
         set {
 //            - (void)setIndentationWidth:(CGFloat)indentationWidth
 //            {
@@ -87,7 +87,7 @@ class PageListTableViewCell: BasePageListCell {
 //            }
             return privateIndentationLevel
         }
-        
+
         set {
 //            - (void)setIndentationLevel:(NSInteger)indentationLevel
 //            {
@@ -98,7 +98,7 @@ class PageListTableViewCell: BasePageListCell {
             updateLeadingContentConstraint()
         }
     }
-    
+
 //    - (void)awakeFromNib
 //    {
 //        [super awakeFromNib];
@@ -108,11 +108,11 @@ class PageListTableViewCell: BasePageListCell {
 //    }
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         applyStyles()
         setupAccessibility()
     }
-    
+
 //    - (void)prepareForReuse
 //    {
 //        [super prepareForReuse];
@@ -123,17 +123,17 @@ class PageListTableViewCell: BasePageListCell {
 //    }
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
         applyStyles()
         featuredImageLoader.prepareForReuse()
         setNeedsDisplay()
     }
-    
+
     override var post: AbstractPost? {
         get {
             return super.post
         }
-        
+
         set {
 //            - (void)setPost:(AbstractPost *)post
 //            {
@@ -152,9 +152,9 @@ class PageListTableViewCell: BasePageListCell {
             accessibilityIdentifier = post?.slugForDisplay()
         }
     }
-    
+
     // MARK: - Configuration
-    
+
 //    - (void)applyStyles
 //    {
 //        [WPStyleGuide configureTableViewCell:self];
@@ -176,7 +176,7 @@ class PageListTableViewCell: BasePageListCell {
 //    }
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
-        
+
         // The next line was disabled as it was crashing.  The weird thing is that the outlet
         // isn't wired in develop but is only crashing after this migration.
         //
@@ -185,21 +185,21 @@ class PageListTableViewCell: BasePageListCell {
         //
         //WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
         WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
-        
+
         titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.headline)
         titleLabel.adjustsFontForContentSizeCategory = true
-        
+
         titleLabel.textColor = .text
         badgesLabel.textColor = .textSubtle
         menuButton.tintColor = .textSubtle
         menuButton.setImage(Gridicon.iconOfType(.ellipsis), for: .normal)
-        
+
         backgroundColor = UIColor.neutral(.shade5)
         contentView.backgroundColor = .neutral(.shade5)
-        
+
         featuredImageView.layer.cornerRadius = PageListTableViewCell.pageListTableViewCellTagLabelRadius
     }
-    
+
 //    - (void)configureTitle
 //    {
 //        AbstractPost *post = [self.post hasRevision] ? [self.post revision] : self.post;
@@ -209,7 +209,7 @@ class PageListTableViewCell: BasePageListCell {
         let postForTitle = self.post?.hasRevision() == true ? self.post?.revision : self.post
         titleLabel.text = postForTitle?.titleForDisplay() ?? ""
     }
-    
+
 //    - (void)configureForStatus
 //    {
 //        if (self.post.isFailed && !self.post.hasLocalChanges) {
@@ -221,13 +221,13 @@ class PageListTableViewCell: BasePageListCell {
         guard let post = post else {
             return
         }
-        
+
         if post.isFailed && !post.hasLocalChanges() {
             titleLabel.textColor = .error
             menuButton.tintColor = .error
         }
     }
-    
+
 //    - (void)updateLeadingContentConstraint
 //    {
 //        self.leadingContentConstraint.constant = (CGFloat)_indentationLevel * _indentationWidth;
@@ -235,7 +235,7 @@ class PageListTableViewCell: BasePageListCell {
     private func updateLeadingContentConstraint() {
         leadingContentConstraint.constant = CGFloat(indentationLevel) * indentationWidth
     }
-    
+
 //    - (void)configureBadges
 //    {
 //        Page *page = (Page *)self.post;
@@ -261,27 +261,27 @@ class PageListTableViewCell: BasePageListCell {
         guard let page = self.post as? Page else {
             return
         }
-        
+
         var badges = [String]()
-        
+
         if let dateCreated = page.dateCreated {
             let timeStamp = page.isScheduled() ? dateFormatter.string(from: dateCreated) : dateCreated.mediumString()
             badges.append(timeStamp)
         }
-        
+
         if page.hasPrivateState {
             badges.append(NSLocalizedString("Private", comment: "Title of the Private Badge"))
         } else if page.hasPendingReviewState {
             badges.append(NSLocalizedString("Pending review", comment: "Title of the Pending Review Badge"))
         }
-        
+
         if page.hasLocalChanges() {
             badges.append(NSLocalizedString("Local changes", comment: "Title of the Local Changes Badge"))
         }
-        
+
         badgesLabel.text = badges.joined(separator: " · ")
     }
-    
+
 //    - (void)configureFeaturedImage
 //    {
 //        Page *page = (Page *)self.post;
@@ -305,25 +305,25 @@ class PageListTableViewCell: BasePageListCell {
         guard let page = post as? Page else {
             return
         }
-        
+
         let hideFeaturedImage = page.featuredImage == nil
         featuredImageView.isHidden = hideFeaturedImage
         labelsContainerTrailing.isActive = !hideFeaturedImage
-        
+
         if !hideFeaturedImage,
             let media = page.featuredImage {
-            
+
             featuredImageLoader.loadImage(media: media,
                                           preferredSize: CGSize(
                                             width: PageListTableViewCell.featuredImageSize,
                                             height: PageListTableViewCell.featuredImageSize),
                                           placeholder: nil,
                                           success: nil) { error in
-                                            DDLogError("Failed to load the media: %@", level: .error);
+                                            DDLogError("Failed to load the media: %@", level: .error)
             }
         }
     }
-    
+
 //    - (void)setupAccessibility {
 //        self.menuButton.accessibilityLabel = NSLocalizedString(@"More", @"Accessibility label for the More button in Page List.");
 //    }
