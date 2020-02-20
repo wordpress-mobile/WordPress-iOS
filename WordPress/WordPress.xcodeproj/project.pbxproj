@@ -2020,6 +2020,7 @@
 		F16C35DC23F3F78E00C81331 /* AutoUploadMessageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16C35DB23F3F78E00C81331 /* AutoUploadMessageProvider.swift */; };
 		F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */; };
 		F17A2A2023BFBD84001E96AC /* UIView+ExistingConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */; };
+		F18A25DA23FEEB7E0083DB02 /* PageListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18A25D923FEEB7E0083DB02 /* PageListTableViewCell.swift */; };
 		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
 		F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
@@ -4581,6 +4582,7 @@
 		F16C35DB23F3F78E00C81331 /* AutoUploadMessageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoUploadMessageProvider.swift; sourceTree = "<group>"; };
 		F17A2A1D23BFBD72001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
 		F17A2A1F23BFBD84001E96AC /* UIView+ExistingConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ExistingConstraints.swift"; sourceTree = "<group>"; };
+		F18A25D923FEEB7E0083DB02 /* PageListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListTableViewCell.swift; sourceTree = "<group>"; };
 		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
 		F1D690141F828FF000200E30 /* BuildConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfiguration.swift; sourceTree = "<group>"; };
 		F1D690151F828FF000200E30 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
@@ -6417,6 +6419,7 @@
 			children = (
 				59A3CADB1CD2FF0C009BFA1B /* BasePageListCell.h */,
 				59A3CADC1CD2FF0C009BFA1B /* BasePageListCell.m */,
+				F18A25D923FEEB7E0083DB02 /* PageListTableViewCell.swift */,
 				5DFA7EC41AF814E40072023B /* PageListTableViewCell.h */,
 				5DFA7EC51AF814E40072023B /* PageListTableViewCell.m */,
 				5DFA7EC61AF814E40072023B /* PageListTableViewCell.xib */,
@@ -11880,6 +11883,7 @@
 				E6F2788021BC1A4A008B4DB5 /* Plan.swift in Sources */,
 				B5AC00681BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift in Sources */,
 				D816C1F620E0896F00C4D82F /* TrashComment.swift in Sources */,
+				F18A25DA23FEEB7E0083DB02 /* PageListTableViewCell.swift in Sources */,
 				08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */,
 				9A4E216021F87AE200EFF212 /* QuickStartChecklistHeader.swift in Sources */,
 				98B52AE121F7AF4A006FF6B4 /* StatsDataHelper.swift in Sources */,
