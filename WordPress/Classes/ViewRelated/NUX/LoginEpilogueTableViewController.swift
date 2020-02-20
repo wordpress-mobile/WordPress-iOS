@@ -36,6 +36,9 @@ class LoginEpilogueTableViewController: UITableViewController {
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
 
         view.backgroundColor = .basicBackground
+
+        // Hide separators on empty rows
+        tableView.tableFooterView = UIView()
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
