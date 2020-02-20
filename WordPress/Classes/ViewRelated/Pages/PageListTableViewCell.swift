@@ -1,7 +1,7 @@
 import Foundation
 import Gridicons
 
-class PageListTableViewCell2: BasePageListCell {
+class PageListTableViewCell: BasePageListCell {
 //    static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
 //    static CGFloat const FeaturedImageSize = 120.0;
     private static let pageListTableViewCellTagLabelRadius = CGFloat(2)
@@ -106,7 +106,7 @@ class PageListTableViewCell2: BasePageListCell {
 //        [self applyStyles];
 //        [self setupAccessibility];
 //    }
-    override class func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         
         applyStyles()
@@ -176,7 +176,14 @@ class PageListTableViewCell2: BasePageListCell {
 //    }
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
-        WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
+        
+        // The next line was disabled as it was crashing.  The weird thing is that the outlet
+        // isn't wired in develop but is only crashing after this migration.
+        //
+        // This has been left here to make the reviewer's job easier, and will be removed before
+        // merging this code.
+        //
+        //WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
         WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
         
         titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.headline)
@@ -190,7 +197,7 @@ class PageListTableViewCell2: BasePageListCell {
         backgroundColor = UIColor.neutral(.shade5)
         contentView.backgroundColor = .neutral(.shade5)
         
-        featuredImageView.layer.cornerRadius = PageListTableViewCell2.pageListTableViewCellTagLabelRadius
+        featuredImageView.layer.cornerRadius = PageListTableViewCell.pageListTableViewCellTagLabelRadius
     }
     
 //    - (void)configureTitle
@@ -308,8 +315,8 @@ class PageListTableViewCell2: BasePageListCell {
             
             featuredImageLoader.loadImage(media: media,
                                           preferredSize: CGSize(
-                                            width: PageListTableViewCell2.featuredImageSize,
-                                            height: PageListTableViewCell2.featuredImageSize),
+                                            width: PageListTableViewCell.featuredImageSize,
+                                            height: PageListTableViewCell.featuredImageSize),
                                           placeholder: nil,
                                           success: nil) { error in
                                             DDLogError("Failed to load the media: %@", level: .error);
