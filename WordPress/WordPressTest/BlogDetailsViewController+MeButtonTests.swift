@@ -48,7 +48,7 @@ class BlogDetailsViewControllerTests: XCTestCase {
             return
         }
         // When
-        _ = controller.view
+        controller.addMeButtonToNavigationBar()
         // Then
         guard let meButton = controller.navigationItem.rightBarButtonItem else {
             XCTFail("Me Button not installed")
@@ -65,7 +65,7 @@ class BlogDetailsViewControllerTests: XCTestCase {
             XCTFail("Blog details viewController not initialized")
             return
         }
-        _ = controller.view
+        controller.addMeButtonToNavigationBar()
         guard let meButton = controller.navigationItem.rightBarButtonItem else {
             XCTFail("Me Button not installed")
             return
