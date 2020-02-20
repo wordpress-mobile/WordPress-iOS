@@ -1,6 +1,9 @@
 14.3
 -----
 * Block editor: Add support for upload options in Gallery block
+* Aztec and Block Editor: Fix the presentation of ordered lists with large numbers.
+* Added Quick Action buttons on the Site Details page to access the most frequently used parts of a site.
+* Post Settings: Adjusts the weekday symbols in the calendar depending on Regional settings. 
  
 14.2
 -----
