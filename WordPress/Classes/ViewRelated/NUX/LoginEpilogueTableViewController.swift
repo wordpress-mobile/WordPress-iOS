@@ -112,7 +112,6 @@ extension LoginEpilogueTableViewController {
         }
 
         cell.titleLabel?.text = title(for: section)
-        cell.backgroundColor = .basicBackground
         cell.accessibilityIdentifier = "Login Cell"
 
         return cell
@@ -156,6 +155,10 @@ extension LoginEpilogueTableViewController {
         guard let headerView = view as? UITableViewHeaderFooterView else {
             return
         }
+
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .basicBackground
+        headerView.backgroundView = backgroundView
 
         headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         headerView.textLabel?.textColor = .neutral(.shade50)
