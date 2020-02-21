@@ -4,8 +4,8 @@ import Foundation
 /// a given post (or page).  It provides progress both in pull (by calling `progress()`
 /// and push (by using the `progressBlock` property) forms.
 ///
-class PostUploadProgressViewModel<PostType: AbstractPost> {
-    private let post: PostType
+class PostUploadProgressViewModel {
+    private let post: AbstractPost
     private var progressObserverUUID: UUID? = nil
 
     var progressBlock: ((Float) -> Void)? = nil {
@@ -24,7 +24,7 @@ class PostUploadProgressViewModel<PostType: AbstractPost> {
         }
     }
 
-    init(for post: PostType) {
+    init(for post: AbstractPost) {
         self.post = post
     }
 

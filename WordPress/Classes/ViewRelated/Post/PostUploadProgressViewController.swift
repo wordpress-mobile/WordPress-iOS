@@ -3,11 +3,11 @@ import Foundation
 /// This class controls the setup and update of a standard UIProgressView
 /// used to reflect the upload progress of a post (or page).
 ///
-class PostUploadProgressViewController<PostType: AbstractPost> {
-    private let viewModel: PostUploadProgressViewModel<PostType>
+class PostUploadProgressViewController {
+    private let viewModel: PostUploadProgressViewModel
     private let onUploadComplete: () -> ()
 
-    init(with post: PostType, onUploadComplete: @escaping () -> ()) {
+    init(with post: AbstractPost, onUploadComplete: @escaping () -> ()) {
         self.onUploadComplete = onUploadComplete
         viewModel = PostUploadProgressViewModel(for: post)
     }
