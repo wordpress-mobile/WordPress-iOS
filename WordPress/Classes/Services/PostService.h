@@ -8,6 +8,7 @@
 @class Page;
 @class RemotePost;
 @class PostServiceRemoteFactory;
+@class PostServiceUploadingList;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -117,8 +118,8 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  */
 - (void)uploadPost:(AbstractPost *)post
 forceDraftIfCreating:(BOOL)forceDraftIfCreating
-           success:(nullable void (^)(AbstractPost *post))success
-           failure:(void (^)(NSError * _Nullable error))failure;
+           success:(nullable void (^)(AbstractPost * _Nullable post))success
+           failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 /**
  Saves a post to the server.
