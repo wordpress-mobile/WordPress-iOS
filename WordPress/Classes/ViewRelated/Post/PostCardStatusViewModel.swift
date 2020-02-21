@@ -26,27 +26,10 @@ class PostCardStatusViewModel: NSObject {
     }
 
     let post: Post
-    private var progressObserverUUID: UUID? = nil
 
     private let autoUploadInteractor = PostAutoUploadInteractor()
 
     private let isInternetReachable: Bool
-
-    var progressBlock: ((Float) -> Void)? = nil {
-        didSet {
-            if let _ = oldValue, let uuid = progressObserverUUID {
-                MediaCoordinator.shared.removeObserver(withUUID: uuid)
-            }
-
-            if let progressBlock = progressBlock {
-                progressObserverUUID = MediaCoordinator.shared.addObserver({ [weak self] (_, _) in
-                    if let post = self?.post {
-                        progressBlock(Float(MediaCoordinator.shared.totalProgress(for: post)))
-                    }
-                }, forMediaFor: post)
-            }
-        }
-    }
 
     init(post: Post, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
         self.post = post
@@ -120,18 +103,6 @@ class PostCardStatusViewModel: NSObject {
             return .error
         default:
             return .neutral(.shade70)
-        }
-    }
-
-    var shouldHideProgressView: Bool {
-        return !(MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing)
-    }
-
-    var progress: Float {
-        if post.remoteStatus == .pushing {
-            return 1.0
-        } else {
-            return Float(MediaCoordinator.shared.totalProgress(for: post))
         }
     }
 

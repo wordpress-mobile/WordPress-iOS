@@ -35,6 +35,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }()
 
     private var post: Post?
+    private var progressViewController: PostUploadProgressViewController? = nil
     private var viewModel: PostCardStatusViewModel?
     private var currentLoadedFeaturedImage: String?
     private weak var interactivePostViewDelegate: InteractivePostViewDelegate?
@@ -52,7 +53,15 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         }
 
         self.post = post
+        
+        progressViewController = PostUploadProgressViewController(with: post, onUploadComplete: { [weak self] in
+            self?.configure()
+        })
 
+        configure()
+    }
+    
+    private func configure() {
         resetGhost()
         configureFeaturedImage()
         configureTitle()
@@ -261,24 +270,11 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureProgressView() {
-        guard let viewModel = viewModel else {
+        guard let progressViewController = progressViewController else {
             return
         }
 
-        let shouldHide = viewModel.shouldHideProgressView
-
-        progressView.isHidden = shouldHide
-
-        progressView.progress = viewModel.progress
-
-        if !shouldHide && viewModel.progressBlock == nil {
-            viewModel.progressBlock = { [weak self] progress in
-                self?.progressView.setProgress(progress, animated: true)
-                if progress >= 1.0, let post = self?.post {
-                    self?.configure(with: post)
-                }
-            }
-        }
+        progressViewController.configure(progressView)
     }
 
     private func configureActionBar() {
