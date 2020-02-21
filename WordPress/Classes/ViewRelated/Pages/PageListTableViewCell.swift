@@ -5,10 +5,11 @@ class PageListTableViewCell: BasePageListCell {
     private static let pageListTableViewCellTagLabelRadius = CGFloat(2)
     private static let featuredImageSize = CGFloat(120)
 
-    @IBOutlet private var titleLabel: UILabel!
-    @IBOutlet private var badgesLabel: UILabel!
-    @IBOutlet private var featuredImageView: CachedAnimatedImageView!
-    @IBOutlet private var menuButton: UIButton!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var badgesLabel: UILabel!
+    @IBOutlet private weak var featuredImageView: CachedAnimatedImageView!
+    @IBOutlet private weak var menuButton: UIButton!
+    @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private var labelsContainerTrailing: NSLayoutConstraint!
     @IBOutlet private var leadingContentConstraint: NSLayoutConstraint!
 
@@ -25,6 +26,7 @@ class PageListTableViewCell: BasePageListCell {
         return dateFormatter
     }()
 
+    private var progressViewController: PostUploadProgressViewController? = nil
     private var privateIndentationWidth: CGFloat = 0
     private var privateIndentationLevel: Int = 0
 
@@ -67,17 +69,7 @@ class PageListTableViewCell: BasePageListCell {
         setNeedsDisplay()
     }
 
-    // MARK: - Configuration
-
-    override func configureCell(_ post: AbstractPost) {
-        super.configureCell(post)
-
-        configureTitle()
-        configureForStatus()
-        configureBadges()
-        configureFeaturedImage()
-        accessibilityIdentifier = post.slugForDisplay()
-    }
+    // MARK: - Styling
 
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
@@ -97,17 +89,46 @@ class PageListTableViewCell: BasePageListCell {
         featuredImageView.layer.cornerRadius = PageListTableViewCell.pageListTableViewCellTagLabelRadius
     }
 
-    private func configureTitle() {
-        let postForTitle = self.post?.hasRevision() == true ? self.post?.revision : self.post
-        titleLabel.text = postForTitle?.titleForDisplay() ?? ""
+    // MARK: - Configuration
+
+    override func configure(with page: Page) {
+        super.configure(with: page)
+
+        progressViewController = PostUploadProgressViewController(with: page, onUploadComplete: { [weak self] in
+            self?.configure()
+        })
+
+        configure()
+        accessibilityIdentifier = page.slugForDisplay()
     }
 
-    private func configureForStatus() {
-        guard let post = post else {
+    private func configure() {
+        configureTitle()
+        configureForStatus()
+        configureBadges()
+        configureFeaturedImage()
+        configureProgressView()
+    }
+
+    private func configureProgressView() {
+        guard let progressViewController = progressViewController else {
             return
         }
 
-        if post.isFailed && !post.hasLocalChanges() {
+        progressViewController.configure(progressView)
+    }
+
+    private func configureTitle() {
+        let pageForTitle = self.page?.hasRevision() == true ? self.page?.revision : self.page
+        titleLabel.text = pageForTitle?.titleForDisplay() ?? ""
+    }
+
+    private func configureForStatus() {
+        guard let page = page else {
+            return
+        }
+
+        if page.isFailed && !page.hasLocalChanges() {
             titleLabel.textColor = .error
             menuButton.tintColor = .error
         }
@@ -118,7 +139,7 @@ class PageListTableViewCell: BasePageListCell {
     }
 
     private func configureBadges() {
-        guard let page = self.post as? Page else {
+        guard let page = self.page else {
             return
         }
 
@@ -143,7 +164,7 @@ class PageListTableViewCell: BasePageListCell {
     }
 
     private func configureFeaturedImage() {
-        guard let page = post as? Page else {
+        guard let page = page else {
             return
         }
 

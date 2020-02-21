@@ -7,13 +7,13 @@ class BasePageListCell: UITableViewCell {
     /// - Parameters:
     ///     - cell: the cell that contains the button that was tapped.
     ///     - button: the button that was tapped.
-    ///     - post:the post represented by the cell that was tapped.
+    ///     - page: the page represented by the cell that was tapped.
     ///
-    typealias ActionBlock = (_ cell: BasePageListCell, _ button: UIButton, _ post: AbstractPost) -> Void
+    typealias ActionBlock = (_ cell: BasePageListCell, _ button: UIButton, _ page: Page) -> Void
 
     /// The page represented by this cell.
     ///
-    var post: AbstractPost? = nil
+    var page: Page? = nil
 
     /// The block that will be executed when the main button inside this cell is tapped.
     ///
@@ -21,15 +21,15 @@ class BasePageListCell: UITableViewCell {
 
     /// Configure the cell to represent the specified page.
     ///
-    func configureCell(_ post: AbstractPost) {
-        self.post = post
+    func configure(with page: Page) {
+        self.page = page
     }
 
     @IBAction func onAction(_ sender: UIButton) {
-        guard let post = post else {
+        guard let page = page else {
             return
         }
 
-        onAction?(self, sender, post)
+        onAction?(self, sender, page)
     }
 }
