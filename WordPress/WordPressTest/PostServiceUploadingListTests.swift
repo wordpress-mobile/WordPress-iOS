@@ -43,7 +43,7 @@ class PostServiceUploadingListTests: XCTestCase {
         expect(uploadingList.isSingleUpload(post.objectID)).to(beFalse())
     }
 
-    /// If a post is added twice and then the upload finishes, return trye
+    /// If a post is added twice and then the upload of one finishes, return true
     ///
     func testReturnTrueForMultipleUploadIfOneOfThemIsRemoved() {
         let post = PostBuilder(context).build()
