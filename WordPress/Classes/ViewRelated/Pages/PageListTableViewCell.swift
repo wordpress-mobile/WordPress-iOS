@@ -50,21 +50,6 @@ class PageListTableViewCell: BasePageListCell {
         }
     }
 
-    override var post: AbstractPost? {
-        get {
-            return super.post
-        }
-
-        set {
-            super.post = newValue
-            configureTitle()
-            configureForStatus()
-            configureBadges()
-            configureFeaturedImage()
-            accessibilityIdentifier = post?.slugForDisplay()
-        }
-    }
-
     // MARK: - Lifecycle
 
     override func awakeFromNib() {
@@ -83,6 +68,16 @@ class PageListTableViewCell: BasePageListCell {
     }
 
     // MARK: - Configuration
+    
+    override func configureCell(_ post: AbstractPost) {
+        super.configureCell(post)
+
+        configureTitle()
+        configureForStatus()
+        configureBadges()
+        configureFeaturedImage()
+        accessibilityIdentifier = post.slugForDisplay()
+    }
 
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
