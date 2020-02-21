@@ -35,7 +35,10 @@ class LoginEpilogueTableViewController: UITableViewController {
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
 
-        view.backgroundColor = .listBackground
+        view.backgroundColor = .basicBackground
+
+        // Hide separators on empty rows
+        tableView.tableFooterView = UIView()
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
@@ -101,8 +104,11 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
-            fatalError("Failed to get a section header cell")
+
+        // Don't show section header for User Info
+        guard section != Sections.userInfoSection,
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
+            return nil
         }
 
         cell.titleLabel?.text = title(for: section)
@@ -112,7 +118,7 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
+        if indexPath.section == Sections.userInfoSection {
             return Settings.profileRowHeight
         }
 
@@ -128,6 +134,10 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard section != Sections.userInfoSection else {
+            return 0
+        }
+
         return UITableView.automaticDimension
     }
 
@@ -146,9 +156,12 @@ extension LoginEpilogueTableViewController {
             return
         }
 
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .basicBackground
+        headerView.backgroundView = backgroundView
+
         headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         headerView.textLabel?.textColor = .neutral(.shade50)
-        headerView.contentView.backgroundColor = .listBackground
     }
 }
 
@@ -157,14 +170,14 @@ extension LoginEpilogueTableViewController {
 //
 private extension LoginEpilogueTableViewController {
 
-    /// Returns the title for the current section!.
+    /// Returns the title for the current section.
     ///
-    func title(for section: Int) -> String {
-        if section == Sections.userInfoSection {
-            return NSLocalizedString("Logged In As", comment: "Header for user info, shown after loggin in").localizedUppercase
+    func title(for section: Int) -> String? {
+        guard section != Sections.userInfoSection else {
+            return nil
         }
 
-        let rowCount = blogDataSource.tableView(tableView, numberOfRowsInSection: section-1)
+        let rowCount = blogDataSource.tableView(tableView, numberOfRowsInSection: section - 1)
         if rowCount > 1 {
             return NSLocalizedString("My Sites", comment: "Header for list of multiple sites, shown after loggin in").localizedUppercase
         }
@@ -174,7 +187,7 @@ private extension LoginEpilogueTableViewController {
 }
 
 
-// MARK: - Loading!
+// MARK: - Loading
 //
 private extension LoginEpilogueTableViewController {
 
