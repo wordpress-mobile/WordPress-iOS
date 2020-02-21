@@ -20,10 +20,10 @@ extension WPStyleGuide {
 
     @objc public class func configureCellForLogin(_ cell: WPBlogTableViewCell) {
         cell.textLabel?.textColor = .text
-        cell.textLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
+        cell.textLabel?.font = fontForTextStyle(.subheadline, fontWeight: .medium)
 
         cell.detailTextLabel?.textColor = .textSubtle
-        cell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        cell.detailTextLabel?.font = fontForTextStyle(.subheadline)
 
         cell.imageView?.layer.borderColor = UIColor.neutral(.shade10).cgColor
         cell.imageView?.layer.borderWidth = 1
