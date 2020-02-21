@@ -9,7 +9,7 @@ struct PostEditorAnalyticsSession {
     var currentEditor: Editor
     var hasUnsupportedBlocks = false
     var outcome: Outcome? = nil
-    var pageTemplateApplied: String?
+    var template: String?
 
     init(editor: Editor, post: AbstractPost) {
         currentEditor = editor
@@ -28,8 +28,8 @@ struct PostEditorAnalyticsSession {
         started = true
     }
 
-    mutating func editorSessionTemplateApplied(_ appliedTemplate: String) {
-        pageTemplateApplied = appliedTemplate
+    mutating func apply(template: String) {
+        self.template = template
     }
 
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
@@ -58,11 +58,7 @@ struct PostEditorAnalyticsSession {
 
     func end(outcome endOutcome: Outcome) {
         let outcome = self.outcome ?? endOutcome
-        var properties = [ Property.outcome: outcome.rawValue].merging(commonProperties, uniquingKeysWith: { $1 })
-
-        if let pageTemplateApplied = pageTemplateApplied {
-            properties[Property.template] = pageTemplateApplied
-        }
+        let properties = [ Property.outcome: outcome.rawValue].merging(commonProperties, uniquingKeysWith: { $1 })
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
@@ -88,8 +84,9 @@ private extension PostEditorAnalyticsSession {
             Property.postType: postType,
             Property.blogType: blogType,
             Property.sessionId: sessionId,
-            Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0"
-        ]
+            Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0",
+            Property.template: template
+        ].compactMapValues { $0 }
     }
 }
 

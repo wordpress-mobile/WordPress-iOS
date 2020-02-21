@@ -577,10 +577,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergLogUserEvent(_ event: GutenbergUserEvent, properties: [AnyHashable: Any]) {
+    func gutenbergDidLogUserEvent(_ event: GutenbergUserEvent) {
         switch event {
-        case .pageTemplateApplied:
-            gutenbergDidLogSessionTemplateEvent(properties)
+        case .pageTemplateApplied(let template):
+            editorSession.apply(template: template)
         }
     }
 
@@ -598,11 +598,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .overCurrentContext
         self.present(controller, animated: true)
-    }
-
-    private func gutenbergDidLogSessionTemplateEvent(_ properties: [AnyHashable: Any]) {
-        guard let appliedTemplate = properties["template"] as? String else { return }
-        editorSession.editorSessionTemplateApplied(appliedTemplate)
     }
 }
 
