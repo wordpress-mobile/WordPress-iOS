@@ -42,11 +42,6 @@ class EpilogueUserInfoCell: UITableViewCell {
         configureColors()
     }
 
-    func configureColors() {
-        fullNameLabel.textColor = .text
-        usernameLabel.textColor = .textSubtle
-    }
-
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
     ///
     func configure(userInfo: LoginEpilogueUserInfo, showEmail: Bool = false, allowGravatarUploads: Bool = false) {
@@ -84,7 +79,7 @@ class EpilogueUserInfoCell: UITableViewCell {
         activityIndicator.startAnimating()
     }
 
-    /// Stops the Activity Indicator Animation, and hides the Username + Fullname labels.
+    /// Stops the Activity Indicator Animation, and shows the Username + Fullname labels.
     ///
     func stopSpinner() {
         fullNameLabel.isHidden = false
@@ -92,6 +87,30 @@ class EpilogueUserInfoCell: UITableViewCell {
         activityIndicator.stopAnimating()
     }
 }
+
+// MARK: - Private Methods
+//
+private extension EpilogueUserInfoCell {
+
+    func configureColors() {
+        fullNameLabel.textColor = .text
+        fullNameLabel.font = fullNameFont()
+
+        usernameLabel.textColor = .textSubtle
+        usernameLabel.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
+    }
+
+    func fullNameFont() -> UIFont {
+        // Use New York font for full name.
+        guard #available(iOS 13, *),
+            let fontDescriptor = UIFont.systemFont(ofSize: 34.0, weight: .medium).fontDescriptor.withDesign(.serif) else {
+                return WPStyleGuide.mediumWeightFont(forStyle: .largeTitle)
+        }
+
+        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
+    }
+}
+
 
 // MARK: - Gravatar uploading
 //
