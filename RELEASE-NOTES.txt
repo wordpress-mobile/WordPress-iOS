@@ -7,8 +7,9 @@
 * Block editor: Added the Button block
 * Block editor: Add scroll support inside block picker and block settings
 * Block editor: Fix issue where adding emojis to the post title added strong HTML elements to the title of the post
-* Block editor: Fix issue where alignment of paragraph blocks was not respected when splitting the paragraph or reading from the original Post content
- 
+* Block editor: Fix issue where alignment of paragraph blocks was not always being respected when splitting the paragraph or reading the post's html content.
+* Block editor: We’ve introduced a new toolbar that floats above the block you’re editing, which makes navigating your blocks easier — especially complex ones.
+
 14.2
 -----
 * Comment Editing: Fixed a bug that could cause the text selection to be on the wrong line
