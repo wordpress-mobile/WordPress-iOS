@@ -2006,6 +2006,7 @@
 		F110239B2318479000C4E84A /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = F110239A2318479000C4E84A /* Media.swift */; };
 		F11023A1231863CE00C4E84A /* MediaServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11023A0231863CE00C4E84A /* MediaServiceTests.swift */; };
 		F11023A323186BCA00C4E84A /* MediaBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11023A223186BCA00C4E84A /* MediaBuilder.swift */; };
+		F111041F24003256002BB60B /* PageCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111041E24003256002BB60B /* PageCellModel.swift */; };
 		F115308121B17E66002F1D65 /* EditorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F115308021B17E65002F1D65 /* EditorFactory.swift */; };
 		F126FE0020A33BDB0010EB6E /* VideoUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFD20A33BDB0010EB6E /* VideoUploadProcessor.swift */; };
 		F126FE0220A33BDB0010EB6E /* DocumentUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFF20A33BDB0010EB6E /* DocumentUploadProcessor.swift */; };
@@ -4560,6 +4561,7 @@
 		F110239A2318479000C4E84A /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		F11023A0231863CE00C4E84A /* MediaServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaServiceTests.swift; sourceTree = "<group>"; };
 		F11023A223186BCA00C4E84A /* MediaBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaBuilder.swift; sourceTree = "<group>"; };
+		F111041E24003256002BB60B /* PageCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCellModel.swift; sourceTree = "<group>"; };
 		F115308021B17E65002F1D65 /* EditorFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorFactory.swift; sourceTree = "<group>"; };
 		F117E5841F7AA8BF003D9ACB /* WordPress 67.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 67.xcdatamodel"; sourceTree = "<group>"; };
 		F126FDFD20A33BDB0010EB6E /* VideoUploadProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoUploadProcessor.swift; sourceTree = "<group>"; };
@@ -6370,6 +6372,7 @@
 				5D2FB2821AE98C4600F1D4ED /* RestorePostTableViewCell.xib */,
 				5D2C05541AD2F56200A753FE /* NavBarTitleDropdownButton.h */,
 				5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */,
+				F111041E24003256002BB60B /* PageCellModel.swift */,
 				5D732F951AE84E3C00CD89E7 /* PostListFooterView.h */,
 				5D732F961AE84E3C00CD89E7 /* PostListFooterView.m */,
 				5D732F981AE84E5400CD89E7 /* PostListFooterView.xib */,
@@ -12225,6 +12228,7 @@
 				E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */,
 				2F08ECFC2283A4FB000F8E11 /* PostService+UnattachedMedia.swift in Sources */,
 				E61084BF1B9B47BA008050C5 /* ReaderDefaultTopic.swift in Sources */,
+				F111041F24003256002BB60B /* PageCellModel.swift in Sources */,
 				D816C1F220E0894D00C4D82F /* ReplyToComment.swift in Sources */,
 				E1BB92321FDAAFFA00F2D817 /* TextWithAccessoryButtonCell.swift in Sources */,
 				9872CB30203B8A730066A293 /* SignupEpilogueTableViewController.swift in Sources */,

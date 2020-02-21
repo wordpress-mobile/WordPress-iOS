@@ -5,12 +5,13 @@ class PageListTableViewCell: BasePageListCell {
     private static let pageListTableViewCellTagLabelRadius = CGFloat(2)
     private static let featuredImageSize = CGFloat(120)
 
-    @IBOutlet private var titleLabel: UILabel!
-    @IBOutlet private var badgesLabel: UILabel!
-    @IBOutlet private var featuredImageView: CachedAnimatedImageView!
-    @IBOutlet private var menuButton: UIButton!
-    @IBOutlet private var labelsContainerTrailing: NSLayoutConstraint!
-    @IBOutlet private var leadingContentConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var badgesLabel: UILabel!
+    @IBOutlet private weak var featuredImageView: CachedAnimatedImageView!
+    @IBOutlet private weak var menuButton: UIButton!
+    @IBOutlet private weak var progressView: UIProgressView!
+    @IBOutlet private weak var labelsContainerTrailing: NSLayoutConstraint!
+    @IBOutlet private weak var leadingContentConstraint: NSLayoutConstraint!
 
     private lazy var featuredImageLoader: ImageLoader = {
         return ImageLoader(imageView: self.featuredImageView, gifStrategy: .largeGIFs)
@@ -24,7 +25,8 @@ class PageListTableViewCell: BasePageListCell {
 
         return dateFormatter
     }()
-
+    
+    private var pageModel: PageCellModel? = nil
     private var privateIndentationWidth: CGFloat = 0
     private var privateIndentationLevel: Int = 0
 
@@ -50,18 +52,17 @@ class PageListTableViewCell: BasePageListCell {
         }
     }
 
-    override var post: AbstractPost? {
+    override var page: Page? {
         get {
-            return super.post
+            return super.page
         }
 
         set {
-            super.post = newValue
-            configureTitle()
-            configureForStatus()
-            configureBadges()
-            configureFeaturedImage()
-            accessibilityIdentifier = post?.slugForDisplay()
+            super.page = newValue
+            
+            if let page = newValue {
+                pageWasChanged(page: page)
+            }
         }
     }
 
@@ -81,8 +82,8 @@ class PageListTableViewCell: BasePageListCell {
         featuredImageLoader.prepareForReuse()
         setNeedsDisplay()
     }
-
-    // MARK: - Configuration
+    
+    // MARK: - Styling
 
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
@@ -102,17 +103,30 @@ class PageListTableViewCell: BasePageListCell {
         featuredImageView.layer.cornerRadius = PageListTableViewCell.pageListTableViewCellTagLabelRadius
     }
 
+    // MARK: - Configuration
+    
+    func configure(with page: Page) {
+        self.page = page
+        
+        configureTitle()
+        configureForStatus()
+        configureBadges()
+        configureFeaturedImage()
+        configureProgressView()
+        accessibilityIdentifier = page?.slugForDisplay()
+    }
+
     private func configureTitle() {
-        let postForTitle = self.post?.hasRevision() == true ? self.post?.revision : self.post
+        let postForTitle = self.page?.hasRevision() == true ? self.page?.revision : self.page
         titleLabel.text = postForTitle?.titleForDisplay() ?? ""
     }
 
     private func configureForStatus() {
-        guard let post = post else {
+        guard let page = page else {
             return
         }
 
-        if post.isFailed && !post.hasLocalChanges() {
+        if page.isFailed && !page.hasLocalChanges() {
             titleLabel.textColor = .error
             menuButton.tintColor = .error
         }
@@ -123,7 +137,7 @@ class PageListTableViewCell: BasePageListCell {
     }
 
     private func configureBadges() {
-        guard let page = self.post as? Page else {
+        guard let page = self.page else {
             return
         }
 
@@ -148,7 +162,7 @@ class PageListTableViewCell: BasePageListCell {
     }
 
     private func configureFeaturedImage() {
-        guard let page = post as? Page else {
+        guard let page = page else {
             return
         }
 
