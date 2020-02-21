@@ -65,7 +65,6 @@
                         </connections>
                     </button>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="11G-E4-8Jh" firstAttribute="centerY" secondItem="SqA-Tm-XVX" secondAttribute="centerY" id="IxS-CJ-S1j"/>
                     <constraint firstItem="11G-E4-8Jh" firstAttribute="centerX" secondItem="SqA-Tm-XVX" secondAttribute="centerX" id="M29-uj-sGk"/>
@@ -89,6 +88,7 @@
                     <constraint firstItem="GYR-3W-aku" firstAttribute="trailing" secondItem="SqA-Tm-XVX" secondAttribute="trailing" constant="4" id="wL3-WH-8HH"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="activityIndicator" destination="xGK-LG-0cx" id="cvq-jE-eTh"/>
                 <outlet property="fullNameLabel" destination="MbK-Ns-TbF" id="V0e-0h-jX6"/>
