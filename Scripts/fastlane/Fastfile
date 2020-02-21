@@ -177,6 +177,13 @@ import "./ScreenshotFastfile"
     ios_update_metadata(options) unless ios_current_branch_is_hotfix
     ios_bump_version_beta() unless ios_current_branch_is_hotfix
     ios_final_tag(options)
+
+    # Wrap up
+    version = ios_get_app_version()
+    removebranchprotection(repository:GHHELPER_REPO, branch: "release/#{version}")
+    setfrozentag(repository:GHHELPER_REPO, milestone: version, freeze: false)
+    create_new_milestone(repository:GHHELPER_REPO)
+    close_milestone(repository:GHHELPER_REPO, milestone: version)
   end
 
   #####################################################################################
