@@ -106,12 +106,9 @@ extension LoginEpilogueTableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
         // Don't show section header for User Info
-        guard section != Sections.userInfoSection else {
+        guard section != Sections.userInfoSection,
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
             return nil
-        }
-
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
-            fatalError("Failed to get a section header cell")
         }
 
         cell.titleLabel?.text = title(for: section)
