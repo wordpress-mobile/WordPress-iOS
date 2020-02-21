@@ -1,12 +1,12 @@
 import Foundation
 
 //@interface RestorePageTableViewCell()
- 
+
 class RestorePageTableViewCell: BasePageListCell {
 
 //@property (nonatomic, strong) IBOutlet UILabel *restoreLabel;
 //@property (nonatomic, strong) IBOutlet UIButton *restoreButton;
-    
+
     @IBOutlet private var restoreLabel: UILabel!
     @IBOutlet private var restoreButton: UIButton!
 
@@ -24,7 +24,7 @@ class RestorePageTableViewCell: BasePageListCell {
 //}
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         configureView()
         applyStyles()
     }
@@ -49,9 +49,9 @@ class RestorePageTableViewCell: BasePageListCell {
 //}
     private func configureView() {
         restoreLabel.text = NSLocalizedString("Page moved to trash.", comment: "A short message explaining that a page was moved to the trash bin.")
-        
+
         let buttonTitle = NSLocalizedString("Undo", comment: "The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.")
-        
+
         restoreButton.setTitle(buttonTitle, for: .normal)
     }
 

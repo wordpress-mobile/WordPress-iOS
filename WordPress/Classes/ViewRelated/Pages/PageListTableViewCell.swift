@@ -68,7 +68,7 @@ class PageListTableViewCell: BasePageListCell {
     }
 
     // MARK: - Configuration
-    
+
     override func configureCell(_ post: AbstractPost) {
         super.configureCell(post)
 
