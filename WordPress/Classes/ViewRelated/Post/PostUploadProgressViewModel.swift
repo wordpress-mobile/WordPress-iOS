@@ -1,9 +1,13 @@
 import Foundation
 
-class PostUploadProgressTracker<PostType: AbstractPost> {
+/// This class provides a standard view model for accessing the upload progress of
+/// a given post (or page).  It provides progress both in pull (by calling `progress()`
+/// and push (by using the `progressBlock` property) forms.
+///
+class PostUploadProgressViewModel<PostType: AbstractPost> {
     private let post: PostType
     private var progressObserverUUID: UUID? = nil
-    
+
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
@@ -19,19 +23,20 @@ class PostUploadProgressTracker<PostType: AbstractPost> {
             }
         }
     }
-    
-    init(with post: PostType) {
+
+    init(for post: PostType) {
         self.post = post
     }
-}
 
-class PageCellModel {
-    private let page: Page
-    
-    let uploadProgressTracker: PostUploadProgressTracker<Page>
-    
-    init(with page: Page) {
-        self.page = page
-        self.uploadProgressTracker = PostUploadProgressTracker(with: page)
+    func progress() -> Float {
+        if post.remoteStatus == .pushing {
+            return 1.0
+        } else {
+            return Float(MediaCoordinator.shared.totalProgress(for: post))
+        }
+    }
+
+    func shouldHideProgressView() -> Bool {
+        return !(MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing)
     }
 }

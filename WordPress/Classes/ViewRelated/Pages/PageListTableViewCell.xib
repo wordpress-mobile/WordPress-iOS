@@ -60,7 +60,7 @@
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="onAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="asl-aB-XVB"/>
+                                    <action selector="onAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="3rp-S8-Y9k"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8cG-SG-iYd" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">

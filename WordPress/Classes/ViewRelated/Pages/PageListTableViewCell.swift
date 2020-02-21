@@ -10,8 +10,8 @@ class PageListTableViewCell: BasePageListCell {
     @IBOutlet private weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet private weak var menuButton: UIButton!
     @IBOutlet private weak var progressView: UIProgressView!
-    @IBOutlet private weak var labelsContainerTrailing: NSLayoutConstraint!
-    @IBOutlet private weak var leadingContentConstraint: NSLayoutConstraint!
+    @IBOutlet private var labelsContainerTrailing: NSLayoutConstraint!
+    @IBOutlet private var leadingContentConstraint: NSLayoutConstraint!
 
     private lazy var featuredImageLoader: ImageLoader = {
         return ImageLoader(imageView: self.featuredImageView, gifStrategy: .largeGIFs)
@@ -25,8 +25,8 @@ class PageListTableViewCell: BasePageListCell {
 
         return dateFormatter
     }()
-    
-    private var pageModel: PageCellModel? = nil
+
+    private var progressViewController: PostUploadProgressViewController? = nil
     private var privateIndentationWidth: CGFloat = 0
     private var privateIndentationLevel: Int = 0
 
@@ -52,20 +52,6 @@ class PageListTableViewCell: BasePageListCell {
         }
     }
 
-    override var page: Page? {
-        get {
-            return super.page
-        }
-
-        set {
-            super.page = newValue
-            
-            if let page = newValue {
-                pageWasChanged(page: page)
-            }
-        }
-    }
-
     // MARK: - Lifecycle
 
     override func awakeFromNib() {
@@ -82,7 +68,7 @@ class PageListTableViewCell: BasePageListCell {
         featuredImageLoader.prepareForReuse()
         setNeedsDisplay()
     }
-    
+
     // MARK: - Styling
 
     private func applyStyles() {
@@ -104,21 +90,37 @@ class PageListTableViewCell: BasePageListCell {
     }
 
     // MARK: - Configuration
-    
-    func configure(with page: Page) {
-        self.page = page
-        
+
+    override func configure(with page: Page) {
+        super.configure(with: page)
+
+        progressViewController = PostUploadProgressViewController(with: page, onUploadComplete: { [weak self] in
+            self?.configure()
+        })
+
+        configure()
+        accessibilityIdentifier = page.slugForDisplay()
+    }
+
+    private func configure() {
         configureTitle()
         configureForStatus()
         configureBadges()
         configureFeaturedImage()
         configureProgressView()
-        accessibilityIdentifier = page?.slugForDisplay()
+    }
+
+    private func configureProgressView() {
+        guard let progressViewController = progressViewController else {
+            return
+        }
+
+        progressViewController.configure(progressView)
     }
 
     private func configureTitle() {
-        let postForTitle = self.page?.hasRevision() == true ? self.page?.revision : self.page
-        titleLabel.text = postForTitle?.titleForDisplay() ?? ""
+        let pageForTitle = self.page?.hasRevision() == true ? self.page?.revision : self.page
+        titleLabel.text = pageForTitle?.titleForDisplay() ?? ""
     }
 
     private func configureForStatus() {
