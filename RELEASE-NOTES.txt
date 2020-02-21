@@ -10,6 +10,8 @@
 * Block editor: Fix issue where alignment of paragraph blocks was not always being respected when splitting the paragraph or reading the post's html content.
 * Block editor: We’ve introduced a new toolbar that floats above the block you’re editing, which makes navigating your blocks easier — especially complex ones.
 
+* Post Settings: Adjusts the weekday symbols in the calendar depending on Regional settings. 
+ 
 14.2
 -----
 * Comment Editing: Fixed a bug that could cause the text selection to be on the wrong line
