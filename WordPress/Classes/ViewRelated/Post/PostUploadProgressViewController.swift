@@ -22,9 +22,7 @@ class PostUploadProgressViewController {
         let shouldHide = viewModel.shouldHideProgressView()
 
         guard !shouldHide else {
-            progressView.isHidden = true
-            progressView.progress = 0
-            viewModel.progressBlock = nil
+            hide(progressView)
             return
         }
 
