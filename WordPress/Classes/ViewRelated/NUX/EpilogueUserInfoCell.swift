@@ -140,6 +140,6 @@ extension UIImage {
     /// Returns a Gravatar Placeholder Image when uploading is allowed
     ///
     fileprivate static var gravatarUploadablePlaceholderImage: UIImage {
-        return UIImage(named: "gravatar-hollow", in: nil, compatibleWith: nil)!
+        return UIImage(named: "gravatar-hollow") ?? UIImage()
     }
 }
