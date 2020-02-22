@@ -19,7 +19,7 @@ class TabNavComponent: BaseScreen {
 
     func gotoMeScreen() -> MeTabScreen {
         gotoMySitesScreen()
-        app.cells.firstMatch.tap()
+        app.cells["infocusphotographers.com"].tap()
         let meButton = app.navigationBars.buttons["meBarButton"]
         meButton.tap()
         return MeTabScreen()
