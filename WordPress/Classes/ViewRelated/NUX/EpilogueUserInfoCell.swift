@@ -97,7 +97,7 @@ private extension EpilogueUserInfoCell {
         fullNameLabel.font = fullNameFont()
 
         usernameLabel.textColor = .textSubtle
-        usernameLabel.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
+        usernameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize, weight: .regular)
     }
 
     func fullNameFont() -> UIFont {
