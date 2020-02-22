@@ -106,5 +106,6 @@ private extension UIBarButtonItem {
         accessibilityHint = NSLocalizedString("Open the Me Section", comment: "Accessibility hint the Me button in My Site.")
         accessibilityIdentifier = "meBarButton"
         accessibilityTraits = UIAccessibilityTraits.button
+        isAccessibilityElement = true
     }
 }
