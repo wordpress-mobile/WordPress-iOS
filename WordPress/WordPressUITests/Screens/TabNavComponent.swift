@@ -33,7 +33,7 @@ class TabNavComponent: BaseScreen {
         }
         return MySiteScreen()
     }
-    
+
     @discardableResult
     func gotoMySitesScreen() -> MySitesScreen {
         mySitesTabButton.tap()
