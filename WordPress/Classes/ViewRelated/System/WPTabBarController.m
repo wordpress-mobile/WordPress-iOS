@@ -263,7 +263,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     
     return _meNavigationController;
 }
-
+//TODO: remove when the new Me navigation is ready
 - (MeViewController *)meViewController {
     if (!_meViewController) {
         _meViewController = [MeViewController new];
