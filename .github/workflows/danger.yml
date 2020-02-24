@@ -5,12 +5,23 @@ on:
     # when the labels change, not only when a PR is opened/reopened or changes
     # are pushed to it.
     types: [opened, reopened, synchronize, labeled, unlabeled]
+  # In order to validate the milestone, we need to listen for the event on the
+  # issue, as there's no event for milestones in PRs –GitHub PRs are a special
+  # kind of issue. Un
+  issues:
+    types: [milestoned, demilestoned]
 
 jobs:
   danger:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    if:
+      # One of the checks we run is for milestones, but the event that triggers
+      # it is for issues. In order to run this workflow only for PRs, we need
+      # to check the context to see if this was triggered by a PR or a plain
+      # issue.
+      github.event.pull_request != null || github.event.issue.pull_request != null
     steps:
       - uses: actions/checkout@v2
 
@@ -51,3 +62,9 @@ jobs:
           yarn run danger ci \
             --dangerfile Automattic/peril-settings/org/pr/diff-size.ts \
             --id diff_size
+
+      - name: Validate Milestone
+        run: |
+          yarn run danger ci \
+            --dangerfile Automattic/peril-settings/org/pr/milestone.ts \
+            --id milestone
