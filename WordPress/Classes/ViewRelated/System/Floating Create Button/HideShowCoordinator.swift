@@ -73,6 +73,21 @@ private class NavigationDelegate: NSObject, UINavigationControllerDelegate {
 
 extension UIView {
 
+    private enum Constants {
+        enum Maximize {
+            static let damping: CGFloat = 0.7
+            static let duration: TimeInterval = 0.5
+            static let initialScale: CGFloat = 0.0
+            static let finalScale: CGFloat = 1.0
+        }
+        enum Minimize {
+            static let damping: CGFloat = 0.9
+            static let duration: TimeInterval = 0.25
+            static let initialScale: CGFloat = 1.0
+            static let finalScale: CGFloat = 0.001
+        }
+    }
+
     /// Animates the showing and hiding of a view using a spring animation
     /// - Parameter toShow: Whether to show the view
     fileprivate func springAnimation(toShow: Bool, context: UIViewControllerTransitionCoordinatorContext? = nil) {
@@ -87,10 +102,10 @@ extension UIView {
 
     /// Applies a spring animation, from size 1 to 0
     private func minimizeSpringAnimation(context: UIViewControllerTransitionCoordinatorContext?) {
-        let damping: CGFloat = 0.9
-        let scaleInitial: CGFloat = 1.0
-        let scaleFinal: CGFloat = 0.001
-        let duration = 0.25
+        let damping = Constants.Minimize.damping
+        let scaleInitial = Constants.Minimize.initialScale
+        let scaleFinal = Constants.Minimize.finalScale
+        let duration = Constants.Minimize.duration
 
         scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal, context: context) { [weak self] success in
             self?.transform = .identity
@@ -100,10 +115,10 @@ extension UIView {
 
     /// Applies a spring animation, from size 0 to 1
     private func maximizeSpringAnimation(context: UIViewControllerTransitionCoordinatorContext?) {
-        let damping: CGFloat = 0.7
-        let scaleInitial: CGFloat = 0.0
-        let scaleFinal: CGFloat = 1.0
-        let duration = 0.5
+        let damping = Constants.Maximize.damping
+        let scaleInitial = Constants.Maximize.initialScale
+        let scaleFinal = Constants.Maximize.finalScale
+        let duration = Constants.Maximize.duration
 
         scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal, context: context)
     }
