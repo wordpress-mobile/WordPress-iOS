@@ -24,8 +24,6 @@ class EpilogueUserInfoCell: UITableViewCell {
     @IBOutlet var gravatarView: UIImageView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet var topBorder: UIView!
-    @IBOutlet var bottomBorder: UIView!
     open var viewControllerProvider: EpilogueUserInfoCellViewControllerProvider?
     private var gravatarStatus: GravatarUploaderStatus = .idle
     private var email: String?
@@ -42,13 +40,6 @@ class EpilogueUserInfoCell: UITableViewCell {
         gravatarButton.accessibilityHint = accessibilityHint
 
         configureColors()
-    }
-
-    func configureColors() {
-        fullNameLabel.textColor = .text
-        usernameLabel.textColor = .textSubtle
-        topBorder.backgroundColor = .divider
-        bottomBorder.backgroundColor = .divider
     }
 
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
@@ -88,7 +79,7 @@ class EpilogueUserInfoCell: UITableViewCell {
         activityIndicator.startAnimating()
     }
 
-    /// Stops the Activity Indicator Animation, and hides the Username + Fullname labels.
+    /// Stops the Activity Indicator Animation, and shows the Username + Fullname labels.
     ///
     func stopSpinner() {
         fullNameLabel.isHidden = false
@@ -96,6 +87,30 @@ class EpilogueUserInfoCell: UITableViewCell {
         activityIndicator.stopAnimating()
     }
 }
+
+// MARK: - Private Methods
+//
+private extension EpilogueUserInfoCell {
+
+    func configureColors() {
+        fullNameLabel.textColor = .text
+        fullNameLabel.font = fullNameFont()
+
+        usernameLabel.textColor = .textSubtle
+        usernameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize, weight: .regular)
+    }
+
+    func fullNameFont() -> UIFont {
+        // Use New York font for full name.
+        guard #available(iOS 13, *),
+            let fontDescriptor = UIFont.systemFont(ofSize: 34.0, weight: .medium).fontDescriptor.withDesign(.serif) else {
+                return WPStyleGuide.mediumWeightFont(forStyle: .largeTitle)
+        }
+
+        return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
+    }
+}
+
 
 // MARK: - Gravatar uploading
 //
@@ -125,6 +140,6 @@ extension UIImage {
     /// Returns a Gravatar Placeholder Image when uploading is allowed
     ///
     fileprivate static var gravatarUploadablePlaceholderImage: UIImage {
-        return UIImage(named: "gravatar-hollow", in: nil, compatibleWith: nil)!
+        return UIImage(named: "gravatar-hollow") ?? UIImage()
     }
 }

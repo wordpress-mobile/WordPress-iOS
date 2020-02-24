@@ -99,8 +99,6 @@ extension LoginEpilogueTableViewController {
         guard cell is EpilogueUserInfoCell else {
             return
         }
-
-        cell.contentView.backgroundColor = .listForeground
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
