@@ -15,13 +15,9 @@ class LoginEpilogueViewController: UIViewController {
     ///
     @IBOutlet var shadowView: UIView!
 
-    /// Connect Button!
+    /// Done Button.
     ///
-    @IBOutlet var connectButton: UIButton!
-
-    /// Continue Button.
-    ///
-    @IBOutlet var continueButton: UIButton!
+    @IBOutlet var doneButton: UIButton!
 
     /// Links to the Epilogue TableViewController
     ///
@@ -100,11 +96,7 @@ private extension LoginEpilogueViewController {
     /// Refreshes the UI so that the specified WordPressSite is displayed.
     ///
     func refreshInterface(with credentials: AuthenticatorCredentials) {
-        if credentials.wporg != nil {
-            configureButtons()
-        } else if let wpcom = credentials.wpcom {
-            configureButtons(numberOfBlogs: numberOfWordPressComBlogs, hidesConnectButton: wpcom.isJetpackLogin)
-        }
+        configureDoneButton()
     }
 
     /// Returns the number of WordPress.com sites.
@@ -118,19 +110,9 @@ private extension LoginEpilogueViewController {
 
     /// Setup: Buttons
     ///
-    func configureButtons(numberOfBlogs: Int = 1, hidesConnectButton: Bool = false) {
-        let connectTitle: String
-        if numberOfBlogs == 0 {
-            connectTitle = NSLocalizedString("Connect a site", comment: "Button title")
-        } else {
-            connectTitle = NSLocalizedString("Connect another site", comment: "Button title")
-        }
-
-        continueButton.setTitle(NSLocalizedString("Continue", comment: "A button title"), for: .normal)
-        continueButton.accessibilityIdentifier = "Continue"
-        connectButton.setTitle(connectTitle, for: .normal)
-        connectButton.isHidden = hidesConnectButton
-        connectButton.accessibilityIdentifier = "Connect"
+    func configureDoneButton() {
+        doneButton.setTitle(NSLocalizedString("Done", comment: "A button title"), for: .normal)
+        doneButton.accessibilityIdentifier = "Done"
     }
 
     /// Setup: Button Panel
