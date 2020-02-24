@@ -364,6 +364,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[WPTabBarController sharedInstance] showCreateButton];
     [self createUserActivity];
     [self startAlertTimer];
 }
@@ -372,6 +373,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillDisappear:animated];
     [self stopAlertTimer];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[WPTabBarController sharedInstance] hideCreateButton];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

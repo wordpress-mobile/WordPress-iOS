@@ -1,4 +1,7 @@
+/// A rounded button with a shadow intended for use as a "Floating Action Button"
 class FloatingActionButton: UIButton {
+
+    var trailingConstraint: NSLayoutConstraint?
 
     convenience init(image: UIImage) {
         self.init(frame: .zero)
@@ -11,6 +14,7 @@ class FloatingActionButton: UIButton {
 
         backgroundColor = .accent
         tintColor = .white
+        clipsToBounds = true
 
         refreshShadow()
     }
@@ -19,9 +23,20 @@ class FloatingActionButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.cornerRadius = frame.size.width / 2
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+
+        layer.cornerRadius = rect.size.width / 2
+    }
+
+    override func updateConstraints() {
+        super.updateConstraints()
+
+        // If we are missing our trailing constraint, re-activate it.
+        // This can happen because the trailing anchor is not yet in the view hierarchy when the button was added.
+        if constraint(for: .trailing, withRelation: .equal) == nil {
+            trailingConstraint?.isActive = true
+        }
     }
 
     private func refreshShadow() {
