@@ -1,2 +1,16 @@
-- Yeni bir Kısa Kod bloğu mevcut olduğundan blok düzenleyicide kısa kodlar oluşturabilir ve düzenleyebilirsiniz.
-- İstatistikler sayfanıza geçtiğimiz hafta aldığınız görüntülemeleri gösteren bir Bu Hafta bileşeni ekledik.
+Yorum yapma:
+- Yorumları düzenlerken metin seçiminin yanlış satırda olmasına neden olan bir hata düzeltildi.
+- HTML işaretlemesinin yorum içeriğinde görüntülenmesine neden olan bir hata düzeltildi.
+- Yorumların okuyucuda görünmemesine neden olan bir sorun düzeltildi.
+
+Yayıncılık:
+- Artık bir yazıdaki görüntüleri kırpabilir, yakınlaştırabilir / uzaklaştırabilir ve döndürebilirsiniz.
+- Uygulama artık iPhone'da bir masaüstü ön izleme modu ve iPad'de mobil ön izleme içeriyor. Yayın ön izlemesinde ayrıca "Safari'de aç" ve "Paylaş seçenekleri" gibi yeni gezinme seçenekleri de vardır.
+- Çok sayıda blok düzenleyici geliştirmesi: Blokları önce / sonra eklemek için uzun basma simgesi ve seçilen görüntü bloklarına “Düzenle” düğmesi kaplaması eklendi. Düzenleyici, bağlantı sorunlarından sonra görüntüleri yüklemeyi yeniden deneyecek. Galeri bloğu artık görüntü boyutu seçeneklerini destekliyor.
+- Bir taslak gönderideki yorumları önizlerken devre dışı bırakabilecek bir hatayı düzelttik.
+
+Kayıt ve Giriş
+- Sihirli bağlantı yoluyla kaydolma veya giriş artık birden çok e-posta istemcisini destekliyor. “E-postayı aç” düğmesine dokunduğunuzda, seçebileceğiniz yüklü e-posta istemcilerinin bir listesi gösterilir.
+
+Okuyucu
+- Uygulamalar artık yeniden blog yazmayı destekliyor! Sitelerinizden hangilerine yayın yapılacağını seçmek ve seçtiğiniz editörü orijinal yayından önceden doldurulmuş içerikle açmak için yayınlama işlem çubuğundaki yeni "yeniden blog" düğmesine dokunun.

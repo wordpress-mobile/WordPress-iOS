@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.7'
+    pod 'WordPressKit', '~> 4.5.8'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'fix/datarequest-weak-reference'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '0ab4bb57ae5ba77e8f705ab987d8affa7e188d18'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
@@ -57,7 +57,7 @@ def shared_with_all_pods
 end
 
 def shared_with_networking_pods
-    pod 'Alamofire', '4.7.3'
+    pod 'Alamofire', '4.8.0'
     pod 'Reachability', '3.2'
 
     wordpress_kit
@@ -146,7 +146,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '46239f3db87242fa639698f3138204c9816be85c'
+    gutenberg :tag => 'v1.23.0'
 
     ## Third party libraries
     ## =====================
@@ -160,7 +160,7 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSupportSDK', '5.0.0'
-    pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
+    pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
 
@@ -181,7 +181,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.7'
+    pod 'WordPressAuthenticator', '~> 1.10.8'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
