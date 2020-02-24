@@ -579,8 +579,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidLogUserEvent(_ event: GutenbergUserEvent) {
         switch event {
-        case .pageTemplateApplied(let template):
+        case .editorSessionTemplateApply(let template):
             editorSession.apply(template: template)
+        case .editorSessionTemplatePreview(let template):
+            WPAnalytics.track(.editorSessionTemplatePreview, withProperties: ["template": template])
         }
     }
 

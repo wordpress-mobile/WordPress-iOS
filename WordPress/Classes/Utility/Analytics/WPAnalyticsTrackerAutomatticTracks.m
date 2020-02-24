@@ -525,6 +525,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorSessionEnd:
             eventName = @"editor_session_end";
             break;
+        case WPAnalyticsStatEditorSessionTemplateApply:
+            eventName = @"editor_session_template_apply";
+            break;
+        case WPAnalyticsStatEditorSessionTemplatePreview:
+            eventName = @"editor_session_template_preview";
+            break;
         case WPAnalyticsStatEditorPublishedPost:
             eventName = @"editor_post_published";
             break;

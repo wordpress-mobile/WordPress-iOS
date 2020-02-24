@@ -30,6 +30,7 @@ struct PostEditorAnalyticsSession {
 
     mutating func apply(template: String) {
         self.template = template
+        WPAnalytics.track(.editorSessionTemplateApply, withProperties: ["template": template])
     }
 
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
