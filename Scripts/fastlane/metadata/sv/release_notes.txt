@@ -1,2 +1,16 @@
-- Ett nytt kortkodsblock låter dig skapa lägga in och redigera kortkoder i blockredigeraren.
-- På statistiksidan har vi lagt till en ny widget ”Denna vecka” med antalet visningar under den senaste veckan.
+Kommentarer:
+- Rättat ett fel där markeringen av text hamnade på fel rad när man redigerade kommentarer.
+- Rättat ett fel som kunde göra att HTML-kod visades i kommentarers innehåll.
+- Rättat ett fel som gjorde att kommentarer inte visades i läsaren.
+
+Publicering:
+- Nu kan du beskära, förstora/förminska och rotera bilder i ett inlägg.
+- Nu innehåller appen ett förhandsgranskningsläge för datorskärm på iPhone och förhandsgranskning för mobil på iPad. Förhandsvisning av inlägg har nu ny en ny menypost: ”Öppna länk i Safari” och nya delningsalternativ.
+- En rad förbättringar av blockredigeraren: Lagt till en ikon för långt tryck för infogning av block före/efter och ett överlägg ”Redigera” på vissa bildblock. Redigeraren kommer att försöka ladda bilder på nytt efter eventuella problem med internetförbindelseen. Och blocket ”Galleri” har nu stöd för olika bildstorlekar.
+- Vi har rättat ett fel som kunde inaktivera kommentarer på ett utkast vid förhansgranskning.
+
+Registrering och inloggning
+- Nu stöder registrering och inloggning med hjälp av ”magiska länkar” flera olika e-postklienter. När man trycker på knappen ”öppna e-post” visas en lista där man kan välja mellan de e-postprogra som finns installerade.
+
+Läsaren
+- Nu har appen stöd för reblogging av inlägg! Tryck på den nya knappen ”reblogga” i verktygsfältet för åtgärder på inlägg och välj till vilka av dina webbplatser du vill publicera och öppna din favoritredigerare med innehållet från det ursprungliga inlägget redan inlagt.

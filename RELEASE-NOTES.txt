@@ -1,10 +1,22 @@
 14.3
 -----
+* Aztec and Block Editor: Fix the presentation of ordered lists with large numbers.
+* Added Quick Action buttons on the Site Details page to access the most frequently used parts of a site.
+* Block editor: Add support for changing image sizes in Image blocks
+* Block editor: Add support for upload options in Gallery block
+* Block editor: Added the Button block
+* Block editor: Added the Group block
+* Block editor: Add scroll support inside block picker and block settings
+* Block editor: Fix issue where adding emojis to the post title added strong HTML elements to the title of the post
+* Block editor: Fix issue where alignment of paragraph blocks was not always being respected when splitting the paragraph or reading the post's html content.
+* Block editor: We’ve introduced a new toolbar that floats above the block you’re editing, which makes navigating your blocks easier — especially complex ones.
+
 * Block editor: Add support for upload options in Gallery block
 * Aztec and Block Editor: Fix the presentation of ordered lists with large numbers.
 * Added Quick Action buttons on the Site Details page to access the most frequently used parts of a site.
 * Post Settings: Adjusts the weekday symbols in the calendar depending on Regional settings. 
  
+
 14.2
 -----
 * Comment Editing: Fixed a bug that could cause the text selection to be on the wrong line
@@ -22,6 +34,7 @@
 * Reader: Fixed an issue where a new comment may not appear.
 * Reader: Added Post Reblogging feature. You can now reblog a post from the reader to your site(s). There is a new "reblog" button in the post action bar.
           Tapping on it allows to choose the site where to post, and opens the editor of your choice with pre-populated content from the original post.
+* Fixed a bug that was causing the app to crash when the user tapped "Retry" on Post List
 
 14.1
 -----

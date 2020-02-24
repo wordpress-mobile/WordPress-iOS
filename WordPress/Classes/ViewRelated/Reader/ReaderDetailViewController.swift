@@ -1033,7 +1033,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     fileprivate func configureCommentActionButton() {
-        let title = post!.commentCount.stringValue
+        guard let commentCount = post?.commentCount else {
+            return
+        }
+
+        let title = commentCount.stringValue
         let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
