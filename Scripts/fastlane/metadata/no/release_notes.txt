@@ -1,2 +1,0 @@
-- Det er en ny Kortkode-blokk, så du kan opprette og redigere kortkoder i det blokkbaserte redigeringsverktøyet.
-- På statistikk-siden har vi lagt til en Denne uken-widget for å vise visninger for den siste uken.
