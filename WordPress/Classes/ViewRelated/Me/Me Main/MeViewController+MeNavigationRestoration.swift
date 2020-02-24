@@ -21,7 +21,7 @@ extension MeViewController: UIViewControllerRestoration {
         if FeatureFlag.meMove.enabled {
             // needs to be done after self has been initialized, so we do it in this method
             let doneButton = UIBarButtonItem(target: self, action: #selector(dismissHandler))
-            navigationItem.leftBarButtonItem = doneButton
+            navigationItem.rightBarButtonItem = doneButton
         }
     }
 

@@ -203,7 +203,9 @@ class MeViewController: UITableViewController {
         return { [unowned self] row in
             if let myProfileViewController = self.myProfileViewController {
                 WPAppAnalytics.track(.openedMyProfile)
-                self.navigationController?.pushViewController(myProfileViewController, animated: true)
+                self.navigationController?.pushViewController(myProfileViewController,
+                                                              animated: true,
+                                                              rightBarButton: self.navigationItem.rightBarButtonItem)
             }
         }
     }
@@ -215,7 +217,9 @@ class MeViewController: UITableViewController {
                 guard let controller = AccountSettingsViewController(account: account) else {
                     return
                 }
-                self.navigationController?.pushViewController(controller, animated: true)
+                self.navigationController?.pushViewController(controller,
+                                                              animated: true,
+                                                              rightBarButton: self.navigationItem.rightBarButtonItem)
             }
         }
     }
@@ -224,19 +228,18 @@ class MeViewController: UITableViewController {
         return { [unowned self] row in
             WPAppAnalytics.track(.openedAppSettings)
             let controller = AppSettingsViewController()
-            self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.pushViewController(controller,
+                                                          animated: true,
+                                                          rightBarButton: self.navigationItem.rightBarButtonItem)
         }
     }
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportTableViewController()
-
-            // If iPad, show Support from Me view controller instead of navigation controller.
-            if !self.splitViewControllerIsHorizontallyCompact {
-                controller.showHelpFromViewController = self
-            }
-            self.navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.pushViewController(controller,
+                                                          animated: true,
+                                                          rightBarButton: self.navigationItem.rightBarButtonItem)
         }
     }
 
