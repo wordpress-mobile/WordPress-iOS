@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.5.8-beta-1'
+    pod 'WordPressKit', '~> 4.5.8'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'fix/datarequest-weak-reference'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '0ab4bb57ae5ba77e8f705ab987d8affa7e188d18'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
@@ -146,7 +146,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '46239f3db87242fa639698f3138204c9816be85c'
+    gutenberg :tag => 'v1.23.0'
 
     ## Third party libraries
     ## =====================
@@ -181,7 +181,7 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.10.8-beta.1'
+    pod 'WordPressAuthenticator', '~> 1.10.8'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
