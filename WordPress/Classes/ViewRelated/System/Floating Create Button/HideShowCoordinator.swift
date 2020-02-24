@@ -13,6 +13,12 @@
         let observation = tabBarController.observe(\.selectedViewController, options: []) { (tabBarController, change) in
             if let viewController = tabBarController.selectedViewController {
                 let shouldShow = showFor(viewController)
+
+                // If a constraint relies on a a different tab, it may need to be reactivated
+                if shouldShow {
+                    view.setNeedsUpdateConstraints()
+                }
+
                 view.springAnimation(toShow: shouldShow)
             }
         }
@@ -84,8 +90,9 @@ extension UIView {
         let damping: CGFloat = 0.9
         let scaleInitial: CGFloat = 1.0
         let scaleFinal: CGFloat = 0.001
+        let duration = 0.25
 
-        scaleAnimation(damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal, context: context) { [weak self] success in
+        scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal, context: context) { [weak self] success in
             self?.transform = .identity
             self?.isHidden = true
         }
@@ -96,13 +103,13 @@ extension UIView {
         let damping: CGFloat = 0.7
         let scaleInitial: CGFloat = 0.0
         let scaleFinal: CGFloat = 1.0
-
-        scaleAnimation(damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal, context: context)
-    }
-
-    private func scaleAnimation(damping: CGFloat, scaleInitial: CGFloat, scaleFinal: CGFloat, context: UIViewControllerTransitionCoordinatorContext?, completion: ((Bool) -> Void)? = nil) {
         let duration = 0.5
 
+        scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal, context: context)
+    }
+
+    private func scaleAnimation(duration: TimeInterval, damping: CGFloat, scaleInitial: CGFloat, scaleFinal: CGFloat, context: UIViewControllerTransitionCoordinatorContext?, completion: ((Bool) -> Void)? = nil) {
+        setNeedsDisplay() // Make sure we redraw so that corners are rounded
         transform = CGAffineTransform(scaleX: scaleInitial, y: scaleInitial)
         isHidden = false
 

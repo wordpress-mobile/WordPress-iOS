@@ -1,12 +1,11 @@
 import Gridicons
 
 extension FloatingActionButton {
-    class func createButton() -> UIButton {
+    class func createButton() -> FloatingActionButton {
         let button = FloatingActionButton(image: Gridicon.iconOfType(.create))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
         button.translatesAutoresizingMaskIntoConstraints = false
-
         return button
     }
 }
@@ -67,9 +66,12 @@ extension WPTabBarController {
 
         view.addSubview(button)
 
+        let trailingConstraint = button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.padding)
+        button.trailingConstraint = trailingConstraint
+
         NSLayoutConstraint.activate([
+            trailingConstraint,
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.padding),
-            button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.padding),
             button.heightAnchor.constraint(equalToConstant: Constants.heightWidth),
             button.widthAnchor.constraint(equalToConstant: Constants.heightWidth)
         ])
