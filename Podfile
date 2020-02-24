@@ -18,7 +18,7 @@ def wordpress_shared
 
     ## while PR is in review:
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => '6a3598e1e4f31e424063b19792aef1f9833e9d36'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => '83c7ce59152de2f597ecf9794817fbf9c6c01eb4'
 end
 
 def aztec
@@ -146,7 +146,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '028338977db37d956747bec4537e07704ef7bdca'
+    gutenberg :commit => '6a3598e1e4f31e424063b19792aef1f9833e9d36'
 
     ## Third party libraries
     ## =====================
