@@ -1,6 +1,25 @@
+14.3
+-----
+
 14.2
 -----
- 
+* Comment Editing: Fixed a bug that could cause the text selection to be on the wrong line
+* Comments: Fixed an bug that could cause HTML markup to be displayed in the comment content
+* Media editing: You can now crop, zoom in/out and rotate images that are inserted or being inserted in a post.
+* Post Preview: Added a new Desktop preview mode on iPhone and Mobile preview on iPad when previewing posts or pages.
+* Post Preview: Added new navigation, "Open in Safari" and Share options when previewing posts or pages.
+* Block editor: Long-press Inserter icon to show options to add before/after
+* Block editor: Retry displaying image when connectivity restores
+* Block editor: Show an "Edit" button overlay on selected image blocks
+* Block editor: Add support for image size options in the gallery block
+* Signup and Login: signup or login via magic link now supports multiple email clients.
+                    Tapping on the "Open Email" button will present a list of installed email client to choose from.
+* Posts: Fixed a bug that could disable comments on a draft post when previewing that post.
+* Reader: Fixed an issue where a new comment may not appear.
+* Reader: Added Post Reblogging feature. You can now reblog a post from the reader to your site(s). There is a new "reblog" button in the post action bar.
+          Tapping on it allows to choose the site where to post, and opens the editor of your choice with pre-populated content from the original post.
+* Fixed a bug that was causing the app to crash when the user tapped "Retry" on Post List
+
 14.1
 -----
 * Fixes a bug that could cause some web page previews to remain unauthenticated even after logging in.
@@ -9,7 +28,7 @@
 * Block Editor: New block "Shortcode". You can now create and edit Shortcode blocks in the editor.
 * Publicize: connecting with Facebook is working again.
 * Web Views: the title and button colors in the header of web views was grey, and is now white.
- 
+
 14.0
 -----
 * Stats: Updated default cards for the Insights view.

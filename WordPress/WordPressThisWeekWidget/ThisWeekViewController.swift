@@ -54,6 +54,20 @@ class ThisWeekViewController: UIViewController {
         return !isReachable && statsValues == nil
     }
 
+    private var loadingFailed = false {
+        didSet {
+            setAvailableDisplayMode()
+
+            if loadingFailed != oldValue {
+                tableView.reloadData()
+            }
+        }
+    }
+
+    private var failedState: Bool {
+        return !isConfigured || showNoConnection || loadingFailed
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -73,7 +87,6 @@ class ThisWeekViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         reachability.stopNotifier()
-        saveData()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -132,11 +145,10 @@ extension ThisWeekViewController: NCWidgetProviding {
                 self?.tableView.reloadData()
             }
 
-            completionHandler(NCUpdateResult.failed)
+            completionHandler(.failed)
             return
         }
 
-        tracks.trackExtensionAccessed()
         fetchData(completionHandler: completionHandler)
     }
 
@@ -160,7 +172,7 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
             return noConnectionCellFor(indexPath: indexPath)
         }
 
-        if !isConfigured {
+        if !isConfigured || loadingFailed {
             return unconfiguredCellFor(indexPath: indexPath)
         }
 
@@ -168,7 +180,7 @@ extension ThisWeekViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if !isConfigured || showNoConnection,
+        if failedState,
             let maxCompactSize = extensionContext?.widgetMaximumSize(for: .compact) {
             // Use the max compact height for unconfigured view.
             return maxCompactSize.height
@@ -186,6 +198,15 @@ private extension ThisWeekViewController {
     // MARK: - Tap Gesture Handling
 
     @IBAction func handleTapGesture() {
+
+        // If showing the loading failed view, reload the widget.
+        if loadingFailed,
+            let completionHandler = widgetCompletionBlock {
+            widgetPerformUpdate(completionHandler: completionHandler)
+            return
+        }
+
+        // Otherwise, open the app.
         guard isReachable,
             let extensionContext = extensionContext,
             let containingAppURL = appURL() else {
@@ -257,10 +278,13 @@ private extension ThisWeekViewController {
         let weekEndingDate = Date().convert(from: siteTimeZone).normalizedDate()
 
         // Include an extra day. It's needed to get the dailyChange for the last day.
-        statsRemote.getData(for: .day, endingOn: weekEndingDate, limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [unowned self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+        statsRemote.getData(for: .day, endingOn: weekEndingDate, limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+
+            self?.loadingFailed = (error != nil)
+
             if error != nil {
                 DDLogError("This Week Widget: Error fetching summary: \(String(describing: error?.localizedDescription))")
-                completionHandler(NCUpdateResult.failed)
+                completionHandler(.failed)
                 return
             }
 
@@ -268,9 +292,18 @@ private extension ThisWeekViewController {
 
             DispatchQueue.main.async { [weak self] in
                 let summaryData = summary?.summaryData.reversed() ?? []
-                self?.statsValues = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
+                let updatedStats = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
+
+                // Update the widget only if the data has changed.
+                guard updatedStats != self?.statsValues else {
+                    completionHandler(.noData)
+                    return
+                }
+
+                self?.statsValues = updatedStats
+                completionHandler(.newData)
+                self?.saveData()
             }
-            completionHandler(NCUpdateResult.newData)
         }
     }
 
@@ -322,7 +355,7 @@ private extension ThisWeekViewController {
             return UITableViewCell()
         }
 
-        cell.configure(for: .thisWeek)
+        loadingFailed ? cell.configure(for: .loadingFailed) : cell.configure(for: .thisWeek)
         return cell
     }
 
@@ -362,8 +395,8 @@ private extension ThisWeekViewController {
     // MARK: - Expand / Compact View Helpers
 
     func setAvailableDisplayMode() {
-        // If unconfigured or no connection, don't allow the widget to be expanded.
-        extensionContext?.widgetLargestAvailableDisplayMode = isConfigured && !showNoConnection ? .expanded : .compact
+        // If something went wrong, don't allow the widget to be expanded.
+        extensionContext?.widgetLargestAvailableDisplayMode = failedState ? .compact : .expanded
     }
 
     func numberOfRowsToDisplay() -> Int {

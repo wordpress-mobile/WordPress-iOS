@@ -7,8 +7,7 @@ struct ReaderReblogFormatter {
     }
 
     static func gutenbergImage(image: String) -> String {
-        let imageInHtml = htmlImage(image: image)
-        return embedInWpParagraph(html: imageInHtml)
+        return embedInWpImage(image: image)
     }
 
 
@@ -27,16 +26,20 @@ struct ReaderReblogFormatter {
 // MARK: - Gutenberg formatter helpers
 private extension ReaderReblogFormatter {
 
-    static func embedInWpParagraph(html: String) -> String {
-        return "<!-- wp:paragraph -->\n<p>\(html)</p>\n<!-- /wp:paragraph -->"
+    static func embedInWpImage(image: String, size: String = "size-large") -> String {
+        return "<!-- wp:image {\"className\":\"\(size)\"} -->\n" + gutenbergFigure(image: image, size: size) + "\n<!-- /wp:image -->"
     }
 
     static func embedInWpQuote(html: String) -> String {
         return "<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\">\(html)</blockquote>\n<!-- /wp:quote -->"
     }
+
+    private static func gutenbergFigure(image: String, size: String) -> String {
+        return "<figure class=\"wp-block-image \(size)\">" + htmlImage(image: image) + "</figure>"
+    }
 }
 
-// MARK: - Aztec formatter helpers
+// MARK: - Aztec (standard HTML) formatter helpers
 extension ReaderReblogFormatter {
 
     static func hyperLink(url: String, text: String) -> String {
@@ -44,7 +47,7 @@ extension ReaderReblogFormatter {
     }
 
     private static func htmlImage(image: String) -> String {
-        return "<img src=\"\(image)\">"
+        return "<img src=\"\(image)\" alt=\"\"/>"
     }
 
     private static func embedInQuote(html: String) -> String {

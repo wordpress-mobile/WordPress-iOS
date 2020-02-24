@@ -8,7 +8,6 @@
 
 @property (nonatomic, strong, readonly) UIStackView *stackView;
 @property (nonatomic, strong, readonly) NSLayoutConstraint *stackViewTopConstraint;
-@property (nonatomic, strong, readonly) UIView *textFieldContainerView;
 @property (nonatomic, strong, readonly) UIImageView *iconView;
 
 @end
@@ -43,18 +42,13 @@
 
     [self addSubview:stackView];
 
-    NSLayoutConstraint *topConstraint = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:margins.top];
-    topConstraint.priority = UILayoutPriorityDefaultHigh;
-    _stackViewTopConstraint  = topConstraint;
-
     NSLayoutConstraint *bottomConstraint = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-margins.bottom];
     bottomConstraint.priority = UILayoutPriorityDefaultHigh;
 
     [NSLayoutConstraint activateConstraints:@[
-                                              topConstraint,
                                               bottomConstraint,
-                                              [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:margins.left],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-margins.right]
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:margins.left],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.trailingAnchor constant:-margins.right]
                                               ]];
 
     _stackView = stackView;
@@ -85,8 +79,6 @@
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:textFieldContainerView];
 
-    _textFieldContainerView = textFieldContainerView;
-
     UIEdgeInsets margins = UIEdgeInsetsZero;
     margins.top = [self defaultStackDesignMargin];
     // Margins for the textFieldContainerView inset the textField.
@@ -97,6 +89,7 @@
     margins.right = MenusDesignDefaultContentSpacing / 4.0;
     margins.bottom = margins.top;
     textFieldContainerView.layoutMargins = margins;
+    textFieldContainerView.insetsLayoutMarginsFromSafeArea = YES;
 
     UILayoutGuide *marginGuide = textFieldContainerView.layoutMarginsGuide;
 

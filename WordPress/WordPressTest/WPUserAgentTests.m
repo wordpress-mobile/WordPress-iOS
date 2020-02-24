@@ -15,12 +15,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     return [[NSUserDefaults standardUserDefaults] objectForKey:WPUserAgentKeyUserAgent];
 }
 
-- (NSString *)currentUserAgentFromUIWebView
-{
-    return [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-}
-
-- (NSString *)currentUserAgentFromWKWebView
+- (NSString *)currentUserAgentFromWebView
 {
     return [WKWebView userAgent];
 }
@@ -43,46 +38,33 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: defaultUA}];
 
     XCTAssertEqualObjects([self currentUserAgentFromUserDefaults], defaultUA);
-    XCTAssertEqualObjects([self currentUserAgentFromUIWebView], defaultUA);
-    XCTAssertEqualObjects([self currentUserAgentFromWKWebView], defaultUA);
+    XCTAssertEqualObjects([self currentUserAgentFromWebView], defaultUA);
 
     [WPUserAgent useWordPressUserAgentInWebViews];
     
     XCTAssertEqualObjects([self currentUserAgentFromUserDefaults], wordPressUA);
-    XCTAssertEqualObjects([self currentUserAgentFromUIWebView], wordPressUA);
-    XCTAssertEqualObjects([self currentUserAgentFromWKWebView], wordPressUA);
+    XCTAssertEqualObjects([self currentUserAgentFromWebView], wordPressUA);
 }
 
 - (void)testThatOriginalRemovalOfWPUseKeyUserAgentDoesntWork {
     // get the original user agent
-    NSString *originalUserAgentInUIWebView = [self currentUserAgentFromUIWebView];
-    NSLog(@"OriginalUserAgent (UIWebView): %@", originalUserAgentInUIWebView);
-    
-    NSString *originalUserAgentInWKWebView = [self currentUserAgentFromWKWebView];
-    NSLog(@"OriginalUserAgent (WKWebView): %@", originalUserAgentInWKWebView);
+    NSString *originalUserAgentInWebView = [self currentUserAgentFromWebView];
+    NSLog(@"OriginalUserAgent (WebView): %@", originalUserAgentInWebView);
     
     // set a new one
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: @"new user agent"}];
     
-    NSString *changedUserAgentInUIWebView = [self currentUserAgentFromUIWebView];
-    NSLog(@"changedUserAgent (UIWebView): %@", changedUserAgentInUIWebView);
-    
-    NSString *changedUserAgentInWKWebView = [self currentUserAgentFromWKWebView];
-    NSLog(@"changedUserAgent (WKWebView): %@", changedUserAgentInWKWebView);
+    NSString *changedUserAgentInWebView = [self currentUserAgentFromWebView];
+    NSLog(@"changedUserAgent (WebView): %@", changedUserAgentInWebView);
 
     // try to remove it using old method
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{}];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPUserAgentKeyUserAgent];
     
-    NSString *shouldBeOriginalInUIWebView = [self currentUserAgentFromUIWebView];
-    NSLog(@"shouldBeOriginal (UIWebView): %@", shouldBeOriginalInUIWebView);
+    NSString *shouldBeOriginalInWebView = [self currentUserAgentFromWebView];
+    NSLog(@"shouldBeOriginal (WebView): %@", shouldBeOriginalInWebView);
     
-    XCTAssertNotEqualObjects(originalUserAgentInUIWebView, shouldBeOriginalInUIWebView, "This agent should be the same");
-    
-    NSString *shouldBeOriginalInWKWebView = [self currentUserAgentFromWKWebView];
-    NSLog(@"shouldBeOriginal (WKWebView): %@", shouldBeOriginalInWKWebView);
-    
-    XCTAssertNotEqualObjects(originalUserAgentInWKWebView, shouldBeOriginalInWKWebView, "This agent should be the same");
+    XCTAssertNotEqualObjects(originalUserAgentInWebView, shouldBeOriginalInWebView, "This agent should be the same");
 }
 
 - (void)testThatCallingFromAnotherThreadWorks {

@@ -2,7 +2,6 @@
 #import "CommentViewController.h"
 #import "CommentService.h"
 #import "ContextManager.h"
-#import "IOS7CorrectedTextView.h"
 
 #import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"

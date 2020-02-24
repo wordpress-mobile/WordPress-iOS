@@ -16,11 +16,15 @@ class GutenbergMediaPickerHelper: NSObject {
 
     fileprivate let post: AbstractPost
     fileprivate unowned let context: UIViewController
+    fileprivate unowned var navigationPicker: WPNavigationMediaPickerViewController?
+    fileprivate let noResultsView = NoResultsViewController.controller()
 
     /// Media Library Data Source
     ///
     fileprivate lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
-        return MediaLibraryPickerDataSource(post: self.post)
+        let dataSource = MediaLibraryPickerDataSource(post: self.post)
+        dataSource.ignoreSyncErrors = true
+        return dataSource
     }()
 
     /// Device Photo Library Data Source
@@ -55,7 +59,7 @@ class GutenbergMediaPickerHelper: NSObject {
         didPickMediaCallback = callback
 
         let picker = WPNavigationMediaPickerViewController()
-
+        navigationPicker = picker
         switch dataSourceType {
         case .device:
             picker.dataSource = devicePhotoLibraryDataSource
@@ -118,4 +122,67 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         didPickMediaCallback?(asset)
         didPickMediaCallback = nil
     }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
+        if let phAssets = assets as? [PHAsset], phAssets.allSatisfy({ $0.mediaType == .image }) {
+            edit(fromMediaPicker: picker, assets: phAssets)
+            return nil
+        }
+
+        return nil
+    }
+
+    func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
+        guard picker == navigationPicker?.mediaPicker else {
+            return nil
+        }
+        return noResultsView
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
+        if (mediaLibraryDataSource.searchQuery?.count ?? 0) > 0 {
+            noResultsView.configureForNoSearchResult()
+        } else {
+            noResultsView.removeFromView()
+        }
+    }
+
+    func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
+        noResultsView.configureForFetching()
+    }
+
+    func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
+        noResultsView.removeFromView()
+        noResultsView.configureForNoAssets(userCanUploadMedia: false)
+    }
+
+}
+
+// MARK: - Media Editing
+//
+extension GutenbergMediaPickerHelper {
+        private func edit(fromMediaPicker picker: WPMediaPickerViewController, assets: [PHAsset]) {
+            let mediaEditor = WPMediaEditor(assets)
+
+            // When the photo's library is updated (eg.: a new photo is added)
+            // the actionBar is appearing and conflicting with Media Editor.
+            // We hide it to prevent that issue
+            picker.actionBar?.isHidden = true
+
+            mediaEditor.edit(from: picker,
+                                  onFinishEditing: { [weak self] images, actions in
+                                    guard let images = images as? [PHAsset] else {
+                                        return
+                                    }
+
+                                    self?.didPickMediaCallback?(images)
+                                    self?.context.dismiss(animated: false)
+                }, onCancel: {
+                    // Dismiss the Preview screen in Media Picker
+                    picker.navigationController?.popViewController(animated: false)
+
+                    // Show picker actionBar again
+                    picker.actionBar?.isHidden = false
+            })
+        }
 }

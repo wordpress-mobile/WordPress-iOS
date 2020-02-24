@@ -26,7 +26,7 @@ class PreviewWebKitViewControllerTests: XCTestCase {
         let post = PostBuilder(context).drafted().build()
 
         let vc = PreviewWebKitViewController(post: post, previewURL: nil)
-        XCTAssertEqual(vc.url.absoluteString, "about:blank", "Should load blank page when no permalink is available")
+        XCTAssertEqual(vc.url!.absoluteString, "about:blank", "Should load blank page when no permalink is available")
     }
 
     func testDraftToolbarItems() {

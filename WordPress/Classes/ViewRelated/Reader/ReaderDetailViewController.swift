@@ -36,6 +36,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate struct DetailConstants {
         static let LikeCountKeyPath = "likeCount"
+        static let CommentCountKeyPath = "commentCount"
         static let MarginOffset = CGFloat(8.0)
     }
 
@@ -131,12 +132,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @objc open var post: ReaderPost? {
         didSet {
             oldValue?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+            oldValue?.removeObserver(self, forKeyPath: DetailConstants.CommentCountKeyPath)
             oldValue?.inUse = false
 
             if let newPost = post, let context = newPost.managedObjectContext {
                 newPost.inUse = true
                 ContextManager.sharedInstance().save(context)
                 newPost.addObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath, options: .new, context: nil)
+                newPost.addObserver(self, forKeyPath: DetailConstants.CommentCountKeyPath, options: .new, context: nil)
             }
             if isViewLoaded {
                 configureView()
@@ -238,6 +241,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             post.inUse = false
             ContextManager.sharedInstance().save(context)
             post.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+            post.removeObserver(self, forKeyPath: DetailConstants.CommentCountKeyPath)
         }
         NotificationCenter.default.removeObserver(self)
     }
@@ -359,13 +363,27 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
     }
 
-
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        if (object! as! NSObject == post!) && (keyPath! == DetailConstants.LikeCountKeyPath) {
+        guard
+            let object = object as? NSObject,
+            let keyPath = keyPath
+        else {
+            return
+        }
+
+        if object != post {
+            return
+        }
+
+        if keyPath == DetailConstants.LikeCountKeyPath {
             // Note: The intent here is to update the action buttons, specifically the
             // like button, *after* both likeCount and isLiked has changed. The order
             // of the properties is important.
             configureLikeActionButton(true)
+        }
+
+        else if keyPath == DetailConstants.CommentCountKeyPath {
+            configureCommentActionButton()
         }
     }
 
@@ -886,7 +904,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 configureCommentActionButton()
             }
         }
-        configureReblogButton()
+        // Show reblog only if logged in
+        if ReaderHelpers.isLoggedIn(), !post.isPrivate() {
+            configureReblogButton()
+        }
         configureSaveForLaterButton()
     }
 
@@ -1012,7 +1033,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     fileprivate func configureCommentActionButton() {
-        let title = post!.commentCount.stringValue
+        guard let commentCount = post?.commentCount else {
+            return
+        }
+
+        let title = commentCount.stringValue
         let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
@@ -1257,8 +1282,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return
         }
 
-        let controller = ReaderCommentsViewController(post: post)
-        navigationController?.pushViewController(controller!, animated: true)
+        guard let post = self.post else {
+            return
+        }
+
+        ReaderCommentAction().execute(post: post, origin: self)
     }
 
 
