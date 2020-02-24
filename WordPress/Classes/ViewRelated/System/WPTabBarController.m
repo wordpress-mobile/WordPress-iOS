@@ -68,6 +68,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
+@property (nonatomic, strong) HideShowCoordinator *hideShowCoordinator;
+
 @end
 
 @implementation WPTabBarController
@@ -107,6 +109,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self setViewControllers:[self tabViewControllers]];
 
         [self setSelectedViewController:self.blogListSplitViewController];
+        
+        if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+            self.hideShowCoordinator = [self setupCreateButton];
+        }
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
@@ -986,10 +992,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self startObserversForTabAccessTracking];
-    
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self addFloatingButton];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

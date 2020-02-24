@@ -1,3 +1,4 @@
+/// A rounded button with a shadow intended for use as a "Floating Action Button"
 class FloatingActionButton: UIButton {
 
     convenience init(image: UIImage) {
