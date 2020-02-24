@@ -155,11 +155,29 @@ class PreviewWebKitViewController: WebKitViewController {
         return items
     }
 
-    // MARK: Button Actionss
+    // MARK: Button Actions
 
     @objc private func publishButtonPressed(_ sender: UIBarButtonItem) {
-        PostCoordinator.shared.publish(post)
-        dismiss(animated: true, completion: nil)
+        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
+        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
+
+        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
+
+        alertController.addCancelActionWithTitle(cancelTitle)
+        alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
+            PostCoordinator.shared.publish(self.post)
+
+            if let editorVC = (self.presentingViewController?.presentingViewController as? EditPostViewController) {
+                editorVC.closeEditor(true, showPostEpilogue: false, from: self)
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+
+        present(alertController, animated: true)
     }
 
     @objc private func previewButtonPressed(_ sender: UIBarButtonItem) {

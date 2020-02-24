@@ -1,2 +1,16 @@
-- There’s a new Shortcode block so you can create and edit shortcodes in the block editor.
-- On your stats page, we’ve added a This Week widget to display your views for the past week.
+Commenting:
+- Fixed a bug causing text selection to happen on the wrong line when editing comments.
+- Fixed a bug causing HTML markup to display in comment content.
+- Fixed an issue causing comments not to appear in the Reader.
+
+Publishing:
+- You can now crop, zoom in/out and rotate images in a post.
+- The app now includes a desktop preview mode on iPhone and Mobile preview on iPad. Post preview also has new navigation, “Open in Safari,” and Share options.
+- Lots of block editor improvements: added a long-press icon for inserting blocks before/after and an “Edit” button overlay on selected image blocks. The editor will retry to load images after connectivity issues. And the Gallery block now has support for image size options.
+- We fixed a bug that could disable comments on a draft post when previewing it.
+
+Signup and Login
+- Signup or login via magic link now supports multiple email clients. Tapping on the “Open Email” button will present a list of installed email clients to choose from.
+
+Reader
+- The apps now support post reblogging! Tap the new “reblog” button in the post action bar to choose which of your sites to post to and open the editor of your choice with pre-populated content from the original post.
