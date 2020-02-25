@@ -53,14 +53,14 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
         }
 
         self.post = post
-        
+
         progressViewController = PostUploadProgressViewController(with: post, onUploadComplete: { [weak self] in
             self?.configure()
         })
 
         configure()
     }
-    
+
     private func configure() {
         resetGhost()
         configureFeaturedImage()

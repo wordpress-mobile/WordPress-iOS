@@ -34,14 +34,14 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     func configure(with post: Post) {
         self.post = post
-        
+
         progressViewController = PostUploadProgressViewController(with: post, onUploadComplete: { [weak self] in
             self?.configure()
         })
-        
+
         configure()
     }
-    
+
     private func configure() {
         resetGhostStyles()
         configureTitle()
