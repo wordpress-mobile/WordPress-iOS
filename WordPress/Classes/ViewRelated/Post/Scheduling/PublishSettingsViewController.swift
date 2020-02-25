@@ -24,7 +24,7 @@ struct PublishSettingsViewModel {
     let dateTimeFormatter: DateFormatter
 
     init(post: AbstractPost, context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
-        if let dateCreated = post.dateCreated {
+        if let dateCreated = post.dateCreated, post.originalIsDraft() == false || post.hasFuturePublishDate() {
             state = post.hasFuturePublishDate() ? .scheduled(dateCreated) : .published(dateCreated)
         } else {
             state = .immediately
