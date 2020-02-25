@@ -1,2 +1,16 @@
-- Hay un nuevo bloque de shortcode para que puedas crear y shortcodes en el editor de bloques.
-- En tu página de estadísticas, hemos añadido el widget «Esta semana» para mostrar tus visitas de la semana pasada.
+Comentarios:
+- Se ha corregido un fallo que hacía que la selección de texto se hiciera en la línea errónea al editar los comentarios.
+- Se ha corregido un fallo que hacía que el marcado HTML se mostrara en el contenido de los comentarios.
+- Se ha corregido un problema que hacía que los comentarios no aparecieran en el lector.
+
+Publicación:
+- Ahora, puedes recortar, acercar/alejar y rotar las imágenes en una entrada.
+- Ahora, la aplicación incluye un modo de vista previa del escritorio en iPhone y una vista previa móvil en iPad. La vista previa de las entradas también tiene las nuevas opciones de navegación «Abrir en Safari» y «Compartir».
+- Muchas mejoras en el editor de bloques: Se ha añadido un icono de pulsación larga para insertar bloques antes/después y la superposición de un botón «Editar» en los bloques de imágenes seleccionados. El editor volverá a intentar cargar las imágenes después de los problemas de conectividad. Y el bloque de galería tiene ahora compatibilidad para opciones de tamaño de imágenes.
+- Hemos corregido un fallo que podía desactivar los comentarios en un borrador de una entrada al previsualizarla.
+
+Registro y acceso
+- Ahora, el registro y acceso a través de un enlace mágico es compatible con múltiples clientes de correo electrónico. Al tocar el botón «Abrir el correo electrónico», se presentará una lista de clientes de correo electrónico instalados para elegir.
+
+Lector
+- ¡La aplicación es compatible ahora con el reblogueo de las entradas! Toca el nuevo botón «Rebloguear» en la barra de acción de la entrada para elegir en cuál de tus sitios publicar y abrir el editor de tu elección con el contenido prerellenado de la entrada original.

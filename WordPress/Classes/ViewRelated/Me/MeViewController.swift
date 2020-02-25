@@ -124,7 +124,21 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         if !splitViewControllerIsHorizontallyCompact {
             // And finally we'll reselect the selected row, if there is one
             tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
+            if FeatureFlag.meMove.enabled {
+                refreshDetailView()
+            }
         }
+    }
+
+    /// Force (re)show the current detail view to refresh the split view. Addresses a layout bug
+    /// when rotating the device from compact to regular, in modal presentation.
+    private func refreshDetailView() {
+        guard let viewControllers = self.splitViewController?.viewControllers,
+            viewControllers.count > 1,
+            let detailViewController = viewControllers.last else {
+            return
+        }
+        self.showDetailViewController(detailViewController, sender: self)
     }
 
     fileprivate func headerViewForAccount(_ account: WPAccount) -> MeHeaderView {
@@ -328,9 +342,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             return false
         }
 
-        let sections = handler.viewModel.sections
-
-        if let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
+        if let sections = handler?.viewModel.sections,
+            let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
             let row = sections[section].rows.firstIndex(where: matchRow) {
             let indexPath = IndexPath(row: row, section: section)
 
