@@ -22,7 +22,6 @@ class MainNavigationTests: XCTestCase {
         mySiteScreen
             .tabBar.gotoMySitesScreen()
             .tabBar.gotoReaderScreen()
-            .tabBar.gotoMeScreen()
             .tabBar.gotoNotificationsScreen()
             .tabBar.gotoBlockEditorScreen()
             .closeEditor()
