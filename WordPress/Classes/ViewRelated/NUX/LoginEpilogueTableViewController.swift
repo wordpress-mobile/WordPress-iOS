@@ -23,6 +23,10 @@ class LoginEpilogueTableViewController: UITableViewController {
     ///
     private var credentials: AuthenticatorCredentials?
 
+    /// Closure to be executed when Connect Site is selected.
+    ///
+    var onConnectSite: (() -> Void)?
+
 
     // MARK: - Lifecycle
 
@@ -46,8 +50,9 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
     ///
-    func setup(with credentials: AuthenticatorCredentials) {
+    func setup(with credentials: AuthenticatorCredentials, onConnectSite: (() -> Void)? = nil) {
         self.credentials = credentials
+        self.onConnectSite = onConnectSite
         refreshInterface(for: credentials)
     }
 }
@@ -102,7 +107,7 @@ extension LoginEpilogueTableViewController {
         }
 
         // Connect Site Row
-        if indexPath.row == (tableView.numberOfRows(inSection: indexPath.section) - 1) {
+        if indexPath.row == lastRowInSection(indexPath.section) {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LoginEpilogueConnectSiteCell.defaultReuseID) as? LoginEpilogueConnectSiteCell else {
                 return UITableViewCell()
             }
@@ -112,12 +117,6 @@ extension LoginEpilogueTableViewController {
         // Site Rows
         let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
         return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard cell is EpilogueUserInfoCell else {
-            return
-        }
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -153,8 +152,15 @@ extension LoginEpilogueTableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-}
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row == lastRowInSection(indexPath.section) else {
+            return
+        }
+
+        onConnectSite?()
+    }
+}
 
 // MARK: - UITableViewDelegate methods
 //
@@ -179,7 +185,7 @@ extension LoginEpilogueTableViewController {
 //
 private extension LoginEpilogueTableViewController {
 
-    /// Returns the title for the current section.
+    /// Returns the title for a given section.
     ///
     func title(for section: Int) -> String? {
         guard section != Sections.userInfoSection else {
@@ -192,6 +198,12 @@ private extension LoginEpilogueTableViewController {
         }
 
         return NSLocalizedString("My Site", comment: "Header for a single site, shown after logging in").localizedUppercase
+    }
+
+    /// Returns the last row index for a given section.
+    ///
+    func lastRowInSection(_ section: Int) -> Int {
+        return (tableView.numberOfRows(inSection: section) - 1)
     }
 }
 

@@ -74,8 +74,10 @@ class LoginEpilogueViewController: UIViewController {
             fatalError()
         }
 
-        epilogueTableViewController.setup(with: credentials)
-        tableViewController = epilogueTableViewController
+        epilogueTableViewController.setup(with: credentials, onConnectSite: { [weak self] in
+            self?.handleConnectAnotherButton()
+
+        })
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -146,7 +148,7 @@ extension LoginEpilogueViewController {
         navigationController?.dismiss(animated: true)
     }
 
-    @IBAction func handleConnectAnotherButton() {
+    func handleConnectAnotherButton() {
         onDismiss?()
         let controller = WordPressAuthenticator.signinForWPOrg()
         navigationController?.setViewControllers([controller], animated: true)

@@ -30,6 +30,7 @@ extension WPStyleGuide {
         cell.imageView?.layer.borderWidth = 1
         cell.imageView?.tintColor = .neutral(.shade30)
 
+        cell.selectionStyle = .none
         cell.backgroundColor = .basicBackground
     }
 
