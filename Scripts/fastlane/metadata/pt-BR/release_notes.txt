@@ -1,2 +1,16 @@
-- Adicionamos um novo bloco de shortcode para que você possa criar e editar shortcodes no editor de blocos.
-- Na página de estatísticas, adicionamos o widget "Esta semana" para exibir as visualizações da última semana.
+Comentários:
+– Corrigido um erro que fazia com que a seleção de texto ocorresse na linha errada ao se editar comentários.
+– Corrigido um erro que fazia com que o código HTML aparecesse no conteúdo dos comentários.
+– Corrigido um erro que fazia com que os comentários não aparecessem no Leitor.
+
+Publicação:
+– Agora você pode recortar, aumentar/reduzir o zoom e rotacionar as imagens em um post.
+– O aplicativo agora inclui um modo para pré-visualizar no iPhone como ficaria no computador e uma prévia em dispositivos móveis para o iPad. A prévia de posts também inclui uma nova navegação e as opções "Abrir no Safari" e "Compartilhar".
+– Um monte de melhorias no Editor de Blocos: adicionado um ícone de toque-longo para inserir blocos antes/depois e um botão "Editar" sobreposto a blocos de imagens que estiverem selecionados. O editor irá tentar recarregar as imagens se houver problemas de conexão. E o bloco Galeria agora oferece opções de tamanho de imagens.
+– Corrigimos um erro que poderia desativar os comentários enquanto se estivesse visualizando um rascunho.
+
+Registro e acesso:
+- O registro e acesso via link mágico agora suporta múltiplos clientes de email. Tocando-se no botão "Abrir Email" irá se apresentar uma lista de aplicativos instalados para o usuário escolher.
+
+Leitor:
+- Os aplicativos agora suportam republicação de posts! Toque no novo botão "Reblog" na barra de funções do post para escolher em qual dos seus sites você quer publicar e abrir o editor de sua preferência com um conteúdo copiado do post original.

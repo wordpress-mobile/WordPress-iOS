@@ -1,2 +1,0 @@
-- Es gibt einen neuen Shortcode-Block, um Shortcodes im Block-Editor zu erstellen und zu bearbeiten.
-- Auf deiner Statistik-Seite haben wir ein „Diese Woche“-Widget hinzugefügt, um die Aufrufe der letzten Woche anzuzeigen.
