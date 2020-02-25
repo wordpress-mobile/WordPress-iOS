@@ -44,8 +44,6 @@ class PostSignUpInterstitialViewController: UIViewController {
     ///
     var onDismiss: (() -> Void)?
 
-    let coordinator = PostSignUpInterstitialCoordinator()
-
     // MARK: - View Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +52,7 @@ class PostSignUpInterstitialViewController: UIViewController {
 
         configureI18N()
 
+        let coordinator = PostSignUpInterstitialCoordinator()
         coordinator.markAsSeen()
 
         WPAnalytics.track(.welcomeNoSitesInterstitialShown)
