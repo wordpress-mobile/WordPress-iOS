@@ -253,10 +253,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self stopObservingQuickStart];
 }
 
-- (id)initWithScenePresenter:(id<ScenePresenter>)presenter
+- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
     self = [super init];
-    self.scenePresenter = presenter;
+    self.meScenePresenter = meScenePresenter;
     return self;
 }
 

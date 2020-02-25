@@ -117,9 +117,9 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 }
 
 @property (nonatomic, strong, nonnull) Blog * blog;
-@property (nonatomic, strong) id<ScenePresenter> _Nonnull scenePresenter;
+@property (nonatomic, strong) id<ScenePresenter> _Nonnull meScenePresenter;
 
-- (id _Nonnull)initWithScenePresenter:(id<ScenePresenter> _Nonnull)presenter;
+- (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
 - (void)reloadTableViewPreservingSelection;
 - (void)configureTableViewData;
