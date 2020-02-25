@@ -70,7 +70,7 @@ class PostSignUpInterstitialViewController: UIViewController {
     // MARK: - IBAction's
     @IBAction func createSite(_ sender: Any) {
         onDismiss?()
-        navigationController?.dismiss(animated: true) {
+        navigationController?.dismiss(animated: false) {
             NotificationCenter.default.post(name: .createSite, object: nil)
         }
 
@@ -79,7 +79,7 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     @IBAction func addSelfHosted(_ sender: Any) {
         onDismiss?()
-        navigationController?.dismiss(animated: true) {
+        navigationController?.dismiss(animated: false) {
             NotificationCenter.default.post(name: .addSelfHosted, object: nil)
         }
 
