@@ -552,7 +552,6 @@ EXTERNAL SOURCES:
   Gutenberg:
     :commit: c3b262fc3e9a9791ef795fcacd6bc3790940a0ed
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v1.23.0
   RCTRequired:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/c3b262fc3e9a9791ef795fcacd6bc3790940a0ed/react-native-gutenberg-bridge/third-party-podspecs/RCTRequired.podspec.json
   RCTTypeSafety:
@@ -608,7 +607,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: c3b262fc3e9a9791ef795fcacd6bc3790940a0ed
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v1.23.0
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/c3b262fc3e9a9791ef795fcacd6bc3790940a0ed/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -619,11 +617,9 @@ CHECKOUT OPTIONS:
   Gutenberg:
     :commit: c3b262fc3e9a9791ef795fcacd6bc3790940a0ed
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v1.23.0
   RNTAztecView:
     :commit: c3b262fc3e9a9791ef795fcacd6bc3790940a0ed
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v1.23.0
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -710,6 +706,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: a27eac163fe10e9a90c9d15990930b8b21e36cab
+PODFILE CHECKSUM: 98aa758beaccd5061a776fe7ad3fa4d3fae0d1e0
 
 COCOAPODS: 1.8.4
