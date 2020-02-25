@@ -582,7 +582,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         case .editorSessionTemplateApply(let template):
             editorSession.apply(template: template)
         case .editorSessionTemplatePreview(let template):
-            WPAnalytics.track(.editorSessionTemplatePreview, withProperties: ["template": template])
+            editorSession.preview(template: template)
         }
     }
 

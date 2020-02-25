@@ -30,7 +30,13 @@ struct PostEditorAnalyticsSession {
 
     mutating func apply(template: String) {
         self.template = template
-        WPAnalytics.track(.editorSessionTemplateApply, withProperties: ["template": template])
+        WPAnalytics.track(.editorSessionTemplateApply, withProperties: commonProperties)
+    }
+
+    func preview(template: String) {
+        let properties = commonProperties.merging([ Property.template: template], uniquingKeysWith: { $1 })
+
+        WPAnalytics.track(.editorSessionTemplatePreview, withProperties: properties)
     }
 
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
