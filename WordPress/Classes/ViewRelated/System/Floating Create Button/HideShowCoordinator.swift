@@ -71,9 +71,9 @@ private class NavigationDelegate: NSObject, UINavigationControllerDelegate {
 
 // MARK: View Animations
 
-extension UIView {
+private extension UIView {
 
-    private enum Constants {
+    enum Constants {
         enum Maximize {
             static let damping: CGFloat = 0.7
             static let duration: TimeInterval = 0.5
@@ -90,7 +90,7 @@ extension UIView {
 
     /// Animates the showing and hiding of a view using a spring animation
     /// - Parameter toShow: Whether to show the view
-    fileprivate func springAnimation(toShow: Bool, context: UIViewControllerTransitionCoordinatorContext? = nil) {
+    func springAnimation(toShow: Bool, context: UIViewControllerTransitionCoordinatorContext? = nil) {
         if toShow {
             guard isHidden == true else { return }
             maximizeSpringAnimation(context: context)
@@ -101,7 +101,7 @@ extension UIView {
     }
 
     /// Applies a spring animation, from size 1 to 0
-    private func minimizeSpringAnimation(context: UIViewControllerTransitionCoordinatorContext?) {
+    func minimizeSpringAnimation(context: UIViewControllerTransitionCoordinatorContext?) {
         let damping = Constants.Minimize.damping
         let scaleInitial = Constants.Minimize.initialScale
         let scaleFinal = Constants.Minimize.finalScale
@@ -114,7 +114,7 @@ extension UIView {
     }
 
     /// Applies a spring animation, from size 0 to 1
-    private func maximizeSpringAnimation(context: UIViewControllerTransitionCoordinatorContext?) {
+    func maximizeSpringAnimation(context: UIViewControllerTransitionCoordinatorContext?) {
         let damping = Constants.Maximize.damping
         let scaleInitial = Constants.Maximize.initialScale
         let scaleFinal = Constants.Maximize.finalScale
@@ -123,7 +123,7 @@ extension UIView {
         scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal, context: context)
     }
 
-    private func scaleAnimation(duration: TimeInterval, damping: CGFloat, scaleInitial: CGFloat, scaleFinal: CGFloat, context: UIViewControllerTransitionCoordinatorContext?, completion: ((Bool) -> Void)? = nil) {
+    func scaleAnimation(duration: TimeInterval, damping: CGFloat, scaleInitial: CGFloat, scaleFinal: CGFloat, context: UIViewControllerTransitionCoordinatorContext?, completion: ((Bool) -> Void)? = nil) {
         setNeedsDisplay() // Make sure we redraw so that corners are rounded
         transform = CGAffineTransform(scaleX: scaleInitial, y: scaleInitial)
         isHidden = false

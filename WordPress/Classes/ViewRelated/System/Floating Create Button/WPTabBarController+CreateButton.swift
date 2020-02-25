@@ -1,7 +1,7 @@
 import Gridicons
 
 extension FloatingActionButton {
-    class func createButton() -> FloatingActionButton {
+    class func makeCreateButton() -> FloatingActionButton {
         let button = FloatingActionButton(image: Gridicon.iconOfType(.create))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
@@ -17,25 +17,23 @@ extension WPTabBarController {
         static let heightWidth: CGFloat = 56
     }
 
-    @objc func showCreateSheet() {
+    @objc private func showCreateSheet() {
         showPostTab()
     }
 
-    @objc func setupCreateButton() -> HideShowCoordinator? {
+    @objc func addCreateButton() -> FloatingActionButton? {
         guard let trailingAnchor = blogListSplitViewController.viewControllers.first?.view.trailingAnchor else {
             return nil
         }
         let button = addFloatingButton(trailingAnchor: trailingAnchor, bottomAnchor: tabBar.topAnchor)
         button.addTarget(self, action: #selector(showCreateSheet), for: .touchUpInside)
 
-        let coordinator = setupHideShowCoordinator(view: button)
-
-        return coordinator
+        return button
     }
 
     /// Sets up the HideShowCoordinator object
     /// - Parameter view: The view to hide & show
-    private func setupHideShowCoordinator(view: UIView) -> HideShowCoordinator {
+    @objc func setupHideShowCoordinator(view: UIView) -> HideShowCoordinator {
         let coordinator = HideShowCoordinator()
 
         let showForNavigation: (UIViewController) -> Bool = { viewController in
@@ -61,8 +59,8 @@ extension WPTabBarController {
     /// - Parameters:
     ///   - trailingAnchor: The trailing anchor to anchor the button to, separated by `Constants.padding`
     ///   - bottomAnchor: The bottom anchor to anchor the button to, separated by `Constants.padding`
-    private func addFloatingButton(trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) -> UIButton {
-        let button = FloatingActionButton.createButton()
+    private func addFloatingButton(trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) -> FloatingActionButton {
+        let button = FloatingActionButton.makeCreateButton()
 
         view.addSubview(button)
 
