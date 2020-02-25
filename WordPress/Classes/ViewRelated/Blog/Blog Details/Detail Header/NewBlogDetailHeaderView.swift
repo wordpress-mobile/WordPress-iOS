@@ -1,6 +1,6 @@
 class NewBlogDetailHeaderView: UIView {
 
-    @objc var delegate: BlogDetailHeaderViewDelegate?
+    @objc weak var delegate: BlogDetailHeaderViewDelegate?
 
     private let titleLabel: UILabel = {
         let label = UILabel()
