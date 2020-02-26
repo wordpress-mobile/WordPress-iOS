@@ -9,8 +9,7 @@ extension MeViewController: UIViewControllerRestoration {
     static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                coder: NSCoder) -> UIViewController? {
         if FeatureFlag.meMove.enabled {
-            let meController = MeViewController()
-            return meController
+            return MeViewController()
         } else {
             return WPTabBarController.sharedInstance().meViewController
         }

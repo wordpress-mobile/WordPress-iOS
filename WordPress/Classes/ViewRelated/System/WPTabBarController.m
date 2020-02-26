@@ -465,6 +465,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     if ([Feature enabled:FeatureFlagMeMove]) {
         [allViewControllers removeObject:self.meSplitViewController];
+        self.meSplitViewController = nil;
+        self.meNavigationController = nil;
+        self.meViewController = nil;
     }
 
     return allViewControllers;
