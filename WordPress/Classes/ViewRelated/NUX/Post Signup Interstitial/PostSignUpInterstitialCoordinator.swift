@@ -58,6 +58,6 @@ class PostSignUpInterstitialCoordinator {
             return
         }
 
-        return database.set(true, forKey: key)
+        database.set(true, forKey: key)
     }
 }
