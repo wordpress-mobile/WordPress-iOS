@@ -535,13 +535,13 @@ static NSInteger HideSearchMinSites = 3;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(launchSiteCreation)
-                                                 name:@"PSICreateSite"
+                                                 name:NSNotification.PSICreateSite
                                                object:nil];
 
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showLoginControllerForAddingSelfHostedSite)
-                                                 name:@"PSIAddSelfHosted"
+                                                 name:NSNotification.PSIAddSelfHosted
                                                object:nil];
 }
 

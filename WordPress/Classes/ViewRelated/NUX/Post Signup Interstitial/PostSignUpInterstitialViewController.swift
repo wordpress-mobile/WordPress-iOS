@@ -5,6 +5,11 @@ extension NSNotification.Name {
     static let addSelfHosted = NSNotification.Name(rawValue: "PSIAddSelfHosted")
 }
 
+@objc extension NSNotification {
+    public static let PSICreateSite = NSNotification.Name.createSite
+    public static let PSIAddSelfHosted = NSNotification.Name.addSelfHosted
+}
+
 private struct Constants {
     // I18N Strings
     static let welcomeTitleText = NSLocalizedString(
