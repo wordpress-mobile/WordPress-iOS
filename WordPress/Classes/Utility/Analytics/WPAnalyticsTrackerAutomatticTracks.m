@@ -1991,6 +1991,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"widget_active_site_changed";
             break;
 
+        case WPAnalyticsStatWelcomeNoSitesInterstitialShown:
+            eventName = @"welcome_no_sites_interstitial_shown";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialButtonTapped:
+            eventName = @"welcome_no_sites_interstitial_button_tapped";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialDismissed:
+            eventName = @"welcome_no_sites_interstitial_dismissed";
+            break;
+
         // The following are yet to be implemented.
         //
         // If you get test failures in WPAnalyticsTrackerAutomatticTracksTests, it's most likely
