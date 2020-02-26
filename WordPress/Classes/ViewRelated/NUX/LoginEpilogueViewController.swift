@@ -76,8 +76,9 @@ class LoginEpilogueViewController: UIViewController {
 
         epilogueTableViewController.setup(with: credentials, onConnectSite: { [weak self] in
             self?.handleConnectAnotherButton()
-
         })
+
+        tableViewController = epilogueTableViewController
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -119,7 +120,7 @@ private extension LoginEpilogueViewController {
         let screenHeight = UIScreen.main.bounds.height
         let panelHeight = buttonPanel.frame.height
 
-        if contentSize.height > (screenHeight - panelHeight) {
+        if contentSize.height >= (screenHeight - panelHeight) {
             buttonPanel.backgroundColor = WordPressAuthenticator.shared.style.viewControllerBackgroundColor
             shadowView.isHidden = false
         } else {
