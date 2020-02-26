@@ -8,11 +8,17 @@ class LoginEpilogueConnectSiteCell: UITableViewCell, NibReusable {
 
     // Init
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        connectLabel.text = NSLocalizedString("Connect another site", comment: "Link to connect a site, shown after logging in.")
+    func configure(numberOfSites: Int) {
+        connectLabel.text = numberOfSites == 0 ? LocalizedText.connectSite : LocalizedText.connectAnother
         connectLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize, weight: .regular)
         connectLabel.textColor = .primary
     }
 
+}
+
+private extension LoginEpilogueConnectSiteCell {
+    enum LocalizedText {
+        static let connectSite = NSLocalizedString("Connect a site", comment: "Link to connect a site, shown after logging in.")
+        static let connectAnother = NSLocalizedString("Connect another site", comment: "Link to connect another site, shown after logging in.")
+    }
 }

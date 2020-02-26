@@ -101,15 +101,6 @@ private extension LoginEpilogueViewController {
         configureDoneButton()
     }
 
-    /// Returns the number of WordPress.com sites.
-    ///
-    var numberOfWordPressComBlogs: Int {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount()?.blogs.count ?? 0
-    }
-
     /// Setup: Buttons
     ///
     func configureDoneButton() {

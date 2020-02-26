@@ -84,6 +84,12 @@ extension LoginEpilogueTableViewController {
             }
         }
 
+        // Add one for Connect Site if there are no sites from blogDataSource.
+        if adjustedNumberOfSections == 0 && showConnectSite {
+            adjustedNumberOfSections += 1
+        }
+
+        // Add one for User Info
         return adjustedNumberOfSections + 1
     }
 
@@ -121,6 +127,8 @@ extension LoginEpilogueTableViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LoginEpilogueConnectSiteCell.defaultReuseID) as? LoginEpilogueConnectSiteCell else {
                 return UITableViewCell()
             }
+
+            cell.configure(numberOfSites: numberOfWordPressComBlogs)
             return cell
         }
 
@@ -215,6 +223,16 @@ private extension LoginEpilogueTableViewController {
     func lastRowInSection(_ section: Int) -> Int {
         return (tableView.numberOfRows(inSection: section) - 1)
     }
+
+    /// Returns the number of WordPress.com sites.
+    ///
+    var numberOfWordPressComBlogs: Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+
+        return service.defaultWordPressComAccount()?.blogs.count ?? 0
+    }
+
 }
 
 
