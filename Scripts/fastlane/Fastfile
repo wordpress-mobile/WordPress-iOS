@@ -282,7 +282,7 @@ import "./ScreenshotFastfile"
   # bundle exec fastlane build_and_upload_internal 
   # bundle exec fastlane build_and_upload_internal skip_confirm:true 
   #####################################################################################
-  desc "Builds and updates for distribution"
+  desc "Builds and uploads for distribution"
   lane :build_and_upload_internal do | options |
     ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless (options[:skip_prechecks])
     ios_build_preflight() unless (options[:skip_prechecks])
@@ -328,13 +328,14 @@ import "./ScreenshotFastfile"
   # This lane builds the app and upload it for external distribution  
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_and_upload_itc [skip_confirm:<skip confirm>]
+  # bundle exec fastlane build_and_upload_itc [skip_confirm:<skip confirm>] [create_release:<Create release on GH> ]
   #
   # Example:
   # bundle exec fastlane build_and_upload_itc 
   # bundle exec fastlane build_and_upload_itc skip_confirm:true 
+  # bundle exec fastlane build_and_upload_itc create_release:true 
   #####################################################################################
-  desc "Builds and updates for distribution"
+  desc "Builds and uploads for distribution"
   lane :build_and_upload_itc do | options |
     ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless (options[:skip_prechecks])
     ios_build_preflight() unless (options[:skip_prechecks])
@@ -364,6 +365,37 @@ import "./ScreenshotFastfile"
     )
 
     sh("cd .. && rm WordPress.app.dSYM.zip")
+
+    if (options[:create_release])
+      archive_zip_path = File.dirname(Dir.pwd) + "/WordPress.xarchive.zip"
+      zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
+
+      version = ios_get_app_version()
+      create_release(repository:GHHELPER_REPO, 
+        version: version, 
+        release_notes_file_path:'../WordPress/Resources/release_notes.txt',
+        release_assets:"#{archive_zip_path}"
+      )
+
+      sh("rm #{archive_zip_path}") 
+    end
+  end
+
+  #####################################################################################
+  # build_release
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app, create a GH release and upload it for external distribution  
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_release [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_release 
+  # bundle exec fastlane build_release skip_confirm:true 
+  #####################################################################################
+  desc "Builds, create release and uploads for distribution"
+  lane :build_release do | options |
+    build_and_upload_itc(skip_confirm: options[:skip_confirm], create_release: true)
   end
 
 ########################################################################
