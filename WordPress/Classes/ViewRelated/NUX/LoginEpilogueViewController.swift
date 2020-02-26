@@ -11,10 +11,6 @@ class LoginEpilogueViewController: UIViewController {
     ///
     @IBOutlet var buttonPanel: UIView!
 
-    /// Separator: to be displayed above the actual buttons.
-    ///
-    @IBOutlet var shadowView: UIView!
-
     /// Done Button.
     ///
     @IBOutlet var doneButton: UIButton!
@@ -122,10 +118,8 @@ private extension LoginEpilogueViewController {
 
         if contentSize.height >= (screenHeight - panelHeight) {
             buttonPanel.backgroundColor = .listBackground
-            shadowView.isHidden = false
         } else {
             buttonPanel.backgroundColor = .basicBackground
-            shadowView.isHidden = true
         }
     }
 }

@@ -17,22 +17,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qDW-L0-z8a">
-                                <rect key="frame" x="-4" y="0.0" width="383" height="592"/>
+                                <rect key="frame" x="-4" y="0.0" width="383" height="560"/>
                                 <connections>
                                     <segue destination="UFO-Sm-cpW" kind="embed" id="rhb-gY-oAu"/>
                                 </connections>
                             </containerView>
                             <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LF6-fg-TWa">
-                                <rect key="frame" x="-4" y="592" width="383" height="109"/>
+                                <rect key="frame" x="0.0" y="560" width="375" height="107"/>
                                 <subviews>
-                                    <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="z66-ET-PAh">
-                                        <rect key="frame" x="0.0" y="-10" width="383" height="10"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="10" id="LbP-86-YIj"/>
-                                        </constraints>
-                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51h-er-sEL" customClass="FancyButton" customModule="WordPressUI">
-                                        <rect key="frame" x="16" y="20" width="351" height="44"/>
+                                        <rect key="frame" x="20" y="31.5" width="335" height="44"/>
                                         <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="8TV-5o-H50"/>
@@ -54,22 +48,19 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="z66-ET-PAh" secondAttribute="trailing" id="F4j-Xk-TjB"/>
-                                    <constraint firstAttribute="bottom" secondItem="51h-er-sEL" secondAttribute="bottom" constant="45" id="ao5-iK-ErT"/>
-                                    <constraint firstItem="51h-er-sEL" firstAttribute="top" secondItem="z66-ET-PAh" secondAttribute="bottom" constant="20" id="g0i-q2-T4G"/>
-                                    <constraint firstAttribute="trailing" secondItem="51h-er-sEL" secondAttribute="trailing" constant="16" id="sIX-Sk-Tpb"/>
-                                    <constraint firstItem="51h-er-sEL" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" constant="16" id="srG-AX-XCE"/>
-                                    <constraint firstItem="z66-ET-PAh" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="-10" id="tgY-xe-QBV"/>
-                                    <constraint firstItem="z66-ET-PAh" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="yi8-OP-SB5"/>
+                                    <constraint firstItem="51h-er-sEL" firstAttribute="centerY" secondItem="LF6-fg-TWa" secondAttribute="centerY" id="1vO-pB-ZmJ"/>
+                                    <constraint firstAttribute="height" constant="107" id="bjg-yv-Bi5"/>
+                                    <constraint firstAttribute="trailing" secondItem="51h-er-sEL" secondAttribute="trailing" constant="20" id="sIX-Sk-Tpb"/>
+                                    <constraint firstItem="51h-er-sEL" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" constant="20" id="srG-AX-XCE"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <constraints>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="top" secondItem="qDW-L0-z8a" secondAttribute="bottom" id="3xo-Xc-gY6"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="leading" secondItem="CSv-1Z-yIA" secondAttribute="leadingMargin" constant="-20" id="7zX-it-ASF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="LF6-fg-TWa" secondAttribute="trailing" constant="-20" id="980-CW-Iwa"/>
-                            <constraint firstItem="LF6-fg-TWa" firstAttribute="leading" secondItem="CSv-1Z-yIA" secondAttribute="leadingMargin" constant="-20" id="ME9-0u-Vx1"/>
-                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="LF6-fg-TWa" secondAttribute="bottom" constant="-34" id="ePC-QY-FqS"/>
+                            <constraint firstItem="LF6-fg-TWa" firstAttribute="trailing" secondItem="NNF-sA-UQ4" secondAttribute="trailing" id="980-CW-Iwa"/>
+                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="ME9-0u-Vx1"/>
+                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="LF6-fg-TWa" secondAttribute="bottom" id="ePC-QY-FqS"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="top" secondItem="NNF-sA-UQ4" secondAttribute="top" id="yLi-rM-L1b"/>
                             <constraint firstAttribute="trailingMargin" secondItem="qDW-L0-z8a" secondAttribute="trailing" constant="-20" id="zBp-f1-PDL"/>
                         </constraints>
@@ -80,7 +71,6 @@
                     <connections>
                         <outlet property="buttonPanel" destination="LF6-fg-TWa" id="XBZ-Df-emN"/>
                         <outlet property="doneButton" destination="51h-er-sEL" id="JUE-a3-f8p"/>
-                        <outlet property="shadowView" destination="z66-ET-PAh" id="lFb-op-yOy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0zu-w6-ZSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -160,6 +150,5 @@
     </scenes>
     <resources>
         <image name="beveled-blue-button-down" width="18.5" height="19.5"/>
-        <image name="darkgrey-shadow" width="10" height="10"/>
     </resources>
 </document>
