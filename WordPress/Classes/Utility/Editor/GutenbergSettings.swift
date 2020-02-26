@@ -170,7 +170,7 @@ class GutenbergSettings {
     }
 
     func getDefaultEditor(for blog: Blog) -> MobileEditor {
-        return .aztec
+        return .gutenberg
     }
 }
 
