@@ -2039,7 +2039,7 @@
 		F543AF5923A84F200022F595 /* SchedulingCalendarViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F543AF5823A84F200022F595 /* SchedulingCalendarViewControllerTests.swift */; };
 		F551E7F523F6EA3100751212 /* FloatingActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E7F423F6EA3100751212 /* FloatingActionButton.swift */; };
 		F551E7F723FC9A5C00751212 /* Collection+RotateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E7F623FC9A5C00751212 /* Collection+RotateTests.swift */; };
-		F551E7FF2404336000751212 /* HideShowCoordinator+HideShowCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E7FE2404336000751212 /* HideShowCoordinator+HideShowCreate.swift */; };
+		F551E7FF2404336000751212 /* WPTabBarController+HideShowCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F551E7FE2404336000751212 /* WPTabBarController+HideShowCreate.swift */; };
 		F565190323CF6D1D003FACAF /* WKCookieJarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F565190223CF6D1D003FACAF /* WKCookieJarTests.swift */; };
 		F5660D03235CF73800020B1E /* SchedulingCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5660CFF235CE82100020B1E /* SchedulingCalendarViewController.swift */; };
 		F5660D07235D114500020B1E /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5660D06235D114500020B1E /* CalendarCollectionView.swift */; };
@@ -4609,7 +4609,7 @@
 		F543AF5823A84F200022F595 /* SchedulingCalendarViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulingCalendarViewControllerTests.swift; sourceTree = "<group>"; };
 		F551E7F423F6EA3100751212 /* FloatingActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingActionButton.swift; sourceTree = "<group>"; };
 		F551E7F623FC9A5C00751212 /* Collection+RotateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+RotateTests.swift"; sourceTree = "<group>"; };
-		F551E7FE2404336000751212 /* HideShowCoordinator+HideShowCreate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HideShowCoordinator+HideShowCreate.swift"; sourceTree = "<group>"; };
+		F551E7FE2404336000751212 /* WPTabBarController+HideShowCreate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+HideShowCreate.swift"; sourceTree = "<group>"; };
 		F565190223CF6D1D003FACAF /* WKCookieJarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKCookieJarTests.swift; sourceTree = "<group>"; };
 		F5660CFF235CE82100020B1E /* SchedulingCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulingCalendarViewController.swift; sourceTree = "<group>"; };
 		F5660D06235D114500020B1E /* CalendarCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionView.swift; sourceTree = "<group>"; };
@@ -9903,7 +9903,7 @@
 			children = (
 				F537F33A23F1FEB9003210FD /* WPTabBarController+CreateButton.swift */,
 				F551E7F423F6EA3100751212 /* FloatingActionButton.swift */,
-				F551E7FE2404336000751212 /* HideShowCoordinator+HideShowCreate.swift */,
+				F551E7FE2404336000751212 /* WPTabBarController+HideShowCreate.swift */,
 			);
 			path = "Floating Create Button";
 			sourceTree = "<group>";
@@ -11528,7 +11528,7 @@
 				FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */,
 				9874767321963D330080967F /* SiteStatsInformation.swift in Sources */,
 				738B9A5821B85CF20005062B /* TitleSubtitleHeader.swift in Sources */,
-				F551E7FF2404336000751212 /* HideShowCoordinator+HideShowCreate.swift in Sources */,
+				F551E7FF2404336000751212 /* WPTabBarController+HideShowCreate.swift in Sources */,
 				43290CF4214F755400F6B398 /* FancyAlertViewController+QuickStart.swift in Sources */,
 				7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */,
 				40F46B6B22121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift in Sources */,
