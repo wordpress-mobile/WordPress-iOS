@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qDW-L0-z8a">
-                                <rect key="frame" x="-4" y="0.0" width="383" height="606"/>
+                                <rect key="frame" x="-4" y="0.0" width="383" height="592"/>
                                 <connections>
                                     <segue destination="UFO-Sm-cpW" kind="embed" id="rhb-gY-oAu"/>
                                 </connections>
@@ -66,7 +66,7 @@
                             </view>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="LF6-fg-TWa" firstAttribute="top" secondItem="qDW-L0-z8a" secondAttribute="bottom" constant="-14" id="3xo-Xc-gY6"/>
+                            <constraint firstItem="LF6-fg-TWa" firstAttribute="top" secondItem="qDW-L0-z8a" secondAttribute="bottom" id="3xo-Xc-gY6"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="leading" secondItem="CSv-1Z-yIA" secondAttribute="leadingMargin" constant="-20" id="7zX-it-ASF"/>
                             <constraint firstAttribute="trailingMargin" secondItem="LF6-fg-TWa" secondAttribute="trailing" constant="-20" id="980-CW-Iwa"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="leading" secondItem="CSv-1Z-yIA" secondAttribute="leadingMargin" constant="-20" id="ME9-0u-Vx1"/>
