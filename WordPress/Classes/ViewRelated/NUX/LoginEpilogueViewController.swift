@@ -121,10 +121,10 @@ private extension LoginEpilogueViewController {
         let panelHeight = buttonPanel.frame.height
 
         if contentSize.height >= (screenHeight - panelHeight) {
-            buttonPanel.backgroundColor = WordPressAuthenticator.shared.style.viewControllerBackgroundColor
+            buttonPanel.backgroundColor = .listBackground
             shadowView.isHidden = false
         } else {
-            buttonPanel.backgroundColor = .listBackground
+            buttonPanel.backgroundColor = .basicBackground
             shadowView.isHidden = true
         }
     }
