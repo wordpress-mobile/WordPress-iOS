@@ -200,6 +200,13 @@ class GutenbergSettingsTests: XCTestCase {
 
     // Autoenable on new installs
 
+    func testDoNotAutoenableWithTrailingSlashURL() {
+        blog.url = "https://wordpress.com/" // From site creation flow
+        settings.setGutenbergEnabled(true, for: blog)
+        blog.url = "https://wordpress.com" // After refreshing with remote
+        XCTAssertFalse(shouldAutoenableGutenberg)
+    }
+
     func testDoNotAutoenableIfUsersSwitchesToGutenberg() {
         settings.setGutenbergEnabled(true, for: blog)
 
