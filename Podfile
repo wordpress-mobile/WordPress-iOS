@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.13'
+    pod 'WordPressShared', '1.8.15-beta.1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -146,7 +146,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '435632c31e104b4609556858d87a18acee1751e1'
+    gutenberg :commit => 'd377b883c761c2a71d29bd631f3d3227b3e313a2'
 
     ## Third party libraries
     ## =====================
