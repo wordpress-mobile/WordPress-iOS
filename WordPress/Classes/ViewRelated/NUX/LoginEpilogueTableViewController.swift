@@ -25,7 +25,17 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     /// Closure to be executed when Connect Site is selected.
     ///
-    var onConnectSite: (() -> Void)?
+    private var onConnectSite: (() -> Void)?
+
+    /// Flag indicating if the Connect Site option should be displayed.
+    ///
+    private var showConnectSite: Bool {
+        guard let wpcom = credentials?.wpcom else {
+            return true
+        }
+
+        return !wpcom.isJetpackLogin
+    }
 
 
     // MARK: - Lifecycle
@@ -85,8 +95,8 @@ extension LoginEpilogueTableViewController {
         let correctedSection = section - 1
         let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
 
-        // Add one for the 'Connect another site' row
-        return siteRows + 1
+        // Add one for the Connect Site row if shown.
+        return showConnectSite ? siteRows + 1 : siteRows
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -107,7 +117,7 @@ extension LoginEpilogueTableViewController {
         }
 
         // Connect Site Row
-        if indexPath.row == lastRowInSection(indexPath.section) {
+        if indexPath.row == lastRowInSection(indexPath.section) && showConnectSite {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LoginEpilogueConnectSiteCell.defaultReuseID) as? LoginEpilogueConnectSiteCell else {
                 return UITableViewCell()
             }
