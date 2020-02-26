@@ -32,10 +32,25 @@ class PublishSettingsViewControllerTests: XCTestCase {
         }
     }
 
-    func testViewModelDatePublished() {
+    func testViewModelDateImmediately() {
         let testDate = Date()
 
         let post = PostBuilder(context).with(dateCreated: testDate).drafted().withRemote().build()
+
+        let viewModel = PublishSettingsViewModel(post: post)
+        XCTAssertNil(viewModel.date, "Date should not exist in view model")
+
+        if case PublishSettingsViewModel.State.immediately = viewModel.state {
+            // Success
+        } else {
+            XCTFail("View model should be immediately")
+        }
+    }
+
+    func testViewModelDatePublished() {
+        let testDate = Date()
+
+        let post = PostBuilder(context).with(dateCreated: testDate).published().withRemote().build()
 
         let viewModel = PublishSettingsViewModel(post: post)
         XCTAssertEqual(viewModel.date, testDate, "Date should exist in view model")
