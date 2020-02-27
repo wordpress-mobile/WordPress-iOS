@@ -1248,6 +1248,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPostRevisionsLoadUndone:
             eventName = @"revisions_load_undone";
             break;
+        case WPAnalyticsStatPostSettingsShown:
+            eventName = @"post_settings_shown";
+            break;
+        case WPAnalyticsStatPostSettingsAddTagsShown:
+            eventName = @"post_settings_add_tags_shown";
+            break;
+        case WPAnalyticsStatPostSettingsTagsAdded:
+            eventName = @"post_settings_tags_added";
+            break;
         case WPAnalyticsStatPushAuthenticationApproved:
             eventName = @"push_authentication_approved";
             break;
