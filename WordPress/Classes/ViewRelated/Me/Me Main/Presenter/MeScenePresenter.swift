@@ -21,9 +21,10 @@ class MeScenePresenter: NSObject, ScenePresenter {
             completion?()
             return
         }
-        let presentedViewController = makePresentedViewController()
+        let presentedViewController = makeNavigationController()
         self.presentedViewController = presentedViewController
         viewController.present(presentedViewController, animated: animated, completion: completion)
+        WPAnalytics.track(.meTabAccessed)
     }
 }
 
@@ -42,20 +43,23 @@ private extension MeScenePresenter {
     func makeNavigationController() -> UINavigationController {
         let meController = makeMeViewController()
         let navigationController = UINavigationController(rootViewController: meController)
-        meController.navigationItem.leftBarButtonItem = makeDoneButton()
+        navigationController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
+        meController.navigationItem.rightBarButtonItem = makeDoneButton()
+        // present in formSheet on iPad, default on iPhone
+        if WPDeviceIdentification.isiPad() {
+            navigationController.modalPresentationStyle = .formSheet
+            navigationController.modalTransitionStyle = .coverVertical
+        }
         return navigationController
-    }
-
-    func makePresentedViewController() -> WPSplitViewController {
-        let splitViewController = WPSplitViewController()
-        splitViewController.setInitialPrimaryViewController(makeNavigationController())
-        return splitViewController
     }
 }
 
 /// Accessibility
-private extension UIBarButtonItem {
-
+extension UIBarButtonItem {
+    /// Initialize a 'Done' UIBarButtonItem with the specified target/action
+    /// - Parameters:
+    ///   - target: target of the action to execute when the button is pressed
+    ///   - action: selector of the action to execute when the button is pressed
     convenience init(target: Any?, action: Selector) {
         self.init(title: NSLocalizedString("Done", comment: "Title of the Done button on the me page"),
                   style: .done,
@@ -65,7 +69,7 @@ private extension UIBarButtonItem {
     }
 
     /// Adds accessibility traits for the `Me` bar button item
-    func makeDoneButtonAccessible() {
+    private func makeDoneButtonAccessible() {
         accessibilityLabel = NSLocalizedString("Done", comment: "Accessibility label for the Done button in the Me screen.")
         accessibilityHint = NSLocalizedString("Close the Me screen", comment: "Accessibility hint the  Done button in the Me screen.")
         accessibilityIdentifier = "doneBarButton"

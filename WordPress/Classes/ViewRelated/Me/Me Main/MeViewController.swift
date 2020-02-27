@@ -5,24 +5,15 @@ import Gridicons
 import WordPressAuthenticator
 
 
-class MeViewController: UITableViewController, UIViewControllerRestoration {
-    @objc static let restorationIdentifier = "WPMeRestorationID"
-    @objc var handler: ImmuTableViewHandler!
-
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                               coder: NSCoder) -> UIViewController? {
-        return WPTabBarController.sharedInstance().meViewController
-    }
+class MeViewController: UITableViewController {
+    var handler: ImmuTableViewHandler!
 
     // MARK: - Table View Controller
 
     override init(style: UITableView.Style) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("Me", comment: "Me page title")
-        // Need to use `super` to work around a Swift compiler bug
-        // https://bugs.swift.org/browse/SR-3465
-        super.restorationIdentifier = MeViewController.restorationIdentifier
-        restorationClass = type(of: self)
+        MeViewController.configureRestoration(on: self)
         clearsSelectionOnViewWillAppear = false
     }
 
@@ -42,13 +33,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         // Preventing MultiTouch Scenarios
         view.isExclusiveTouch = true
-
         ImmuTable.registerRows([
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
             ButtonRow.self,
             DestructiveButtonRow.self
-            ], tableView: self.tableView)
+        ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
@@ -82,21 +72,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         registerUserActivity()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // Required to update the tableview cell disclosure indicators
-        reloadViewModel()
-    }
-
     @objc fileprivate func accountDidChange() {
         reloadViewModel()
-
-        // Reload the detail pane if the split view isn't compact
-        if let splitViewController = splitViewController as? WPSplitViewController,
-            let detailViewController = initialDetailViewControllerForSplitView(splitViewController), !splitViewControllerIsHorizontallyCompact {
-            showDetailViewController(detailViewController, sender: self)
-        }
     }
 
     @objc fileprivate func reloadViewModel() {
@@ -109,36 +86,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
-
-        // After we've reloaded the view model we should maintain the current
-        // table row selection, or if the split view we're in is not compact
-        // then we'll just select the first item in the table.
-
-        // First, we'll grab the appropriate index path so we can reselect it
-        // after reloading the table
-        let selectedIndexPath = tableView.indexPathForSelectedRow ?? IndexPath(row: 0, section: 0)
-
-        // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(loggedIn)
-
-        if !splitViewControllerIsHorizontallyCompact {
-            // And finally we'll reselect the selected row, if there is one
-            tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
-            if FeatureFlag.meMove.enabled {
-                refreshDetailView()
-            }
-        }
-    }
-
-    /// Force (re)show the current detail view to refresh the split view. Addresses a layout bug
-    /// when rotating the device from compact to regular, in modal presentation.
-    private func refreshDetailView() {
-        guard let viewControllers = self.splitViewController?.viewControllers,
-            viewControllers.count > 1,
-            let detailViewController = viewControllers.last else {
-            return
-        }
-        self.showDetailViewController(detailViewController, sender: self)
     }
 
     fileprivate func headerViewForAccount(_ account: WPAccount) -> MeHeaderView {
@@ -150,7 +98,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     private var appSettingsRow: NavigationItemRow {
-        let accessoryType: UITableViewCell.AccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        let accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
@@ -161,7 +109,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     fileprivate func tableViewModel(_ loggedIn: Bool) -> ImmuTable {
-        let accessoryType: UITableViewCell.AccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        let accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
@@ -202,27 +150,27 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         myProfile,
                         accountSettings,
                         appSettingsRow
-                        ]),
+                    ]),
                     ImmuTableSection(rows: [helpAndSupportIndicator]),
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
                             logOut
-                        ])
-                ])
+                    ])
+            ])
         } else { // Logged out
             return ImmuTable(
                 sections: [
                     ImmuTableSection(rows: [
                         appSettingsRow,
-                        ]),
+                    ]),
                     ImmuTableSection(rows: [helpAndSupportIndicator]),
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
                             logIn
-                        ])
-                ])
+                    ])
+            ])
         }
     }
 
@@ -255,7 +203,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             if let myProfileViewController = self.myProfileViewController {
                 WPAppAnalytics.track(.openedMyProfile)
-                self.showDetailViewController(myProfileViewController, sender: self)
+                self.navigationController?.pushViewController(myProfileViewController,
+                                                              animated: true,
+                                                              rightBarButton: self.navigationItem.rightBarButtonItem)
             }
         }
     }
@@ -267,8 +217,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 guard let controller = AccountSettingsViewController(account: account) else {
                     return
                 }
-
-                self.showDetailViewController(controller, sender: self)
+                self.navigationController?.pushViewController(controller,
+                                                              animated: true,
+                                                              rightBarButton: self.navigationItem.rightBarButtonItem)
             }
         }
     }
@@ -277,20 +228,18 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             WPAppAnalytics.track(.openedAppSettings)
             let controller = AppSettingsViewController()
-            self.showDetailViewController(controller, sender: self)
+            self.navigationController?.pushViewController(controller,
+                                                          animated: true,
+                                                          rightBarButton: self.navigationItem.rightBarButtonItem)
         }
     }
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportTableViewController()
-
-            // If iPad, show Support from Me view controller instead of navigation controller.
-            if !self.splitViewControllerIsHorizontallyCompact {
-                controller.showHelpFromViewController = self
-            }
-
-            self.showDetailViewController(controller, sender: self)
+            self.navigationController?.pushViewController(controller,
+                                                          animated: true,
+                                                          rightBarButton: self.navigationItem.rightBarButtonItem)
         }
     }
 
@@ -440,19 +389,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     ///
     fileprivate func promptForLoginOrSignup() {
         WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
-    }
-}
-
-// MARK: - WPSplitViewControllerDetailProvider Conformance
-
-extension MeViewController: WPSplitViewControllerDetailProvider {
-    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        // If we're not logged in yet, return app settings
-        guard let _ = defaultAccount() else {
-            return AppSettingsViewController()
-        }
-
-        return myProfileViewController
     }
 }
 
