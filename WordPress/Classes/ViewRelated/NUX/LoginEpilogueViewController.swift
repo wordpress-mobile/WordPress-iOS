@@ -7,9 +7,14 @@ import WordPressAuthenticator
 //
 class LoginEpilogueViewController: UIViewController {
 
-    /// Button's Container View.
+    /// Button Container View.
     ///
     @IBOutlet var buttonPanel: UIView!
+
+    /// Line displayed atop the buttonPanel when the table is scrollable.
+    ///
+    @IBOutlet var topLine: UIView!
+    @IBOutlet var topLineHeightConstraint: NSLayoutConstraint!
 
     /// Done Button.
     ///
@@ -46,6 +51,7 @@ class LoginEpilogueViewController: UIViewController {
         }
 
         view.backgroundColor = .basicBackground
+        topLine.backgroundColor = .divider
         refreshInterface(with: credentials)
     }
 
@@ -112,14 +118,18 @@ private extension LoginEpilogueViewController {
             return
         }
 
+        topLineHeightConstraint.constant = .hairlineBorderWidth
+
         let contentSize = tableView.contentSize
         let screenHeight = UIScreen.main.bounds.height
         let panelHeight = buttonPanel.frame.height
 
         if contentSize.height >= (screenHeight - panelHeight) {
             buttonPanel.backgroundColor = .listBackground
+            topLine.isHidden = false
         } else {
             buttonPanel.backgroundColor = .basicBackground
+            topLine.isHidden = true
         }
     }
 }
