@@ -333,17 +333,17 @@ fileprivate extension SearchManager {
     // MARK: Me Tab Navigation
 
     func openMeTab() -> Bool {
-        WPTabBarController.sharedInstance().showMeTab()
+        WPTabBarController.sharedInstance().showMeScene()
         return true
     }
 
     func openAppSettingsScreen() -> Bool {
-        WPTabBarController.sharedInstance().switchMeTabToAppSettings()
+        WPTabBarController.sharedInstance().navigateToAppSettings()
         return true
     }
 
     func openSupportScreen() -> Bool {
-        WPTabBarController.sharedInstance().switchMeTabToSupport()
+        WPTabBarController.sharedInstance().navigateToSupport()
         return true
     }
 

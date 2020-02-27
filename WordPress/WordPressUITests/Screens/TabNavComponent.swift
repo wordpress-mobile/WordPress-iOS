@@ -3,7 +3,6 @@ import XCTest
 
 class TabNavComponent: BaseScreen {
 
-    let meTabButton: XCUIElement
     let mySitesTabButton: XCUIElement
     let readerTabButton: XCUIElement
     let writeTabButton: XCUIElement
@@ -15,12 +14,14 @@ class TabNavComponent: BaseScreen {
         readerTabButton = tabBars.buttons["readerTabButton"]
         writeTabButton = XCUIApplication().buttons["floatingCreateButton"]
         notificationsTabButton = tabBars.buttons["notificationsTabButton"]
-        meTabButton = tabBars.buttons["meTabButton"]
-        super.init(element: meTabButton)
+        super.init(element: mySitesTabButton)
     }
 
     func gotoMeScreen() -> MeTabScreen {
-        meTabButton.tap()
+        gotoMySitesScreen()
+        app.cells[WPUITestCredentials.testWPcomSitePrimaryAddress].tap()
+        let meButton = app.navigationBars.buttons["meBarButton"]
+        meButton.tap()
         return MeTabScreen()
     }
 
@@ -28,11 +29,12 @@ class TabNavComponent: BaseScreen {
     func gotoMySiteScreen() -> MySiteScreen {
         // Avoid transitioning to the sites list if MySites is already on screen
         if !MySiteScreen.isVisible {
-            mySitesTabButton.tap()
+            gotoMySitesScreen().switchToSite(withTitle: "infocusphotographers.com")
         }
         return MySiteScreen()
     }
 
+    @discardableResult
     func gotoMySitesScreen() -> MySitesScreen {
         mySitesTabButton.tap()
         mySitesTabButton.tap()
@@ -45,6 +47,7 @@ class TabNavComponent: BaseScreen {
     }
 
     func gotoBlockEditorScreen() -> BlockEditorScreen {
+        gotoMySiteScreen()
         writeTabButton.tap()
         return BlockEditorScreen()
     }
