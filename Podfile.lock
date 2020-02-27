@@ -1,8 +1,8 @@
 PODS:
   - 1PasswordExtension (1.8.5)
-  - Alamofire (4.7.3)
-  - AlamofireNetworkActivityIndicator (2.3.0):
-    - Alamofire (~> 4.7)
+  - Alamofire (4.8.0)
+  - AlamofireNetworkActivityIndicator (2.4.0):
+    - Alamofire (~> 4.8)
   - AppCenter (2.5.1):
     - AppCenter/Analytics (= 2.5.1)
     - AppCenter/Crashes (= 2.5.1)
@@ -372,20 +372,20 @@ PODS:
   - WordPress-Aztec-iOS (1.16.0)
   - WordPress-Editor-iOS (1.16.0):
     - WordPress-Aztec-iOS (= 1.16.0)
-  - WordPressAuthenticator (1.10.7):
+  - WordPressAuthenticator (1.10.8):
     - 1PasswordExtension (= 1.8.5)
-    - Alamofire (= 4.7.3)
+    - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 4.4)
     - Gridicons (~> 0.15)
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 4.5.6-beta.1)
-    - WordPressShared (~> 1.8)
+    - WordPressKit (~> 4.5.8-beta-1)
+    - WordPressShared (~> 1.8.13-beta)
     - WordPressUI (~> 1.4-beta.1)
-  - WordPressKit (4.5.7):
-    - Alamofire (~> 4.7.3)
+  - WordPressKit (4.5.8):
+    - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 1)
@@ -417,8 +417,8 @@ PODS:
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
-  - Alamofire (= 4.7.3)
-  - AlamofireNetworkActivityIndicator (~> 2.3)
+  - Alamofire (= 4.8.0)
+  - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
   - Automattic-Tracks-iOS (~> 0.4.3)
@@ -475,8 +475,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.16.0)
-  - WordPressAuthenticator (~> 1.10.7)
-  - WordPressKit (~> 4.5.7)
+  - WordPressAuthenticator (~> 1.10.8)
+  - WordPressKit (~> 4.5.8)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.13)
   - WordPressUI (~> 1.5.1)
@@ -623,8 +623,8 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
-  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  AlamofireNetworkActivityIndicator: 18346ff6d770d9513d0ac6f2d99706f40f93dbaa
+  Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
+  AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
   Automattic-Tracks-iOS: 5515b3e6a5e55183a244ca6cb013df26810fa994
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -689,8 +689,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 64a2989d25befb5ce086fac440315f696026ffd5
   WordPress-Editor-iOS: 63ef6a532af2c92e3301421f5c4af41ad3be8721
-  WordPressAuthenticator: 9141ea5a2e2b227252f3da6b3282a467f62588ba
-  WordPressKit: 2404e5f60d6564494f7add2a0a75d7b970dbefb0
+  WordPressAuthenticator: 0bc92d42c942e7139c3a75d5988b4b3649eb32e2
+  WordPressKit: 2a21df0466083d073cbd85efdff4b50280a5c675
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: fde9523bd00696fc1dfa45ed5299e16de111ebcc
   WordPressUI: ce0ac522146dabcd0a68ace24c0104dfdf6f4b0d

@@ -9,6 +9,7 @@ class EditorGutenbergTests: XCTestCase {
         _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = EditorFlow
             .toggleBlockEditor(to: .on)
+            .goBackToMySite()
             .tabBar.gotoBlockEditorScreen()
     }
 
@@ -18,6 +19,7 @@ class EditorGutenbergTests: XCTestCase {
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()
         }
+        LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 
