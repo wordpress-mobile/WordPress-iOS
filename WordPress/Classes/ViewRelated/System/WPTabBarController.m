@@ -68,6 +68,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
+@property (nonatomic, strong) UIButton *createButton;
+
 @end
 
 @implementation WPTabBarController
@@ -109,6 +111,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self setViewControllers:[self tabViewControllers]];
 
         [self setSelectedViewController:self.blogListSplitViewController];
+        
+        if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+            [self.createButton removeFromSuperview];
+            self.createButton = [self addCreateButton];
+        }
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
@@ -416,8 +423,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _meSplitViewController = nil;
     _notificationsNavigationController = nil;
     _notificationsSplitViewController = nil;
-
+    
     [self setViewControllers:[self tabViewControllers]];
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [self.createButton removeFromSuperview];
+        self.createButton = [self addCreateButton];
+    }
 
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
@@ -960,10 +972,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self startObserversForTabAccessTracking];
-    
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self addFloatingButton];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

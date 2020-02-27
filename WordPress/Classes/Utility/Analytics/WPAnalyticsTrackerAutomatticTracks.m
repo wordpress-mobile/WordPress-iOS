@@ -525,6 +525,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorSessionEnd:
             eventName = @"editor_session_end";
             break;
+        case WPAnalyticsStatEditorSessionTemplateApply:
+            eventName = @"editor_session_template_apply";
+            break;
+        case WPAnalyticsStatEditorSessionTemplatePreview:
+            eventName = @"editor_session_template_preview";
+            break;
         case WPAnalyticsStatEditorPublishedPost:
             eventName = @"editor_post_published";
             break;
@@ -2001,6 +2007,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+            return nil;
+
+        // The following are implemented as part of the release/14.3 branch
+        // https://github.com/wordpress-mobile/WordPress-iOS/pull/13505
+        // For the time being I'm stubbing these out until that branch makes it back to develop
+        case WPAnalyticsStatWelcomeNoSitesInterstitialShown:
+        case WPAnalyticsStatWelcomeNoSitesInterstitialButtonTapped:
+        case WPAnalyticsStatWelcomeNoSitesInterstitialDismissed:
             return nil;
     }
 
