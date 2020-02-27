@@ -51,7 +51,7 @@ private extension UIBarButtonItem {
 
     /// Create the gravatar CircluarImageView with a fade animation on tap.
     /// If no valid email is provided, fall back to the circled user icon
-    func makeGravatarTappableView(with email: String?) -> UIImageView {
+    func makeGravatarTappableView(with email: String?) -> UIView {
         let gravatarImageView = CircularImageView()
 
         gravatarImageView.isUserInteractionEnabled = true
@@ -77,8 +77,8 @@ private extension UIBarButtonItem {
     }
 
     /// embeds a view in a larger tappable area, vertically centered and aligned to the right
-    func embedInTappableArea(_ imageView: UIImageView) -> UIImageView {
-        let tappableView = UIImageView()
+    func embedInTappableArea(_ imageView: UIImageView) -> UIView {
+        let tappableView = UIView()
         setSize(of: tappableView, size: GravatarConfiguration.tappableWidth)
         tappableView.addSubview(imageView)
         NSLayoutConstraint(item: imageView,
@@ -104,9 +104,9 @@ private extension UIBarButtonItem {
     }
 
     /// constrains a squared UIImageView to a set size
-    func setSize(of imageView: UIImageView, size: CGFloat) {
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: imageView,
+    func setSize(of view: UIView, size: CGFloat) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: view,
                            attribute: .width,
                            relatedBy: .equal,
                            toItem: nil,
@@ -115,7 +115,7 @@ private extension UIBarButtonItem {
                            constant: size)
             .isActive = true
 
-        NSLayoutConstraint(item: imageView,
+        NSLayoutConstraint(item: view,
                            attribute: .height,
                            relatedBy: .equal,
                            toItem: nil,
