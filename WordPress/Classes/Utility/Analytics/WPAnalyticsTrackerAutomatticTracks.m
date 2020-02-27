@@ -1997,6 +1997,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"widget_active_site_changed";
             break;
 
+        case WPAnalyticsStatWelcomeNoSitesInterstitialShown:
+            eventName = @"welcome_no_sites_interstitial_shown";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialButtonTapped:
+            eventName = @"welcome_no_sites_interstitial_button_tapped";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialDismissed:
+            eventName = @"welcome_no_sites_interstitial_dismissed";
+            break;
+
         // The following are yet to be implemented.
         //
         // If you get test failures in WPAnalyticsTrackerAutomatticTracksTests, it's most likely
@@ -2007,14 +2019,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
-            return nil;
-
-        // The following are implemented as part of the release/14.3 branch
-        // https://github.com/wordpress-mobile/WordPress-iOS/pull/13505
-        // For the time being I'm stubbing these out until that branch makes it back to develop
-        case WPAnalyticsStatWelcomeNoSitesInterstitialShown:
-        case WPAnalyticsStatWelcomeNoSitesInterstitialButtonTapped:
-        case WPAnalyticsStatWelcomeNoSitesInterstitialDismissed:
             return nil;
     }
 

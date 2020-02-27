@@ -9,6 +9,10 @@ class SignupEpilogueViewController: NUXViewController {
     var credentials: AuthenticatorCredentials?
     var socialService: SocialService?
 
+    /// Closure to be executed upon tapping the continue button.
+    ///
+    var onContinue: (() -> Void)?
+
     // MARK: - Outlets
 
     @IBOutlet private var buttonViewContainer: UIView! {
@@ -177,7 +181,7 @@ private extension SignupEpilogueViewController {
             }
             self.refreshAccountDetails() {
                 SVProgressHUD.dismiss()
-                self.navigationController?.dismiss(animated: true)
+                self.dismissEpilogue()
             }
         }
         changesMade = true
@@ -253,11 +257,20 @@ private extension SignupEpilogueViewController {
         }
     }
 
+    func dismissEpilogue() {
+        guard let onContinue = self.onContinue else {
+            self.navigationController?.dismiss(animated: true)
+            return
+        }
+
+        onContinue()
+    }
+
     func refreshAccountDetails(finished: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         guard let account = service.defaultWordPressComAccount() else {
-            self.navigationController?.dismiss(animated: true)
+            self.dismissEpilogue()
             return
         }
         service.updateUserDetails(for: account, success: { () in
