@@ -21,10 +21,12 @@ class MainNavigationTests: XCTestCase {
     func testTabBarNavigation() {
         mySiteScreen
             .tabBar.gotoMySitesScreen()
-            .tabBar.gotoReaderScreen()
-            .tabBar.gotoNotificationsScreen()
             .tabBar.gotoBlockEditorScreen()
             .closeEditor()
+
+        _ = mySiteScreen
+            .tabBar.gotoReaderScreen()
+            .tabBar.gotoNotificationsScreen()
 
         XCTContext.runActivity(named: "Confirm Notifications screen and main navigation bar are loaded.") { (activity) in
             XCTAssert(NotificationsScreen.isLoaded(), "Notifications screen isn't loaded.")
