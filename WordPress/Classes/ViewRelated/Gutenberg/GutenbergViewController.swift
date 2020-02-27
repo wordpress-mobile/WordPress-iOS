@@ -577,6 +577,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
+    func gutenbergDidLogUserEvent(_ event: GutenbergUserEvent) {
+        switch event {
+        case .editorSessionTemplateApply(let template):
+            editorSession.apply(template: template)
+        case .editorSessionTemplatePreview(let template):
+            editorSession.preview(template: template)
+        }
+    }
+
     func gutenbergDidRequestImagePreview(with fullSizeUrl: URL, thumbUrl: URL?) {
         navigationController?.definesPresentationContext = true
 
