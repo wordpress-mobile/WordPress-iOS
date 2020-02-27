@@ -12,6 +12,7 @@ class LoginEpilogueConnectSiteCell: UITableViewCell, NibReusable {
         connectLabel.text = numberOfSites == 0 ? LocalizedText.connectSite : LocalizedText.connectAnother
         connectLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize, weight: .regular)
         connectLabel.textColor = .primary
+        accessibilityIdentifier = "connectSite"
     }
 
 }
