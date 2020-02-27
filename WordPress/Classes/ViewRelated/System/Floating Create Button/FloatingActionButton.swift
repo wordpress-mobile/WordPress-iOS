@@ -32,11 +32,7 @@ class FloatingActionButton: UIButton {
     override func updateConstraints() {
         super.updateConstraints()
 
-        // If we are missing our trailing constraint, re-activate it.
-        // This can happen because the trailing anchor is not yet in the view hierarchy when the button was added.
-        if constraint(for: .trailing, withRelation: .equal) == nil {
-            trailingConstraint?.isActive = true
-        }
+        trailingConstraint?.isActive = true
     }
 
     private func refreshShadow() {
