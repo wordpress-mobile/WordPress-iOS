@@ -23,6 +23,20 @@ class LoginEpilogueTableViewController: UITableViewController {
     ///
     private var credentials: AuthenticatorCredentials?
 
+    /// Closure to be executed when Connect Site is selected.
+    ///
+    private var onConnectSite: (() -> Void)?
+
+    /// Flag indicating if the Connect Site option should be displayed.
+    ///
+    private var showConnectSite: Bool {
+        guard let wpcom = credentials?.wpcom else {
+            return true
+        }
+
+        return !wpcom.isJetpackLogin
+    }
+
 
     // MARK: - Lifecycle
 
@@ -35,16 +49,20 @@ class LoginEpilogueTableViewController: UITableViewController {
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
 
-        view.backgroundColor = .basicBackground
+        tableView.register(LoginEpilogueConnectSiteCell.defaultNib,
+                           forCellReuseIdentifier: LoginEpilogueConnectSiteCell.defaultReuseID)
 
-        // Hide separators on empty rows
-        tableView.tableFooterView = UIView()
+        // Remove separator line on last row
+        tableView.tableFooterView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0, height: 1)))
+
+        view.backgroundColor = .basicBackground
     }
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
     ///
-    func setup(with credentials: AuthenticatorCredentials) {
+    func setup(with credentials: AuthenticatorCredentials, onConnectSite: (() -> Void)? = nil) {
         self.credentials = credentials
+        self.onConnectSite = onConnectSite
         refreshInterface(for: credentials)
     }
 }
@@ -66,6 +84,12 @@ extension LoginEpilogueTableViewController {
             }
         }
 
+        // Add one for Connect Site if there are no sites from blogDataSource.
+        if adjustedNumberOfSections == 0 && showConnectSite {
+            adjustedNumberOfSections += 1
+        }
+
+        // Add one for User Info
         return adjustedNumberOfSections + 1
     }
 
@@ -75,30 +99,42 @@ extension LoginEpilogueTableViewController {
         }
 
         let correctedSection = section - 1
-        return blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
+        let siteRows = blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
+
+        // Add one for the Connect Site row if shown.
+        return showConnectSite ? siteRows + 1 : siteRows
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard indexPath.section == Sections.userInfoSection else {
-            let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
-            return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
+
+        // User Info Row
+        if indexPath.section == Sections.userInfoSection {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as? EpilogueUserInfoCell else {
+                return UITableViewCell()
+            }
+            if let info = epilogueUserInfo {
+                cell.stopSpinner()
+                cell.configure(userInfo: info)
+            } else {
+                cell.startSpinner()
+            }
+
+            return cell
         }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as! EpilogueUserInfoCell
-        if let info = epilogueUserInfo {
-            cell.stopSpinner()
-            cell.configure(userInfo: info)
-        } else {
-            cell.startSpinner()
+        // Connect Site Row
+        if indexPath.row == lastRowInSection(indexPath.section) && showConnectSite {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: LoginEpilogueConnectSiteCell.defaultReuseID) as? LoginEpilogueConnectSiteCell else {
+                return UITableViewCell()
+            }
+
+            cell.configure(numberOfSites: numberOfWordPressComBlogs)
+            return cell
         }
 
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard cell is EpilogueUserInfoCell else {
-            return
-        }
+        // Site Rows
+        let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
+        return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -116,11 +152,7 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == Sections.userInfoSection {
-            return Settings.profileRowHeight
-        }
-
-        return Settings.blogRowHeight
+        return indexPath.section == Sections.userInfoSection ? Settings.profileRowHeight : Settings.blogRowHeight
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -132,18 +164,22 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard section != Sections.userInfoSection else {
-            return 0
-        }
-
-        return UITableView.automaticDimension
+        return section == Sections.userInfoSection ? 0 : UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-}
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section != Sections.userInfoSection,
+            indexPath.row == lastRowInSection(indexPath.section) else {
+            return
+        }
+
+        onConnectSite?()
+    }
+}
 
 // MARK: - UITableViewDelegate methods
 //
@@ -168,7 +204,7 @@ extension LoginEpilogueTableViewController {
 //
 private extension LoginEpilogueTableViewController {
 
-    /// Returns the title for the current section.
+    /// Returns the title for a given section.
     ///
     func title(for section: Int) -> String? {
         guard section != Sections.userInfoSection else {
@@ -177,11 +213,27 @@ private extension LoginEpilogueTableViewController {
 
         let rowCount = blogDataSource.tableView(tableView, numberOfRowsInSection: section - 1)
         if rowCount > 1 {
-            return NSLocalizedString("My Sites", comment: "Header for list of multiple sites, shown after loggin in").localizedUppercase
+            return NSLocalizedString("My Sites", comment: "Header for list of multiple sites, shown after logging in").localizedUppercase
         }
 
-        return NSLocalizedString("My Site", comment: "Header for a single site, shown after loggin in").localizedUppercase
+        return NSLocalizedString("My Site", comment: "Header for a single site, shown after logging in").localizedUppercase
     }
+
+    /// Returns the last row index for a given section.
+    ///
+    func lastRowInSection(_ section: Int) -> Int {
+        return (tableView.numberOfRows(inSection: section) - 1)
+    }
+
+    /// Returns the number of WordPress.com sites.
+    ///
+    var numberOfWordPressComBlogs: Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+
+        return service.defaultWordPressComAccount()?.blogs.count ?? 0
+    }
+
 }
 
 
