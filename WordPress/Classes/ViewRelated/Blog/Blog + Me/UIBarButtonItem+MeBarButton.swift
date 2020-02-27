@@ -5,7 +5,7 @@ import UIKit
 /// Add a UIBarButtonItem to the navigation bar that  presents the Me scene.
 extension BlogDetailsViewController {
     @objc
-    private func presentHandler() {
+    func presentHandler() {
         meScenePresenter.present(on: self, animated: true, completion: nil)
     }
 
