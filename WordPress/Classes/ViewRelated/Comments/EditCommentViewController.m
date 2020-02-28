@@ -23,7 +23,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 @interface EditCommentViewController()
 @property (readwrite, nonatomic, weak) IBOutlet UITextView     *textView;
 @property (nonatomic, strong) NSString *pristineText;
-@property (nonatomic, assign) CGRect   keyboardFrame;
+@property (readwrite, nonatomic, assign) CGRect keyboardFrame;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
@@ -159,7 +159,9 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
 {
-    CGSize kbSize = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGRect keyboardRect = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    self.keyboardFrame = keyboardRect;
+    CGSize kbSize = keyboardRect.size;
 
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     self.textView.contentInset = contentInsets;
@@ -167,9 +169,9 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 
     // Scroll the active text field into view.
-    //CGRect textFieldRect = [activeField frame];
     CGRect rect = [self.textView caretRectForPosition:self.textView.selectedTextRange.start];
-    [self.textView scrollRectToVisible:rect animated:YES];
+
+    [self.textView scrollRectToVisible:rect animated:NO];
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
@@ -177,8 +179,8 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 0, 0.0);
     self.textView.contentInset = contentInsets;
     self.textView.scrollIndicatorInsets = contentInsets;
+    self.keyboardFrame = CGRectZero;
 }
-
 
 #pragma mark - Text View Delegate Methods
 
