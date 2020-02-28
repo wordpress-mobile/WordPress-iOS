@@ -73,8 +73,9 @@ class BlogDetailsViewControllerTests: XCTestCase {
         scenePresenter?.presentExpectation = expectation(description: "Me was presented")
         // When
 
-        guard let target = blogDetailsViewController?.target(forAction: #selector(BlogDetailsViewController.presentHandler), withSender: blogDetailsViewController) else {
-            XCTFail("Cippa")
+        guard let target = blogDetailsViewController?.target(forAction: #selector(BlogDetailsViewController.presentHandler),
+                                                             withSender: blogDetailsViewController) else {
+            XCTFail("Target not found")
             return
         }
 
