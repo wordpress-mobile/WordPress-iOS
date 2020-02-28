@@ -29,8 +29,8 @@ import Gridicons
 
     /// Should be called any time the `viewController`'s trait collections change
     /// - Parameter previousTraitCollect: The previous trait collection
-    @objc func presentingTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection) {
-        if viewController?.presentedViewController is ActionSheetViewController {
+    @objc func presentingTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection, newTraitCollection: UITraitCollection) {
+        if viewController?.presentedViewController is ActionSheetViewController && previousTraitCollection.verticalSizeClass == newTraitCollection.verticalSizeClass {
             viewController?.dismiss(animated: true, completion: { [weak self] in
                 self?.showCreateSheet()
             })
@@ -68,7 +68,7 @@ import Gridicons
 
         let actionSheetController = ActionSheetViewController(headerTitle: NSLocalizedString("Create New", comment: "Create New header text"), buttons: [postsButton, pagesButton])
 
-        if viewController?.traitCollection.horizontalSizeClass == .regular {
+        if viewController?.traitCollection.horizontalSizeClass == .regular && viewController?.traitCollection.verticalSizeClass == .regular {
             actionSheetController.modalPresentationStyle = .popover
         } else {
             actionSheetController.modalPresentationStyle = .custom

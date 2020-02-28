@@ -1019,7 +1019,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     [self updateWriteButtonAppearance];
     
-    [self.createButtonCoordinator presentingTraitCollectionDidChange:previousTraitCollection];
+    [self.createButtonCoordinator presentingTraitCollectionDidChange:previousTraitCollection newTraitCollection:self.traitCollection];
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
