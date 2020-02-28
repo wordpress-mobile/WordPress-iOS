@@ -178,6 +178,7 @@ class GutenbergSettings {
     }
 
     func getDefaultEditor(for blog: Blog) -> MobileEditor {
+        database.set(true, forKey: Key.enabledOnce(for: blog))
         return .gutenberg
     }
 }
