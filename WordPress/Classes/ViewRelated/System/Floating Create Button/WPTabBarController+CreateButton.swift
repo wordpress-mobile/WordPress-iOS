@@ -40,11 +40,11 @@ extension WPTabBarController {
 
         view.addSubview(button)
 
+        /// A trailing constraint that is activated in `updateConstraints` at a later time when everything should be set up
         let trailingConstraint = button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.padding)
         button.trailingConstraint = trailingConstraint
 
         NSLayoutConstraint.activate([
-            trailingConstraint,
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.padding),
             button.heightAnchor.constraint(equalToConstant: Constants.heightWidth),
             button.widthAnchor.constraint(equalToConstant: Constants.heightWidth)
