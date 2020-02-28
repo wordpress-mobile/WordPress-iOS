@@ -159,27 +159,24 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
 {
-    NSTimeInterval animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    
-    _keyboardFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    _keyboardFrame = [self.view convertRect:_keyboardFrame fromView:self.view.window];
-    
-    [UIView animateWithDuration:animationDuration animations:^{
-        CGRect frm = self.textView.frame;
-        frm.size.height = CGRectGetMinY(self.keyboardFrame);
-        self.textView.frame = frm;
-    }];
+    CGSize kbSize = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.textView.contentInset = contentInsets;
+    self.textView.scrollIndicatorInsets = contentInsets;
+
+
+    // Scroll the active text field into view.
+    //CGRect textFieldRect = [activeField frame];
+    CGRect rect = [self.textView caretRectForPosition:self.textView.selectedTextRange.start];
+    [self.textView scrollRectToVisible:rect animated:YES];
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
-    NSTimeInterval animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    
-    [UIView animateWithDuration:animationDuration animations:^{
-        CGRect frm = self.textView.frame;
-        frm.size.height = CGRectGetMaxY(self.view.bounds);
-        self.textView.frame = frm;
-    }];
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 0, 0.0);
+    self.textView.contentInset = contentInsets;
+    self.textView.scrollIndicatorInsets = contentInsets;
 }
 
 
