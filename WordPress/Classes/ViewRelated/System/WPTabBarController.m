@@ -467,12 +467,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             [weakSelf showPostTab];
         } newPage:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
-            Blog *blog = [weakSelf currentlyVisibleBlog];
-            if (blog == nil) {
-                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-                BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-                blog = [blogService lastUsedOrFirstBlog];
-            }
+            Blog *blog = [weakSelf currentOrLastBlog];
             [weakSelf showPageTabForBlog:blog];
         }];
     }
@@ -594,13 +589,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     if (!blog) {
-        blog = [self currentlyVisibleBlog];
-
-        if (blog == nil) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-            blog = [blogService lastUsedOrFirstBlog];
-        }
+        blog = [self currentOrLastBlog];
     }
 
     EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
@@ -800,6 +789,19 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         return [obj isKindOfClass:[BlogDetailsViewController class]];
     }] firstObject];
     return blogDetailsController.blog;
+}
+
+- (Blog *)currentOrLastBlog
+{
+    Blog *blog = [self currentlyVisibleBlog];
+
+    if (blog == nil) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        blog = [blogService lastUsedOrFirstBlog];
+    }
+    
+    return blog;
 }
 
 #pragma mark - UITabBarControllerDelegate methods

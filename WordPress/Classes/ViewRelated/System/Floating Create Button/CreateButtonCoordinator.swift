@@ -11,6 +11,7 @@ import Gridicons
         let button = FloatingActionButton(image: Gridicon.iconOfType(.create))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
+        button.accessibilityHint = NSLocalizedString("Creates new post or page", comment: " Accessibility hint for create floating action button")
         return button
     }()
 
@@ -49,7 +50,6 @@ import Gridicons
     }
 
     @objc private func showCreateSheet() {
-//        newPost()
         //TODO: Add Action Sheet here
         newPage()
     }
