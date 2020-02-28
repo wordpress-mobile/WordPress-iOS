@@ -50,7 +50,7 @@ extension NSNotification.Name {
     private static var zdAppID: String?
     private static var zdUrl: String?
     private static var zdClientId: String?
-    private static var presentInController: UIViewController?
+    private weak var presentInController: UIViewController?
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
@@ -102,7 +102,7 @@ extension NSNotification.Name {
     ///
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
-        ZendeskUtils.presentInController = controller
+        presentInController = controller
         let haveUserIdentity = ZendeskUtils.sharedInstance.haveUserIdentity
 
         // Since user information is not needed to display the Help Center,
@@ -138,7 +138,7 @@ extension NSNotification.Name {
     ///
     func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
-        ZendeskUtils.presentInController = controller
+        presentInController = controller
 
         ZendeskUtils.createIdentity { success in
             guard success else {
@@ -158,7 +158,7 @@ extension NSNotification.Name {
     ///
     func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
-        ZendeskUtils.presentInController = controller
+        presentInController = controller
 
         ZendeskUtils.createIdentity { success in
             guard success else {
@@ -179,7 +179,7 @@ extension NSNotification.Name {
     /// Displays an alert allowing the user to change their Support email address.
     ///
     func showSupportEmailPrompt(from controller: UIViewController, completion: @escaping (Bool) -> Void) {
-        ZendeskUtils.presentInController = controller
+        presentInController = controller
 
         ZendeskUtils.getUserInformationAndShowPrompt(withName: false) { success in
             completion(success)
@@ -472,7 +472,7 @@ private extension ZendeskUtils {
     // MARK: - View
 
     static func showZendeskView(_ zendeskView: UIViewController) {
-        guard let presentInController = presentInController else {
+        guard let presentInController = ZendeskUtils.sharedInstance.presentInController else {
             return
         }
 
@@ -798,7 +798,7 @@ private extension ZendeskUtils {
         }
 
         // Show alert
-        presentInController?.present(alertController, animated: true) {
+        ZendeskUtils.sharedInstance.presentInController?.present(alertController, animated: true) {
             // Enable text fields only after the alert is shown so that VoiceOver will dictate
             // the message first. 
             alertController.textFields?.forEach { textField in
@@ -808,7 +808,7 @@ private extension ZendeskUtils {
     }
 
     @objc static func emailTextFieldDidChange(_ textField: UITextField) {
-        guard let alertController = presentInController?.presentedViewController as? UIAlertController,
+        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
             let email = alertController.textFields?.first?.text,
             let submitAction = alertController.actions.last else {
                 return
@@ -819,7 +819,7 @@ private extension ZendeskUtils {
     }
 
     static func updateNameFieldForEmail(_ email: String) {
-        guard let alertController = presentInController?.presentedViewController as? UIAlertController,
+        guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
             let nameField = alertController.textFields?.last else {
                 return
         }

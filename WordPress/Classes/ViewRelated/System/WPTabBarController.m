@@ -68,6 +68,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
+@property (nonatomic, strong) UIButton *createButton;
+
 @end
 
 @implementation WPTabBarController
@@ -109,6 +111,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self setViewControllers:[self tabViewControllers]];
 
         [self setSelectedViewController:self.blogListSplitViewController];
+        
+        if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+            [self.createButton removeFromSuperview];
+            self.createButton = [self addCreateButton];
+        }
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
@@ -263,7 +270,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     
     return _meNavigationController;
 }
-
+//TODO: remove when the new Me navigation is ready
 - (MeViewController *)meViewController {
     if (!_meViewController) {
         _meViewController = [MeViewController new];
@@ -416,8 +423,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _meSplitViewController = nil;
     _notificationsNavigationController = nil;
     _notificationsSplitViewController = nil;
-
+    
     [self setViewControllers:[self tabViewControllers]];
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [self.createButton removeFromSuperview];
+        self.createButton = [self addCreateButton];
+    }
 
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
@@ -465,6 +477,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     if ([Feature enabled:FeatureFlagMeMove]) {
         [allViewControllers removeObject:self.meSplitViewController];
+        self.meSplitViewController = nil;
+        self.meNavigationController = nil;
+        self.meViewController = nil;
     }
 
     return allViewControllers;
@@ -960,10 +975,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self startObserversForTabAccessTracking];
-    
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self addFloatingButton];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
