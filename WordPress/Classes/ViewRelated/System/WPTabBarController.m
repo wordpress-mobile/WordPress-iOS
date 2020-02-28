@@ -68,7 +68,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
-@property (nonatomic, strong) UIButton *createButton;
+@property (nonatomic, strong) CreateButtonCoordinator *createButtonCoordinator;
 
 @end
 
@@ -113,8 +113,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self setSelectedViewController:self.blogListSplitViewController];
         
         if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-            [self.createButton removeFromSuperview];
-            self.createButton = [self addCreateButton];
+            [self.createButtonCoordinator addTo:self.view trailingAnchor:((UIViewController *)self.blogListSplitViewController.viewControllers[0]).view.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
         }
 
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -427,8 +426,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self setViewControllers:[self tabViewControllers]];
     
     if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButton removeFromSuperview];
-        self.createButton = [self addCreateButton];
+        [self.createButtonCoordinator addTo:self.view trailingAnchor:self.blogListSplitViewController.viewControllers[0].view.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
     }
 
     // Reset the selectedIndex to the default MySites tab.
@@ -458,6 +456,28 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController
                                                readerSplitViewController:self.readerSplitViewController
                                                 readerMenuViewController:self.readerMenuViewController];
+}
+
+- (CreateButtonCoordinator *)createButtonCoordinator
+{
+    if (!_createButtonCoordinator) {
+        __weak __typeof(self) weakSelf = self;
+        _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
+            [weakSelf dismissViewControllerAnimated:true completion:nil];
+            [weakSelf showPostTab];
+        } newPage:^{
+            [weakSelf dismissViewControllerAnimated:true completion:nil];
+            Blog *blog = [weakSelf currentlyVisibleBlog];
+            if (blog == nil) {
+                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+                blog = [blogService lastUsedOrFirstBlog];
+            }
+            [weakSelf showPageTabForBlog:blog];
+        }];
+    }
+    
+    return _createButtonCoordinator;
 }
 
 #pragma mark - Navigation Helpers
@@ -996,6 +1016,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [super traitCollectionDidChange:previousTraitCollection];
 
     [self updateWriteButtonAppearance];
+    
+    [self.createButtonCoordinator presentingTraitCollectionDidChange:previousTraitCollection];
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -1014,5 +1036,4 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     return nil;
 }
-
 @end
