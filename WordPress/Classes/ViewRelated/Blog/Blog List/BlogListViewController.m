@@ -52,6 +52,16 @@ static NSInteger HideSearchMinSites = 3;
     return self;
 }
 
+- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
+{
+    self = [self init];
+    if (self) {
+        self.meScenePresenter = meScenePresenter;
+    }
+    return self;
+}
+
+
 - (void)configureDataSource
 {
     self.dataSource = [BlogListDataSource new];
@@ -132,6 +142,7 @@ static NSInteger HideSearchMinSites = 3;
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
     [self registerForAccountChangeNotification];
+    [self registerForPostSignUpNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -210,11 +221,16 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)maybeShowNUX
 {
-    if (self.dataSource.allBlogsCount > 0) {
+    NSInteger blogCount = self.dataSource.allBlogsCount;
+    BOOL isLoggedIn = AccountHelper.isLoggedIn;
+
+    if (blogCount > 0 && !isLoggedIn) {
         return;
     }
+    
     if (![self defaultWordPressComAccount]) {
         [[WordPressAppDelegate shared] showWelcomeScreenIfNeededAnimated:YES];
+        return;
     }
 }
 
@@ -525,6 +541,19 @@ static NSInteger HideSearchMinSites = 3;
 }
 
 #pragma mark - Notifications
+- (void)registerForPostSignUpNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(launchSiteCreation)
+                                                 name:NSNotification.PSICreateSite
+                                               object:nil];
+
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showLoginControllerForAddingSelfHostedSite)
+                                                 name:NSNotification.PSIAddSelfHosted
+                                               object:nil];
+}
 
 - (void)registerForAccountChangeNotification
 {
@@ -853,7 +882,11 @@ static NSInteger HideSearchMinSites = 3;
 - (void)setAddSiteBarButtonItem
 {
     if (self.dataSource.allBlogsCount == 0) {
-        self.navigationItem.rightBarButtonItem = nil;
+        if([Feature enabled:FeatureFlagMeMove]) {
+            [self addMeButtonToNavigationBarWith:[[self defaultWordPressComAccount] email]];
+        } else {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
     }
     else {
         self.navigationItem.rightBarButtonItem = self.addSiteButton;

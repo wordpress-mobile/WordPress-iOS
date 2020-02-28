@@ -9,6 +9,7 @@ class EditorAztecTests: XCTestCase {
         _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = EditorFlow
             .toggleBlockEditor(to: .off)
+            .goBackToMySite()
             .tabBar.gotoAztecEditorScreen()
     }
 
@@ -18,6 +19,7 @@ class EditorAztecTests: XCTestCase {
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()
         }
+        LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 

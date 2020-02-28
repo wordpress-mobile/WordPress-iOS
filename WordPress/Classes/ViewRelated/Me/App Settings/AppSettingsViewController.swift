@@ -434,5 +434,4 @@ private extension AppSettingsViewController {
             rows: rows,
             footerText: nil)
     }
-
 }

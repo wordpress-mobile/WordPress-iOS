@@ -525,6 +525,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorSessionEnd:
             eventName = @"editor_session_end";
             break;
+        case WPAnalyticsStatEditorSessionTemplateApply:
+            eventName = @"editor_session_template_apply";
+            break;
+        case WPAnalyticsStatEditorSessionTemplatePreview:
+            eventName = @"editor_session_template_preview";
+            break;
         case WPAnalyticsStatEditorPublishedPost:
             eventName = @"editor_post_published";
             break;
@@ -1989,6 +1995,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatWidgetActiveSiteChanged:
             eventName = @"widget_active_site_changed";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialShown:
+            eventName = @"welcome_no_sites_interstitial_shown";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialButtonTapped:
+            eventName = @"welcome_no_sites_interstitial_button_tapped";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialDismissed:
+            eventName = @"welcome_no_sites_interstitial_dismissed";
             break;
 
         // The following are yet to be implemented.

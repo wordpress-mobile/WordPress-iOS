@@ -23,10 +23,12 @@ enum MeNavigationAction: NavigationAction {
     func perform(_ values: [String: String] = [:], source: UIViewController? = nil) {
         switch self {
         case .root:
-            WPTabBarController.sharedInstance().showMeTab()
-            WPTabBarController.sharedInstance().popMeTabToRoot()
+            WPTabBarController.sharedInstance().showMeScene()
+            if !FeatureFlag.meMove.enabled {
+                WPTabBarController.sharedInstance().popMeTabToRoot()
+            }
         case .accountSettings:
-            WPTabBarController.sharedInstance().switchMeTabToAccountSettings()
+            WPTabBarController.sharedInstance().navigateToAccountSettings()
         case .notificationSettings:
             WPTabBarController.sharedInstance().switchNotificationsTabToNotificationSettings()
         }

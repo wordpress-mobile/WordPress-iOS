@@ -127,6 +127,15 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallCancelAutoUpload)
     }
 
+    func testCallsDelegateWhenRetryIsTapped() {
+        let viewModel = PostCardStatusViewModel(post: PostBuilder().with(remoteStatus: .failed).with(autoUploadAttemptsCount: 5).build())
+
+        postActionSheet.show(for: viewModel, from: view, isCompactOrSearching: true)
+        tap(Titles.retry, in: viewControllerMock.viewControllerPresented)
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallRetry)
+    }
+
     func tap(_ label: String, in alertController: UIAlertController?) {
         typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
 
