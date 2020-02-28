@@ -28,9 +28,6 @@ import Gridicons
     /// Should be called any time the `viewController`'s trait collections change
     /// - Parameter previousTraitCollect: The previous trait collection
     @objc func presentingTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection) {
-        viewController?.dismiss(animated: true, completion: { [weak self] in
-            self?.showCreateSheet()
-        })
     }
 
     @objc func add(to view: UIView, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {
