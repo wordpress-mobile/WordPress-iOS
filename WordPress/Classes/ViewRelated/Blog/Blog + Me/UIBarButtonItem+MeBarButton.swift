@@ -36,7 +36,7 @@ extension BlogListViewController {
 private extension UIBarButtonItem {
     /// gravatar configuration parameters
     struct GravatarConfiguration {
-        static let radius: CGFloat = 24.0
+        static let radius: CGFloat = 32
         static let tappableWidth: CGFloat = 44
         static let fallBackImage = Gridicon.iconOfType(.user)
     }
