@@ -6,6 +6,8 @@ import Gridicons
 //
 @objc public protocol ReplyTextViewDelegate: UITextViewDelegate {
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
+
+    @objc optional func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen withController: FullScreenCommentReplyViewController)
 }
 
 
@@ -181,6 +183,13 @@ import Gridicons
 
         guard let presenter = WPTabBarController.sharedInstance() else {
             return
+        }
+
+
+        let respondsToWillEnter = delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:willEnterFullScreen:))) ?? false
+
+        if respondsToWillEnter {
+            delegate?.replyTextView?(self, willEnterFullScreen: editViewController)
         }
 
         // Snapshot the first reponder status before presenting so we can restore it later

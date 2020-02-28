@@ -1186,4 +1186,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tapOffKeyboardGesture.enabled = !showsSuggestions;
 }
 
+
+- (void)replyTextView:(ReplyTextView *)replyTextView willEnterFullScreen:(FullScreenCommentReplyViewController *)controller
+{
+    [controller enableSuggestionsWith:self.siteID];
+}
 @end

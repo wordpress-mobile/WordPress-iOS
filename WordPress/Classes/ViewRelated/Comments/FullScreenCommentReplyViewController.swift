@@ -1,4 +1,3 @@
-
 import UIKit
 import Gridicons
 
@@ -6,7 +5,7 @@ import Gridicons
 /// After instantiating using `newEdit()` the class expects the `content` and `onExitFullscreen`
 /// properties to be set.
 
-class FullScreenCommentReplyViewController: EditCommentViewController {
+public class FullScreenCommentReplyViewController: EditCommentViewController, SuggestionsTableViewDelegate {
     private struct Parameters {
         /// Determines the size of the replyButton
         static let replyButtonIconSize = CGSize(width: 21, height: 18)
@@ -17,11 +16,17 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
     /// - Parameter: String, the updated comment content
     public var onExitFullscreen: ((Bool, String) -> ())?
 
+    @objc public var siteID: NSNumber?
+
     /// The save/reply button that is displayed in the rightBarButtonItem position
     private(set) var replyButton: UIButton!
 
+    /// Reply Suggestions
+    ///
+    @IBOutlet var suggestionsTableView: SuggestionsTableView!
+
     // MARK: - View Methods
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         title = NSLocalizedString("Comment", comment: "User facing, navigation bar title")
@@ -31,18 +36,57 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
         configureAppearance()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         enableRefreshButtonIfNeeded(animated: false)
+
+        setupSuggestionsTableViewIfNeeded()
+        attachSuggestionsViewIfNeeded()
     }
 
-    // MARK: - UITextViewDelegate
-    override func textViewDidBeginEditing(_ textView: UITextView) { }
-    override func textViewDidEndEditing(_ textView: UITextView) { }
+    // MARK: - Public Methods
+    @objc func enableSuggestions(with siteID: NSNumber) {
+        self.siteID = siteID
+    }
 
-    override func contentDidChange() {
+    private func setupSuggestionsTableViewIfNeeded() {
+        guard let siteID = self.siteID else {
+            return
+        }
+
+        suggestionsTableView = SuggestionsTableView()
+        suggestionsTableView.siteID = siteID
+        suggestionsTableView.suggestionsDelegate = self
+        suggestionsTableView.useTransparentHeader = true
+        suggestionsTableView.translatesAutoresizingMaskIntoConstraints = false
+
+    }
+    // MARK: - UITextViewDelegate
+    public override func textViewDidBeginEditing(_ textView: UITextView) { }
+    public override func textViewDidEndEditing(_ textView: UITextView) { }
+
+    public override func contentDidChange() {
         enableRefreshButtonIfNeeded()
+    }
+
+    open override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard shouldAttachSuggestionsView else {
+            return true
+        }
+
+        let textViewText: NSString = textView.text as NSString
+        let prerange = NSMakeRange(0, range.location)
+        let pretext = textViewText.substring(with: prerange) + text
+        let words = pretext.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        let lastWord: NSString = words.last! as NSString
+
+        didTypeWord(lastWord as String)
+        return true
+    }
+
+    private func didTypeWord(_ word: String) {
+        suggestionsTableView.showSuggestions(forWord: word)
     }
 
     // MARK: - Actions
@@ -153,4 +197,54 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
 
         completion(shouldSave, updatedText)
     }
+}
+
+// MARK - SuggestionsTableViewDelegate
+public extension FullScreenCommentReplyViewController {
+    func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
+        replaceTextAtCaret(text as NSString?, withText: suggestion)
+        suggestionsTableView.showSuggestions(forWord: String())
+    }
+}
+
+// MARK: - Suggestions View Helpers
+//
+private extension FullScreenCommentReplyViewController {
+    func attachSuggestionsViewIfNeeded() {
+        guard shouldAttachSuggestionsView else {
+            suggestionsTableView.removeFromSuperview()
+            return
+        }
+
+        view.addSubview(suggestionsTableView)
+
+        NSLayoutConstraint.activate([
+            suggestionsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            suggestionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            suggestionsTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            suggestionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+    }
+
+    var shouldAttachSuggestionsView: Bool {
+        guard let siteID = self.siteID else {
+            return false
+        }
+
+        return SuggestionService.sharedInstance().shouldShowSuggestions(forSiteID: siteID)
+    }
+
+
+    func replaceTextAtCaret(_ text: NSString?, withText replacement: String?) {
+        guard let replacementText = replacement,
+              let textToReplace = text,
+              let selectedRange = textView.selectedTextRange,
+              let newPosition = textView.position(from: selectedRange.start, offset: -textToReplace.length),
+              let newRange = textView.textRange(from: newPosition, to: selectedRange.start) else {
+            return
+        }
+
+        textView.replace(newRange, withText: replacementText)
+    }
+
 }
