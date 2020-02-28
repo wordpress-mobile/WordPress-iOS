@@ -52,7 +52,7 @@ import Gridicons
 
     @objc private func showCreateSheet() {
         //TODO: Add Action Sheet here
-        newPage()
+        newPost()
     }
 
     @objc func hideCreateButton() {
