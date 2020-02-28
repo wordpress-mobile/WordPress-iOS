@@ -5,10 +5,21 @@ import Gridicons
 /// After instantiating using `newEdit()` the class expects the `content` and `onExitFullscreen`
 /// properties to be set.
 
+
+/// Keeps track of the position of the suggestions view
+fileprivate enum SuggestionsPosition: Int {
+    case hidden
+    case top
+    case bottom
+}
+
 public class FullScreenCommentReplyViewController: EditCommentViewController, SuggestionsTableViewDelegate {
     private struct Parameters {
         /// Determines the size of the replyButton
         static let replyButtonIconSize = CGSize(width: 21, height: 18)
+
+        // Static margin between the suggestions view and the text cursor position
+        static let suggestionViewMargin: CGFloat = 5
     }
 
     /// The completion block that is called when the view is exiting fullscreen
@@ -16,14 +27,13 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     /// - Parameter: String, the updated comment content
     public var onExitFullscreen: ((Bool, String) -> ())?
 
-    @objc public var siteID: NSNumber?
-
     /// The save/reply button that is displayed in the rightBarButtonItem position
     private(set) var replyButton: UIButton!
 
     /// Reply Suggestions
     ///
-    @IBOutlet var suggestionsTableView: SuggestionsTableView!
+    private var siteID: NSNumber?
+    private var suggestionsTableView: SuggestionsTableView?
 
     // MARK: - View Methods
     public override func viewDidLoad() {
@@ -42,26 +52,33 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         enableRefreshButtonIfNeeded(animated: false)
 
         setupSuggestionsTableViewIfNeeded()
-        attachSuggestionsViewIfNeeded()
     }
 
     // MARK: - Public Methods
+
+    /// Enables the @ mention suggestions while editing
+    /// - Parameter siteID: The ID of the site to determine if suggestions are enabled or not
     @objc func enableSuggestions(with siteID: NSNumber) {
         self.siteID = siteID
     }
 
+    /// Description
     private func setupSuggestionsTableViewIfNeeded() {
-        guard let siteID = self.siteID else {
+        guard shouldShowSuggestions else {
             return
         }
 
-        suggestionsTableView = SuggestionsTableView()
-        suggestionsTableView.siteID = siteID
-        suggestionsTableView.suggestionsDelegate = self
-        suggestionsTableView.useTransparentHeader = true
-        suggestionsTableView.translatesAutoresizingMaskIntoConstraints = false
+        let tableView = SuggestionsTableView()
+        tableView.siteID = siteID
+        tableView.suggestionsDelegate = self
+        tableView.useTransparentHeader = true
+        tableView.translatesAutoresizingMaskIntoConstraints = false
 
+        suggestionsTableView = tableView
+
+        attachSuggestionsViewIfNeeded()
     }
+
     // MARK: - UITextViewDelegate
     public override func textViewDidBeginEditing(_ textView: UITextView) { }
     public override func textViewDidEndEditing(_ textView: UITextView) { }
@@ -71,10 +88,10 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     }
 
     open override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        guard shouldAttachSuggestionsView else {
+        guard shouldShowSuggestions else {
             return true
         }
-
+        
         let textViewText: NSString = textView.text as NSString
         let prerange = NSMakeRange(0, range.location)
         let pretext = textViewText.substring(with: prerange) + text
@@ -82,17 +99,21 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         let lastWord: NSString = words.last! as NSString
 
         didTypeWord(lastWord as String)
+
         return true
     }
 
     private func didTypeWord(_ word: String) {
-        suggestionsTableView.showSuggestions(forWord: word)
+        guard let tableView = suggestionsTableView else {
+            return
+        }
+
+        tableView.showSuggestions(forWord: word)
     }
 
     // MARK: - Actions
     @objc func btnSavePressed() {
         exitFullscreen(shouldSave: true)
-
     }
 
     @objc func btnExitFullscreenPressed() {
@@ -197,36 +218,128 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
 
         completion(shouldSave, updatedText)
     }
+
+    var suggestionsTop: NSLayoutConstraint!
+    var suggestionsBottom: NSLayoutConstraint!
+
+    fileprivate var suggestionsPosition: SuggestionsPosition = .hidden
 }
 
-// MARK - SuggestionsTableViewDelegate
+// MARK: - SuggestionsTableViewDelegate
+//
 public extension FullScreenCommentReplyViewController {
     func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
         replaceTextAtCaret(text as NSString?, withText: suggestion)
         suggestionsTableView.showSuggestions(forWord: String())
+    }
+
+    func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didChangeTableBounds bounds: CGRect) {
+
+        if suggestionsTableView.isHidden {
+            self.suggestionsPosition = .hidden
+        }
+        else{
+            self.repositionSuggestions()
+        }
+    }
+
+    func suggestionsTableViewMaxDisplayedRows(_ suggestionsTableView: SuggestionsTableView) -> Int {
+        return 4
+    }
+
+    override func handleKeyboardDidShow(_ notification: Foundation.Notification?) {
+        super.handleKeyboardDidShow(notification)
+
+        self.repositionSuggestions()
+    }
+
+    override func handleKeyboardWillHide(_ notification: Foundation.Notification?) {
+        super.handleKeyboardWillHide(notification)
+
+        self.repositionSuggestions()
     }
 }
 
 // MARK: - Suggestions View Helpers
 //
 private extension FullScreenCommentReplyViewController {
-    func attachSuggestionsViewIfNeeded() {
-        guard shouldAttachSuggestionsView else {
-            suggestionsTableView.removeFromSuperview()
+
+    /// Calculates a CGRect for the text caret and converts its value to the view's coordindate system
+    var absoluteTextCursorRect: CGRect {
+        let selectedRangeStart = textView.selectedTextRange?.start ?? UITextPosition()
+        var caretRect = textView.caretRect(for: selectedRangeStart)
+        caretRect = textView.convert(caretRect, to: view)
+
+        return caretRect.integral
+    }
+
+    func repositionSuggestions() {
+        guard let suggestions = suggestionsTableView else {
             return
         }
 
-        view.addSubview(suggestionsTableView)
+        let caretRect = absoluteTextCursorRect
+        let margin = Parameters.suggestionViewMargin
+        let suggestionsHeight = suggestions.frame.height
+
+
+        // Calculates the height of the view minus the keyboard if its visible
+        let calculatedViewHeight = (view.frame.height - keyboardFrame.height)
+
+        var position: SuggestionsPosition = .hidden
+        var constant: CGFloat = 0
+
+        // Calculates the direction the suggestions view should appear
+        // And the global position
+
+        // If the estimated position of the suggestion will appear below the bottom of the view
+        // then display it in the top position
+        if (caretRect.maxY + suggestionsHeight) > calculatedViewHeight {
+            position = .top
+
+            constant = (caretRect.minY - suggestionsHeight - margin)
+        }
+        else {
+            position = .bottom
+            constant = caretRect.maxY + margin
+        }
+
+        // If the user is typing we don't want to change the position of the suggestions view
+        //
+        if position == suggestionsPosition {
+            return
+        }
+
+//        suggestionsPosition = position
+        suggestionsTop.constant = constant
+    }
+
+    func attachSuggestionsViewIfNeeded() {
+        guard let tableView = suggestionsTableView else {
+            return
+        }
+
+        guard shouldShowSuggestions else {
+            tableView.removeFromSuperview()
+            return
+        }
+
+        // We're adding directly to the navigation controller view to allow the suggestions to appear
+        // above the nav bar, this only happens on smaller screens when the keyboard is open
+        navigationController?.view.addSubview(tableView)
+
+        suggestionsTop = tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
 
         NSLayoutConstraint.activate([
-            suggestionsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            suggestionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            suggestionsTableView.topAnchor.constraint(equalTo: view.topAnchor),
-            suggestionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            suggestionsTop,
         ])
     }
 
-    var shouldAttachSuggestionsView: Bool {
+
+    /// Determine if suggestions are enabled and visible for this site
+    var shouldShowSuggestions: Bool {
         guard let siteID = self.siteID else {
             return false
         }
@@ -234,7 +347,7 @@ private extension FullScreenCommentReplyViewController {
         return SuggestionService.sharedInstance().shouldShowSuggestions(forSiteID: siteID)
     }
 
-
+    // This should be moved elsewhere
     func replaceTextAtCaret(_ text: NSString?, withText replacement: String?) {
         guard let replacementText = replacement,
               let textToReplace = text,
