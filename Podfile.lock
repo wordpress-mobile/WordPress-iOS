@@ -13,7 +13,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (2.5.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.4.3):
+  - Automattic-Tracks-iOS (0.4.4-beta.1):
     - CocoaLumberjack (~> 3.5.2)
     - Reachability (~> 3.1)
     - Sentry (~> 4)
@@ -421,7 +421,7 @@ DEPENDENCIES:
   - AlamofireNetworkActivityIndicator (~> 2.3)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, commit `77ba1da15404cee0f4fb24d6e508a45469be700c`)
+  - Automattic-Tracks-iOS (~> 0.4.4-beta.1)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.5.2)
   - Down (~> 0.6.6)
@@ -491,6 +491,7 @@ SPEC REPOS:
     - Alamofire
     - AlamofireNetworkActivityIndicator
     - AppCenter
+    - Automattic-Tracks-iOS
     - boost-for-react-native
     - Charts
     - CocoaLumberjack
@@ -537,9 +538,6 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
-  Automattic-Tracks-iOS:
-    :commit: 77ba1da15404cee0f4fb24d6e508a45469be700c
-    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FBLazyVector:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/46239f3db87242fa639698f3138204c9816be85c/react-native-gutenberg-bridge/third-party-podspecs/FBLazyVector.podspec.json
   FBReactNativeSpec:
@@ -613,9 +611,6 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/46239f3db87242fa639698f3138204c9816be85c/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
 CHECKOUT OPTIONS:
-  Automattic-Tracks-iOS:
-    :commit: 77ba1da15404cee0f4fb24d6e508a45469be700c
-    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -631,7 +626,7 @@ SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireNetworkActivityIndicator: 18346ff6d770d9513d0ac6f2d99706f40f93dbaa
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  Automattic-Tracks-iOS: 5515b3e6a5e55183a244ca6cb013df26810fa994
+  Automattic-Tracks-iOS: f36f95a7525fc9cca7cf1617300cd5044247f4c3
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
@@ -711,6 +706,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 433fd5b961f11a235e8560433851c598c6fa53a2
+PODFILE CHECKSUM: ced6322b5c73b8d4838987c6a5fd492c1e80618e
 
 COCOAPODS: 1.8.4

@@ -169,9 +169,9 @@ target 'WordPress' do
     ##
 
     # Production
-    # pod 'Automattic-Tracks-iOS', '~> 0.4.3'
+    pod 'Automattic-Tracks-iOS', '~> 0.4.4-beta.1'
     # While in PR
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => '77ba1da15404cee0f4fb24d6e508a45469be700c'
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => '77ba1da15404cee0f4fb24d6e508a45469be700c'
 
     pod 'NSURL+IDN', '0.3'
 
