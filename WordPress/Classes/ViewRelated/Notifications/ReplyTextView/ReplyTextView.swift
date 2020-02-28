@@ -201,7 +201,7 @@ import Gridicons
         if #available(iOS 13.0, *) {
             editViewController.isModalInPresentation = true
         }
-        
+
         editViewController.onExitFullscreen = { (shouldSave, updatedContent) in
             self.text = updatedContent
 

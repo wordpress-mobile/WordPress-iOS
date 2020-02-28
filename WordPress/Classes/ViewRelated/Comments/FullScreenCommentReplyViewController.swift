@@ -91,7 +91,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         guard shouldShowSuggestions else {
             return true
         }
-        
+
         let textViewText: NSString = textView.text as NSString
         let prerange = NSMakeRange(0, range.location)
         let pretext = textViewText.substring(with: prerange) + text
@@ -237,8 +237,7 @@ public extension FullScreenCommentReplyViewController {
 
         if suggestionsTableView.isHidden {
             self.suggestionsPosition = .hidden
-        }
-        else{
+        } else {
             self.repositionSuggestions()
         }
     }
