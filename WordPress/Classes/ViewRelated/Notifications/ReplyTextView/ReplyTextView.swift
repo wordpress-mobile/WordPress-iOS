@@ -7,7 +7,7 @@ import Gridicons
 @objc public protocol ReplyTextViewDelegate: UITextViewDelegate {
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
 
-    @objc optional func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen withController: FullScreenCommentReplyViewController)
+    @objc optional func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController)
 }
 
 
@@ -186,6 +186,7 @@ import Gridicons
         }
 
 
+        // Inform any listeners
         let respondsToWillEnter = delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:willEnterFullScreen:))) ?? false
 
         if respondsToWillEnter {
@@ -196,9 +197,11 @@ import Gridicons
         let didHaveFirstResponder = textView.isFirstResponder
 
         editViewController.content = textView.text
+
         if #available(iOS 13.0, *) {
             editViewController.isModalInPresentation = true
         }
+        
         editViewController.onExitFullscreen = { (shouldSave, updatedContent) in
             self.text = updatedContent
 

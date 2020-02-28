@@ -1146,9 +1146,14 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
     func textView(_ textView: UITextView, didTypeWord word: String) {
         suggestionsTableView.showSuggestions(forWord: word)
     }
+
+    func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController) {
+        guard let siteID = note.metaSiteID else {
+            return
+        }
+        controller.enableSuggestions(with: siteID)
+    }
 }
-
-
 
 // MARK: - UIScrollViewDelegate
 //
