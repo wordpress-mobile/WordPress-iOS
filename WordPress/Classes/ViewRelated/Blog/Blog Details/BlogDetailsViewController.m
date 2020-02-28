@@ -365,7 +365,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
-        [(WPTabBarController *)self.tabBarController showCreateButton];
+        [((WPTabBarController *)self.tabBarController).createButtonCoordinator showCreateButton];
     }
     [self createUserActivity];
     [self startAlertTimer];
@@ -376,7 +376,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewWillDisappear:animated];
     [self stopAlertTimer];
     if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
-        [(WPTabBarController *)self.tabBarController hideCreateButton];
+        [((WPTabBarController *)self.tabBarController).createButtonCoordinator hideCreateButton];
     }
 }
 
