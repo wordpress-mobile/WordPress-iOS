@@ -1,4 +1,4 @@
-class PullDownAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
+class BottomSheetAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     enum TransitionType {
         case presenting
         case dismissing

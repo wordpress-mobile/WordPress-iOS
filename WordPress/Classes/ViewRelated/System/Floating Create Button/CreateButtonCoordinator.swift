@@ -27,14 +27,20 @@ import Gridicons
         self.newPage = newPage
     }
 
-    /// Should be called any time the `viewController`'s trait collections change
-    /// - Parameter previousTraitCollect: The previous trait collection
-    @objc func presentingTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection, newTraitCollection: UITraitCollection) {
-        if viewController?.presentedViewController is ActionSheetViewController && previousTraitCollection.verticalSizeClass == newTraitCollection.verticalSizeClass {
-            viewController?.dismiss(animated: true, completion: { [weak self] in
-                self?.showCreateSheet()
-            })
+    /// Should be called any time the `viewController`'s trait collections will change. Dismisses when horizontal class changes to transition from .popover -> .custom
+    /// - Parameter previousTraitCollection: The previous trait collection
+    /// - Parameter newTraitCollection: The new trait collection
+    @objc func presentingTraitCollectionWillChange(_ previousTraitCollection: UITraitCollection, newTraitCollection: UITraitCollection) {
+        if let actionSheetController = viewController?.presentedViewController as? ActionSheetViewController {
+            if previousTraitCollection.horizontalSizeClass != newTraitCollection.horizontalSizeClass {
+                viewController?.dismiss(animated: false, completion: { [weak self] in
+                    guard let self = self else { return }
+                    self.setupPresentation(on: actionSheetController, for: newTraitCollection)
+                    self.viewController?.present(actionSheetController, animated: false, completion: nil)
+                })
+            }
         }
+
     }
 
     @objc func add(to view: UIView, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {
@@ -56,11 +62,12 @@ import Gridicons
     }
 
     @objc private func showCreateSheet() {
-        let actionSheetVC = actionSheetController()
-        viewController?.present(actionSheetVC, animated: true, completion: nil)
+        guard let viewController = viewController else { return }
+        let actionSheetVC = actionSheetController(for: viewController.traitCollection)
+        viewController.present(actionSheetVC, animated: true, completion: nil)
     }
 
-    private func actionSheetController() -> UIViewController {
+    private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
 
         let postsButton = ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"), image: Gridicon.iconOfType(.posts), target: self, selector: #selector(showNewPost))
 
@@ -68,17 +75,21 @@ import Gridicons
 
         let actionSheetController = ActionSheetViewController(headerTitle: NSLocalizedString("Create New", comment: "Create New header text"), buttons: [postsButton, pagesButton])
 
-        if viewController?.traitCollection.horizontalSizeClass == .regular && viewController?.traitCollection.verticalSizeClass == .regular {
-            actionSheetController.modalPresentationStyle = .popover
-        } else {
-            actionSheetController.modalPresentationStyle = .custom
-        }
-
-        actionSheetController.popoverPresentationController?.sourceView = button
-        actionSheetController.popoverPresentationController?.sourceRect = button.bounds.offsetBy(dx: 0, dy: Constants.popoverOffset)
-        actionSheetController.transitioningDelegate = self
+        setupPresentation(on: actionSheetController, for: traitCollection)
 
         return actionSheetController
+    }
+
+    private func setupPresentation(on viewController: UIViewController, for traitCollection: UITraitCollection) {
+        if traitCollection.horizontalSizeClass == .regular && traitCollection.verticalSizeClass == .regular {
+            viewController.modalPresentationStyle = .popover
+        } else {
+            viewController.modalPresentationStyle = .custom
+        }
+
+        viewController.popoverPresentationController?.sourceView = self.button
+        viewController.popoverPresentationController?.sourceRect = self.button.bounds.offsetBy(dx: 0, dy: Constants.popoverOffset)
+        viewController.transitioningDelegate = self
     }
 
     @objc func hideCreateButton() {
@@ -103,11 +114,11 @@ import Gridicons
 
 extension CreateButtonCoordinator: UIViewControllerTransitioningDelegate {
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return PullDownAnimationController(transitionType: .presenting)
+        return BottomSheetAnimationController(transitionType: .presenting)
     }
 
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return PullDownAnimationController(transitionType: .dismissing)
+        return BottomSheetAnimationController(transitionType: .dismissing)
     }
 
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
