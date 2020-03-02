@@ -476,7 +476,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.16.0)
   - WordPressAuthenticator (~> 1.10.8)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, tag `4.5.9-beta.1`)
+  - WordPressKit (~> 4.5.9-beta.1)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (= 1.8.15-beta.1)
   - WordPressUI (~> 1.5.1)
@@ -522,6 +522,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -606,9 +607,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressKit:
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-    :tag: 4.5.9-beta.1
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -622,9 +620,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressKit:
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-    :tag: 4.5.9-beta.1
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -711,6 +706,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 95d6665573ad2452da7c0e5d7db98dd6a8087aa6
+PODFILE CHECKSUM: 5afac72e9b986739258efa44b08a32100fe7b55f
 
 COCOAPODS: 1.8.4
