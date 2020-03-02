@@ -34,13 +34,14 @@ import Gridicons
         if let actionSheetController = viewController?.presentedViewController as? ActionSheetViewController {
             if previousTraitCollection.horizontalSizeClass != newTraitCollection.horizontalSizeClass {
                 viewController?.dismiss(animated: false, completion: { [weak self] in
-                    guard let self = self else { return }
+                    guard let self = self else {
+                        return
+                    }
                     self.setupPresentation(on: actionSheetController, for: newTraitCollection)
                     self.viewController?.present(actionSheetController, animated: false, completion: nil)
                 })
             }
         }
-
     }
 
     @objc func add(to view: UIView, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {

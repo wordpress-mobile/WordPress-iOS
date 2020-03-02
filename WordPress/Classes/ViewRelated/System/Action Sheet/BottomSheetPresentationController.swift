@@ -1,6 +1,10 @@
 /// A Presentation Controller which dims the background, allows the user to dismiss by tapping outside, and allows the user to swipit down
 class BottomSheetPresentationController: FancyAlertPresentationController {
 
+    private enum Constants {
+        static let maxWidthPercentage: CGFloat = 0.66 // Used when the
+    }
+
     private weak var tapGestureRecognizer: UITapGestureRecognizer?
     private weak var panGestureRecognizer: UIPanGestureRecognizer?
 
@@ -9,10 +13,20 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
     }
 
     override var frameOfPresentedViewInContainerView: CGRect {
-        let height: CGFloat = presentedViewController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        let width: CGFloat = (containerView?.bounds.width ?? 0) - ((containerView?.safeAreaInsets.left ?? 0) + (containerView?.safeAreaInsets.right ?? 0))
+        guard let containerView = containerView else { // If we don't have a container view we're out of luck
+            return .zero
+        }
 
-        return CGRect(x: containerView?.safeAreaInsets.left ?? 0, y: (containerView?.bounds.height ?? 0) - height, width: width, height: height)
+        let height: CGFloat = presentedViewController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        var width: CGFloat = containerView.bounds.width - (containerView.safeAreaInsets.left + containerView.safeAreaInsets.right)
+
+        if traitCollection.verticalSizeClass == .compact {
+            width = width * Constants.maxWidthPercentage
+        }
+
+        let leftInset: CGFloat = ((containerView.bounds.width - width) / 2)
+
+        return CGRect(x: leftInset, y: containerView.bounds.height - height, width: width, height: height)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -55,7 +69,6 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
     var interactionController: UIPercentDrivenInteractiveTransition?
 
     @objc func hide(_ gesture: UIPanGestureRecognizer) {
-
         guard let gestureView = gesture.view else { return }
 
         let translate = gesture.translation(in: gestureView)

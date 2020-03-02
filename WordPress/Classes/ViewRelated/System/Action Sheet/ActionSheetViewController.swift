@@ -1,5 +1,3 @@
-import Gridicons
-
 struct ActionSheetButton {
     let title: String
     let image: UIImage
