@@ -64,6 +64,7 @@ class ActionSheetViewController: UIViewController {
 
         view.clipsToBounds = true
         view.layer.cornerRadius = Constants.cornerRadius
+        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         view.backgroundColor = .basicBackground
 
         let headerLabelView = UIView()

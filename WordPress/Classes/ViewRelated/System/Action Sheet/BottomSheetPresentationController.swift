@@ -9,7 +9,7 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
     }
 
     override var frameOfPresentedViewInContainerView: CGRect {
-        let height: CGFloat = presentedViewController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height + (containerView?.safeAreaInsets.bottom ?? 0)
+        let height: CGFloat = presentedViewController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         let width: CGFloat = (containerView?.bounds.width ?? 0) - ((containerView?.safeAreaInsets.left ?? 0) + (containerView?.safeAreaInsets.right ?? 0))
 
         return CGRect(x: containerView?.safeAreaInsets.left ?? 0, y: (containerView?.bounds.height ?? 0) - height, width: width, height: height)
