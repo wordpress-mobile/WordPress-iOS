@@ -69,9 +69,9 @@ import Gridicons
 
     private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
 
-        let postsButton = ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"), image: Gridicon.iconOfType(.posts), target: self, selector: #selector(showNewPost))
+        let postsButton = ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"), image: Gridicon.iconOfType(.posts), identifier: "blogPostButton", target: self, selector: #selector(showNewPost))
 
-        let pagesButton = ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"), image: Gridicon.iconOfType(.pages), target: self, selector: #selector(showNewPage))
+        let pagesButton = ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"), image: Gridicon.iconOfType(.pages), identifier: "sitePageButton", target: self, selector: #selector(showNewPage))
 
         let actionSheetController = ActionSheetViewController(headerTitle: NSLocalizedString("Create New", comment: "Create New header text"), buttons: [postsButton, pagesButton])
 

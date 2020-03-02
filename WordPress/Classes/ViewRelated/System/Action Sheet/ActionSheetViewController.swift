@@ -3,6 +3,7 @@ import Gridicons
 struct ActionSheetButton {
     let title: String
     let image: UIImage
+    let identifier: String
     let target: Any?
     let selector: Selector
 }
@@ -76,8 +77,8 @@ class ActionSheetViewController: UIViewController {
         headerLabel.text = headerTitle
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        let buttonViews = buttons.map({ (sheetButton) -> UIButton in
-            return button(title: sheetButton.title, image: sheetButton.image, target: sheetButton.target, selector: sheetButton.selector)
+        let buttonViews = buttons.map({ (buttonInfo) -> UIButton in
+            return button(buttonInfo)
         })
 
         NSLayoutConstraint.activate([
@@ -111,18 +112,19 @@ class ActionSheetViewController: UIViewController {
         view.pinSubviewToSafeArea(stackView, insets: Constants.Stack.insets)
     }
 
-    func button(title: String, image: UIImage, target: Any?, selector: Selector) -> UIButton {
+    func button(_ info: ActionSheetButton) -> UIButton {
         let button = UIButton(type: .custom)
-        button.setTitle(title, for: .normal)
+        button.setTitle(info.title, for: .normal)
         button.titleLabel?.font = Constants.Button.font
         button.setTitleColor(Constants.Button.textColor, for: .normal)
-        button.setImage(image, for: .normal)
+        button.setImage(info.image, for: .normal)
         button.imageView?.tintColor = Constants.Button.imageTintColor
         button.setBackgroundImage(UIImage(color: .divider), for: .highlighted)
         button.titleEdgeInsets = Constants.Button.titleInsets
         button.naturalContentHorizontalAlignment = .leading
         button.contentEdgeInsets = Constants.Button.contentInsets
-        button.addTarget(target, action: selector, for: .touchUpInside)
+        button.addTarget(info.target, action: info.selector, for: .touchUpInside)
+        button.accessibilityIdentifier = info.identifier
         button.translatesAutoresizingMaskIntoConstraints = false
         button.flipInsetsForRightToLeftLayoutDirection()
         return button
