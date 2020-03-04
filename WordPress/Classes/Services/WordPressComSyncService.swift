@@ -6,7 +6,7 @@ import WordPressKit
 ///
 class WordPressComSyncService {
 
-    /// Syncs account and blog information for the authenticated wpcom user.
+    /// Syncs account, blog and settings for the authenticated wpcom user.
     ///
     /// - Parameters:
     ///     - authToken: The authentication token.
@@ -18,6 +18,7 @@ class WordPressComSyncService {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
         accountService.createOrUpdateAccount(withAuthToken: authToken, success: { account in
+            self.syncSettings(account: account)
             self.syncOrAssociateBlogs(account: account, isJetpackLogin: isJetpackLogin, onSuccess: onSuccess, onFailure: onFailure)
         }, failure: { error in
             onFailure(error)
@@ -61,5 +62,15 @@ class WordPressComSyncService {
 
             BlogSyncFacade().syncBlogs(for: account, success: onSuccessInternal, failure: onFailureInternal)
         }
+    }
+
+    /// Syncs the Account Settings
+    ///
+    /// - Parameters:
+    ///     - account: the WPAccount for which to sync the settings.
+    ///
+    func syncSettings(account: WPAccount) {
+        let service = AccountSettingsService(userID: account.userID.intValue, api: account.wordPressComRestApi)
+        service.refreshSettings()
     }
 }
