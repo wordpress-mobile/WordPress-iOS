@@ -212,24 +212,19 @@ private extension SignupEpilogueViewController {
     }
 
     func changeDisplayName(to newDisplayName: String, finished: @escaping (() -> Void)) {
-
         let context = ContextManager.sharedInstance().mainContext
-
         guard let defaultAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
-        let restApi = defaultAccount.wordPressComRestApi else {
-            finished()
-            return
+            let restApi = defaultAccount.wordPressComRestApi else {
+                finished()
+                return
         }
 
         let accountSettingService = AccountSettingsService(userID: defaultAccount.userID.intValue, api: restApi)
-        let accountSettingsChange = AccountSettingsChange.displayName(newDisplayName)
 
-        accountSettingService.saveChange(accountSettingsChange) { success in
-            if success {
-                WordPressAuthenticator.track(.signupEpilogueDisplayNameUpdateSucceeded, properties: self.tracksProperties())
-            } else {
-                WordPressAuthenticator.track(.signupEpilogueDisplayNameUpdateFailed, properties: self.tracksProperties())
-            }
+        accountSettingService.updateDisplayName(newDisplayName) { (success, _) in
+            let event: WPAnalyticsStat = success ? .signupEpilogueDisplayNameUpdateSucceeded : .signupEpilogueDisplayNameUpdateFailed
+            WordPressAuthenticator.track(event, properties: self.tracksProperties())
+
             finished()
         }
     }
