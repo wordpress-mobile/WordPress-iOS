@@ -22,13 +22,21 @@ class PublishSettingsViewControllerTests: XCTestCase {
 
         let post = PostBuilder(context).with(dateCreated: testDate).drafted().withRemote().build()
 
-        let viewModel = PublishSettingsViewModel(post: post)
+        var viewModel = PublishSettingsViewModel(post: post)
         XCTAssertEqual(viewModel.date, testDate, "Date should exist in view model")
 
         if case PublishSettingsViewModel.State.scheduled(_) = viewModel.state {
             // Success
         } else {
             XCTFail("View model should be scheduled")
+        }
+
+        viewModel.setDate(testDate)
+
+        if case PublishSettingsViewModel.State.scheduled(_) = viewModel.state {
+            // Success
+        } else {
+            XCTFail("View model should be scheduled instead of \(viewModel.state)")
         }
     }
 
@@ -37,13 +45,21 @@ class PublishSettingsViewControllerTests: XCTestCase {
 
         let post = PostBuilder(context).with(dateCreated: testDate).drafted().withRemote().build()
 
-        let viewModel = PublishSettingsViewModel(post: post)
+        var viewModel = PublishSettingsViewModel(post: post)
         XCTAssertNil(viewModel.date, "Date should not exist in view model")
 
         if case PublishSettingsViewModel.State.immediately = viewModel.state {
             // Success
         } else {
             XCTFail("View model should be immediately")
+        }
+
+        viewModel.setDate(testDate)
+
+        if case PublishSettingsViewModel.State.immediately = viewModel.state {
+            // Success
+        } else {
+            XCTFail("View model should be immediately instead of \(viewModel.state)")
         }
     }
 
@@ -52,13 +68,21 @@ class PublishSettingsViewControllerTests: XCTestCase {
 
         let post = PostBuilder(context).with(dateCreated: testDate).published().withRemote().build()
 
-        let viewModel = PublishSettingsViewModel(post: post)
+        var viewModel = PublishSettingsViewModel(post: post)
         XCTAssertEqual(viewModel.date, testDate, "Date should exist in view model")
 
         if case PublishSettingsViewModel.State.published(_) = viewModel.state {
             // Success
         } else {
-            XCTFail("View model should be published")
+            XCTFail("View model should be published instead of \(viewModel.state)")
+        }
+
+        viewModel.setDate(testDate)
+
+        if case PublishSettingsViewModel.State.published(_) = viewModel.state {
+            // Success
+        } else {
+            XCTFail("View model should be published instead of \(viewModel.state)")
         }
     }
 
