@@ -77,7 +77,7 @@ final class SearchTextField: UITextField {
         autocorrectionType = .no
         adjustsFontForContentSizeCategory = true
 
-        setIconImage()
+        setIconImage(view: searchIconImageView)
 
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: Constants.searchHeight),
@@ -86,17 +86,35 @@ final class SearchTextField: UITextField {
         addTopBorder(withColor: .divider)
         addBottomBorder(withColor: .divider)
     }
-
-    private func setIconImage() {
+    
+    private lazy var searchIconImageView: UIImageView = {
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
         let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(.listIcon)?.imageFlippedForRightToLeftLayoutDirection()
-        let imageView = UIImageView(image: loupeIcon)
+        return UIImageView(image: loupeIcon)
+    }()
+    
+    private lazy var spinner: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .gray)
+        activityIndicator.backgroundColor = UIColor.clear
+        return activityIndicator
+    }()
+    
+    func setIcon(isLoading: Bool) {
+        if isLoading {
+            setIconImage(view: spinner)
+            spinner.startAnimating()
+        } else {
+            setIconImage(view: searchIconImageView)
+            spinner.stopAnimating()
+        }
+    }
 
+    private func setIconImage(view: UIView) {
         if traitCollection.layoutDirection == .rightToLeft {
-            rightView = imageView
+            rightView = view
             rightViewMode = .always
         } else {
-            leftView = imageView
+            leftView = view
             leftViewMode = .always
         }
     }
@@ -105,7 +123,7 @@ final class SearchTextField: UITextField {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if #available(iOS 13, *) {
-            setIconImage()
+            setIconImage(view: searchIconImageView)
         }
     }
 }
