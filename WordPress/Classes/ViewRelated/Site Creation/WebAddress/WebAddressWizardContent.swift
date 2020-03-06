@@ -199,8 +199,10 @@ final class WebAddressWizardContent: UIViewController {
         guard let segmentID = siteCreator.segment?.identifier else {
             return
         }
-
+ 
+        updateIcon(isLoading: true)
         service.addresses(for: searchTerm, segmentID: segmentID) { [weak self] results in
+            self?.updateIcon(isLoading: false)
             switch results {
             case .failure(let error):
                 self?.handleError(error)
@@ -421,7 +423,7 @@ final class WebAddressWizardContent: UIViewController {
         self.tableViewProvider = provider
     }
 
-    private func query(from textField: UITextField?) -> String? {
+    private func query(from textField: SearchTextField?) -> String? {
         guard let text = textField?.text,
             !text.isEmpty else {
                 return siteCreator.information?.title
@@ -431,7 +433,7 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     @objc
-    private func textChanged(sender: UITextField) {
+    private func textChanged(sender: SearchTextField) {
         search(withInputFrom: sender)
     }
 
@@ -452,7 +454,14 @@ final class WebAddressWizardContent: UIViewController {
 
     // MARK: - Search logic
 
-    private func search(withInputFrom textField: UITextField) {
+    func updateIcon(isLoading: Bool) {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return
+        }
+        header.textField.setIcon(isLoading: isLoading)
+    }
+
+    private func search(withInputFrom textField: SearchTextField) {
         guard let query = query(from: textField), query.isEmpty == false else {
             clearContent()
             return
