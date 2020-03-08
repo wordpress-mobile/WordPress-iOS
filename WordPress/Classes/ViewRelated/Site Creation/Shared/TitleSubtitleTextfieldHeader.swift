@@ -93,19 +93,24 @@ final class SearchTextField: UITextField {
         return UIImageView(image: loupeIcon)
     }()
     
-    private lazy var spinner: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(style: .gray)
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator: UIActivityIndicatorView
+        if #available(iOS 13, *) {
+            activityIndicator = UIActivityIndicatorView(style: .medium)
+        } else {
+            activityIndicator = UIActivityIndicatorView(style: .gray)
+        }
         activityIndicator.backgroundColor = UIColor.clear
         return activityIndicator
     }()
     
     func setIcon(isLoading: Bool) {
         if isLoading {
-            setIconImage(view: spinner)
-            spinner.startAnimating()
+            setIconImage(view: activityIndicator)
+            activityIndicator.startAnimating()
         } else {
+            activityIndicator.stopAnimating()
             setIconImage(view: searchIconImageView)
-            spinner.stopAnimating()
         }
     }
 
