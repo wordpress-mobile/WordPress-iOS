@@ -86,13 +86,13 @@ final class SearchTextField: UITextField {
         addTopBorder(withColor: .divider)
         addBottomBorder(withColor: .divider)
     }
-    
+
     private lazy var searchIconImageView: UIImageView = {
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
         let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(.listIcon)?.imageFlippedForRightToLeftLayoutDirection()
         return UIImageView(image: loupeIcon)
     }()
-    
+
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator: UIActivityIndicatorView
         if #available(iOS 13, *) {
@@ -103,7 +103,7 @@ final class SearchTextField: UITextField {
         activityIndicator.backgroundColor = UIColor.clear
         return activityIndicator
     }()
-    
+
     func setIcon(isLoading: Bool) {
         if isLoading {
             setIconImage(view: activityIndicator)
