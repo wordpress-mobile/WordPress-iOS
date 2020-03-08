@@ -101,6 +101,7 @@ final class SearchTextField: UITextField {
             activityIndicator = UIActivityIndicatorView(style: .gray)
         }
         activityIndicator.backgroundColor = UIColor.clear
+
         return activityIndicator
     }()
 
