@@ -423,7 +423,7 @@ final class WebAddressWizardContent: UIViewController {
         self.tableViewProvider = provider
     }
 
-    private func query(from textField: SearchTextField?) -> String? {
+    private func query(from textField: UITextField?) -> String? {
         guard let text = textField?.text,
             !text.isEmpty else {
                 return siteCreator.information?.title
@@ -433,7 +433,7 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     @objc
-    private func textChanged(sender: SearchTextField) {
+    private func textChanged(sender: UITextField) {
         search(withInputFrom: sender)
     }
 
@@ -461,7 +461,7 @@ final class WebAddressWizardContent: UIViewController {
         header.textField.setIcon(isLoading: isLoading)
     }
 
-    private func search(withInputFrom textField: SearchTextField) {
+    private func search(withInputFrom textField: UITextField) {
         guard let query = query(from: textField), query.isEmpty == false else {
             clearContent()
             return
