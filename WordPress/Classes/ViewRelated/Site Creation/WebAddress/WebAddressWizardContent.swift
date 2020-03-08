@@ -199,7 +199,7 @@ final class WebAddressWizardContent: UIViewController {
         guard let segmentID = siteCreator.segment?.identifier else {
             return
         }
- 
+
         updateIcon(isLoading: true)
         service.addresses(for: searchTerm, segmentID: segmentID) { [weak self] results in
             self?.updateIcon(isLoading: false)
