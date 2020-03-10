@@ -231,9 +231,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 navigationController.dismiss(animated: true)
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
-                NotificationCenter.default.post(name: NSNotification.WelcomeNotification, object: ["sign_up": 1])
-                  })
+            UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
         }
 
         navigationController.pushViewController(epilogueViewController, animated: true)

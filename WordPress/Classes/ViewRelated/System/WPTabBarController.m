@@ -70,8 +70,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 @property (nonatomic, strong) CreateButtonCoordinator *createButtonCoordinator;
 
-@property (nonatomic, assign) BOOL isFromSignup;
-
 @end
 
 @implementation WPTabBarController
@@ -152,11 +150,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
                                                  selector:@selector(switchReaderTabToSavedPosts)
                                                      name:NSNotification.ShowAllSavedForLaterPostsNotification
                                                    object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(showNotificationBadge:)
-                                                            name:NSNotification.WelcomeNotification
-                                                          object:nil];
 
         // Watch for application badge number changes
         [[UIApplication sharedApplication] addObserver:self
@@ -576,7 +569,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)showNotificationsTab
 {
-    self.isFromSignup = NO;
     [self showTabForIndex:WPTabNotifications];
 }
 
@@ -949,16 +941,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
     self.readerNavigationController.tabBarItem.image = readerTabBarImage;
-}
-
-- (void) showNotificationBadge:(NSNotification *)notification
-{
-    if ([((NSDictionary*) notification.object) valueForKey:@"sign_up"]) {
-        self.isFromSignup = YES;
-    }
-    UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
-    notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
-    notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
 }
 
 - (void)updateMeNotificationIcon
