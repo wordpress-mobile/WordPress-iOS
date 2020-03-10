@@ -1,0 +1,5 @@
+- Tersedia dua blok baru! Selamat datang, blok Tombol dan Kelompok.
+- Beberapa blok lainnya mendapat peningkatan: Anda bisa mengubah ukuran gambar di blok gambar dan menggunakan opsi unggah di blok Galeri. Kami juga memperhatikan masalah text wrap di blok Shortcode yang akan memotong bagian konten Anda.
+- Kami juga membuat beberapa peningkatan untuk pengalaman blok umum. Anda akan melihat bilah peralatan mengambang di atas blok yang sedang Anda sunting untuk mempermudah navigasi blok, terutama untuk blok yang rumit. Terdapat pula dukungan gulir di pemilih blok dan pengaturan blok.
+- Akhirnya, kami memperbaiki beberapa bug. Menambahkan emoji ke judul pos tak lagi menambahkan elemen HTML yang kuat ke judul pos, dan penyejajaran blok paragraf kini disesuaikan saat Anda memecah paragraf atau membaca konten HTML pos.
+- Kami juga menyesuaikan simbol hari kerja di kalender tergantung pengaturan regional Anda, dan menambahkan tombol Tindakan Cepat ke Detail Situs untuk membawa Anda langsung menuju bagian yang paling sering digunakan dari situs.
