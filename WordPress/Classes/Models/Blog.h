@@ -186,6 +186,8 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (readonly) BOOL hasIcon;
 
 #pragma mark - Blog information
+
+- (BOOL)isAtomic;
 - (BOOL)isAutomatedTransfer;
 - (BOOL)isPrivate;
 - (nullable NSArray *)sortedCategories;

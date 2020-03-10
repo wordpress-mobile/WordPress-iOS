@@ -23,23 +23,13 @@ class PostNoticeNavigationCoordinator {
                 return
         }
 
-        if FeatureFlag.postPreview.enabled {
-            let controller = PostPreviewViewController(post: page)
-            controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-            controller.hidesBottomBarWhenPushed = true
+        let controller = PreviewWebKitViewController(post: page)
+        controller.trackOpenEvent()
+        controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
 
-            let navigationController = UINavigationController(rootViewController: controller)
-            navigationController.modalPresentationStyle = .formSheet
-            presenter.present(navigationController, animated: true)
-        } else {
-            let controller = PreviewWebKitViewController(post: page)
-            controller.trackOpenEvent()
-            controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-
-            let navigationController = UINavigationController(rootViewController: controller)
-            navigationController.modalPresentationStyle = .formSheet
-            presenter.present(navigationController, animated: true)
-        }
+        let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .formSheet
+        presenter.present(navigationController, animated: true)
     }
 
     private static func presentPostEpilogue(for post: Post) {

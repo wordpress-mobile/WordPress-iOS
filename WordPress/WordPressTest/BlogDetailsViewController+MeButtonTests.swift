@@ -66,13 +66,22 @@ class BlogDetailsViewControllerTests: XCTestCase {
             return
         }
         controller.addMeButtonToNavigationBar()
-        guard let meButton = controller.navigationItem.rightBarButtonItem else {
+        guard controller.navigationItem.rightBarButtonItem != nil else {
             XCTFail("Me Button not installed")
             return
         }
         scenePresenter?.presentExpectation = expectation(description: "Me was presented")
         // When
-        _ = meButton.target?.perform(meButton.action)
+
+        guard let target = blogDetailsViewController?.target(forAction: #selector(BlogDetailsViewController.presentHandler),
+                                                             withSender: blogDetailsViewController) else {
+            XCTFail("Target not found")
+            return
+        }
+
+        let actionableTarget = target as AnyObject
+        _ = actionableTarget.perform(#selector(BlogDetailsViewController.presentHandler))
+
         // Then
         guard let presentedController = scenePresenter?.presentedViewController else {
             XCTFail("Presented controller was not instantiated")

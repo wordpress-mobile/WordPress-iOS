@@ -155,12 +155,8 @@ open class AboutViewController: UITableViewController {
     }
 
     private func present(webViewController: UIViewController) {
-        if presentingViewController != nil {
-            navigationController?.pushViewController(webViewController, animated: true)
-        } else {
-            let navController = UINavigationController(rootViewController: webViewController)
-            present(navController, animated: true)
-        }
+        let navController = UINavigationController(rootViewController: webViewController)
+        present(navController, animated: true)
     }
 
     fileprivate func displayRatingPrompt() {

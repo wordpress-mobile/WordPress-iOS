@@ -26,6 +26,7 @@ NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
 NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
+NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 
 @interface Blog ()
 
@@ -109,6 +110,11 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 
 #pragma mark -
 #pragma mark Custom methods
+
+- (BOOL)isAtomic
+{
+    return [self.options[OptionsKeyIsAtomic] boolValue];
+}
 
 - (BOOL)isAutomatedTransfer
 {
