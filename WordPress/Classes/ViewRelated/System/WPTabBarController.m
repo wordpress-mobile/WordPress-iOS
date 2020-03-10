@@ -913,7 +913,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
     NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
-    if (count > 0 || self.isFromSignup) {
+
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *welcomeNotificationSeenKey = standardUserDefaults.welcomeNotificationSeenKey;
+    BOOL welcomeNotificationSeen = [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
+
+    if (count > 0 || !welcomeNotificationSeen) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
     } else {
