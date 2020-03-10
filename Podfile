@@ -11,14 +11,14 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.8.15'
+    # pod 'WordPressShared', '1.8.15'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => 'efe5a065f3ace331353595ef85eef502baa23497'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => '1784d566727159dee6068a2aaa887f8d46f46b6f'
 end
 
 def aztec
