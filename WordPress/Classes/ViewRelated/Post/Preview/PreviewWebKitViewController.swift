@@ -13,6 +13,12 @@ class PreviewWebKitViewController: WebKitViewController {
     private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default {
         didSet {
             if selectedDevice != oldValue {
+                switch selectedDevice {
+                case .mobile:
+                    setWidth(Constants.mobilePreviewWidth)
+                default:
+                    setWidth(nil)
+                }
                 webView.reload()
             }
             showLabel(device: selectedDevice)
@@ -231,6 +237,8 @@ class PreviewWebKitViewController: WebKitViewController {
         static let publishButtonColor = UIColor.muriel(color: MurielColor.accent)
 
         static let blankURL = URL(string: "about:blank")
+
+        static let mobilePreviewWidth: CGFloat = 460
     }
 }
 

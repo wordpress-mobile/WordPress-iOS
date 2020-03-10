@@ -104,11 +104,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [self setupColors];
 
-        [self setViewControllers:@[self.blogListSplitViewController,
-                                   self.readerSplitViewController,
-                                   self.newPostViewController,
-                                   self.meSplitViewController,
-                                   self.notificationsSplitViewController]];
+        [self setViewControllers:[self tabViewControllers]];
 
         [self setSelectedViewController:self.blogListSplitViewController];
 
@@ -419,11 +415,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _notificationsNavigationController = nil;
     _notificationsSplitViewController = nil;
 
-    [self setViewControllers:@[self.blogListSplitViewController,
-                               self.readerSplitViewController,
-                               self.newPostViewController,
-                               self.meSplitViewController,
-                               self.notificationsSplitViewController]];
+    [self setViewControllers:[self tabViewControllers]];
 
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
@@ -435,11 +427,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _readerMenuViewController = nil;
     _readerSplitViewController = nil;
 
-    [self setViewControllers:@[self.blogListSplitViewController,
-                               self.readerSplitViewController,
-                               self.newPostViewController,
-                               self.meSplitViewController,
-                               self.notificationsSplitViewController]];
+    [self setViewControllers:[self tabViewControllers]];
 }
 
 #pragma mark - Navigation Coordinators
@@ -460,9 +448,38 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 #pragma mark - Navigation Helpers
 
+- (NSArray<UIViewController *> *)tabViewControllers
+{
+    
+    NSMutableArray<UIViewController *> *allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+                                                        self.readerSplitViewController,
+                                                        self.newPostViewController,
+                                                        self.meSplitViewController,
+                                                        self.notificationsSplitViewController]];
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [allViewControllers removeObject:self.newPostViewController];
+    }
+    
+    return allViewControllers;
+}
+
 - (void)showTabForIndex:(NSInteger)tabIndex
 {
-    [self setSelectedIndex:tabIndex];
+    NSInteger newIndex = [self adjustedTabIndex:tabIndex toTabType:false];
+    [self setSelectedIndex:newIndex];
+}
+
+/// Adjusts the passed tabIndex to a new value depending on the enabled feature flags
+/// @param tabIndex The index that may need adjustment.
+/// @param toTabType Whether the new index is being converted to the WPTabType index. If true, the index should come from the tab bar.
+- (NSInteger)adjustedTabIndex:(NSInteger)tabIndex toTabType:(BOOL)toTabType {
+    //TODO: Remove this change once `floatingCreateButton` feature flag is enabled
+    if ([Feature enabled:FeatureFlagFloatingCreateButton] && tabIndex > WPTabReader) {
+        return tabIndex + (toTabType ? -1 : 1); // Adjust the index if we are hiding the new post button
+    } else {
+        return tabIndex;
+    }
 }
 
 - (void)showMySitesTab
@@ -639,7 +656,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)switchMySitesTabToMediaForBlog:(Blog *)blog
 {
-    if (self.selectedIndex == WPTabMySites) {
+    if ([self adjustedTabIndex:self.selectedIndex toTabType:false] == WPTabMySites) {
         UIViewController *topViewController = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
         if ([topViewController isKindOfClass:[MediaLibraryViewController class]]) {
             MediaLibraryViewController *mediaVC = (MediaLibraryViewController *)topViewController;
@@ -751,7 +768,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     // Check which tab is currently selected
     NSString *currentlySelectedScreen = @"";
-    switch (self.selectedIndex) {
+    switch ([self adjustedTabIndex:self.selectedIndex toTabType:false]) {
         case WPTabMySites:
             currentlySelectedScreen = @"Blog List";
             break;
@@ -771,7 +788,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (Blog *)currentlyVisibleBlog
 {
-    if (self.selectedIndex != WPTabMySites) {
+    if ([self adjustedTabIndex:self.selectedIndex toTabType:false] != WPTabMySites) {
         return nil;
     }
 
@@ -786,6 +803,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     NSUInteger newIndex = [tabBarController.viewControllers indexOfObject:viewController];
+    
+    newIndex = [self adjustedTabIndex:newIndex toTabType:false];
 
     if (newIndex == WPTabNewPost) {
         [self showPostTab];
@@ -916,7 +935,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)updateMeNotificationIcon
 {
-    UITabBarItem *meTabBarItem = self.tabBar.items[WPTabMe];
+    UITabBarItem *meTabBarItem = self.tabBar.items[[self adjustedTabIndex:WPTabMe toTabType:true]];
 
     if ([ZendeskUtils showSupportNotificationIndicator]) {
         meTabBarItem.image = self.meTabBarImageUnreadUnselected;
@@ -967,6 +986,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self startObserversForTabAccessTracking];
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [self addFloatingButton];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

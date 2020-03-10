@@ -1,16 +1,5 @@
-Comentarios:
-- Se ha corregido un fallo que hacía que la selección de texto se hiciera en la línea errónea al editar los comentarios.
-- Se ha corregido un fallo que hacía que el marcado HTML se mostrara en el contenido de los comentarios.
-- Se ha corregido un problema que hacía que los comentarios no aparecieran en el lector.
-
-Publicación:
-- Ahora, puedes recortar, acercar/alejar y rotar las imágenes en una entrada.
-- Ahora, la aplicación incluye un modo de vista previa del escritorio en iPhone y una vista previa móvil en iPad. La vista previa de las entradas también tiene las nuevas opciones de navegación «Abrir en Safari» y «Compartir».
-- Muchas mejoras en el editor de bloques: Se ha añadido un icono de pulsación larga para insertar bloques antes/después y la superposición de un botón «Editar» en los bloques de imágenes seleccionados. El editor volverá a intentar cargar las imágenes después de los problemas de conectividad. Y el bloque de galería tiene ahora compatibilidad para opciones de tamaño de imágenes.
-- Hemos corregido un fallo que podía desactivar los comentarios en un borrador de una entrada al previsualizarla.
-
-Registro y acceso
-- Ahora, el registro y acceso a través de un enlace mágico es compatible con múltiples clientes de correo electrónico. Al tocar el botón «Abrir el correo electrónico», se presentará una lista de clientes de correo electrónico instalados para elegir.
-
-Lector
-- ¡La aplicación es compatible ahora con el reblogueo de las entradas! Toca el nuevo botón «Rebloguear» en la barra de acción de la entrada para elegir en cuál de tus sitios publicar y abrir el editor de tu elección con el contenido prerellenado de la entrada original.
+- ¡Hay dos nuevos bloques disponibles! Bienvenidos bloques de botón y grupo.
+- Unos cuantos bloques más tienen mejoras: Ahora puedes cambiar tamaños de imágenes en los bloques de imagen y usar las opciones de subida en los bloques de galería. También nos hemos ocupado del problema con la envoltura de texto en los bloques de shortcode que podrían cortar parte de tu contenido.
+- También hemos hecho mejoras en la experiencia general con los bloques. Verás una nueva barra de herramientas flotante sobre el bloque que estés editando para hacer más fácil navegar por los bloques, especialmente por los más complejos. También hay compatibilidad con scroll en el selector de bloques y en los ajustes del bloque.
+- Para terminar, hemos corregido algunos fallos. Añadir un emoji al título de una entrada ya no añade elementos HTML al título de la entrada, y la alineación de los bloques de párrafo ahora se respetan cuando cortas el párrafo o lees el contenido HTML de las entradas.
+- También hemos ajustado los símbolos de días de la semana en el calendario dependiendo de tus ajustes regionales, y añadido botones de acción rápida a los detalles del sitio para acercarte las partes de tu sitio más utilizadas.

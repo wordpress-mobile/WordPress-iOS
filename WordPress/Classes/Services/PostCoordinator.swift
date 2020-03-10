@@ -263,6 +263,11 @@ class PostCoordinator: NSObject {
 
     private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
         mainService.uploadPost(post, forceDraftIfCreating: forceDraftIfCreating, success: { [weak self] uploadedPost in
+            guard let uploadedPost = uploadedPost else {
+                completion?(.failure(SavingError.unknown))
+                return
+            }
+
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
             SearchManager.shared.indexItem(uploadedPost)
@@ -386,7 +391,7 @@ class PostCoordinator: NSObject {
             try? moc?.save()
         }
 
-        let notice = Notice(title: PostAutoUploadMessages.cancelMessage(for: post.status), message: "")
+        let notice = Notice(title: PostAutoUploadMessages(for: post).cancelMessage(), message: "")
         actionDispatcherFacade.dispatch(NoticeAction.post(notice))
     }
 

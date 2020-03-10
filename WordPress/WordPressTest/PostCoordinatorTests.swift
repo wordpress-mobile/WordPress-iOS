@@ -435,6 +435,25 @@ class PostCoordinatorTests: XCTestCase {
         // Assert
         expect(results).to(haveCount(1))
     }
+
+    func testPostSavedButNotReturned() {
+        let postServiceMock = PostServiceMock()
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let post = PostBuilder(context).build()
+        postServiceMock.returnNilPost = true
+        var returnedError: Error?
+
+        postCoordinator.save(post) { result in
+            switch result {
+            case .failure(let error):
+                returnedError = error
+            default:
+                break
+           }
+        }
+
+        expect(returnedError).toNot(beNil())
+    }
 }
 
 private class PostServiceMock: PostService {
@@ -454,16 +473,24 @@ private class PostServiceMock: PostService {
     var returnPost: AbstractPost?
     var returnError: Error?
 
-    override func uploadPost(_ post: AbstractPost, forceDraftIfCreating: Bool, success: ((AbstractPost) -> Void)?, failure: @escaping (Error?) -> Void) {
+    /// Succeed in uploading the post but return nil
+    var returnNilPost = false
+
+    override func uploadPost(_ post: AbstractPost, forceDraftIfCreating: Bool, success: ((AbstractPost?) -> Void)?, failure: ((Error?) -> Void)?) {
         lastUploadPostInvocation = UploadPostInvocation(post: post, forceDraftIfCreating: forceDraftIfCreating)
 
         if let post = returnPost {
             post.remoteStatus = .sync
             success?(post)
         }
+
+        if returnNilPost {
+            success?(nil)
+        }
+
         if let error = returnError {
             post.remoteStatus = .failed
-            failure(error)
+            failure?(error)
         }
     }
 

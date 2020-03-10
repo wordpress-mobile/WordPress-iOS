@@ -2,8 +2,6 @@ class NewBlogDetailHeaderView: UIView {
 
     @objc var delegate: BlogDetailHeaderViewDelegate?
 
-    //TODO: Add drop target
-
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
@@ -46,6 +44,8 @@ class NewBlogDetailHeaderView: UIView {
             let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
             titleLabel.text = title
             subtitleLabel.text = blog?.displayURL as String?
+
+            siteIconView.allowsDropInteraction = delegate?.siteIconShouldAllowDroppedImages() == true
         }
     }
 
@@ -57,7 +57,7 @@ class NewBlogDetailHeaderView: UIView {
             siteIconView.imageView.image = UIImage.siteIconPlaceholder
         }
 
-        //TODO: Refresh spotlight view
+        siteIconView.spotlightIsShown = QuickStartTourGuide.find()?.isCurrentElement(.siteIcon) == true
     }
 
     private enum Constants {
@@ -73,8 +73,15 @@ class NewBlogDetailHeaderView: UIView {
 
         self.init(frame: .zero)
 
-        siteIconView.callback = { [weak self] in
+        siteIconView.tapped = { [weak self] in
+            QuickStartTourGuide.find()?.visited(.siteIcon)
+            self?.siteIconView.spotlightIsShown = false
+
             self?.delegate?.siteIconTapped()
+        }
+
+        siteIconView.dropped = { [weak self] images in
+            self?.delegate?.siteIconReceivedDroppedImage(images.first)
         }
 
         let buttonsStackView = ActionRow(items: items)

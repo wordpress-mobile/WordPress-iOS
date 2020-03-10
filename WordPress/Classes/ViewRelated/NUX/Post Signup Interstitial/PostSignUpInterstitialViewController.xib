@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostSignUpInterstitialViewController" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="addSelfHostedButton" destination="JzC-d5-c3A" id="32W-0f-Xl2"/>
+                <outlet property="cancelButton" destination="kkA-2A-oQc" id="8c3-7h-dBg"/>
+                <outlet property="createSiteButton" destination="r6K-uZ-29W" id="7AY-Mm-WeY"/>
+                <outlet property="subTitleLabel" destination="qaw-pG-rKU" id="JPQ-AV-SRz"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="welcomeLabel" destination="4Zg-pY-BXB" id="Cjg-0o-iCM"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vgl-ir-q3p">
+                    <rect key="frame" x="43.666666666666657" y="146" width="327" height="444"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aWd-hf-9Yb">
+                            <rect key="frame" x="0.0" y="280" width="327" height="164"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r6K-uZ-29W" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                    <rect key="frame" x="0.0" y="0.0" width="327" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="umu-lG-4yV"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                    <state key="normal" title="Create a new site"/>
+                                    <connections>
+                                        <action selector="createSite:" destination="-1" eventType="touchUpInside" id="PvC-HP-RQK"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JzC-d5-c3A" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                    <rect key="frame" x="0.0" y="60" width="327" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="xFj-m5-SMx"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                    <state key="normal" title="Add a self-hosted site"/>
+                                    <connections>
+                                        <action selector="addSelfHosted:" destination="-1" eventType="touchUpInside" id="igX-Gf-1No"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkA-2A-oQc">
+                                    <rect key="frame" x="0.0" y="120" width="327" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="Q2e-2m-ELz"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                    <state key="normal" title="Not right now"/>
+                                    <connections>
+                                        <action selector="cancel:" destination="-1" eventType="touchUpInside" id="LYg-AR-NdD"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Whatever you want to create or share, we’ll help you do it right here." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qaw-pG-rKU">
+                            <rect key="frame" x="0.0" y="199.33333333333331" width="327" height="40.666666666666657"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to WordPress" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Zg-pY-BXB">
+                            <rect key="frame" x="0.0" y="166" width="327" height="26.333333333333343"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="wp-illustration-construct-site" translatesAutoresizingMaskIntoConstraints="NO" id="eYR-bH-2jT">
+                            <rect key="frame" x="68.333333333333343" y="0.0" width="190.00000000000003" height="142"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="aWd-hf-9Yb" secondAttribute="bottom" id="1hy-Wk-TXr"/>
+                        <constraint firstAttribute="trailing" secondItem="aWd-hf-9Yb" secondAttribute="trailing" id="5at-6v-COl"/>
+                        <constraint firstItem="aWd-hf-9Yb" firstAttribute="leading" secondItem="Vgl-ir-q3p" secondAttribute="leading" id="J45-pC-l3H"/>
+                        <constraint firstItem="qaw-pG-rKU" firstAttribute="top" secondItem="4Zg-pY-BXB" secondAttribute="bottom" constant="7" id="JUw-fs-cXY"/>
+                        <constraint firstAttribute="trailing" secondItem="qaw-pG-rKU" secondAttribute="trailing" id="JvB-XA-Lik"/>
+                        <constraint firstAttribute="height" constant="444" id="PyO-hx-F7i"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="327" id="S1p-BQ-XmK"/>
+                        <constraint firstItem="4Zg-pY-BXB" firstAttribute="leading" secondItem="Vgl-ir-q3p" secondAttribute="leading" id="Si7-Yz-CYm"/>
+                        <constraint firstAttribute="trailing" secondItem="4Zg-pY-BXB" secondAttribute="trailing" id="VuT-XA-sI3"/>
+                        <constraint firstItem="4Zg-pY-BXB" firstAttribute="top" secondItem="eYR-bH-2jT" secondAttribute="bottom" constant="24" id="XxN-kf-Rbz"/>
+                        <constraint firstItem="eYR-bH-2jT" firstAttribute="centerX" secondItem="Vgl-ir-q3p" secondAttribute="centerX" id="aS0-VD-BZa"/>
+                        <constraint firstItem="qaw-pG-rKU" firstAttribute="leading" secondItem="Vgl-ir-q3p" secondAttribute="leading" id="her-jT-nfQ"/>
+                        <constraint firstItem="eYR-bH-2jT" firstAttribute="top" secondItem="Vgl-ir-q3p" secondAttribute="top" id="ngi-GV-BAj"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Vgl-ir-q3p" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="4cW-ud-JFW"/>
+                <constraint firstAttribute="trailing" secondItem="Vgl-ir-q3p" secondAttribute="trailing" priority="999" constant="24" id="6j2-qD-fQR"/>
+                <constraint firstItem="Vgl-ir-q3p" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" priority="999" constant="24" id="GMi-uW-igj"/>
+                <constraint firstItem="Vgl-ir-q3p" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="k5v-HX-Ggv"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="-2445" y="-60"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="wp-illustration-construct-site" width="190" height="142"/>
+    </resources>
+</document>

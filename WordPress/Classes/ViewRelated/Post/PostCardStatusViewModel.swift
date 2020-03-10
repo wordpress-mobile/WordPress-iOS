@@ -238,40 +238,17 @@ class PostCardStatusViewModel: NSObject {
     ///
     /// This is a helper method for `status`.
     private func generateFailedStatusMessage() -> String {
-        let defaultFailedMessage = StatusMessages.uploadFailed
 
-        guard post.isFailed, let postStatus = post.status else {
-            return defaultFailedMessage
-        }
+        let postAutoUploadMessages = PostAutoUploadMessages(for: post, onlineFailedUploadMessage: StatusMessages.uploadFailed)
 
         if post.wasAutoUploadCancelled {
-            return post.hasPermanentFailedMedia() ? PostAutoUploadMessages.failedMedia : StatusMessages.localChanges
+            return post.hasPermanentFailedMedia() ? postAutoUploadMessages.failedMediaUploadMessage(for: post.status) : StatusMessages.localChanges
         }
 
-        if post.isFailed && isInternetReachable {
-            return defaultFailedMessage
-        }
-
-        if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
-            return autoUploadMessage
-        }
-
-        if autoUploadInteractor.autoUploadAction(for: post) != .upload {
-            return defaultFailedMessage
-        }
-
-        switch postStatus {
-        case .draft:
-            return PostAutoUploadMessages.draftWillBeUploaded
-        case .publishPrivate:
-            return PostAutoUploadMessages.privateWillBeUploaded
-        case .scheduled:
-            return PostAutoUploadMessages.scheduledWillBeUploaded
-        case .publish:
-            return PostAutoUploadMessages.postWillBePublished
-        default:
-            return PostAutoUploadMessages.willSubmitLater
-        }
+        return postAutoUploadMessages.failedUploadMessage(
+            isInternetReachable: isInternetReachable,
+            autoUploadState: autoUploadInteractor.autoUploadAttemptState(of: post),
+            autoUploadAction: autoUploadInteractor.autoUploadAction(for: post))
     }
 
     private enum Constants {

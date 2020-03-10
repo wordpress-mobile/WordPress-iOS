@@ -1,16 +1,5 @@
-Commenting:
-- Fixed a bug causing text selection to happen on the wrong line when editing comments.
-- Fixed a bug causing HTML markup to display in comment content.
-- Fixed an issue causing comments not to appear in the Reader.
-
-Publishing:
-- You can now crop, zoom in/out, and rotate images in a post.
-- The app now includes a desktop preview mode on iPhone, and Mobile preview on iPad. Post preview also has new navigation, “Open in Safari,” and Share options.
-- Lots of block editor improvements: Added a long-press icon for inserting blocks before/after and an “Edit” button overlay on selected image blocks. The editor will retry to load images after connectivity issues. And the Gallery block now has support for image size options.
-- We fixed a bug that could disable comments on a draft post when previewing it.
-
-Signup and Login
-- Signup or login via magic link now supports multiple email clients. Tapping on the “Open Email” button will present a list of installed email clients to choose from.
-
-Reader
-- The apps now support post reblogging! Tap the new “reblog” button in the post action bar to choose which of your sites to post to and open the editor of your choice with pre-populated content from the original post.
+- There are two new blocks available! Welcome, Button and Group blocks.
+- A few other blocks have improvements: You can change image sizes in image blocks and use upload options in Gallery blocks. We also took care of a text-wrapping issue in Shortcode blocks that would cut off part of your content.
+- We also made some enhancements to the general block experience. You’ll see a new toolbar floating above the block you’re editing to make navigating blocks, especially complex ones, easier. There’s also scroll support in the block picker and in block settings.
+- Finally, we fixed a few bugs. Adding emoji to a post title no longer adds strong HTML elements to the post title, and the alignment of paragraph blocks is now respected when you split the paragraph or read the post’s HTML content.
+- We also adjusted the weekday symbols in the calendar depending on your regional settings, and added Quick Action buttons to the Site Details to take you straight to the most frequently used parts of a site.
