@@ -2,7 +2,7 @@
 class BottomSheetPresentationController: FancyAlertPresentationController {
 
     private enum Constants {
-        static let maxWidthPercentage: CGFloat = 0.66 // Used when the
+        static let maxWidthPercentage: CGFloat = 0.66 /// Used to constrain the width to a smaller size (instead of full width) when sheet is too wide
     }
 
     private weak var tapGestureRecognizer: UITapGestureRecognizer?
@@ -13,17 +13,20 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
     }
 
     override var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else { // If we don't have a container view we're out of luck
+        guard let containerView = containerView else { /// If we don't have a container view we're out of luck
             return .zero
         }
 
+        /// Height calculated by autolayout, Width equal to the container view minus insets
         let height: CGFloat = presentedViewController.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         var width: CGFloat = containerView.bounds.width - (containerView.safeAreaInsets.left + containerView.safeAreaInsets.right)
 
+        /// If we're in a compact vertical size class, constrain the width a bit more so it doesn't get overly wide.
         if traitCollection.verticalSizeClass == .compact {
             width = width * Constants.maxWidthPercentage
         }
 
+        /// If we constrain the width, this centers the view by applying the appropriate insets based on width
         let leftInset: CGFloat = ((containerView.bounds.width - width) / 2)
 
         return CGRect(x: leftInset, y: containerView.bounds.height - height, width: width, height: height)
@@ -75,11 +78,17 @@ class BottomSheetPresentationController: FancyAlertPresentationController {
         let percent   = translate.y / gestureView.bounds.size.height
 
         if gesture.state == .began {
+            /// Begin the dismissal transition
             interactionController = UIPercentDrivenInteractiveTransition()
             dismiss()
         } else if gesture.state == .changed {
+            /// Update the transition based on our calculated percent of completion
             interactionController?.update(percent)
         } else if gesture.state == .ended {
+            /// Calculate the velocity of the ended gesture.
+            /// - If the gesture has no downward velocity but is greater than half way down, complete the dismissal
+            /// - If there is downward velocity, dismiss
+            /// - If the gesture has no downward velocity and is less than half way down, cancel the dismissal
             let velocity = gesture.velocity(in: gesture.view)
             if (percent > 0.5 && velocity.y == 0) || velocity.y > 0 {
                 interactionController?.finish()
