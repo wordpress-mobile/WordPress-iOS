@@ -69,17 +69,26 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
     [mergedProperties addEntriesFromDictionary:properties];
 
-    if (eventPair.properties == nil && properties == nil) {
-        DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
+    [self trackEvent:eventPair.eventName withProperties:mergedProperties];
+}
+
+- (void)trackEvent:(NSString *)event
+{
+    [self trackEvent:event withProperties:nil];
+}
+
+- (void)trackEvent:(NSString *)event withProperties:(NSDictionary *)properties {
+    if (properties == nil) {
+        DDLogInfo(@"🔵 Tracked: %@", event);
     } else {
-        NSArray<NSString *> *propertyKeys = [[mergedProperties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        NSArray<NSString *> *propertyKeys = [[properties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
         NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
-            return [NSString stringWithFormat:@"%@: %@", key, mergedProperties[key]];
+            return [NSString stringWithFormat:@"%@: %@", key, properties[key]];
         }] componentsJoinedByString:@", "];
-        DDLogInfo(@"🔵 Tracked: %@ <%@>", eventPair.eventName, propertiesDescription);
+        DDLogInfo(@"🔵 Tracked: %@ <%@>", event, propertiesDescription);
     }
 
-    [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
+    [self.tracksService trackEventName:event withCustomProperties:properties];
 }
 
 - (void)beginSession
