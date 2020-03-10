@@ -13,7 +13,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (2.5.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.4.3):
+  - Automattic-Tracks-iOS (0.4.4-beta.2):
     - CocoaLumberjack (~> 3.5.2)
     - Reachability (~> 3.1)
     - Sentry (~> 4)
@@ -361,9 +361,9 @@ PODS:
   - RNTAztecView (1.23.0):
     - React-Core
     - WordPress-Aztec-iOS (= 1.16.0)
-  - Sentry (4.4.3):
-    - Sentry/Core (= 4.4.3)
-  - Sentry/Core (4.4.3)
+  - Sentry (4.5.0):
+    - Sentry/Core (= 4.5.0)
+  - Sentry/Core (4.5.0)
   - SimulatorStatusMagic (2.4.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -421,7 +421,7 @@ DEPENDENCIES:
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
-  - Automattic-Tracks-iOS (~> 0.4.3)
+  - Automattic-Tracks-iOS (~> 0.4.4-beta.2)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.5.2)
   - Down (~> 0.6.6)
@@ -626,7 +626,7 @@ SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  Automattic-Tracks-iOS: 5515b3e6a5e55183a244ca6cb013df26810fa994
+  Automattic-Tracks-iOS: 6d382b8a75dd107c6d73f8f539e734ff5064ec69
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
@@ -681,7 +681,7 @@ SPEC CHECKSUMS:
   ReactNativeDarkMode: f61376360c5d983907e5c316e8e1c853a8c2f348
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: 48948d6a92e3202dca86fbb3c579b0b3065c89fd
-  Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
+  Sentry: ab6c209f23700d1460691dbc90e19ed0a05d496b
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -706,6 +706,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: cc86afb52a6af5133d26ee7cd8bdffceb2468a55
+PODFILE CHECKSUM: 47523ae0f4a5c4fb85d45af061edd167bef1fdb5
 
 COCOAPODS: 1.8.4
