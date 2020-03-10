@@ -208,11 +208,11 @@ class FilterTabBar: UIControl {
 
         addSubview(scrollView)
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            scrollView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
             scrollView.topAnchor.constraint(equalTo: topAnchor)
-            ])
+        ])
 
         scrollView.addSubview(stackView)
 
@@ -226,7 +226,7 @@ class FilterTabBar: UIControl {
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
             stackView.topAnchor.constraint(equalTo: topAnchor)
-            ])
+        ])
 
         addSubview(selectionIndicator)
         NSLayoutConstraint.activate([
@@ -241,7 +241,7 @@ class FilterTabBar: UIControl {
             divider.trailingAnchor.constraint(equalTo: trailingAnchor),
             divider.bottomAnchor.constraint(equalTo: bottomAnchor),
             divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
-            ])
+        ])
     }
 
     // MARK: - Tabs
