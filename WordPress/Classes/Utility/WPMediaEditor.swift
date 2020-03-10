@@ -41,7 +41,7 @@ class WPMediaEditor: MediaEditor {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        WPAnalytics.track(.mediaEditorShown)
+        WPAnalytics.track("media_editor_shown")
     }
 
     override func viewDidDisappear(_ animated: Bool) {
