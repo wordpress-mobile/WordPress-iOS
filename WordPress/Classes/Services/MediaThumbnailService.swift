@@ -105,7 +105,7 @@ class MediaThumbnailService: LocalCoreDataService {
                         exporter.exportThumbnail(forFile: localAssetURL,
                                                  onCompletion: onThumbnailExport,
                                                  onError: onThumbnailExportError)
-                    }                
+                    }
                 return
             }
 
