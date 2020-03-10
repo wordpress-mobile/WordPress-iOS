@@ -43,10 +43,10 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.6.0-beta.1'
+    #pod 'WordPressKit', '~> 4.6.0-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.5.9-beta.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/224-update-wpxmlrpc-pod'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '13db93f88726cfb9503384723ceb727e99521398'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '13451a5e8febc1794cd6ef98742416c78ab5b46c'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
