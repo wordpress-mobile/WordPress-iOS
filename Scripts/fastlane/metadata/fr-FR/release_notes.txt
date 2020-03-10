@@ -1,16 +1,5 @@
-Commenter :
-- Correction d’un bug qui sélectionnait la mauvaise ligne lors de l’édition de commentaires.
-- Correction d’un bug qui affichait le balisage HTML dans le contenu d’un commentaire.
-- Correction d’un problème qui n’affichait plus les commentaires dans le Lecteur.
-
-Publication :
-- vous pouvez à présent recadrer, zoomer en avant/arrière et tourner les images dans un article.
-- L’app inclus maintenant un mode d’aperçu bureau sur iPhone et d’aperçu mobile sur iPad. L’aperçu d’article obtient aussi nouvelle navigation, « Ouvrir dans Safari » et des options de partage.
-- Beaucoup d’amélioration de l’éditeur de bloc : Ajout via une longue pression d’une icône  pour insérer des blocs avant/ après et un bouton « Modification » en superposition sur un bloc image sélectionné. L’éditeur réessaiera de charger les images après un problème de connexion. Et la galerie de blocs prend en charge maintenant les options de taille d’image.
-- Nous avons corrigé un bug qui pouvait désactiver les commentaires sur un brouillon d’article lors de son aperçu.
-
-Inscription et connexion : 
-- L’inscription et la connexion via lien magique prend en charge plusieurs apps de messagerie. Toucher le bouton « Ouvrir l’e-mail » vous présentera un liste d’apps d’e-mails installé à choisir.
-
-Lecteur :
-- Les apps prennent maintenant en charge le reblogue d’articles ! Toucher le nouveau bouton « Rebloguer » dans la barre d’actions de l’article pour choisir un de vos sites sur lequel publier et ouvrir l’éditeur de votre choix avec le contenu collé depuis l’article original.
+- Deux nouveaux blocs sont disponibles ! Bienvenue aux blocs Bouton et Groupe.
+- Certains autres blocs ont été améliorés  : Vous pouvez changer les tailles d’images dans les blocs image et utiliser l’option téléverser dans la galerie de blocs. Nous avons aussi pris en charge un problème d’habillage de texte dans les blocs de code court qui coupait des parties de vos contenus.
+- Nous avons aussi apporté quelques améliorations à l’expérience générale des blocs. Vous pourrez voir une nouvelle barre d’outils flotter au-dessus du bloc que vous modifiez pour faciliter la navigation dans les blocs, spécialement les plus complexes. De plus, le défilement dans le sélecteur de blocs et dans réglages des blocs est dorénavant pris en charge.
+- Enfin, nous avons corriger quelques bugs. En ajoutant une émoji dans le titre d’un article, vous n’aurez plus le code HTML qui se mettait à sa place et l’alignement des blocs de paragraphe est désormais respecté lorsque vous divisez le paragraphe ou lisez le contenu HTML de la publication.
+- Nous avons également ajusté les symboles du jour de la semaine en tenant compte de vos réglages régionaux et nous avons ajouté des boutons d’actions rapides aux détails du site pour vous diriger directement vers les parties les plus utilisées de votre site.
