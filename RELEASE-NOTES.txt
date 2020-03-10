@@ -1,10 +1,10 @@
 14.5
 -----
+* Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
  
 14.4
 -----
 * Post Settings: Fixes the displayed publish date of posts which are to be immediately published.
-* Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
  
 14.3
 -----
