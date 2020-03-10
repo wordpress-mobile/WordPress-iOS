@@ -1,5 +1,6 @@
 14.5
 -----
+* Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
  
 14.4
 -----
