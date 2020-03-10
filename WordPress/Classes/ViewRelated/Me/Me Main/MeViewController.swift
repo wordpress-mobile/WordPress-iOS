@@ -74,7 +74,7 @@ class MeViewController: UITableViewController {
     //TODO: Remove when the new Me scene is shipped
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        guard FeatureFlag.meMove.enabled else {
+        guard !FeatureFlag.meMove.enabled else {
             return
         }
         // Required to update the tableview cell disclosure indicators
@@ -83,7 +83,7 @@ class MeViewController: UITableViewController {
 
     @objc fileprivate func accountDidChange() {
         reloadViewModel()
-        guard FeatureFlag.meMove.enabled else {
+        guard !FeatureFlag.meMove.enabled else {
             return
         }
         //TODO: Remove when the new Me scene is scipped
