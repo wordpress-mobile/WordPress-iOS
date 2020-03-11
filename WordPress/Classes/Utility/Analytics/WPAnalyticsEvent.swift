@@ -1,15 +1,12 @@
 import Foundation
 
-// A single place to put all of our WPiOS events
-// Very similar to what we've been doing so far
+// WPiOS-only events
 enum WPAnalyticsEvent: String {
     case mediaEditorShown = "media_editor_shown"
     case mediaEditorUsed = "media_editor_used"
 
     var properties: [AnyHashable: Any]? {
         switch self {
-        case .mediaEditorShown:
-            return ["foo": "bar"]
         default:
             return nil
         }
