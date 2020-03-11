@@ -151,7 +151,7 @@ class MediaItemViewController: UITableViewController {
     private func updateNavigationItem() {
         if mediaMetadata.matches(media) {
             navigationItem.leftBarButtonItem = nil
-            let shareItem = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+            let shareItem = UIBarButtonItem(image: Gridicon.iconOfType(.shareiOS),
                                             style: .plain,
                                             target: self,
                                             action: #selector(shareTapped(_:)))

@@ -31,7 +31,7 @@ extension FormattingIdentifier: FormatBarItemProvider {
             if layoutDirection == .leftToRight {
                 return Gridicon.iconOfType(.listOrdered)
             } else {
-                return Gridicon.iconOfType(.listOrderedRTL)
+                return Gridicon.iconOfType(.listOrderedRtl)
             }
         case .unorderedlist:
             return Gridicon.iconOfType(.listUnordered).imageFlippedForRightToLeftLayoutDirection()

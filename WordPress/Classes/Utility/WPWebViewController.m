@@ -95,7 +95,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
     // Buttons
     if (!self.optionsButton) {
-        self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeShareIOS] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
+        self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeShareiOS] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
 
         self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
     }

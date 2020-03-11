@@ -71,9 +71,9 @@ def shared_test_pods
 end
 
 def shared_with_extension_pods
-    pod 'Gridicons', '~> 0.20-beta.1'
+#    pod 'Gridicons', '~> 0.20-beta.1'
     # While in PR
-    #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
+    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/pdf-assets'
     pod 'ZIPFoundation', '~> 0.9.8'
     pod 'Down', '~> 0.6.6'
 end
@@ -182,9 +182,9 @@ target 'WordPress' do
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '7c3cb8f00400b9316a803640b42bb88a66bbc648'
 
-    pod 'Gridicons', '~> 0.20-beta.1'
+#    pod 'Gridicons', '~> 0.20-beta.1'
     # While in PR
-    #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
+    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/pdf-assets'
 
     pod 'WordPressAuthenticator', '~> 1.11.0-beta.2'
     # While in PR

@@ -25,7 +25,7 @@ class WebKitViewController: UIViewController {
         return button
     }()
     @objc lazy var shareButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.shareiOS),
                                style: .plain,
                                target: self,
                                action: #selector(share))
