@@ -1,7 +1,7 @@
 14.5
 -----
 * Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
-* Dark Mode: General improvements
+* Stats: Fix background color in Dark Mode on wider screen sizes. 
  
 14.4
 -----
