@@ -71,9 +71,27 @@ class MeViewController: UITableViewController {
 
         registerUserActivity()
     }
+    //TODO: Remove when the new Me scene is shipped
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard !FeatureFlag.meMove.enabled else {
+            return
+        }
+        // Required to update the tableview cell disclosure indicators
+        reloadViewModel()
+    }
 
     @objc fileprivate func accountDidChange() {
         reloadViewModel()
+        guard !FeatureFlag.meMove.enabled else {
+            return
+        }
+        //TODO: Remove when the new Me scene is scipped
+        // Reload the detail pane if the split view isn't compact
+        if let splitViewController = splitViewController as? WPSplitViewController,
+            let detailViewController = initialDetailViewControllerForSplitView(splitViewController), !splitViewControllerIsHorizontallyCompact {
+            showDetailViewController(detailViewController, sender: self)
+        }
     }
 
     @objc fileprivate func reloadViewModel() {
@@ -86,7 +104,22 @@ class MeViewController: UITableViewController {
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
+
+        // After we've reloaded the view model we should maintain the current
+        // table row selection, or if the split view we're in is not compact
+        // then we'll just select the first item in the table.
+
+        // First, we'll grab the appropriate index path so we can reselect it
+        // after reloading the table
+        let selectedIndexPath = tableView.indexPathForSelectedRow ?? IndexPath(row: 0, section: 0)
+
+        // Then we'll reload the table view model (prompting a table reload)
         handler.viewModel = tableViewModel(loggedIn)
+        //TODO: remove this after the new Me scene has shipped
+        if !splitViewControllerIsHorizontallyCompact, !FeatureFlag.meMove.enabled {
+            // And finally we'll reselect the selected row, if there is one
+            tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
+        }
     }
 
     fileprivate func headerViewForAccount(_ account: WPAccount) -> MeHeaderView {
@@ -98,7 +131,13 @@ class MeViewController: UITableViewController {
     }
 
     private var appSettingsRow: NavigationItemRow {
-        let accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
+        var accessoryType: UITableViewCell.AccessoryType
+        if FeatureFlag.meMove.enabled {
+            accessoryType = .disclosureIndicator
+        } else {
+            accessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        }
+
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
@@ -109,7 +148,12 @@ class MeViewController: UITableViewController {
     }
 
     fileprivate func tableViewModel(_ loggedIn: Bool) -> ImmuTable {
-        let accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
+        var accessoryType: UITableViewCell.AccessoryType
+        if FeatureFlag.meMove.enabled {
+            accessoryType = .disclosureIndicator
+        } else {
+            accessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        }
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
@@ -203,9 +247,14 @@ class MeViewController: UITableViewController {
         return { [unowned self] row in
             if let myProfileViewController = self.myProfileViewController {
                 WPAppAnalytics.track(.openedMyProfile)
-                self.navigationController?.pushViewController(myProfileViewController,
-                                                              animated: true,
-                                                              rightBarButton: self.navigationItem.rightBarButtonItem)
+                if FeatureFlag.meMove.enabled {
+                    self.navigationController?.pushViewController(myProfileViewController,
+                                                                  animated: true,
+                                                                  rightBarButton: self.navigationItem.rightBarButtonItem)
+                } else {
+                    self.showDetailViewController(myProfileViewController, sender: self)
+                }
+
             }
         }
     }
@@ -217,9 +266,14 @@ class MeViewController: UITableViewController {
                 guard let controller = AccountSettingsViewController(account: account) else {
                     return
                 }
-                self.navigationController?.pushViewController(controller,
-                                                              animated: true,
-                                                              rightBarButton: self.navigationItem.rightBarButtonItem)
+                if FeatureFlag.meMove.enabled {
+                    self.navigationController?.pushViewController(controller,
+                                                                  animated: true,
+                                                                  rightBarButton: self.navigationItem.rightBarButtonItem)
+                } else {
+                    self.showDetailViewController(controller, sender: self)
+                }
+
             }
         }
     }
@@ -228,18 +282,32 @@ class MeViewController: UITableViewController {
         return { [unowned self] row in
             WPAppAnalytics.track(.openedAppSettings)
             let controller = AppSettingsViewController()
-            self.navigationController?.pushViewController(controller,
-                                                          animated: true,
-                                                          rightBarButton: self.navigationItem.rightBarButtonItem)
+            if FeatureFlag.meMove.enabled {
+                self.navigationController?.pushViewController(controller,
+                                                              animated: true,
+                                                              rightBarButton: self.navigationItem.rightBarButtonItem)
+            } else {
+                self.showDetailViewController(controller, sender: self)
+            }
         }
     }
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportTableViewController()
-            self.navigationController?.pushViewController(controller,
-                                                          animated: true,
-                                                          rightBarButton: self.navigationItem.rightBarButtonItem)
+
+            if FeatureFlag.meMove.enabled {
+                self.navigationController?.pushViewController(controller,
+                                                              animated: true,
+                                                              rightBarButton: self.navigationItem.rightBarButtonItem)
+            } else {
+                // If iPad, show Support from Me view controller instead of navigation controller.
+                if !self.splitViewControllerIsHorizontallyCompact {
+                    controller.showHelpFromViewController = self
+                }
+
+                self.showDetailViewController(controller, sender: self)
+            }
         }
     }
 
@@ -389,6 +457,19 @@ class MeViewController: UITableViewController {
     ///
     fileprivate func promptForLoginOrSignup() {
         WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
+    }
+}
+
+// MARK: - WPSplitViewControllerDetailProvider Conformance
+//TODO: remove this extension when the new Me scene is shipped
+extension MeViewController: WPSplitViewControllerDetailProvider {
+    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
+        // If we're not logged in yet, return app settings
+        guard let _ = defaultAccount() else {
+            return AppSettingsViewController()
+        }
+
+        return myProfileViewController
     }
 }
 
