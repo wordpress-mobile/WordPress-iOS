@@ -861,12 +861,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
             break;
-        case WPAnalyticsStatMediaEditorShown:
-            eventName = @"media_editor_shown";
-            break;
-        case WPAnalyticsStatMediaEditorUsed:
-            eventName = @"media_editor_used";
-            break;
         case WPAnalyticsStatMediaLibraryDeletedItems:
             eventName = @"media_library_deleted_items";
             break;
