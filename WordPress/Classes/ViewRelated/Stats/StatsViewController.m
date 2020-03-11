@@ -38,7 +38,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
     
     UINavigationController *statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:nil] instantiateInitialViewController];
