@@ -590,12 +590,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                                 }
                                success:^(NSArray *media) {
                                    [self.managedObjectContext performBlock:^{
-                                       void (^completion)(void) = nil;
-                                       if (!onePageLoad) {
-                                           onePageLoad = YES;
-                                           completion = success;
-                                       }
-                                       [self mergeMedia:media forBlog:blogInContext baseMedia:originalLocalMedia deleteUnreferencedMedia:YES completionHandler:completion];
+                                       [self mergeMedia:media forBlog:blogInContext baseMedia:originalLocalMedia deleteUnreferencedMedia:YES completionHandler:success];
                                    }];
                                }
                                failure:^(NSError *error) {
