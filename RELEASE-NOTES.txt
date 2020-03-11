@@ -5,6 +5,7 @@
   - Border color on Search bars.
   - Stats background color on wider screen sizes.
   - Media Picker action bar background color.
+  - Login and Signup button colors.
  
 14.4
 -----
