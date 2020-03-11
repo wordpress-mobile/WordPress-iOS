@@ -5,6 +5,7 @@
   - Border color on Search bars.
   - Stats background color on wider screen sizes.
   - Media Picker action bar background color.
+* Reader: Fix toolbar width on wider screen sizes.
  
 14.4
 -----
