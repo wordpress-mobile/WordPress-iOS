@@ -914,11 +914,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
 
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *welcomeNotificationSeenKey = standardUserDefaults.welcomeNotificationSeenKey;
-    BOOL welcomeNotificationSeen = [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
-
-    if (count > 0 || !welcomeNotificationSeen) {
+    if (count > 0 || ![self welcomeNotificationSeen]) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
     } else {
@@ -940,6 +936,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if( UIApplication.sharedApplication.isCreatingScreenshots ) {
         [self hideReaderBadge:nil];
     }
+}
+
+-(BOOL) welcomeNotificationSeen
+{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *welcomeNotificationSeenKey = standardUserDefaults.welcomeNotificationSeenKey;
+    return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
 }
 
 - (void) hideReaderBadge:(NSNotification *)notification
