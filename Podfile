@@ -178,9 +178,9 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '0.3'
 
-    # pod 'WPMediaPicker', '~> 1.6.1-beta.1'
+    pod 'WPMediaPicker', '~> 1.6.1-beta.1'
     ## while PR is in review:
-    pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => 'fix/12759-action_bar_background'
+    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
     pod 'Gridicons', '~> 0.20-beta.1'
