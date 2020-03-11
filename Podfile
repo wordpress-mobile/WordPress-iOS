@@ -18,7 +18,7 @@ def wordpress_shared
 
     ## while PR is in review:
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => '1784d566727159dee6068a2aaa887f8d46f46b6f'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => '269538ad1622116a350c3757813007947f922e4d'
 end
 
 def aztec
