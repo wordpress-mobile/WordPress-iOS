@@ -844,6 +844,8 @@ extension WordPressAppDelegate {
         cellAppearance.setCellTintColor(.primary)
 
         UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
+        WPActionBar.appearance().barBackgroundColor = .basicBackground
+        WPActionBar.appearance().lineColor = .basicBackground
 
         customizeAppearanceForTextElements()
     }
