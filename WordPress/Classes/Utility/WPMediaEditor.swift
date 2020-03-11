@@ -42,6 +42,8 @@ class WPMediaEditor: MediaEditor {
         super.viewDidAppear(animated)
 
         WPAnalytics.track("media_editor_shown")
+        WPAnalytics.track(Events.mediaEditorShown)
+        WPAnalytics.track(.mediaEditorShown)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -54,6 +56,13 @@ class WPMediaEditor: MediaEditor {
             return
         }
 
-        WPAnalytics.track(.mediaEditorUsed, withProperties: ["actions": actions.description])
+        WPAnalytics.track("media_editor_used", properties: ["actions": actions.description])
+        WPAnalytics.track(Events.mediaEditorUsed, properties: ["actions": actions.description])
+        WPAnalytics.track(.mediaEditorUsed, properties: ["actions": actions.description])
+    }
+
+    private enum Events {
+        static let mediaEditorShown = "media_editor_shown"
+        static let mediaEditorUsed = "media_editor_used"
     }
 }
