@@ -832,7 +832,7 @@ private extension NotificationsViewController {
 
     func markWelcomeNotificationAsSeenIfNeeded() {
         let welcomeNotificationSeenKey = userDefaults.welcomeNotificationSeenKey
-        if !userDefaults.bool(forKey: welcomeNotificationSeenKey){
+        if !userDefaults.bool(forKey: welcomeNotificationSeenKey) {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
             resetApplicationBadge()
         }
