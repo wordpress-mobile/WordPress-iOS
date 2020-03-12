@@ -277,6 +277,16 @@ import "./ScreenshotFastfile"
       notify_testers: false 
     )
 
+    # Install SentryCLI prior to trying to upload dSYMs
+    sh("curl -sL https://sentry.io/get-cli/ | bash")
+
+    sentry_upload_dsym(
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      org_slug: 'a8c',
+      project_slug: 'wordpress-ios',
+      dsym_path: "./build/WordPress.app.dSYM.zip",
+    )
+
     download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
     UI.message("Successfully built and uploaded installable build here: #{download_url}")
     install_url = "https://install.appcenter.ms/orgs/automattic/apps/WPiOS-One-Offs/"
