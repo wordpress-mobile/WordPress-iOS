@@ -26,12 +26,21 @@ extension WPStyleGuide {
         cell.textLabel?.font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
         cell.detailTextLabel?.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
 
-        cell.imageView?.layer.borderColor = UIColor.neutral(.shade10).cgColor
-        cell.imageView?.layer.borderWidth = 1
         cell.imageView?.tintColor = .neutral(.shade30)
+        cell.imageView?.layer.borderWidth = 1
 
         cell.selectionStyle = .none
         cell.backgroundColor = .basicBackground
     }
 
- }
+}
+
+extension LoginEpilogueBlogCell {
+    // Per Apple's documentation (https://developer.apple.com/documentation/xcode/supporting_dark_mode_in_your_interface),
+    // `cgColor` objects do not adapt to appearance changes (i.e. toggling light/dark mode).
+    // `tintColorDidChange` is called when the appearance changes, so re-set the border color when this occurs.
+    override func tintColorDidChange() {
+        super.tintColorDidChange()
+        imageView?.layer.borderColor = UIColor.neutral(.shade10).cgColor
+    }
+}
