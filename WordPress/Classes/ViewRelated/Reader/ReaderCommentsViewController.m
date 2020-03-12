@@ -280,11 +280,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [headerWrapper addSubview:headerView];
 
     // Border
-    CGSize borderSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 1.0);
-    UIImage *borderImage = [UIImage imageWithColor:[UIColor murielNeutral5] havingSize:borderSize];
-    UIImageView *borderView = [[UIImageView alloc] initWithImage:borderImage];
+    CGRect borderRect = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 1.0);
+    UIView *borderView = [[UIView alloc] initWithFrame:borderRect];
+    borderView.backgroundColor = [UIColor murielNeutral5];
     borderView.translatesAutoresizingMaskIntoConstraints = NO;
-    borderView.contentMode = UIViewContentModeScaleAspectFill;
     [headerWrapper addSubview:borderView];
 
     // Layout
