@@ -1,9 +1,18 @@
 import Foundation
 
 // WPiOS-only events
-enum WPAnalyticsEvent: String {
-    case mediaEditorShown = "media_editor_shown"
-    case mediaEditorUsed = "media_editor_used"
+@objc enum WPAnalyticsEvent: Int {
+    case mediaEditorShown
+    case mediaEditorUsed
+
+    var value: String {
+        switch self {
+        case .mediaEditorShown:
+            return "media_editor_shown"
+        case .mediaEditorUsed:
+            return "media_editor_used"
+        }
+    }
 
     var properties: [AnyHashable: Any]? {
         switch self {
@@ -21,7 +30,7 @@ extension WPAnalytics {
     /// - Parameter event: a `String` that represents the event name
     ///
     static func track(_ event: WPAnalyticsEvent) {
-        WPAnalytics.trackEvent(event.rawValue)
+        WPAnalytics.trackString(event.value)
     }
 
     /// Track a event
@@ -34,7 +43,29 @@ extension WPAnalytics {
         var mergedProperties: [AnyHashable: Any] = event.properties ?? [:]
         mergedProperties.merge(properties) { (_, new) in new }
 
-        WPAnalytics.trackEvent(event.rawValue, withProperties: mergedProperties)
+        WPAnalytics.trackString(event.value, withProperties: mergedProperties)
+    }
+
+    /// Track a event in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given event
+    /// - Parameter event: a `String` that represents the event name
+    ///
+    @objc static func trackEvent(_ event: WPAnalyticsEvent) {
+        WPAnalytics.trackString(event.value)
+    }
+
+    /// Track a event in Obj-C
+    ///
+    /// This will call each registered tracker and fire the given event
+    /// - Parameter event: a `String` that represents the event name
+    /// - Parameter properties: a `Hash` that represents the properties
+    ///
+    @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+        var mergedProperties: [AnyHashable: Any] = event.properties ?? [:]
+        mergedProperties.merge(properties) { (_, new) in new }
+
+        WPAnalytics.trackString(event.value, withProperties: mergedProperties)
     }
 
 }

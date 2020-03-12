@@ -69,15 +69,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
     [mergedProperties addEntriesFromDictionary:properties];
 
-    [self trackEvent:eventPair.eventName withProperties:mergedProperties];
+    [self trackString:eventPair.eventName withProperties:mergedProperties];
 }
 
-- (void)trackEvent:(NSString *)event
+- (void)trackString:(NSString *)event:(NSString *)event
 {
-    [self trackEvent:event withProperties:nil];
+    [self trackString:event withProperties:nil];
 }
 
-- (void)trackEvent:(NSString *)event withProperties:(NSDictionary *)properties {
+- (void)trackString:(NSString *)event withProperties:(NSDictionary *)properties {
     if (properties == nil) {
         DDLogInfo(@"🔵 Tracked: %@", event);
     } else {

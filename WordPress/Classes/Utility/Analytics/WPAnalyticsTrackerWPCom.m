@@ -26,12 +26,12 @@
     }
 }
 
-- (void)trackEvent:(NSString *)event
+- (void)trackString:(NSString *)event
 {
     // Only WPAnalyticsStat should be used in this Tracker
 }
 
-- (void)trackEvent:(NSString *)event withProperties:(NSDictionary *)properties
+- (void)trackString:(NSString *)event withProperties:(NSDictionary *)properties
 {
     // Only WPAnalyticsStat should be used in this Tracker
 }
