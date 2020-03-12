@@ -38,13 +38,9 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v14.3-whats-new"
+msgctxt "v14.4-whats-new"
 msgid ""
-"- There are two new blocks available! Welcome, Button and Group blocks.\n"
-"- A few other blocks have improvements: You can change image sizes in image blocks and use upload options in Gallery blocks. We also took care of a text-wrapping issue in Shortcode blocks that would cut off part of your content.\n"
-"- We also made some enhancements to the general block experience. You’ll see a new toolbar floating above the block you’re editing to make navigating blocks, especially complex ones, easier. There’s also scroll support in the block picker and in block settings.\n"
-"- Finally, we fixed a few bugs. Adding emoji to a post title no longer adds strong HTML elements to the post title, and the alignment of paragraph blocks is now respected when you split the paragraph or read the post’s HTML content.\n"
-"- We also adjusted the weekday symbols in the calendar depending on your regional settings, and added Quick Action buttons to the Site Details to take you straight to the most frequently used parts of a site.\n"
+"Just a few quick things this week, because there are bigger things going on in the world: We fixed an issue in Post Settings so the dates of posts that will be immediately published display correctly, and we made some changes under the hood to improve speed and reliability generally.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

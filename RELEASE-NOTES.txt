@@ -1,5 +1,11 @@
 14.5
 -----
+* Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
+* Dark Mode fixes:
+  - Border color on Search bars.
+  - Stats background color on wider screen sizes.
+  - Media Picker action bar background color.
+  - Login and Signup button colors.
  
 14.4
 -----
