@@ -186,9 +186,9 @@ import "./ScreenshotFastfile"
   end
 
   #####################################################################################
-  # new_hotfix_release
+  # finalize_hotfix_release
   # -----------------------------------------------------------------------------------
-  # This lane finalizes the hotix branch. 
+  # This lane finalizes the hotfix branch. 
   # -----------------------------------------------------------------------------------
   # Usage:
   # bundle exec fastlane finalize_hotfix_release [skip_confirm:<skip confirm>]
