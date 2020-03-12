@@ -3,13 +3,14 @@ import WordPressShared
 
 extension WPStyleGuide {
 
+    fileprivate static let barTintColor: UIColor = .neutral(.shade10)
+
     @objc public class func configureSearchBar(_ searchBar: UISearchBar) {
         searchBar.accessibilityIdentifier = "Search"
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
         searchBar.isTranslucent = false
-        searchBar.barTintColor = .neutral(.shade10)
-        searchBar.layer.borderColor = UIColor.neutral(.shade10).cgColor
+        searchBar.barTintColor = WPStyleGuide.barTintColor
         searchBar.layer.borderWidth = 1.0
         searchBar.returnKeyType = .done
         if #available(iOS 13.0, *) {
@@ -46,5 +47,15 @@ extension WPStyleGuide {
                                                            attributes: WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade30)))
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder =
             attributedPlaceholderText
+    }
+}
+
+extension UISearchBar {
+    // Per Apple's documentation (https://developer.apple.com/documentation/xcode/supporting_dark_mode_in_your_interface),
+    // `cgColor` objects do not adapt to appearance changes (i.e. toggling light/dark mode).
+    // `tintColorDidChange` is called when the appearance changes, so re-set the border color when this occurs.
+    open override func tintColorDidChange() {
+        super.tintColorDidChange()
+        layer.borderColor = WPStyleGuide.barTintColor.cgColor
     }
 }
