@@ -56,6 +56,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 @property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic) BOOL deviceIsRotating;
+@property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
 
 @end
@@ -194,6 +195,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    if (@available(iOS 13.0, *)) {
+        // Update cached attributed strings when toggling light/dark mode.
+        self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
+        [self refreshTableViewAndNoResultsView];
+    } else {
+        self.userInterfaceStyleChanged = NO;
+    }
+}
 
 #pragma mark - Split View Support
 
@@ -721,7 +734,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (NSAttributedString *)cacheContentForComment:(Comment *)comment
 {
     NSAttributedString *attrStr = [self.cachedAttributedStrings objectForKey:comment.commentID];
-    if (!attrStr) {
+    if (!attrStr || self.userInterfaceStyleChanged == YES) {
         attrStr = [WPRichContentView formattedAttributedStringForString: comment.content];
         [self.cachedAttributedStrings setObject:attrStr forKey:comment.commentID];
     }
