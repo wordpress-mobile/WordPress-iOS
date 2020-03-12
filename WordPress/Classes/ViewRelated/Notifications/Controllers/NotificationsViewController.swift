@@ -170,6 +170,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         markSelectedNotificationAsRead()
 
         registerUserActivity()
+
+        markWelcomeNotificationAsSeenIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -826,6 +828,14 @@ private extension NotificationsViewController {
         }
 
         NotificationSyncMediator()?.markAsUnread(note)
+    }
+
+    func markWelcomeNotificationAsSeenIfNeeded() {
+        let welcomeNotificationSeenKey = userDefaults.welcomeNotificationSeenKey
+        if !userDefaults.bool(forKey: welcomeNotificationSeenKey) {
+            userDefaults.set(true, forKey: welcomeNotificationSeenKey)
+            resetApplicationBadge()
+        }
     }
 }
 
