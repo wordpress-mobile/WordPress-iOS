@@ -2,6 +2,7 @@ import UIKit
 import Gridicons
 import WordPressShared
 import WordPressUI
+import AVFoundation
 
 final class ReaderSavedPostsViewController: UITableViewController {
     private enum Strings {
@@ -34,7 +35,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
         super.viewDidLoad()
 
         title = Strings.title
-
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(self.readItToMe) )
         setupTableView()
         setupFooterView()
         setupContentHandler()
@@ -50,6 +51,18 @@ final class ReaderSavedPostsViewController: UITableViewController {
     }
 
     // MARK: - Setup
+
+    @objc func readItToMe() {
+        guard let posts = content.content as? [ReaderPost],
+            let post = posts.first
+        else {
+            DDLogError("[ReaderStreamViewController tableView:cellForRowAtIndexPath:] fetchedObjects was nil.")
+            return
+        }
+
+        let readItToMeVC = ReadItToMeViewController(post: post)
+        show(readItToMeVC, sender: nil)
+    }
 
     fileprivate func setupTableView() {
         tableConfiguration.setup(tableView)
