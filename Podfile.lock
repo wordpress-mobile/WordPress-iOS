@@ -628,7 +628,7 @@ CHECKOUT OPTIONS:
     :commit: baf20c3204bc105decdf96a295a3c670f3f2392e
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :commit: 1a219b3095835dc204fded6eeb13c7e3a09850d7
+    :commit: b254c06db9e2979717e31ef913755ec7ea566be6
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
