@@ -6,6 +6,8 @@
   - Stats background color on wider screen sizes.
   - Media Picker action bar background color.
   - Login and Signup button colors.
+  - Reader comments colors.
+* Reader: Fix toolbar and search bar width on wider screen sizes.
  
 14.4
 -----

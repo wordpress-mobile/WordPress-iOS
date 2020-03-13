@@ -36,6 +36,14 @@ class TestAnalyticsTracker: NSObject {
 }
 
 extension TestAnalyticsTracker: WPAnalyticsTracker {
+    func trackString(_ event: String) {
+
+    }
+
+    func trackString(_ event: String, withProperties properties: [AnyHashable: Any]!) {
+
+    }
+
     func track(_ stat: WPAnalyticsStat) {
         TestAnalyticsTracker.track(stat)
     }
