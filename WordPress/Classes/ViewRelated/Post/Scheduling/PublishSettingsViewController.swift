@@ -70,6 +70,11 @@ struct PublishSettingsViewModel {
     mutating func setDate(_ date: Date?) {
         if let date = date {
             post.dateCreated = date
+            if post.hasFuturePublishDate() {
+                post.status = .scheduled
+            } else {
+                post.status = .publish
+            }
         } else {
             post.publishImmediately()
         }
