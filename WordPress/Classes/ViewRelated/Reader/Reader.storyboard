@@ -318,17 +318,17 @@
                                 </subviews>
                             </stackView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vSH-j9-J3c">
-                                <rect key="frame" x="0.0" y="573" width="379" height="50"/>
+                                <rect key="frame" x="0.0" y="573" width="375" height="50"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="utM-eb-n7b">
-                                        <rect key="frame" x="0.0" y="0.0" width="379" height="1"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
                                         <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="F3N-gl-Nkn"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="PVU-1Y-fyZ">
-                                        <rect key="frame" x="16" y="0.0" width="347" height="50"/>
+                                        <rect key="frame" x="16" y="0.0" width="343" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="168-Gh-oaD">
                                                 <rect key="frame" x="0.0" y="13" width="32" height="24"/>
@@ -346,10 +346,10 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yq2-Pz-GyO">
-                                                <rect key="frame" x="48" y="0.0" width="132" height="50"/>
+                                                <rect key="frame" x="48" y="0.0" width="128" height="50"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="piB-Zd-RVQ" customClass="PostMetaButton">
-                                                <rect key="frame" x="196" y="13" width="40" height="24"/>
+                                                <rect key="frame" x="192" y="13" width="40" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="Mum-BO-4Xd"/>
                                                     <constraint firstAttribute="height" constant="24" id="QBk-ZS-SRK"/>
@@ -363,7 +363,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XmB-eN-d59" customClass="PostMetaButton">
-                                                <rect key="frame" x="252" y="13" width="32" height="24"/>
+                                                <rect key="frame" x="248" y="13" width="32" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="T1s-fS-Zer"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="nt6-Mr-9t8"/>
@@ -378,7 +378,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2yJ-O3-UEu" customClass="PostMetaButton">
-                                                <rect key="frame" x="300" y="13" width="47" height="24"/>
+                                                <rect key="frame" x="296" y="13" width="47" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="7k7-Il-kBP"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="HTK-fj-KBV"/>
@@ -492,7 +492,6 @@
                             <constraint firstAttribute="trailing" secondItem="49S-3J-OMN" secondAttribute="trailing" id="M8m-fa-9Kl"/>
                             <constraint firstItem="49S-3J-OMN" firstAttribute="leading" secondItem="zNg-ay-PFI" secondAttribute="leading" id="Tjg-wk-KPx"/>
                             <constraint firstItem="B6J-Lg-PdX" firstAttribute="top" secondItem="POD-Dc-YbQ" secondAttribute="bottom" id="Wy7-AW-DmL"/>
-                            <constraint firstItem="B6J-Lg-PdX" firstAttribute="centerX" secondItem="zNg-ay-PFI" secondAttribute="centerX" id="kaH-A8-bk2"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -502,9 +501,7 @@
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular" layoutMarginsFollowReadableWidth="YES">
                             <mask key="constraints">
-                                <exclude reference="8Ig-Pa-nrt"/>
                                 <include reference="FB0-IT-8ty"/>
-                                <exclude reference="KUL-kZ-3vg"/>
                                 <include reference="LlQ-Hl-xwi"/>
                             </mask>
                         </variation>
