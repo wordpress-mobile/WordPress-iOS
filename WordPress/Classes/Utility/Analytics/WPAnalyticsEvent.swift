@@ -5,6 +5,7 @@ import Foundation
     case mediaEditorShown
     case mediaEditorUsed
 
+    /// A String that represents the event
     var value: String {
         switch self {
         case .mediaEditorShown:
@@ -14,7 +15,16 @@ import Foundation
         }
     }
 
-    var properties: [AnyHashable: Any]? {
+    /**
+     The default properties of the event
+
+     # Example
+     ```
+     case .mediaEditorShown:
+        return ["from": "ios"]
+     ```
+    */
+    var defaultProperties: [AnyHashable: Any]? {
         switch self {
         default:
             return nil
@@ -40,7 +50,7 @@ extension WPAnalytics {
     /// - Parameter properties: a `Hash` that represents the properties
     ///
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
-        var mergedProperties: [AnyHashable: Any] = event.properties ?? [:]
+        var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
         mergedProperties.merge(properties) { (_, new) in new }
 
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
@@ -62,7 +72,7 @@ extension WPAnalytics {
     /// - Parameter properties: a `Hash` that represents the properties
     ///
     @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
-        var mergedProperties: [AnyHashable: Any] = event.properties ?? [:]
+        var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
         mergedProperties.merge(properties) { (_, new) in new }
 
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
