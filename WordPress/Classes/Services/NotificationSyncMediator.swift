@@ -98,7 +98,14 @@ class NotificationSyncMediator {
                 return
             }
 
-            self.deleteLocalMissingNotes(from: remoteHashes) {
+            let hackedHashes = [
+                RemoteNotification(document: [
+                    "id": 1234,
+                    "note_hash": 9999999
+                    ] as [String: AnyObject] )!
+            ]
+
+            self.deleteLocalMissingNotes(from: hackedHashes) {
 
                 self.determineUpdatedNotes(with: remoteHashes) { outdatedNoteIds in
                     guard outdatedNoteIds.isEmpty == false else {
@@ -107,12 +114,155 @@ class NotificationSyncMediator {
                     }
 
                     self.remote.loadNotes(noteIds: outdatedNoteIds) { error, remoteNotes in
-                        guard let remoteNotes = remoteNotes else {
-                            completion?(error, false)
-                            return
-                        }
-
-                        self.updateLocalNotes(with: remoteNotes) {
+let hackedNotes = [
+    RemoteNotification(document: [
+        "id": 1234,
+        "note_hash": 1234,
+        "type": "comment",
+        "read": 1,
+        "noticon": "\u{f814}",
+        "timestamp": "2020-03-05T09:06:52+00:00",
+        "icon": "https:\\/\\/1.gravatar.com",
+        "url": "https:\\/\\/something",
+        "subject": [[
+            "text": "Aaaaa Aaaaaa mentioned you on I created a simple...",
+            "ranges": [[
+                "type": "noticon",
+                "indices": [0, 0],
+                "value": "\u{f467}"
+            ], [
+                "type": "user",
+                "indices": [0, 12],
+                "url": "http:\\/\\/aaaaaaa.com",
+                "site_id": 999999999999,
+                "id": 999999999999
+            ], [
+                "type": "post",
+                "indices": [30, 51],
+                "url": "https:\\/\\/something",
+                "site_id": 999999999999,
+                "id": 999999999999
+            ]]
+        ], [
+            "text": "I just deployed an update of the IIII service that will check if sssss for a commit were really generated before using them to calculate a delta.\\nUntil now, the select from stats SQL \\u2026\\n",
+            "ranges": [[
+                "type": "comment",
+                "indices": [0, 185],
+                "url": "https:\\/\\/something",
+                "site_id": 999999999999,
+                "post_id": 999999999999,
+                "id": 999999999999
+            ]]
+        ]],
+        "body": [[
+            "text": "Aaaaa Aaaaaa",
+            "ranges": [[
+                "email": "test@test.com",
+                "url": "http:\\/\\/something",
+                "id": 999999999999,
+                "site_id": 999999999999,
+                "type": "user",
+                "indices": [0, 12]
+            ]],
+            "media": [[
+                "type": "image",
+                "indices": [0, 0],
+                "height": "256",
+                "width": "256",
+                "url": "https:\\/\\/1.gravatar.com\\/avatar"
+            ]],
+            "actions": [
+                "follow": false
+            ],
+            "meta": [
+                "links": [
+                ],
+                "ids": [
+                    "user": 999999999999,
+                    "site": 999999999999
+                ],
+                "titles": [
+                    "home": "Aaaaa Aaaaaa"
+                ]
+            ],
+            "type": "user"
+        ], [
+            "text": "I just deployed an update of the IIII sssssss that will check if stats for a commit were really generated before using them to calculate a delta.\n\nUntil now, the select from sssss SQL query simply returned zzzz rows, making one side of the delta empty.\n\nIf the needed stats are not available, xxxx will not proceed to post a comment.\n\nThis is a simple fix that I\u{2019}ve procrastinating on for too long. But now when we\u{2019}re having a lot of issues with unstable CI builds, the problem started happening much more often. Thanks @wwwww for callint it out 👍",
+            "ranges": [[
+                "url": "https:\\/\\/something/",
+                "indices": [520, 526]
+            ], [
+                "type": "code",
+                "indices": [162, 179]
+            ]],
+            "actions": [
+                "spam-comment": false,
+                "trash-comment": false,
+                "approve-comment": true,
+                "edit-comment": false,
+                "replyto-comment": true,
+                "like-comment": false
+            ],
+            "meta": [
+                "ids": [
+                    "comment": 999999999999,
+                    "user": 999999999999,
+                    "post": 999999999999,
+                    "site": 999999999999
+                ],
+                "links": []
+            ],
+            "type": "comment",
+            "nest_level": 0,
+        ], [
+            "text": "You replied to this comment.",
+            "ranges": [[
+                "type": "noticon",
+                "indices": [0, 0],
+                "value": "\u{f467}"
+            ], [
+                "type": "comment",
+                "indices": [4, 11],
+                "url": "https:\\/\\/something",
+                "site_id": 999999999999,
+                "post_id": 999999999999,
+                "id": 999999999999
+            ]]
+        ]],
+        "meta": [
+            "ids": [
+                "user": 999999999999,
+                "comment": 999999999999,
+                "post": 999999999999,
+                "site": 999999999999,
+                "reply_comment": 999999999999
+            ],
+            "links": [
+            ]
+        ],
+        "header": [[
+            "text": "Aaaaa Aaaaaaaa",
+            "ranges": [[
+                "type": "user",
+                "indices": [0, 14],
+                "url": "http:\\/\\/aaaaaaa\\/",
+                "site_id": 999999999999,
+                "id": 999999999999
+            ]],
+            "media": [[
+                "type": "image",
+                "indices": [0, 0],
+                "height": "256",
+                "width": "256",
+                "url": "https:\\/\\/2.gravatar.com"
+            ]]
+        ], [
+            "text": "I created a simple..."
+        ]],
+        "title": "Mention"
+    ] as [String: AnyObject])!
+]
+                        self.updateLocalNotes(with: hackedNotes) {
                             self.notifyNotificationsWereUpdated()
                             completion?(nil, true)
                         }
