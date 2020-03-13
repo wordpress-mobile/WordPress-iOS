@@ -72,7 +72,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     [self trackString:eventPair.eventName withProperties:mergedProperties];
 }
 
-- (void)trackString:(NSString *)event:(NSString *)event
+- (void)trackString:(NSString *)event
 {
     [self trackString:event withProperties:nil];
 }
