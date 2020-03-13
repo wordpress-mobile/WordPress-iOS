@@ -81,17 +81,27 @@ class ReaderCommentCell: UITableViewCell {
         super.awakeFromNib()
 
         setupContentView()
-        setupReplyButton()
-        setupLikeButton()
         applyStyles()
     }
 
+    override func tintColorDidChange() {
+        // Update colors when toggling light/dark mode.
+        super.tintColorDidChange()
+        applyStyles()
+    }
 
     // MARK: = Setup
 
     @objc func applyStyles() {
+
+        setupReplyButton()
+        setupLikeButton()
+
         WPStyleGuide.applyReaderCardSiteButtonStyle(authorButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(timeLabel)
+
+        WPStyleGuide.applyReaderActionButtonStyle(replyButton)
+        WPStyleGuide.applyReaderActionButtonStyle(likeButton)
 
         authorButton.titleLabel?.lineBreakMode = .byTruncatingTail
 
@@ -116,8 +126,6 @@ class ReaderCommentCell: UITableViewCell {
 
         let title = NSLocalizedString("Reply", comment: "Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post.")
         replyButton.setTitle(title, for: .normal)
-
-        WPStyleGuide.applyReaderActionButtonStyle(replyButton)
     }
 
 
@@ -130,8 +138,6 @@ class ReaderCommentCell: UITableViewCell {
         likeButton.setImage(star, for: .highlighted)
         likeButton.setImage(star, for: .selected)
         likeButton.setImage(star, for: [.selected, .highlighted])
-
-        WPStyleGuide.applyReaderActionButtonStyle(likeButton)
     }
 
     // MARK: - Configuration
