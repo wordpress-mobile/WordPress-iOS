@@ -485,26 +485,13 @@
                         <constraints>
                             <constraint firstItem="POi-4x-5Dc" firstAttribute="top" secondItem="49S-3J-OMN" secondAttribute="bottom" id="0rH-fk-AGg"/>
                             <constraint firstAttribute="trailing" secondItem="B6J-Lg-PdX" secondAttribute="trailing" id="8Ig-Pa-nrt"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="B6J-Lg-PdX" secondAttribute="trailing" constant="-10" id="FB0-IT-8ty"/>
                             <constraint firstItem="49S-3J-OMN" firstAttribute="top" secondItem="B6J-Lg-PdX" secondAttribute="bottom" id="FPy-1r-Z0H"/>
                             <constraint firstItem="B6J-Lg-PdX" firstAttribute="leading" secondItem="zNg-ay-PFI" secondAttribute="leading" id="KUL-kZ-3vg"/>
-                            <constraint firstItem="B6J-Lg-PdX" firstAttribute="leading" secondItem="zNg-ay-PFI" secondAttribute="leadingMargin" constant="-10" id="LlQ-Hl-xwi"/>
                             <constraint firstAttribute="trailing" secondItem="49S-3J-OMN" secondAttribute="trailing" id="M8m-fa-9Kl"/>
                             <constraint firstItem="49S-3J-OMN" firstAttribute="leading" secondItem="zNg-ay-PFI" secondAttribute="leading" id="Tjg-wk-KPx"/>
                             <constraint firstItem="B6J-Lg-PdX" firstAttribute="top" secondItem="POD-Dc-YbQ" secondAttribute="bottom" id="Wy7-AW-DmL"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="FB0-IT-8ty"/>
-                                <exclude reference="LlQ-Hl-xwi"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular" layoutMarginsFollowReadableWidth="YES">
-                            <mask key="constraints">
-                                <include reference="FB0-IT-8ty"/>
-                                <include reference="LlQ-Hl-xwi"/>
-                            </mask>
-                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular" layoutMarginsFollowReadableWidth="YES"/>
                     </view>
                     <connections>
                         <outlet property="searchBar" destination="B6J-Lg-PdX" id="nsa-JY-QYl"/>
