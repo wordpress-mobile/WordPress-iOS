@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.8.15'
+    pod 'WordPressShared', '1.8.16-beta.1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.6.0-beta.5'
+    pod 'WordPressKit', '~> 4.6.0-beta.6'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.6.0-beta.3'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'fix/datarequest-weak-reference'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '24af2c192fd628f4c5bb3e9be6c8312cb45260fe'
@@ -176,7 +176,7 @@ target 'WordPress' do
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/Swift-5-migration'
 
-    pod 'NSURL+IDN', '0.3'
+    pod 'NSURL+IDN', '0.4'
 
     pod 'WPMediaPicker', '~> 1.6.1-beta.1'
     ## while PR is in review:
@@ -187,9 +187,9 @@ target 'WordPress' do
     # While in PR
     #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
 
-    pod 'WordPressAuthenticator', '~> 1.11.0-beta.4'
+    pod 'WordPressAuthenticator', '~> 1.11.0-beta.6'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'develop'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.0.1'
