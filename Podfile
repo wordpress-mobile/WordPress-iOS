@@ -43,9 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    #pod 'WordPressKit', '~> 4.6.0-beta.6'
+    pod 'WordPressKit', '~> 4.6.0-beta.6'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.6.0-beta.3'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/79-migrate-swift-5'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/79-migrate-swift-5'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '24af2c192fd628f4c5bb3e9be6c8312cb45260fe'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -176,9 +176,9 @@ target 'WordPress' do
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/Swift-5-migration'
 
-    pod 'NSURL+IDN', '0.3'
+    pod 'NSURL+IDN', '0.4'
 
-    pod 'WPMediaPicker', '~> 1.6.1-beta.1'
+    pod 'WPMediaPicker', '~> 1.6.1-beta.2'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
@@ -187,9 +187,9 @@ target 'WordPress' do
     # While in PR
     #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
 
-    #pod 'WordPressAuthenticator', '~> 1.11.0-beta.6'
+    pod 'WordPressAuthenticator', '~> 1.11.0-beta.6'
     # While in PR
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/update-wpkit-to-4.6.0-beta.6'
+    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/update-wpkit-to-4.6.0-beta.6'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.0.1'
