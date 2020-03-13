@@ -412,6 +412,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)setupSeparators:(NoteBlockTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
     cell.isLastRow = (indexPath.row >= self.numberOfRows - 1);
+    [cell refreshSeparators];
 }
 
 
