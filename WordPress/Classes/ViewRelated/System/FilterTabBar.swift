@@ -166,14 +166,6 @@ class FilterTabBar: UIControl {
         }
     }
 
-    private var stackViewWidthConstraint: NSLayoutConstraint! {
-        didSet {
-            if let oldValue = oldValue {
-                NSLayoutConstraint.deactivate([oldValue])
-            }
-        }
-    }
-
     enum TabSizingStyle {
         /// The tabs will fill the space available to the filter bar,
         /// with all tabs having equal widths. Tabs will not scroll.
@@ -208,15 +200,13 @@ class FilterTabBar: UIControl {
 
         addSubview(scrollView)
         NSLayoutConstraint.activate([
-            scrollView.safeLeadingAnchor.constraint(equalTo: safeLeadingAnchor),
-            scrollView.safeTrailingAnchor.constraint(equalTo: safeTrailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
             scrollView.topAnchor.constraint(equalTo: topAnchor)
         ])
 
         scrollView.addSubview(stackView)
-
-        stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: widthAnchor)
 
         updateTabSizingConstraints()
         activateTabSizingConstraints()
@@ -304,7 +294,8 @@ class FilterTabBar: UIControl {
         let padding = (tabSizingStyle == .equalWidths) ? 0 : AppearanceMetrics.horizontalPadding
 
         stackViewEdgeConstraints = [
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: padding),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
         ]
     }
@@ -316,10 +307,8 @@ class FilterTabBar: UIControl {
         case .equalWidths:
             stackView.distribution = equalWidthFill
             stackView.spacing = equalWidthSpacing
-            NSLayoutConstraint.activate([stackViewWidthConstraint])
         case .fitting:
             stackView.distribution = .fill
-            NSLayoutConstraint.deactivate([stackViewWidthConstraint])
         }
     }
 
