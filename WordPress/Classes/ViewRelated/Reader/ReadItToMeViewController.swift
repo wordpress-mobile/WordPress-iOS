@@ -1,6 +1,7 @@
 import Foundation
 import AVFoundation
 import UIKit
+import NaturalLanguage
 
 public class ReadItToMeViewController: UIViewController {
 
@@ -86,10 +87,23 @@ public class ReadItToMeViewController: UIViewController {
         start(utterance: utterance)
     }
 
+    private func findBestVoice(for text: String) -> AVSpeechSynthesisVoice? {
+        if #available(iOS 12.0, *), let language = NLLanguageRecognizer.dominantLanguage(for: text) {
+            for voice in AVSpeechSynthesisVoice.speechVoices() {
+                if voice.language.starts(with: language.rawValue) {
+                    return voice
+                }
+            }
+        }
+
+        return AVSpeechSynthesisVoice(language: AVSpeechSynthesisVoice.currentLanguageCode())
+    }
+
     func speak(attributedString: NSAttributedString) {
         let utterance = AVSpeechUtterance(attributedString: attributedString)
+        utterance.voice = findBestVoice(for: attributedString.string)
         attributedText = utterance.attributedSpeechString
-        print("Count text: \((utterance.speechString as NSString).length), attributed: \(utterance.attributedSpeechString.length) \n")
+
         start(utterance: utterance)
     }
 
