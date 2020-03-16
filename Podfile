@@ -45,7 +45,7 @@ end
 def wordpress_kit
     pod 'WordPressKit', '~> 4.6.0-beta.6'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.6.0-beta.3'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'fix/datarequest-weak-reference'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/79-migrate-swift-5'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '24af2c192fd628f4c5bb3e9be6c8312cb45260fe'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -178,7 +178,7 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '0.4'
 
-    pod 'WPMediaPicker', '~> 1.6.1-beta.1'
+    pod 'WPMediaPicker', '~> 1.6.1-beta.2'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
