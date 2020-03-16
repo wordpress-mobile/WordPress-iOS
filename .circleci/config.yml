@@ -127,6 +127,12 @@ jobs:
       - run: 
           name: Copy Secrets
           command: bundle exec fastlane run configure_apply
+      - run: 
+          name: Install helpers
+          command: |
+            brew install imagemagick
+            brew install ghostscript
+            
       - run:
           name: Build
           working_directory: Scripts
