@@ -292,8 +292,7 @@ extension WPStyleGuide {
     @objc public class func applyReadItToMeButtonStyle(_ button: UIButton) {
         let size = Gridicon.defaultSize
         let icon = Gridicon.iconOfType(.play, withSize: size)
-
-        button.setImage(icon, for: .normal)        
+        button.setImage(icon, for: .normal)
 
         applyReaderActionButtonStyle(button)
     }

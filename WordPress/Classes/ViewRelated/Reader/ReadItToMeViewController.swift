@@ -83,7 +83,7 @@ public class ReadItToMeViewController: UIViewController {
     }
 
     func speak(string: String) {
-        let utterance = AVSpeechUtterance(string:string)
+        let utterance = AVSpeechUtterance(string: string)
         start(utterance: utterance)
     }
 
