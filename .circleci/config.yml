@@ -115,6 +115,22 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
+  Release Build:
+    executor: 
+      name: ios/default
+      xcode-version: "11.2.1"
+    steps:
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+      - run: 
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run:
+          name: Build
+          working_directory: Scripts
+          command: "bundle exec fastlane build_and_upload_release skip_confirm:true run_on_ci:true"
 
 workflows:
   wordpress_ios:
@@ -142,3 +158,14 @@ workflows:
           filters:
             branches:
               ignore: /pull\/[0-9]+/
+  Release Build:
+    jobs:
+      - Release Build: 
+          filters:
+            branches:
+              only: 
+                - /^release.*/
+                - /^hotfix.*/
+            tags:
+              only: /^\d+(\.\d+)*$/ 
+
