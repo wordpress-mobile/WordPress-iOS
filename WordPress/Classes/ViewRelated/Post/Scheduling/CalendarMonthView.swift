@@ -22,10 +22,12 @@ class CalendarMonthView: UIView {
         }
     }
 
-    private let calendarCollectionView = CalendarCollectionView()
+    private let calendarCollectionView: CalendarCollectionView
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(calendar: Calendar) {
+        self.calendarCollectionView = CalendarCollectionView(calendar: calendar)
+        super.init(frame: .zero)
+
         setup()
     }
 
