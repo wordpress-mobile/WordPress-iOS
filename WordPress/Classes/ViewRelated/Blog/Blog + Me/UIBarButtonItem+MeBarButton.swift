@@ -45,14 +45,13 @@ private extension UIBarButtonItem {
     convenience init(email: String?, style: UIBarButtonItem.Style = .plain, target: Any?, action: Selector?) {
         self.init()
         makeMeButtonAccessible()
-        customView = makeGravatarTappableView(with: email)
-        addTapToCustomView(target: target, action: action)
+        customView = makeGravatarTappableView(with: email, target: target, action: action)
     }
 
     /// Create the gravatar CircluarImageView with a fade animation on tap.
     /// If no valid email is provided, fall back to the circled user icon
-    func makeGravatarTappableView(with email: String?) -> UIView {
-        let gravatarImageView = GravatarButton()
+    func makeGravatarTappableView(with email: String?, target: Any?, action: Selector?) -> UIView {
+        let gravatarImageView = GravatarButtonView(tappableWidth: GravatarConfiguration.tappableWidth)
 
         gravatarImageView.isUserInteractionEnabled = true
         gravatarImageView.animatesTouch = true
@@ -65,26 +64,22 @@ private extension UIBarButtonItem {
         } else {
             gravatarImageView.image = GravatarConfiguration.fallBackImage
         }
-        let tappableView = embedInTappableArea(gravatarImageView)
 
-        return gravatarImageView
-    }
-
-    /// adds a 'tap' action to customView
-    func addTapToCustomView(target: Any?, action: Selector?) {
         let tapRecognizer = UITapGestureRecognizer(target: target, action: action)
-        customView?.addGestureRecognizer(tapRecognizer)
+        gravatarImageView.addGestureRecognizer(tapRecognizer)
+
+        return embedInView(gravatarImageView)
     }
 
-    /// embeds a view in a larger tappable area, vertically centered and aligned to the right
-    func embedInTappableArea(_ imageView: UIImageView) -> UIView {
-        let tappableView = UIView()
-        setSize(of: tappableView, size: GravatarConfiguration.tappableWidth)
-        tappableView.addSubview(imageView)
+    /// embeds a view in a transparent view, vertically centered and aligned to the right
+    func embedInView(_ imageView: UIImageView) -> UIView {
+        let view = UIView()
+        setSize(of: view, size: GravatarConfiguration.tappableWidth)
+        view.addSubview(imageView)
         NSLayoutConstraint(item: imageView,
                            attribute: .centerY,
                            relatedBy: .equal,
-                           toItem: tappableView,
+                           toItem: view,
                            attribute: .centerY,
                            multiplier: 1,
                            constant: 0)
@@ -93,14 +88,13 @@ private extension UIBarButtonItem {
         NSLayoutConstraint(item: imageView,
                            attribute: .trailingMargin,
                        relatedBy: .equal,
-                       toItem: tappableView,
+                       toItem: view,
                        attribute: .trailingMargin,
                        multiplier: 1,
                        constant: 0)
         .isActive = true
 
-        tappableView.isUserInteractionEnabled = true
-        return tappableView
+        return view
     }
 
     /// constrains a squared UIImageView to a set size
@@ -136,16 +130,5 @@ private extension UIBarButtonItem {
         accessibilityIdentifier = "meBarButton"
         accessibilityTraits = UIAccessibilityTraits.button
         isAccessibilityElement = true
-    }
-}
-
-
-class GravatarButton: CircularImageView {
-    private static let tappableWidth: CGFloat = 44
-
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        let outset = -(GravatarButton.tappableWidth - self.bounds.width) / 2
-        let area = bounds.insetBy(dx: outset, dy: outset)
-        return area.contains(point)
     }
 }
