@@ -52,7 +52,7 @@ private extension UIBarButtonItem {
     /// Create the gravatar CircluarImageView with a fade animation on tap.
     /// If no valid email is provided, fall back to the circled user icon
     func makeGravatarTappableView(with email: String?) -> UIView {
-        let gravatarImageView = CircularImageView()
+        let gravatarImageView = GravatarButton()
 
         gravatarImageView.isUserInteractionEnabled = true
         gravatarImageView.animatesTouch = true
@@ -67,7 +67,7 @@ private extension UIBarButtonItem {
         }
         let tappableView = embedInTappableArea(gravatarImageView)
 
-        return tappableView
+        return gravatarImageView
     }
 
     /// adds a 'tap' action to customView
@@ -136,5 +136,16 @@ private extension UIBarButtonItem {
         accessibilityIdentifier = "meBarButton"
         accessibilityTraits = UIAccessibilityTraits.button
         isAccessibilityElement = true
+    }
+}
+
+
+class GravatarButton: CircularImageView {
+    private static let tappableWidth: CGFloat = 44
+
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let outset = -(GravatarButton.tappableWidth - self.bounds.width) / 2
+        let area = bounds.insetBy(dx: outset, dy: outset)
+        return area.contains(point)
     }
 }
