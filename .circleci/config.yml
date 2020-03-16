@@ -118,7 +118,7 @@ jobs:
   Release Build:
     executor: 
       name: ios/default
-      xcode-version: "11.2.1"
+      xcode-version: "11.2.1" 
     steps:
       - git/shallow-checkout
       - ios/install-dependencies:
