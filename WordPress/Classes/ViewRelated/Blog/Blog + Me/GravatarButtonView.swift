@@ -14,7 +14,7 @@ class GravatarButtonView: CircularImageView {
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let offset = tappableWidth - self.bounds.width
-        
+
         let tappableArea = CGRect(x: bounds.origin.x - offset,
                                   y: bounds.origin.y - (offset / 2),
                                   width: tappableWidth,
