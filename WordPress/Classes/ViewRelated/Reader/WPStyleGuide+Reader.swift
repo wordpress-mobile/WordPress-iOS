@@ -289,6 +289,15 @@ extension WPStyleGuide {
         applyReaderActionButtonStyle(button)
     }
 
+    @objc public class func applyReadItToMeButtonStyle(_ button: UIButton) {
+        let size = Gridicon.defaultSize
+        let icon = Gridicon.iconOfType(.play, withSize: size)
+
+        button.setImage(icon, for: .normal)        
+
+        applyReaderActionButtonStyle(button)
+    }
+
     /// Applies the save for later button style to the button passed as an argument
     /// - Parameter button: the button to apply the style to
     /// - Parameter showTitle: if set to true, will show the button label (default: true)

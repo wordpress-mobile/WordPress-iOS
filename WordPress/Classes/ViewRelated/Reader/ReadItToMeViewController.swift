@@ -35,6 +35,7 @@ public class ReadItToMeViewController: UIViewController {
         let string = post.contentForDisplay() ?? ""
         let fullText = "<h2>\(post.postTitle!).</h2> <h3>by \(post.authorDisplayName!) on \(post.blogName!).</h3> \(string)"
         self.init(text: fullText)
+        self.title = post.postTitle
     }
 
     public required init?(coder: NSCoder) {
@@ -56,7 +57,6 @@ public class ReadItToMeViewController: UIViewController {
         guard let view = self.view else {
             return
         }
-
         if #available(iOS 13, *) {
             attributedText = WPRichContentView.formattedAttributedString(for: text, style: self.traitCollection.userInterfaceStyle)
         } else {
