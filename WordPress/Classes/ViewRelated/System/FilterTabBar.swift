@@ -166,6 +166,14 @@ class FilterTabBar: UIControl {
         }
     }
 
+    private var stackViewWidthConstraint: NSLayoutConstraint! {
+        didSet {
+            if let oldValue = oldValue {
+                NSLayoutConstraint.deactivate([oldValue])
+            }
+        }
+    }
+
     enum TabSizingStyle {
         /// The tabs will fill the space available to the filter bar,
         /// with all tabs having equal widths. Tabs will not scroll.
@@ -207,6 +215,8 @@ class FilterTabBar: UIControl {
         ])
 
         scrollView.addSubview(stackView)
+
+        stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: widthAnchor)
 
         updateTabSizingConstraints()
         activateTabSizingConstraints()
@@ -307,8 +317,10 @@ class FilterTabBar: UIControl {
         case .equalWidths:
             stackView.distribution = equalWidthFill
             stackView.spacing = equalWidthSpacing
+            NSLayoutConstraint.activate([stackViewWidthConstraint])
         case .fitting:
             stackView.distribution = .fill
+            NSLayoutConstraint.deactivate([stackViewWidthConstraint])
         }
     }
 
