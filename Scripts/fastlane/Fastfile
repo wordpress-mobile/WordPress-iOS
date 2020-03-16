@@ -142,7 +142,7 @@ import "./ScreenshotFastfile"
   #####################################################################################
   # new_hotfix_release
   # -----------------------------------------------------------------------------------
-  # This lane updates the release branch for a new hotix release. 
+  # This lane creates the release branch for a new hotix release. 
   # -----------------------------------------------------------------------------------
   # Usage:
   # bundle exec fastlane new_hotfix_release [skip_confirm:<skip confirm>] [version:<version>]
@@ -155,7 +155,6 @@ import "./ScreenshotFastfile"
   lane :new_hotfix_release do | options |
     prev_ver = ios_hotfix_prechecks(options)
     ios_bump_version_hotfix(previous_version: prev_ver, version: options[:version])
-    ios_tag_build()
   end
 
   #####################################################################################
@@ -184,6 +183,23 @@ import "./ScreenshotFastfile"
     setfrozentag(repository:GHHELPER_REPO, milestone: version, freeze: false)
     create_new_milestone(repository:GHHELPER_REPO)
     close_milestone(repository:GHHELPER_REPO, milestone: version)
+  end
+
+  #####################################################################################
+  # finalize_hotfix_release
+  # -----------------------------------------------------------------------------------
+  # This lane finalizes the hotfix branch. 
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane finalize_hotfix_release [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane finalize_hotfix_release skip_confirm:true  
+  #####################################################################################
+  desc "Creates a new hotfix branch from the given tag"
+  lane :finalize_hotfix_release do | options |
+    ios_finalize_prechecks(options)
+    ios_tag_build()
   end
 
   #####################################################################################
@@ -259,6 +275,16 @@ import "./ScreenshotFastfile"
       file: "../build/WordPress Alpha.ipa",
       destinations: "All-users-of-WPiOS-One-Offs",
       notify_testers: false 
+    )
+
+    # Install SentryCLI prior to trying to upload dSYMs
+    sh("curl -sL https://sentry.io/get-cli/ | bash")
+
+    sentry_upload_dsym(
+      auth_token: get_required_env("SENTRY_AUTH_TOKEN"),
+      org_slug: 'a8c',
+      project_slug: 'wordpress-ios',
+      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH],
     )
 
     download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]

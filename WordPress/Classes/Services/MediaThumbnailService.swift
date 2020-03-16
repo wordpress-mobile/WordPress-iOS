@@ -99,14 +99,13 @@ class MediaThumbnailService: LocalCoreDataService {
             }
 
             // If the Media asset is available locally, export thumbnails from the local asset.
-            if let localAssetURL = mediaInContext.absoluteLocalURL {
-                if exporter.supportsThumbnailExport(forFile: localAssetURL) {
+            if let localAssetURL = mediaInContext.absoluteLocalURL,
+                exporter.supportsThumbnailExport(forFile: localAssetURL) {
                     self.exportQueue.async {
                         exporter.exportThumbnail(forFile: localAssetURL,
                                                  onCompletion: onThumbnailExport,
                                                  onError: onThumbnailExportError)
                     }
-                }
                 return
             }
 
