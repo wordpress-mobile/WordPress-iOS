@@ -6,6 +6,7 @@ group :screenshots, optional: true do
   gem 'rmagick', '~> 3.2.0'
 end
 
-gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', tag: '0.9.0'
+#gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', tag: '0.9.0'
+gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: '6b6c07226884a337e8ed406b5012c49b21356c9c'
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-appcenter', '1.7.1'
