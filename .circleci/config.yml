@@ -162,10 +162,6 @@ workflows:
     jobs:
       - Release Build: 
           filters:
-            branches:
-              only: 
-                - /^release.*/
-                - /^hotfix.*/
             tags:
               only: /^\d+(\.\d+)*$/ 
 
