@@ -294,8 +294,6 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
             fatalError()
         }
 
-        setupSeparators(cell, indexPath: indexPath)
-
         setup(cell, withContentGroupAt: indexPath)
 
         return cell
@@ -309,6 +307,12 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         estimatedRowHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
+
+        guard let cell = cell as? NoteBlockTableViewCell else {
+            return
+        }
+
+        setupSeparators(cell, indexPath: indexPath)
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -574,6 +578,8 @@ private extension NotificationDetailsViewController {
     func setupSeparators(_ cell: NoteBlockTableViewCell, indexPath: IndexPath) {
         cell.isBadge = note.isBadge
         cell.isLastRow = (indexPath.row >= note.headerAndBodyContentGroups.count - 1)
+
+        cell.refreshSeparators()
     }
 }
 

@@ -58,10 +58,14 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
     /// Indicates if the comment is approved, or not.
     ///
+    /// -   Note:
+    ///     After setting this property you should explicitly call `refreshSeparators` from within `UITableView.willDisplayCell`.
+    ///     We're not doing so from `didSet` anymore since doing so might yield invalid `intrinsicContentSize` calculations,
+    ///     which appears to be cached, and results in incorrect layouts.
+    ///
     @objc var isApproved: Bool = false {
         didSet {
             refreshApprovalColors()
-            refreshSeparators()
         }
     }
 
@@ -131,6 +135,13 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
     // MARK: - Approval Color Helpers
 
+    /// Updates the Separators Insets / Style. This API should be called from within `UITableView.willDisplayCell`.
+    ///
+    /// -   Note:
+    ///     `readableSeparatorInsets`, if executed from within `cellForRowAtIndexPath`, will produce an "invalid" layout cycle (since there won't
+    ///     be a superview). Such "Invalid" layout cycle appears to be yielding an invalid `intrinsicContentSize` calculation, which is then cached,
+    ///     and we end up with strings cutoff onScreen. =(
+    ///
     override func refreshSeparators() {
         // Left Separator
         separatorsView.leftVisible = !isApproved
