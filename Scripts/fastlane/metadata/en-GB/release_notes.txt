@@ -1,5 +1,5 @@
-- Now you can switch to fullscreen mode when writing a comment, so nothing distracts you from writing and you can maximise the hotness of your take.
-- We’re sure you almost never look at your stats because there are more important things in life, but in case you ever peek, the correct stats will now display in the Stats widget, we abbreviated large numbers in the Today Widget to make reading easier and we updated the Insights view based on the most frequently-added cards.
-- Some scheduled posts displayed incorrect time stamps, which was totally a bug and not us trying to mess with you. That’s fixed. We also fixed one that caused the app to crash when you tapped on a notification.
-- There was another bug that would randomly rename files imported from other apps. We had a long talk about whether we should fix the bug or just make sure the random names were always funny, and “Fix the bug” won out in the end.
-- Sometimes the Block editor would crash when you tried to undo something, which was a little too much undoing. That’s also fixed, along with some image-related bugs causing minor shenanigans with image placeholders.
+- There are two new blocks available! Welcome, Button and Group blocks.
+- A few other blocks have improvements: you can change image sizes in image blocks and use upload options in Gallery blocks. We also took care of a text-wrapping issue in Shortcode blocks that would cut off part of your content.
+- We also made some enhancements to the general block experience. You’ll see a new toolbar floating above the block you’re editing to make navigating blocks, especially complex ones, easier. There’s also scroll support in the block picker and in block settings.
+- Finally, we fixed a few bugs. Adding emoji to a post title no longer adds strong HTML elements to the post title, and the alignment of Paragraph blocks is now respected when you split the paragraph or read the post’s HTML content.
+- We also adjusted the weekday symbols in the calendar depending on your regional settings, and added Quick Action buttons to the Site Details to take you straight to the most frequently used parts of a site.

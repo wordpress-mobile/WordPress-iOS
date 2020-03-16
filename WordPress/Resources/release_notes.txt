@@ -1,2 +1,1 @@
-- There’s a new Shortcode block so you can create and edit shortcodes in the block editor.
-- On your stats page, we’ve added a This Week widget to display your views for the past week.
+Just a few quick things this week, because there are bigger things going on in the world: We fixed an issue in Post Settings so the dates of posts that will be immediately published display correctly, and we made some changes under the hood to improve speed and reliability generally.

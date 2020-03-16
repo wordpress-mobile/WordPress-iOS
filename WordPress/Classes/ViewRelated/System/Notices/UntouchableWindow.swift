@@ -30,9 +30,12 @@ class UntouchableViewController: UIViewController {
     }
 
     var offsetOnscreen: CGFloat {
+        // removed check for tabBarController.presentedViewController being nil here
+        // when saving a draft in offline mode the editing view is dismissed
+        // this causes the check for the presentedViewController to return nil
+        // thus placing the notice incorrectly, without the proper space for the tabBar
         guard let mainWindow = UIApplication.shared.delegate?.window,
-            let tabBarController = mainWindow?.rootViewController as? WPTabBarController,
-            tabBarController.presentedViewController == nil else {
+            let tabBarController = mainWindow?.rootViewController as? WPTabBarController else {
             return 0
         }
 

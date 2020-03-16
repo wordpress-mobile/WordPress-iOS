@@ -38,10 +38,9 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v14.1-whats-new"
+msgctxt "v14.4-whats-new"
 msgid ""
-"- There’s a new Shortcode block so you can create and edit shortcodes in the block editor.\n"
-"- On your stats page, we’ve added a This Week widget to display your views for the past week.\n"
+"Just a few quick things this week, because there are bigger things going on in the world: We fixed an issue in Post Settings so the dates of posts that will be immediately published display correctly, and we made some changes under the hood to improve speed and reliability generally.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

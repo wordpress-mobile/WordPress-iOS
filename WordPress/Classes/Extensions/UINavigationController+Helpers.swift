@@ -45,4 +45,14 @@ extension UINavigationController {
         }
         super.present(viewControllerToPresent, animated: flag, completion: completion)
     }
+
+    /// Adds an optional right bar button to a UIViewController instance pushed on the navigation stack
+    /// - Parameters:
+    ///   - viewController: the UIViewController instance to push on the navigation stack
+    ///   - animated: true if the push is animated
+    ///   - rightBarButton: optional right bar button
+    func pushViewController(_ viewController: UIViewController, animated: Bool, rightBarButton: UIBarButtonItem?) {
+        viewController.navigationItem.rightBarButtonItem = rightBarButton
+        self.pushViewController(viewController, animated: animated)
+    }
 }

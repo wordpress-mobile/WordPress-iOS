@@ -8,10 +8,12 @@ struct PostNoticeViewModel {
     private let post: AbstractPost
     private let postCoordinator: PostCoordinator
     private let autoUploadInteractor = PostAutoUploadInteractor()
+    private let isInternetReachable: Bool
 
-    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared) {
+    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
         self.post = post
         self.postCoordinator = postCoordinator
+        self.isInternetReachable = isInternetReachable
     }
 
     /// Returns the Notice represented by this view model.
@@ -105,35 +107,13 @@ struct PostNoticeViewModel {
     }
 
     private var failureTitle: String {
-        var defaultTitle: String {
-            if post is Page {
-                return PostAutoUploadMessages.pageFailedToUpload
-            } else {
-                return PostAutoUploadMessages.postFailedToUpload
-            }
-        }
 
-        if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
-            return autoUploadMessage
-        }
+        let postAutoUploadMessages = PostAutoUploadMessages(for: post)
 
-        guard let postStatus = post.status,
-            autoUploadInteractor.autoUploadAction(for: post) == .upload else {
-            return defaultTitle
-        }
-
-        switch postStatus {
-        case .draft:
-            return PostAutoUploadMessages.draftWillBeUploaded
-        case .publishPrivate:
-            return PostAutoUploadMessages.privateWillBeUploaded
-        case .scheduled:
-            return PostAutoUploadMessages.scheduledWillBeUploaded
-        case .publish:
-            return PostAutoUploadMessages.postWillBePublished
-        default:
-            return PostAutoUploadMessages.willSubmitLater
-        }
+        return postAutoUploadMessages.failedUploadMessage(
+            isInternetReachable: isInternetReachable,
+            autoUploadState: autoUploadInteractor.autoUploadAttemptState(of: post),
+            autoUploadAction: autoUploadInteractor.autoUploadAction(for: post))
     }
 
     private var message: String {
@@ -221,7 +201,7 @@ struct PostNoticeViewModel {
     }
 
     private var failureAction: FailureAction {
-        return autoUploadInteractor.canCancelAutoUpload(of: post) ? .cancel : .retry
+        return autoUploadInteractor.canCancelAutoUpload(of: post) && !isInternetReachable ? .cancel : .retry
     }
 
     // MARK: - Action Handlers

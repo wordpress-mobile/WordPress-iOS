@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.13-beta'
+    pod 'WordPressShared', '1.8.16-beta.1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -29,12 +29,12 @@ def aztec
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'ba8524aba1332550efb05cad583a85ed3511beb5'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
     ## pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.15.0'
+    pod 'WordPress-Editor-iOS', '~> 1.16.0'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.5.1'
+    pod 'WordPressUI', '~> 1.5.2-beta.1'
 
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
@@ -43,9 +43,10 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    #pod 'WordPressKit', '~> 4.5.3'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'try/wp-api-cookie-auth'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
+    #pod 'WordPressKit', '~> 4.6.0-beta.6'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.6.0-beta.3'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/79-migrate-swift-5'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '8751454fd1d48fceabec43f73db13a217477af6d'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -53,11 +54,11 @@ def shared_with_all_pods
     wordpress_shared
     pod 'CocoaLumberjack', '3.5.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
-    pod 'NSObject-SafeExpectations', '0.0.3'
+    pod 'NSObject-SafeExpectations', '0.0.4'
 end
 
 def shared_with_networking_pods
-    pod 'Alamofire', '4.7.3'
+    pod 'Alamofire', '4.8.0'
     pod 'Reachability', '3.2'
 
     wordpress_kit
@@ -70,7 +71,9 @@ def shared_test_pods
 end
 
 def shared_with_extension_pods
-    pod 'Gridicons', '~> 0.16'
+    pod 'Gridicons', '~> 0.20-beta.1'
+    # While in PR
+    #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
     pod 'ZIPFoundation', '~> 0.9.8'
     pod 'Down', '~> 0.6.6'
 end
@@ -118,7 +121,8 @@ def gutenberg_dependencies(options)
         'react-native-video',
         'RNSVG',
         'ReactNativeDarkMode',
-        'react-native-slider'
+        'react-native-slider',
+        'react-native-linear-gradient'
     ]
     if options[:path]
         podspec_prefix = options[:path]
@@ -145,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '772b61065f2b480e582a442517ee63ed7dfa7ae6'
+    gutenberg :commit => 'd377b883c761c2a71d29bd631f3d3227b3e313a2'
 
     ## Third party libraries
     ## =====================
@@ -158,8 +162,8 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios', :tag => '4.0.0'
-    pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
+    pod 'ZendeskSupportSDK', '5.0.0'
+    pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'
 
@@ -168,23 +172,28 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4.3'
+    pod 'Automattic-Tracks-iOS', '~> 0.4.4-beta.2'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => '0cc8960098791cfe1b02914b15a662af20b60389'
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/Swift-5-migration'
 
-    pod 'NSURL+IDN', '0.3'
+    pod 'NSURL+IDN', '0.4'
 
-    pod 'WPMediaPicker', '~> 1.6.0'
+    pod 'WPMediaPicker', '~> 1.6.1-beta.2'
     ## while PR is in review:
-    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '7c3cb8f00400b9316a803640b42bb88a66bbc648'
+    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
+    # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
-    pod 'Gridicons', '~> 0.16'
+    pod 'Gridicons', '~> 0.20-beta.1'
+    # While in PR
+    #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
 
-    pod 'WordPressAuthenticator', '~> 1.10.6'
-    #pod 'WordPressAuthenticator', :git => 'git@github.com:wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/wordpresskit-456-beta1'
+    pod 'WordPressAuthenticator', '~> 1.11.0-beta.6'
+    # While in PR
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'develop'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
-    pod 'MediaEditor', '~> 0.1.3'
+    pod 'MediaEditor', '~> 1.0.1'
+    # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
     # pod 'MediaEditor', :path => '../MediaEditor-iOS'
 
     aztec

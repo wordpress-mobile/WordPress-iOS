@@ -9,6 +9,7 @@ class EditorGutenbergTests: XCTestCase {
         _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = EditorFlow
             .toggleBlockEditor(to: .on)
+            .goBackToMySite()
             .tabBar.gotoBlockEditorScreen()
     }
 
@@ -18,6 +19,7 @@ class EditorGutenbergTests: XCTestCase {
             EditorFlow.returnToMainEditorScreen()
             editorScreen.closeEditor()
         }
+        LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 
@@ -25,6 +27,7 @@ class EditorGutenbergTests: XCTestCase {
         let title = getRandomPhrase()
         let content = getRandomContent()
         editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .publish()
@@ -39,6 +42,7 @@ class EditorGutenbergTests: XCTestCase {
         let category = getCategory()
         let tag = getTag()
         editorScreen
+            .dismissNotificationAlertIfNeeded(.accept)
             .enterTextInTitle(text: title)
             .addParagraphBlock(withText: content)
             .addImage()

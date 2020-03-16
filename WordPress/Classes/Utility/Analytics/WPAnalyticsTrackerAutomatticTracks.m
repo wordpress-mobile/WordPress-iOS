@@ -69,17 +69,26 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
     [mergedProperties addEntriesFromDictionary:properties];
 
-    if (eventPair.properties == nil && properties == nil) {
-        DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
+    [self trackString:eventPair.eventName withProperties:mergedProperties];
+}
+
+- (void)trackString:(NSString *)event
+{
+    [self trackString:event withProperties:nil];
+}
+
+- (void)trackString:(NSString *)event withProperties:(NSDictionary *)properties {
+    if (properties == nil) {
+        DDLogInfo(@"🔵 Tracked: %@", event);
     } else {
-        NSArray<NSString *> *propertyKeys = [[mergedProperties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        NSArray<NSString *> *propertyKeys = [[properties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
         NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
-            return [NSString stringWithFormat:@"%@: %@", key, mergedProperties[key]];
+            return [NSString stringWithFormat:@"%@: %@", key, properties[key]];
         }] componentsJoinedByString:@", "];
-        DDLogInfo(@"🔵 Tracked: %@ <%@>", eventPair.eventName, propertiesDescription);
+        DDLogInfo(@"🔵 Tracked: %@ <%@>", event, propertiesDescription);
     }
 
-    [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
+    [self.tracksService trackEventName:event withCustomProperties:properties];
 }
 
 - (void)beginSession
@@ -525,6 +534,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorSessionEnd:
             eventName = @"editor_session_end";
             break;
+        case WPAnalyticsStatEditorSessionTemplateApply:
+            eventName = @"editor_session_template_apply";
+            break;
+        case WPAnalyticsStatEditorSessionTemplatePreview:
+            eventName = @"editor_session_template_preview";
+            break;
         case WPAnalyticsStatEditorPublishedPost:
             eventName = @"editor_post_published";
             break;
@@ -845,12 +860,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
-            break;
-        case WPAnalyticsStatMediaEditorShown:
-            eventName = @"media_editor_shown";
-            break;
-        case WPAnalyticsStatMediaEditorUsed:
-            eventName = @"media_editor_used";
             break;
         case WPAnalyticsStatMediaLibraryDeletedItems:
             eventName = @"media_library_deleted_items";
@@ -1241,6 +1250,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatPostRevisionsLoadUndone:
             eventName = @"revisions_load_undone";
+            break;
+        case WPAnalyticsStatPostSettingsShown:
+            eventName = @"post_settings_shown";
+            break;
+        case WPAnalyticsStatPostSettingsAddTagsShown:
+            eventName = @"post_settings_add_tags_shown";
+            break;
+        case WPAnalyticsStatPostSettingsTagsAdded:
+            eventName = @"post_settings_tags_added";
             break;
         case WPAnalyticsStatPushAuthenticationApproved:
             eventName = @"push_authentication_approved";
@@ -1989,6 +2007,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatWidgetActiveSiteChanged:
             eventName = @"widget_active_site_changed";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialShown:
+            eventName = @"welcome_no_sites_interstitial_shown";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialButtonTapped:
+            eventName = @"welcome_no_sites_interstitial_button_tapped";
+            break;
+
+        case WPAnalyticsStatWelcomeNoSitesInterstitialDismissed:
+            eventName = @"welcome_no_sites_interstitial_dismissed";
             break;
 
         // The following are yet to be implemented.

@@ -20,6 +20,11 @@ class WordPressAuthenticationManager: NSObject {
     /// Initializes WordPressAuthenticator with all of the parameters that will be needed during the login flow.
     ///
     func initializeWordPressAuthenticator() {
+
+        // SIWA can not be enabled for internal builds
+        // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
+        let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
+
         let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
                                                                 wpcomSecret: ApiCredentials.secret(),
                                                                 wpcomScheme: WPComScheme,
@@ -30,8 +35,9 @@ class WordPressAuthenticationManager: NSObject {
                                                                 googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
                                                                 googleLoginScheme: ApiCredentials.googleLoginSchemeId(),
                                                                 userAgent: WPUserAgent.wordPress(),
-                                                                showNewLoginFlow: true,
-                                                                enableSignInWithApple: FeatureFlag.signInWithApple.enabled)
+                                                                showLoginOptions: true,
+                                                                enableSignInWithApple: enableSignInWithApple,
+                                                                enableUnifiedAuth: FeatureFlag.unifiedAuth.enabled)
 
         let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                                 primaryNormalBorderColor: nil,
@@ -191,6 +197,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
+        if PostSignUpInterstitialViewController.shouldDisplay() {
+            self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
+            return
+        }
+
+        //Present the epilogue view
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
@@ -212,6 +224,15 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
+        epilogueViewController.onContinue = {
+            if PostSignUpInterstitialViewController.shouldDisplay() {
+                self.presentPostSignUpInterstitial(in: navigationController)
+            } else {
+                navigationController.dismiss(animated: true)
+            }
+
+            UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
+        }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
@@ -237,7 +258,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return true
     }
 
-    /// Whenever a WordPress.com acocunt has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
+
+    /// Whenever a WordPress.com account has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
     /// the new DefaultWordPressComAccount.
     ///
     func createdWordPressComAccount(username: String, authToken: String) {
@@ -297,6 +319,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 // MARK: - WordPressAuthenticatorManager
 //
 private extension WordPressAuthenticationManager {
+    /// Displays the post sign up interstitial if needed, if it's not displayed
+    private func presentPostSignUpInterstitial(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
+        let viewController = PostSignUpInterstitialViewController()
+        viewController.onDismiss = onDismiss
+
+        navigationController.pushViewController(viewController, animated: true)
+    }
 
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///

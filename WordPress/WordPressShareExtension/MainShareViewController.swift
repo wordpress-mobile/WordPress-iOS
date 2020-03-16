@@ -24,10 +24,21 @@ class MainShareViewController: UIViewController {
     fileprivate let editorController: ShareExtensionAbstractViewController = {
         let storyboard = UIStoryboard(name: "ShareExtension", bundle: nil)
 
-
         let origination: OriginatingExtension
 
-        if Bundle.main.bundleIdentifier == "org.wordpress.WordPressDraftAction" {
+        // Please forgive the following code - I believe there must be some other better way to architect our share
+        // extension so that we don't need to check for the bundle ID.  But for the purpose of this bugfix it'll have
+        // to do.
+        //
+        // This was proposed as a bug fix to the original expression:
+        //      Bundle.main.bundleIdentifier == "org.wordpress.WordPressDraftAction"
+        //
+        // The problem with the original expression is that it didn't account for the bundle ID being different in
+        // different build configurations (debug, internal, release).
+        //
+        let isSaveAsDraftAction = Bundle.main.bundleIdentifier?.hasSuffix("WordPressDraftAction") ?? false
+
+        if isSaveAsDraftAction {
             origination = .saveToDraft
         } else {
             origination = .share

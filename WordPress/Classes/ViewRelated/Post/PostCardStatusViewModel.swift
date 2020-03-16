@@ -30,6 +30,8 @@ class PostCardStatusViewModel: NSObject {
 
     private let autoUploadInteractor = PostAutoUploadInteractor()
 
+    private let isInternetReachable: Bool
+
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
@@ -46,8 +48,9 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    init(post: Post) {
+    init(post: Post, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
         self.post = post
+        self.isInternetReachable = isInternetReachable
         super.init()
     }
 
@@ -89,6 +92,10 @@ class PostCardStatusViewModel: NSObject {
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
             return .neutral(.shade30)
+        }
+
+        if post.isFailed && isInternetReachable {
+            return .error
         }
 
         if post.isRevision() {
@@ -152,7 +159,11 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.retry)
             }
 
-            if canCancelAutoUpload {
+            if post.isFailed && isInternetReachable {
+                buttons.append(.retry)
+            }
+
+            if canCancelAutoUpload && !isInternetReachable {
                 buttons.append(.cancelAutoUpload)
             }
 
@@ -227,36 +238,17 @@ class PostCardStatusViewModel: NSObject {
     ///
     /// This is a helper method for `status`.
     private func generateFailedStatusMessage() -> String {
-        let defaultFailedMessage = StatusMessages.uploadFailed
 
-        guard post.isFailed, let postStatus = post.status else {
-            return defaultFailedMessage
-        }
+        let postAutoUploadMessages = PostAutoUploadMessages(for: post, onlineFailedUploadMessage: StatusMessages.uploadFailed)
 
         if post.wasAutoUploadCancelled {
-            return post.hasPermanentFailedMedia() ? PostAutoUploadMessages.failedMedia : StatusMessages.localChanges
+            return post.hasPermanentFailedMedia() ? postAutoUploadMessages.failedMediaUploadMessage(for: post.status) : StatusMessages.localChanges
         }
 
-        if let autoUploadMessage = PostAutoUploadMessages.attemptFailures(for: post, withState: autoUploadInteractor.autoUploadAttemptState(of: post)) {
-            return autoUploadMessage
-        }
-
-        if autoUploadInteractor.autoUploadAction(for: post) != .upload {
-            return defaultFailedMessage
-        }
-
-        switch postStatus {
-        case .draft:
-            return PostAutoUploadMessages.draftWillBeUploaded
-        case .publishPrivate:
-            return PostAutoUploadMessages.privateWillBeUploaded
-        case .scheduled:
-            return PostAutoUploadMessages.scheduledWillBeUploaded
-        case .publish:
-            return PostAutoUploadMessages.postWillBePublished
-        default:
-            return PostAutoUploadMessages.willSubmitLater
-        }
+        return postAutoUploadMessages.failedUploadMessage(
+            isInternetReachable: isInternetReachable,
+            autoUploadState: autoUploadInteractor.autoUploadAttemptState(of: post),
+            autoUploadAction: autoUploadInteractor.autoUploadAction(for: post))
     }
 
     private enum Constants {

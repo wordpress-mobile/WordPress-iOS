@@ -3,24 +3,23 @@ import XCTest
 
 class TabNavComponent: BaseScreen {
 
-    let meTabButton: XCUIElement
     let mySitesTabButton: XCUIElement
     let readerTabButton: XCUIElement
-    let writeTabButton: XCUIElement
     let notificationsTabButton: XCUIElement
 
     init() {
         let tabBars = XCUIApplication().tabBars["Main Navigation"]
         mySitesTabButton = tabBars.buttons["mySitesTabButton"]
         readerTabButton = tabBars.buttons["readerTabButton"]
-        writeTabButton = tabBars.buttons["Write"]
         notificationsTabButton = tabBars.buttons["notificationsTabButton"]
-        meTabButton = tabBars.buttons["meTabButton"]
-        super.init(element: meTabButton)
+        super.init(element: mySitesTabButton)
     }
 
     func gotoMeScreen() -> MeTabScreen {
-        meTabButton.tap()
+        gotoMySitesScreen()
+        app.cells[WPUITestCredentials.testWPcomSitePrimaryAddress].tap()
+        let meButton = app.navigationBars.buttons["meBarButton"]
+        meButton.tap()
         return MeTabScreen()
     }
 
@@ -28,11 +27,12 @@ class TabNavComponent: BaseScreen {
     func gotoMySiteScreen() -> MySiteScreen {
         // Avoid transitioning to the sites list if MySites is already on screen
         if !MySiteScreen.isVisible {
-            mySitesTabButton.tap()
+            gotoMySitesScreen().switchToSite(withTitle: "infocusphotographers.com")
         }
         return MySiteScreen()
     }
 
+    @discardableResult
     func gotoMySitesScreen() -> MySitesScreen {
         mySitesTabButton.tap()
         mySitesTabButton.tap()
@@ -40,12 +40,18 @@ class TabNavComponent: BaseScreen {
     }
 
     func gotoAztecEditorScreen() -> AztecEditorScreen {
-        writeTabButton.tap()
+        let mySiteScreen = gotoMySiteScreen()
+        let actionSheet = mySiteScreen.gotoCreateSheet()
+        actionSheet.gotoBlogPost()
+
         return AztecEditorScreen(mode: .rich)
     }
 
     func gotoBlockEditorScreen() -> BlockEditorScreen {
-        writeTabButton.tap()
+        let mySite = gotoMySiteScreen()
+        let actionSheet = mySite.gotoCreateSheet()
+        actionSheet.gotoBlogPost()
+
         return BlockEditorScreen()
     }
 

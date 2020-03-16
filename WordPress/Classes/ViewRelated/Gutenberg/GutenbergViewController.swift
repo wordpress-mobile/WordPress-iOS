@@ -260,6 +260,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        WPFontManager.loadNotoFontFamily()
         createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
         setupGutenbergView()
         configureNavigationBar()
@@ -447,9 +448,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestMediaEditor(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let image = GutenbergMediaEditorImage(url: mediaUrl)
+        let image = GutenbergMediaEditorImage(url: mediaUrl, post: post)
 
         let mediaEditor = WPMediaEditor(image)
+        mediaEditor.editingAlreadyPublishedImage = true
+
         mediaEditor.edit(from: self,
                               onFinishEditing: { [weak self] images, actions in
                                 guard let image = images.first?.editedImage else {
@@ -571,6 +574,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogWarn(message)
         case .error, .fatal:
             DDLogError(message)
+        }
+    }
+
+    func gutenbergDidLogUserEvent(_ event: GutenbergUserEvent) {
+        switch event {
+        case .editorSessionTemplateApply(let template):
+            editorSession.apply(template: template)
+        case .editorSessionTemplatePreview(let template):
+            editorSession.preview(template: template)
         }
     }
 

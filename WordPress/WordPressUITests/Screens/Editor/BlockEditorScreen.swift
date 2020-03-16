@@ -11,7 +11,7 @@ class BlockEditorScreen: BaseScreen {
 
     // Editor area
     // Title
-    let titleView = XCUIApplication().textViews.containing(.staticText, identifier: "Add title").element(boundBy: 0) // Uses a localized string
+    let titleView = XCUIApplication().otherElements["Post title. Empty"].firstMatch // Uses a localized string
     // Paragraph block
     let paragraphView = XCUIApplication().otherElements["Paragraph Block. Row 1. Empty"].textViews.element(boundBy: 0)
     // Image block
@@ -138,12 +138,6 @@ class BlockEditorScreen: BaseScreen {
             } else {
                 app.sheets.buttons["Publish"].tap()
             }
-        }
-    }
-
-    func dismissBlockEditorEnabledDialog() {
-        if FancyAlertComponent.isLoaded() {
-            FancyAlertComponent().acceptAlert()
         }
     }
 
