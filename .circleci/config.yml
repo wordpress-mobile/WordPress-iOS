@@ -119,6 +119,8 @@ jobs:
     executor: 
       name: ios/default
       xcode-version: "11.2.1" 
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
       - git/shallow-checkout
       - ios/install-dependencies:
@@ -130,9 +132,10 @@ jobs:
       - run: 
           name: Install helpers
           command: |
+            brew unlink python@2
             brew install imagemagick
             brew install ghostscript
-            
+
       - run:
           name: Build
           working_directory: Scripts
