@@ -2,6 +2,12 @@
 class FloatingActionButton: UIButton {
 
     var trailingConstraint: NSLayoutConstraint?
+    private var shadowLayer: CALayer?
+
+    private enum Constants {
+        static let shadowColor: UIColor = UIColor.gray(.shade20)
+        static let shadowRadius: CGFloat = 3
+    }
 
     convenience init(image: UIImage) {
         self.init(frame: .zero)
@@ -12,10 +18,8 @@ class FloatingActionButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .accent
+        layer.backgroundColor = UIColor.accent.cgColor
         tintColor = .white
-        clipsToBounds = true
-
         refreshShadow()
     }
 
@@ -36,9 +40,9 @@ class FloatingActionButton: UIButton {
     }
 
     private func refreshShadow() {
-        layer.shadowColor = UIColor.gray(.shade20).cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 0)
-        layer.shadowRadius = 3
+        layer.shadowColor = Constants.shadowColor.cgColor
+        layer.shadowOffset = .zero
+        layer.shadowRadius = Constants.shadowRadius
         if #available(iOS 12.0, *) {
             layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 1 : 0
         } else {
