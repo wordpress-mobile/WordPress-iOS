@@ -283,7 +283,7 @@ private extension JetpackConnectionWebViewController {
     }
 
     func authenticateWithDotCom(username: String, token: String, redirect: URL) {
-        let authenticator = WebViewAuthenticator(credentials: .dotCom(username: username, authToken: token))
+        let authenticator = WebViewAuthenticator(credentials: .dotCom(username: username, authToken: token, authenticationType: .regular))
         authenticator.safeRedirect = true
         let request = authenticator.authenticatedRequest(url: redirect)
         DDLogDebug("Performing WordPress.com login to \(String(describing: request.url))")

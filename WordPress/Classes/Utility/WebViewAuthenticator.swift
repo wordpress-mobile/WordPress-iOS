@@ -1,3 +1,4 @@
+import AutomatticTracks
 import Foundation
 
 /// Encapsulates all the authentication logic for web views.
@@ -16,8 +17,18 @@ import Foundation
 /// delegate method, when deciding if a request or redirect should continue.
 ///
 class WebViewAuthenticator: NSObject {
+
+    enum Error: Swift.Error {
+        case atomicSiteWithoutDotComID(blog: Blog)
+    }
+
+    enum DotComAuthenticationType {
+        case regular
+        case atomic(blogID: Int)
+    }
+
     enum Credentials {
-        case dotCom(username: String, authToken: String)
+        case dotCom(username: String, authToken: String, authenticationType: DotComAuthenticationType)
         case siteLogin(loginURL: URL, username: String, password: String)
     }
 
@@ -29,21 +40,39 @@ class WebViewAuthenticator: NSObject {
     @objc
     var safeRedirect = false
 
+    // MARK: - Initializers
+
     init(credentials: Credentials) {
         self.credentials = credentials
     }
 
-    @objc convenience init?(account: WPAccount) {
+    @objc convenience init?(account: WPAccount, blog: Blog? = nil) {
         guard let username = account.username,
             let token = account.authToken else {
                 return nil
         }
-        self.init(credentials: .dotCom(username: username, authToken: token))
+
+        let authenticationType: DotComAuthenticationType
+
+        if let blog = blog,
+            blog.isAtomic() {
+
+            guard let blogID = blog.dotComID as? Int else {
+                CrashLogging.logError(Error.atomicSiteWithoutDotComID(blog: blog))
+                return nil
+            }
+
+            authenticationType = .atomic(blogID: blogID)
+        } else {
+            authenticationType = .regular
+        }
+
+        self.init(credentials: .dotCom(username: username, authToken: token, authenticationType: authenticationType))
     }
 
     @objc convenience init?(blog: Blog) {
         if let account = blog.account {
-            self.init(account: account)
+            self.init(account: account, blog: blog)
         } else if let username = blog.usernameForSite,
             let password = blog.password,
             let loginURL = URL(string: blog.loginUrl()) {
@@ -179,7 +208,7 @@ private extension WebViewAuthenticator {
 
     var username: String {
         switch credentials {
-        case .dotCom(let username, _):
+        case .dotCom(let username, _, _):
             return username
         case .siteLogin(_, let username, _):
             return username
@@ -196,11 +225,11 @@ private extension WebViewAuthenticator {
     }
 
     var authToken: String? {
-        if case let .dotCom(_, authToken) = credentials {
+        if case let .dotCom(_, authToken, _) = credentials {
             return authToken
         }
         switch credentials {
-        case .dotCom(_, let authToken):
+        case .dotCom(_, let authToken, _):
             return authToken
         case .siteLogin:
             return nil

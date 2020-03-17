@@ -107,13 +107,13 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 #pragma mark -
 #pragma mark Custom methods
 
 - (BOOL)isAtomic
 {
-    return [self.options[OptionsKeyIsAtomic] boolValue];
+    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAutomatedTransfer];
+    return [value boolValue];
 }
 
 - (BOOL)isAutomatedTransfer
