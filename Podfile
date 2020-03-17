@@ -187,10 +187,10 @@ target 'WordPress' do
     # While in PR
     #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
 
-    pod 'WordPressAuthenticator', '~> 1.11.0-beta.11'
+    # pod 'WordPressAuthenticator', '~> 1.11.0-beta.12'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/13620-google_button_appearance'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.0.1'
