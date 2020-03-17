@@ -54,7 +54,6 @@ private extension UIBarButtonItem {
         let gravatarImageView = GravatarButtonView(tappableWidth: GravatarConfiguration.tappableWidth)
 
         gravatarImageView.isUserInteractionEnabled = true
-        gravatarImageView.animatesTouch = true
         setSize(of: gravatarImageView, size: GravatarConfiguration.radius)
         gravatarImageView.contentMode = .scaleAspectFit
         gravatarImageView.setBorder()

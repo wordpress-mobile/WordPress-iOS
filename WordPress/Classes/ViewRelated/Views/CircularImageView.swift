@@ -2,9 +2,6 @@ import UIKit
 
 // Makes a UIImageView circular. Handy for gravatars
 class CircularImageView: UIImageView {
-
-    var animatesTouch = false
-
     @objc var shouldRoundCorners: Bool = true {
         didSet {
             let rect = frame

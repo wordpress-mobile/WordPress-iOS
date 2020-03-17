@@ -15,10 +15,7 @@ class GravatarButtonView: CircularImageView {
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let offset = tappableWidth - self.bounds.width
 
-        let tappableArea = CGRect(x: bounds.origin.x - offset,
-                                  y: bounds.origin.y - (offset / 2),
-                                  width: tappableWidth,
-                                  height: tappableWidth)
+        let tappableArea = bounds.insetBy(dx: -offset, dy: -offset)
         return tappableArea.contains(point)
     }
 }
@@ -38,26 +35,21 @@ extension GravatarButtonView {
             self.alpha = AnimationConfiguration.endAlpha
         }
     }
-    /// Custom touch animation, executed if animatesTouch is set to true.
+
+    /// Custom touch animation.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        if animatesTouch {
-            alpha = AnimationConfiguration.startAlpha
-        }
+        alpha = AnimationConfiguration.startAlpha
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        if animatesTouch {
-            restoreAlpha()
-        }
+        restoreAlpha()
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesCancelled(touches, with: event)
-        if animatesTouch {
-            restoreAlpha()
-        }
+        restoreAlpha()
     }
 }
 
