@@ -68,7 +68,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
 @property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
-@property (nonatomic, strong) UIButton *createButton;
+@property (nonatomic, strong) CreateButtonCoordinator *createButtonCoordinator;
 
 @end
 
@@ -113,8 +113,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self setSelectedViewController:self.blogListSplitViewController];
         
         if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-            [self.createButton removeFromSuperview];
-            self.createButton = [self addCreateButton];
+            [self.createButtonCoordinator addTo:self.view trailingAnchor:((UIViewController *)self.blogListSplitViewController.viewControllers[0]).view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
         }
 
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -427,8 +426,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self setViewControllers:[self tabViewControllers]];
     
     if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButton removeFromSuperview];
-        self.createButton = [self addCreateButton];
+        [self.createButtonCoordinator addTo:self.view trailingAnchor:self.blogListSplitViewController.viewControllers[0].view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
     }
 
     // Reset the selectedIndex to the default MySites tab.
@@ -458,6 +456,23 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController
                                                readerSplitViewController:self.readerSplitViewController
                                                 readerMenuViewController:self.readerMenuViewController];
+}
+
+- (CreateButtonCoordinator *)createButtonCoordinator
+{
+    if (!_createButtonCoordinator) {
+        __weak __typeof(self) weakSelf = self;
+        _createButtonCoordinator = [[CreateButtonCoordinator alloc] init:self newPost:^{
+            [weakSelf dismissViewControllerAnimated:true completion:nil];
+            [weakSelf showPostTab];
+        } newPage:^{
+            [weakSelf dismissViewControllerAnimated:true completion:nil];
+            Blog *blog = [weakSelf currentOrLastBlog];
+            [weakSelf showPageTabForBlog:blog];
+        }];
+    }
+    
+    return _createButtonCoordinator;
 }
 
 #pragma mark - Navigation Helpers
@@ -574,13 +589,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     if (!blog) {
-        blog = [self currentlyVisibleBlog];
-
-        if (blog == nil) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-            blog = [blogService lastUsedOrFirstBlog];
-        }
+        blog = [self currentOrLastBlog];
     }
 
     EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
@@ -782,6 +791,19 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return blogDetailsController.blog;
 }
 
+- (Blog *)currentOrLastBlog
+{
+    Blog *blog = [self currentlyVisibleBlog];
+
+    if (blog == nil) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        blog = [blogService lastUsedOrFirstBlog];
+    }
+    
+    return blog;
+}
+
 #pragma mark - UITabBarControllerDelegate methods
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
@@ -891,7 +913,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
     NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
-    if (count > 0) {
+    if (count > 0 || ![self welcomeNotificationSeen]) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
     } else {
@@ -913,6 +935,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if( UIApplication.sharedApplication.isCreatingScreenshots ) {
         [self hideReaderBadge:nil];
     }
+}
+
+-(BOOL) welcomeNotificationSeen
+{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *welcomeNotificationSeenKey = standardUserDefaults.welcomeNotificationSeenKey;
+    return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
 }
 
 - (void) hideReaderBadge:(NSNotification *)notification
@@ -1000,6 +1029,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:newCollection];
     [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
 }
 
@@ -1014,5 +1044,4 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
     return nil;
 }
-
 @end

@@ -26,6 +26,16 @@
     }
 }
 
+- (void)trackString:(NSString *)event
+{
+    // Only WPAnalyticsStat should be used in this Tracker
+}
+
+- (void)trackString:(NSString *)event withProperties:(NSDictionary *)properties
+{
+    // Only WPAnalyticsStat should be used in this Tracker
+}
+
 - (void)pingWPComStatsEndpoint:(NSString *)statName
 {
     int x = arc4random();

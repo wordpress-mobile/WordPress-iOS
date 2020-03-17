@@ -127,6 +127,17 @@ class AccountSettingsService {
         }
     }
 
+    func updateDisplayName(_ displayName: String, finished: ((Bool, Error?) -> ())? = nil) {
+        remote.updateSetting(.displayName(displayName), success: {
+            finished?(true, nil)
+        }) { error in
+            DDLogError("Error saving account settings change \(error)")
+            NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: self, userInfo: [NSUnderlyingErrorKey: error])
+
+            finished?(false, error)
+        }
+    }
+
     func updatePassword(_ password: String, finished: ((Bool, Error?) -> ())? = nil) {
         remote.updatePassword(password, success: {
             finished?(true, nil)

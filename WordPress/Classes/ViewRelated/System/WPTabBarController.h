@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class NotificationsViewController;
 @class ReaderCoordinator;
 @class ReaderMenuViewController;
+@class CreateButtonCoordinator;
 @class WPSplitViewController;
 @class QuickStartTourGuide;
 @protocol ScenePresenter;
@@ -38,7 +39,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly) ReaderCoordinator *readerCoordinator;
 @property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
-@property (nonatomic, strong, readonly) UIButton *createButton;
+@property (nonatomic, strong, readonly) CreateButtonCoordinator *createButtonCoordinator;
 
 + (instancetype)sharedInstance;
 

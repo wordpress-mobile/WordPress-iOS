@@ -1,19 +1,6 @@
-extension WPTabBarController {
-    @objc func hideCreateButton() {
-        createButton.springAnimation(toShow: false)
-    }
+extension FloatingActionButton {
 
-    @objc func showCreateButton() {
-        createButton.setNeedsUpdateConstraints() // See `FloatingActionButton` implementation for more info on why this is needed.
-        createButton.springAnimation(toShow: true)
-    }
-}
-
-// MARK: View Animations
-
-private extension UIView {
-
-    enum Constants {
+    private enum Constants {
         enum Maximize {
             static let damping: CGFloat = 0.7
             static let duration: TimeInterval = 0.5
