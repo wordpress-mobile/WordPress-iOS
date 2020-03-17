@@ -216,6 +216,9 @@ class FilterTabBar: UIControl {
 
         scrollView.addSubview(stackView)
 
+        // We will manually constrain the stack view to the content layout guide
+        scrollView.contentInsetAdjustmentBehavior = .never
+
         stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: widthAnchor)
 
         updateTabSizingConstraints()
@@ -303,8 +306,10 @@ class FilterTabBar: UIControl {
     private func updateTabSizingConstraints() {
         let padding = (tabSizingStyle == .equalWidths) ? 0 : AppearanceMetrics.horizontalPadding
 
+        let scrollLeadingAnchor = (tabSizingStyle == .equalWidths) ? leadingAnchor : safeAreaLayoutGuide.leadingAnchor
+
         stackViewEdgeConstraints = [
-            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: scrollLeadingAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: padding),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
         ]
