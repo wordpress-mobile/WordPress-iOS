@@ -312,7 +312,7 @@ private extension FullScreenCommentReplyViewController {
         }
 
         // If the user is typing we don't want to change the position of the suggestions view
-        if position == initialSuggestionsPosition || initialSuggestionsPosition == .hidden{
+        if position == initialSuggestionsPosition || initialSuggestionsPosition == .hidden {
             initialSuggestionsPosition = position
         }
 
