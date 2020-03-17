@@ -22,9 +22,11 @@ class CalendarMonthView: UIView {
         }
     }
 
+    private let calendar: Calendar
     private let calendarCollectionView: CalendarCollectionView
 
     init(calendar: Calendar) {
+        self.calendar = calendar
         self.calendarCollectionView = CalendarCollectionView(calendar: calendar)
         super.init(frame: .zero)
 
@@ -36,7 +38,7 @@ class CalendarMonthView: UIView {
     }
 
     private func setup() {
-        let weekdaysHeaderView = WeekdaysHeaderView(calendar: Calendar.current)
+        let weekdaysHeaderView = WeekdaysHeaderView(calendar: calendar)
         let calendarHeaderView = CalendarHeaderView(next: (self, #selector(CalendarMonthView.nextMonth)), previous: (self, #selector(CalendarMonthView.previousMonth)))
 
         let stackView = UIStackView(arrangedSubviews: [
@@ -54,9 +56,9 @@ class CalendarMonthView: UIView {
 
         pinSubviewToAllEdges(stackView)
 
-        calendarCollectionView.calDataSource.didScroll = { [weak calendarHeaderView] dateSegment in
+        calendarCollectionView.calDataSource.didScroll = { [weak calendarHeaderView, calendar] dateSegment in
             if let visibleDate = dateSegment.monthDates.first?.date {
-                calendarHeaderView?.set(date: visibleDate)
+                calendarHeaderView?.set(date: visibleDate, withCalendar: calendar)
             }
         }
         calendarCollectionView.calDataSource.didSelect = { [weak self] dateSegment in
@@ -104,14 +106,14 @@ class CalendarMonthView: UIView {
     // MARK: Navigation button selectors
     @objc func previousMonth(_ sender: Any) {
         if let lastVisibleDate = calendarCollectionView.visibleDates().monthDates.first?.date,
-           let nextVisibleDate = Calendar.current.date(byAdding: .day, value: -1, to: lastVisibleDate, wrappingComponents: false) {
+           let nextVisibleDate = calendar.date(byAdding: .day, value: -1, to: lastVisibleDate, wrappingComponents: false) {
             calendarCollectionView.scrollToDate(nextVisibleDate)
         }
     }
 
     @objc func nextMonth(_ sender: Any) {
         if let lastVisibleDate = calendarCollectionView.visibleDates().monthDates.last?.date,
-           let nextVisibleDate = Calendar.current.date(byAdding: .day, value: 1, to: lastVisibleDate, wrappingComponents: false) {
+           let nextVisibleDate = calendar.date(byAdding: .day, value: 1, to: lastVisibleDate, wrappingComponents: false) {
             calendarCollectionView.scrollToDate(nextVisibleDate)
         }
     }
@@ -124,8 +126,11 @@ class CalendarHeaderView: UIStackView {
 
     /// A function to set the string of the title label to a given date
     /// - Parameter date: The date to set the `titleLabel`'s text to
-    func set(date: Date) {
-        titleLabel.text = CalendarHeaderView.dateFormatter.string(from: date)
+    func set(date: Date, withCalendar calendar: Calendar) {
+        let formatter = CalendarHeaderView.dateFormatter
+        formatter.calendar = calendar
+        formatter.timeZone = calendar.timeZone
+        titleLabel.text = formatter.string(from: date)
     }
 
     private let titleLabel: UILabel = {
