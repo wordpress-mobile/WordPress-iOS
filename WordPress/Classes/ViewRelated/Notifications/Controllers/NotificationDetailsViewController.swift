@@ -1157,6 +1157,8 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
         guard let siteID = note.metaSiteID else {
             return
         }
+        
+        suggestionsTableView.hideSuggestions()
         controller.enableSuggestions(with: siteID)
     }
 }

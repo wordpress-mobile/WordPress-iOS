@@ -1201,6 +1201,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)replyTextView:(ReplyTextView *)replyTextView willEnterFullScreen:(FullScreenCommentReplyViewController *)controller
 {
+    [self.suggestionsTableView hideSuggestions];
+    
     [controller enableSuggestionsWith:self.siteID];
 }
 @end
