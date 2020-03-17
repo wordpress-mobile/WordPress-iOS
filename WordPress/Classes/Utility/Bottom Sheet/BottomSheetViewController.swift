@@ -147,4 +147,3 @@ extension BottomSheetViewController: UIViewControllerTransitioningDelegate {
         return (self.presentedViewController?.presentationController as? BottomSheetPresentationController)?.interactionController
     }
 }
-
