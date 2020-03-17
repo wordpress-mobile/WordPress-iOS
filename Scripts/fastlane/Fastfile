@@ -209,6 +209,9 @@ import "./ScreenshotFastfile"
       run_on_ci: options[:run_on_ci])
     ios_build_preflight()
 
+     # Install SentryCLI prior to trying to upload dSYMs
+     sh("curl -sL https://sentry.io/get-cli/ | bash") if options[:run_on_ci]
+
     build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) unless !build_internal
     #build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm])
   end
@@ -314,7 +317,6 @@ import "./ScreenshotFastfile"
       file: "../build/WordPress Internal.ipa",
       notify_testers: false 
     )
-    
 
     dSYM_PATH = File.dirname(File.dirname(Dir.pwd)) + "/build/WordPress.app.dSYM.zip"
 
