@@ -205,7 +205,8 @@ import "./ScreenshotFastfile"
 
     ios_build_prechecks(skip_confirm: options[:skip_confirm], 
       internal: build_internal,
-      external: true)
+      external: true, 
+      run_on_ci: options[:run_on_ci])
     ios_build_preflight()
 
     build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) unless !build_internal
