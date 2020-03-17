@@ -228,6 +228,11 @@ CGFloat const STVSeparatorHeight = 1.f;
     return ([self.searchResults count] > 0);
 }
 
+- (void)hideSuggestions
+{
+    [self showSuggestionsForWord:@""];
+}
+
 #pragma mark - UITableViewDataSource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
