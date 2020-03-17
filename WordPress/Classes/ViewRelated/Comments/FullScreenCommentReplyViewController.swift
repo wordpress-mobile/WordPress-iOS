@@ -256,7 +256,7 @@ public extension FullScreenCommentReplyViewController {
     }
 
     func suggestionsTableViewMaxDisplayedRows(_ suggestionsTableView: SuggestionsTableView) -> Int {
-        return 4
+        return 3
     }
 
     override func handleKeyboardDidShow(_ notification: Foundation.Notification?) {
