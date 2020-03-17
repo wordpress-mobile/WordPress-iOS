@@ -222,7 +222,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     var suggestionsTop: NSLayoutConstraint!
     var suggestionsBottom: NSLayoutConstraint!
 
-    fileprivate var suggestionsPosition: SuggestionsPosition = .hidden
+    fileprivate var initialSuggestionsPosition: SuggestionsPosition = .hidden
 }
 
 // MARK: - SuggestionsTableViewDelegate
@@ -234,9 +234,8 @@ public extension FullScreenCommentReplyViewController {
     }
 
     func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didChangeTableBounds bounds: CGRect) {
-
         if suggestionsTableView.isHidden {
-            self.suggestionsPosition = .hidden
+            self.initialSuggestionsPosition = .hidden
         } else {
             self.repositionSuggestions()
         }
@@ -249,12 +248,14 @@ public extension FullScreenCommentReplyViewController {
     override func handleKeyboardDidShow(_ notification: Foundation.Notification?) {
         super.handleKeyboardDidShow(notification)
 
+        self.initialSuggestionsPosition = .hidden
         self.repositionSuggestions()
     }
 
     override func handleKeyboardWillHide(_ notification: Foundation.Notification?) {
         super.handleKeyboardWillHide(notification)
 
+        self.initialSuggestionsPosition = .hidden
         self.repositionSuggestions()
     }
 }
@@ -285,8 +286,7 @@ private extension FullScreenCommentReplyViewController {
         // Calculates the height of the view minus the keyboard if its visible
         let calculatedViewHeight = (view.frame.height - keyboardFrame.height)
 
-        var position: SuggestionsPosition = .hidden
-        var constant: CGFloat = 0
+        var position: SuggestionsPosition = .bottom
 
         // Calculates the direction the suggestions view should appear
         // And the global position
@@ -295,21 +295,26 @@ private extension FullScreenCommentReplyViewController {
         // then display it in the top position
         if (caretRect.maxY + suggestionsHeight) > calculatedViewHeight {
             position = .top
-
-            constant = (caretRect.minY - suggestionsHeight - margin)
-        }
-        else {
-            position = .bottom
-            constant = caretRect.maxY + margin
         }
 
         // If the user is typing we don't want to change the position of the suggestions view
-        //
-        if position == suggestionsPosition {
-            return
+        if position == initialSuggestionsPosition || initialSuggestionsPosition == .hidden{
+            initialSuggestionsPosition = position
         }
 
-//        suggestionsPosition = position
+        var constant: CGFloat = 0
+
+        switch initialSuggestionsPosition {
+        case .top:
+            constant = (caretRect.minY - suggestionsHeight - margin)
+
+        case .bottom:
+            constant = caretRect.maxY + margin
+
+        case .hidden:
+            constant = 0
+        }
+
         suggestionsTop.constant = constant
     }
 
