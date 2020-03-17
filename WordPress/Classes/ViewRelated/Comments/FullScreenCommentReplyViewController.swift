@@ -87,7 +87,19 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         enableRefreshButtonIfNeeded()
     }
 
-    open override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    public override func textViewDidChangeSelection(_ textView: UITextView) {
+        if didChangeText {
+            //If the didChangeText flag is true, reset it here
+            didChangeText = false
+            return
+        }
+
+        //If the user just changes the selection, then hide the suggestions
+        suggestionsTableView?.hideSuggestions()
+    }
+
+
+    public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard shouldShowSuggestions else {
             return true
         }
@@ -100,6 +112,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
 
         didTypeWord(lastWord as String)
 
+        didChangeText = true
         return true
     }
 
@@ -223,6 +236,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     var suggestionsBottom: NSLayoutConstraint!
 
     fileprivate var initialSuggestionsPosition: SuggestionsPosition = .hidden
+    fileprivate var didChangeText: Bool = false
 }
 
 // MARK: - SuggestionsTableViewDelegate
