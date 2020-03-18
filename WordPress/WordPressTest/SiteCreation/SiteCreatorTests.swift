@@ -60,18 +60,6 @@ class SiteCreatorTests: XCTestCase {
         XCTAssertThrowsError(try siteInput.build())
     }
 
-    func testSiteCreator_buildFails_MissingSiteInfo() {
-        // Given
-        XCTAssertNotNil(pendingSiteInput)
-        let siteInput = pendingSiteInput!
-
-        // When
-        siteInput.information = nil
-
-        // Then
-        XCTAssertThrowsError(try siteInput.build())
-    }
-
     func testSiteCreator_buildSucceeds_MissingSiteVertical() {
         // Given
         XCTAssertNotNil(pendingSiteInput)
