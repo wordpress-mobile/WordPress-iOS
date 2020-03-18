@@ -33,6 +33,12 @@ extension PostEditor where Self: UIViewController {
         dismissWhenDone: Bool,
         analyticsStat: WPAnalyticsStat?) {
 
+        let prepublishing = PrepublishingViewController()
+        let bottomSheet = BottomSheetViewController(childViewController: prepublishing)
+        bottomSheet.show(from: self, sourceView: navigationBarManager.publishButton)
+
+        return
+
         mapUIContentToPostAndSave(immediate: true)
 
         // Cancel publishing if media is currently being uploaded
