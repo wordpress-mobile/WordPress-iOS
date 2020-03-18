@@ -142,10 +142,10 @@ class CalendarHeaderView: UIStackView {
     convenience init(next: TargetSelector, previous: TargetSelector) {
         let previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         previousButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        previousButton.setImage(Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
+        previousButton.setImage(UIImage.gridicon(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
 
         let forwardButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-        forwardButton.setImage(Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
+        forwardButton.setImage(UIImage.gridicon(.chevronRight).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
         forwardButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
         self.init()

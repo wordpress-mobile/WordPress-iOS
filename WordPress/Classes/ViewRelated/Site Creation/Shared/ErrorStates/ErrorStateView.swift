@@ -151,7 +151,7 @@ final class ErrorStateView: UIView {
 
         if let _ = configuration.dismissalActionHandler {
             self.dismissalImageView = {
-                let dismissImage = Gridicon.iconOfType(.cross)
+                let dismissImage = UIImage.gridicon(.cross)
                 let imageView = UIImageView(image: dismissImage)
 
                 imageView.translatesAutoresizingMaskIntoConstraints = false

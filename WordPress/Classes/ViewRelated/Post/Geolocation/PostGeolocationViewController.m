@@ -338,7 +338,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     if (_currentLocationCell == nil) {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.textLabel.text = NSLocalizedString(@"Use Current Location", @"Label for cell that sets the location of a post to the current location");
-        cell.imageView.image = [Gridicon iconOfType:GridiconTypeLocation];
+        cell.imageView.image = [UIImage gridiconOfType:GridiconTypeLocation];
         cell.imageView.tintColor = [UIColor murielPrimary40];
         cell.textLabel.font = [WPStyleGuide regularTextFont];
         cell.textLabel.textColor = [UIColor murielNeutral70];

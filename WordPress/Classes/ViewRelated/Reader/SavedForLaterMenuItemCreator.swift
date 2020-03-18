@@ -6,7 +6,7 @@ final class SavedForLaterMenuItemCreator {
         let title = NSLocalizedString("Saved Posts", comment: "Title of the reader's Saved Posts menu item.")
         var item = ReaderMenuItem(title: title,
                                   type: .savedPosts)
-        item.icon = Gridicon.iconOfType(.bookmark)
+        item.icon = .gridicon(.bookmark)
         item.order = ReaderDefaultMenuItemOrder.savedForLater.rawValue
 
         return item

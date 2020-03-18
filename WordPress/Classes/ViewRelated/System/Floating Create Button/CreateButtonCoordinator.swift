@@ -8,7 +8,7 @@ import Gridicons
     }
 
     var button: FloatingActionButton = {
-        let button = FloatingActionButton(image: Gridicon.iconOfType(.create))
+        let button = FloatingActionButton(image: .gridicon(.create))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
         button.accessibilityHint = NSLocalizedString("Creates new post or page", comment: " Accessibility hint for create floating action button")

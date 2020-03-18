@@ -24,12 +24,12 @@ class WPMediaEditor: MediaEditor {
                 .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
                 .errorLoadingImageMessage: NSLocalizedString("We couldn't retrieve this media.\nPlease tap to retry.", comment: "Description that appears when a media fails to load in the Media Editor."),
                 .cancelColor: UIColor.white,
-                .resetIcon: Gridicon.iconOfType(.undo),
-                .doneIcon: Gridicon.iconOfType(.checkmark),
-                .cancelIcon: Gridicon.iconOfType(.cross),
-                .rotateClockwiseIcon: Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(),
+                .resetIcon: UIImage.gridicon(.undo),
+                .doneIcon: UIImage.gridicon(.checkmark),
+                .cancelIcon: UIImage.gridicon(.cross),
+                .rotateClockwiseIcon: UIImage.gridicon(.rotate).withHorizontallyFlippedOrientation(),
                 .rotateCounterclockwiseButtonHidden: true,
-                .retryIcon: Gridicon.iconOfType(.refresh, withSize: CGSize(width: 48, height: 48))
+                .retryIcon: UIImage.gridicon(.refresh, size: CGSize(width: 48, height: 48))
             ]
         }
 

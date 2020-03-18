@@ -3,7 +3,7 @@ import WordPressFlux
 
 extension BlogDetailsViewController {
     @objc func domainCreditSectionViewModel() -> BlogDetailsSection {
-        let image = Gridicon.iconOfType(.info)
+        let image = UIImage.gridicon(.info)
         let row = BlogDetailsRow(title: NSLocalizedString("Register Domain", comment: "Action to redeem domain credit."),
                                  accessibilityIdentifier: "Register domain from site dashboard",
                                  image: image,

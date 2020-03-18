@@ -318,7 +318,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (iPhoneLandscape || iPadPortraitFullscreen || iPadLandscapeGreaterThanHalfSplit) {
         self.newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsZero;
         self.newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetZero;
-        self.newPostViewController.tabBarItem.image = [Gridicon iconOfType:GridiconTypeCreate withSize:CGSizeMake(WPTabBarIconSize, WPTabBarIconSize)];
+        self.newPostViewController.tabBarItem.image = [UIImage gridiconOfType:GridiconTypeCreate withSize:CGSizeMake(WPTabBarIconSize, WPTabBarIconSize)];
     } else {
         self.newPostViewController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
         self.newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 99999.0);

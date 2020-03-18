@@ -69,7 +69,7 @@
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor clearColor];
     iconView.tintColor = [UIColor murielNeutral30];
-    iconView.image = [Gridicon iconOfType:GridiconTypeChevronLeft];
+    iconView.image = [UIImage gridiconOfType:GridiconTypeChevronLeft];
 
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:iconView];

@@ -90,7 +90,7 @@ class FullScreenCommentReplyViewController: EditCommentViewController {
     /// Creates the `leftBarButtonItem` and the `rightBarButtonItem`
     private func setupNavigationItems() {
         navigationItem.leftBarButtonItem = ({
-            let image = Gridicon.iconOfType(.chevronDown).imageWithTintColor(.listIcon)
+            let image = UIImage.gridicon(.chevronDown).imageWithTintColor(.listIcon)
             let leftItem = UIBarButtonItem(image: image,
                                            style: .plain,
                                            target: self,

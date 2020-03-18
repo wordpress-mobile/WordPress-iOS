@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.8.15'
+    pod 'WordPressShared', '~> 1.8.15'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -73,7 +73,7 @@ end
 def shared_with_extension_pods
 #    pod 'Gridicons', '~> 0.20-beta.1'
     # While in PR
-    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/pdf-assets'
+    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'release/1.0'
     pod 'ZIPFoundation', '~> 0.9.8'
     pod 'Down', '~> 0.6.6'
 end
@@ -184,11 +184,11 @@ target 'WordPress' do
 
 #    pod 'Gridicons', '~> 0.20-beta.1'
     # While in PR
-    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/pdf-assets'
+    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'release/1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.11.0-beta.2'
+    # pod 'WordPressAuthenticator', '~> 1.11.0-beta.2'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/update-wpkit-to-v4.6.0-beta.1'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'update/gridicons-1.0'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.0.1'
