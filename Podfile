@@ -154,7 +154,7 @@ target 'WordPress' do
     ## Third party libraries
     ## =====================
     ##
-    pod '1PasswordExtension', '1.8.5'
+    pod '1PasswordExtension', '1.8.6'
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
     pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
@@ -187,9 +187,9 @@ target 'WordPress' do
     # While in PR
     #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
 
-    pod 'WordPressAuthenticator', '~> 1.11.0-beta.12'
+    #pod 'WordPressAuthenticator', '~> 1.11.0-beta.15'
     # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/211-remove-showLinkMailView'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
