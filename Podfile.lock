@@ -62,7 +62,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.2.2)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.2)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.2)"
-  - Gridicons (0.20-beta.2)
+  - Gridicons (1.0-beta.1)
   - GTMSessionFetcher/Core (1.3.1)
   - Gutenberg (1.23.0):
     - React (= 0.61.5)
@@ -70,7 +70,7 @@ PODS:
     - React-RCTImage (= 0.61.5)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
-  - lottie-ios (2.5.2)
+  - lottie-ios (3.1.6)
   - MediaEditor (1.0.1):
     - TOCropViewController (~> 2.5.2)
   - MRProgress (0.8.3):
@@ -102,8 +102,8 @@ PODS:
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
   - Nimble (7.3.4)
-  - NSObject-SafeExpectations (0.0.3)
-  - "NSURL+IDN (0.3)"
+  - NSObject-SafeExpectations (0.0.4)
+  - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
   - OHHTTPStubs (6.1.0):
     - OHHTTPStubs/Default (= 6.1.0)
@@ -372,27 +372,27 @@ PODS:
   - WordPress-Aztec-iOS (1.16.0)
   - WordPress-Editor-iOS (1.16.0):
     - WordPress-Aztec-iOS (= 1.16.0)
-  - WordPressAuthenticator (1.11.0-beta.2):
+  - WordPressAuthenticator (1.11.0-beta.12):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 4.4)
-    - Gridicons (~> 0.20-beta.1)
-    - lottie-ios (= 2.5.2)
-    - "NSURL+IDN (= 0.3)"
+    - Gridicons (~> 1.0-beta.1)
+    - lottie-ios (= 3.1.6)
+    - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 4.6.0-beta.1)
-    - WordPressShared (~> 1.8.13-beta)
-    - WordPressUI (~> 1.4-beta.1)
-  - WordPressKit (4.6.0-beta.2):
+    - WordPressKit (~> 4.6.0-beta.8)
+    - WordPressShared (~> 1.8.16-beta)
+    - WordPressUI (~> 1.5-beta)
+  - WordPressKit (4.6.0-beta.8):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
-    - NSObject-SafeExpectations (= 0.0.3)
+    - NSObject-SafeExpectations (= 0.0.4)
     - UIDeviceIdentifier (~> 1)
-    - WordPressShared (~> 1.8.13-beta)
+    - WordPressShared (~> 1.8.15-beta)
     - wpxmlrpc (= 0.8.5-beta.1)
   - WordPressMocks (0.0.8)
-  - WordPressShared (1.8.15):
+  - WordPressShared (1.8.16-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.5.1)
@@ -432,14 +432,14 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
-  - Gridicons (from `https://github.com/Automattic/Gridicons-iOS.git`, branch `feature/pdf-assets`)
+  - Gridicons (from `https://github.com/Automattic/Gridicons-iOS.git`, branch `release/1.0`)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `d377b883c761c2a71d29bd631f3d3227b3e313a2`)
   - JTAppleCalendar (~> 8.0.2)
   - MediaEditor (~> 1.0.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
-  - NSObject-SafeExpectations (= 0.0.3)
-  - "NSURL+IDN (= 0.3)"
+  - NSObject-SafeExpectations (~> 0.0.3)
+  - "NSURL+IDN (~> 0.4)"
   - OCMock (= 3.4.3)
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
@@ -475,10 +475,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.16.0)
-  - WordPressAuthenticator (~> 1.11.0-beta.2)
-  - WordPressKit (~> 4.6.0-beta.1)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `update/gridicons-1.0`)
+  - WordPressKit (~> 4.6.0-beta.8)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (= 1.8.15)
+  - WordPressShared (~> 1.8.16-beta)
   - WordPressUI (~> 1.5.1)
   - WPMediaPicker (~> 1.6.0)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
@@ -520,7 +520,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -549,7 +548,7 @@ EXTERNAL SOURCES:
   glog:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json
   Gridicons:
-    :branch: feature/pdf-assets
+    :branch: release/1.0
     :git: https://github.com/Automattic/Gridicons-iOS.git
   Gutenberg:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
@@ -609,6 +608,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressAuthenticator:
+    :branch: update/gridicons-1.0
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -617,7 +619,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gridicons:
-    :commit: 1d180e55de68eda2ef86bf5a6cb92ab6897f21ec
+    :commit: 760a6901b8edf203453e653d06449d7cda359f27
     :git: https://github.com/Automattic/Gridicons-iOS.git
   Gutenberg:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
@@ -625,6 +627,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressAuthenticator:
+    :commit: 4f24cc26a5987a13317d3210b6f18f7c48d88a42
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -646,16 +651,16 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
-  Gridicons: 9654ccc2be34ce5998ad16815d257efa1cc0c138
+  Gridicons: 48ccbe284c39db15cc796af0c523e749683ae061
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   Gutenberg: fd94d54ccf8605564288cc6ef0f762da70f18b01
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
+  lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
   MediaEditor: 7296cd01d7a0548fb2bc909aa72153b376a56a61
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
-  NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
-  "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
+  NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
+  "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   RCTRequired: 3ca691422140f76f04fd2af6dc90914cf0f81ef1
@@ -694,10 +699,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 64a2989d25befb5ce086fac440315f696026ffd5
   WordPress-Editor-iOS: 63ef6a532af2c92e3301421f5c4af41ad3be8721
-  WordPressAuthenticator: d7077030e7b5a38ad080821b3871c4a8ee131c8b
-  WordPressKit: 36f3dd07e27cee3153ea0d77b9802bc4fec48c19
+  WordPressAuthenticator: f7abd84b03351af4dc35d8e4ce109f5ce47263a8
+  WordPressKit: eb884caeba0fab58ea1e99ceee2403559c4e99a4
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
-  WordPressShared: 02e0947034648cbd7251ffcc10f64d512f93a53b
+  WordPressShared: ddcb40e608bc0f0162cce5e8df006584febcec50
   WordPressUI: ce0ac522146dabcd0a68ace24c0104dfdf6f4b0d
   WPMediaPicker: e5d28197da6b467d4e5975d64a49255977e39455
   wpxmlrpc: d758b6ad17723d31d06493acc932f6d9b340de95
@@ -711,6 +716,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: f85bfcb32c8327d092b2343141f452edb3303965
+PODFILE CHECKSUM: 63a6ba0d311119eeee943bca099b8abd53f918e8
 
 COCOAPODS: 1.8.4
