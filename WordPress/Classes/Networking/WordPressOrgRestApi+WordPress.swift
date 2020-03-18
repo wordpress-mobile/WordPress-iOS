@@ -12,7 +12,7 @@ private func makeTokenAuthenticator(blog: Blog) -> Authenticator? {
         DDLogError("Failed to initialize a .com API client with blog: \(blog)")
         return nil
     }
-    return TokenAuthenticator.token(token)
+    return TokenAuthenticator(token: token)
 }
 
 private func makeCookieNonceAuthenticator(blog: Blog) -> Authenticator? {
@@ -25,7 +25,7 @@ private func makeCookieNonceAuthenticator(blog: Blog) -> Authenticator? {
         return nil
     }
 
-    return CookieNonceAuthenticator.cookieNonce(username: username, password: password, loginURL: loginURL, adminURL: adminURL, version: version)
+    return CookieNonceAuthenticator(username: username, password: password, loginURL: loginURL, adminURL: adminURL, version: version)
 }
 
 private func apiBase(blog: Blog) -> URL? {
