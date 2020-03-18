@@ -475,7 +475,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.16.0)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `issue/13620-google_button_appearance`)
+  - WordPressAuthenticator (~> 1.11.0-beta.12)
   - WordPressKit (~> 4.6.0-beta.8)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (= 1.8.16-beta.1)
@@ -521,6 +521,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -606,9 +607,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :branch: issue/13620-google_button_appearance
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -622,9 +620,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :commit: 114caa671685eafe94831e5a1740c9bedae7fc9f
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -711,6 +706,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 8b66b4940754672db1a43674c4477ffd3c642773
+PODFILE CHECKSUM: d2fdb574296e6dfab4c013788e96c928b07d93bb
 
 COCOAPODS: 1.8.4
