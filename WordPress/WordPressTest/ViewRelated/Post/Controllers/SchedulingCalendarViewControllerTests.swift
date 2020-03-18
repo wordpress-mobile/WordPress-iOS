@@ -42,6 +42,29 @@ class SchedulingCalendarViewControllerTests: XCTestCase {
         let originalComponents = Calendar.current.dateComponents([.hour, .minute], from: dateValue)
 
         XCTAssertNotEqual(dateValue, coordinatorDate, "Dates should not be equal.")
-        XCTAssertEqual(newComponents, originalComponents, "Date should retain its minutes and seconds")
+        XCTAssertEqual(newComponents, originalComponents, "Date should retain its hours and minutes")
+    }
+
+    /// Tests that proper calendar is used based on site time zone insted of device time zone
+    func testVCCoordinatorCalendar() {
+
+        let currentDate = Date()
+        let dateValue = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: currentDate)!
+        let timeZone = TimeZone(secondsFromGMT: TimeZone.current.secondsFromGMT(for: currentDate) - 60 * 60)!
+
+        let coordinator = DateCoordinator(date: nil, timeZone: timeZone, dateFormatter: DateFormatter(), dateTimeFormatter: DateFormatter(), updated: { _ in })
+        calendarVC?.coordinator = coordinator
+        calendarVC?.calendarMonthView.updated?(dateValue)
+        calendarVC?.nextButtonPressed()
+
+        let coordinatorDate = calendarVC?.coordinator?.date
+
+        var calendar = Calendar.current
+        calendar.timeZone = timeZone
+
+        let convertedComponents = calendar.dateComponents([.year, .month, .day], from: dateValue)
+        let coordinatorComponents = calendar.dateComponents([.year, .month, .day], from: coordinatorDate!)
+
+        XCTAssertEqual(coordinatorComponents, convertedComponents, "Date should be converted to proper day of time zone.")
     }
 }
