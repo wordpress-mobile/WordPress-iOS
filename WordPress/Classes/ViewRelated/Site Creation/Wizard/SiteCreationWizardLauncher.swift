@@ -33,8 +33,6 @@ final class SiteCreationWizardLauncher {
     private lazy var steps: [WizardStep] = {
         return [
             self.segmentsStep,
-            self.verticalsStep,
-            self.siteInfoStep,
             self.addressStep,
             self.siteAssemblyStep
         ]
