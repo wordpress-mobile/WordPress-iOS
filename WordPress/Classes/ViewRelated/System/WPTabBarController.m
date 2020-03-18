@@ -113,7 +113,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self setSelectedViewController:self.blogListSplitViewController];
         
         if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-            [self.createButtonCoordinator addTo:self.view trailingAnchor:((UIViewController *)self.blogListSplitViewController.viewControllers[0]).view.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
+            [self.createButtonCoordinator addTo:self.view trailingAnchor:((UIViewController *)self.blogListSplitViewController.viewControllers[0]).view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
         }
 
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -426,7 +426,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self setViewControllers:[self tabViewControllers]];
     
     if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator addTo:self.view trailingAnchor:self.blogListSplitViewController.viewControllers[0].view.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
+        [self.createButtonCoordinator addTo:self.view trailingAnchor:self.blogListSplitViewController.viewControllers[0].view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
     }
 
     // Reset the selectedIndex to the default MySites tab.
@@ -1025,12 +1025,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [super traitCollectionDidChange:previousTraitCollection];
 
     [self updateWriteButtonAppearance];
-    
-    [self.createButtonCoordinator presentingTraitCollectionDidChange:previousTraitCollection];
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:newCollection];
     [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
 }
 

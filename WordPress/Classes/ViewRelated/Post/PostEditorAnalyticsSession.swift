@@ -10,6 +10,7 @@ struct PostEditorAnalyticsSession {
     var hasUnsupportedBlocks = false
     var outcome: Outcome? = nil
     var template: String?
+    private let startTime = DispatchTime.now().uptimeNanoseconds
 
     init(editor: Editor, post: AbstractPost) {
         currentEditor = editor
@@ -40,7 +41,12 @@ struct PostEditorAnalyticsSession {
     }
 
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
+        // On Android, we are tracking this in milliseconds, which seems like a good enough time scale
+        // Let's make sure to round the value and send an integer for consistency
+        let startupTimeNanoseconds = DispatchTime.now().uptimeNanoseconds - startTime
+        let startupTimeMilliseconds = Int(Double(startupTimeNanoseconds) / 1_000_000)
         return [
+            Property.startupTime: startupTimeMilliseconds,
             Property.unsupportedBlocks: unsupportedBlocks
         ].merging(commonProperties, uniquingKeysWith: { $1 })
     }
@@ -82,6 +88,7 @@ private extension PostEditorAnalyticsSession {
         static let outcome = "outcome"
         static let sessionId = "session_id"
         static let template = "template"
+        static let startupTime = "startup_time_ms"
     }
 
     var commonProperties: [String: String] {

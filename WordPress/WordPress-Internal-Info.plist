@@ -6,6 +6,94 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>WP Internal</string>
+	<key>CFBundleIcons~ipad</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>AppIcon</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<true/>
+		</dict>
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>WordPress Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>wordpress_dark_icon_20pt</string>
+					<string>wordpress_dark_icon_29pt</string>
+					<string>wordpress_dark_icon_76pt</string>
+					<string>wordpress_dark_icon_83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Open Source</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>open_source_icon_20pt</string>
+					<string>open_source_icon_29pt</string>
+					<string>open_source_icon_76pt</string>
+					<string>open_source_icon_83.5</string>
+					<string></string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Open Source Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>open_source_dark_icon_20pt</string>
+					<string>open_source_dark_icon_29pt</string>
+					<string>open_source_dark_icon_76pt</string>
+					<string>open_source_dark_icon_83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>Hot Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>hot_pink_icon_20pt</string>
+					<string>hot_pink_icon_29pt</string>
+					<string>hot_pink_icon_76pt</string>
+					<string>hot_pink_icon_83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Jetpack Green</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>jetpack_green_icon_20pt</string>
+					<string>jetpack_green_icon_29pt</string>
+					<string>jetpack_green_icon_76pt</string>
+					<string>jetpack_green_icon_83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Pride</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>pride_icon_20pt</string>
+					<string>pride_icon_29pt</string>
+					<string>pride_icon_76pt</string>
+					<string>pride_icon_83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>

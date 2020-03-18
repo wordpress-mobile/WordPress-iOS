@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.16-beta'
+    pod 'WordPressShared', '~> 1.8.16-beta.1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -34,7 +34,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.5.1'
+    pod 'WordPressUI', '~> 1.5.2-beta.1'
 
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
@@ -44,9 +44,10 @@ end
 
 def wordpress_kit
     pod 'WordPressKit', '~> 4.6.0-beta.8'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.5.9-beta.1'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/224-update-wpxmlrpc-pod'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '13db93f88726cfb9503384723ceb727e99521398'
+
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.6.0-beta.3'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -54,7 +55,7 @@ def shared_with_all_pods
     wordpress_shared
     pod 'CocoaLumberjack', '3.5.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
-    pod 'NSObject-SafeExpectations', '~> 0.0.3'
+    pod 'NSObject-SafeExpectations', '~> 0.0.4'
 end
 
 def shared_with_networking_pods
@@ -154,7 +155,6 @@ target 'WordPress' do
     ## Third party libraries
     ## =====================
     ##
-    pod '1PasswordExtension', '1.8.5'
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
     pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
@@ -178,9 +178,10 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '~> 0.4'
 
-    pod 'WPMediaPicker', '~> 1.6.0'
+    pod 'WPMediaPicker', '~> 1.6.1-beta.2'
     ## while PR is in review:
-    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '7c3cb8f00400b9316a803640b42bb88a66bbc648'
+    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
+    # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
 #    pod 'Gridicons', '~> 0.20-beta.1'
     # While in PR
@@ -189,6 +190,8 @@ target 'WordPress' do
     # pod 'WordPressAuthenticator', '~> 1.11.0-beta.2'
     # While in PR
     pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'update/gridicons-1.0'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.0.1'

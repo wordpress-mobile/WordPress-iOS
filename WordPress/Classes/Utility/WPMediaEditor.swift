@@ -54,6 +54,6 @@ class WPMediaEditor: MediaEditor {
             return
         }
 
-        WPAnalytics.track(.mediaEditorUsed, withProperties: ["actions": actions.description])
+        WPAnalytics.track(.mediaEditorUsed, properties: ["actions": actions.description])
     }
 }

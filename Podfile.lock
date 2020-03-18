@@ -395,8 +395,8 @@ PODS:
   - WordPressShared (1.8.16-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.5.1)
-  - WPMediaPicker (1.6.0)
+  - WordPressUI (1.5.2-beta.1)
+  - WPMediaPicker (1.6.1-beta.2)
   - wpxmlrpc (0.8.5-beta.1)
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (4.0.0):
@@ -416,7 +416,6 @@ PODS:
   - ZIPFoundation (0.9.10)
 
 DEPENDENCIES:
-  - 1PasswordExtension (= 1.8.5)
   - Alamofire (= 4.8.0)
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (= 2.5.1)
@@ -438,7 +437,7 @@ DEPENDENCIES:
   - MediaEditor (~> 1.0.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
-  - NSObject-SafeExpectations (~> 0.0.3)
+  - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
   - OCMock (= 3.4.3)
   - OHHTTPStubs (= 6.1.0)
@@ -478,9 +477,9 @@ DEPENDENCIES:
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `update/gridicons-1.0`)
   - WordPressKit (~> 4.6.0-beta.8)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (~> 1.8.16-beta)
-  - WordPressUI (~> 1.5.1)
-  - WPMediaPicker (~> 1.6.0)
+  - WordPressShared (~> 1.8.16-beta.1)
+  - WordPressUI (~> 1.5.2-beta.1)
+  - WPMediaPicker (~> 1.6.1-beta.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.0.0)
   - ZIPFoundation (~> 0.9.8)
@@ -703,8 +702,8 @@ SPEC CHECKSUMS:
   WordPressKit: eb884caeba0fab58ea1e99ceee2403559c4e99a4
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: ddcb40e608bc0f0162cce5e8df006584febcec50
-  WordPressUI: ce0ac522146dabcd0a68ace24c0104dfdf6f4b0d
-  WPMediaPicker: e5d28197da6b467d4e5975d64a49255977e39455
+  WordPressUI: 77907b59f39530af1003a30e6148a3ad0d2b179f
+  WPMediaPicker: d426e9af45a454df8850d9e045cf6a52a8b599ed
   wpxmlrpc: d758b6ad17723d31d06493acc932f6d9b340de95
   Yoga: c920bf12bf8146aa5cd118063378c2cf5682d16c
   ZendeskCommonUISDK: 3c432801e31abff97d6e30441ea102eaef6b99e2
@@ -716,6 +715,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 63a6ba0d311119eeee943bca099b8abd53f918e8
+PODFILE CHECKSUM: d991d38f550b1f5126784ef1958f0388babcfdf0
 
 COCOAPODS: 1.8.4

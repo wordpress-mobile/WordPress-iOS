@@ -347,7 +347,7 @@ private extension String {
 
     private enum Fonts {
         static let regular = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
-        static let highlight = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        static let highlight = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
     }
 
     private enum Constants {

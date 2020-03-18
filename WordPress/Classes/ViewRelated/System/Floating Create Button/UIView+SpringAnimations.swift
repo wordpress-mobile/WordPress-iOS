@@ -1,6 +1,6 @@
 extension FloatingActionButton {
 
-    enum Constants {
+    private enum Constants {
         enum Maximize {
             static let damping: CGFloat = 0.7
             static let duration: TimeInterval = 0.5
