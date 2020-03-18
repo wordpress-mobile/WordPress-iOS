@@ -1,5 +1,5 @@
 PODS:
-  - 1PasswordExtension (1.8.5)
+  - 1PasswordExtension (1.8.6)
   - Alamofire (4.8.0)
   - AlamofireNetworkActivityIndicator (2.4.0):
     - Alamofire (~> 4.8)
@@ -372,8 +372,8 @@ PODS:
   - WordPress-Aztec-iOS (1.16.0)
   - WordPress-Editor-iOS (1.16.0):
     - WordPress-Aztec-iOS (= 1.16.0)
-  - WordPressAuthenticator (1.11.0-beta.12):
-    - 1PasswordExtension (= 1.8.5)
+  - WordPressAuthenticator (1.11.0-beta.13):
+    - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 4.4)
@@ -416,7 +416,6 @@ PODS:
   - ZIPFoundation (0.9.10)
 
 DEPENDENCIES:
-  - 1PasswordExtension (= 1.8.5)
   - Alamofire (= 4.8.0)
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (= 2.5.1)
@@ -475,7 +474,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.16.0)
-  - WordPressAuthenticator (~> 1.11.0-beta.12)
+  - WordPressAuthenticator (~> 1.11.0-beta.13)
   - WordPressKit (~> 4.6.0-beta.8)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (= 1.8.16-beta.1)
@@ -622,7 +621,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
 
 SPEC CHECKSUMS:
-  1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
+  1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
@@ -689,7 +688,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 64a2989d25befb5ce086fac440315f696026ffd5
   WordPress-Editor-iOS: 63ef6a532af2c92e3301421f5c4af41ad3be8721
-  WordPressAuthenticator: 913dfe859211c6f839603ddcf95ca3a2bf1f3cd8
+  WordPressAuthenticator: a932d9db6a439f7e47372c8f64de629724c63462
   WordPressKit: eb884caeba0fab58ea1e99ceee2403559c4e99a4
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: ddcb40e608bc0f0162cce5e8df006584febcec50
@@ -706,6 +705,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: d2fdb574296e6dfab4c013788e96c928b07d93bb
+PODFILE CHECKSUM: 98c95e0b597b72dc6abc779e0c4bd69085fc130d
 
 COCOAPODS: 1.8.4
