@@ -189,9 +189,9 @@ target 'WordPress' do
 
     #pod 'WordPressAuthenticator', '~> 1.11.0-beta.11'
     # While in PR
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/204-remove-showLoginEmail'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/204-remove-showLoginEmail'
     #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-    pod 'WordPressAuthenticator', :path => '/Users/thuycopeland/WordPressAuthenticator-iOS'
+    #pod 'WordPressAuthenticator', :path => ''
 
     pod 'MediaEditor', '~> 1.0.1'
     # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
