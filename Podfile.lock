@@ -416,7 +416,6 @@ PODS:
   - ZIPFoundation (0.9.10)
 
 DEPENDENCIES:
-  - 1PasswordExtension (= 1.8.6)
   - Alamofire (= 4.8.0)
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (= 2.5.1)
@@ -711,6 +710,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 227eefcd34bce4e01ad5a2202bf58c7be7144efb
+PODFILE CHECKSUM: 52991546863ea31052698aa4cedc549ea7284868
 
 COCOAPODS: 1.8.4
