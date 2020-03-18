@@ -154,7 +154,7 @@ target 'WordPress' do
     ## Third party libraries
     ## =====================
     ##
-    pod '1PasswordExtension', '1.8.5'
+    pod '1PasswordExtension', '1.8.6'
     pod 'Charts', '~> 3.2.2'
     pod 'Gifu', '3.2.0'
     pod 'AppCenter', '2.5.1', :configurations => ['Release-Internal', 'Release-Alpha']
@@ -189,9 +189,9 @@ target 'WordPress' do
 
     #pod 'WordPressAuthenticator', '~> 1.11.0-beta.11'
     # While in PR
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/204-remove-showLoginEmail'
+    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/204-remove-showLoginEmail'
     #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-    # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+    pod 'WordPressAuthenticator', :path => '/Users/thuycopeland/WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.0.1'
     # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
