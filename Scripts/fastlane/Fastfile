@@ -201,7 +201,7 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Builds and updates for distribution"
   lane :build_and_upload_release do | options |
-    build_internal = (options[:run_on_ci] == true) ? ios_validate_ci_build() : true
+    build_internal = (options[:run_on_ci] == true) ? !ios_validate_ci_build() : true
 
     ios_build_prechecks(skip_confirm: options[:skip_confirm], 
       internal: build_internal,
