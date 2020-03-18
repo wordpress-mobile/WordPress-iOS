@@ -2,10 +2,6 @@ import UIKit
 
 class BottomSheetViewController: UIViewController {
 
-    private var isDeviceInLandscape: Bool {
-        return UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight
-    }
-
     enum Constants {
         static let gripHeight: CGFloat = 5
         static let cornerRadius: CGFloat = 8
@@ -47,12 +43,6 @@ class BottomSheetViewController: UIViewController {
             modalPresentationStyle = .popover
             popoverPresentationController?.sourceView = sourceView ?? UIView()
             popoverPresentationController?.sourceRect = sourceView?.bounds ?? .zero
-        } else if isDeviceInLandscape {
-            if #available(iOS 13.0, *) {
-                modalPresentationStyle = .automatic
-            } else {
-                modalPresentationStyle = .pageSheet
-            }
         } else {
             transitioningDelegate = self
             modalPresentationStyle = .custom
