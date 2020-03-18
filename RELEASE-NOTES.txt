@@ -10,6 +10,7 @@
   - Reader comments colors.
   - Jetpack install flow colors.
 * Reader: Fix toolbar and search bar width on wider screen sizes.
+* Site Creation: faster site creation, removed intermediate steps. Just select what kind of site you'd like, enter the domain name and the site will be created.
 * Updated the Signup and Login Magic Link confirmation screen advising the user to check their spam/junk folder.
 * Updated appearance of Google login/signup button.
  
