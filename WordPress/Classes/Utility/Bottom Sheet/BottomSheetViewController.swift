@@ -27,7 +27,7 @@ class BottomSheetViewController: UIViewController {
             static let insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
         }
     }
-    
+
     private let childViewController: UIViewController
 
     init(childViewController: UIViewController) {
