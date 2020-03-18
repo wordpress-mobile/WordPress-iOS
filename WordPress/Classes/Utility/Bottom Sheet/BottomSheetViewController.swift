@@ -27,13 +27,10 @@ class BottomSheetViewController: UIViewController {
             static let insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
         }
     }
-
-    let headerTitle: String
-
+    
     private let childViewController: UIViewController
 
     init(childViewController: UIViewController) {
-        self.headerTitle = "Foobar"
         self.childViewController = childViewController
         super.init(nibName: nil, bundle: nil)
     }
