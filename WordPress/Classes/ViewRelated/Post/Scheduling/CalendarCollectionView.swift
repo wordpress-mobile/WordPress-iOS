@@ -3,15 +3,17 @@ import JTAppleCalendar
 
 class CalendarCollectionView: JTACMonthView {
 
-    let calDataSource = CalendarDataSource()
+    let calDataSource: CalendarDataSource
 
-    override init() {
+    init(calendar: Calendar) {
+        calDataSource = CalendarDataSource(calendar: calendar)
         super.init()
 
         setup()
     }
 
     required init?(coder aDecoder: NSCoder) {
+        calDataSource = CalendarDataSource(calendar: Calendar.current)
         super.init(coder: aDecoder)
 
         setup()
@@ -38,10 +40,16 @@ class CalendarDataSource: JTACMonthViewDataSource {
     var didScroll: ((DateSegmentInfo) -> Void)?
     var didSelect: ((Date) -> Void)?
 
+    private let calendar: Calendar
+
+    init(calendar: Calendar) {
+        self.calendar = calendar
+    }
+
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
         let startDate = Date.farPastDate
         let endDate = Date.farFutureDate
-        return ConfigurationParameters(startDate: startDate, endDate: endDate)
+        return ConfigurationParameters(startDate: startDate, endDate: endDate, calendar: self.calendar)
     }
 }
 

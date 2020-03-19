@@ -1,6 +1,7 @@
 14.5
 -----
 * Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
+* Post Settings: Fix issue where the calendar selection may not match the selected date when site timezone differs from device timezone.
 * Dark Mode fixes:
   - Border color on Search bars.
   - Stats background color on wider screen sizes.
@@ -9,6 +10,8 @@
   - Reader comments colors.
   - Jetpack install flow colors.
 * Reader: Fix toolbar and search bar width on wider screen sizes.
+* Updated the Signup and Login Magic Link confirmation screen advising the user to check their spam/junk folder.
+* Updated appearance of Google login/signup button.
  
 14.4
 -----
