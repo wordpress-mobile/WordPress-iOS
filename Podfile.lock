@@ -1,5 +1,5 @@
 PODS:
-  - 1PasswordExtension (1.8.5)
+  - 1PasswordExtension (1.8.6)
   - Alamofire (4.8.0)
   - AlamofireNetworkActivityIndicator (2.4.0):
     - Alamofire (~> 4.8)
@@ -372,8 +372,8 @@ PODS:
   - WordPress-Aztec-iOS (1.16.0)
   - WordPress-Editor-iOS (1.16.0):
     - WordPress-Aztec-iOS (= 1.16.0)
-  - WordPressAuthenticator (1.11.0-beta.12):
-    - 1PasswordExtension (= 1.8.5)
+  - WordPressAuthenticator (1.11.0-beta.14):
+    - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 4.4)
@@ -474,7 +474,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.16.0)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `update/gridicons-1.0`)
+  - WordPressAuthenticator (~> 1.11.0-beta.14)
   - WordPressKit (~> 4.6.0-beta.8)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16-beta.1)
@@ -520,6 +520,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressMocks
     - WordPressShared
@@ -605,9 +606,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :branch: update/gridicons-1.0
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -621,12 +619,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: d377b883c761c2a71d29bd631f3d3227b3e313a2
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :commit: 4f24cc26a5987a13317d3210b6f18f7c48d88a42
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
-  1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
+  1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
@@ -693,7 +688,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 64a2989d25befb5ce086fac440315f696026ffd5
   WordPress-Editor-iOS: 63ef6a532af2c92e3301421f5c4af41ad3be8721
-  WordPressAuthenticator: f7abd84b03351af4dc35d8e4ce109f5ce47263a8
+  WordPressAuthenticator: 76bd1c9042add8ff5cb960aa8216f2e7519c9ea0
   WordPressKit: eb884caeba0fab58ea1e99ceee2403559c4e99a4
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: ddcb40e608bc0f0162cce5e8df006584febcec50
@@ -710,6 +705,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: e1c42211cc9b1e90c2d8bbc2202db64f047c03aa
+PODFILE CHECKSUM: c553765f25dfd8f5065fa1bc2e075c61488ff084
 
 COCOAPODS: 1.8.4
