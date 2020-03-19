@@ -12,6 +12,7 @@
 * Reader: Fix toolbar and search bar width on wider screen sizes.
 * Updated the Signup and Login Magic Link confirmation screen advising the user to check their spam/junk folder.
 * Updated appearance of Google login/signup button.
+* [Internal] the login and signup flows have code changes that could cause regressions. See https://git.io/Jv1MO for testing details.
  
 14.4
 -----
