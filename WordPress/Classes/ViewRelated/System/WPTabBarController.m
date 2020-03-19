@@ -112,10 +112,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [self setSelectedViewController:self.blogListSplitViewController];
         
-        if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-            [self.createButtonCoordinator addTo:self.view trailingAnchor:((UIViewController *)self.blogListSplitViewController.viewControllers[0]).view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
-        }
-
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
                                                      name:NSNotification.ZendeskPushNotificationReceivedNotification
@@ -205,6 +201,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
     if (blogToOpen) {
         _blogListViewController.selectedBlog = blogToOpen;
+    }
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [self.createButtonCoordinator addTo:_blogListNavigationController.view trailingAnchor:_blogListNavigationController.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:_blogListNavigationController.view.safeAreaLayoutGuide.bottomAnchor];
     }
 
     return _blogListNavigationController;
@@ -425,10 +425,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     
     [self setViewControllers:[self tabViewControllers]];
     
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator addTo:self.view trailingAnchor:self.blogListSplitViewController.viewControllers[0].view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
-    }
-
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
 }
