@@ -86,6 +86,7 @@ def gutenberg(options)
     end
     pod 'Gutenberg', options
     pod 'RNTAztecView', options
+    pod 'RNTOverflowView', options
 
     gutenberg_dependencies options
 end
@@ -149,7 +150,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => 'd377b883c761c2a71d29bd631f3d3227b3e313a2'
+    gutenberg :commit => '3402226e7eb1e4eba4a25063247959d7e20a33f6'
 
     ## Third party libraries
     ## =====================
