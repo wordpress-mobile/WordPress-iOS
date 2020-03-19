@@ -33,8 +33,9 @@ extension PostEditor where Self: UIViewController {
         dismissWhenDone: Bool,
         analyticsStat: WPAnalyticsStat?) {
 
-        let prepublishing = PrepublishingViewController()
-        let bottomSheet = BottomSheetViewController(childViewController: prepublishing)
+        let prepublishing = PrepublishingViewController(post: post as! Post)
+        let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
+        let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController)
         bottomSheet.show(from: self, sourceView: navigationBarManager.publishButton)
 
         return
