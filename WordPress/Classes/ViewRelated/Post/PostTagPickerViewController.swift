@@ -95,10 +95,15 @@ class PostTagPickerViewController: UIViewController {
         keyboardObserver.tableView = tableView
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        textView.becomeFirstResponder()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateSuggestions()
-        textView.becomeFirstResponder()
         loadTags()
     }
 
