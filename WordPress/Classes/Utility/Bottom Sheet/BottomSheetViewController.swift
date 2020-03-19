@@ -28,9 +28,13 @@ class BottomSheetViewController: UIViewController {
         }
     }
 
-    private let childViewController: UIViewController
+    private weak var childViewController: UIBottomSheetPresentable?
 
-    init(childViewController: UIViewController) {
+    private var heightConstraint: NSLayoutConstraint!
+
+    var stackView: UIStackView!
+
+    init(childViewController: UIBottomSheetPresentable) {
         self.childViewController = childViewController
         super.init(nibName: nil, bundle: nil)
     }
@@ -66,6 +70,10 @@ class BottomSheetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
         view.clipsToBounds = true
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
@@ -75,9 +83,19 @@ class BottomSheetViewController: UIViewController {
             gripButton.heightAnchor.constraint(equalToConstant: Constants.gripHeight)
         ])
 
+        guard let childViewController = childViewController else {
+            return
+        }
+
+        // Set the initial height of the child VC
+        heightConstraint = childViewController.view.heightAnchor.constraint(equalToConstant: childViewController.initialHeight)
+        heightConstraint.priority = UILayoutPriority(rawValue: 999)
+        heightConstraint.isActive = true
+        childViewController.view.translatesAutoresizingMaskIntoConstraints = false
+
         addChild(childViewController)
 
-        let stackView = UIStackView(arrangedSubviews: [
+        stackView = UIStackView(arrangedSubviews: [
             gripButton,
             childViewController.view
         ])
@@ -113,6 +131,34 @@ class BottomSheetViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         return preferredContentSize = CGSize(width: Constants.minimumWidth, height: view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)
+    }
+
+    @objc func keyboardWillShow(_ notification: NSNotification) {
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.30
+        let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 0
+
+        UIView.animateKeyframes(withDuration: duration,
+                                delay: 0,
+                                options: UIView.KeyframeAnimationOptions(rawValue: curve),
+                                animations: {
+            self.heightConstraint.constant = UIScreen.main.bounds.height - 200
+            self.presentationController?.containerView?.setNeedsLayout()
+            self.presentationController?.containerView?.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    @objc func keyboardWillHide(_ notification: NSNotification) {
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.30
+        let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 0
+
+        UIView.animateKeyframes(withDuration: duration,
+                                delay: 0,
+                                options: UIView.KeyframeAnimationOptions(rawValue: curve),
+                                animations: {
+            self.heightConstraint.constant = self.childViewController?.initialHeight ?? 200
+            self.presentationController?.containerView?.setNeedsLayout()
+            self.presentationController?.containerView?.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
