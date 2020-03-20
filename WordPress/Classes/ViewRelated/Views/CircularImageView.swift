@@ -76,3 +76,18 @@ extension CircularImageView {
         }
     }
 }
+
+/// Border options
+extension CircularImageView {
+
+    private struct StandardBorder {
+        static let color = UIColor.white
+        static let width = CGFloat(2)
+    }
+    /// sets border color and width to the circular image view. Defaults to StandardBorder values
+    func setBorder(color: UIColor = StandardBorder.color, width: CGFloat = StandardBorder.width) {
+        self.layer.borderColor = color.cgColor
+        self.layer.borderWidth = width
+    }
+
+}

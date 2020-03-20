@@ -253,10 +253,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self stopObservingQuickStart];
 }
 
-- (id)initWithScenePresenter:(id<ScenePresenter>)presenter
+- (id)initWithMeScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
     self = [super init];
-    self.scenePresenter = presenter;
+    self.meScenePresenter = meScenePresenter;
     return self;
 }
 
@@ -364,6 +364,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
+        [((WPTabBarController *)self.tabBarController).createButtonCoordinator showCreateButton];
+    }
     [self createUserActivity];
     [self startAlertTimer];
 }
@@ -372,6 +375,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillDisappear:animated];
     [self stopAlertTimer];
+    if ([self.tabBarController isKindOfClass:[WPTabBarController class]]) {
+        [((WPTabBarController *)self.tabBarController).createButtonCoordinator hideCreateButton];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
