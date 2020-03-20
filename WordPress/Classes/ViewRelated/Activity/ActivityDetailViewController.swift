@@ -91,18 +91,17 @@ class ActivityDetailViewController: UIViewController {
 
         if let avatar = activity.actor?.avatarURL, let avatarURL = URL(string: avatar) {
             imageView.backgroundColor = .neutral(.shade20)
-            imageView.downloadImage(from: avatarURL, placeholderImage: Gridicon.iconOfType(.user, withSize: Constants.gridiconSize))
+            imageView.downloadImage(from: avatarURL, placeholderImage: .gridicon(.user, size: Constants.gridiconSize))
         } else if let iconType = WPStyleGuide.ActivityStyleGuide.getGridiconTypeForActivity(activity) {
             imageView.contentMode = .center
             imageView.backgroundColor = WPStyleGuide.ActivityStyleGuide.getColorByActivityStatus(activity)
-            let image = Gridicon.iconOfType(iconType, withSize: Constants.gridiconSize)
-            imageView.image = image
+            imageView.image = .gridicon(iconType, size: Constants.gridiconSize)
         } else {
             imageView.isHidden = true
         }
 
         rewindButton.naturalContentHorizontalAlignment = .leading
-        rewindButton.setImage(Gridicon.iconOfType(.history, withSize: Constants.gridiconSize), for: .normal)
+        rewindButton.setImage(.gridicon(.history, size: Constants.gridiconSize), for: .normal)
     }
 
     private func setupText() {

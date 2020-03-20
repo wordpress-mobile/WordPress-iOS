@@ -69,7 +69,7 @@ open class DeleteSiteViewController: UITableViewController {
     /// One time setup of section one (header)
     ///
     fileprivate func setupHeaderSection() {
-        let warningIcon = Gridicon.iconOfType(.notice, withSize: CGSize(width: 48.0, height: 48.0))
+        let warningIcon = UIImage.gridicon(.notice, size: CGSize(width: 48.0, height: 48.0))
         warningImage.image = warningIcon
         warningImage.tintColor = UIColor.warning
         siteTitleLabel.textColor = .neutral(.shade70)
@@ -154,7 +154,7 @@ open class DeleteSiteViewController: UITableViewController {
     fileprivate func setupDeleteButton() {
         deleteButtonContainerView.backgroundColor = .listForeground
 
-        let trashIcon = Gridicon.iconOfType(.trash)
+        let trashIcon = UIImage.gridicon(.trash)
         deleteSiteButton.setTitle(NSLocalizedString("Delete Site", comment: "Button label for deleting the current site"), for: .normal)
         deleteSiteButton.tintColor = .error
         deleteSiteButton.setImage(trashIcon.imageWithTintColor(.error), for: .normal)

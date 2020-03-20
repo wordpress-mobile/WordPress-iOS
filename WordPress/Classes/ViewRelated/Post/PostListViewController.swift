@@ -74,7 +74,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private var postViewIcon: UIImage? {
-        return isCompact ? UIImage(named: "icon-post-view-card") : Gridicon.iconOfType(.listUnordered)
+        return isCompact ? UIImage(named: "icon-post-view-card") : .gridicon(.listUnordered)
     }
 
     private lazy var postActionSheet: PostActionSheet = {

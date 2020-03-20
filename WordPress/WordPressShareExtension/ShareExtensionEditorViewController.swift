@@ -472,7 +472,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         toolbar.selectedTintColor = ShareColors.aztecFormatBarActiveColor
         toolbar.disabledTintColor = ShareColors.aztecFormatBarDisabledColor
         toolbar.dividerTintColor = ShareColors.aztecFormatBarDividerColor
-        toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
+        toolbar.overflowToggleIcon = .gridicon(.ellipsis)
         toolbar.overflowToolbar(expand: false)
         updateToolbar(toolbar)
 
@@ -1164,7 +1164,7 @@ extension ShareExtensionEditorViewController: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
-        return Gridicon.iconOfType(.image, withSize: Constants.mediaPlaceholderImageSize)
+        return .gridicon(.image, size: Constants.mediaPlaceholderImageSize)
     }
 }
 
@@ -1268,7 +1268,7 @@ private extension ShareExtensionEditorViewController {
 
 fileprivate extension ShareExtensionEditorViewController {
     struct Assets {
-        static let defaultMissingImage          = Gridicon.iconOfType(.image)
+        static let defaultMissingImage          = UIImage.gridicon(.image)
     }
 
     struct Constants {

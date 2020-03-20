@@ -47,7 +47,7 @@ open class ActivityTableViewCell: WPTableViewCell {
     // MARK: - Private Properties
 
     fileprivate var activity: Activity?
-    fileprivate var rewindGridicon = Gridicon.iconOfType(.history)
+    fileprivate var rewindGridicon = UIImage.gridicon(.history)
 
     // MARK: - IBOutlets
 
@@ -78,7 +78,7 @@ open class RewindStatusTableViewCell: ActivityTableViewCell {
         summaryLabel.text = summary
 
         iconBackgroundImageView.backgroundColor = .primary
-        iconImageView.image = Gridicon.iconOfType(.noticeOutline).imageWithTintColor(.white)
+        iconImageView.image = UIImage.gridicon(.noticeOutline).imageWithTintColor(.white)
         iconImageView.isHidden = false
         rewindIconContainer.isHidden = true
 

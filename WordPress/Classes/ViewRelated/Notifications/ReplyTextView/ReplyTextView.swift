@@ -294,8 +294,7 @@ import Gridicons
         placeholderLabel.textColor = WPStyleGuide.Reply.placeholderColor
 
         // Fullscreen toggle button
-        let fullscreenImage = Gridicon.iconOfType(.chevronUp)
-        fullscreenToggleButton.setImage(fullscreenImage, for: .normal)
+        fullscreenToggleButton.setImage(.gridicon(.chevronUp), for: .normal)
         fullscreenToggleButton.tintColor = .listIcon
         fullscreenToggleButton.accessibilityLabel = NSLocalizedString("Enter Full Screen",
                                                                       comment: "Accessibility Label for the enter full screen button on the comment reply text view")

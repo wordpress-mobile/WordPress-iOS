@@ -201,7 +201,7 @@ import Gridicons
     fileprivate func setupVisitButton() {
         let size = CGSize(width: 20, height: 20)
         let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
-        let icon = Gridicon.iconOfType(.external, withSize: size)
+        let icon = UIImage.gridicon(.external, size: size)
         let tintedIcon = icon.imageFlippedForRightToLeftLayoutDirection()
         let highlightIcon = icon.imageFlippedForRightToLeftLayoutDirection()
 
@@ -212,7 +212,7 @@ import Gridicons
 
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
-        let icon = Gridicon.iconOfType(.ellipsis, withSize: size)
+        let icon = UIImage.gridicon(.ellipsis, size: size)
         let tintedIcon = icon.imageWithTintColor(.neutral(.shade30))
         let highlightIcon = icon.imageWithTintColor(.neutral)
 

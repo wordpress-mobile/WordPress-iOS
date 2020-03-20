@@ -10,7 +10,7 @@ final class LikedMenuItemCreatorTests: XCTestCase {
     private struct TestConstants {
         static let path = "/read/liked"
         static let title = "Liked"
-        static let icon = Gridicon.iconOfType(.star)
+        static let icon = UIImage.gridicon(.star)
     }
 
     override func setUp() {
