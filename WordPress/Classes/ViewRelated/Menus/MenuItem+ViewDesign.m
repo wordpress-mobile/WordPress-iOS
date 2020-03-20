@@ -11,16 +11,16 @@ CGFloat const MenusDesignItemIconSize = 18.0;
     UIImage *image = nil;
 
     if ([itemType isEqualToString:MenuItemTypePage]) {
-        image = [Gridicon iconOfType:GridiconTypePages];
+        image = [UIImage gridiconOfType:GridiconTypePages];
     } else if ([itemType isEqualToString:MenuItemTypeCustom]) {
-        image = [Gridicon iconOfType:GridiconTypeLink];
+        image = [UIImage gridiconOfType:GridiconTypeLink];
     } else if ([itemType isEqualToString:MenuItemTypeCategory]) {
-        image = [Gridicon iconOfType:GridiconTypeFolder];
+        image = [UIImage gridiconOfType:GridiconTypeFolder];
     } else if ([itemType isEqualToString:MenuItemTypeTag]) {
-        image = [Gridicon iconOfType:GridiconTypeTag];
+        image = [UIImage gridiconOfType:GridiconTypeTag];
     }
 
-    return image ?: [Gridicon iconOfType:GridiconTypePosts];
+    return image ?: [UIImage gridiconOfType:GridiconTypePosts];
 }
 
 @end

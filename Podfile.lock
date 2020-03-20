@@ -62,7 +62,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.2.2)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.2)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.2)"
-  - Gridicons (0.20-beta.1)
+  - Gridicons (1.0-beta.1)
   - GTMSessionFetcher/Core (1.3.1)
   - Gutenberg (1.23.0):
     - React (= 0.61.5)
@@ -372,12 +372,12 @@ PODS:
   - WordPress-Aztec-iOS (1.16.0)
   - WordPress-Editor-iOS (1.16.0):
     - WordPress-Aztec-iOS (= 1.16.0)
-  - WordPressAuthenticator (1.11.0-beta.13):
+  - WordPressAuthenticator (1.11.0-beta.14):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 4.4)
-    - Gridicons (~> 0.20-beta)
+    - Gridicons (~> 1.0-beta.1)
     - lottie-ios (= 3.1.6)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (= 2.2.5)
@@ -431,14 +431,14 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
-  - Gridicons (~> 0.20-beta.1)
+  - Gridicons (~> 1.0-beta.1)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `d377b883c761c2a71d29bd631f3d3227b3e313a2`)
   - JTAppleCalendar (~> 8.0.2)
   - MediaEditor (~> 1.0.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
-  - NSObject-SafeExpectations (= 0.0.4)
-  - "NSURL+IDN (= 0.4)"
+  - NSObject-SafeExpectations (~> 0.0.4)
+  - "NSURL+IDN (~> 0.4)"
   - OCMock (= 3.4.3)
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
@@ -474,10 +474,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.16.0)
-  - WordPressAuthenticator (~> 1.11.0-beta.13)
+  - WordPressAuthenticator (~> 1.11.0-beta.14)
   - WordPressKit (~> 4.6.0-beta.8)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (= 1.8.16-beta.1)
+  - WordPressShared (~> 1.8.16-beta.1)
   - WordPressUI (~> 1.5.2-beta.1)
   - WPMediaPicker (~> 1.6.1-beta.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
@@ -640,7 +640,7 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
-  Gridicons: a89c04840b560895223a2c5c1e1299b518e0fc6f
+  Gridicons: 48ccbe284c39db15cc796af0c523e749683ae061
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   Gutenberg: fd94d54ccf8605564288cc6ef0f762da70f18b01
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
@@ -688,7 +688,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 64a2989d25befb5ce086fac440315f696026ffd5
   WordPress-Editor-iOS: 63ef6a532af2c92e3301421f5c4af41ad3be8721
-  WordPressAuthenticator: a932d9db6a439f7e47372c8f64de629724c63462
+  WordPressAuthenticator: 76bd1c9042add8ff5cb960aa8216f2e7519c9ea0
   WordPressKit: eb884caeba0fab58ea1e99ceee2403559c4e99a4
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: ddcb40e608bc0f0162cce5e8df006584febcec50
@@ -705,6 +705,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 8913227c787b0a45ce3627ec5cab350605e4533b
+PODFILE CHECKSUM: c553765f25dfd8f5065fa1bc2e075c61488ff084
 
 COCOAPODS: 1.8.4

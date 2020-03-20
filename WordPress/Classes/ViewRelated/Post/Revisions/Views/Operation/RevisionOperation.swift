@@ -55,8 +55,8 @@ class RevisionOperationView: UIView {
 
         var icon: UIImage {
             switch self {
-            case .add: return Gridicon.iconOfType(.plusSmall)
-            case .del: return Gridicon.iconOfType(.minusSmall)
+            case .add: return .gridicon(.plusSmall)
+            case .del: return .gridicon(.minusSmall)
             }
         }
     }

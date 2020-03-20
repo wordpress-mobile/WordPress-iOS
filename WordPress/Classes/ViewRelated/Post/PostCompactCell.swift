@@ -77,7 +77,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         timestampLabel.textColor = .textSubtle
         menuButton.tintColor = .textSubtle
 
-        menuButton.setImage(Gridicon.iconOfType(.ellipsis), for: .normal)
+        menuButton.setImage(.gridicon(.ellipsis), for: .normal)
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
 

@@ -89,7 +89,7 @@ final class SearchTextField: UITextField {
 
     private lazy var searchIconImageView: UIImageView = {
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
-        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(.listIcon)?.imageFlippedForRightToLeftLayoutDirection()
+        let loupeIcon = UIImage.gridicon(.search, size: iconSize).imageWithTintColor(.listIcon)?.imageFlippedForRightToLeftLayoutDirection()
         return UIImageView(image: loupeIcon)
     }()
 

@@ -33,7 +33,7 @@ class QuickStartChecklistHeader: UIView {
     }
     @IBOutlet private var chevronView: UIImageView! {
         didSet {
-            chevronView.image = Gridicon.iconOfType(.chevronDown)
+            chevronView.image = .gridicon(.chevronDown)
             chevronView.tintColor = .textTertiary
         }
     }
