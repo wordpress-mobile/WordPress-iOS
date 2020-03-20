@@ -4,7 +4,7 @@ extension WPTabBarController {
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
         let page = postService.createDraftPage(for: blog)
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "tab_bar"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "create_button"], with: blog)
 
         let editorFactory = EditorFactory()
 
