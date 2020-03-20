@@ -15,7 +15,7 @@ import Foundation
             return "media_editor_shown"
         case .mediaEditorUsed:
             return "media_editor_used"
-        case .prepublishingTagsAdded
+        case .prepublishingTagsAdded:
             return "prepublishing_tags_added"
         }
     }
