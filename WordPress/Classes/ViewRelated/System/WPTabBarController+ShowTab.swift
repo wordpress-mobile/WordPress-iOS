@@ -1,20 +1,33 @@
 extension WPTabBarController {
 
-    @objc func showPageTab(forBlog blog: Blog) {
+    @objc func showPageTab(forBlog: Blog? = nil) {
+        showPageTab(blog: forBlog)
+    }
+
+    /// Show the page tab
+    /// - Parameter inBlog: Blog to a add a page to. Uses the current or last blog if not provided
+    func showPageTab(blog inBlog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button") {
+
+        guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
+
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
         let page = postService.createDraftPage(for: blog)
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "create_button"], with: blog)
+        page.postTitle = title
+        page.content = content
+
+        let blogID = blog.dotComID?.intValue ?? 0 as Any
+        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: ["tap_source": source, WPAppAnalyticsKeyBlogID: blogID])
 
         let editorFactory = EditorFactory()
 
-        let postViewController = editorFactory.instantiateEditor(
+        let pageViewController = editorFactory.instantiateEditor(
             for: page,
             replaceEditor: { [weak self] (editor, replacement) in
                 self?.replaceEditor(editor: editor, replacement: replacement)
         })
 
-        show(postViewController)
+        show(pageViewController)
     }
 
     private func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {
