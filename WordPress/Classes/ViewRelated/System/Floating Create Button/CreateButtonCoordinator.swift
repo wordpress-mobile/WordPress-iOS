@@ -100,12 +100,20 @@ import Gridicons
     }
 
     @objc func hideCreateButton() {
-        button.springAnimation(toShow: false)
+        if UIAccessibility.isReduceMotionEnabled {
+            button.isHidden = true
+        } else {
+            button.springAnimation(toShow: false)
+        }
     }
 
     @objc func showCreateButton() {
         button.setNeedsUpdateConstraints() // See `FloatingActionButton` implementation for more info on why this is needed.
-        button.springAnimation(toShow: true)
+        if UIAccessibility.isReduceMotionEnabled {
+            button.isHidden = false
+        } else {
+            button.springAnimation(toShow: true)
+        }
     }
 
     @objc func showNewPost() {
