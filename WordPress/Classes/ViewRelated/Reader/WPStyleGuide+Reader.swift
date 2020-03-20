@@ -252,8 +252,8 @@ extension WPStyleGuide {
         let side = WPStyleGuide.fontSizeForTextStyle(Cards.buttonTextStyle)
         let size = CGSize(width: side, height: side)
 
-        let followIcon = Gridicon.iconOfType(.readerFollow, withSize: size)
-        let followingIcon = Gridicon.iconOfType(.readerFollowing, withSize: size)
+        let followIcon = UIImage.gridicon(.readerFollow, size: size)
+        let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
 
         let normalColor = UIColor.primary
         let highlightedColor = UIColor.primaryDark
@@ -278,8 +278,8 @@ extension WPStyleGuide {
 
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
         let size = Gridicon.defaultSize
-        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: size)
-        let selectedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
+        let icon = UIImage.gridicon(.bookmarkOutline, size: size)
+        let selectedIcon = UIImage.gridicon(.bookmark, size: size)
 
         button.setImage(icon, for: .normal)
         button.setImage(selectedIcon, for: .selected)
@@ -306,7 +306,7 @@ extension WPStyleGuide {
     /// - Parameter showTitle: if set to true, will show the button label (default: true)
     @objc public class func applyReaderReblogActionButtonStyle(_ button: UIButton, showTitle: Bool = true) {
         let size = Gridicon.defaultSize
-        let icon = Gridicon.iconOfType(.reblog, withSize: size)
+        let icon = UIImage.gridicon(.reblog, size: size)
 
         button.setImage(icon, for: .normal)
 

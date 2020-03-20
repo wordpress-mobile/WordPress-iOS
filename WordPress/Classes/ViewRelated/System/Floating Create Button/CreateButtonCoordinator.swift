@@ -9,7 +9,7 @@ import Gridicons
     }
 
     var button: FloatingActionButton = {
-        let button = FloatingActionButton(image: Gridicon.iconOfType(.create))
+        let button = FloatingActionButton(image: .gridicon(.create))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
         button.accessibilityHint = NSLocalizedString("Creates new post or page", comment: " Accessibility hint for create floating action button")
@@ -70,12 +70,12 @@ import Gridicons
 
     private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
         let postsButton = ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"),
-                                            image: Gridicon.iconOfType(.posts),
+                                            image: .gridicon(.posts),
                                             identifier: "blogPostButton",
                                             target: self,
                                             selector: #selector(showNewPost))
         let pagesButton = ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
-                                            image: Gridicon.iconOfType(.pages),
+                                            image: .gridicon(.pages),
                                             identifier: "sitePageButton",
                                             target: self,
                                             selector: #selector(showNewPage))

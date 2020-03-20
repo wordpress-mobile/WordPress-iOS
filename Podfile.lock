@@ -437,8 +437,8 @@ DEPENDENCIES:
   - MediaEditor (~> 1.0.1)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.3.1)
-  - NSObject-SafeExpectations (= 0.0.4)
-  - "NSURL+IDN (= 0.4)"
+  - NSObject-SafeExpectations (~> 0.0.4)
+  - "NSURL+IDN (~> 0.4)"
   - OCMock (= 3.4.3)
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
@@ -477,7 +477,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.11.0-beta.15)
   - WordPressKit (~> 4.6.0-beta.8)
   - WordPressMocks (~> 0.0.8)
-  - WordPressShared (= 1.8.16-beta.1)
+  - WordPressShared (~> 1.8.16-beta.1)
   - WordPressUI (~> 1.5.2-beta.1)
   - WPMediaPicker (~> 1.6.1-beta.2)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/d377b883c761c2a71d29bd631f3d3227b3e313a2/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
@@ -705,6 +705,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 5c5e5cb14357fb3cbdaa53dcd10c386d52ce6916
+PODFILE CHECKSUM: e3ae3d709698497bc33ea31279042a78a0033d9f
 
 COCOAPODS: 1.8.4

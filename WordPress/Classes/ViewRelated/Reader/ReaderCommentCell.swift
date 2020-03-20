@@ -120,7 +120,7 @@ class ReaderCommentCell: UITableViewCell {
     }
 
     @objc func setupReplyButton() {
-        let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize).rotate180Degrees()
+        let icon = UIImage.gridicon(.reply, size: Constants.buttonSize).rotate180Degrees()
         replyButton.setImage(icon, for: .normal)
         replyButton.setImage(icon, for: .highlighted)
 
@@ -131,8 +131,8 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc func setupLikeButton() {
         let size = Constants.buttonSize
-        let star = Gridicon.iconOfType(.star, withSize: size)
-        let starOutline = Gridicon.iconOfType(.starOutline, withSize: size)
+        let star = UIImage.gridicon(.star, size: size)
+        let starOutline = UIImage.gridicon(.starOutline, size: size)
 
         likeButton.setImage(starOutline, for: .normal)
         likeButton.setImage(star, for: .highlighted)
