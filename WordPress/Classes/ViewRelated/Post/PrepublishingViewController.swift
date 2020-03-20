@@ -14,7 +14,7 @@ class PrepublishingViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(WPTableViewCell.self, forCellReuseIdentifier: Constants.reuseIdentifier)
+        tableView.tableFooterView = UIView(frame: .zero)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -26,12 +26,23 @@ class PrepublishingViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier)
+        let cell: WPTableViewCell = {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? WPTableViewCell else {
+                return WPTableViewCell.init(style: .value1, reuseIdentifier: Constants.reuseIdentifier)
+            }
+            return cell
+        }()
 
-        cell?.accessoryType = .disclosureIndicator
-        cell?.textLabel?.text = "Tags"
+        cell.preservesSuperviewLayoutMargins = false
+        cell.separatorInset = .zero
+        cell.layoutMargins = .zero
 
-        return cell!
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.text = "Tags"
+        cell.detailTextLabel?.text = post.tags
+        cell.detailTextLabel?.isEnabled = true
+
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -39,6 +50,7 @@ class PrepublishingViewController: UITableViewController {
 
         viewController.onValueChanged = { [weak self] tags in
             self?.post.tags = tags
+            self?.tableView.reloadData()
         }
 
         navigationController?.pushViewController(viewController, animated: true)
