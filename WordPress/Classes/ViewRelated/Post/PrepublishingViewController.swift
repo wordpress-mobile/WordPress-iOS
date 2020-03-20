@@ -1,7 +1,15 @@
 import UIKit
 
+private struct PrepublishingOption {
+    let title: String
+}
+
 class PrepublishingViewController: UITableViewController {
     private let post: Post
+
+    private let options: [PrepublishingOption] = [
+        PrepublishingOption(title: NSLocalizedString("Tags", comment: "Label for Tags"))
+    ]
 
     init(post: Post) {
         self.post = post
@@ -22,7 +30,7 @@ class PrepublishingViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return options.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -38,9 +46,12 @@ class PrepublishingViewController: UITableViewController {
         cell.layoutMargins = .zero
 
         cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.text = "Tags"
-        cell.detailTextLabel?.text = post.tags
-        cell.detailTextLabel?.isEnabled = true
+        cell.textLabel?.text = options[indexPath.row].title
+
+        if indexPath.row == 0 {
+            // Tags row
+            cell.detailTextLabel?.text = post.tags
+        }
 
         return cell
     }
