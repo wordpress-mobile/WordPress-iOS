@@ -19,7 +19,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4">
+                <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="250" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -36,7 +36,7 @@
                 <constraint firstItem="4" firstAttribute="leading" secondItem="hd0-DM-uqE" secondAttribute="leading" id="jf7-Kx-yZn"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="hd0-DM-uqE"/>
-            <point key="canvasLocation" x="-507" y="38"/>
+            <point key="canvasLocation" x="-1414" y="-66"/>
         </view>
     </objects>
 </document>

@@ -256,8 +256,8 @@ extension WPStyleGuide {
             // Image(s)
             let side = WPStyleGuide.fontSizeForTextStyle(.subheadline)
             let size = CGSize(width: side, height: side)
-            let followIcon = Gridicon.iconOfType(.readerFollow, withSize: size)
-            let followingIcon = Gridicon.iconOfType(.readerFollowing, withSize: size)
+            let followIcon = UIImage.gridicon(.readerFollow, size: size)
+            let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
 
             button.setImage(followIcon.imageWithTintColor(normalColor), for: .normal)
             button.setImage(followingIcon.imageWithTintColor(selectedColor), for: .selected)

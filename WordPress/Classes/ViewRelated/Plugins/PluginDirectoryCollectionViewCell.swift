@@ -47,7 +47,7 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(name: String, author: String, image: URL?) {
-        let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 98, height: 98))
+        let iconPlaceholder = UIImage.gridicon(.plugins, size: CGSize(width: 98, height: 98))
 
         if let imageURL = image {
             logoImageView?.downloadImage(from: imageURL, placeholderImage: iconPlaceholder)

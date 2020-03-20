@@ -11,7 +11,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.8.16-beta.1'
+    pod 'WordPressShared', '~> 1.8.16-beta.1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -44,6 +44,7 @@ end
 
 def wordpress_kit
     pod 'WordPressKit', '~> 4.6.0-beta.8'
+
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.6.0-beta.3'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -54,7 +55,7 @@ def shared_with_all_pods
     wordpress_shared
     pod 'CocoaLumberjack', '3.5.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
-    pod 'NSObject-SafeExpectations', '0.0.4'
+    pod 'NSObject-SafeExpectations', '~> 0.0.4'
 end
 
 def shared_with_networking_pods
@@ -71,9 +72,7 @@ def shared_test_pods
 end
 
 def shared_with_extension_pods
-    pod 'Gridicons', '~> 0.20-beta.1'
-    # While in PR
-    #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
+    pod 'Gridicons', '~> 1.0-beta.1'
     pod 'ZIPFoundation', '~> 0.9.8'
     pod 'Down', '~> 0.6.6'
 end
@@ -175,18 +174,16 @@ target 'WordPress' do
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/Swift-5-migration'
 
-    pod 'NSURL+IDN', '0.4'
+    pod 'NSURL+IDN', '~> 0.4'
 
     pod 'WPMediaPicker', '~> 1.6.1-beta.2'
     ## while PR is in review:
     # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
     # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
-    pod 'Gridicons', '~> 0.20-beta.1'
-    # While in PR
-    #pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'feature/Swift-5-migration'
+    pod 'Gridicons', '~> 1.0-beta.1'
 
-    pod 'WordPressAuthenticator', '~> 1.11.0-beta.13'
+    pod 'WordPressAuthenticator', '~> 1.11.0-beta.14'
     # While in PR
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
