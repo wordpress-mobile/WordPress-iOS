@@ -137,14 +137,30 @@ class BottomSheetViewController: UIViewController {
         let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.30
         let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 0
 
+        let heightForKeyboard = UIScreen.main.bounds.height - 200
+
         UIView.animateKeyframes(withDuration: duration,
                                 delay: 0,
                                 options: UIView.KeyframeAnimationOptions(rawValue: curve),
                                 animations: {
-            self.heightConstraint.constant = UIScreen.main.bounds.height - 200
+            // Resize the bottom sheet
+            self.heightConstraint.constant = heightForKeyboard
             self.presentationController?.containerView?.setNeedsLayout()
             self.presentationController?.containerView?.layoutIfNeeded()
-        }, completion: nil)
+
+            // Resize all the subviews if the child VC is a navigation controller
+            self.resizeAllViewControllers(height: heightForKeyboard)
+        }, completion: { _ in
+            // Make sure the subviews keeps the height of the bottom sheet
+            self.resizeAllViewControllers(height: heightForKeyboard)
+        })
+    }
+
+    private func resizeAllViewControllers(height: CGFloat) {
+        (childViewController as? UINavigationController)?.viewControllers.forEach { viewController in
+            let originalFrame = viewController.view.frame
+            viewController.view.frame = CGRect(x: originalFrame.origin.x, y: originalFrame.origin.y, width: originalFrame.width, height: height)
+        }
     }
 
     @objc func keyboardWillHide(_ notification: NSNotification) {
