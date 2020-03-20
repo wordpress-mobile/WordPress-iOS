@@ -133,7 +133,7 @@ extension LoginEpilogueTableViewController {
         }
 
         // Site Rows
-        let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
+        let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section - 1)
         return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
     }
 
@@ -142,6 +142,11 @@ extension LoginEpilogueTableViewController {
         // Don't show section header for User Info
         guard section != Sections.userInfoSection,
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
+            return nil
+        }
+
+        // Don't show section header if there are no sites.
+        guard rowCount(forSection: section) > 0 else {
             return nil
         }
 
@@ -164,7 +169,17 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == Sections.userInfoSection ? 0 : UITableView.automaticDimension
+
+        if section == Sections.userInfoSection {
+            return 0
+        }
+
+        if rowCount(forSection: section) == 0 {
+            tableView.separatorStyle = .none
+            return 0
+        }
+
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -211,8 +226,7 @@ private extension LoginEpilogueTableViewController {
             return nil
         }
 
-        let rowCount = blogDataSource.tableView(tableView, numberOfRowsInSection: section - 1)
-        if rowCount > 1 {
+        if rowCount(forSection: section) > 1 {
             return NSLocalizedString("My Sites", comment: "Header for list of multiple sites, shown after logging in").localizedUppercase
         }
 
@@ -232,6 +246,10 @@ private extension LoginEpilogueTableViewController {
         let service = AccountService(managedObjectContext: context)
 
         return service.defaultWordPressComAccount()?.blogs.count ?? 0
+    }
+
+    func rowCount(forSection section: Int) -> Int {
+        return blogDataSource.tableView(tableView, numberOfRowsInSection: section - 1)
     }
 
 }
@@ -323,7 +341,7 @@ private extension LoginEpilogueTableViewController {
     enum Settings {
         static let headerReuseIdentifier = "SectionHeader"
         static let userCellReuseIdentifier = "userInfo"
-        static let profileRowHeight = CGFloat(140)
+        static let profileRowHeight = CGFloat(180)
         static let blogRowHeight = CGFloat(52)
         static let headerHeight = CGFloat(50)
     }
