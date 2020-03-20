@@ -10,7 +10,7 @@ final class FollowingMenuItemCreatorTests: XCTestCase {
     private struct TestConstants {
         static let path = "/read/following"
         static let title = "Following"
-        static let icon = Gridicon.icon(type: .checkmarkCircle)
+        static let icon = UIImage.gridicon(.checkmarkCircle)
     }
 
     override func setUp() {

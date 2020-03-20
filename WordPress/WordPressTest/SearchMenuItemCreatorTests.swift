@@ -7,7 +7,7 @@ final class SearchMenuItemCreatorTests: XCTestCase {
 
     private struct TestConstants {
         static let title = NSLocalizedString("Search", comment: "Search")
-        static let icon = Gridicon.icon(type: .search)
+        static let icon = UIImage.gridicon(.search)
     }
 
     override func setUp() {
