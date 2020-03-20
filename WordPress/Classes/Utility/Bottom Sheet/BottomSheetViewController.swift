@@ -32,8 +32,6 @@ class BottomSheetViewController: UIViewController {
 
     private var heightConstraint: NSLayoutConstraint!
 
-    var stackView: UIStackView!
-
     init(childViewController: UIBottomSheetPresentable) {
         self.childViewController = childViewController
         super.init(nibName: nil, bundle: nil)
@@ -95,7 +93,7 @@ class BottomSheetViewController: UIViewController {
 
         addChild(childViewController)
 
-        stackView = UIStackView(arrangedSubviews: [
+        let stackView = UIStackView(arrangedSubviews: [
             gripButton,
             childViewController.view
         ])
