@@ -116,6 +116,8 @@ class PostTagPickerViewController: UIViewController {
             onValueChanged?(tags.joined(separator: ", "))
         }
         WPError.dismissNetworkingNotice()
+
+        textView.resignFirstResponder()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
