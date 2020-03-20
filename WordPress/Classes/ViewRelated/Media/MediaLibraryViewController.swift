@@ -137,7 +137,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         if isEditing {
             navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: false)
 
-            let trashButton = UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped))
+            let trashButton = UIBarButtonItem(image: .gridicon(.trash), style: .plain, target: self, action: #selector(trashTapped))
             navigationItem.setRightBarButtonItems([trashButton], animated: true)
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {

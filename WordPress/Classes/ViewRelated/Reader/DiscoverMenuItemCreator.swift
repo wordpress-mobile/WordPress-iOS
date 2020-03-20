@@ -9,7 +9,7 @@ final class DiscoverMenuItemCreator: ReaderMenuItemCreator {
     func menuItem(with topic: ReaderAbstractTopic) -> ReaderMenuItem {
         var item = ReaderMenuItem(title: topic.title,
                                   type: .topic,
-                                  icon: Gridicon.iconOfType(.mySites),
+                                  icon: .gridicon(.mySites),
                                   topic: topic)
         item.order = ReaderDefaultMenuItemOrder.discover.rawValue
 

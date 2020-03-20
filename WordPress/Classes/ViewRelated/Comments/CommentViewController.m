@@ -660,6 +660,12 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [self.suggestionsTableView showSuggestionsForWord:word];
 }
 
+- (void)replyTextView:(ReplyTextView *)replyTextView willEnterFullScreen:(FullScreenCommentReplyViewController *)controller
+{
+    [self.suggestionsTableView hideSuggestions];
+
+    [controller enableSuggestionsWith:self.comment.blog.dotComID];
+}
 
 #pragma mark - SuggestionsTableViewDelegate
 

@@ -34,7 +34,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func active() -> UIView {
-        let icon = Gridicon.iconOfType(.checkmark, withSize: Constants.imageSize)
+        let icon = UIImage.gridicon(.checkmark, size: Constants.imageSize)
         let color = UIColor.success
         let text = NSLocalizedString("Active", comment: "Describes a status of a plugin")
 
@@ -42,7 +42,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func inactive() -> UIView {
-        let icon = Gridicon.iconOfType(.cross, withSize: Constants.imageSize)
+        let icon = UIImage.gridicon(.cross, size: Constants.imageSize)
         let color = UIColor.neutral(.shade40)
         let text = NSLocalizedString("Inactive", comment: "Describes a status of a plugin")
 
@@ -50,7 +50,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func needsUpdate() -> UIView {
-        let icon = Gridicon.iconOfType(.sync, withSize: Constants.imageSize)
+        let icon = UIImage.gridicon(.sync, size: Constants.imageSize)
         let color = UIColor.warning
         let text = NSLocalizedString("Needs Update", comment: "Describes a status of a plugin")
 
@@ -58,7 +58,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func updating() -> UIView {
-        let icon = Gridicon.iconOfType(.sync, withSize: Constants.imageSize)
+        let icon = UIImage.gridicon(.sync, size: Constants.imageSize)
         let color = UIColor.warning
         let text = NSLocalizedString("Updating", comment: "Describes a status of a plugin")
 
@@ -128,10 +128,10 @@ struct PluginDirectoryAccessoryItem {
             let color: UIColor
 
             if i <= Int(wholeStars) {
-                image = Gridicon.iconOfType(.star, withSize: Constants.starImageSize)
+                image = .gridicon(.star, size: Constants.starImageSize)
                 color = .primary(.shade40)
             } else {
-                image = Gridicon.iconOfType(.starOutline, withSize: Constants.starImageSize)
+                image = .gridicon(.starOutline, size: Constants.starImageSize)
                 color = .neutral(.shade10)
             }
 
@@ -155,7 +155,7 @@ struct PluginDirectoryAccessoryItem {
             container.widthAnchor.constraint(equalToConstant: size.width)
         ])
 
-        let leftHalf = UIImageView(image: Gridicon.iconOfType(.star, withSize: size))
+        let leftHalf = UIImageView(image: .gridicon(.star, size: size))
         leftHalf.tintColor = color
         leftHalf.translatesAutoresizingMaskIntoConstraints = false
         leftHalf.contentMode = .left
@@ -164,7 +164,7 @@ struct PluginDirectoryAccessoryItem {
         leftHalf.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         leftHalf.addConstraint(NSLayoutConstraint(item: leftHalf, attribute: .width, relatedBy: .equal, toItem: leftHalf, attribute: .height, multiplier: 0.5, constant: 0))
 
-        let rightHalf = UIImageView(image: Gridicon.iconOfType(.starOutline, withSize: size))
+        let rightHalf = UIImageView(image: .gridicon(.starOutline, size: size))
         rightHalf.tintColor = .neutral(.shade10)
         rightHalf.translatesAutoresizingMaskIntoConstraints = false
         rightHalf.contentMode = .right
