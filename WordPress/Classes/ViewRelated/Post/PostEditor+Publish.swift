@@ -158,8 +158,10 @@ extension PostEditor where Self: UIViewController {
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
+        let postTypeValue = post is Page ? "page" : "post"
+
         guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
-            WPAppAnalytics.track(stat, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post.blog)
+            WPAppAnalytics.track(stat, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource, WPAppAnalyticsKeyPostType: postTypeValue], with: post.blog)
             return
         }
 
