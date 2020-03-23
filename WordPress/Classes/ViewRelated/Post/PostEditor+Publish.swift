@@ -172,6 +172,8 @@ extension PostEditor where Self: UIViewController {
             properties["word_diff_count"] = originalWordCount
         }
 
+        properties[WPAppAnalyticsKeyPostType] = postTypeValue
+
         if stat == .editorPublishedPost {
             properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = post.hasCategories()
             properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = post.hasPhoto()
