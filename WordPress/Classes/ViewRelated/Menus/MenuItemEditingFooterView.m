@@ -42,7 +42,7 @@
     button.adjustsImageWhenHighlighted = YES;
     [button setTitle:nil forState:UIControlStateNormal];
     button.tintColor = [UIColor murielNeutral30];
-    [button setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
+    [button setImage:[UIImage gridiconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
 

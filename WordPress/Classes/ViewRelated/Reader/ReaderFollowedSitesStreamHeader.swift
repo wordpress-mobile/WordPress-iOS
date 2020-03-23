@@ -33,10 +33,10 @@ import WordPressShared.WPStyleGuide
         titleLabel.textColor = .neutral(.shade70)
         titleLabel.text = NSLocalizedString("Manage", comment: "Button title. Tapping lets the user manage the sites they follow.")
 
-        disclosureIcon.image = Gridicon.iconOfType(.chevronRight, withSize: disclosureIcon.frame.size).imageFlippedForRightToLeftLayoutDirection()
+        disclosureIcon.image = UIImage.gridicon(.chevronRight, size: disclosureIcon.frame.size).imageFlippedForRightToLeftLayoutDirection()
         disclosureIcon.tintColor = .neutral(.shade30)
 
-        imageView.image = Gridicon.iconOfType(.cog)
+        imageView.image = .gridicon(.cog)
         imageView.tintColor = UIColor.white
     }
 

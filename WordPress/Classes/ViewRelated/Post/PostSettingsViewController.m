@@ -223,9 +223,9 @@ FeaturedImageViewControllerDelegate>
     BOOL passwordIsVisible = !self.passwordTextField.secureTextEntry;
     
     if (passwordIsVisible) {
-        icon = [Gridicon iconOfType:GridiconTypeVisible];
+        icon = [UIImage gridiconOfType:GridiconTypeVisible];
     } else {
-        icon = [Gridicon iconOfType:GridiconTypeNotVisible];
+        icon = [UIImage gridiconOfType:GridiconTypeNotVisible];
     }
     
     [self.passwordVisibilityButton setImage:icon forState:UIControlStateNormal];

@@ -1,5 +1,1 @@
-- İki yeni blok kullanıma sunuldu! Hoş Geldiniz, Düğme ve Grup blokları
-- Diğer birkaç blokta iyileştirme yapılmıştır: Görsel bloklarında görsel boyutlarını değiştirebilir ve Galeri bloklarında karşıya yükleme seçeneklerini kullanabilirsiniz. Ayrıca Kısa Kod bloklarında içeriğinizin bir kısmını kesen metin kaydırma sorununu da çözdük.
-- Genel blok deneyiminde bazı iyileştirmeler de yaptık. Özellikle karmaşık olan bloklarda gezinmeyi kolaylaştırmak amacıyla, düzenlemekte olduğunuz blokun üzerinde kayan yeni bir araç çubuğu göreceksiniz. Ayrıca blok seçicide ve blok ayarlarında kaydırma desteği sunduk.
-- Son olarak birkaç hatayı düzelttik. Yazı başlığına emoji eklemek artık yazı başlığına strong HTML öğeleri eklemiyor ve artık paragrafı böldüğünüzde veya yazının HTML içeriğini okuduğunuzda paragraf bloklarının hizalamasına uyuluyor.
-- Bunun dışında, bölgesel ayarlarınıza göre takvimdeki haftanın günü sembollerini düzenledik ve sitenin en sık kullanılan bölümlerine kullanıcıları doğrudan yönlendirmek için Site Ayrıntılarına Hızlı Eylem düğmeleri ekledik.
+Bu hafta sadece hızlı bir kaç şey, çünkü dünyada çok daha büyük şeyler oluyor: Yazı ayarlarında hemen yayımlanan yazıların tarihlerinin düzgün görüntülenebilmesi için bir sorun düzeltildi, hız ve genel güvenilirliği artırmak için kaputun altında bir kaç değişiklik yapıldı.

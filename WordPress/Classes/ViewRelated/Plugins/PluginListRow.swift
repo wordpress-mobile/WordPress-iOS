@@ -22,7 +22,7 @@ struct PluginListRow: ImmuTableRow {
         cell.nameLabel?.text = name
         cell.authorLabel?.text = author
 
-        let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: iconSize)
+        let iconPlaceholder = UIImage.gridicon(.plugins, size: iconSize)
         cell.iconImageView?.cancelImageDownload()
 
         if let iconURL = iconURL {

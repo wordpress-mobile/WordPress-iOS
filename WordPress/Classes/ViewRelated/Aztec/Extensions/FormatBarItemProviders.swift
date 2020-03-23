@@ -14,51 +14,51 @@ extension FormattingIdentifier: FormatBarItemProvider {
     var iconImage: UIImage {
         switch self {
         case .media:
-            return Gridicon.iconOfType(.addOutline)
+            return .gridicon(.addOutline)
         case .p:
-            return Gridicon.iconOfType(.heading)
+            return .gridicon(.heading)
         case .bold:
-            return Gridicon.iconOfType(.bold)
+            return .gridicon(.bold)
         case .italic:
-            return Gridicon.iconOfType(.italic)
+            return .gridicon(.italic)
         case .underline:
-            return Gridicon.iconOfType(.underline)
+            return .gridicon(.underline)
         case .strikethrough:
-            return Gridicon.iconOfType(.strikethrough)
+            return .gridicon(.strikethrough)
         case .blockquote:
-            return Gridicon.iconOfType(.quote)
+            return .gridicon(.quote)
         case .orderedlist:
             if layoutDirection == .leftToRight {
-                return Gridicon.iconOfType(.listOrdered)
+                return .gridicon(.listOrdered)
             } else {
-                return Gridicon.iconOfType(.listOrderedRTL)
+                return .gridicon(.listOrderedRtl)
             }
         case .unorderedlist:
-            return Gridicon.iconOfType(.listUnordered).imageFlippedForRightToLeftLayoutDirection()
+            return UIImage.gridicon(.listUnordered).imageFlippedForRightToLeftLayoutDirection()
         case .link:
-            return Gridicon.iconOfType(.link)
+            return .gridicon(.link)
         case .horizontalruler:
-            return Gridicon.iconOfType(.minusSmall)
+            return .gridicon(.minusSmall)
         case .sourcecode:
-            return Gridicon.iconOfType(.code)
+            return .gridicon(.code)
         case .more:
-            return Gridicon.iconOfType(.readMore)
+            return .gridicon(.readMore)
         case .header1:
-            return Gridicon.iconOfType(.headingH1)
+            return .gridicon(.headingH1)
         case .header2:
-            return Gridicon.iconOfType(.headingH2)
+            return .gridicon(.headingH2)
         case .header3:
-            return Gridicon.iconOfType(.headingH3)
+            return .gridicon(.headingH3)
         case .header4:
-            return Gridicon.iconOfType(.headingH4)
+            return .gridicon(.headingH4)
         case .header5:
-            return Gridicon.iconOfType(.headingH5)
+            return .gridicon(.headingH5)
         case .header6:
-            return Gridicon.iconOfType(.headingH6)
+            return .gridicon(.headingH6)
         case .code:
-            return Gridicon.iconOfType(.posts)
+            return .gridicon(.posts)
         default:
-            return Gridicon.iconOfType(.help)
+            return .gridicon(.help)
         }
     }
 
@@ -172,13 +172,13 @@ extension FormatBarMediaIdentifier: FormatBarItemProvider {
     var iconImage: UIImage {
         switch self {
         case .deviceLibrary:
-            return Gridicon.iconOfType(.imageMultiple)
+            return .gridicon(.imageMultiple)
         case .camera:
-            return Gridicon.iconOfType(.camera)
+            return .gridicon(.camera)
         case .mediaLibrary:
-            return Gridicon.iconOfType(.mySites)
+            return .gridicon(.mySites)
         case .otherApplications:
-            return Gridicon.iconOfType(.ellipsis)
+            return .gridicon(.ellipsis)
         }
     }
 
