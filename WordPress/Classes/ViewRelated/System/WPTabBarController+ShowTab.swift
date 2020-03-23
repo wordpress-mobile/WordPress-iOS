@@ -1,12 +1,12 @@
 extension WPTabBarController {
 
-    @objc func showPageTab(forBlog: Blog? = nil) {
-        showPageTab(blog: forBlog)
+    @objc func showPageEditor(forBlog: Blog? = nil) {
+        showPageEditor(blog: forBlog)
     }
 
     /// Show the page tab
     /// - Parameter inBlog: Blog to a add a page to. Uses the current or last blog if not provided
-    func showPageTab(blog inBlog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button") {
+    func showPageEditor(blog inBlog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button") {
 
         guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
 

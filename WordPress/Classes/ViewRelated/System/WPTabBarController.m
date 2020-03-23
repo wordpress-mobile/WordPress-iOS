@@ -464,7 +464,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         } newPage:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
             Blog *blog = [weakSelf currentOrLastBlog];
-            [weakSelf showPageTabForBlog:blog];
+            [weakSelf showPageEditorForBlog:blog];
         }];
     }
     
