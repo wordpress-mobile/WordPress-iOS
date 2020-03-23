@@ -593,9 +593,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
     editor.afterDismiss = afterDismiss;
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];
     [self presentViewController:editor animated:NO completion:nil];
-    return;
 }
 
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
