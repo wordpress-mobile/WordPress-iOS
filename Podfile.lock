@@ -374,7 +374,7 @@ PODS:
   - WordPress-Aztec-iOS (1.17.0)
   - WordPress-Editor-iOS (1.17.0):
     - WordPress-Aztec-iOS (= 1.17.0)
-  - WordPressAuthenticator (1.11.1):
+  - WordPressAuthenticator (1.11.2-beta.1):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -625,7 +625,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.24.0
   WordPressAuthenticator:
-    :commit: b9c020acb1c5bd4c3af1889b32b65b7395f4714d
+    :commit: 8c8170675e2bfa686ebb9fa7620704623d006432
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
@@ -697,7 +697,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 2a9fb6c2a23284f53d6d69ada43c50b5fddc7c3b
   WordPress-Editor-iOS: 9f236b27b068120af37d6d02e82037e122187804
-  WordPressAuthenticator: 5711680069ca4b4f7614bad8d57cc453e7663b54
+  WordPressAuthenticator: 0cbfb9fbcafe7da388a4a2ac52cc509131645b9b
   WordPressKit: 767cc17ae08894f73f08c852fe124c865a62fb3d
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: 1bc316ed162f42af4e0fa2869437e9e28b532b01
@@ -714,6 +714,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 57ce73c72ee43437595575ba2609397ba4af31d3
+PODFILE CHECKSUM: 0ecd498ec427b728afed21081c6c6900a2d9dde4
 
 COCOAPODS: 1.8.4
