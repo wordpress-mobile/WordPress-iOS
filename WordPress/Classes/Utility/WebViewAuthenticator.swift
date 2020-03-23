@@ -106,7 +106,7 @@ class WebViewAuthenticator: NSObject {
         
         switch self.credentials {
         case .dotCom(let username, let authToken, let authenticationType):
-            requestWPCom(
+            requestForWPCom(
                 url: url,
                 cookieJar: cookieJar,
                 username: username,
@@ -119,49 +119,75 @@ class WebViewAuthenticator: NSObject {
         }
     }
     
-    func requestWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, authenticationType: DotComAuthenticationType, completion: @escaping (URLRequest) -> Void) {
+    func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, authenticationType: DotComAuthenticationType, completion: @escaping (URLRequest) -> Void) {
         
         switch authenticationType {
-        case .atomic(let blogID):
-            // no-op
-            break
         case .regular:
-            requestWPComRegular(url: url, cookieJar: cookieJar, username: username, authToken: authToken, completion: completion)
+            requestForWPCom(
+                url: url,
+                cookieJar: cookieJar,
+                username: username,
+                authToken: authToken,
+                completion: completion)
+        case .atomic(let siteID):
+            requestForAtomicWPCom(
+                url: url,
+                cookieJar: cookieJar,
+                username: username,
+                siteID: siteID,
+                completion: completion)
         }
     }
     
-    func requestWPComRegular(url: URL, cookieJar: CookieJar, username: String, authToken: String, completion: @escaping (URLRequest) -> Void) {
+    private func requestForAtomicWPCom(url: URL, cookieJar: CookieJar, username: String, siteID: Int, completion: @escaping (URLRequest) -> Void) {
         
         func done() {
             let request = URLRequest(url: url)
             completion(request)
         }
         
-        cookieJar.hasWordPressComCookie(for: loginURL, username: username, atomicSite: true) { [weak self] hasCookie in
-            guard let self = self else {
-                return
-            }
+        // We should really consider refactoring how we retrieve the default account since it doesn't really use
+        // a context at all...
+        guard let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount() else {
             
-            guard hasCookie else {
-                let authenticationService = AuthenticationService()
+            CrashLogging.logMessage("It shouldn't be possible to reach this point without an account.", properties: nil, level: .error)
+            return
+        }
+        let authenticationService = AtomicAuthenticationService(account: account)
         
-                authenticationService.getAuthCookiesForWPCom(username: username, authToken: authToken, success: { cookies in
-                    cookieJar.setCookies(cookies) {
-                        done()
-                    }
-                }) { error in
-                    // Make sure this error scenario isn't silently ignored.
-                    CrashLogging.logError(error)
-                    
-                    // Even if getting the auth cookies fail, we'll still try to load the URL
-                    // so that the user sees a reasonable error situation on screen.
-                    // We could opt to create a special screen but for now I'd rather users report
-                    // the issue when it happens.
-                    done()
-                }
-                return
-            }
+        authenticationService.loadAuthCookies(into: cookieJar, username: username, siteID: siteID, success: {
+            done()
+        }) { error in
+            // Make sure this error scenario isn't silently ignored.
+            CrashLogging.logError(error)
+            
+            // Even if getting the auth cookies fail, we'll still try to load the URL
+            // so that the user sees a reasonable error situation on screen.
+            // We could opt to create a special screen but for now I'd rather users report
+            // the issue when it happens.
+            done()
+        }
+    }
+    
+    private func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, completion: @escaping (URLRequest) -> Void) {
+        
+        func done() {
+            let request = URLRequest(url: url)
+            completion(request)
+        }
 
+        let authenticationService = AuthenticationService()
+        
+        authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
+            done()
+        }) { error in
+            // Make sure this error scenario isn't silently ignored.
+            CrashLogging.logError(error)
+            
+            // Even if getting the auth cookies fail, we'll still try to load the URL
+            // so that the user sees a reasonable error situation on screen.
+            // We could opt to create a special screen but for now I'd rather users report
+            // the issue when it happens.
             done()
         }
     }

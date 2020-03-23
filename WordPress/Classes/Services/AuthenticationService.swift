@@ -1,6 +1,10 @@
+import AutomatticTracks
 import Foundation
 
 class AuthenticationService {
+    
+    static let wpComLoginEndpoint = "https://wordpress.com/wp-login.php"
+    
     func getAuthCookiesForSelfHosted(
         username: String,
         password: String,
@@ -60,6 +64,43 @@ class AuthenticationService {
          */
     }
     
+    func loadAuthCookiesForWPCom(
+        into cookieJar: CookieJar,
+        username: String,
+        authToken: String,
+        success: @escaping () -> Void,
+        failure: @escaping (Error) -> Void) {
+        
+        cookieJar.hasWordPressComCookie(
+            username: username,
+            atomicSite: false) { [weak self] hasCookie in
+                
+                guard let self = self else {
+                    return
+                }
+                
+                guard !hasCookie else {
+                    success()
+                    return
+                }
+                
+                self.getAuthCookiesForWPCom(username: username, authToken: authToken, success: { cookies in
+                    cookieJar.setCookies(cookies) {
+                        success()
+                    }
+                }) { error in
+                    // Make sure this error scenario isn't silently ignored.
+                    CrashLogging.logError(error)
+                   
+                    // Even if getting the auth cookies fail, we'll still try to load the URL
+                    // so that the user sees a reasonable error situation on screen.
+                    // We could opt to create a special screen but for now I'd rather users report
+                    // the issue when it happens.
+                    failure(error)
+                }
+        }
+    }
+    
     func getAuthCookiesForWPCom(
         username: String,
         authToken: String,
@@ -69,7 +110,7 @@ class AuthenticationService {
         // We don't want these cookies loaded onto all of our requests
         let session = URLSession(configuration: .ephemeral)
         
-        let endpoint = "https://wordpress.com/wp-login.php"
+        let endpoint = AuthenticationService.wpComLoginEndpoint
         let url = URL(string: endpoint)!
         var request = URLRequest(url: url)
         

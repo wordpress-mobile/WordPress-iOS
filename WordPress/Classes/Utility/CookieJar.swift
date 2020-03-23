@@ -7,7 +7,7 @@ import WebKit
 @objc protocol CookieJar {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void)
     func getCookies(completion: @escaping ([HTTPCookie]) -> Void)
-    func hasWordPressComCookie(for url: URL, username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void)
+    func hasWordPressComCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void)
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
     func removeWordPressComCookies(completion: @escaping () -> Void)
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
@@ -28,7 +28,9 @@ protocol CookieJarSharedImplementation: CookieJar {
 }
 
 extension CookieJarSharedImplementation {
-    func _hasWordPressComCookie(for url: URL, username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+    func _hasWordPressComCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+        let url = URL(string: "https://wordpress.com")!
+        
         getCookies(url: url) { (cookies) in
             let cookie = cookies
                 .contains(where: { cookie in
@@ -55,8 +57,8 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
         completion(cookies ?? [])
     }
     
-    func hasWordPressComCookie(for url: URL, username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
-        _hasWordPressComCookie(for: url, username: username, atomicSite: atomicSite, completion: completion)
+    func hasWordPressComCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+        _hasWordPressComCookie(username: username, atomicSite: atomicSite, completion: completion)
     }
 
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
@@ -116,8 +118,8 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
         getAllCookies(completion)
     }
 
-    func hasWordPressComCookie(for url: URL, username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
-        _hasWordPressComCookie(for: url, username: username, atomicSite: atomicSite, completion: completion)
+    func hasWordPressComCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+        _hasWordPressComCookie(username: username, atomicSite: atomicSite, completion: completion)
     }
 
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
