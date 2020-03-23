@@ -29,7 +29,7 @@ protocol CookieJarSharedImplementation: CookieJar {
 
 extension CookieJarSharedImplementation {
     func _hasWordPressComCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
-        let url = URL(string: "https://wordpress.com")!
+        let url = URL(string: "https://wordpress.com/")!
         
         getCookies(url: url) { (cookies) in
             let cookie = cookies
