@@ -365,7 +365,7 @@ extension SiteTagsViewController {
         let confirmationSubtitle = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
         let actionTitle = NSLocalizedString("Delete", comment: "Delete")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
-        let trashIcon = Gridicon.iconOfType(.trash)
+        let trashIcon = UIImage.gridicon(.trash)
 
         return SettingsTitleSubtitleController.Confirmation(title: confirmationTitle,
                                                             subtitle: confirmationSubtitle,

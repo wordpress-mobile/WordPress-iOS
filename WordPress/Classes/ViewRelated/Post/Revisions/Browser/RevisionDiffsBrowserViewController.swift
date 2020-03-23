@@ -29,7 +29,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
     }()
 
     private lazy var moreBarButtonItem: UIBarButtonItem = {
-        let image = Gridicon.iconOfType(.ellipsis)
+        let image = UIImage.gridicon(.ellipsis)
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
         button.frame = CGRect(origin: .zero, size: image.size)
@@ -128,13 +128,13 @@ private extension RevisionDiffsBrowserViewController {
     }
 
     private func setNextPreviousButtons() {
-        previousButton.setImage(Gridicon.iconOfType(.chevronLeft), for: .normal)
+        previousButton.setImage(.gridicon(.chevronLeft), for: .normal)
         previousButton.tintColor = .neutral(.shade70)
         previousButton.on(.touchUpInside) { [weak self] _ in
             self?.showPrevious()
         }
 
-        nextButton.setImage(Gridicon.iconOfType(.chevronRight), for: .normal)
+        nextButton.setImage(.gridicon(.chevronRight), for: .normal)
         nextButton.tintColor = .neutral(.shade70)
         nextButton.on(.touchUpInside) { [weak self] _ in
             self?.showNext()

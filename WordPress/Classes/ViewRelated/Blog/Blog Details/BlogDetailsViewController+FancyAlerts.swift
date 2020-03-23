@@ -88,7 +88,7 @@ extension BlogDetailsViewController {
         let customizeRow = BlogDetailsRow(title: NSLocalizedString("Customize Your Site", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
                                           identifier: QuickStartListTitleCell.reuseIdentifier,
                                           accessibilityIdentifier: "Customize Your Site Row",
-                                          image: Gridicon.iconOfType(.customize)) { [weak self] in
+                                          image: .gridicon(.customize)) { [weak self] in
                                             self?.showQuickStartCustomize()
         }
         customizeRow.quickStartIdentifier = .checklist
@@ -101,7 +101,7 @@ extension BlogDetailsViewController {
         let growRow = BlogDetailsRow(title: NSLocalizedString("Grow Your Audience", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
                                         identifier: QuickStartListTitleCell.reuseIdentifier,
                                         accessibilityIdentifier: "Grow Your Audience Row",
-                                        image: Gridicon.iconOfType(.multipleUsers)) { [weak self] in
+                                        image: .gridicon(.multipleUsers)) { [weak self] in
                                             self?.showQuickStartGrow()
                                         }
         growRow.quickStartIdentifier = .checklist

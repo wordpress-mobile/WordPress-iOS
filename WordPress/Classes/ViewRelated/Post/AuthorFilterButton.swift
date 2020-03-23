@@ -58,7 +58,7 @@ class AuthorFilterButton: UIControl {
         didSet {
             switch filterType {
             case .everyone:
-                authorImageView.image = Gridicon.iconOfType(.multipleUsers, withSize: Metrics.multipleUsersGravatarSize)
+                authorImageView.image = .gridicon(.multipleUsers, size: Metrics.multipleUsersGravatarSize)
                 authorImageView.contentMode = .center
             case .user(let email):
                 authorImageView.contentMode = .scaleAspectFill
@@ -103,7 +103,7 @@ class AuthorFilterButton: UIControl {
         prepareForVoiceOver()
     }
 
-    private let gravatarPlaceholder: UIImage = Gridicon.iconOfType(.user, withSize: Metrics.gravatarSize)
+    private let gravatarPlaceholder: UIImage = .gridicon(.user, size: Metrics.gravatarSize)
 
     private enum Metrics {
         static let chevronSize = CGSize(width: 10.0, height: 5.0)

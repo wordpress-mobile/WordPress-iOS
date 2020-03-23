@@ -10,7 +10,7 @@ final class DiscoverMenuItemCreatorTests: XCTestCase {
     private struct TestConstants {
         static let path = "/read/sites/53424024/posts"
         static let title = "Discover"
-        static let icon = Gridicon.iconOfType(.mySites)
+        static let icon = UIImage.gridicon(.mySites)
     }
 
     override func setUp() {
