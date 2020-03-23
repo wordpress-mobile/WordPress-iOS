@@ -191,78 +191,9 @@ class WebViewAuthenticator: NSObject {
             done()
         }
     }
-
-    /// Intercepts and rewrites any potential redirect after login.
-    ///
-    /// This should be called whenever a web view needs to decide if it should
-    /// load a request. If this returns a non-nil value, the resulting request
-    /// should be loaded instead.
-    ///
-    /// - Parameters:
-    ///     - request: the request that was going to be loaded by the web view.
-    ///
-    /// - Returns: a request to be loaded instead. If `nil`, the original
-    /// request should continue loading.
-    ///
-    /*
-    @objc func interceptRedirect(request: URLRequest) -> URLRequest? {
-        guard let url = request.url,
-            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-            components.scheme == "https",
-            components.host == "wordpress.com",
-            let encodedRedirect = components
-                .queryItems?
-                .first(where: { $0.name == WebViewAuthenticator.redirectParameter })?
-                .value,
-            let redirect = encodedRedirect.removingPercentEncoding,
-            let redirectUrl = URL(string: redirect) else {
-                return nil
-        }
-
-        return URLRequest(url: redirectUrl)
-    }
- */
-
-    /// Rewrites a request for authentication.
-    ///
-    /// This method will always return an authenticated request. If you want to
-    /// authenticate only if needed, by inspecting the existing cookies, use
-    /// request(url:cookieJar:completion:) instead
-    ///
-    func authenticatedRequest(url: URL) -> URLRequest {
-        /*
-        let authenticationService = AuthenticationService()
-        
-        authenticationService.getAuthCookies(success: { cookies in
-            
-            webView.configuration.websiteDataStore.httpCookieStore.setCookie(cookie)
-        }) { error in
-            
-        }*/
-
-        var request = URLRequest(url: loginURL)
-        request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.httpBody = body(url: url)
-        if let authToken = authToken {
-            request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
-        }
-        return request
-    }
 }
 
 private extension WebViewAuthenticator {
-    func request(url: URL, authenticated: Bool) -> URLRequest {
-        if authenticated {
-            return authenticatedRequest(url: url)
-        } else {
-            return unauthenticatedRequest(url: url)
-        }
-    }
-
-    func unauthenticatedRequest(url: URL) -> URLRequest {
-        return URLRequest(url: url)
-    }
 
     func body(url: URL) -> Data? {
         guard let redirectedUrl = redirectUrl(url: url.absoluteString) else {

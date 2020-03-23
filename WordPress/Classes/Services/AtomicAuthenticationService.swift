@@ -33,11 +33,7 @@ class AtomicAuthenticationService {
 
         cookieJar.hasWordPressComCookie(
             username: username,
-            atomicSite: true) { [weak self] hasCookie in
-
-                guard let self = self else {
-                    return
-                }
+            atomicSite: true) { hasCookie in
 
                 guard !hasCookie else {
                     success()
