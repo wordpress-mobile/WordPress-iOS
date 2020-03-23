@@ -38,7 +38,7 @@ private extension UIBarButtonItem {
     struct GravatarConfiguration {
         static let radius: CGFloat = 32
         static let tappableWidth: CGFloat = 44
-        static let fallBackImage = Gridicon.iconOfType(.user)
+        static let fallBackImage = UIImage.gridicon(.user)
     }
 
     /// Assign the gravatar CircularImageView to the customView property and attach the passed target/action.
