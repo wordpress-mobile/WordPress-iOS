@@ -21,7 +21,7 @@ class WebViewAuthenticator: NSObject {
     enum Error: Swift.Error {
         case atomicSiteWithoutDotComID(blog: Blog)
     }
-    
+
     enum DotComAuthenticationType {
         case regular
         case atomic(blogID: Int)
@@ -103,7 +103,7 @@ class WebViewAuthenticator: NSObject {
             let request = URLRequest(url: url)
             completion(request)
         }
-        
+
         switch self.credentials {
         case .dotCom(let username, let authToken, let authenticationType):
             requestForWPCom(
@@ -118,9 +118,9 @@ class WebViewAuthenticator: NSObject {
             break
         }
     }
-    
+
     func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, authenticationType: DotComAuthenticationType, completion: @escaping (URLRequest) -> Void) {
-        
+
         switch authenticationType {
         case .regular:
             requestForWPCom(
@@ -138,29 +138,29 @@ class WebViewAuthenticator: NSObject {
                 completion: completion)
         }
     }
-    
+
     private func requestForAtomicWPCom(url: URL, cookieJar: CookieJar, username: String, siteID: Int, completion: @escaping (URLRequest) -> Void) {
-        
+
         func done() {
             let request = URLRequest(url: url)
             completion(request)
         }
-        
+
         // We should really consider refactoring how we retrieve the default account since it doesn't really use
         // a context at all...
         guard let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount() else {
-            
+
             CrashLogging.logMessage("It shouldn't be possible to reach this point without an account.", properties: nil, level: .error)
             return
         }
         let authenticationService = AtomicAuthenticationService(account: account)
-        
+
         authenticationService.loadAuthCookies(into: cookieJar, username: username, siteID: siteID, success: {
             done()
         }) { error in
             // Make sure this error scenario isn't silently ignored.
             CrashLogging.logError(error)
-            
+
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
             // We could opt to create a special screen but for now I'd rather users report
@@ -168,22 +168,22 @@ class WebViewAuthenticator: NSObject {
             done()
         }
     }
-    
+
     private func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, completion: @escaping (URLRequest) -> Void) {
-        
+
         func done() {
             let request = URLRequest(url: url)
             completion(request)
         }
 
         let authenticationService = AuthenticationService()
-        
+
         authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
             done()
         }) { error in
             // Make sure this error scenario isn't silently ignored.
             CrashLogging.logError(error)
-            
+
             // Even if getting the auth cookies fail, we'll still try to load the URL
             // so that the user sees a reasonable error situation on screen.
             // We could opt to create a special screen but for now I'd rather users report
@@ -239,7 +239,7 @@ class WebViewAuthenticator: NSObject {
         }) { error in
             
         }*/
-        
+
         var request = URLRequest(url: loginURL)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -330,7 +330,7 @@ private extension WebViewAuthenticator {
             return nil
         }
     }
-    
+
     func cookieURL(for url: URL) -> URL {
         switch credentials {
         case .dotCom(_, _, let authenticationType):

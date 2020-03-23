@@ -30,7 +30,7 @@ protocol CookieJarSharedImplementation: CookieJar {
 extension CookieJarSharedImplementation {
     func _hasWordPressComCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
         let url = URL(string: "https://wordpress.com/")!
-        
+
         getCookies(url: url) { (cookies) in
             let cookie = cookies
                 .contains(where: { cookie in
@@ -56,7 +56,7 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
     func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
         completion(cookies ?? [])
     }
-    
+
     func hasWordPressComCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
         _hasWordPressComCookie(username: username, atomicSite: atomicSite, completion: completion)
     }
@@ -69,12 +69,12 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
     func removeWordPressComCookies(completion: @escaping () -> Void) {
         _removeWordPressComCookies(completion: completion)
     }
-    
+
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
         for cookie in cookies {
             setCookie(cookie)
         }
-        
+
         completion()
     }
 }
@@ -141,18 +141,18 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
     func removeWordPressComCookies(completion: @escaping () -> Void) {
         _removeWordPressComCookies(completion: completion)
     }
-    
+
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
         var completionCount = 0
-        
+
         func completionIncrement() {
             completionCount += 1
-            
+
             if completionCount >= cookies.count {
                 completion()
             }
         }
-        
+
         for cookie in cookies {
             setCookie(cookie, completionHandler: completionIncrement)
         }
@@ -184,11 +184,11 @@ private extension HTTPCookie {
         guard !atomic else {
             return isWordPressLoggedInAtomic(username: username)
         }
-        
+
         return name == loggedInCookieName
             && value.components(separatedBy: "%").first == username
     }
-    
+
     private func isWordPressLoggedInAtomic(username: String) -> Bool {
         return name.hasPrefix(atomicLoggedInCookieNamePrefix)
             && value.components(separatedBy: "|").first == username
