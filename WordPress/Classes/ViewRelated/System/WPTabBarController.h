@@ -76,4 +76,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 // will be removed when the new IA implementation completes
 - (void)showTabForIndex:(NSInteger)tabIndex;
 
+- (Blog *)currentOrLastBlog;
+
 @end

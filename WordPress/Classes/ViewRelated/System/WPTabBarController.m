@@ -464,7 +464,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         } newPage:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
             Blog *blog = [weakSelf currentOrLastBlog];
-            [weakSelf showPageTabForBlog:blog];
+            [weakSelf showPageEditorForBlog:blog];
         }];
     }
     
@@ -593,7 +593,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
     editor.afterDismiss = afterDismiss;
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"create_button"} withBlog:blog];
+    } else {
+        [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
+    }
     [self presentViewController:editor animated:NO completion:nil];
     return;
 }
