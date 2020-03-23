@@ -154,7 +154,9 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
         }
 
         for cookie in cookies {
-            setCookie(cookie, completionHandler: completionIncrement)
+            DispatchQueue.main.async {
+                self.setCookie(cookie, completionHandler: completionIncrement)
+            }
         }
     }
 }
