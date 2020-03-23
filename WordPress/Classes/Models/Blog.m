@@ -112,7 +112,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 
 - (BOOL)isAtomic
 {
-    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAutomatedTransfer];
+    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAtomic];
     return [value boolValue];
 }
 
