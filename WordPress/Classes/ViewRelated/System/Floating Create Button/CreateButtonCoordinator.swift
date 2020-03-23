@@ -65,7 +65,9 @@ import Gridicons
     @objc private func showCreateSheet() {
         guard let viewController = viewController else { return }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
-        viewController.present(actionSheetVC, animated: true, completion: nil)
+        viewController.present(actionSheetVC, animated: true, completion: {
+            WPAnalytics.track(.createSheetShown)
+        })
     }
 
     private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
