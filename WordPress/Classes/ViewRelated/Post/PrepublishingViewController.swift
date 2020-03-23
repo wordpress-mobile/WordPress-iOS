@@ -18,7 +18,6 @@ class PrepublishingViewController: UITableViewController {
         let nuxButton = NUXButton()
         nuxButton.isPrimary = true
         nuxButton.setTitle(NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post"), for: .normal)
-        nuxButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
 
         return nuxButton
     }()
@@ -86,7 +85,7 @@ class PrepublishingViewController: UITableViewController {
     }
 
     @objc func publish(_ sender: UIButton) {
-        dismiss(animated: true)
+        navigationController?.dismiss(animated: true)
         completion(post)
     }
 
@@ -96,6 +95,7 @@ class PrepublishingViewController: UITableViewController {
         footer.pinSubviewToSafeArea(nuxButton, insets: Constants.nuxButtonInsets)
         nuxButton.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableFooterView = footer
+        nuxButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
     }
 
     private enum Constants {
