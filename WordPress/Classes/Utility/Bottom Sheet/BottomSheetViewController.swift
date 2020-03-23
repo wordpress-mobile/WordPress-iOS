@@ -28,9 +28,11 @@ class BottomSheetViewController: UIViewController {
         }
     }
 
-    private let childViewController: UIViewController
+    private weak var childViewController: UIBottomSheetPresentable?
 
-    init(childViewController: UIViewController) {
+    private var heightConstraint: NSLayoutConstraint!
+
+    init(childViewController: UIBottomSheetPresentable) {
         self.childViewController = childViewController
         super.init(nibName: nil, bundle: nil)
     }
@@ -66,6 +68,10 @@ class BottomSheetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
         view.clipsToBounds = true
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
@@ -74,6 +80,16 @@ class BottomSheetViewController: UIViewController {
         NSLayoutConstraint.activate([
             gripButton.heightAnchor.constraint(equalToConstant: Constants.gripHeight)
         ])
+
+        guard let childViewController = childViewController else {
+            return
+        }
+
+        // Set the initial height of the child VC
+        heightConstraint = childViewController.view.heightAnchor.constraint(equalToConstant: childViewController.initialHeight)
+        heightConstraint.priority = UILayoutPriority(rawValue: 999)
+        heightConstraint.isActive = true
+        childViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
         addChild(childViewController)
 
@@ -113,6 +129,50 @@ class BottomSheetViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         return preferredContentSize = CGSize(width: Constants.minimumWidth, height: view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)
+    }
+
+    @objc func keyboardWillShow(_ notification: NSNotification) {
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.30
+        let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 0
+
+        let heightForKeyboard = UIScreen.main.bounds.height - 200
+
+        UIView.animateKeyframes(withDuration: duration,
+                                delay: 0,
+                                options: UIView.KeyframeAnimationOptions(rawValue: curve),
+                                animations: {
+            // Resize the bottom sheet
+            self.heightConstraint.constant = heightForKeyboard
+            self.presentationController?.containerView?.setNeedsLayout()
+            self.presentationController?.containerView?.layoutIfNeeded()
+
+            // Resize all the subviews if the child VC is a navigation controller
+            self.resizeAllViewControllers(height: heightForKeyboard)
+        }, completion: { _ in
+            // Make sure the subviews keeps the height of the bottom sheet
+            self.resizeAllViewControllers(height: heightForKeyboard)
+        })
+    }
+
+    private func resizeAllViewControllers(height: CGFloat) {
+        (childViewController as? UINavigationController)?.viewControllers.forEach { viewController in
+            let originalFrame = viewController.view.frame
+            viewController.view.frame = CGRect(x: originalFrame.origin.x, y: originalFrame.origin.y, width: originalFrame.width, height: height)
+        }
+    }
+
+    @objc func keyboardWillHide(_ notification: NSNotification) {
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.30
+        let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 0
+
+        UIView.animateKeyframes(withDuration: duration,
+                                delay: 0,
+                                options: UIView.KeyframeAnimationOptions(rawValue: curve),
+                                animations: {
+            self.heightConstraint.constant = self.childViewController?.initialHeight ?? 200
+            self.presentationController?.containerView?.setNeedsLayout()
+            self.presentationController?.containerView?.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 

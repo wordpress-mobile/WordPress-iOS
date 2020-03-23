@@ -5,6 +5,9 @@ import Foundation
     case mediaEditorShown
     case mediaEditorUsed
 
+    // Prepublishing Nudges
+    case prepublishingTagsAdded
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -12,6 +15,8 @@ import Foundation
             return "media_editor_shown"
         case .mediaEditorUsed:
             return "media_editor_used"
+        case .prepublishingTagsAdded:
+            return "prepublishing_tags_added"
         }
     }
 
