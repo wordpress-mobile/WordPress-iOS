@@ -5,6 +5,7 @@ import Foundation
     case mediaEditorShown
     case mediaEditorUsed
     case editorCreatedPage
+    case createSheetShown
 
     /// A String that represents the event
     var value: String {
@@ -15,6 +16,8 @@ import Foundation
             return "media_editor_used"
         case .editorCreatedPage:
             return "editor_page_created"
+        case .createSheetShown:
+            return "create_sheet_shown"
         }
     }
 
