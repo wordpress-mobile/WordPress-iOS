@@ -8,19 +8,24 @@ private struct PrepublishingOption {
 class PrepublishingViewController: UITableViewController {
     private let post: Post
 
+    private let completion: (AbstractPost) -> ()
+
     private let options: [PrepublishingOption] = [
         PrepublishingOption(title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
 
-    private let nuxButton: NUXButton = {
+    let nuxButton: NUXButton = {
         let nuxButton = NUXButton()
         nuxButton.isPrimary = true
         nuxButton.setTitle(NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post"), for: .normal)
+        nuxButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
+
         return nuxButton
     }()
 
-    init(post: Post) {
+    init(post: Post, completion: @escaping (AbstractPost) -> ()) {
         self.post = post
+        self.completion = completion
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -78,6 +83,11 @@ class PrepublishingViewController: UITableViewController {
         }
 
         navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    @objc func publish(_ sender: UIButton) {
+        dismiss(animated: true)
+        completion(post)
     }
 
     private func setupFooterWithButton() {
