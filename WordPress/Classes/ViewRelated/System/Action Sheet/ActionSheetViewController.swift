@@ -87,6 +87,10 @@ class ActionSheetViewController: UIViewController {
             return button.heightAnchor.constraint(equalToConstant: Constants.Button.height)
         }
 
+        buttonConstraints.forEach({ constraint in
+            constraint.priority = .defaultHigh
+        })
+
         NSLayoutConstraint.activate(buttonConstraints)
 
         let stackView = UIStackView(arrangedSubviews: [
