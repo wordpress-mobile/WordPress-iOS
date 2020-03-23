@@ -19,7 +19,7 @@ class WebViewAuthenticatorTests: XCTestCase {
     let sitePasswordEncoded = "x%3E73R9%269;r%26ju9$J499FmZ?2*Nii/?$8"
 
     var dotComAuthenticator: WebViewAuthenticator {
-        return WebViewAuthenticator(credentials: .dotCom(username: dotComUser, authToken: dotComToken))
+        return WebViewAuthenticator(credentials: .dotCom(username: dotComUser, authToken: dotComToken, authenticationType: .regular))
     }
 
     var siteAuthenticator: WebViewAuthenticator {

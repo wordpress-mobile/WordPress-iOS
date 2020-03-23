@@ -21,7 +21,7 @@ class WebViewAuthenticator: NSObject {
     enum Error: Swift.Error {
         case atomicSiteWithoutDotComID(blog: Blog)
     }
-
+    
     enum DotComAuthenticationType {
         case regular
         case atomic(blogID: Int)
@@ -99,13 +99,70 @@ class WebViewAuthenticator: NSObject {
     ///     authentication, or a request for the original URL.
     ///
     @objc func request(url: URL, cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
-        cookieJar.hasCookie(url: loginURL, username: username) { [weak self] (hasCookie) in
-            guard let authenticator = self else {
+        func done() {
+            let request = URLRequest(url: url)
+            completion(request)
+        }
+        
+        switch self.credentials {
+        case .dotCom(let username, let authToken, let authenticationType):
+            requestWPCom(
+                url: url,
+                cookieJar: cookieJar,
+                username: username,
+                authToken: authToken,
+                authenticationType: authenticationType,
+                completion: completion)
+        case .siteLogin(let loginURL, let username, let password):
+            // no-op
+            break
+        }
+    }
+    
+    func requestWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, authenticationType: DotComAuthenticationType, completion: @escaping (URLRequest) -> Void) {
+        
+        switch authenticationType {
+        case .atomic(let blogID):
+            // no-op
+            break
+        case .regular:
+            requestWPComRegular(url: url, cookieJar: cookieJar, username: username, authToken: authToken, completion: completion)
+        }
+    }
+    
+    func requestWPComRegular(url: URL, cookieJar: CookieJar, username: String, authToken: String, completion: @escaping (URLRequest) -> Void) {
+        
+        func done() {
+            let request = URLRequest(url: url)
+            completion(request)
+        }
+        
+        cookieJar.hasWordPressComCookie(for: loginURL, username: username, atomicSite: true) { [weak self] hasCookie in
+            guard let self = self else {
+                return
+            }
+            
+            guard hasCookie else {
+                let authenticationService = AuthenticationService()
+        
+                authenticationService.getAuthCookiesForWPCom(username: username, authToken: authToken, success: { cookies in
+                    cookieJar.setCookies(cookies) {
+                        done()
+                    }
+                }) { error in
+                    // Make sure this error scenario isn't silently ignored.
+                    CrashLogging.logError(error)
+                    
+                    // Even if getting the auth cookies fail, we'll still try to load the URL
+                    // so that the user sees a reasonable error situation on screen.
+                    // We could opt to create a special screen but for now I'd rather users report
+                    // the issue when it happens.
+                    done()
+                }
                 return
             }
 
-            let request = authenticator.request(url: url, authenticated: !hasCookie)
-            completion(request)
+            done()
         }
     }
 
@@ -121,6 +178,7 @@ class WebViewAuthenticator: NSObject {
     /// - Returns: a request to be loaded instead. If `nil`, the original
     /// request should continue loading.
     ///
+    /*
     @objc func interceptRedirect(request: URLRequest) -> URLRequest? {
         guard let url = request.url,
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
@@ -137,6 +195,7 @@ class WebViewAuthenticator: NSObject {
 
         return URLRequest(url: redirectUrl)
     }
+ */
 
     /// Rewrites a request for authentication.
     ///
@@ -145,6 +204,16 @@ class WebViewAuthenticator: NSObject {
     /// request(url:cookieJar:completion:) instead
     ///
     func authenticatedRequest(url: URL) -> URLRequest {
+        /*
+        let authenticationService = AuthenticationService()
+        
+        authenticationService.getAuthCookies(success: { cookies in
+            
+            webView.configuration.websiteDataStore.httpCookieStore.setCookie(cookie)
+        }) { error in
+            
+        }*/
+        
         var request = URLRequest(url: loginURL)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -235,11 +304,30 @@ private extension WebViewAuthenticator {
             return nil
         }
     }
+    
+    func cookieURL(for url: URL) -> URL {
+        switch credentials {
+        case .dotCom(_, _, let authenticationType):
+            switch authenticationType {
+            case .regular:
+                return WebViewAuthenticator.wordPressComLoginUrl
+            case .atomic:
+                return url
+            }
+        case .siteLogin(let url, _, _):
+            return url
+        }
+    }
 
     var loginURL: URL {
         switch credentials {
-        case .dotCom:
-            return WebViewAuthenticator.wordPressComLoginUrl
+        case .dotCom(_, _, let authenticationType):
+            switch authenticationType {
+            case .regular:
+                return WebViewAuthenticator.wordPressComLoginUrl
+            case .atomic(let blogID):
+                return URL(string: "google.com")!
+            }
         case .siteLogin(let url, _, _):
             return url
         }

@@ -3,6 +3,7 @@ import CocoaLumberjack
 import WordPressKit
 
 class AtomicAuthenticationService {
+    
     let remote: AtomicAuthenticationServiceRemote
     fileprivate let context = ContextManager.sharedInstance().mainContext
 
@@ -10,7 +11,7 @@ class AtomicAuthenticationService {
         self.remote = remote
     }
 
-    func getAuthCookie(
+    func getAtomicAuthCookie(
         siteID: Int,
         success: @escaping (_ cookie: HTTPCookie) -> Void,
         failure: @escaping (Error) -> Void) {
