@@ -85,8 +85,9 @@ class PrepublishingViewController: UITableViewController {
     }
 
     @objc func publish(_ sender: UIButton) {
-        completion(post)
-        navigationController?.dismiss(animated: true)
+        navigationController?.dismiss(animated: true) {
+            self.completion(self.post)
+        }
     }
 
     private func setupFooterWithButton() {
