@@ -61,14 +61,6 @@ class PublishSettingsViewControllerTests: XCTestCase {
         } else {
             XCTFail("View model should be published instead of \(viewModel.state)")
         }
-
-        viewModel.setDate(nil)
-
-        if case PublishSettingsViewModel.State.immediately = viewModel.state {
-            // Success
-        } else {
-            XCTFail("View model should be immediately instead of \(viewModel.state)")
-        }
     }
 
     func testViewModelDatePublished() {
