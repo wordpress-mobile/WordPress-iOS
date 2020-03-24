@@ -205,7 +205,7 @@ import "./ScreenshotFastfile"
     create_release = (final_tag && is_ci()) || options[:create_gh_release]
 
     ios_build_prechecks(skip_confirm: options[:skip_confirm], 
-      internal: build_internal,
+      internal: !final_tag,
       external: true)
     ios_build_preflight()
 
