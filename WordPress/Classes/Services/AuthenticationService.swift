@@ -66,7 +66,26 @@ class AuthenticationService {
                 return
             }
 
-            let cookies = session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()
+            // The following code is a bit complicated to read, apologies.
+            // We're retrieving all cookies from the "Set-Cookie" header manually, and combining
+            // those cookies with the ones from the current session.  The reason behind this is that
+            // iOS's URLSession processes the cookies from such header before this callback is executed,
+            // whereas OHTTPStubs.framework doesn't (the cookies are left in the header fields of
+            // the response).  The only way to combine both is to just add them together here manually.
+            //
+            // To know if you can remove this, you'll have to test this code live and in our unit tests
+            // and compare the session cookies.
+
+            let responseCookies: [HTTPCookie] = {
+                guard let httpResponse = response as? HTTPURLResponse,
+                    let headers = httpResponse.allHeaderFields as? [String: String] else {
+                        return []
+                }
+
+                return HTTPCookie.cookies(withResponseHeaderFields: headers, for: loginURL)
+            }()
+
+            let cookies = (session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()) + responseCookies
             success(cookies)
         }
 

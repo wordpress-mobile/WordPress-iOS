@@ -34,16 +34,15 @@ class WebViewAuthenticator: NSObject {
 
     fileprivate let credentials: Credentials
 
-    /// If true, the authenticator will assume that redirect URLs are allowed and
-    /// won't use the special WordPress.com redirect URL
-    ///
-    @objc
-    var safeRedirect = false
+    // MARK: - Services
+
+    private let authenticationService: AuthenticationService
 
     // MARK: - Initializers
 
-    init(credentials: Credentials) {
+    init(credentials: Credentials, authenticationService: AuthenticationService = AuthenticationService()) {
         self.credentials = credentials
+        self.authenticationService = authenticationService
     }
 
     @objc convenience init?(account: WPAccount, blog: Blog? = nil) {
@@ -153,8 +152,6 @@ class WebViewAuthenticator: NSObject {
             completion(request)
         }
 
-        let authenticationService = AuthenticationService()
-
         authenticationService.loadAuthCookiesForSelfHosted(into: cookieJar, loginURL: loginURL, username: username, password: password, success: {
             done()
         }) { error in
@@ -205,8 +202,6 @@ class WebViewAuthenticator: NSObject {
             let request = URLRequest(url: url)
             completion(request)
         }
-
-        let authenticationService = AuthenticationService()
 
         authenticationService.loadAuthCookiesForWPCom(into: cookieJar, username: username, authToken: authToken, success: {
             done()

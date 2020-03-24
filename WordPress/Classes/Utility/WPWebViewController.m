@@ -122,7 +122,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     
     // Additional Setup
     [self setupWebView];
-    [self setupAuthenticator];
 
     // Fire away!
     [self applyModalStyleIfNeeded];
@@ -175,14 +174,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 }
 
 #pragma mark - Setup
-
-/// I'm not sure why this is necessary, but it seems like the authenticator is failing to redirect us if
-/// this isn't set to true.  @kokejb suggested this change and it's working for now.
-///
-- (void)setupAuthenticator
-{
-    self.authenticator.safeRedirect = true;
-}
 
 - (void)setupTitle
 {
