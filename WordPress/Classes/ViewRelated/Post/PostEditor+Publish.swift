@@ -33,13 +33,6 @@ extension PostEditor where Self: UIViewController {
         dismissWhenDone: Bool,
         analyticsStat: WPAnalyticsStat?) {
 
-        let prepublishing = PrepublishingViewController(post: post as! Post)
-        let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
-        let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController)
-        bottomSheet.show(from: self, sourceView: navigationBarManager.publishButton)
-
-        return
-
         mapUIContentToPostAndSave(immediate: true)
 
         // Cancel publishing if media is currently being uploaded
@@ -151,17 +144,12 @@ extension PostEditor where Self: UIViewController {
     ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
     ///
     fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
-        let title = action.publishingActionQuestionLabel
-        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = action.publishActionLabel
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
-
-        alertController.addCancelActionWithTitle(keepEditingTitle)
-        alertController.addDefaultActionWithTitle(publishTitle) { _ in
+        let prepublishing = PrepublishingViewController(post: post as! Post) { _ in
             publishAction()
         }
-        present(alertController, animated: true, completion: nil)
+        let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
+        let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController)
+        bottomSheet.show(from: self, sourceView: navigationBarManager.publishButton)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {

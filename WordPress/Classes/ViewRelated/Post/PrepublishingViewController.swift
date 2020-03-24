@@ -1,4 +1,5 @@
 import UIKit
+import WordPressAuthenticator
 
 private struct PrepublishingOption {
     let title: String
@@ -7,12 +8,23 @@ private struct PrepublishingOption {
 class PrepublishingViewController: UITableViewController {
     private let post: Post
 
+    private let completion: (AbstractPost) -> ()
+
     private let options: [PrepublishingOption] = [
         PrepublishingOption(title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
 
-    init(post: Post) {
+    let publishButton: NUXButton = {
+        let nuxButton = NUXButton()
+        nuxButton.isPrimary = true
+        nuxButton.setTitle(NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post"), for: .normal)
+
+        return nuxButton
+    }()
+
+    init(post: Post, completion: @escaping (AbstractPost) -> ()) {
         self.post = post
+        self.completion = completion
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -22,7 +34,8 @@ class PrepublishingViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableFooterView = UIView(frame: .zero)
+
+        setupPublishButton()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -71,8 +84,25 @@ class PrepublishingViewController: UITableViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
 
+    @objc func publish(_ sender: UIButton) {
+        navigationController?.dismiss(animated: true) {
+            self.completion(self.post)
+        }
+    }
+
+    private func setupPublishButton() {
+        let footer = UIView(frame: Constants.footerFrame)
+        footer.addSubview(publishButton)
+        footer.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
+        publishButton.translatesAutoresizingMaskIntoConstraints = false
+        tableView.tableFooterView = footer
+        publishButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
+    }
+
     private enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
+        static let nuxButtonInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+        static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 40)
     }
 }
 
