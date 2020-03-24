@@ -114,6 +114,12 @@ class WebViewAuthenticator: NSObject {
                 authenticationType: authenticationType,
                 completion: completion)
         case .siteLogin(let loginURL, let username, let password):
+            requestForSelfHosted(
+                url: loginURL,
+                cookieJar: cookieJar,
+                username: username,
+                password: password,
+                completion: completion)
             // no-op
             break
         }
@@ -136,6 +142,29 @@ class WebViewAuthenticator: NSObject {
                 username: username,
                 siteID: siteID,
                 completion: completion)
+        }
+    }
+
+    private func requestForSelfHosted(url: URL, cookieJar: CookieJar, username: String, password: String, completion: @escaping (URLRequest) -> Void) {
+
+        func done() {
+            let request = URLRequest(url: url)
+            completion(request)
+        }
+
+        let authenticationService = AuthenticationService()
+
+        authenticationService.loadAuthCookiesForSelfHosted(into: cookieJar, loginURL: url, username: username, password: password, success: {
+            done()
+        }) { error in
+            // Make sure this error scenario isn't silently ignored.
+            CrashLogging.logError(error)
+
+            // Even if getting the auth cookies fail, we'll still try to load the URL
+            // so that the user sees a reasonable error situation on screen.
+            // We could opt to create a special screen but for now I'd rather users report
+            // the issue when it happens.
+            done()
         }
     }
 
@@ -261,7 +290,7 @@ private extension WebViewAuthenticator {
             return nil
         }
     }
-
+/*
     func cookieURL(for url: URL) -> URL {
         switch credentials {
         case .dotCom(_, _, let authenticationType):
@@ -274,8 +303,8 @@ private extension WebViewAuthenticator {
         case .siteLogin(let url, _, _):
             return url
         }
-    }
-
+    }*/
+/*
     var loginURL: URL {
         switch credentials {
         case .dotCom(_, _, let authenticationType):
@@ -288,7 +317,7 @@ private extension WebViewAuthenticator {
         case .siteLogin(let url, _, _):
             return url
         }
-    }
+    }*/
 
     static let wordPressComLoginUrl = URL(string: "https://wordpress.com/wp-login.php")!
     static let redirectParameter = "wpios_redirect"

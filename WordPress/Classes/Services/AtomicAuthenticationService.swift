@@ -31,7 +31,7 @@ class AtomicAuthenticationService {
         success: @escaping () -> Void,
         failure: @escaping (Error) -> Void) {
 
-        cookieJar.hasWordPressComCookie(
+        cookieJar.hasWordPressComAuthCookie(
             username: username,
             atomicSite: true) { hasCookie in
 

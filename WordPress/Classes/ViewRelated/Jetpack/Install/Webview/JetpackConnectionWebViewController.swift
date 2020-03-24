@@ -266,7 +266,7 @@ private extension JetpackConnectionWebViewController {
             return
         }
         decisionHandler(.cancel)
-        
+
         authenticator.request(url: redirect, cookieJar: webView.configuration.websiteDataStore.httpCookieStore, completion: { request in
             DDLogDebug("Performing site login to \(String(describing: request.url))")
             self.pendingSiteRedirect = redirect
@@ -287,7 +287,7 @@ private extension JetpackConnectionWebViewController {
     func authenticateWithDotCom(username: String, token: String, redirect: URL) {
         let authenticator = WebViewAuthenticator(credentials: .dotCom(username: username, authToken: token, authenticationType: .regular))
         authenticator.safeRedirect = true
-        
+
         authenticator.request(url: redirect, cookieJar: webView.configuration.websiteDataStore.httpCookieStore, completion: { request in
             DDLogDebug("Performing WordPress.com login to \(String(describing: request.url))")
             self.webView.load(request)

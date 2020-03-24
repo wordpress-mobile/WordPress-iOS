@@ -4,8 +4,46 @@ import Foundation
 class AuthenticationService {
 
     static let wpComLoginEndpoint = "https://wordpress.com/wp-login.php"
-    
+
+    // MARK: - Self Hosted
+
+    func loadAuthCookiesForSelfHosted(
+        into cookieJar: CookieJar,
+        loginURL: URL,
+        username: String,
+        password: String,
+        success: @escaping () -> Void,
+        failure: @escaping (Error) -> Void) {
+
+        cookieJar.hasWordPressSelfHostedAuthCookie(for: loginURL, username: username) { hasCookie in
+                guard !hasCookie else {
+                    success()
+                    return
+                }
+
+                self.getAuthCookiesForSelfHosted(loginURL: loginURL, username: username, password: password, success: { cookies in
+                    cookieJar.setCookies(cookies) {
+                        success()
+                    }
+
+                    cookieJar.hasWordPressSelfHostedAuthCookie(for: loginURL, username: username) { hasCookie in
+                        print("Has cookie: \(hasCookie)")
+                    }
+                }) { error in
+                    // Make sure this error scenario isn't silently ignored.
+                    CrashLogging.logError(error)
+
+                    // Even if getting the auth cookies fail, we'll still try to load the URL
+                    // so that the user sees a reasonable error situation on screen.
+                    // We could opt to create a special screen but for now I'd rather users report
+                    // the issue when it happens.
+                    failure(error)
+                }
+        }
+    }
+
     func getAuthCookiesForSelfHosted(
+        loginURL: URL,
         username: String,
         password: String,
         success: @escaping (_ cookies: [HTTPCookie]) -> Void,
@@ -13,13 +51,12 @@ class AuthenticationService {
 
         // We don't want these cookies loaded onto all of our requests
         let session = URLSession(configuration: .ephemeral)
+        var request = URLRequest(url: loginURL)
 
-        let endpoint = "https://wordpress.com/wp-login.php"
-        let url = URL(string: endpoint)!
-        var request = URLRequest(url: url)
-
+        request.httpMethod = "POST"
         request.httpBody = body(withParameters: [
             "log": username,
+            "pwd": password,
             "rememberme": "true"
         ])
 
@@ -36,6 +73,8 @@ class AuthenticationService {
         task.resume()
     }
 
+    // MARK: - WP.com
+
     func loadAuthCookiesForWPCom(
         into cookieJar: CookieJar,
         username: String,
@@ -43,7 +82,7 @@ class AuthenticationService {
         success: @escaping () -> Void,
         failure: @escaping (Error) -> Void) {
 
-        cookieJar.hasWordPressComCookie(
+        cookieJar.hasWordPressComAuthCookie(
             username: username,
             atomicSite: false) { hasCookie in
 
@@ -81,7 +120,7 @@ class AuthenticationService {
         let endpoint = AuthenticationService.wpComLoginEndpoint
         let url = URL(string: endpoint)!
         var request = URLRequest(url: url)
-        
+
         request.httpMethod = "POST"
         request.httpBody = body(withParameters: [
             "log": username,
