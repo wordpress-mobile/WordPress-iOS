@@ -137,7 +137,7 @@ import AutomatticTracks
             return false
         }
 
-        // Should more formats be accepted be accepted in the future, this line would have to be expanded to accomodate it.
+        // Should more formats be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
