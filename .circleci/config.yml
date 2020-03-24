@@ -3,7 +3,7 @@ version: 2.1
 orbs:
   # Using 1.0 of the Orbs means it will use the latest 1.0.x version from https://github.com/wordpress-mobile/circleci-orbs
   ios: wordpress-mobile/ios@1.0
-  git: wordpress-mobile/git@dev:fix/checkout-without-circle-branch
+  git: wordpress-mobile/git@1.0
 
 commands:
   fix-path:
@@ -140,7 +140,7 @@ jobs:
       - run:
           name: Build
           working_directory: Scripts
-          command: "bundle exec fastlane build_and_upload_release skip_confirm:true run_on_ci:true"
+          command: "bundle exec fastlane build_and_upload_release skip_confirm:true"
 
 workflows:
   wordpress_ios:
