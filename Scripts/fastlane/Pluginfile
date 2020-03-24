@@ -7,6 +7,7 @@ group :screenshots, optional: true do
 end
 
 #gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', tag: '0.9.0'
-gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: '352569f03c990e84758d1ba63dea6e24fae16dd6'
+#gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: '352569f03c990e84758d1ba63dea6e24fae16dd6'
+gem 'fastlane-plugin-wpmreleasetoolkit', path: '../../../../wordpress-mobile/release-toolkit'
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-appcenter', '1.7.1'
