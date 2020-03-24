@@ -420,7 +420,7 @@
 
 - (BOOL)shouldPublishImmediately
 {
-    return [self dateCreatedIsNilOrEqualToDateModified];
+    return [self originalIsDraft] && [self dateCreatedIsNilOrEqualToDateModified];
 }
 
 - (NSString *)authorNameForDisplay
