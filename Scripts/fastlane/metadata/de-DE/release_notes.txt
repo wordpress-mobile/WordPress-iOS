@@ -1,2 +1,1 @@
-- Es gibt einen neuen Shortcode-Block, um Shortcodes im Block-Editor zu erstellen und zu bearbeiten.
-- Auf deiner Statistik-Seite haben wir ein „Diese Woche“-Widget hinzugefügt, um die Aufrufe der letzten Woche anzuzeigen.
+Nur ein paar schnelle Dinge in dieser Woche, denn es sind größere Dinge in der Welt im Gange: Wir haben ein Problem in den Beitragseinstellungen behoben, sodass die Daten von Beiträgen, die sofort veröffentlicht werden, korrekt angezeigt werden. Und wir haben einige Änderungen unter der Haube vorgenommen, um die Geschwindigkeit und Zuverlässigkeit allgemein zu verbessern.

@@ -151,12 +151,12 @@ class MediaItemViewController: UITableViewController {
     private func updateNavigationItem() {
         if mediaMetadata.matches(media) {
             navigationItem.leftBarButtonItem = nil
-            let shareItem = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+            let shareItem = UIBarButtonItem(image: .gridicon(.shareiOS),
                                             style: .plain,
                                             target: self,
                                             action: #selector(shareTapped(_:)))
 
-            let trashItem = UIBarButtonItem(image: Gridicon.iconOfType(.trash),
+            let trashItem = UIBarButtonItem(image: .gridicon(.trash),
                                             style: .plain,
                                             target: self,
                                             action: #selector(trashTapped(_:)))

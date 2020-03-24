@@ -1,0 +1,1 @@
+Solo un paio di cose questa settimana, perché ci sono questioni più importanti in corso nel mondo: abbiamo risolto un problema nelle Impostazioni articolo affinché le date degli articoli che saranno immediatamente pubblicati vengano visualizzate correttamente; inoltre, abbiamo apportato alcune modifiche per migliorare la velocità e la leggibilità in generale.

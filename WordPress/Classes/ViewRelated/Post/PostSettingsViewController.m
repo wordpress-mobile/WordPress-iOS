@@ -162,6 +162,8 @@ FeaturedImageViewControllerDelegate>
     _locationService = [LocationService sharedService];
     
     [self setupPostDateFormatter];
+
+    [WPAnalytics track:WPAnalyticsStatPostSettingsShown];
     
     // It's recommended to keep this call near the end of the initial setup, since we don't want
     // reachability callbacks to trigger before such initial setup completes.
@@ -221,9 +223,9 @@ FeaturedImageViewControllerDelegate>
     BOOL passwordIsVisible = !self.passwordTextField.secureTextEntry;
     
     if (passwordIsVisible) {
-        icon = [Gridicon iconOfType:GridiconTypeVisible];
+        icon = [UIImage gridiconOfType:GridiconTypeVisible];
     } else {
-        icon = [Gridicon iconOfType:GridiconTypeNotVisible];
+        icon = [UIImage gridiconOfType:GridiconTypeNotVisible];
     }
     
     [self.passwordVisibilityButton setImage:icon forState:UIControlStateNormal];
@@ -1299,9 +1301,17 @@ FeaturedImageViewControllerDelegate>
 - (void)showTagsPicker
 {
     PostTagPickerViewController *tagsPicker = [[PostTagPickerViewController alloc] initWithTags:self.post.tags blog:self.post.blog];
+
     tagsPicker.onValueChanged = ^(NSString * _Nonnull value) {
+        if (!value.isEmpty) {
+            [WPAnalytics track:WPAnalyticsStatPostSettingsTagsAdded];
+        }
+
         self.post.tags = value;
     };
+
+    [WPAnalytics track:WPAnalyticsStatPostSettingsAddTagsShown];
+
     [self.navigationController pushViewController:tagsPicker animated:YES];
 }
 

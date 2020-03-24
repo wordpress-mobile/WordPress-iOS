@@ -114,7 +114,7 @@ static CGFloat const FeaturedImageSize = 120.0;
     self.titleLabel.textColor = [UIColor murielText];
     self.badgesLabel.textColor = [UIColor murielTextSubtle];
     self.menuButton.tintColor = [UIColor murielTextSubtle];
-    [self.menuButton setImage:[Gridicon iconOfType:GridiconTypeEllipsis] forState:UIControlStateNormal];
+    [self.menuButton setImage:[UIImage gridiconOfType:GridiconTypeEllipsis] forState:UIControlStateNormal];
 
     self.backgroundColor = [UIColor murielNeutral5];
     self.contentView.backgroundColor = [UIColor murielNeutral5];

@@ -241,10 +241,15 @@ forceDraftIfCreating:NO
              failure:failure];
 }
 
+- (PostServiceUploadingList *)uploadingList
+{
+    return [PostServiceUploadingList sharedInstance];
+}
+
 - (void)uploadPost:(AbstractPost *)post
 forceDraftIfCreating:(BOOL)forceDraftIfCreating
-           success:(void (^)(AbstractPost *post))success
-           failure:(void (^)(NSError *error))failure
+           success:(nullable void (^)(AbstractPost * _Nullable post))success
+           failure:(nullable void (^)(NSError * _Nullable error))failure
 {
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
     RemotePost *remotePost = [self remotePostWithPost:post];
@@ -252,6 +257,10 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
     post.remoteStatus = AbstractPostRemoteStatusPushing;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     NSManagedObjectID *postObjectID = post.objectID;
+
+    // Add the post to the uploading queue list
+    [self.uploadingList uploading:postObjectID];
+
     void (^successBlock)(RemotePost *post) = ^(RemotePost *post) {
         [self.managedObjectContext performBlock:^{
             AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
@@ -259,13 +268,20 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                 if ([postInContext isRevision]) {
                     postInContext = postInContext.original;
                     [postInContext applyRevision];
-                    [postInContext deleteRevision];
+
+                    // If multiple calls to upload the same post are made, we'll delete the revision
+                    // only when the last call succeeds.
+                    // This avoids deleting an entity that's being used by another call, which can lead to crashes.
+                    if ([self.uploadingList isSingleUpload:postObjectID]) {
+                        [postInContext deleteRevision];
+                    }
                 }
                 
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
 
                 [self updateMediaForPost:postInContext success:^{
+
                     if (success) {
                         success(postInContext);
                     }
@@ -282,6 +298,9 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
                     success(nil);
                 }
             }
+
+            // Remove the post from the uploading queue list
+            [self.uploadingList finishedUploading:postObjectID];
         }];
     };
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
@@ -294,6 +313,9 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
             if (failure) {
                 failure(error);
             }
+
+            // Remove the post from the uploading queue list
+            [self.uploadingList finishedUploading:postObjectID];
         }];
     };
 

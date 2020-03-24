@@ -1,2 +1,1 @@
-- Il y a un nouveau bloc « Code court » pour que vous puissiez créer et modifier des codes courts dans l’éditeur de blocs.
-- Sur votre page de statistiques, nous avons ajouté un widget « Cette semaine » pour afficher vos vues de la dernière semaine.
+Juste quelques petits choses cette semaine comme il y a de grandes choses qui arrivent dans le monde : nous avons corrigé un problème dans les réglages d’article de sorte que les dates des messages qui seront immédiatement publiés s’affichent correctement, et nous avons effectué quelques changements sous le capot pour améliorer la vitesse et la stabilité générale.

@@ -9,7 +9,7 @@ final class LikedMenuItemCreator: ReaderMenuItemCreator {
     func menuItem(with topic: ReaderAbstractTopic) -> ReaderMenuItem {
         var item = ReaderMenuItem(title: topic.title,
                                   type: .topic,
-                                  icon: Gridicon.iconOfType(.star),
+                                  icon: .gridicon(.star),
                                   topic: topic)
         item.order = ReaderDefaultMenuItemOrder.likes.rawValue
 

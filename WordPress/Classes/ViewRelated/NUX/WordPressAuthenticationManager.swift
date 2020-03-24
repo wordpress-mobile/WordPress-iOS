@@ -43,7 +43,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 primaryNormalBorderColor: nil,
                                                 primaryHighlightBackgroundColor: .primaryButtonDownBackground,
                                                 primaryHighlightBorderColor: nil,
-                                                secondaryNormalBackgroundColor: .secondaryButtonBackground,
+                                                secondaryNormalBackgroundColor: .authSecondaryButtonBackground,
                                                 secondaryNormalBorderColor: .secondaryButtonBorder,
                                                 secondaryHighlightBackgroundColor: .secondaryButtonDownBackground,
                                                 secondaryHighlightBorderColor: .secondaryButtonDownBorder,
@@ -59,7 +59,8 @@ class WordPressAuthenticationManager: NSObject {
                                                 placeholderColor: .textPlaceholder,
                                                 viewControllerBackgroundColor: .listBackground,
                                                 textFieldBackgroundColor: .listForeground,
-                                                navBarImage: Gridicon.iconOfType(.mySites),
+                                                buttonViewBackgroundColor: .authButtonViewBackground,
+                                                navBarImage: .gridicon(.mySites),
                                                 navBarBadgeColor: .accent(.shade20),
                                                 prologueBackgroundColor: .primary,
                                                 prologueTitleColor: .textInverted,
@@ -197,6 +198,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
+        if PostSignUpInterstitialViewController.shouldDisplay() {
+            self.presentPostSignUpInterstitial(in: navigationController, onDismiss: onDismiss)
+            return
+        }
+
+        //Present the epilogue view
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
@@ -218,6 +225,15 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
+        epilogueViewController.onContinue = {
+            if PostSignUpInterstitialViewController.shouldDisplay() {
+                self.presentPostSignUpInterstitial(in: navigationController)
+            } else {
+                navigationController.dismiss(animated: true)
+            }
+
+            UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
+        }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
@@ -243,7 +259,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return true
     }
 
-    /// Whenever a WordPress.com acocunt has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
+
+    /// Whenever a WordPress.com account has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
     /// the new DefaultWordPressComAccount.
     ///
     func createdWordPressComAccount(username: String, authToken: String) {
@@ -303,6 +320,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 // MARK: - WordPressAuthenticatorManager
 //
 private extension WordPressAuthenticationManager {
+    /// Displays the post sign up interstitial if needed, if it's not displayed
+    private func presentPostSignUpInterstitial(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
+        let viewController = PostSignUpInterstitialViewController()
+        viewController.onDismiss = onDismiss
+
+        navigationController.pushViewController(viewController, animated: true)
+    }
 
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///

@@ -1,2 +1,1 @@
-- Yeni bir Kısa Kod bloğu mevcut olduğundan blok düzenleyicide kısa kodlar oluşturabilir ve düzenleyebilirsiniz.
-- İstatistikler sayfanıza geçtiğimiz hafta aldığınız görüntülemeleri gösteren bir Bu Hafta bileşeni ekledik.
+Bu hafta sadece hızlı bir kaç şey, çünkü dünyada çok daha büyük şeyler oluyor: Yazı ayarlarında hemen yayımlanan yazıların tarihlerinin düzgün görüntülenebilmesi için bir sorun düzeltildi, hız ve genel güvenilirliği artırmak için kaputun altında bir kaç değişiklik yapıldı.

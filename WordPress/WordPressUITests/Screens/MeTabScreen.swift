@@ -2,23 +2,23 @@ import Foundation
 import XCTest
 
 class MeTabScreen: BaseScreen {
-    let tabBar: TabNavComponent
     let logOutButton: XCUIElement
     let logOutAlert: XCUIElement
     let appSettingsButton: XCUIElement
     let myProfileButton: XCUIElement
     let accountSettingsButton: XCUIElement
     let notificationSettingsButton: XCUIElement
+    let doneButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        tabBar = TabNavComponent()
         logOutButton = app.cells["logOutFromWPcomButton"]
         logOutAlert = app.alerts.element(boundBy: 0)
         appSettingsButton = app.cells["appSettings"]
         myProfileButton = app.cells["myProfile"]
         accountSettingsButton = app.cells["accountSettings"]
         notificationSettingsButton = app.cells["notificationSettings"]
+        doneButton = app.navigationBars.buttons["doneBarButton"]
 
         super.init(element: appSettingsButton)
     }

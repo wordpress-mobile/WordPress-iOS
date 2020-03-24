@@ -1,2 +1,1 @@
-- Hay un nuevo bloque de shortcode para que puedas crear y shortcodes en el editor de bloques.
-- En tu página de estadísticas, hemos añadido el widget «Esta semana» para mostrar tus visitas de la semana pasada.
+Solo unas pocas cosas rápidas esta semana, porque hay cosas más grandes en el mundo: hemos corregido un problema en los ajustes de las entradas para que las fechas de las entradas sean publicadas inmediatamente se muestren de forma correcta y hemos hecho algunos cambios bajo el capó para mejorar la velocidad y la fiabilidad en general.

@@ -129,7 +129,7 @@ class AbstractPostListViewController: UIViewController,
     @IBOutlet var filterTabBar: FilterTabBar!
 
     @objc lazy var addButton: UIBarButtonItem = {
-        let addButton = UIBarButtonItem(image: Gridicon.iconOfType(.plus), style: .plain, target: self, action: #selector(handleAddButtonTapped))
+        let addButton = UIBarButtonItem(image: .gridicon(.plus), style: .plain, target: self, action: #selector(handleAddButtonTapped))
         addButton.accessibilityLabel = NSLocalizedString("Add", comment: "Button to create a new post.")
         return addButton
     }()
@@ -940,22 +940,13 @@ class AbstractPostListViewController: UIViewController,
 
         let post = apost.hasRevision() ? apost.revision! : apost
 
-        if FeatureFlag.postPreview.enabled {
-            let controller = PreviewWebKitViewController(post: post)
-            controller.trackOpenEvent()
-            // NOTE: We'll set the title to match the title of the View action button.
-            // If the button title changes we should also update the title here.
-            controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-            let navWrapper = LightNavigationController(rootViewController: controller)
-            navigationController?.present(navWrapper, animated: true)
-        } else {
-            let controller = PostPreviewViewController(post: post)
-            // NOTE: We'll set the title to match the title of the View action button.
-            // If the button title changes we should also update the title here.
-            controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-            controller.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(controller, animated: true)
-        }
+        let controller = PreviewWebKitViewController(post: post)
+        controller.trackOpenEvent()
+        // NOTE: We'll set the title to match the title of the View action button.
+        // If the button title changes we should also update the title here.
+        controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
+        let navWrapper = LightNavigationController(rootViewController: controller)
+        navigationController?.present(navWrapper, animated: true)
     }
 
     @objc func deletePost(_ apost: AbstractPost) {

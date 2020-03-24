@@ -1,2 +1,1 @@
-- Ett nytt kortkodsblock låter dig skapa lägga in och redigera kortkoder i blockredigeraren.
-- På statistiksidan har vi lagt till en ny widget ”Denna vecka” med antalet visningar under den senaste veckan.
+Den här veckan har vi bara några små snabbkorrigeringar eftersom världen just nu är upptagen med viktigare saker: Vi har rättat ett problem i inläggsinställningarna så att datumet visas på rätt sätt för inlägg som kommer att publiceras omedelbart. Dessutom har vi gjort några ändringar i den underliggande koden för att rent allmänt förbättra hastigheten och stabiliteten.

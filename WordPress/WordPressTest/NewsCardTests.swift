@@ -70,7 +70,7 @@ final class NewsCardTests: XCTestCase {
 
     func testDismissButtonContainsTheExpectedIcon() {
         let icon = subject?.dismiss.image(for: .normal)
-        let expectedIcon = Gridicon.iconOfType(.crossCircle, withSize: CGSize(width: 40, height: 40))
+        let expectedIcon = UIImage.gridicon(.crossCircle, size: CGSize(width: 40, height: 40))
 
         XCTAssertEqual(icon, expectedIcon)
     }

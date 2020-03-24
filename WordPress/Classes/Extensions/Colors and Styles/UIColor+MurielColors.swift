@@ -302,6 +302,22 @@ extension UIColor {
     static var secondaryButtonDownBorder: UIColor {
         return secondaryButtonBorder
     }
+
+    static var authSecondaryButtonBackground: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor(light: .white, dark: .black)
+        }
+
+        return .white
+    }
+
+    static var authButtonViewBackground: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor(light: .white, dark: .black)
+        }
+
+        return .white
+    }
 }
 
 extension UIColor {

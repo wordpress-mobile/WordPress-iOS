@@ -629,7 +629,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     private func configureShareButton() {
-        let image = Gridicon.iconOfType(.shareIOS).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        let image = UIImage.gridicon(.shareiOS).withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
         button.setImage(image, for: UIControl.State())
         button.addTarget(self, action: #selector(ReaderDetailViewController.didTapShareButton(_:)), for: .touchUpInside)
@@ -1033,7 +1033,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     fileprivate func configureCommentActionButton() {
-        let title = post!.commentCount.stringValue
+        guard let commentCount = post?.commentCount else {
+            return
+        }
+
+        let title = commentCount.stringValue
         let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)

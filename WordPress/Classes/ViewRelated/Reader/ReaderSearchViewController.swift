@@ -163,7 +163,7 @@ import Gridicons
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).attributedPlaceholder = attributedPlaceholder
         let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(.shade60))
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).defaultTextAttributes = textAttributes
-
+        searchBar.becomeFirstResponder()
         WPStyleGuide.configureSearchBar(searchBar)
     }
 

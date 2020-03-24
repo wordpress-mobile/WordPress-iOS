@@ -361,6 +361,6 @@ private extension NoteBlockActionsTableViewCell {
 
     struct Constants {
         static let buttonSpacing = CGFloat(20)
-        static let buttonSpacingCompact = CGFloat(9)
+        static let buttonSpacingCompact = CGFloat(2)
     }
 }

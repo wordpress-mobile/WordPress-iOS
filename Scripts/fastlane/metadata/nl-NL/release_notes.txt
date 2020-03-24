@@ -1,0 +1,1 @@
+Even een paar snelle dingen deze week, omdat er belangrijkere zaken aan de gang zijn in de wereld. We hebben een probleem met bericht-instellingen opgelost, zodat de datums van berichten die direct worden gepubliceerd correct worden getoond en we hebben een paar wijzigingen onder de motorkap gedaan om de snelheid en betrouwbaarheid in het algemeen te verbeteren.

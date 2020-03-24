@@ -400,7 +400,7 @@ private extension AppSettingsViewController {
 
         let debugRow = NavigationItemRow(
             title: NSLocalizedString("Debug", comment: "Navigates to debug menu only available in development builds"),
-            icon: Gridicon.iconOfType(.bug),
+            icon: .gridicon(.bug),
             action: pushDebugMenu()
         )
 
@@ -434,5 +434,4 @@ private extension AppSettingsViewController {
             rows: rows,
             footerText: nil)
     }
-
 }
