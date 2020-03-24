@@ -2,7 +2,7 @@
 
 extern NSString * const WPNewPostURLParamContentKey;
 extern NSString * const WPNewPostURLParamTagsKey;
-
+//TODO: Remove WPTabMe and WPTabNewPost when the new Me page and FAB are released
 typedef NS_ENUM(NSUInteger, WPTabType) {
     WPTabMySites,
     WPTabReader,
@@ -75,5 +75,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)updateNotificationBadgeVisibility;
 // will be removed when the new IA implementation completes
 - (void)showTabForIndex:(NSInteger)tabIndex;
+
+- (Blog *)currentOrLastBlog;
 
 @end

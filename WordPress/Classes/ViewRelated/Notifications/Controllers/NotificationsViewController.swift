@@ -91,7 +91,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     /// Notification Settings button
     lazy var notificationSettingsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
+        let button = UIBarButtonItem(image: .gridicon(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
         button.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
         return button
     }()

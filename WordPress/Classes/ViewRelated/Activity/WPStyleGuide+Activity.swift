@@ -66,7 +66,7 @@ extension WPStyleGuide {
                 return nil
             }
 
-            return Gridicon.iconOfType(gridiconType).imageWithTintColor(.white)
+            return UIImage.gridicon(gridiconType).imageWithTintColor(.white)
         }
 
         public static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
