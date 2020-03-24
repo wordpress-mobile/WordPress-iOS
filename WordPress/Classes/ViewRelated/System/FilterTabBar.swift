@@ -202,6 +202,11 @@ class FilterTabBar: UIControl {
         commonInit()
     }
 
+    init() {
+        super.init(frame: .zero)
+        commonInit()
+    }
+
     private func commonInit() {
         tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
         tabBarHeightConstraint?.isActive = true
