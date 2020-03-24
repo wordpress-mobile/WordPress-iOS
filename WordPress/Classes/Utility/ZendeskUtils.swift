@@ -777,6 +777,7 @@ private extension ZendeskUtils {
             textField.placeholder = LocalizedText.emailPlaceholder
             textField.accessibilityLabel = LocalizedText.emailAccessibilityLabel
             textField.text = ZendeskUtils.sharedInstance.userEmail
+            textField.delegate = ZendeskUtils.sharedInstance
             textField.isEnabled = false
 
             textField.addTarget(self,
@@ -982,6 +983,15 @@ extension ZendeskUtils: UITextFieldDelegate {
 
         let newLength = text.count + string.count - range.length
         return newLength <= Constants.nameFieldCharacterLimit
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard textField != ZendeskUtils.sharedInstance.alertNameField,
+            let email = textField.text else {
+            return true
+        }
+
+        return EmailFormatValidator.validate(string: email)
     }
 
 }
