@@ -1,4 +1,3 @@
-import Gridicons
 import UIKit
 
 class ReaderTabView: UIView {
