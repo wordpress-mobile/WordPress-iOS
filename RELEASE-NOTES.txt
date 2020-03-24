@@ -1,6 +1,7 @@
 14.6
 -----
 * [internal] the login and signup Magic Link flows have code changes that could cause regressions. See https://git.io/Jvy4P for testing details.
+* Notifications: Fix layout on screens with a notch.
 
  
 14.5
@@ -10,6 +11,7 @@
 * Block editor: Added Starter Page Templates: when you create a new page, we now show you a few templates to get started more quickly.
 * Block editor: Fix crash when pasting HTML content with embeded images on paragraphs
 * Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
+* Stats: Fix background color in Dark Mode on wider screen sizes. 
 * Post Settings: Fix issue where the calendar selection may not match the selected date when site timezone differs from device timezone.
 * Dark Mode fixes:
   - Border color on Search bars.
