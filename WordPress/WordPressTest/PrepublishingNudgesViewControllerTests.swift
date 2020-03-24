@@ -21,11 +21,12 @@ class PrepublishingNudgesViewControllerTests: XCTestCase {
         let prepublishingViewController = PrepublishingViewController(post: post) { post in
             returnedPost = post
         }
+        _ = UINavigationController(rootViewController: prepublishingViewController)
         prepublishingViewController.viewDidLoad()
 
         prepublishingViewController.nuxButton.sendActions(for: .touchUpInside)
 
-        expect(returnedPost).to(equal(post))
+        expect(returnedPost).toEventually(equal(post))
     }
 
 }
