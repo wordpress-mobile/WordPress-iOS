@@ -31,7 +31,11 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
     let chosenValueRow = ChosenValueRow(frame: .zero)
 
     lazy var calendarMonthView: CalendarMonthView = {
-        let calendarMonthView = CalendarMonthView(frame: .zero)
+        var calendar = Calendar.current
+        if let timeZone = coordinator?.timeZone {
+            calendar.timeZone = timeZone
+        }
+        let calendarMonthView = CalendarMonthView(calendar: calendar)
         calendarMonthView.translatesAutoresizingMaskIntoConstraints = false
 
         let selectedDate = coordinator?.date ?? Date()
@@ -40,8 +44,12 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
             var newDate = date
 
             // Since the date from the calendar will not include hours and minutes, replace with the original date (either the current, or previously entered date)
-            let selectedComponents = Calendar.current.dateComponents([.hour, .minute], from: selectedDate)
-            newDate = Calendar.current.date(bySettingHour: selectedComponents.hour ?? 0, minute: selectedComponents.minute ?? 0, second: 0, of: newDate) ?? newDate
+            var calendar = Calendar.current
+            if let timeZone = self?.coordinator?.timeZone {
+                calendar.timeZone = timeZone
+            }
+            let selectedComponents = calendar.dateComponents([.hour, .minute], from: selectedDate)
+            newDate = calendar.date(bySettingHour: selectedComponents.hour ?? 0, minute: selectedComponents.minute ?? 0, second: 0, of: newDate) ?? newDate
 
             self?.coordinator?.date = newDate
             self?.chosenValueRow.detailLabel.text = self?.coordinator?.dateFormatter.string(from: date)
@@ -51,7 +59,7 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
     }()
 
     private lazy var closeButton: UIBarButtonItem = {
-        let item = UIBarButtonItem(image: Gridicon.iconOfType(.cross),
+        let item = UIBarButtonItem(image: .gridicon(.cross),
                                    style: .plain,
                                    target: self,
                                    action: #selector(closeButtonPressed))

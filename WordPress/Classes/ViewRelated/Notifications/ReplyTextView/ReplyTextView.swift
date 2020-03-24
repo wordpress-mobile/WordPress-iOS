@@ -6,6 +6,8 @@ import Gridicons
 //
 @objc public protocol ReplyTextViewDelegate: UITextViewDelegate {
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
+
+    @objc optional func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController)
 }
 
 
@@ -183,13 +185,23 @@ import Gridicons
             return
         }
 
+
+        // Inform any listeners
+        let respondsToWillEnter = delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:willEnterFullScreen:))) ?? false
+
+        if respondsToWillEnter {
+            delegate?.replyTextView?(self, willEnterFullScreen: editViewController)
+        }
+
         // Snapshot the first reponder status before presenting so we can restore it later
         let didHaveFirstResponder = textView.isFirstResponder
 
         editViewController.content = textView.text
+
         if #available(iOS 13.0, *) {
             editViewController.isModalInPresentation = true
         }
+
         editViewController.onExitFullscreen = { (shouldSave, updatedContent) in
             self.text = updatedContent
 
@@ -282,8 +294,7 @@ import Gridicons
         placeholderLabel.textColor = WPStyleGuide.Reply.placeholderColor
 
         // Fullscreen toggle button
-        let fullscreenImage = Gridicon.iconOfType(.chevronUp)
-        fullscreenToggleButton.setImage(fullscreenImage, for: .normal)
+        fullscreenToggleButton.setImage(.gridicon(.chevronUp), for: .normal)
         fullscreenToggleButton.tintColor = .listIcon
         fullscreenToggleButton.accessibilityLabel = NSLocalizedString("Enter Full Screen",
                                                                       comment: "Accessibility Label for the enter full screen button on the comment reply text view")

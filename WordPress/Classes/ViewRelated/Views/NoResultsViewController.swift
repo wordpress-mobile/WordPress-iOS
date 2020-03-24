@@ -514,8 +514,8 @@ private extension NoResultsViewController {
     }
 
     struct NoConnection {
-        static let title: String = NSLocalizedString("Unable to load this page right now.", comment: "Title for No results full page screen displayed when there is no connection")
-        static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Subtitle for No results full page screen displayed when there is no connection")
+        static let title: String = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
+        static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
         static let imageName = "cloud"
     }
 }

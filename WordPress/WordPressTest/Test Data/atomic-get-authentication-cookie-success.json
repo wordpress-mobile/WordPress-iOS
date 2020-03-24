@@ -1,0 +1,12 @@
+{
+  "url": "https://testingblog.wordpress.com",
+  "cookies": [
+    {
+      "expires": 1584511597,
+      "path": "/",
+      "domain": "testingblog.wordpress.com",
+      "name": "wordpress_logged_in_39d5e8179c238764ac288442f27d091b",
+      "value": "johndoe|1544455667|KwKSrAKJsqIWCTtt2QImT3hFTgHuzDOaMprlWWZXQeQ|7f0a75827e7f72ce645ec817ac9a2ab58735e95752494494cc463d1ad5853add"
+    }
+  ]
+}

@@ -319,7 +319,7 @@ private extension ReaderSavedPostsViewController {
         let styledText = noResultsViewController.applyMessageStyleTo(attributedString: messageText)
         messageText = NSMutableAttributedString(attributedString: styledText)
 
-        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
+        let icon = UIImage.gridicon(.bookmarkOutline, size: CGSize(width: 18, height: 18))
         messageText.replace("[bookmark-outline]", with: icon)
 
         noResultsViewController.configure(title: NoResultsText.noResultsTitle, attributedSubtitle: messageText)

@@ -155,9 +155,9 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
         let size = CGSize(width: dimension, height: dimension)
 
         if media.mediaType == .audio {
-            customImageView.image = Gridicon.iconOfType(.audio, withSize: size)
+            customImageView.image = .gridicon(.audio, size: size)
         } else {
-            customImageView.image = Gridicon.iconOfType(.pages, withSize: size)
+            customImageView.image = .gridicon(.pages, size: size)
         }
     }
 }
