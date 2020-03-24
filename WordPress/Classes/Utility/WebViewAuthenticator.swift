@@ -115,7 +115,8 @@ class WebViewAuthenticator: NSObject {
                 completion: completion)
         case .siteLogin(let loginURL, let username, let password):
             requestForSelfHosted(
-                url: loginURL,
+                url: url,
+                loginURL: loginURL,
                 cookieJar: cookieJar,
                 username: username,
                 password: password,
@@ -145,7 +146,7 @@ class WebViewAuthenticator: NSObject {
         }
     }
 
-    private func requestForSelfHosted(url: URL, cookieJar: CookieJar, username: String, password: String, completion: @escaping (URLRequest) -> Void) {
+    private func requestForSelfHosted(url: URL, loginURL: URL, cookieJar: CookieJar, username: String, password: String, completion: @escaping (URLRequest) -> Void) {
 
         func done() {
             let request = URLRequest(url: url)
@@ -154,7 +155,7 @@ class WebViewAuthenticator: NSObject {
 
         let authenticationService = AuthenticationService()
 
-        authenticationService.loadAuthCookiesForSelfHosted(into: cookieJar, loginURL: url, username: username, password: password, success: {
+        authenticationService.loadAuthCookiesForSelfHosted(into: cookieJar, loginURL: loginURL, username: username, password: password, success: {
             done()
         }) { error in
             // Make sure this error scenario isn't silently ignored.
@@ -223,104 +224,7 @@ class WebViewAuthenticator: NSObject {
 }
 
 private extension WebViewAuthenticator {
-
-    func body(url: URL) -> Data? {
-        guard let redirectedUrl = redirectUrl(url: url.absoluteString) else {
-                return nil
-        }
-        var parameters = [URLQueryItem]()
-        parameters.append(URLQueryItem(name: "log", value: username))
-        if let password = password {
-            parameters.append(URLQueryItem(name: "pwd", value: password))
-        }
-        parameters.append(URLQueryItem(name: "rememberme", value: "true"))
-        parameters.append(URLQueryItem(name: "redirect_to", value: redirectedUrl))
-        var components = URLComponents()
-        components.queryItems = parameters
-
-        return components.percentEncodedQuery?.data(using: .utf8)
-    }
-
-    func redirectUrl(url: String) -> String? {
-        guard case .dotCom = credentials,
-            let escapedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            !safeRedirect else {
-            return url
-        }
-
-        return self.url(string: "https://wordpress.com/", parameters: [WebViewAuthenticator.redirectParameter: escapedUrl])?.absoluteString
-    }
-
-    func url(string: String, parameters: [String: String]) -> URL? {
-        guard var components = URLComponents(string: string) else {
-            return nil
-        }
-        components.queryItems = parameters.map({ (key, value) in
-            return URLQueryItem(name: key, value: value)
-        })
-        return components.url
-    }
-
-    var username: String {
-        switch credentials {
-        case .dotCom(let username, _, _):
-            return username
-        case .siteLogin(_, let username, _):
-            return username
-        }
-    }
-
-    var password: String? {
-        switch credentials {
-        case .dotCom:
-            return nil
-        case .siteLogin(_, _, let password):
-            return password
-        }
-    }
-
-    var authToken: String? {
-        if case let .dotCom(_, authToken, _) = credentials {
-            return authToken
-        }
-        switch credentials {
-        case .dotCom(_, let authToken, _):
-            return authToken
-        case .siteLogin:
-            return nil
-        }
-    }
-/*
-    func cookieURL(for url: URL) -> URL {
-        switch credentials {
-        case .dotCom(_, _, let authenticationType):
-            switch authenticationType {
-            case .regular:
-                return WebViewAuthenticator.wordPressComLoginUrl
-            case .atomic:
-                return url
-            }
-        case .siteLogin(let url, _, _):
-            return url
-        }
-    }*/
-/*
-    var loginURL: URL {
-        switch credentials {
-        case .dotCom(_, _, let authenticationType):
-            switch authenticationType {
-            case .regular:
-                return WebViewAuthenticator.wordPressComLoginUrl
-            case .atomic(let blogID):
-                return URL(string: "google.com")!
-            }
-        case .siteLogin(let url, _, _):
-            return url
-        }
-    }*/
-
     static let wordPressComLoginUrl = URL(string: "https://wordpress.com/wp-login.php")!
-    static let redirectParameter = "wpios_redirect"
 }
 
 extension WebViewAuthenticator {
