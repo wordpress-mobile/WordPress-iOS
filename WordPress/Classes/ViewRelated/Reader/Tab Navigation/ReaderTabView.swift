@@ -46,6 +46,8 @@ extension ReaderTabView {
     }
 
     private func setupViewElements() {
+        setupMainStackView()
+        setupTabBar()
         setupButtonsView()
         setupFilterButton()
         setupResetFilterButton()
@@ -158,7 +160,6 @@ extension ReaderTabView {
         setFilterButtonTitle("Phoebe's Photos")
         resetFilterButton.isHidden = false
     }
-
     /// Reset filter button
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
