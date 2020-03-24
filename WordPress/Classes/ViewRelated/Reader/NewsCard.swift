@@ -104,7 +104,7 @@ final class NewsCard: UIViewController {
     }
 
     private func styleDismissButton() {
-        let dismissIcon = Gridicon.iconOfType(.crossCircle, withSize: CGSize(width: 40, height: 40))
+        let dismissIcon = UIImage.gridicon(.crossCircle, size: CGSize(width: 40, height: 40))
         dismiss.setImage(dismissIcon, for: .normal)
         dismiss.setTitle(nil, for: .normal)
     }

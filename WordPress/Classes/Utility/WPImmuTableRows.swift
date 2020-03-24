@@ -137,7 +137,7 @@ struct LinkRow: ImmuTableRow {
 
     private static let imageSize = CGSize(width: 20, height: 20)
     private var accessoryImageView: UIImageView {
-        let image = Gridicon.iconOfType(.external, withSize: LinkRow.imageSize)
+        let image = UIImage.gridicon(.external, size: LinkRow.imageSize)
 
         let imageView = UIImageView(image: image)
         imageView.tintColor = WPStyleGuide.cellGridiconAccessoryColor()

@@ -22,10 +22,14 @@ class CalendarMonthView: UIView {
         }
     }
 
-    private let calendarCollectionView = CalendarCollectionView()
+    private let calendar: Calendar
+    private let calendarCollectionView: CalendarCollectionView
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(calendar: Calendar) {
+        self.calendar = calendar
+        self.calendarCollectionView = CalendarCollectionView(calendar: calendar)
+        super.init(frame: .zero)
+
         setup()
     }
 
@@ -34,8 +38,8 @@ class CalendarMonthView: UIView {
     }
 
     private func setup() {
-        let weekdaysHeaderView = WeekdaysHeaderView(calendar: Calendar.current)
-        let calendarHeaderView = CalendarHeaderView(next: (self, #selector(CalendarMonthView.nextMonth)), previous: (self, #selector(CalendarMonthView.previousMonth)))
+        let weekdaysHeaderView = WeekdaysHeaderView(calendar: calendar)
+        let calendarHeaderView = CalendarHeaderView(calendar: calendar, next: (self, #selector(CalendarMonthView.nextMonth)), previous: (self, #selector(CalendarMonthView.previousMonth)))
 
         let stackView = UIStackView(arrangedSubviews: [
             calendarHeaderView,
@@ -102,14 +106,14 @@ class CalendarMonthView: UIView {
     // MARK: Navigation button selectors
     @objc func previousMonth(_ sender: Any) {
         if let lastVisibleDate = calendarCollectionView.visibleDates().monthDates.first?.date,
-           let nextVisibleDate = Calendar.current.date(byAdding: .day, value: -1, to: lastVisibleDate, wrappingComponents: false) {
+           let nextVisibleDate = calendar.date(byAdding: .day, value: -1, to: lastVisibleDate, wrappingComponents: false) {
             calendarCollectionView.scrollToDate(nextVisibleDate)
         }
     }
 
     @objc func nextMonth(_ sender: Any) {
         if let lastVisibleDate = calendarCollectionView.visibleDates().monthDates.last?.date,
-           let nextVisibleDate = Calendar.current.date(byAdding: .day, value: 1, to: lastVisibleDate, wrappingComponents: false) {
+           let nextVisibleDate = calendar.date(byAdding: .day, value: 1, to: lastVisibleDate, wrappingComponents: false) {
             calendarCollectionView.scrollToDate(nextVisibleDate)
         }
     }
@@ -118,42 +122,53 @@ class CalendarMonthView: UIView {
 /// A view containing two buttons to navigate forward and backward and a
 class CalendarHeaderView: UIStackView {
 
+    private enum Constants {
+        static let buttonSize = CGSize(width: 24, height: 24)
+        static let titeLabelColor: UIColor = .neutral(.shade60)
+        static let dateFormat = "MMMM, YYYY"
+    }
+
     typealias TargetSelector = (target: Any?, selector: Selector)
 
     /// A function to set the string of the title label to a given date
     /// - Parameter date: The date to set the `titleLabel`'s text to
     func set(date: Date) {
-        titleLabel.text = CalendarHeaderView.dateFormatter.string(from: date)
+        titleLabel.text = dateFormatter?.string(from: date)
     }
 
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .neutral(.shade60)
+        label.textColor = Constants.titeLabelColor
         return label
     }()
 
-    private static var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM, YYYY"
-        return formatter
-    }()
+    private var dateFormatter: DateFormatter? = nil
 
-    convenience init(next: TargetSelector, previous: TargetSelector) {
-        let previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+    convenience init(calendar: Calendar, next: TargetSelector, previous: TargetSelector) {
+        let previousButton = UIButton(frame: CGRect(origin: .zero, size: Constants.buttonSize))
         previousButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        previousButton.setImage(Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
+        previousButton.setImage(UIImage.gridicon(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
 
-        let forwardButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-        forwardButton.setImage(Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
+        let forwardButton = UIButton(frame: CGRect(origin: .zero, size: Constants.buttonSize))
+        forwardButton.setImage(UIImage.gridicon(.chevronRight).imageFlippedForRightToLeftLayoutDirection(), for: .normal)
+
         forwardButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
         self.init()
+
         addArrangedSubviews([
             previousButton,
             titleLabel,
             forwardButton
         ])
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = Constants.dateFormat
+        formatter.calendar = calendar
+        formatter.timeZone = calendar.timeZone
+
+        dateFormatter = formatter
 
         alignment = .center
 

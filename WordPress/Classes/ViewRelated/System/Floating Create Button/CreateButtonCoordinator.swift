@@ -9,7 +9,7 @@ import Gridicons
     }
 
     var button: FloatingActionButton = {
-        let button = FloatingActionButton(image: Gridicon.iconOfType(.create))
+        let button = FloatingActionButton(image: .gridicon(.create))
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
         button.accessibilityHint = NSLocalizedString("Creates new post or page", comment: " Accessibility hint for create floating action button")
@@ -65,17 +65,19 @@ import Gridicons
     @objc private func showCreateSheet() {
         guard let viewController = viewController else { return }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
-        viewController.present(actionSheetVC, animated: true, completion: nil)
+        viewController.present(actionSheetVC, animated: true, completion: {
+            WPAnalytics.track(.createSheetShown)
+        })
     }
 
     private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
         let postsButton = ActionSheetButton(title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"),
-                                            image: Gridicon.iconOfType(.posts),
+                                            image: .gridicon(.posts),
                                             identifier: "blogPostButton",
                                             target: self,
                                             selector: #selector(showNewPost))
         let pagesButton = ActionSheetButton(title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
-                                            image: Gridicon.iconOfType(.pages),
+                                            image: .gridicon(.pages),
                                             identifier: "sitePageButton",
                                             target: self,
                                             selector: #selector(showNewPage))
@@ -100,12 +102,20 @@ import Gridicons
     }
 
     @objc func hideCreateButton() {
-        button.springAnimation(toShow: false)
+        if UIAccessibility.isReduceMotionEnabled {
+            button.isHidden = true
+        } else {
+            button.springAnimation(toShow: false)
+        }
     }
 
     @objc func showCreateButton() {
         button.setNeedsUpdateConstraints() // See `FloatingActionButton` implementation for more info on why this is needed.
-        button.springAnimation(toShow: true)
+        if UIAccessibility.isReduceMotionEnabled {
+            button.isHidden = false
+        } else {
+            button.springAnimation(toShow: true)
+        }
     }
 
     @objc func showNewPost() {

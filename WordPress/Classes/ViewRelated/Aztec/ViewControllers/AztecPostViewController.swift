@@ -1757,7 +1757,7 @@ extension AztecPostViewController {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight))
         toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
         toolbar.tintColor = WPStyleGuide.aztecFormatBarActiveColor
-        let gridButton = UIBarButtonItem(image: Gridicon.iconOfType(.grid), style: .plain, target: self, action: #selector(mediaAddShowFullScreen))
+        let gridButton = UIBarButtonItem(image: .gridicon(.grid), style: .plain, target: self, action: #selector(mediaAddShowFullScreen))
         gridButton.accessibilityLabel = NSLocalizedString("Open full media picker", comment: "Editor button to swich the media picker from quick mode to full picker")
         toolbar.items = [
             UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(mediaAddInputCancelled)),
@@ -2129,7 +2129,7 @@ extension AztecPostViewController {
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.disabledTintColor = WPStyleGuide.aztecFormatBarDisabledColor
         toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDividerColor
-        toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
+        toolbar.overflowToggleIcon = .gridicon(.ellipsis)
 
         let mediaButton = makeToolbarButton(identifier: .media)
         mediaButton.normalTintColor = .primary
@@ -2662,7 +2662,7 @@ extension AztecPostViewController {
 
         let attributeMessage = NSAttributedString(string: message, attributes: Constants.mediaMessageAttributes)
         attachment.message = attributeMessage
-        attachment.overlayImage = Gridicon.iconOfType(.refresh, withSize: Constants.mediaOverlayIconSize)
+        attachment.overlayImage = .gridicon(.refresh, size: Constants.mediaOverlayIconSize)
         attachment.shouldHideBorder = true
         attachment.progress = nil
         richTextView.refresh(attachment, overlayUpdateOnly: true)
@@ -2767,7 +2767,7 @@ extension AztecPostViewController {
     fileprivate func process(videoAttachment: VideoAttachment) {
         // Use a placeholder for video while trying to generate a thumbnail
         DispatchQueue.main.async {
-            videoAttachment.image = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
+            videoAttachment.image = .gridicon(.video, size: Constants.mediaPlaceholderImageSize)
             self.richTextView.refresh(videoAttachment)
         }
         if let videoSrcURL = videoAttachment.url,
@@ -3331,10 +3331,10 @@ extension AztecPostViewController {
     }
 
     struct Assets {
-        static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
+        static let closeButtonModalImage    = UIImage.gridicon(.cross)
         static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
-        static let defaultMissingImage      = Gridicon.iconOfType(.image)
-        static let linkPlaceholderImage     = Gridicon.iconOfType(.pages)
+        static let defaultMissingImage      = UIImage.gridicon(.image)
+        static let linkPlaceholderImage     = UIImage.gridicon(.pages)
     }
 
     struct Constants {
