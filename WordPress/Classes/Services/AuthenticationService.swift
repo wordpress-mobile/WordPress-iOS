@@ -143,7 +143,7 @@ class AuthenticationService {
                 failure(error)
                 return
             }
-            
+
             // The following code is a bit complicated to read, apologies.
             // We're retrieving all cookies from the "Set-Cookie" header manually, and combining
             // those cookies with the ones from the current session.  The reason behind this is that
@@ -176,9 +176,9 @@ class AuthenticationService {
 
         return components.percentEncodedQuery?.data(using: .utf8)
     }
-    
+
     // MARK: - Response Parsing
-    
+
     private func cookies(from response: URLResponse?, loginURL: URL) -> [HTTPCookie] {
         guard let httpResponse = response as? HTTPURLResponse,
             let headers = httpResponse.allHeaderFields as? [String: String] else {

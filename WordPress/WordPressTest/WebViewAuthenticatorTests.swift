@@ -64,7 +64,7 @@ class WebViewAuthenticatorTests: XCTestCase {
         let authenticator = dotComAuthenticator
         let cookieJar = MockCookieJar()
         let expectation = self.expectation(description: "Authorization cookies obtained")
-        
+
         stub(condition: { request in
             return request.url! == self.dotComLoginURL && request.httpMethod! == "POST"
         }) { _ in
@@ -74,7 +74,7 @@ class WebViewAuthenticatorTests: XCTestCase {
                     "Content-Type": "text/html; charset=UTF-8",
                     "Set-Cookie": self.wpComAuthCookies])
         }
-        
+
         authenticator.request(url: url, cookieJar: cookieJar) { request in
             cookieJar.hasWordPressComAuthCookie(username: self.dotComUser, atomicSite: false) { hasCookie in
                 if hasCookie {
