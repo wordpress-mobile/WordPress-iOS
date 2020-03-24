@@ -24,7 +24,7 @@ class PrepublishingNudgesViewControllerTests: XCTestCase {
         _ = UINavigationController(rootViewController: prepublishingViewController)
         prepublishingViewController.viewDidLoad()
 
-        prepublishingViewController.nuxButton.sendActions(for: .touchUpInside)
+        prepublishingViewController.publishButton.sendActions(for: .touchUpInside)
 
         expect(returnedPost).toEventually(equal(post))
     }

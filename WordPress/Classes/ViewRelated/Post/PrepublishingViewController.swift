@@ -14,7 +14,7 @@ class PrepublishingViewController: UITableViewController {
         PrepublishingOption(title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
 
-    let nuxButton: NUXButton = {
+    let publishButton: NUXButton = {
         let nuxButton = NUXButton()
         nuxButton.isPrimary = true
         nuxButton.setTitle(NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post"), for: .normal)
@@ -35,7 +35,7 @@ class PrepublishingViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupFooterWithButton()
+        setupPublishButton()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -90,13 +90,13 @@ class PrepublishingViewController: UITableViewController {
         }
     }
 
-    private func setupFooterWithButton() {
+    private func setupPublishButton() {
         let footer = UIView(frame: Constants.footerFrame)
-        footer.addSubview(nuxButton)
-        footer.pinSubviewToSafeArea(nuxButton, insets: Constants.nuxButtonInsets)
-        nuxButton.translatesAutoresizingMaskIntoConstraints = false
+        footer.addSubview(publishButton)
+        footer.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
+        publishButton.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableFooterView = footer
-        nuxButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
+        publishButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
     }
 
     private enum Constants {
