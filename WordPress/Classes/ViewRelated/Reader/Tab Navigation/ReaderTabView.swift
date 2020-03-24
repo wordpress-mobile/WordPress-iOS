@@ -35,14 +35,15 @@ class ReaderTabView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    /// Call this method to set the title of the filter button
-    func setFilterButtonTitle(_ title: String) {
-        WPStyleGuide.applyReaderFilterButtonTitle(filterButton, title: title)
-    }
 }
 
 // MARK: - UI setup
 extension ReaderTabView {
+
+    /// Call this method to set the title of the filter button
+    func setFilterButtonTitle(_ title: String) {
+        WPStyleGuide.applyReaderFilterButtonTitle(filterButton, title: title)
+    }
 
     private func setupViewElements() {
         setupButtonsView()
@@ -157,6 +158,7 @@ extension ReaderTabView {
         setFilterButtonTitle("Phoebe's Photos")
         resetFilterButton.isHidden = false
     }
+    
     /// Reset filter button
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
