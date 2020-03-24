@@ -191,6 +191,7 @@ extension BottomSheetViewController: UIViewControllerTransitioningDelegate {
     }
 
     public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return (self.presentedViewController?.presentationController as? BottomSheetPresentationController)?.interactionController
+
+        return (self.presentationController as? BottomSheetPresentationController)?.interactionController
     }
 }
