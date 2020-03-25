@@ -222,8 +222,7 @@ extension WPStyleGuide {
 
     // MARK: - Button Styles and Text
 
-    public class func applyReaderActionButtonStyle(_ button: UIButton) {
-        let defaultColor: UIColor = .listIcon
+    class func applyReaderActionButtonStyle(_ button: UIButton, defaultColor: UIColor = UIColor.listIcon) {
         let highlightedColor: UIColor = .neutral
         let selectedColor: UIColor = .primary(.shade40)
         let bothColor: UIColor = .primaryLight
@@ -370,7 +369,7 @@ extension WPStyleGuide {
         let icon = UIImage.gridicon(.filter)
 
         button.setImage(icon, for: .normal)
-        WPStyleGuide.applyReaderActionButtonStyle(button)
+        applyReaderActionButtonStyle(button, defaultColor: UIColor(light: .black, dark: .white))
     }
     /// Applies the filter button title to the button passed as an argument
     class func applyReaderFilterButtonTitle(_ button: UIButton, title: String) {
@@ -382,14 +381,14 @@ extension WPStyleGuide {
         let icon = UIImage.gridicon(.crossSmall)
 
         button.setImage(icon, for: .normal)
-        WPStyleGuide.applyReaderActionButtonStyle(button)
+        applyReaderActionButtonStyle(button, defaultColor: UIColor(light: .black, dark: .white))
     }
     /// Applies the settings button style to the button passed as an argument
     class func applyReaderSettingsButtonStyle(_ button: UIButton) {
         let icon = UIImage.gridicon(.cog)
 
         button.setImage(icon, for: .normal)
-        WPStyleGuide.applyReaderActionButtonStyle(button)
+        applyReaderActionButtonStyle(button)
     }
 
     // MARK: - Gap Marker Styles

@@ -178,9 +178,7 @@ extension ReaderTabView {
 
         static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
         static let filterButtonMaxFontSize: CGFloat = 28.0
-        static let filterButtonFont = WPStyleGuide.fontForTextStyle(.subheadline,
-                                                               symbolicTraits: .traitBold,
-                                                               maximumPointSize: filterButtonMaxFontSize)
+        static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
         static let filterButtonInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         static let filterButtonimageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         static let filterButtonTitleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)

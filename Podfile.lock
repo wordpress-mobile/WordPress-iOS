@@ -63,7 +63,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.2.2)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.2)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.2)"
-  - Gridicons (1.0)
+  - Gridicons (1.0.1-beta.1)
   - GTMSessionFetcher/Core (1.3.1)
   - Gutenberg (1.24.0):
     - React (= 0.61.5)
@@ -433,7 +433,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.24.0/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
-  - Gridicons (~> 1.0)
+  - Gridicons (from `https://github.com/Automattic/Gridicons-iOS`, branch `fix/update-filter-asset`)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.24.0`)
   - JTAppleCalendar (~> 8.0.2)
   - MediaEditor (~> 1.0.1)
@@ -502,7 +502,6 @@ SPEC REPOS:
     - Gifu
     - GoogleSignIn
     - GoogleToolboxForMac
-    - Gridicons
     - GTMSessionFetcher
     - JTAppleCalendar
     - lottie-ios
@@ -551,6 +550,9 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   glog:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.24.0/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json
+  Gridicons:
+    :branch: fix/update-filter-asset
+    :git: https://github.com/Automattic/Gridicons-iOS
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.24.0
@@ -616,6 +618,9 @@ CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
+  Gridicons:
+    :commit: ef98df9991731582fb0f0fc3e2027a781d23516b
+    :git: https://github.com/Automattic/Gridicons-iOS
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.24.0
@@ -643,7 +648,7 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
-  Gridicons: f032dbc3350f8648e0fabe3e531b72cf97d428a9
+  Gridicons: 7747ca3007179183996219596890ef5a7abc0e84
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   Gutenberg: 8cdb2c1e818d3ccdda5b546ad87f3024aaf95c80
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
@@ -709,6 +714,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 063e48e9efb162a2c7d8c6ee92df1e653f0c27e7
+PODFILE CHECKSUM: 162e83fdbc35a58454e5deba220c760239ec8213
 
 COCOAPODS: 1.8.4
