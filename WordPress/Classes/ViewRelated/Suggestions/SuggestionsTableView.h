@@ -26,6 +26,7 @@
 */
 - (BOOL)showSuggestionsForWord:(nonnull NSString *)word;
 
+- (void)hideSuggestions;
 @end
 
 @protocol SuggestionsTableViewDelegate <NSObject>
@@ -44,5 +45,12 @@
   will call this method to let the UIViewController know
  */
 - (void)suggestionsTableView:(nonnull SuggestionsTableView *)suggestionsTableView didChangeTableBounds:(CGRect)bounds;
+
+
+/**
+  When the suggestionsTableView has completed subview layout, the SuggestionsTableView
+  will call this method to let the UIViewController know
+ */
+- (NSInteger)suggestionsTableViewMaxDisplayedRows:(nonnull SuggestionsTableView *)suggestionsTableView;
 
 @end

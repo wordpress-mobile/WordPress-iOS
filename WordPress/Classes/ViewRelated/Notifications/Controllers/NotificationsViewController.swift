@@ -91,7 +91,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     /// Notification Settings button
     lazy var notificationSettingsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
+        let button = UIBarButtonItem(image: .gridicon(.cog), style: .plain, target: self, action: #selector(showNotificationSettings))
         button.accessibilityLabel = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
         return button
     }()
@@ -109,6 +109,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
 
         setupNavigationBar()
         setupTableView()
@@ -191,20 +193,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     private func layoutHeaderIfNeeded() {
         precondition(tableHeaderView != nil)
-        // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-        let requiredSize = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        var headerFrame = tableHeaderView.frame
-        if headerFrame.height != requiredSize.height {
-            headerFrame.size.height = requiredSize.height
-            tableHeaderView.frame = headerFrame
-            adjustNoResultsViewSize()
+        tableHeaderView.setNeedsLayout()
+        tableHeaderView.layoutIfNeeded()
 
-            tableHeaderView.layoutIfNeeded()
-
-            // We reassign the tableHeaderView to force the UI to refresh. Yes, really.
-            tableView.tableHeaderView = tableHeaderView
-            tableView.setNeedsLayout()
-        }
+        // We reassign the tableHeaderView to force the UI to refresh. Yes, really.
+        tableView.tableHeaderView = tableHeaderView
+        tableView.setNeedsLayout()
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -226,6 +220,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
                 selectFirstNotificationIfAppropriate()
             }
         }
+
+        tableView.tableHeaderView = tableHeaderView
     }
 
     // MARK: - State Restoration
@@ -479,9 +475,11 @@ private extension NotificationsViewController {
         tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
 
-        tableHeaderView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
-        tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
-        tableHeaderView.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor),
+            tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor),
+            tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+        ])
     }
 
     func setupTableView() {

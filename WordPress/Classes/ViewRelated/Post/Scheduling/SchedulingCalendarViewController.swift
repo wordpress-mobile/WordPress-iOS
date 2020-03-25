@@ -59,7 +59,7 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
     }()
 
     private lazy var closeButton: UIBarButtonItem = {
-        let item = UIBarButtonItem(image: Gridicon.iconOfType(.cross),
+        let item = UIBarButtonItem(image: .gridicon(.cross),
                                    style: .plain,
                                    target: self,
                                    action: #selector(closeButtonPressed))

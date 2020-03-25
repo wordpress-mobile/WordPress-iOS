@@ -626,8 +626,7 @@ import WordPressShared
         WPStyleGuide.configureTableViewActionCell(cell)
 
         if cell.accessoryView == nil {
-            let image = Gridicon.iconOfType(.plus)
-            let imageView = UIImageView(image: image)
+            let imageView = UIImageView(image: .gridicon(.plus))
             imageView.tintColor = .primary
             cell.accessoryView = imageView
         }

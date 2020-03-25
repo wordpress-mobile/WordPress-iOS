@@ -12,14 +12,14 @@ class EditorMediaUtility {
         switch attachment {
         case let imageAttachment as ImageAttachment:
             if imageAttachment.url == Constants.placeholderDocumentLink {
-                icon = Gridicon.iconOfType(.pages, withSize: size)
+                icon = .gridicon(.pages, size: size)
             } else {
-                icon = Gridicon.iconOfType(.image, withSize: size)
+                icon = .gridicon(.image, size: size)
             }
         case _ as VideoAttachment:
-            icon = Gridicon.iconOfType(.video, withSize: size)
+            icon = .gridicon(.video, size: size)
         default:
-            icon = Gridicon.iconOfType(.attachment, withSize: size)
+            icon = .gridicon(.attachment, size: size)
         }
         if #available(iOS 13.0, *), let color = tintColor {
             icon = icon.withTintColor(color)
