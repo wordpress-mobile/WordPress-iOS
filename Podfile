@@ -183,9 +183,9 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.11.1'
+    #pod 'WordPressAuthenticator', '~> 1.11.2'
     # While in PR
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/220-remove-spaces'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     #pod 'WordPressAuthenticator', :path => ''
 
