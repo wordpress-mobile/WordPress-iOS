@@ -11,7 +11,7 @@ class TrashComment: DefaultNotificationActionCommand {
         return .error
     }
 
-    override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
+    func execute(context: ActionContext<FormattableCommentContent>) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] requestCompletion in
                 self?.actionsService?.deleteCommentWithBlock(context.block, completion: { success in

@@ -7,7 +7,7 @@ class ReplyToComment: DefaultNotificationActionCommand {
         return ReplyToComment.title
     }
 
-    override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
+    func execute(context: ActionContext<FormattableCommentContent>) {
         let block = context.block
         let content = context.content
         actionsService?.replyCommentWithBlock(block, content: content, completion: { success in

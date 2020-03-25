@@ -7,7 +7,7 @@ class EditComment: DefaultNotificationActionCommand {
         return EditComment.title
     }
 
-    override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
+    func execute(context: ActionContext<FormattableCommentContent>) {
         let block = context.block
         let content = context.content
         actionsService?.updateCommentWithBlock(block, content: content, completion: { success in
