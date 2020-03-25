@@ -37,7 +37,7 @@
 
 - (void)setupAddButton
 {
-    UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePlus]];
+    UIButton *button = [self addAccessoryButtonIconViewWithImage:[UIImage gridiconOfType:GridiconTypePlus]];
     [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     _addButton = button;
 }

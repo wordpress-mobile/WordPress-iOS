@@ -34,7 +34,7 @@ class PostEditorNavigationBarManager {
     }()
 
     private lazy var moreButton: UIButton = {
-        let image = Gridicon.iconOfType(.ellipsis)
+        let image = UIImage.gridicon(.ellipsis)
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
         button.frame = CGRect(origin: .zero, size: image.size)
@@ -234,6 +234,6 @@ extension PostEditorNavigationBarManager {
     }
 
     private enum Assets {
-        static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
+        static let closeButtonModalImage    = UIImage.gridicon(.cross)
     }
 }

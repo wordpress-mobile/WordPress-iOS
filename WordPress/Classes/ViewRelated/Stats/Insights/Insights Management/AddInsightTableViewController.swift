@@ -41,7 +41,7 @@ class AddInsightTableViewController: UITableViewController {
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         tableView.accessibilityIdentifier = "Add Insight Table"
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(doneTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(doneTapped))
     }
 
     override func viewWillDisappear(_ animated: Bool) {

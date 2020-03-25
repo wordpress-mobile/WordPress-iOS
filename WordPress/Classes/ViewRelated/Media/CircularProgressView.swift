@@ -188,7 +188,7 @@ class CircularProgressView: UIView {
     private func configureRetryViews() {
         configureAccessoryView(retryView)
         retryView.label.text = NSLocalizedString("Retry", comment: "Retry. Verb – retry a failed media upload.")
-        retryView.imageView.image = Gridicon.iconOfType(.refresh)
+        retryView.imageView.image = .gridicon(.refresh)
     }
 
     private func configureAccessoryView(_ view: UIView) {
