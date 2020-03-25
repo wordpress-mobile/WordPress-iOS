@@ -49,6 +49,21 @@ class AuthenticationService {
         success: @escaping (_ cookies: [HTTPCookie]) -> Void,
         failure: @escaping (Error) -> Void) {
 
+        let parameters = [
+            "log": username,
+            "pwd": password,
+            "rememberme": "true"
+        ]
+
+        requestAuthCookies(
+            from: loginURL,
+            headers: headers,
+            parameters: parameters,
+            success: success,
+            failure: failure)
+        
+        /*
+        
         // We don't want these cookies loaded onto all of our requests
         let session = URLSession(configuration: .ephemeral)
         var request = URLRequest(url: loginURL)
@@ -80,7 +95,7 @@ class AuthenticationService {
             success(cookies)
         }
 
-        task.resume()
+        task.resume()*/
     }
 
     // MARK: - WP.com
@@ -123,8 +138,25 @@ class AuthenticationService {
         authToken: String,
         success: @escaping (_ cookies: [HTTPCookie]) -> Void,
         failure: @escaping (Error) -> Void) {
+        
+        let loginURL = URL(string: AuthenticationService.wpComLoginEndpoint)!
+        let headers = [
+            "Authorization": "Bearer \(authToken)"
+        ]
+        let parameters = [
+            "log": username,
+            "rememberme": "true"
+        ]
 
+        requestAuthCookies(
+            from: loginURL,
+            headers: headers,
+            parameters: parameters,
+            success: success,
+            failure: failure)
+        
         // We don't want these cookies loaded onto all of our requests
+        /*
         let session = URLSession(configuration: .ephemeral)
 
         let endpoint = AuthenticationService.wpComLoginEndpoint
@@ -159,9 +191,51 @@ class AuthenticationService {
         }
 
         task.resume()
+ */
     }
 
     // MARK: - Request Construction
+    
+    private func requestAuthCookies(
+        from url: URL,
+        headers: [String: String],
+        parameters: [String: String],
+        success: @escaping (_ cookies: [HTTPCookie]) -> Void,
+        failure: @escaping (Error) -> Void) {
+
+        // We don't want these cookies persisted in other sessions
+        let session = URLSession(configuration: .ephemeral)
+        var request = URLRequest(url: url)
+
+        request.httpMethod = "POST"
+        request.httpBody = body(withParameters: parameters)
+        
+        headers.forEach { (key, value) in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                failure(error)
+                return
+            }
+
+            // The following code is a bit complicated to read, apologies.
+            // We're retrieving all cookies from the "Set-Cookie" header manually, and combining
+            // those cookies with the ones from the current session.  The reason behind this is that
+            // iOS's URLSession processes the cookies from such header before this callback is executed,
+            // whereas OHTTPStubs.framework doesn't (the cookies are left in the header fields of
+            // the response).  The only way to combine both is to just add them together here manually.
+            //
+            // To know if you can remove this, you'll have to test this code live and in our unit tests
+            // and compare the session cookies.
+            let responseCookies = self.cookies(from: response, loginURL: url)
+            let cookies = (session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()) + responseCookies
+            success(cookies)
+        }
+
+        task.resume()
+    }
 
     private func body(withParameters parameters: [String: String]) -> Data? {
         var queryItems = [URLQueryItem]()
