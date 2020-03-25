@@ -49,6 +49,7 @@ class AuthenticationService {
         success: @escaping (_ cookies: [HTTPCookie]) -> Void,
         failure: @escaping (Error) -> Void) {
 
+        let headers = [String: String]()
         let parameters = [
             "log": username,
             "pwd": password,
