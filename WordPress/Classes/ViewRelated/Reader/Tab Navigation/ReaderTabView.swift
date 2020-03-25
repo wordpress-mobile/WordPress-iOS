@@ -46,6 +46,7 @@ extension ReaderTabView {
     }
 
     private func setupViewElements() {
+        backgroundColor = .filterBarBackground
         setupMainStackView()
         setupTabBar()
         setupButtonsView()
@@ -80,7 +81,6 @@ extension ReaderTabView {
         buttonsStackView.addArrangedSubview(filterButton)
         buttonsStackView.addArrangedSubview(resetFilterButton)
         let spacer = UIView()
-        spacer.backgroundColor = .filterBarBackground
         buttonsStackView.addArrangedSubview(spacer)
         buttonsStackView.addArrangedSubview(verticalDivider)
         buttonsStackView.addArrangedSubview(settingsButton)
