@@ -11,9 +11,11 @@ class AtomicAuthenticationService {
         self.remote = remote
     }
 
-    init(account: WPAccount) {
+    convenience init(account: WPAccount) {
         let wpComRestApi = account.wordPressComRestV2Api
-        self.remote = AtomicAuthenticationServiceRemote(wordPressComRestApi: wpComRestApi)
+        let remote = AtomicAuthenticationServiceRemote(wordPressComRestApi: wpComRestApi)
+
+        self.init(remote: remote)
     }
 
     func getAuthCookie(
