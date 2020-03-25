@@ -62,41 +62,6 @@ class AuthenticationService {
             parameters: parameters,
             success: success,
             failure: failure)
-
-        /*
-        
-        // We don't want these cookies loaded onto all of our requests
-        let session = URLSession(configuration: .ephemeral)
-        var request = URLRequest(url: loginURL)
-
-        request.httpMethod = "POST"
-        request.httpBody = body(withParameters: [
-            "log": username,
-            "pwd": password,
-            "rememberme": "true"
-        ])
-
-        let task = session.dataTask(with: request) { data, response, error in
-            if let error = error {
-                failure(error)
-                return
-            }
-
-            // The following code is a bit complicated to read, apologies.
-            // We're retrieving all cookies from the "Set-Cookie" header manually, and combining
-            // those cookies with the ones from the current session.  The reason behind this is that
-            // iOS's URLSession processes the cookies from such header before this callback is executed,
-            // whereas OHTTPStubs.framework doesn't (the cookies are left in the header fields of
-            // the response).  The only way to combine both is to just add them together here manually.
-            //
-            // To know if you can remove this, you'll have to test this code live and in our unit tests
-            // and compare the session cookies.
-            let responseCookies = self.cookies(from: response, loginURL: loginURL)
-            let cookies = (session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()) + responseCookies
-            success(cookies)
-        }
-
-        task.resume()*/
     }
 
     // MARK: - WP.com
@@ -155,44 +120,6 @@ class AuthenticationService {
             parameters: parameters,
             success: success,
             failure: failure)
-
-        // We don't want these cookies loaded onto all of our requests
-        /*
-        let session = URLSession(configuration: .ephemeral)
-
-        let endpoint = AuthenticationService.wpComLoginEndpoint
-        let url = URL(string: endpoint)!
-        var request = URLRequest(url: url)
-
-        request.httpMethod = "POST"
-        request.httpBody = body(withParameters: [
-            "log": username,
-            "rememberme": "true"
-        ])
-        request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
-
-        let task = session.dataTask(with: request) { data, response, error in
-            if let error = error {
-                failure(error)
-                return
-            }
-
-            // The following code is a bit complicated to read, apologies.
-            // We're retrieving all cookies from the "Set-Cookie" header manually, and combining
-            // those cookies with the ones from the current session.  The reason behind this is that
-            // iOS's URLSession processes the cookies from such header before this callback is executed,
-            // whereas OHTTPStubs.framework doesn't (the cookies are left in the header fields of
-            // the response).  The only way to combine both is to just add them together here manually.
-            //
-            // To know if you can remove this, you'll have to test this code live and in our unit tests
-            // and compare the session cookies.
-            let responseCookies = self.cookies(from: response, loginURL: url)
-            let cookies = (session.configuration.httpCookieStorage?.cookies ?? [HTTPCookie]()) + responseCookies
-            success(cookies)
-        }
-
-        task.resume()
- */
     }
 
     // MARK: - Request Construction
