@@ -18,7 +18,7 @@ class ApproveComment: DefaultNotificationActionCommand {
         return on ? .neutral(.shade30) : .primary
     }
 
-    func execute(context: ActionContext<FormattableCommentContent>) {
+    override func execute<ObjectType: FormattableCommentContent>(context: ActionContext<ObjectType>) {
         let block = context.block
         if on {
             unApprove(block: block)

@@ -7,7 +7,7 @@ class MarkAsSpam: DefaultNotificationActionCommand {
         return MarkAsSpam.title
     }
 
-    func execute(context: ActionContext<FormattableCommentContent>) {
+    override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
         let request = NotificationDeletionRequest(kind: .spamming, action: { [weak self] requestCompletion in
             self?.actionsService?.spamCommentWithBlock(context.block) { (success) in
                 requestCompletion(success)

@@ -14,7 +14,7 @@ class LikeComment: DefaultNotificationActionCommand {
         return on ? TitleStrings.like : TitleStrings.unlike
     }
 
-    func execute(context: ActionContext<FormattableCommentContent>) {
+    override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
         let block = context.block
         if on {
             removeLike(block: block)
