@@ -6,7 +6,7 @@ private struct PrepublishingOption {
 }
 
 class PrepublishingViewController: UITableViewController {
-    private let post: Post
+    let post: Post
 
     private let completion: (AbstractPost) -> ()
 
@@ -104,14 +104,4 @@ class PrepublishingViewController: UITableViewController {
         static let nuxButtonInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 40)
     }
-}
-
-class PrepublishingNavigationController: UINavigationController, BottomSheetPresentable {
-    var initialHeight: CGFloat = 200
-}
-
-typealias UIBottomSheetPresentable = BottomSheetPresentable & UIViewController
-
-protocol BottomSheetPresentable {
-    var initialHeight: CGFloat { get }
 }
