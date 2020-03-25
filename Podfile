@@ -183,9 +183,9 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.11.2-beta.1'
+    #pod 'WordPressAuthenticator', '~> 1.12.0-beta.4'
     # While in PR
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/224-remove-showSignupMethod'
     #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
     # pod 'WordPressAuthenticator', :path => ''
 
