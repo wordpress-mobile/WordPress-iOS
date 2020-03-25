@@ -1,6 +1,6 @@
 14.6
 -----
-* [internal] the login and signup Magic Link flows have code changes that could cause regressions. See https://git.io/Jvy4P for testing details.
+* [internal] the login and signup Magic Link flows have code changes that could cause regressions. See https://git.io/JvSD6 and https://git.io/Jvy4P for testing details.
 * Notifications: Fix layout on screens with a notch.
 
  
