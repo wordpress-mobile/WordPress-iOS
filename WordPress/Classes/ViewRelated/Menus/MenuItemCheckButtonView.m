@@ -38,7 +38,7 @@ static CGFloat const iconPadding = 3.0;
 {
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.translatesAutoresizingMaskIntoConstraints = NO;
-    iconView.image = [Gridicon iconOfType:GridiconTypeCheckmark];
+    iconView.image = [UIImage gridiconOfType:GridiconTypeCheckmark];
     iconView.tintColor = [UIColor murielListIcon];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor clearColor];

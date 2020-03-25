@@ -29,7 +29,7 @@ private class InlineErrorRetryTableViewCellAccessoryView: UIStackView {
 
     init() {
         self.retryImageView = {
-            let dismissImage = Gridicon.iconOfType(.refresh).imageWithTintColor(.primary)
+            let dismissImage = UIImage.gridicon(.refresh).imageWithTintColor(.primary)
             let imageView = UIImageView(image: dismissImage)
 
             imageView.translatesAutoresizingMaskIntoConstraints = false

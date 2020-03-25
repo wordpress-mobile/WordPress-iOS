@@ -19,7 +19,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
             headerImageView?.isHidden = true
         }
 
-        let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 40, height: 40))
+        let iconPlaceholder = UIImage.gridicon(.plugins, size: CGSize(width: 40, height: 40))
         iconImageView?.downloadImage(from: directoryEntry.icon, placeholderImage: iconPlaceholder)
         iconImageView?.backgroundColor = .listForeground
         iconImageView?.tintColor = .neutral

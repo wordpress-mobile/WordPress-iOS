@@ -9,7 +9,7 @@ class WebKitViewController: UIViewController {
     @objc let titleView = NavigationTitleView()
 
     @objc lazy var backButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
+        let button = UIBarButtonItem(image: UIImage.gridicon(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
                                style: .plain,
                                target: self,
                                action: #selector(goBack))
@@ -17,7 +17,7 @@ class WebKitViewController: UIViewController {
         return button
     }()
     @objc lazy var forwardButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight),
+        let button = UIBarButtonItem(image: .gridicon(.chevronRight),
                                style: .plain,
                                target: self,
                                action: #selector(goForward))
@@ -25,7 +25,7 @@ class WebKitViewController: UIViewController {
         return button
     }()
     @objc lazy var shareButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+        let button = UIBarButtonItem(image: .gridicon(.shareiOS),
                                style: .plain,
                                target: self,
                                action: #selector(share))
@@ -33,7 +33,7 @@ class WebKitViewController: UIViewController {
         return button
     }()
     @objc lazy var safariButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.globe),
+        let button = UIBarButtonItem(image: .gridicon(.globe),
                                style: .plain,
                                target: self,
                                action: #selector(openInSafari))
@@ -42,12 +42,12 @@ class WebKitViewController: UIViewController {
         return button
     }()
     @objc lazy var refreshButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
+        let button = UIBarButtonItem(image: .gridicon(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
         button.title = NSLocalizedString("Refresh", comment: "Button label to refres a web page")
         return button
     }()
     @objc lazy var closeButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
+        let button = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
         button.title = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
         return button
     }()

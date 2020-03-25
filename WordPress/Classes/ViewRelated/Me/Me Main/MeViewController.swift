@@ -141,7 +141,7 @@ class MeViewController: UITableViewController {
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
-            icon: Gridicon.iconOfType(.phone),
+            icon: .gridicon(.phone),
             accessoryType: accessoryType,
             action: pushAppSettings(),
             accessibilityIdentifier: "appSettings")
@@ -157,21 +157,21 @@ class MeViewController: UITableViewController {
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
-            icon: Gridicon.iconOfType(.user),
+            icon: .gridicon(.user),
             accessoryType: accessoryType,
             action: pushMyProfile(),
             accessibilityIdentifier: "myProfile")
 
         let accountSettings = NavigationItemRow(
             title: RowTitles.accountSettings,
-            icon: Gridicon.iconOfType(.cog),
+            icon: .gridicon(.cog),
             accessoryType: accessoryType,
             action: pushAccountSettings(),
             accessibilityIdentifier: "accountSettings")
 
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
-            icon: Gridicon.iconOfType(.help),
+            icon: .gridicon(.help),
             showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())

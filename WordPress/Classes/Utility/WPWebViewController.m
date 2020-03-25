@@ -95,19 +95,19 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
     // Buttons
     if (!self.optionsButton) {
-        self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeShareIOS] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
+        self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage gridiconOfType:GridiconTypeShareiOS] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
 
         self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
     }
 
-    self.dismissButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeCross] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+    self.dismissButton = [[UIBarButtonItem alloc] initWithImage:[UIImage gridiconOfType:GridiconTypeCross] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
 
     self.dismissButton.accessibilityLabel   = NSLocalizedString(@"Dismiss", @"Dismiss a view. Verb");
     self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Previous web page");
     self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Next web page");
 
-    self.backButton.image                   = [[Gridicon iconOfType:GridiconTypeChevronLeft] imageFlippedForRightToLeftLayoutDirection];
-    self.forwardButton.image                = [[Gridicon iconOfType:GridiconTypeChevronRight] imageFlippedForRightToLeftLayoutDirection];
+    self.backButton.image                   = [[UIImage gridiconOfType:GridiconTypeChevronLeft] imageFlippedForRightToLeftLayoutDirection];
+    self.forwardButton.image                = [[UIImage gridiconOfType:GridiconTypeChevronRight] imageFlippedForRightToLeftLayoutDirection];
 
     // Toolbar: Hidden by default!
     self.toolbar.barTintColor               = [UIColor whiteColor];
