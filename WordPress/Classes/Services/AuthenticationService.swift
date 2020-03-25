@@ -61,7 +61,7 @@ class AuthenticationService {
             parameters: parameters,
             success: success,
             failure: failure)
-        
+
         /*
         
         // We don't want these cookies loaded onto all of our requests
@@ -138,7 +138,7 @@ class AuthenticationService {
         authToken: String,
         success: @escaping (_ cookies: [HTTPCookie]) -> Void,
         failure: @escaping (Error) -> Void) {
-        
+
         let loginURL = URL(string: AuthenticationService.wpComLoginEndpoint)!
         let headers = [
             "Authorization": "Bearer \(authToken)"
@@ -154,7 +154,7 @@ class AuthenticationService {
             parameters: parameters,
             success: success,
             failure: failure)
-        
+
         // We don't want these cookies loaded onto all of our requests
         /*
         let session = URLSession(configuration: .ephemeral)
@@ -195,7 +195,7 @@ class AuthenticationService {
     }
 
     // MARK: - Request Construction
-    
+
     private func requestAuthCookies(
         from url: URL,
         headers: [String: String],
@@ -209,7 +209,7 @@ class AuthenticationService {
 
         request.httpMethod = "POST"
         request.httpBody = body(withParameters: parameters)
-        
+
         headers.forEach { (key, value) in
             request.setValue(value, forHTTPHeaderField: key)
         }
