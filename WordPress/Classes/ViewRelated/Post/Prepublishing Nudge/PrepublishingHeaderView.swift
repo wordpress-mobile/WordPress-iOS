@@ -16,17 +16,12 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     weak var delegate: PrepublishingHeaderViewDelegate?
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        configureBackButton()
-        configurePublishingToLabel()
-        configureBlogTitleLabel()
-    }
-
     func configure(_ blog: Blog) {
         blogImageView.downloadSiteIcon(for: blog)
         blogTitleLabel.text = blog.title
     }
+
+    // MARK: - Back button
 
     func hideBackButton() {
         backButtonView.layer.opacity = 0
@@ -42,6 +37,15 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     @IBAction func backButtonTapped(_ sender: Any) {
         delegate?.backButtonTapped()
+    }
+
+    // MARK: - Style
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        configureBackButton()
+        configurePublishingToLabel()
+        configureBlogTitleLabel()
     }
 
     private func configureBackButton() {
