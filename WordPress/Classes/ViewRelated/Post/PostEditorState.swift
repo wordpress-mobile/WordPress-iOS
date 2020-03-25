@@ -350,9 +350,6 @@ public class PostEditorStateContext {
     /// Returns the WPAnalyticsStat enum to be tracked when this post is published
     ///
     var publishActionAnalyticsStat: WPAnalyticsStat {
-        if action == .publish && !isBeingPublished {
-            return PostEditorAction.save.publishActionAnalyticsStat
-        }
         return action.publishActionAnalyticsStat
     }
 
