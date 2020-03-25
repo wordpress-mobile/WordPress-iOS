@@ -41,7 +41,12 @@ struct GutenbergNetworkRequest {
     }
 
     private func performSelfHostedRequest(completion: @escaping CompletionHandler) {
-        blog.wordPressOrgRestApi?.GET(path, parameters: nil) { (result, httpResponse) in
+        guard let api = blog.wordPressOrgRestApi else {
+            completion(.failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil)))
+            return
+        }
+
+        api.GET(path, parameters: nil) { (result, httpResponse) in
                 switch result {
                     case .success(let response):
                         completion(.success(response))
