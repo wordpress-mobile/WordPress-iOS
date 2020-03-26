@@ -222,7 +222,7 @@ extension WPStyleGuide {
 
     // MARK: - Button Styles and Text
 
-    class func applyReaderActionButtonStyle(_ button: UIButton, defaultColor: UIColor = UIColor.listIcon) {
+    class func applyReaderActionButtonStyle(_ button: UIButton, titleColor: UIColor = .listIcon, imageColor: UIColor = .listIcon) {
         let highlightedColor: UIColor = .neutral
         let selectedColor: UIColor = .primary(.shade40)
         let bothColor: UIColor = .primaryLight
@@ -234,13 +234,13 @@ extension WPStyleGuide {
         let bothImage = button.image(for: [.highlighted, .selected])
         let disabledImage = button.image(for: .disabled)
 
-        button.setImage(normalImage?.imageWithTintColor(defaultColor), for: .normal)
+        button.setImage(normalImage?.imageWithTintColor(imageColor), for: .normal)
         button.setImage(highlightedImage?.imageWithTintColor(highlightedColor), for: .highlighted)
         button.setImage(selectedImage?.imageWithTintColor(selectedColor), for: .selected)
         button.setImage(bothImage?.imageWithTintColor(bothColor), for: [.selected, .highlighted])
         button.setImage(disabledImage?.imageWithTintColor(disabledColor), for: .disabled)
 
-        button.setTitleColor(defaultColor, for: .normal)
+        button.setTitleColor(titleColor, for: .normal)
         button.setTitleColor(highlightedColor, for: .highlighted)
         button.setTitleColor(selectedColor, for: .selected)
         button.setTitleColor(bothColor, for: [.selected, .highlighted])
@@ -369,7 +369,7 @@ extension WPStyleGuide {
         let icon = UIImage.gridicon(.filter)
 
         button.setImage(icon, for: .normal)
-        applyReaderActionButtonStyle(button, defaultColor: UIColor(light: .black, dark: .white))
+        applyReaderActionButtonStyle(button, titleColor: UIColor(light: .black, dark: .white))
     }
     /// Applies the filter button title to the button passed as an argument
     class func applyReaderFilterButtonTitle(_ button: UIButton, title: String) {
@@ -381,7 +381,7 @@ extension WPStyleGuide {
         let icon = UIImage.gridicon(.crossSmall)
 
         button.setImage(icon, for: .normal)
-        applyReaderActionButtonStyle(button, defaultColor: UIColor(light: .black, dark: .white))
+        applyReaderActionButtonStyle(button, imageColor: UIColor(light: .black, dark: .white))
     }
     /// Applies the settings button style to the button passed as an argument
     class func applyReaderSettingsButtonStyle(_ button: UIButton) {

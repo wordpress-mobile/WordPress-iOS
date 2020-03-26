@@ -185,7 +185,7 @@ extension ReaderTabView {
 
 
         static let resetButtonWidth: CGFloat = 32
-        static let resetButtonInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
+        static let resetButtonInsets = UIEdgeInsets(top: 1, left: -4, bottom: -1, right: 4)
         static let settingsButtonWidth: CGFloat = 56
 
         static let verticalDividerWidth: CGFloat = 1
