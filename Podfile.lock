@@ -433,7 +433,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.24.0/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
-  - Gridicons (from `https://github.com/Automattic/Gridicons-iOS`, branch `fix/update-filter-asset`)
+  - Gridicons (~> 1.0.1-beta.1)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.24.0`)
   - JTAppleCalendar (~> 8.0.2)
   - MediaEditor (~> 1.0.1)
@@ -502,6 +502,7 @@ SPEC REPOS:
     - Gifu
     - GoogleSignIn
     - GoogleToolboxForMac
+    - Gridicons
     - GTMSessionFetcher
     - JTAppleCalendar
     - lottie-ios
@@ -550,9 +551,6 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   glog:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.24.0/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json
-  Gridicons:
-    :branch: fix/update-filter-asset
-    :git: https://github.com/Automattic/Gridicons-iOS
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.24.0
@@ -618,9 +616,6 @@ CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  Gridicons:
-    :commit: ef98df9991731582fb0f0fc3e2027a781d23516b
-    :git: https://github.com/Automattic/Gridicons-iOS
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.24.0
@@ -714,6 +709,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 0bf643a0bb0faffc57a61d342802c87942ff41a4
+PODFILE CHECKSUM: c06910a18a4ff3184e4ce79b71bfda7239285b24
 
 COCOAPODS: 1.8.4
