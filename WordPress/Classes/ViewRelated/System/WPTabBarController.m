@@ -593,13 +593,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
     editor.afterDismiss = afterDismiss;
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"create_button"} withBlog:blog];
-    } else {
-        [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
-    }
+    
+    NSString *tapSource = [Feature enabled:FeatureFlagFloatingCreateButton] ? @"create_button" : @"tab_bar";
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": tapSource, WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];
     [self presentViewController:editor animated:NO completion:nil];
-    return;
 }
 
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId

@@ -516,7 +516,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let editor = EditPostViewController(blog: blog)
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: nil)
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
     }
 
     private func editPost(apost: AbstractPost) {
