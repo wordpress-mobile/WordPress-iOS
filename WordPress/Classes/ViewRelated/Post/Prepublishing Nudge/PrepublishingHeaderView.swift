@@ -13,6 +13,7 @@ class PrepublishingHeaderView: UIView, NibLoadable {
     @IBOutlet weak var backButtonView: UIView!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
 
     weak var delegate: PrepublishingHeaderViewDelegate?
 
@@ -39,6 +40,22 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         delegate?.backButtonTapped()
     }
 
+    // MARK: - Title
+
+    func setTitle(_ title: String?) {
+        titleLabel.text = title?.uppercased()
+    }
+
+    func showTitle() {
+        publishingToLabel.layer.opacity = 0
+        titleLabel.layer.opacity = 1
+    }
+
+    func hideTitle() {
+        publishingToLabel.layer.opacity = 1
+        titleLabel.layer.opacity = 0
+    }
+
     // MARK: - Style
 
     override func awakeFromNib() {
@@ -46,6 +63,7 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         configureBackButton()
         configurePublishingToLabel()
         configureBlogTitleLabel()
+        configureTitleLabel()
     }
 
     private func configureBackButton() {
@@ -63,8 +81,15 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         WPStyleGuide.applyPostTitleStyle(blogTitleLabel)
     }
 
+    private func configureTitleLabel() {
+        titleLabel.layer.opacity = 0
+        titleLabel.font = WPStyleGuide.TableViewHeaderDetailView.titleFont
+        titleLabel.textColor = WPStyleGuide.TableViewHeaderDetailView.titleColor
+    }
+
     private enum Constants {
         static let backButtonSize = CGSize(width: 28, height: 28)
         static let leftRightInset: CGFloat = 20
+        static let title = NSLocalizedString("Publishing To", comment: "Label that describes in which blog the user is publishing to")
     }
 }
