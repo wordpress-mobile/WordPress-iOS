@@ -433,7 +433,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
         let page = postService.createDraftPage(for: blog)
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view", WPAppAnalyticsKeyPostType: "page"], with: blog)
         showEditor(post: page)
 
         QuickStartTourGuide.find()?.visited(.newPage)
