@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.6.0'
+    pod 'WordPressKit', '~> 4.7.0-beta.1'
 
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.6.0-beta.3'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
@@ -183,11 +183,11 @@ target 'WordPress' do
 
     pod 'Gridicons', '~> 1.0'
 
-    pod 'WordPressAuthenticator', '~> 1.11.2-beta.1'
+    pod 'WordPressAuthenticator', '~> 1.12.0-beta.4'
     # While in PR
     #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
     #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-    # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+    #pod 'WordPressAuthenticator', :path => ''
 
     pod 'MediaEditor', '~> 1.0.1'
     # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'

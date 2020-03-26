@@ -31,6 +31,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 @interface Blog ()
 
 @property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
+@property (nonatomic, strong, readwrite) WordPressOrgRestApi *wordPressOrgRestApi;
 
 @end
 
@@ -88,6 +89,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
 @synthesize xmlrpcApi = _xmlrpcApi;
+@synthesize wordPressOrgRestApi = _wordPressOrgRestApi;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -96,6 +98,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
     [super prepareForDeletion];
 
     [_xmlrpcApi invalidateAndCancelTasks];
+    [_wordPressOrgRestApi invalidateAndCancelTasks];
 }
 
 - (void)didTurnIntoFault
@@ -104,6 +107,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 
     // Clean up instance variables
     self.xmlrpcApi = nil;
+    self.wordPressOrgRestApi = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -715,6 +719,14 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
         }
     }
     return _xmlrpcApi;
+}
+
+- (WordPressOrgRestApi *)wordPressOrgRestApi
+{
+    if (_wordPressOrgRestApi == nil) {
+        _wordPressOrgRestApi = [[WordPressOrgRestApi alloc] initWithBlog:self];
+    }
+    return _wordPressOrgRestApi;
 }
 
 - (WordPressComRestApi *)wordPressComRestApi
