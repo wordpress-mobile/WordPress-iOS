@@ -14,6 +14,18 @@ class PrepublishingNavigationController: UINavigationController, BottomSheetPres
         return (viewControllers.first { $0 is PrepublishingViewController } as? PrepublishingViewController)?.post.blog
     }()
 
+    // In iOS 13+ we need to take into account the navigationBar frame height
+    // iOS 12 or 11 that's not needed
+    lazy var insets: UIEdgeInsets = {
+        var top: CGFloat = 0
+        if #available(iOS 13, *) {
+            top = Constants.navigationHeaderHeight - navigationBar.frame.height
+        } else {
+            top = Constants.navigationHeaderHeight
+        }
+        return UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -43,7 +55,7 @@ class PrepublishingNavigationController: UINavigationController, BottomSheetPres
             header.rightAnchor.constraint(equalTo: navigationBar.rightAnchor),
             header.heightAnchor.constraint(equalToConstant: Constants.navigationHeaderHeight)
         ])
-        additionalSafeAreaInsets = UIEdgeInsets(top: Constants.navigationHeaderHeight - navigationBar.frame.height, left: 0, bottom: 0, right: 0)
+        additionalSafeAreaInsets = insets
     }
 
     private enum Constants {
