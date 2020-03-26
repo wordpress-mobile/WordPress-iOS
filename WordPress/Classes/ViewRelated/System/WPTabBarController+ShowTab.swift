@@ -25,7 +25,7 @@ extension WPTabBarController {
         page.content = content
 
         let blogID = blog.dotComID?.intValue ?? 0 as Any
-        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: ["tap_source": source, WPAppAnalyticsKeyBlogID: blogID])
+        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage, properties: ["tap_source": source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyPostType: "page"])
 
         let editorFactory = EditorFactory()
 

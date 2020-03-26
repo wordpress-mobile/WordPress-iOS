@@ -459,11 +459,6 @@ class WebKitViewController: UIViewController {
 
 extension WebKitViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if let request = authenticator?.interceptRedirect(request: navigationAction.request) {
-            decisionHandler(.cancel)
-            load(request: request)
-            return
-        }
 
         if let delegate = navigationDelegate {
             let policy = delegate.shouldNavigate(request: navigationAction.request)
