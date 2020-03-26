@@ -6,7 +6,7 @@ protocol PrepublishingHeaderViewDelegate: class {
 }
 
 class PrepublishingHeaderView: UIView, NibLoadable {
-    
+
     @IBOutlet weak var blogImageView: UIImageView!
     @IBOutlet weak var publishingToLabel: UILabel!
     @IBOutlet weak var blogTitleLabel: UILabel!
