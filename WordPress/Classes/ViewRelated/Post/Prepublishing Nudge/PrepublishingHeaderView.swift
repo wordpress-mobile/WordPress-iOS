@@ -15,7 +15,7 @@ class PrepublishingHeaderView: UIView, NibLoadable {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separator: UIView!
-    
+
     weak var delegate: PrepublishingHeaderViewDelegate?
 
     func configure(_ blog: Blog) {
