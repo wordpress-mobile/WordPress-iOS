@@ -111,7 +111,7 @@ extension PostEditor where Self: UIViewController {
             !UserDefaults.standard.asyncPromoWasDisplayed {
             promoBlock()
         } else if action.isAsync,
-            let postStatus = self.post.status,
+            let postStatus = self.post.original?.status ?? self.post.status,
             ![.publish, .publishPrivate].contains(postStatus) {
             // Only display confirmation alert for unpublished posts
             displayPublishConfirmationAlert(for: action, onPublish: publishBlock)
