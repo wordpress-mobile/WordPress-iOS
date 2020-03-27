@@ -115,6 +115,33 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
+  Release Build:
+    executor: 
+      name: ios/default
+      xcode-version: "11.2.1"
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+      - run: 
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run: 
+          name: Install other tools
+          command: |
+            brew unlink python@2
+            brew install imagemagick
+            brew install ghostscript
+            curl -sL https://sentry.io/get-cli/ | bash
+
+      - run:
+          name: Build
+          working_directory: Scripts
+          command: "bundle exec fastlane build_and_upload_release skip_confirm:true"
+          no_output_timeout: 60m
 
 workflows:
   wordpress_ios:
@@ -142,3 +169,12 @@ workflows:
           filters:
             branches:
               ignore: /pull\/[0-9]+/
+  Release Build:
+    jobs:
+      - Release Build: 
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/ 
+
