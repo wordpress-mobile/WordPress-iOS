@@ -61,16 +61,16 @@
                             <rect key="frame" x="106" y="0.0" width="268" height="110"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="3YM-UU-GGo">
-                                    <rect key="frame" x="0.0" y="35.666666666666671" width="81" height="38.666666666666671"/>
+                                    <rect key="frame" x="0.0" y="35.666666666666671" width="268" height="38.666666666666671"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Publishing To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZFo-FV-nl8">
-                                            <rect key="frame" x="0.0" y="0.0" width="81" height="15.666666666666666"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="268" height="15.666666666666666"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" name="Gray30"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYs-yz-ucu">
-                                            <rect key="frame" x="0.0" y="20.666666666666671" width="81" height="18"/>
+                                            <rect key="frame" x="0.0" y="20.666666666666671" width="268" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" name="Gray80"/>
                                             <nil key="highlightedColor"/>
@@ -80,6 +80,7 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstAttribute="trailing" secondItem="3YM-UU-GGo" secondAttribute="trailing" id="08r-Oh-snD"/>
                                 <constraint firstItem="3YM-UU-GGo" firstAttribute="leading" secondItem="zDg-a5-aiB" secondAttribute="leading" id="oJg-wJ-uCW"/>
                                 <constraint firstItem="3YM-UU-GGo" firstAttribute="centerY" secondItem="zDg-a5-aiB" secondAttribute="centerY" id="tpf-SY-Ods"/>
                             </constraints>
