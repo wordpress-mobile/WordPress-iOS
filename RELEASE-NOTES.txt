@@ -1,7 +1,10 @@
 14.6
 -----
+* [internal] the login and signup Magic Link flows have code changes that can cause regressions. See https://git.io/Jvy4P for testing details.
+* [internal] the login and signup Continue with Google flows have code changes that can cause regressions. See https://git.io/JvypB for testing details.
 * [internal] the login and signup Magic Link flows have code changes that could cause regressions. See https://git.io/Jvy4P for testing details.
 * Notifications: Fix layout on screens with a notch.
+* Post Commenting: fixed issue that prevented selecting an @ mention suggestion.
 
  
 14.5

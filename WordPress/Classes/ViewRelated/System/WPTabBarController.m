@@ -213,8 +213,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
-
+        if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerTabViewController];
+        } else {
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+        }
         _readerNavigationController.navigationBar.translucent = NO;
 
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
@@ -383,6 +386,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return _readerSplitViewController;
 }
 
+- (ReaderTabViewController *)readerTabViewController
+{
+    ReaderTabView *readerTabView = [[ReaderTabView alloc] init];
+    ReaderTabViewController *readerTabViewController = [[ReaderTabViewController alloc] initWithView:readerTabView];
+    return readerTabViewController;
+}
+
 - (UISplitViewController *)meSplitViewController
 {
     if (!_meSplitViewController) {
@@ -476,11 +486,21 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (NSArray<UIViewController *> *)tabViewControllers
 {
     
-    NSMutableArray<UIViewController *> *allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
-                                                        self.readerSplitViewController,
-                                                        self.newPostViewController,
-                                                        self.meSplitViewController,
-                                                        self.notificationsSplitViewController]];
+    NSMutableArray<UIViewController *> *allViewControllers;
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+        self.readerNavigationController,
+        self.newPostViewController,
+        self.meSplitViewController,
+        self.notificationsSplitViewController]];
+    } else {
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+        self.readerSplitViewController,
+        self.newPostViewController,
+        self.meSplitViewController,
+        self.notificationsSplitViewController]];
+    }
+
     
     if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
         [allViewControllers removeObject:self.newPostViewController];
