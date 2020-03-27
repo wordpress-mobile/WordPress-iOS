@@ -69,17 +69,26 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
     [mergedProperties addEntriesFromDictionary:properties];
 
-    if (eventPair.properties == nil && properties == nil) {
-        DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
+    [self trackString:eventPair.eventName withProperties:mergedProperties];
+}
+
+- (void)trackString:(NSString *)event
+{
+    [self trackString:event withProperties:nil];
+}
+
+- (void)trackString:(NSString *)event withProperties:(NSDictionary *)properties {
+    if (properties == nil) {
+        DDLogInfo(@"🔵 Tracked: %@", event);
     } else {
-        NSArray<NSString *> *propertyKeys = [[mergedProperties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        NSArray<NSString *> *propertyKeys = [[properties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
         NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
-            return [NSString stringWithFormat:@"%@: %@", key, mergedProperties[key]];
+            return [NSString stringWithFormat:@"%@: %@", key, properties[key]];
         }] componentsJoinedByString:@", "];
-        DDLogInfo(@"🔵 Tracked: %@ <%@>", eventPair.eventName, propertiesDescription);
+        DDLogInfo(@"🔵 Tracked: %@ <%@>", event, propertiesDescription);
     }
 
-    [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
+    [self.tracksService trackEventName:event withCustomProperties:properties];
 }
 
 - (void)beginSession
@@ -851,12 +860,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
-            break;
-        case WPAnalyticsStatMediaEditorShown:
-            eventName = @"media_editor_shown";
-            break;
-        case WPAnalyticsStatMediaEditorUsed:
-            eventName = @"media_editor_used";
             break;
         case WPAnalyticsStatMediaLibraryDeletedItems:
             eventName = @"media_library_deleted_items";

@@ -1,5 +1,15 @@
-- There are two new blocks available! Welcome, Button and Group blocks.
-- A few other blocks have improvements: You can change image sizes in image blocks and use upload options in Gallery blocks. We also took care of a text-wrapping issue in Shortcode blocks that would cut off part of your content.
-- We also made some enhancements to the general block experience. You’ll see a new toolbar floating above the block you’re editing to make navigating blocks, especially complex ones, easier. There’s also scroll support in the block picker and in block settings.
-- Finally, we fixed a few bugs. Adding emoji to a post title no longer adds strong HTML elements to the post title, and the alignment of paragraph blocks is now respected when you split the paragraph or read the post’s HTML content.
-- We also adjusted the weekday symbols in the calendar depending on your regional settings, and added Quick Action buttons to the Site Details to take you straight to the most frequently used parts of a site.
+New blocks! Welcome the Latest Posts block, for highlighting your new stuff in posts and pages.
+
+When you create a new page, we’ll show you a few templates — pick one, and we’ll add all the necessary blocks to your page to get you started quickly.
+
+We fixed up a few block editor issues; no more crashes when pasting in HTML content or missing Quote block borders in Dark Mode.
+
+If you scheduled a post to publish in the past, it would display as “scheduled” instead of “published.” That’s fixed, along with an issue where dates displayed incorrectly if your site’s timezone wasn’t the same as your device’s timezone.
+
+We fixed some UI inconsistencies in Dark Mode and with the Reader toolbar.
+
+You can use @-mentions when writing comments in fullscreen mode.
+
+Sometimes Signup and Login Magic Link emails would go to your spam folder, so we added a note to the confirmation screen suggesting that folks check their spam/junk folders if they don’t see the email promptly.
+
+Stay safe, everyone.

@@ -1,0 +1,1 @@
+Hanya beberapa hal yang harus dilakukan dengan cepat minggu ini, karena terdapat hal-hal lebih besar yang terjadi di dunia: Kami telah memperbaiki masalah di Pengaturan Pos sehingga tanggal pos yang akan segera dipublikasikan dapat ditampilkan dengan benar, dan kami membuat beberapa perubahan di balik kap untuk meningkatkan kecepatan dan keandalan secara umum.

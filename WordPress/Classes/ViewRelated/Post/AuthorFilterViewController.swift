@@ -235,13 +235,13 @@ private class AuthorFilterCell: UITableViewCell {
         didSet {
             switch filterType {
             case .everyone:
-                gravatarImageView.image = Gridicon.iconOfType(.multipleUsers, withSize: Metrics.multipleGravatarSize)
+                gravatarImageView.image = .gridicon(.multipleUsers, size: Metrics.multipleGravatarSize)
                 gravatarImageView.contentMode = .center
                 accessibilityHint = NSLocalizedString("Select to show everyone's posts.", comment: "Voiceover accessibility hint, informing the user they can select an item to show posts written by all users on the site")
             case .user(let email):
                 gravatarImageView.contentMode = .scaleAspectFill
 
-                let placeholder = Gridicon.iconOfType(.user, withSize: Metrics.gravatarSize)
+                let placeholder = UIImage.gridicon(.user, size: Metrics.gravatarSize)
                 if let email = email {
                     gravatarImageView.downloadGravatarWithEmail(email, placeholderImage: placeholder)
                 } else {

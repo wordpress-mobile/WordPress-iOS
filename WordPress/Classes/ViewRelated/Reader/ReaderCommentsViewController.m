@@ -56,6 +56,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 @property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic) BOOL deviceIsRotating;
+@property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
 
 @end
@@ -194,6 +195,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    if (@available(iOS 13.0, *)) {
+        // Update cached attributed strings when toggling light/dark mode.
+        self.userInterfaceStyleChanged = self.traitCollection.userInterfaceStyle != previousTraitCollection.userInterfaceStyle;
+        [self refreshTableViewAndNoResultsView];
+    } else {
+        self.userInterfaceStyleChanged = NO;
+    }
+}
 
 #pragma mark - Split View Support
 
@@ -280,11 +293,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [headerWrapper addSubview:headerView];
 
     // Border
-    CGSize borderSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 1.0);
-    UIImage *borderImage = [UIImage imageWithColor:[UIColor murielNeutral5] havingSize:borderSize];
-    UIImageView *borderView = [[UIImageView alloc] initWithImage:borderImage];
+    CGRect borderRect = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 1.0);
+    UIView *borderView = [[UIView alloc] initWithFrame:borderRect];
+    borderView.backgroundColor = [UIColor murielNeutral5];
     borderView.translatesAutoresizingMaskIntoConstraints = NO;
-    borderView.contentMode = UIViewContentModeScaleAspectFill;
     [headerWrapper addSubview:borderView];
 
     // Layout
@@ -688,7 +700,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.noResultsViewController hideImageView:hideImageView];
     [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];
-    [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.suggestionsTableView];
     self.noResultsViewController.view.frame = self.tableView.frame;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
@@ -722,7 +734,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (NSAttributedString *)cacheContentForComment:(Comment *)comment
 {
     NSAttributedString *attrStr = [self.cachedAttributedStrings objectForKey:comment.commentID];
-    if (!attrStr) {
+    if (!attrStr || self.userInterfaceStyleChanged == YES) {
         attrStr = [WPRichContentView formattedAttributedStringForString: comment.content];
         [self.cachedAttributedStrings setObject:attrStr forKey:comment.commentID];
     }
@@ -1186,4 +1198,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tapOffKeyboardGesture.enabled = !showsSuggestions;
 }
 
+
+- (void)replyTextView:(ReplyTextView *)replyTextView willEnterFullScreen:(FullScreenCommentReplyViewController *)controller
+{
+    [self.suggestionsTableView hideSuggestions];
+    
+    [controller enableSuggestionsWith:self.siteID];
+}
 @end

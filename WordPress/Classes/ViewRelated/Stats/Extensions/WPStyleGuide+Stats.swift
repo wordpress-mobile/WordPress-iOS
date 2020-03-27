@@ -158,7 +158,7 @@ extension WPStyleGuide {
         }
 
         static func imageForGridiconType(_ iconType: GridiconType, withTint tintColor: ImageTintColor = .grey) -> UIImage? {
-            return Gridicon.iconOfType(iconType, withSize: gridiconSize).imageWithTintColor(tintColor.styleGuideColor)
+            return UIImage.gridicon(iconType, size: gridiconSize).imageWithTintColor(tintColor.styleGuideColor)
         }
 
         static func gravatarPlaceholderImage() -> UIImage? {

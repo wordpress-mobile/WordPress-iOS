@@ -17,6 +17,16 @@ final class BlogBuilder {
         blog.xmlrpc = "https://example.com/xmlrpc.php"
     }
 
+    func with(atomic: Bool) -> Self {
+        var options = blog.options ?? [AnyHashable: Any]()
+        options["is_wpcom_atomic"] = [
+            "value": atomic ? 1 : 0
+        ]
+        blog.options = options
+
+        return self
+    }
+
     func build() -> Blog {
         return blog
     }

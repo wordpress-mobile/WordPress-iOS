@@ -26,10 +26,12 @@ NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
 NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
+NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 
 @interface Blog ()
 
 @property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
+@property (nonatomic, strong, readwrite) WordPressOrgRestApi *wordPressOrgRestApi;
 
 @end
 
@@ -87,6 +89,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
 @synthesize xmlrpcApi = _xmlrpcApi;
+@synthesize wordPressOrgRestApi = _wordPressOrgRestApi;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -95,6 +98,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
     [super prepareForDeletion];
 
     [_xmlrpcApi invalidateAndCancelTasks];
+    [_wordPressOrgRestApi invalidateAndCancelTasks];
 }
 
 - (void)didTurnIntoFault
@@ -103,12 +107,18 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 
     // Clean up instance variables
     self.xmlrpcApi = nil;
+    self.wordPressOrgRestApi = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 #pragma mark -
 #pragma mark Custom methods
+
+- (BOOL)isAtomic
+{
+    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAtomic];
+    return [value boolValue];
+}
 
 - (BOOL)isAutomatedTransfer
 {
@@ -709,6 +719,14 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
         }
     }
     return _xmlrpcApi;
+}
+
+- (WordPressOrgRestApi *)wordPressOrgRestApi
+{
+    if (_wordPressOrgRestApi == nil) {
+        _wordPressOrgRestApi = [[WordPressOrgRestApi alloc] initWithBlog:self];
+    }
+    return _wordPressOrgRestApi;
 }
 
 - (WordPressComRestApi *)wordPressComRestApi

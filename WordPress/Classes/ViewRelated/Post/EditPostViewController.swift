@@ -236,20 +236,10 @@ class EditPostViewController: UIViewController {
             return
         }
 
-        if FeatureFlag.postPreview.enabled {
-            let controller = PreviewWebKitViewController(post: post)
-            controller.trackOpenEvent()
-            let navWrapper = LightNavigationController(rootViewController: controller)
-            postPost.present(navWrapper, animated: true) {}
-        } else {
-            let controller = PostPreviewViewController(post: post)
-            controller.hidesBottomBarWhenPushed = true
-            controller.onClose = {
-                self.dismiss(animated: true) {}
-            }
-            let navWrapper = UINavigationController(rootViewController: controller)
-            postPost.present(navWrapper, animated: true) {}
-        }
+        let controller = PreviewWebKitViewController(post: post)
+        controller.trackOpenEvent()
+        let navWrapper = LightNavigationController(rootViewController: controller)
+        postPost.present(navWrapper, animated: true) {}
     }
 
     @objc func closePostPost(animated: Bool) {
