@@ -202,6 +202,11 @@ class FilterTabBar: UIControl {
         commonInit()
     }
 
+    init() {
+        super.init(frame: .zero)
+        commonInit()
+    }
+
     private func commonInit() {
         tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
         tabBarHeightConstraint?.isActive = true
@@ -212,11 +217,14 @@ class FilterTabBar: UIControl {
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
             scrollView.topAnchor.constraint(equalTo: topAnchor)
-            ])
+        ])
 
         scrollView.addSubview(stackView)
 
-        stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: widthAnchor)
+        // We will manually constrain the stack view to the content layout guide
+        scrollView.contentInsetAdjustmentBehavior = .never
+
+        stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.widthAnchor)
 
         updateTabSizingConstraints()
         activateTabSizingConstraints()
@@ -226,7 +234,7 @@ class FilterTabBar: UIControl {
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
             stackView.topAnchor.constraint(equalTo: topAnchor)
-            ])
+        ])
 
         addSubview(selectionIndicator)
         NSLayoutConstraint.activate([
@@ -241,7 +249,7 @@ class FilterTabBar: UIControl {
             divider.trailingAnchor.constraint(equalTo: trailingAnchor),
             divider.bottomAnchor.constraint(equalTo: bottomAnchor),
             divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
-            ])
+        ])
     }
 
     // MARK: - Tabs
@@ -304,7 +312,8 @@ class FilterTabBar: UIControl {
         let padding = (tabSizingStyle == .equalWidths) ? 0 : AppearanceMetrics.horizontalPadding
 
         stackViewEdgeConstraints = [
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: padding),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
         ]
     }

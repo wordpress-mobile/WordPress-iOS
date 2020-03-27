@@ -208,20 +208,26 @@ import "./ScreenshotFastfile"
   # This lane builds the app and upload it for both internal and external distribution 
   # -----------------------------------------------------------------------------------
   # Usage:
-  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>]
+  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>] [create_gh_release:<create release on GH>]
   #
   # Example:
   # bundle exec fastlane build_and_upload_release 
   # bundle exec fastlane build_and_upload_release skip_confirm:true 
+  # bundle exec fastlane build_and_upload_release create_gh_release:true 
   #####################################################################################
   desc "Builds and updates for distribution"
   lane :build_and_upload_release do | options |
+    final_tag = (is_ci() == true) ? ios_validate_ci_build() : false
+    create_release = (final_tag && is_ci()) || options[:create_gh_release]
+
     ios_build_prechecks(skip_confirm: options[:skip_confirm], 
-      internal: true,
+      internal: !final_tag,
       external: true)
     ios_build_preflight()
-    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm])
-    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm])
+
+    UI.message("final tag: #{final_tag} Create release: #{create_release}")
+    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm]) unless final_tag
+    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm], create_release: create_release)
   end
 
   #####################################################################################
@@ -405,23 +411,6 @@ import "./ScreenshotFastfile"
 
       sh("rm #{archive_zip_path}") 
     end
-  end
-
-  #####################################################################################
-  # build_release
-  # -----------------------------------------------------------------------------------
-  # This lane builds the app, create a GH release and upload it for external distribution  
-  # -----------------------------------------------------------------------------------
-  # Usage:
-  # bundle exec fastlane build_release [skip_confirm:<skip confirm>]
-  #
-  # Example:
-  # bundle exec fastlane build_release 
-  # bundle exec fastlane build_release skip_confirm:true 
-  #####################################################################################
-  desc "Builds, create release and uploads for distribution"
-  lane :build_release do | options |
-    build_and_upload_itc(skip_confirm: options[:skip_confirm], create_release: true)
   end
 
 ########################################################################

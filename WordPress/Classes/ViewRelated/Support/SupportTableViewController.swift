@@ -37,6 +37,7 @@ class SupportTableViewController: UITableViewController {
         setupTable()
         checkForAutomatticEmail()
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans()
+        ZendeskUtils.fetchUserInformation()
     }
 
     override func viewWillAppear(_ animated: Bool) {

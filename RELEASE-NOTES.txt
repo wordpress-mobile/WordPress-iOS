@@ -1,6 +1,21 @@
+14.6
+-----
+* [internal] the login and signup Magic Link flows have code changes that can cause regressions. See https://git.io/Jvy4P for testing details.
+* [internal] the login and signup Continue with Google flows have code changes that can cause regressions. See https://git.io/JvypB for testing details.
+* [internal] the login and signup Magic Link flows have code changes that could cause regressions. See https://git.io/Jvy4P for testing details.
+* Notifications: Fix layout on screens with a notch.
+* Post Commenting: fixed issue that prevented selecting an @ mention suggestion.
+
+ 
 14.5
 -----
+* Block editor: New block: Latest Posts
+* Block editor: Fix Quote block's left border not being visible in Dark Mode
+* Block editor: Added Starter Page Templates: when you create a new page, we now show you a few templates to get started more quickly.
+* Block editor: Fix crash when pasting HTML content with embeded images on paragraphs
 * Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
+* Stats: Fix background color in Dark Mode on wider screen sizes. 
+* Post Settings: Fix issue where the calendar selection may not match the selected date when site timezone differs from device timezone.
 * Dark Mode fixes:
   - Border color on Search bars.
   - Stats background color on wider screen sizes.
@@ -10,6 +25,8 @@
   - Jetpack install flow colors.
 * Reader: Fix toolbar and search bar width on wider screen sizes.
 * Updated the Signup and Login Magic Link confirmation screen advising the user to check their spam/junk folder.
+* Updated appearance of Google login/signup button.
+* Updated appearance of Apple login/signup button.
  
 14.4
 -----

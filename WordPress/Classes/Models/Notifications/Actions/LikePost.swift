@@ -4,7 +4,10 @@ final class LikePost: DefaultNotificationActionCommand {
         return NSLocalizedString("Like", comment: "Like a post.")
     }
 
-    override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
-
+    override func execute<ContentType: FormattableContent>(context: ActionContext<ContentType>) {
+        guard let _ = context.block as? FormattableCommentContent else {
+            super.execute(context: context)
+            return
+        }
     }
 }

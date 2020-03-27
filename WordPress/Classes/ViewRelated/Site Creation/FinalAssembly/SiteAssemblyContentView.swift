@@ -189,7 +189,7 @@ final class SiteAssemblyContentView: UIView {
             let icon: UIImage = {
                 let iconSize = Parameters.checkmarkImageSize
                 let tintColor = Parameters.checkmarkImageColor
-                let icon = Gridicon.iconOfType(.checkmark, withSize: iconSize)
+                let icon = UIImage.gridicon(.checkmark, size: iconSize)
 
                 guard let tintedIcon = icon.imageWithTintColor(tintColor) else {
                     return icon

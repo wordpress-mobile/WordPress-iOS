@@ -222,8 +222,7 @@ extension WPStyleGuide {
 
     // MARK: - Button Styles and Text
 
-    public class func applyReaderActionButtonStyle(_ button: UIButton) {
-        let defaultColor: UIColor = .listIcon
+    class func applyReaderActionButtonStyle(_ button: UIButton, titleColor: UIColor = .listIcon, imageColor: UIColor = .listIcon) {
         let highlightedColor: UIColor = .neutral
         let selectedColor: UIColor = .primary(.shade40)
         let bothColor: UIColor = .primaryLight
@@ -235,13 +234,13 @@ extension WPStyleGuide {
         let bothImage = button.image(for: [.highlighted, .selected])
         let disabledImage = button.image(for: .disabled)
 
-        button.setImage(normalImage?.imageWithTintColor(defaultColor), for: .normal)
+        button.setImage(normalImage?.imageWithTintColor(imageColor), for: .normal)
         button.setImage(highlightedImage?.imageWithTintColor(highlightedColor), for: .highlighted)
         button.setImage(selectedImage?.imageWithTintColor(selectedColor), for: .selected)
         button.setImage(bothImage?.imageWithTintColor(bothColor), for: [.selected, .highlighted])
         button.setImage(disabledImage?.imageWithTintColor(disabledColor), for: .disabled)
 
-        button.setTitleColor(defaultColor, for: .normal)
+        button.setTitleColor(titleColor, for: .normal)
         button.setTitleColor(highlightedColor, for: .highlighted)
         button.setTitleColor(selectedColor, for: .selected)
         button.setTitleColor(bothColor, for: [.selected, .highlighted])
@@ -252,8 +251,8 @@ extension WPStyleGuide {
         let side = WPStyleGuide.fontSizeForTextStyle(Cards.buttonTextStyle)
         let size = CGSize(width: side, height: side)
 
-        let followIcon = Gridicon.iconOfType(.readerFollow, withSize: size)
-        let followingIcon = Gridicon.iconOfType(.readerFollowing, withSize: size)
+        let followIcon = UIImage.gridicon(.readerFollow, size: size)
+        let followingIcon = UIImage.gridicon(.readerFollowing, size: size)
 
         let normalColor = UIColor.primary
         let highlightedColor = UIColor.primaryDark
@@ -278,8 +277,8 @@ extension WPStyleGuide {
 
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
         let size = Gridicon.defaultSize
-        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: size)
-        let selectedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
+        let icon = UIImage.gridicon(.bookmarkOutline, size: size)
+        let selectedIcon = UIImage.gridicon(.bookmark, size: size)
 
         button.setImage(icon, for: .normal)
         button.setImage(selectedIcon, for: .selected)
@@ -306,7 +305,7 @@ extension WPStyleGuide {
     /// - Parameter showTitle: if set to true, will show the button label (default: true)
     @objc public class func applyReaderReblogActionButtonStyle(_ button: UIButton, showTitle: Bool = true) {
         let size = Gridicon.defaultSize
-        let icon = Gridicon.iconOfType(.reblog, withSize: size)
+        let icon = UIImage.gridicon(.reblog, size: size)
 
         button.setImage(icon, for: .normal)
 
@@ -363,6 +362,33 @@ extension WPStyleGuide {
         } else {
             return NSLocalizedString("Save", comment: "Title of action button to save a Reader post to read later.")
         }
+    }
+
+    /// Applies the filter button style to the button passed as an argument
+    class func applyReaderFilterButtonStyle(_ button: UIButton) {
+        let icon = UIImage.gridicon(.filter)
+
+        button.setImage(icon, for: .normal)
+        applyReaderActionButtonStyle(button, titleColor: UIColor(light: .black, dark: .white))
+    }
+    /// Applies the filter button title to the button passed as an argument
+    class func applyReaderFilterButtonTitle(_ button: UIButton, title: String) {
+        button.setTitle(title, for: .normal)
+        button.setTitle(title, for: .highlighted)
+    }
+    /// Applies the reset filter button style to the button passed as an argument
+    class func applyReaderResetFilterButtonStyle(_ button: UIButton) {
+        let icon = UIImage.gridicon(.crossSmall)
+
+        button.setImage(icon, for: .normal)
+        applyReaderActionButtonStyle(button, imageColor: UIColor(light: .black, dark: .white))
+    }
+    /// Applies the settings button style to the button passed as an argument
+    class func applyReaderSettingsButtonStyle(_ button: UIButton) {
+        let icon = UIImage.gridicon(.cog)
+
+        button.setImage(icon, for: .normal)
+        applyReaderActionButtonStyle(button)
     }
 
     // MARK: - Gap Marker Styles

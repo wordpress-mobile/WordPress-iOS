@@ -20,6 +20,8 @@ import AutomatticTracks
         switch url.host {
         case "newpost":
             return handleNewPost(url: url)
+        case "newpage":
+            return handleNewPage(url: url)
         case "magic-login":
             return handleMagicLogin(url: url)
         case "viewpost":
@@ -135,7 +137,7 @@ import AutomatticTracks
             return false
         }
 
-        // Should more formats be accepted be accepted in the future, this line would have to be expanded to accomodate it.
+        // Should more formats be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
@@ -148,10 +150,39 @@ import AutomatticTracks
 
         WPTabBarController.sharedInstance()?.present(postVC, animated: true, completion: nil)
 
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "url_scheme"])
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "url_scheme", WPAppAnalyticsKeyPostType: "post"])
 
         return true
     }
+
+    /// Handle a call of wordpress://newpage?…
+    ///
+    /// - Parameter url: URL of the request
+    /// - Returns: true if the url was handled
+    /// - Note: **url** must contain param for `content` at minimum. Also supports `title`. Currently `content` is assumed to be
+    ///         text. May support other formats, such as HTML or Markdown in the future.
+    private func handleNewPage(url: URL) -> Bool {
+        guard let params = url.queryItems,
+            let contentRaw = params.value(of: NewPostKey.content) else {
+                return false
+        }
+
+        let title = params.value(of: NewPostKey.title)
+
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let blog = blogService.lastUsedOrFirstBlog() else {
+            return false
+        }
+
+        // Should more formats be accepted be accepted in the future, this line would have to be expanded to accomodate it.
+        let contentEscaped = contentRaw.escapeHtmlNamedEntities()
+
+        WPTabBarController.sharedInstance()?.showPageEditor(blog: blog, title: title, content: contentEscaped, source: "url_scheme")
+
+        return true
+    }
+
 
     private enum NewPostKey {
         static let title = "title"

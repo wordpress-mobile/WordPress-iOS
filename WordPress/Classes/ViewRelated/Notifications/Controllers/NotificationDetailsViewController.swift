@@ -365,11 +365,11 @@ extension NotificationDetailsViewController {
         navigationItem.backBarButtonItem = backButton
 
         let next = UIButton(type: .custom)
-        next.setImage(Gridicon.iconOfType(.arrowUp), for: .normal)
+        next.setImage(.gridicon(.arrowUp), for: .normal)
         next.addTarget(self, action: #selector(nextNotificationWasPressed), for: .touchUpInside)
 
         let previous = UIButton(type: .custom)
-        previous.setImage(Gridicon.iconOfType(.arrowDown), for: .normal)
+        previous.setImage(.gridicon(.arrowDown), for: .normal)
         previous.addTarget(self, action: #selector(previousNotificationWasPressed), for: .touchUpInside)
 
         previousNavigationButton = previous
@@ -1152,9 +1152,16 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
     func textView(_ textView: UITextView, didTypeWord word: String) {
         suggestionsTableView.showSuggestions(forWord: word)
     }
+
+    func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController) {
+        guard let siteID = note.metaSiteID else {
+            return
+        }
+
+        suggestionsTableView.hideSuggestions()
+        controller.enableSuggestions(with: siteID)
+    }
 }
-
-
 
 // MARK: - UIScrollViewDelegate
 //

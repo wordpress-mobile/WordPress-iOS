@@ -13,7 +13,10 @@ final class Follow: DefaultNotificationActionCommand {
         return on ? .neutral(.shade30) : .primary
     }
 
-    override func execute<ContentType: FormattableUserContent>(context: ActionContext<ContentType>) {
-
+    override func execute<ContentType: FormattableContent>(context: ActionContext<ContentType>) {
+        guard let _ = context.block as? FormattableUserContent else {
+            super.execute(context: context)
+            return
+        }
     }
 }

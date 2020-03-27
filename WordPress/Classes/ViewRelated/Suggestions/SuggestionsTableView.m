@@ -163,7 +163,13 @@ CGFloat const STVSeparatorHeight = 1.f;
 {
     // Take the height of the table frame and make it so only whole results are displayed
     NSUInteger maxRows = floor(self.frame.size.height / STVRowHeight);
-    
+
+    if([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableViewMaxDisplayedRows:)]){
+        NSInteger delegateMaxRows = [self.suggestionsDelegate suggestionsTableViewMaxDisplayedRows:self];
+
+        maxRows = delegateMaxRows;
+    }
+
     if (maxRows < 1) {
         maxRows = 1;
     }    
@@ -220,6 +226,11 @@ CGFloat const STVSeparatorHeight = 1.f;
     [self setNeedsUpdateConstraints];
     
     return ([self.searchResults count] > 0);
+}
+
+- (void)hideSuggestions
+{
+    [self showSuggestionsForWord:@""];
 }
 
 #pragma mark - UITableViewDataSource methods

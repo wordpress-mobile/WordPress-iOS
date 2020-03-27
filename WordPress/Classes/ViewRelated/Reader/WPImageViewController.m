@@ -161,7 +161,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 {
     self.activityIndicatorView = [[CircularProgressView alloc] initWithStyle:CircularProgressViewStyleWhite];
     AccessoryView *errorView = [[AccessoryView alloc] init];
-    errorView.imageView.image = [Gridicon iconOfType:GridiconTypeNoticeOutline];
+    errorView.imageView.image = [UIImage gridiconOfType:GridiconTypeNoticeOutline];
     errorView.label.text = NSLocalizedString(@"Error", @"Generic error.");
     self.activityIndicatorView.errorView = errorView;
 }
