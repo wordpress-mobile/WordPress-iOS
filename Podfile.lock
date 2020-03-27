@@ -285,7 +285,7 @@ PODS:
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
   - React-jsinspector (0.62.0)
-  - react-native-keyboard-aware-scroll-view (0.8.7):
+  - react-native-keyboard-aware-scroll-view (0.8.8):
     - React
   - react-native-linear-gradient (2.5.6):
     - React
@@ -301,29 +301,53 @@ PODS:
   - React-RCTActionSheet (0.62.0):
     - React-Core/RCTActionSheetHeaders (= 0.62.0)
   - React-RCTAnimation (0.62.0):
+    - FBReactNativeSpec (= 0.62.0)
+    - Folly (= 2018.10.22.00)
+    - RCTTypeSafety (= 0.62.0)
     - React-Core/RCTAnimationHeaders (= 0.62.0)
+    - ReactCommon/turbomodule/core (= 0.62.0)
   - React-RCTBlob (0.62.0):
+    - FBReactNativeSpec (= 0.62.0)
+    - Folly (= 2018.10.22.00)
     - React-Core/RCTBlobHeaders (= 0.62.0)
     - React-Core/RCTWebSocket (= 0.62.0)
     - React-jsi (= 0.62.0)
     - React-RCTNetwork (= 0.62.0)
+    - ReactCommon/turbomodule/core (= 0.62.0)
   - React-RCTImage (0.62.0):
+    - FBReactNativeSpec (= 0.62.0)
+    - Folly (= 2018.10.22.00)
+    - RCTTypeSafety (= 0.62.0)
     - React-Core/RCTImageHeaders (= 0.62.0)
     - React-RCTNetwork (= 0.62.0)
+    - ReactCommon/turbomodule/core (= 0.62.0)
   - React-RCTLinking (0.62.0):
+    - FBReactNativeSpec (= 0.62.0)
     - React-Core/RCTLinkingHeaders (= 0.62.0)
+    - ReactCommon/turbomodule/core (= 0.62.0)
   - React-RCTNetwork (0.62.0):
+    - FBReactNativeSpec (= 0.62.0)
+    - Folly (= 2018.10.22.00)
+    - RCTTypeSafety (= 0.62.0)
     - React-Core/RCTNetworkHeaders (= 0.62.0)
+    - ReactCommon/turbomodule/core (= 0.62.0)
   - React-RCTSettings (0.62.0):
+    - FBReactNativeSpec (= 0.62.0)
+    - Folly (= 2018.10.22.00)
+    - RCTTypeSafety (= 0.62.0)
     - React-Core/RCTSettingsHeaders (= 0.62.0)
+    - ReactCommon/turbomodule/core (= 0.62.0)
   - React-RCTText (0.62.0):
     - React-Core/RCTTextHeaders (= 0.62.0)
   - React-RCTVibration (0.62.0):
+    - FBReactNativeSpec (= 0.62.0)
+    - Folly (= 2018.10.22.00)
     - React-Core/RCTVibrationHeaders (= 0.62.0)
+    - ReactCommon/turbomodule/core (= 0.62.0)
   - ReactCommon (0.62.0):
-    - ReactCommon/jscallinvoker (= 0.62.0)
+    - ReactCommon/callinvoker (= 0.62.0)
     - ReactCommon/turbomodule (= 0.62.0)
-  - ReactCommon/jscallinvoker (0.62.0):
+  - ReactCommon/callinvoker (0.62.0):
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
@@ -335,7 +359,7 @@ PODS:
     - React-Core (= 0.62.0)
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
-    - ReactCommon/jscallinvoker (= 0.62.0)
+    - ReactCommon/callinvoker (= 0.62.0)
     - ReactCommon/turbomodule/core (= 0.62.0)
     - ReactCommon/turbomodule/samples (= 0.62.0)
   - ReactCommon/turbomodule/core (0.62.0):
@@ -345,7 +369,7 @@ PODS:
     - React-Core (= 0.62.0)
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
-    - ReactCommon/jscallinvoker (= 0.62.0)
+    - ReactCommon/callinvoker (= 0.62.0)
   - ReactCommon/turbomodule/samples (0.62.0):
     - DoubleConversion
     - Folly (= 2018.10.22.00)
@@ -353,7 +377,7 @@ PODS:
     - React-Core (= 0.62.0)
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
-    - ReactCommon/jscallinvoker (= 0.62.0)
+    - ReactCommon/callinvoker (= 0.62.0)
     - ReactCommon/turbomodule/core (= 0.62.0)
   - ReactNativeDarkMode (0.0.10):
     - React
@@ -426,15 +450,15 @@ DEPENDENCIES:
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.5.2)
   - Down (~> 0.6.6)
-  - FBLazyVector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/FBLazyVector.podspec.json`)
-  - FBReactNativeSpec (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/FBReactNativeSpec.podspec.json`)
-  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
+  - FBLazyVector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/FBLazyVector.podspec.json`)
+  - FBReactNativeSpec (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/FBReactNativeSpec.podspec.json`)
+  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
-  - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
+  - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json`)
   - Gridicons (~> 1.0.1-beta.1)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `1525da4437b4290af8f9be4f445eefcc73fce6af`)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `eddeefea75431ab597faab173b8d2a7eb33a0506`)
   - JTAppleCalendar (~> 8.0.2)
   - MediaEditor (~> 1.0.1)
   - MRProgress (= 0.8.3)
@@ -444,34 +468,34 @@ DEPENDENCIES:
   - OCMock (= 3.4.3)
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
-  - RCTRequired (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/RCTRequired.podspec.json`)
-  - RCTTypeSafety (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/RCTTypeSafety.podspec.json`)
+  - RCTRequired (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/RCTRequired.podspec.json`)
+  - RCTTypeSafety (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/RCTTypeSafety.podspec.json`)
   - Reachability (= 3.2)
-  - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
-  - React-Core (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-Core.podspec.json`)
-  - React-CoreModules (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-CoreModules.podspec.json`)
-  - React-cxxreact (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-cxxreact.podspec.json`)
-  - React-jsi (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-jsi.podspec.json`)
-  - React-jsiexecutor (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-jsiexecutor.podspec.json`)
-  - React-jsinspector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-jsinspector.podspec.json`)
-  - react-native-keyboard-aware-scroll-view (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json`)
-  - react-native-linear-gradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-linear-gradient.podspec.json`)
-  - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
-  - react-native-slider (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-slider.podspec.json`)
-  - react-native-video (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json`)
-  - React-RCTActionSheet (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTActionSheet.podspec.json`)
-  - React-RCTAnimation (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTAnimation.podspec.json`)
-  - React-RCTBlob (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTBlob.podspec.json`)
-  - React-RCTImage (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTImage.podspec.json`)
-  - React-RCTLinking (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTLinking.podspec.json`)
-  - React-RCTNetwork (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTNetwork.podspec.json`)
-  - React-RCTSettings (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTSettings.podspec.json`)
-  - React-RCTText (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTText.podspec.json`)
-  - React-RCTVibration (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTVibration.podspec.json`)
-  - ReactCommon (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/ReactCommon.podspec.json`)
-  - ReactNativeDarkMode (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/ReactNativeDarkMode.podspec.json`)
-  - RNSVG (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/RNSVG.podspec.json`)
-  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `1525da4437b4290af8f9be4f445eefcc73fce6af`)
+  - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
+  - React-Core (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-Core.podspec.json`)
+  - React-CoreModules (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-CoreModules.podspec.json`)
+  - React-cxxreact (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-cxxreact.podspec.json`)
+  - React-jsi (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-jsi.podspec.json`)
+  - React-jsiexecutor (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-jsiexecutor.podspec.json`)
+  - React-jsinspector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-jsinspector.podspec.json`)
+  - react-native-keyboard-aware-scroll-view (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json`)
+  - react-native-linear-gradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-linear-gradient.podspec.json`)
+  - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
+  - react-native-slider (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-slider.podspec.json`)
+  - react-native-video (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json`)
+  - React-RCTActionSheet (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTActionSheet.podspec.json`)
+  - React-RCTAnimation (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTAnimation.podspec.json`)
+  - React-RCTBlob (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTBlob.podspec.json`)
+  - React-RCTImage (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTImage.podspec.json`)
+  - React-RCTLinking (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTLinking.podspec.json`)
+  - React-RCTNetwork (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTNetwork.podspec.json`)
+  - React-RCTSettings (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTSettings.podspec.json`)
+  - React-RCTText (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTText.podspec.json`)
+  - React-RCTVibration (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTVibration.podspec.json`)
+  - ReactCommon (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/ReactCommon.podspec.json`)
+  - ReactNativeDarkMode (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/ReactNativeDarkMode.podspec.json`)
+  - RNSVG (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/RNSVG.podspec.json`)
+  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `eddeefea75431ab597faab173b8d2a7eb33a0506`)
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
@@ -482,7 +506,7 @@ DEPENDENCIES:
   - WordPressShared (~> 1.8.16)
   - WordPressUI (~> 1.5.2)
   - WPMediaPicker (~> 1.6.1)
-  - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
+  - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.0.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -541,86 +565,86 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   FBLazyVector:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/FBLazyVector.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/FBLazyVector.podspec.json
   FBReactNativeSpec:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/FBReactNativeSpec.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/FBReactNativeSpec.podspec.json
   Folly:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   glog:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/glog.podspec.json
   Gutenberg:
-    :commit: 1525da4437b4290af8f9be4f445eefcc73fce6af
+    :commit: eddeefea75431ab597faab173b8d2a7eb33a0506
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RCTRequired:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/RCTRequired.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/RCTRequired.podspec.json
   RCTTypeSafety:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/RCTTypeSafety.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/RCTTypeSafety.podspec.json
   React:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   React-Core:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-Core.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-Core.podspec.json
   React-CoreModules:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-CoreModules.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-CoreModules.podspec.json
   React-cxxreact:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-cxxreact.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-cxxreact.podspec.json
   React-jsi:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-jsi.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-jsi.podspec.json
   React-jsiexecutor:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-jsiexecutor.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-jsiexecutor.podspec.json
   React-jsinspector:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-jsinspector.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-jsinspector.podspec.json
   react-native-keyboard-aware-scroll-view:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json
   react-native-linear-gradient:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-linear-gradient.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-linear-gradient.podspec.json
   react-native-safe-area:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json
   react-native-slider:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-slider.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-slider.podspec.json
   react-native-video:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json
   React-RCTActionSheet:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTActionSheet.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTActionSheet.podspec.json
   React-RCTAnimation:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTAnimation.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTAnimation.podspec.json
   React-RCTBlob:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTBlob.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTBlob.podspec.json
   React-RCTImage:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTImage.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTImage.podspec.json
   React-RCTLinking:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTLinking.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTLinking.podspec.json
   React-RCTNetwork:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTNetwork.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTNetwork.podspec.json
   React-RCTSettings:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTSettings.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTSettings.podspec.json
   React-RCTText:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTText.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTText.podspec.json
   React-RCTVibration:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/React-RCTVibration.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/React-RCTVibration.podspec.json
   ReactCommon:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/ReactCommon.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/ReactCommon.podspec.json
   ReactNativeDarkMode:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/ReactNativeDarkMode.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/ReactNativeDarkMode.podspec.json
   RNSVG:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/RNSVG.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/RNSVG.podspec.json
   RNTAztecView:
-    :commit: 1525da4437b4290af8f9be4f445eefcc73fce6af
+    :commit: eddeefea75431ab597faab173b8d2a7eb33a0506
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   Yoga:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1525da4437b4290af8f9be4f445eefcc73fce6af/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/eddeefea75431ab597faab173b8d2a7eb33a0506/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :commit: 1525da4437b4290af8f9be4f445eefcc73fce6af
+    :commit: eddeefea75431ab597faab173b8d2a7eb33a0506
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNTAztecView:
-    :commit: 1525da4437b4290af8f9be4f445eefcc73fce6af
+    :commit: eddeefea75431ab597faab173b8d2a7eb33a0506
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
 
 SPEC CHECKSUMS:
@@ -660,26 +684,26 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   React: a7681cc55551a79d4570c06f4637cccf2a0f053b
   React-Core: 50a1164ebfed1ac2bffc8646b5670f44390a2853
-  React-CoreModules: 1136de1a2158d22e22cecb1db685e1abf08ce608
+  React-CoreModules: f29931111fdde7fc69ac80d9513db67b0ec8e8f4
   React-cxxreact: 4fb323069b4f083e38f202f15f1ab81b5678b7d4
   React-jsi: 5ed1982bb70153e6b60e19282d14e96e30ff80cb
   React-jsiexecutor: 839a2cc6f0b85e1b7b8dd9b00ac04f6b6979e545
   React-jsinspector: c121bd6ac3cc88d9c3a530e0d0feec90a6aac51c
-  react-native-keyboard-aware-scroll-view: 01c4b2303c4ef1c49c4d239c9c5856f0393104df
+  react-native-keyboard-aware-scroll-view: ffa9152671fec9a571197ed2d02e0fcb90206e60
   react-native-linear-gradient: 258ba8c61848324b1f2019bed5f460e6396137b7
   react-native-safe-area: e8230b0017d76c00de6b01e2412dcf86b127c6a3
   react-native-slider: b36527edad24d49d9f3b53f3078334f45558f97b
   react-native-video: 9de661e89386bb7ab78cc68e61a146cbdf5ad4ad
   React-RCTActionSheet: 13be19d802d51154c48006b5b3c15b51867520f4
-  React-RCTAnimation: f98debd4328530ef15fdf6d2460ad8f1448c6148
-  React-RCTBlob: 0c3a88331c6a7f62d250fea746ab0b28ec069260
-  React-RCTImage: 8d06c257a3cef78315b250f336aa2fd7881608f1
-  React-RCTLinking: 9ff033370fe37e394b8df609b767a65445f5afbf
-  React-RCTNetwork: 6d4da0712dd94e353e92c0fb7bbe3af9f8ec9a63
-  React-RCTSettings: a7820fefc2d0fa9d7dcf4475bafddf7177a3ba3a
+  React-RCTAnimation: 1b1e6d4e08ac1aeef1a1c37ccf96f25843daf688
+  React-RCTBlob: 22e9416109c1b4cc8b7a5d595b1dea2029f41fa7
+  React-RCTImage: 37b89779ef27d4d73723185293bd5f3f01b51d34
+  React-RCTLinking: 82bd99d881f52f34b5f39ecb3c4ef2b98db91391
+  React-RCTNetwork: b846ea99dcacdfea484034734ea7f984fb28c689
+  React-RCTSettings: afe59b916af2533238c321a3b1b1ff7b6c5a4163
   React-RCTText: 0938b6a96af663804d5e1673adf352498b02611d
-  React-RCTVibration: e6690ff43219d090368384f565dbdfb95a51df5d
-  ReactCommon: 445a257dba7e078f4fbbdd4f91d17c7842459464
+  React-RCTVibration: 04c97b38c0c16778a6fa46402c6c5e5d033b821e
+  ReactCommon: cc77828265f52796bb0ed2fceb6ac31186e7e744
   ReactNativeDarkMode: f61376360c5d983907e5c316e8e1c853a8c2f348
   RNSVG: 68a534a5db06dcbdaebfd5079349191598caef7b
   RNTAztecView: 8d9f78ce613bec2de7ab33bd22829ceff28a7c7e
@@ -699,7 +723,7 @@ SPEC CHECKSUMS:
   WordPressUI: 70cc58a253c352330b23cd8fa6dd6a2021570e18
   WPMediaPicker: 59559813ec8a7929a91aa5a1db74998d8485fb9f
   wpxmlrpc: 6a9bdd6ab9d1b159b384b0df0f3f39de9af4fecf
-  Yoga: d9057cbdcb499a7a4121389612dfbb59f5aaa795
+  Yoga: 19fc9375bd1aa9e6ccf52b752f8031e31b27e2fe
   ZendeskCommonUISDK: 3c432801e31abff97d6e30441ea102eaef6b99e2
   ZendeskCoreSDK: 86513e62c1ab68913416c9044463d9b687ca944f
   ZendeskMessagingAPISDK: 7c0cbd1d2c941f05b36f73e7db5faee5863fe8b0
@@ -709,6 +733,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 3eb2829a2f814a2927c1f52c929316c110015a89
+PODFILE CHECKSUM: b9e383aee64bab4fd827ce11076622fde3137dfd
 
 COCOAPODS: 1.8.4
