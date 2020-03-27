@@ -82,14 +82,9 @@ extension PrepublishingNavigationController: UINavigationControllerDelegate {
     /// Animated the back button based on what View Controller will be shown
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         transitionCoordinator?.animate(alongsideTransition: { context in
-            if viewController is PrepublishingViewController {
-                self.header.hideBackButton()
-                self.header.hideTitle()
-            } else {
-                self.header.showBackButton()
-                self.header.setTitle(viewController.title)
-                self.header.showTitle()
-            }
+            viewController is PrepublishingViewController ? self.header.hideBackButton() : self.header.showBackButton()
+
+            self.header.setTitle(viewController.title, transitionDuration: context.transitionDuration)
         }, completion: nil)
     }
 }

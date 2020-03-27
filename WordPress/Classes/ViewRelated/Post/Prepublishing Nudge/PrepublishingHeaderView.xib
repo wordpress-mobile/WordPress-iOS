@@ -87,12 +87,6 @@
                         </view>
                     </subviews>
                 </stackView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ViewController Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3x-at-qsc">
-                    <rect key="frame" x="126" y="35.666666666666664" width="119.33333333333331" height="15.666666666666664"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                    <color key="textColor" name="Gray30"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FfF-E5-Fym">
                     <rect key="frame" x="0.0" y="109" width="414" height="1"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -106,9 +100,7 @@
                 <constraint firstAttribute="top" secondItem="U3e-kO-v2p" secondAttribute="top" id="6Jf-9O-ejp"/>
                 <constraint firstAttribute="bottom" secondItem="U3e-kO-v2p" secondAttribute="bottom" id="IsF-tS-X0B"/>
                 <constraint firstAttribute="trailing" secondItem="U3e-kO-v2p" secondAttribute="trailing" constant="20" id="LSI-AS-5M2"/>
-                <constraint firstItem="A3x-at-qsc" firstAttribute="centerY" secondItem="ZFo-FV-nl8" secondAttribute="centerY" id="Ozx-Zt-24M"/>
                 <constraint firstAttribute="bottom" secondItem="FfF-E5-Fym" secondAttribute="bottom" id="QyB-Vo-bfq"/>
-                <constraint firstItem="A3x-at-qsc" firstAttribute="leading" secondItem="ZFo-FV-nl8" secondAttribute="leading" id="dDv-kN-MRU"/>
                 <constraint firstItem="U3e-kO-v2p" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="tyj-l1-rNT"/>
                 <constraint firstAttribute="trailing" secondItem="FfF-E5-Fym" secondAttribute="trailing" id="ufv-zd-CIh"/>
                 <constraint firstItem="FfF-E5-Fym" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="x0z-h5-7dj"/>
@@ -123,7 +115,6 @@
                 <outlet property="leadingConstraint" destination="tyj-l1-rNT" id="Qlz-fc-hJn"/>
                 <outlet property="publishingToLabel" destination="ZFo-FV-nl8" id="bSu-i4-xEU"/>
                 <outlet property="separator" destination="FfF-E5-Fym" id="63L-2I-pWd"/>
-                <outlet property="titleLabel" destination="A3x-at-qsc" id="y7O-9J-dLB"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="-229.6875"/>
         </view>

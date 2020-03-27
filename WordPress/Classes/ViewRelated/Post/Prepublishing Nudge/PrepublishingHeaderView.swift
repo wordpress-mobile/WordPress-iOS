@@ -13,7 +13,6 @@ class PrepublishingHeaderView: UIView, NibLoadable {
     @IBOutlet weak var backButtonView: UIView!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separator: UIView!
 
     weak var delegate: PrepublishingHeaderViewDelegate?
@@ -45,18 +44,13 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     // MARK: - Title
 
-    func setTitle(_ title: String?) {
-        titleLabel.text = title?.uppercased()
-    }
-
-    func showTitle() {
-        publishingToLabel.layer.opacity = 0
-        titleLabel.layer.opacity = 1
-    }
-
-    func hideTitle() {
-        publishingToLabel.layer.opacity = 1
-        titleLabel.layer.opacity = 0
+    func setTitle(_ title: String?, transitionDuration: TimeInterval = 0.2) {
+        UIView.transition(with: publishingToLabel,
+                          duration: transitionDuration,
+                          options: .transitionCrossDissolve,
+                          animations: {
+            self.publishingToLabel.text = title?.uppercased()
+        })
     }
 
     // MARK: - Style
@@ -66,7 +60,6 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         configureBackButton()
         configurePublishingToLabel()
         configureBlogTitleLabel()
-        configureTitleLabel()
         configureSeparator()
     }
 
@@ -87,12 +80,6 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     private func configureSeparator() {
         WPStyleGuide.applyBorderStyle(separator)
-    }
-
-    private func configureTitleLabel() {
-        titleLabel.layer.opacity = 0
-        titleLabel.font = WPStyleGuide.TableViewHeaderDetailView.titleFont
-        titleLabel.textColor = WPStyleGuide.TableViewHeaderDetailView.titleColor
     }
 
     private enum Constants {
