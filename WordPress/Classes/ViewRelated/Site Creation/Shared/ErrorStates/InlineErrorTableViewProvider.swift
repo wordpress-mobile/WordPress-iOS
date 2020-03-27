@@ -3,6 +3,8 @@
 
 typealias InlineErrorMessage = String
 
+typealias CellSelectionHandler = ((IndexPath) -> ())
+
 struct InlineErrorMessages {
 
     static let noConnection: InlineErrorMessage = NSLocalizedString("No connection",
