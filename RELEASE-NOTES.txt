@@ -1,5 +1,9 @@
 14.5
 -----
+
+14.4.1
+-----
+* Block Editor: Fix crash when inserting a Button Block.
  
 14.4
 -----

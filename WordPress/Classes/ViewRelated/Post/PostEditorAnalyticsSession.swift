@@ -9,7 +9,6 @@ struct PostEditorAnalyticsSession {
     var currentEditor: Editor
     var hasUnsupportedBlocks = false
     var outcome: Outcome? = nil
-    var template: String?
 
     init(editor: Editor, post: AbstractPost) {
         currentEditor = editor
@@ -26,17 +25,6 @@ struct PostEditorAnalyticsSession {
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
         started = true
-    }
-
-    mutating func apply(template: String) {
-        self.template = template
-        WPAnalytics.track(.editorSessionTemplateApply, withProperties: commonProperties)
-    }
-
-    func preview(template: String) {
-        let properties = commonProperties.merging([ Property.template: template], uniquingKeysWith: { $1 })
-
-        WPAnalytics.track(.editorSessionTemplatePreview, withProperties: properties)
     }
 
     private func startEventProperties(with unsupportedBlocks: [String]) -> [String: Any] {
@@ -65,7 +53,9 @@ struct PostEditorAnalyticsSession {
 
     func end(outcome endOutcome: Outcome) {
         let outcome = self.outcome ?? endOutcome
-        let properties = [ Property.outcome: outcome.rawValue].merging(commonProperties, uniquingKeysWith: { $1 })
+        let properties = [
+            Property.outcome: outcome.rawValue,
+            ].merging(commonProperties, uniquingKeysWith: { $1 })
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
     }
@@ -81,7 +71,6 @@ private extension PostEditorAnalyticsSession {
         static let postType = "post_type"
         static let outcome = "outcome"
         static let sessionId = "session_id"
-        static let template = "template"
     }
 
     var commonProperties: [String: String] {
@@ -91,9 +80,8 @@ private extension PostEditorAnalyticsSession {
             Property.postType: postType,
             Property.blogType: blogType,
             Property.sessionId: sessionId,
-            Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0",
-            Property.template: template
-        ].compactMapValues { $0 }
+            Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0"
+        ]
     }
 }
 
