@@ -29,12 +29,14 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         backButtonView.layer.opacity = 0
         backButtonView.isHidden = true
         leadingConstraint.constant = Constants.leftRightInset
+        layoutIfNeeded()
     }
 
     func showBackButton() {
         backButtonView.layer.opacity = 1
         backButtonView.isHidden = false
         leadingConstraint.constant = 0
+        layoutIfNeeded()
     }
 
     @IBAction func backButtonTapped(_ sender: Any) {
