@@ -40,10 +40,6 @@ class PostPreviewGenerator: NSObject {
     @objc func previewRequestFailed(reason: String) {
         delegate?.previewFailed(self, message: NSLocalizedString("There has been an error while trying to reach your site.", comment: "An error message."))
     }
-
-    @objc func interceptRedirect(request: URLRequest) -> URLRequest? {
-        return authenticator?.interceptRedirect(request: request)
-    }
 }
 
 

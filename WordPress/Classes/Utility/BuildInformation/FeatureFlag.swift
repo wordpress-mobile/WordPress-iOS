@@ -9,6 +9,7 @@ enum FeatureFlag: Int, CaseIterable {
     case quickActions
     case meMove
     case floatingCreateButton
+    case newReaderNavigation
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -32,6 +33,8 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .floatingCreateButton:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .newReaderNavigation:
+            return false
         }
     }
 }
@@ -64,6 +67,8 @@ extension FeatureFlag: OverrideableFlag {
             return "Move the Me Scene to My Site"
         case .floatingCreateButton:
             return "Floating Create Button"
+        case .newReaderNavigation:
+            return "New Reader Navigation"
         }
     }
 

@@ -3,7 +3,7 @@ source 'https://rubygems.org' do
   gem 'cocoapods', '~> 1.8.0'
   gem 'xcpretty-travis-formatter'
   gem 'octokit', "~> 4.0"
-  gem 'fastlane', "2.141.0"
+  gem 'fastlane', "2.143.0"
   gem 'dotenv'
   gem 'rubyzip', "~> 1.3"
   gem 'commonmarker'
