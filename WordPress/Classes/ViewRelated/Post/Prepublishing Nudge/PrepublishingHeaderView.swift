@@ -14,7 +14,8 @@ class PrepublishingHeaderView: UIView, NibLoadable {
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
-
+    @IBOutlet weak var separator: UIView!
+    
     weak var delegate: PrepublishingHeaderViewDelegate?
 
     func configure(_ blog: Blog) {
@@ -64,6 +65,7 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         configurePublishingToLabel()
         configureBlogTitleLabel()
         configureTitleLabel()
+        configureSeparator()
     }
 
     private func configureBackButton() {
@@ -79,6 +81,10 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     private func configureBlogTitleLabel() {
         WPStyleGuide.applyPostTitleStyle(blogTitleLabel)
+    }
+
+    private func configureSeparator() {
+        WPStyleGuide.applyBorderStyle(separator)
     }
 
     private func configureTitleLabel() {

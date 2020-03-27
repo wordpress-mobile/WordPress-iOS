@@ -32,6 +32,7 @@ class PrepublishingNavigationController: UINavigationController, BottomSheetPres
         delegate = self
 
         configureNavigationHeader()
+        configureNavigationBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +44,17 @@ class PrepublishingNavigationController: UINavigationController, BottomSheetPres
 
         // Configure the header
         header.configure(blog)
+    }
+
+    private func configureNavigationBar() {
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithTransparentBackground()
+            navigationBar.standardAppearance = appearance
+        } else {
+            let clearImage = UIImage(color: .clear, havingSize: CGSize(width: 1, height: 1))
+            navigationBar.shadowImage = clearImage
+        }
     }
 
     private func configureNavigationHeader() {
