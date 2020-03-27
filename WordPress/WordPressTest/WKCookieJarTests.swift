@@ -30,7 +30,7 @@ class WKCookieJarTests: XCTestCase {
 
     func testHasCookieMatching() {
         let expectation = self.expectation(description: "hasCookie completion called")
-        cookieJar.hasCookie(url: wordPressComLoginURL, username: "testuser") { (matches) in
+        cookieJar.hasWordPressComAuthCookie(username: "testuser", atomicSite: false) { (matches) in
             XCTAssertTrue(matches, "Cookies should exist for wordpress.com + testuser")
             expectation.fulfill()
         }
@@ -39,7 +39,7 @@ class WKCookieJarTests: XCTestCase {
     }
     func testHasCookieNotMatching() {
         let expectation = self.expectation(description: "hasCookie completion called")
-        cookieJar.hasCookie(url: wordPressComLoginURL, username: "anotheruser") { (matches) in
+        cookieJar.hasWordPressComAuthCookie(username: "anotheruser", atomicSite: false) { (matches) in
             XCTAssertFalse(matches, "Cookies should not exist for wordpress.com + anotheruser")
             expectation.fulfill()
         }

@@ -11,10 +11,14 @@ class TrashComment: DefaultNotificationActionCommand {
         return .error
     }
 
-    override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
+    override func execute<ContentType: FormattableContent>(context: ActionContext<ContentType>) {
+        guard let block = context.block as? FormattableCommentContent else {
+            super.execute(context: context)
+            return
+        }
         ReachabilityUtils.onAvailableInternetConnectionDo {
             let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] requestCompletion in
-                self?.actionsService?.deleteCommentWithBlock(context.block, completion: { success in
+                self?.actionsService?.deleteCommentWithBlock(block, completion: { success in
                     requestCompletion(success)
                 })
             })
