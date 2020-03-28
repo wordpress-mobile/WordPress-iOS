@@ -54,7 +54,7 @@ final class WebAddressTableViewProvider: NSObject, TableViewProvider {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard isShowingImplicitSuggestions else {
+        guard data.count > 0 else {
             return nil
         }
 
