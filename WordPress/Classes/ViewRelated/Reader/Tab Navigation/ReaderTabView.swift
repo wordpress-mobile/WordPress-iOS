@@ -2,16 +2,18 @@ import UIKit
 
 class ReaderTabView: UIView {
 
-    private var mainStackView: UIStackView
-    private var tabBar: FilterTabBar
-    private var filterButton: PostMetaButton
-    private var resetFilterButton: UIButton
-    private var verticalDivider: UIView
-    private var settingsButton: UIButton
-    private var buttonsStackView: UIStackView
-    private var containerView: UIView
+    private let mainStackView: UIStackView
+    private let tabBar: FilterTabBar
+    private let filterButton: PostMetaButton
+    private let resetFilterButton: UIButton
+    private let verticalDivider: UIView
+    private let settingsButton: UIButton
+    private let buttonsStackView: UIStackView
+    private let containerView: UIView
 
-    init() {
+    private let viewModel: ReaderTabViewModel
+
+    init(viewModel: ReaderTabViewModel) {
         func makeTabBar() -> FilterTabBar {
             let tabBar = FilterTabBar()
             let sections: [ReaderSection] = [.following, .discover, .likes, .saved]
@@ -27,6 +29,8 @@ class ReaderTabView: UIView {
         verticalDivider = UIView()
         settingsButton = UIButton(type: .custom)
         containerView = UIView()
+
+        self.viewModel = viewModel
 
         super.init(frame: .zero)
         setupViewElements()
@@ -160,6 +164,7 @@ extension ReaderTabView {
     /// Reset filter button
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
+        viewModel.resetFilter()
         resetFilterButton.isHidden = true
     }
 }
