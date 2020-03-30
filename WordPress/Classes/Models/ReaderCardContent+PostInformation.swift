@@ -6,7 +6,7 @@ class ReaderCardContent: ImageSourceInformation {
     init(provider: ReaderPostContentProvider) {
         originalProvider = provider
     }
-    
+
     var isAtomicOnWPCom: Bool {
         // Pinged @zieladam about this since the reader endpoint, ie:
         //

@@ -1,10 +1,10 @@
 
 extension Blog: ImageSourceInformation {
-    
+
     var isAtomicOnWPCom: Bool {
         return isAtomic()
     }
-    
+
     var isPrivateOnWPCom: Bool {
         return isHostedAtWPcom && isPrivate()
     }

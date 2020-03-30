@@ -52,7 +52,7 @@ class WPRichContentView: UITextView {
             attachmentManager.layoutAttachmentViews()
         }
     }
-    
+
     @objc var isAtomic = false
 
     /// Whether the view shows private content. Used when fetching images.

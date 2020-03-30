@@ -3,7 +3,7 @@ import MobileCoreServices
 /// Protocol used to abstract the information needed to load post related images.
 ///
 @objc protocol ImageSourceInformation {
-    
+
     var isAtomicOnWPCom: Bool { get }
 
     /// The post is private and hosted on WPcom.

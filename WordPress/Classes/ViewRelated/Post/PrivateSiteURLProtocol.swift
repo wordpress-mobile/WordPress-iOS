@@ -8,10 +8,10 @@ extension PrivateSiteURLProtocol {
             let bearerToken = PrivateSiteURLProtocol.bearerToken() else {
                 return URLRequest(url: url)
         }
-        
+
         // Just in case, enforce HTTPs
         components.scheme = "https"
-        
+
         var request = URLRequest(url: urlComponent)
         request.addValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
         return request

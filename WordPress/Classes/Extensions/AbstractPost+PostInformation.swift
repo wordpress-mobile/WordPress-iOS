@@ -1,10 +1,10 @@
 
 extension AbstractPost: ImageSourceInformation {
-    
+
     var isAtomicOnWPCom: Bool {
         return blog.isAtomic()
     }
-    
+
     var isPrivateOnWPCom: Bool {
         return isPrivate() && blog.isHostedAtWPcom
     }
