@@ -326,10 +326,9 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
     return formatText;
 }
 
-// WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && [self.settings.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
+    return [self.settings.privacy isEqualToNumber:@(SiteVisibilityPrivate)];
 }
 
 - (SiteVisibility)siteVisibility

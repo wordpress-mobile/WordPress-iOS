@@ -73,22 +73,18 @@ extension UIImageView {
             return
         }
 
-        let request: URLRequest
-        if false, blog.isPrivate(), PrivateSiteURLProtocol.urlGoes(toWPComSite: siteIconURL) {
-            if let dotComID = blog.dotComID?.intValue,
-                blog.isAtomic() {
+        if blog.dotComID == 172825667 {
+            print("Blog id \(blog.dotComID ?? 0), is atomic \(blog.isAtomic())")
+        }
 
-                PrivateSiteURLProtocol.requestForPrivateAtomicSite(for: siteIconURL, siteID: dotComID, onComplete: { (request) in
-
-                    downloadImage(with: request)
-                })
-            } else {
-                request = PrivateSiteURLProtocol.requestForPrivateSite(from: siteIconURL)
+        if blog.isPrivate(),
+            let dotComID = blog.dotComID {
+            PrivateSiteURLProtocol.request(for: siteIconURL, siteID: dotComID.intValue, isAtomic: blog.isAtomic()) { request in
 
                 downloadImage(with: request)
             }
         } else {
-            request = URLRequest(url: siteIconURL)
+            let request = URLRequest(url: siteIconURL)
             downloadImage(with: request)
         }
     }

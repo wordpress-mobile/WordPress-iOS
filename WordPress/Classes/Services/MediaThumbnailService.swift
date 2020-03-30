@@ -162,7 +162,8 @@ class MediaThumbnailService: LocalCoreDataService {
                 return
             }
             // Get an expected WP URL, for sizing.
-            if media.blog.isPrivate() || (!media.blog.isHostedAtWPcom && media.blog.isBasicAuthCredentialStored()) {
+            if (media.blog.isHostedAtWPcom && media.blog.isPrivate())
+                || (!media.blog.isHostedAtWPcom && media.blog.isBasicAuthCredentialStored()) {
                 remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
             } else {
                 remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
@@ -187,7 +188,7 @@ class MediaThumbnailService: LocalCoreDataService {
                 onError(error)
             }
         }
-        if media.blog.isPrivate() {
+        if media.blog.isHostedAtWPcom && media.blog.isPrivate() {
             let accountService = AccountService(managedObjectContext: self.managedObjectContext)
             guard let authToken = accountService.defaultWordPressComAccount()?.authToken else {
                 // Don't have an auth token for some reason, return nothing.
