@@ -65,7 +65,9 @@ extension UIImageView {
             self.downloadImage(usingRequest: request, placeholderImage: placeholderImage, success: { [weak self] (image) in
                 self?.image = image
                 self?.removePlaceholderBorder()
-            }, failure: nil)
+            }) { error in
+                // No-op (for now!)
+            }
         }
 
         guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath) else {
