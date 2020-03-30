@@ -1034,59 +1034,10 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showPostVisibilitySelector
 {
-    NSArray *titles = @[
-                        NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-                        NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
-                        NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")
-                        ];
-    NSDictionary *visiblityDict = @{
-                                    @"DefaultValue": NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-                                    @"Title" : NSLocalizedString(@"Visibility", nil),
-                                    @"Titles" : titles,
-                                    @"Values" : titles,
-                                    @"CurrentValue" : [self titleForVisibility]};
-    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:visiblityDict];
-    __weak SettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSString *visibility) {
+    PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
+    __weak PostVisibilitySelectorViewController *weakVc = vc;
+    vc.completion = ^{
         [weakVc dismiss];
-        
-        NSAssert(self.apost != nil, @"The post should not be nil here.");
-        NSAssert(!self.apost.isFault, @"The post should not be a fault here here.");
-        NSAssert(self.apost.managedObjectContext != nil, @"The post's MOC should not be nil here.");
-
-        if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
-            self.apost.status = PostStatusPrivate;
-            self.apost.password = nil;
-        } else {
-            if ([self.apost.status isEqualToString:PostStatusPrivate]) {
-                if ([self.apost.original.status isEqualToString:PostStatusPrivate]) {
-                    self.apost.status = PostStatusPublish;
-                } else {
-                    // restore the original status
-                    self.apost.status = self.apost.original.status;
-                }
-            }
-            if ([visibility isEqualToString:NSLocalizedString(@"Password protected", @"Post password protection in the Post Editor/Settings area (compare with WP core translations).")]) {
-                
-                NSString *password = @"";
-                
-                NSAssert(self.apost.original != nil,
-                         @"We're expecting to have a reference to the original post here.");
-                NSAssert(!self.apost.original.isFault,
-                         @"The original post should not be a fault here here.");
-                NSAssert(self.apost.original.managedObjectContext != nil,
-                         @"The original post's MOC should not be nil here.");
-                
-                if (self.apost.original.password) {
-                    // restore the original password
-                    password = self.apost.original.password;
-                }
-                self.apost.password = password;
-            } else {
-                self.apost.password = nil;
-            }
-        }
-
         [self.tableView reloadData];
     };
     [self.navigationController pushViewController:vc animated:YES];
