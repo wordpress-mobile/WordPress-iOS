@@ -65,7 +65,7 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     private func configureBackButton() {
         backButtonView.isHidden = true
-        backButton.setImage(Gridicon.iconOfType(.chevronLeft, withSize: Constants.backButtonSize), for: .normal)
+        backButton.setImage(.gridicon(.chevronLeft, size: Constants.backButtonSize), for: .normal)
     }
 
     private func configurePublishingToLabel() {
