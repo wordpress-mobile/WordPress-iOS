@@ -147,6 +147,10 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 // Used as a key to store passwords, if you change the algorithm, logins will break
 - (NSString *)displayURL
 {
+    if (self.url == nil) {
+        return nil;
+    }
+    
     NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""]];
