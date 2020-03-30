@@ -67,7 +67,7 @@ extension UIImageView {
                 self?.removePlaceholderBorder()
             }, failure: nil)
         }
-        
+
         guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath) else {
             image = placeholderImage
             return
@@ -77,14 +77,14 @@ extension UIImageView {
         if false, blog.isPrivate(), PrivateSiteURLProtocol.urlGoes(toWPComSite: siteIconURL) {
             if let dotComID = blog.dotComID?.intValue,
                 blog.isAtomic() {
-                
+
                 PrivateSiteURLProtocol.requestForPrivateAtomicSite(for: siteIconURL, siteID: dotComID, onComplete: { (request) in
-                    
+
                     downloadImage(with: request)
                 })
             } else {
                 request = PrivateSiteURLProtocol.requestForPrivateSite(from: siteIconURL)
-                
+
                 downloadImage(with: request)
             }
         } else {

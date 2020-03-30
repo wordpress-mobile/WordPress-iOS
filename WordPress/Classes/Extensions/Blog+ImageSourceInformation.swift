@@ -12,7 +12,7 @@ extension Blog: ImageSourceInformation {
     var isSelfHostedWithCredentials: Bool {
         return !isHostedAtWPcom && isBasicAuthCredentialStored()
     }
-    
+
     var siteID: NSNumber? {
         return dotComID
     }
