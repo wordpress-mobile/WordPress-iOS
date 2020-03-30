@@ -1,7 +1,7 @@
 import UIKit
 
 class PrepublishingNavigationController: UINavigationController, BottomSheetPresentable {
-    var initialHeight: CGFloat = 200
+    var initialHeight: CGFloat = 300
 
     lazy var header: PrepublishingHeaderView = {
         let header = PrepublishingHeaderView.loadFromNib()
