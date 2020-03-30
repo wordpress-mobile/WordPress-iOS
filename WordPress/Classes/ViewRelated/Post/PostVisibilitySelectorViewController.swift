@@ -20,7 +20,7 @@ import UIKit
 
         let visiblityDict: [AnyHashable: Any] = [
             "DefaultValue": NSLocalizedString("Public", comment: "Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-            "Title": NSLocalizedString("Visibility", comment: ""),
+            "Title": NSLocalizedString("Visibility", comment: "Visibility label"),
             "Titles": titles,
             "Values": titles,
             "CurrentValue": post.titleForVisibility
@@ -75,7 +75,7 @@ import UIKit
         fatalError("init(coder:) has not been implemented")
     }
 
-    override init!(style: UITableView.Style, andDictionary dictionary: [AnyHashable : Any]!) {
+    override init!(style: UITableView.Style, andDictionary dictionary: [AnyHashable: Any]!) {
         super.init(style: style, andDictionary: dictionary)
     }
 
