@@ -25,4 +25,8 @@ class ReaderCardContent: ImageSourceInformation {
     var isSelfHostedWithCredentials: Bool {
         return !originalProvider.isWPCom() && !originalProvider.isJetpack()
     }
+    
+    var siteID: NSNumber? {
+        return originalProvider.siteID()
+    }
 }

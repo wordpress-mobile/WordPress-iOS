@@ -343,7 +343,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.height)
         }
 
-        let contentInformation = ContentInformation(isAtomicOnWPCom: isAtomic, isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
+        let contentInformation = ContentInformation(isAtomicOnWPCom: isAtomic, isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false, siteID: nil)
         let index = mediaArray.count
         let indexPath = IndexPath(row: index, section: 1)
         weak var weakImage = image
@@ -477,11 +477,13 @@ class ContentInformation: ImageSourceInformation {
     var isAtomicOnWPCom: Bool
     var isPrivateOnWPCom: Bool
     var isSelfHostedWithCredentials: Bool
+    var siteID: NSNumber?
 
-    init(isAtomicOnWPCom: Bool, isPrivateOnWPCom: Bool, isSelfHostedWithCredentials: Bool) {
+    init(isAtomicOnWPCom: Bool, isPrivateOnWPCom: Bool, isSelfHostedWithCredentials: Bool, siteID: NSNumber?) {
         self.isAtomicOnWPCom = isAtomicOnWPCom
         self.isPrivateOnWPCom = isPrivateOnWPCom
         self.isSelfHostedWithCredentials = isSelfHostedWithCredentials
+        self.siteID = siteID
     }
 }
 

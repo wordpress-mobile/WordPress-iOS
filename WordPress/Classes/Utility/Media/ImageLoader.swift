@@ -14,6 +14,8 @@ import MobileCoreServices
     /// The blog is self-hosted and there is already a basic auth credential stored.
     ///
     var isSelfHostedWithCredentials: Bool { get }
+    
+    var siteID: NSNumber? { get }
 }
 
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both

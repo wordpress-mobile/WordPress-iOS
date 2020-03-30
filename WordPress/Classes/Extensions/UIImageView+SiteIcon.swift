@@ -61,22 +61,36 @@ extension UIImageView {
     ///
     @objc
     func downloadSiteIcon(for blog: Blog, placeholderImage: UIImage? = .siteIconPlaceholder) {
+        func downloadImage(with request: URLRequest) {
+            self.downloadImage(usingRequest: request, placeholderImage: placeholderImage, success: { [weak self] (image) in
+                self?.image = image
+                self?.removePlaceholderBorder()
+            }, failure: nil)
+        }
+        
         guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath) else {
             image = placeholderImage
             return
         }
 
         let request: URLRequest
-        if blog.isPrivate(), PrivateSiteURLProtocol.urlGoes(toWPComSite: siteIconURL) {
-            request = PrivateSiteURLProtocol.requestForPrivateSite(from: siteIconURL)
+        if false, blog.isPrivate(), PrivateSiteURLProtocol.urlGoes(toWPComSite: siteIconURL) {
+            if let dotComID = blog.dotComID?.intValue,
+                blog.isAtomic() {
+                
+                PrivateSiteURLProtocol.requestForPrivateAtomicSite(for: siteIconURL, siteID: dotComID, onComplete: { (request) in
+                    
+                    downloadImage(with: request)
+                })
+            } else {
+                request = PrivateSiteURLProtocol.requestForPrivateSite(from: siteIconURL)
+                
+                downloadImage(with: request)
+            }
         } else {
             request = URLRequest(url: siteIconURL)
+            downloadImage(with: request)
         }
-
-        downloadImage(usingRequest: request, placeholderImage: placeholderImage, success: { [weak self] (image) in
-            self?.image = image
-            self?.removePlaceholderBorder()
-        }, failure: nil)
     }
 }
 

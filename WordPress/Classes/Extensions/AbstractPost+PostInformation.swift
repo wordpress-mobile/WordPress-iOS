@@ -29,4 +29,8 @@ extension AbstractPost: ImageSourceInformation {
         }
         return autosaveRevisionIdentifier > 0
     }
+    
+    var siteID: NSNumber? {
+        return blog.dotComID
+    }
 }
