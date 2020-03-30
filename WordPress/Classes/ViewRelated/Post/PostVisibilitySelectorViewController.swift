@@ -28,7 +28,7 @@ import UIKit
 
         super.init(dictionary: visiblityDict)
 
-        onItemSelected = { visibility in
+        onItemSelected = { [weak self] visibility in
             guard let visibility = visibility as? String,
                 !post.isFault, post.managedObjectContext != nil else {
                 return
@@ -66,7 +66,7 @@ import UIKit
                 }
             }
 
-            self.completion?()
+            self?.completion?()
 
         }
     }

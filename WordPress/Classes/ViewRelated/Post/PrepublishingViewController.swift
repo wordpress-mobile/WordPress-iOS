@@ -11,6 +11,7 @@ class PrepublishingViewController: UITableViewController {
     private let completion: (AbstractPost) -> ()
 
     private let options: [PrepublishingOption] = [
+        PrepublishingOption(title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
 
@@ -64,6 +65,8 @@ class PrepublishingViewController: UITableViewController {
         cell.textLabel?.text = options[indexPath.row].title
 
         if indexPath.row == 0 {
+            cell.detailTextLabel?.text = post.titleForVisibility
+        } else {
             // Tags row
             cell.detailTextLabel?.text = post.tags
         }
@@ -72,18 +75,29 @@ class PrepublishingViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
+        if indexPath.row == 0 {
+            let viewController = PostVisibilitySelectorViewController(post)
 
-        viewController.onValueChanged = { [weak self] tags in
-            if !tags.isEmpty {
-                WPAnalytics.track(.prepublishingTagsAdded)
+            viewController.completion = { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+                self?.tableView.reloadData()
             }
 
-            self?.post.tags = tags
-            self?.tableView.reloadData()
-        }
+            navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
 
-        navigationController?.pushViewController(viewController, animated: true)
+            viewController.onValueChanged = { [weak self] tags in
+                if !tags.isEmpty {
+                    WPAnalytics.track(.prepublishingTagsAdded)
+                }
+
+                self?.post.tags = tags
+                self?.tableView.reloadData()
+            }
+
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     @objc func publish(_ sender: UIButton) {
