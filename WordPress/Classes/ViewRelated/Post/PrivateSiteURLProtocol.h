@@ -20,6 +20,8 @@
 + (void)registerPrivateSiteURLProtocol;
 + (void)unregisterPrivateSiteURLProtocol;
 
++ (NSString *)bearerToken;
+
 + (nonnull NSURLRequest *)requestForPrivateSiteFromURL:(nonnull NSURL *)url;
 
 + (BOOL)urlGoesToWPComSite:(nonnull NSURL *)url;

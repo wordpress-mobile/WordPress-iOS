@@ -52,7 +52,8 @@ class WPRichContentView: UITextView {
             attachmentManager.layoutAttachmentViews()
         }
     }
-
+    
+    @objc var isAtomic = false
 
     /// Whether the view shows private content. Used when fetching images.
     ///
@@ -342,7 +343,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.height)
         }
 
-        let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
+        let contentInformation = ContentInformation(isAtomicOnWPCom: isAtomic, isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
         let index = mediaArray.count
         let indexPath = IndexPath(row: index, section: 1)
         weak var weakImage = image
@@ -473,10 +474,12 @@ struct RichMedia {
 // MARK: - ContentInformation (ImageSourceInformation)
 
 class ContentInformation: ImageSourceInformation {
+    var isAtomicOnWPCom: Bool
     var isPrivateOnWPCom: Bool
     var isSelfHostedWithCredentials: Bool
 
-    init(isPrivateOnWPCom: Bool, isSelfHostedWithCredentials: Bool) {
+    init(isAtomicOnWPCom: Bool, isPrivateOnWPCom: Bool, isSelfHostedWithCredentials: Bool) {
+        self.isAtomicOnWPCom = isAtomicOnWPCom
         self.isPrivateOnWPCom = isPrivateOnWPCom
         self.isSelfHostedWithCredentials = isSelfHostedWithCredentials
     }
