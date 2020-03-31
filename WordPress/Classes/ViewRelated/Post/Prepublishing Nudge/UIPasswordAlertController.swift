@@ -64,7 +64,7 @@ class UIPasswordAlertController {
         static let alertSubmit = NSLocalizedString("OK", comment: "Submit button on prompt for user information.")
         static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
         static let postPassword = NSLocalizedString("Post Password", comment: "Placeholder of a field to type a password to protect the post.")
-        static let passwordMessage = NSLocalizedString("Add a password to protect this post", comment: "Message explaining why the user might enter a password.")
+        static let passwordMessage = NSLocalizedString("Enter a password to protect this post", comment: "Message explaining why the user might enter a password.")
     }
 
 }
