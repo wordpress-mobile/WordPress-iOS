@@ -42,6 +42,8 @@ extension NSNotification.Name {
 
     private var userName: String?
     private var userEmail: String?
+    private var userNameConfirmed = false
+
     private var deviceID: String?
     private var haveUserIdentity = false
     private var alertNameField: UITextField?
@@ -63,7 +65,7 @@ extension NSNotification.Name {
     // MARK: - Public Methods
 
     @objc static func setup() {
-        guard getZendeskCredentials() == true else {
+        guard getZendeskCredentials() else {
             return
         }
 
@@ -78,7 +80,7 @@ extension NSNotification.Name {
         Zendesk.initialize(appId: appId, clientId: clientId, zendeskUrl: url)
         Support.initialize(withZendesk: Zendesk.instance)
 
-        ZendeskUtils.sharedInstance.haveUserIdentity = getUserProfile()
+        ZendeskUtils.fetchUserInformation()
         toggleZendesk(enabled: true)
 
         // User has accessed a single ticket view, typically via the Zendesk Push Notification alert.
@@ -103,7 +105,7 @@ extension NSNotification.Name {
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
         presentInController = controller
-        let haveUserIdentity = ZendeskUtils.sharedInstance.haveUserIdentity
+        let haveUserIdentity = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
 
         // Since user information is not needed to display the Help Center,
         // if a user identity has not been created, create an empty identity.
@@ -270,8 +272,29 @@ extension NSNotification.Name {
     /// Returns the user's Support email address.
     ///
     static func userSupportEmail() -> String? {
-        let _ = getUserProfile()
         return ZendeskUtils.sharedInstance.userEmail
+    }
+
+    /// Obtains user's name and email from first available source.
+    ///
+    static func fetchUserInformation() {
+        // If user information already obtained, do nothing.
+        guard !ZendeskUtils.sharedInstance.haveUserIdentity else {
+            return
+        }
+
+        // Attempt to load from User Defaults.
+        // If nothing in UD, get from sources in `getUserInformationIfAvailable`.
+        if !loadUserProfile() {
+            ZendeskUtils.getUserInformationIfAvailable {
+                ZendeskUtils.createZendeskIdentity { success in
+                    guard success else {
+                        return
+                    }
+                    ZendeskUtils.sharedInstance.haveUserIdentity = true
+                }
+            }
+        }
     }
 
 }
@@ -284,9 +307,9 @@ private extension ZendeskUtils {
         guard let appId = ApiCredentials.zendeskAppId(),
             let url = ApiCredentials.zendeskUrl(),
             let clientId = ApiCredentials.zendeskClientId(),
-            appId.count > 0,
-            url.count > 0,
-            clientId.count > 0 else {
+            !appId.isEmpty,
+            !url.isEmpty,
+            !clientId.isEmpty else {
                 DDLogInfo("Unable to get Zendesk credentials.")
                 toggleZendesk(enabled: false)
                 return false
@@ -305,34 +328,15 @@ private extension ZendeskUtils {
 
     static func createIdentity(completion: @escaping (Bool) -> Void) {
 
-        // If we already have an identity, do nothing.
-        guard ZendeskUtils.sharedInstance.haveUserIdentity == false else {
-            DDLogDebug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
-            completion(true)
-            return
-        }
-
-        /*
-         1. Attempt to get user information from User Defaults.
-         2. If we don't have the user's information yet, attempt to get it from the account/site.
-         3. Prompt the user for email & name, pre-populating with user information obtained in step 1.
-         4. Create Zendesk identity with user information.
-         */
-
-        if getUserProfile() {
-            ZendeskUtils.createZendeskIdentity { success in
-                guard success else {
-                    DDLogInfo("Creating Zendesk identity failed.")
-                    completion(false)
-                    return
-                }
-                DDLogDebug("Using User Defaults for Zendesk identity.")
-                ZendeskUtils.sharedInstance.haveUserIdentity = true
+        // If we already have an identity, and the user has confirmed it, do nothing.
+        let haveUserInfo = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
+        guard !haveUserInfo else {
+                DDLogDebug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
                 completion(true)
                 return
-            }
         }
 
+        // Prompt the user for information.
         ZendeskUtils.getUserInformationAndShowPrompt(withName: true) { success in
             completion(success)
         }
@@ -545,13 +549,24 @@ private extension ZendeskUtils {
         UserDefaults.standard.set(userProfile, forKey: Constants.zendeskProfileUDKey)
     }
 
-    static func getUserProfile() -> Bool {
+    static func loadUserProfile() -> Bool {
         guard let userProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) else {
             return false
         }
+
         DDLogDebug("Zendesk - read profile from User Defaults: \(userProfile)")
         ZendeskUtils.sharedInstance.userEmail = userProfile.valueAsString(forKey: Constants.profileEmailKey)
         ZendeskUtils.sharedInstance.userName = userProfile.valueAsString(forKey: Constants.profileNameKey)
+        ZendeskUtils.sharedInstance.userNameConfirmed = true
+
+        ZendeskUtils.createZendeskIdentity { success in
+            guard success else {
+                return
+            }
+            DDLogDebug("Using User Defaults for Zendesk identity.")
+            ZendeskUtils.sharedInstance.haveUserIdentity = true
+        }
+
         return true
     }
 
@@ -757,6 +772,7 @@ private extension ZendeskUtils {
 
             if withName {
                 ZendeskUtils.sharedInstance.userName = alertController?.textFields?.last?.text
+                ZendeskUtils.sharedInstance.userNameConfirmed = true
             }
 
             saveUserProfile()
@@ -800,8 +816,7 @@ private extension ZendeskUtils {
 
         // Show alert
         ZendeskUtils.sharedInstance.presentInController?.present(alertController, animated: true) {
-            // Enable text fields only after the alert is shown so that VoiceOver will dictate
-            // the message first. 
+            // Enable text fields only after the alert is shown so that VoiceOver will dictate the message first.
             alertController.textFields?.forEach { textField in
                 textField.isEnabled = true
             }

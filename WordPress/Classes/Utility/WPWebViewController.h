@@ -4,7 +4,7 @@
 @class Blog;
 @class WPAccount;
 @class WebViewControllerConfiguration;
-@class WebViewAuthenticator;
+@class RequestAuthenticator;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign) BOOL addsHideMasterbarParameters;
 
-@property (nonatomic, strong, nullable) WebViewAuthenticator *authenticator;
+@property (nonatomic, strong, nullable) RequestAuthenticator *authenticator;
 
 /**
  *	@brief		Dismiss modal presentation
