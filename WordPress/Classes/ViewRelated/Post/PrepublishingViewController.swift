@@ -119,12 +119,13 @@ class PrepublishingViewController: UITableViewController {
         let visbilitySelectorViewController = PostVisibilitySelectorViewController(post)
 
         visbilitySelectorViewController.completion = { [weak self] option in
-            self?.navigationController?.popViewController(animated: true)
             self?.tableView.reloadData()
 
             // If tue user selects password protected, prompt for a password
             if option == AbstractPost.passwordProtectedLabel {
                 self?.showPasswordAlert()
+            } else {
+                self?.navigationController?.popViewController(animated: true)
             }
         }
 
@@ -158,6 +159,7 @@ class PrepublishingViewController: UITableViewController {
             }
 
             self?.post.password = password
+            self?.navigationController?.popViewController(animated: true)
         }, onCancel: { [weak self] in
             self?.cancelPasswordProtectedPost()
         })
