@@ -1036,7 +1036,7 @@ FeaturedImageViewControllerDelegate>
 {
     PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
     __weak PostVisibilitySelectorViewController *weakVc = vc;
-    vc.completion = ^{
+    vc.completion = ^(NSString *visibility) {
         [weakVc dismiss];
         [self.tableView reloadData];
     };

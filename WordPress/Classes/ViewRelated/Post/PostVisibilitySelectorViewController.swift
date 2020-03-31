@@ -5,7 +5,7 @@ import UIKit
     private var post: AbstractPost!
 
     /// A completion block that is called after the user select an option
-    @objc var completion: (() -> Void)?
+    @objc var completion: ((String) -> Void)?
 
     // MARK: - Constructors
 
@@ -66,7 +66,7 @@ import UIKit
                 }
             }
 
-            self?.completion?()
+            self?.completion?(visibility)
 
         }
     }
