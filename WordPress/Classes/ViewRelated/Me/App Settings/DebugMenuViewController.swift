@@ -1,4 +1,5 @@
 import UIKit
+import AutomatticTracks
 
 class DebugMenuViewController: UITableViewController {
     private var blogService: BlogService {
@@ -65,6 +66,14 @@ class DebugMenuViewController: UITableViewController {
         return [
             ButtonRow(title: Strings.quickStartRow, action: { [weak self] _ in
                 self?.displayBlogPickerForQuickStart()
+            }),
+            ButtonRow(title: Strings.sendLogMessage, action: { _ in
+                CrashLogging.logMessage("Debug Log Message \(UUID().uuidString)")
+                self.tableView.deselectSelectedRowWithAnimationAfterDelay(true)
+            }),
+            ButtonRow(title: Strings.sendTestCrash, action: { _ in
+                DDLogInfo("Initiating user-requested crash")
+                CrashLogging.crash()
             })
         ]
     }
@@ -101,5 +110,7 @@ class DebugMenuViewController: UITableViewController {
         static let featureFlags = NSLocalizedString("Feature flags", comment: "Title of the Feature Flags screen used in debug builds of the app")
         static let tools = NSLocalizedString("Tools", comment: "Title of the Tools section of the debug screen used in debug builds of the app")
         static let quickStartRow = NSLocalizedString("Enable Quick Start for Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
+        static let sendTestCrash = NSLocalizedString("Send Test Crash", comment: "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly")
+        static let sendLogMessage = NSLocalizedString("Send Log Message", comment: "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly")
     }
 }
