@@ -36,7 +36,7 @@ extension ReaderTabViewModel {
                 return
             }
 
-            let tabItems = topics.map{ ReaderTabItem(topic: $0) }
+            let tabItems = topics.map { ReaderTabItem(topic: $0) }
             completion(ReaderHelpers.rearrange(items: tabItems))
 
         } catch {

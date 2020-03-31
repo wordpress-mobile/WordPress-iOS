@@ -33,4 +33,3 @@ extension ReaderTabViewController {
         viewModel.performSearch()
     }
 }
-

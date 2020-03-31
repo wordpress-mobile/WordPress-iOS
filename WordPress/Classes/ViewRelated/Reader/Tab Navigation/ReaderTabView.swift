@@ -176,7 +176,7 @@ extension ReaderTabView {
         resetFilterButton.isHidden = false
         viewModel.presentFilter()
     }
-    
+
     /// Reset filter button
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
