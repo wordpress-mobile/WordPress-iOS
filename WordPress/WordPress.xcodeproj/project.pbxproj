@@ -1064,6 +1064,7 @@
 		8B939F4323832E5D00ACCB0F /* PostListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */; };
 		8BAD272C241FEF3300E9D105 /* PrepublishingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */; };
 		8BAD53D6241922B900230F4B /* WPAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD53D5241922B900230F4B /* WPAnalyticsEvent.swift */; };
+		8BB2768424323A94002D2BEC /* PostVisibilitySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB2768324323A94002D2BEC /* PostVisibilitySelectorViewController.swift */; };
 		8BC12F72231FEBA1004DDA72 /* PostCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC12F71231FEBA1004DDA72 /* PostCoordinatorTests.swift */; };
 		8BC12F7523201917004DDA72 /* PostService+MarkAsFailedAndDraftIfNeeded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC12F732320181E004DDA72 /* PostService+MarkAsFailedAndDraftIfNeeded.swift */; };
 		8BC12F7723201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC12F7623201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift */; };
@@ -3462,6 +3463,7 @@
 		8B939F4223832E5D00ACCB0F /* PostListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewControllerTests.swift; sourceTree = "<group>"; };
 		8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingViewController.swift; sourceTree = "<group>"; };
 		8BAD53D5241922B900230F4B /* WPAnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPAnalyticsEvent.swift; sourceTree = "<group>"; };
+		8BB2768324323A94002D2BEC /* PostVisibilitySelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVisibilitySelectorViewController.swift; sourceTree = "<group>"; };
 		8BC12F71231FEBA1004DDA72 /* PostCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCoordinatorTests.swift; sourceTree = "<group>"; };
 		8BC12F732320181E004DDA72 /* PostService+MarkAsFailedAndDraftIfNeeded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+MarkAsFailedAndDraftIfNeeded.swift"; sourceTree = "<group>"; };
 		8BC12F7623201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+MarkAsFailedAndDraftIfNeededTests.swift"; sourceTree = "<group>"; };
@@ -8404,6 +8406,7 @@
 				FFEECFFB2084DE2B009B8CDB /* PostSettingsViewController+FeaturedImageUpload.swift */,
 				593F26601CAB00CA00F14073 /* PostSharingController.swift */,
 				E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */,
+				8BB2768324323A94002D2BEC /* PostVisibilitySelectorViewController.swift */,
 				8BAD272B241FEF3300E9D105 /* PrepublishingViewController.swift */,
 				5D17F0BC1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.h */,
 				5D17F0BD1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m */,
@@ -12815,6 +12818,7 @@
 				988AC37522F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
 				436D55DF210F866900CEAA33 /* StoryboardLoadable.swift in Sources */,
+				8BB2768424323A94002D2BEC /* PostVisibilitySelectorViewController.swift in Sources */,
 				D8212CC320AA7F57008E8AE8 /* ReaderBlockSiteAction.swift in Sources */,
 				5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */,
 				B518E1651CCAA19200ADFE75 /* Blog+Capabilities.swift in Sources */,
