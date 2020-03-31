@@ -4,7 +4,7 @@ class ReaderTabViewController: UIViewController {
 
     private let viewModel: ReaderTabViewModel
 
-    @objc init(viewModel: ReaderTabViewModel, nibName: String? =  nil, bundle: Bundle? = nil) {
+    init(viewModel: ReaderTabViewModel, nibName: String? =  nil, bundle: Bundle? = nil) {
         self.viewModel = viewModel
         super.init(nibName: nibName, bundle: bundle)
         self.title = NSLocalizedString("Reader", comment: "The default title of the Reader")

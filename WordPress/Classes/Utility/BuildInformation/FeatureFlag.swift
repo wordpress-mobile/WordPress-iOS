@@ -34,7 +34,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .floatingCreateButton:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .newReaderNavigation:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 }
