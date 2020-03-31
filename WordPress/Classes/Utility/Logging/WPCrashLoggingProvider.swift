@@ -44,7 +44,7 @@ struct EventLoggingDataProvider: EventLoggingDataSource {
         self.previousSessionLogPath = url
     }
 
-    let loggingEncryptionKey: String = "6/Urz0lhTD4POD3KZuKnvsanDyKinPASDbw3mmQVFj0="
+    let loggingEncryptionKey: String = ApiCredentials.encryptedLogKey()
 
     let previousSessionLogPath: URL?
 
