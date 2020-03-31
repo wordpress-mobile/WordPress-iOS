@@ -186,7 +186,7 @@ target 'WordPress' do
     #pod 'WordPressAuthenticator', '~> 1.12.0-beta.6'
     # While in PR
     pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'issue/224-remove-showSignupMethod'
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'f3b0491fe73a3bf3c3fbe38b06f055bc5a1b8eec'
+    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'ac47309c708351ad16cffc3c57244b39bea75b06'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
     pod 'MediaEditor', '~> 1.0.1'
