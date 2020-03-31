@@ -55,7 +55,7 @@ class WebKitViewController: UIViewController {
     @objc var customOptionsButton: UIBarButtonItem?
 
     @objc let url: URL?
-    @objc let authenticator: WebViewAuthenticator?
+    @objc let authenticator: RequestAuthenticator?
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
