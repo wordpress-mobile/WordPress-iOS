@@ -233,3 +233,43 @@ import WordPressShared
         return AccountHelper.isDotcomAvailable()
     }
 }
+
+/// Reader tab items
+extension ReaderHelpers {
+    /// Display title for topics that do not use the default title
+    class func displayTitle(for topic: ReaderAbstractTopic) -> String {
+        if topicIsFollowing(topic) {
+            return NSLocalizedString("Following", comment: "Title of the Following Reader tab")
+        } else if topicIsLiked(topic) {
+            return NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
+        }
+        return topic.title
+    }
+    /// Sorts the default tabs according to the order [Following, Discover, Likes], and adds the Saved tab
+    class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
+        var mutableItems = items
+        mutableItems.sort {
+            guard let leftTopic = $0.topic, let rightTopic = $1.topic else {
+                return true
+            }
+            if topicIsFollowing(leftTopic) {
+                return true
+            } else if topicIsFollowing(rightTopic) {
+                return false
+            } else if topicIsDiscover(leftTopic) {
+                return true
+            } else if topicIsDiscover(rightTopic) {
+                return false
+            } else if topicIsLiked(leftTopic) {
+                return true
+            } else if topicIsLiked(rightTopic) {
+                return false
+            } else if leftTopic.type == rightTopic.type {
+                return leftTopic.title < rightTopic.title
+            }
+            return true
+        }
+        mutableItems.insert(ReaderTabItem(title: NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")), at: 3)
+        return mutableItems
+    }
+}
