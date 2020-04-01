@@ -39,18 +39,34 @@ public protocol DrawerPresentable: AnyObject {
 
 typealias UIDrawerPresentable = DrawerPresentable & UIViewController
 
+private enum Constants {
+    static let transitionDuration: TimeInterval = 0.5
+
+    static let flickVelocity: CGFloat = 300
+    static let bounceAmount: CGFloat = 0.01
+
+    enum Defaults {
+        static let expandedHeight: DrawerHeight = .topMargin(20)
+        static let collapsedHeight: DrawerHeight = .contentHeight(0)
+
+        static let allowsUserTransition: Bool = true
+        static let allowsTapToDismiss: Bool = true
+        static let allowsDragToDismiss: Bool = true
+    }
+}
+
 public extension DrawerPresentable where Self: UIViewController {
     //Default values
     var allowsUserTransition: Bool {
-        return true
+        return Constants.Defaults.allowsUserTransition
     }
 
     var expandedHeight: DrawerHeight {
-        return .topMargin(20)
+        return Constants.Defaults.expandedHeight
     }
 
     var collapsedHeight: DrawerHeight {
-        return .contentHeight(0)
+        return Constants.Defaults.collapsedHeight
     }
 
     var scrollableView: UIScrollView? {
@@ -58,11 +74,11 @@ public extension DrawerPresentable where Self: UIViewController {
     }
 
     var allowsDragToDismiss: Bool {
-        return true
+        return Constants.Defaults.allowsDragToDismiss
     }
 
     var allowsTapToDismiss: Bool {
-        return true
+        return Constants.Defaults.allowsTapToDismiss
     }
 
     // Helpers
@@ -76,13 +92,6 @@ public extension DrawerPresentable where Self: UIViewController {
 }
 
 public class DrawerPresentationController: FancyAlertPresentationController {
-    private enum Constants {
-        static let transitionDuration: TimeInterval = 0.5
-        static let defaultTopMargin: CGFloat = 20
-        static let flickVelocity: CGFloat = 300
-        static let bounceAmount: CGFloat = 0.01
-    }
-
     override public var frameOfPresentedViewInContainerView: CGRect {
         guard let containerView = self.containerView else {
             return .zero
@@ -96,8 +105,12 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         return frame
     }
 
+    /// Returns the current position of the drawer
     public var currentPosition: DrawerPosition = .collapsed
 
+
+    /// Animates between the drawer positions
+    /// - Parameter position: The position to animate to
     public func transition(to position: DrawerPosition) {
         currentPosition = position
 
@@ -140,6 +153,8 @@ public class DrawerPresentationController: FancyAlertPresentationController {
 
 
     // MARK: - Internal Positions
+    // Helpers to calculate the Y positions for the drawer positions
+
     private var closedPosition: CGFloat {
         guard let presentedView = self.presentedView else {
             return 0
@@ -149,21 +164,19 @@ public class DrawerPresentationController: FancyAlertPresentationController {
     }
 
     private var collapsedYPosition: CGFloat {
-        guard let presentableVC = presentableViewController else {
-            return calculatedTopMargin(for: 0)
-        }
+        let height = presentableViewController?.collapsedHeight ?? Constants.Defaults.collapsedHeight
 
-        return topMargin(with: presentableVC.collapsedHeight)
+        return topMargin(with: height)
     }
 
     private var expandedYPosition: CGFloat {
-        guard let presentableVC = presentableViewController else {
-            return calculatedTopMargin(for: Constants.defaultTopMargin)
-        }
+        let height = presentableViewController?.expandedHeight ?? Constants.Defaults.expandedHeight
 
-        return topMargin(with: presentableVC.expandedHeight)
+        return topMargin(with: height)
     }
 
+    /// Calculates the Y position for the view based on a DrawerHeight enum
+    /// - Parameter drawerHeight: The drawer height to calculate
     private func topMargin(with drawerHeight: DrawerHeight) -> CGFloat {
         var topMargin: CGFloat
 
@@ -213,12 +226,11 @@ private extension DrawerPresentationController {
         containerView.addGestureRecognizer(tapGestureRecognizer)
     }
 
+    /// Dismiss action for the tap gesture
+    /// Will prevent dismissal if the `allowsTapToDismiss` is false
+    /// - Parameter gesture: The tap gesture
     @objc func dismiss(_ gesture: UIPanGestureRecognizer) {
-        var canDismiss = true
-
-        if let presentableVC = presentableViewController {
-            canDismiss = presentableVC.allowsTapToDismiss
-        }
+        let canDismiss = presentableViewController?.allowsTapToDismiss ?? Constants.Defaults.allowsTapToDismiss
 
         guard canDismiss else {
             return
@@ -231,8 +243,8 @@ private extension DrawerPresentationController {
         guard let presentedView = self.presentedView else { return }
 
         let translation = gesture.translation(in: presentedView)
-        let allowsUserTransition = presentableViewController?.allowsUserTransition ?? false
-        let allowDragToDismiss = presentableViewController?.allowsDragToDismiss ?? true
+        let allowsUserTransition = presentableViewController?.allowsUserTransition ?? Constants.Defaults.allowsUserTransition
+        let allowDragToDismiss = presentableViewController?.allowsDragToDismiss ?? Constants.Defaults.allowsDragToDismiss
 
         switch gesture.state {
         case .began:
@@ -300,7 +312,6 @@ private extension DrawerPresentationController {
             return
         }
     }
-
 }
 
 private extension UIScrollView {
