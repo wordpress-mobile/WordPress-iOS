@@ -304,9 +304,8 @@ private extension DrawerPresentationController {
             self.configureScrollViewInsets()
         }
 
-
         if animated {
-            UIView.animate(withDuration: Constants.transitionDuration, animations: animations)
+            animate(animations)
         } else {
             animations()
         }
@@ -335,6 +334,14 @@ private extension DrawerPresentationController {
         return returnPosition
     }
 
+    private func animate(_ animations: @escaping () -> Void) {
+        UIView.animate(withDuration: Constants.transitionDuration,
+                       delay: 0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0,
+                       options: .curveEaseInOut,
+                       animations: animations)
+    }
 
     private var rootViewController: UIViewController? {
         return UIApplication.shared.keyWindow?.rootViewController
