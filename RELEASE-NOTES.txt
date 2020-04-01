@@ -12,6 +12,7 @@
 * Block editor: Add alignment options for Heading block
 * Block editor: Implemented dropdown toolbar for alignment toolbar in Heading, Paragraph, Image, MediaText blocks
 * Block Editor: When editing link settings, tapping the keyboard return button now closes the settings panel as well as closing the keyboard.
+* Fixed a crash when a blog's URL became `nil` from a Core Data operation.
 
  
 14.5
