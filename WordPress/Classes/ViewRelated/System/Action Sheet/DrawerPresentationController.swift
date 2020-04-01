@@ -139,7 +139,7 @@ public class DrawerPresentationController: FancyAlertPresentationController {
     }
 
 
-    //MARK: - Internal Positions
+    // MARK: - Internal Positions
     private var closedPosition: CGFloat {
         guard let presentedView = self.presentedView else {
             return 0
@@ -181,7 +181,7 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         return topMargin
     }
 
-    //MARK: - Gestures
+    // MARK: - Gestures
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.dismiss(_:)))
         gesture.delegate = self
@@ -201,7 +201,7 @@ public class DrawerPresentationController: FancyAlertPresentationController {
     private var dragStartPoint: CGPoint?
 }
 
-//MARK: - Dragging
+// MARK: - Dragging
 private extension DrawerPresentationController {
     private func addGestures() {
         guard
@@ -242,7 +242,7 @@ private extension DrawerPresentationController {
             let startY = dragStartPoint?.y ?? 0
             var yTranslation = translation.y
 
-            if (!allowsUserTransition || !allowDragToDismiss) {
+            if !allowsUserTransition || !allowDragToDismiss {
                 let maxBounce: CGFloat = (startY * Constants.bounceAmount)
 
                 if yTranslation < 0 {
@@ -260,8 +260,7 @@ private extension DrawerPresentationController {
 
         case .ended:
             /// Helper closure to prevent user transitions
-            let transition:(DrawerPosition) -> () = { pos in
-
+            let transition: (DrawerPosition) -> () = { pos in
                 if allowsUserTransition {
                     self.transition(to: pos)
                     return
@@ -281,13 +280,13 @@ private extension DrawerPresentationController {
             let position = closestPosition(for: currentPosition)
 
             // Determine how to handle flicking of the view
-            if ((abs(velocity) - Constants.flickVelocity) > 0) {
+            if (abs(velocity) - Constants.flickVelocity) > 0 {
                 //Flick up
                 if velocity < 0 {
                     transition(.expanded)
                 }
                 else {
-                    if(position == .expanded){
+                    if position == .expanded {
                         transition(.collapsed)
                     } else {
                         transition(.closed)
@@ -335,7 +334,7 @@ extension DrawerPresentationController: UIGestureRecognizerDelegate {
     }
 }
 
-//MARK: - Private: Helpers
+// MARK: - Private: Helpers
 private extension DrawerPresentationController {
 
     private func configureScrollViewInsets() {
@@ -412,7 +411,7 @@ private extension DrawerPresentationController {
 
         if closestVal == expandedYPosition {
             returnPosition = .expanded
-        } else if(closestVal == collapsedYPosition) {
+        } else if closestVal == collapsedYPosition {
             returnPosition = .collapsed
         }
 
