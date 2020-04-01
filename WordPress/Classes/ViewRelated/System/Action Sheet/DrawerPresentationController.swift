@@ -6,11 +6,32 @@ public enum DrawerPosition {
     case closed
 }
 
+public enum DrawerHeight {
+    // The maximum height for the screen
+    case maxHeight
+
+    //Height is based on the specified margin from the top of the screen
+    case topMargin(CGFloat)
+
+    // Height will be equal to the the content height value
+    case contentHeight(CGFloat)
+}
+
 public protocol DrawerPresentable: AnyObject {
-    var initialHeight: CGFloat { get }
-    var scrollableView: UIScrollView? { get }
+    /// The height of the drawer when it's in the expanded position
+    var topHeight: DrawerHeight { get }
+
+    /// The height of the drawer when it's in the collapsed position
+    var bottomHeight: DrawerHeight { get }
+
+    /// Whether or not the user is allowed to swipe to switch between the expanded and collapsed position
     var allowsUserTransition: Bool { get }
+
+    /// Whether or not the user is allowed to drag to dismiss the drawer
     var allowsDragToDismiss: Bool { get }
+
+    /// A scroll view that should have its insets adjusted when the drawer is expanded/collapsed
+    var scrollableView: UIScrollView? { get }
 }
 
 typealias UIDrawerPresentable = DrawerPresentable & UIViewController
@@ -21,8 +42,12 @@ public extension DrawerPresentable where Self: UIViewController {
         return true
     }
 
-    var initialHeight: CGFloat {
-        return 0
+    var bottomHeight: DrawerHeight {
+        return .contentHeight(0)
+    }
+
+    var topHeight: DrawerHeight {
+        return .topMargin(20)
     }
 
     var scrollableView: UIScrollView? {
@@ -117,13 +142,37 @@ public class DrawerPresentationController: FancyAlertPresentationController {
     }
 
     private var bottomYPosition: CGFloat {
-        return calculatedTopMargin(for: presentableInitialHeight)
+        guard let presentableVC = presentableViewController else {
+            return calculatedTopMargin(for: 0)
+        }
+
+        return topMargin(with: presentableVC.bottomHeight)
     }
 
     private var topYPosition: CGFloat {
-        return Constants.defaultTopMargin + safeAreaInsets.top
+        guard let presentableVC = presentableViewController else {
+            return calculatedTopMargin(for: Constants.defaultTopMargin)
+        }
+
+        return topMargin(with: presentableVC.topHeight)
     }
 
+    private func topMargin(with drawerHeight: DrawerHeight) -> CGFloat {
+        var topMargin: CGFloat
+
+        switch drawerHeight {
+        case .contentHeight(let height):
+            topMargin = calculatedTopMargin(for: height)
+
+        case .topMargin(let margin):
+            topMargin = safeAreaInsets.top + margin
+
+        case .maxHeight:
+            topMargin = safeAreaInsets.top
+        }
+
+        return topMargin
+    }
 
     //MARK: - Panning
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
@@ -143,7 +192,6 @@ public class DrawerPresentationController: FancyAlertPresentationController {
     }
 
     private var startPoint: CGPoint?
-
 }
 
 //MARK: - Dragging
@@ -181,7 +229,9 @@ private extension DrawerPresentationController {
                 }
             }
 
-            self.setTopMargin((startY + yTranslation), animated: false)
+            let maxY = topMargin(with: .maxHeight)
+
+            self.setTopMargin(max((startY + yTranslation), maxY), animated: false)
 
         case .ended:
             /// Helper closure to prevent user transitions
