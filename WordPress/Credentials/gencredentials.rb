@@ -190,7 +190,10 @@ encrytedlogkey=nil
 
 File.open(path) do |f|
   f.each_line do |l|
-    (k,value) = l.split("=")
+    eqPos = l.index("=")
+    k = l[0...eqPos]
+    value = l[(eqPos + 1)..-1]
+    
     next if !value
     value.strip!
     if k == "WPCOM_APP_ID"
