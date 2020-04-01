@@ -148,6 +148,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 - (NSString *)displayURL
 {
     if (self.url == nil) {
+        DDLogInfo(@"Blog display URL is nil");
         return nil;
     }
     
