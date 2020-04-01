@@ -5,6 +5,9 @@ class LoginTests: XCTestCase {
     override func setUp() {
         setUpTestSuite()
 
+        // For testing only; don't merge this change!
+        XCTAssertEqual(true, false)
+
         LoginFlow.logoutIfNeeded()
     }
 

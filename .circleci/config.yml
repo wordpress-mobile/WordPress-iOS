@@ -203,6 +203,7 @@ workflows:
       - UI Tests:
           name: UI Tests (iPhone 11)
           device: iPhone 11
+          post-to-slack: true # For testing only; don't merge this change!
           requires: [ "Build Tests" ]
       - UI Tests:
           name: UI Tests (iPad Air 3rd generation)
