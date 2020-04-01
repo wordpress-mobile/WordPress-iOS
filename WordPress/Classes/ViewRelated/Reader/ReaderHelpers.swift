@@ -252,23 +252,28 @@ extension ReaderHelpers {
             guard let leftTopic = $0.topic, let rightTopic = $1.topic else {
                 return true
             }
+            // first item: Following
             if topicIsFollowing(leftTopic) {
                 return true
             } else if topicIsFollowing(rightTopic) {
                 return false
+            // second item: Discover
             } else if topicIsDiscover(leftTopic) {
                 return true
             } else if topicIsDiscover(rightTopic) {
                 return false
+            // third item: Likes
             } else if topicIsLiked(leftTopic) {
                 return true
             } else if topicIsLiked(rightTopic) {
                 return false
+            // any other items: sort them alphabetically, grouped by topic type
             } else if leftTopic.type == rightTopic.type {
                 return leftTopic.title < rightTopic.title
             }
             return true
         }
+        // fourth item: Saved. It's manually inserted after the sorting
         mutableItems.insert(ReaderTabItem(title: NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")), at: 3)
         return mutableItems
     }

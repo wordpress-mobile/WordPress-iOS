@@ -70,6 +70,7 @@ class FilterTabBar: UIControl {
         didSet {
             if let oldValue = oldValue {
                 NSLayoutConstraint.deactivate([oldValue])
+                tabBarHeightConstraint.isActive = true
             }
         }
     }

@@ -3,24 +3,24 @@ import UIKit
 class ReaderTabView: UIView {
 
     private let mainStackView: UIStackView
+    private let buttonsStackView: UIStackView
     private let tabBar: FilterTabBar
     private let filterButton: PostMetaButton
     private let resetFilterButton: UIButton
-    private let verticalDivider: UIView
     private let settingsButton: UIButton
-    private let buttonsStackView: UIStackView
+    private let verticalDivider: UIView
     private let containerView: UIView
 
     private let viewModel: ReaderTabViewModel
 
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
-        tabBar = FilterTabBar()
         buttonsStackView = UIStackView()
+        tabBar = FilterTabBar()
         filterButton = PostMetaButton(type: .custom)
         resetFilterButton = UIButton(type: .custom)
-        verticalDivider = UIView()
         settingsButton = UIButton(type: .custom)
+        verticalDivider = UIView()
         containerView = UIView()
 
         self.viewModel = viewModel
@@ -65,7 +65,6 @@ extension ReaderTabView {
     }
 
     private func setupTabBar() {
-        tabBar.translatesAutoresizingMaskIntoConstraints = false
         tabBar.tabBarHeight = Appearance.barHeight
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)

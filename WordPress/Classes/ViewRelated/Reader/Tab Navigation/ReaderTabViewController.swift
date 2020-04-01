@@ -4,9 +4,9 @@ class ReaderTabViewController: UIViewController {
 
     private let viewModel: ReaderTabViewModel
 
-    init(viewModel: ReaderTabViewModel, nibName: String? =  nil, bundle: Bundle? = nil) {
+    init(viewModel: ReaderTabViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nibName, bundle: bundle)
+        super.init(nibName: nil, bundle: nil)
         self.title = NSLocalizedString("Reader", comment: "The default title of the Reader")
         setupSearchButton()
     }
