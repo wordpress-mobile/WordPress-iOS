@@ -163,7 +163,7 @@ class PrepublishingViewController: UITableViewController {
         }, onCancel: { [weak self] in
             self?.cancelPasswordProtectedPost()
         })
-        
+
         passwordAlertController.show(from: self)
     }
 
