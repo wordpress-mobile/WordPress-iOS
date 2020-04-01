@@ -198,7 +198,7 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         addGestures()
     }
 
-    private var startPoint: CGPoint?
+    private var dragStartPoint: CGPoint?
 }
 
 //MARK: - Dragging
@@ -236,10 +236,10 @@ private extension DrawerPresentationController {
 
         switch gesture.state {
         case .began:
-            startPoint = presentedView.frame.origin
+            dragStartPoint = presentedView.frame.origin
 
         case .changed:
-            let startY = startPoint?.y ?? 0
+            let startY = dragStartPoint?.y ?? 0
             var yTranslation = translation.y
 
             if (!allowsUserTransition || !allowDragToDismiss) {
@@ -275,7 +275,7 @@ private extension DrawerPresentationController {
             }
 
             let velocity = gesture.velocity(in: presentedView).y
-            let startY = startPoint?.y ?? 0
+            let startY = dragStartPoint?.y ?? 0
 
             let currentPosition = (startY + translation.y)
             let position = closestPosition(for: currentPosition)
@@ -299,7 +299,7 @@ private extension DrawerPresentationController {
 
             transition(position)
 
-            startPoint = nil
+            dragStartPoint = nil
 
         default:
             return
