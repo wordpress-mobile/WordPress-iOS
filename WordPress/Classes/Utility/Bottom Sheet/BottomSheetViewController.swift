@@ -1,6 +1,11 @@
 import UIKit
 
-class BottomSheetViewController: UIViewController {
+class BottomSheetViewController: UIViewController, DrawerPresentable {
+    var initialHeight: CGFloat = 200
+
+    var scrollableView: UIScrollView? {
+        return self.childViewController?.scrollableView
+    }
 
     enum Constants {
         static let gripHeight: CGFloat = 5
@@ -28,11 +33,9 @@ class BottomSheetViewController: UIViewController {
         }
     }
 
-    private weak var childViewController: UIBottomSheetPresentable?
+    private weak var childViewController: UIDrawerPresentable?
 
-    private var heightConstraint: NSLayoutConstraint!
-
-    init(childViewController: UIBottomSheetPresentable) {
+    init(childViewController: UIDrawerPresentable) {
         self.childViewController = childViewController
         super.init(nibName: nil, bundle: nil)
     }
@@ -85,12 +88,6 @@ class BottomSheetViewController: UIViewController {
             return
         }
 
-        // Set the initial height of the child VC
-        heightConstraint = childViewController.view.heightAnchor.constraint(equalToConstant: childViewController.initialHeight)
-        heightConstraint.priority = UILayoutPriority(rawValue: 999)
-        heightConstraint.isActive = true
-        childViewController.view.translatesAutoresizingMaskIntoConstraints = false
-
         addChild(childViewController)
 
         let stackView = UIStackView(arrangedSubviews: [
@@ -131,48 +128,20 @@ class BottomSheetViewController: UIViewController {
         return preferredContentSize = CGSize(width: Constants.minimumWidth, height: view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)
     }
 
-    @objc func keyboardWillShow(_ notification: NSNotification) {
-        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.30
-        let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 0
+    var presentedVC: DrawerPresentationController? {
+        guard let navController = self.navigationController else {
+            return presentationController as? DrawerPresentationController
+        }
 
-        let heightForKeyboard = UIScreen.main.bounds.height - 200
-
-        UIView.animateKeyframes(withDuration: duration,
-                                delay: 0,
-                                options: UIView.KeyframeAnimationOptions(rawValue: curve),
-                                animations: {
-            // Resize the bottom sheet
-            self.heightConstraint.constant = heightForKeyboard
-            self.presentationController?.containerView?.setNeedsLayout()
-            self.presentationController?.containerView?.layoutIfNeeded()
-
-            // Resize all the subviews if the child VC is a navigation controller
-            self.resizeAllViewControllers(height: heightForKeyboard)
-        }, completion: { _ in
-            // Make sure the subviews keeps the height of the bottom sheet
-            self.resizeAllViewControllers(height: heightForKeyboard)
-        })
+        return navController.presentationController as? DrawerPresentationController
     }
 
-    private func resizeAllViewControllers(height: CGFloat) {
-        (childViewController as? UINavigationController)?.viewControllers.forEach { viewController in
-            let originalFrame = viewController.view.frame
-            viewController.view.frame = CGRect(x: originalFrame.origin.x, y: originalFrame.origin.y, width: originalFrame.width, height: height)
-        }
+    @objc func keyboardWillShow(_ notification: NSNotification) {
+        self.presentedVC?.transition(to: .top)
     }
 
     @objc func keyboardWillHide(_ notification: NSNotification) {
-        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.30
-        let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 0
-
-        UIView.animateKeyframes(withDuration: duration,
-                                delay: 0,
-                                options: UIView.KeyframeAnimationOptions(rawValue: curve),
-                                animations: {
-            self.heightConstraint.constant = self.childViewController?.initialHeight ?? 200
-            self.presentationController?.containerView?.setNeedsLayout()
-            self.presentationController?.containerView?.layoutIfNeeded()
-        }, completion: nil)
+        self.presentedVC?.transition(to: .bottom)
     }
 }
 
@@ -186,12 +155,12 @@ extension BottomSheetViewController: UIViewControllerTransitioningDelegate {
     }
 
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = BottomSheetPresentationController(presentedViewController: presented, presenting: presenting)
+        let presentationController = DrawerPresentationController(presentedViewController: presented, presenting: presenting)
         return presentationController
     }
 
-    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-
-        return (self.presentationController as? BottomSheetPresentationController)?.interactionController
-    }
+//    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+//
+//        return (self.presentationController as? DrawerPresentationController)?.interactionController
+//    }
 }

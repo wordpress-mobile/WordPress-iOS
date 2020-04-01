@@ -1,7 +1,13 @@
 import UIKit
 
-class PrepublishingNavigationController: UINavigationController, BottomSheetPresentable {
+class PrepublishingNavigationController: UINavigationController, DrawerPresentable {
     var initialHeight: CGFloat = 200
+
+    var scrollableView: UIScrollView? {
+        let scroll = visibleViewController?.view as? UIScrollView
+
+        return scroll
+    }
 
     lazy var header: PrepublishingHeaderView = {
         let header = PrepublishingHeaderView.loadFromNib()
@@ -97,10 +103,4 @@ extension PrepublishingNavigationController: PrepublishingHeaderViewDelegate {
     func backButtonTapped() {
         popViewController(animated: true)
     }
-}
-
-typealias UIBottomSheetPresentable = BottomSheetPresentable & UIViewController
-
-protocol BottomSheetPresentable {
-    var initialHeight: CGFloat { get }
 }
