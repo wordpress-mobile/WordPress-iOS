@@ -162,12 +162,6 @@ extension BottomSheetViewController: UIViewControllerTransitioningDelegate {
     }
 
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = DrawerPresentationController(presentedViewController: presented, presenting: presenting)
-        return presentationController
+        return DrawerPresentationController(presentedViewController: presented, presenting: presenting)
     }
-
-//    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-//
-//        return (self.presentationController as? DrawerPresentationController)?.interactionController
-//    }
 }
