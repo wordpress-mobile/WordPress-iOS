@@ -30,6 +30,9 @@ public protocol DrawerPresentable: AnyObject {
     /// Whether or not the user is allowed to drag to dismiss the drawer
     var allowsDragToDismiss: Bool { get }
 
+    /// Whether or not the user is allowed to tap outside the view to dismiss the drawer
+    var allowsTapToDismiss: Bool { get }
+
     /// A scroll view that should have its insets adjusted when the drawer is expanded/collapsed
     var scrollableView: UIScrollView? { get }
 }
@@ -55,6 +58,10 @@ public extension DrawerPresentable where Self: UIViewController {
     }
 
     var allowsDragToDismiss: Bool {
+        return true
+    }
+
+    var allowsTapToDismiss: Bool {
         return true
     }
 
@@ -174,16 +181,16 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         return topMargin
     }
 
-    //MARK: - Panning
+    //MARK: - Gestures
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
-        return UITapGestureRecognizer(target: self, action: #selector(self.dismiss))
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.dismiss(_:)))
+        gesture.delegate = self
+        return gesture
     }()
 
     private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         return UIPanGestureRecognizer(target: self, action: #selector(self.pan(_:)))
     }()
-
-    var interactionController: UIPercentDrivenInteractiveTransition?
 
     override public func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
@@ -197,9 +204,27 @@ public class DrawerPresentationController: FancyAlertPresentationController {
 //MARK: - Dragging
 private extension DrawerPresentationController {
     private func addGestures() {
-        guard let presentedView = self.presentedView else { return }
+        guard
+            let presentedView = self.presentedView,
+            let containerView = self.containerView
+            else { return }
 
-        presentedView.addGestureRecognizer(self.panGestureRecognizer)
+        presentedView.addGestureRecognizer(panGestureRecognizer)
+        containerView.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc func dismiss(_ gesture: UIPanGestureRecognizer) {
+        var canDismiss = true
+
+        if let presentableVC = presentableViewController {
+            canDismiss = presentableVC.allowsTapToDismiss
+        }
+
+        guard canDismiss else {
+            return
+        }
+
+        dismiss()
     }
 
     @objc func pan(_ gesture: UIPanGestureRecognizer) {
@@ -289,6 +314,24 @@ private extension UIScrollView {
      */
     var isScrolling: Bool {
         return isDragging && !isDecelerating || isTracking
+    }
+}
+
+extension DrawerPresentationController: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        /// Shouldn't happen; should always have container & presented view when tapped
+        guard
+            let containerView = containerView,
+            let presentedView = presentedView
+        else {
+            return false
+        }
+
+        let touchPoint = touch.location(in: containerView)
+        let isInPresentedView = presentedView.frame.contains(touchPoint)
+
+        /// Do not accept the touch if inside of the presented view
+        return (gestureRecognizer == tapGestureRecognizer) && isInPresentedView == false
     }
 }
 
