@@ -352,7 +352,7 @@ private extension DrawerPresentationController {
             else { return }
 
 
-        let bottom = presentingViewController.bottomLayoutGuide.length
+        let bottom = presentingViewController.view.safeAreaLayoutGuide.layoutFrame.origin.y
         let margin = presentedView.frame.origin.y + bottom
 
         /**
@@ -435,6 +435,8 @@ private extension DrawerPresentationController {
     }
 
     private var rootViewController: UIViewController? {
-        return UIApplication.shared.keyWindow?.rootViewController
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+
+        return keyWindow?.rootViewController
     }
 }
