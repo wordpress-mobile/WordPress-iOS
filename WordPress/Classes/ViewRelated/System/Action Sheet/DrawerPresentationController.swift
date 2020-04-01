@@ -96,10 +96,10 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         return frame
     }
 
-    public var position: DrawerPosition = .collapsed
+    public var currentPosition: DrawerPosition = .collapsed
 
     public func transition(to position: DrawerPosition) {
-        self.position = position
+        currentPosition = position
 
         if position == .closed {
             dismiss()
@@ -259,17 +259,13 @@ private extension DrawerPresentationController {
             self.setTopMargin(max((startY + yTranslation), maxY), animated: false)
 
         case .ended:
-            /// Helper closure to prevent user transitions
+            /// Helper closure to prevent user transition/dismiss
             let transition: (DrawerPosition) -> () = { pos in
-                if allowsUserTransition {
-                    self.transition(to: pos)
-                    return
-                }
-
-                if pos == .closed && allowDragToDismiss {
+                if allowsUserTransition || pos == .closed && allowDragToDismiss {
                     self.transition(to: pos)
                 } else {
-                    self.transition(to: self.position)
+                    //Reset to the original position
+                    self.transition(to: self.currentPosition)
                 }
             }
 
