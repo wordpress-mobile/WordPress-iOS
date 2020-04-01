@@ -108,6 +108,8 @@ jobs:
                   echo "export SLACK_FAILURE_MESSAGE=':red_circle: WordPress iOS UI tests failed on ${DEVICE_NAME} in \`${CIRCLE_BRANCH}\` branch by ${CIRCLE_USERNAME}.\n\nPlease reach out in #platform9 if you think this failure is not caused by your changes, so we can investigate.'" >> $BASH_ENV
             - slack/status:
                 fail_only: true
+                include_job_number_field: false
+                include_project_field: false
                 failure_message: '${SLACK_FAILURE_MESSAGE}'
   Installable Build:
     executor:
