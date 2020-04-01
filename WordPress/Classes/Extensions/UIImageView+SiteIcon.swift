@@ -79,15 +79,17 @@ extension UIImageView {
             print("Blog id \(blog.dotComID ?? 0), is atomic \(blog.isAtomic())")
         }
 
-        if blog.isPrivate(),
-            let dotComID = blog.dotComID {
-            PrivateSiteURLProtocol.request(for: siteIconURL, siteID: dotComID.intValue, isAtomic: blog.isAtomic()) { request in
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
 
-                downloadImage(with: request)
-            }
-        } else {
-            let request = URLRequest(url: siteIconURL)
+        mediaRequestAuthenticator.authenticatedRequest(
+            for: siteIconURL,
+            blog: blog,
+            onComplete: { request in
+
             downloadImage(with: request)
+        }) { error in
+
+            // No-op for now
         }
     }
 }

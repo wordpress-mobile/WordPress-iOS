@@ -137,8 +137,9 @@ import MobileCoreServices
         let request: URLRequest
         if url.isFileURL {
             request = URLRequest(url: url)
-        } else if let source = source, source.isPrivateOnWPCom, PrivateSiteURLProtocol.urlGoes(toWPComSite: url) {
-            request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
+        } else if let source = source, source.isPrivateOnWPCom, url.isHostedAtWPCom() {
+            let mediaAuthenticator = MediaRequestAuthenticator()
+            request = mediaAuthenticator.authenticatedRequestForPrivateSite(for: url)
         } else {
             if let photonUrl = getPhotonUrl(for: url, size: size),
                 source != nil {
@@ -156,7 +157,7 @@ import MobileCoreServices
         if url.isFileURL {
             downloadImage(from: url)
         } else if let source = source {
-            if source.isPrivateOnWPCom && PrivateSiteURLProtocol.urlGoes(toWPComSite: url) {
+            if source.isPrivateOnWPCom && url.isHostedAtWPCom() {
                 loadPrivateImage(with: url, from: source, preferredSize: size)
             } else if source.isSelfHostedWithCredentials {
                 downloadImage(from: url)
@@ -174,7 +175,9 @@ import MobileCoreServices
         let scale = UIScreen.main.scale
         let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
         let scaledURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
-        let request = PrivateSiteURLProtocol.requestForPrivateSite(from: scaledURL)
+
+        let mediaAuthenticator = MediaRequestAuthenticator()
+        let request = mediaAuthenticator.authenticatedRequestForPrivateSite(for: scaledURL)
 
         downloadImage(from: request)
     }

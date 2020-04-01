@@ -1,6 +1,67 @@
 import Aztec
 import Gridicons
 
+final class ImageDownload: AsyncOperation {
+    let request: URLRequest
+
+    init(request: URLRequest) {
+        self.request = request
+    }
+
+    override func main() {
+        ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
+            guard let self = self else {
+                return
+            }
+
+            DispatchQueue.main.async {
+                guard let image = image else {
+                    DDLogError("Unable to download image for attachment with url = \(self.request.url). Details: \(String(describing: error?.localizedDescription))")
+                    if let error = error {
+                        //failure(error)
+                    } else {
+                        //failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil))
+                    }
+
+                    self.cancel()
+                    return
+                }
+
+                //success(image)
+                self.state = .isFinished
+            }
+        }
+
+        self.state = .isFinished
+    }
+}
+
+final class ImageDownloadAuthentication: AsyncOperation {
+    let url: URL
+    let blog: Blog
+
+    init(url: URL, blog: Blog) {
+        self.url = url
+        self.blog = blog
+    }
+
+    override func main() {
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
+
+        mediaRequestAuthenticator.authenticatedRequest(
+            for: url,
+            blog: blog,
+            onComplete: { request in
+                let download = ImageDownload(request: request)
+                self.addDependency(download)
+                download.start()
+        },
+            onFailure: { error in
+                self.cancel()
+        })
+    }
+}
+
 class EditorMediaUtility {
 
     private struct Constants {
@@ -45,40 +106,74 @@ class EditorMediaUtility {
     }
 
 
-    func downloadImage(from url: URL, post: AbstractPost, success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Error) -> Void) -> ImageDownloader.Task {
+    func downloadImage(
+        from url: URL,
+        post: AbstractPost,
+        success: @escaping (UIImage) -> Void,
+        onFailure failure: @escaping (Error) -> Void) -> Operation {
+
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
         let size = CGSize(width: imageMaxDimension, height: 0)
         let scale = UIScreen.main.scale
+
         return downloadImage(from: url, size: size, scale: scale, post: post, success: success, onFailure: failure)
     }
 
-    func downloadImage(from url: URL, size requestSize: CGSize, scale: CGFloat, post: AbstractPost, success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Error) -> Void) -> ImageDownloader.Task {
-        var requestURL = url
+    func downloadImage(
+        from url: URL,
+        size requestSize: CGSize,
+        scale: CGFloat, post: AbstractPost,
+        success: @escaping (UIImage) -> Void,
+        onFailure failure: @escaping (Error) -> Void) -> Operation { //}-> ImageDownloader.Task {
+
         let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
         var size = CGSize(width: imageMaxDimension, height: 0)
-        let request: URLRequest
+        let requestURL: URL
 
         if url.isFileURL {
-            request = URLRequest(url: url)
-        } else if post.blog.isHostedAtWPcom && post.blog.isPrivate() && PrivateSiteURLProtocol.urlGoes(toWPComSite: url) {
+            requestURL = url
+        } else if post.blog.isHostedAtWPcom && post.blog.isPrivate() && url.isHostedAtWPCom() {
             // private wpcom image needs special handling.
             // the size that WPImageHelper expects is pixel size
             size.width = size.width * scale
-            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
-            request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
         } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored() {
             size.width = size.width * scale
-            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
-            request = URLRequest(url: requestURL)
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
         } else {
             // the size that PhotonImageURLHelper expects is points size
-            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
-            request = URLRequest(url: requestURL)
+            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
         }
 
-        return ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
+        // NUEVO CODIGO
+        /*
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
+
+        mediaRequestAuthenticator.authenticatedRequest(
+            for: requestURL,
+            blog: post.blog,
+            onComplete: { request in
+                // aca deberia llamarse el  request...
+        },
+            onFailure: { error in
+                failure(error)
+        })
+        
+        let authOperation = AsyncOperation()
+        let task = URLSession(configuration: .ephemeral).dataTask(with: URL(url: "www.google.com")!) { (data, response, error) in
+            authOperation
+        }*/
+
+        let downloadOperation = ImageDownloadAuthentication(url: requestURL, blog: post.blog)
+        downloadOperation.start()
+
+        return downloadOperation
+
+        /*
+        // VIEJO CODIGO
+        let task = ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
             guard let _ = self else {
                 return
             }
@@ -97,6 +192,8 @@ class EditorMediaUtility {
                 success(image)
             }
         }
+        
+        return task*/
     }
 
     static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?), Error> ) -> Void) {

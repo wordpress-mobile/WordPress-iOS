@@ -295,12 +295,23 @@ import Gridicons
 
         let size = avatarImageView.frame.size.width * UIScreen.main.scale
         if let url = provider.siteIconForDisplay(ofSize: Int(size)) {
+            let mediaRequestAuthenticator = MediaRequestAuthenticator()
+
+            mediaRequestAuthenticator.authenticatedWPComRequest(
+                for: url,
+                siteID: provider.siteID().intValue,
+                inPrivateBlog: provider.isPrivate(),
+                inAtomicBlog: false,
+                onComplete: { request in
+                    self.avatarImageView.downloadImage(usingRequest: request)
+            })
+            /*
             if provider.isPrivate() {
                 let request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
                 avatarImageView.downloadImage(usingRequest: request)
             } else {
                 avatarImageView.downloadImage(from: url)
-            }
+            }*/
             avatarImageView.isHidden = false
 
         } else {

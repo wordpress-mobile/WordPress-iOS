@@ -360,7 +360,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Active Downloads
     ///
-    fileprivate var activeMediaRequests = [ImageDownloader.Task]()
+    fileprivate var activeMediaRequests = [Operation]()
 
     /// Media Library Data Source
     ///

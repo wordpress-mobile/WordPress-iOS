@@ -20,8 +20,8 @@
 + (void)registerPrivateSiteURLProtocol;
 + (void)unregisterPrivateSiteURLProtocol;
 
-+ (nonnull NSURLRequest *)requestForPrivateSiteFromURL:(nonnull NSURL *)url;
+//+ (nonnull NSURLRequest *)requestForPrivateSiteFromURL:(nonnull NSURL *)url;
 
-+ (BOOL)urlGoesToWPComSite:(nonnull NSURL *)url;
+//+ (BOOL)urlGoesToWPComSite:(nonnull NSURL *)url;
 
 @end

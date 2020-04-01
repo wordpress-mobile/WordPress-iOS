@@ -2,7 +2,7 @@ import Foundation
 import AutomatticTracks
 
 extension PrivateSiteURLProtocol {
-
+/*
     enum Error: Swift.Error {
         case cannotBreakDownURLIntoComponents(url: URL)
         case cannotFindWPContentInPhotonPath(components: URLComponents)
@@ -36,8 +36,8 @@ extension PrivateSiteURLProtocol {
             let request = URLRequest(url: url)
             provide(request)
         }
-    }
-
+    }*/
+/*
     /// Photon URLs are currently not working for private atomic sites, so this is a workaround
     /// to replace those URLs with working URLs.
     ///
@@ -133,5 +133,5 @@ extension PrivateSiteURLProtocol {
         var request = URLRequest(url: url)
         request.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
         return request
-    }
+    }*/
 }

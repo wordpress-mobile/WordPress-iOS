@@ -100,7 +100,7 @@ static NSString *cachedToken;
 {
     return [self urlGoesToWPComSite:request.URL];
 }
-
+/*
 + (BOOL)urlGoesToWPComSite:(NSURL *)url
 {
     if ([url.scheme isEqualToString:@"https"] && [url.host hasSuffix:@".wordpress.com"]) {
@@ -108,8 +108,8 @@ static NSString *cachedToken;
     }
 
     return NO;
-}
-
+}*/
+/*
 + (NSURLRequest *)requestForPrivateSiteFromURL:(NSURL *)url
 {
     if (![self urlGoesToWPComSite:url]) {
@@ -123,7 +123,7 @@ static NSString *cachedToken;
     NSString *bearerToken = [NSString stringWithFormat:@"Bearer %@", [self bearerToken]];
     [request addValue:bearerToken forHTTPHeaderField:@"Authorization"];
     return request;
-}
+}*/
 
 - (void)startLoading
 {

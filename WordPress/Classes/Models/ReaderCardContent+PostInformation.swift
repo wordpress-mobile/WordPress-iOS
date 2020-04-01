@@ -8,14 +8,7 @@ class ReaderCardContent: ImageSourceInformation {
     }
 
     var isAtomicOnWPCom: Bool {
-        // Pinged @zieladam about this since the reader endpoint, ie:
-        //
-        // https://public-api.wordpress.com/rest/v1.2/read/sites/atomicdiegotravel.wpcomstaging.com/posts/
-        //
-        // provides no info on whether the post is from an atomic site.  Right now all we can do is
-        // assume a default here until the endpoint offers this info.
-        //
-        return false
+        return originalProvider.isAtomic()
     }
 
     var isPrivateOnWPCom: Bool {

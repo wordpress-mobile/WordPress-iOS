@@ -6,7 +6,7 @@ import MediaEditor
  We need the full high-quality image in the Media Editor.
  */
 class GutenbergMediaEditorImage: AsyncImage {
-    private var tasks: [URLSessionDataTask] = []
+    private var tasks: [Operation] = []
 
     private var originalURL: URL
 
