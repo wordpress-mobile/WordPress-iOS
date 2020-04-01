@@ -1,7 +1,14 @@
 import UIKit
 
 class PrepublishingNavigationController: UINavigationController, DrawerPresentable {
-    var initialHeight: CGFloat = 200
+    // Drawer
+    var expandedHeight: DrawerHeight {
+        return .maxHeight
+    }
+
+    var collapsedHeight: DrawerHeight {
+        return .contentHeight(250)
+    }
 
     var scrollableView: UIScrollView? {
         let scroll = visibleViewController?.view as? UIScrollView

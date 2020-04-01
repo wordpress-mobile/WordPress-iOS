@@ -1,7 +1,14 @@
 import UIKit
 
 class BottomSheetViewController: UIViewController, DrawerPresentable {
-    var initialHeight: CGFloat = 200
+    // Drawer
+    var expandedHeight: DrawerHeight {
+        return self.childViewController?.expandedHeight ?? .maxHeight
+    }
+
+    var collapsedHeight: DrawerHeight {
+        return self.childViewController?.collapsedHeight ?? .contentHeight(200)
+    }
 
     var scrollableView: UIScrollView? {
         return self.childViewController?.scrollableView
@@ -137,11 +144,11 @@ class BottomSheetViewController: UIViewController, DrawerPresentable {
     }
 
     @objc func keyboardWillShow(_ notification: NSNotification) {
-        self.presentedVC?.transition(to: .top)
+        self.presentedVC?.transition(to: .expanded)
     }
 
     @objc func keyboardWillHide(_ notification: NSNotification) {
-        self.presentedVC?.transition(to: .bottom)
+        self.presentedVC?.transition(to: .collapsed)
     }
 }
 
