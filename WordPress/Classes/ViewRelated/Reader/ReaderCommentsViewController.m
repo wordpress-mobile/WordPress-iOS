@@ -700,7 +700,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.noResultsViewController hideImageView:hideImageView];
     [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];
-    [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    [self.view insertSubview:self.noResultsViewController.view belowSubview:self.suggestionsTableView];
     self.noResultsViewController.view.frame = self.tableView.frame;
     [self.noResultsViewController didMoveToParentViewController:self];
 }

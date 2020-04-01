@@ -111,13 +111,13 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 #pragma mark -
 #pragma mark Custom methods
 
 - (BOOL)isAtomic
 {
-    return [self.options[OptionsKeyIsAtomic] boolValue];
+    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAtomic];
+    return [value boolValue];
 }
 
 - (BOOL)isAutomatedTransfer
@@ -147,6 +147,11 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 // Used as a key to store passwords, if you change the algorithm, logins will break
 - (NSString *)displayURL
 {
+    if (self.url == nil) {
+        DDLogInfo(@"Blog display URL is nil");
+        return nil;
+    }
+    
     NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""]];

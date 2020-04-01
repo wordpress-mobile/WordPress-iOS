@@ -7,9 +7,11 @@ import WebKit
 @objc protocol CookieJar {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void)
     func getCookies(completion: @escaping ([HTTPCookie]) -> Void)
-    func hasCookie(url: URL, username: String, completion: @escaping (Bool) -> Void)
+    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void)
+    func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void)
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
     func removeWordPressComCookies(completion: @escaping () -> Void)
+    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void)
 }
 
 // As long as CookieJar is @objc, we can't have shared methods in protocol
@@ -27,11 +29,17 @@ protocol CookieJarSharedImplementation: CookieJar {
 }
 
 extension CookieJarSharedImplementation {
-    func _hasCookie(url: URL, username: String, completion: @escaping (Bool) -> Void) {
+    func _hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+        let url = URL(string: "https://wordpress.com/")!
+
+        return _hasWordPressAuthCookie(for: url, username: username, atomicSite: atomicSite, completion: completion)
+    }
+
+    func _hasWordPressAuthCookie(for url: URL, username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
         getCookies(url: url) { (cookies) in
             let cookie = cookies
                 .contains(where: { cookie in
-                    return cookie.isWordPressLoggedIn(username: username)
+                    return cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
                 })
 
             completion(cookie)
@@ -54,8 +62,12 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
         completion(cookies ?? [])
     }
 
-    func hasCookie(url: URL, username: String, completion: @escaping (Bool) -> Void) {
-        _hasCookie(url: url, username: username, completion: completion)
+    func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+        _hasWordPressComAuthCookie(username: username, atomicSite: atomicSite, completion: completion)
+    }
+
+    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void) {
+        _hasWordPressAuthCookie(for: url, username: username, atomicSite: false, completion: completion)
     }
 
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
@@ -65,6 +77,14 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
 
     func removeWordPressComCookies(completion: @escaping () -> Void) {
         _removeWordPressComCookies(completion: completion)
+    }
+
+    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
+        for cookie in cookies {
+            setCookie(cookie)
+        }
+
+        completion()
     }
 }
 
@@ -107,8 +127,12 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
         getAllCookies(completion)
     }
 
-    func hasCookie(url: URL, username: String, completion: @escaping (Bool) -> Void) {
-        _hasCookie(url: url, username: username, completion: completion)
+    func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+        _hasWordPressComAuthCookie(username: username, atomicSite: atomicSite, completion: completion)
+    }
+
+    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void) {
+        _hasWordPressAuthCookie(for: url, username: username, atomicSite: false, completion: completion)
     }
 
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
@@ -130,6 +154,24 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
     func removeWordPressComCookies(completion: @escaping () -> Void) {
         _removeWordPressComCookies(completion: completion)
     }
+
+    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
+        var completionCount = 0
+
+        func completionIncrement() {
+            completionCount += 1
+
+            if completionCount >= cookies.count {
+                completion()
+            }
+        }
+
+        for cookie in cookies {
+            DispatchQueue.main.async {
+                self.setCookie(cookie, completionHandler: completionIncrement)
+            }
+        }
+    }
 }
 
 #if DEBUG
@@ -149,11 +191,26 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
     }
 #endif
 
+private let atomicLoggedInCookieNamePrefix = "wordpress_logged_in_"
 private let loggedInCookieName = "wordpress_logged_in"
+
 private extension HTTPCookie {
-    func isWordPressLoggedIn(username: String) -> Bool {
-        return name == loggedInCookieName
+    func isWordPressLoggedIn(username: String, atomic: Bool) -> Bool {
+        guard !atomic else {
+            return isWordPressLoggedInAtomic(username: username)
+        }
+
+        return isWordPressLoggedIn(username: username)
+    }
+
+    private func isWordPressLoggedIn(username: String) -> Bool {
+        return name.hasPrefix(loggedInCookieName)
             && value.components(separatedBy: "%").first == username
+    }
+
+    private func isWordPressLoggedInAtomic(username: String) -> Bool {
+        return name.hasPrefix(atomicLoggedInCookieNamePrefix)
+            && value.components(separatedBy: "|").first == username
     }
 
     func matches(url: URL) -> Bool {
