@@ -1,8 +1,8 @@
 import UIKit
 
 public enum DrawerPosition {
-    case top
-    case bottom
+    case expanded
+    case collapsed
     case closed
 }
 
@@ -19,10 +19,10 @@ public enum DrawerHeight {
 
 public protocol DrawerPresentable: AnyObject {
     /// The height of the drawer when it's in the expanded position
-    var topHeight: DrawerHeight { get }
+    var expandedHeight: DrawerHeight { get }
 
     /// The height of the drawer when it's in the collapsed position
-    var bottomHeight: DrawerHeight { get }
+    var collapsedHeight: DrawerHeight { get }
 
     /// Whether or not the user is allowed to swipe to switch between the expanded and collapsed position
     var allowsUserTransition: Bool { get }
@@ -42,12 +42,12 @@ public extension DrawerPresentable where Self: UIViewController {
         return true
     }
 
-    var bottomHeight: DrawerHeight {
-        return .contentHeight(0)
+    var expandedHeight: DrawerHeight {
+        return .topMargin(20)
     }
 
-    var topHeight: DrawerHeight {
-        return .topMargin(20)
+    var collapsedHeight: DrawerHeight {
+        return .contentHeight(0)
     }
 
     var scrollableView: UIScrollView? {
@@ -70,7 +70,7 @@ public extension DrawerPresentable where Self: UIViewController {
 
 public class DrawerPresentationController: FancyAlertPresentationController {
     private enum Constants {
-        static let transitionDuration: TimeInterval = 0.2
+        static let transitionDuration: TimeInterval = 0.5
         static let defaultTopMargin: CGFloat = 20
         static let flickVelocity: CGFloat = 300
         static let bounceAmount: CGFloat = 0.01
@@ -82,14 +82,14 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         }
 
         var frame = containerView.frame
-        let y = bottomYPosition
+        let y = collapsedYPosition
 
         frame.origin.y = y
 
         return frame
     }
 
-    public var position: DrawerPosition = .bottom
+    public var position: DrawerPosition = .collapsed
 
     public func transition(to position: DrawerPosition) {
         self.position = position
@@ -102,11 +102,11 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         var margin: CGFloat = 0
 
         switch position {
-        case .top:
-            margin = topYPosition
+        case .expanded:
+            margin = expandedYPosition
 
-        case .bottom:
-            margin = bottomYPosition
+        case .collapsed:
+            margin = collapsedYPosition
 
         default:
             margin = 0
@@ -141,20 +141,20 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         return presentedView.bounds.height
     }
 
-    private var bottomYPosition: CGFloat {
+    private var collapsedYPosition: CGFloat {
         guard let presentableVC = presentableViewController else {
             return calculatedTopMargin(for: 0)
         }
 
-        return topMargin(with: presentableVC.bottomHeight)
+        return topMargin(with: presentableVC.collapsedHeight)
     }
 
-    private var topYPosition: CGFloat {
+    private var expandedYPosition: CGFloat {
         guard let presentableVC = presentableViewController else {
             return calculatedTopMargin(for: Constants.defaultTopMargin)
         }
 
-        return topMargin(with: presentableVC.topHeight)
+        return topMargin(with: presentableVC.expandedHeight)
     }
 
     private func topMargin(with drawerHeight: DrawerHeight) -> CGFloat {
@@ -259,11 +259,11 @@ private extension DrawerPresentationController {
             if ((abs(velocity) - Constants.flickVelocity) > 0) {
                 //Flick up
                 if velocity < 0 {
-                    transition(.top)
+                    transition(.expanded)
                 }
                 else {
-                    if(position == .top){
-                        transition(.bottom)
+                    if(position == .expanded){
+                        transition(.collapsed)
                     } else {
                         transition(.closed)
                     }
@@ -320,14 +320,6 @@ private extension DrawerPresentationController {
         return presentedViewController as? DrawerPresentable
     }
 
-    private var presentableInitialHeight: CGFloat {
-        guard let presentableVC = presentableViewController else {
-            return 0
-        }
-
-        return presentableVC.initialHeight
-    }
-
     private func calculatedTopMargin(for height: CGFloat) -> CGFloat {
         guard let containerView = self.containerView else {
             return 0
@@ -370,15 +362,15 @@ private extension DrawerPresentationController {
     }
 
     func closestPosition(for yPosition: CGFloat) -> DrawerPosition {
-        let positions = [closedPosition, bottomYPosition, topYPosition]
+        let positions = [closedPosition, collapsedYPosition, expandedYPosition]
         let closestVal = positions.min(by: { abs(yPosition - $0) < abs(yPosition - $1) }) ?? yPosition
 
         var returnPosition: DrawerPosition = .closed
 
-        if closestVal == topYPosition {
-            returnPosition = .top
-        } else if(closestVal == bottomYPosition) {
-            returnPosition = .bottom
+        if closestVal == expandedYPosition {
+            returnPosition = .expanded
+        } else if(closestVal == collapsedYPosition) {
+            returnPosition = .collapsed
         }
 
         return returnPosition
