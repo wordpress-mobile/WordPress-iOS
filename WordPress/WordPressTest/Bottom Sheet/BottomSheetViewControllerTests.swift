@@ -28,6 +28,6 @@ class BottomSheetViewControllerTests: XCTestCase {
     }
 }
 
-private class BottomSheetPresentableViewController: UIViewController, BottomSheetPresentable {
+private class BottomSheetPresentableViewController: UIViewController, DrawerPresentable {
     var initialHeight: CGFloat = 0
 }
