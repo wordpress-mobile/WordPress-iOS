@@ -239,7 +239,9 @@ class EditPostViewController: UIViewController {
         let controller = PreviewWebKitViewController(post: post)
         controller.trackOpenEvent()
         let navWrapper = LightNavigationController(rootViewController: controller)
-        navWrapper.modalPresentationStyle = .fullScreen
+        if postPost.traitCollection.userInterfaceIdiom == .pad {
+            navWrapper.modalPresentationStyle = .fullScreen
+        }
         postPost.present(navWrapper, animated: true) {}
     }
 
