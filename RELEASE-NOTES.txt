@@ -8,6 +8,7 @@
 * Fixed an issue that could have caused the app to crash when accessing Site Pages.
 * Site Creation: faster site creation, removed intermediate steps. Just select what kind of site you'd like, enter the domain name and the site will be created.
 * Fixed a crash when a blog's URL became `nil` from a Core Data operation.
+* Added Share action to the more menu in the Posts list
 
  
 14.5
