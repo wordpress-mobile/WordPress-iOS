@@ -99,7 +99,7 @@ import AutomatticTracks
 
     //@objc(loadImageWithURL:success:error:)
     /// Load an image from a specific URL. As no source is provided, we can assume
-    /// that this is from an external source. Supports animated images (gifs) as well.
+    /// that this is from a public site. Supports animated images (gifs) as well.
     ///
     /// - Parameters:
     ///   - url: The URL to load the image from.
@@ -111,10 +111,10 @@ import AutomatticTracks
         errorHandler = error
 
         if url.isGif {
-            loadGif(with: url, from: nil)
+            loadGif(with: url, from: .publicSite)
         } else {
             imageView.clean()
-            loadStaticImage(with: url, from: nil)
+            loadStaticImage(with: url, from: .publicSite)
         }
     }
 
@@ -134,7 +134,7 @@ import AutomatticTracks
         successHandler = success
         errorHandler = error
 
-        loadImage(with: url, from: source, preferredSize: size)
+        loadImage(with: url, from: host, preferredSize: size)
     }
 
     // MARK: - Private helpers
@@ -142,23 +142,17 @@ import AutomatticTracks
     /// Load an animated image from the given URL.
     ///
     private func loadGif(with url: URL, from host: MediaHost, preferredSize size: CGSize = .zero) {
-        func downloadGIFWithoutAuthenticating() {
-            let request = URLRequest(url: url)
-            self.downloadGif(from: request)
-        }
-
-        guard !url.isFileURL,
-            let host = host else {
-                downloadGIFWithoutAuthenticating()
-                return
-        }
-
         let mediaAuthenticator = MediaRequestAuthenticator()
         mediaAuthenticator.authenticatedRequest(
             for: url,
-            from: host) { request in
+            from: host,
+            onComplete: { request in
                 self.downloadGif(from: request)
-        }
+        },
+            onFailure: { error in
+                CrashLogging.logError(error)
+                self.callErrorHandler(with: error)
+        })
 
         /*
         let request: URLRequest
@@ -183,46 +177,51 @@ import AutomatticTracks
     /// Load a static image from the given URL.
     ///
     private func loadStaticImage(with url: URL, from host: MediaHost, preferredSize size: CGSize = .zero) {
+        let finalURL: URL
 
-
-
+        // WORKINGPOINT:
         if url.isFileURL {
-            downloadImage(from: url)
+            finalURL = url
         } else if let source = source {
             if source.isPrivateOnWPCom && url.isHostedAtWPCom() {
-                loadPrivateImage(with: url, from: source, preferredSize: size)
+                finalURL = privateImageURL(with: url, from: source, preferredSize: size)
             } else if source.isSelfHostedWithCredentials {
-                downloadImage(from: url)
+                finalURL = url
             } else {
-                loadPhotonUrl(with: url, preferredSize: size)
+                finalURL = photonUrl(with: url, preferredSize: size)
             }
         } else {
-            downloadImage(from: url)
+            finalURL = url
+        }
+
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
+
+        mediaRequestAuthenticator.authenticatedRequest(for: finalURL, from: host, onComplete: { request in
+            self.downloadImage(from: request)
+        }) { error in
+            CrashLogging.logError(error)
+            self.callErrorHandler(with: error)
         }
     }
 
-    /// Loads the image from a private post hosted in WPCom.
+    /// Constructs the URL for an image from a private post hosted in WPCom.
     ///
-    private func loadPrivateImage(with url: URL, from host: MediaHost, preferredSize size: CGSize) {
+    private func privateImageURL(with url: URL, from host: MediaHost, preferredSize size: CGSize) -> URL {
         let scale = UIScreen.main.scale
         let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
         let scaledURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
 
-        let mediaAuthenticator = MediaRequestAuthenticator()
-        let request = mediaAuthenticator.authenticatedRequestForPrivateSite(for: scaledURL)
-
-        downloadImage(from: request)
+        return scaledURL
     }
 
-    /// Loads the image from the Photon API with the given size.
+    /// Gets the photon URL with the specified size, or returns the passed `URL`
     ///
-    private func loadPhotonUrl(with url: URL, preferredSize size: CGSize) {
+    private func photonUrl(with url: URL, preferredSize size: CGSize) -> URL {
         guard let photonURL = getPhotonUrl(for: url, size: size) else {
-            downloadImage(from: url)
-            return
+            return url
         }
 
-        downloadImage(from: photonURL)
+        return photonURL
     }
 
     /// Download the animated image from the given URL Request.
@@ -340,7 +339,12 @@ extension ImageLoader {
         }
 
         if url.isGif {
-            loadGif(with: url, from: media.blog, preferredSize: size)
+            let host = MediaHost(with: media.blog) { error in
+                // We'll log the error, so we know it's there, but we won't halt execution.
+                CrashLogging.logError(error)
+            }
+
+            loadGif(with: url, from: host, preferredSize: size)
         } else if imageView.image == nil {
             imageView.clean()
             loadImage(from: media, preferredSize: size)

@@ -1,4 +1,4 @@
-
+/*
 extension AbstractPost: ImageSourceInformation {
 
     var isAtomicOnWPCom: Bool {
@@ -33,4 +33,4 @@ extension AbstractPost: ImageSourceInformation {
     var siteID: NSNumber? {
         return blog.dotComID
     }
-}
+}*/

@@ -1,5 +1,5 @@
+import AutomatticTracks
 import Foundation
-
 
 /// UIImageView Helper Methods that allow us to download a SiteIcon, given a website's "Icon Path"
 ///
@@ -79,11 +79,15 @@ extension UIImageView {
             print("Blog id \(blog.dotComID ?? 0), is atomic \(blog.isAtomic())")
         }
 
-        let mediaRequestAuthenticator = MediaRequestAuthenticator()
+        let host = MediaHost(with: blog) { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        }
 
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
         mediaRequestAuthenticator.authenticatedRequest(
             for: siteIconURL,
-            blog: blog,
+            from: host,
             onComplete: { request in
 
             downloadImage(with: request)
