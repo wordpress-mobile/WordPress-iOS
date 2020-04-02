@@ -1,19 +1,6 @@
 import UIKit
 
-class BottomSheetViewController: UIViewController, DrawerPresentable {
-    // Drawer
-    var expandedHeight: DrawerHeight {
-        return self.childViewController?.expandedHeight ?? .maxHeight
-    }
-
-    var collapsedHeight: DrawerHeight {
-        return self.childViewController?.collapsedHeight ?? .contentHeight(200)
-    }
-
-    var scrollableView: UIScrollView? {
-        return self.childViewController?.scrollableView
-    }
-
+class BottomSheetViewController: UIViewController {
     enum Constants {
         static let gripHeight: CGFloat = 5
         static let cornerRadius: CGFloat = 8
@@ -155,5 +142,20 @@ extension BottomSheetViewController: UIViewControllerTransitioningDelegate {
 
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return DrawerPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+// MARK: - DrawerDelegate
+extension BottomSheetViewController: DrawerPresentable {
+    var expandedHeight: DrawerHeight {
+        return childViewController?.expandedHeight ?? .maxHeight
+    }
+
+    var collapsedHeight: DrawerHeight {
+        return childViewController?.collapsedHeight ?? .contentHeight(200)
+    }
+
+    var scrollableView: UIScrollView? {
+        return childViewController?.scrollableView
     }
 }
