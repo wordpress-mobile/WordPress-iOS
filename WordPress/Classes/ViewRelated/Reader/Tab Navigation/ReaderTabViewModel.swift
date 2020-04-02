@@ -1,6 +1,14 @@
 
 class ReaderTabViewModel {
 
+    var tabItems = [ReaderTabItem]()
+
+    var selectedIndex = 0 {
+        didSet {
+            // TODO: - READERNAV - implement transition on ReaderContent
+        }
+    }
+
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
     func navigateToTab(at index: Int) { }
 
@@ -36,8 +44,9 @@ extension ReaderTabViewModel {
                 return
             }
 
-            let tabItems = topics.map { ReaderTabItem(topic: $0) }
-            completion(ReaderHelpers.rearrange(items: tabItems))
+            tabItems = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) })
+
+            completion(tabItems)
 
         } catch {
             DDLogError("There was a problem fetching topics for the menu." + error.localizedDescription)
@@ -56,5 +65,19 @@ extension ReaderTabViewModel {
                 DDLogError("Error syncing menu: \(String(describing: error))")
                 completion(nil)
         })
+    }
+}
+
+
+// MARK: Reader Content
+extension ReaderTabViewModel {
+
+    private var currentTopic: ReaderAbstractTopic? {
+        return tabItems[selectedIndex].topic
+    }
+
+    func makeChildViewController() -> UIViewController {
+        // TODO: - READERNAV - Remove force unwrapping
+        return ReaderStreamViewController.controllerWithTopic(currentTopic!)
     }
 }
