@@ -9,6 +9,7 @@
 * Site Creation: faster site creation, removed intermediate steps. Just select what kind of site you'd like, enter the domain name and the site will be created.
 * Fixed a crash when a blog's URL became `nil` from a Core Data operation.
 * Period Stats: fix colors when switching between light and dark modes.
+* Reader post detail: fix colors when switching between light and dark modes.
 
  
 14.5
