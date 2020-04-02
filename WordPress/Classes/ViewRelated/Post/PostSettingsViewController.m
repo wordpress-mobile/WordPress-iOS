@@ -671,7 +671,7 @@ FeaturedImageViewControllerDelegate>
         // Visibility
         cell = [self getWPTableViewDisclosureCell];
         cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
-        cell.detailTextLabel.text = [self titleForVisibility];
+        cell.detailTextLabel.text = [self.apost titleForVisibility];
         cell.tag = PostSettingsRowVisibility;
         cell.accessibilityIdentifier = @"Visibility";
 
@@ -1036,7 +1036,7 @@ FeaturedImageViewControllerDelegate>
 {
     PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
     __weak PostVisibilitySelectorViewController *weakVc = vc;
-    vc.completion = ^{
+    vc.completion = ^(NSString *visibility) {
         [weakVc dismiss];
         [self.tableView reloadData];
     };
@@ -1279,17 +1279,6 @@ FeaturedImageViewControllerDelegate>
     DDLogError(@"Error loading featured image: %@", error);
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
-}
-
-- (NSString *)titleForVisibility
-{
-    if (self.apost.password) {
-        return NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.");
-    } else if ([self.apost.status isEqualToString:PostStatusPrivate]) {
-        return NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.");
-    }
-
-    return NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
 }
 
 - (NoResultsViewController *)noResultsView

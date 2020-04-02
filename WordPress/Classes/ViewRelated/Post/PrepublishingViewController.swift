@@ -2,7 +2,13 @@ import UIKit
 import WordPressAuthenticator
 
 private struct PrepublishingOption {
+    let id: PrepublishingIdentifier
     let title: String
+}
+
+private enum PrepublishingIdentifier {
+    case visibility
+    case tags
 }
 
 class PrepublishingViewController: UITableViewController {
@@ -11,7 +17,8 @@ class PrepublishingViewController: UITableViewController {
     private let completion: (AbstractPost) -> ()
 
     private let options: [PrepublishingOption] = [
-        PrepublishingOption(title: NSLocalizedString("Tags", comment: "Label for Tags"))
+        PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
+        PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
 
     let publishButton: NUXButton = {
@@ -63,18 +70,34 @@ class PrepublishingViewController: UITableViewController {
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.text = options[indexPath.row].title
 
-        if indexPath.row == 0 {
-            // Tags row
-            cell.detailTextLabel?.text = post.tags
+        switch options[indexPath.row].id {
+        case .tags:
+            configureTagCell(cell)
+        case .visibility:
+            configureVisibilityCell(cell)
         }
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
+        if indexPath.row == 0 {
+            didTapVisibilityCell()
+        } else {
+            didTapTagCell()
+        }
+    }
 
-        viewController.onValueChanged = { [weak self] tags in
+    // MARK: - Tags
+
+    private func configureTagCell(_ cell: WPTableViewCell) {
+        cell.detailTextLabel?.text = post.tags
+    }
+
+    private func didTapTagCell() {
+        let tagPickerViewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
+
+        tagPickerViewController.onValueChanged = { [weak self] tags in
             if !tags.isEmpty {
                 WPAnalytics.track(.prepublishingTagsAdded)
             }
@@ -83,14 +106,33 @@ class PrepublishingViewController: UITableViewController {
             self?.tableView.reloadData()
         }
 
-        navigationController?.pushViewController(viewController, animated: true)
+        navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
 
-    @objc func publish(_ sender: UIButton) {
-        navigationController?.dismiss(animated: true) {
-            self.completion(self.post)
-        }
+    // MARK: - Visibility
+
+    private func configureVisibilityCell(_ cell: WPTableViewCell) {
+        cell.detailTextLabel?.text = post.titleForVisibility
     }
+
+    private func didTapVisibilityCell() {
+        let visbilitySelectorViewController = PostVisibilitySelectorViewController(post)
+
+        visbilitySelectorViewController.completion = { [weak self] option in
+            self?.tableView.reloadData()
+
+            // If tue user selects password protected, prompt for a password
+            if option == AbstractPost.passwordProtectedLabel {
+                self?.showPasswordAlert()
+            } else {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+
+        navigationController?.pushViewController(visbilitySelectorViewController, animated: true)
+    }
+
+    // MARK: - Publish Button
 
     private func setupPublishButton() {
         let footer = UIView(frame: Constants.footerFrame)
@@ -99,6 +141,36 @@ class PrepublishingViewController: UITableViewController {
         publishButton.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableFooterView = footer
         publishButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
+    }
+
+    @objc func publish(_ sender: UIButton) {
+        navigationController?.dismiss(animated: true) {
+            self.completion(self.post)
+        }
+    }
+
+    // MARK: - Password Prompt
+
+    private func showPasswordAlert() {
+        let passwordAlertController = PasswordAlertController(onSubmit: { [weak self] password in
+            guard let password = password, !password.isEmpty else {
+                self?.cancelPasswordProtectedPost()
+                return
+            }
+
+            self?.post.password = password
+            self?.navigationController?.popViewController(animated: true)
+        }, onCancel: { [weak self] in
+            self?.cancelPasswordProtectedPost()
+        })
+
+        passwordAlertController.show(from: self)
+    }
+
+    private func cancelPasswordProtectedPost() {
+        post.status = .publish
+        post.password = nil
+        tableView.reloadData()
     }
 
     private enum Constants {
