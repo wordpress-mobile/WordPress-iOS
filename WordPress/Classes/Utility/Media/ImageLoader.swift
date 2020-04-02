@@ -1,15 +1,20 @@
 import MobileCoreServices
+import AutomatticTracks
 
 /// Protocol used to abstract the information needed to load post related images.
 ///
 @objc protocol ImageSourceInformation {
 
-    var isAtomicOnWPCom: Bool { get }
+    var isAtomic: Bool { get }
 
     /// The post is private and hosted on WPcom.
     /// Redundant name due to naming conflict.
     ///
-    var isPrivateOnWPCom: Bool { get }
+    var isPrivate: Bool { get }
+
+    /// Whether the post is accessible through WPCom.
+    ///
+    var isAccessibleThroughWPCom: Bool { get }
 
     /// The blog is self-hosted and there is already a basic auth credential stored.
     ///
@@ -134,10 +139,46 @@ import MobileCoreServices
     /// Load an animated image from the given URL.
     ///
     private func loadGif(with url: URL, from source: ImageSourceInformation?, preferredSize size: CGSize = .zero) {
+        guard !url.isFileURL,
+            let source = source else {
+                let request = URLRequest(url: url)
+                self.downloadGif(from: request)
+                return
+        }
+
+        let host: MediaRequestAuthenticator.ImageHost
+
+        if !source.isPrivate {
+            host = .publicSite
+        } else if !source.isAccessibleThroughWPCom {
+            host = .privateSelfHostedSite
+        } else if !source.isAtomic {
+            host = .privateWPComSite
+        } else if let siteID = source.siteID?.intValue {
+            host = .privateAtomicWPComSite(siteID: siteID)
+        } else {
+            // We're logging an error since this scenario should not be possible, and then
+            // just trying to load the resource as if it was WPCom private.  This is to
+            // avoid crashing the app here, since failing to load the image is a better
+            // option for UX.
+            CrashLogging.logError(error)
+            host = .publicSite
+        }
+
+        let mediaAuthenticator = MediaRequestAuthenticator()
+        mediaAuthenticator.authenticatedWPComRequest(
+            for: url,
+            hostedIn: host) { request in
+                self.downloadGif(from: request)
+        }
+
+        /*
         let request: URLRequest
         if url.isFileURL {
             request = URLRequest(url: url)
-        } else if let source = source, source.isPrivateOnWPCom, url.isHostedAtWPCom() {
+        } else if let source = source,
+            source.isAccessibleThroughWPCom && source.isPrivate {
+            
             let mediaAuthenticator = MediaRequestAuthenticator()
             request = mediaAuthenticator.authenticatedRequestForPrivateSite(for: url)
         } else {
@@ -148,7 +189,7 @@ import MobileCoreServices
                 request = URLRequest(url: url)
             }
         }
-        downloadGif(from: request)
+        downloadGif(from: request)*/
     }
 
     /// Load a static image from the given URL.

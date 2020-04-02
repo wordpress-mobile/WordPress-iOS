@@ -33,6 +33,44 @@ class MediaRequestAuthenticator {
         case cannotFindWPContentInPhotonPath(components: URLComponents)
     }
 
+    enum ImageHost {
+        case publicSite
+        case privateSelfHostedSite
+        case privateWPComSite
+        case privateAtomicWPComSite(siteID: Int)
+    }
+
+    func authenticatedWPComRequest(
+        for url: URL,
+        hostedIn host: ImageHost,
+        onComplete provide: @escaping (URLRequest) -> ()) {
+
+        // We want to make sure we're never sending credentials
+        // to a URL that's not safe.
+        guard url.isHostedAtWPCom() || url.isPhoton() else {
+            let request = URLRequest(url: url)
+            provide(request)
+            return
+        }
+
+        switch host {
+        case .publicSite: fallthrough
+        case .privateSelfHostedSite:
+            // The authentication for these is handled elsewhere
+            let request = URLRequest(url: url)
+            provide(request)
+        case .privateWPComSite:
+            let request = authenticatedRequestForPrivateSite(for: url)
+            provide(request)
+        case .privateAtomicWPComSite(let siteID):
+            if url.isPhoton() {
+                authenticatedRequestForPrivateAtomicSiteThroughPhoton(for: url, siteID: siteID, onComplete: provide)
+            } else {
+                authenticatedRequestForPrivateAtomicSite(for: url, siteID: siteID, onComplete: provide)
+            }
+        }
+    }
+
     // MARK: - Request Authentication
 
     /// Pass this method a media URL, and it will handle all the necessary logic to provide the caller
@@ -48,7 +86,6 @@ class MediaRequestAuthenticator {
     func authenticatedRequest(
         for url: URL,
         blog: Blog,
-        using session: URLSession = URLSession.shared,
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
 
@@ -89,7 +126,6 @@ class MediaRequestAuthenticator {
         siteID: Int,
         inPrivateBlog: Bool,
         inAtomicBlog: Bool,
-        using session: URLSession = URLSession.shared,
         onComplete provide: @escaping (URLRequest) -> ()) {
 
         guard inPrivateBlog else {
