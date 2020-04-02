@@ -1,20 +1,7 @@
 import UIKit
 
-class PrepublishingNavigationController: UINavigationController, DrawerPresentable {
-    // Drawer
-    var expandedHeight: DrawerHeight {
-        return .maxHeight
-    }
 
-    var collapsedHeight: DrawerHeight {
-        return .contentHeight(250)
-    }
-
-    var scrollableView: UIScrollView? {
-        let scroll = visibleViewController?.view as? UIScrollView
-
-        return scroll
-    }
+class PrepublishingNavigationController: UINavigationController {
 
     lazy var header: PrepublishingHeaderView = {
         let header = PrepublishingHeaderView.loadFromNib()
@@ -109,5 +96,23 @@ extension PrepublishingNavigationController: PrepublishingHeaderViewDelegate {
     /// Pop the current view controller when Back button is pressed
     func backButtonTapped() {
         popViewController(animated: true)
+    }
+}
+
+// MARK: - DrawerPresentable
+
+extension PrepublishingNavigationController: DrawerPresentable {
+    var expandedHeight: DrawerHeight {
+        return .maxHeight
+    }
+
+    var collapsedHeight: DrawerHeight {
+        return .contentHeight(250)
+    }
+
+    var scrollableView: UIScrollView? {
+        let scroll = visibleViewController?.view as? UIScrollView
+
+        return scroll
     }
 }
