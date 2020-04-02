@@ -10,7 +10,7 @@ public enum DrawerHeight {
     // The maximum height for the screen
     case maxHeight
 
-    //Height is based on the specified margin from the top of the screen
+    // Height is based on the specified margin from the top of the screen
     case topMargin(CGFloat)
 
     // Height will be equal to the the content height value
@@ -363,13 +363,6 @@ private extension DrawerPresentationController {
         let bottom = presentingViewController.view.safeAreaLayoutGuide.layoutFrame.origin.y
         let margin = presentedView.frame.origin.y + bottom
 
-        /**
-         Disable vertical scroll indicator until we start to scroll
-         to avoid visual bugs
-         */
-//        scrollView.showsVerticalScrollIndicator = false
-//        scrollView.scrollIndicatorInsets = .zero
-//
         scrollView.contentInset.bottom = margin
     }
 
@@ -385,7 +378,7 @@ private extension DrawerPresentationController {
         let bounds = containerView.bounds
         let margin = bounds.maxY - (safeAreaInsets.bottom + ((height > 0) ? height : (bounds.height * 0.5)))
 
-        //Limit the max height
+        // Limit the max height
         return max(margin, safeAreaInsets.top)
     }
 
