@@ -65,6 +65,7 @@ import "./ScreenshotFastfile"
   #####################################################################################
   desc "Creates a new release branch from the current develop"
   lane :code_freeze do | options |
+    gutenberg_dep_check()
     old_version = ios_codefreeze_prechecks(options)
     
     ios_bump_version_release()
@@ -490,4 +491,23 @@ import "./ScreenshotFastfile"
     get_prs_list(repository:GHHELPER_REPO, start_tag:"#{options[:start_tag]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
   end
 
+  desc "Verifies that Gutenberg is referenced by release version and not by commit"
+  lane :gutenberg_dep_check do | options |
+    res = ''
+    
+    File.open '../../Podfile' do |file|
+      res = file.find { |line| line =~ /^(?!\s*#)(?=.*\bgutenberg\b).*(\bcommit|tag\b){1}.+/ }
+    end
+
+    UI.user_error!("Can't find any reference to Gutenberg!") unless (res.length != 0)
+    if res.include?("commit")
+      UI.user_error!("Gutenberg referenced by commit!\n#{res}") unless UI.interactive? 
+      
+      if (!UI.confirm("Gutenberg referenced by commit!\n#{res}\nDo you want to continue anyway?"))
+        UI.user_error!("Aborted by user request. Please fix Gutenberg reference and try again.")
+      end  
+    end
+    
+    UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
+  end
 end
