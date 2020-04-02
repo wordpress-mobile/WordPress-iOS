@@ -27,9 +27,9 @@ final class ImageDownload: AsyncOperation {
                     guard let self = self else {
                         return
                     }
-                    
+
                     self.state = .isFinished
-                    
+
                     DispatchQueue.main.async {
                         guard let image = image else {
                             DDLogError("Unable to download image for attachment with url = \(String(describing: request.url)). Details: \(String(describing: error?.localizedDescription))")
@@ -38,7 +38,7 @@ final class ImageDownload: AsyncOperation {
                             } else {
                                 self.onFailure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil))
                             }
-                            
+
                             return
                         }
 
@@ -153,11 +153,11 @@ class EditorMediaUtility {
             blog: post.blog,
             onSuccess: success,
             onFailure: failure)
-        
+
         imageDownload.start()
         return imageDownload
-        
-        
+
+
         /*
         let operationQueue = OperationQueue()
         

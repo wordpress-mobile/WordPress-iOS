@@ -10,7 +10,7 @@ extension URL {
         // the check for now to avoid breaking things.
         return scheme == "https" && host?.hasSuffix(".wordpress.com") ?? false
     }
-    
+
     fileprivate func isPhoton() -> Bool {
         return host == photonHost
     }
@@ -51,7 +51,7 @@ class MediaRequestAuthenticator {
         using session: URLSession = URLSession.shared,
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
-        
+
         guard blog.isAccessibleThroughWPCom() else {
             let request = URLRequest(url: url)
             provide(request)
