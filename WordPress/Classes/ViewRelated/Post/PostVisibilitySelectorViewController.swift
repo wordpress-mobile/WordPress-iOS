@@ -5,7 +5,7 @@ import UIKit
     private var post: AbstractPost!
 
     /// A completion block that is called after the user select an option
-    @objc var completion: (() -> Void)?
+    @objc var completion: ((String) -> Void)?
 
     // MARK: - Constructors
 
@@ -28,7 +28,7 @@ import UIKit
 
         super.init(dictionary: visiblityDict)
 
-        onItemSelected = { visibility in
+        onItemSelected = { [weak self] visibility in
             guard let visibility = visibility as? String,
                 !post.isFault, post.managedObjectContext != nil else {
                 return
@@ -66,7 +66,7 @@ import UIKit
                 }
             }
 
-            self.completion?()
+            self?.completion?(visibility)
 
         }
     }
@@ -81,23 +81,5 @@ import UIKit
 
     override init(style: UITableView.Style) {
         super.init(style: style)
-    }
-}
-
-// MARK: - Abstract Post private extension
-
-extension AbstractPost {
-    static let passwordProtectedLabel = NSLocalizedString("Password protected", comment: "Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.")
-    static let privateLabel = NSLocalizedString("Private", comment: "Privacy setting for posts set to 'Private'. Should be the same as in core WP.")
-    static let publicLabel = NSLocalizedString("Public", comment: "Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.")
-
-    @objc var titleForVisibility: String {
-        if password != nil {
-            return AbstractPost.passwordProtectedLabel
-        } else if status == .publishPrivate {
-            return AbstractPost.privateLabel
-        }
-
-        return AbstractPost.publicLabel
     }
 }
