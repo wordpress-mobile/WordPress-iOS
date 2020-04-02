@@ -5,6 +5,7 @@
 * Notifications: Fix layout on screens with a notch.
 * Post Commenting: fixed issue that prevented selecting an @ mention suggestion.
 * Site Creation: faster site creation, removed intermediate steps. Just select what kind of site you'd like, enter the domain name and the site will be created.
+* Post Preview: Increase Post and Page Preview size on iPads running iOS 13.
 
  
 14.5
