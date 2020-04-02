@@ -146,7 +146,7 @@ public class DrawerPresentationController: FancyAlertPresentationController {
     }
 
     @objc func dismiss() {
-        self.presentedViewController.dismiss(animated: true, completion: nil)
+        presentedViewController.dismiss(animated: true, completion: nil)
     }
 
     public override func presentationTransitionWillBegin() {
@@ -278,7 +278,7 @@ private extension DrawerPresentationController {
 
             let maxY = topMargin(with: .maxHeight)
 
-            self.setTopMargin(max((startY + yTranslation), maxY), animated: false)
+            setTopMargin(max((startY + yTranslation), maxY), animated: false)
 
         case .ended:
             /// Helper closure to prevent user transition/dismiss
