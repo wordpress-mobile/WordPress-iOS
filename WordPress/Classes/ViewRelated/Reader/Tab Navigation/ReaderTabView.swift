@@ -69,17 +69,21 @@ extension ReaderTabView {
         WPStyleGuide.configureFilterTabBar(tabBar)
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
 
-        viewModel.fetchReaderMenu() { [weak self] sections in
-            guard let sections = sections, let self = self else {
+        viewModel.fetchReaderMenu() { [weak self] items in
+            guard let items = items, let self = self else {
                 return
             }
-            UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
-                self.tabBar.items = sections
-                guard let tabItem = self.tabBar.items[self.tabBar.selectedIndex] as? ReaderTabItem else {
-                    return
-                }
-                self.buttonsStackView.isHidden = tabItem.shouldHideButtonsView
+            self.populateTabBar(with: items)
+        }
+    }
+
+    private func populateTabBar(with items: [ReaderTabItem]) {
+        UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
+            self.tabBar.items = items
+            guard let tabItem = self.tabBar.items[self.tabBar.selectedIndex] as? ReaderTabItem else {
+                return
             }
+            self.buttonsStackView.isHidden = tabItem.shouldHideButtonsView
         }
     }
 
