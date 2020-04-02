@@ -27,9 +27,9 @@ class BottomSheetViewController: UIViewController {
         }
     }
 
-    private weak var childViewController: UIDrawerPresentable?
+    private weak var childViewController: DrawerPresentableViewController?
 
-    init(childViewController: UIDrawerPresentable) {
+    init(childViewController: DrawerPresentableViewController) {
         self.childViewController = childViewController
         super.init(nibName: nil, bundle: nil)
     }

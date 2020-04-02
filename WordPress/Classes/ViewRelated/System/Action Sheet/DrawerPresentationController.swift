@@ -37,8 +37,6 @@ public protocol DrawerPresentable: AnyObject {
     var scrollableView: UIScrollView? { get }
 }
 
-typealias UIDrawerPresentable = DrawerPresentable & UIViewController
-
 private enum Constants {
     static let transitionDuration: TimeInterval = 0.5
 
@@ -54,6 +52,8 @@ private enum Constants {
         static let allowsDragToDismiss: Bool = true
     }
 }
+
+typealias DrawerPresentableViewController = DrawerPresentable & UIViewController
 
 public extension DrawerPresentable where Self: UIViewController {
     // Default values
