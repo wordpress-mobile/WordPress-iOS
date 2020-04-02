@@ -1,19 +1,22 @@
 import MobileCoreServices
 import AutomatticTracks
-
+/*
 /// Protocol used to abstract the information needed to load post related images.
 ///
 @objc protocol ImageSourceInformation {
 
+    @objc
     var isAtomic: Bool { get }
 
     /// The post is private and hosted on WPcom.
     /// Redundant name due to naming conflict.
     ///
+    @objc
     var isPrivate: Bool { get }
 
     /// Whether the post is accessible through WPCom.
     ///
+    @objc
     var isAccessibleThroughWPCom: Bool { get }
 
     /// The blog is self-hosted and there is already a basic auth credential stored.
@@ -21,7 +24,7 @@ import AutomatticTracks
     var isSelfHostedWithCredentials: Bool { get }
 
     var siteID: NSNumber? { get }
-}
+}*/
 
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
 /// still images and animated gifs.
@@ -77,24 +80,24 @@ import AutomatticTracks
         imageView.prepForReuse()
     }
 
-    @objc(loadImageWithURL:fromPost:andPreferredSize:)
+    //@objc(loadImageWithURL:fromPost:andPreferredSize:)
     /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
     ///
     /// - Parameters:
     ///   - url: The URL to load the image from.
-    ///   - post: The post where the image is loaded from.
+    ///   - host: The `MediaHost` of the image.
     ///   - size: The preferred size of the image to load.
     ///
-    func loadImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize = .zero) {
+    func loadImage(with url: URL, from host: MediaHost, preferredSize size: CGSize = .zero) {
         if url.isGif {
-            loadGif(with: url, from: source, preferredSize: size)
+            loadGif(with: url, from: host, preferredSize: size)
         } else {
             imageView.clean()
-            loadStaticImage(with: url, from: source, preferredSize: size)
+            loadStaticImage(with: url, from: host, preferredSize: size)
         }
     }
 
-    @objc(loadImageWithURL:success:error:)
+    //@objc(loadImageWithURL:success:error:)
     /// Load an image from a specific URL. As no source is provided, we can assume
     /// that this is from an external source. Supports animated images (gifs) as well.
     ///
@@ -115,17 +118,17 @@ import AutomatticTracks
         }
     }
 
-    @objc(loadImageWithURL:fromPost:preferredSize:placeholder:success:error:)
+    //@objc(loadImageWithURL:fromPost:preferredSize:placeholder:success:error:)
     /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
     ///
     /// - Parameters:
     ///   - url: The URL to load the image from.
-    ///   - post: The post where the image is loaded from.
+    ///   - host: The host of the image.
     ///   - size: The preferred size of the image to load. You can pass height 0 to set width and preserve aspect ratio.
     ///   - placeholder: A placeholder to show while the image is loading.
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
-    func loadImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
+    func loadImage(with url: URL, from host: MediaHost, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
 
         self.placeholder = placeholder
         successHandler = success
@@ -138,37 +141,22 @@ import AutomatticTracks
 
     /// Load an animated image from the given URL.
     ///
-    private func loadGif(with url: URL, from source: ImageSourceInformation?, preferredSize size: CGSize = .zero) {
+    private func loadGif(with url: URL, from host: MediaHost, preferredSize size: CGSize = .zero) {
+        func downloadGIFWithoutAuthenticating() {
+            let request = URLRequest(url: url)
+            self.downloadGif(from: request)
+        }
+
         guard !url.isFileURL,
-            let source = source else {
-                let request = URLRequest(url: url)
-                self.downloadGif(from: request)
+            let host = host else {
+                downloadGIFWithoutAuthenticating()
                 return
         }
 
-        let host: MediaRequestAuthenticator.ImageHost
-
-        if !source.isPrivate {
-            host = .publicSite
-        } else if !source.isAccessibleThroughWPCom {
-            host = .privateSelfHostedSite
-        } else if !source.isAtomic {
-            host = .privateWPComSite
-        } else if let siteID = source.siteID?.intValue {
-            host = .privateAtomicWPComSite(siteID: siteID)
-        } else {
-            // We're logging an error since this scenario should not be possible, and then
-            // just trying to load the resource as if it was WPCom private.  This is to
-            // avoid crashing the app here, since failing to load the image is a better
-            // option for UX.
-            CrashLogging.logError(error)
-            host = .publicSite
-        }
-
         let mediaAuthenticator = MediaRequestAuthenticator()
-        mediaAuthenticator.authenticatedWPComRequest(
+        mediaAuthenticator.authenticatedRequest(
             for: url,
-            hostedIn: host) { request in
+            from: host) { request in
                 self.downloadGif(from: request)
         }
 
@@ -194,7 +182,10 @@ import AutomatticTracks
 
     /// Load a static image from the given URL.
     ///
-    private func loadStaticImage(with url: URL, from source: ImageSourceInformation?, preferredSize size: CGSize = .zero) {
+    private func loadStaticImage(with url: URL, from host: MediaHost, preferredSize size: CGSize = .zero) {
+
+
+
         if url.isFileURL {
             downloadImage(from: url)
         } else if let source = source {
@@ -212,7 +203,7 @@ import AutomatticTracks
 
     /// Loads the image from a private post hosted in WPCom.
     ///
-    private func loadPrivateImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize) {
+    private func loadPrivateImage(with url: URL, from host: MediaHost, preferredSize size: CGSize) {
         let scale = UIScreen.main.scale
         let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
         let scaledURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)

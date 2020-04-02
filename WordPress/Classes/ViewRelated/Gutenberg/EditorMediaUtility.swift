@@ -1,3 +1,4 @@
+import AutomatticTracks
 import Aztec
 import Gridicons
 
@@ -18,10 +19,14 @@ final class ImageDownload: AsyncOperation {
 
     override func main() {
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
+        let host = MediaHost(with: blog) { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        }
 
         mediaRequestAuthenticator.authenticatedRequest(
             for: url,
-            blog: blog,
+            from: host,
             onComplete: { request in
                 ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
                     guard let self = self else {

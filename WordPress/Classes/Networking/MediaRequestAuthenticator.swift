@@ -1,4 +1,3 @@
-import AutomatticTracks
 import Foundation
 
 fileprivate let photonHost = "i0.wp.com"
@@ -33,17 +32,23 @@ class MediaRequestAuthenticator {
         case cannotFindWPContentInPhotonPath(components: URLComponents)
     }
 
-    enum ImageHost {
-        case publicSite
-        case privateSelfHostedSite
-        case privateWPComSite
-        case privateAtomicWPComSite(siteID: Int)
-    }
+    // MARK: - Request Authentication
 
-    func authenticatedWPComRequest(
+    /// Pass this method a media URL, and it will handle all the necessary logic to provide the caller
+    /// with an authenticated request through the completion closure.
+    ///
+    /// - Parameters:
+    ///     - url: the url for the media.
+    ///     - host: the `MediaHost` for the requested Media.  This is used for authenticating the requests.
+    ///     - onComplete: the closure that will be called once authentication is sorted out by this class.
+    ///         The request can be executed directly without having to do anything else in terms of
+    ///         authentication.
+    ///
+    func authenticatedRequest(
         for url: URL,
-        hostedIn host: ImageHost,
-        onComplete provide: @escaping (URLRequest) -> ()) {
+        from host: MediaHost,
+        onComplete provide: @escaping (URLRequest) -> (),
+        onFailure fail: @escaping (Error) -> ()) {
 
         // We want to make sure we're never sending credentials
         // to a URL that's not safe.
@@ -60,122 +65,50 @@ class MediaRequestAuthenticator {
             let request = URLRequest(url: url)
             provide(request)
         case .privateWPComSite:
-            let request = authenticatedRequestForPrivateSite(for: url)
-            provide(request)
+            authenticatedRequestForPrivateSite(for: url, onComplete: provide, onFailure: fail)
         case .privateAtomicWPComSite(let siteID):
             if url.isPhoton() {
-                authenticatedRequestForPrivateAtomicSiteThroughPhoton(for: url, siteID: siteID, onComplete: provide)
+                authenticatedRequestForPrivateAtomicSiteThroughPhoton(for: url, siteID: siteID, onComplete: provide, onFailure: fail)
             } else {
-                authenticatedRequestForPrivateAtomicSite(for: url, siteID: siteID, onComplete: provide)
+                authenticatedRequestForPrivateAtomicSite(for: url, siteID: siteID, onComplete: provide, onFailure: fail)
             }
-        }
-    }
-
-    // MARK: - Request Authentication
-
-    /// Pass this method a media URL, and it will handle all the necessary logic to provide the caller
-    /// with an authenticated request through the completion closure.
-    ///
-    /// - Parameters:
-    ///     - url: the url for the media.
-    ///     - blog: the blog associated with the passed media URL.
-    ///     - onComplete: the closure that will be called once authentication is sorted out by this class.
-    ///         The request can be executed directly without having to do anything else in terms of
-    ///         authentication.
-    ///
-    func authenticatedRequest(
-        for url: URL,
-        blog: Blog,
-        onComplete provide: @escaping (URLRequest) -> (),
-        onFailure fail: @escaping (Error) -> ()) {
-
-        guard blog.isAccessibleThroughWPCom() else {
-            let request = URLRequest(url: url)
-            provide(request)
-            return
-        }
-
-        guard let siteID = blog.dotComID?.intValue else {
-            fail(Error.cannotFindSiteIDForSiteAvailableThroughWPCom(blog: blog))
-            return
-        }
-
-        authenticatedWPComRequest(
-            for: url,
-            siteID: siteID,
-            inPrivateBlog: blog.isPrivate(),
-            inAtomicBlog: blog.isAtomic(),
-            onComplete: provide)
-    }
-
-    /// Same as above, but this method authenticates WPCom hosted requests only.
-    ///
-    /// - Parameters:
-    ///     - url: the url for the media.
-    ///     - siteID: the ID of the site associated with this media.  It may not be the host though
-    ///         as can be the case with photon URLs that are hosted elsewhere.
-    ///     - inPrivateBlog: whether the owning site is private.
-    ///     - inAtomicBlog: whether the owning site is atomic.  This is relevant since atomic authentication
-    ///         is not standard.
-    ///     - onComplete: the closure that will be called once authentication is sorted out by this class.
-    ///         The request can be executed directly without having to do anything else in terms of
-    ///         authentication.
-    ///
-    func authenticatedWPComRequest(
-        for url: URL,
-        siteID: Int,
-        inPrivateBlog: Bool,
-        inAtomicBlog: Bool,
-        onComplete provide: @escaping (URLRequest) -> ()) {
-
-        guard inPrivateBlog else {
-            let request = URLRequest(url: url)
-            provide(request)
-            return
-        }
-
-        if url.isHostedAtWPCom() {
-            if inAtomicBlog {
-                authenticatedRequestForPrivateAtomicSite(for: url, siteID: siteID, onComplete: provide)
-            } else {
-                let request = authenticatedRequestForPrivateSite(for: url)
-                provide(request)
-            }
-        } else if inAtomicBlog && url.isPhoton() {
-            authenticatedRequestForPrivateAtomicSiteThroughPhoton(for: url, siteID: siteID, onComplete: provide)
-        } else {
-            let request = URLRequest(url: url)
-            provide(request)
         }
     }
 
     // MARK: - Request Authentication: Specific Scenarios
 
-    func authenticatedRequestForPrivateSite(for url: URL) -> URLRequest {
-        guard !url.isHostedAtWPCom(),
-            var components = URLComponents(url: url, resolvingAgainstBaseURL: true),
-            let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount(),
-            let authToken = account.authToken else {
-                return URLRequest(url: url)
+    private func authenticatedRequestForPrivateSite(
+        for url: URL,
+        onComplete provide: (URLRequest) -> (),
+        onFailure fail: (Error) -> ()) {
+
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+            fail(Error.cannotBreakDownURLIntoComponents(url: url))
+            return
         }
 
         // Just in case, enforce HTTPs
         components.scheme = "https"
 
         guard let finalURL = components.url else {
-            CrashLogging.logError(Error.cannotCreatePrivateURL(components: components))
-            return URLRequest(url: url)
+            fail(Error.cannotCreatePrivateURL(components: components))
+            return
         }
 
-        let request = tokenAuthenticatedWPComRequest(for: finalURL, authToken: authToken)
-        return request
+        guard let request = tokenAuthenticatedWPComRequest(for: finalURL) else {
+            fail(Error.cannotFindAuthenticationToken(url: finalURL))
+            return
+        }
+
+        provide(request)
     }
 
     private func authenticatedRequestForPrivateAtomicSite(
         for url: URL,
         siteID: Int,
         using session: URLSession = URLSession.shared,
-        onComplete provide: @escaping (URLRequest) -> ()) {
+        onComplete provide: @escaping (URLRequest) -> (),
+        onFailure fail: @escaping (Error) -> ()) {
 
         guard !url.isHostedAtWPCom(),
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true),
@@ -191,8 +124,7 @@ class MediaRequestAuthenticator {
         components.scheme = "https"
 
         guard let finalURL = components.url else {
-            CrashLogging.logError(Error.cannotCreateAtomicURL(components: components))
-            provide(URLRequest(url: url))
+            fail(Error.cannotCreateAtomicURL(components: components))
             return
         }
 
@@ -219,17 +151,16 @@ class MediaRequestAuthenticator {
     private func authenticatedRequestForPrivateAtomicSiteThroughPhoton(
         for url: URL,
         siteID: Int,
-        onComplete provide: @escaping (URLRequest) -> ()) {
+        onComplete provide: @escaping (URLRequest) -> (),
+        onFailure fail: @escaping (Error) -> ()) {
 
         guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-            CrashLogging.logError(Error.cannotBreakDownURLIntoComponents(url: url))
-            provide(URLRequest(url: url))
+            fail(Error.cannotBreakDownURLIntoComponents(url: url))
             return
         }
 
         guard let wpContentRange = components.path.range(of: "/wp-content") else {
-            CrashLogging.logError(Error.cannotFindWPContentInPhotonPath(components: components))
-            provide(URLRequest(url: url))
+            fail(Error.cannotFindWPContentInPhotonPath(components: components))
             return
         }
 
@@ -240,14 +171,12 @@ class MediaRequestAuthenticator {
         components.path = "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file\(contentPath)"
 
         guard let finalURL = components.url else {
-            CrashLogging.logError(Error.cannotCreateAtomicProxyURL(components: components))
-            provide(URLRequest(url: url))
+            fail(Error.cannotCreateAtomicProxyURL(components: components))
             return
         }
 
         guard let request = tokenAuthenticatedWPComRequest(for: finalURL) else {
-            CrashLogging.logError(Error.cannotFindAuthenticationToken(url: finalURL))
-            provide(URLRequest(url: url))
+            fail(Error.cannotFindAuthenticationToken(url: finalURL))
             return
         }
 

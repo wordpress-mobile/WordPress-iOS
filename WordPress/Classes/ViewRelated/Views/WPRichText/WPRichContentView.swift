@@ -53,11 +53,7 @@ class WPRichContentView: UITextView {
         }
     }
 
-    @objc var isAtomic = false
-
-    /// Whether the view shows private content. Used when fetching images.
-    ///
-    @objc var isPrivate = false
+    var mediaHost: MediaHost = .publicSite
 
     @objc var content: String {
         get {
@@ -343,12 +339,11 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.height)
         }
 
-        let contentInformation = ContentInformation(isAtomicOnWPCom: isAtomic, isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false, siteID: nil)
         let index = mediaArray.count
         let indexPath = IndexPath(row: index, section: 1)
         weak var weakImage = image
 
-        image.loadImage(from: contentInformation, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
+        image.loadImage(from: mediaHost, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
             guard
                 let richMedia = self?.mediaArray[indexPath.row],
                 let img = weakImage
@@ -469,22 +464,6 @@ private extension WPRichContentView {
 struct RichMedia {
     let image: WPRichTextImage
     let attachment: WPTextAttachment
-}
-
-// MARK: - ContentInformation (ImageSourceInformation)
-
-class ContentInformation: ImageSourceInformation {
-    var isAtomicOnWPCom: Bool
-    var isPrivateOnWPCom: Bool
-    var isSelfHostedWithCredentials: Bool
-    var siteID: NSNumber?
-
-    init(isAtomicOnWPCom: Bool, isPrivateOnWPCom: Bool, isSelfHostedWithCredentials: Bool, siteID: NSNumber?) {
-        self.isAtomicOnWPCom = isAtomicOnWPCom
-        self.isPrivateOnWPCom = isPrivateOnWPCom
-        self.isSelfHostedWithCredentials = isSelfHostedWithCredentials
-        self.siteID = siteID
-    }
 }
 
 // This is very much based on Aztec.LayoutManager — most of this code is pretty much copy-pasted
