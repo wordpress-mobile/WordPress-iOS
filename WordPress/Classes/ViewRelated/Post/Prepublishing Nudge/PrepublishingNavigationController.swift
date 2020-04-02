@@ -1,7 +1,7 @@
 import UIKit
 
-class PrepublishingNavigationController: UINavigationController, BottomSheetPresentable {
-    var initialHeight: CGFloat = 300
+
+class PrepublishingNavigationController: UINavigationController {
 
     lazy var header: PrepublishingHeaderView = {
         let header = PrepublishingHeaderView.loadFromNib()
@@ -99,8 +99,20 @@ extension PrepublishingNavigationController: PrepublishingHeaderViewDelegate {
     }
 }
 
-typealias UIBottomSheetPresentable = BottomSheetPresentable & UIViewController
+// MARK: - DrawerPresentable
 
-protocol BottomSheetPresentable {
-    var initialHeight: CGFloat { get }
+extension PrepublishingNavigationController: DrawerPresentable {
+    var expandedHeight: DrawerHeight {
+        return .maxHeight
+    }
+
+    var collapsedHeight: DrawerHeight {
+        return .contentHeight(250)
+    }
+
+    var scrollableView: UIScrollView? {
+        let scroll = visibleViewController?.view as? UIScrollView
+
+        return scroll
+    }
 }
