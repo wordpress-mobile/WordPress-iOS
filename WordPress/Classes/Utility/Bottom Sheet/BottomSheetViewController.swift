@@ -135,14 +135,6 @@ class BottomSheetViewController: UIViewController, DrawerPresentable {
         return preferredContentSize = CGSize(width: Constants.minimumWidth, height: view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)
     }
 
-    var presentedVC: DrawerPresentationController? {
-        guard let navController = self.navigationController else {
-            return presentationController as? DrawerPresentationController
-        }
-
-        return navController.presentationController as? DrawerPresentationController
-    }
-
     @objc func keyboardWillShow(_ notification: NSNotification) {
         self.presentedVC?.transition(to: .expanded)
     }

@@ -56,7 +56,7 @@ private enum Constants {
 }
 
 public extension DrawerPresentable where Self: UIViewController {
-    //Default values
+    // Default values
     var allowsUserTransition: Bool {
         return Constants.Defaults.allowsUserTransition
     }
@@ -82,12 +82,22 @@ public extension DrawerPresentable where Self: UIViewController {
     }
 
     // Helpers
-    var presentedVC: DrawerPresentationController? {
-        guard let navController = self.navigationController else {
-            return presentationController as? DrawerPresentationController
-        }
 
-        return navController.presentationController as? DrawerPresentationController
+    /// Try to determine the correct DrawerPresentationController to use
+
+    /// Returns the `DrawerPresentationController` for a view controller if there is one
+    /// This tries to determine the correct one to use in the following order:
+    /// - The view controller
+    /// - The navController
+    /// - The navController parentViewController
+    /// - The views parentViewController
+    var presentedVC: DrawerPresentationController? {
+        let presentationController = self.presentationController as? DrawerPresentationController
+        let navigationPresentationController = navigationController?.presentationController as? DrawerPresentationController
+        let navParentPresetationController = navigationController?.parent?.presentationController as? DrawerPresentationController
+        let parentPresentationController = parent?.presentationController as? DrawerPresentationController
+
+        return presentationController ?? navigationPresentationController ?? navParentPresetationController ?? parentPresentationController
     }
 }
 
@@ -315,9 +325,7 @@ private extension DrawerPresentationController {
 }
 
 private extension UIScrollView {
-    /**
-     A flag to determine if a scroll view is scrolling
-     */
+    /// A flag to determine if a scroll view is scrolling
     var isScrolling: Bool {
         return isDragging && !isDecelerating || isTracking
     }
