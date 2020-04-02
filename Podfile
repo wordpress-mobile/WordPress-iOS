@@ -175,9 +175,12 @@ target 'WordPress' do
     wordpress_shared
 
     # Production
-    pod 'Automattic-Tracks-iOS', '~> 0.4.4'
+
+    #pod 'Automattic-Tracks-iOS', '~> 0.4.4'
     # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/Swift-5-migration'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'feature/encrypted-logging-master'
+    # Local Development
+    #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
     pod 'NSURL+IDN', '~> 0.4'
 
