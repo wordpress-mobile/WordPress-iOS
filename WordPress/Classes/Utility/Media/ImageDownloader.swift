@@ -1,5 +1,6 @@
 import Foundation
 
+extension URLSessionTask: CancellableTask {}
 
 // MARK: - Image Downloading Tool
 //
@@ -26,7 +27,7 @@ class ImageDownloader {
     /// Downloads the UIImage resource at the specified URL. On completion the received closure will be executed.
     ///
     @discardableResult
-    func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> Task {
+    func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> CancellableTask {
         var request = URLRequest(url: url)
         request.httpShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
@@ -37,7 +38,7 @@ class ImageDownloader {
     /// Downloads the UIImage resource at the specified endpoint. On completion the received closure will be executed.
     ///
     @discardableResult
-    func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> Task {
+    func downloadImage(for request: URLRequest, completion: @escaping (UIImage?, Error?) -> Void) -> CancellableTask {
         let task = session.dataTask(with: request) { (data, _, error) in
             guard let data = data, let image = UIImage(data: data) else {
                 let error = error ?? ImageDownloaderError.failed

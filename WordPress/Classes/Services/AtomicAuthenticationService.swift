@@ -20,6 +20,7 @@ class AtomicAuthenticationService {
 
     func getAuthCookie(
         siteID: Int,
+        using session: URLSession = URLSession.shared,
         success: @escaping (_ cookie: HTTPCookie) -> Void,
         failure: @escaping (Error) -> Void) {
 
@@ -30,6 +31,7 @@ class AtomicAuthenticationService {
         into cookieJar: CookieJar,
         username: String,
         siteID: Int,
+        using session: URLSession = URLSession.shared,
         success: @escaping () -> Void,
         failure: @escaping (Error) -> Void) {
 

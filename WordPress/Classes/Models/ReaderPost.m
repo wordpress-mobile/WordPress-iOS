@@ -65,6 +65,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return self.crossPostMeta != nil;
 }
 
+- (BOOL)isAtomic
+{
+    // DRM: before merging I need to load this from the endpoint.
+    return false;
+}
+
 - (BOOL)isPrivate
 {
     return self.isBlogPrivate;

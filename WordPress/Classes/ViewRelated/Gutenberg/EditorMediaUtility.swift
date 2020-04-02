@@ -1,48 +1,19 @@
 import Aztec
 import Gridicons
 
+extension Operation: CancellableTask {}
+
 final class ImageDownload: AsyncOperation {
-    let request: URLRequest
-
-    init(request: URLRequest) {
-        self.request = request
-    }
-
-    override func main() {
-        ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
-            guard let self = self else {
-                return
-            }
-
-            DispatchQueue.main.async {
-                guard let image = image else {
-                    DDLogError("Unable to download image for attachment with url = \(self.request.url). Details: \(String(describing: error?.localizedDescription))")
-                    if let error = error {
-                        //failure(error)
-                    } else {
-                        //failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil))
-                    }
-
-                    self.cancel()
-                    return
-                }
-
-                //success(image)
-                self.state = .isFinished
-            }
-        }
-
-        self.state = .isFinished
-    }
-}
-
-final class ImageDownloadAuthentication: AsyncOperation {
     let url: URL
     let blog: Blog
+    private let onSuccess: (UIImage) -> ()
+    private let onFailure: (Error) -> ()
 
-    init(url: URL, blog: Blog) {
+    init(url: URL, blog: Blog, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping (Error) -> ()) {
         self.url = url
         self.blog = blog
+        self.onSuccess = onSuccess
+        self.onFailure = onFailure
     }
 
     override func main() {
@@ -52,13 +23,43 @@ final class ImageDownloadAuthentication: AsyncOperation {
             for: url,
             blog: blog,
             onComplete: { request in
-                let download = ImageDownload(request: request)
-                self.addDependency(download)
-                download.start()
+                ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    self.state = .isFinished
+                    
+                    DispatchQueue.main.async {
+                        guard let image = image else {
+                            DDLogError("Unable to download image for attachment with url = \(String(describing: request.url)). Details: \(String(describing: error?.localizedDescription))")
+                            if let error = error {
+                                self.onFailure(error)
+                            } else {
+                                self.onFailure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil))
+                            }
+                            
+                            return
+                        }
+
+                        self.onSuccess(image)
+                    }
+                }
         },
             onFailure: { error in
-                self.cancel()
+                self.state = .isFinished
+                self.onFailure(error)
         })
+    }
+}
+
+protocol CancellableTask {
+    func cancel()
+}
+
+extension URLSession: CancellableTask {
+    func cancel() {
+        invalidateAndCancel()
     }
 }
 
@@ -110,7 +111,7 @@ class EditorMediaUtility {
         from url: URL,
         post: AbstractPost,
         success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void) -> Operation {
+        onFailure failure: @escaping (Error) -> Void) -> CancellableTask {
 
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
@@ -125,7 +126,7 @@ class EditorMediaUtility {
         size requestSize: CGSize,
         scale: CGFloat, post: AbstractPost,
         success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void) -> Operation { //}-> ImageDownloader.Task {
+        onFailure failure: @escaping (Error) -> Void) -> CancellableTask { //}-> ImageDownloader.Task {
 
         let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
@@ -147,8 +148,23 @@ class EditorMediaUtility {
             requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
         }
 
-        // NUEVO CODIGO
+        let imageDownload = ImageDownload(
+            url: requestURL,
+            blog: post.blog,
+            onSuccess: success,
+            onFailure: failure)
+        
+        imageDownload.start()
+        return imageDownload
+        
+        
         /*
+        let operationQueue = OperationQueue()
+        
+        operationQueue.addOperation(<#T##op: Operation##Operation#>)
+        
+        // NUEVO CODIGO
+
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
 
         mediaRequestAuthenticator.authenticatedRequest(
@@ -160,18 +176,7 @@ class EditorMediaUtility {
             onFailure: { error in
                 failure(error)
         })
-        
-        let authOperation = AsyncOperation()
-        let task = URLSession(configuration: .ephemeral).dataTask(with: URL(url: "www.google.com")!) { (data, response, error) in
-            authOperation
-        }*/
 
-        let downloadOperation = ImageDownloadAuthentication(url: requestURL, blog: post.blog)
-        downloadOperation.start()
-
-        return downloadOperation
-
-        /*
         // VIEJO CODIGO
         let task = ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
             guard let _ = self else {
@@ -193,7 +198,8 @@ class EditorMediaUtility {
             }
         }
         
-        return task*/
+        return task
+         */
     }
 
     static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?), Error> ) -> Void) {

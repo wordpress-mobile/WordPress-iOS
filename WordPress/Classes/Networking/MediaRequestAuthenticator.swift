@@ -10,7 +10,7 @@ extension URL {
         // the check for now to avoid breaking things.
         return scheme == "https" && host?.hasSuffix(".wordpress.com") ?? false
     }
-
+    
     fileprivate func isPhoton() -> Bool {
         return host == photonHost
     }
@@ -48,9 +48,10 @@ class MediaRequestAuthenticator {
     func authenticatedRequest(
         for url: URL,
         blog: Blog,
+        using session: URLSession = URLSession.shared,
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
-
+        
         guard blog.isAccessibleThroughWPCom() else {
             let request = URLRequest(url: url)
             provide(request)
@@ -88,6 +89,7 @@ class MediaRequestAuthenticator {
         siteID: Int,
         inPrivateBlog: Bool,
         inAtomicBlog: Bool,
+        using session: URLSession = URLSession.shared,
         onComplete provide: @escaping (URLRequest) -> ()) {
 
         guard inPrivateBlog else {
@@ -136,6 +138,7 @@ class MediaRequestAuthenticator {
     private func authenticatedRequestForPrivateAtomicSite(
         for url: URL,
         siteID: Int,
+        using session: URLSession = URLSession.shared,
         onComplete provide: @escaping (URLRequest) -> ()) {
 
         guard !url.isHostedAtWPCom(),

@@ -2,7 +2,7 @@ import Aztec
 
 class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     private let post: AbstractPost
-    private var activeMediaRequests = [Operation]()
+    private var activeMediaRequests = [CancellableTask]()
     private let mediaUtility = EditorMediaUtility()
 
     init(post: AbstractPost) {
