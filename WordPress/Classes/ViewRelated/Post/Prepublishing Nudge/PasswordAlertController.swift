@@ -2,7 +2,7 @@ import UIKit
 import Gridicons
 
 /// Display an Alert Controller that prompts for a password
-class UIPasswordAlertController {
+class PasswordAlertController {
 
     var passwordField: UITextField!
 

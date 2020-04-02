@@ -152,7 +152,7 @@ class PrepublishingViewController: UITableViewController {
     // MARK: - Password Prompt
 
     private func showPasswordAlert() {
-        let passwordAlertController = UIPasswordAlertController(onSubmit: { [weak self] password in
+        let passwordAlertController = PasswordAlertController(onSubmit: { [weak self] password in
             guard let password = password, !password.isEmpty else {
                 self?.cancelPasswordProtectedPost()
                 return
