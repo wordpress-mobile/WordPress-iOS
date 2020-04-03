@@ -39,11 +39,6 @@ jobs:
             - DerivedData/Build/Products
             - Pods/WordPressMocks
   Unit Tests:
-    parameters:
-      try-count:
-        description: Number of times to try unit tests
-        type: integer
-        default: 1
     executor:
       name: ios/default
       xcode-version: "11.2.1"
@@ -57,7 +52,7 @@ jobs:
       - ios/wait-for-simulator
       - run:
           name: Run Unit Tests
-          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUnitTests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:<< parameters.try-count >>
+          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUnitTests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
       - ios/save-xcodebuild-artifacts
   UI Tests:
     parameters:
@@ -67,10 +62,6 @@ jobs:
         description: Post to Slack when tests fail. SLACK_WEBHOOK ENV variable must be set.
         type: boolean
         default: false
-      try-count:
-        description: Number of times to try UI tests
-        type: integer
-        default: 1
     executor:
       name: ios/default
       xcode-version: "11.2.1"
@@ -88,7 +79,7 @@ jobs:
       - ios/wait-for-simulator
       - run:
           name: Run UI Tests
-          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:<< parameters.try-count >>
+          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
       - ios/save-xcodebuild-artifacts
       - when:
           condition: << parameters.post-to-slack >>
