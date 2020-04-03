@@ -1,12 +1,9 @@
 import Foundation
 
 extension SchedulingCalendarViewController {
-    static func present(from viewController: UIViewController, post: AbstractPost) {
-        let model = PublishSettingsViewModel(post: post)
+    static func present(from viewController: UIViewController, viewModel: PublishSettingsViewModel, updated: @escaping (Date?) -> Void) {
         let schedulingCalendarViewController = SchedulingCalendarViewController()
-        schedulingCalendarViewController.coordinator = DateCoordinator(date: model.date, timeZone: model.timeZone, dateFormatter: model.dateFormatter, dateTimeFormatter: model.dateTimeFormatter) { date in
-            // Date picked
-        }
+        schedulingCalendarViewController.coordinator = DateCoordinator(date: viewModel.date, timeZone: viewModel.timeZone, dateFormatter: viewModel.dateFormatter, dateTimeFormatter: viewModel.dateTimeFormatter, updated: updated)
         let vc = LightNavigationController(rootViewController: schedulingCalendarViewController)
         vc.modalPresentationStyle = .custom
         vc.transitioningDelegate = schedulingCalendarViewController

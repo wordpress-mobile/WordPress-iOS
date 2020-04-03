@@ -15,6 +15,10 @@ private enum PrepublishingIdentifier {
 class PrepublishingViewController: UITableViewController {
     let post: Post
 
+    private lazy var publishSettingsViewModel: PublishSettingsViewModel = {
+        return PublishSettingsViewModel(post: post)
+    }()
+
     private let completion: (AbstractPost) -> ()
 
     private let options: [PrepublishingOption] = [
@@ -141,25 +145,15 @@ class PrepublishingViewController: UITableViewController {
 
     // MARK: - Schedule
 
-    var scheduleLabel: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        dateFormatter.timeStyle = .short
-        dateFormatter.timeZone = post.blog.timeZone as TimeZone
-
-        if let dateCreated = post.dateCreated, !post.shouldPublishImmediately() {
-            return dateFormatter.string(from: dateCreated)
-        } else {
-            return NSLocalizedString("Immediately", comment: "Label that indicates that the post will be immediately published");
-        }
-    }
-
     func configureScheduleCell(_ cell: WPTableViewCell) {
-        cell.detailTextLabel?.text = scheduleLabel
+        cell.detailTextLabel?.text = publishSettingsViewModel.detailString
     }
 
     func didTapSchedule() {
-        SchedulingCalendarViewController.present(from: self, post: post)
+        SchedulingCalendarViewController.present(from: self, viewModel: publishSettingsViewModel) { [weak self] date in
+            self?.publishSettingsViewModel.setDate(date)
+            self?.tableView.reloadData()
+        }
     }
 
     // MARK: - Publish Button
