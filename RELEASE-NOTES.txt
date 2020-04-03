@@ -10,6 +10,7 @@
 * Fixed a crash when a blog's URL became `nil` from a Core Data operation.
 * Added Share action to the more menu in the Posts list
 * Period Stats: fix colors when switching between light and dark modes.
+* Reader post detail: fix colors when switching between light and dark modes.
 
  
 14.5
