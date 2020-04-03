@@ -78,13 +78,11 @@ extension ReaderTabView {
     }
 
     private func populateTabBar(with items: [ReaderTabItem]) {
-        UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
-            self.tabBar.items = items
-            guard let tabItem = self.tabBar.items[self.tabBar.selectedIndex] as? ReaderTabItem else {
-                return
-            }
-            self.buttonsStackView.isHidden = tabItem.shouldHideButtonsView
+        self.tabBar.items = items
+        guard let tabItem = self.tabBar.items[self.tabBar.selectedIndex] as? ReaderTabItem else {
+            return
         }
+        self.buttonsStackView.isHidden = tabItem.shouldHideButtonsView
     }
 
     private func setupButtonsView() {
@@ -155,7 +153,7 @@ extension ReaderTabView {
         // hide/show buttons view depending on the selected TabBarItem
         guard let tabItems = tabBar.items as? [ReaderTabItem],
             buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
-            return
+                return
         }
 
         UIView.animate(withDuration: Appearance.tabBarAnimationsDuration,
