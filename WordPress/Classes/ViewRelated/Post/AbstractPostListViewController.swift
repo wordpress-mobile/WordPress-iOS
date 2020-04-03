@@ -208,8 +208,8 @@ class AbstractPostListViewController: UIViewController,
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if searchController.isActive {
-            searchController.isActive = false
+        if searchController?.isActive == true {
+            searchController?.isActive = false
         }
 
         dismissAllNetworkErrorNotices()
