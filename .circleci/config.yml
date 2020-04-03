@@ -38,6 +38,7 @@ jobs:
           paths:
             - DerivedData/Build/Products
             - Pods/WordPressMocks
+            - vendor/bundle
   Unit Tests:
     executor:
       name: ios/default
