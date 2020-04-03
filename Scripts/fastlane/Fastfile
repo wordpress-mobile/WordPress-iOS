@@ -484,6 +484,35 @@ import "./ScreenshotFastfile"
   end
 
 ########################################################################
+# Test Lanes
+########################################################################
+  #####################################################################################
+  # test_without_building
+  # -----------------------------------------------------------------------------------
+  # This lane runs tests without building the app.
+  # It requires a prebuilt xctestrun file and simulator destination where the tests will be run.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane test_without_building [xctestrun:<Path to xctestrun file>] [destination:<Simulator>] [try_count:<Number of times to try tests>]
+  #
+  # Example:
+  # bundle exec fastlane test_without_building xctestrun:WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
+  #####################################################################################
+  desc "Run tests without building"
+  lane :test_without_building do | options |
+    multi_scan(
+      workspace: "../WordPress.xcworkspace",
+      scheme: "WordPress",
+      test_without_building: true,
+      xctestrun: "../#{options[:xctestrun]}",
+      destination: options[:destination],
+      try_count: options[:try_count],
+      output_directory: "../build/results",
+      result_bundle: true
+    )
+  end
+
+########################################################################
 # Helper Lanes
 ########################################################################  
   desc "Get a list of pull request from `start_tag` to the current state"

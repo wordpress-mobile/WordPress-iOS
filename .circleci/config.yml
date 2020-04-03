@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   # Using 1.0 of the Orbs means it will use the latest 1.0.x version from https://github.com/wordpress-mobile/circleci-orbs
-  ios: wordpress-mobile/ios@1.0
+  ios: wordpress-mobile/ios@dev:add/store-test-bundles
   git: wordpress-mobile/git@1.0
   slack: circleci/slack@3.4.2
 
@@ -19,19 +19,6 @@ commands:
               echo "Manually added `/usr/local/bin` to the $PATH:"
               echo $PATH
             fi
-
-  save-xcresult:
-    steps:
-      - run:
-          name: Zip xcresult
-          command: |
-            mkdir testresults
-            zip -r testresults/xcresult.zip test-without-building.xcresult
-          when: on_fail # Zips the .xcresult file when tests fail, so it can be saved
-      - store_artifacts:
-          name: Save xcresult
-          path: testresults
-          destination: logs
 
 jobs:
   Build Tests:
@@ -52,6 +39,11 @@ jobs:
             - DerivedData/Build/Products
             - Pods/WordPressMocks
   Unit Tests:
+    parameters:
+      try-count:
+        description: Number of times to try unit tests
+        type: integer
+        default: 1
     executor:
       name: ios/default
       xcode-version: "11.2.1"
@@ -63,11 +55,10 @@ jobs:
       - attach_workspace:
           at: ./
       - ios/wait-for-simulator
-      - ios/xcodebuild:
-          command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPressUnitTests_iphonesimulator13.2-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath test-without-building.xcresult
+      - run:
+          name: Run Unit Tests
+          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUnitTests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:<< parameters.try-count >>
       - ios/save-xcodebuild-artifacts
-      - save-xcresult
   UI Tests:
     parameters:
       device:
@@ -76,6 +67,10 @@ jobs:
         description: Post to Slack when tests fail. SLACK_WEBHOOK ENV variable must be set.
         type: boolean
         default: false
+      try-count:
+        description: Number of times to try UI tests
+        type: integer
+        default: 1
     executor:
       name: ios/default
       xcode-version: "11.2.1"
@@ -91,11 +86,10 @@ jobs:
           command: ./Pods/WordPressMocks/scripts/start.sh 8282
           background: true
       - ios/wait-for-simulator
-      - ios/xcodebuild:
-          command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath test-without-building.xcresult
+      - run:
+          name: Run UI Tests
+          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:<< parameters.try-count >>
       - ios/save-xcodebuild-artifacts
-      - save-xcresult
       - when:
           condition: << parameters.post-to-slack >>
           steps:
