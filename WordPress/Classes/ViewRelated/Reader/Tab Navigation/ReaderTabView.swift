@@ -82,17 +82,16 @@ extension ReaderTabView {
     }
 
     private func populateTabBar(with items: [ReaderTabItem]) {
-        UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
-            self.tabBar.items = items
-            guard let tabItem = self.tabBar.items[self.tabBar.selectedIndex] as? ReaderTabItem else {
-                return
-            }
-            self.buttonsStackView.isHidden = tabItem.shouldHideButtonsView
+        tabBar.items = items
+        guard let tabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem else {
+            return
         }
+        buttonsStackView.isHidden = tabItem.shouldHideButtonsView
     }
 
     private func setupButtonsView() {
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.isLayoutMarginsRelativeArrangement = true
         buttonsStackView.axis = .horizontal
         buttonsStackView.alignment = .center
         buttonsStackView.addArrangedSubview(filterButton)
@@ -152,7 +151,7 @@ extension ReaderTabView {
     }
 
     private func activateConstraints() {
-        pinSubviewToSafeArea(mainStackView)
+        pinSubviewToAllEdges(mainStackView)
         NSLayoutConstraint.activate([
             buttonsStackView.heightAnchor.constraint(equalToConstant: Appearance.barHeight),
             resetFilterButton.widthAnchor.constraint(equalToConstant: Appearance.resetButtonWidth),
@@ -173,7 +172,7 @@ extension ReaderTabView {
         // hide/show buttons view depending on the selected TabBarItem
         guard let tabItems = tabBar.items as? [ReaderTabItem],
             buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
-            return
+                return
         }
 
         self.viewModel.showTab(for: tabBar.items[tabBar.selectedIndex])
