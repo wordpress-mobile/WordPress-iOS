@@ -1,16 +1,16 @@
 
 class ReaderTabViewModel {
 
-    var tabItems = [ReaderTabItem]()
-
-    var selectedIndex = 0 {
-        didSet {
-            // TODO: - READERNAV - implement transition on ReaderContent
-        }
-    }
+    var navigationClosure: ((ReaderAbstractTopic) -> Void)?
 
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
-    func navigateToTab(at index: Int) { }
+    func showTab(for item: FilterTabBarItem) {
+        guard let readerItem = item as? ReaderTabItem,
+            let topic = readerItem.topic else {
+            return
+        }
+        navigationClosure?(topic)
+    }
 
     func performSearch() { }
 
@@ -44,9 +44,7 @@ extension ReaderTabViewModel {
                 return
             }
 
-            tabItems = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) })
-
-            completion(tabItems)
+            completion(ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) }))
 
         } catch {
             DDLogError("There was a problem fetching topics for the menu." + error.localizedDescription)
@@ -72,12 +70,17 @@ extension ReaderTabViewModel {
 // MARK: Reader Content
 extension ReaderTabViewModel {
 
-    private var currentTopic: ReaderAbstractTopic? {
-        return tabItems[selectedIndex].topic
-    }
+    func makeChildViewController(with item: ReaderTabItem) -> UIViewController? {
+        guard let topic = item.topic else {
+            return nil
+        }
 
-    func makeChildViewController() -> UIViewController {
-        // TODO: - READERNAV - Remove force unwrapping
-        return ReaderStreamViewController.controllerWithTopic(currentTopic!)
+        let controller = ReaderStreamViewController.controllerWithTopic(topic)
+
+        self.navigationClosure = { topic in
+            controller.readerTopic = topic
+        }
+
+        return controller
     }
 }

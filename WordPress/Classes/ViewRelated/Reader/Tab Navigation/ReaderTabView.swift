@@ -135,11 +135,12 @@ extension ReaderTabView {
     }
 
     private func addContentToContainerView() {
-        guard let controller = self.next as? ReaderTabViewController else {
+        guard let controller = self.next as? UIViewController,
+            let readetTabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem,
+            let childController = viewModel.makeChildViewController(with: readetTabItem) else {
             return
         }
 
-        let childController = viewModel.makeChildViewController()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         childController.view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -175,16 +176,10 @@ extension ReaderTabView {
             return
         }
 
-        UIView.animate(withDuration: Appearance.tabBarAnimationsDuration,
-                       animations: {
+        self.viewModel.showTab(for: tabBar.items[tabBar.selectedIndex])
+        UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
                         self.buttonsStackView.isHidden = tabItems[tabBar.selectedIndex].shouldHideButtonsView
-        },
-                       completion: { finished in
-                        if finished {
-                            self.viewModel.navigateToTab(at: tabBar.selectedIndex)
-                        }
-        })
-        viewModel.selectedIndex = tabBar.selectedIndex
+        }
     }
 
     /// Filter button
@@ -225,7 +220,6 @@ extension ReaderTabView {
         static let filterButtonInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         static let filterButtonimageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         static let filterButtonTitleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-
 
         static let resetButtonWidth: CGFloat = 32
         static let resetButtonInsets = UIEdgeInsets(top: 1, left: -4, bottom: -1, right: 4)
