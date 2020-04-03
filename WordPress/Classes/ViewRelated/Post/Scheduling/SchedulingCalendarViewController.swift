@@ -12,15 +12,13 @@ class DateCoordinator {
     let dateFormatter: DateFormatter
     let dateTimeFormatter: DateFormatter
     let updated: (Date?) -> Void
-    let onDismiss: (() -> Void)?
 
-    init(date: Date?, timeZone: TimeZone, dateFormatter: DateFormatter, dateTimeFormatter: DateFormatter, updated: @escaping (Date?) -> Void, onDismiss: (() -> Void)? = nil) {
+    init(date: Date?, timeZone: TimeZone, dateFormatter: DateFormatter, dateTimeFormatter: DateFormatter, updated: @escaping (Date?) -> Void) {
         self.date = date
         self.timeZone = timeZone
         self.dateFormatter = dateFormatter
         self.dateTimeFormatter = dateTimeFormatter
         self.updated = updated
-        self.onDismiss = onDismiss
     }
 }
 
@@ -90,11 +88,6 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculatePreferredSize()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        coordinator?.onDismiss?()
     }
 
     private func calculatePreferredSize() {
