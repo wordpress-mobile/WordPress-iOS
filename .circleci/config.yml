@@ -52,6 +52,7 @@ jobs:
       - ios/wait-for-simulator
       - run:
           name: Run Unit Tests
+          working_directory: Scripts
           command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUnitTests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
       - ios/save-xcodebuild-artifacts
   UI Tests:
@@ -79,6 +80,7 @@ jobs:
       - ios/wait-for-simulator
       - run:
           name: Run UI Tests
+          working_directory: Scripts
           command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
       - ios/save-xcodebuild-artifacts
       - when:
