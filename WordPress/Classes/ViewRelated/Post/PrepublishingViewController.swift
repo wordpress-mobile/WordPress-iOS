@@ -34,7 +34,6 @@ class PrepublishingViewController: UITableViewController {
     let publishButton: NUXButton = {
         let nuxButton = NUXButton()
         nuxButton.isPrimary = true
-        nuxButton.setTitle(NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post"), for: .normal)
 
         return nuxButton
     }()
@@ -161,9 +160,10 @@ class PrepublishingViewController: UITableViewController {
             viewModel: publishSettingsViewModel,
             updated: { [weak self] date in
                 self?.publishSettingsViewModel.setDate(date)
+                self?.tableView.reloadData()
+                self?.updatePublishButtonLabel()
             },
             onDismiss: { [weak self] in
-                self?.tableView.reloadData()
                 self?.presentedVC?.transition(to: .collapsed)
             }
         )
@@ -178,6 +178,11 @@ class PrepublishingViewController: UITableViewController {
         publishButton.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableFooterView = footer
         publishButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
+        updatePublishButtonLabel()
+    }
+
+    private func updatePublishButtonLabel() {
+        publishButton.setTitle(post.isScheduled() ? Constants.scheduleNow : Constants.publishNow, for: .normal)
     }
 
     @objc func publish(_ sender: UIButton) {
@@ -215,5 +220,7 @@ class PrepublishingViewController: UITableViewController {
         static let nuxButtonInsets = UIEdgeInsets(top: 20, left: 15, bottom: 20, right: 15)
         static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
         static let title = NSLocalizedString("Publishing To", comment: "Label that describes in which blog the user is publishing to")
+        static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
+        static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
     }
 }
