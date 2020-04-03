@@ -155,11 +155,17 @@ class PrepublishingViewController: UITableViewController {
 
     func didTapSchedule() {
         presentedVC?.transition(to: .hidden)
-        SchedulingCalendarViewController.present(from: self, viewModel: publishSettingsViewModel) { [weak self] date in
-            self?.publishSettingsViewModel.setDate(date)
-            self?.tableView.reloadData()
-            self?.presentedVC?.transition(to: .collapsed)
-        }
+        SchedulingCalendarViewController.present(
+            from: self,
+            viewModel: publishSettingsViewModel,
+            updated: { [weak self] date in
+                self?.publishSettingsViewModel.setDate(date)
+            },
+            onDismiss: { [weak self] in
+                self?.tableView.reloadData()
+                self?.presentedVC?.transition(to: .collapsed)
+            }
+        )
     }
 
     // MARK: - Publish Button

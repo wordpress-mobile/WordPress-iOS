@@ -196,10 +196,16 @@ private struct DateAndTimeRow: ImmuTableRow {
         return { [weak self] row in
 
             let schedulingCalendarViewController = SchedulingCalendarViewController()
-            schedulingCalendarViewController.coordinator = DateCoordinator(date: model.date, timeZone: model.timeZone, dateFormatter: model.dateFormatter, dateTimeFormatter: model.dateTimeFormatter) { [weak self] date in
-                self?.viewModel.setDate(date)
-                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
-            }
+            schedulingCalendarViewController.coordinator = DateCoordinator(
+                date: model.date,
+                timeZone: model.timeZone,
+                dateFormatter: model.dateFormatter,
+                dateTimeFormatter: model.dateTimeFormatter,
+                updated: { [weak self] date in
+                    self?.viewModel.setDate(date)
+                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
+                }
+            )
 
             return self?.calendarNavigationController(rootViewController: schedulingCalendarViewController) ?? UINavigationController()
         }
