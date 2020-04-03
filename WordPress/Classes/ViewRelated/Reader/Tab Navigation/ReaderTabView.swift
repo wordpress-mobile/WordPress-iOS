@@ -87,6 +87,7 @@ extension ReaderTabView {
 
     private func setupButtonsView() {
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.isLayoutMarginsRelativeArrangement = true
         buttonsStackView.axis = .horizontal
         buttonsStackView.alignment = .center
         buttonsStackView.addArrangedSubview(filterButton)
@@ -134,7 +135,7 @@ extension ReaderTabView {
     }
 
     private func activateConstraints() {
-        pinSubviewToSafeArea(mainStackView)
+        pinSubviewToAllEdges(mainStackView)
         NSLayoutConstraint.activate([
             buttonsStackView.heightAnchor.constraint(equalToConstant: Appearance.barHeight),
             resetFilterButton.widthAnchor.constraint(equalToConstant: Appearance.resetButtonWidth),
