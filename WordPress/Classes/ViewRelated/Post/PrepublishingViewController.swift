@@ -7,6 +7,7 @@ private struct PrepublishingOption {
 }
 
 private enum PrepublishingIdentifier {
+    case schedule
     case visibility
     case tags
 }
@@ -17,6 +18,7 @@ class PrepublishingViewController: UITableViewController {
     private let completion: (AbstractPost) -> ()
 
     private let options: [PrepublishingOption] = [
+        PrepublishingOption(id: .schedule, title: NSLocalizedString("Publish", comment: "Label for Publish")),
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
@@ -75,16 +77,21 @@ class PrepublishingViewController: UITableViewController {
             configureTagCell(cell)
         case .visibility:
             configureVisibilityCell(cell)
+        case .schedule:
+            configureScheduleCell(cell)
         }
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            didTapVisibilityCell()
-        } else {
+        switch options[indexPath.row].id {
+        case .tags:
             didTapTagCell()
+        case .visibility:
+            didTapVisibilityCell()
+        case .schedule:
+            didTapSchedule()
         }
     }
 
@@ -130,6 +137,29 @@ class PrepublishingViewController: UITableViewController {
         }
 
         navigationController?.pushViewController(visbilitySelectorViewController, animated: true)
+    }
+
+    // MARK: - Schedule
+
+    var scheduleLabel: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .short
+        dateFormatter.timeZone = post.blog.timeZone as TimeZone
+
+        if let dateCreated = post.dateCreated, !post.shouldPublishImmediately() {
+            return dateFormatter.string(from: dateCreated)
+        } else {
+            return NSLocalizedString("Immediately", comment: "Label that indicates that the post will be immediately published");
+        }
+    }
+
+    func configureScheduleCell(_ cell: WPTableViewCell) {
+        cell.detailTextLabel?.text = scheduleLabel
+    }
+
+    func didTapSchedule() {
+        SchedulingCalendarViewController.present(from: self, post: post)
     }
 
     // MARK: - Publish Button
