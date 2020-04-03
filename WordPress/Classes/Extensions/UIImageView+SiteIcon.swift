@@ -62,12 +62,18 @@ extension UIImageView {
     @objc
     func downloadSiteIcon(for blog: Blog, placeholderImage: UIImage? = .siteIconPlaceholder) {
         func downloadImage(with request: URLRequest) {
-            self.downloadImage(usingRequest: request, placeholderImage: placeholderImage, success: { [weak self] (image) in
-                self?.image = image
-                self?.removePlaceholderBorder()
-            }) { error in
-                // No-op (for now!)
-            }
+            self.downloadImage(
+                usingRequest: request,
+                placeholderImage: placeholderImage,
+                success: { [weak self] (image) in
+                    self?.image = image
+                    self?.removePlaceholderBorder()
+            },
+                failure: { error -> () in
+                    if let error = error {
+                        CrashLogging.logError(error)
+                    }
+            })
         }
 
         guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath) else {
