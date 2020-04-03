@@ -131,7 +131,7 @@ class EditorMediaUtility {
         size requestSize: CGSize,
         scale: CGFloat, post: AbstractPost,
         success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void) -> CancellableTask { //}-> ImageDownloader.Task {
+        onFailure failure: @escaping (Error) -> Void) -> CancellableTask {
 
         let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
@@ -161,50 +161,6 @@ class EditorMediaUtility {
 
         imageDownload.start()
         return imageDownload
-
-
-        /*
-        let operationQueue = OperationQueue()
-        
-        operationQueue.addOperation(<#T##op: Operation##Operation#>)
-        
-        // NUEVO CODIGO
-
-        let mediaRequestAuthenticator = MediaRequestAuthenticator()
-
-        mediaRequestAuthenticator.authenticatedRequest(
-            for: requestURL,
-            blog: post.blog,
-            onComplete: { request in
-                // aca deberia llamarse el  request...
-        },
-            onFailure: { error in
-                failure(error)
-        })
-
-        // VIEJO CODIGO
-        let task = ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
-            guard let _ = self else {
-                return
-            }
-
-            DispatchQueue.main.async {
-                guard let image = image else {
-                    DDLogError("Unable to download image for attachment with url = \(url). Details: \(String(describing: error?.localizedDescription))")
-                    if let error = error {
-                        failure(error)
-                    } else {
-                        failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil))
-                    }
-                    return
-                }
-
-                success(image)
-            }
-        }
-        
-        return task
-         */
     }
 
     static func fetchRemoteVideoURL(for media: Media, in post: AbstractPost, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?), Error> ) -> Void) {
