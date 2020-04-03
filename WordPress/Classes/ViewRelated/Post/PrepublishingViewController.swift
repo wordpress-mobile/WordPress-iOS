@@ -102,6 +102,10 @@ class PrepublishingViewController: UITableViewController {
         }
     }
 
+    private func reloadData() {
+        tableView.reloadData()
+    }
+
     // MARK: - Tags
 
     private func configureTagCell(_ cell: WPTableViewCell) {
@@ -117,7 +121,7 @@ class PrepublishingViewController: UITableViewController {
             }
 
             self?.post.tags = tags
-            self?.tableView.reloadData()
+            self?.reloadData()
         }
 
         navigationController?.pushViewController(tagPickerViewController, animated: true)
@@ -133,7 +137,7 @@ class PrepublishingViewController: UITableViewController {
         let visbilitySelectorViewController = PostVisibilitySelectorViewController(post)
 
         visbilitySelectorViewController.completion = { [weak self] option in
-            self?.tableView.reloadData()
+            self?.reloadData()
 
             // If tue user selects password protected, prompt for a password
             if option == AbstractPost.passwordProtectedLabel {
@@ -160,10 +164,11 @@ class PrepublishingViewController: UITableViewController {
             viewModel: publishSettingsViewModel,
             updated: { [weak self] date in
                 self?.publishSettingsViewModel.setDate(date)
-                self?.tableView.reloadData()
+                self?.reloadData()
                 self?.updatePublishButtonLabel()
             },
             onDismiss: { [weak self] in
+                self?.reloadData()
                 self?.presentedVC?.transition(to: .collapsed)
             }
         )
@@ -212,7 +217,7 @@ class PrepublishingViewController: UITableViewController {
     private func cancelPasswordProtectedPost() {
         post.status = .publish
         post.password = nil
-        tableView.reloadData()
+        reloadData()
     }
 
     private enum Constants {
