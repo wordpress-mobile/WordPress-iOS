@@ -1,5 +1,6 @@
 14.6
 -----
+* [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.
 * [internal] the login and signup Magic Link flows have code changes that could cause regressions. See https://git.io/JvSD6 and https://git.io/Jvy4P for testing details.
 * [internal] the login and signup Magic Link flows have code changes that can cause regressions. See https://git.io/Jvy4P for testing details.
 * [internal] the login and signup Continue with Google flows have code changes that can cause regressions. See https://git.io/JvypB for testing details.
