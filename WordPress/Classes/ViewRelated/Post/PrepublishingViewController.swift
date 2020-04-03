@@ -99,7 +99,7 @@ class PrepublishingViewController: UITableViewController {
         case .visibility:
             didTapVisibilityCell()
         case .schedule:
-            didTapSchedule()
+            didTapSchedule(indexPath)
         }
     }
 
@@ -153,10 +153,11 @@ class PrepublishingViewController: UITableViewController {
         cell.detailTextLabel?.text = publishSettingsViewModel.detailString
     }
 
-    func didTapSchedule() {
+    func didTapSchedule(_ indexPath: IndexPath) {
         presentedVC?.transition(to: .hidden)
         SchedulingCalendarViewController.present(
             from: self,
+            sourceView: tableView.cellForRow(at: indexPath)?.contentView,
             viewModel: publishSettingsViewModel,
             updated: { [weak self] date in
                 self?.publishSettingsViewModel.setDate(date)

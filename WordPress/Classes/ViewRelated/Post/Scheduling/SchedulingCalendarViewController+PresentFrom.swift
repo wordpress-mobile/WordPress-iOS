@@ -1,12 +1,24 @@
 import Foundation
 
 extension SchedulingCalendarViewController {
-    static func present(from viewController: UIViewController, viewModel: PublishSettingsViewModel, updated: @escaping (Date?) -> Void, onDismiss: @escaping () -> Void) {
+    static func present(from viewController: UIViewController, sourceView: UIView?, viewModel: PublishSettingsViewModel, updated: @escaping (Date?) -> Void, onDismiss: @escaping () -> Void) {
         let schedulingCalendarViewController = SchedulingCalendarViewController()
         schedulingCalendarViewController.coordinator = DateCoordinator(date: viewModel.date, timeZone: viewModel.timeZone, dateFormatter: viewModel.dateFormatter, dateTimeFormatter: viewModel.dateTimeFormatter, updated: updated, onDismiss: onDismiss)
         let vc = LightNavigationController(rootViewController: schedulingCalendarViewController)
-        vc.modalPresentationStyle = .custom
-        vc.transitioningDelegate = schedulingCalendarViewController
+
+        if UIDevice.isPad() {
+            vc.modalPresentationStyle = .popover
+        } else {
+            vc.modalPresentationStyle = .custom
+            vc.transitioningDelegate = schedulingCalendarViewController
+        }
+
+        if let popoverController = vc.popoverPresentationController,
+            let sourceView = sourceView {
+            popoverController.sourceView = sourceView
+            popoverController.sourceRect = sourceView.frame
+        }
+
         viewController.present(vc, animated: true)
     }
 }
