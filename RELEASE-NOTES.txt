@@ -8,8 +8,15 @@
 * Post Commenting: fixed issue that prevented selecting an @ mention suggestion.
 * Fixed an issue that could have caused the app to crash when accessing Site Pages.
 * Site Creation: faster site creation, removed intermediate steps. Just select what kind of site you'd like, enter the domain name and the site will be created.
+* Block editor: Added the Cover block
+* Block editor: Removed the dimming effect on unselected blocks
+* Block editor: Add alignment options for Heading block
+* Block editor: Implemented dropdown toolbar for alignment toolbar in Heading, Paragraph, Image, MediaText blocks
+* Block Editor: When editing link settings, tapping the keyboard return button now closes the settings panel as well as closing the keyboard.
 * Fixed a crash when a blog's URL became `nil` from a Core Data operation.
+* Added Share action to the more menu in the Posts list
 * Period Stats: fix colors when switching between light and dark modes.
+* Reader post detail: fix colors when switching between light and dark modes.
 
  
 14.5
