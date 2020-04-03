@@ -107,7 +107,7 @@ extension PrepublishingNavigationController: DrawerPresentable {
     }
 
     var collapsedHeight: DrawerHeight {
-        return .contentHeight(250)
+        return .contentHeight(300)
     }
 
     var scrollableView: UIScrollView? {
