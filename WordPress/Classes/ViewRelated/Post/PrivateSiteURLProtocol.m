@@ -109,21 +109,6 @@ static NSString *cachedToken;
 
     return NO;
 }
-/*
-+ (NSURLRequest *)requestForPrivateSiteFromURL:(NSURL *)url
-{
-    if (![self urlGoesToWPComSite:url]) {
-        return [NSURLRequest requestWithURL:url];
-    }
-    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
-    //make sure the scheme used is https
-    [urlComponents setScheme:@"https"];
-    NSURL *httpsURL = [urlComponents URL];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:httpsURL];
-    NSString *bearerToken = [NSString stringWithFormat:@"Bearer %@", [self bearerToken]];
-    [request addValue:bearerToken forHTTPHeaderField:@"Authorization"];
-    return request;
-}*/
 
 - (void)startLoading
 {
