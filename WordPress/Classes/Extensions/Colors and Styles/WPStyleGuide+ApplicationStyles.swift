@@ -39,8 +39,9 @@ extension WPStyleGuide {
 
         // Makes bar buttons visible in "Other Apps" media source picker.
         // Setting title text attributes makes bar button items not go blank when switching between the tabs of the picker.
-        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self]).tintColor = .text
-        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self]).setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.text], for: .normal)
+        let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
+        barButtonItemAppearance.tintColor = .barButtonItemTitle
+        barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.barButtonItemTitle], for: .normal)
 
         let buttonBarAppearance = UIBarButtonItem.appearance()
         buttonBarAppearance.tintColor = .white
