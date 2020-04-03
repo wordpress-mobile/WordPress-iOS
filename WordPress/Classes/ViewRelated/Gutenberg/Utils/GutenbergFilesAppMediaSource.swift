@@ -17,7 +17,6 @@ class GutenbergFilesAppMediaSource: NSObject {
         let docPicker = UIDocumentPickerViewController(documentTypes: uttypeFilters, in: .import)
         docPicker.delegate = self
         docPicker.allowsMultipleSelection = multipleSelection
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
         origin.present(docPicker, animated: true)
     }
 }
@@ -35,7 +34,6 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
     }
 
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        WPStyleGuide.configureNavigationAppearance()
         mediaPickerCallback?(nil)
         mediaPickerCallback = nil
     }
@@ -43,7 +41,6 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
     /// Adds the given image object to the requesting Image Block
     /// - Parameter asset: Stock Media object to add.
     func insertOnBlock(with url: URL) {
-        WPStyleGuide.configureNavigationAppearance()
         guard let callback = mediaPickerCallback else {
             return assertionFailure("Image picked without callback")
         }
