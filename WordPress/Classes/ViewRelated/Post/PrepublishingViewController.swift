@@ -7,6 +7,7 @@ private struct PrepublishingOption {
 }
 
 private enum PrepublishingIdentifier {
+    case schedule
     case visibility
     case tags
 }
@@ -14,9 +15,18 @@ private enum PrepublishingIdentifier {
 class PrepublishingViewController: UITableViewController {
     let post: Post
 
+    private lazy var publishSettingsViewModel: PublishSettingsViewModel = {
+        return PublishSettingsViewModel(post: post)
+    }()
+
+    private lazy var presentedVC: DrawerPresentationController? = {
+        return (navigationController as? PrepublishingNavigationController)?.presentedVC
+    }()
+
     private let completion: (AbstractPost) -> ()
 
     private let options: [PrepublishingOption] = [
+        PrepublishingOption(id: .schedule, title: NSLocalizedString("Publish", comment: "Label for Publish")),
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
@@ -24,7 +34,6 @@ class PrepublishingViewController: UITableViewController {
     let publishButton: NUXButton = {
         let nuxButton = NUXButton()
         nuxButton.isPrimary = true
-        nuxButton.setTitle(NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post"), for: .normal)
 
         return nuxButton
     }()
@@ -75,17 +84,26 @@ class PrepublishingViewController: UITableViewController {
             configureTagCell(cell)
         case .visibility:
             configureVisibilityCell(cell)
+        case .schedule:
+            configureScheduleCell(cell)
         }
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            didTapVisibilityCell()
-        } else {
+        switch options[indexPath.row].id {
+        case .tags:
             didTapTagCell()
+        case .visibility:
+            didTapVisibilityCell()
+        case .schedule:
+            didTapSchedule(indexPath)
         }
+    }
+
+    private func reloadData() {
+        tableView.reloadData()
     }
 
     // MARK: - Tags
@@ -103,7 +121,7 @@ class PrepublishingViewController: UITableViewController {
             }
 
             self?.post.tags = tags
-            self?.tableView.reloadData()
+            self?.reloadData()
         }
 
         navigationController?.pushViewController(tagPickerViewController, animated: true)
@@ -119,7 +137,7 @@ class PrepublishingViewController: UITableViewController {
         let visbilitySelectorViewController = PostVisibilitySelectorViewController(post)
 
         visbilitySelectorViewController.completion = { [weak self] option in
-            self?.tableView.reloadData()
+            self?.reloadData()
 
             // If tue user selects password protected, prompt for a password
             if option == AbstractPost.passwordProtectedLabel {
@@ -132,6 +150,30 @@ class PrepublishingViewController: UITableViewController {
         navigationController?.pushViewController(visbilitySelectorViewController, animated: true)
     }
 
+    // MARK: - Schedule
+
+    func configureScheduleCell(_ cell: WPTableViewCell) {
+        cell.detailTextLabel?.text = publishSettingsViewModel.detailString
+    }
+
+    func didTapSchedule(_ indexPath: IndexPath) {
+        presentedVC?.transition(to: .hidden)
+        SchedulingCalendarViewController.present(
+            from: self,
+            sourceView: tableView.cellForRow(at: indexPath)?.contentView,
+            viewModel: publishSettingsViewModel,
+            updated: { [weak self] date in
+                self?.publishSettingsViewModel.setDate(date)
+                self?.reloadData()
+                self?.updatePublishButtonLabel()
+            },
+            onDismiss: { [weak self] in
+                self?.reloadData()
+                self?.presentedVC?.transition(to: .collapsed)
+            }
+        )
+    }
+
     // MARK: - Publish Button
 
     private func setupPublishButton() {
@@ -141,6 +183,11 @@ class PrepublishingViewController: UITableViewController {
         publishButton.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableFooterView = footer
         publishButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
+        updatePublishButtonLabel()
+    }
+
+    private func updatePublishButtonLabel() {
+        publishButton.setTitle(post.isScheduled() ? Constants.scheduleNow : Constants.publishNow, for: .normal)
     }
 
     @objc func publish(_ sender: UIButton) {
@@ -170,13 +217,15 @@ class PrepublishingViewController: UITableViewController {
     private func cancelPasswordProtectedPost() {
         post.status = .publish
         post.password = nil
-        tableView.reloadData()
+        reloadData()
     }
 
     private enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
-        static let nuxButtonInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-        static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 40)
+        static let nuxButtonInsets = UIEdgeInsets(top: 20, left: 15, bottom: 20, right: 15)
+        static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
         static let title = NSLocalizedString("Publishing To", comment: "Label that describes in which blog the user is publishing to")
+        static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
+        static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
     }
 }

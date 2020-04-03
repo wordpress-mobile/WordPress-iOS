@@ -4,6 +4,7 @@ public enum DrawerPosition {
     case expanded
     case collapsed
     case closed
+    case hidden
 }
 
 public enum DrawerHeight {
@@ -15,6 +16,9 @@ public enum DrawerHeight {
 
     // Height will be equal to the the content height value
     case contentHeight(CGFloat)
+
+    // Height in the hidden state will be equal the screens height
+    case hidden
 }
 
 public protocol DrawerPresentable: AnyObject {
@@ -138,6 +142,9 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         case .collapsed:
             margin = collapsedYPosition
 
+        case .hidden:
+            margin = hiddenYPosition
+
         default:
             margin = 0
         }
@@ -185,6 +192,10 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         return topMargin(with: height)
     }
 
+    private var hiddenYPosition: CGFloat {
+        return topMargin(with: .hidden)
+    }
+
     /// Calculates the Y position for the view based on a DrawerHeight enum
     /// - Parameter drawerHeight: The drawer height to calculate
     private func topMargin(with drawerHeight: DrawerHeight) -> CGFloat {
@@ -199,6 +210,9 @@ public class DrawerPresentationController: FancyAlertPresentationController {
 
         case .maxHeight:
             topMargin = safeAreaInsets.top
+
+        case .hidden:
+            topMargin = UIScreen.main.bounds.height
         }
 
         return topMargin
@@ -336,7 +350,8 @@ extension DrawerPresentationController: UIGestureRecognizerDelegate {
         /// Shouldn't happen; should always have container & presented view when tapped
         guard
             let containerView = containerView,
-            let presentedView = presentedView
+            let presentedView = presentedView,
+            currentPosition != .hidden
         else {
             return false
         }
