@@ -50,10 +50,6 @@ extension ReaderStreamViewController {
             return nil
         }
 
-        if ReaderHelpers.topicIsFollowing(topic) {
-            return Bundle.main.loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil)!.first as! ReaderFollowedSitesStreamHeader
-        }
-
         // if tag
         if ReaderHelpers.isTopicTag(topic) {
             return Bundle.main.loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil)!.first as! ReaderTagStreamHeader
