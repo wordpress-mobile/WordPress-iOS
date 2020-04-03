@@ -137,7 +137,7 @@ extension ReaderTabView {
         guard let controller = self.next as? UIViewController,
             let readetTabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem,
             let childController = viewModel.makeChildViewController(with: readetTabItem) else {
-            return
+                return
         }
 
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -169,15 +169,16 @@ extension ReaderTabView {
 extension ReaderTabView {
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
-        // hide/show buttons view depending on the selected TabBarItem
-        guard let tabItems = tabBar.items as? [ReaderTabItem],
-            buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
+        guard let tabItems = tabBar.items as? [ReaderTabItem] else {
                 return
         }
-
         self.viewModel.showTab(for: tabBar.items[tabBar.selectedIndex])
+        // hide/show buttons depending on the selected tab. Do not call the animation if not necessary.
+        guard buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
+            return
+        }
         UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
-                        self.buttonsStackView.isHidden = tabItems[tabBar.selectedIndex].shouldHideButtonsView
+            self.buttonsStackView.isHidden = tabItems[tabBar.selectedIndex].shouldHideButtonsView
         }
     }
 
