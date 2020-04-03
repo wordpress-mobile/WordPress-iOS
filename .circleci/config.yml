@@ -45,6 +45,7 @@ jobs:
       xcode-version: "11.2.1"
     steps:
       - fix-path
+      - git/shallow-checkout
       - ios/boot-simulator:
           xcode-version: "11.2.1"
           device: iPhone 11
@@ -72,6 +73,7 @@ jobs:
       xcode-version: "11.2.1"
     steps:
       - fix-path
+      - git/shallow-checkout
       - ios/boot-simulator:
           xcode-version: "11.2.1"
           device: << parameters.device >>
