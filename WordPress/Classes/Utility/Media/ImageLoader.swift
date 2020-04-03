@@ -1,30 +1,5 @@
 import MobileCoreServices
 import AutomatticTracks
-/*
-/// Protocol used to abstract the information needed to load post related images.
-///
-@objc protocol ImageSourceInformation {
-
-    @objc
-    var isAtomic: Bool { get }
-
-    /// The post is private and hosted on WPcom.
-    /// Redundant name due to naming conflict.
-    ///
-    @objc
-    var isPrivate: Bool { get }
-
-    /// Whether the post is accessible through WPCom.
-    ///
-    @objc
-    var isAccessibleThroughWPCom: Bool { get }
-
-    /// The blog is self-hosted and there is already a basic auth credential stored.
-    ///
-    var isSelfHostedWithCredentials: Bool { get }
-
-    var siteID: NSNumber? { get }
-}*/
 
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
 /// still images and animated gifs.
@@ -80,7 +55,6 @@ import AutomatticTracks
         imageView.prepForReuse()
     }
 
-    //@objc(loadImageWithURL:fromPost:andPreferredSize:)
     /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
     ///
     /// - Parameters:
@@ -97,7 +71,6 @@ import AutomatticTracks
         }
     }
 
-    //@objc(loadImageWithURL:success:error:)
     /// Load an image from a specific URL. As no source is provided, we can assume
     /// that this is from a public site. Supports animated images (gifs) as well.
     ///
@@ -162,25 +135,6 @@ import AutomatticTracks
                 CrashLogging.logError(error)
                 self.callErrorHandler(with: error)
         })
-
-        /*
-        let request: URLRequest
-        if url.isFileURL {
-            request = URLRequest(url: url)
-        } else if let source = source,
-            source.isAccessibleThroughWPCom && source.isPrivate {
-            
-            let mediaAuthenticator = MediaRequestAuthenticator()
-            request = mediaAuthenticator.authenticatedRequestForPrivateSite(for: url)
-        } else {
-            if let photonUrl = getPhotonUrl(for: url, size: size),
-                source != nil {
-                request = URLRequest(url: photonUrl)
-            } else {
-                request = URLRequest(url: url)
-            }
-        }
-        downloadGif(from: request)*/
     }
 
     /// Load a static image from the given URL.
