@@ -16,6 +16,7 @@ class PostCardStatusViewModel: NSObject {
         case moveToDraft
         case trash
         case cancelAutoUpload
+        case share
     }
 
     struct ButtonGroups: Equatable {
@@ -177,6 +178,7 @@ class PostCardStatusViewModel: NSObject {
 
             if post.status == .publish && post.hasRemote() {
                 buttons.append(.stats)
+                buttons.append(.share)
             }
 
             if post.status != .draft {
