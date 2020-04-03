@@ -3,6 +3,8 @@ import Foundation
 fileprivate let photonHost = "i0.wp.com"
 
 extension URL {
+    /// Whether the URL is hosted at WPCom.
+    ///
     func isHostedAtWPCom() -> Bool {
         // I don't think this method should check for HTTPs here, and we'd rather test
         // that separately.  But since this code is basically a migration, I'm leaving
@@ -10,6 +12,8 @@ extension URL {
         return scheme == "https" && host?.hasSuffix(".wordpress.com") ?? false
     }
 
+    /// Whether the URL is a Photon URL.
+    ///
     fileprivate func isPhoton() -> Bool {
         return host == photonHost
     }
@@ -22,6 +26,8 @@ extension URL {
 ///
 class MediaRequestAuthenticator {
 
+    /// Errors conditions that this class can find.
+    ///
     enum Error: Swift.Error {
         case cannotFindSiteIDForSiteAvailableThroughWPCom(blog: Blog)
         case cannotBreakDownURLIntoComponents(url: URL)
@@ -34,15 +40,16 @@ class MediaRequestAuthenticator {
 
     // MARK: - Request Authentication
 
-    /// Pass this method a media URL, and it will handle all the necessary logic to provide the caller
-    /// with an authenticated request through the completion closure.
+    /// Pass this method a media URL and host information, and it will handle all the necessary
+    /// logic to provide the caller with an authenticated request through the completion closure.
     ///
     /// - Parameters:
     ///     - url: the url for the media.
     ///     - host: the `MediaHost` for the requested Media.  This is used for authenticating the requests.
-    ///     - onComplete: the closure that will be called once authentication is sorted out by this class.
+    ///     - provide: the closure that will be called once authentication is sorted out by this class.
     ///         The request can be executed directly without having to do anything else in terms of
     ///         authentication.
+    ///     - fail: the closure that will be called upon finding an error condition.
     ///
     func authenticatedRequest(
         for url: URL,
@@ -78,6 +85,15 @@ class MediaRequestAuthenticator {
 
     // MARK: - Request Authentication: Specific Scenarios
 
+    /// Authentication for a WPCom private request.
+    ///
+    /// - Parameters:
+    ///     - url: the url for the media.
+    ///     - provide: the closure that will be called once authentication is sorted out by this class.
+    ///         The request can be executed directly without having to do anything else in terms of
+    ///         authentication.
+    ///     - fail: the closure that will be called upon finding an error condition.
+    ///
     private func authenticatedRequestForPrivateSite(
         for url: URL,
         onComplete provide: (URLRequest) -> (),
@@ -104,10 +120,19 @@ class MediaRequestAuthenticator {
         provide(request)
     }
 
+    /// Authentication for a WPCom private atomic request.
+    ///
+    /// - Parameters:
+    ///     - url: the url for the media.
+    ///     - siteID: the ID of the site that owns this media.
+    ///     - provide: the closure that will be called once authentication is sorted out by this class.
+    ///         The request can be executed directly without having to do anything else in terms of
+    ///         authentication.
+    ///     - fail: the closure that will be called upon finding an error condition.
+    ///
     private func authenticatedRequestForPrivateAtomicSite(
         for url: URL,
         siteID: Int,
-        using session: URLSession = URLSession.shared,
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
 
@@ -138,7 +163,9 @@ class MediaRequestAuthenticator {
         }
     }
 
-    /// Photon URLs are currently not working for private atomic sites, so this is a workaround
+    /// Authentication for a Photon request in a private atomic site.
+    ///
+    /// - Important: Photon URLs are currently not working for private atomic sites, so this is a workaround
     /// to replace those URLs with working URLs.
     ///
     /// By recommendation of @zieladam we'll be using the Atomic Proxy endpoint for these until
@@ -148,6 +175,14 @@ class MediaRequestAuthenticator {
     ///
     /// To know whether you can remove this method, try requesting the photon URL from an
     /// atomic private site.  If it works then you can remove this workaround logic.
+    ///
+    /// - Parameters:
+    ///     - url: the url for the media.
+    ///     - siteID: the ID of the site that owns this media.
+    ///     - provide: the closure that will be called once authentication is sorted out by this class.
+    ///         The request can be executed directly without having to do anything else in terms of
+    ///         authentication.
+    ///     - fail: the closure that will be called upon finding an error condition.
     ///
     private func authenticatedRequestForPrivateAtomicSiteThroughPhoton(
         for url: URL,
@@ -186,6 +221,8 @@ class MediaRequestAuthenticator {
 
     // MARK: - Adding the Auth Token
 
+    /// Returns a request with the Bearer token for WPCom authentication.
+    ///
     private func tokenAuthenticatedWPComRequest(for url: URL) -> URLRequest? {
         guard let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount(),
             let authToken = account.authToken else {
@@ -195,6 +232,12 @@ class MediaRequestAuthenticator {
         return tokenAuthenticatedWPComRequest(for: url, authToken: authToken)
     }
 
+    /// Returns a request with the Bearer token for WPCom authentication.
+    ///
+    /// - Parameters:
+    ///     - url: the url of the media.
+    ///     - authToken: the Bearer token to add to the resulting request.
+    ///
     private func tokenAuthenticatedWPComRequest(for url: URL, authToken: String) -> URLRequest {
         var request = URLRequest(url: url)
         request.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
