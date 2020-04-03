@@ -70,6 +70,7 @@ class FilterTabBar: UIControl {
         didSet {
             if let oldValue = oldValue {
                 NSLayoutConstraint.deactivate([oldValue])
+                tabBarHeightConstraint.isActive = true
             }
         }
     }
@@ -204,6 +205,7 @@ class FilterTabBar: UIControl {
 
     init() {
         super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
         commonInit()
     }
 
@@ -211,11 +213,20 @@ class FilterTabBar: UIControl {
         tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
         tabBarHeightConstraint?.isActive = true
 
+        divider.backgroundColor = dividerColor
+        addSubview(divider)
+        NSLayoutConstraint.activate([
+            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
+            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
+            divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
+        ])
+
         addSubview(scrollView)
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
+            scrollView.bottomAnchor.constraint(equalTo: divider.topAnchor),
             scrollView.topAnchor.constraint(equalTo: topAnchor)
         ])
 
@@ -232,7 +243,7 @@ class FilterTabBar: UIControl {
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
+            stackView.bottomAnchor.constraint(equalTo: divider.topAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor)
         ])
 
@@ -240,15 +251,6 @@ class FilterTabBar: UIControl {
         NSLayoutConstraint.activate([
             selectionIndicator.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             selectionIndicator.heightAnchor.constraint(equalToConstant: AppearanceMetrics.selectionIndicatorHeight)
-        ])
-
-        divider.backgroundColor = dividerColor
-        addSubview(divider)
-        NSLayoutConstraint.activate([
-            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
-            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
-            divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
         ])
     }
 
