@@ -10,7 +10,7 @@ import Foundation
 
 /// Defines a media host for request authentication purposes.
 ///
-enum MediaHost {
+enum MediaHost: Equatable {
     case publicSite
     case publicWPComSite
     case privateSelfHostedSite
@@ -25,7 +25,7 @@ enum MediaHost {
         isAccessibleThroughWPCom: Bool,
         isPrivate: Bool,
         isAtomic: Bool,
-        siteID: Int?,
+        siteID: Int? = nil,
         failure: (Error) -> ()) {
 
         guard isPrivate else {
