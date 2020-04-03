@@ -33,6 +33,11 @@ class PrepublishingNavigationController: UINavigationController {
 
         configureNavigationHeader()
         configureNavigationBar()
+
+        // Set the height for iPad
+        if UIDevice.isPad() {
+            view.heightAnchor.constraint(equalToConstant: Constants.height).isActive = true
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,6 +77,7 @@ class PrepublishingNavigationController: UINavigationController {
 
     private enum Constants {
         static let navigationHeaderHeight: CGFloat = 80
+        static let height: CGFloat = 300
     }
 }
 
@@ -107,7 +113,7 @@ extension PrepublishingNavigationController: DrawerPresentable {
     }
 
     var collapsedHeight: DrawerHeight {
-        return .contentHeight(300)
+        return .contentHeight(Constants.height)
     }
 
     var scrollableView: UIScrollView? {
