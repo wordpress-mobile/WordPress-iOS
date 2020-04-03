@@ -13,4 +13,5 @@
 + (NSString *)zendeskAppId;
 + (NSString *)zendeskUrl;
 + (NSString *)zendeskClientId;
++ (NSString *)tenorApiKey;
 @end
