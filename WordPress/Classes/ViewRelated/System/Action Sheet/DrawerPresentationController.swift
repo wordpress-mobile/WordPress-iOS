@@ -17,7 +17,7 @@ public enum DrawerHeight {
     // Height will be equal to the the content height value
     case contentHeight(CGFloat)
 
-    // Height to hidden the bottom sheet
+    // Height in the hidden state will be equal the screens height
     case hidden
 }
 
