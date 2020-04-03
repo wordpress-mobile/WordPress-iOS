@@ -133,7 +133,15 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, sentry, appcenter, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+def print_tenor(tenor_key)
+print <<-EOF
++ (NSString *)tenorApiKey {
+    return @"#{tenor_key}";
+}
+EOF
+end
+
+def print_class(client, secret, sentry, appcenter, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id, tenor_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -150,6 +158,7 @@ EOF
   print_zendesk_app_id(zendesk_app_id)
   print_zendesk_url(zendesk_url)
   print_zendesk_client_id(zendesk_client_id)
+  print_tenor(tenor_key)
   printf("@end\n")
 end
 
@@ -177,6 +186,7 @@ debugging_key = nil
 zendesk_app_id = nil
 zendesk_url = nil
 zendesk_client_id = nil
+tenor_key = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,value) = l.split("=")
@@ -206,6 +216,8 @@ File.open(path) do |f|
       zendesk_url = value
     elsif k == "ZENDESK_CLIENT_ID"
       zendesk_client_id = value
+    elsif k == "TENOR_API_KEY"
+      tenor_key = value
     end
   end
 end
@@ -242,4 +254,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, sentry, appcenter, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+print_class(client, secret, sentry, appcenter, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id, tenor_key)
