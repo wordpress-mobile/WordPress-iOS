@@ -78,11 +78,11 @@ extension ReaderTabView {
     }
 
     private func populateTabBar(with items: [ReaderTabItem]) {
-        self.tabBar.items = items
-        guard let tabItem = self.tabBar.items[self.tabBar.selectedIndex] as? ReaderTabItem else {
+        tabBar.items = items
+        guard let tabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem else {
             return
         }
-        self.buttonsStackView.isHidden = tabItem.shouldHideButtonsView
+        buttonsStackView.isHidden = tabItem.shouldHideButtonsView
     }
 
     private func setupButtonsView() {
