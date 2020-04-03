@@ -536,7 +536,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        resetNavigationColors()
         configureDismissButton()
         startListeningToNotifications()
         verificationPromptHelper?.updateVerificationStatus()
@@ -715,14 +714,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
-    }
-
-    /// This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
-    /// either by uploading media or canceling. Doing this in the UIDocumentPickerDelegate methods either did
-    /// nothing or the resetting wasn't permanent.
-    ///
-    fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationAppearance()
     }
 
     func configureDismissButton() {
