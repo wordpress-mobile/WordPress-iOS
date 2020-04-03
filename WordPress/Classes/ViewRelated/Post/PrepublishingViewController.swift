@@ -211,8 +211,8 @@ class PrepublishingViewController: UITableViewController {
 
     private enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
-        static let nuxButtonInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-        static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 40)
+        static let nuxButtonInsets = UIEdgeInsets(top: 20, left: 15, bottom: 20, right: 15)
+        static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
         static let title = NSLocalizedString("Publishing To", comment: "Label that describes in which blog the user is publishing to")
     }
 }
