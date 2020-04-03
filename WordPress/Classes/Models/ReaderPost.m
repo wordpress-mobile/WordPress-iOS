@@ -65,6 +65,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return self.crossPostMeta != nil;
 }
 
+- (BOOL)isAtomic
+{
+    // This is temporary until we start parsing a new value from the reader endpoint.
+    return false;
+}
+
 - (BOOL)isPrivate
 {
     return self.isBlogPrivate;
