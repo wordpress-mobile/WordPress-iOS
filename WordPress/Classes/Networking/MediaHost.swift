@@ -12,6 +12,7 @@ import Foundation
 ///
 enum MediaHost {
     case publicSite
+    case publicWPComSite
     case privateSelfHostedSite
     case privateWPComSite
     case privateAtomicWPComSite(siteID: Int)
@@ -28,7 +29,11 @@ enum MediaHost {
         failure: (Error) -> ()) {
 
         guard isPrivate else {
-            self = .publicSite
+            if isAccessibleThroughWPCom {
+                self = .publicWPComSite
+            } else {
+                self = .publicSite
+            }
             return
         }
 

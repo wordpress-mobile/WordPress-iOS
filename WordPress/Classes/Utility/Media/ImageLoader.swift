@@ -179,19 +179,15 @@ import AutomatticTracks
     private func loadStaticImage(with url: URL, from host: MediaHost, preferredSize size: CGSize = .zero) {
         let finalURL: URL
 
-        // WORKINGPOINT:
-        if url.isFileURL {
+        switch host {
+        case .publicSite: fallthrough
+        case .privateSelfHostedSite:
             finalURL = url
-        } else if let source = source {
-            if source.isPrivateOnWPCom && url.isHostedAtWPCom() {
-                finalURL = privateImageURL(with: url, from: source, preferredSize: size)
-            } else if source.isSelfHostedWithCredentials {
-                finalURL = url
-            } else {
-                finalURL = photonUrl(with: url, preferredSize: size)
-            }
-        } else {
-            finalURL = url
+        case .publicWPComSite: fallthrough
+        case .privateAtomicWPComSite(siteID: _):
+            finalURL = photonUrl(with: url, preferredSize: size)
+        case .privateWPComSite:
+            finalURL = privateImageURL(with: url, from: host, preferredSize: size)
         }
 
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
