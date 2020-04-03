@@ -19,6 +19,10 @@ class PrepublishingViewController: UITableViewController {
         return PublishSettingsViewModel(post: post)
     }()
 
+    private lazy var presentedVC: DrawerPresentationController? = {
+        return (navigationController as? PrepublishingNavigationController)?.presentedVC
+    }()
+
     private let completion: (AbstractPost) -> ()
 
     private let options: [PrepublishingOption] = [
@@ -150,9 +154,11 @@ class PrepublishingViewController: UITableViewController {
     }
 
     func didTapSchedule() {
+        presentedVC?.transition(to: .hidden)
         SchedulingCalendarViewController.present(from: self, viewModel: publishSettingsViewModel) { [weak self] date in
             self?.publishSettingsViewModel.setDate(date)
             self?.tableView.reloadData()
+            self?.presentedVC?.transition(to: .collapsed)
         }
     }
 
