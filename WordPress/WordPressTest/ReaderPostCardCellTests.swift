@@ -5,7 +5,7 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
     func siteID() -> NSNumber! {
         return NSNumber(value: 15567)
     }
-    
+
     func titleForDisplay() -> String! {
         return "A title"
     }
@@ -94,7 +94,7 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
     func isLikesEnabled() -> Bool {
         return true
     }
-    
+
     func isAtomic() -> Bool {
         return false
     }
