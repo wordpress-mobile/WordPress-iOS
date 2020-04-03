@@ -81,10 +81,6 @@ extension UIImageView {
             return
         }
 
-        if blog.dotComID == 172825667 {
-            print("Blog id \(blog.dotComID ?? 0), is atomic \(blog.isAtomic())")
-        }
-
         let host = MediaHost(with: blog) { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
             CrashLogging.logError(error)
@@ -98,8 +94,7 @@ extension UIImageView {
 
             downloadImage(with: request)
         }) { error in
-
-            // No-op for now
+            CrashLogging.logError(error)
         }
     }
 }
