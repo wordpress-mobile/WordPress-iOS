@@ -2,6 +2,7 @@ import UIKit
 import Gridicons
 import WordPressShared
 import WordPressUI
+import AVFoundation
 
 final class ReaderSavedPostsViewController: UITableViewController {
     private enum Strings {
@@ -34,7 +35,6 @@ final class ReaderSavedPostsViewController: UITableViewController {
         super.viewDidLoad()
 
         title = Strings.title
-
         setupTableView()
         setupFooterView()
         setupContentHandler()

@@ -64,6 +64,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var likeButton: UIButton!
     @IBOutlet fileprivate weak var footerViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
+    @IBOutlet fileprivate weak var readItForMeButton: UIButton!
     // Wrapper views
     @IBOutlet fileprivate weak var textHeaderStackView: UIStackView!
     @IBOutlet fileprivate weak var textFooterStackView: UIStackView!
@@ -909,6 +910,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             configureReblogButton()
         }
         configureSaveForLaterButton()
+        configureReadItToMeButton()
     }
 
 
@@ -1056,6 +1058,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         saveForLaterButton.isSelected = post?.isSavedForLater ?? false
     }
 
+    fileprivate func configureReadItToMeButton() {
+        WPStyleGuide.applyReadItToMeButtonStyle(readItForMeButton)
+    }
 
     fileprivate func configureFooterIfNeeded() {
         self.footerView.isHidden = tagButton.isHidden && likeButton.isHidden && commentButton.isHidden
@@ -1262,6 +1267,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             self?.saveForLaterButton.isSelected = readerPost.isSavedForLater
             self?.prepareActionButtonsForVoiceOver()
         }
+    }
+
+    @IBAction func didTapReadItForMeButton(_ sender: UIButton) {
+        guard let readerPost = post else {
+            return
+        }
+        let readItToMeVC = ReadItToMeViewController(post: readerPost)
+        show(readItToMeVC, sender: nil)
     }
 
     @IBAction func didTapTagButton(_ sender: UIButton) {
