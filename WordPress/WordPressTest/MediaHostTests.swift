@@ -27,21 +27,75 @@ class MediaHostTests: XCTestCase {
     }
 
     func testInitializationWithPrivateWPComSite() {
-        let host = MediaHost(isAccessibleThroughWPCom: true, isPrivate: true, isAtomic: false) { error in
+        let authToken = "letMeIn!"
+
+        let host = MediaHost(
+            isAccessibleThroughWPCom: true,
+            isPrivate: true,
+            isAtomic: false,
+            authToken: authToken) { error in
+
             XCTFail("This should not be called.")
         }
 
-        XCTAssertEqual(host, .privateWPComSite)
+        XCTAssertEqual(host, .privateWPComSite(authToken: authToken))
     }
 
     func testInitializationWithPrivateAtomicWPComSite() {
         let siteID = 16557
+        let username = "demouser"
+        let authToken = "letMeIn!"
 
-        let host = MediaHost(isAccessibleThroughWPCom: true, isPrivate: true, isAtomic: true, siteID: siteID) { error in
+        let host = MediaHost(
+            isAccessibleThroughWPCom: true,
+            isPrivate: true,
+            isAtomic: true,
+            siteID: siteID,
+            username: username,
+            authToken: authToken) { error in
+
             XCTFail("This should not be called.")
         }
 
-        XCTAssertEqual(host, .privateAtomicWPComSite(siteID: siteID))
+        XCTAssertEqual(host, .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken))
+    }
+
+    func testInitializationWithPrivateAtomicWPComSiteWithoutAuthTokenFails() {
+        let siteID = 16557
+        let username = "demouser"
+        let expectation = self.expectation(description: "We're expecting an error to be triggered.")
+
+        let _ = MediaHost(
+            isAccessibleThroughWPCom: true,
+            isPrivate: true,
+            isAtomic: true,
+            siteID: siteID,
+            username: username) { error in
+                if error == .wpComPrivateSiteWithoutAuthToken {
+                    expectation.fulfill()
+                }
+        }
+
+        waitForExpectations(timeout: 0.05)
+    }
+
+    func testInitializationWithPrivateAtomicWPComSiteWithoutUsernameFails() {
+        let siteID = 16557
+        let authToken = "letMeIn!"
+        let expectation = self.expectation(description: "We're expecting an error to be triggered.")
+
+        let _ = MediaHost(
+            isAccessibleThroughWPCom: true,
+            isPrivate: true,
+            isAtomic: true,
+            siteID: siteID,
+            authToken: authToken) { error in
+                if error == .wpComPrivateSiteWithoutUsername {
+                    expectation.fulfill()
+                }
+        }
+
+        waitForExpectations(timeout: 0.05)
     }
 
     func testInitializationWithPrivateAtomicWPComSiteWithoutSiteIDFails() {

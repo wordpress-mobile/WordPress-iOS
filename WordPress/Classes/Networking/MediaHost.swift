@@ -46,21 +46,6 @@ enum MediaHost: Equatable {
             return
         }
 
-        guard let username = username else {
-            // This should actually not be possible.  We have no good way to
-            // handle this.
-            failure(Error.wpComPrivateSiteWithoutUsername)
-
-            // If the caller wants to kill execution, they can do it in the failure block
-            // call above.
-            //
-            // Otherwise they'll be able to continue trying to request the image as if it
-            // was hosted in a public WPCom site.  This is the best we can offer with the
-            // provided input parameters.
-            self = .publicSite
-            return
-        }
-
         guard let authToken = authToken else {
             // This should actually not be possible.  We have no good way to
             // handle this.
@@ -77,6 +62,21 @@ enum MediaHost: Equatable {
         }
 
         guard isAtomic else {
+            self = .privateWPComSite(authToken: authToken)
+            return
+        }
+
+        guard let username = username else {
+            // This should actually not be possible.  We have no good way to
+            // handle this.
+            failure(Error.wpComPrivateSiteWithoutUsername)
+
+            // If the caller wants to kill execution, they can do it in the failure block
+            // call above.
+            //
+            // Otherwise they'll be able to continue trying to request the image as if it
+            // was hosted in a private WPCom site.  This is the best we can offer with the
+            // provided input parameters.
             self = .privateWPComSite(authToken: authToken)
             return
         }
