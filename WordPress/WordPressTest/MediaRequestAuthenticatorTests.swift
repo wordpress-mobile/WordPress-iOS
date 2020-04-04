@@ -2,6 +2,45 @@ import XCTest
 @testable import WordPress
 
 class MediaRequestAuthenticatorTests: XCTestCase {
+    fileprivate var contextManager: TestContextManager!
+    fileprivate var context: NSManagedObjectContext!
+
+    override func setUp() {
+        super.setUp()
+
+        contextManager = TestContextManager()
+        context = contextManager.mainContext
+    }
+
+    override func tearDown() {
+        contextManager  =  nil
+        context = nil
+
+        super.tearDown()
+    }
+
+    // MARK: - Utility
+
+    func setupAccount(username: String, authToken: String) {
+        let account = ModelTestHelper.insertAccount(context: context)
+        account.uuid = UUID().uuidString
+        account.userID = NSNumber(value: 156)
+        account.username = username
+        account.authToken = authToken
+        contextManager.saveContextAndWait(context)
+        AccountService(managedObjectContext: context).setDefaultWordPressComAccount(account)
+    }
+
+    fileprivate func stubResponse(forEndpoint endpoint: String, responseFilename filename: String) {
+        stub(condition: { request in
+            return (request.url!.absoluteString as NSString).contains(endpoint) && request.httpMethod! == "GET"
+        }) { _ in
+            let stubPath = OHPathForFile(filename, type(of: self))
+            return fixture(filePath: stubPath!, headers: ["Content-Type": "application/json"])
+        }
+    }
+
+    // MARK: - Tests
 
     func testPublicSiteAuthentication() {
         let url = URL(string: "http://www.wordpress.com")!
@@ -86,12 +125,21 @@ class MediaRequestAuthenticatorTests: XCTestCase {
         let siteID = 15567
         let url = URL(string: "http://www.wordpress.com")!
         let expectedURL = URL(string: "https://www.wordpress.com")!
+        let expectation = self.expectation(description: "Completion closure called")
+
+        setupAccount(username: username, authToken: authToken)
+
+        let endpoint = "sites/\(siteID)/atomic-auth-proxy/read-access-cookies"
+        stubResponse(forEndpoint: endpoint, responseFilename: "atomic-get-authentication-cookie-success.json")
+
         let authenticator = MediaRequestAuthenticator()
 
         authenticator.authenticatedRequest(
             for: url,
             from: .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken),
             onComplete: { request in
+                expectation.fulfill()
+
                 let hasAuthorizationHeader = request.allHTTPHeaderFields?.contains(where: {
                     $0.key == "Authorization" && $0.value == "Bearer \(authToken)"
                 }) ?? false
@@ -101,5 +149,7 @@ class MediaRequestAuthenticatorTests: XCTestCase {
         }) { error in
             XCTFail("This should not be called")
         }
+
+        waitForExpectations(timeout: 0.05)
     }
 }

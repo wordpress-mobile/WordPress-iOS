@@ -32,6 +32,7 @@ class MediaRequestAuthenticator {
         case cannotCreateAtomicProxyURL(components: URLComponents)
         case cannotCreatePrivateURL(components: URLComponents)
         case cannotFindWPContentInPhotonPath(components: URLComponents)
+        case failedToLoadAtomicAuthenticationCookies(underlyingError: Swift.Error)
     }
 
     // MARK: - Request Authentication
@@ -146,7 +147,7 @@ class MediaRequestAuthenticator {
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
 
-        guard !url.isHostedAtWPCom(),
+        guard url.isHostedAtWPCom(),
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
                 provide(URLRequest(url: url))
                 return
@@ -173,7 +174,7 @@ class MediaRequestAuthenticator {
         authenticationService.loadAuthCookies(into: cookieJar, username: account.username, siteID: siteID, success: {
             provide(request)
         }) { error in
-            provide(request)
+            fail(Error.failedToLoadAtomicAuthenticationCookies(underlyingError: error))
         }
     }
 
