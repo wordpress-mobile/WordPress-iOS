@@ -1,22 +1,14 @@
 import AutomatticTracks
 import Foundation
 
-/// Encapsulates all the authentication logic for web views.
+/// Authenticator for requests to self-hosted sites, wp.com sites, including private
+/// sites and atomic sites.
 ///
-/// This objects is in charge of deciding when a web view should be authenticated,
-/// and rewriting requests to do so.
+/// - Note: at some point I considered moving this module to the WordPressAuthenticator pod.
+///     Unfortunately the effort required for this makes it unfeasible for me to focus on it
+///     right now, as it involves also moving at least CookieJar, AuthenticationService and AtomicAuthenticationService over there as well. - @diegoreymendez
 ///
-/// Our current authentication system is based on posting to wp-login.php and
-/// taking advantage of the `redirect_to` parameter. In the specific case of
-/// WordPress.com, we sometimes want to pre-authenticate the user when visiting
-/// URLs that we're not sure if they are hosted there (e.g. mapped domains).
-///
-/// Since WordPress.com doesn't allow redirects to external URLs, we use a
-/// special WordPress.com URL that includes the target URL, and extract that on
-/// `interceptRedirect(request:)`. You should call that from your web view's
-/// delegate method, when deciding if a request or redirect should continue.
-///
-class WebViewAuthenticator: NSObject {
+class RequestAuthenticator: NSObject {
 
     enum Error: Swift.Error {
         case atomicSiteWithoutDotComID(blog: Blog)
@@ -118,7 +110,7 @@ class WebViewAuthenticator: NSObject {
         }
     }
 
-    func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, authenticationType: DotComAuthenticationType, completion: @escaping (URLRequest) -> Void) {
+    private func requestForWPCom(url: URL, cookieJar: CookieJar, username: String, authToken: String, authenticationType: DotComAuthenticationType, completion: @escaping (URLRequest) -> Void) {
 
         switch authenticationType {
         case .regular:
@@ -211,15 +203,15 @@ class WebViewAuthenticator: NSObject {
     }
 }
 
-private extension WebViewAuthenticator {
+private extension RequestAuthenticator {
     static let wordPressComLoginUrl = URL(string: "https://wordpress.com/wp-login.php")!
 }
 
-extension WebViewAuthenticator {
+extension RequestAuthenticator {
     func isLogin(url: URL) -> Bool {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         components?.queryItems = nil
 
-        return components?.url == WebViewAuthenticator.wordPressComLoginUrl
+        return components?.url == RequestAuthenticator.wordPressComLoginUrl
     }
 }
