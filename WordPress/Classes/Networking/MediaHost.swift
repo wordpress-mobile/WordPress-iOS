@@ -14,11 +14,13 @@ enum MediaHost: Equatable {
     case publicSite
     case publicWPComSite
     case privateSelfHostedSite
-    case privateWPComSite
-    case privateAtomicWPComSite(siteID: Int)
+    case privateWPComSite(authToken: String)
+    case privateAtomicWPComSite(siteID: Int, username: String, authToken: String)
 
     enum Error: Swift.Error {
         case wpComWithoutSiteID
+        case wpComPrivateSiteWithoutAuthToken
+        case wpComPrivateSiteWithoutUsername
     }
 
     init(
@@ -26,6 +28,8 @@ enum MediaHost: Equatable {
         isPrivate: Bool,
         isAtomic: Bool,
         siteID: Int? = nil,
+        username: String? = nil,
+        authToken: String? = nil,
         failure: (Error) -> ()) {
 
         guard isPrivate else {
@@ -42,8 +46,38 @@ enum MediaHost: Equatable {
             return
         }
 
+        guard let username = username else {
+            // This should actually not be possible.  We have no good way to
+            // handle this.
+            failure(Error.wpComPrivateSiteWithoutUsername)
+
+            // If the caller wants to kill execution, they can do it in the failure block
+            // call above.
+            //
+            // Otherwise they'll be able to continue trying to request the image as if it
+            // was hosted in a public WPCom site.  This is the best we can offer with the
+            // provided input parameters.
+            self = .publicSite
+            return
+        }
+
+        guard let authToken = authToken else {
+            // This should actually not be possible.  We have no good way to
+            // handle this.
+            failure(Error.wpComPrivateSiteWithoutAuthToken)
+
+            // If the caller wants to kill execution, they can do it in the failure block
+            // call above.
+            //
+            // Otherwise they'll be able to continue trying to request the image as if it
+            // was hosted in a public WPCom site.  This is the best we can offer with the
+            // provided input parameters.
+            self = .publicSite
+            return
+        }
+
         guard isAtomic else {
-            self = .privateWPComSite
+            self = .privateWPComSite(authToken: authToken)
             return
         }
 
@@ -58,11 +92,11 @@ enum MediaHost: Equatable {
             // Otherwise they'll be able to continue trying to request the image as if it
             // was hosted in a private WPCom site.  This is the best we can offer with the
             // provided input parameters.
-            self = .privateWPComSite
+            self = .privateWPComSite(authToken: authToken)
             return
         }
 
-        self = .privateAtomicWPComSite(siteID: siteID)
+        self = .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken)
     }
 }
 
@@ -70,8 +104,19 @@ enum MediaHost: Equatable {
 /// initialize it from a given `AbstractPost`.
 ///
 extension MediaHost {
-    init(with post: AbstractPost, failure: (BlogError) -> ()) {
-        self.init(with: post.blog, failure: failure)
+    enum PostError: Swift.Error {
+        case baseInitializerError(error: BlogError, post: AbstractPost)
+    }
+
+    init(with post: AbstractPost, failure: (PostError) -> ()) {
+        self.init(
+            with: post.blog,
+            failure: { error in
+                // We just associate a blog with the underlying error for simpler debugging.
+                failure(PostError.baseInitializerError(
+                    error: error,
+                    post: post))
+        })
    }
 }
 
@@ -80,7 +125,7 @@ extension MediaHost {
 ///
 extension MediaHost {
     enum BlogError: Swift.Error {
-        case wpComWithoutSiteID(blog: Blog)
+        case baseInitializerError(error: Error, blog: Blog)
     }
 
     init(with blog: Blog, failure: (BlogError) -> ()) {
@@ -89,11 +134,10 @@ extension MediaHost {
             isAtomic: blog.isAtomic(),
             siteID: blog.dotComID?.intValue,
             failure: { error in
-            switch error {
-                case .wpComWithoutSiteID:
-                    // We can add valuable information by replacing this error case.
-                    failure(BlogError.wpComWithoutSiteID(blog: blog))
-                }
+                // We just associate a blog with the underlying error for simpler debugging.
+                failure(BlogError.baseInitializerError(
+                    error: error,
+                    blog: blog))
         })
    }
 }
@@ -103,7 +147,7 @@ extension MediaHost {
 ///
 extension MediaHost {
     enum ReaderPostContentProviderError: Swift.Error {
-        case wpComWithoutSiteID(readerPostContentProvider: ReaderPostContentProvider)
+        case baseInitializerError(error: Error, readerPostContentProvider: ReaderPostContentProvider)
     }
 
     init(with readerPostContentProvider: ReaderPostContentProvider, failure: (ReaderPostContentProviderError) -> ()) {
@@ -114,11 +158,10 @@ extension MediaHost {
             isAtomic: readerPostContentProvider.isAtomic(),
             siteID: readerPostContentProvider.siteID()?.intValue,
             failure: { error in
-                switch error {
-                case .wpComWithoutSiteID:
-                    // We can add valuable information by replacing this error case.
-                    failure(ReaderPostContentProviderError.wpComWithoutSiteID(readerPostContentProvider: readerPostContentProvider))
-                }
+                // We just associate a blog with the underlying error for simpler debugging.
+                failure(ReaderPostContentProviderError.baseInitializerError(
+                    error: error,
+                    readerPostContentProvider: readerPostContentProvider))
         })
     }
 }

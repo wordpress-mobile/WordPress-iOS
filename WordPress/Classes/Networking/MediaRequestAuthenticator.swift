@@ -6,10 +6,7 @@ extension URL {
     /// Whether the URL is hosted at WPCom.
     ///
     func isHostedAtWPCom() -> Bool {
-        // I don't think this method should check for HTTPs here, and we'd rather test
-        // that separately.  But since this code is basically a migration, I'm leaving
-        // the check for now to avoid breaking things.
-        return scheme == "https" && host?.hasSuffix(".wordpress.com") ?? false
+        return host?.hasSuffix(".wordpress.com") ?? false
     }
 
     /// Whether the URL is a Photon URL.
@@ -34,7 +31,6 @@ class MediaRequestAuthenticator {
         case cannotCreateAtomicURL(components: URLComponents)
         case cannotCreateAtomicProxyURL(components: URLComponents)
         case cannotCreatePrivateURL(components: URLComponents)
-        case cannotFindAuthenticationToken(url: URL)
         case cannotFindWPContentInPhotonPath(components: URLComponents)
     }
 
@@ -72,13 +68,28 @@ class MediaRequestAuthenticator {
             // The authentication for these is handled elsewhere
             let request = URLRequest(url: url)
             provide(request)
-        case .privateWPComSite:
-            authenticatedRequestForPrivateSite(for: url, onComplete: provide, onFailure: fail)
-        case .privateAtomicWPComSite(let siteID):
+        case .privateWPComSite(let authToken):
+            authenticatedRequestForPrivateSite(
+                for: url,
+                authToken: authToken,
+                onComplete: provide,
+                onFailure: fail)
+        case .privateAtomicWPComSite(let siteID, let username, let authToken):
             if url.isPhoton() {
-                authenticatedRequestForPrivateAtomicSiteThroughPhoton(for: url, siteID: siteID, onComplete: provide, onFailure: fail)
+                authenticatedRequestForPrivateAtomicSiteThroughPhoton(
+                    for: url,
+                    siteID: siteID,
+                    authToken: authToken,
+                    onComplete: provide,
+                    onFailure: fail)
             } else {
-                authenticatedRequestForPrivateAtomicSite(for: url, siteID: siteID, onComplete: provide, onFailure: fail)
+                authenticatedRequestForPrivateAtomicSite(
+                    for: url,
+                    siteID: siteID,
+                    username: username,
+                    authToken: authToken,
+                    onComplete: provide,
+                    onFailure: fail)
             }
         }
     }
@@ -96,6 +107,7 @@ class MediaRequestAuthenticator {
     ///
     private func authenticatedRequestForPrivateSite(
         for url: URL,
+        authToken: String,
         onComplete provide: (URLRequest) -> (),
         onFailure fail: (Error) -> ()) {
 
@@ -112,11 +124,7 @@ class MediaRequestAuthenticator {
             return
         }
 
-        guard let request = tokenAuthenticatedWPComRequest(for: finalURL) else {
-            fail(Error.cannotFindAuthenticationToken(url: finalURL))
-            return
-        }
-
+        let request = tokenAuthenticatedWPComRequest(for: finalURL, authToken: authToken)
         provide(request)
     }
 
@@ -133,14 +141,20 @@ class MediaRequestAuthenticator {
     private func authenticatedRequestForPrivateAtomicSite(
         for url: URL,
         siteID: Int,
+        username: String,
+        authToken: String,
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
 
         guard !url.isHostedAtWPCom(),
-            var components = URLComponents(url: url, resolvingAgainstBaseURL: true),
-            let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount(),
-            let authToken = account.authToken else {
-                return provide(URLRequest(url: url))
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+                provide(URLRequest(url: url))
+                return
+        }
+
+        guard let account = AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount() else {
+            provide(URLRequest(url: url))
+            return
         }
 
         let authenticationService = AtomicAuthenticationService(account: account)
@@ -157,9 +171,9 @@ class MediaRequestAuthenticator {
         let request = tokenAuthenticatedWPComRequest(for: finalURL, authToken: authToken)
 
         authenticationService.loadAuthCookies(into: cookieJar, username: account.username, siteID: siteID, success: {
-            return provide(request)
+            provide(request)
         }) { error in
-            return provide(request)
+            provide(request)
         }
     }
 
@@ -187,6 +201,7 @@ class MediaRequestAuthenticator {
     private func authenticatedRequestForPrivateAtomicSiteThroughPhoton(
         for url: URL,
         siteID: Int,
+        authToken: String,
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
 
@@ -211,26 +226,11 @@ class MediaRequestAuthenticator {
             return
         }
 
-        guard let request = tokenAuthenticatedWPComRequest(for: finalURL) else {
-            fail(Error.cannotFindAuthenticationToken(url: finalURL))
-            return
-        }
-
+        let request = tokenAuthenticatedWPComRequest(for: finalURL, authToken: authToken)
         provide(request)
     }
 
     // MARK: - Adding the Auth Token
-
-    /// Returns a request with the Bearer token for WPCom authentication.
-    ///
-    private func tokenAuthenticatedWPComRequest(for url: URL) -> URLRequest? {
-        guard let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount(),
-            let authToken = account.authToken else {
-                return nil
-        }
-
-        return tokenAuthenticatedWPComRequest(for: url, authToken: authToken)
-    }
 
     /// Returns a request with the Bearer token for WPCom authentication.
     ///
