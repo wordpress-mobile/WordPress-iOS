@@ -134,7 +134,14 @@ extension LoginEpilogueTableViewController {
 
         // Site Rows
         let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section - 1)
-        return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
+        let cell = blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
+
+        guard let loginCell = cell as? LoginEpilogueBlogCell else {
+            return cell
+        }
+
+        loginCell.adjustSiteNameConstraint()
+        return loginCell
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -342,7 +349,7 @@ private extension LoginEpilogueTableViewController {
         static let headerReuseIdentifier = "SectionHeader"
         static let userCellReuseIdentifier = "userInfo"
         static let profileRowHeight = CGFloat(180)
-        static let blogRowHeight = CGFloat(52)
+        static let blogRowHeight = CGFloat(60)
         static let headerHeight = CGFloat(50)
     }
 }
