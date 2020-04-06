@@ -32,10 +32,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     @IBOutlet var inlinePromptView: AppFeedbackPromptView!
 
-    /// Ensures the segmented control is below the feedback prompt
-    ///
-    @IBOutlet var inlinePromptSpaceConstraint: NSLayoutConstraint!
-
     /// TableView Handler: Our commander in chief!
     ///
     fileprivate var tableViewHandler: WPTableViewHandler!
@@ -110,17 +106,16 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
-
         setupNavigationBar()
         setupTableView()
         setupTableFooterView()
-        layoutHeaderIfNeeded()
-        setupConstraints()
         setupTableHandler()
         setupRefreshControl()
         setupNoResultsView()
         setupFilterBar()
+
+        tableView.tableHeaderView = tableHeaderView
+        setupConstraints()
 
         reloadTableViewPreservingSelection()
     }
@@ -174,6 +169,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         registerUserActivity()
 
         markWelcomeNotificationAsSeenIfNeeded()
+
+        if shouldShowPrimeForPush {
+            setupNotificationPrompt()
+        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
+            setupAppRatings()
+            self.showInlinePrompt()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -188,17 +190,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        layoutHeaderIfNeeded()
-    }
-
-    private func layoutHeaderIfNeeded() {
-        precondition(tableHeaderView != nil)
-        tableHeaderView.setNeedsLayout()
-        tableHeaderView.layoutIfNeeded()
-
-        // We reassign the tableHeaderView to force the UI to refresh. Yes, really.
-        tableView.tableHeaderView = tableHeaderView
-        tableView.setNeedsLayout()
+        tableView.layoutHeaderView()
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -469,10 +461,7 @@ private extension NotificationsViewController {
     }
 
     func setupConstraints() {
-        precondition(inlinePromptSpaceConstraint != nil)
-
         // Inline prompt is initially hidden!
-        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -512,17 +501,7 @@ private extension NotificationsViewController {
 
         inlinePromptView.alpha = WPAlphaZero
 
-        // this allows the selector to move to the top
-        inlinePromptSpaceConstraint.isActive = false
-
-        if shouldShowPrimeForPush {
-            setupNotificationPrompt()
-        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
-            setupAppRatings()
-            showInlinePrompt()
-        }
-
-        layoutHeaderIfNeeded()
+        inlinePromptView.isHidden = true
     }
 
     func setupRefreshControl() {
@@ -1305,26 +1284,24 @@ internal extension NotificationsViewController {
             return
         }
 
-        // allows the inline prompt to push the selector down
-        inlinePromptSpaceConstraint.isActive = true
+        UIView.animate(withDuration: WPAnimationDurationDefault, delay: 0, options: .curveEaseIn, animations: {
+            self.inlinePromptView.isHidden = false
+        })
 
-        // Layout immediately the TableHeaderView. Otherwise we'll see a seriously uncool Buttons Resizing animation.
-        tableHeaderView.layoutIfNeeded()
-
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: InlinePrompt.animationDelay, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: WPAnimationDurationDefault * 0.5, delay: WPAnimationDurationDefault * 0.75, options: .curveEaseIn, animations: {
             self.inlinePromptView.alpha = WPAlphaFull
-            self.layoutHeaderIfNeeded()
         })
 
         WPAnalytics.track(.appReviewsSawPrompt)
     }
 
     func hideInlinePrompt(delay: TimeInterval) {
-        inlinePromptSpaceConstraint.isActive = false
-
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: delay, animations: {
+        UIView.animate(withDuration: WPAnimationDurationDefault * 0.75, delay: delay, animations: {
             self.inlinePromptView.alpha = WPAlphaZero
-            self.layoutHeaderIfNeeded()
+        })
+
+        UIView.animate(withDuration: WPAnimationDurationDefault, delay: delay + WPAnimationDurationDefault * 0.5, animations: {
+            self.inlinePromptView.isHidden = true
         })
     }
 }
@@ -1645,6 +1622,5 @@ private extension NotificationsViewController {
 
     enum InlinePrompt {
         static let section = "notifications"
-        static let animationDelay = TimeInterval(0.5)
     }
 }

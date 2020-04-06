@@ -4,6 +4,7 @@ orbs:
   # Using 1.0 of the Orbs means it will use the latest 1.0.x version from https://github.com/wordpress-mobile/circleci-orbs
   ios: wordpress-mobile/ios@1.0
   git: wordpress-mobile/git@1.0
+  slack: circleci/slack@3.4.2
 
 commands:
   fix-path:
@@ -71,6 +72,10 @@ jobs:
     parameters:
       device:
         type: string
+      post-to-slack:
+        description: Post to Slack when tests fail. SLACK_WEBHOOK ENV variable must be set.
+        type: boolean
+        default: false
     executor:
       name: ios/default
       xcode-version: "11.2.1"
@@ -91,6 +96,21 @@ jobs:
           arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath test-without-building.xcresult
       - ios/save-xcodebuild-artifacts
       - save-xcresult
+      - when:
+          condition: << parameters.post-to-slack >>
+          steps:
+            - run:
+                name: Prepare Slack message
+                when: always
+                command: |
+                  # Get the name of the device that is running. Using "<< parameters.device >>" can cause slack formatting errors.
+                  DEVICE_NAME=$(xcrun simctl list -j | jq -r --arg UDID $SIMULATOR_UDID '.devices[] | .[] | select(.udid == "\($UDID)") | .name')
+                  echo "export SLACK_FAILURE_MESSAGE=':red_circle: WordPress iOS UI tests failed on ${DEVICE_NAME} in \`${CIRCLE_BRANCH}\` branch by ${CIRCLE_USERNAME}.\n\nPlease reach out in #platform9 if you think this failure is not caused by your changes, so we can investigate.'" >> $BASH_ENV
+            - slack/status:
+                fail_only: true
+                include_job_number_field: false
+                include_project_field: false
+                failure_message: '${SLACK_FAILURE_MESSAGE}'
   Installable Build:
     executor:
       name: ios/default
@@ -115,6 +135,33 @@ jobs:
       - store_artifacts:
           path: Artifacts
           destination: Artifacts
+  Release Build:
+    executor: 
+      name: ios/default
+      xcode-version: "11.2.1"
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - git/shallow-checkout
+      - ios/install-dependencies:
+            bundle-install: true
+            pod-install: true
+      - run: 
+          name: Copy Secrets
+          command: bundle exec fastlane run configure_apply
+      - run: 
+          name: Install other tools
+          command: |
+            brew unlink python@2
+            brew install imagemagick
+            brew install ghostscript
+            curl -sL https://sentry.io/get-cli/ | bash
+
+      - run:
+          name: Build
+          working_directory: Scripts
+          command: "bundle exec fastlane build_and_upload_release skip_confirm:true"
+          no_output_timeout: 60m
 
 workflows:
   wordpress_ios:
@@ -122,14 +169,44 @@ workflows:
       - Build Tests
       - Unit Tests:
           requires: [ "Build Tests" ]
+      # Always run UI tests on develop and release branches
       - UI Tests:
           name: UI Tests (iPhone 11)
           device: iPhone 11
+          post-to-slack: true
           requires: [ "Build Tests" ]
+          filters:
+            branches:
+              only:
+                - develop
+                - /^release.*/
       - UI Tests:
           name: UI Tests (iPad Air 3rd generation)
           device: iPad Air \\(3rd generation\\)
+          post-to-slack: true
           requires: [ "Build Tests" ]
+          filters:
+            branches:
+              only:
+                - develop
+                - /^release.*/
+      #Optionally run UI tests on PRs
+      - Optional Tests:
+          type: approval
+          requires: [ "Build Tests" ]
+          filters:
+            branches:
+              ignore:
+                - develop
+                - /^release.*/
+      - UI Tests:
+          name: UI Tests (iPhone 11)
+          device: iPhone 11
+          requires: [ "Optional Tests" ]
+      - UI Tests:
+          name: UI Tests (iPad Air 3rd generation)
+          device: iPad Air \\(3rd generation\\)
+          requires: [ "Optional Tests" ]
   Installable Build:
     jobs:
       - Hold:
@@ -142,3 +219,12 @@ workflows:
           filters:
             branches:
               ignore: /pull\/[0-9]+/
+  Release Build:
+    jobs:
+      - Release Build: 
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d.\d?(.\d)?(.\d)?(.\d{1,4})$/ 
+
