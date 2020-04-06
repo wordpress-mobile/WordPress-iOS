@@ -1,6 +1,6 @@
 import Foundation
 
-/// Extends `MediaRequestAuthenticator.ImageHost` so that we can easily
+/// Extends `MediaRequestAuthenticator.MediaHost` so that we can easily
 /// initialize it from a given `Blog`.
 ///
 extension MediaHost {
@@ -13,7 +13,7 @@ extension MediaHost {
             isPrivate: blog.isPrivate(),
             isAtomic: blog.isAtomic(),
             siteID: blog.dotComID?.intValue,
-            username: blog.username,
+            username: blog.usernameForSite,
             authToken: blog.authToken,
             failure: { error in
                 // We just associate a blog with the underlying error for simpler debugging.

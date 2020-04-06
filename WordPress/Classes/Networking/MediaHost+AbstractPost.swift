@@ -1,6 +1,6 @@
 import Foundation
 
-/// Extends `MediaRequestAuthenticator.ImageHost` so that we can easily
+/// Extends `MediaRequestAuthenticator.MediaHost` so that we can easily
 /// initialize it from a given `AbstractPost`.
 ///
 extension MediaHost {
