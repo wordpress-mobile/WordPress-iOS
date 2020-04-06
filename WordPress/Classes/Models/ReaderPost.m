@@ -67,7 +67,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (BOOL)isAtomic
 {
-    // DRM: before merging I need to load this from the endpoint.
+    // This is temporary until we start parsing a new value from the reader endpoint.
     return false;
 }
 
