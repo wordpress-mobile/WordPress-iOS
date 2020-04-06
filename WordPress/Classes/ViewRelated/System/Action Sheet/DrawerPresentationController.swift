@@ -129,6 +129,7 @@ public class DrawerPresentationController: FancyAlertPresentationController {
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { _ in
             self.presentedView?.frame = self.frameOfPresentedViewInContainerView
+            self.transition(to: self.currentPosition)
         }, completion: nil)
         super.viewWillTransition(to: size, with: coordinator)
     }
