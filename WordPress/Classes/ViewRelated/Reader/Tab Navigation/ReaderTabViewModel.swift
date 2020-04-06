@@ -33,7 +33,7 @@ extension ReaderTabViewModel {
     private var topicsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderTopics.entityName)
 
-        fetchRequest.predicate = NSPredicate(format: ReaderTopics.predicate, NSNumber(value: ReaderHelpers.isLoggedIn()))
+        fetchRequest.predicate = NSPredicate(format: ReaderTopics.predicateFormat, NSNumber(value: ReaderHelpers.isLoggedIn()))
 
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: ReaderTopics.sortByKey, ascending: true)]
         return fetchRequest
@@ -69,7 +69,7 @@ extension ReaderTabViewModel {
     }
 
     private enum ReaderTopics {
-        static let predicate = "following == %@ AND showInMenu == YES AND type == 'default' OR type == 'list' OR type == 'team'"
+        static let predicateFormat = "following == %@ AND showInMenu == YES AND type == 'default' OR type == 'list' OR type == 'team'"
 
         static let entityName = "ReaderAbstractTopic"
         static let sortByKey = "type"
@@ -90,7 +90,7 @@ extension ReaderTabViewModel {
         let controller = ReaderStreamViewController.controllerWithTopic(topic)
 
         self.tabSelectionCallback = { [weak controller] topic in
-            controller?.readerTopic = topic
+            controller?.setTopic(topic)
         }
         return controller
     }
