@@ -36,7 +36,7 @@ public protocol DrawerPresentable: AnyObject {
     var collapsedHeight: DrawerHeight { get }
 
     /// The width of the Drawer in compact screen
-    var width: DrawerWidth { get }
+    var compactWidth: DrawerWidth { get }
 
     /// Whether or not the user is allowed to swipe to switch between the expanded and collapsed position
     var allowsUserTransition: Bool { get }
@@ -84,7 +84,7 @@ public extension DrawerPresentable where Self: UIViewController {
         return Constants.Defaults.collapsedHeight
     }
 
-    var width: DrawerWidth {
+    var compactWidth: DrawerWidth {
         return Constants.Defaults.compactWidth
     }
 
@@ -133,7 +133,7 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         frame.origin.y = y
 
         /// If we're in a compact vertical size class, constrain the width a bit more so it doesn't get overly wide.
-        if let widthForCompactSizeClass = presentableViewController?.width,
+        if let widthForCompactSizeClass = presentableViewController?.compactWidth,
             traitCollection.verticalSizeClass == .compact {
 
             switch widthForCompactSizeClass {
