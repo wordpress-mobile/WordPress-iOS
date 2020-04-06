@@ -53,6 +53,15 @@ struct TenorReponseData {
         }
         """
 
+    static let emptyMediaSearchResponse =
+        """
+        {
+          "weburl": "https://tenor.com/search/cat-gifs",
+          "results": [
+          ],
+        }
+        """
+
     static let invalidSearchResponse =
         """
         {
