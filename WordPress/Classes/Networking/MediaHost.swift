@@ -39,6 +39,8 @@ enum MediaHost: Equatable {
         }
 
         guard let authToken = authToken else {
+            assertionFailure()
+            
             // This should actually not be possible.  We have no good way to
             // handle this.
             failure(Error.wpComPrivateSiteWithoutAuthToken)
@@ -59,6 +61,8 @@ enum MediaHost: Equatable {
         }
 
         guard let username = username else {
+            assertionFailure()
+            
             // This should actually not be possible.  We have no good way to
             // handle this.
             failure(Error.wpComPrivateSiteWithoutUsername)
@@ -74,6 +78,8 @@ enum MediaHost: Equatable {
         }
 
         guard let siteID = siteID else {
+            assertionFailure()
+            
             // This should actually not be possible.  We have no good way to
             // handle this.
             failure(Error.wpComWithoutSiteID)
