@@ -12,6 +12,14 @@ struct PublishSettingsViewModel {
         case scheduled(Date)
         case published(Date)
         case immediately
+
+        init(post: AbstractPost) {
+            if let dateCreated = post.dateCreated, post.shouldPublishImmediately() == false {
+                self = post.hasFuturePublishDate() ? .scheduled(dateCreated) : .published(dateCreated)
+            } else {
+                self = .immediately
+            }
+        }
     }
 
     private(set) var state: State
@@ -61,22 +69,17 @@ struct PublishSettingsViewModel {
 
     mutating func setDate(_ date: Date?) {
         if let date = date {
-            state = .scheduled(date)
             post.dateCreated = date
+            if post.hasFuturePublishDate() {
+                post.status = .scheduled
+            } else {
+                post.status = .publish
+            }
         } else {
-            state = .immediately
+            post.publishImmediately()
         }
 
-        /// Set the post's status to scheduled or published depending on our date value
-        switch state {
-        case .scheduled:
-            post.status = .scheduled
-        case .immediately:
-            post.publishImmediately()
-        case .published:
-            /// Don't need to do anything for published states (based on previous logic in PostSettingsViewController)
-            break
-        }
+        state = State(post: post)
     }
 }
 

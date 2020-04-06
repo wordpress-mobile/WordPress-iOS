@@ -55,13 +55,13 @@ class PrivacySettingsViewController: UITableViewController {
         let collectInformation = SwitchRow(
             title: NSLocalizedString("Collect information", comment: "Label for switch to turn on/off sending app usage data"),
             value: !WPAppAnalytics.userHasOptedOut(),
-            icon: Gridicon.iconOfType(.stats),
+            icon: .gridicon(.stats),
             onChange: usageTrackingChanged()
         )
 
         let shareInfoText = InfoRow(
             title: NSLocalizedString("Share information with our analytics tool about your use of services while logged in to your WordPress.com account.", comment: "Informational text for Collect Information setting"),
-            icon: Gridicon.iconOfType(.info)
+            icon: .gridicon(.info)
         )
 
         let shareInfoLink = PaddedLinkRow(
@@ -71,7 +71,7 @@ class PrivacySettingsViewController: UITableViewController {
 
         let privacyText = InfoRow(
             title: NSLocalizedString("This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy.", comment: "Informational text for the privacy policy link"),
-            icon: Gridicon.iconOfType(.userCircle)
+            icon: .gridicon(.userCircle)
         )
 
         let privacyLink = PaddedLinkRow(
@@ -81,7 +81,7 @@ class PrivacySettingsViewController: UITableViewController {
 
         let otherTracking = InfoRow(
             title: NSLocalizedString("We use other tracking tools, including some from third parties. Read about these and how to control them.", comment: "Informational text about link to other tracking tools"),
-            icon: Gridicon.iconOfType(.briefcase)
+            icon: .gridicon(.briefcase)
         )
 
         let otherTrackingLink = PaddedLinkRow(

@@ -560,6 +560,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidMount(unsupportedBlockNames: [String]) {
         if !editorSession.started {
+            // Note that this method is also used to track startup performance
+            // It assumes this is being called when the editor has finished loading
+            // If you need to refactor this, please ensure that the startup_time_ms property
+            // is still reflecting the actual startup time of the editor
             editorSession.start(unsupportedBlocks: unsupportedBlockNames)
         }
     }
@@ -574,6 +578,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             DDLogWarn(message)
         case .error, .fatal:
             DDLogError(message)
+        }
+    }
+
+    func gutenbergDidLogUserEvent(_ event: GutenbergUserEvent) {
+        switch event {
+        case .editorSessionTemplateApply(let template):
+            editorSession.apply(template: template)
+        case .editorSessionTemplatePreview(let template):
+            editorSession.preview(template: template)
         }
     }
 

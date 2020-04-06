@@ -16,7 +16,7 @@
         [self.contentView addGestureRecognizer:tap];
 
         self.iconView.tintColor = [UIColor murielPrimary];
-        self.iconView.image = [Gridicon iconOfType:GridiconTypePlus];
+        self.iconView.image = [UIImage gridiconOfType:GridiconTypePlus];
     }
 
     return self;

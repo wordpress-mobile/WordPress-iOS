@@ -8,6 +8,7 @@ private struct ElementStringIDs {
     static let mediaButton = "Media Row"
     static let statsButton = "Stats Row"
     static let settingsButton = "Settings Row"
+    static let createButton = "floatingCreateButton"
 }
 
 class MySiteScreen: BaseScreen {
@@ -19,6 +20,7 @@ class MySiteScreen: BaseScreen {
     let mediaButton: XCUIElement
     let statsButton: XCUIElement
     let siteSettingsButton: XCUIElement
+    let createButton: XCUIElement
 
     static var isVisible: Bool {
         let app = XCUIApplication()
@@ -37,6 +39,7 @@ class MySiteScreen: BaseScreen {
         mediaButton = app.cells[ElementStringIDs.mediaButton]
         statsButton = app.cells[ElementStringIDs.statsButton]
         siteSettingsButton = app.cells[ElementStringIDs.settingsButton]
+        createButton = app.buttons[ElementStringIDs.createButton]
 
         super.init(element: blogTable)
     }
@@ -73,5 +76,10 @@ class MySiteScreen: BaseScreen {
     func gotoSettingsScreen() -> SiteSettingsScreen {
         siteSettingsButton.tap()
         return SiteSettingsScreen()
+    }
+
+    func gotoCreateSheet() -> ActionSheetComponent {
+        createButton.tap()
+        return ActionSheetComponent()
     }
 }

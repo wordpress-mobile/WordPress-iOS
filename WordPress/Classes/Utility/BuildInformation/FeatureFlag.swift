@@ -29,9 +29,9 @@ enum FeatureFlag: Int, CaseIterable {
         case .quickActions:
             return true
         case .meMove:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .floatingCreateButton:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 }

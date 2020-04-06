@@ -16,6 +16,11 @@ class WPMediaEditor: MediaEditor {
         }
     }
 
+    /// The number of images in the Media Editor
+    private var numberOfImages: Int {
+        return max(asyncImages.count, images.count)
+    }
+
     override var styles: MediaEditorStyles {
         get {
             return [
@@ -24,12 +29,12 @@ class WPMediaEditor: MediaEditor {
                 .cancelLabel: NSLocalizedString("Cancel", comment: "Cancel editing an image"),
                 .errorLoadingImageMessage: NSLocalizedString("We couldn't retrieve this media.\nPlease tap to retry.", comment: "Description that appears when a media fails to load in the Media Editor."),
                 .cancelColor: UIColor.white,
-                .resetIcon: Gridicon.iconOfType(.undo),
-                .doneIcon: Gridicon.iconOfType(.checkmark),
-                .cancelIcon: Gridicon.iconOfType(.cross),
-                .rotateClockwiseIcon: Gridicon.iconOfType(.rotate).withHorizontallyFlippedOrientation(),
+                .resetIcon: UIImage.gridicon(.undo),
+                .doneIcon: UIImage.gridicon(.checkmark),
+                .cancelIcon: UIImage.gridicon(.cross),
+                .rotateClockwiseIcon: UIImage.gridicon(.rotate).withHorizontallyFlippedOrientation(),
                 .rotateCounterclockwiseButtonHidden: true,
-                .retryIcon: Gridicon.iconOfType(.refresh, withSize: CGSize(width: 48, height: 48))
+                .retryIcon: UIImage.gridicon(.refresh, size: CGSize(width: 48, height: 48))
             ]
         }
 
@@ -41,7 +46,7 @@ class WPMediaEditor: MediaEditor {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        WPAnalytics.track(.mediaEditorShown)
+        WPAnalytics.track(.mediaEditorShown, properties: ["number_of_images": numberOfImages])
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -54,6 +59,6 @@ class WPMediaEditor: MediaEditor {
             return
         }
 
-        WPAnalytics.track(.mediaEditorUsed, withProperties: ["actions": actions.description])
+        WPAnalytics.track(.mediaEditorUsed, properties: ["actions": actions.description])
     }
 }

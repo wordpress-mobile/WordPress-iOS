@@ -112,10 +112,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [self setSelectedViewController:self.blogListSplitViewController];
         
-        if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-            [self.createButtonCoordinator addTo:self.view trailingAnchor:((UIViewController *)self.blogListSplitViewController.viewControllers[0]).view.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
-        }
-
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateIconIndicators:)
                                                      name:NSNotification.ZendeskPushNotificationReceivedNotification
@@ -205,6 +201,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
     if (blogToOpen) {
         _blogListViewController.selectedBlog = blogToOpen;
+    }
+    
+    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
+        [self.createButtonCoordinator addTo:_blogListNavigationController.view trailingAnchor:_blogListNavigationController.view.safeAreaLayoutGuide.trailingAnchor bottomAnchor:_blogListNavigationController.view.safeAreaLayoutGuide.bottomAnchor];
     }
 
     return _blogListNavigationController;
@@ -318,7 +318,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (iPhoneLandscape || iPadPortraitFullscreen || iPadLandscapeGreaterThanHalfSplit) {
         self.newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsZero;
         self.newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetZero;
-        self.newPostViewController.tabBarItem.image = [Gridicon iconOfType:GridiconTypeCreate withSize:CGSizeMake(WPTabBarIconSize, WPTabBarIconSize)];
+        self.newPostViewController.tabBarItem.image = [UIImage gridiconOfType:GridiconTypeCreate withSize:CGSizeMake(WPTabBarIconSize, WPTabBarIconSize)];
     } else {
         self.newPostViewController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
         self.newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 99999.0);
@@ -425,10 +425,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     
     [self setViewControllers:[self tabViewControllers]];
     
-    if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
-        [self.createButtonCoordinator addTo:self.view trailingAnchor:self.blogListSplitViewController.viewControllers[0].view.trailingAnchor bottomAnchor:self.tabBar.topAnchor];
-    }
-
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
 }
@@ -913,7 +909,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
     NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
-    if (count > 0) {
+    if (count > 0 || ![self welcomeNotificationSeen]) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
     } else {
@@ -935,6 +931,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if( UIApplication.sharedApplication.isCreatingScreenshots ) {
         [self hideReaderBadge:nil];
     }
+}
+
+-(BOOL) welcomeNotificationSeen
+{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *welcomeNotificationSeenKey = standardUserDefaults.welcomeNotificationSeenKey;
+    return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
 }
 
 - (void) hideReaderBadge:(NSNotification *)notification
@@ -1018,12 +1021,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [super traitCollectionDidChange:previousTraitCollection];
 
     [self updateWriteButtonAppearance];
-    
-    [self.createButtonCoordinator presentingTraitCollectionDidChange:previousTraitCollection];
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    [self.createButtonCoordinator presentingTraitCollectionWillChange:self.traitCollection newTraitCollection:newCollection];
     [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
 }
 

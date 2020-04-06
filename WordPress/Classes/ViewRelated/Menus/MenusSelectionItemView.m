@@ -85,7 +85,7 @@
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.tintColor = [UIColor murielNeutral40];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.image = [Gridicon iconOfType:GridiconTypeCheckmark];
+    imageView.image = [UIImage gridiconOfType:GridiconTypeCheckmark];
 
     NSLayoutConstraint *width = [imageView.widthAnchor constraintEqualToConstant:20.0];
     width.priority = 999;
