@@ -65,8 +65,10 @@ class MediaRequestAuthenticator {
         }
 
         switch host {
-        case .publicSite: fallthrough
-        case .publicWPComSite: fallthrough
+        case .publicSite:
+            fallthrough
+        case .publicWPComSite:
+            fallthrough
         case .privateSelfHostedSite:
             // The authentication for these is handled elsewhere
             let request = URLRequest(url: url)
