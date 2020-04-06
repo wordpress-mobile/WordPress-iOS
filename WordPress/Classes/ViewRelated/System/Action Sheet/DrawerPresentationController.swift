@@ -47,6 +47,8 @@ private enum Constants {
     static let flickVelocity: CGFloat = 300
     static let bounceAmount: CGFloat = 0.01
 
+    static let maxWidthPercentage: CGFloat = 0.66 /// Used to constrain the width to a smaller size (instead of full width) when sheet is too wide
+
     enum Defaults {
         static let expandedHeight: DrawerHeight = .topMargin(20)
         static let collapsedHeight: DrawerHeight = .contentHeight(0)
@@ -113,10 +115,26 @@ public class DrawerPresentationController: FancyAlertPresentationController {
 
         var frame = containerView.frame
         let y = collapsedYPosition
+        var width: CGFloat = containerView.bounds.width - (containerView.safeAreaInsets.left + containerView.safeAreaInsets.right)
 
         frame.origin.y = y
 
-        return frame
+        /// If we're in a compact vertical size class, constrain the width a bit more so it doesn't get overly wide.
+        if traitCollection.verticalSizeClass == .compact {
+            width = width * Constants.maxWidthPercentage
+        }
+
+        /// If we constrain the width, this centers the view by applying the appropriate insets based on width
+        let leftInset: CGFloat = ((containerView.bounds.width - width) / 2)
+
+        return CGRect(x: leftInset, y: frame.origin.y, width: width, height: frame.height)
+    }
+
+    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { _ in
+            self.presentedView?.frame = self.frameOfPresentedViewInContainerView
+        }, completion: nil)
+        super.viewWillTransition(to: size, with: coordinator)
     }
 
     /// Returns the current position of the drawer
@@ -160,6 +178,11 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         super.presentationTransitionWillBegin()
 
         configureScrollViewInsets()
+    }
+
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        transition(to: currentPosition)
     }
 
     public override func presentationTransitionDidEnd(_ completed: Bool) {
