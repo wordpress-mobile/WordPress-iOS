@@ -26,6 +26,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic featuredImage;
 @dynamic feedID;
 @dynamic feedItemID;
+@dynamic isBlogAtomic;
 @dynamic isBlogPrivate;
 @dynamic isFollowing;
 @dynamic isLiked;
