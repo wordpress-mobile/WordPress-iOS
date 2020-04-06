@@ -1,5 +1,5 @@
+import AutomatticTracks
 import Foundation
-
 
 /// UIImageView Helper Methods that allow us to download a SiteIcon, given a website's "Icon Path"
 ///
@@ -61,22 +61,41 @@ extension UIImageView {
     ///
     @objc
     func downloadSiteIcon(for blog: Blog, placeholderImage: UIImage? = .siteIconPlaceholder) {
+        func downloadImage(with request: URLRequest) {
+            self.downloadImage(
+                usingRequest: request,
+                placeholderImage: placeholderImage,
+                success: { [weak self] (image) in
+                    self?.image = image
+                    self?.removePlaceholderBorder()
+            },
+                failure: { error -> () in
+                    if let error = error {
+                        CrashLogging.logError(error)
+                    }
+            })
+        }
+
         guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath) else {
             image = placeholderImage
             return
         }
 
-        let request: URLRequest
-        if blog.isPrivate(), PrivateSiteURLProtocol.urlGoes(toWPComSite: siteIconURL) {
-            request = PrivateSiteURLProtocol.requestForPrivateSite(from: siteIconURL)
-        } else {
-            request = URLRequest(url: siteIconURL)
+        let host = MediaHost(with: blog) { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
         }
 
-        downloadImage(usingRequest: request, placeholderImage: placeholderImage, success: { [weak self] (image) in
-            self?.image = image
-            self?.removePlaceholderBorder()
-        }, failure: nil)
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
+        mediaRequestAuthenticator.authenticatedRequest(
+            for: siteIconURL,
+            from: host,
+            onComplete: { request in
+
+            downloadImage(with: request)
+        }) { error in
+            CrashLogging.logError(error)
+        }
     }
 }
 
