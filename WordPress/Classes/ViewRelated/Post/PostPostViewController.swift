@@ -77,7 +77,7 @@ class PostPostViewController: UIViewController {
 
         shareButton.setTitle(NSLocalizedString("Share", comment: "Button label to share a post"), for: .normal)
         shareButton.accessibilityIdentifier = "sharePostButton"
-        shareButton.setImage(Gridicon.iconOfType(.shareIOS, withSize: CGSize(width: 18, height: 18)), for: .normal)
+        shareButton.setImage(.gridicon(.shareiOS, size: CGSize(width: 18, height: 18)), for: .normal)
         shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
         editButton.setTitle(NSLocalizedString("Edit Post", comment: "Button label for editing a post"), for: .normal)
         editButton.accessibilityIdentifier = "editPostButton"

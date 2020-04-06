@@ -43,7 +43,7 @@ class WordPressAuthenticationManager: NSObject {
                                                 primaryNormalBorderColor: nil,
                                                 primaryHighlightBackgroundColor: .primaryButtonDownBackground,
                                                 primaryHighlightBorderColor: nil,
-                                                secondaryNormalBackgroundColor: .secondaryButtonBackground,
+                                                secondaryNormalBackgroundColor: .authSecondaryButtonBackground,
                                                 secondaryNormalBorderColor: .secondaryButtonBorder,
                                                 secondaryHighlightBackgroundColor: .secondaryButtonDownBackground,
                                                 secondaryHighlightBorderColor: .secondaryButtonDownBorder,
@@ -59,7 +59,8 @@ class WordPressAuthenticationManager: NSObject {
                                                 placeholderColor: .textPlaceholder,
                                                 viewControllerBackgroundColor: .listBackground,
                                                 textFieldBackgroundColor: .listForeground,
-                                                navBarImage: Gridicon.iconOfType(.mySites),
+                                                buttonViewBackgroundColor: .authButtonViewBackground,
+                                                navBarImage: .gridicon(.mySites),
                                                 navBarBadgeColor: .accent(.shade20),
                                                 prologueBackgroundColor: .primary,
                                                 prologueTitleColor: .textInverted,
@@ -230,6 +231,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             } else {
                 navigationController.dismiss(animated: true)
             }
+
+            UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
         }
 
         navigationController.pushViewController(epilogueViewController, animated: true)

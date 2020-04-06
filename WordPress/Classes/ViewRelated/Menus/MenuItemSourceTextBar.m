@@ -54,7 +54,7 @@
 
         NSAssert(_iconView != nil, @"iconView is nil");
 
-        _iconView.image = [Gridicon iconOfType:GridiconTypeSearch];
+        _iconView.image = [UIImage gridiconOfType:GridiconTypeSearch];
         _iconView.hidden = NO;
 
         NSAssert(_textField != nil, @"textField is nil");

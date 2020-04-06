@@ -111,7 +111,7 @@
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor clearColor];
     iconView.tintColor = [UIColor murielListIcon];
-    iconView.image = [Gridicon iconOfType:GridiconTypeChevronRight];
+    iconView.image = [UIImage gridiconOfType:GridiconTypeChevronRight];
 
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:iconView];

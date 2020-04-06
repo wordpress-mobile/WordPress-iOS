@@ -203,7 +203,7 @@ private struct QuickStartChecklistConfiguration {
 private enum Constants {
     static let analyticsTypeKey = "type"
     static let cancelButtonPadding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-    static let closeButtonModalImage = Gridicon.iconOfType(.cross)
+    static let closeButtonModalImage = UIImage.gridicon(.cross)
     static let estimatedRowHeight: CGFloat = 90.0
     static let successScreenFadeAnimationDuration: TimeInterval = 0.3
     static let customizeYourSite = NSLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")

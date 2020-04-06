@@ -1,1 +1,15 @@
-Solo un paio di cose questa settimana, perché ci sono questioni più importanti in corso nel mondo: abbiamo risolto un problema nelle Impostazioni articolo affinché le date degli articoli che saranno immediatamente pubblicati vengano visualizzate correttamente; inoltre, abbiamo apportato alcune modifiche per migliorare la velocità e la leggibilità in generale.
+Nuovi blocchi. Dai il benvenuto al blocco Ultimi articoli, per mettere in evidenza nuovi elementi su articoli e pagine.
+
+Quando crei una nuova pagina, ti mostreremo alcuni modelli: scegline uno e noi aggiungeremo tutti i blocchi necessari alla tua pagina per farti iniziare velocemente.
+
+Abbiamo risolto alcuni problemi relativi all'editor a blocchi; non si verificano più arresti anomali quando si incollano i contenuti HTML o quando mancano i bordi del blocco Citazione in Dark Mode.
+
+Quando in passato pianificavi la pubblicazione di un articolo, veniva visualizzato come "pianificato" anziché "pubblicato". Questo problema è stato risolto, insieme a un altro che causava la visualizzazione errata delle date venivano visualizzate se il fuso orario del sito non era lo stesso del fuso orario del dispositivo.
+
+Abbiamo corretto alcune incoerenze nella UI in Dark Mode e nella barra degli strumenti del Reader.
+
+Puoi usare i riferimenti @ quando scrivi commenti in modalità schermo intero.
+
+A volte le e-mail di Accedi e Accesso tramite link finivano nella cartella dello spam, quindi abbiamo aggiunto una nota alla schermata di conferma in cui viene suggerito di controllare le cartelle di spam/posta indesiderata se non visualizzano subito le e-mail.
+
+State tutti al sicuro.

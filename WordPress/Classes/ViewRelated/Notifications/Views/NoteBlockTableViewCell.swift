@@ -2,17 +2,25 @@ import Foundation
 import WordPressShared
 
 class NoteBlockTableViewCell: WPTableViewCell {
-    // MARK: - Public Properties
-    @objc var isBadge: Bool = false {
-        didSet {
-            refreshSeparators()
-        }
-    }
-    @objc var isLastRow: Bool = false {
-        didSet {
-            refreshSeparators()
-        }
-    }
+
+    /// Represents the (full, side to side) Separator Insets
+    ///
+    private let fullSeparatorInsets = UIEdgeInsets.zero
+
+    /// Indicates if the receiver represents a Badge Block
+    ///
+    /// - Note: After setting this property you should explicitly call `refreshSeparators` from within `UITableView.willDisplayCell`.
+    ///
+    @objc var isBadge = false
+
+    /// Indicates if the receiver is the last row in the group.
+    ///
+    /// - Note: After setting this property you should explicitly call `refreshSeparators` from within `UITableView.willDisplayCell`.
+    ///
+    @objc var isLastRow = false
+
+    /// Readability Insets
+    ///
     @objc var readableSeparatorInsets: UIEdgeInsets {
         var insets = UIEdgeInsets.zero
         let readableLayoutFrame = readableContentGuide.layoutFrame
@@ -20,18 +28,39 @@ class NoteBlockTableViewCell: WPTableViewCell {
         insets.right = frame.size.width - (readableLayoutFrame.origin.x + readableLayoutFrame.size.width)
         return insets
     }
+
+    /// Separators View
+    ///
     @objc var separatorsView: SeparatorsView = {
         let view = SeparatorsView()
         view.backgroundColor = .listForeground
         return view
     }()
 
+
+    // MARK: - Overridden Methods
+
     override func layoutSubviews() {
         super.layoutSubviews()
         refreshSeparators()
     }
 
-    // MARK: - Public Methods
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        backgroundView = separatorsView
+        backgroundColor = .listForeground
+    }
+
+
+    // MARK: - Public API
+
+    /// Updates the Separators Insets / Visibility. This API should be called from within `UITableView.willDisplayCell`.
+    ///
+    /// -   Note:
+    ///     `readableSeparatorInsets`, if executed from within `cellForRowAtIndexPath`, will produce an "invalid" layout cycle (since there won't
+    ///     be a superview). Such "Invalid" layout cycle appears to be yielding an invalid `intrinsicContentSize` calculation, which is then cached,
+    ///     and we end up with strings cutoff onScreen. =(
+    ///
     @objc func refreshSeparators() {
         // Exception: Badges require no separators
         if isBadge {
@@ -43,17 +72,8 @@ class NoteBlockTableViewCell: WPTableViewCell {
         separatorsView.bottomInsets = isLastRow ? fullSeparatorInsets : readableSeparatorInsets
         separatorsView.bottomVisible = true
     }
+
     @objc class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
-
-    // MARK: - View Methods
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        backgroundView = separatorsView
-        backgroundColor = .listForeground
-    }
-
-    // MARK: - Private
-    fileprivate let fullSeparatorInsets = UIEdgeInsets.zero
 }

@@ -119,4 +119,8 @@ extension UserDefaults {
             set(newValue, forKey: Keys.notificationPrimerInlineWasAcknowledged.rawValue)
         }
     }
+
+    @objc var welcomeNotificationSeenKey: String {
+        return "welcomeNotificationSeen"
+    }
 }
