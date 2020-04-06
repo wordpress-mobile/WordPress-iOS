@@ -109,7 +109,7 @@ extension PrepublishingNavigationController: PrepublishingHeaderViewDelegate {
 
 extension PrepublishingNavigationController: DrawerPresentable {
     var expandedHeight: DrawerHeight {
-        return .maxHeight
+        return .topMargin(20)
     }
 
     var collapsedHeight: DrawerHeight {
