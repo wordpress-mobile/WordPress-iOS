@@ -1,3 +1,7 @@
+14.7
+-----
+* [internal] the signup flow using email has code changes that can cause regressions. See https://git.io/JvALZ for testing details.
+
 14.6
 -----
 * [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.
