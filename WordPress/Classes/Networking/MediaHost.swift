@@ -22,7 +22,7 @@ enum MediaHost: Equatable {
         siteID: Int? = nil,
         username: String? = nil,
         authToken: String? = nil,
-        failure: (Error) -> ()) {
+        failure: (Error) -> Void) {
 
         guard isPrivate else {
             if isAccessibleThroughWPCom {
