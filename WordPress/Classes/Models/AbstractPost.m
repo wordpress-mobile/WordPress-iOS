@@ -477,7 +477,7 @@
 
 - (BOOL)isPrivate
 {
-    return self.blog.isPrivate;
+    return self.blog.isPrivateAtWPCom;
 }
 
 - (BOOL)isMultiAuthorBlog

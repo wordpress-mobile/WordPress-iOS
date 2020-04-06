@@ -336,6 +336,12 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
     return [self.settings.privacy isEqualToNumber:@(SiteVisibilityPrivate)];
 }
 
+// WP.COM private blog.
+- (BOOL)isPrivateAtWPCom
+{
+    return (self.isHostedAtWPcom && [self isPrivate]);
+}
+
 - (SiteVisibility)siteVisibility
 {
     switch ([self.settings.privacy integerValue]) {
@@ -437,7 +443,7 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
 {
     if (self.username) {
         return self.username;
-    } else if (self.account && self.isHostedAtWPcom) {
+    } else if (self.account && self.isAccessibleThroughWPCom) {
         return self.account.username;
     } else {
         // FIXME: Figure out how to get the self hosted username when using Jetpack REST (@koke 2015-06-15)

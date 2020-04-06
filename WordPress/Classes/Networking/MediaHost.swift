@@ -1,11 +1,3 @@
-//
-//  MediaHost.swift
-//  WordPress
-//
-//  Created by Diego E. Rey Mendez on 2/4/20.
-//  Copyright © 2020 WordPress. All rights reserved.
-//
-
 import Foundation
 
 /// Defines a media host for request authentication purposes.
@@ -97,71 +89,5 @@ enum MediaHost: Equatable {
         }
 
         self = .privateAtomicWPComSite(siteID: siteID, username: username, authToken: authToken)
-    }
-}
-
-/// Extends `MediaRequestAuthenticator.ImageHost` so that we can easily
-/// initialize it from a given `AbstractPost`.
-///
-extension MediaHost {
-    enum PostError: Swift.Error {
-        case baseInitializerError(error: BlogError, post: AbstractPost)
-    }
-
-    init(with post: AbstractPost, failure: (PostError) -> ()) {
-        self.init(
-            with: post.blog,
-            failure: { error in
-                // We just associate a blog with the underlying error for simpler debugging.
-                failure(PostError.baseInitializerError(
-                    error: error,
-                    post: post))
-        })
-   }
-}
-
-/// Extends `MediaRequestAuthenticator.ImageHost` so that we can easily
-/// initialize it from a given `Blog`.
-///
-extension MediaHost {
-    enum BlogError: Swift.Error {
-        case baseInitializerError(error: Error, blog: Blog)
-    }
-
-    init(with blog: Blog, failure: (BlogError) -> ()) {
-        self.init(isAccessibleThroughWPCom: blog.isAccessibleThroughWPCom(),
-            isPrivate: blog.isPrivate(),
-            isAtomic: blog.isAtomic(),
-            siteID: blog.dotComID?.intValue,
-            failure: { error in
-                // We just associate a blog with the underlying error for simpler debugging.
-                failure(BlogError.baseInitializerError(
-                    error: error,
-                    blog: blog))
-        })
-   }
-}
-
-/// Extends `MediaRequestAuthenticator.ImageHost` so that we can easily
-/// initialize it from a given `Blog`.
-///
-extension MediaHost {
-    enum ReaderPostContentProviderError: Swift.Error {
-        case baseInitializerError(error: Error, readerPostContentProvider: ReaderPostContentProvider)
-    }
-
-    init(with readerPostContentProvider: ReaderPostContentProvider, failure: (ReaderPostContentProviderError) -> ()) {
-        let isAccessibleThroughWPCom = readerPostContentProvider.isWPCom() || readerPostContentProvider.isJetpack()
-
-        self.init(isAccessibleThroughWPCom: isAccessibleThroughWPCom,
-            isPrivate: readerPostContentProvider.isPrivate(),
-            isAtomic: readerPostContentProvider.isAtomic(),
-            siteID: readerPostContentProvider.siteID()?.intValue,
-            failure: { error in
-                // We just associate a blog with the underlying error for simpler debugging.
-                failure(ReaderPostContentProviderError.baseInitializerError(
-                    error: error,
-                    readerPostContentProvider: readerPostContentProvider))
-        })
     }
 }
