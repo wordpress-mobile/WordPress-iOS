@@ -42,6 +42,10 @@
 * Updated the Signup and Login Magic Link confirmation screen advising the user to check their spam/junk folder.
 * Updated appearance of Google login/signup button.
 * Updated appearance of Apple login/signup button.
+
+14.4.1
+-----
+* Block Editor: Fix crash when inserting a Button Block.
  
 14.4
 -----
