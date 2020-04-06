@@ -1,6 +1,8 @@
 import Foundation
 
 fileprivate let photonHost = "i0.wp.com"
+fileprivate let secureHttpScheme = "https"
+fileprivate let wpComApiHost = "public-api.wordpress.com"
 
 extension URL {
     /// Whether the URL is hosted at WPCom.
@@ -118,7 +120,7 @@ class MediaRequestAuthenticator {
         }
 
         // Just in case, enforce HTTPs
-        components.scheme = "https"
+        components.scheme = secureHttpScheme
 
         guard let finalURL = components.url else {
             fail(Error.cannotCreatePrivateURL(components: components))
@@ -162,7 +164,7 @@ class MediaRequestAuthenticator {
         let cookieJar = HTTPCookieStorage.shared
 
         // Just in case, enforce HTTPs
-        components.scheme = "https"
+        components.scheme = secureHttpScheme
 
         guard let finalURL = components.url else {
             fail(Error.cannotCreateAtomicURL(components: components))
@@ -218,8 +220,8 @@ class MediaRequestAuthenticator {
 
         let contentPath = components.path[wpContentRange.lowerBound ..< components.path.endIndex]
 
-        components.scheme = "https"
-        components.host = "public-api.wordpress.com"
+        components.scheme = secureHttpScheme
+        components.host = wpComApiHost
         components.path = "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file\(contentPath)"
 
         guard let finalURL = components.url else {
