@@ -30,9 +30,9 @@ enum FeatureFlag: Int, CaseIterable {
         case .quickActions:
             return true
         case .meMove:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .floatingCreateButton:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .newReaderNavigation:
             return false
         }

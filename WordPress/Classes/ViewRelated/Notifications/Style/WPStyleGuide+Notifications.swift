@@ -42,9 +42,9 @@ extension WPStyleGuide {
                      .foregroundColor: subjectTextColor ]
         }
 
-        public static var subjectBoldStyle: [NSAttributedString.Key: Any] {
+        public static var subjectSemiBoldStyle: [NSAttributedString.Key: Any] {
             return [.paragraphStyle: subjectParagraph,
-                    .font: subjectBoldFont ]
+                    .font: subjectSemiBoldFont ]
         }
 
         public static var subjectItalicsStyle: [NSAttributedString.Key: Any] {
@@ -333,8 +333,8 @@ extension WPStyleGuide {
         fileprivate static var subjectRegularFont: UIFont {
             return WPStyleGuide.fontForTextStyle(.subheadline)
         }
-        fileprivate static var subjectBoldFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
+        fileprivate static var subjectSemiBoldFont: UIFont {
+            return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         }
         fileprivate static var subjectItalicsFont: UIFont {
             return  WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitItalic)
