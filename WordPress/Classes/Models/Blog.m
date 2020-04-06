@@ -331,12 +331,15 @@ NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
     return formatText;
 }
 
+/// Call this method to know whether the blog is private.
+///
 - (BOOL)isPrivate
 {
     return [self.settings.privacy isEqualToNumber:@(SiteVisibilityPrivate)];
 }
 
-// WP.COM private blog.
+/// Call this method to know whether the blog is private AND hosted at WP.com.
+///
 - (BOOL)isPrivateAtWPCom
 {
     return (self.isHostedAtWPcom && [self isPrivate]);
