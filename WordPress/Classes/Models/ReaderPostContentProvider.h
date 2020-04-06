@@ -8,6 +8,7 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 };
 
 @protocol ReaderPostContentProvider <PostContentProvider>
+- (NSNumber *)siteID;
 - (NSURL *)siteIconForDisplayOfSize:(NSInteger)size;
 - (SourceAttributionStyle)sourceAttributionStyle;
 - (NSString *)sourceAuthorNameForDisplay;
@@ -22,6 +23,7 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 - (BOOL)commentsOpen;
 - (BOOL)isFollowing;
 - (BOOL)isLikesEnabled;
+- (BOOL)isAtomic;
 - (BOOL)isPrivate;
 - (BOOL)isLiked;
 - (BOOL)isExternal;
