@@ -8,7 +8,7 @@ extension MediaHost {
         case baseInitializerError(error: BlogError, post: AbstractPost)
     }
 
-    init(with post: AbstractPost, failure: (PostError) -> ()) {
+    init(with post: AbstractPost, failure: (AbstractPostError) -> ()) {
         self.init(
             with: post.blog,
             failure: { error in
