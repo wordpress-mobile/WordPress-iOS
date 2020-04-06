@@ -5,12 +5,6 @@ fileprivate let secureHttpScheme = "https"
 fileprivate let wpComApiHost = "public-api.wordpress.com"
 
 extension URL {
-    /// Whether the URL is hosted at WPCom.
-    ///
-    func isHostedAtWPCom() -> Bool {
-        return host?.hasSuffix(".wordpress.com") ?? false
-    }
-
     /// Whether the URL is a Photon URL.
     ///
     fileprivate func isPhoton() -> Bool {
@@ -58,7 +52,7 @@ class MediaRequestAuthenticator {
 
         // We want to make sure we're never sending credentials
         // to a URL that's not safe.
-        guard url.isHostedAtWPCom() || url.isPhoton() else {
+        guard url.isHostedAtWPCom || url.isPhoton() else {
             let request = URLRequest(url: url)
             provide(request)
             return
@@ -151,7 +145,7 @@ class MediaRequestAuthenticator {
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
 
-        guard url.isHostedAtWPCom(),
+        guard url.isHostedAtWPCom,
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
                 provide(URLRequest(url: url))
                 return
