@@ -135,6 +135,11 @@ import WordPressFlux
     /// - Returns: An instance of the controller
     ///
     @objc class func controllerWithTopic(_ topic: ReaderAbstractTopic) -> ReaderStreamViewController {
+        // if a default discover topic is provided, treat it as a site to retrieve the header
+        if ReaderHelpers.topicIsDiscover(topic) && FeatureFlag.newReaderNavigation.enabled {
+            return controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
+        }
+
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
@@ -1661,5 +1666,19 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+
+// MARK: - Topic Injection
+extension ReaderStreamViewController {
+    func setTopic(_ topic: ReaderAbstractTopic) {
+        guard ReaderHelpers.topicIsDiscover(topic) else {
+            readerTopic = topic
+            return
+        }
+        readerTopic = nil
+        isFeed = false
+        siteID = ReaderHelpers.discoverSiteID
     }
 }
