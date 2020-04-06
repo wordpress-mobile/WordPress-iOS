@@ -1,1 +1,15 @@
-Hanya beberapa hal yang harus dilakukan dengan cepat minggu ini, karena terdapat hal-hal lebih besar yang terjadi di dunia: Kami telah memperbaiki masalah di Pengaturan Pos sehingga tanggal pos yang akan segera dipublikasikan dapat ditampilkan dengan benar, dan kami membuat beberapa perubahan di balik kap untuk meningkatkan kecepatan dan keandalan secara umum.
+Blok baru! Sambut blok Pos Terbaru, untuk menyoroti item baru Anda di pos dan halaman.
+
+Saat Anda membuat halaman baru, kami akan menampilkan beberapa template — pilih satu, dan kami akan menambahkan semua blok yang dibutuhkan ke halaman Anda agar Anda dapat memulai halaman dengan cepat.
+
+Kami memperbaiki beberapa masalah penyunting blok, tak ada lagi crash saat menempel di konten HTML ataupun tepi blok Kutipan yang tidak muncul di Mode Gelap.
+
+Jika Anda menjadwalkan pos untuk dipublikasikan di masa lalu, itu akan ditampilkan sebagai “dijadwalkan” bukan “dipublikasikan”. Telah diperbaiki, bersama dengan masalah tanggal yang tidak ditampilkan secara tepat jika zona waktu situs Anda tidak sama dengan zona waktu perangkat.
+
+Kami memperbaiki beberapa UI yang tidak konsisten di Mode Gelap dan dengan bilah peralatan Pembaca.
+
+Anda dapat menggunakan @-sebut saat menulis komentar di mode layar penuh.
+
+Terkadang email Tautan Ajaib Daftar dan Login akan masuk ke folder spam, sehingga kami menambahkan catatan ke layar konfirmasi untuk menyarankan pengguna agar memeriksa folder spam/sampah mereka jika tidak kunjung menemukan emailnya.
+
+Selalu jaga kesehatan, semuanya.
