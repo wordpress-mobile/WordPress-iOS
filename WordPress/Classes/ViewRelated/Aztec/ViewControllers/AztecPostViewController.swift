@@ -2410,12 +2410,12 @@ extension AztecPostViewController {
         insert(exportableAsset: url as NSURL, source: .otherApps)
     }
 
-    fileprivate func insertImage(image: UIImage) {
-        insert(exportableAsset: image, source: .deviceLibrary)
+    fileprivate func insertImage(image: UIImage, source: MediaSource = .deviceLibrary) {
+        insert(exportableAsset: image, source: source)
     }
 
-    fileprivate func insertDeviceMedia(phAsset: PHAsset) {
-        insert(exportableAsset: phAsset, source: .deviceLibrary)
+    fileprivate func insertDeviceMedia(phAsset: PHAsset, source: MediaSource = .deviceLibrary) {
+        insert(exportableAsset: phAsset, source: source)
     }
 
     private func insertStockPhotosMedia(_ media: StockPhotosMedia) {
@@ -3519,9 +3519,9 @@ extension AztecPostViewController {
                               onFinishEditing: { [weak self] images, actions in
                                 images.forEach { mediaEditorImage in
                                     if let image = mediaEditorImage.editedImage {
-                                        self?.insertImage(image: image)
+                                        self?.insertImage(image: image, source: .mediaEditor)
                                     } else if let phAsset = mediaEditorImage as? PHAsset {
-                                        self?.insertDeviceMedia(phAsset: phAsset)
+                                        self?.insertDeviceMedia(phAsset: phAsset, source: .mediaEditor)
                                     }
                                 }
 
