@@ -12,7 +12,7 @@ extension MediaHost {
         self.init(
             with: post.blog,
             failure: { error in
-                // We just associate a blog with the underlying error for simpler debugging.
+                // We just associate a post with the underlying error for simpler debugging.
                 failure(AbstractPostError.baseInitializerError(
                     error: error,
                     post: post))

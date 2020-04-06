@@ -67,7 +67,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (BOOL)isAtomic
 {
-    // This is temporary until we start parsing a new value from the reader endpoint.
+    // TODO: This is temporary until we start parsing a new value from the reader endpoint.
+    //
+    // Issue: https://git.io/JvNAN
+    //
     return false;
 }
 

@@ -1,14 +1,10 @@
 import Foundation
 
 fileprivate let photonHost = "i0.wp.com"
+fileprivate let secureHttpScheme = "https"
+fileprivate let wpComApiHost = "public-api.wordpress.com"
 
 extension URL {
-    /// Whether the URL is hosted at WPCom.
-    ///
-    func isHostedAtWPCom() -> Bool {
-        return host?.hasSuffix(".wordpress.com") ?? false
-    }
-
     /// Whether the URL is a Photon URL.
     ///
     fileprivate func isPhoton() -> Bool {
@@ -56,15 +52,17 @@ class MediaRequestAuthenticator {
 
         // We want to make sure we're never sending credentials
         // to a URL that's not safe.
-        guard url.isHostedAtWPCom() || url.isPhoton() else {
+        guard url.isHostedAtWPCom || url.isPhoton() else {
             let request = URLRequest(url: url)
             provide(request)
             return
         }
 
         switch host {
-        case .publicSite: fallthrough
-        case .publicWPComSite: fallthrough
+        case .publicSite:
+            fallthrough
+        case .publicWPComSite:
+            fallthrough
         case .privateSelfHostedSite:
             // The authentication for these is handled elsewhere
             let request = URLRequest(url: url)
@@ -118,7 +116,7 @@ class MediaRequestAuthenticator {
         }
 
         // Just in case, enforce HTTPs
-        components.scheme = "https"
+        components.scheme = secureHttpScheme
 
         guard let finalURL = components.url else {
             fail(Error.cannotCreatePrivateURL(components: components))
@@ -147,7 +145,7 @@ class MediaRequestAuthenticator {
         onComplete provide: @escaping (URLRequest) -> (),
         onFailure fail: @escaping (Error) -> ()) {
 
-        guard url.isHostedAtWPCom(),
+        guard url.isHostedAtWPCom,
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
                 provide(URLRequest(url: url))
                 return
@@ -162,7 +160,7 @@ class MediaRequestAuthenticator {
         let cookieJar = HTTPCookieStorage.shared
 
         // Just in case, enforce HTTPs
-        components.scheme = "https"
+        components.scheme = secureHttpScheme
 
         guard let finalURL = components.url else {
             fail(Error.cannotCreateAtomicURL(components: components))
@@ -218,8 +216,8 @@ class MediaRequestAuthenticator {
 
         let contentPath = components.path[wpContentRange.lowerBound ..< components.path.endIndex]
 
-        components.scheme = "https"
-        components.host = "public-api.wordpress.com"
+        components.scheme = secureHttpScheme
+        components.host = wpComApiHost
         components.path = "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file\(contentPath)"
 
         guard let finalURL = components.url else {

@@ -16,7 +16,7 @@ extension MediaHost {
             isAtomic: readerPostContentProvider.isAtomic(),
             siteID: readerPostContentProvider.siteID()?.intValue,
             failure: { error in
-                // We just associate a blog with the underlying error for simpler debugging.
+                // We just associate a ReaderPostContentProvider with the underlying error for simpler debugging.
                 failure(ReaderPostContentProviderError.baseInitializerError(
                     error: error,
                     readerPostContentProvider: readerPostContentProvider))
