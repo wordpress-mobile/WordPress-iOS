@@ -66,8 +66,27 @@ extension UIImageView {
                 usingRequest: request,
                 placeholderImage: placeholderImage,
                 success: { [weak self] (image) in
-                    self?.image = image
-                    self?.removePlaceholderBorder()
+                    guard let self = self else {
+                        return
+                    }
+
+                    // In `MediaRequesAuthenticator.authenticatedRequestForPrivateAtomicSiteThroughPhoton` we're
+                    // having to replace photon URLs for Atomic Private Sites, with a call to the Atomic Media Proxy
+                    // endpoint.  The downside of calling that endpoint is that it doesn't always return images of
+                    // the requested size.
+                    //
+                    // The following lines of code ensure that we resize the image to the default Site Icon size, to
+                    // ensure there is no UI breakage due to having larger images set here.
+                    //
+                    let expectedSize = CGSize(width: SiteIconDefaults.imageSize, height: SiteIconDefaults.imageSize)
+
+                    if image.size != expectedSize {
+                        self.image = image.resizedImage(with: .scaleAspectFill, bounds: expectedSize, interpolationQuality: .default)
+                    } else {
+                        self.image = image
+                    }
+
+                    self.removePlaceholderBorder()
             },
                 failure: { error -> () in
                     if let error = error {
