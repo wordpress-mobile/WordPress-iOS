@@ -20,6 +20,15 @@ struct TenorReponseData {
               "url": "https://tenor.com/x5jK.gif",
               "media": [
                 {
+                "nanogif": {
+                  "url": "https://media.tenor.com/images/b517c9429616233016d600633477ec25/tenor.gif",
+                  "dims": [
+                    160,
+                    90
+                  ],
+                  "preview": "https://media.tenor.com/images/62e0c5de3dcf4740c21a3ce44b316c94/raw",
+                  "size": 15256
+                },
                   "tinygif": {
                     "url": "https://media.tenor.com/images/65e9b4eaf8ba48d8f1ad3322b13533af/tenor.gif",
                     "dims": [
