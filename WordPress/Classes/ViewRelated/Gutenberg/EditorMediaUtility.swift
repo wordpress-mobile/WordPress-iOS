@@ -140,7 +140,7 @@ class EditorMediaUtility {
 
         if url.isFileURL {
             requestURL = url
-        } else if post.blog.isPrivateAtWPCom() {
+        } else if post.isPrivateAtWPCom() && url.isHostedAtWPCom {
             // private wpcom image needs special handling.
             // the size that WPImageHelper expects is pixel size
             size.width = size.width * scale
