@@ -187,26 +187,10 @@ class MediaThumbnailService: LocalCoreDataService {
                 onError(error)
             }
         }
-        if media.blog.isPrivateAtWPCom() {
-            let accountService = AccountService(managedObjectContext: self.managedObjectContext)
-            guard let authToken = accountService.defaultWordPressComAccount()?.authToken else {
-                // Don't have an auth token for some reason, return nothing.
-                onCompletion(nil)
-                return
-            }
-            DispatchQueue.main.async {
-                WPImageSource.shared().downloadImage(for: imageURL,
-                                                     authToken: authToken,
-                                                     withSuccess: inContextImageHandler,
-                                                     failure: inContextErrorHandler)
-            }
-        } else {
-            DispatchQueue.main.async {
-                WPImageSource.shared().downloadImage(for: imageURL,
-                                                     withSuccess: inContextImageHandler,
-                                                     failure: inContextErrorHandler)
-            }
-        }
+        
+        let download = ImageDownload(url: imageURL, blog: media.blog, onSuccess: inContextImageHandler, onFailure: inContextErrorHandler)
+        
+        download.start()
     }
 
     // MARK: - Helpers

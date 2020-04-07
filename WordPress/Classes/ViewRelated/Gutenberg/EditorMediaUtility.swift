@@ -28,11 +28,7 @@ final class ImageDownload: AsyncOperation {
             for: url,
             from: host,
             onComplete: { request in
-                ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
-                    guard let self = self else {
-                        return
-                    }
-
+                ImageDownloader.shared.downloadImage(for: request) { (image, error) in
                     self.state = .isFinished
 
                     DispatchQueue.main.async {
