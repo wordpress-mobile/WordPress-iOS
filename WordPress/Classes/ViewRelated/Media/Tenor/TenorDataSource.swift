@@ -4,7 +4,7 @@ import WPMediaPicker
 final class TenorDataSource: NSObject, WPMediaCollectionDataSource {
     fileprivate static let paginationThreshold = 10
 
-    fileprivate var gifMedia = [TenorMedia]()
+    fileprivate var tenorMedia = [TenorMedia]()
     var observers = [String: WPMediaChangesBlock]()
     private var dataLoader: TenorDataLoader?
 
@@ -21,7 +21,7 @@ final class TenorDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func clearSearch(notifyObservers shouldNotify: Bool) {
-        gifMedia.removeAll()
+        tenorMedia.removeAll()
         if shouldNotify {
             notifyObservers()
         }
@@ -60,16 +60,16 @@ final class TenorDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func numberOfAssets() -> Int {
-        return gifMedia.count
+        return tenorMedia.count
     }
 
     func media(at index: Int) -> WPMediaAsset {
         fetchMoreContentIfNecessary(index)
-        return gifMedia[index]
+        return tenorMedia[index]
     }
 
     func media(withIdentifier identifier: String) -> WPMediaAsset? {
-        return gifMedia.filter { $0.identifier() == identifier }.first
+        return tenorMedia.filter { $0.identifier() == identifier }.first
     }
 
     func registerChangeObserverBlock(_ callback: @escaping WPMediaChangesBlock) -> NSObjectProtocol {
@@ -180,18 +180,18 @@ extension TenorDataSource: TenorDataLoaderDelegate {
     }
 
     private func overwriteMedia(with media: [TenorMedia]) {
-        gifMedia = media
+        tenorMedia = media
         notifyObservers(incremental: false)
     }
 
     private func appendMedia(with media: [TenorMedia]) {
-        let currentMaxIndex = gifMedia.count
+        let currentMaxIndex = tenorMedia.count
         let newMaxIndex = currentMaxIndex + media.count - 1
 
         let isIncremental = currentMaxIndex != 0
         let insertedIndexes = IndexSet(integersIn: currentMaxIndex...newMaxIndex)
 
-        gifMedia.append(contentsOf: media)
+        tenorMedia.append(contentsOf: media)
         notifyObservers(incremental: isIncremental, inserted: insertedIndexes)
     }
 }
