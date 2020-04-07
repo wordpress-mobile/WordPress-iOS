@@ -32,14 +32,15 @@ extension TenorMedia {
     convenience init?(tenorGIF gif: TenorGIF) {
         let largeGif = gif.media.first { $0.gif != nil }?.gif
         let previewGif = gif.media.first { $0.tinyGIF != nil }?.tinyGIF
+        let thumbnailGif = gif.media.first { $0.nanoGIF != nil }?.nanoGIF
 
-        guard largeGif != nil, previewGif != nil else {
+        guard largeGif != nil, previewGif != nil, thumbnailGif != nil else {
             return nil
         }
 
         let images = TenorImageCollection(largeURL: largeGif!.url,
                                           previewURL: previewGif!.url,
-                                          staticThumbnailURL: previewGif!.url,
+                                          staticThumbnailURL: thumbnailGif!.url,
                                           largeSize: largeGif!.mediaSize)
 
         self.init(id: gif.id, name: gif.title ?? "", caption: "", images: images, date: gif.created)
