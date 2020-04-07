@@ -115,9 +115,9 @@ extension TenorMedia: ExportableAsset {
 
 // MARK: - MediaExternalAsset conformance
 
-//
 extension TenorMedia: MediaExternalAsset {
+    // The URL source for saving into user's media library as well as GIF preview
     var URL: URL {
-        return images.previewURL
+        return images.largeURL
     }
 }
