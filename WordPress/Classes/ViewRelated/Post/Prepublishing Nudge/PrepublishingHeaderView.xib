@@ -94,13 +94,26 @@
                         <constraint firstAttribute="height" constant="1" id="PaW-Rp-6In"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpW-l4-4fQ">
+                    <rect key="frame" x="189.33333333333334" y="45" width="35.333333333333343" height="20.333333333333329"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.opacity">
+                            <integer key="value" value="0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </label>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
                 <constraint firstAttribute="top" secondItem="U3e-kO-v2p" secondAttribute="top" id="6Jf-9O-ejp"/>
+                <constraint firstItem="SpW-l4-4fQ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="9Gd-VF-reY"/>
                 <constraint firstAttribute="bottom" secondItem="U3e-kO-v2p" secondAttribute="bottom" id="IsF-tS-X0B"/>
                 <constraint firstAttribute="trailing" secondItem="U3e-kO-v2p" secondAttribute="trailing" constant="20" id="LSI-AS-5M2"/>
                 <constraint firstAttribute="bottom" secondItem="FfF-E5-Fym" secondAttribute="bottom" id="QyB-Vo-bfq"/>
+                <constraint firstItem="SpW-l4-4fQ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="TlA-on-swr"/>
                 <constraint firstItem="U3e-kO-v2p" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="tyj-l1-rNT"/>
                 <constraint firstAttribute="trailing" secondItem="FfF-E5-Fym" secondAttribute="trailing" id="ufv-zd-CIh"/>
                 <constraint firstItem="FfF-E5-Fym" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="x0z-h5-7dj"/>
@@ -115,6 +128,7 @@
                 <outlet property="leadingConstraint" destination="tyj-l1-rNT" id="Qlz-fc-hJn"/>
                 <outlet property="publishingToLabel" destination="ZFo-FV-nl8" id="bSu-i4-xEU"/>
                 <outlet property="separator" destination="FfF-E5-Fym" id="63L-2I-pWd"/>
+                <outlet property="titleLabel" destination="SpW-l4-4fQ" id="W8A-ah-6BN"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="-229.6875"/>
         </view>
