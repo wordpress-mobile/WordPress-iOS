@@ -159,4 +159,5 @@ enum MediaSource {
     case camera
     case giphy
     case mediaEditor
+    case tenor
 }

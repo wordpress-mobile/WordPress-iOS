@@ -5,13 +5,16 @@ import WPMediaPicker
 final class MediaLibraryMediaPickingCoordinator {
     private let stockPhotos = StockPhotosPicker()
     private var giphy = GiphyPicker()
+    private var tenor = TenorPicker()
     private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
-    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & GiphyPickerDelegate) {
+    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate
+                 & GiphyPickerDelegate & TenorPickerDelegate) {
         stockPhotos.delegate = delegate
         mediaLibrary.delegate = delegate
         giphy.delegate = delegate
+        tenor.delegate = delegate
     }
 
     func present(context: MediaPickingContext) {
@@ -34,6 +37,10 @@ final class MediaLibraryMediaPickingCoordinator {
 
         if blog.supports(.stockPhotos) {
             menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
+        }
+
+        if FeatureFlag.tenor.enabled {
+            menuAlert.addAction(tenorAction(origin: origin, blog: blog))
         }
 
         menuAlert.addAction(otherAppsAction(origin: origin, blog: blog))
@@ -71,6 +78,12 @@ final class MediaLibraryMediaPickingCoordinator {
         })
     }
 
+    private func tenorAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
+        return UIAlertAction(title: .tenor, style: .default, handler: { [weak self] action in
+            self?.showTenor(origin: origin, blog: blog)
+        })
+    }
+
     private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin, blog: blog)
@@ -98,6 +111,17 @@ final class MediaLibraryMediaPickingCoordinator {
 
         giphy.presentPicker(origin: origin, blog: blog)
     }
+
+    private func showTenor(origin: UIViewController, blog: Blog) {
+        let delegate = tenor.delegate
+
+        // Create a new TenorPicker each time so we don't save state
+        tenor = TenorPicker()
+        tenor.delegate = delegate
+
+        tenor.presentPicker(origin: origin, blog: blog)
+    }
+
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {
         let docTypes = blog.allowedTypeIdentifiers
