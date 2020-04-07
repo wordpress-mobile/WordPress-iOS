@@ -6,6 +6,7 @@ struct TenorPageable: Pageable {
 
     static let defaultPageSize = 40
     static let defaultPageIndex = 0
+    static let defaultPosition: String? = nil
 
     func next() -> Pageable? {
         guard position != nil else {
@@ -29,7 +30,7 @@ extension TenorPageable {
     ///
     /// - Returns: A TenorPageable configured with the default page size and the initial page handle
     static func first() -> TenorPageable {
-        return TenorPageable(itemsPerPage: defaultPageSize, position: nil, currentPageIndex: defaultPageIndex)
+        return TenorPageable(itemsPerPage: defaultPageSize, position: defaultPosition, currentPageIndex: defaultPageIndex)
     }
 }
 

@@ -40,15 +40,3 @@ struct TenorService {
         }
     }
 }
-
-// Allows us to mock out the pagination in tests
-protocol TenorPaginationType {
-    /// Total Result Count.
-    var totalCount: Int { get }
-
-    /// Actual Result Count (not always == limit)
-    var count: Int { get }
-
-    /// Offset to start next set of results.
-    var offset: Int { get }
-}
