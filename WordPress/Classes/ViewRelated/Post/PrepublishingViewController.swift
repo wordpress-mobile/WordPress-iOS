@@ -15,6 +15,11 @@ private enum PrepublishingIdentifier {
 class PrepublishingViewController: UITableViewController {
     let post: Post
 
+    lazy var header: PrepublishingHeaderView = {
+         let header = PrepublishingHeaderView.loadFromNib()
+         return header
+     }()
+
     private lazy var publishSettingsViewModel: PublishSettingsViewModel = {
         return PublishSettingsViewModel(post: post)
     }()
@@ -53,11 +58,30 @@ class PrepublishingViewController: UITableViewController {
 
         title = Constants.title
 
+        header.configure(post.blog)
         setupPublishButton()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return header
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return Constants.headerHeight
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -227,5 +251,6 @@ class PrepublishingViewController: UITableViewController {
         static let title = NSLocalizedString("Publishing To", comment: "Label that describes in which blog the user is publishing to")
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
+        static let headerHeight: CGFloat = 80
     }
 }
