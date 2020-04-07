@@ -475,7 +475,7 @@
     return [self.blog supports:BlogFeatureStats] && [self hasRemote];
 }
 
-- (BOOL)isPrivate
+- (BOOL)isPrivateAtWPCom
 {
     return self.blog.isPrivateAtWPCom;
 }
