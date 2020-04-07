@@ -233,3 +233,48 @@ import WordPressShared
         return AccountHelper.isDotcomAvailable()
     }
 }
+
+/// Reader tab items
+extension ReaderHelpers {
+    /// Display title for topics that do not use the default title
+    class func displayTitle(for topic: ReaderAbstractTopic) -> String {
+        if topicIsFollowing(topic) {
+            return NSLocalizedString("Following", comment: "Title of the Following Reader tab")
+        } else if topicIsLiked(topic) {
+            return NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
+        }
+        return topic.title
+    }
+    /// Sorts the default tabs according to the order [Following, Discover, Likes], and adds the Saved tab
+    class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
+        var mutableItems = items
+        mutableItems.sort {
+            guard let leftTopic = $0.topic, let rightTopic = $1.topic else {
+                return true
+            }
+            // first item: Following
+            if topicIsFollowing(leftTopic) {
+                return true
+            } else if topicIsFollowing(rightTopic) {
+                return false
+            // second item: Discover
+            } else if topicIsDiscover(leftTopic) {
+                return true
+            } else if topicIsDiscover(rightTopic) {
+                return false
+            // third item: Likes
+            } else if topicIsLiked(leftTopic) {
+                return true
+            } else if topicIsLiked(rightTopic) {
+                return false
+            // any other items: sort them alphabetically, grouped by topic type
+            } else if leftTopic.type == rightTopic.type {
+                return leftTopic.title < rightTopic.title
+            }
+            return true
+        }
+        // fourth item: Saved. It's manually inserted after the sorting
+        mutableItems.insert(ReaderTabItem(title: NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")), at: 3)
+        return mutableItems
+    }
+}

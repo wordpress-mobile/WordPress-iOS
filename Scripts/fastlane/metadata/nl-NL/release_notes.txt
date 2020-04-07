@@ -1,1 +1,15 @@
-Even een paar snelle dingen deze week, omdat er belangrijkere zaken aan de gang zijn in de wereld. We hebben een probleem met bericht-instellingen opgelost, zodat de datums van berichten die direct worden gepubliceerd correct worden getoond en we hebben een paar wijzigingen onder de motorkap gedaan om de snelheid en betrouwbaarheid in het algemeen te verbeteren.
+Nieuwe blokken! Welkom bij het blok Nieuwste berichten, waar je je nieuwe content kunt laten opvallen in berichten en op pagina's.
+
+Wanneer je een nieuwe pagina aanmaakt, laten we je een paar sjablonen zien. Kies er een en wij voegen dan alle benodigde blokken toe aan je pagina zodat je snel aan de slag kunt gaan.
+
+We hebben een paar problemen met de blok-editor verholpen. De app zou nu niet meer moeten crashen wanneer je HTML-content plakt en er zullen geen randen van citaatblokken meer ontbreken in de Nachtmodus.
+
+Als je voorheen berichten inplande voor publicatie, werden ze weergegeven als 'gepland' in plaats van als 'gepubliceerd'. Dat probleem is opgelost, net als het probleem waarbij data onjuist werden weergegeven als de tijdzone van je site niet hetzelfde was als de tijdzone van je apparaat.
+
+We hebben UI-inconsistenties opgemerkt in de Nachtmodus en met de Reader-werkbalk.
+
+Je kunt @-verwijzingen gebruiken wanneer je reacties schrijft in de weergave op volledig scherm.
+
+Soms werden e-mails om aan te melden en in te loggen via magische links naar je map met ongewenste e-mail verplaatst. Daarom hebben we een opmerking aan het bevestigingsscherm toegevoegd waarin staat dat je je mappen Spam/Ongewenste e-mail moet controleren als je de e-mail niet snel ontvangt.
+
+Blijf veilig allemaal.

@@ -388,8 +388,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (ReaderTabViewController *)readerTabViewController
 {
-    ReaderTabView *readerTabView = [[ReaderTabView alloc] init];
-    ReaderTabViewController *readerTabViewController = [[ReaderTabViewController alloc] initWithView:readerTabView];
+    ReaderTabViewController *readerTabViewController = [self makeReaderTabViewController];
     return readerTabViewController;
 }
 
