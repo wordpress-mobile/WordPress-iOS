@@ -2,6 +2,10 @@
 import XCTest
 
 class MockContentProvider: NSObject, ReaderPostContentProvider {
+    func siteID() -> NSNumber {
+        return NSNumber(value: 15546)
+    }
+
     func titleForDisplay() -> String! {
         return "A title"
     }
@@ -89,6 +93,10 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
 
     func isLikesEnabled() -> Bool {
         return true
+    }
+
+    func isAtomic() -> Bool {
+        return false
     }
 
     func isPrivate() -> Bool {
