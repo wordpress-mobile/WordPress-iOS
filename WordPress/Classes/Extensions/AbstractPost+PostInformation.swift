@@ -1,7 +1,7 @@
 
 extension AbstractPost: ImageSourceInformation {
     var isPrivateOnWPCom: Bool {
-        return isPrivate() && blog.isHostedAtWPcom
+        return isPrivateAtWPCom()
     }
 
     var isSelfHostedWithCredentials: Bool {
