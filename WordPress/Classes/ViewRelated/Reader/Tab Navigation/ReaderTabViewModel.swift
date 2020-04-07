@@ -14,7 +14,7 @@ class ReaderTabViewModel {
         }
         tabSelectionCallback?(topic)
     }
-    
+
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
     func performSearch() { }
 

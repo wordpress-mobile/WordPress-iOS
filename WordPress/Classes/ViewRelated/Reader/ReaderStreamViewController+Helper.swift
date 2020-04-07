@@ -45,7 +45,7 @@ extension ReaderStreamViewController {
     }
 
     func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
-        
+
         if ReaderHelpers.topicIsFollowing(topic), !FeatureFlag.newReaderNavigation.enabled {
             return Bundle.main.loadNibNamed("ReaderFollowedSitesStreamHeader", owner: nil, options: nil)!.first as! ReaderFollowedSitesStreamHeader
         }
