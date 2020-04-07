@@ -14,17 +14,22 @@ class PrepublishingNavigationController: UINavigationController {
         return (viewControllers.first { $0 is PrepublishingViewController } as? PrepublishingViewController)?.post.blog
     }()
 
-    // In iOS 13+ we need to take into account the navigationBar frame height
-    // iOS 12 or 11 that's not needed
-    lazy var insets: UIEdgeInsets = {
+
+    private func updateAdditionalAreaInsets() {
         var top: CGFloat = 0
+
+        // In iOS 13+ we need to take into account the navigationBar frame height
+        // iOS 12 or 11 that's not needed
         if #available(iOS 13, *) {
             top = Constants.navigationHeaderHeight - navigationBar.frame.height
         } else {
             top = Constants.navigationHeaderHeight
         }
-        return UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
-    }()
+
+        let insets = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
+
+        additionalSafeAreaInsets = insets
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +56,11 @@ class PrepublishingNavigationController: UINavigationController {
         header.configure(blog)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateAdditionalAreaInsets()
+    }
+
     private func configureNavigationBar() {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
@@ -72,7 +82,6 @@ class PrepublishingNavigationController: UINavigationController {
             header.rightAnchor.constraint(equalTo: navigationBar.rightAnchor),
             header.heightAnchor.constraint(equalToConstant: Constants.navigationHeaderHeight)
         ])
-        additionalSafeAreaInsets = insets
     }
 
     private enum Constants {
@@ -109,7 +118,7 @@ extension PrepublishingNavigationController: PrepublishingHeaderViewDelegate {
 
 extension PrepublishingNavigationController: DrawerPresentable {
     var expandedHeight: DrawerHeight {
-        return .maxHeight
+        return .topMargin(20)
     }
 
     var collapsedHeight: DrawerHeight {

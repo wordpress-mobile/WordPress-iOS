@@ -21,12 +21,26 @@ public enum DrawerHeight {
     case hidden
 }
 
+public enum DrawerWidth {
+    // Fills the whole screen width
+    case maxWidth
+
+    // When in compact mode, fills a percentage of the screen
+    case percentage(CGFloat)
+
+    // Width will be equal to the the content height value
+    case contentWidth(CGFloat)
+}
+
 public protocol DrawerPresentable: AnyObject {
     /// The height of the drawer when it's in the expanded position
     var expandedHeight: DrawerHeight { get }
 
     /// The height of the drawer when it's in the collapsed position
     var collapsedHeight: DrawerHeight { get }
+
+    /// The width of the Drawer in compact screen
+    var compactWidth: DrawerWidth { get }
 
     /// Whether or not the user is allowed to swipe to switch between the expanded and collapsed position
     var allowsUserTransition: Bool { get }
@@ -50,6 +64,7 @@ private enum Constants {
     enum Defaults {
         static let expandedHeight: DrawerHeight = .topMargin(20)
         static let collapsedHeight: DrawerHeight = .contentHeight(0)
+        static let compactWidth: DrawerWidth = .percentage(0.66)
 
         static let allowsUserTransition: Bool = true
         static let allowsTapToDismiss: Bool = true
@@ -71,6 +86,10 @@ public extension DrawerPresentable where Self: UIViewController {
 
     var collapsedHeight: DrawerHeight {
         return Constants.Defaults.collapsedHeight
+    }
+
+    var compactWidth: DrawerWidth {
+        return Constants.Defaults.compactWidth
     }
 
     var scrollableView: UIScrollView? {
@@ -113,10 +132,37 @@ public class DrawerPresentationController: FancyAlertPresentationController {
 
         var frame = containerView.frame
         let y = collapsedYPosition
+        var width: CGFloat = containerView.bounds.width - (containerView.safeAreaInsets.left + containerView.safeAreaInsets.right)
 
         frame.origin.y = y
 
+        /// If we're in a compact vertical size class, constrain the width a bit more so it doesn't get overly wide.
+        if let widthForCompactSizeClass = presentableViewController?.compactWidth,
+            traitCollection.verticalSizeClass == .compact {
+
+            switch widthForCompactSizeClass {
+            case .percentage(let percentage):
+                width = width * percentage
+            case .contentWidth(let givenWidth):
+                width = givenWidth
+            case .maxWidth:
+                break
+            }
+        }
+        frame.size.width = width
+
+        /// If we constrain the width, this centers the view by applying the appropriate insets based on width
+        frame.origin.x = ((containerView.bounds.width - width) / 2)
+
         return frame
+    }
+
+    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { _ in
+            self.presentedView?.frame = self.frameOfPresentedViewInContainerView
+            self.transition(to: self.currentPosition)
+        }, completion: nil)
+        super.viewWillTransition(to: size, with: coordinator)
     }
 
     /// Returns the current position of the drawer
@@ -160,6 +206,11 @@ public class DrawerPresentationController: FancyAlertPresentationController {
         super.presentationTransitionWillBegin()
 
         configureScrollViewInsets()
+    }
+
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        transition(to: currentPosition)
     }
 
     public override func presentationTransitionDidEnd(_ completed: Bool) {

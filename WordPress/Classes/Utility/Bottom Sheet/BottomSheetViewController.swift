@@ -147,6 +147,10 @@ extension BottomSheetViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - DrawerDelegate
 extension BottomSheetViewController: DrawerPresentable {
+    var compactWidth: DrawerWidth {
+        childViewController?.compactWidth ?? .percentage(0.66)
+    }
+
     var expandedHeight: DrawerHeight {
         return childViewController?.expandedHeight ?? .maxHeight
     }
