@@ -42,17 +42,6 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         delegate?.backButtonTapped()
     }
 
-    // MARK: - Title
-
-    func setTitle(_ title: String?, transitionDuration: TimeInterval = 0.2) {
-        UIView.transition(with: publishingToLabel,
-                          duration: transitionDuration,
-                          options: .transitionCrossDissolve,
-                          animations: {
-            self.publishingToLabel.text = title?.uppercased()
-        })
-    }
-
     // MARK: - Style
 
     override func awakeFromNib() {
