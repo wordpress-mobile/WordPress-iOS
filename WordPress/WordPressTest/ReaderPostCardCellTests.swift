@@ -2,8 +2,8 @@
 import XCTest
 
 class MockContentProvider: NSObject, ReaderPostContentProvider {
-    func siteID() -> NSNumber! {
-        return NSNumber(value: 15567)
+    func siteID() -> NSNumber {
+        return NSNumber(value: 15546)
     }
 
     func titleForDisplay() -> String! {
