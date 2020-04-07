@@ -7,8 +7,10 @@ struct TenorGIFCollection: Decodable {
     let gif: TenorMediaObject? // The lagest size
     let mediumGIF: TenorMediaObject?
     let tinyGIF: TenorMediaObject?
+    let nanoGIF: TenorMediaObject?
 
     enum CodingKeys: String, CodingKey {
+        case nanoGIF = "nanogif"
         case tinyGIF = "tinygif"
         case gif
         case mediumGIF = "mediumgif"
