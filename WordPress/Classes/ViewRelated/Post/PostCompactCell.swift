@@ -15,10 +15,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var separator: UIView!
 
-    enum Error: Swift.Error {
-        case cannotCreateMediaHostFromPost(post: AbstractPost)
-    }
-
     private weak var actionSheetDelegate: PostActionSheetDelegate?
 
     lazy var imageLoader: ImageLoader = {
