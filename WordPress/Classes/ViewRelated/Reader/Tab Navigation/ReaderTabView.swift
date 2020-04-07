@@ -17,7 +17,7 @@ class ReaderTabView: UIView {
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
         buttonsStackView = UIStackView()
-        tabBar = FilterTabBar(pinLeadingEdgeToSafeArea: false)
+        tabBar = FilterTabBar()
         filterButton = PostMetaButton(type: .custom)
         resetFilterButton = UIButton(type: .custom)
         settingsButton = UIButton(type: .custom)

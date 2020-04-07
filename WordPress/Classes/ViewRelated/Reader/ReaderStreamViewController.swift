@@ -444,12 +444,12 @@ import WordPressFlux
         }
 
         tableView.tableHeaderView = header
-
-        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-        header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
-        header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
-        header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
-
+        if !FeatureFlag.newReaderNavigation.enabled {
+            // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
+            header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+            header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
+            header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+        }
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }

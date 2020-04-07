@@ -175,8 +175,6 @@ class FilterTabBar: UIControl {
         }
     }
 
-    private var pinLeadingEdgeToSafeArea: Bool
-
     enum TabSizingStyle {
         /// The tabs will fill the space available to the filter bar,
         /// with all tabs having equal widths. Tabs will not scroll.
@@ -200,14 +198,12 @@ class FilterTabBar: UIControl {
 
     // MARK: - Initialization
     required init?(coder aDecoder: NSCoder) {
-        self.pinLeadingEdgeToSafeArea = true
         super.init(coder: aDecoder)
 
         commonInit()
     }
 
-    init(pinLeadingEdgeToSafeArea: Bool = true) {
-        self.pinLeadingEdgeToSafeArea = pinLeadingEdgeToSafeArea
+    init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         commonInit()
@@ -235,7 +231,7 @@ class FilterTabBar: UIControl {
         ])
 
         scrollView.addSubview(stackView)
-
+        stackView.isLayoutMarginsRelativeArrangement = true
         // We will manually constrain the stack view to the content layout guide
         scrollView.contentInsetAdjustmentBehavior = .never
 
@@ -321,9 +317,6 @@ class FilterTabBar: UIControl {
             stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: padding),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
         ]
-        if pinLeadingEdgeToSafeArea {
-            stackViewEdgeConstraints.append(scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor))
-        }
     }
 
     private func activateTabSizingConstraints() {
