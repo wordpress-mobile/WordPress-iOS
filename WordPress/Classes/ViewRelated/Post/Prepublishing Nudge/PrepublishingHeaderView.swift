@@ -9,7 +9,6 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     @IBOutlet weak var blogImageView: UIImageView!
     @IBOutlet weak var publishingToLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var blogTitleLabel: UILabel!
     @IBOutlet weak var backButtonView: UIView!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
@@ -41,26 +40,6 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     @IBAction func backButtonTapped(_ sender: Any) {
         delegate?.backButtonTapped()
-    }
-
-    // MARK: - Title
-
-    func setTitle(_ title: String?, transitionDuration: TimeInterval = 0.2) {
-        titleLabel.text = title
-    }
-
-    func showTitle() {
-        titleLabel.layer.opacity = 1
-        blogTitleLabel.layer.opacity = 0
-        publishingToLabel.layer.opacity = 0
-        blogImageView.layer.opacity = 0
-    }
-
-    func hideTitle() {
-        titleLabel.layer.opacity = 0
-        blogTitleLabel.layer.opacity = 1
-        publishingToLabel.layer.opacity = 1
-        blogImageView.layer.opacity = 1
     }
 
     // MARK: - Style
