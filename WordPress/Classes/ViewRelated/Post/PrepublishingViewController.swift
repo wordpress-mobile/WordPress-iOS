@@ -56,7 +56,7 @@ class PrepublishingViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = Constants.title
+        title = ""
 
         header.configure(post.blog)
         setupPublishButton()
@@ -248,7 +248,6 @@ class PrepublishingViewController: UITableViewController {
         static let reuseIdentifier = "wpTableViewCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 20, left: 15, bottom: 20, right: 15)
         static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
-        static let title = NSLocalizedString("Publishing To", comment: "Label that describes in which blog the user is publishing to")
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
         static let headerHeight: CGFloat = 80
