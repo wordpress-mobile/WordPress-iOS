@@ -145,11 +145,12 @@ public class DrawerPresentationController: FancyAlertPresentationController {
                 break
             }
         }
+        frame.size.width = width
 
         /// If we constrain the width, this centers the view by applying the appropriate insets based on width
-        let leftInset: CGFloat = ((containerView.bounds.width - width) / 2)
+        frame.origin.x = ((containerView.bounds.width - width) / 2)
 
-        return CGRect(x: leftInset, y: frame.origin.y, width: width, height: frame.height)
+        return frame
     }
 
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
