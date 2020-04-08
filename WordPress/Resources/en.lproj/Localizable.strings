@@ -1,9 +1,3 @@
-/* Button title. Tapping begins log in using Google. There are leading spaces to separate it from the Google logo. */
-"  Continue with Google" = "  Continue with Google";
-
-/* Button title. Tapping begins log in using Apple. There is a leading space to separate it from the Apple logo. */
-" Continue with Apple" = " Continue with Apple";
-
 /* 'AUTHOR on POST TITLE' in a comment list */
 "%1$@ on %2$@" = "%1$@ on %2$@";
 
@@ -211,9 +205,6 @@
 /* System notification displayed to the user when a single media item has uploaded successfully. */
 "1 file successfully uploaded" = "1 file successfully uploaded";
 
-/* Site creation. Step 2. Screen title */
-"1 of 3" = "1 of 3";
-
 /* Alert displayed to the user when a single post has been successfully uploaded. */
 "1 post uploaded" = "1 post uploaded";
 
@@ -230,10 +221,7 @@
 "1080p" = "1080p";
 
 /* Site creation. Step 2. Screen title */
-"2 of 3" = "2 of 3";
-
-/* Site creation. Step 3. Screen title */
-"3 of 3" = "3 of 3";
+"2 of 2" = "2 of 2";
 
 /* Indicates a video will be resized to 640x480 when uploaded. */
 "480p" = "480p";
@@ -298,8 +286,7 @@
 /* Age between dates equaling one year. */
 "a year" = "a year";
 
-/* About this app (information page title)
-   translators: title for \"About\" page template */
+/* About this app (information page title) */
 "About" = "About";
 
 /* My Profile 'About me' label */
@@ -776,6 +763,9 @@
    Previous web page */
 "Back" = "Back";
 
+/* No comment provided by engineer. */
+"Background Opacity" = "Background Opacity";
+
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Bar Chart depicting Comments for the selected period.";
 
@@ -793,9 +783,6 @@
 
 /* This description is used to set the accessibility label for the chart in the Insights view. */
 "Bar Chart depicting visitors for your latest post" = "Bar Chart depicting visitors for your latest post";
-
-/* Create site, step 3. Select basic information. Title */
-"Basic information" = "Basic information";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
 "Be the first to leave a comment." = "Be the first to leave a comment.";
@@ -1303,9 +1290,6 @@
 /* The menu item to tap during a guided tour. */
 "connections" = "connections";
 
-/* translators: title for \"Contact\" page template */
-"Contact" = "Contact";
-
 /* Support email label. */
 "Contact Email" = "Contact Email";
 
@@ -1336,6 +1320,12 @@
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Continue reading";
+
+/* Button title. Tapping begins log in using Apple. */
+"Continue with Apple" = "Continue with Apple";
+
+/* Button title. Tapping begins log in using Google. */
+"Continue with Google" = "Continue with Google";
 
 /* Title of a Quick Start Tour */
 "Continue with site setup" = "Continue with site setup";
@@ -1507,9 +1497,6 @@
 
 /* Title of the cell displaying status of a rewind in progress */
 "Currently restoring your site" = "Currently restoring your site";
-
-/* Placeholder for new site types when creating a new site */
-"Custom category" = "Custom category";
 
 /* Customize button that appears in Theme Browser Header
    The menu item to tap during a guided tour.
@@ -1809,9 +1796,6 @@
    Title of the drafts header in search list. */
 "Drafts" = "Drafts";
 
-/* Site creation. Select focus of your business, search field placeholder */
-"e.g. Landscaping, Consulting... etc." = "e.g. Landscaping, Consulting... etc.";
-
 /* Used for Geo-tagging posts by latitude and longitude. Basic form. */
 "East" = "East";
 
@@ -1830,6 +1814,9 @@
 
 /* No comment provided by engineer. */
 "Edit Comment" = "Edit Comment";
+
+/* No comment provided by engineer. */
+"Edit cover media" = "Edit cover media";
 
 /* IP Address or Range Edition Title */
 "Edit IP or IP Range" = "Edit IP or IP Range";
@@ -2171,6 +2158,9 @@
 /* The password manager button in login pages. The button opens a dialog showing which password manager to use (e.g. 1Password, LastPass).  */
 "Fill with password manager" = "Fill with password manager";
 
+/* Title of the filter button in the Reader */
+"Filter" = "Filter";
+
 /* Description of a Quick Start Tour */
 "Find sites that speak to you, and follow them to get updates when they publish." = "Find sites that speak to you, and follow them to get updates when they publish.";
 
@@ -2215,6 +2205,7 @@
 "Followers" = "Followers";
 
 /* Accessibility label for following buttons.
+   Title of the Following Reader tab
    User is following the blog.
    Verb. Button title. The user is following a blog. */
 "Following" = "Following";
@@ -2761,6 +2752,7 @@
    Noun. Button title.  Tap to like a comment.
    Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
+   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Likes";
 
@@ -3076,6 +3068,9 @@
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
+/* No comment provided by engineer. */
+"Minimum height in pixels" = "Minimum height in pixels";
+
 /* Title for the mobile web preview */
 "Mobile" = "Mobile";
 
@@ -3188,12 +3183,6 @@
 /* No comment provided by engineer. */
 "Navigate Up" = "Navigate Up";
 
-/* Site creation. Navigates to the next step */
-"Navigates to the next step saving changes" = "Navigates to the next step saving changes";
-
-/* Site creation. Navigates to the next step */
-"Navigates to the next step without making changes" = "Navigates to the next step without making changes";
-
 /* A button title. */
 "Need help finding your site address?" = "Need help finding your site address?";
 
@@ -3243,8 +3232,7 @@
 /* Sort Order */
 "Newest first" = "Newest first";
 
-/* Button to progress to the next step
-   Next action on share extension editor screen.
+/* Next action on share extension editor screen.
    Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
@@ -4514,7 +4502,8 @@
 /* Body text of alert informing users about the Reader Save for Later feature. */
 "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices." = "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.";
 
-/* Title of action button for a Reader post that has been saved to read later. */
+/* Title of action button for a Reader post that has been saved to read later.
+   Title of the Saved Reader Tab */
 "Saved" = "Saved";
 
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
@@ -4736,6 +4725,7 @@
 
 /* Button label to share a post
    Button label to share a web page
+   Share the post.
    Spoken accessibility label
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Share";
@@ -4922,8 +4912,7 @@
 "Size" = "Size";
 
 /* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Button to progress to the next step */
+   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour. */
 "Skip" = "Skip";
 
 /* Label for button that will allow the user to skip all items in the Quick Start checklist */
@@ -5192,7 +5181,6 @@
 "Tag already exists" = "Tag already exists";
 
 /* Label for tagline blog setting
-   Site info. Tagline
    Title for screen that show tagline editor */
 "Tagline" = "Tagline";
 
@@ -5309,9 +5297,6 @@
 
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Tell us a bit about you.";
-
-/* Create site, step 3. Select basic information. Subtitle */
-"Tell us more about the site you are creating." = "Tell us more about the site you are creating.";
 
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Tell us what kind of site you'd like to make";
@@ -5436,9 +5421,6 @@
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "The specified user cannot be found. Please, verify if it's correctly spelt.";
-
-/* Site info. Table footer. */
-"The tagline is a short line of text shown right below the title." = "The tagline is a short line of text shown right below the title.";
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "The URL is missing a valid host.";
@@ -6439,9 +6421,6 @@
 /* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
 "We'll submit your post for review when your device is back online." = "We'll submit your post for review when your device is back online.";
 
-/* Create site, step 2. Select focus of the business. Subtitle */
-"We'll use your answer to add sections to your website." = "We'll use your answer to add sections to your website.";
-
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "We're doing the final setup—almost done…";
 
@@ -6501,9 +6480,6 @@
 
 /* Title of section that contains plugins' change log */
 "What's New" = "What's New";
-
-/* Create site, step 2. Select focus of the business. Title */
-"What's the focus of your business?" = "What's the focus of your business?";
 
 /* Post Signup Interstitial Subtitle Text */
 "Whatever you want to create or share, we'll help you do it right here." = "Whatever you want to create or share, we'll help you do it right here.";
@@ -6915,4 +6891,5 @@
 
 /* Item 2 of delete screen section listing things that will be deleted. */
 "• Users & Authors" = "• Users & Authors";
+
 
