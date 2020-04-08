@@ -1841,7 +1841,6 @@
 		E185474E1DED8D8800D875D7 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E185474D1DED8D8800D875D7 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E18549D9230EED73003C620E /* BlogService+Deduplicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18549D8230EED73003C620E /* BlogService+Deduplicate.swift */; };
 		E18549DB230FBFEF003C620E /* BlogServiceDeduplicationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18549DA230FBFEF003C620E /* BlogServiceDeduplicationTests.swift */; };
-		E1928B2E1F8369F100E076C8 /* WebViewAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1928B2D1F8369F100E076C8 /* WebViewAuthenticatorTests.swift */; };
 		E192E78C22EF453C008D725D /* WordPress-87-88.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E192E78B22EF453C008D725D /* WordPress-87-88.xcmappingmodel */; };
 		E19B17AE1E5C6944007517C6 /* BasePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19B17AD1E5C6944007517C6 /* BasePost.swift */; };
 		E19B17B01E5C69A5007517C6 /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19B17AF1E5C69A5007517C6 /* NSManagedObject.swift */; };
@@ -4343,7 +4342,6 @@
 		E1874BFE161C5DBC0058BDC4 /* WordPress 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 7.xcdatamodel"; sourceTree = "<group>"; };
 		E18D8AE21397C51A00000861 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E18D8AE41397C54E00000861 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1928B2D1F8369F100E076C8 /* WebViewAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAuthenticatorTests.swift; sourceTree = "<group>"; };
 		E192E78B22EF453C008D725D /* WordPress-87-88.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-87-88.xcmappingmodel"; sourceTree = "<group>"; };
 		E1939C671B15B4D2001AFEF7 /* WordPress 30.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 30.xcdatamodel"; sourceTree = "<group>"; };
 		E19853331755E461001CC6D5 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -7354,7 +7352,6 @@
 				93A379EB19FFBF7900415023 /* KeychainTest.m */,
 				1759F1711FE017F20003EC81 /* QueueTests.swift */,
 				1797373620EBAA4100377B4E /* RouteMatcherTests.swift */,
-				E1928B2D1F8369F100E076C8 /* WebViewAuthenticatorTests.swift */,
 				5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */,
 				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
 				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
@@ -13390,7 +13387,6 @@
 				D821C81B21003AE9002ED995 /* FormattableContentGroupTests.swift in Sources */,
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
 				400A2C932217B463000A8A59 /* ReferrerStatsRecordValueTests.swift in Sources */,
-				E1928B2E1F8369F100E076C8 /* WebViewAuthenticatorTests.swift in Sources */,
 				73178C2921BEE09300E37C9A /* SiteSegmentsStepTests.swift in Sources */,
 				08F8CD311EBD2A960049D0C0 /* MediaImageExporterTests.swift in Sources */,
 				400A2C912217B308000A8A59 /* CountryStatsRecordValueTests.swift in Sources */,
