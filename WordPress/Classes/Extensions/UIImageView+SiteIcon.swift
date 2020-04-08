@@ -1,5 +1,5 @@
+import AutomatticTracks
 import Foundation
-
 
 /// UIImageView Helper Methods that allow us to download a SiteIcon, given a website's "Icon Path"
 ///
@@ -51,6 +51,49 @@ extension UIImageView {
         downloadImage(from: siteIconURL, placeholderImage: placeholderImage)
     }
 
+    /// Downloads a SiteIcon image, using a specified request.
+    ///
+    /// - Parameters:
+    ///     - request: the request for the SiteIcon.
+    ///     - placeholderImage: Yes. It's the "place holder image".
+    ///
+    private func downloadSiteIcon(
+        with request: URLRequest,
+        placeholderImage: UIImage?) {
+
+        downloadImage(
+            usingRequest: request,
+            placeholderImage: placeholderImage,
+            success: { [weak self] (image) in
+                guard let self = self else {
+                    return
+                }
+
+                // In `MediaRequesAuthenticator.authenticatedRequestForPrivateAtomicSiteThroughPhoton` we're
+                // having to replace photon URLs for Atomic Private Sites, with a call to the Atomic Media Proxy
+                // endpoint.  The downside of calling that endpoint is that it doesn't always return images of
+                // the requested size.
+                //
+                // The following lines of code ensure that we resize the image to the default Site Icon size, to
+                // ensure there is no UI breakage due to having larger images set here.
+                //
+                let expectedSize = CGSize(width: SiteIconDefaults.imageSize, height: SiteIconDefaults.imageSize)
+
+                if image.size != expectedSize {
+                    self.image = image.resizedImage(with: .scaleAspectFill, bounds: expectedSize, interpolationQuality: .default)
+                } else {
+                    self.image = image
+                }
+
+                self.removePlaceholderBorder()
+        },
+            failure: { error -> () in
+                if let error = error {
+                    CrashLogging.logError(error)
+                }
+        })
+    }
+
 
     /// Downloads the SiteIcon Image, associated to a given Blog. This method will attempt to optimize the URL, so that
     /// the download Image Size matches `SiteIconDefaults.imageSize`.
@@ -66,17 +109,20 @@ extension UIImageView {
             return
         }
 
-        let request: URLRequest
-        if blog.isPrivate(), PrivateSiteURLProtocol.urlGoes(toWPComSite: siteIconURL) {
-            request = PrivateSiteURLProtocol.requestForPrivateSite(from: siteIconURL)
-        } else {
-            request = URLRequest(url: siteIconURL)
+        let host = MediaHost(with: blog) { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
         }
 
-        downloadImage(usingRequest: request, placeholderImage: placeholderImage, success: { [weak self] (image) in
-            self?.image = image
-            self?.removePlaceholderBorder()
-        }, failure: nil)
+        let mediaRequestAuthenticator = MediaRequestAuthenticator()
+        mediaRequestAuthenticator.authenticatedRequest(
+            for: siteIconURL,
+            from: host,
+            onComplete: { [weak self] request in
+                self?.downloadSiteIcon(with: request, placeholderImage: placeholderImage)
+        }) { error in
+            CrashLogging.logError(error)
+        }
     }
 }
 

@@ -2,6 +2,8 @@
 ----
 * Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
 
+-----
+ 
 14.6
 -----
 * [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.
@@ -24,6 +26,7 @@
 * Media uploads from "Other Apps": Fixed an issue where the Cancel button on the document picker/browser was not showing up in Light Mode.
 * Fix a crash when accessing Blog Posts from the Quick Actions button on iPads running iOS 12 and below.
 * Reader post detail: fix colors when switching between light and dark modes.
+* Fixed an issue where Continue with Apple button wouldn't respond after Jetpack Setup > Sign up flow completed.
 
  
 14.5
