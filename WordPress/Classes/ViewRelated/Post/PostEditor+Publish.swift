@@ -144,6 +144,9 @@ extension PostEditor where Self: UIViewController {
     ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
     ///
     fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
+        // End editing to avoid issues with accessibility
+        view.endEditing(true)
+        
         let prepublishing = PrepublishingViewController(post: post as! Post) { _ in
             publishAction()
         }
