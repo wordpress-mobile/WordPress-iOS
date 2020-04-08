@@ -824,9 +824,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-    NSUInteger newIndex = [tabBarController.viewControllers indexOfObject:viewController];
+    NSUInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
 
-    newIndex = [self adjustedTabIndex:newIndex toTabType:false];
+    NSUInteger newIndex = [self adjustedTabIndex:selectedIndex toTabType:false];
 
     if (newIndex == WPTabNewPost) {
         [self showPostTab];
@@ -834,7 +834,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     // If we're selecting a new tab...
-    if (newIndex != tabBarController.selectedIndex) {
+    if (selectedIndex != tabBarController.selectedIndex) {
         switch (newIndex) {
             case WPTabMySites: {
                 [self bypassBlogListViewControllerIfNecessary];
