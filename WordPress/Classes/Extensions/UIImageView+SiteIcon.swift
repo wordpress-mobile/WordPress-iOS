@@ -1,3 +1,4 @@
+import AlamofireImage
 import AutomatticTracks
 import Foundation
 
@@ -48,7 +49,8 @@ extension UIImageView {
             return
         }
 
-        downloadImage(from: siteIconURL, placeholderImage: placeholderImage)
+        let request = URLRequest(url: siteIconURL)
+        downloadSiteIcon(with: request, placeholderImage: placeholderImage)
     }
 
     /// Downloads a SiteIcon image, using a specified request.
@@ -61,10 +63,9 @@ extension UIImageView {
         with request: URLRequest,
         placeholderImage: UIImage?) {
 
-        downloadImage(
-            usingRequest: request,
-            placeholderImage: placeholderImage,
-            success: { [weak self] (image) in
+        af_setImage(withURLRequest: request, placeholderImage: placeholderImage) { [weak self] dataResponse in
+            switch dataResponse.result {
+            case .success(let image):
                 guard let self = self else {
                     return
                 }
@@ -86,12 +87,10 @@ extension UIImageView {
                 }
 
                 self.removePlaceholderBorder()
-        },
-            failure: { error -> () in
-                if let error = error {
-                    CrashLogging.logError(error)
-                }
-        })
+            case .failure(let error):
+                CrashLogging.logError(error)
+            }
+        }
     }
 
 
