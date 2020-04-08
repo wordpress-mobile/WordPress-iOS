@@ -263,7 +263,7 @@ class AztecEditorScreen: BaseScreen {
 
     func publish() -> EditorNoticeComponent {
         publishButton.tap()
-        publishNowButton.tap()
+
         confirmPublish()
 
         return EditorNoticeComponent(withNotice: "Post published", andAction: "View")
@@ -273,11 +273,7 @@ class AztecEditorScreen: BaseScreen {
         if FancyAlertComponent.isLoaded() {
             FancyAlertComponent().acceptAlert()
         } else {
-            if isIpad {
-                app.alerts.buttons["Publish"].tap()
-            } else {
-                app.sheets.buttons["Publish"].tap()
-            }
+            publishNowButton.tap()
         }
     }
 
