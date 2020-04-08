@@ -49,7 +49,8 @@ extension UIImageView {
             return
         }
 
-        downloadImage(from: siteIconURL, placeholderImage: placeholderImage)
+        let request = URLRequest(url: siteIconURL)
+        downloadSiteIcon(with: request, placeholderImage: placeholderImage)
     }
 
     /// Downloads a SiteIcon image, using a specified request.
