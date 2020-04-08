@@ -188,7 +188,7 @@ class MediaThumbnailService: LocalCoreDataService {
             }
         }
 
-        let download = ImageDownload(url: imageURL, blog: media.blog, onSuccess: inContextImageHandler, onFailure: inContextErrorHandler)
+        let download = AuthenticatedImageDownload(url: imageURL, blog: media.blog, onSuccess: inContextImageHandler, onFailure: inContextErrorHandler)
 
         download.start()
     }

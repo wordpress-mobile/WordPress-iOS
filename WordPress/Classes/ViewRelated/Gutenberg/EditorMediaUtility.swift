@@ -2,9 +2,7 @@ import AutomatticTracks
 import Aztec
 import Gridicons
 
-extension Operation: CancellableTask {}
-
-final class ImageDownload: AsyncOperation {
+final class AuthenticatedImageDownload: AsyncOperation {
     let url: URL
     let blog: Blog
     private let onSuccess: (UIImage) -> ()
@@ -51,16 +49,6 @@ final class ImageDownload: AsyncOperation {
                 self.state = .isFinished
                 self.onFailure(error)
         })
-    }
-}
-
-protocol CancellableTask {
-    func cancel()
-}
-
-extension URLSession: CancellableTask {
-    func cancel() {
-        invalidateAndCancel()
     }
 }
 
@@ -112,7 +100,7 @@ class EditorMediaUtility {
         from url: URL,
         post: AbstractPost,
         success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void) -> CancellableTask {
+        onFailure failure: @escaping (Error) -> Void) -> ImageDownloaderTask {
 
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
@@ -127,7 +115,7 @@ class EditorMediaUtility {
         size requestSize: CGSize,
         scale: CGFloat, post: AbstractPost,
         success: @escaping (UIImage) -> Void,
-        onFailure failure: @escaping (Error) -> Void) -> CancellableTask {
+        onFailure failure: @escaping (Error) -> Void) -> ImageDownloaderTask {
 
         let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
@@ -149,7 +137,7 @@ class EditorMediaUtility {
             requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
         }
 
-        let imageDownload = ImageDownload(
+        let imageDownload = AuthenticatedImageDownload(
             url: requestURL,
             blog: post.blog,
             onSuccess: success,
