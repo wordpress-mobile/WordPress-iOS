@@ -1,1 +1,15 @@
-Nur ein paar schnelle Dinge in dieser Woche, denn es sind größere Dinge in der Welt im Gange: Wir haben ein Problem in den Beitragseinstellungen behoben, sodass die Daten von Beiträgen, die sofort veröffentlicht werden, korrekt angezeigt werden. Und wir haben einige Änderungen unter der Haube vorgenommen, um die Geschwindigkeit und Zuverlässigkeit allgemein zu verbessern.
+Neue Blöcke! Willkommen beim Block „Letzte Beiträge“, um deine neuen Beiträge und Seiten hervorzuheben.
+
+Wenn du eine neue Seite erstellst, zeigen wir dir ein paar Vorlagen. Wähle eine aus und wir fügen alle notwendigen Blöcke zu deiner Seite hinzu, damit du schnell damit beginnen kannst.
+
+Wir haben ein paar Probleme mit dem Block-Editor behoben: keine Abstürze mehr beim Einfügen von HTML-Inhalten bzw. keine fehlenden Ränder mehr bei Zitat-Blöcken im dunklen Modus.
+
+Wenn du zuvor einen Beitrag zur Veröffentlichung geplant hast, würde er als „geplant“ anstatt als „veröffentlicht“ angezeigt. Das wurde behoben. Ebenso ein Problem, bei dem Datumsangaben nicht korrekt angezeigt wurden, wenn die Zeitzone der Website nicht mit der Zeitzone des Geräts übereinstimmte.
+
+Wir haben ein paar UI-Inkonsistenzen im dunklen Modus und bei der Reader-Werkzeugleiste behoben.
+
+Du kannst @-Erwähnungen verwenden, wenn du Kommentare im Vollbildmodus erstellst.
+
+Manchmal landeten E-Mails mit magischen Registrierungs- und Anmeldelinks in deinem Spam-Ordner. Deshalb haben wir auf dem Bestätigungsbildschirm den Hinweis hinzugefügt, im Spam- oder Junk-Mail-Ordner nachzusehen, wenn die E-Mail nicht sofort gefunden wird.
+
+Bleibt alle gesund.

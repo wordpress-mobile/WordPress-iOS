@@ -9,7 +9,7 @@ import MobileCoreServices
 class ReaderPlaceholderAttachment: NSTextAttachment {
     init() {
         // Initialize with default image data to prevent placeholder graphics appearing on iOS 13.
-        super.init(data: UIImage(color: .basicBackground).pngData(), ofType: kUTTypePNG as String)
+        super.init(data: UIImage(color: .clear).pngData(), ofType: kUTTypePNG as String)
     }
 
     required init?(coder: NSCoder) {
@@ -71,7 +71,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // Header realated Views
     @IBOutlet fileprivate weak var headerView: UIView!
-    @IBOutlet fileprivate weak var headerViewBackground: UIView!
     @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
     @IBOutlet fileprivate weak var blogNameButton: UIButton!
     @IBOutlet fileprivate weak var blogURLLabel: UILabel!
