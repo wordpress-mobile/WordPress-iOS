@@ -1,4 +1,5 @@
 import MobileCoreServices
+import AlamofireImage
 import AutomatticTracks
 
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
@@ -198,24 +199,22 @@ import AutomatticTracks
     ///
     private func downloadImage(from request: URLRequest) {
         imageView.startLoadingAnimation()
+        imageView.af_setImage(withURLRequest: request)
+/*
         imageView.downloadImage(usingRequest: request, placeholderImage: placeholder, success: { [weak self] (image) in
             // Since a success block is specified, we need to set the image manually.
             self?.imageView.image = image
             self?.callSuccessHandler()
         }) { [weak self] (error) in
             self?.callErrorHandler(with: error)
-        }
+        }*/
     }
 
     /// Downloads the image from the given URL.
     ///
     private func downloadImage(from url: URL) {
-        imageView.startLoadingAnimation()
-        imageView.downloadImage(from: url, placeholderImage: placeholder, success: { [weak self] (_) in
-            self?.callSuccessHandler()
-        }) { [weak self] (error) in
-            self?.callErrorHandler(with: error)
-        }
+        let request = URLRequest(url: url)
+        downloadImage(from: request)
     }
 
     private func callSuccessHandler() {

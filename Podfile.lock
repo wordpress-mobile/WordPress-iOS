@@ -1,6 +1,8 @@
 PODS:
   - 1PasswordExtension (1.8.6)
   - Alamofire (4.8.0)
+  - AlamofireImage (3.5.2):
+    - Alamofire (~> 4.8)
   - AlamofireNetworkActivityIndicator (2.4.0):
     - Alamofire (~> 4.8)
   - AppCenter (2.5.1):
@@ -419,6 +421,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (= 4.8.0)
+  - AlamofireImage (= 3.5.2)
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (= 2.5.1)
   - AppCenter/Distribute (= 2.5.1)
@@ -490,6 +493,7 @@ SPEC REPOS:
   trunk:
     - 1PasswordExtension
     - Alamofire
+    - AlamofireImage
     - AlamofireNetworkActivityIndicator
     - AppCenter
     - Automattic-Tracks-iOS
@@ -626,6 +630,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
+  AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
   Automattic-Tracks-iOS: dbe6301bebdc1e444972475bae19299491702cef
@@ -709,6 +714,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: 07d9390e327784a39db6ad2b2138fa671d3cce59
+PODFILE CHECKSUM: 6a01cb2728f23526b2998f507ebb3d0afdabdaf9
 
 COCOAPODS: 1.8.4
