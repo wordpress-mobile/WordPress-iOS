@@ -146,7 +146,7 @@ extension PostEditor where Self: UIViewController {
     fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
-        
+
         let prepublishing = PrepublishingViewController(post: post as! Post) { _ in
             publishAction()
         }
