@@ -87,6 +87,7 @@ extension ReaderTabView {
             return
         }
         buttonsStackView.isHidden = tabItem.shouldHideButtonsView
+        horizontalDivider.isHidden = tabItem.shouldHideButtonsView
     }
 
     private func setupButtonsView() {
@@ -124,7 +125,7 @@ extension ReaderTabView {
 
     private func setupDivider(_ divider: UIView) {
         divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = .divider
+        divider.backgroundColor = Appearance.dividerColor
     }
 
     private func setupSettingsButton() {
@@ -173,12 +174,14 @@ extension ReaderTabView {
                 return
         }
         self.viewModel.showTab(for: tabBar.items[tabBar.selectedIndex])
-        // hide/show buttons depending on the selected tab. Do not call the animation if not necessary.
+        // hide/show buttons depending on the selected tab. Do not execute the animation if not necessary.
         guard buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
             return
         }
         UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
-            self.buttonsStackView.isHidden = tabItems[tabBar.selectedIndex].shouldHideButtonsView
+            let shouldHideButtons = tabItems[tabBar.selectedIndex].shouldHideButtonsView
+            self.buttonsStackView.isHidden = shouldHideButtons
+            self.horizontalDivider.isHidden = shouldHideButtons
         }
     }
 
@@ -225,7 +228,8 @@ extension ReaderTabView {
         static let resetButtonInsets = UIEdgeInsets(top: 1, left: -4, bottom: -1, right: 4)
         static let settingsButtonWidth: CGFloat = 56
 
-        static let dividerWidth: CGFloat = 1
+        static let dividerWidth: CGFloat = .hairlineBorderWidth
+        static let dividerColor: UIColor = .lightGray
         static let verticalDividerHeightMultiplier: CGFloat = 0.6
     }
 }
