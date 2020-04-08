@@ -199,15 +199,18 @@ import AutomatticTracks
     ///
     private func downloadImage(from request: URLRequest) {
         imageView.startLoadingAnimation()
-        imageView.af_setImage(withURLRequest: request)
-/*
-        imageView.downloadImage(usingRequest: request, placeholderImage: placeholder, success: { [weak self] (image) in
-            // Since a success block is specified, we need to set the image manually.
-            self?.imageView.image = image
-            self?.callSuccessHandler()
-        }) { [weak self] (error) in
-            self?.callErrorHandler(with: error)
-        }*/
+        imageView.af_setImage(withURLRequest: request, completion: { [weak self] dataResponse in
+            guard let self = self else {
+                return
+            }
+
+            switch dataResponse.result {
+            case .success:
+                self.callSuccessHandler()
+            case .failure(let error):
+                self.callErrorHandler(with: error)
+            }
+        })
     }
 
     /// Downloads the image from the given URL.
