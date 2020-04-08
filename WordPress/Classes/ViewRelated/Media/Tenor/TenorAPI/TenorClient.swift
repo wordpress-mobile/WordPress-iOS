@@ -68,7 +68,8 @@ struct TenorClient {
 
                     completion(parser.results ?? [], parser.next, nil)
                 } catch {
-                    assertionFailure("Couldn't decode API response from Tenor. Required to check https://tenor.com/gifapi/documentation for breaking changes if needed")
+                    DDLogError("Couldn't decode API response from Tenor. Required to check https://tenor.com/gifapi/documentation for breaking changes if needed")
+
                     completion(nil, nil, error)
                 }
 
