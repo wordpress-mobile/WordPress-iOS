@@ -63,7 +63,7 @@ extension ReaderTabViewModel {
         service.fetchReaderMenu(success: { [weak self] in
             self?.fetchTabBarItems(completion: completion)
             }, failure: { error in
-                DDLogError(ReaderTopics.remoteFetchError + "\(String(describing: error))")
+                DDLogError(ReaderTopics.remoteFetchError + String(describing: error))
                 completion(nil)
         })
     }

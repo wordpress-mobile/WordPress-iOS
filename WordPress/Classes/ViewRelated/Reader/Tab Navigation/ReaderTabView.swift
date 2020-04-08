@@ -136,8 +136,8 @@ extension ReaderTabView {
 
     private func addContentToContainerView() {
         guard let controller = self.next as? UIViewController,
-            let readetTabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem,
-            let childController = viewModel.makeChildViewController(with: readetTabItem) else {
+            let readerTabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem,
+            let childController = viewModel.makeChildViewController(with: readerTabItem) else {
                 return
         }
 
