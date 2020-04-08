@@ -1,5 +1,6 @@
 14.7
 -----
+* [internal] Notifications tab should pop to the root of the navigation stack when tapping on the tab from within a notification detail screen. See https://git.io/Jvxka for testing details.
  
 14.6
 -----
