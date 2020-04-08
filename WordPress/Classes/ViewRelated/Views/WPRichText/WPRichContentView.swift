@@ -53,10 +53,7 @@ class WPRichContentView: UITextView {
         }
     }
 
-
-    /// Whether the view shows private content. Used when fetching images.
-    ///
-    @objc var isPrivate = false
+    var mediaHost: MediaHost = .publicSite
 
     @objc var content: String {
         get {
@@ -342,12 +339,11 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.height)
         }
 
-        let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
         let index = mediaArray.count
         let indexPath = IndexPath(row: index, section: 1)
         weak var weakImage = image
 
-        image.loadImage(from: contentInformation, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
+        image.loadImage(from: mediaHost, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
             guard
                 let richMedia = self?.mediaArray[indexPath.row],
                 let img = weakImage
@@ -468,18 +464,6 @@ private extension WPRichContentView {
 struct RichMedia {
     let image: WPRichTextImage
     let attachment: WPTextAttachment
-}
-
-// MARK: - ContentInformation (ImageSourceInformation)
-
-class ContentInformation: ImageSourceInformation {
-    var isPrivateOnWPCom: Bool
-    var isSelfHostedWithCredentials: Bool
-
-    init(isPrivateOnWPCom: Bool, isSelfHostedWithCredentials: Bool) {
-        self.isPrivateOnWPCom = isPrivateOnWPCom
-        self.isSelfHostedWithCredentials = isSelfHostedWithCredentials
-    }
 }
 
 // This is very much based on Aztec.LayoutManager — most of this code is pretty much copy-pasted
