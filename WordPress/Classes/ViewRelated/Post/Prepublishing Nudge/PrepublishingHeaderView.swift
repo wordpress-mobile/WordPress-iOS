@@ -2,7 +2,7 @@ import UIKit
 import Gridicons
 
 protocol PrepublishingHeaderViewDelegate: class {
-    func backButtonTapped()
+    func closeButtonTapped()
 }
 
 class PrepublishingHeaderView: UIView, NibLoadable {
@@ -10,9 +10,9 @@ class PrepublishingHeaderView: UIView, NibLoadable {
     @IBOutlet weak var blogImageView: UIImageView!
     @IBOutlet weak var publishingToLabel: UILabel!
     @IBOutlet weak var blogTitleLabel: UILabel!
-    @IBOutlet weak var backButtonView: UIView!
+    @IBOutlet weak var closeButtonView: UIView!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var separator: UIView!
 
     weak var delegate: PrepublishingHeaderViewDelegate?
@@ -22,24 +22,24 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         blogTitleLabel.text = blog.title
     }
 
-    // MARK: - Back button
+    // MARK: - Close button
 
-    func hideBackButton() {
-        backButtonView.layer.opacity = 0
-        backButtonView.isHidden = true
+    func hideCloseButton() {
+        closeButtonView.layer.opacity = 0
+        closeButtonView.isHidden = true
         leadingConstraint.constant = Constants.leftRightInset
         layoutIfNeeded()
     }
 
-    func showBackButton() {
-        backButtonView.layer.opacity = 1
-        backButtonView.isHidden = false
+    func showCloseButton() {
+        closeButtonView.layer.opacity = 1
+        closeButtonView.isHidden = false
         leadingConstraint.constant = 0
         layoutIfNeeded()
     }
 
-    @IBAction func backButtonTapped(_ sender: Any) {
-        delegate?.backButtonTapped()
+    @IBAction func closeButtonTapped(_ sender: Any) {
+        delegate?.closeButtonTapped()
     }
 
     // MARK: - Style
@@ -53,8 +53,12 @@ class PrepublishingHeaderView: UIView, NibLoadable {
     }
 
     private func configureBackButton() {
-        backButtonView.isHidden = true
-        backButton.setImage(.gridicon(.chevronLeft, size: Constants.backButtonSize), for: .normal)
+        closeButtonView.isHidden = true
+        closeButton.setImage(.gridicon(.cross, size: Constants.backButtonSize), for: .normal)
+        closeButton.accessibilityHint = Constants.doubleTapToDismiss
+
+        // Only show close button for accessibility purposes
+        UIAccessibility.isVoiceOverRunning ? showCloseButton() : hideCloseButton()
     }
 
     private func configurePublishingToLabel() {
@@ -75,5 +79,6 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         static let backButtonSize = CGSize(width: 28, height: 28)
         static let leftRightInset: CGFloat = 20
         static let title = NSLocalizedString("Publishing To", comment: "Label that describes in which blog the user is publishing to")
+        static let doubleTapToDismiss = NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it")
     }
 }
