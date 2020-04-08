@@ -3,24 +3,42 @@ import XCTest
 
 class MediaHostTests: XCTestCase {
     func testInitializationWithPublicSite() {
-        let host = MediaHost(isAccessibleThroughWPCom: false, isPrivate: false, isAtomic: false) { error in
-            XCTFail("This should not be called.")
+        let host = MediaHost(
+            isAccessibleThroughWPCom: false,
+            isPrivate: false,
+            isAtomic: false,
+            siteID: nil,
+            username: nil,
+            authToken: nil) { error in
+                XCTFail("This should not be called.")
         }
 
         XCTAssertEqual(host, .publicSite)
     }
 
     func testInitializationWithPublicWPComSite() {
-        let host = MediaHost(isAccessibleThroughWPCom: true, isPrivate: false, isAtomic: false) { error in
-            XCTFail("This should not be called.")
+        let host = MediaHost(
+            isAccessibleThroughWPCom: true,
+            isPrivate: false,
+            isAtomic: false,
+            siteID: nil,
+            username: nil,
+            authToken: nil) { error in
+                XCTFail("This should not be called.")
         }
 
         XCTAssertEqual(host, .publicWPComSite)
     }
 
     func testInitializationWithPrivateSelfHostedSite() {
-        let host = MediaHost(isAccessibleThroughWPCom: false, isPrivate: true, isAtomic: false) { error in
-            XCTFail("This should not be called.")
+        let host = MediaHost(
+            isAccessibleThroughWPCom: false,
+            isPrivate: true,
+            isAtomic: false,
+            siteID: nil,
+            username: nil,
+            authToken: nil) { error in
+                XCTFail("This should not be called.")
         }
 
         XCTAssertEqual(host, .privateSelfHostedSite)
@@ -33,6 +51,8 @@ class MediaHostTests: XCTestCase {
             isAccessibleThroughWPCom: true,
             isPrivate: true,
             isAtomic: false,
+            siteID: nil,
+            username: nil,
             authToken: authToken) { error in
 
             XCTFail("This should not be called.")
@@ -70,7 +90,8 @@ class MediaHostTests: XCTestCase {
             isPrivate: true,
             isAtomic: true,
             siteID: siteID,
-            username: username) { error in
+            username: username,
+            authToken: nil) { error in
                 if error == .wpComPrivateSiteWithoutAuthToken {
                     expectation.fulfill()
                 }
@@ -89,6 +110,7 @@ class MediaHostTests: XCTestCase {
             isPrivate: true,
             isAtomic: true,
             siteID: siteID,
+            username: nil,
             authToken: authToken) { error in
                 if error == .wpComPrivateSiteWithoutUsername {
                     expectation.fulfill()
@@ -101,8 +123,14 @@ class MediaHostTests: XCTestCase {
     func testInitializationWithPrivateAtomicWPComSiteWithoutSiteIDFails() {
         let expectation = self.expectation(description: "The error closure will be called")
 
-        let _ = MediaHost(isAccessibleThroughWPCom: true, isPrivate: true, isAtomic: true) { error in
-            expectation.fulfill()
+        let _ = MediaHost(
+            isAccessibleThroughWPCom: true,
+            isPrivate: true,
+            isAtomic: true,
+            siteID: nil,
+            username: nil,
+            authToken: nil) { error in
+                expectation.fulfill()
         }
 
         waitForExpectations(timeout: 0.05)
