@@ -133,11 +133,7 @@ class BlockEditorScreen: BaseScreen {
         if FancyAlertComponent.isLoaded() {
             FancyAlertComponent().acceptAlert()
         } else {
-            if isIpad {
-                app.alerts.buttons["Publish"].tap()
-            } else {
-                app.sheets.buttons["Publish"].tap()
-            }
+            publishNowButton.tap()
         }
     }
 
