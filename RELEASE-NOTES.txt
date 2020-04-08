@@ -1,4 +1,7 @@
 14.7
+----
+* Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
+
 -----
  
 14.6
