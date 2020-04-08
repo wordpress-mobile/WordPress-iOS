@@ -147,43 +147,34 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         NSString *trashButtonTitle = NSLocalizedString(@"Yes", comment: @"Label for a button that clears all old activity logs");
         NSString *cancelButtonTitle = NSLocalizedString(@"No", comment: @"Label for a cancel button");
         
-        UIAlertController * alert = [UIAlertController
-                                        alertControllerWithTitle: titleText
-                                        message: messageText
-                                        preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle: titleText
+                                    message: messageText
+                                    preferredStyle:UIAlertControllerStyleAlert];
 
-           //Add Buttons
-           UIAlertAction* yesButton = [UIAlertAction
-                                       actionWithTitle:trashButtonTitle
-                                       style:UIAlertActionStyleDestructive
-                                       handler:^(UIAlertAction * action) {
-                                           //Handle your yes please button action here
-                                          for (DDLogFileInfo *logFileInfo in self.logFiles) {
-                                              if (logFileInfo.isArchived) {
-                                                  [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
-                                              }
+        //Add Buttons
+        UIAlertAction *yesButton = [UIAlertAction
+                                    actionWithTitle:trashButtonTitle
+                                    style:UIAlertActionStyleDestructive
+                                    handler:^(UIAlertAction *action) {
+                                      for (DDLogFileInfo *logFileInfo in self.logFiles) {
+                                          if (logFileInfo.isArchived) {
+                                              [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
                                           }
-                                          DDLogWarn(@"All archived log files erased.");
-                                          [self loadLogFiles];
-                                          [self.tableView reloadData];
-                                       }];
+                                      }
+                                      DDLogWarn(@"All archived log files erased.");
+                                      [self loadLogFiles];
+                                      [self.tableView reloadData];
+                                    }];
 
-           UIAlertAction* noButton = [UIAlertAction
-                                      actionWithTitle:cancelButtonTitle
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action) {
-                                      }];
+        UIAlertAction *noButton = [UIAlertAction
+            actionWithTitle:cancelButtonTitle
+            style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction *action) {
+            }];
         [alert addAction:noButton];
         [alert addAction:yesButton];
         [self presentViewController:alert animated:YES completion:nil];
-        
-        //let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-
-//        alertController.addCancelActionWithTitle(cancelText)
-//        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-//           // self?.deletePost(post)
-//        }
-//        alertController.presentFromRootViewController()
     }
 }
 
