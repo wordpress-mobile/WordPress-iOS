@@ -1,3 +1,4 @@
+import AutomatticTracks
 import Foundation
 import CocoaLumberjack
 import WordPressShared
@@ -9,7 +10,7 @@ import MobileCoreServices
 class ReaderPlaceholderAttachment: NSTextAttachment {
     init() {
         // Initialize with default image data to prevent placeholder graphics appearing on iOS 13.
-        super.init(data: UIImage(color: .basicBackground).pngData(), ofType: kUTTypePNG as String)
+        super.init(data: UIImage(color: .clear).pngData(), ofType: kUTTypePNG as String)
     }
 
     required init?(coder: NSCoder) {
@@ -71,7 +72,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // Header realated Views
     @IBOutlet fileprivate weak var headerView: UIView!
-    @IBOutlet fileprivate weak var headerViewBackground: UIView!
     @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
     @IBOutlet fileprivate weak var blogNameButton: UIButton!
     @IBOutlet fileprivate weak var blogURLLabel: UILabel!
@@ -681,10 +681,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 return
         }
 
-        let postInfo = ReaderCardContent(provider: post)
+        let host = MediaHost(with: post, failure: { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        })
+
         let maxImageWidth = min(view.frame.width, view.frame.height)
         let imageWidthSize = CGSize(width: maxImageWidth, height: 0) // height 0: preserves aspect ratio.
-        featuredImageLoader.loadImage(with: featuredImageURL, from: postInfo, preferredSize: imageWidthSize, placeholder: nil, success: { [weak self] in
+        featuredImageLoader.loadImage(with: featuredImageURL, from: host, preferredSize: imageWidthSize, placeholder: nil, success: { [weak self] in
             guard let strongSelf = self, let size = strongSelf.featuredImageView.image?.size else {
                 return
             }
@@ -807,7 +811,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return
         }
 
-        textView.isPrivate = post.isPrivate()
+        textView.mediaHost = MediaHost(with: post, failure: { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        })
         textView.content = post.contentForDisplay()
 
         updateRichText()

@@ -1,1 +1,15 @@
-Bu hafta sadece hızlı bir kaç şey, çünkü dünyada çok daha büyük şeyler oluyor: Yazı ayarlarında hemen yayımlanan yazıların tarihlerinin düzgün görüntülenebilmesi için bir sorun düzeltildi, hız ve genel güvenilirliği artırmak için kaputun altında bir kaç değişiklik yapıldı.
+Yeni bloklar! Güncel yazılar bloğuna hoş geldin diyoruz, yeni yazı ve sayfalarınızı vurgulamak için kullanabilirsiniz.
+
+Yeni bir sayfa oluşturduğunuzda, bir kaç şablon gösteriyoruz — birini seçin, ve gerekli tüm blokları sayfanıza ekleyerek işe başlamanızı sağlayalım.
+
+Bir kaç blok düzenleyici sorununu düzelttik; HTML içerik yapıştırırken çökmeler ya da koyu modda alıntı bloğunun çerçevesinin olmaması gibi problemlere son.
+
+Eğer geçmişte bir yazı zamanladıysanız "zamanlanmış" yerine "yayımlanmış" olarak gözüküyordu. Bu düzeltildi, beraberinde sitenin zaman diliminin cihazınızın zaman dilimiyle aynı olmadığı durumlarda ortaya çıkan bir sorun da düzeltildi.
+
+Koyu modda ve okuyucu araç çubuğundaki bazı kullanıcı arabirimi uyumsuzluklarını giderdik.
+
+Tam ekran modunda yorum yazarken @-anmalarını kullanabilirsiniz.
+
+Bazen üyelik ve giriş sihirli bağlantı e-postaları istenmeyen postalar arasına gidebiliyor, biz de onaylama ekranına kullanıcıların istenmeyen/önemsiz posta kutularını kontrol etmelerini hatırlatır bir açıklama ekledik.
+
+Herkese sağlık ve güvenlik.

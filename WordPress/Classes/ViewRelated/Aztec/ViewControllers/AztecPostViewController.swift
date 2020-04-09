@@ -360,7 +360,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Active Downloads
     ///
-    fileprivate var activeMediaRequests = [ImageDownloader.Task]()
+    fileprivate var activeMediaRequests = [ImageDownloaderTask]()
 
     /// Media Library Data Source
     ///
@@ -536,7 +536,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        resetNavigationColors()
         configureDismissButton()
         startListeningToNotifications()
         verificationPromptHelper?.updateVerificationStatus()
@@ -715,14 +714,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
-    }
-
-    /// This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
-    /// either by uploading media or canceling. Doing this in the UIDocumentPickerDelegate methods either did
-    /// nothing or the resetting wasn't permanent.
-    ///
-    fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationAppearance()
     }
 
     func configureDismissButton() {
@@ -2419,12 +2410,12 @@ extension AztecPostViewController {
         insert(exportableAsset: url as NSURL, source: .otherApps)
     }
 
-    fileprivate func insertImage(image: UIImage) {
-        insert(exportableAsset: image, source: .deviceLibrary)
+    fileprivate func insertImage(image: UIImage, source: MediaSource = .deviceLibrary) {
+        insert(exportableAsset: image, source: source)
     }
 
-    fileprivate func insertDeviceMedia(phAsset: PHAsset) {
-        insert(exportableAsset: phAsset, source: .deviceLibrary)
+    fileprivate func insertDeviceMedia(phAsset: PHAsset, source: MediaSource = .deviceLibrary) {
+        insert(exportableAsset: phAsset, source: source)
     }
 
     private func insertStockPhotosMedia(_ media: StockPhotosMedia) {
@@ -3528,9 +3519,9 @@ extension AztecPostViewController {
                               onFinishEditing: { [weak self] images, actions in
                                 images.forEach { mediaEditorImage in
                                     if let image = mediaEditorImage.editedImage {
-                                        self?.insertImage(image: image)
+                                        self?.insertImage(image: image, source: .mediaEditor)
                                     } else if let phAsset = mediaEditorImage as? PHAsset {
-                                        self?.insertDeviceMedia(phAsset: phAsset)
+                                        self?.insertDeviceMedia(phAsset: phAsset, source: .mediaEditor)
                                     }
                                 }
 
