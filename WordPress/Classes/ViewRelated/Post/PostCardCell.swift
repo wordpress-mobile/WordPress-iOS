@@ -1,3 +1,4 @@
+import AutomatticTracks
 import UIKit
 import Gridicons
 
@@ -201,9 +202,14 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
             return
         }
 
+        let host = MediaHost(with: post) { error in
+            // We'll log the error, so we know it's there, but we won't halt execution.
+            CrashLogging.logError(error)
+        }
+
         if currentLoadedFeaturedImage != url.absoluteString {
             currentLoadedFeaturedImage = url.absoluteString
-            imageLoader.loadImage(with: url, from: post, preferredSize: preferredSize)
+            imageLoader.loadImage(with: url, from: host, preferredSize: preferredSize)
         }
     }
 
