@@ -6,7 +6,7 @@ class RevisionPreviewTextViewManager: NSObject {
     var post: AbstractPost?
 
     private let mediaUtility = EditorMediaUtility()
-    private var activeMediaRequests = [ImageDownloader.Task]()
+    private var activeMediaRequests = [ImageDownloaderTask]()
 
     private enum Constants {
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)

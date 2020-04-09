@@ -2,7 +2,7 @@ import Aztec
 
 class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     private let post: AbstractPost
-    private var activeMediaRequests = [ImageDownloader.Task]()
+    private var activeMediaRequests = [ImageDownloaderTask]()
     private let mediaUtility = EditorMediaUtility()
 
     init(post: AbstractPost) {

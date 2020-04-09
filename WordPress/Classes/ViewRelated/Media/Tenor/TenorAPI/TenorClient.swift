@@ -38,7 +38,13 @@ struct TenorClient {
 
     // MARK: - Public Methods
 
-    func search(for query: String, limit: Int = 20, from position: String?, completion: @escaping TenorSearchResult) {
+    /// Return a list of GIFs from Tenor for a given search query
+    /// - Parameters:
+    ///   - query: a search string
+    ///   - limit: return up to a specified number of results (max "limit" is 50 enforced by Tenor, default is 20 if unspecified)
+    ///   - position: return results starting from "position" (use it's the last "position" of the previous search, for paging purpose)
+    ///   - completion: the handler which will be called on completion
+    public func search(for query: String, limit: Int = 20, from position: String?, completion: @escaping TenorSearchResult) {
         assert(limit <= 50, "Tenor allows a maximum 50 images per search")
 
         guard let url = URL(string: EndPoints.search.rawValue) else {
@@ -68,7 +74,8 @@ struct TenorClient {
 
                     completion(parser.results ?? [], parser.next, nil)
                 } catch {
-                    assertionFailure("Couldn't decode API response from Tenor. Required to check https://tenor.com/gifapi/documentation for breaking changes if needed")
+                    DDLogError("Couldn't decode API response from Tenor. Required to check https://tenor.com/gifapi/documentation for breaking changes if needed")
+
                     completion(nil, nil, error)
                 }
 

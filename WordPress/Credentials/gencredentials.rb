@@ -252,6 +252,10 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   if zendesk_app_id.nil? || zendesk_url.nil? || zendesk_client_id.nil?
       $stderr.puts "warning: Zendesk keys not found"
   end
+  
+  if tenor_key.nil?
+      $stderr.puts "warning: Tenor keys not found"
+  end
 end
 
 print_class(client, secret, sentry, appcenter, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id, tenor_key)
