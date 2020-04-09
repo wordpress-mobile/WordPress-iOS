@@ -26,9 +26,9 @@
                                         <constraint firstAttribute="width" constant="44" id="Hzn-wu-Giy"/>
                                         <constraint firstAttribute="height" constant="44" id="nMd-Hh-E65"/>
                                     </constraints>
-                                    <state key="normal" image="icon-post-actionbar-back"/>
+                                    <state key="normal" image="gridicons-cross"/>
                                     <connections>
-                                        <action selector="backButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="MTX-wi-cBI"/>
+                                        <action selector="closeButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="MTX-wi-cBI"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -108,10 +108,10 @@
             <nil key="simulatedTopBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="backButton" destination="nQB-ct-GJB" id="iVs-bk-h0W"/>
-                <outlet property="backButtonView" destination="Lqd-3Z-R2I" id="SxC-Uc-zrp"/>
                 <outlet property="blogImageView" destination="7Pf-bk-gek" id="eLY-zs-ARs"/>
                 <outlet property="blogTitleLabel" destination="fYs-yz-ucu" id="sA7-6P-XAg"/>
+                <outlet property="closeButton" destination="nQB-ct-GJB" id="iVs-bk-h0W"/>
+                <outlet property="closeButtonView" destination="Lqd-3Z-R2I" id="SxC-Uc-zrp"/>
                 <outlet property="leadingConstraint" destination="tyj-l1-rNT" id="Qlz-fc-hJn"/>
                 <outlet property="publishingToLabel" destination="ZFo-FV-nl8" id="bSu-i4-xEU"/>
                 <outlet property="separator" destination="FfF-E5-Fym" id="63L-2I-pWd"/>
@@ -120,7 +120,7 @@
         </view>
     </objects>
     <resources>
-        <image name="icon-post-actionbar-back" width="18" height="18"/>
+        <image name="gridicons-cross" width="24" height="24"/>
         <namedColor name="Gray30">
             <color red="0.55686274509803924" green="0.56862745098039214" blue="0.58823529411764708" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -10,17 +10,17 @@ class PrepublishingHeaderViewTests: XCTestCase {
         let delegateMock = PrepublishingHeaderViewDelegateMock()
         prepublishingHeaderView.delegate = delegateMock
 
-        prepublishingHeaderView.backButton.sendActions(for: .touchUpInside)
+        prepublishingHeaderView.closeButton.sendActions(for: .touchUpInside)
 
-        expect(delegateMock.didCallBackButtonTapped).to(beTrue())
+        expect(delegateMock.didCallCloseButtonTapped).to(beTrue())
     }
 
 }
 
 class PrepublishingHeaderViewDelegateMock: PrepublishingHeaderViewDelegate {
-    var didCallBackButtonTapped = false
+    var didCallCloseButtonTapped = false
 
-    func backButtonTapped() {
-        didCallBackButtonTapped = true
+    func closeButtonTapped() {
+        didCallCloseButtonTapped = true
     }
 }

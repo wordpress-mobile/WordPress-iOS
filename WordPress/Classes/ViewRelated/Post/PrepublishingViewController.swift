@@ -58,8 +58,13 @@ class PrepublishingViewController: UITableViewController {
 
         title = ""
 
+        header.delegate = self
         header.configure(post.blog)
         setupPublishButton()
+
+        announcePublishButton()
+
+        tableView.isScrollEnabled = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -181,7 +186,7 @@ class PrepublishingViewController: UITableViewController {
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
-        presentedVC?.transition(to: .hidden)
+        transitionIfVoiceOverDisabled(to: .hidden)
         SchedulingCalendarViewController.present(
             from: self,
             sourceView: tableView.cellForRow(at: indexPath)?.contentView,
@@ -193,7 +198,7 @@ class PrepublishingViewController: UITableViewController {
             },
             onDismiss: { [weak self] in
                 self?.reloadData()
-                self?.presentedVC?.transition(to: .collapsed)
+                self?.transitionIfVoiceOverDisabled(to: .collapsed)
             }
         )
     }
@@ -244,6 +249,24 @@ class PrepublishingViewController: UITableViewController {
         reloadData()
     }
 
+    // MARK: - Accessibility
+
+    private func announcePublishButton() {
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            UIAccessibility.post(notification: .screenChanged, argument: self.publishButton)
+        }
+    }
+
+    /// Only perform a transition if Voice Over is disabled
+    /// This avoids some unresponsiveness
+    private func transitionIfVoiceOverDisabled(to position: DrawerPosition) {
+        guard !UIAccessibility.isVoiceOverRunning else {
+            return
+        }
+
+        presentedVC?.transition(to: position)
+    }
+
     private enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 20, left: 15, bottom: 20, right: 15)
@@ -251,5 +274,11 @@ class PrepublishingViewController: UITableViewController {
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
         static let headerHeight: CGFloat = 80
+    }
+}
+
+extension PrepublishingViewController: PrepublishingHeaderViewDelegate {
+    func closeButtonTapped() {
+        dismiss(animated: true)
     }
 }
