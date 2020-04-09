@@ -19,9 +19,9 @@ enum MediaHost: Equatable {
         isAccessibleThroughWPCom: Bool,
         isPrivate: Bool,
         isAtomic: Bool,
-        siteID: Int? = nil,
-        username: String? = nil,
-        authToken: String? = nil,
+        siteID: Int?,
+        username: String?,
+        authToken: String?,
         failure: (Error) -> Void) {
 
         guard isPrivate else {

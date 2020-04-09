@@ -102,8 +102,8 @@ NSString * const CommentStatusDraft = @"draft";
 
 - (BOOL)isPrivateContent
 {
-    if ([self.post respondsToSelector:@selector(isPrivate)]) {
-        return (BOOL)[self.post performSelector:@selector(isPrivate)];
+    if ([self.post respondsToSelector:@selector(isPrivateAtWPCom)]) {
+        return (BOOL)[self.post performSelector:@selector(isPrivateAtWPCom)];
     }
     return NO;
 }
