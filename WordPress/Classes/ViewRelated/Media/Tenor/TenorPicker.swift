@@ -140,11 +140,3 @@ extension TenorPicker: WPMediaPickerViewControllerDelegate {
         }
     }
 }
-
-// MARK: - Tracks
-
-extension TenorPicker {
-    fileprivate func trackAccess() {
-        // WPAnalytics.track(.tenorAccessed)
-    }
-}
