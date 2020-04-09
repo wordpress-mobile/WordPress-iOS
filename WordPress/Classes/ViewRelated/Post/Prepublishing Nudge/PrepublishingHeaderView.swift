@@ -24,17 +24,10 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     // MARK: - Close button
 
-    func hideCloseButton() {
-        closeButtonView.layer.opacity = 0
-        closeButtonView.isHidden = true
-        leadingConstraint.constant = Constants.leftRightInset
-        layoutIfNeeded()
-    }
-
-    func showCloseButton() {
-        closeButtonView.layer.opacity = 1
-        closeButtonView.isHidden = false
-        leadingConstraint.constant = 0
+    func toggleCloseButton(visible: Bool) {
+        closeButtonView.layer.opacity = visible ? 1 : 0
+        closeButtonView.isHidden = visible ? false : true
+        leadingConstraint.constant = visible ? 0 : Constants.leftRightInset
         layoutIfNeeded()
     }
 
@@ -59,7 +52,7 @@ class PrepublishingHeaderView: UIView, NibLoadable {
         closeButton.accessibilityHint = Constants.doubleTapToDismiss
 
         // Only show close button for accessibility purposes
-        UIAccessibility.isVoiceOverRunning ? showCloseButton() : hideCloseButton()
+        toggleCloseButton(visible: UIAccessibility.isVoiceOverRunning)
     }
 
     private func configurePublishingToLabel() {
