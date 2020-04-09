@@ -55,7 +55,6 @@
 #import "WPProgressTableViewCell.h"
 #import "PostTag.h"
 #import "PostTagService.h"
-#import "PrivateSiteURLProtocol.h"
 
 #import "ReachabilityUtils.h"
 #import "ReaderCommentsViewController.h"

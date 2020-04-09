@@ -34,16 +34,17 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.5.2'
+    pod 'WordPressUI', '~> 1.5.3-beta.1'
 
     ## for development:
     #pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
     #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
+    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => '71f32a3300b4c630b41ba7ae8101896f9d297606'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.7.0'
+    pod 'WordPressKit', '~> 4.7.1-beta.1'
 
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => '4.6.0-beta.3'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
@@ -148,7 +149,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '65a87cfbaa47822c3f742426b2aff02c4a2dbd1d'
+    gutenberg :commit => 'fe07af1691e4f5f869e4824ebf26a9b8326bafec'
 
     ## Third party libraries
     ## =====================
@@ -161,6 +162,7 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSupportSDK', '5.0.0'
+    pod 'AlamofireImage', '3.5.2'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
     pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
     pod 'JTAppleCalendar', '~> 8.0.2'

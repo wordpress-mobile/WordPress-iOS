@@ -71,12 +71,12 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     /// Load an image with the already-set contentURL property. Supports animated images (gifs) as well.
     ///
     /// - Parameters:
-    ///   - contentInformation: The corresponding ImageSourceInformation for the contentURL
+    ///   - host: The host for the media.
     ///   - preferedSize: The prefered size of the image to load.
     ///   - indexPath: The IndexPath where this view is located — returned as a param in success and error blocks.
     ///   - onSuccess: A closure to be called if the image was loaded successfully.
     ///   - onError: A closure to be called if there was an error loading the image.
-    func loadImage(from contentInformation: ImageSourceInformation,
+    func loadImage(from host: MediaHost,
                    preferedSize size: CGSize = .zero,
                    indexPath: IndexPath,
                    onSuccess: ((IndexPath) -> Void)?,
@@ -94,7 +94,7 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
             onError?(indexPath, error)
         }
 
-        imageLoader.loadImage(with: contentURL, from: contentInformation, preferredSize: size, placeholder: nil, success: successHandler, error: errorHandler)
+        imageLoader.loadImage(with: contentURL, from: host, preferredSize: size, placeholder: nil, success: successHandler, error: errorHandler)
     }
 
     func contentSize() -> CGSize {
