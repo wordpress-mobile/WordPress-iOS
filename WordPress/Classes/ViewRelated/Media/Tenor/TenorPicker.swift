@@ -55,7 +55,6 @@ final class TenorPicker: NSObject {
         }
 
         observeDataSource()
-        trackAccess()
     }
 
     private func observeDataSource() {
