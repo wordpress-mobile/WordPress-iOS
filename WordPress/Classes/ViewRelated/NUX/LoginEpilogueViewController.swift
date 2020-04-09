@@ -24,6 +24,7 @@ class LoginEpilogueViewController: UIViewController {
     /// Used to adjust the table width on iPad.
     @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
+    private var defaultTableViewMargin: CGFloat = 0
 
     /// Links to the Epilogue TableViewController
     ///
@@ -55,8 +56,9 @@ class LoginEpilogueViewController: UIViewController {
             fatalError()
         }
 
-        view.backgroundColor = .yellow// .basicBackground
+        view.backgroundColor = .basicBackground
         topLine.backgroundColor = .divider
+        defaultTableViewMargin = tableViewLeadingConstraint.constant
         setTableViewMargins()
         refreshInterface(with: credentials)
     }
@@ -152,8 +154,8 @@ private extension LoginEpilogueViewController {
     func setTableViewMargins() {
         guard traitCollection.horizontalSizeClass == .regular &&
             traitCollection.verticalSizeClass == .regular else {
-                tableViewLeadingConstraint.constant = 0
-                tableViewTrailingConstraint.constant = 0
+                tableViewLeadingConstraint.constant = defaultTableViewMargin
+                tableViewTrailingConstraint.constant = defaultTableViewMargin
                 return
         }
 
