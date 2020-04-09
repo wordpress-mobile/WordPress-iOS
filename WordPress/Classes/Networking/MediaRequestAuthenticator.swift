@@ -214,11 +214,12 @@ class MediaRequestAuthenticator {
             return
         }
 
-        let contentPath = components.path[wpContentRange.lowerBound ..< components.path.endIndex]
+        let contentPath = String(components.path[wpContentRange.lowerBound ..< components.path.endIndex])
 
         components.scheme = secureHttpScheme
         components.host = wpComApiHost
-        components.path = "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file\(contentPath)"
+        components.path = "/wpcom/v2/sites/\(siteID)/atomic-auth-proxy/file"
+        components.queryItems = [URLQueryItem(name: "path", value: contentPath)]
 
         guard let finalURL = components.url else {
             fail(Error.cannotCreateAtomicProxyURL(components: components))
