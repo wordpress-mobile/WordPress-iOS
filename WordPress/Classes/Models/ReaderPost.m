@@ -26,6 +26,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic featuredImage;
 @dynamic feedID;
 @dynamic feedItemID;
+@dynamic isBlogAtomic;
 @dynamic isBlogPrivate;
 @dynamic isFollowing;
 @dynamic isLiked;
@@ -67,11 +68,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (BOOL)isAtomic
 {
-    // TODO: This is temporary until we start parsing a new value from the reader endpoint.
-    //
-    // Issue: https://git.io/JvNAN
-    //
-    return false;
+    return self.isBlogAtomic;
 }
 
 - (BOOL)isPrivate
