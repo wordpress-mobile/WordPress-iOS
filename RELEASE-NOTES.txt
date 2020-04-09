@@ -1,11 +1,7 @@
 14.7
 -----
 * [internal] the signup flow using email has code changes that can cause regressions. See https://git.io/JvALZ for testing details.
-
-----
 * Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
-
------
  
 14.6
 -----
