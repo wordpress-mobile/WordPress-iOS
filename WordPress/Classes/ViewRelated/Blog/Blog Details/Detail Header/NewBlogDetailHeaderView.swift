@@ -125,9 +125,11 @@ class NewBlogDetailHeaderView: UIView {
 
         let edgeConstraints = [
             leadingSafeAreaConstraint,
-            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
             stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.minimumSideSpacing),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing),
+            stackView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
+            stackView.widthAnchor.constraint(lessThanOrEqualToConstant: 500),
             buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
             buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             bottomConstraint
