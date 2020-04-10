@@ -191,7 +191,7 @@ extension ReaderTabView {
         guard filterButton.titleLabel?.text == "Filter" else {
             return
         }
-        viewModel.presentFilter() { [weak self] topic in
+        viewModel.presentFilter(from: filterButton) { [weak self] topic in
             if let topic = topic {
                 self?.resetFilterButton.isHidden = false
                 self?.setFilterButtonTitle(topic.title)

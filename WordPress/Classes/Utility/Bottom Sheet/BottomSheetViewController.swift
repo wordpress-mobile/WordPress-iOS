@@ -5,7 +5,7 @@ class BottomSheetViewController: UIViewController {
         static let gripHeight: CGFloat = 5
         static let cornerRadius: CGFloat = 8
         static let buttonSpacing: CGFloat = 8
-        static let additionalSafeAreaInsetsRegular: UIEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        static let additionalSafeAreaInsetsRegular: UIEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         static let minimumWidth: CGFloat = 300
 
         enum Header {
@@ -34,9 +34,10 @@ class BottomSheetViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    func show(from presenting: UIViewController, sourceView: UIView? = nil) {
+    func show(from presenting: UIViewController, sourceView: UIView? = nil, arrowDirections: UIPopoverArrowDirection = .any) {
         if UIDevice.isPad() {
             modalPresentationStyle = .popover
+            popoverPresentationController?.permittedArrowDirections = arrowDirections
             popoverPresentationController?.sourceView = sourceView ?? UIView()
             popoverPresentationController?.sourceRect = sourceView?.bounds ?? .zero
         } else {
@@ -105,6 +106,15 @@ class BottomSheetViewController: UIViewController {
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         refreshForTraits()
+    }
+
+    override var preferredContentSize: CGSize {
+        set {
+            childViewController?.preferredContentSize = newValue
+        }
+        get {
+            return childViewController?.preferredContentSize ?? super.preferredContentSize
+        }
     }
 
     private func refreshForTraits() {
