@@ -2,20 +2,20 @@ import MobileCoreServices
 import WPMediaPicker
 
 struct TenorImageCollection {
-    private(set) var largeURL: URL
-    private(set) var previewURL: URL
-    private(set) var staticThumbnailURL: URL
-    private(set) var largeSize: CGSize
+    let largeURL: URL
+    let previewURL: URL
+    let staticThumbnailURL: URL
+    let largeSize: CGSize
 }
 
 // Models a Tenor image
 
 final class TenorMedia: NSObject {
-    private(set) var id: String
-    private(set) var name: String
-    private(set) var caption: String
-    private let updatedDate: Date
-    private let images: TenorImageCollection
+    let id: String
+    let name: String
+    let caption: String
+    let updatedDate: Date
+    let images: TenorImageCollection
 
     init(id: String, name: String, caption: String, images: TenorImageCollection, date: Date? = nil) {
         self.id = id
