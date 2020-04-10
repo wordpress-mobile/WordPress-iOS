@@ -30,7 +30,26 @@ import WordPressFlux
         return tableViewController.tableView
     }
 
-    private var syncHelper: WPContentSyncHelper!
+    private var syncHelpers: [ReaderAbstractTopic: WPContentSyncHelper] = [:]
+
+    private var syncHelper: WPContentSyncHelper? {
+        guard let topic = readerTopic else {
+            return nil
+        }
+        syncHelpers.forEach {
+            $0.value.delegate = nil
+        }
+
+        let currentHelper = syncHelpers[topic] ?? WPContentSyncHelper()
+
+        if syncHelpers[topic] == nil {
+            syncHelpers[topic] = currentHelper
+        }
+
+        currentHelper.delegate = self
+        return currentHelper
+    }
+
     private var resultsStatusView = NoResultsViewController.controller()
 
     private lazy var footerView: PostListFooterView = {
@@ -115,6 +134,9 @@ import WordPressFlux
             if readerTopic != nil && readerTopic != oldValue {
                 if didSetupView {
                     configureControllerForTopic()
+                    if let syncHelper = syncHelper, syncHelper.isSyncing, !isShowingResultStatusView {
+                        displayLoadingView()
+                    }
                 }
                 // Discard the siteID (if there was one) now that we have a good topic
                 siteID = nil
@@ -243,7 +265,6 @@ import WordPressFlux
         setupTableView()
         setupFooterView()
         setupContentHandler()
-        setupSyncHelper()
         setupResultsStatusView()
 
         observeNetworkStatus()
@@ -408,11 +429,6 @@ import WordPressFlux
         content.initializeContent(tableView: tableView, delegate: self)
     }
 
-    private func setupSyncHelper() {
-        syncHelper = WPContentSyncHelper()
-        syncHelper.delegate = self
-    }
-
     private func setupResultsStatusView() {
         resultsStatusView.delegate = self
     }
@@ -506,7 +522,7 @@ import WordPressFlux
         let count = content.contentCount
 
         // Make sure we're showing the no results view if appropriate
-        if !syncHelper.isSyncing && count == 0 {
+        if let syncHelper = syncHelper, !syncHelper.isSyncing && count == 0 {
             displayNoResultsView()
         }
 
@@ -724,7 +740,7 @@ import WordPressFlux
 
             return
         }
-        syncHelper.syncContentWithUserInteraction(true)
+        syncHelper?.syncContentWithUserInteraction(true)
     }
 
 
@@ -810,7 +826,7 @@ import WordPressFlux
         let lastSynced = topic.lastSynced ?? Date(timeIntervalSince1970: 0)
         let interval = Int( Date().timeIntervalSince(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
-            syncHelper.syncContentWithUserInteraction(false, forceSync: true)
+            syncHelper?.syncContentWithUserInteraction(false)
         } else {
             handleConnectionError()
         }
@@ -850,7 +866,7 @@ import WordPressFlux
 
             return
         }
-        if syncHelper.isSyncing {
+        if let syncHelper = syncHelper, syncHelper.isSyncing {
             let alertTitle = NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
             let alertMessage = NSLocalizedString("Please wait til the current fetch completes.", comment: "Asks the usre to wait until the currently running fetch request completes.")
             let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
@@ -864,7 +880,7 @@ import WordPressFlux
         }
         indexPathForGapMarker = indexPath
         syncIsFillingGap = true
-        syncHelper.syncContentWithUserInteraction(true)
+        syncHelper?.syncContentWithUserInteraction(true)
     }
 
 
@@ -1122,7 +1138,7 @@ import WordPressFlux
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forTag: topic, success: { [weak self] in
-            self?.syncHelper.syncContent()
+            self?.syncHelper?.syncContent()
         }, failure: { [weak self] (error: Error?) in
             generator.notificationOccurred(.error)
             self?.updateStreamHeaderIfNeeded()
@@ -1150,7 +1166,7 @@ import WordPressFlux
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forSite: topic, success: { [weak self] in
-            self?.syncHelper.syncContent()
+            self?.syncHelper?.syncContent()
             if toFollow {
                 self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
             }
@@ -1217,7 +1233,11 @@ extension ReaderStreamViewController: NewsManagerDelegate {
 extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-        displayLoadingViewIfNeeded()
+        guard content.isEmpty else {
+            return
+        }
+        displayLoadingView()
+
         if syncIsFillingGap {
             syncItemsForGap(success, failure: failure)
         } else {
@@ -1321,7 +1341,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     func tableViewHandlerDidRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         hideResultsStatus()
         if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
-            if syncHelper.isSyncing {
+            if let syncHelper = syncHelper, syncHelper.isSyncing {
                 return
             }
             displayNoResultsView()
@@ -1407,7 +1427,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             // - there is more content,
             // - when we are not alrady syncing
             // - when we are not waiting for scrolling to end to cleanup and refresh the list
-            if syncHelper.hasMoreContent && !syncHelper.isSyncing && !cleanupAndRefreshAfterScrolling {
+            if let syncHelper = syncHelper, syncHelper.hasMoreContent && !syncHelper.isSyncing && !cleanupAndRefreshAfterScrolling {
                 syncHelper.syncMoreContent()
             }
         }
@@ -1527,11 +1547,7 @@ private extension ReaderStreamViewController {
         displayResultsStatus()
     }
 
-    func displayLoadingViewIfNeeded() {
-        if content.contentCount > 0 {
-            return
-        }
-
+    private func displayLoadingView() {
         tableView.tableHeaderView?.isHidden = true
         configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         displayResultsStatus()
@@ -1576,6 +1592,7 @@ private extension ReaderStreamViewController {
 
     func displayResultsStatus() {
         resultsStatusView.removeFromView()
+        tableViewController.addChild(resultsStatusView)
         tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
         resultsStatusView.view.frame = tableView.frame
         resultsStatusView.didMove(toParent: tableViewController)
