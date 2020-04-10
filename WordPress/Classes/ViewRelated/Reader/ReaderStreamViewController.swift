@@ -36,17 +36,11 @@ import WordPressFlux
         guard let topic = readerTopic else {
             return nil
         }
-        syncHelpers.forEach {
-            $0.value.delegate = nil
-        }
-
         let currentHelper = syncHelpers[topic] ?? WPContentSyncHelper()
 
         if syncHelpers[topic] == nil {
             syncHelpers[topic] = currentHelper
         }
-
-        currentHelper.delegate = self
         return currentHelper
     }
 
@@ -124,7 +118,11 @@ import WordPressFlux
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
     @objc var readerTopic: ReaderAbstractTopic? {
         didSet {
-            oldValue?.inUse = false
+            if let oldValue = oldValue {
+                oldValue.inUse = false
+                syncHelpers[oldValue]?.delegate = nil
+            }
+            syncHelper?.delegate = self
 
             if let newTopic = readerTopic {
                 newTopic.inUse = true
