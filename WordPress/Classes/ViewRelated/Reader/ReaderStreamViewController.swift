@@ -135,6 +135,11 @@ import WordPressFlux
     /// - Returns: An instance of the controller
     ///
     @objc class func controllerWithTopic(_ topic: ReaderAbstractTopic) -> ReaderStreamViewController {
+        // if a default discover topic is provided, treat it as a site to retrieve the header
+        if ReaderHelpers.topicIsDiscover(topic) && FeatureFlag.newReaderNavigation.enabled {
+            return controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
+        }
+
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
@@ -439,12 +444,12 @@ import WordPressFlux
         }
 
         tableView.tableHeaderView = header
-
-        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-        header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
-        header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
-        header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
-
+        if !FeatureFlag.newReaderNavigation.enabled {
+            // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
+            header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+            header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
+            header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+        }
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }
@@ -805,7 +810,7 @@ import WordPressFlux
         let lastSynced = topic.lastSynced ?? Date(timeIntervalSince1970: 0)
         let interval = Int( Date().timeIntervalSince(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
-            syncHelper.syncContentWithUserInteraction(false)
+            syncHelper.syncContentWithUserInteraction(false, forceSync: FeatureFlag.newReaderNavigation.enabled)
         } else {
             handleConnectionError()
         }
@@ -1661,5 +1666,19 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+
+// MARK: - Topic Injection
+extension ReaderStreamViewController {
+    func setTopic(_ topic: ReaderAbstractTopic) {
+        guard ReaderHelpers.topicIsDiscover(topic) else {
+            readerTopic = topic
+            return
+        }
+        readerTopic = nil
+        isFeed = false
+        siteID = ReaderHelpers.discoverSiteID
     }
 }
