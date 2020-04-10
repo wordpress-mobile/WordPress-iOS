@@ -1,16 +1,10 @@
+
 @testable import WordPress
 import XCTest
 
 final class TenorResultsPageTests: XCTestCase {
     private struct Constants {
-        static let mockResults: [TenorMedia] = {
-            let data = TenorReponseData.validSearchResponse
-            let parser = TenorResponseParser<TenorGIF>()
-            try! parser.parse(data)
-
-            let tenorMedia = TenorMedia(tenorGIF: parser.results!.first!)!
-            return [tenorMedia, tenorMedia, tenorMedia]
-        }()
+        static let mockResults = TenorMockDataHelper.mockMediaList
     }
 
     private var resultsPage: TenorResultsPage?
