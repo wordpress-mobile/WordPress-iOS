@@ -1578,6 +1578,7 @@
 		C8567492243F3751001A995E /* tenor-search-response.json in Resources */ = {isa = PBXBuildFile; fileRef = C8567491243F3751001A995E /* tenor-search-response.json */; };
 		C8567494243F388F001A995E /* tenor-invalid-search-reponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C8567493243F388F001A995E /* tenor-invalid-search-reponse.json */; };
 		C8567496243F3D37001A995E /* TenorResultsPageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8567495243F3D37001A995E /* TenorResultsPageTests.swift */; };
+		C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */; };
 		CC19BE06223FECAC00CAB3E1 /* EditorPostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */; };
 		CC2BB0CA2289CC3B0034F9AB /* BlockEditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0C92289CC3B0034F9AB /* BlockEditorScreen.swift */; };
 		CC2BB0D0228ACF710034F9AB /* EditorGutenbergTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */; };
@@ -4044,6 +4045,7 @@
 		C8567491243F3751001A995E /* tenor-search-response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tenor-search-response.json"; sourceTree = "<group>"; };
 		C8567493243F388F001A995E /* tenor-invalid-search-reponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tenor-invalid-search-reponse.json"; sourceTree = "<group>"; };
 		C8567495243F3D37001A995E /* TenorResultsPageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorResultsPageTests.swift; sourceTree = "<group>"; };
+		C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergTenorMediaPicker.swift; sourceTree = "<group>"; };
 		C9264D275F6288F66C33D2CE /* Pods-WordPressTest.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-internal.xcconfig"; sourceTree = "<group>"; };
 		C9BDC428A69177C2CBF0C247 /* Pods-WordPressShareExtension.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release-internal.xcconfig"; sourceTree = "<group>"; };
 		CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPostSettings.swift; sourceTree = "<group>"; };
@@ -7099,6 +7101,7 @@
 				8B05D29223AA572A0063B9AA /* GutenbergMediaEditorImage.swift */,
 				7E407120237163B8003627FA /* GutenbergStockPhotos.swift */,
 				7E4071392372AD54003627FA /* GutenbergFilesAppMediaSource.swift */,
+				C856748E243EF177001A995E /* GutenbergTenorMediaPicker.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -11948,6 +11951,7 @@
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				31C9F82E1A2368A2008BB945 /* BlogDetailHeaderView.m in Sources */,
 				9A2D0B23225CB92B009E585F /* BlogService+JetpackConvenience.swift in Sources */,
+				C856748F243EF177001A995E /* GutenbergTenorMediaPicker.swift in Sources */,
 				B50C0C5F1EF42A4A00372C65 /* AztecPostViewController.swift in Sources */,
 				FF28B3F11AEB251200E11AAE /* InfoPListTranslator.m in Sources */,
 				086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */,

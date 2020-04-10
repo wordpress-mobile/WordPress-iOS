@@ -7,6 +7,16 @@ protocol TenorPickerDelegate: AnyObject {
 
 /// Presents the Tenor main interface
 final class TenorPicker: NSObject {
+    // MARK: - Public properties
+
+    var allowMultipleSelection = true {
+        didSet {
+            pickerOptions.allowMultipleSelection = allowMultipleSelection
+        }
+    }
+
+    // MARK: - Private properties
+
     private lazy var dataSource: TenorDataSource = {
         TenorDataSource(service: tenorService)
     }()
@@ -25,7 +35,7 @@ final class TenorPicker: NSObject {
 
     private let searchHint = NoResultsViewController.controller()
 
-    private var pickerOptions: WPMediaPickerOptions = {
+    private lazy var pickerOptions: WPMediaPickerOptions = {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
@@ -33,6 +43,7 @@ final class TenorPicker: NSObject {
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
         options.preferredStatusBarStyle = .lightContent
+        options.allowMultipleSelection = allowMultipleSelection
         return options
     }()
 
