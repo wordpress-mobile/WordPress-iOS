@@ -810,7 +810,7 @@ import WordPressFlux
         let lastSynced = topic.lastSynced ?? Date(timeIntervalSince1970: 0)
         let interval = Int( Date().timeIntervalSince(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
-            syncHelper.syncContentWithUserInteraction(false, forceSync: true)
+            syncHelper.syncContentWithUserInteraction(false, forceSync: FeatureFlag.newReaderNavigation.enabled)
         } else {
             handleConnectionError()
         }
