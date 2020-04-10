@@ -11,7 +11,7 @@ struct TenorSearchParams {
     }
 }
 
-struct TenorService {
+class TenorService {
     static let tenor: TenorClient = {
         TenorClient.configure(apiKey: ApiCredentials.tenorApiKey())
         return TenorClient.shared
