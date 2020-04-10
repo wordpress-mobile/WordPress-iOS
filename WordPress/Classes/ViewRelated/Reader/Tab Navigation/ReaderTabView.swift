@@ -191,16 +191,20 @@ extension ReaderTabView {
         guard filterButton.titleLabel?.text == "Filter" else {
             return
         }
-        setFilterButtonTitle("Phoebe's Photos")
-        resetFilterButton.isHidden = false
-        viewModel.presentFilter()
+        viewModel.presentFilter() { [weak self] topic in
+            if let topic = topic {
+                self?.resetFilterButton.isHidden = false
+                self?.setFilterButtonTitle(topic.title)
+                self?.viewModel.tabSelectionCallback?(topic)
+            }
+        }
     }
 
     /// Reset filter button
     @objc private func didTapResetFilterButton() {
         setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
         resetFilterButton.isHidden = true
-        viewModel.resetFilter()
+        viewModel.resetFilter(selectedItem: tabBar.items[tabBar.selectedIndex])
     }
 
     @objc private func didTapSettingsButton() {

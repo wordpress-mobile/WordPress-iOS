@@ -2,6 +2,7 @@
 class ReaderTabViewModel {
 
     var tabSelectionCallback: ((ReaderAbstractTopic) -> Void)?
+    var filterTapped: ((@escaping (ReaderAbstractTopic?) -> Void) -> Void)?
 
     init() {
         addNotificationsObservers()
@@ -18,9 +19,15 @@ class ReaderTabViewModel {
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
     func performSearch() { }
 
-    func presentFilter() { }
+    func presentFilter(completion: @escaping (ReaderAbstractTopic?) -> Void) {
+        filterTapped?(completion)
+    }
 
-    func resetFilter() { }
+    func resetFilter(selectedItem: FilterTabBarItem) {
+        if let topic = (selectedItem as? ReaderTabItem)?.topic {
+            tabSelectionCallback?(topic)
+        }
+    }
 
     func presentSettings() { }
 }

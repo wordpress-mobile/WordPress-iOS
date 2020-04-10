@@ -7,6 +7,15 @@ class ReaderTabViewController: UIViewController {
     init(viewModel: ReaderTabViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.filterTapped = { [weak self] completion in
+            guard let self = self else { return }
+            let viewController = FilterSheetViewController(filters: [ReaderSiteTopic.filterProvider(), ReaderTagTopic.filterProvider()], changedFilter: { [weak self] topic in
+                completion(topic)
+                self?.dismiss(animated: true, completion: nil)
+            })
+            let bottomSheet = BottomSheetViewController(childViewController: viewController)
+            bottomSheet.show(from: self, sourceView: self.view)
+        }
         self.title = NSLocalizedString("Reader", comment: "The default title of the Reader")
         setupSearchButton()
     }
