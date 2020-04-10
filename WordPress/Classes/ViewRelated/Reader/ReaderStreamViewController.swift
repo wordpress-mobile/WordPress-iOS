@@ -1231,10 +1231,9 @@ extension ReaderStreamViewController: NewsManagerDelegate {
 extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-        guard content.isEmpty else {
-            return
+        if content.isEmpty {
+            displayLoadingView()
         }
-        displayLoadingView()
 
         if syncIsFillingGap {
             syncItemsForGap(success, failure: failure)
