@@ -16,7 +16,9 @@ final class AztecMediaPickingCoordinator {
         let blog = context.blog
         let fromView = context.view
 
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: nil,
+                                                message: nil,
+                                                preferredStyle: UIDevice.isPad() ? .alert : .actionSheet)
 
         if blog.supports(.stockPhotos) {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
