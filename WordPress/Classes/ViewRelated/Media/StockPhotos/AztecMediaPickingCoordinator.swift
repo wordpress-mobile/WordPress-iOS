@@ -4,10 +4,12 @@ import WPMediaPicker
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMediaPickingCoordinator {
     private let giphy = GiphyPicker()
+    private let tenor = TenorPicker()
     private let stockPhotos = StockPhotosPicker()
 
-    init(delegate: GiphyPickerDelegate & StockPhotosPickerDelegate) {
+    init(delegate: StockPhotosPickerDelegate & GiphyPickerDelegate & TenorPickerDelegate) {
         giphy.delegate = delegate
+        tenor.delegate = delegate
         stockPhotos.delegate = delegate
     }
 
@@ -22,6 +24,10 @@ final class AztecMediaPickingCoordinator {
 
         if blog.supports(.stockPhotos) {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
+        }
+
+        if FeatureFlag.tenor.enabled {
+            alertController.addAction(tenorAction(origin: origin, blog: blog))
         }
 
         alertController.addAction(otherAppsAction(origin: origin, blog: blog))
@@ -46,6 +52,12 @@ final class AztecMediaPickingCoordinator {
         })
     }
 
+    private func tenorAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
+        return UIAlertAction(title: .tenor, style: .default, handler: { [weak self] action in
+            self?.showTenor(origin: origin, blog: blog)
+        })
+    }
+
     private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin, blog: blog)
@@ -62,6 +74,10 @@ final class AztecMediaPickingCoordinator {
 
     private func showGiphy(origin: UIViewController, blog: Blog) {
         giphy.presentPicker(origin: origin, blog: blog)
+    }
+
+    private func showTenor(origin: UIViewController, blog: Blog) {
+        tenor.presentPicker(origin: origin, blog: blog)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {
