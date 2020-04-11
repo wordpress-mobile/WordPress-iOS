@@ -133,7 +133,7 @@ import WordPressFlux
                 if didSetupView {
                     configureControllerForTopic()
                     if let syncHelper = syncHelper, syncHelper.isSyncing, !isShowingResultStatusView {
-                        displayLoadingView()
+                        displayLoadingViewIfNeeded()
                     }
                 }
                 // Discard the siteID (if there was one) now that we have a good topic
@@ -1231,10 +1231,7 @@ extension ReaderStreamViewController: NewsManagerDelegate {
 extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-        if content.isEmpty {
-            displayLoadingView()
-        }
-
+        displayLoadingViewIfNeeded()
         if syncIsFillingGap {
             syncItemsForGap(success, failure: failure)
         } else {
@@ -1544,7 +1541,11 @@ private extension ReaderStreamViewController {
         displayResultsStatus()
     }
 
-    private func displayLoadingView() {
+    func displayLoadingViewIfNeeded() {
+        if content.contentCount > 0 {
+            return
+        }
+
         tableView.tableHeaderView?.isHidden = true
         configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         displayResultsStatus()
