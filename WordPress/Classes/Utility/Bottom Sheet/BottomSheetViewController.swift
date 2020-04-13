@@ -27,10 +27,14 @@ class BottomSheetViewController: UIViewController {
         }
     }
 
+    private var customHeaderSpacing: CGFloat?
+
     private weak var childViewController: DrawerPresentableViewController?
 
-    init(childViewController: DrawerPresentableViewController) {
+    init(childViewController: DrawerPresentableViewController,
+         customHeaderSpacing: CGFloat? = nil) {
         self.childViewController = childViewController
+        self.customHeaderSpacing = customHeaderSpacing
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -58,6 +62,8 @@ class BottomSheetViewController: UIViewController {
         return button
     }()
 
+    private var stackView: UIStackView!
+
     @objc func buttonPressed() {
         dismiss(animated: true, completion: nil)
     }
@@ -84,12 +90,12 @@ class BottomSheetViewController: UIViewController {
 
         addChild(childViewController)
 
-        let stackView = UIStackView(arrangedSubviews: [
+        stackView = UIStackView(arrangedSubviews: [
             gripButton,
             childViewController.view
         ])
 
-        stackView.setCustomSpacing(Constants.Header.spacing, after: gripButton)
+        stackView.setCustomSpacing(customHeaderSpacing ?? Constants.Header.spacing, after: gripButton)
 
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -147,6 +153,10 @@ extension BottomSheetViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - DrawerDelegate
 extension BottomSheetViewController: DrawerPresentable {
+    var allowsUserTransition: Bool {
+        return childViewController?.allowsUserTransition ?? true
+    }
+
     var compactWidth: DrawerWidth {
         childViewController?.compactWidth ?? .percentage(0.66)
     }

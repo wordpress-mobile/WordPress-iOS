@@ -63,8 +63,6 @@ class PrepublishingViewController: UITableViewController {
         setupPublishButton()
 
         announcePublishButton()
-
-        tableView.isScrollEnabled = false
     }
 
     override func viewWillAppear(_ animated: Bool) {

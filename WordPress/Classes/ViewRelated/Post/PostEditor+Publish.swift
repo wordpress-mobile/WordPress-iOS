@@ -136,7 +136,7 @@ extension PostEditor where Self: UIViewController {
             publishAction()
         }
         let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
-        let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController)
+        let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
         bottomSheet.show(from: self, sourceView: navigationBarManager.publishButton)
     }
 

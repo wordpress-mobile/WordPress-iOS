@@ -19,6 +19,10 @@ class PrepublishingNavigationController: LightNavigationController {
 // MARK: - DrawerPresentable
 
 extension PrepublishingNavigationController: DrawerPresentable {
+    var allowsUserTransition: Bool {
+        return false
+    }
+
     var expandedHeight: DrawerHeight {
         return .topMargin(20)
     }
