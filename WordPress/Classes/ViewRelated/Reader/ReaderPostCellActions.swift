@@ -8,6 +8,13 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     var isLoggedIn: Bool = false
     private let visibleConfirmation: Bool
 
+    // saved posts
+    /// Posts that have been removed but not yet discarded
+    // TODO: - READERNAV - Set this property as private once the old reader class ReaderSavedPostCellActions is removed
+    var removedPosts = ReaderSaveForLaterRemovedPosts()
+
+    weak var savedPostsDelegate: ReaderSavedPostCellActionsDelegate?
+
     init(context: NSManagedObjectContext, origin: UIViewController, topic: ReaderAbstractTopic? = nil, visibleConfirmation: Bool = true) {
         self.context = context
         self.origin = origin
@@ -38,10 +45,18 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
+        if let origin = origin as? ReaderStreamViewController, origin.isSavedPostsController {
+            if let post = provider as? ReaderPost {
+                removedPosts.add(post)
+            }
+            savedPostsDelegate?.willRemove(cell)
+
+        } else {
+            guard let post = provider as? ReaderPost else {
+                return
+            }
+            toggleSavedForLater(for: post)
         }
-        toggleSavedForLater(for: post)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
@@ -105,6 +120,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
     func toggleSavedForLater(for post: ReaderPost) {
         let actionOrigin: ReaderSaveForLaterOrigin
+        // TODO: - READERNAV - Remove this check once the old reader is removed
         if origin is ReaderSavedPostsViewController {
             actionOrigin = .savedStream
         } else {
@@ -169,5 +185,26 @@ enum ReaderActionsVisibility: Equatable {
         case .visible(let enabled):
             return enabled
         }
+    }
+}
+
+
+// MARK: - Saved Posts
+extension ReaderPostCellActions {
+
+    func postIsRemoved(_ post: ReaderPost) -> Bool {
+        return removedPosts.contains(post)
+    }
+
+    func restoreUnsavedPost(_ post: ReaderPost) {
+        removedPosts.remove(post)
+    }
+
+    func clearRemovedPosts() {
+        let allRemovedPosts = removedPosts.all()
+        for post in allRemovedPosts {
+            toggleSavedForLater(for: post)
+        }
+        removedPosts = ReaderSaveForLaterRemovedPosts()
     }
 }

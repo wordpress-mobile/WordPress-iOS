@@ -83,6 +83,10 @@ extension ReaderSavedPostsViewController {
 
 extension ReaderStreamViewController {
     func trackSavedPostNavigation() {
-        WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.otherStream.openPostValue ])
+        if FeatureFlag.newReaderNavigation.enabled, isSavedPostsController {
+            WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue ])
+        } else {
+            WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.otherStream.openPostValue ])
+        }
     }
 }
