@@ -29,10 +29,19 @@ class ReaderTabViewModel {
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
     func performSearch() { }
 
-    func presentFilter(from: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
+    func presentFilter(from: UIViewController, sourceView: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
+        let viewController = makeFilterSheetViewController(completion: completion)
+        let bottomSheet = BottomSheetViewController(childViewController: viewController)
+        bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
+    }
+
+    func presentFilter(from: UIView, completion: @escaping (String?) -> Void) {
         filterTapped?(from, { [weak self] topic in
             self?.selectedFilter = topic
-            completion(topic)
+            if let topic = topic {
+                self?.tabSelectionCallback?(topic)
+            }
+            completion(topic?.title)
         })
     }
 
@@ -44,6 +53,17 @@ class ReaderTabViewModel {
     }
 
     func presentSettings() { }
+}
+
+// MARK: - Bottom Sheet
+
+extension ReaderTabViewModel {
+    private func makeFilterSheetViewController(completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
+        return FilterSheetViewController(filters:
+            [ReaderSiteTopic.filterProvider(),
+             ReaderTagTopic.filterProvider()],
+            changedFilter: completion)
+    }
 }
 
 

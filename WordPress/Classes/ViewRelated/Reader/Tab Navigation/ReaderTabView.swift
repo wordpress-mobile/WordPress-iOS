@@ -187,11 +187,10 @@ extension ReaderTabView {
 
     /// Filter button
     @objc private func didTapFilterButton() {
-        viewModel.presentFilter(from: filterButton) { [weak self] topic in
-            if let topic = topic {
+        viewModel.presentFilter(from: filterButton) { [weak self] title in
+            if let title = title {
                 self?.resetFilterButton.isHidden = false
-                self?.setFilterButtonTitle(topic.title)
-                self?.viewModel.tabSelectionCallback?(topic)
+                self?.setFilterButtonTitle(title)
             }
         }
     }
@@ -207,7 +206,6 @@ extension ReaderTabView {
         viewModel.presentSettings()
     }
 }
-
 
 // MARK: - Appearance
 extension ReaderTabView {

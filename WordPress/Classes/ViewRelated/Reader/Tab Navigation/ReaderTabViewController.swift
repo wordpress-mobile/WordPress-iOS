@@ -9,14 +9,12 @@ class ReaderTabViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.viewModel.filterTapped = { [weak self] (fromView, completion) in
             guard let self = self else { return }
-            let viewController = FilterSheetViewController(filters: [ReaderSiteTopic.filterProvider(), ReaderTagTopic.filterProvider()], changedFilter: { [weak self] topic in
-                completion(topic)
+            self.viewModel.presentFilter(from: self, sourceView: fromView, completion: { [weak self] title in
                 self?.dismiss(animated: true, completion: nil)
+                completion(title)
             })
-            let bottomSheet = BottomSheetViewController(childViewController: viewController)
-            bottomSheet.show(from: self, sourceView: fromView, arrowDirections: .up)
         }
-        self.title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        title = NSLocalizedString("Reader", comment: "The default title of the Reader")
         setupSearchButton()
     }
 
@@ -31,7 +29,7 @@ class ReaderTabViewController: UIViewController {
     }
 
     override func loadView() {
-        self.view = ReaderTabView(viewModel: viewModel)
+        view = ReaderTabView(viewModel: viewModel)
     }
 }
 
