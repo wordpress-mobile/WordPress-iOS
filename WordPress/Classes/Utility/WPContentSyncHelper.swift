@@ -47,8 +47,8 @@ class WPContentSyncHelper: NSObject {
     }
 
 
-    @objc @discardableResult func syncContentWithUserInteraction(_ userInteraction: Bool) -> Bool {
-        if isSyncing {
+    @objc @discardableResult func syncContentWithUserInteraction(_ userInteraction: Bool, forceSync: Bool = false) -> Bool {
+        if isSyncing && !forceSync {
             return false
         }
 
