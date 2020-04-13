@@ -5,7 +5,6 @@ class BottomSheetViewController: UIViewController {
         static let gripHeight: CGFloat = 5
         static let cornerRadius: CGFloat = 8
         static let buttonSpacing: CGFloat = 8
-        static let additionalSafeAreaInsetsRegular: UIEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         static let minimumWidth: CGFloat = 300
 
         enum Header {
@@ -116,10 +115,8 @@ class BottomSheetViewController: UIViewController {
     private func refreshForTraits() {
         if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
             gripButton.isHidden = true
-            additionalSafeAreaInsets = Constants.additionalSafeAreaInsetsRegular
         } else {
             gripButton.isHidden = false
-            additionalSafeAreaInsets = .zero
         }
     }
 
