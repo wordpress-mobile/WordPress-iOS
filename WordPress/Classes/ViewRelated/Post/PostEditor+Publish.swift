@@ -55,8 +55,6 @@ extension PostEditor where Self: UIViewController {
             return
         }
 
-        let isPage = post is Page
-
         let publishBlock = { [unowned self] in
             if action == .saveAsDraft {
                 self.post.status = .draft
@@ -97,20 +95,7 @@ extension PostEditor where Self: UIViewController {
             }
         }
 
-        let promoBlock = { [unowned self] in
-            UserDefaults.standard.asyncPromoWasDisplayed = true
-
-            let controller = FancyAlertViewController.makeAsyncPostingAlertController(action: action, isPage: isPage, onConfirm: publishBlock)
-            controller.modalPresentationStyle = .custom
-            controller.transitioningDelegate = self
-            self.present(controller, animated: true, completion: nil)
-        }
-
-
-        if action.isAsync &&
-            !UserDefaults.standard.asyncPromoWasDisplayed {
-            promoBlock()
-        } else if action.isAsync,
+        if action.isAsync,
             let postStatus = self.post.original?.status ?? self.post.status,
             ![.publish, .publishPrivate].contains(postStatus) {
             // Only display confirmation alert for unpublished posts

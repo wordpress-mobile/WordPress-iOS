@@ -35,7 +35,7 @@ public enum PostEditorAction {
     var publishActionLabel: String {
         switch self {
         case .publish:
-            return NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
+            return "\(NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post."))..."
         case .publishNow:
             return NSLocalizedString("Publish Now", comment: "Title of button allowing the user to immediately publish the post they are editing.")
         case .save:
@@ -43,9 +43,9 @@ public enum PostEditorAction {
         case .saveAsDraft:
             return NSLocalizedString("Save as Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
         case .schedule:
-            return NSLocalizedString("Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.")
+            return "\(NSLocalizedString("Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later."))..."
         case .submitForReview:
-            return NSLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment).")
+            return "\(NSLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment)."))..."
         case .update:
             return NSLocalizedString("Update", comment: "Update button label (saving content, ex: Post, Page, Comment).")
         }
