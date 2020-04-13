@@ -104,12 +104,6 @@ class NewBlogDetailHeaderView: UIView {
         stackView.setCustomSpacing(Constants.spacingBelowIcon, after: siteIconView)
         stackView.setCustomSpacing(Constants.spacingBelowTitle, after: titleLabel)
 
-        /// Constraints for larger widths with extra padding (iPhone portrait)
-        let extraPaddingSideConstraints = [
-            buttonsStackView.trailingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor, constant: -Constants.buttonsSidePadding),
-            buttonsStackView.leadingAnchor.constraint(lessThanOrEqualTo: stackView.leadingAnchor, constant: Constants.buttonsSidePadding)
-        ]
-
         /// Constraints for constrained widths (iPad portrait)
         let minimumPaddingSideConstraints = [
             buttonsStackView.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: 0),
@@ -129,13 +123,13 @@ class NewBlogDetailHeaderView: UIView {
             stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.minimumSideSpacing),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing),
             stackView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
-            stackView.widthAnchor.constraint(lessThanOrEqualToConstant: 500),
+            buttonsStackView.widthAnchor.constraint(equalToConstant: 320),
             buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
             buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             bottomConstraint
         ]
 
-        NSLayoutConstraint.activate(extraPaddingSideConstraints + minimumPaddingSideConstraints + edgeConstraints)
+        NSLayoutConstraint.activate(minimumPaddingSideConstraints + edgeConstraints)
     }
 
     override init(frame: CGRect) {
