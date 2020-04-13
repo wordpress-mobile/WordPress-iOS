@@ -55,8 +55,6 @@ extension PostEditor where Self: UIViewController {
             return
         }
 
-        let isPage = post is Page
-
         let publishBlock = { [unowned self] in
             if action == .saveAsDraft {
                 self.post.status = .draft
