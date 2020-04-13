@@ -16,6 +16,7 @@ class FilterSheetView: UIView {
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.tableFooterView = UIView() // To hide the separators for empty cells
+        tableView.separatorStyle = .none
         tableView.delegate = self
         return tableView
     }()

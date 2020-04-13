@@ -2,6 +2,7 @@
 class ReaderTabViewModel {
 
     var tabSelectionCallback: ((ReaderAbstractTopic) -> Void)?
+    var selectedFilter: ReaderAbstractTopic?
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
 
     init() {
@@ -9,21 +10,34 @@ class ReaderTabViewModel {
     }
 
     func showTab(for item: FilterTabBarItem) {
+
         guard let readerItem = item as? ReaderTabItem,
             let topic = readerItem.topic else {
                 return
         }
-        tabSelectionCallback?(topic)
+
+        let selectedTopic: ReaderAbstractTopic
+        if readerItem.shouldHideButtonsView == false {
+            selectedTopic = selectedFilter ?? topic
+        } else {
+            selectedTopic = topic
+        }
+
+        tabSelectionCallback?(selectedTopic)
     }
 
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
     func performSearch() { }
 
     func presentFilter(from: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
-        filterTapped?(from, completion)
+        filterTapped?(from, { [weak self] topic in
+            self?.selectedFilter = topic
+            completion(topic)
+        })
     }
 
     func resetFilter(selectedItem: FilterTabBarItem) {
+        selectedFilter = nil
         if let topic = (selectedItem as? ReaderTabItem)?.topic {
             tabSelectionCallback?(topic)
         }

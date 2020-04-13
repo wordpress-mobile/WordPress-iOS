@@ -187,10 +187,6 @@ extension ReaderTabView {
 
     /// Filter button
     @objc private func didTapFilterButton() {
-        //TODO: - READERNAV - Remove. This test code is for UI prototyping only
-        guard filterButton.titleLabel?.text == "Filter" else {
-            return
-        }
         viewModel.presentFilter(from: filterButton) { [weak self] topic in
             if let topic = topic {
                 self?.resetFilterButton.isHidden = false
