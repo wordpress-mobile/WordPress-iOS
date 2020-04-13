@@ -37,10 +37,7 @@ import WordPressFlux
             return nil
         }
         let currentHelper = syncHelpers[topic] ?? WPContentSyncHelper()
-
-        if syncHelpers[topic] == nil {
-            syncHelpers[topic] = currentHelper
-        }
+        syncHelpers[topic] = currentHelper
         return currentHelper
     }
 
