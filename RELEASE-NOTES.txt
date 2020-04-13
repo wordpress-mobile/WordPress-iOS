@@ -3,7 +3,9 @@
 * [internal] the signup flow using email has code changes that can cause regressions. See https://git.io/JvALZ for testing details.
 * Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
 * [internal] Notifications tab should pop to the root of the navigation stack when tapping on the tab from within a notification detail screen. See https://git.io/Jvxka for testing details.
- 
+* Block editor: Disable ripple effect in all BottomSheet's controls.
+* Block editor: New block: Columns
+
 14.6
 -----
 * [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.
