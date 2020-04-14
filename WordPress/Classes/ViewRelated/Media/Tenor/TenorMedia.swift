@@ -13,14 +13,12 @@ struct TenorImageCollection {
 final class TenorMedia: NSObject {
     let id: String
     let name: String
-    let caption: String
     let updatedDate: Date
     let images: TenorImageCollection
 
-    init(id: String, name: String, caption: String, images: TenorImageCollection, date: Date? = nil) {
+    init(id: String, name: String, images: TenorImageCollection, date: Date? = nil) {
         self.id = id
         self.name = name
-        self.caption = caption
         self.updatedDate = date ?? Date()
         self.images = images
     }
@@ -43,7 +41,7 @@ extension TenorMedia {
                                           staticThumbnailURL: thumbnailGif!.url,
                                           largeSize: largeGif!.mediaSize)
 
-        self.init(id: gif.id, name: gif.title ?? "", caption: "", images: images, date: gif.created)
+        self.init(id: gif.id, name: gif.title ?? "", images: images, date: gif.created)
     }
 }
 
@@ -119,5 +117,9 @@ extension TenorMedia: MediaExternalAsset {
     // The URL source for saving into user's media library as well as GIF preview
     var URL: URL {
         return images.largeURL
+    }
+
+    var caption: String {
+        return ""
     }
 }

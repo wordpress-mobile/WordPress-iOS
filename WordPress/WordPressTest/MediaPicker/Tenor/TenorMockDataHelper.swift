@@ -21,7 +21,6 @@ struct TenorMockDataHelper {
         let media = TenorMockDataHelper.mockMedia
         return TenorMedia(id: id,
                           name: media.name,
-                          caption: media.caption,
                           images: media.images,
                           date: media.updatedDate)
     }
