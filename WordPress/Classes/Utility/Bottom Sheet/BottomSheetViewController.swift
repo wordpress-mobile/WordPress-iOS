@@ -112,6 +112,15 @@ class BottomSheetViewController: UIViewController {
         refreshForTraits()
     }
 
+    override var preferredContentSize: CGSize {
+        set {
+            childViewController?.preferredContentSize = newValue
+        }
+        get {
+            return childViewController?.preferredContentSize ?? super.preferredContentSize
+        }
+    }
+
     private func refreshForTraits() {
         if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
             gripButton.isHidden = true
