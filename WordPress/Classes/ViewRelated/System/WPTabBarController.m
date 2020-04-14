@@ -61,6 +61,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) WPSplitViewController *readerSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
+@property (nonatomic, strong) ReaderTabViewController *readerTabViewController;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -388,8 +389,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (ReaderTabViewController *)readerTabViewController
 {
-    ReaderTabViewController *readerTabViewController = [self makeReaderTabViewController];
-    return readerTabViewController;
+    if (!_readerTabViewController) {
+        _readerTabViewController = [self makeReaderTabViewController];
+    }
+    return _readerTabViewController;
 }
 
 - (UISplitViewController *)meSplitViewController
@@ -762,15 +765,20 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [self showReaderTab];
 
-    // Unfortunately animations aren't disabled properly for this
-    // transition unless we dispatch_async.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.readerNavigationController popToRootViewControllerAnimated:NO];
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+        [self.readerTabViewController navigateToSavedPosts];
+    } else {
 
-        [UIView performWithoutAnimation:^{
-            [self.readerMenuViewController showSavedForLater];
-        }];
-    });
+        // Unfortunately animations aren't disabled properly for this
+        // transition unless we dispatch_async.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.readerNavigationController popToRootViewControllerAnimated:NO];
+
+            [UIView performWithoutAnimation:^{
+                [self.readerMenuViewController showSavedForLater];
+            }];
+        });
+    };
 }
 
 - (NSString *)currentlySelectedScreen

@@ -34,3 +34,14 @@ extension ReaderTabViewController {
         navigationController?.pushViewController(searchController, animated: true)
     }
 }
+
+
+// MARK: - Tab Switching
+extension ReaderTabViewController {
+    @objc func navigateToSavedPosts() {
+        guard let readerTabView = view as? ReaderTabView else {
+            return
+        }
+        readerTabView.switchToSavedPosts()
+    }
+}
