@@ -26,7 +26,6 @@
                                         <constraint firstAttribute="width" constant="44" id="Hzn-wu-Giy"/>
                                         <constraint firstAttribute="height" constant="44" id="nMd-Hh-E65"/>
                                     </constraints>
-                                    <state key="normal" image="gridicons-cross"/>
                                     <connections>
                                         <action selector="closeButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="MTX-wi-cBI"/>
                                     </connections>
@@ -121,7 +120,6 @@
         </view>
     </objects>
     <resources>
-        <image name="gridicons-cross" width="24" height="24"/>
         <namedColor name="Gray30">
             <color red="0.55686274509803924" green="0.56862745098039214" blue="0.58823529411764708" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
