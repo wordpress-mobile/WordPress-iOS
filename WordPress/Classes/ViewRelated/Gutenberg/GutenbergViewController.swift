@@ -605,6 +605,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         controller.modalPresentationStyle = .overCurrentContext
         self.present(controller, animated: true)
     }
+
+    func gutenbergDidRequestUnsupportedBlockFallback(with content: String) {
+        let controller = GutenbergWebViewController(with: post)
+        controller.onSave = { [weak self] content in
+            self?.gutenberg.updateHtml(content)
+        }
+        present(controller, animated: true)
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
