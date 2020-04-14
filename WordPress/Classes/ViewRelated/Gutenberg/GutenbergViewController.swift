@@ -611,7 +611,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         controller.onSave = { [weak self] content in
             self?.gutenberg.updateHtml(content)
         }
-        present(controller, animated: true)
+        let navController = UINavigationController(rootViewController: controller)
+        present(navController, animated: true)
     }
 }
 

@@ -2,7 +2,7 @@ import UIKit
 import WebKit
 
 class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
-    let authenticator: WebViewAuthenticator?
+    let authenticator: RequestAuthenticator?
     let url: URL
     var onSave: ((String) -> Void)?
 
@@ -11,7 +11,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     }
 
     init(with post: AbstractPost) {
-        authenticator = WebViewAuthenticator(blog: post.blog)
+        authenticator = RequestAuthenticator(blog: post.blog)
 
         guard let postID = post.postID as? Int, let siteURL = post.blog.hostURL else {
             url = URL(string: "https://wordpress.com/block-editor/post/new-post")!
@@ -24,6 +24,20 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
         super.init(nibName: nil, bundle: nil)
 
         self.modalPresentationStyle = .fullScreen
+
+        let saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(onSaveButtonPressed))
+        navigationItem.rightBarButtonItem = saveButton
+    }
+
+    @objc func onSaveButtonPressed() {
+        webView.evaluateJavaScript("document.test()") { (result, error) in
+            if let error = error {
+                print(error)
+            }
+            if let result = result {
+                print(result)
+            }
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -41,6 +55,8 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
         authenticatedRequest(for: url, on: webView) { [weak self] (request) in
             self?.webView.load(request)
         }
+
+        webView.navigationDelegate = self
     }
 
     deinit {
@@ -75,6 +91,12 @@ extension GutenbergWebViewController: WKScriptMessageHandler {
     }
 }
 
+extension GutenbergWebViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        print("---> DID FINISH!!!")
+    }
+}
+
 private extension WKUserContentController {
     func addUserScripts(_ scripts: [WKUserScript]) {
         scripts.forEach {
@@ -87,8 +109,9 @@ struct GutenbergWebJavascriptInjection {
     static func userContent(messageHandler handler: WKScriptMessageHandler) -> WKUserContentController {
         let userContent = WKUserContentController()
         userContent.addUserScripts([
-//            WKUserScript(source: requestInterceptionScript, injectionTime: .atDocumentStart, forMainFrameOnly: false),
-            WKUserScript(source: cleanUIScript, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+            WKUserScript(source: requestInterceptionScript, injectionTime: .atDocumentStart, forMainFrameOnly: false),
+            WKUserScript(source: cleanUIScript, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
+            WKUserScript(source: nativeActionsScript, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
         ])
         userContent.add(handler, name: "onSave")
         userContent.add(handler, name: "log")
@@ -97,24 +120,44 @@ struct GutenbergWebJavascriptInjection {
     }
 
     private static var requestInterceptionScript = """
-window.webkit.messageHandlers.log.postMessage("--> HELLO WORLD v2!!");
+(function(open) {
+  XMLHttpRequest.prototype.open = function(arg1, arg2) {
+    this.URL = arg2;
+    this.method = arg1;
+    open.apply(this, arguments);
+  };
+})(XMLHttpRequest.prototype.open);
+
+(function(send) {
+  XMLHttpRequest.prototype.send = function(arg1) {
+    if (this.URL.includes('/posts/') && this.method === "PUT") {
+      window.webkit.messageHandlers.log.postMessage("--> Saving....");
+      window.webkit.messageHandlers.onSave.postMessage(arg1);
+      this.abort();
+      return;
+    }
+    send.apply(this, arguments);
+  };
+})(XMLHttpRequest.prototype.send);
 """
 
     private static var cleanUIScript = """
-$(document).bind('DOMSubtreeModified',function(){
-    window.webkit.messageHandlers.log.postMessage("Changed!!");
-    const header = document.getElementsByClassName("edit-post-header")[0];
-    window.webkit.messageHandlers.log.postMessage(String(header));
-    if (header) {
-        const publishButton = header.getElementsByClassName("editor-post-publish-button")[0]
-        if (publishButton) {
-            publishButton.textContent = "Save"
+window.onload = () => {
+    $(document).bind('DOMSubtreeModified',function() {
+        window.webkit.messageHandlers.log.postMessage("Changed!!");
+        const header = document.getElementsByClassName("edit-post-header")[0];
+        if (header && header.id == '') {
+            header.id = 'gb-header';
+    //        header.style.display = 'none';
         }
-        const settingsBar = header.getElementsByClassName("edit-post-header__settings")[0]
-        const listArray = Array.from( settingsBar.children );
-        listArray.forEach( (item) => { settingsBar.removeChild(item) } );
-        settingsBar.appendChild(publishButton);
-    }
-});
+    });
+}
+
+"""
+
+    private static var nativeActionsScript = """
+document.test = () => {
+    window.webkit.messageHandlers.log.postMessage("Hello world");
+}
 """
 }

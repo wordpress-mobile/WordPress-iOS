@@ -4,7 +4,7 @@ import UIKit
 import WebKit
 
 protocol WebKitAuthenticatable {
-    var authenticator: WebViewAuthenticator? { get }
+    var authenticator: RequestAuthenticator? { get }
     func authenticatedRequest(for url: URL, on webView: WKWebView, completion: @escaping (URLRequest) -> Void)
 }
 
