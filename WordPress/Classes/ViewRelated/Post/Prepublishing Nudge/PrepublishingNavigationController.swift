@@ -11,7 +11,7 @@ class PrepublishingNavigationController: LightNavigationController {
     }
 
     private enum Constants {
-        static let height: CGFloat = 280
+        static let height: CGFloat = 290
         static let iPadHeight: CGFloat = 270
     }
 }
