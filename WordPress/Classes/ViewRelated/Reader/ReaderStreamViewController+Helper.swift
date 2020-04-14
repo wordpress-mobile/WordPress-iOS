@@ -136,7 +136,7 @@ extension ReaderStreamViewController {
 
 // MARK: - No Results for saved posts
 extension ReaderStreamViewController {
-    
+
     func configureNoResultsViewForSavedPosts() {
 
         let noResultsResponse = NoResultsResponse(title: NSLocalizedString("No Saved Posts",
