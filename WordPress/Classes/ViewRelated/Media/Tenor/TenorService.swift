@@ -19,7 +19,7 @@ class TenorService {
 
     func search(params: TenorSearchParams, completion: @escaping (TenorResultsPage) -> Void) {
         let tenorPageable = params.pageable as? TenorPageable
-        let currentPageIndex = tenorPageable != nil ? tenorPageable!.pageIndex : 0
+        let currentPageIndex = tenorPageable?.pageIndex
 
         TenorService.tenor.search(for: params.text,
                                   limit: params.limit,
@@ -33,7 +33,7 @@ class TenorService {
             let medias = gifObjects.compactMap { TenorMedia(tenorGIF: $0) }
             let nextPageable = TenorPageable(itemsPerPage: params.limit,
                                              position: position,
-                                             currentPageIndex: currentPageIndex)
+                                             currentPageIndex: currentPageIndex ?? 0)
             let result = TenorResultsPage(results: medias,
                                           pageable: nextPageable)
             completion(result)
