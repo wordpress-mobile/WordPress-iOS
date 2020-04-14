@@ -121,19 +121,24 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     func toggleSavedForLater(for post: ReaderPost) {
         let actionOrigin: ReaderSaveForLaterOrigin
         // TODO: - READERNAV - Remove this check once the old reader is removed
+        var presentSavedPostAlert = visibleConfirmation
         if origin is ReaderSavedPostsViewController {
             actionOrigin = .savedStream
+        } else if let origin = origin as? ReaderStreamViewController, origin.isSavedPostsController, FeatureFlag.newReaderNavigation.enabled {
+            actionOrigin = .savedStream
+            presentSavedPostAlert = false
+
         } else {
             actionOrigin = .otherStream
         }
 
         if !post.isSavedForLater {
-            if let origin = origin as? UIViewController & UIViewControllerTransitioningDelegate {
+            if let origin = origin as? ReaderStreamViewController, !origin.isSavedPostsController {
                 FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: origin)
             }
         }
 
-        ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation).execute(with: post, context: context, origin: actionOrigin)
+        ReaderSaveForLaterAction(visibleConfirmation: presentSavedPostAlert).execute(with: post, context: context, origin: actionOrigin)
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {

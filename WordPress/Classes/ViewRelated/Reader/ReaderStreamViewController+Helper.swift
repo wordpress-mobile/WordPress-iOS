@@ -182,3 +182,11 @@ extension ReaderStreamViewController {
         cell.delegate = self
     }
 }
+
+
+// MARK: - Tracks
+extension ReaderStreamViewController {
+    func trackSavedListAccessed() {
+        WPAppAnalytics.track(.readerSavedListViewed, withProperties: ["source": ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue])
+    }
+}

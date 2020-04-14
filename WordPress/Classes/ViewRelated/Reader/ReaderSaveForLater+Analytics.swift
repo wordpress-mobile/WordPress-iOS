@@ -6,7 +6,7 @@ enum ReaderSaveForLaterOrigin {
     case postDetail
     case readerMenu
 
-    fileprivate var saveActionValue: String {
+    var saveActionValue: String {
         switch self {
         case .savedStream:
             return "saved_post_list"
@@ -19,7 +19,7 @@ enum ReaderSaveForLaterOrigin {
         }
     }
 
-    fileprivate var openPostValue: String {
+    var openPostValue: String {
         switch self {
         case .savedStream:
             return "saved_post_list"
@@ -32,7 +32,7 @@ enum ReaderSaveForLaterOrigin {
         }
     }
 
-    fileprivate var viewAllPostsValue: String {
+    var viewAllPostsValue: String {
         switch self {
         case .savedStream:
             return "post_list_saved_post_notice"

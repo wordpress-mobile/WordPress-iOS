@@ -141,11 +141,15 @@ import WordPressFlux
     }
 
     var isSavedPostsController: Bool = false {
-        didSet {
-            if !isSavedPostsController && oldValue {
+        willSet {
+            if isSavedPostsController && !newValue {
                 postCellActions?.clearRemovedPosts()
-            } else if isSavedPostsController {
+            }
+        }
+        didSet {
+            if isSavedPostsController {
                 configureControllerForTopic(synchronize: false)
+                trackSavedListAccessed()
             }
         }
     }
