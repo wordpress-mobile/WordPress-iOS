@@ -15,8 +15,6 @@ class ReaderTabViewModel {
     }
 
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
-    func performSearch() { }
-
     func presentFilter() { }
 
     func resetFilter() { }
