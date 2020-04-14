@@ -13,7 +13,7 @@ public enum DrawerHeight {
     // Height is based on the specified margin from the top of the screen
     case topMargin(CGFloat)
 
-    // Height will be equal to the the content height value
+    // Height will be equal to the the content height value. A height of 0 will use the calculated height.
     case contentHeight(CGFloat)
 }
 

@@ -22,9 +22,10 @@ class FilterSheetView: UIView {
     }()
 
     lazy var ghostableTableView: UITableView = {
-        let ghostTV = UITableView()
-        ghostTV.isScrollEnabled = false
-        return ghostTV
+        let tableView = UITableView()
+        tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
+        return tableView
     }()
 
     lazy var filterTabBar: FilterTabBar = {

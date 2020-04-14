@@ -51,8 +51,8 @@ extension ReaderTabView {
         setupButtonsView()
         setupFilterButton()
         setupResetFilterButton()
-        setupDivider(verticalDivider)
-        setupDivider(horizontalDivider)
+        setupVerticalDivider(verticalDivider)
+        setupHorizontalDivider(horizontalDivider)
         setupSettingsButton()
         activateConstraints()
     }
@@ -94,7 +94,7 @@ extension ReaderTabView {
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonsStackView.isLayoutMarginsRelativeArrangement = true
         buttonsStackView.axis = .horizontal
-        buttonsStackView.alignment = .center
+        buttonsStackView.alignment = .fill
         buttonsStackView.addArrangedSubview(filterButton)
         buttonsStackView.addArrangedSubview(resetFilterButton)
         let spacer = UIView()
@@ -123,7 +123,21 @@ extension ReaderTabView {
         resetFilterButton.isHidden = true
     }
 
-    private func setupDivider(_ divider: UIView) {
+    private func setupVerticalDivider(_ divider: UIView) {
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        let dividerView = UIView()
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        dividerView.backgroundColor = Appearance.dividerColor
+        divider.addSubview(dividerView)
+        NSLayoutConstraint.activate([
+            dividerView.centerYAnchor.constraint(equalTo: divider.centerYAnchor),
+            dividerView.heightAnchor.constraint(equalTo: divider.heightAnchor, multiplier: Appearance.verticalDividerHeightMultiplier),
+            dividerView.leadingAnchor.constraint(equalTo: divider.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: divider.trailingAnchor)
+        ])
+    }
+
+    private func setupHorizontalDivider(_ divider: UIView) {
         divider.translatesAutoresizingMaskIntoConstraints = false
         divider.backgroundColor = Appearance.dividerColor
     }
@@ -157,8 +171,6 @@ extension ReaderTabView {
             buttonsStackView.heightAnchor.constraint(equalToConstant: Appearance.barHeight),
             resetFilterButton.widthAnchor.constraint(equalToConstant: Appearance.resetButtonWidth),
             verticalDivider.widthAnchor.constraint(equalToConstant: Appearance.dividerWidth),
-            verticalDivider.heightAnchor.constraint(equalTo: buttonsStackView.heightAnchor,
-                                                    multiplier: Appearance.verticalDividerHeightMultiplier),
             horizontalDivider.heightAnchor.constraint(equalToConstant: Appearance.dividerWidth),
             horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
             settingsButton.widthAnchor.constraint(equalToConstant: Appearance.settingsButtonWidth)

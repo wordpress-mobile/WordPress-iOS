@@ -23,4 +23,12 @@ extension FilterSheetViewController: DrawerPresentable {
     var scrollableView: UIScrollView? {
         return (view as? FilterSheetView)?.tableView
     }
+
+    var collapsedHeight: DrawerHeight {
+        if traitCollection.verticalSizeClass == .compact {
+            return .maxHeight
+        } else {
+            return .contentHeight(0)
+        }
+    }
 }
