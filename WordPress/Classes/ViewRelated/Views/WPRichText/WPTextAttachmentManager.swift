@@ -6,7 +6,7 @@ import UIKit
 ///
 @objc open class WPTextAttachmentManager: NSObject {
     @objc open var attachments = [WPTextAttachment]()
-    var attachmentViews = [String: WPTextAttachmentView]()
+    var attachmentViews = [WPTextAttachment: WPTextAttachmentView]()
     @objc open weak var delegate: WPTextAttachmentManagerDelegate?
     @objc fileprivate(set) open weak var textView: UITextView?
     @objc let layoutManager: NSLayoutManager
@@ -40,7 +40,7 @@ import UIKit
     /// - Returns: A UIView optional
     ///
     @objc open func viewForAttachment(_ attachment: WPTextAttachment) -> UIView? {
-        return attachmentViews[attachment.identifier]?.view
+        return attachmentViews[attachment]?.view
     }
 
 
@@ -88,7 +88,7 @@ import UIKit
         // Make sure attachments are correctly laid out.
         attachmentsAndRanges.forEach { (attachment, range) in
 
-            guard let attachmentView = attachmentViews[attachment.identifier] else {
+            guard let attachmentView = attachmentViews[attachment] else {
                 return
             }
 
@@ -125,7 +125,7 @@ import UIKit
                 self.attachments.append(attachment)
 
                 if let view = self.delegate?.attachmentManager(self, viewForAttachment: attachment) {
-                    self.attachmentViews[attachment.identifier] = WPTextAttachmentView(view: view, identifier: attachment.identifier, exclusionPath: nil)
+                    self.attachmentViews[attachment] = WPTextAttachmentView(view: view, identifier: attachment.identifier, exclusionPath: nil)
                     self.textView?.addSubview(view)
                 }
         })
