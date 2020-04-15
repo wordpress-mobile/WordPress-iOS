@@ -113,20 +113,18 @@ class NewBlogDetailHeaderView: UIView {
         let bottomConstraint = buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.buttonsBottomPadding)
         bottomConstraint.priority = UILayoutPriority(999) // Allow to break so encapsulated height (on initial table view load) doesn't spew warnings
 
-        /// If we are able to attach to the safe area's leading edge, we should, otherwise it can break
-        let leadingSafeAreaConstraint = stackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor)
-        leadingSafeAreaConstraint.priority = .defaultHigh
+        let widthConstraint = buttonsStackView.widthAnchor.constraint(equalToConstant: 320)
+        widthConstraint.priority = .defaultHigh
 
         let edgeConstraints = [
-            leadingSafeAreaConstraint,
             stackView.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
             stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.minimumSideSpacing),
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.interSectionSpacing),
             stackView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
-            buttonsStackView.widthAnchor.constraint(equalToConstant: 320),
             buttonsStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.interSectionSpacing),
             buttonsStackView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            bottomConstraint
+            bottomConstraint,
+            widthConstraint
         ]
 
         NSLayoutConstraint.activate(minimumPaddingSideConstraints + edgeConstraints)
