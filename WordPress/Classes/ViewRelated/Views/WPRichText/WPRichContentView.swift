@@ -408,7 +408,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         }) else {
             return nil
         }
-        
+
         return rangeOfAttachment(match.key)
     }
 
