@@ -1,7 +1,7 @@
 import Foundation
 import Gridicons
 import WordPressShared.WPStyleGuide
-
+// TODO: - READERNAV - This (and the related xib) might need to be removed once the new Reader Tab Navigation is stable
 @objc open class ReaderFollowedSitesStreamHeader: UIView, ReaderStreamHeader {
     @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var imageView: UIImageView!
