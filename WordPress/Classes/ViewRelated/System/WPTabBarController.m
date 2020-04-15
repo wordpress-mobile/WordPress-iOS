@@ -923,6 +923,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self.meNavigationController popToRootViewControllerAnimated:NO];
         [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
     }
+    self.readerTabViewController = nil;
 }
 
 - (void)signinDidFinish:(NSNotification *)notification
