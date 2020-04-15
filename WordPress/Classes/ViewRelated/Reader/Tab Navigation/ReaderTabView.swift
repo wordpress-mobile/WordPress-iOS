@@ -77,8 +77,19 @@ extension ReaderTabView {
                 return
             }
             self.populateTabBar(with: items)
+            if let startIndex = self.viewModel.startIndex {
+                self.switchTab(to: startIndex)
+            }
             self.addContentToContainerView()
         }
+    }
+
+    private func switchTab(to index: Int) {
+        guard index >= 0, index < tabBar.items.count, !tabBar.items.isEmpty else {
+            return
+        }
+        tabBar.setSelectedIndex(index)
+        selectedTabDidChange(tabBar)
     }
 
     private func populateTabBar(with items: [ReaderTabItem]) {
@@ -185,16 +196,6 @@ extension ReaderTabView {
         }
     }
 
-    func switchToSavedPosts() {
-        guard let index = tabBar.items.firstIndex(where: {
-            $0.title == "Saved"
-        }) else {
-            return
-        }
-        tabBar.setSelectedIndex(index)
-        selectedTabDidChange(tabBar)
-    }
-
     /// Filter button
     @objc private func didTapFilterButton() {
         //TODO: - READERNAV - Remove. This test code is for UI prototyping only
@@ -215,6 +216,24 @@ extension ReaderTabView {
 
     @objc private func didTapSettingsButton() {
         viewModel.presentSettings()
+    }
+}
+
+
+// MARK: - Externally accessible methods/properties
+extension ReaderTabView {
+
+    var currentIndex: Int {
+        return tabBar.selectedIndex
+    }
+
+    func switchToSavedPosts() {
+        guard let index = tabBar.items.firstIndex(where: {
+            $0.title == "Saved"
+        }) else {
+            return
+        }
+        switchTab(to: index)
     }
 }
 

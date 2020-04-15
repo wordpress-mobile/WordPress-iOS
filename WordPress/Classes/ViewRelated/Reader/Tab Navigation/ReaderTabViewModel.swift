@@ -3,6 +3,8 @@ class ReaderTabViewModel {
 
     var tabSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
 
+    var startIndex: Int?
+
     init() {
         addNotificationsObservers()
     }
