@@ -73,7 +73,10 @@ class PrepublishingViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        let isPresentingAViewController = navigationController?.viewControllers.count ?? 0 > 1
+        if isPresentingAViewController {
+            navigationController?.setNavigationBarHidden(false, animated: animated)
+        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
