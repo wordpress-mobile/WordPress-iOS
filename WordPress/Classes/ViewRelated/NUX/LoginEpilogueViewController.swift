@@ -158,21 +158,21 @@ private extension LoginEpilogueViewController {
                 tableViewTrailingConstraint.constant = defaultTableViewMargin
                 return
         }
-        
+
         let isLandscape = UIDevice.current.orientation.isLandscape
         let marginMultiplier = isLandscape ?
             TableViewMarginMultipliers.ipadLandscape :
             TableViewMarginMultipliers.ipadPortrait
-        
+
         let screenSizeMax = max(view.frame.width, view.frame.height)
         let screenSizeMin = min(view.frame.width, view.frame.height)
         let viewWidth = isLandscape ? screenSizeMax : screenSizeMin
         let margin = viewWidth * marginMultiplier
-        
+
         tableViewLeadingConstraint.constant = margin
         tableViewTrailingConstraint.constant = margin
     }
-    
+
     enum TableViewMarginMultipliers {
         static let ipadPortrait: CGFloat = 0.1667
         static let ipadLandscape: CGFloat = 0.25
