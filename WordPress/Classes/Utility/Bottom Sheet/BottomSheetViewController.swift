@@ -129,11 +129,6 @@ class BottomSheetViewController: UIViewController {
         }
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        return preferredContentSize = CGSize(width: Constants.minimumWidth, height: view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)
-    }
-
     @objc func keyboardWillShow(_ notification: NSNotification) {
         self.presentedVC?.transition(to: .expanded)
     }
