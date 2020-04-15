@@ -29,6 +29,11 @@ class FilterTableViewDataSource: NSObject, UITableViewDataSource {
 
 class SiteTableViewCell: UITableViewCell, GhostableView {
 
+    enum Constants {
+        static let textLabelCharacterWidth = 40 // Number of characters in text label
+        static let detailLabelCharacterWidth = 80 // Number of characters in detail label
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         detailTextLabel?.textColor = UIColor.systemGray
@@ -42,9 +47,9 @@ class SiteTableViewCell: UITableViewCell, GhostableView {
         contentView.subviews.forEach { view in
             view.isGhostableDisabled = true
         }
-        textLabel?.text = "TEST LABEL Text Label"
+        textLabel?.text = String(repeating: " ", count: Constants.textLabelCharacterWidth)
         textLabel?.isGhostableDisabled = false
-        detailTextLabel?.text = "TEST LABEL sdflsjlwe lsdfjsldjsl sidjflsidj"
+        detailTextLabel?.text = String(repeating: " ", count: Constants.detailLabelCharacterWidth)
         detailTextLabel?.isGhostableDisabled = false
     }
 }
