@@ -243,6 +243,7 @@ class PrepublishingViewController: UITableViewController {
 
     @objc func publish(_ sender: UIButton) {
         navigationController?.dismiss(animated: true) {
+            WPAnalytics.track(.editorPostPublishNowTapped)
             self.completion(self.post)
         }
     }
