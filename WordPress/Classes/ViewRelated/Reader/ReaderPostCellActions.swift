@@ -213,10 +213,7 @@ extension ReaderPostCellActions {
     }
 
     func clearRemovedPosts() {
-        let allRemovedPosts = removedPosts.all()
-        for post in allRemovedPosts {
-            toggleSavedForLater(for: post)
-        }
+        removedPosts.all().forEach({ toggleSavedForLater(for: $0) })
         removedPosts = ReaderSaveForLaterRemovedPosts()
     }
 }
