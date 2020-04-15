@@ -6,12 +6,13 @@ class PrepublishingNavigationController: LightNavigationController {
 
         // Set the height for iPad
         if UIDevice.isPad() {
-            view.heightAnchor.constraint(equalToConstant: Constants.height).isActive = true
+            preferredContentSize = Constants.iPadPreferredContentSize
         }
     }
 
     private enum Constants {
-        static let height: CGFloat = 300
+        static let height: CGFloat = 290
+        static let iPadPreferredContentSize = CGSize(width: 300, height: 240)
     }
 }
 

@@ -5,7 +5,6 @@ class BottomSheetViewController: UIViewController {
         static let gripHeight: CGFloat = 5
         static let cornerRadius: CGFloat = 8
         static let buttonSpacing: CGFloat = 8
-        static let additionalSafeAreaInsetsRegular: UIEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         static let minimumWidth: CGFloat = 300
 
         enum Header {
@@ -113,19 +112,21 @@ class BottomSheetViewController: UIViewController {
         refreshForTraits()
     }
 
-    private func refreshForTraits() {
-        if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
-            gripButton.isHidden = true
-            additionalSafeAreaInsets = Constants.additionalSafeAreaInsetsRegular
-        } else {
-            gripButton.isHidden = false
-            additionalSafeAreaInsets = .zero
+    override var preferredContentSize: CGSize {
+        set {
+            childViewController?.preferredContentSize = newValue
+        }
+        get {
+            return childViewController?.preferredContentSize ?? super.preferredContentSize
         }
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        return preferredContentSize = CGSize(width: Constants.minimumWidth, height: view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)
+    private func refreshForTraits() {
+        if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
+            gripButton.isHidden = true
+        } else {
+            gripButton.isHidden = false
+        }
     }
 
     @objc func keyboardWillShow(_ notification: NSNotification) {

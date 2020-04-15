@@ -61,6 +61,7 @@ class PrepublishingViewController: UITableViewController {
         header.delegate = self
         header.configure(post.blog)
         setupPublishButton()
+        setupFooterSeparator()
 
         announcePublishButton()
     }
@@ -72,7 +73,10 @@ class PrepublishingViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        let isPresentingAViewController = navigationController?.viewControllers.count ?? 0 > 1
+        if isPresentingAViewController {
+            navigationController?.setNavigationBarHidden(false, animated: animated)
+        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -101,7 +105,7 @@ class PrepublishingViewController: UITableViewController {
 
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = .zero
-        cell.layoutMargins = .zero
+        cell.layoutMargins = Constants.cellMargins
 
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.text = options[indexPath.row].title
@@ -213,6 +217,23 @@ class PrepublishingViewController: UITableViewController {
         updatePublishButtonLabel()
     }
 
+    private func setupFooterSeparator() {
+        guard let footer = tableView.tableFooterView else {
+            return
+        }
+
+        let separator = UIView()
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        footer.addSubview(separator)
+        NSLayoutConstraint.activate([
+            separator.topAnchor.constraint(equalTo: footer.topAnchor),
+            separator.leftAnchor.constraint(equalTo: footer.leftAnchor),
+            separator.rightAnchor.constraint(equalTo: footer.rightAnchor),
+            separator.heightAnchor.constraint(equalToConstant: 1)
+        ])
+        WPStyleGuide.applyBorderStyle(separator)
+    }
+
     private func updatePublishButtonLabel() {
         publishButton.setTitle(post.isScheduled() ? Constants.scheduleNow : Constants.publishNow, for: .normal)
     }
@@ -267,11 +288,12 @@ class PrepublishingViewController: UITableViewController {
 
     private enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
-        static let nuxButtonInsets = UIEdgeInsets(top: 20, left: 15, bottom: 20, right: 15)
+        static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let cellMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
-        static let headerHeight: CGFloat = 80
+        static let headerHeight: CGFloat = 70
     }
 }
 
