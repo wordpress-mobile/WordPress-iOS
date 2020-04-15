@@ -62,7 +62,10 @@ final class TenorPicker: NSObject {
             self?.updateHintView()
         }
         dataSource.onStartLoading = { [weak self] in
-            NoResultsTenorConfiguration.configureAsLoading(self!.searchHint)
+            guard let strongSelf = self else {
+                return
+            }
+            NoResultsTenorConfiguration.configureAsLoading(strongSelf.searchHint)
         }
         dataSource.onStopLoading = { [weak self] in
             self?.updateHintView()
