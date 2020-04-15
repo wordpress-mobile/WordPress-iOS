@@ -3,7 +3,7 @@ extension String {
     // MARK: - Entry point: alert controller
 
     static var tenor: String {
-        return NSLocalizedString("Tenor", comment: "One of the options when selecting More in the Post Editor's format bar")
+        return NSLocalizedString("Free GIF Library", comment: "One of the options when selecting More in the Post Editor's format bar")
     }
 
     // MARK: - Placeholder
