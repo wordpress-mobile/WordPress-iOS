@@ -17,9 +17,9 @@ class TenorAPIResponseParserTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let data = TenorReponseData.validSearchResponse.data(using: .utf8)
+        let data = TenorReponseData.validSearchResponse
         let parser = TenorResponseParser<TenorGIF>()
-        try! parser.parse(data!)
+        try! parser.parse(data)
 
         firstImage = parser.results!.first!
         next = parser.next!
@@ -63,17 +63,17 @@ class TenorAPIResponseParserTests: XCTestCase {
     // MARK: Test an invalid response from Tenor
 
     func testParserThrowsIfResponseIsUnexpected() {
-        let data = TenorReponseData.invalidSearchResponse.data(using: .utf8)
+        let data = TenorReponseData.invalidSearchResponse
         let parser = TenorResponseParser<TenorGIF>()
-        XCTAssertThrowsError(try parser.parse(data!))
+        XCTAssertThrowsError(try parser.parse(data))
     }
 
     // MARK: Test a response with empty result (no image)
 
     func testParserReturnsEmptyResult() throws {
-        let data = TenorReponseData.emptyMediaSearchResponse.data(using: .utf8)
+        let data = TenorReponseData.emptyMediaSearchResponse
         let parser = TenorResponseParser<TenorGIF>()
-        try parser.parse(data!)
+        try parser.parse(data)
 
         XCTAssertEqual(parser.results?.count, 0)
         XCTAssertNil(parser.next)
