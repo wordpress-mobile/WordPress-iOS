@@ -8,7 +8,8 @@
 * Block editor: New starter page template: Blog
 * Block editor: Make Starter Page Template picker buttons visible only when the screen height is enough
 * Block editor: Fix a bug which caused to show URL settings modal randomly when changing the device orientation multiple times during the time Starter Page Template Preview is open
-
+* Updated the appearance of the login and signup buttons to make signup more prominent.
+ 
 14.6
 -----
 * [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.
