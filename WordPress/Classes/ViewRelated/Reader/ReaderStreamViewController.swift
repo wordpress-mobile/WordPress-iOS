@@ -150,10 +150,8 @@ import WordPressFlux
             if isSavedPostsController {
                 configureControllerForTopic(synchronize: false)
                 trackSavedListAccessed()
-                postCellActions?.visibleConfirmation = false
-            } else {
-                postCellActions?.visibleConfirmation = true
             }
+            postCellActions?.visibleConfirmation = !isSavedPostsController
         }
     }
 

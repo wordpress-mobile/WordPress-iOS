@@ -6,7 +6,7 @@ enum ReaderSaveForLaterOrigin {
     case postDetail
     case readerMenu
 
-    var saveActionValue: String {
+    fileprivate var saveActionValue: String {
         switch self {
         case .savedStream:
             return "saved_post_list"
@@ -19,7 +19,7 @@ enum ReaderSaveForLaterOrigin {
         }
     }
 
-    var openPostValue: String {
+    fileprivate var openPostValue: String {
         switch self {
         case .savedStream:
             return "saved_post_list"
@@ -32,6 +32,7 @@ enum ReaderSaveForLaterOrigin {
         }
     }
 
+    // TODO: - READERNAV - Refactor this and ReaderStreamViewController+Helper once the old reader is removed
     var viewAllPostsValue: String {
         switch self {
         case .savedStream:
