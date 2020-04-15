@@ -79,9 +79,9 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Ewo-7I-oMB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="8" id="4yq-Z2-bkB"/>
+                <constraint firstItem="Ewo-7I-oMB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" priority="999" constant="8" id="4yq-Z2-bkB"/>
                 <constraint firstItem="7Cb-NM-WoN" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="FZz-ss-TnJ"/>
-                <constraint firstItem="7Cb-NM-WoN" firstAttribute="bottom" secondItem="Ewo-7I-oMB" secondAttribute="bottom" constant="1" id="GTd-qW-n5p"/>
+                <constraint firstItem="7Cb-NM-WoN" firstAttribute="bottom" secondItem="Ewo-7I-oMB" secondAttribute="bottom" priority="999" constant="1" id="GTd-qW-n5p"/>
                 <constraint firstItem="7Cb-NM-WoN" firstAttribute="leading" secondItem="Ewo-7I-oMB" secondAttribute="leading" constant="-1" id="l44-WK-Rum"/>
                 <constraint firstAttribute="trailing" secondItem="Ewo-7I-oMB" secondAttribute="trailing" id="mnd-4c-EBW"/>
                 <constraint firstItem="7Cb-NM-WoN" firstAttribute="trailing" secondItem="Ewo-7I-oMB" secondAttribute="trailing" constant="-1" id="oW9-JR-dWT"/>
