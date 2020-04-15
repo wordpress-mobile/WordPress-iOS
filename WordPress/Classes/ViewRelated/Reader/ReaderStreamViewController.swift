@@ -519,6 +519,8 @@ import WordPressFlux
         updateAndPerformFetchRequest()
         if readerTopic != nil {
             configureStreamHeader()
+        } else {
+            tableView.tableHeaderView = nil
         }
         tableView.setContentOffset(CGPoint.zero, animated: false)
         content.refresh()
