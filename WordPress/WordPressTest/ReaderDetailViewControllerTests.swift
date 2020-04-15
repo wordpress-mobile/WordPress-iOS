@@ -28,9 +28,6 @@ class ReaderDetailViewControllerTests: XCTestCase {
     }
 
     func testReblogButtonMatchesExpectation() {
-        guard FeatureFlag.postReblogging.enabled else {
-            return
-        }
         XCTAssertEqual(readerDetailViewController?.getReblogButtonForTesting().accessibilityLabel, TestConstants.reblogLabel, "Incorrect accessibility label: Reblog button")
     }
 }
