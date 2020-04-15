@@ -97,8 +97,6 @@ extension ReaderTabView {
         buttonsStackView.alignment = .fill
         buttonsStackView.addArrangedSubview(filterButton)
         buttonsStackView.addArrangedSubview(resetFilterButton)
-        let spacer = UIView()
-        buttonsStackView.addArrangedSubview(spacer)
         buttonsStackView.addArrangedSubview(verticalDivider)
         buttonsStackView.addArrangedSubview(settingsButton)
     }
@@ -108,6 +106,7 @@ extension ReaderTabView {
         filterButton.contentEdgeInsets = Appearance.filterButtonInsets
         filterButton.imageEdgeInsets = Appearance.filterButtonimageInsets
         filterButton.titleEdgeInsets = Appearance.filterButtonTitleInsets
+        filterButton.contentHorizontalAlignment = .leading
 
         filterButton.titleLabel?.font = Appearance.filterButtonFont
         WPStyleGuide.applyReaderFilterButtonStyle(filterButton)
@@ -229,9 +228,9 @@ extension ReaderTabView {
 
         static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
         static let filterButtonMaxFontSize: CGFloat = 28.0
-        static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+        static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
         static let filterButtonInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
-        static let filterButtonimageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        static let filterButtonimageInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         static let filterButtonTitleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
 
         static let resetButtonWidth: CGFloat = 32

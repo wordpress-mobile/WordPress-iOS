@@ -23,6 +23,7 @@ class FilterSheetView: UIView {
 
     lazy var ghostableTableView: UITableView = {
         let tableView = UITableView()
+        tableView.allowsSelection = false
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
         return tableView
