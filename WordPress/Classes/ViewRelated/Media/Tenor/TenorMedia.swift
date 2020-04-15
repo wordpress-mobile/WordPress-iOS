@@ -32,10 +32,6 @@ extension TenorMedia {
         let previewGif = gif.media.first { $0.tinyGIF != nil }?.tinyGIF
         let thumbnailGif = gif.media.first { $0.nanoGIF != nil }?.nanoGIF
 
-        guard largeGif != nil, previewGif != nil, thumbnailGif != nil else {
-            return nil
-        }
-
         guard let largeURL = largeGif?.url,
             let previewURL = previewGif?.url,
             let staticThumbnailURL = thumbnailGif?.url,
