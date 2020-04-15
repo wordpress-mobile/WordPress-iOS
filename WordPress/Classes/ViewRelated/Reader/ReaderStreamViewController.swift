@@ -30,7 +30,17 @@ import WordPressFlux
         return tableViewController.tableView
     }
 
-    private var syncHelper: WPContentSyncHelper!
+    private var syncHelpers: [ReaderAbstractTopic: WPContentSyncHelper] = [:]
+
+    private var syncHelper: WPContentSyncHelper? {
+        guard let topic = readerTopic else {
+            return nil
+        }
+        let currentHelper = syncHelpers[topic] ?? WPContentSyncHelper()
+        syncHelpers[topic] = currentHelper
+        return currentHelper
+    }
+
     private var resultsStatusView = NoResultsViewController.controller()
 
     private lazy var footerView: PostListFooterView = {
@@ -105,7 +115,11 @@ import WordPressFlux
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
     @objc var readerTopic: ReaderAbstractTopic? {
         didSet {
-            oldValue?.inUse = false
+            if let oldValue = oldValue {
+                oldValue.inUse = false
+                syncHelpers[oldValue]?.delegate = nil
+            }
+            syncHelper?.delegate = self
 
             if let newTopic = readerTopic {
                 newTopic.inUse = true
@@ -115,6 +129,9 @@ import WordPressFlux
             if readerTopic != nil && readerTopic != oldValue {
                 if didSetupView {
                     configureControllerForTopic()
+                    if let syncHelper = syncHelper, syncHelper.isSyncing, !isShowingResultStatusView {
+                        displayLoadingViewIfNeeded()
+                    }
                 }
                 // Discard the siteID (if there was one) now that we have a good topic
                 siteID = nil
@@ -135,6 +152,11 @@ import WordPressFlux
     /// - Returns: An instance of the controller
     ///
     @objc class func controllerWithTopic(_ topic: ReaderAbstractTopic) -> ReaderStreamViewController {
+        // if a default discover topic is provided, treat it as a site to retrieve the header
+        if ReaderHelpers.topicIsDiscover(topic) && FeatureFlag.newReaderNavigation.enabled {
+            return controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
+        }
+
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
@@ -238,7 +260,6 @@ import WordPressFlux
         setupTableView()
         setupFooterView()
         setupContentHandler()
-        setupSyncHelper()
         setupResultsStatusView()
 
         observeNetworkStatus()
@@ -403,11 +424,6 @@ import WordPressFlux
         content.initializeContent(tableView: tableView, delegate: self)
     }
 
-    private func setupSyncHelper() {
-        syncHelper = WPContentSyncHelper()
-        syncHelper.delegate = self
-    }
-
     private func setupResultsStatusView() {
         resultsStatusView.delegate = self
     }
@@ -439,12 +455,12 @@ import WordPressFlux
         }
 
         tableView.tableHeaderView = header
-
-        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
-        header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
-        header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
-        header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
-
+        if !FeatureFlag.newReaderNavigation.enabled {
+            // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
+            header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+            header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
+            header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+        }
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }
@@ -501,7 +517,7 @@ import WordPressFlux
         let count = content.contentCount
 
         // Make sure we're showing the no results view if appropriate
-        if !syncHelper.isSyncing && count == 0 {
+        if let syncHelper = syncHelper, !syncHelper.isSyncing && count == 0 {
             displayNoResultsView()
         }
 
@@ -719,7 +735,7 @@ import WordPressFlux
 
             return
         }
-        syncHelper.syncContentWithUserInteraction(true)
+        syncHelper?.syncContentWithUserInteraction(true)
     }
 
 
@@ -805,7 +821,7 @@ import WordPressFlux
         let lastSynced = topic.lastSynced ?? Date(timeIntervalSince1970: 0)
         let interval = Int( Date().timeIntervalSince(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
-            syncHelper.syncContentWithUserInteraction(false)
+            syncHelper?.syncContentWithUserInteraction(false)
         } else {
             handleConnectionError()
         }
@@ -845,7 +861,7 @@ import WordPressFlux
 
             return
         }
-        if syncHelper.isSyncing {
+        if let syncHelper = syncHelper, syncHelper.isSyncing {
             let alertTitle = NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
             let alertMessage = NSLocalizedString("Please wait til the current fetch completes.", comment: "Asks the usre to wait until the currently running fetch request completes.")
             let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
@@ -859,7 +875,7 @@ import WordPressFlux
         }
         indexPathForGapMarker = indexPath
         syncIsFillingGap = true
-        syncHelper.syncContentWithUserInteraction(true)
+        syncHelper?.syncContentWithUserInteraction(true)
     }
 
 
@@ -1117,7 +1133,7 @@ import WordPressFlux
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forTag: topic, success: { [weak self] in
-            self?.syncHelper.syncContent()
+            self?.syncHelper?.syncContent()
         }, failure: { [weak self] (error: Error?) in
             generator.notificationOccurred(.error)
             self?.updateStreamHeaderIfNeeded()
@@ -1145,7 +1161,7 @@ import WordPressFlux
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forSite: topic, success: { [weak self] in
-            self?.syncHelper.syncContent()
+            self?.syncHelper?.syncContent()
             if toFollow {
                 self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
             }
@@ -1316,7 +1332,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     func tableViewHandlerDidRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         hideResultsStatus()
         if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
-            if syncHelper.isSyncing {
+            if let syncHelper = syncHelper, syncHelper.isSyncing {
                 return
             }
             displayNoResultsView()
@@ -1402,7 +1418,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             // - there is more content,
             // - when we are not alrady syncing
             // - when we are not waiting for scrolling to end to cleanup and refresh the list
-            if syncHelper.hasMoreContent && !syncHelper.isSyncing && !cleanupAndRefreshAfterScrolling {
+            if let syncHelper = syncHelper, syncHelper.hasMoreContent && !syncHelper.isSyncing && !cleanupAndRefreshAfterScrolling {
                 syncHelper.syncMoreContent()
             }
         }
@@ -1571,6 +1587,7 @@ private extension ReaderStreamViewController {
 
     func displayResultsStatus() {
         resultsStatusView.removeFromView()
+        tableViewController.addChild(resultsStatusView)
         tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
         resultsStatusView.view.frame = tableView.frame
         resultsStatusView.didMove(toParent: tableViewController)
@@ -1661,5 +1678,19 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+
+// MARK: - Topic Injection
+extension ReaderStreamViewController {
+    func setTopic(_ topic: ReaderAbstractTopic) {
+        guard ReaderHelpers.topicIsDiscover(topic) else {
+            readerTopic = topic
+            return
+        }
+        readerTopic = nil
+        isFeed = false
+        siteID = ReaderHelpers.discoverSiteID
     }
 }

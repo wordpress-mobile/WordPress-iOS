@@ -13,14 +13,12 @@ struct TenorImageCollection {
 final class TenorMedia: NSObject {
     let id: String
     let name: String
-    let caption: String
     let updatedDate: Date
     let images: TenorImageCollection
 
-    init(id: String, name: String, caption: String, images: TenorImageCollection, date: Date? = nil) {
+    init(id: String, name: String, images: TenorImageCollection, date: Date? = nil) {
         self.id = id
         self.name = name
-        self.caption = caption
         self.updatedDate = date ?? Date()
         self.images = images
     }
@@ -34,16 +32,19 @@ extension TenorMedia {
         let previewGif = gif.media.first { $0.tinyGIF != nil }?.tinyGIF
         let thumbnailGif = gif.media.first { $0.nanoGIF != nil }?.nanoGIF
 
-        guard largeGif != nil, previewGif != nil, thumbnailGif != nil else {
+        guard let largeURL = largeGif?.url,
+            let previewURL = previewGif?.url,
+            let staticThumbnailURL = thumbnailGif?.url,
+            let largeSize = largeGif?.mediaSize else {
             return nil
         }
 
-        let images = TenorImageCollection(largeURL: largeGif!.url,
-                                          previewURL: previewGif!.url,
-                                          staticThumbnailURL: thumbnailGif!.url,
-                                          largeSize: largeGif!.mediaSize)
+        let images = TenorImageCollection(largeURL: largeURL,
+                                          previewURL: previewURL,
+                                          staticThumbnailURL: staticThumbnailURL,
+                                          largeSize: largeSize)
 
-        self.init(id: gif.id, name: gif.title ?? "", caption: "", images: images, date: gif.created)
+        self.init(id: gif.id, name: gif.title ?? "", images: images, date: gif.created)
     }
 }
 
@@ -119,5 +120,9 @@ extension TenorMedia: MediaExternalAsset {
     // The URL source for saving into user's media library as well as GIF preview
     var URL: URL {
         return images.largeURL
+    }
+
+    var caption: String {
+        return ""
     }
 }
