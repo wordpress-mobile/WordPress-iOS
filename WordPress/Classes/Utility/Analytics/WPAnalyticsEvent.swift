@@ -10,6 +10,7 @@ import Foundation
     // Prepublishing Nudges
     case editorPostPublishTap
     case editorPostScheduled
+    case editorPostVisibilityChanged
 
     /// A String that represents the event
     var value: String {
@@ -26,6 +27,8 @@ import Foundation
             return "editor_post_publish_tapped"
         case .editorPostScheduled:
             return "editor_post_scheduled"
+        case .editorPostVisibilityChanged:
+            return "editor_post_visibility_changed"
         }
     }
 

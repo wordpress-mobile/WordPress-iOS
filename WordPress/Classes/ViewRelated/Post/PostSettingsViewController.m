@@ -1037,6 +1037,7 @@ FeaturedImageViewControllerDelegate>
     PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
     __weak PostVisibilitySelectorViewController *weakVc = vc;
     vc.completion = ^(NSString *visibility) {
+        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostVisibilityChanged properties:@{@"via": @"settings"}];
         [weakVc dismiss];
         [self.tableView reloadData];
     };

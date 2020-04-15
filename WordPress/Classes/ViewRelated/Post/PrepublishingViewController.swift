@@ -170,6 +170,8 @@ class PrepublishingViewController: UITableViewController {
         visbilitySelectorViewController.completion = { [weak self] option in
             self?.reloadData()
 
+            WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "prepublishing_nudges"])
+
             // If tue user selects password protected, prompt for a password
             if option == AbstractPost.passwordProtectedLabel {
                 self?.showPasswordAlert()
