@@ -6,7 +6,8 @@ import Aztec
 class GutenbergViewController: UIViewController, PostEditor {
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
-
+    var newUpdatedBlockContent = ""
+    var originalUnsuportedBlockContent = ""
     enum RequestHTMLReason {
         case publish
         case close
@@ -14,6 +15,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         case switchToAztec
         case switchBlog
         case autoSave
+        case unsupportedBlockUpdate
     }
 
     private lazy var stockPhotos: GutenbergStockPhotos = {
@@ -540,6 +542,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 blogPickerWasPressed()
             case .autoSave:
                 break
+            case .unsupportedBlockUpdate:
+                // Just momentary 🙏
+                let newContent = html.replacingOccurrences(of: originalUnsuportedBlockContent, with: newUpdatedBlockContent)
+                gutenberg.updateHtml(newContent)
             }
         }
     }
@@ -607,9 +613,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestUnsupportedBlockFallback(with content: String) {
-        let controller = GutenbergWebViewController(with: post)
+        originalUnsuportedBlockContent = content
+        let controller = GutenbergWebViewController(with: post, blockHTML: content)
         controller.onSave = { [weak self] content in
-            self?.gutenberg.updateHtml(content)
+            self?.newUpdatedBlockContent = content
+            self?.requestHTMLReason = .unsupportedBlockUpdate
+            self?.gutenberg.requestHTML()
         }
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true)
