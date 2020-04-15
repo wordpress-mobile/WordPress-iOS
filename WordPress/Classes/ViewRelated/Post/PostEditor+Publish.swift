@@ -98,6 +98,8 @@ extension PostEditor where Self: UIViewController {
         if action.isAsync,
             let postStatus = self.post.original?.status ?? self.post.status,
             ![.publish, .publishPrivate].contains(postStatus) {
+            WPAnalytics.track(.editorPostPublishTap)
+
             // Only display confirmation alert for unpublished posts
             displayPublishConfirmationAlert(for: action, onPublish: publishBlock)
         } else {

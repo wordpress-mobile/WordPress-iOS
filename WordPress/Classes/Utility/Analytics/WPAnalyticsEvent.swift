@@ -8,7 +8,7 @@ import Foundation
     case createSheetShown
 
     // Prepublishing Nudges
-    case prepublishingTagsAdded
+    case editorPostPublishTap
 
     /// A String that represents the event
     var value: String {
@@ -21,8 +21,8 @@ import Foundation
             return "editor_page_created"
         case .createSheetShown:
             return "create_sheet_shown"
-        case .prepublishingTagsAdded:
-            return "prepublishing_tags_added"
+        case .editorPostPublishTap:
+            return "editor_post_publish_tapped"
         }
     }
 
