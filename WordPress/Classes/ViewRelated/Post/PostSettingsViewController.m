@@ -1256,7 +1256,7 @@ FeaturedImageViewControllerDelegate>
 
     tagsPicker.onValueChanged = ^(NSString * _Nonnull value) {
         if (!value.isEmpty) {
-            [WPAnalytics track:WPAnalyticsStatPostSettingsTagsAdded];
+            [WPAnalytics trackEvent:WPAnalyticsEventEditorPostTagsAdded properties:@{@"via": @"settings"}];
         }
 
         self.post.tags = value;

@@ -11,6 +11,7 @@ import Foundation
     case editorPostPublishTap
     case editorPostScheduled
     case editorPostVisibilityChanged
+    case editorPostTagsAdded
 
     /// A String that represents the event
     var value: String {
@@ -29,6 +30,8 @@ import Foundation
             return "editor_post_scheduled"
         case .editorPostVisibilityChanged:
             return "editor_post_visibility_changed"
+        case .editorPostTagsAdded:
+            return "editor_post_tags_added"
         }
     }
 

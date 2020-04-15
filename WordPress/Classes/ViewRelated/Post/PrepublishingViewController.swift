@@ -147,9 +147,9 @@ class PrepublishingViewController: UITableViewController {
         let tagPickerViewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
 
         tagPickerViewController.onValueChanged = { [weak self] tags in
-//            if !tags.isEmpty {
-//                WPAnalytics.track(.prepublishingTagsAdded)
-//            }
+            if !tags.isEmpty {
+                WPAnalytics.track(.editorPostTagsAdded, properties: ["via": "prepublishing_nudges"])
+            }
 
             self?.post.tags = tags
             self?.reloadData()
