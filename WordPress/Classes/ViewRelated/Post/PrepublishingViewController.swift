@@ -194,6 +194,7 @@ class PrepublishingViewController: UITableViewController {
             sourceView: tableView.cellForRow(at: indexPath)?.contentView,
             viewModel: publishSettingsViewModel,
             updated: { [weak self] date in
+                WPAnalytics.track(.editorPostScheduled, properties: ["via": "prepublishing_nudges"])
                 self?.publishSettingsViewModel.setDate(date)
                 self?.reloadData()
                 self?.updatePublishButtonLabel()

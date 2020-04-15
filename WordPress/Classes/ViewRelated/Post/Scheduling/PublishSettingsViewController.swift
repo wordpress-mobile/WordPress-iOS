@@ -202,6 +202,7 @@ private struct DateAndTimeRow: ImmuTableRow {
                 dateFormatter: model.dateFormatter,
                 dateTimeFormatter: model.dateTimeFormatter,
                 updated: { [weak self] date in
+                    WPAnalytics.track(.editorPostScheduled, properties: ["via": "settings"])
                     self?.viewModel.setDate(date)
                     NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
                 }
