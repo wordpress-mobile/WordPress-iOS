@@ -82,6 +82,8 @@ extension FeatureFlag: OverrideableFlag {
             return false
         case .floatingCreateButton:
             return false
+        case .newReaderNavigation:
+            return false
         default:
             return true
         }

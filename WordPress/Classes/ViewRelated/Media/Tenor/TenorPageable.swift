@@ -4,7 +4,7 @@ struct TenorPageable: Pageable {
     let position: String?
     let currentPageIndex: Int
 
-    static let defaultPageSize = 36 // 6 rows x 6 columns on iPad Landscape, up to 9 rows x 4 cols on iPhone
+    static let defaultPageSize = 40 // same size as StockPhotos
     static let defaultPageIndex = 0
     static let defaultPosition: String? = nil
 
