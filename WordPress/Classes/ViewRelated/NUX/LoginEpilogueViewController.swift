@@ -20,6 +20,12 @@ class LoginEpilogueViewController: UIViewController {
     ///
     @IBOutlet var doneButton: UIButton!
 
+    /// Constraints on the table view container.
+    /// Used to adjust the table width on iPad.
+    @IBOutlet var tableViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var tableViewTrailingConstraint: NSLayoutConstraint!
+    private var defaultTableViewMargin: CGFloat = 0
+
     /// Links to the Epilogue TableViewController
     ///
     private var tableViewController: LoginEpilogueTableViewController?
@@ -52,6 +58,8 @@ class LoginEpilogueViewController: UIViewController {
 
         view.backgroundColor = .basicBackground
         topLine.backgroundColor = .divider
+        defaultTableViewMargin = tableViewLeadingConstraint.constant
+        setTableViewMargins()
         refreshInterface(with: credentials)
     }
 
@@ -91,8 +99,18 @@ class LoginEpilogueViewController: UIViewController {
         super.viewDidLayoutSubviews()
         configurePanelBasedOnTableViewContents()
     }
-}
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setTableViewMargins()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setTableViewMargins()
+    }
+
+}
 
 // MARK: - Configuration
 //
@@ -132,6 +150,34 @@ private extension LoginEpilogueViewController {
             topLine.isHidden = true
         }
     }
+
+    func setTableViewMargins() {
+        guard traitCollection.horizontalSizeClass == .regular &&
+            traitCollection.verticalSizeClass == .regular else {
+                tableViewLeadingConstraint.constant = defaultTableViewMargin
+                tableViewTrailingConstraint.constant = defaultTableViewMargin
+                return
+        }
+
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        let marginMultiplier = isLandscape ?
+            TableViewMarginMultipliers.ipadLandscape :
+            TableViewMarginMultipliers.ipadPortrait
+
+        let screenSizeMax = max(view.frame.width, view.frame.height)
+        let screenSizeMin = min(view.frame.width, view.frame.height)
+        let viewWidth = isLandscape ? screenSizeMax : screenSizeMin
+        let margin = viewWidth * marginMultiplier
+
+        tableViewLeadingConstraint.constant = margin
+        tableViewTrailingConstraint.constant = margin
+    }
+
+    enum TableViewMarginMultipliers {
+        static let ipadPortrait: CGFloat = 0.1667
+        static let ipadLandscape: CGFloat = 0.25
+    }
+
 }
 
 
