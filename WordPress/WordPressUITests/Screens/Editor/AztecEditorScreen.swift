@@ -18,7 +18,7 @@ class AztecEditorScreen: BaseScreen {
     private var htmlTextField = "aztec-html-text-view"
 
     let editorCloseButton = XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"]
-    let publishButton = XCUIApplication().buttons["Publish..."]
+    let publishButton = XCUIApplication().buttons["Publish"]
     let publishNowButton = XCUIApplication().buttons["Publish Now"]
     let moreButton = XCUIApplication().buttons["more_post_options"]
     let uploadProgressBar = XCUIApplication().progressIndicators["Progress"]
