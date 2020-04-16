@@ -158,7 +158,10 @@ extension LoginEpilogueTableViewController {
         }
 
         cell.titleLabel?.text = title(for: section)
-        cell.accessibilityIdentifier = "Login Cell"
+
+        cell.accessibilityIdentifier = "siteListHeaderCell"
+        cell.accessibilityLabel = cell.titleLabel?.text
+        cell.accessibilityHint = NSLocalizedString("A list of sites on this account.", comment: "Accessibility hint for My Sites list.")
 
         return cell
     }

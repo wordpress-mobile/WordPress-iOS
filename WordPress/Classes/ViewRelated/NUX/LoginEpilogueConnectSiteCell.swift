@@ -13,6 +13,7 @@ class LoginEpilogueConnectSiteCell: UITableViewCell, NibReusable {
         connectLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize, weight: .regular)
         connectLabel.textColor = .primary
         accessibilityIdentifier = "connectSite"
+        accessibilityTraits = .button
     }
 
 }
