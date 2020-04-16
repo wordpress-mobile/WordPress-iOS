@@ -103,7 +103,7 @@ extension ReaderSiteTopic {
         let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         siteService.fetchFollowedSites(success: {
-            completion(.success(siteService.allSiteTopics()))
+            completion(.success(siteService.allSiteTopics().filter { !$0.isExternal }))
         }, failure: { error in
             let unknownRestAPIError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
             completion(.failure(error ?? unknownRestAPIError))
