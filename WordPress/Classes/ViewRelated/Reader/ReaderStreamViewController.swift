@@ -214,6 +214,12 @@ import WordPressFlux
         return controller
     }
 
+    class func controllerForSavedPosts() -> ReaderStreamViewController {
+        let controller = ReaderStreamViewController()
+        controller.isSavedPostsController = true
+        return controller
+    }
+
 
     // MARK: - State Restoration
 
@@ -283,7 +289,7 @@ import WordPressFlux
 
         didSetupView = true
 
-        if readerTopic != nil {
+        if readerTopic != nil || isSavedPostsController {
             // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
             // prevents a possible internet connection error being shown twice.
             configureControllerForTopic(synchronize: false)
@@ -495,8 +501,10 @@ import WordPressFlux
     /// Configures the controller for the `readerTopic`.  This should only be called
     /// once when the topic is set.
     private func configureControllerForTopic(synchronize: Bool = true) {
-        assert(isViewLoaded, "The controller's view must be loaded before displaying the topic")
-
+        // if the view has not been loaded yet, this will be called in viewDidLoad
+        guard isViewLoaded else {
+            return
+        }
         // Enable the view now that we have a topic.
         view.isUserInteractionEnabled = true
 

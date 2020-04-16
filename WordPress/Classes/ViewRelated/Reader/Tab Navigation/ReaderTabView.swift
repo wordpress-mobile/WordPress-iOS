@@ -78,20 +78,12 @@ extension ReaderTabView {
             }
             self.populateTabBar(with: items)
             if let startIndex = self.viewModel.startIndex {
-                self.switchTab(to: startIndex)
+                self.tabBar.setSelectedIndex(startIndex)
             }
             self.addContentToContainerView()
         }
     }
-
-    private func switchTab(to index: Int) {
-        guard index >= 0, index < tabBar.items.count, !tabBar.items.isEmpty else {
-            return
-        }
-        tabBar.setSelectedIndex(index)
-        selectedTabDidChange(tabBar)
-    }
-
+    
     private func populateTabBar(with items: [ReaderTabItem]) {
         tabBar.items = items
         guard let tabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem else {
@@ -233,7 +225,8 @@ extension ReaderTabView {
         }) else {
             return
         }
-        switchTab(to: index)
+        tabBar.setSelectedIndex(index)
+        selectedTabDidChange(tabBar)
     }
 }
 

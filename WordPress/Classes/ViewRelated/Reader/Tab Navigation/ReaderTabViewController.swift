@@ -61,11 +61,12 @@ extension ReaderTabViewController: UIViewControllerRestoration {
     static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                coder: NSCoder) -> UIViewController? {
 
-        let viewModel = ReaderTabViewModel()
-        let index = coder.decodeInt32(forKey: ReaderTabViewController.encodedIndexKey)
-        viewModel.startIndex = Int(index)
+        let index = Int(coder.decodeInt32(forKey: ReaderTabViewController.encodedIndexKey))
 
-        return ReaderTabViewController(viewModel: viewModel)
+        let controller = WPTabBarController.sharedInstance().readerTabViewController
+        controller?.setStartIndex(index)
+
+        return controller
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
@@ -73,5 +74,9 @@ extension ReaderTabViewController: UIViewControllerRestoration {
             return
         }
         coder.encode(readerTabView.currentIndex, forKey: ReaderTabViewController.encodedIndexKey)
+    }
+
+    func setStartIndex(_ index: Int) {
+        viewModel.startIndex = index
     }
 }

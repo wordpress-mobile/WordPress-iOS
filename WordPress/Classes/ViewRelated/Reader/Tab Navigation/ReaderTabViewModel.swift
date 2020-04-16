@@ -83,11 +83,13 @@ extension ReaderTabViewModel {
 extension ReaderTabViewModel {
 
     func makeChildViewController(with item: ReaderTabItem) -> UIViewController? {
-        guard let topic = item.topic else {
-            return nil
+        var controller: ReaderStreamViewController
+        if let topic = item.topic {
+            controller = ReaderStreamViewController.controllerWithTopic(topic)
+        } else {
+            controller = ReaderStreamViewController.controllerForSavedPosts()
         }
-        let controller = ReaderStreamViewController.controllerWithTopic(topic)
-
+        
         self.tabSelectionCallback = { [weak controller] topic in
             controller?.setTopic(topic)
             controller?.isSavedPostsController = (topic == nil)
