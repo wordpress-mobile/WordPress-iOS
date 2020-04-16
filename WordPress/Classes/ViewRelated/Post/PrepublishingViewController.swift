@@ -148,7 +148,7 @@ class PrepublishingViewController: UITableViewController {
 
         tagPickerViewController.onValueChanged = { [weak self] tags in
             if !tags.isEmpty {
-                WPAnalytics.track(.prepublishingTagsAdded)
+                WPAnalytics.track(.editorPostTagsAdded, properties: Constants.analyticsDefaultProperty)
             }
 
             self?.post.tags = tags
@@ -169,6 +169,8 @@ class PrepublishingViewController: UITableViewController {
 
         visbilitySelectorViewController.completion = { [weak self] option in
             self?.reloadData()
+
+            WPAnalytics.track(.editorPostVisibilityChanged, properties: Constants.analyticsDefaultProperty)
 
             // If tue user selects password protected, prompt for a password
             if option == AbstractPost.passwordProtectedLabel {
@@ -194,6 +196,7 @@ class PrepublishingViewController: UITableViewController {
             sourceView: tableView.cellForRow(at: indexPath)?.contentView,
             viewModel: publishSettingsViewModel,
             updated: { [weak self] date in
+                WPAnalytics.track(.editorPostScheduled, properties: Constants.analyticsDefaultProperty)
                 self?.publishSettingsViewModel.setDate(date)
                 self?.reloadData()
                 self?.updatePublishButtonLabel()
@@ -240,6 +243,7 @@ class PrepublishingViewController: UITableViewController {
 
     @objc func publish(_ sender: UIButton) {
         navigationController?.dismiss(animated: true) {
+            WPAnalytics.track(.editorPostPublishNowTapped)
             self.completion(self.post)
         }
     }
@@ -294,6 +298,7 @@ class PrepublishingViewController: UITableViewController {
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
         static let headerHeight: CGFloat = 70
+        static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
 }
 

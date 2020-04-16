@@ -1037,6 +1037,7 @@ FeaturedImageViewControllerDelegate>
     PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
     __weak PostVisibilitySelectorViewController *weakVc = vc;
     vc.completion = ^(NSString *visibility) {
+        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostVisibilityChanged properties:@{@"via": @"settings"}];
         [weakVc dismiss];
         [self.tableView reloadData];
     };
@@ -1255,7 +1256,7 @@ FeaturedImageViewControllerDelegate>
 
     tagsPicker.onValueChanged = ^(NSString * _Nonnull value) {
         if (!value.isEmpty) {
-            [WPAnalytics track:WPAnalyticsStatPostSettingsTagsAdded];
+            [WPAnalytics trackEvent:WPAnalyticsEventEditorPostTagsAdded properties:@{@"via": @"settings"}];
         }
 
         self.post.tags = value;
