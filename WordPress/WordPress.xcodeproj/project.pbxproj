@@ -2071,6 +2071,8 @@
 		F59AAC10235E430F00385EE6 /* ChosenValueRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59AAC0F235E430E00385EE6 /* ChosenValueRow.swift */; };
 		F59AAC16235EA46D00385EE6 /* LightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */; };
 		F5B8A60F23CE56A1001B7359 /* PreviewDeviceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B8A60E23CE56A1001B7359 /* PreviewDeviceSelectionViewController.swift */; };
+		F5B9151F244653C100179876 /* ReaderManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B9151E244653C100179876 /* ReaderManageViewController.swift */; };
+		F5B9152124465FB400179876 /* ReaderTagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B9152024465FB400179876 /* ReaderTagsTableViewController.swift */; };
 		F5C00EAE242179780047846F /* WeekdaysHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C00EAD242179780047846F /* WeekdaysHeaderViewTests.swift */; };
 		F5CFB8F524216DFC00E58B69 /* CalendarHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CFB8F424216DFC00E58B69 /* CalendarHeaderViewTests.swift */; };
 		F5D03DFF2370E28D0043F287 /* LightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */; };
@@ -4678,6 +4680,8 @@
 		F59AAC0F235E430E00385EE6 /* ChosenValueRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChosenValueRow.swift; sourceTree = "<group>"; };
 		F59AAC15235EA46D00385EE6 /* LightNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightNavigationController.swift; sourceTree = "<group>"; };
 		F5B8A60E23CE56A1001B7359 /* PreviewDeviceSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDeviceSelectionViewController.swift; sourceTree = "<group>"; };
+		F5B9151E244653C100179876 /* ReaderManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderManageViewController.swift; sourceTree = "<group>"; };
+		F5B9152024465FB400179876 /* ReaderTagsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagsTableViewController.swift; sourceTree = "<group>"; };
 		F5C00EAD242179780047846F /* WeekdaysHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdaysHeaderViewTests.swift; sourceTree = "<group>"; };
 		F5CFB8F424216DFC00E58B69 /* CalendarHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderViewTests.swift; sourceTree = "<group>"; };
 		F5D0A64823C8FA1500B20D27 /* LinkBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkBehavior.swift; sourceTree = "<group>"; };
@@ -6390,6 +6394,8 @@
 				D87A329520ABD60700F4726F /* ReaderTableContent.swift */,
 				5D42A401175E76A1005CFF05 /* WPImageViewController.h */,
 				5D42A402175E76A2005CFF05 /* WPImageViewController.m */,
+				F5B9151E244653C100179876 /* ReaderManageViewController.swift */,
+				F5B9152024465FB400179876 /* ReaderTagsTableViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -11841,6 +11847,7 @@
 				08216FCB1CDBF96000304BA7 /* MenuItemEditingHeaderView.m in Sources */,
 				17BD4A0820F76A4700975AC3 /* Routes+Banners.swift in Sources */,
 				1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */,
+				F5B9152124465FB400179876 /* ReaderTagsTableViewController.swift in Sources */,
 				4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
 				981C986821B9BDF300A7C0C8 /* PostingActivityViewController.swift in Sources */,
@@ -11939,6 +11946,7 @@
 				40F50B7D22130E6C00CBBB73 /* FollowersStatsRecordValue+CoreDataClass.swift in Sources */,
 				43D74AD620FB5AD5004AD934 /* RegisterDomainSectionHeaderView.swift in Sources */,
 				986DD19C218D002500D28061 /* WPStyleGuide+Stats.swift in Sources */,
+				F5B9151F244653C100179876 /* ReaderManageViewController.swift in Sources */,
 				FF00889B204DF3ED007CCE66 /* Blog+Quota.swift in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
 				FAFF153D1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift in Sources */,

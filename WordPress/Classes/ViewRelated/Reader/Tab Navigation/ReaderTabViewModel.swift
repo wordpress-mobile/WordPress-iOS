@@ -4,6 +4,7 @@ class ReaderTabViewModel {
     var tabSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
     var selectedFilter: ReaderAbstractTopic?
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
+    var settingsTapped: ((UIView) -> Void)?
 
     init() {
         addNotificationsObservers()
@@ -54,7 +55,9 @@ class ReaderTabViewModel {
         }
     }
 
-    func presentSettings() { }
+    func presentSettings(from: UIView) {
+        settingsTapped?(from)
+    }
 }
 
 // MARK: - Bottom Sheet

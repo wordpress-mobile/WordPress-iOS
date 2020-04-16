@@ -2,6 +2,7 @@ import Foundation
 import WordPressShared
 import CocoaLumberjack
 import WordPressFlux
+import Gridicons
 
 /// Displays the list of sites a user follows in the Reader.  Provides functionality
 /// for following new sites by URL, and unfollowing existing sites via a swipe
@@ -10,9 +11,10 @@ import WordPressFlux
 class ReaderFollowedSitesViewController: UIViewController, UIViewControllerRestoration {
     @IBOutlet var searchBar: UISearchBar!
 
+    var tableView: UITableView!
+
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var isSyncing = false
-    fileprivate var tableView: UITableView!
     fileprivate var tableViewHandler: WPTableViewHandler!
     fileprivate var tableViewController: UITableViewController!
     fileprivate let cellIdentifier = "CellIdentifier"
@@ -411,8 +413,13 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         // Reset the site icon first to address: https://github.com/wordpress-mobile/WordPress-iOS/issues/8513
         cell.imageView?.image = .siteIconPlaceholder
 
-        cell.accessoryType = .disclosureIndicator
+//        cell.accessoryType = .disclosureIndicator
         cell.imageView?.backgroundColor = .neutral(.shade5)
+
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        button.setImage(UIImage.gridicon(.readerFollowing), for: .normal)
+        button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
+        cell.accessoryView = button
 
         cell.textLabel?.text = site.title
         cell.detailTextLabel?.text = URL(string: site.siteURL)?.host
@@ -423,6 +430,9 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         cell.layoutSubviews()
     }
 
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ?? WPTableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
@@ -472,13 +482,18 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView,
                    editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
+        return .none
+//        return .delete
     }
 
 
     func tableView(_ tableView: UITableView,
                    titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return NSLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing a site.")
+    }
+
+    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        unfollowSiteAtIndexPath(indexPath)
     }
 
 
@@ -492,6 +507,13 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         }
     }
 
+    @objc func tappedAccessory(_ sender: UIButton) {
+        if let point = sender.superview?.convert(sender.center, to: tableView),
+            let indexPath = tableView.indexPathForRow(at: point) {
+            self.tableView(tableView, accessoryButtonTappedForRowWith: indexPath)
+//            tableView.delegate?.tableView?(tableView, accessoryButtonTappedForRowWith: indexPath)
+        }
+    }
 }
 
 extension ReaderFollowedSitesViewController: UISearchBarDelegate {
