@@ -117,7 +117,8 @@ private extension EpilogueUserInfoCell {
     }
 
     func configureLoginAccessibility() {
-        accessibilityLabel = String(format: "Account Information. %@. %@.", fullNameLabel.text ?? "", usernameLabel.text ?? "")
+        let accessibilityFormat = NSLocalizedString("Account Information. %@. %@.", comment: "Accessibility description for account information after logging in.")
+        accessibilityLabel = String(format: accessibilityFormat, fullNameLabel.text ?? "", usernameLabel.text ?? "")
         accessibilityTraits = .none
         fullNameLabel.isAccessibilityElement = false
         usernameLabel.isAccessibilityElement = false
