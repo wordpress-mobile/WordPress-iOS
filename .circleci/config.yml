@@ -24,7 +24,7 @@ commands:
       - run:
           name: Zip test output
           working_directory: build/results
-          command: zip -r testoutput.zip *
+          command: zip -r testoutput.zip * || touch testoutput.zip
       - store_artifacts:
           name: Save test output
           path: build/results/testoutput.zip
