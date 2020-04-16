@@ -4,6 +4,10 @@ class ReaderTabViewController: UIViewController {
 
     private let viewModel: ReaderTabViewModel
 
+    private lazy var readerTabView: ReaderTabView = {
+        return ReaderTabView(viewModel: viewModel)
+    }()
+
     init(viewModel: ReaderTabViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -23,7 +27,7 @@ class ReaderTabViewController: UIViewController {
     }
 
     override func loadView() {
-        self.view = ReaderTabView(viewModel: viewModel)
+        self.view = readerTabView
     }
 }
 
@@ -40,9 +44,6 @@ extension ReaderTabViewController {
 // MARK: - Tab Switching
 extension ReaderTabViewController {
     @objc func navigateToSavedPosts() {
-        guard let readerTabView = view as? ReaderTabView else {
-            return
-        }
         readerTabView.switchToSavedPosts()
     }
 }
@@ -70,9 +71,6 @@ extension ReaderTabViewController: UIViewControllerRestoration {
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
-        guard let readerTabView = self.view as? ReaderTabView else {
-            return
-        }
         coder.encode(readerTabView.currentIndex, forKey: ReaderTabViewController.encodedIndexKey)
     }
 
