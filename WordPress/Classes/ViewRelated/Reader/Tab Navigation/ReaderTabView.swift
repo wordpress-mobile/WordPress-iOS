@@ -196,6 +196,16 @@ extension ReaderTabView {
         }
     }
 
+    func switchToSavedPosts() {
+        guard let index = tabBar.items.firstIndex(where: {
+            $0.title == "Saved"
+        }) else {
+            return
+        }
+        tabBar.setSelectedIndex(index)
+        selectedTabDidChange(tabBar)
+    }
+
     /// Filter button
     @objc private func didTapFilterButton() {
         viewModel.presentFilter(from: filterButton) { [weak self] title in

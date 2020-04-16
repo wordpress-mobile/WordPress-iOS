@@ -6,7 +6,20 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
     var imageRequestAuthToken: String? = nil
     var isLoggedIn: Bool = false
-    private let visibleConfirmation: Bool
+    var visibleConfirmation: Bool {
+        didSet {
+            saveForLaterAction?.visibleConfirmation = visibleConfirmation
+        }
+    }
+
+    private weak var saveForLaterAction: ReaderSaveForLaterAction?
+
+    // saved posts
+    /// Posts that have been removed but not yet discarded
+    // TODO: - READERNAV - Set this property as private once the old reader class ReaderSavedPostCellActions is removed
+    var removedPosts = ReaderSaveForLaterRemovedPosts()
+
+    weak var savedPostsDelegate: ReaderSavedPostCellActionsDelegate?
 
     init(context: NSManagedObjectContext, origin: UIViewController, topic: ReaderAbstractTopic? = nil, visibleConfirmation: Bool = true) {
         self.context = context
@@ -38,10 +51,18 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
+        if let origin = origin as? ReaderStreamViewController, origin.isSavedPostsController {
+            if let post = provider as? ReaderPost {
+                removedPosts.add(post)
+            }
+            savedPostsDelegate?.willRemove(cell)
+
+        } else {
+            guard let post = provider as? ReaderPost else {
+                return
+            }
+            toggleSavedForLater(for: post)
         }
-        toggleSavedForLater(for: post)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
@@ -105,19 +126,26 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
     func toggleSavedForLater(for post: ReaderPost) {
         let actionOrigin: ReaderSaveForLaterOrigin
+        // TODO: - READERNAV - Update this check once the old reader is removed
         if origin is ReaderSavedPostsViewController {
             actionOrigin = .savedStream
+        } else if let origin = origin as? ReaderStreamViewController, origin.isSavedPostsController, FeatureFlag.newReaderNavigation.enabled {
+            actionOrigin = .savedStream
+
         } else {
             actionOrigin = .otherStream
         }
 
         if !post.isSavedForLater {
-            if let origin = origin as? UIViewController & UIViewControllerTransitioningDelegate {
+            if let origin = origin as? ReaderStreamViewController, !origin.isSavedPostsController {
                 FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: origin)
             }
         }
 
-        ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation).execute(with: post, context: context, origin: actionOrigin)
+        let saveAction = ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation)
+
+        saveAction.execute(with: post, context: context, origin: actionOrigin)
+        saveForLaterAction = saveAction
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
@@ -169,5 +197,23 @@ enum ReaderActionsVisibility: Equatable {
         case .visible(let enabled):
             return enabled
         }
+    }
+}
+
+
+// MARK: - Saved Posts
+extension ReaderPostCellActions {
+
+    func postIsRemoved(_ post: ReaderPost) -> Bool {
+        return removedPosts.contains(post)
+    }
+
+    func restoreUnsavedPost(_ post: ReaderPost) {
+        removedPosts.remove(post)
+    }
+
+    func clearRemovedPosts() {
+        removedPosts.all().forEach({ toggleSavedForLater(for: $0) })
+        removedPosts = ReaderSaveForLaterRemovedPosts()
     }
 }

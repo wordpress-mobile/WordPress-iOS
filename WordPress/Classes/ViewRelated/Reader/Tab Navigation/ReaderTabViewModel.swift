@@ -132,6 +132,7 @@ extension ReaderTabViewModel {
 
         self.tabSelectionCallback = { [weak controller] topic in
             controller?.setTopic(topic)
+            controller?.isSavedPostsController = (topic == nil)
         }
         return controller
     }
