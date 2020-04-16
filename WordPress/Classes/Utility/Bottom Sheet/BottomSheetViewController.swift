@@ -121,6 +121,11 @@ class BottomSheetViewController: UIViewController {
         }
     }
 
+    override func accessibilityPerformEscape() -> Bool {
+        dismiss(animated: true, completion: nil)
+        return true
+    }
+
     private func refreshForTraits() {
         if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
             gripButton.isHidden = true
