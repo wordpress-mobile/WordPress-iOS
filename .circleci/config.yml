@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   # Using 1.0 of the Orbs means it will use the latest 1.0.x version from https://github.com/wordpress-mobile/circleci-orbs
-  ios: wordpress-mobile/ios@1.0
+  ios: wordpress-mobile/ios@dev:add/store-test-bundles-take2
   git: wordpress-mobile/git@1.0
   slack: circleci/slack@3.4.2
 
@@ -19,16 +19,6 @@ commands:
               echo "Manually added `/usr/local/bin` to the $PATH:"
               echo $PATH
             fi
-  save-test-output:
-    steps:
-      - run:
-          name: Zip test output
-          working_directory: build/results
-          command: zip -r testoutput.zip * || touch testoutput.zip
-      - store_artifacts:
-          name: Save test output
-          path: build/results/testoutput.zip
-          destination: testresults
 
 jobs:
   Build Tests:
@@ -69,8 +59,8 @@ jobs:
           name: Run Unit Tests
           working_directory: Scripts
           command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUnitTests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
-      - ios/save-xcodebuild-artifacts
-      - save-test-output
+      - ios/save-xcodebuild-artifacts:
+          result-bundle-path: build/results
   UI Tests:
     parameters:
       device:
@@ -102,8 +92,8 @@ jobs:
           name: Run UI Tests
           working_directory: Scripts
           command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
-      - ios/save-xcodebuild-artifacts
-      - save-test-output
+      - ios/save-xcodebuild-artifacts:
+          result-bundle-path: build/results
       - when:
           condition: << parameters.post-to-slack >>
           steps:
