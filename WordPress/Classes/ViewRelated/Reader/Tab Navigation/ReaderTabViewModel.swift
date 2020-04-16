@@ -1,23 +1,20 @@
 
 class ReaderTabViewModel {
 
-    var tabSelectionCallback: ((ReaderAbstractTopic) -> Void)?
+    var tabSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
 
     init() {
         addNotificationsObservers()
     }
 
     func showTab(for item: FilterTabBarItem) {
-        guard let readerItem = item as? ReaderTabItem,
-            let topic = readerItem.topic else {
-                return
+        guard let readerItem = item as? ReaderTabItem else {
+            return
         }
-        tabSelectionCallback?(topic)
+        tabSelectionCallback?(readerItem.topic)
     }
 
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
-    func performSearch() { }
-
     func presentFilter() { }
 
     func resetFilter() { }
@@ -91,6 +88,7 @@ extension ReaderTabViewModel {
 
         self.tabSelectionCallback = { [weak controller] topic in
             controller?.setTopic(topic)
+            controller?.isSavedPostsController = (topic == nil)
         }
         return controller
     }

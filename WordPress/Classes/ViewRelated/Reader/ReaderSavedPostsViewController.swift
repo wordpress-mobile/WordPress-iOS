@@ -2,7 +2,7 @@ import UIKit
 import Gridicons
 import WordPressShared
 import WordPressUI
-
+// TODO: - READERNAV - Remove this file once the new reader is released and stable
 final class ReaderSavedPostsViewController: UITableViewController {
     private enum Strings {
         static let title = NSLocalizedString("Saved Posts", comment: "Title for list of posts saved for later")
@@ -105,7 +105,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
     @objc public func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
         if postCellActions == nil {
             postCellActions = ReaderSavedPostCellActions(context: managedObjectContext(), origin: self, topic: post.topic, visibleConfirmation: false)
-            postCellActions?.delegate = self
+            postCellActions?.savedPostsDelegate = self
         }
 
         cellConfiguration.configurePostCardCell(cell,
