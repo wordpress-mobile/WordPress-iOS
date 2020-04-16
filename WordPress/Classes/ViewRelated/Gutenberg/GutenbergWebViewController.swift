@@ -40,6 +40,7 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        webView.navigationDelegate = self;
         addNavigationButtons()
         authenticatedRequest(for: url, on: webView) { [weak self] (request) in
             self?.webView.load(request)
@@ -60,7 +61,15 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
     }
 
     @objc func onSaveButtonPressed() {
-        webView.evaluateJavaScript("window.onSave()") { (response, error) in
+        evaluateJavascript("window.getHTMLPostContent()")
+    }
+
+    @objc func onCloseButtonPressed() {
+        presentingViewController?.dismiss(animated: true)
+    }
+
+    func evaluateJavascript(_ script: String) {
+        webView.evaluateJavaScript(script) { (response, error) in
             if let response = response {
                 print(response)
             }
@@ -70,29 +79,78 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
         }
     }
 
-    @objc func onCloseButtonPressed() {
-        presentingViewController?.dismiss(animated: true)
-    }
-
     func save(_ newContent: String) {
         onSave?(newContent)
         webView.configuration.userContentController.removeAllUserScripts()
         presentingViewController?.dismiss(animated: true)
     }
+
+    private let insertCSSScript: String = {
+        let css = """
+#wp-toolbar {
+    display: none;
+}
+
+#wpadminbar {
+    display: none;
+}
+
+#post-title-0 {
+    display: none;
+}
+
+.block-list-appender {
+    display: none;
+}
+
+.edit-post-header {
+    height: 0px;
+    overflow: hidden;
+}
+
+.edit-post-header-toolbar__block-toolbar {
+    top: 0px;
+}
+
+.block-editor-editor-skeleton {
+    top: 0px;
+}
+"""
+
+        return """
+const style = document.createElement('style');
+style.innerHTML = `\(css)`;
+style.type = 'text/css';
+document.head.appendChild(style);
+"CSS Injected"
+"""
+    }()
+}
+
+extension GutenbergWebViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+
+    }
+
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        evaluateJavascript(insertCSSScript)
+    }
 }
 
 extension GutenbergWebViewController: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        switch message.name {
-        case "log":
-            if let content = message.body as? String {
-                print("---> JS: " + content)
-            }
-        case "onSave":
-            if let newContent = message.body as? String {
-                save(newContent)
-            }
-        default: break
+        guard
+            let messageType = GutenbergWebJavascriptInjection.JSMessage(rawValue: message.name),
+            let body = message.body as? String
+        else {
+            return
+        }
+
+        switch messageType {
+        case .log:
+            print("---> JS: " + body)
+        case .htmlPostContent:
+            save(body)
         }
     }
 }
@@ -106,24 +164,28 @@ private extension WKUserContentController {
 }
 
 struct GutenbergWebJavascriptInjection {
+    enum JSMessage: String, CaseIterable {
+        case htmlPostContent
+        case log
+    }
     static func userContent(messageHandler handler: WKScriptMessageHandler, blockHTML: String) -> WKUserContentController {
         let userContent = WKUserContentController()
         userContent.addUserScripts([
             WKUserScript(source: incertBlockScript(blockHTML: blockHTML), injectionTime: .atDocumentEnd, forMainFrameOnly: false),
-            WKUserScript(source: cleanUIScript, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
+            WKUserScript(source: mutationObserverScript, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
             WKUserScript(source: retriveContentHTMLScript, injectionTime: .atDocumentEnd, forMainFrameOnly: false),
         ])
-        userContent.add(handler, name: "onSave")
-        userContent.add(handler, name: "log")
-
+        JSMessage.allCases.forEach {
+            userContent.add(handler, name: $0.rawValue)
+        }
         return userContent
     }
 
     private static let retriveContentHTMLScript = """
-window.onSave = () => {
+window.getHTMLPostContent = () => {
     const blocks = window.wp.data.select('core/block-editor').getBlocks();
     const HTML = window.wp.blocks.serialize( blocks );
-    window.webkit.messageHandlers.onSave.postMessage(HTML);
+    window.webkit.messageHandlers.htmlPostContent.postMessage(HTML);
 }
 """
 
@@ -139,49 +201,15 @@ window.insertBlock = () => {
 """
     }
 
-    private static let cleanUIScript = """
+    /// Script that observe DOM mutations and calls `insertBlock` when it's appropiate.
+    private static let mutationObserverScript = """
 window.onload = () => {
-    const wpAdminBar = document.getElementById('wpadminbar');
-    const wpToolbar = document.getElementById('wp-toolbar');
-    if (wpAdminBar) {
-        wpAdminBar.style.display = 'none';
-    }
-    if (wpToolbar) {
-        wpToolbar.style.display = 'none';
-    }
-
     const content = document.getElementById('wpbody-content');
     if (content) {
         const callback = function(mutationsList, observer) {
             window.webkit.messageHandlers.log.postMessage("UPDATED!");
             const header = document.getElementsByClassName("edit-post-header")[0];
-            const postTitle = document.getElementById('post-title-0');
-            if (postTitle && header.id == '') {
-                header.id = 'gb-header';
-                header.style.height = 0;
-                postTitle.style.display = 'none';
-                Array.from(header.children).forEach( (child) => {
-                    child.style.display = 'none';
-                });
-
-                const headerToolbar = header.getElementsByClassName('edit-post-header-toolbar')[0];
-                headerToolbar.style.display = null;
-                headerToolbar.parentNode.style.display = null;
-                const inserterToggle = header.getElementsByClassName('block-editor-inserter__toggle')[0];
-                inserterToggle.style.display = 'none';
-
-                const blockToolbar = header.getElementsByClassName('edit-post-header-toolbar__block-toolbar')[0];
-                blockToolbar.style.top = '0px';
-
-                const skeleton = document.getElementsByClassName('block-editor-editor-skeleton')[0];
-                skeleton.style.top = '0px';
-
-                const appender = document.getElementsByClassName('block-list-appender')[0];
-                if (appender && appender.id == '') {
-                    appender.id = 'appender';
-                    appender.style.display = 'none';
-                }
-
+            if (header) {
                 window.insertBlock();
                 observer.disconnect();
             }
