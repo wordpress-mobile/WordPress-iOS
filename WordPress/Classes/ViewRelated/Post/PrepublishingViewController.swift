@@ -31,7 +31,7 @@ class PrepublishingViewController: UITableViewController {
     private let completion: (AbstractPost) -> ()
 
     private let options: [PrepublishingOption] = [
-        PrepublishingOption(id: .schedule, title: NSLocalizedString("Publish", comment: "Label for Publish")),
+        PrepublishingOption(id: .schedule, title: Constants.publishLabel),
         PrepublishingOption(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility")),
         PrepublishingOption(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"))
     ]
@@ -186,6 +186,7 @@ class PrepublishingViewController: UITableViewController {
     // MARK: - Schedule
 
     func configureScheduleCell(_ cell: WPTableViewCell) {
+        cell.textLabel?.text = post.hasFuturePublishDate() ? Constants.scheduledLabel : Constants.publishLabel
         cell.detailTextLabel?.text = publishSettingsViewModel.detailString
     }
 
@@ -297,6 +298,8 @@ class PrepublishingViewController: UITableViewController {
         static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
+        static let publishLabel = NSLocalizedString("Publish", comment: "Label for Publish")
+        static let scheduledLabel = NSLocalizedString("Scheduled for", comment: "Scheduled for [date]")
         static let headerHeight: CGFloat = 70
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
