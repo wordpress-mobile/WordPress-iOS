@@ -214,6 +214,7 @@ import WordPressFlux
         return controller
     }
 
+    /// Convenience method to create an instance for saved posts
     class func controllerForSavedPosts() -> ReaderStreamViewController {
         let controller = ReaderStreamViewController()
         controller.isSavedPostsController = true

@@ -76,16 +76,18 @@ extension ReaderTabView {
             guard let items = items, let self = self else {
                 return
             }
-            self.populateTabBar(with: items)
+
+            self.tabBar.items = items
+            
             if let startIndex = self.viewModel.startIndex {
                 self.tabBar.setSelectedIndex(startIndex)
             }
+            self.configureTabBarElements()
             self.addContentToContainerView()
         }
     }
     
-    private func populateTabBar(with items: [ReaderTabItem]) {
-        tabBar.items = items
+    private func configureTabBarElements() {
         guard let tabItem = tabBar.items[tabBar.selectedIndex] as? ReaderTabItem else {
             return
         }
