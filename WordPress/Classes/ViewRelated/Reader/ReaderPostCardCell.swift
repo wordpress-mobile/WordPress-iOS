@@ -243,11 +243,7 @@ import Gridicons
         borderedView.layer.borderWidth = .hairlineBorderWidth
 
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
-
-        if FeatureFlag.postReblogging.enabled {
-            WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
-        }
-
+        WPStyleGuide.applyReaderReblogActionButtonStyle(reblogActionButton)
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
@@ -509,8 +505,7 @@ import Gridicons
 
     fileprivate var shouldShowReblogActionButton: Bool {
         // reblog button is hidden if there's no content
-        guard FeatureFlag.postReblogging.enabled,
-            let provider = contentProvider,
+        guard let provider = contentProvider,
             !provider.isPrivate(),
             loggedInActionVisibility.isEnabled else {
             return false
@@ -532,12 +527,9 @@ import Gridicons
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            if FeatureFlag.postReblogging.enabled {
-                WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
-                WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
-            } else {
-                saveForLaterButton.setTitle("", for: .normal)
-            }
+            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton, showTitle: false)
+
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
@@ -546,9 +538,7 @@ import Gridicons
             commentActionButton.setTitle(commentTitle, for: .normal)
 
             WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
-            if FeatureFlag.postReblogging.enabled {
-                WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
-            }
+            WPStyleGuide.applyReaderReblogActionButtonTitle(reblogActionButton)
         }
     }
 
@@ -671,9 +661,7 @@ extension ReaderPostCardCell: Accessible {
         prepareMenuForVoiceOver()
         prepareVisitForVoiceOver()
         prepareFollowButtonForVoiceOver()
-        if FeatureFlag.postReblogging.enabled {
-            prepareReblogForVoiceOver()
-        }
+        prepareReblogForVoiceOver()
     }
 
     private func prepareCardForVoiceOver() {
