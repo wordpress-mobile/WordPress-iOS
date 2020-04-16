@@ -41,7 +41,7 @@ import WordPressFlux
         return currentHelper
     }
 
-    private var resultsStatusView = NoResultsViewController.controller()
+    private(set) var resultsStatusView = NoResultsViewController.controller()
 
     private lazy var footerView: PostListFooterView = {
         return tableConfiguration.footer()
@@ -137,6 +137,21 @@ import WordPressFlux
                 siteID = nil
                 tagSlug = nil
             }
+        }
+    }
+
+    var isSavedPostsController: Bool = false {
+        willSet {
+            if isSavedPostsController && !newValue {
+                postCellActions?.clearRemovedPosts()
+            }
+        }
+        didSet {
+            if isSavedPostsController {
+                configureControllerForTopic(synchronize: false)
+                trackSavedListAccessed()
+            }
+            postCellActions?.visibleConfirmation = !isSavedPostsController
         }
     }
 
@@ -396,6 +411,7 @@ import WordPressFlux
         add(tableViewController, asChildOf: self)
         layoutTableView()
         tableConfiguration.setup(tableView)
+        setupUndoCell(tableView)
     }
 
     @objc func configureRefreshControl() {
@@ -479,7 +495,6 @@ import WordPressFlux
     /// Configures the controller for the `readerTopic`.  This should only be called
     /// once when the topic is set.
     private func configureControllerForTopic(synchronize: Bool = true) {
-        assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded, "The controller's view must be loaded before displaying the topic")
 
         // Enable the view now that we have a topic.
@@ -503,7 +518,11 @@ import WordPressFlux
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
-        configureStreamHeader()
+        if readerTopic != nil {
+            configureStreamHeader()
+        } else {
+            tableView.tableHeaderView = nil
+        }
         tableView.setContentOffset(CGPoint.zero, animated: false)
         content.refresh()
         refreshTableViewHeaderLayout()
@@ -514,10 +533,10 @@ import WordPressFlux
 
         bumpStats()
 
-        let count = content.contentCount
-
         // Make sure we're showing the no results view if appropriate
-        if let syncHelper = syncHelper, !syncHelper.isSyncing && count == 0 {
+        if let syncHelper = syncHelper, !syncHelper.isSyncing, content.isEmpty {
+            displayNoResultsView()
+        } else if isSavedPostsController, content.isEmpty {
             displayNoResultsView()
         }
 
@@ -1073,7 +1092,9 @@ import WordPressFlux
         // avoids returning readerPosts that do not belong to a topic (e.g. those
         // loaded from a notification). We can do this by specifying that self
         // has to exist within an empty set.
-        let predicateForNilTopic = NSPredicate(format: "topic = NULL AND SELF in %@", [])
+        let predicateForNilTopic = isSavedPostsController ?
+            NSPredicate(format: "isSavedForLater == YES") :
+            NSPredicate(format: "topic = NULL AND SELF in %@", [])
 
         guard let topic = readerTopic else {
             return predicateForNilTopic
@@ -1099,18 +1120,15 @@ import WordPressFlux
 
 
     private func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
-        guard let topic = readerTopic else {
-            return
-        }
-
         if postCellActions == nil {
             postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: readerTopic)
         }
         postCellActions?.isLoggedIn = isLoggedIn
+        postCellActions?.savedPostsDelegate = self
 
         cellConfiguration.configurePostCardCell(cell,
                                                 withPost: post,
-                                                topic: topic,
+                                                topic: readerTopic ?? post.topic,
                                                 delegate: postCellActions,
                                                 loggedInActionVisibility: .visible(enabled: isLoggedIn))
     }
@@ -1401,6 +1419,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
+        if isSavedPostsController, postCellActions?.postIsRemoved(post) == true {
+            let cell = undoCell(tableView)
+            configureUndoCell(cell, with: post)
+            return cell
+        }
+
         let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
         return cell
@@ -1484,7 +1508,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         }
 
-        if post.isSavedForLater {
+        if post.isSavedForLater || isSavedPostsController {
             trackSavedPostNavigation()
         }
 
@@ -1552,6 +1576,9 @@ private extension ReaderStreamViewController {
         // Its possible the topic was deleted before a sync could be completed,
         // so make certain its not nil.
         guard let topic = readerTopic else {
+            if isSavedPostsController {
+                displayNoResultsForSavedPosts()
+            }
             return
         }
 
@@ -1583,6 +1610,11 @@ private extension ReaderStreamViewController {
                                 accessoryView: UIView? = nil) {
 
         resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
+    }
+
+    private func displayNoResultsForSavedPosts() {
+        configureNoResultsViewForSavedPosts()
+        displayResultsStatus()
     }
 
     func displayResultsStatus() {
@@ -1684,13 +1716,34 @@ extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
 
 // MARK: - Topic Injection
 extension ReaderStreamViewController {
-    func setTopic(_ topic: ReaderAbstractTopic) {
-        guard ReaderHelpers.topicIsDiscover(topic) else {
+    func setTopic(_ topic: ReaderAbstractTopic?) {
+        guard let actualTopic = topic, ReaderHelpers.topicIsDiscover(actualTopic) else {
             readerTopic = topic
             return
         }
         readerTopic = nil
         isFeed = false
         siteID = ReaderHelpers.discoverSiteID
+    }
+}
+
+
+// MARK: - Saved Posts Delegate
+extension ReaderStreamViewController: ReaderSavedPostCellActionsDelegate {
+    func willRemove(_ cell: ReaderPostCardCell) {
+        if let cellIndex = tableView.indexPath(for: cell) {
+            tableView.reloadRows(at: [cellIndex], with: .fade)
+        }
+    }
+}
+
+// MARK: - Undo
+extension ReaderStreamViewController: ReaderPostUndoCellDelegate {
+    func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
+        if let cellIndex = tableView.indexPath(for: cell),
+            let post: ReaderPost = content.object(at: cellIndex) {
+                postCellActions?.restoreUnsavedPost(post)
+                tableView.reloadRows(at: [cellIndex], with: .fade)
+        }
     }
 }
