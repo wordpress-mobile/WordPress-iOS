@@ -32,13 +32,6 @@ class EpilogueUserInfoCell: UITableViewCell {
         super.awakeFromNib()
 
         gravatarView.image = .gravatarPlaceholderImage
-
-        let accessibilityDescription = NSLocalizedString("Add account image", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
-        gravatarButton.accessibilityLabel = accessibilityDescription
-
-        let accessibilityHint = NSLocalizedString("Adds image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
-        gravatarButton.accessibilityHint = accessibilityHint
-
         configureColors()
     }
 
@@ -52,9 +45,9 @@ class EpilogueUserInfoCell: UITableViewCell {
 
         usernameLabel.text = showEmail ? userInfo.email : "@\(userInfo.username)"
         usernameLabel.fadeInAnimation()
-        usernameLabel.accessibilityIdentifier = "login-epilogue-username-label"
 
         gravatarAddIcon.isHidden = !allowGravatarUploads
+        configureAccessibility()
 
         switch gravatarStatus {
         case .uploading(image: _):
@@ -62,10 +55,10 @@ class EpilogueUserInfoCell: UITableViewCell {
         case .finished:
             gravatarActivityIndicator.stopAnimating()
         case .idle:
-            let placeholder: UIImage = allowGravatarUploads ? .gravatarUploadablePlaceholderImage : .gravatarPlaceholderImage
             if let gravatarUrl = userInfo.gravatarUrl, let url = URL(string: gravatarUrl) {
                 gravatarView.downloadImage(from: url)
             } else {
+                let placeholder: UIImage = allowGravatarUploads ? .gravatarUploadablePlaceholderImage : .gravatarPlaceholderImage
                 gravatarView.downloadGravatarWithEmail(userInfo.email, rating: .x, placeholderImage: placeholder)
             }
         }
@@ -109,6 +102,28 @@ private extension EpilogueUserInfoCell {
 
         return UIFontMetrics.default.scaledFont(for: UIFont(descriptor: fontDescriptor, size: 0.0))
     }
+
+    func configureAccessibility() {
+        usernameLabel.accessibilityIdentifier = "login-epilogue-username-label"
+        gravatarAddIcon.isHidden ? configureLoginAccessibility() : configureSignupAccessibility()
+    }
+
+    func configureSignupAccessibility() {
+        let accessibilityDescription = NSLocalizedString("Add account image", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
+        gravatarButton.accessibilityLabel = accessibilityDescription
+
+        let accessibilityHint = NSLocalizedString("Adds image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
+        gravatarButton.accessibilityHint = accessibilityHint
+    }
+
+    func configureLoginAccessibility() {
+        accessibilityLabel = String(format: "Account Information. %@. %@.", fullNameLabel.text ?? "", usernameLabel.text ?? "")
+        accessibilityTraits = .none
+        fullNameLabel.isAccessibilityElement = false
+        usernameLabel.isAccessibilityElement = false
+        gravatarButton.isAccessibilityElement = false
+    }
+
 }
 
 
