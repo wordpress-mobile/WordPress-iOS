@@ -350,7 +350,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         self.restorableSelectedIndexPath = nil;
     }
     
-    self.navigationItem.title = self.blog.settings.name;
+    self.navigationItem.title = NSLocalizedString(@"My Site", @"Title of My Site tab");
 
     [self.headerView setBlog:self.blog];
 
@@ -1644,7 +1644,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
-        self.navigationItem.title = self.blog.settings.name;
         [self configureTableViewData];
         BOOL isQuickStartSectionShownAfter = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryQuickStart] != NSNotFound;
         
