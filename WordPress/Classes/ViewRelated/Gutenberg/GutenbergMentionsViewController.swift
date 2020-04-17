@@ -10,6 +10,7 @@ public class GutenbergMentionsViewController: UIViewController {
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
+        textField.backgroundColor = UIColor.basicBackground
         return textField
     }()
 

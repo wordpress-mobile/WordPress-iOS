@@ -639,21 +639,19 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func updateConstraintsToAvoidKeyboard(frame: CGRect) {
         keyboardFrame = frame
-        let blockToolbarSize = CGFloat(44.0)
+        let minimumKeyboardHeight = CGFloat(100)
         guard let mentionsBottomConstraint = mentionsBottomConstraint else {
             return
         }
         print("Keyboard height:\(frame.height) safe bottom:\(self.view.safeAreaInsets.bottom)")
-        if keyboardFrame.height < 5 {
-            mentionsBottomConstraint.constant = -blockToolbarSize - self.view.safeAreaInsets.bottom
-        } else if UIDevice.current.userInterfaceIdiom == .phone && keyboardFrame.height >= 5  && keyboardFrame.height < 100 {
-            mentionsBottomConstraint.constant = -self.keyboardFrame.height
+        if keyboardFrame.height < minimumKeyboardHeight {
+            mentionsBottomConstraint.constant = -self.view.safeAreaInsets.bottom
         }
         else {
-            mentionsBottomConstraint.constant = -self.keyboardFrame.height - blockToolbarSize
+            mentionsBottomConstraint.constant = -self.keyboardFrame.height
         }
     }
-
+    
     func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
         guard let siteID = self.post.blog.dotComID else {
             callback(.failure(NSError(domain:"MentionError", code: 1, userInfo:nil)))
