@@ -4,47 +4,37 @@ class ReaderTabViewController: UIViewController {
 
     private let viewModel: ReaderTabViewModel
 
+    private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
+
     private lazy var readerTabView: ReaderTabView = {
-        return ReaderTabView(viewModel: viewModel)
+        return makeReaderTabView(viewModel)
     }()
 
-    init(viewModel: ReaderTabViewModel) {
+    init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
+        self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
-        self.title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        self.title = ReaderTabConstants.title
         ReaderTabViewController.configureRestoration(on: self)
-        setupSearchButton()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(ReaderTabConstants.storyBoardInitError)
     }
 
     func setupSearchButton() {
       navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search,
-                                                          target: self,
-                                                          action: #selector(didTapSearchButton))
+                                                          target: WPTabBarController.sharedInstance(),
+                                                          action: #selector(WPTabBarController.sharedInstance().navigateToReaderSearch))
     }
 
     override func loadView() {
         self.view = readerTabView
     }
-}
 
-// MARK: - Search
-extension ReaderTabViewController {
-
-    @objc private func didTapSearchButton() {
-        let searchController = ReaderSearchViewController.controller()
-        navigationController?.pushViewController(searchController, animated: true)
-    }
-}
-
-
-// MARK: - Tab Switching
-extension ReaderTabViewController {
-    @objc func navigateToSavedPosts() {
-        readerTabView.switchToSavedPosts()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupSearchButton()
     }
 }
 
@@ -53,28 +43,41 @@ extension ReaderTabViewController {
 extension ReaderTabViewController: UIViewControllerRestoration {
 
     static func configureRestoration(on instance: ReaderTabViewController) {
-        instance.restorationIdentifier = "WPReaderTabControllerRestorationID"
+        instance.restorationIdentifier = ReaderTabConstants.restorationIdentifier
         instance.restorationClass = ReaderTabViewController.self
     }
 
-    static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
+    static let encodedIndexKey = ReaderTabConstants.encodedIndexKey
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                coder: NSCoder) -> UIViewController? {
 
         let index = Int(coder.decodeInt32(forKey: ReaderTabViewController.encodedIndexKey))
 
-        let controller = WPTabBarController.sharedInstance().readerTabViewController
-        controller?.setStartIndex(index)
+        guard let controller = WPTabBarController.sharedInstance()?.readerTabViewController else {
+            return nil
+        }
+        controller.setStartIndex(index)
 
         return controller
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
-        coder.encode(readerTabView.currentIndex, forKey: ReaderTabViewController.encodedIndexKey)
+        coder.encode(viewModel.selectedIndex, forKey: ReaderTabViewController.encodedIndexKey)
     }
 
     func setStartIndex(_ index: Int) {
-        viewModel.startIndex = index
+        viewModel.selectedIndex = index
+    }
+}
+
+
+// MARK: - Constants
+extension ReaderTabViewController {
+    private enum ReaderTabConstants {
+        static let title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+        static let storyBoardInitError = "Storyboard instantiation not supported"
+        static let restorationIdentifier = "WPReaderTabControllerRestorationID"
+        static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
     }
 }

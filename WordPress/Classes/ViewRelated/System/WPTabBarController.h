@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class NotificationsViewController;
 @class ReaderCoordinator;
 @class ReaderMenuViewController;
-@class ReaderTabViewController;
+@class ReaderTabViewModel;
 @class CreateButtonCoordinator;
 @class WPSplitViewController;
 @class QuickStartTourGuide;
@@ -36,12 +36,13 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @property (nonatomic, strong, readonly) MeViewController *meViewController;
 // will be removed when the new IA implementation completes
 @property (nonatomic, strong, readonly) UINavigationController *meNavigationController;
+@property (nonatomic, strong, readonly) UINavigationController *readerNavigationController;
 @property (nonatomic, strong, readonly) QuickStartTourGuide *tourGuide;
 @property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly) ReaderCoordinator *readerCoordinator;
 @property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator *createButtonCoordinator;
-@property (nonatomic, strong, readonly) ReaderTabViewController *readerTabViewController;
+@property (nonatomic, strong, readonly) ReaderTabViewModel *readerTabViewModel;
 
 + (instancetype)sharedInstance;
 

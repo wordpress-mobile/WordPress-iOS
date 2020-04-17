@@ -29,6 +29,13 @@ class ReaderTabView: UIView {
 
         super.init(frame: .zero)
         setupViewElements()
+        viewModel.indexSelectionCallback = { [weak self] index in
+            guard let readerTabView = self else {
+                return
+            }
+            readerTabView.tabBar.setSelectedIndex(index)
+            readerTabView.selectedTabDidChange(readerTabView.tabBar)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -73,15 +80,13 @@ extension ReaderTabView {
         tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
 
         viewModel.fetchReaderMenu() { [weak self] items in
-            guard let items = items, let self = self else {
+            guard let items = items, items.count > 0, let self = self else {
                 return
             }
 
             self.tabBar.items = items
-            
-            if let startIndex = self.viewModel.startIndex {
-                self.tabBar.setSelectedIndex(startIndex)
-            }
+
+            self.tabBar.setSelectedIndex(self.viewModel.selectedIndex)
             self.configureTabBarElements()
             self.addContentToContainerView()
         }
@@ -175,16 +180,21 @@ extension ReaderTabView {
 extension ReaderTabView {
     /// Tab bar
     @objc private func selectedTabDidChange(_ tabBar: FilterTabBar) {
+        viewModel.showTab(for: tabBar.items[tabBar.selectedIndex])
+        viewModel.selectedIndex = tabBar.selectedIndex
+        toggleButtonsView()
+    }
+
+    private func toggleButtonsView() {
         guard let tabItems = tabBar.items as? [ReaderTabItem] else {
                 return
         }
-        self.viewModel.showTab(for: tabBar.items[tabBar.selectedIndex])
         // hide/show buttons depending on the selected tab. Do not execute the animation if not necessary.
         guard buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
             return
         }
         UIView.animate(withDuration: Appearance.tabBarAnimationsDuration) {
-            let shouldHideButtons = tabItems[tabBar.selectedIndex].shouldHideButtonsView
+            let shouldHideButtons = tabItems[self.tabBar.selectedIndex].shouldHideButtonsView
             self.buttonsStackView.isHidden = shouldHideButtons
             self.horizontalDivider.isHidden = shouldHideButtons
         }
@@ -210,25 +220,6 @@ extension ReaderTabView {
 
     @objc private func didTapSettingsButton() {
         viewModel.presentSettings()
-    }
-}
-
-
-// MARK: - Externally accessible methods/properties
-extension ReaderTabView {
-
-    var currentIndex: Int {
-        return tabBar.selectedIndex
-    }
-
-    func switchToSavedPosts() {
-        guard let index = tabBar.items.firstIndex(where: {
-            $0.title == "Saved"
-        }) else {
-            return
-        }
-        tabBar.setSelectedIndex(index)
-        selectedTabDidChange(tabBar)
     }
 }
 

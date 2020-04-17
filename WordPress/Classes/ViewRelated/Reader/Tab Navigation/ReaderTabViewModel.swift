@@ -1,11 +1,16 @@
 
-class ReaderTabViewModel {
+@objc class ReaderTabViewModel: NSObject {
 
     var tabSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
 
-    var startIndex: Int?
+    var indexSelectionCallback: ((Int) -> Void)?
 
-    init() {
+    var selectedIndex = 0
+
+    private var navigationItems: [ReaderTabItem] = []
+
+    override init() {
+        super.init()
         addNotificationsObservers()
     }
 
@@ -14,6 +19,27 @@ class ReaderTabViewModel {
             return
         }
         tabSelectionCallback?(readerItem.topic)
+    }
+
+    func navigate(matches: (ReaderAbstractTopic) -> Bool) {
+        guard let index = navigationItems.firstIndex(where: { item in
+            guard let topic = item.topic else {
+                return false
+            }
+            return matches(topic)
+        }) else {
+            return
+        }
+        indexSelectionCallback?(index)
+    }
+
+    func navigate(matches: (String) -> Bool) {
+        guard let index = navigationItems.firstIndex(where: {
+            matches($0.title)
+        }) else {
+            return
+        }
+        indexSelectionCallback?(index)
     }
 
     // TODO: - READERNAV - Methods to be implemented. Signature will likely change
@@ -46,7 +72,11 @@ extension ReaderTabViewModel {
                 return
             }
 
-            completion(ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) }))
+            let items = ReaderHelpers.rearrange(items: topics.map { ReaderTabItem(topic: $0) })
+
+            self.navigationItems = items
+
+            completion(items)
 
         } catch {
             DDLogError(ReaderTopics.fetchRequestError + error.localizedDescription)
@@ -117,6 +147,7 @@ extension ReaderTabViewModel {
                                                 self.clearSavedPosts()
                                                 self.cleanupStaleContent(removeAllTopics: true)
                                                 self.clearSearchSuggestions()
+                                                self.selectedIndex = 0
         }
     }
 

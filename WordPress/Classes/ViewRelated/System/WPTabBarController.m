@@ -61,7 +61,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) WPSplitViewController *readerSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
-@property (nonatomic, strong) ReaderTabViewController *readerTabViewController;
+@property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -215,7 +215,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     if (!_readerNavigationController) {
         if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerTabViewController];
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.makeReaderTabViewController];
         } else {
             _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
         }
@@ -387,12 +387,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return _readerSplitViewController;
 }
 
-- (ReaderTabViewController *)readerTabViewController
+- (ReaderTabViewModel *)readerTabViewModel
 {
-    if (!_readerTabViewController) {
-        _readerTabViewController = [self makeReaderTabViewController];
+    if (!_readerTabViewModel) {
+        _readerTabViewModel = [self makeReaderTabViewModel];
     }
-    return _readerTabViewController;
+    return _readerTabViewModel;
 }
 
 - (UISplitViewController *)meSplitViewController
@@ -772,7 +772,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self showReaderTab];
 
     if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
-        [self.readerTabViewController navigateToSavedPosts];
+        [self switchToSavedPosts];
     } else {
 
         // Unfortunately animations aren't disabled properly for this
@@ -929,7 +929,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         [self.meNavigationController popToRootViewControllerAnimated:NO];
         [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
     }
-    self.readerTabViewController = nil;
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+        self.readerNavigationController = nil;
+    }
 }
 
 - (void)signinDidFinish:(NSNotification *)notification
