@@ -17,7 +17,7 @@ class GutenbergCoverUploadProcessor: Processor {
     lazy var coverBlockProcessor = GutenbergBlockTreeProcessor(for: "wp:cover", replacer: { coverBlock in
         guard let mediaID = coverBlock.attributes["id"] as? Int,
             mediaID == self.mediaUploadID else {
-                return self.processInnerBlocks(coverBlock)
+                return nil
         }
         var block = "<!-- wp:cover "
 

@@ -51,7 +51,6 @@ public class GutenbergBlockTreeProcessor: Processor {
     // MARK: - Processing
 
     /// Processes the block and for any needed replacements from a given opening tag match.
-    /// Delegates handeling of innerBlocks to the class's `replacer`.
     ///     - Parameters:
     ///         - text: The string that the following parameter is found in.
     ///     - Returns: The resulting string after the necessary replacements have occured
@@ -93,7 +92,6 @@ public class GutenbergBlockTreeProcessor: Processor {
 
 private extension GutenbergBlockTreeProcessor {
     /// Processes the block and for any needed replacements from a given opening tag match.
-    /// Delegates handeling of innerBlocks to the replacer.
     ///     - Parameters:
     ///         - match: The match reperesenting an opening block tag
     ///         - text: The string that the following parameter is found in.
@@ -105,7 +103,8 @@ private extension GutenbergBlockTreeProcessor {
         if let closingRange = locateClosingTag(forMatch: match, in: text) {
             let attributes = readAttributes(from: match, in: text)
             let content = readContent(from: match, withClosingRange: closingRange, in: text)
-            let block = GutenbergBlock(name: name, attributes: attributes, content: content)
+            let parsedContent = process(content) // Recurrsively parse nested blocks and process those seperatly
+            let block = GutenbergBlock(name: name, attributes: attributes, content: parsedContent)
 
             if let replacement = replacer(block) {
                 let length = closingRange.upperBound - match.range.lowerBound
