@@ -15,6 +15,9 @@
 * Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area.
 * You can now schedule your post, add tags or change the visibility before hitting "Publish Now" — and you don't have to go to the Post Settings for this!
 
+* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites. 
+* Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area. 
+ 
 14.6
 -----
 * [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.
