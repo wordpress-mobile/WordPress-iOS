@@ -65,11 +65,11 @@ extension WPAnalytics {
 
     /// Track a event
     ///
-    /// This will call each registered tracker and fire the given event
+    /// This will call each registered tracker and fire the given event.
     /// - Parameter event: a `String` that represents the event name
-    ///
+    /// - Note: If an event has its default properties, it will be passed through
     static func track(_ event: WPAnalyticsEvent) {
-        WPAnalytics.trackString(event.value)
+        WPAnalytics.trackString(event.value, withProperties: event.defaultProperties ?? [:])
     }
 
     /// Track a event
@@ -81,6 +81,21 @@ extension WPAnalytics {
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
         var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
         mergedProperties.merge(properties) { (_, new) in new }
+
+        WPAnalytics.trackString(event.value, withProperties: mergedProperties)
+    }
+
+
+    /// This will call each registered tracker and fire the given event.
+    /// - Parameters:
+    ///   - event: a `String` that represents the event name
+    ///   - properties: a `Hash` that represents the properties
+    ///   - blog: a `Blog` asssociated with the event
+    static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
+        var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
+        mergedProperties.merge(properties) { (_, new) in new }
+
+        mergedProperties[WPAppAnalyticsKeyBlogID] = blog.dotComID
 
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
     }
