@@ -115,6 +115,10 @@ class GutenbergWebViewController: UIViewController, WebKitAuthenticatable {
 .block-editor-editor-skeleton {
     top: 0px;
 }
+
+.edit-post-layout__metaboxes {
+    display: none;
+}
 """
 
         return """
@@ -206,6 +210,7 @@ window.insertBlock = () => {
 window.onload = () => {
     const content = document.getElementById('wpbody-content');
     if (content) {
+        window.insertBlock();
         const callback = function(mutationsList, observer) {
             window.webkit.messageHandlers.log.postMessage("UPDATED!");
             const header = document.getElementsByClassName("edit-post-header")[0];
