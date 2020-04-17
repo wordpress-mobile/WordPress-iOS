@@ -302,7 +302,8 @@ CGFloat const STVSeparatorHeight = 1.f;
     // only reload if the suggestion list is updated for the current site
     if (self.siteID && [notification.object isEqualToNumber:self.siteID]) {
         self.suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:self.siteID];
-        [self showSuggestionsForWord:self.searchText];
+        NSString * text = [NSString stringWithFormat:@"@%@", self.searchText];        
+        [self showSuggestionsForWord:text];
     }
 }
 
