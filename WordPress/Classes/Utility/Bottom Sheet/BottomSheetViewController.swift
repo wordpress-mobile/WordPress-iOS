@@ -133,7 +133,7 @@ class BottomSheetViewController: UIViewController {
     private func refreshForTraits() {
         if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
             gripButton.isHidden = true
-            additionalSafeAreaInsets = Constants.additionalSafeAreaInsetsRegular
+            additionalSafeAreaInsets = additionalSafeAreaInsetsRegular
         } else {
             gripButton.isHidden = false
             additionalSafeAreaInsets = .zero
