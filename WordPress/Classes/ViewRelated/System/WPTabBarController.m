@@ -625,19 +625,25 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [self showReaderTab];
 
-    UIViewController *topDetailVC = (ReaderDetailViewController *)self.readerSplitViewController.topDetailViewController;
-    if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
-        ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
-        ReaderPost *readerPost = readerDetailVC.post;
-        if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-             // The desired reader detail VC is already the top VC for the tab. Move along.
-            return;
-        }
-    }
-
-    if (topDetailVC && topDetailVC.navigationController) {
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
         ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
-        [topDetailVC.navigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
+        [self.readerNavigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
+    } else {
+
+        UIViewController *topDetailVC = (ReaderDetailViewController *)self.readerSplitViewController.topDetailViewController;
+        if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
+            ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
+            ReaderPost *readerPost = readerDetailVC.post;
+            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
+             // The desired reader detail VC is already the top VC for the tab. Move along.
+                return;
+            }
+        }
+
+        if (topDetailVC && topDetailVC.navigationController) {
+            ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
+            [topDetailVC.navigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
+        }
     }
 }
 
