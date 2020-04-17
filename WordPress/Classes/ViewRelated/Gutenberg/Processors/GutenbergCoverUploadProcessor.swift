@@ -14,10 +14,10 @@ class GutenbergCoverUploadProcessor: Processor {
         self.remoteURLString = remoteURLString
     }
 
-    lazy var coverBlockProcessor = GutenbergBlockProcessor(for: "wp:cover", replacer: { coverBlock in
+    lazy var coverBlockProcessor = GutenbergBlockTreeProcessor(for: "wp:cover", replacer: { coverBlock in
         guard let mediaID = coverBlock.attributes["id"] as? Int,
             mediaID == self.mediaUploadID else {
-                return nil
+                return self.processInnerBlocks(coverBlock)
         }
         var block = "<!-- wp:cover "
 
@@ -59,5 +59,20 @@ class GutenbergCoverUploadProcessor: Processor {
 
     func process(_ text: String) -> String {
         return coverBlockProcessor.process(text)
+    }
+
+    private func processInnerBlocks(_ outerBlock: GutenbergBlock) -> String {
+        var block = "<!-- wp:cover "
+        let attributes = outerBlock.attributes
+
+        if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: [.sortedKeys]),
+            let jsonString = String(data: jsonData, encoding: .utf8) {
+            block += jsonString
+        }
+
+        block += " -->"
+        block += coverBlockProcessor.process(outerBlock.content)
+        block += "<!-- /wp:cover -->"
+        return block
     }
 }
