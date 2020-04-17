@@ -29,9 +29,10 @@ class TenorAPIResponseParserTests: XCTestCase {
         thumbnailGif = firstImage.media.first { $0.nanoGIF != nil }?.nanoGIF
     }
 
-    func testParserReturnsGIFImageWithCorrectIdAndTitle() {
+    func testParserReturnsGIFImageWithCorrectIdAndTitleAndCreatedDate() {
         XCTAssertEqual(firstImage.id, "5701246")
         XCTAssertEqual(firstImage.title, "My lovely cat")
+        XCTAssertEqual(firstImage.created, Date(timeIntervalSince1970: 1468938984.001052))
     }
 
     func testParserReturnsCorrectLargeGIFImage() {
