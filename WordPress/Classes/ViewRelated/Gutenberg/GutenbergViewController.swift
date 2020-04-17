@@ -652,36 +652,41 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             mentionsBottomConstraint.constant = -self.keyboardFrame.height
         }
     }
-    
-    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-        guard let siteID = self.post.blog.dotComID else {
+
+    private func mentionShow(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        guard let siteID = post.blog.dotComID else {
             callback(.failure(NSError(domain:"MentionError", code: 1, userInfo:nil)))
             return
         }
-        DispatchQueue.main.async {
-            self.previousFirstResponder = self.view.findFirstResponder()
-            let mentionsController = GutenbergMentionsViewController(siteID: siteID)
-            mentionsController.onCompletion = { (result) in
-                callback(result)
-                mentionsController.view.removeFromSuperview()
-                mentionsController.removeFromParent()
-                if let previousFirstResponder = self.previousFirstResponder {
-                    previousFirstResponder.becomeFirstResponder()
-                }
+
+        previousFirstResponder = view.findFirstResponder()
+        let mentionsController = GutenbergMentionsViewController(siteID: siteID)
+        mentionsController.onCompletion = { (result) in
+            callback(result)
+            mentionsController.view.removeFromSuperview()
+            mentionsController.removeFromParent()
+            if let previousFirstResponder = self.previousFirstResponder {
+                previousFirstResponder.becomeFirstResponder()
             }
-            self.addChild(mentionsController)
-            self.view.addSubview(mentionsController.view)
-            let mentionsBottomConstraint = mentionsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant:0)
-            NSLayoutConstraint.activate([
-                mentionsController.view.leadingAnchor.constraint(equalTo: self.view.safeLeadingAnchor, constant: 0),
-                mentionsController.view.trailingAnchor.constraint(equalTo: self.view.safeTrailingAnchor, constant: 0),
-                mentionsBottomConstraint,
-                mentionsController.view.topAnchor.constraint(equalTo: self.view.safeTopAnchor)
-            ])
-            self.mentionsBottomConstraint = mentionsBottomConstraint
-            self.updateConstraintsToAvoidKeyboard(frame: self.keyboardFrame)
-            mentionsController.didMove(toParent: self)            
         }
+        addChild(mentionsController)
+        view.addSubview(mentionsController.view)
+        let mentionsBottomConstraint = mentionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant:0)
+        NSLayoutConstraint.activate([
+            mentionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
+            mentionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
+            mentionsBottomConstraint,
+            mentionsController.view.topAnchor.constraint(equalTo: view.safeTopAnchor)
+        ])
+        self.mentionsBottomConstraint = mentionsBottomConstraint
+        updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
+        mentionsController.didMove(toParent: self)
+    }
+
+    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        DispatchQueue.main.async(execute: { [weak self] in
+            self?.mentionShow(callback: callback)
+        })
     }
 }
 
