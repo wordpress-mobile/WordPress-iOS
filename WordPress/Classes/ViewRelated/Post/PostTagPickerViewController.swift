@@ -2,7 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
-class PostTagPickerViewController: UIViewController {
+class PostTagPickerViewController: UIViewController, DrawerPresentable {
     private let originalTags: [String]
     @objc var onValueChanged: ((String) -> Void)?
     @objc let blog: Blog
@@ -120,6 +120,9 @@ class PostTagPickerViewController: UIViewController {
         super.viewDidAppear(animated)
         updateSuggestions()
         loadTags()
+
+        tableView.contentInset.bottom += descriptionLabel.frame.height + 20
+        updateTableViewBottomInset()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -148,6 +151,14 @@ class PostTagPickerViewController: UIViewController {
 
     fileprivate func reloadTableData() {
         tableView.reloadData()
+    }
+
+    fileprivate func updateTableViewBottomInset() {
+        guard !UIDevice.isPad() else {
+            return
+        }
+
+        tableView.contentInset.bottom += presentedVC?.yPosition ?? 0
     }
 }
 

@@ -168,6 +168,10 @@ public class DrawerPresentationController: FancyAlertPresentationController {
     /// Returns the current position of the drawer
     public var currentPosition: DrawerPosition = .collapsed
 
+    /// Returns the Y position of the drawer
+    public var yPosition: CGFloat? {
+        return presentedView?.frame.origin.y
+    }
 
     /// Animates between the drawer positions
     /// - Parameter position: The position to animate to
