@@ -19,6 +19,7 @@ class AztecEditorScreen: BaseScreen {
 
     let editorCloseButton = XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"]
     let publishButton = XCUIApplication().buttons["Publish"]
+    let publishNowButton = XCUIApplication().buttons["Publish Now"]
     let moreButton = XCUIApplication().buttons["more_post_options"]
     let uploadProgressBar = XCUIApplication().progressIndicators["Progress"]
 
@@ -262,6 +263,7 @@ class AztecEditorScreen: BaseScreen {
 
     func publish() -> EditorNoticeComponent {
         publishButton.tap()
+
         confirmPublish()
 
         return EditorNoticeComponent(withNotice: "Post published", andAction: "View")
@@ -271,11 +273,7 @@ class AztecEditorScreen: BaseScreen {
         if FancyAlertComponent.isLoaded() {
             FancyAlertComponent().acceptAlert()
         } else {
-            if isIpad {
-                app.alerts.buttons["Publish"].tap()
-            } else {
-                app.sheets.buttons["Publish"].tap()
-            }
+            publishNowButton.tap()
         }
     }
 
