@@ -427,7 +427,7 @@ private extension DrawerPresentationController {
             else { return }
 
 
-        let bottom = presentingView.safeAreaLayoutGuide.layoutFrame.origin.y
+        let bottom = presentingView.safeAreaInsets.bottom
         let margin = presentedView.frame.origin.y + bottom
 
         scrollView.contentInset.bottom = margin
