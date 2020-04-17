@@ -12,6 +12,7 @@
 * [internal] the login by email flow and the self-hosted login flow have code changes that can cause regressions. See https://git.io/JfeFN for testing details.
 * Updated the appearance of the login and signup buttons to make signup more prominent.
 * [internal] the navigation to the "login by site address" flow has code changes that can cause regressions. See https://git.io/JfvP9 for testing details.
+* Login Epilogue: fixed issue where account information never stopped loading for some self-hosted sites. 
 * Updated site details screen title to My Site, to avoid duplicating the title of the current site which is displayed in the screen's header area. 
  
 14.6
