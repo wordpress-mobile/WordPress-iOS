@@ -38,6 +38,20 @@ class ReaderTabViewModel {
         bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
     }
 
+    func presentManage(from: UIViewController) {
+        let tagsVC = ReaderTagsTableViewController(style: .grouped)
+        let sitesVC = ReaderFollowedSitesViewController.controller()
+
+        let tagsItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Tags", comment: "Followed Tags Title"), viewController: tagsVC, accessibilityIdentifier: "FollowedTags")
+        let sitesItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Sites", comment: "Followed Sites Title"), viewController: sitesVC, accessibilityIdentifier: "FollowedSites")
+
+        let tabbedVC = TabbedViewController(items: [tagsItem, sitesItem])
+        tabbedVC.title =  NSLocalizedString("Manage", comment: "Title for the Reader Manage screen.")
+
+        let navigationController = UINavigationController(rootViewController: tabbedVC)
+        from.present(navigationController, animated: true, completion: nil)
+    }
+
     func presentFilter(from: UIView, completion: @escaping (String?) -> Void) {
         filterTapped?(from, { [weak self] topic in
             self?.selectedFilter = topic

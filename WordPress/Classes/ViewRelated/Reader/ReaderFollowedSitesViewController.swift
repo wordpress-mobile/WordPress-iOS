@@ -11,10 +11,9 @@ import Gridicons
 class ReaderFollowedSitesViewController: UIViewController, UIViewControllerRestoration {
     @IBOutlet var searchBar: UISearchBar!
 
-    var tableView: UITableView!
-
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var isSyncing = false
+    fileprivate var tableView: UITableView!
     fileprivate var tableViewHandler: WPTableViewHandler!
     fileprivate var tableViewController: UITableViewController!
     fileprivate let cellIdentifier = "CellIdentifier"
@@ -431,10 +430,6 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         cell.layoutSubviews()
     }
 
-    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ?? WPTableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
 
@@ -483,8 +478,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView,
                    editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .none
-//        return .delete
+        return .delete
     }
 
 
@@ -496,7 +490,6 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         unfollowSiteAtIndexPath(indexPath)
     }
-
 
     func tableViewDidChangeContent(_ tableView: UITableView) {
         configureNoResultsView()
@@ -512,7 +505,6 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         if let point = sender.superview?.convert(sender.center, to: tableView),
             let indexPath = tableView.indexPathForRow(at: point) {
             self.tableView(tableView, accessoryButtonTappedForRowWith: indexPath)
-//            tableView.delegate?.tableView?(tableView, accessoryButtonTappedForRowWith: indexPath)
         }
     }
 }

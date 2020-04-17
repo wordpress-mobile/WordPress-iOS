@@ -1,8 +1,4 @@
-import UIKit
-
 class ReaderTagsTableViewController: ReaderMenuViewController {
-
-    let readerMenuSection = ReaderMenuSectionType.tags
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,22 +11,8 @@ class ReaderTagsTableViewController: ReaderMenuViewController {
 
     // MARK: - Table view data source
 
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
-
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        super.tableView(tableView, numberOfRowsInSection: readerMenuSection.rawValue)
-//    }
-
-    private func adjust(_ indexPath: IndexPath) -> IndexPath {
-//        var adjustedIndexPath = indexPath
-//        adjustedIndexPath.section = readerMenuSection.rawValue
-        return indexPath
-    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = super.tableView(tableView, cellForRowAt: adjust(indexPath))
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         guard cell.textLabel?.text != "Add a Tag" else { return cell }
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.setImage(UIImage.gridicon(.crossSmall), for: .normal)

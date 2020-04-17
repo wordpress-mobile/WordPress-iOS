@@ -15,13 +15,8 @@ class ReaderTabViewController: UIViewController {
             })
         }
         viewModel.settingsTapped = { [weak self] fromView in
-            let tagsVC = ReaderTagsTableViewController(style: .grouped)
-            let sitesVC = ReaderFollowedSitesViewController.controller()
-//            sitesVC.tableView.allowsSelection = false
-            let vc = TabbedViewController(items: [("Followed Tags", tagsVC), ("Followed Sites", sitesVC)])
-            vc.title =  NSLocalizedString("Manage", comment: "Title for the Reader Manage screen.")
-            let navigationController = UINavigationController(rootViewController: vc)
-            self?.present(navigationController, animated: true, completion: nil)
+            guard let self = self else { return }
+            viewModel.presentManage(from: self)
         }
         title = NSLocalizedString("Reader", comment: "The default title of the Reader")
         setupSearchButton()
