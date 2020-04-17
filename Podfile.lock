@@ -376,7 +376,7 @@ PODS:
   - WordPress-Aztec-iOS (1.17.1)
   - WordPress-Editor-iOS (1.17.1):
     - WordPress-Aztec-iOS (= 1.17.1)
-  - WordPressAuthenticator (1.13.0-beta.4):
+  - WordPressAuthenticator (1.13.0-beta.5):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -479,8 +479,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.17.1)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `issue/update_wpkit_version`)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `fix/11771-gravatar_user_not_found`)
+  - WordPressAuthenticator (~> 1.13.0-beta.5)
+  - WordPressKit (~> 4.8.0-beta.1)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
   - WordPressUI (~> 1.5.3-beta.1)
@@ -527,6 +527,8 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
+    - WordPressKit
     - WordPressMocks
     - WordPressShared
     - WordPressUI
@@ -611,12 +613,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.26.0
-  WordPressAuthenticator:
-    :branch: issue/update_wpkit_version
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :branch: fix/11771-gravatar_user_not_found
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.26.0/react-native-gutenberg-bridge/third-party-podspecs/Yoga.podspec.json
 
@@ -630,12 +626,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.26.0
-  WordPressAuthenticator:
-    :commit: f597659ec0c82b1b786dbd87e786cefede11117c
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :commit: 864eec7eb314cf89e3c7defedf631db87c1af42b
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: f97cc80ae58053c331b2b6dc8843ba7103b33794
@@ -707,7 +697,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 319620514af963ca519bd83b96a2c0ebdf3a0f03
   WordPress-Editor-iOS: 497b55838ef0030cc6ca82eb92da84e661423521
-  WordPressAuthenticator: 482365d748b60fbc1aa49efb734230901924957c
+  WordPressAuthenticator: 069addaf14f6d3948d4a0a3c1d4934c3cff7660c
   WordPressKit: 636f3f7e1c879b22f1d46e61d662ad640161f8b2
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: 1bc316ed162f42af4e0fa2869437e9e28b532b01
@@ -724,6 +714,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: e8140fdf61b5dfbd85630a499d57614cb524803e
+PODFILE CHECKSUM: 73de16125e9bea801dd83639382442f8ce57c197
 
 COCOAPODS: 1.8.4
