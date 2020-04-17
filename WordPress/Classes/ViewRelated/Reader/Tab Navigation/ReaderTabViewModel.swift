@@ -1,7 +1,7 @@
 
 class ReaderTabViewModel {
 
-    var tabSelectionCallback: ((ReaderAbstractTopic) -> Void)?
+    var tabSelectionCallback: ((ReaderAbstractTopic?) -> Void)?
     var selectedFilter: ReaderAbstractTopic?
     var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
 
@@ -11,12 +11,13 @@ class ReaderTabViewModel {
 
     func showTab(for item: FilterTabBarItem) {
 
-        guard let readerItem = item as? ReaderTabItem,
-            let topic = readerItem.topic else {
-                return
+        guard let readerItem = item as? ReaderTabItem else {
+            return
         }
 
-        let selectedTopic: ReaderAbstractTopic
+        let topic = readerItem.topic
+
+        let selectedTopic: ReaderAbstractTopic?
         if readerItem.shouldHideButtonsView == false {
             selectedTopic = selectedFilter ?? topic
         } else {
