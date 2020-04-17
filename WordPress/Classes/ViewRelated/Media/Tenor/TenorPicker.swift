@@ -66,6 +66,7 @@ final class TenorPicker: NSObject {
         }
 
         observeDataSource()
+        WPAnalytics.track(.tenorAccessed)
     }
 
     private func observeDataSource() {

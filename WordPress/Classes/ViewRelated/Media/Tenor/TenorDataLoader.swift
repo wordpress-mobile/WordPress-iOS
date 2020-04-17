@@ -27,6 +27,7 @@ final class TenorDataLoader {
         let isFirstPage = request?.pageable?.pageIndex == TenorPageable.defaultPageIndex
         state = .loading
         DispatchQueue.main.async { [weak self] in
+            WPAnalytics.track(.tenorSearched)
             self?.service.search(params: params) { resultsPage in
                 self?.state = .idle
                 self?.request = TenorSearchParams(text: self?.request?.text, pageable: resultsPage.nextPageable())
