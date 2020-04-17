@@ -92,12 +92,9 @@ extension WPAnalytics {
     ///   - properties: a `Hash` that represents the properties
     ///   - blog: a `Blog` asssociated with the event
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
-        var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
-        mergedProperties.merge(properties) { (_, new) in new }
-
-        mergedProperties[WPAppAnalyticsKeyBlogID] = blog.dotComID
-
-        WPAnalytics.trackString(event.value, withProperties: mergedProperties)
+        var props = properties
+        props[WPAppAnalyticsKeyBlogID] = blog.dotComID
+        WPAnalytics.track(event, properties: props)
     }
 
     /// Track a event in Obj-C
