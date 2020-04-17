@@ -25,6 +25,7 @@ class PostTagPickerViewController: UIViewController {
     fileprivate let textView = UITextView()
     private let textViewContainer = UIView()
     fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
+    private let descriptionLabel = UILabel()
     fileprivate var dataSource: PostTagPickerDataSource = LoadingDataSource() {
         didSet {
             tableView.dataSource = dataSource
@@ -67,17 +68,28 @@ class PostTagPickerViewController: UIViewController {
         textViewContainer.addSubview(textView)
         view.addSubview(textViewContainer)
 
+        descriptionLabel.text = NSLocalizedString("Tags help tell readers what a post is about. Separate different tags with commas.", comment: "Label explaining why users might want to add tags.")
+        descriptionLabel.numberOfLines = 0
+        WPStyleGuide.configureLabelForRegularFontStyle(descriptionLabel)
+        descriptionLabel.textColor = .textSubtle
+        view.addSubview(descriptionLabel)
+
         textView.translatesAutoresizingMaskIntoConstraints = false
         textViewContainer.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
+            descriptionLabel.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor, constant: 10),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
+
             textView.topAnchor.constraint(equalTo: textViewContainer.topAnchor),
             textView.bottomAnchor.constraint(equalTo: textViewContainer.bottomAnchor),
             textView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             textView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
 
-            textViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 35),
+            textViewContainer.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 10),
             textViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -1),
             textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 1),
             textViewContainer.bottomAnchor.constraint(equalTo: tableView.topAnchor),
@@ -93,6 +105,9 @@ class PostTagPickerViewController: UIViewController {
         textViewContainer.layer.masksToBounds = false
 
         keyboardObserver.tableView = tableView
+
+        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Done button title"), style: .plain, target: self, action: #selector(doneButtonPressed))
+        navigationItem.setRightBarButton(doneButton, animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -125,6 +140,10 @@ class PostTagPickerViewController: UIViewController {
         if #available(iOS 13, *) {
             textViewContainer.layer.borderColor = UIColor.divider.cgColor
         }
+    }
+
+    @objc func doneButtonPressed() {
+        navigationController?.popViewController(animated: true)
     }
 
     fileprivate func reloadTableData() {
