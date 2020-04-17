@@ -1,15 +1,11 @@
-Neue Blöcke! Willkommen beim Block „Letzte Beiträge“, um deine neuen Beiträge und Seiten hervorzuheben.
+Die Website-Erstellung wurde durch Entfernen einiger Zwischenschritte optimiert. Suche einfach deine gewünschte Art von Website aus, gib einen Domainnamen ein und schon bist du fertig.
 
-Wenn du eine neue Seite erstellst, zeigen wir dir ein paar Vorlagen. Wähle eine aus und wir fügen alle notwendigen Blöcke zu deiner Seite hinzu, damit du schnell damit beginnen kannst.
+Weitere Verbesserungen am Block-Editor: Der Cover-Block ist jetzt verfügbar. Im Überschriftsblock findest du Optionen zur Ausrichtung und eine Dropdown-Toolbar vereinfacht die Ausrichtung für Überschrifts-, Absatz-, Bild- und MediaText-Blöcke. Darüber hinaus haben wir den Dimmeffekt für nicht ausgewählte Blöcke entfernt.
 
-Wir haben ein paar Probleme mit dem Block-Editor behoben: keine Abstürze mehr beim Einfügen von HTML-Inhalten bzw. keine fehlenden Ränder mehr bei Zitat-Blöcken im dunklen Modus.
+Bedingt durch das Layout des Bildschirms „Benachrichtigungen“ wurde der Text auf einigen Smartphone-Modellen durch das Gehäuse verdeckt. Dies wurde nun behoben!
 
-Wenn du zuvor einen Beitrag zur Veröffentlichung geplant hast, würde er als „geplant“ anstatt als „veröffentlicht“ angezeigt. Das wurde behoben. Ebenso ein Problem, bei dem Datumsangaben nicht korrekt angezeigt wurden, wenn die Zeitzone der Website nicht mit der Zeitzone des Geräts übereinstimmte.
+Bei dem Versuch einer @-Erwähnung einer Person in einem Kommentar hat die App manchmal zwar Namen vorgeschlagen, ließ diese aber nicht auswählen – auch das wurde behoben. Wir haben uns auch um einige weitere Probleme gekümmert, die zum Absturz der App führten, wenn du versuchtest, auf den Bildschirm „Website-Seiten“ zuzugreifen, oder mithilfe der „Quick Action“-Buttons auf iPads zu deinen Blogbeiträgen gelangen wolltest. Und apropos Seiten und Beiträge: Die Vorschau ist auf iPads mit iOS 13 jetzt größer.
 
-Wir haben ein paar UI-Inkonsistenzen im dunklen Modus und bei der Reader-Werkzeugleiste behoben.
-
-Du kannst @-Erwähnungen verwenden, wenn du Kommentare im Vollbildmodus erstellst.
-
-Manchmal landeten E-Mails mit magischen Registrierungs- und Anmeldelinks in deinem Spam-Ordner. Deshalb haben wir auf dem Bestätigungsbildschirm den Hinweis hinzugefügt, im Spam- oder Junk-Mail-Ordner nachzusehen, wenn die E-Mail nicht sofort gefunden wird.
+Wir mögen unseren dunklen Modus so wie unseren Kaffee: echt dunkel und ohne ungewollte Zusätze. Es gab einige Störungen im hellen und dunklen Modus und das Verhalten war beim Umschalten von einem Modus zum anderen nicht immer optimal. Es gibt jetzt wesentlich weniger von diesen Störungen.
 
 Bleibt alle gesund.

@@ -1,15 +1,11 @@
-Nya block! Låt oss presentera blocket för de senaste inläggen, som låter dig lyfta fram dina nyheter bland inlägg och sidor.
+Det har nu blivit mycket smidigare att skapa en ny webbplats genom att några mellanliggande steg har tagits bort. Välj vilken typ av webbplats du vill ha och skriv in ett domännamn, så är det klar.
 
-När du skapar en ny sida visar vi några mallar. När du väljer någon av dem lägger vi in de block som behövs på sidan för att du ska komma igång snabbt.
+Blockredigeraren har förbättrats på flera sätt: Nu har du tillgång till blocket ”Överlägg”, I rubrikblocket kan du välja textjustering, och en verktygslist med rullgardinsmeny underlättar textjustering för block av typerna rubrik, stycke, bild och mediatext. Dessutom har vi tagit bort nedtoningseffekten på omarkerade block.
 
-Vi har löst några problem med blockredigeraren: inga fler programkrascher när du klistrar in HTML-innehåll. Och citatblockets kanter försvinner inte längre, ens om du använder mörkt läge.
+På vissa mobiler gjorde layouten av aviseringsskärmen att text kunde bli oåtkomlig – nu är det rättat!
 
-Om du schemalade ett inlägg för publicering i förfluten tid visades det tidigare som ”schemalagt” i stället för ”publicerat”. Det är nu rättat, liksom ett annat problem där datum kunde visas på fel sätt om din webbplats och din telefon var inställda på olika tidszoner.
+Ibland kanske du försökte att @-nämna någon i en kommentar, appen föreslog olika namn men det gick inte att välja något av dem. Det är också fixat nu. Vidare har vi tagit hand om några problem som kunde få appen att krascha när du försökte öppna skärmen med webbplatsens sidor eller använda snabbåtgärder på iPad för att komma till dina blogginlägg. På tal om sidor och inlägg – nu är förhandsvisningen i ett större format för iPad som kör iOS 13.
 
-Vi har rättat några inkonsekventa saker i användargränssnittet i mörkt läge och med verktygslisten i läsaren.
+Vi vill att vårt Dark Mode (mörkt läge) ska vara som kaffet vi dricker: svart som natten och utan diverse programfel. Det fanns olika missar i funktionen för ljust och mörkt läge. Ibland hände konstiga saker vid växling mellan lägena. Nu är missarna inte lika många längre.
 
-När du skriver kommentarer i helskärmsläge kan du @-nämna personer.
-
-Ibland händer det att e-post med länkar för registrering och magisk inloggning hamnar i skräpfoldern, så på bekräftelsesidan har vi lagt till en påminnelse om att kolla i mapparna för spam och reklam om de inte hittar meddelandet direkt.
-
-Ta hand om er.
+Var försiktiga och ta hand om er.

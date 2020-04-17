@@ -1,15 +1,11 @@
-Blok baru! Sambut blok Pos Terbaru, untuk menyoroti item baru Anda di pos dan halaman.
+Pembuatan Situs telah disederhanakan dengan menghapus beberapa langkah yang tidak efisien. Pilih jenis situs yang Anda inginkan, masukkan nama domain, dan selesai.
 
-Saat Anda membuat halaman baru, kami akan menampilkan beberapa template — pilih satu, dan kami akan menambahkan semua blok yang dibutuhkan ke halaman Anda agar Anda dapat memulai halaman dengan cepat.
+Penyunting Blok mendapatkan penyempurnaan: Blok Sampul kini tersedia; ada opsi perataan di blok Heading; dan bilah peralatan tarik turun memudahkan perataan untuk blok Heading, Paragraf, Gambar, dan MediaText. Kami meniadakan efek peredupan pada blok yang tidak dipilih.
 
-Kami memperbaiki beberapa masalah penyunting blok, tak ada lagi crash saat menempel di konten HTML ataupun tepi blok Kutipan yang tidak muncul di Mode Gelap.
+Tata letak layar Pemberitahuan menyebabkan teks hilang ke bawah casing sebagian model ponsel. Sudah kami perbaiki!
 
-Jika Anda menjadwalkan pos untuk dipublikasikan di masa lalu, itu akan ditampilkan sebagai “dijadwalkan” bukan “dipublikasikan”. Telah diperbaiki, bersama dengan masalah tanggal yang tidak ditampilkan secara tepat jika zona waktu situs Anda tidak sama dengan zona waktu perangkat.
+Terkadang Anda ingin @-menyebut seseorang pada sebuah komentar, dan aplikasi akan menyarankan beberapa nama tetapi tidak dapat dipilih — kami juga telah memperbaikinya. Kami juga memperbaiki beberapa masalah lain yang menyebabkan aplikasi tertutup paksa saat Anda mencoba mengakses layar Halaman Situs atau menggunakan tombol Tindakan Cepat di iPad untuk membuka pos blog. Untuk halaman dan pos, pratinjau kini lebih besar untuk iPad yang menjalankan iOS 13.
 
-Kami memperbaiki beberapa UI yang tidak konsisten di Mode Gelap dan dengan bilah peralatan Pembaca.
+Seperti halnya kopi kesukaan kita, Mode Gelap itu seharusnya: hitam pekat dan bisa dinikmati tanpa gangguan. Ada beberapa gangguan pada Mode Gelap dan Terang, dan terkadang aplikasi menjadi aneh saat Anda beralih dari satu mode ke mode lain. Gangguan tersebut kini jauh berkurang.
 
-Anda dapat menggunakan @-sebut saat menulis komentar di mode layar penuh.
-
-Terkadang email Tautan Ajaib Daftar dan Login akan masuk ke folder spam, sehingga kami menambahkan catatan ke layar konfirmasi untuk menyarankan pengguna agar memeriksa folder spam/sampah mereka jika tidak kunjung menemukan emailnya.
-
-Selalu jaga kesehatan, semuanya.
+Tetaplah aman, kawan.
