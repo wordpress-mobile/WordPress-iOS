@@ -251,6 +251,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     deinit {
+        tearDownKeyboardObservers()
         removeObservers(fromPost: post)
         gutenberg.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
@@ -260,6 +261,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupKeyboardObservers()
         WPFontManager.loadNotoFontFamily()
         createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
         setupGutenbergView()
@@ -276,6 +278,35 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     // MARK: - Functions
+
+    private var keyboardShowObserver: Any?
+    private var keyboardHideObserver: Any?
+    private var keyboardFrame = CGRect.zero
+    private var mentionsBottomConstraint: NSLayoutConstraint?
+
+    private func setupKeyboardObservers() {
+        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { (notification) in
+            if let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { (notification) in
+            if let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+    }
+
+    private func tearDownKeyboardObservers() {
+        if let keyboardShowObserver = keyboardShowObserver {
+            NotificationCenter.default.removeObserver(keyboardShowObserver)
+        }
+        if let keyboardHideObserver = keyboardHideObserver {
+            NotificationCenter.default.removeObserver(keyboardHideObserver)
+        }
+    }
 
     private func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
@@ -604,6 +635,50 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .overCurrentContext
         self.present(controller, animated: true)
+    }
+
+    func updateConstraintsToAvoidKeyboard(frame: CGRect) {
+        keyboardFrame = frame
+        let blockToolbarSize = CGFloat(44.0)
+        guard let mentionsBottomConstraint = mentionsBottomConstraint else {
+            return
+        }
+        print("Keyboard height:\(frame.height) safe bottom:\(self.view.safeAreaInsets.bottom)")
+        if keyboardFrame.height < 5 {
+            mentionsBottomConstraint.constant = -blockToolbarSize - self.view.safeAreaInsets.bottom
+        } else if UIDevice.current.userInterfaceIdiom == .phone && keyboardFrame.height >= 5  && keyboardFrame.height < 100 {
+            mentionsBottomConstraint.constant = -self.keyboardFrame.height
+        }
+        else {
+            mentionsBottomConstraint.constant = -self.keyboardFrame.height - blockToolbarSize
+        }
+    }
+
+    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        guard let siteID = self.post.blog.dotComID else {
+            callback(.failure(NSError(domain:"MentionError", code: 1, userInfo:nil)))
+            return
+        }
+        DispatchQueue.main.async {
+            let mentionsController = GutenbergMentionsViewController(siteID: siteID)
+            mentionsController.onCompletion = { (result) in
+                callback(result)
+                mentionsController.view.removeFromSuperview()
+                mentionsController.removeFromParent()
+            }
+            self.addChild(mentionsController)
+            self.view.addSubview(mentionsController.view)
+            let mentionsBottomConstraint = mentionsController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant:0)
+            NSLayoutConstraint.activate([
+                mentionsController.view.leadingAnchor.constraint(equalTo: self.view.safeLeadingAnchor, constant: 0),
+                mentionsController.view.trailingAnchor.constraint(equalTo: self.view.safeTrailingAnchor, constant: 0),
+                mentionsBottomConstraint,
+                mentionsController.view.topAnchor.constraint(equalTo: self.view.safeTopAnchor)
+            ])
+            self.mentionsBottomConstraint = mentionsBottomConstraint
+            self.updateConstraintsToAvoidKeyboard(frame: self.keyboardFrame)
+            mentionsController.didMove(toParent: self)            
+        }
     }
 }
 
