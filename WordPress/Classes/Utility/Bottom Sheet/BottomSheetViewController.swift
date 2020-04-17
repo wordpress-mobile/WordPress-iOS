@@ -28,6 +28,9 @@ class BottomSheetViewController: UIViewController {
 
     private var customHeaderSpacing: CGFloat?
 
+    /// Additional safe are insets for regular horizontal size class
+    var additionalSafeAreaInsetsRegular: UIEdgeInsets = .zero
+
     private weak var childViewController: DrawerPresentableViewController?
 
     init(childViewController: DrawerPresentableViewController,
@@ -37,9 +40,10 @@ class BottomSheetViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    func show(from presenting: UIViewController, sourceView: UIView? = nil) {
+    func show(from presenting: UIViewController, sourceView: UIView? = nil, arrowDirections: UIPopoverArrowDirection = .any) {
         if UIDevice.isPad() {
             modalPresentationStyle = .popover
+            popoverPresentationController?.permittedArrowDirections = arrowDirections
             popoverPresentationController?.sourceView = sourceView ?? UIView()
             popoverPresentationController?.sourceRect = sourceView?.bounds ?? .zero
         } else {
@@ -129,8 +133,10 @@ class BottomSheetViewController: UIViewController {
     private func refreshForTraits() {
         if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
             gripButton.isHidden = true
+            additionalSafeAreaInsets = Constants.additionalSafeAreaInsetsRegular
         } else {
             gripButton.isHidden = false
+            additionalSafeAreaInsets = .zero
         }
     }
 
