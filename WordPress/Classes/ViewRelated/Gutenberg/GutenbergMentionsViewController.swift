@@ -3,14 +3,20 @@ import UIKit
 
 public class GutenbergMentionsViewController: UIViewController {
 
+    public lazy var backgroundView: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .basicBackground
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     public lazy var searchView: UITextField = {
         let textField = UITextField(frame: CGRect.zero)
         textField.placeholder = "Search users..."
         textField.text = "@"
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.delegate = self
-        textField.backgroundColor = UIColor.basicBackground
+        textField.delegate = self        
         return textField
     }()
 
@@ -49,6 +55,14 @@ public class GutenbergMentionsViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
 
+        view.addSubview(backgroundView)
+        NSLayoutConstraint.activate([
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor),
+            backgroundView.heightAnchor.constraint(equalToConstant: 50.0)
+        ])
+
         let margin = CGFloat(10)
         view.addSubview(searchView)
         searchView.becomeFirstResponder()
@@ -56,7 +70,7 @@ public class GutenbergMentionsViewController: UIViewController {
             searchView.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: margin),
             searchView.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: -margin),
             searchView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor),
-            searchView.heightAnchor.constraint(equalToConstant: 44.0)
+            searchView.heightAnchor.constraint(equalToConstant: 50.0)
         ])
 
         view.addSubview(suggestionsView)

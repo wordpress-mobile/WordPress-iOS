@@ -640,11 +640,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func updateConstraintsToAvoidKeyboard(frame: CGRect) {
         keyboardFrame = frame
-        let minimumKeyboardHeight = CGFloat(100)
+        let minimumKeyboardHeight = CGFloat(50)
         guard let mentionsBottomConstraint = mentionsBottomConstraint else {
             return
         }
-        print("Keyboard height:\(frame.height) safe bottom:\(self.view.safeAreaInsets.bottom)")
+
         if keyboardFrame.height < minimumKeyboardHeight {
             mentionsBottomConstraint.constant = -self.view.safeAreaInsets.bottom
         }
