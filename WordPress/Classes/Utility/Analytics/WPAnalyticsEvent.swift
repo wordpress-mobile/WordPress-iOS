@@ -34,9 +34,9 @@ import Foundation
         case .tenorUploaded:
             return "tenor_uploaded"
         case .mediaLibraryAddedPhotoViaTenor:
-            return "media_library_added_photo_via_tenor"
+            return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
-            return "editor_added_photo_via_tenor"
+            return "editor_photo_added"
         }
     }
 
@@ -51,6 +51,10 @@ import Foundation
     */
     var defaultProperties: [AnyHashable: Any]? {
         switch self {
+        case .mediaLibraryAddedPhotoViaTenor:
+            return ["via": "tenor"]
+        case .editorAddedPhotoViaTenor:
+            return ["via": "tenor"]
         default:
             return nil
         }
