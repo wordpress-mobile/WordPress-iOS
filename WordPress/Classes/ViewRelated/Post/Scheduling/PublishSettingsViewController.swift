@@ -26,6 +26,14 @@ struct PublishSettingsViewModel {
     let timeZone: TimeZone
     let title: String?
 
+    var detailString: String {
+        if let date = date {
+            return dateTimeFormatter.string(from: date)
+        } else {
+            return NSLocalizedString("Immediately", comment: "Undated post time label")
+        }
+    }
+
     private let post: AbstractPost
 
     let dateFormatter: DateFormatter
@@ -150,15 +158,9 @@ private struct DateAndTimeRow: ImmuTableRow {
         let rows: [ImmuTableRow] = viewModel.cells.map { cell in
             switch cell {
             case .dateTime:
-                let detailString: String
-                if let date = viewModel.date {
-                    detailString = viewModel.dateTimeFormatter.string(from: date)
-                } else {
-                    detailString = NSLocalizedString("Immediately", comment: "Undated post time label")
-                }
                 return DateAndTimeRow(
                     title: NSLocalizedString("Date and Time", comment: "Date and Time"),
-                    detail: detailString,
+                    detail: viewModel.detailString,
                     accessibilityIdentifier: "Date and Time Row",
                     action: presenter.present(dateTimeCalendarViewController(with: viewModel))
                 )
@@ -194,10 +196,17 @@ private struct DateAndTimeRow: ImmuTableRow {
         return { [weak self] row in
 
             let schedulingCalendarViewController = SchedulingCalendarViewController()
-            schedulingCalendarViewController.coordinator = DateCoordinator(date: model.date, timeZone: model.timeZone, dateFormatter: model.dateFormatter, dateTimeFormatter: model.dateTimeFormatter) { [weak self] date in
-                self?.viewModel.setDate(date)
-                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
-            }
+            schedulingCalendarViewController.coordinator = DateCoordinator(
+                date: model.date,
+                timeZone: model.timeZone,
+                dateFormatter: model.dateFormatter,
+                dateTimeFormatter: model.dateTimeFormatter,
+                updated: { [weak self] date in
+                    WPAnalytics.track(.editorPostScheduled, properties: ["via": "settings"])
+                    self?.viewModel.setDate(date)
+                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
+                }
+            )
 
             return self?.calendarNavigationController(rootViewController: schedulingCalendarViewController) ?? UINavigationController()
         }

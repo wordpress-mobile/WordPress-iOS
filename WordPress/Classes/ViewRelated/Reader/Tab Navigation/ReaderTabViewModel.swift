@@ -33,6 +33,7 @@ class ReaderTabViewModel {
     func presentFilter(from: UIViewController, sourceView: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
         let viewController = makeFilterSheetViewController(completion: completion)
         let bottomSheet = BottomSheetViewController(childViewController: viewController)
+        bottomSheet.additionalSafeAreaInsetsRegular = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
     }
 
