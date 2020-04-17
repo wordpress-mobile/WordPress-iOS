@@ -418,6 +418,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.setImage(UIImage.gridicon(.readerFollowing), for: .normal)
+        button.imageView?.tintColor = UIColor.success
         button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
         cell.accessoryView = button
 
