@@ -26,10 +26,22 @@ class ReaderTabViewController: UIViewController {
     }
 }
 
-// MARK: - Actions
+// MARK: - Search
 extension ReaderTabViewController {
-    /// Search button
+
     @objc private func didTapSearchButton() {
-        viewModel.performSearch()
+        let searchController = ReaderSearchViewController.controller()
+        navigationController?.pushViewController(searchController, animated: true)
+    }
+}
+
+
+// MARK: - Tab Switching
+extension ReaderTabViewController {
+    @objc func navigateToSavedPosts() {
+        guard let readerTabView = view as? ReaderTabView else {
+            return
+        }
+        readerTabView.switchToSavedPosts()
     }
 }
