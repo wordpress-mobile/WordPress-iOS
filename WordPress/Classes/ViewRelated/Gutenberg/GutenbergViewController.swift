@@ -283,6 +283,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private var keyboardHideObserver: Any?
     private var keyboardFrame = CGRect.zero
     private var mentionsBottomConstraint: NSLayoutConstraint?
+    private var previousFirstResponder: UIView?
 
     private func setupKeyboardObservers() {
         keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { (notification) in
@@ -658,11 +659,15 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             return
         }
         DispatchQueue.main.async {
+            self.previousFirstResponder = self.view.findFirstResponder()
             let mentionsController = GutenbergMentionsViewController(siteID: siteID)
             mentionsController.onCompletion = { (result) in
                 callback(result)
                 mentionsController.view.removeFromSuperview()
                 mentionsController.removeFromParent()
+                if let previousFirstResponder = self.previousFirstResponder {
+                    previousFirstResponder.becomeFirstResponder()
+                }
             }
             self.addChild(mentionsController)
             self.view.addSubview(mentionsController.view)
