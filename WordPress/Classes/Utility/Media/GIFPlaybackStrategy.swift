@@ -2,6 +2,7 @@ import Foundation
 
 @objc
 public enum GIFStrategy: Int {
+    case tinyGIFs
     case smallGIFs
     case mediumGIFs
     case largeGIFs
@@ -10,6 +11,8 @@ public enum GIFStrategy: Int {
     ///
     var playbackStrategy: GIFPlaybackStrategy {
         switch self {
+        case .tinyGIFs:
+            return TinyGIFPlaybackStrategy()
         case .smallGIFs:
             return SmallGIFPlaybackStrategy()
         case .mediumGIFs:
@@ -50,6 +53,12 @@ extension GIFPlaybackStrategy {
         }
         return true
     }
+}
+// This is good for thumbnail GIFs used in a collection view
+class TinyGIFPlaybackStrategy: GIFPlaybackStrategy {
+    var maxSize = 2_000_000  // in MB
+    var frameBufferCount = 5
+    var gifStrategy: GIFStrategy = .tinyGIFs
 }
 
 class SmallGIFPlaybackStrategy: GIFPlaybackStrategy {
