@@ -14,7 +14,7 @@ public class GutenbergMentionsViewController: UIViewController {
 
     public lazy var searchView: UITextField = {
         let textField = UITextField(frame: CGRect.zero)
-        textField.placeholder = "Search users..."
+        textField.placeholder = NSLocalizedString("Search users...", comment: "Placeholder message when showing mentions search field")
         textField.text = Self.mentionTriggerText
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
