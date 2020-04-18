@@ -16,6 +16,14 @@ class ReaderTabViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.title = ReaderTabConstants.title
         ReaderTabViewController.configureRestoration(on: self)
+
+        self.viewModel.filterTapped = { [weak self] (fromView, completion) in
+            guard let self = self else { return }
+            self.viewModel.presentFilter(from: self, sourceView: fromView, completion: { [weak self] title in
+                self?.dismiss(animated: true, completion: nil)
+                completion(title)
+            })
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -29,7 +37,7 @@ class ReaderTabViewController: UIViewController {
     }
 
     override func loadView() {
-        self.view = readerTabView
+        view = readerTabView
     }
 
     override func viewDidLoad() {

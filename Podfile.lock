@@ -376,7 +376,7 @@ PODS:
   - WordPress-Aztec-iOS (1.17.1)
   - WordPress-Editor-iOS (1.17.1):
     - WordPress-Aztec-iOS (= 1.17.1)
-  - WordPressAuthenticator (1.13.0-beta.4):
+  - WordPressAuthenticator (1.13.0-beta.5):
     - 1PasswordExtension (= 1.8.6)
     - Alamofire (= 4.8)
     - CocoaLumberjack (~> 3.5)
@@ -385,10 +385,10 @@ PODS:
     - lottie-ios (= 3.1.6)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 4.7.0)
+    - WordPressKit (~> 4.8.0-beta.1)
     - WordPressShared (~> 1.8.16)
     - WordPressUI (~> 1.5.2)
-  - WordPressKit (4.7.1-beta.1):
+  - WordPressKit (4.8.0-beta.1):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -479,8 +479,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.17.1)
-  - WordPressAuthenticator (~> 1.13.0-beta.4)
-  - WordPressKit (~> 4.7.1-beta.1)
+  - WordPressAuthenticator (~> 1.13.0-beta.5)
+  - WordPressKit (~> 4.8.0-beta.1)
   - WordPressMocks (~> 0.0.8)
   - WordPressShared (~> 1.8.16)
   - WordPressUI (~> 1.5.3-beta.1)
@@ -697,8 +697,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 44f805037d21b94394821828f4fcaba34b38c2d0
   WordPress-Aztec-iOS: 319620514af963ca519bd83b96a2c0ebdf3a0f03
   WordPress-Editor-iOS: 497b55838ef0030cc6ca82eb92da84e661423521
-  WordPressAuthenticator: d55a86bb181478bb536b3fc8a9dd4eaa7f6bc3e0
-  WordPressKit: dde0a214279fb70d7150b69ae90c7224c18fe2d0
+  WordPressAuthenticator: 069addaf14f6d3948d4a0a3c1d4934c3cff7660c
+  WordPressKit: 636f3f7e1c879b22f1d46e61d662ad640161f8b2
   WordPressMocks: b4064b99a073117bbc304abe82df78f2fbe60992
   WordPressShared: 1bc316ed162f42af4e0fa2869437e9e28b532b01
   WordPressUI: 91b91e51b8cd7db83a2bd492c12998db711a6a57
@@ -714,6 +714,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: a87ab1e4badace92c75eb11dc77ede1e995b2adc
   ZIPFoundation: 249fa8890597086cd536bb2df5c9804d84e122b0
 
-PODFILE CHECKSUM: f9691a3d2482bd52ab6eff1111a8b5fd201388f7
+PODFILE CHECKSUM: 73de16125e9bea801dd83639382442f8ce57c197
 
 COCOAPODS: 1.8.4
