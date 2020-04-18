@@ -3,6 +3,8 @@ import UIKit
 
 public class GutenbergMentionsViewController: UIViewController {
 
+    static let mentionTriggerText = String("@")
+
     public lazy var backgroundView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .basicBackground
@@ -13,7 +15,7 @@ public class GutenbergMentionsViewController: UIViewController {
     public lazy var searchView: UITextField = {
         let textField = UITextField(frame: CGRect.zero)
         textField.placeholder = "Search users..."
-        textField.text = "@"
+        textField.text = Self.mentionTriggerText
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
@@ -23,7 +25,7 @@ public class GutenbergMentionsViewController: UIViewController {
     public lazy var suggestionsView: SuggestionsTableView = {
         let suggestionsView = SuggestionsTableView()
         suggestionsView.enabled = true
-        suggestionsView.showSuggestions(forWord: "@")
+        suggestionsView.showSuggestions(forWord: Self.mentionTriggerText)
         suggestionsView.suggestionsDelegate = self
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
         suggestionsView.siteID = siteID
@@ -85,7 +87,7 @@ public class GutenbergMentionsViewController: UIViewController {
     }
 
     override public func viewDidAppear(_ animated: Bool) {
-        suggestionsView.showSuggestions(forWord: "@")
+        suggestionsView.showSuggestions(forWord: Self.mentionTriggerText)
     }
 }
 
@@ -108,7 +110,7 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
             return true
         }
         let searchWord = nsString.replacingCharacters(in: range, with: string)
-        if searchWord.hasPrefix("@") {
+        if searchWord.hasPrefix(Self.mentionTriggerText) {
             suggestionsView.showSuggestions(forWord: searchWord)
         } else {
             onCompletion?(.failure(NSError(domain: "Mention", code: 1, userInfo: nil)))
