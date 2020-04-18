@@ -1,3 +1,7 @@
+14.8
+-----
+* Block Editor: Mentions insertion are now available for WP.com and Jetpack sites.
+
 14.7
 -----
 * Classic Editor: Fixed action sheet position for additional Media sources picker on iPad
