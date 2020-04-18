@@ -52,26 +52,13 @@ extension TenorMedia {
 
 extension TenorMedia: WPMediaAsset {
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
-        let url = imageURL(with: size)
-
-        DispatchQueue.global().async {
-            do {
-                let data = try Data(contentsOf: url)
-                let image = UIImage(data: data)
-                completionHandler(image, nil)
-            } catch {
-                completionHandler(nil, error)
-            }
-        }
-
-        return (id as NSString).intValue
+        // We don't need to download any image here, leave it for the overlay to handle
+        return 0
     }
 
-    private func imageURL(with size: CGSize) -> URL {
-        return size == .zero ? images.previewURL : images.staticThumbnailURL
+    func cancelImageRequest(_ requestID: WPMediaRequestID) {
+        // Nothing to do
     }
-
-    func cancelImageRequest(_ requestID: WPMediaRequestID) {}
 
     func videoAsset(completionHandler: @escaping WPMediaAssetBlock) -> WPMediaRequestID {
         return 0
@@ -124,5 +111,13 @@ extension TenorMedia: MediaExternalAsset {
 
     var caption: String {
         return ""
+    }
+}
+
+// Overlay
+extension TenorMedia {
+    // Return the smallest GIF size for previewing
+    var previewURL: URL {
+        return images.staticThumbnailURL
     }
 }

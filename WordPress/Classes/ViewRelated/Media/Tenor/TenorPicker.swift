@@ -54,6 +54,7 @@ final class TenorPicker: NSObject {
         picker.showGroupSelector = false
         picker.dataSource = dataSource
         picker.cancelButtonTitle = .closePicker
+        picker.mediaPicker.registerClass(forReusableCellOverlayViews: CachedAnimatedImageView.self)
         return picker
     }()
 
@@ -137,6 +138,30 @@ extension TenorPicker: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
         hideKeyboard(from: picker.searchBar)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
+        return true
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController,
+                               willShowOverlayView overlayView: UIView,
+                               forCellFor asset: WPMediaAsset) {
+        guard let animatedImageView = overlayView as? CachedAnimatedImageView else {
+            return
+        }
+
+        guard let tenorMedia = asset as? TenorMedia else {
+            assertionFailure("asset should be of type `TenorMedia`")
+            return
+        }
+
+        animatedImageView.contentMode = .scaleAspectFill
+        animatedImageView.clipsToBounds = true
+        animatedImageView.setAnimatedImage(URLRequest(url: tenorMedia.previewURL),
+                                           placeholderImage: nil,
+                                           success: nil,
+                                           failure: nil)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
