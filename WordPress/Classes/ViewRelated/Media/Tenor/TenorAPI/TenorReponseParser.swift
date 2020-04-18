@@ -7,7 +7,7 @@ class TenorResponseParser<T> where T: Decodable {
 
     func parse(_ data: Data) throws {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .millisecondsSince1970
+        decoder.dateDecodingStrategy = .secondsSince1970
 
         let response = try decoder.decode(TenorResponse<[T]>.self, from: data)
 
