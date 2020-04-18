@@ -653,9 +653,20 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
+    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        DispatchQueue.main.async(execute: { [weak self] in
+            self?.mentionShow(callback: callback)
+        })
+    }
+}
+
+// MARK: - Mention implementation
+
+extension GutenbergViewController {
+
     private func mentionShow(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
         guard let siteID = post.blog.dotComID else {
-            callback(.failure(NSError(domain: "MentionError", code: 1, userInfo: nil)))
+            callback(.failure(GutenbergMentionsViewController.MentionError.notAvailable as NSError))
             return
         }
 
@@ -683,11 +694,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         mentionsController.didMove(toParent: self)
     }
 
-    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-        DispatchQueue.main.async(execute: { [weak self] in
-            self?.mentionShow(callback: callback)
-        })
-    }
 }
 
 // MARK: - GutenbergBridgeDataSource

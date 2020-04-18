@@ -33,9 +33,6 @@ public class GutenbergMentionsViewController: UIViewController {
         return suggestionsView
     }()
 
-    deinit {
-    }
-
     private let siteID: NSNumber
     public var onCompletion: ((Result<String, NSError>) -> Void)?
 
@@ -147,7 +144,27 @@ extension GutenbergMentionsViewController: SuggestionsTableViewDelegate {
 
 extension GutenbergMentionsViewController {
 
+    enum MentionError: CustomNSError {
+        case canceled
+        case notAvailable
+
+        static var errorDomain: String = "MentionErrorDomain"
+
+        var errorCode: Int {
+            switch self {
+            case .canceled:
+                return 1
+            case .notAvailable:
+                return 2
+            }
+        }
+
+        var errorUserInfo: [String: Any] {
+            return [:]
+        }
+    }
+
     private func buildErrorForCancelation() -> NSError {
-        return NSError(domain: "MentionErrorDomain", code:1, userInfo: nil);
+        return MentionError.canceled as NSError
     }
 }
