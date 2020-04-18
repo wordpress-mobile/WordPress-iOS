@@ -16,7 +16,7 @@ public class GutenbergMentionsViewController: UIViewController {
         textField.text = "@"
         textField.clearButtonMode = .whileEditing
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.delegate = self        
+        textField.delegate = self
         return textField
     }()
 
@@ -99,7 +99,7 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
     }
 
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        onCompletion?(.failure(NSError(domain:"Mention", code: 1, userInfo: nil)))
+        onCompletion?(.failure(NSError(domain: "Mention", code: 1, userInfo: nil)))
         return true
     }
 
@@ -111,7 +111,10 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
         if searchWord.hasPrefix("@") {
             suggestionsView.showSuggestions(forWord: searchWord)
         } else {
-            onCompletion?(.failure(NSError(domain:"Mention", code: 1, userInfo: nil)))
+            onCompletion?(.failure(NSError(domain: "Mention", code: 1, userInfo: nil)))
+        }
+        return true
+    }
         }
         return true
     }

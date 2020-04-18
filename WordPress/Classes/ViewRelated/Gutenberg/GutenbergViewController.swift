@@ -655,7 +655,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     private func mentionShow(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
         guard let siteID = post.blog.dotComID else {
-            callback(.failure(NSError(domain:"MentionError", code: 1, userInfo:nil)))
+            callback(.failure(NSError(domain: "MentionError", code: 1, userInfo: nil)))
             return
         }
 
@@ -671,7 +671,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
         addChild(mentionsController)
         view.addSubview(mentionsController.view)
-        let mentionsBottomConstraint = mentionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant:0)
+        let mentionsBottomConstraint = mentionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         NSLayoutConstraint.activate([
             mentionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
             mentionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
