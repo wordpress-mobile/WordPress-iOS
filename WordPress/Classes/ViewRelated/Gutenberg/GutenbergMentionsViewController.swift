@@ -101,7 +101,7 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
     }
 
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        onCompletion?(.failure(NSError(domain: "Mention", code: 1, userInfo: nil)))
+        onCompletion?(.failure(buildErrorForCancelation()))
         return true
     }
 
@@ -113,7 +113,7 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
         if searchWord.hasPrefix(Self.mentionTriggerText) {
             suggestionsView.showSuggestions(forWord: searchWord)
         } else {
-            onCompletion?(.failure(NSError(domain: "Mention", code: 1, userInfo: nil)))
+            onCompletion?(.failure(buildErrorForCancelation()))
         }
         return true
     }
@@ -143,4 +143,11 @@ extension GutenbergMentionsViewController: SuggestionsTableViewDelegate {
         return 3
     }
 
+}
+
+extension GutenbergMentionsViewController {
+
+    private func buildErrorForCancelation() -> NSError {
+        return NSError(domain: "MentionErrorDomain", code:1, userInfo: nil);
+    }
 }
