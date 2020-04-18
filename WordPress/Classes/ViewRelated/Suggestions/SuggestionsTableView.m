@@ -233,6 +233,18 @@ CGFloat const STVSeparatorHeight = 1.f;
     [self showSuggestionsForWord:@""];
 }
 
+- (NSInteger)numberOfSuggestions {
+    return self.suggestions.count;
+}
+
+- (void)selectSuggestionAtPosition:(NSInteger)position {
+    if ([self.suggestions count] == 0) {
+        return;
+    }
+    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:position inSection:0]];
+}
+
+
 #pragma mark - UITableViewDataSource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

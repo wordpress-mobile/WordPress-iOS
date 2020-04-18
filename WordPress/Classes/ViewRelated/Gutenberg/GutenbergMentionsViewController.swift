@@ -115,6 +115,10 @@ extension GutenbergMentionsViewController: UITextFieldDelegate {
         }
         return true
     }
+
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if suggestionsView.numberOfSuggestions() == 1 {
+            suggestionsView.selectSuggestion(atPosition: 0)
         }
         return true
     }

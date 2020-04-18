@@ -27,6 +27,11 @@
 - (BOOL)showSuggestionsForWord:(nonnull NSString *)word;
 
 - (void)hideSuggestions;
+
+- (NSInteger)numberOfSuggestions;
+
+- (void)selectSuggestionAtPosition:(NSInteger)position;
+
 @end
 
 @protocol SuggestionsTableViewDelegate <NSObject>
