@@ -40,7 +40,7 @@ class ReaderTabViewModel {
 
     func presentManage(from: UIViewController) {
         let tagsVC = ReaderTagsTableViewController(style: .grouped)
-        let sitesVC = ReaderFollowedSitesViewController.controller()
+        let sitesVC = ReaderFollowedSitesViewController.controller(showsAccessoryFollowButtons: true, showsSectionTitle: false)
 
         let tagsItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Tags", comment: "Followed Tags Title"), viewController: tagsVC, accessibilityIdentifier: "FollowedTags")
         let sitesItem = TabbedViewController.TabbedItem(title: NSLocalizedString("Followed Sites", comment: "Followed Sites Title"), viewController: sitesVC, accessibilityIdentifier: "FollowedSites")

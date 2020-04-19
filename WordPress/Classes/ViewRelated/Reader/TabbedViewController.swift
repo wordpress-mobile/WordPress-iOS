@@ -1,3 +1,4 @@
+/// Contains multiple Child View Controllers with a Filter Tab Bar to switch between them.
 class TabbedViewController: UIViewController {
 
     struct TabbedItem: FilterTabBarItem {
@@ -45,7 +46,6 @@ class TabbedViewController: UIViewController {
 
         stackView.addArrangedSubview(tabBar)
 
-        view.backgroundColor = .white
         view.addSubview(stackView)
         view.pinSubviewToAllEdges(stackView)
     }

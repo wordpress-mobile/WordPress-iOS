@@ -143,7 +143,7 @@ extension ReaderTagTopic {
         })
     }
 
-    private static var tagsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
+    static var tagsFetchRequest: NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderTagTopic")
         fetchRequest.predicate = NSPredicate(format: "following == %@ AND showInMenu == YES AND type == 'tag'",
                                              NSNumber(value: ReaderHelpers.isLoggedIn()))
