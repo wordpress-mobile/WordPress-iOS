@@ -71,7 +71,7 @@ extension ReaderTagsTableViewController {
             let topic = tableViewHandler?.resultsController.object(at: adjustIndexPath) as? ReaderTagTopic else {
                 return
         }
-        unfollowTagTopic(topic)
+        unfollow(topic)
     }
 
     /// Presents a new view controller for subscribing to a new tag.
@@ -80,10 +80,7 @@ extension ReaderTagsTableViewController {
         let controller = SettingsTextViewController(text: nil, placeholder: placeholder, hint: nil)
         controller.title = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
         controller.onValueChanged = { [weak self] value in
-            let tagName = value.trim()
-            if tagName.isEmpty() {
-                self?.followTagNamed(tagName)
-            }
+            self?.follow(tagName: value)
         }
         controller.mode = .lowerCaseText
         controller.displaysActionButton = true
@@ -109,7 +106,13 @@ extension ReaderTagsTableViewController {
     ///
     /// - Parameters:
     ///     - tagName: The name of the tag to follow.
-    private func followTagNamed(_ tagName: String) {
+    private func follow(tagName: String) {
+
+        let tagName = tagName.trim()
+        guard !tagName.isEmpty() else {
+            return
+        }
+
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         let generator = UINotificationFeedbackGenerator()
@@ -139,8 +142,7 @@ extension ReaderTagsTableViewController {
     ///
     /// - Parameters:
     ///     - topic: The tag topic that is to be unfollowed.
-    ///
-    private func unfollowTagTopic(_ topic: ReaderTagTopic) {
+    private func unfollow(_ topic: ReaderTagTopic) {
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
