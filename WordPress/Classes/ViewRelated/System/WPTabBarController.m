@@ -213,8 +213,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
-
+        if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerTabViewController];
+        } else {
+            _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+        }
         _readerNavigationController.navigationBar.translucent = NO;
 
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
@@ -383,6 +386,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return _readerSplitViewController;
 }
 
+- (ReaderTabViewController *)readerTabViewController
+{
+    ReaderTabViewController *readerTabViewController = [self makeReaderTabViewController];
+    return readerTabViewController;
+}
+
 - (UISplitViewController *)meSplitViewController
 {
     if (!_meSplitViewController) {
@@ -464,7 +473,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         } newPage:^{
             [weakSelf dismissViewControllerAnimated:true completion:nil];
             Blog *blog = [weakSelf currentOrLastBlog];
-            [weakSelf showPageTabForBlog:blog];
+            [weakSelf showPageEditorForBlog:blog];
         }];
     }
     
@@ -476,11 +485,21 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (NSArray<UIViewController *> *)tabViewControllers
 {
     
-    NSMutableArray<UIViewController *> *allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
-                                                        self.readerSplitViewController,
-                                                        self.newPostViewController,
-                                                        self.meSplitViewController,
-                                                        self.notificationsSplitViewController]];
+    NSMutableArray<UIViewController *> *allViewControllers;
+    if ([Feature enabled:FeatureFlagNewReaderNavigation]) {
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+        self.readerNavigationController,
+        self.newPostViewController,
+        self.meSplitViewController,
+        self.notificationsSplitViewController]];
+    } else {
+        allViewControllers = [NSMutableArray arrayWithArray:@[self.blogListSplitViewController,
+        self.readerSplitViewController,
+        self.newPostViewController,
+        self.meSplitViewController,
+        self.notificationsSplitViewController]];
+    }
+
     
     if ([Feature enabled:FeatureFlagFloatingCreateButton]) {
         [allViewControllers removeObject:self.newPostViewController];
@@ -593,9 +612,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
     editor.afterDismiss = afterDismiss;
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
+    
+    NSString *tapSource = [Feature enabled:FeatureFlagFloatingCreateButton] ? @"create_button" : @"tab_bar";
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": tapSource, WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];
     [self presentViewController:editor animated:NO completion:nil];
-    return;
 }
 
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
@@ -804,9 +824,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-    NSUInteger newIndex = [tabBarController.viewControllers indexOfObject:viewController];
+    NSUInteger selectedIndex = [tabBarController.viewControllers indexOfObject:viewController];
 
-    newIndex = [self adjustedTabIndex:newIndex toTabType:false];
+    NSUInteger newIndex = [self adjustedTabIndex:selectedIndex toTabType:false];
 
     if (newIndex == WPTabNewPost) {
         [self showPostTab];
@@ -814,7 +834,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     // If we're selecting a new tab...
-    if (newIndex != tabBarController.selectedIndex) {
+    if (selectedIndex != tabBarController.selectedIndex) {
         switch (newIndex) {
             case WPTabMySites: {
                 [self bypassBlogListViewControllerIfNecessary];

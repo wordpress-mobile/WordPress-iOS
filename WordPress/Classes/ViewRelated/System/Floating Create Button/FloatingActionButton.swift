@@ -1,7 +1,6 @@
 /// A rounded button with a shadow intended for use as a "Floating Action Button"
 class FloatingActionButton: UIButton {
 
-    var trailingConstraint: NSLayoutConstraint?
     private var shadowLayer: CALayer?
 
     private enum Constants {
@@ -31,12 +30,6 @@ class FloatingActionButton: UIButton {
         super.draw(rect)
 
         layer.cornerRadius = rect.size.width / 2
-    }
-
-    override func updateConstraints() {
-        super.updateConstraints()
-
-        trailingConstraint?.isActive = true
     }
 
     private func refreshShadow() {

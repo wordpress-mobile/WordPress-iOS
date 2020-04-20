@@ -67,7 +67,6 @@ final class AztecMediaPickingCoordinator {
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = origin
         docPicker.allowsMultipleSelection = true
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
         origin.present(docPicker, animated: true)
     }
 }

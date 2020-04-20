@@ -1,5 +1,31 @@
+14.7
+-----
+* [internal] Notifications tab should pop to the root of the navigation stack when tapping on the tab from within a notification detail screen. See https://git.io/Jvxka for testing details.
+ 
 14.6
 -----
+* [internal] the login flow with 2-factor authentication enabled has code changes that can cause regressions. See https://git.io/Jvdil for testing details.
+* [internal] the login and signup Magic Link flows have code changes that could cause regressions. See https://git.io/JvSD6 and https://git.io/Jvy4P for testing details.
+* [internal] the login and signup Magic Link flows have code changes that can cause regressions. See https://git.io/Jvy4P for testing details.
+* [internal] the login and signup Continue with Google flows have code changes that can cause regressions. See https://git.io/JvypB for testing details.
+* Notifications: Fix layout on screens with a notch.
+* Post Commenting: fixed issue that prevented selecting an @ mention suggestion.
+* Fixed an issue that could have caused the app to crash when accessing Site Pages.
+* Site Creation: faster site creation, removed intermediate steps. Just select what kind of site you'd like, enter the domain name and the site will be created.
+* Post Preview: Increase Post and Page Preview size on iPads running iOS 13.
+* Block editor: Added the Cover block
+* Block editor: Removed the dimming effect on unselected blocks
+* Block editor: Add alignment options for Heading block
+* Block editor: Implemented dropdown toolbar for alignment toolbar in Heading, Paragraph, Image, MediaText blocks
+* Block Editor: When editing link settings, tapping the keyboard return button now closes the settings panel as well as closing the keyboard.
+* Fixed a crash when a blog's URL became `nil` from a Core Data operation.
+* Added Share action to the more menu in the Posts list
+* Period Stats: fix colors when switching between light and dark modes.
+* Media uploads from "Other Apps": Fixed an issue where the Cancel button on the document picker/browser was not showing up in Light Mode.
+* Fix a crash when accessing Blog Posts from the Quick Actions button on iPads running iOS 12 and below.
+* Reader post detail: fix colors when switching between light and dark modes.
+* Fixed an issue where Continue with Apple button wouldn't respond after Jetpack Setup > Sign up flow completed.
+
  
 14.5
 -----
@@ -8,6 +34,7 @@
 * Block editor: Added Starter Page Templates: when you create a new page, we now show you a few templates to get started more quickly.
 * Block editor: Fix crash when pasting HTML content with embeded images on paragraphs
 * Post Settings: Fix issue where the status of a post showed "Scheduled" instead of "Published" after scheduling before the current date.
+* Stats: Fix background color in Dark Mode on wider screen sizes. 
 * Post Settings: Fix issue where the calendar selection may not match the selected date when site timezone differs from device timezone.
 * Dark Mode fixes:
   - Border color on Search bars.

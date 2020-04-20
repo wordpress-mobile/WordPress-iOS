@@ -37,6 +37,12 @@ extension WPStyleGuide {
             navigationAppearance.scrollEdgeAppearance = navigationAppearance.standardAppearance
         }
 
+        // Makes bar buttons visible in "Other Apps" media source picker.
+        // Setting title text attributes makes bar button items not go blank when switching between the tabs of the picker.
+        let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
+        barButtonItemAppearance.tintColor = .barButtonItemTitle
+        barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.barButtonItemTitle], for: .normal)
+
         let buttonBarAppearance = UIBarButtonItem.appearance()
         buttonBarAppearance.tintColor = .white
         buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),

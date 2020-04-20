@@ -17,7 +17,7 @@ class MediaNoticeNavigationCoordinator {
         editor.modalPresentationStyle = .fullScreen
         editor.insertedMedia = media
         WPTabBarController.sharedInstance().present(editor, animated: false)
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": source], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": source, WPAppAnalyticsKeyPostType: "post"], with: blog)
     }
 
     static func navigateToMediaLibrary(with userInfo: NSDictionary) {

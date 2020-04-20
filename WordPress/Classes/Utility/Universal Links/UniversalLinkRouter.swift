@@ -21,6 +21,7 @@ struct UniversalLinkRouter {
         redirects +
         meRoutes +
         newPostRoutes +
+        newPageRoutes +
         notificationsRoutes +
         readerRoutes +
         statsRoutes +
@@ -36,6 +37,11 @@ struct UniversalLinkRouter {
     static let newPostRoutes: [Route] = [
         NewPostRoute(),
         NewPostForSiteRoute()
+    ]
+
+    static let newPageRoutes: [Route] = [
+        NewPageRoute(),
+        NewPageForSiteRoute()
     ]
 
     static let notificationsRoutes: [Route] = [

@@ -68,6 +68,12 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         applyStyles()
     }
 
+    override func tintColorDidChange() {
+        super.tintColorDidChange()
+        // Restart animation when toggling light/dark mode so colors are updated.
+        restartGhostAnimation(style: GhostCellStyle.muriel)
+    }
+
     func configure(date: Date?,
                    period: StatsPeriodUnit?,
                    delegate: SiteStatsTableHeaderDelegate,

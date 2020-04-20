@@ -96,21 +96,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        resetNavigationColors()
-    }
-
-    /*
-     This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
-     either by uploading media or canceling. Doing this in the UIDocumentPickerDelegate methods either did nothing
-     or the resetting wasn't permanent.
-     */
-    fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationAppearance()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 

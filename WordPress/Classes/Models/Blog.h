@@ -8,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class BlogSettings;
 @class WPAccount;
 @class WordPressComRestApi;
+@class WordPressOrgRestApi;
 @class WordPressOrgXMLRPCApi;
 @class Role;
 @class QuickStartTourState;
@@ -159,6 +160,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedConnections;
 @property (nonatomic, readonly, nullable) NSArray<Role *> *sortedRoles;
 @property (nonatomic, strong,  readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
+@property (nonatomic, strong,  readonly, nullable) WordPressOrgRestApi *wordPressOrgRestApi;
 @property (nonatomic,   weak,  readonly, nullable) NSString       *version;
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
 @property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;

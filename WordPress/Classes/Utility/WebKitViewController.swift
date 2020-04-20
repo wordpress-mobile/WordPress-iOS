@@ -55,7 +55,7 @@ class WebKitViewController: UIViewController {
     @objc var customOptionsButton: UIBarButtonItem?
 
     @objc let url: URL?
-    @objc let authenticator: WebViewAuthenticator?
+    @objc let authenticator: RequestAuthenticator?
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
@@ -459,11 +459,6 @@ class WebKitViewController: UIViewController {
 
 extension WebKitViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if let request = authenticator?.interceptRedirect(request: navigationAction.request) {
-            decisionHandler(.cancel)
-            load(request: request)
-            return
-        }
 
         if let delegate = navigationDelegate {
             let policy = delegate.shouldNavigate(request: navigationAction.request)

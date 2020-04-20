@@ -68,6 +68,10 @@ class PostActionSheet {
                     actionSheetController.addDefaultActionWithTitle(Titles.edit) { [weak self] _ in
                         self?.interactivePostViewDelegate?.edit(post)
                     }
+                case .share:
+                    actionSheetController.addDefaultActionWithTitle(Titles.share) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.share(post, fromView: view)
+                    }
                 case .more:
                     CrashLogging.logMessage("Cannot handle unexpected button for post action sheet: \(button). This is a configuration error.", level: .error)
                 }
@@ -93,5 +97,6 @@ class PostActionSheet {
         static let view = NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
         static let retry = NSLocalizedString("Retry", comment: "Retry uploading the post.")
         static let edit = NSLocalizedString("Edit", comment: "Edit the post.")
+        static let share = NSLocalizedString("Share", comment: "Share the post.")
     }
 }

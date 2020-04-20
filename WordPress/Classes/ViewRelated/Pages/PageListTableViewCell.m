@@ -147,9 +147,11 @@ static CGFloat const FeaturedImageSize = 120.0;
 
     NSMutableArray<NSString *> *badges = [NSMutableArray new];
 
-    NSString *timestamp = [self.post isScheduled] ? [self.dateFormatter stringFromDate:self.post.dateCreated] : [self.post.dateCreated mediumString];
-    [badges addObject:timestamp];
-    
+    if (self.post.dateCreated != nil) {
+        NSString *timestamp = [self.post isScheduled] ? [self.dateFormatter stringFromDate:self.post.dateCreated] : [self.post.dateCreated mediumString];
+        [badges addObject:timestamp];
+    }
+
     if (page.hasPrivateState) {
         [badges addObject:NSLocalizedString(@"Private", @"Title of the Private Badge")];
     } else if (page.hasPendingReviewState) {

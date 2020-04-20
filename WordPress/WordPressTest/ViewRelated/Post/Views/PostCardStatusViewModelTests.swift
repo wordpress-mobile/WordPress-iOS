@@ -57,12 +57,12 @@ class PostCardStatusViewModelTests: XCTestCase {
             (
                 "Published post",
                 PostBuilder(context).published().withRemote().build(),
-                ButtonGroups(primary: [.edit, .view, .more], secondary: [.stats, .moveToDraft, .trash])
+                ButtonGroups(primary: [.edit, .view, .more], secondary: [.stats, .share, .moveToDraft, .trash])
             ),
             (
                 "Published post with local confirmed changes",
                 PostBuilder(context).published().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.stats, .moveToDraft, .trash])
+                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.stats, .share, .moveToDraft, .trash])
             ),
             (
                 "Post with the max number of auto uploades retry reached",

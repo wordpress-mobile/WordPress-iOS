@@ -107,7 +107,16 @@ class ActionSheetViewController: UIViewController {
         refreshForTraits()
 
         view.addSubview(stackView)
-        view.pinSubviewToSafeArea(stackView, insets: Constants.Stack.insets)
+        let stackViewConstraints = [
+            view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -Constants.Stack.insets.left),
+            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: Constants.Stack.insets.right),
+            view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: stackView.topAnchor, constant: -Constants.Stack.insets.top),
+        ]
+
+        let bottomAnchor = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.Stack.insets.bottom)
+        bottomAnchor.priority = .defaultHigh
+
+        NSLayoutConstraint.activate(stackViewConstraints + [bottomAnchor])
     }
 
     func button(_ info: ActionSheetButton) -> UIButton {

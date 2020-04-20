@@ -1541,7 +1541,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    LightNavigationController *navController = [[LightNavigationController alloc] initWithRootViewController:webViewController];
+    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    }
     [self presentViewController:navController animated:YES completion:nil];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];

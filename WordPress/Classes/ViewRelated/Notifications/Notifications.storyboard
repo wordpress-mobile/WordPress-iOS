@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -24,54 +22,41 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="filterTabBar" destination="LBU-zb-iai" id="qqB-Tp-xXt"/>
-                        <outlet property="inlinePromptSpaceConstraint" destination="MBK-Ez-h7B" id="NJj-XL-4AG"/>
-                        <outlet property="inlinePromptView" destination="ZnY-3K-upT" id="lUG-fd-Stc"/>
-                        <outlet property="tableHeaderView" destination="Uvo-9e-l6I" id="dxx-mK-msp"/>
+                        <outlet property="filterTabBar" destination="p6x-Ny-2wu" id="Wui-ck-Vlw"/>
+                        <outlet property="inlinePromptView" destination="SZM-LE-bID" id="ovr-0R-gdo"/>
+                        <outlet property="tableHeaderView" destination="V09-JZ-6RQ" id="ga5-UG-6nB"/>
                         <segue destination="veA-Pg-QAw" kind="showDetail" identifier="NotificationDetailsViewController" id="qci-jy-59F"/>
                     </connections>
                 </tableViewController>
-                <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="Uvo-9e-l6I" userLabel="Header View">
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" id="V09-JZ-6RQ">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="144"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZnY-3K-upT" userLabel="Ratings View" customClass="AppFeedbackPromptView" customModule="WordPress" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SZM-LE-bID" userLabel="Ratings View" customClass="AppFeedbackPromptView" customModule="WordPress" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="100" placeholder="YES" id="R1T-Iv-5Q8"/>
+                                <constraint firstAttribute="height" constant="100" placeholder="YES" id="bWv-aJ-fgb"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pEF-oN-cih" userLabel="Filters View">
+                        <view contentMode="scaleToFill" ambiguous="YES" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CJY-eS-kF1" userLabel="Filters View">
                             <rect key="frame" x="0.0" y="100" width="600" height="44"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBU-zb-iai" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p6x-Ny-2wu" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="LBU-zb-iai" secondAttribute="bottom" id="6uy-tW-55g"/>
-                                <constraint firstItem="LBU-zb-iai" firstAttribute="leading" secondItem="pEF-oN-cih" secondAttribute="leading" priority="999" id="9sh-kF-RQv"/>
-                                <constraint firstItem="LBU-zb-iai" firstAttribute="top" secondItem="pEF-oN-cih" secondAttribute="top" id="Ib2-7V-nPZ"/>
-                                <constraint firstAttribute="trailing" secondItem="LBU-zb-iai" secondAttribute="trailing" priority="999" id="Zhl-Rn-WR6"/>
+                                <constraint firstItem="p6x-Ny-2wu" firstAttribute="leading" secondItem="CJY-eS-kF1" secondAttribute="leading" priority="999" id="AdC-UY-iyo"/>
+                                <constraint firstItem="p6x-Ny-2wu" firstAttribute="top" secondItem="CJY-eS-kF1" secondAttribute="top" id="Omd-d3-Vhm"/>
+                                <constraint firstAttribute="trailing" secondItem="p6x-Ny-2wu" secondAttribute="trailing" priority="999" id="ZrZ-W6-sPC"/>
+                                <constraint firstAttribute="bottom" secondItem="p6x-Ny-2wu" secondAttribute="bottom" id="wg2-sw-4xq"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstItem="pEF-oN-cih" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" priority="999" identifier="FiltersLeading" id="0TE-M7-WfE"/>
-                        <constraint firstAttribute="trailing" secondItem="pEF-oN-cih" secondAttribute="trailing" priority="999" identifier="FiltersTrailing" id="222-MX-igM"/>
-                        <constraint firstItem="ZnY-3K-upT" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" priority="999" identifier="RatingsLeading" id="27p-cV-siE"/>
-                        <constraint firstItem="pEF-oN-cih" firstAttribute="top" secondItem="ZnY-3K-upT" secondAttribute="bottom" identifier="FiltersTop" id="MBK-Ez-h7B"/>
-                        <constraint firstItem="ZnY-3K-upT" firstAttribute="top" secondItem="Uvo-9e-l6I" secondAttribute="top" priority="750" identifier="RatingsTop" id="SJu-PU-nzt"/>
-                        <constraint firstAttribute="trailing" secondItem="ZnY-3K-upT" secondAttribute="trailing" priority="999" identifier="RatingsTrailing" id="b8L-0Q-JCB"/>
-                        <constraint firstItem="pEF-oN-cih" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Uvo-9e-l6I" secondAttribute="top" id="iOI-vG-EsO"/>
-                        <constraint firstItem="pEF-oN-cih" firstAttribute="centerX" secondItem="Uvo-9e-l6I" secondAttribute="centerX" identifier="FiltersCenter" id="rGu-9k-JxJ"/>
-                        <constraint firstAttribute="bottom" secondItem="pEF-oN-cih" secondAttribute="bottom" identifier="FiltersBottom" id="zwD-z0-d6i"/>
-                    </constraints>
-                </view>
+                </stackView>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9wK-eg-RBm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="700" y="-1061"/>
@@ -85,11 +70,11 @@
                         <viewControllerLayoutGuide type="bottom" id="6LW-NS-qSh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lvM-1n-Dgf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-NP-ili">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                 <subviews>
                                     <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN" customClass="IntrinsicTableView" customModule="WordPress">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>

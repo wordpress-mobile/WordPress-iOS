@@ -174,7 +174,7 @@ final class WebAddressWizardContent: UIViewController {
     // MARK: Private behavior
 
     private func applyTitle() {
-        title = NSLocalizedString("3 of 3", comment: "Site creation. Step 3. Screen title")
+        title = NSLocalizedString("2 of 2", comment: "Site creation. Step 2. Screen title")
     }
 
     private func clearContent() {

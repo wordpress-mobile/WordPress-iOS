@@ -1,15 +1,11 @@
-Nieuwe blokken! Welkom bij het blok Nieuwste berichten, waar je je nieuwe content kunt laten opvallen in berichten en op pagina's.
+Het aanmaken van een site is gestroomlijnd door een aantal tussenliggende stappen te verwijderen. Kies het soort site waar je naar op zoek bent, voer een domeinnaam in en je bent klaar.
 
-Wanneer je een nieuwe pagina aanmaakt, laten we je een paar sjablonen zien. Kies er een en wij voegen dan alle benodigde blokken toe aan je pagina zodat je snel aan de slag kunt gaan.
+De blokeditor bevat nu nog meer verbeteringen: Het Omslagblok is nu beschikbaar, er zijn uitlijningsopties voor het Titelblok en een vervolgkeuzebalk maakt het eenvoudiger om de blokken Titel, Paragraaf, Afbeelding en MediaTekst uit te lijnen. We hebben ook het dim-effect op niet-geselecteerde blokken verwijderd.
 
-We hebben een paar problemen met de blok-editor verholpen. De app zou nu niet meer moeten crashen wanneer je HTML-content plakt en er zullen geen randen van citaatblokken meer ontbreken in de Nachtmodus.
+De opmaak van het scherm Meldingen leidde ertoe dat tekst verloren kon raken onder de behuizing van sommige modellen mobiele telefoons. Dat is nu opgelost!
 
-Als je voorheen berichten inplande voor publicatie, werden ze weergegeven als 'gepland' in plaats van als 'gepubliceerd'. Dat probleem is opgelost, net als het probleem waarbij data onjuist werden weergegeven als de tijdzone van je site niet hetzelfde was als de tijdzone van je apparaat.
+Soms probeerde je iemand aan te spreken via een @-melding in de reactie en gaf de app je een aantal suggesties, maar kon je geen naam kiezen. Dat probleem is nu ook verholpen. We hebben ook een paar andere problemen aangepakt die zorgden dat de app crashte wanneer je toegang probeerde te krijgen tot het scherm Sitepagina's of wanneer je probeerde de knoppen voor snelle acties te gebruiken op een iPad om je blogberichten te openen. En over pagina's en berichten gesproken: voorbeeldweergaven zijn nu groter voor iPads waarop iOS 13 wordt uitgevoerd.
 
-We hebben UI-inconsistenties opgemerkt in de Nachtmodus en met de Reader-werkbalk.
-
-Je kunt @-verwijzingen gebruiken wanneer je reacties schrijft in de weergave op volledig scherm.
-
-Soms werden e-mails om aan te melden en in te loggen via magische links naar je map met ongewenste e-mail verplaatst. Daarom hebben we een opmerking aan het bevestigingsscherm toegevoegd waarin staat dat je je mappen Spam/Ongewenste e-mail moet controleren als je de e-mail niet snel ontvangt.
+We willen de nachtmodus echt zoals we onze koffie willen: heel donker en zonder dat er bugs in ronddrijven. Er zijn nog wat glitches aanwezig in de dag- en nachtmodus, wat soms tot vreemde problemen leidde wanneer je overschakelde van de ene op de andere. Er zijn nu een hoop minder glitches.
 
 Blijf veilig allemaal.

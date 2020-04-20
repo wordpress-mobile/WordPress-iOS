@@ -17,7 +17,6 @@ enum SiteCreationRequestAssemblyError: Error {
     case invalidSegmentIdentifier
     case invalidVerticalIdentifier
     case invalidDomain
-    case invalidSiteInformation
 }
 
 // MARK: - SiteCreator
@@ -52,15 +51,11 @@ final class SiteCreator {
         }
         let siteName = domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
 
-        guard let siteInformation = information else {
-            throw SiteCreationRequestAssemblyError.invalidSiteInformation
-        }
-
         let request = SiteCreationRequest(
             segmentIdentifier: segmentIdentifier,
             verticalIdentifier: verticalIdentifier,
-            title: siteInformation.title,
-            tagline: siteInformation.tagLine,
+            title: information?.title ?? NSLocalizedString("Site Title", comment: "Site info. Title"),
+            tagline: information?.tagLine ?? "",
             siteURLString: siteName,
             isPublic: true
         )

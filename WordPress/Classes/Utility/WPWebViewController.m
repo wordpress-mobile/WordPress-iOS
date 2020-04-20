@@ -122,7 +122,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     
     // Additional Setup
     [self setupWebView];
-    [self setupAuthenticator];
 
     // Fire away!
     [self applyModalStyleIfNeeded];
@@ -175,14 +174,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 }
 
 #pragma mark - Setup
-
-/// I'm not sure why this is necessary, but it seems like the authenticator is failing to redirect us if
-/// this isn't set to true.  @kokejb suggested this change and it's working for now.
-///
-- (void)setupAuthenticator
-{
-    self.authenticator.safeRedirect = true;
-}
 
 - (void)setupTitle
 {
@@ -408,15 +399,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     NSURLRequest *request = [navigationAction request];
     
     DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
-    
-    NSURLRequest *redirectRequest = [self.authenticator interceptRedirectWithRequest:request];
-    if (redirectRequest != NULL) {
-        DDLogInfo(@"Found redirect to %@", redirectRequest);
-        [self.webView loadRequest:redirectRequest];
-        
-        decisionHandler(WKNavigationActionPolicyCancel);
-        return;
-    }
     
     // To handle WhatsApp and Telegraph shares
     // Even though the documentation says that canOpenURL will only return YES for

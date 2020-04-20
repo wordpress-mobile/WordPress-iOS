@@ -11,9 +11,9 @@ class SubjectContentStyles: FormattableContentStyles {
 
     var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
         return [
-            .user: WPStyleGuide.Notifications.subjectBoldStyle,
-            .post: WPStyleGuide.Notifications.subjectBoldStyle,
-            .comment: WPStyleGuide.Notifications.subjectBoldStyle,
+            .user: WPStyleGuide.Notifications.subjectSemiBoldStyle,
+            .post: WPStyleGuide.Notifications.subjectSemiBoldStyle,
+            .comment: WPStyleGuide.Notifications.subjectSemiBoldStyle,
             .blockquote: WPStyleGuide.Notifications.subjectQuotedStyle,
             .noticon: WPStyleGuide.Notifications.subjectNoticonStyle
         ]

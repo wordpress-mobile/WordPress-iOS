@@ -49,14 +49,11 @@ import Gridicons
 
         view.addSubview(button)
 
-        /// A trailing constraint that is activated in `updateConstraints` at a later time when everything should be set up
-        let trailingConstraint = button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.padding)
-        button.trailingConstraint = trailingConstraint
-
         NSLayoutConstraint.activate([
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.padding),
             button.heightAnchor.constraint(equalToConstant: Constants.heightWidth),
-            button.widthAnchor.constraint(equalToConstant: Constants.heightWidth)
+            button.widthAnchor.constraint(equalToConstant: Constants.heightWidth),
+            button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.padding)
         ])
 
         button.addTarget(self, action: #selector(showCreateSheet), for: .touchUpInside)
@@ -65,7 +62,9 @@ import Gridicons
     @objc private func showCreateSheet() {
         guard let viewController = viewController else { return }
         let actionSheetVC = actionSheetController(for: viewController.traitCollection)
-        viewController.present(actionSheetVC, animated: true, completion: nil)
+        viewController.present(actionSheetVC, animated: true, completion: {
+            WPAnalytics.track(.createSheetShown)
+        })
     }
 
     private func actionSheetController(for traitCollection: UITraitCollection) -> UIViewController {
@@ -108,7 +107,6 @@ import Gridicons
     }
 
     @objc func showCreateButton() {
-        button.setNeedsUpdateConstraints() // See `FloatingActionButton` implementation for more info on why this is needed.
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = false
         } else {

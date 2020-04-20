@@ -1,4 +1,5 @@
 import Alamofire
+import WordPressKit
 
 struct GutenbergNetworkRequest {
     typealias CompletionHandler = (Swift.Result<Any, NSError>) -> Void
@@ -36,24 +37,23 @@ struct GutenbergNetworkRequest {
     // MARK: - Self-Hosed
 
     private func selfHostedRequest(completion: @escaping CompletionHandler) {
-        do {
-            let url = try blog.url(withPath: selfHostedPath).asURL()
-            performSelfHostedRequest(with: url, completion: completion)
-        } catch {
-            completion(.failure(error as NSError))
-        }
+        performSelfHostedRequest(completion: completion)
     }
 
-    private func performSelfHostedRequest(with url: URL, completion: @escaping CompletionHandler) {
-        SessionManager.default.request(url).validate().responseJSON { (response) in
-            switch response.result {
-            case .success(let response):
-                completion(.success(response))
-            case .failure(let afError):
-                let error = afError.nsError(with: response.response)
-                completion(.failure(error))
-            }
+    private func performSelfHostedRequest(completion: @escaping CompletionHandler) {
+        guard let api = blog.wordPressOrgRestApi else {
+            completion(.failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil)))
+            return
         }
+
+        api.GET(path, parameters: nil) { (result, httpResponse) in
+                switch result {
+                    case .success(let response):
+                        completion(.success(response))
+                    case .failure(let error):
+                        completion(.failure(error as NSError))
+                }
+            }
     }
 
     private var selfHostedPath: String {

@@ -261,15 +261,17 @@ private extension JetpackConnectionWebViewController {
     }
 
     func performSiteLogin(redirect: URL, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let authenticator = WebViewAuthenticator(blog: blog) else {
-                decisionHandler(.allow)
-                return
+        guard let authenticator = RequestAuthenticator(blog: blog) else {
+            decisionHandler(.allow)
+            return
         }
         decisionHandler(.cancel)
-        let request = authenticator.authenticatedRequest(url: redirect)
-        DDLogDebug("Performing site login to \(String(describing: request.url))")
-        pendingSiteRedirect = redirect
-        webView.load(request)
+
+        authenticator.request(url: redirect, cookieJar: webView.configuration.websiteDataStore.httpCookieStore, completion: { request in
+            DDLogDebug("Performing site login to \(String(describing: request.url))")
+            self.pendingSiteRedirect = redirect
+            self.webView.load(request)
+        })
     }
 
     func performDotComLogin(redirect: URL) {
@@ -283,11 +285,12 @@ private extension JetpackConnectionWebViewController {
     }
 
     func authenticateWithDotCom(username: String, token: String, redirect: URL) {
-        let authenticator = WebViewAuthenticator(credentials: .dotCom(username: username, authToken: token))
-        authenticator.safeRedirect = true
-        let request = authenticator.authenticatedRequest(url: redirect)
-        DDLogDebug("Performing WordPress.com login to \(String(describing: request.url))")
-        webView.load(request)
+        let authenticator = RequestAuthenticator(credentials: .dotCom(username: username, authToken: token, authenticationType: .regular))
+
+        authenticator.request(url: redirect, cookieJar: webView.configuration.websiteDataStore.httpCookieStore, completion: { request in
+            DDLogDebug("Performing WordPress.com login to \(String(describing: request.url))")
+            self.webView.load(request)
+        })
     }
 
     func presentDotComLogin(redirect: URL) {

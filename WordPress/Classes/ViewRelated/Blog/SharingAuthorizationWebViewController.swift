@@ -59,7 +59,7 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 
         super.init(nibName: "WPWebViewController", bundle: nil)
 
-        self.authenticator = WebViewAuthenticator(blog: blog)
+        self.authenticator = RequestAuthenticator(blog: blog)
         self.secureInteraction = true
         self.url = url
     }
