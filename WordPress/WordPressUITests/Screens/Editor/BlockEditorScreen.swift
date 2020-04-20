@@ -7,6 +7,7 @@ class BlockEditorScreen: BaseScreen {
     let editorNavBar = XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"]
     let editorCloseButton = XCUIApplication().navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
     let publishButton = XCUIApplication().buttons["Publish"]
+    let publishNowButton = XCUIApplication().buttons["Publish Now"]
     let moreButton = XCUIApplication().buttons["more_post_options"]
 
     // Editor area
@@ -133,11 +134,7 @@ class BlockEditorScreen: BaseScreen {
         if FancyAlertComponent.isLoaded() {
             FancyAlertComponent().acceptAlert()
         } else {
-            if isIpad {
-                app.alerts.buttons["Publish"].tap()
-            } else {
-                app.sheets.buttons["Publish"].tap()
-            }
+            publishNowButton.tap()
         }
     }
 

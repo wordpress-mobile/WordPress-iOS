@@ -15,19 +15,22 @@ def get_required_env(key)
   ENV[key]
 end
 
-before_all do
-  # Check that the env files exist
-  unless is_ci || File.file?(USER_ENV_FILE_PATH)
-    UI.user_error!("~/.wpios-env.default not found: Please copy env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
-  end
-  unless File.file?(PROJECT_ENV_FILE_PATH)
-    UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
-  end
+before_all do |lane|
+  # Skip these checks/steps for test lane (not needed for testing)
+  unless lane == :test_without_building
+    # Check that the env files exist
+    unless is_ci || File.file?(USER_ENV_FILE_PATH)
+      UI.user_error!("~/.wpios-env.default not found: Please copy env/user.env-example to #{USER_ENV_FILE_PATH} and fill in the values")
+    end
+    unless File.file?(PROJECT_ENV_FILE_PATH)
+      UI.user_error!("project.env not found: Make sure your configuration is up to date with `rake dependencies`")
+    end
 
-  # This allows code signing to work on CircleCI
-  # It is skipped if this isn't running on CI
-  # See https://circleci.com/docs/2.0/ios-codesigning/
-  setup_circle_ci
+    # This allows code signing to work on CircleCI
+    # It is skipped if this isn't running on CI
+    # See https://circleci.com/docs/2.0/ios-codesigning/
+    setup_circle_ci
+  end
 end
 
 platform :ios do
@@ -481,6 +484,35 @@ import "./ScreenshotFastfile"
                        "org.wordpress.WordPressNotificationContentExtension",
                        "org.wordpress.WordPressAllTimeWidget",
                        "org.wordpress.WordPressThisWeekWidget"])
+  end
+
+########################################################################
+# Test Lanes
+########################################################################
+  #####################################################################################
+  # test_without_building
+  # -----------------------------------------------------------------------------------
+  # This lane runs tests without building the app.
+  # It requires a prebuilt xctestrun file and simulator destination where the tests will be run.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane test_without_building [xctestrun:<Path to xctestrun file>] [destination:<Simulator>] [try_count:<Number of times to try tests>]
+  #
+  # Example:
+  # bundle exec fastlane test_without_building xctestrun:WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
+  #####################################################################################
+  desc "Run tests without building"
+  lane :test_without_building do | options |
+    multi_scan(
+      workspace: "../WordPress.xcworkspace",
+      scheme: "WordPress",
+      test_without_building: true,
+      xctestrun: "../#{options[:xctestrun]}",
+      destination: options[:destination],
+      try_count: options[:try_count],
+      output_directory: "../build/results",
+      result_bundle: true
+    )
   end
 
 ########################################################################

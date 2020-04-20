@@ -20,19 +20,6 @@ commands:
               echo $PATH
             fi
 
-  save-xcresult:
-    steps:
-      - run:
-          name: Zip xcresult
-          command: |
-            mkdir testresults
-            zip -r testresults/xcresult.zip test-without-building.xcresult
-          when: on_fail # Zips the .xcresult file when tests fail, so it can be saved
-      - store_artifacts:
-          name: Save xcresult
-          path: testresults
-          destination: logs
-
 jobs:
   Build Tests:
     executor:
@@ -51,23 +38,29 @@ jobs:
           paths:
             - DerivedData/Build/Products
             - Pods/WordPressMocks
+            - vendor/bundle
   Unit Tests:
     executor:
       name: ios/default
       xcode-version: "11.2.1"
     steps:
       - fix-path
+      - git/shallow-checkout
       - ios/boot-simulator:
           xcode-version: "11.2.1"
           device: iPhone 11
       - attach_workspace:
           at: ./
+      - run:
+          name: Prepare Bundle
+          command: bundle --path vendor/bundle
       - ios/wait-for-simulator
-      - ios/xcodebuild:
-          command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPressUnitTests_iphonesimulator13.2-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath test-without-building.xcresult
-      - ios/save-xcodebuild-artifacts
-      - save-xcresult
+      - run:
+          name: Run Unit Tests
+          working_directory: Scripts
+          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUnitTests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
+      - ios/save-xcodebuild-artifacts:
+          result-bundle-path: build/results
   UI Tests:
     parameters:
       device:
@@ -81,21 +74,26 @@ jobs:
       xcode-version: "11.2.1"
     steps:
       - fix-path
+      - git/shallow-checkout
       - ios/boot-simulator:
           xcode-version: "11.2.1"
           device: << parameters.device >>
       - attach_workspace:
           at: ./
       - run:
+          name: Prepare Bundle
+          command: bundle --path vendor/bundle
+      - run:
           name: Run mocks
           command: ./Pods/WordPressMocks/scripts/start.sh 8282
           background: true
       - ios/wait-for-simulator
-      - ios/xcodebuild:
-          command: test-without-building
-          arguments: -xctestrun DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" -resultBundlePath test-without-building.xcresult
-      - ios/save-xcodebuild-artifacts
-      - save-xcresult
+      - run:
+          name: Run UI Tests
+          working_directory: Scripts
+          command: bundle exec fastlane test_without_building xctestrun:DerivedData/Build/Products/WordPress_WordPressUITests_iphonesimulator13.2-x86_64.xctestrun destination:"platform=iOS Simulator,id=$SIMULATOR_UDID" try_count:3
+      - ios/save-xcodebuild-artifacts:
+          result-bundle-path: build/results
       - when:
           condition: << parameters.post-to-slack >>
           steps:

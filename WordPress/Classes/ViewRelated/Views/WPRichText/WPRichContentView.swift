@@ -16,10 +16,6 @@ import WordPressShared
 ///
 class WPRichContentView: UITextView {
 
-    /// Used to keep references to image attachments.
-    ///
-    var mediaArray = [RichMedia]()
-
     /// Manages the layout and positioning of text attachments.
     ///
     @objc lazy var attachmentManager: WPTextAttachmentManager = {
@@ -339,29 +335,21 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.height)
         }
 
-        let index = mediaArray.count
-        let indexPath = IndexPath(row: index, section: 1)
         weak var weakImage = image
 
-        image.loadImage(from: mediaHost, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
-            guard
-                let richMedia = self?.mediaArray[indexPath.row],
-                let img = weakImage
-            else {
+        image.loadImage(from: mediaHost, preferedSize: finalSize, onSuccess: { [weak self] in
+            guard let img = weakImage else {
                 return
             }
 
-            richMedia.attachment.maxSize = img.contentSize()
+            attachment.maxSize = img.contentSize()
 
             if isUsingTemporaryLayoutDimensions {
                 self?.layoutAttachmentViews()
             }
-        }, onError: { (indexPath, error) in
+        }, onError: { (error) in
             DDLogError("\(String(describing: error))")
         })
-
-        let media = RichMedia(image: image, attachment: attachment)
-        mediaArray.append(media)
 
         return image
     }
@@ -415,12 +403,13 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     /// - Returns: An NSRange optional.
     ///
     func attachmentRangeForRichTextImage(_ richTextImage: WPRichTextImage) -> NSRange? {
-        for item in mediaArray {
-            if item.image == richTextImage {
-                return rangeOfAttachment(item.attachment)
-            }
+        guard let match = attachmentManager.attachmentViews.first( where: { (_, value) -> Bool in
+            return value.view == richTextImage
+        }) else {
+            return nil
         }
-        return nil
+
+        return rangeOfAttachment(match.key)
     }
 
 
