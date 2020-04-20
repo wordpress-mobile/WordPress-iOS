@@ -2,7 +2,9 @@
 class OffsetTableViewHandler: WPTableViewHandler {
 
     func object(at indexPath: IndexPath) -> NSFetchRequestResult? {
-        guard let indexPath = adjusted(indexPath: indexPath) else { return nil }
+        guard let indexPath = adjusted(indexPath: indexPath) else {
+            return nil
+        }
         return resultsController.object(at: indexPath)
     }
 

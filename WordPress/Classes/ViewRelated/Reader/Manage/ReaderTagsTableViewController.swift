@@ -48,7 +48,9 @@ extension ReaderTagsTableViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard tableViewHandler?.adjusted(indexPath: indexPath) == nil else { return }
+        guard tableViewHandler?.adjusted(indexPath: indexPath) == nil else {
+            return
+        }
         tableView.deselectSelectedRowWithAnimation(true)
         showAddTag()
     }
@@ -66,7 +68,9 @@ extension ReaderTagsTableViewController {
         guard let point = sender.superview?.convert(sender.center, to: tableView),
             let indexPath = tableView.indexPathForRow(at: point),
             let adjustIndexPath = tableViewHandler?.adjusted(indexPath: indexPath),
-            let topic = tableViewHandler?.resultsController.object(at: adjustIndexPath) as? ReaderTagTopic else { return }
+            let topic = tableViewHandler?.resultsController.object(at: adjustIndexPath) as? ReaderTagTopic else {
+                return
+        }
         unfollowTagTopic(topic)
     }
 
@@ -75,16 +79,17 @@ extension ReaderTagsTableViewController {
         let placeholder = NSLocalizedString("Add any tag", comment: "Placeholder text. A call to action for the user to type any tag to which they would like to subscribe.")
         let controller = SettingsTextViewController(text: nil, placeholder: placeholder, hint: nil)
         controller.title = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
-        controller.onValueChanged = { value in
-            if value.trim().count > 0 {
-                self.followTagNamed(value.trim())
+        controller.onValueChanged = { [weak self] value in
+            let tagName = value.trim()
+            if tagName.isEmpty() {
+                self?.followTagNamed(tagName)
             }
         }
         controller.mode = .lowerCaseText
         controller.displaysActionButton = true
         controller.actionText = NSLocalizedString("Add Tag", comment: "Button Title. Tapping subscribes the user to a new tag.")
-        controller.onActionPress = {
-            self.dismissModal()
+        controller.onActionPress = { [weak self] in
+            self?.dismissModal()
         }
 
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(ReaderTagsTableViewController.dismissModal))
@@ -157,7 +162,10 @@ extension ReaderTagsTableViewController {
             return
         }
 
-        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .middle, completion: {
+        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .middle, completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
             if !self.splitViewControllerIsHorizontallyCompact {
                 self.tableView(self.tableView, didSelectRowAt: indexPath)
             }

@@ -455,7 +455,9 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 
-        guard showsSectionTitle else { return nil }
+        guard showsSectionTitle else {
+            return nil
+        }
 
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         if count > 0 {
