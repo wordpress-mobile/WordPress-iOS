@@ -37,6 +37,11 @@ class ReaderTagsTableViewController: UIViewController {
 
 class ReaderTagsTableViewHandler: WPTableViewHandler {
 
+    func object(at indexPath: IndexPath) -> NSFetchRequestResult? {
+        guard let indexPath = adjusted(indexPath: indexPath) else { return nil }
+        return resultsController.object(at: indexPath)
+    }
+
     func adjusted(indexPath: IndexPath) -> IndexPath? {
         guard indexPath.row > 0 else {
             return nil
@@ -44,8 +49,30 @@ class ReaderTagsTableViewHandler: WPTableViewHandler {
         return IndexPath(row: indexPath.row - 1, section: indexPath.section)
     }
 
+    func adjustedToTable(indexPath: IndexPath) -> IndexPath {
+        let newIndexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
+        return newIndexPath
+    }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return super.tableView(tableView, numberOfRowsInSection: section) + 1
+    }
+
+    override func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                             didChange anObject: Any,
+                             at indexPath: IndexPath?,
+                             for type: NSFetchedResultsChangeType,
+                             newIndexPath: IndexPath?) {
+
+        let oldIndexPath = indexPath.map {
+            adjustedToTable(indexPath: $0)
+        } ?? nil
+
+        let newPath = newIndexPath.map {
+            adjustedToTable(indexPath: $0)
+        } ?? nil
+
+        super.controller(controller, didChange: anObject, at: oldIndexPath, for: type, newIndexPath: newPath)
     }
 }
 
@@ -67,13 +94,9 @@ extension ReaderTagsTableViewController: WPTableViewHandlerDelegate {
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
 
-        guard let indexPath = tableViewHandler?.adjusted(indexPath: indexPath) else {
+        guard let topic = tableViewHandler?.object(at: indexPath) as? ReaderTagTopic else {
             cell.textLabel?.text = NSLocalizedString("Add a Tag", comment: "Title of a feature to add a new tag to the tags subscribed by the user.")
             cell.accessoryView = UIImageView(image: UIImage.gridicon(.plusSmall))
-            return
-        }
-
-        guard let topic = tableViewHandler?.resultsController.object(at: indexPath) as? ReaderTagTopic else {
             return
         }
 
@@ -88,10 +111,11 @@ extension ReaderTagsTableViewController: WPTableViewHandlerDelegate {
 
 extension ReaderTagsTableViewController {
     @objc func tappedAccessory(_ sender: UIButton) {
-        if let point = sender.superview?.convert(sender.center, to: tableView),
-            let indexPath = tableView.indexPathForRow(at: point) {
-            tableView.delegate?.tableView?(tableView, accessoryButtonTappedForRowWith: indexPath)
-        }
+        guard let point = sender.superview?.convert(sender.center, to: tableView),
+            let indexPath = tableView.indexPathForRow(at: point),
+            let adjustIndexPath = tableViewHandler?.adjusted(indexPath: indexPath),
+            let topic = tableViewHandler?.resultsController.object(at: adjustIndexPath) as? ReaderTagTopic else { return }
+        unfollowTagTopic(topic)
     }
 
     /// Presents a new view controller for subscribing to a new tag.
@@ -152,6 +176,24 @@ extension ReaderTagsTableViewController {
             alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
             alert.presentFromRootViewController()
         })
+    }
+
+    /// Tells the ReaderTopicService to unfollow the specified topic.
+    ///
+    /// - Parameters:
+    ///     - topic: The tag topic that is to be unfollowed.
+    ///
+    func unfollowTagTopic(_ topic: ReaderTagTopic) {
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.unfollowTag(topic, withSuccess: nil) { (error) in
+            DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
+
+            let title = NSLocalizedString("Could Not Remove Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
+            let message = error?.localizedDescription
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addCancelActionWithTitle(NSLocalizedString("OK", comment: "Button title. An acknowledgement of the message displayed in a prompt."))
+            alert.presentFromRootViewController()
+        }
     }
 
     /// Scrolls the tableView so the specified tag is in view.
